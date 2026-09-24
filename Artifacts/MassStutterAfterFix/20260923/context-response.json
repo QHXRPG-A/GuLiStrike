@@ -1,0 +1,76 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "pid": 28384,
+    "wall_time": 1790140170.6486504,
+    "worlds": [
+      {
+        "index": 0,
+        "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "world_seconds": 449.47295654565096,
+        "delta_seconds": 0.04844199866056442,
+        "paused": false,
+        "replication_settings": {
+          "full_rate_pose_distance_centimeters": 32000.0,
+          "far_moving_pose_frame_divisor": 2,
+          "stationary_pose_frame_divisor": 2
+        }
+      },
+      {
+        "index": 1,
+        "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "world_seconds": 448.2231541350484,
+        "delta_seconds": 0.04844199866056442,
+        "paused": false,
+        "snapshot": "D:\\UE5.7\\test1\\Artifacts\\MassStutterAfterFix\\20260923\\client-1.json",
+        "presentation": {
+          "interpolation_back_time_seconds": 0.11999999731779099,
+          "maximum_adaptive_interpolation_back_time_seconds": 0.3499999940395355,
+          "maximum_extrapolation_seconds": 0.10000000149011612,
+          "hard_snap_distance_centimeters": 200.0
+        },
+        "camera_location": [
+          -61432.87604653356,
+          22659.852390826847,
+          7817.991824461591
+        ],
+        "camera_fov": 45.0
+      },
+      {
+        "index": 2,
+        "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "world_seconds": 447.3494900204241,
+        "delta_seconds": 0.04844199866056442,
+        "paused": false,
+        "snapshot": "D:\\UE5.7\\test1\\Artifacts\\MassStutterAfterFix\\20260923\\client-2.json",
+        "presentation": {
+          "interpolation_back_time_seconds": 0.11999999731779099,
+          "maximum_adaptive_interpolation_back_time_seconds": 0.3499999940395355,
+          "maximum_extrapolation_seconds": 0.10000000149011612,
+          "hard_snap_distance_centimeters": 200.0
+        },
+        "camera_location": [
+          6.750469215459616e-07,
+          81621.7464876647,
+          11570.38644397545
+        ],
+        "camera_fov": 45.0
+      }
+    ],
+    "cvars": {
+      "t.MaxFPS": 0.0,
+      "r.VSync": 0.0,
+      "t.IdleWhenNotForeground": 0.0,
+      "r.ScreenPercentage": 0.0,
+      "r.AntiAliasingMethod": 1.0,
+      "sg.ViewDistanceQuality": 3.0,
+      "sg.ShadowQuality": 3.0,
+      "sg.GlobalIlluminationQuality": 3.0,
+      "sg.ReflectionQuality": 3.0,
+      "r.Lumen.HardwareRayTracing": 1.0,
+      "r.RayTracing": 1.0,
+      "r.Shadow.Virtual.Enable": 1.0
+    }
+  }
+}

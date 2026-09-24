@@ -1,0 +1,33 @@
+{
+  "duration_seconds": 35,
+  "dropped_pose_rpc_attempts": 4217,
+  "by_controller": {
+    "GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock": 2103,
+    "GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock": 2114
+  },
+  "effective_connection_bytes_per_second": 250000,
+  "net_log_restored": "Log",
+  "evidence_scope": "current PIE has confirmed server-side saturated unreliable RPC drops; historical frame6298 was not traced at send layer",
+  "csv_capture": "not_started; STARTFILE selected filename only, STOP warned no capture; no CSV evidence used",
+  "unresolved": [
+    "which traffic consumes the send budget",
+    "sustained throughput versus per-tick bursts",
+    "historical frame6298 exact drop path"
+  ],
+  "traces": [
+    {
+      "file": "prediction-baseline-20260923-142904-89418.csv",
+      "sha256": "d747b1f9b93e7042c8f41be4b21455d6769f804512371e05b0d5fdeb591ff423",
+      "fps": 36.795732842563396,
+      "maximum_sample_gap_seconds": 0.32403599999997823,
+      "cap_frames": 0
+    },
+    {
+      "file": "prediction-baseline-20260923-142907-89532.csv",
+      "sha256": "05fd18a956ce3e83db1e948c582c614e6bfccb4389218ce68db083842908e8e2",
+      "fps": 36.92224760192712,
+      "maximum_sample_gap_seconds": 0.35449400000015885,
+      "cap_frames": 0
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "authorized_by": "User: 编译",
+  "engine": "D:/UnrealEngine-5.7",
+  "target": "GuLiStrikeEditor Win64 Development",
+  "flags": [
+    "-WaitMutex",
+    "-NoHotReloadFromIDE"
+  ],
+  "exit_code": 0,
+  "completed_at": "2026-09-23T20:47:30.583323+08:00",
+  "attempts": [
+    {
+      "log": "compile-editor-20260923.log",
+      "exit_code": 6,
+      "ubt_seconds": 60.78
+    },
+    {
+      "log": "compile-editor-20260923-retry1.log",
+      "exit_code": 6,
+      "ubt_seconds": 36.25
+    },
+    {
+      "log": "compile-editor-20260923-retry2.log",
+      "exit_code": 0,
+      "ubt_seconds": 6.83
+    }
+  ],
+  "build_ids_match": true,
+  "outputs": [
+    {
+      "path": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiStrike.dll",
+      "bytes": 12500480,
+      "modified": "2026-09-23T20:47:01.036561+08:00"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiStrikeEditor.dll",
+      "bytes": 595968,
+      "modified": "2026-09-23T20:47:00.749587+08:00"
+    }
+  ],
+  "sources": [
+    {
+      "file": "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp",
+      "sha256": "892e35820423f73fbdc4690ce6274e86c21807d9bfdbe3c8d9e972bf73ed5bbc"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h",
+      "sha256": "f162d1dc7041c29a850c6f96fe19c3f32166f02867f5c31da810b95cec19f2e0"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Framework/GuLiCommanderStateDispatch.cpp",
+      "sha256": "c430d22ca5fd9f3e3f53ce577109a98b05502b1dc3674e76ce9d04519d97a91a"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp",
+      "sha256": "ad559533ae7ae9ca21ffcfb4f31f7fd0c4c4af41ddfa8cdcb6dbd47dd63bb373"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h",
+      "sha256": "63801d80d67f52478c4582fc1b24c6e8c23edbeb48fd31e771ca1794a6c7f5ac"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.cpp",
+      "sha256": "6ebda7011160856b9f83b5a4393b650b77d235944cd96dc9e969de87db1094b4"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Network/GuLiCommanderStateStream.cpp",
+      "sha256": "716d097f4f1d9c16567e53bb54f9f2fc8a2741b0618b7227ef77b16de4c64f6f"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Network/GuLiCommanderStateStream.h",
+      "sha256": "57be7a4fdf40533a20ae40f4aafffcd77dc5bae3fc2cc8986dd49f257a443d35"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.cpp",
+      "sha256": "9e17646477c8230ed55b8d541b5d94fb4274b74ac5cf3dc6a3a95f06d7d6a7ad"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.cpp",
+      "sha256": "727d0850604f9b2853f494de36ec8a915ee0e4f1bb75034220fc6fa05ad143e6"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp",
+      "sha256": "405ab1da296ae272ef9998978b34f7d4831212419cc8de713c672738c963a36f"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h",
+      "sha256": "65713d3d0ccdaa332f3ea39d224fff6be1e06dd9eb556c8651ce061ffe577cd9"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderRouteLineComponent.cpp",
+      "sha256": "8b57c9f48b8bbdf1a0b71e7b04c6f76cf95b73e5f9d0e14626e150aaad65bde6"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderRouteLineComponent.h",
+      "sha256": "4e90fd97785a59cff973af3a3064f133007f0733cfc9e1f3899bce3a60a33123"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.cpp",
+      "sha256": "5a79df81e5f9fcab7d8778d5be05726f6d178c90298d98fd68d4feff9998883b"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h",
+      "sha256": "1a5f90ea37057cdb784ce84a9122a46eda27d5f4455bbccc35121ca3c4e42e98"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiIncrementalAssignment.h",
+      "sha256": "89657b2a6f1fd8b3d8ad844defd30a3650ae4782d09ca8282c8df1c2991ffb8b"
+    },
+    {
+      "file": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiNavigationWorkBudget.h",
+      "sha256": "abdcc08d10fcf428796f3d33658ebd9eb1328d8cf2b62341f1b6df67a005d8c2"
+    },
+    {
+      "file": "Source/GuLiStrike/Gameplay/Navigation/GuLiDynamicObstacleRegistry.cpp",
+      "sha256": "5cd647249768bc2f0cace4f54b7f710ae4215b413f434e908133b55ff98bad0f"
+    },
+    {
+      "file": "Source/GuLiStrike/Gameplay/Navigation/GuLiDynamicObstacleRegistry.h",
+      "sha256": "ff9dc0562d63ad5cd87c65e5e0d10e8ba321b567497dda1641753982c7937d96"
+    },
+    {
+      "file": "Source/GuLiStrike/Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.cpp",
+      "sha256": "23b0d9f4e51952a1fbd3f25480ea78b387b831c84291efe8a2a1d005a380e465"
+    },
+    {
+      "file": "Source/GuLiStrike/Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.h",
+      "sha256": "06ad80c07cc902885a15af16dd5c12eba1df570539cc8909d11e2b9c53756d04"
+    },
+    {
+      "file": "Source/GuLiStrike/GuLiStrike.Build.cs",
+      "sha256": "ca4e4edc4abcaed92c697edbb4e54caf56ff61ff8158c3f22d8d96158d4d2117"
+    }
+  ],
+  "runtime_validation": "not_run",
+  "editor_launched": false
+}

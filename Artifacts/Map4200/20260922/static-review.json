@@ -1,0 +1,47 @@
+{
+  "stage": "static-review",
+  "native_build": "passed: build-final-result.json",
+  "runtime_tests": "not_run",
+  "checks": {
+    "BlueBudgets": {
+      "sum": 200,
+      "dimensions": [
+        7,
+        7
+      ],
+      "rotational_symmetry": true,
+      "even_center": true
+    },
+    "RedBudgets": {
+      "sum": 40,
+      "dimensions": [
+        7,
+        7
+      ],
+      "rotational_symmetry": true,
+      "even_center": true
+    },
+    "board": {
+      "territories": 49,
+      "extent_cm": 140000,
+      "cell_cm": 40000,
+      "red_index": 3,
+      "blue_index": 45,
+      "factory_y_cm": 130000,
+      "assembly_y_cm": 110000
+    }
+  },
+  "files": {
+    "Source/GuLiStrike/Gameplay/Resources/GuLiResourceTypes.h": "6503e5551a5d996929f00c10b036a2a7662fe0ab7b92e9f906b6a2ad00c0736d",
+    "Source/GuLiStrike/Gameplay/Resources/GuLiResourceTypes.cpp": "afecd3b0e4582d403aeb5631328af0ce7ec26a68ec380124494abbe28b6c8ebe",
+    "Source/GuLiStrike/Gameplay/Resources/GuLiResourceMapDefinition.cpp": "ed536ce5431f00e276eef7b80551a67b07872f328c3189c243b5bd6b354209cc",
+    "Source/GuLiStrike/Gameplay/Resources/GuLiResourceWorldSubsystem.cpp": "effcd4d7e19b951b7320f6935d856018827941416b102fc701b6bc23dd48d8bc",
+    "Source/GuLiStrike/Gameplay/Resources/GuLiResourceDebugCommands.cpp": "9257fac10ac738d987ce6f0bb89dd04d5e2d4211c475cd32d0101eaf924c5b51",
+    "Source/GuLiStrikeEditor/Public/GuLiResourceAuthoringLibrary.h": "99265bef2e3a3b99d08204c3c2bf789721300c69acfa264764732ec8acb0d274",
+    "Source/GuLiStrikeEditor/Private/GuLiResourceAuthoringLibrary.cpp": "14030310e44e48d000a8beda27db6946e50808ab4152706814c3b094e71d762b",
+    "Source/GuLiStrike/Gameplay/Resources/Tests/GuLiResourceTests.cpp": "43d2787890462a2e19be4c9f52616e8cf85a8ae212054ac2ec2718c146b29349",
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderResourceAdapter.h": "164a3d240136335f0d8511741c21f29f4bb542eb2028b5023a3caa7d1fe3e594",
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderResourceAdapter.cpp": "2e5a5b4873d7585942a07ca7fb247fa5372337d16897383d42a33c6c8915cf40",
+    "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp": "3ca8b52ed7cd8904b14460640b1e5e6461687ac84e755bbf768bb6455d7654ea"
+  }
+}

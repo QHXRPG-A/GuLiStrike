@@ -1,0 +1,17 @@
+{
+  "files": [
+    "Source\\GuLiStrike\\Commander\\Presentation\\GuLiCommanderHUD.h",
+    "Source\\GuLiStrike\\Commander\\Presentation\\GuLiCommanderHUD.cpp"
+  ],
+  "checks": [
+    "git diff --check",
+    "existing AHUD Canvas lifetime and all local role views reviewed",
+    "Unreal source AvgLag, RawPingInSeconds and GetPingInMilliseconds signatures checked",
+    "half-second cached text update using real time and GFrameCounter",
+    "no hit boxes, timers, delegates, RPCs or actor scans added",
+    "DPI and viewport bounds reviewed; starts below current Y=12..56 UMG strip",
+    "unavailable RTT distinct from local session; seconds converted to milliseconds"
+  ],
+  "compiled": false,
+  "runtime_new_code_verified": false
+}

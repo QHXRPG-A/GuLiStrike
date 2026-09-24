@@ -6,20 +6,41 @@ namespace
 {
 	constexpr uint8 BlueBudgets[GULI_RESOURCE_BOARD_DIMENSION][GULI_RESOURCE_BOARD_DIMENSION] =
 	{
-		{ 6, 7, 10, 7, 6 },
-		{ 7, 9, 10, 9, 7 },
-		{ 8, 9, 10, 9, 8 },
-		{ 7, 9, 10, 9, 7 },
-		{ 6, 7, 10, 7, 6 }
+		{ 1, 1, 2, 2, 3, 2, 2, 1, 1 },
+		{ 1, 2, 2, 3, 3, 3, 2, 2, 1 },
+		{ 2, 2, 3, 3, 4, 3, 3, 2, 2 },
+		{ 2, 2, 3, 4, 4, 4, 3, 2, 2 },
+		{ 2, 3, 4, 4, 6, 4, 4, 3, 2 },
+		{ 2, 2, 3, 4, 4, 4, 3, 2, 2 },
+		{ 2, 2, 3, 3, 4, 3, 3, 2, 2 },
+		{ 1, 2, 2, 3, 3, 3, 2, 2, 1 },
+		{ 1, 1, 2, 2, 3, 2, 2, 1, 1 }
 	};
 	constexpr uint8 RedBudgets[GULI_RESOURCE_BOARD_DIMENSION][GULI_RESOURCE_BOARD_DIMENSION] =
 	{
-		{ 0, 1, 2, 1, 0 },
-		{ 1, 2, 3, 2, 1 },
-		{ 2, 3, 4, 3, 2 },
-		{ 1, 2, 3, 2, 1 },
-		{ 0, 1, 2, 1, 0 }
+		{ 0, 0, 0, 0, 1, 0, 0, 0, 0 },
+		{ 0, 0, 0, 0, 1, 0, 0, 0, 0 },
+		{ 0, 0, 0, 1, 2, 1, 0, 0, 0 },
+		{ 0, 0, 1, 1, 2, 1, 1, 0, 0 },
+		{ 1, 1, 2, 2, 4, 2, 2, 1, 1 },
+		{ 0, 0, 1, 1, 2, 1, 1, 0, 0 },
+		{ 0, 0, 0, 1, 2, 1, 0, 0, 0 },
+		{ 0, 0, 0, 0, 1, 0, 0, 0, 0 },
+		{ 0, 0, 0, 0, 1, 0, 0, 0, 0 }
 	};
+
+	constexpr int32 SumBudget(const uint8 (&Budget)[GULI_RESOURCE_BOARD_DIMENSION][GULI_RESOURCE_BOARD_DIMENSION])
+	{
+		int32 Total = 0;
+		for (int32 Row = 0; Row < GULI_RESOURCE_BOARD_DIMENSION; ++Row)
+			for (int32 Column = 0; Column < GULI_RESOURCE_BOARD_DIMENSION; ++Column)
+				Total += Budget[Row][Column];
+		return Total;
+	}
+	static_assert(SumBudget(BlueBudgets) == GULI_RESOURCE_BLUE_CLUSTER_COUNT);
+	static_assert(SumBudget(RedBudgets) == GULI_RESOURCE_RED_CLUSTER_COUNT);
+	static_assert(BlueBudgets[GULI_RESOURCE_BOARD_CENTER - 1][GULI_RESOURCE_BOARD_CENTER - 1] % 2 == 0);
+	static_assert(RedBudgets[GULI_RESOURCE_BOARD_CENTER - 1][GULI_RESOURCE_BOARD_CENTER - 1] % 2 == 0);
 
 	bool SetError(FString* OutError, const FString& Error)
 	{
@@ -54,7 +75,7 @@ bool FGuLiTerritoryDefinition::IsWellFormed(FString* OutError) const
 	if (BlueClusterBudget != GuLiResources::GetBlueClusterBudget(BoardRow, BoardColumn)
 		|| RedClusterBudget != GuLiResources::GetRedClusterBudget(BoardRow, BoardColumn))
 	{
-		return SetError(OutError, TEXT("Territory cluster budget differs from the canonical 5x5 budget."));
+		return SetError(OutError, TEXT("Territory cluster budget differs from the canonical 9x9 budget."));
 	}
 	const FVector2D CanonicalCorners[] = {
 		FVector2D(-GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM, -GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM),
@@ -68,7 +89,7 @@ bool FGuLiTerritoryDefinition::IsWellFormed(FString* OutError) const
 			[Corner](const FVector2D Point) { return Point.Equals(Corner, 0.1); }))
 		{
 			return SetError(OutError,
-				TEXT("Territory polygon must contain the four canonical +/-56000 cm corners."));
+				TEXT("Territory polygon must contain the four canonical +/-15000 cm corners."));
 		}
 	}
 	return true;
@@ -106,10 +127,10 @@ bool FGuLiResourceSpawnAnchors::IsWellFormed() const
 {
 	return !RedFactory.ContainsNaN() && !RedAssembly.ContainsNaN()
 		&& !BlueFactory.ContainsNaN() && !BlueAssembly.ContainsNaN()
-		&& FVector2D(RedFactory).Equals(FVector2D(0.0, 252000.0), 1.0)
-		&& FVector2D(RedAssembly).Equals(FVector2D(0.0, 196000.0), 1.0)
-		&& FVector2D(BlueFactory).Equals(FVector2D(0.0, -252000.0), 1.0)
-		&& FVector2D(BlueAssembly).Equals(FVector2D(0.0, -196000.0), 1.0);
+		&& FVector2D(RedFactory).Equals(FVector2D(0.0, GULI_RESOURCE_FACTORY_ANCHOR_Y_CM), 1.0)
+		&& FVector2D(RedAssembly).Equals(FVector2D(0.0, GULI_RESOURCE_ASSEMBLY_ANCHOR_Y_CM), 1.0)
+		&& FVector2D(BlueFactory).Equals(FVector2D(0.0, -GULI_RESOURCE_FACTORY_ANCHOR_Y_CM), 1.0)
+		&& FVector2D(BlueAssembly).Equals(FVector2D(0.0, -GULI_RESOURCE_ASSEMBLY_ANCHOR_Y_CM), 1.0);
 }
 
 bool FGuLiMiningCommand::IsWellFormed() const
@@ -181,9 +202,17 @@ int32 GuLiResources::ToTerritoryIndex(const int32 Row, const int32 Column)
 
 FVector GuLiResources::GetTerritoryCenter(const int32 Row, const int32 Column)
 {
-	const float X = (static_cast<float>(Column) - 3.0f) * GULI_RESOURCE_TERRITORY_SIZE_CM;
-	const float Y = (3.0f - static_cast<float>(Row)) * GULI_RESOURCE_TERRITORY_SIZE_CM;
+	const float X = (static_cast<float>(Column) - GULI_RESOURCE_BOARD_CENTER) * GULI_RESOURCE_TERRITORY_SIZE_CM;
+	const float Y = (GULI_RESOURCE_BOARD_CENTER - static_cast<float>(Row)) * GULI_RESOURCE_TERRITORY_SIZE_CM;
 	return FVector(X, Y, 0.0f);
+}
+
+EGuLiTeam GuLiResources::GetInitialTerritoryOwner(const int32 Row, const int32 Column)
+{
+	if (Column != GULI_RESOURCE_BOARD_CENTER) return EGuLiTeam::Unassigned;
+	if (Row == 1) return EGuLiTeam::Red;
+	if (Row == GULI_RESOURCE_BOARD_DIMENSION) return EGuLiTeam::Blue;
+	return EGuLiTeam::Unassigned;
 }
 
 EGuLiOreVisualStage GuLiResources::AmountToVisualStage(const uint8 RemainingAmount)
@@ -223,3 +252,14 @@ bool GuLiResources::IsPlayableTeam(const EGuLiTeam Team)
 {
 	return Team == EGuLiTeam::Red || Team == EGuLiTeam::Blue;
 }
+
+FVector GuLiResources::InitialEngineeringVehicleOffset(const EGuLiTeam Team, const int32 Index, const bool bConstruction)
+	{
+		constexpr int32 Columns = 4;
+		constexpr float SpacingCm = 1200.0f;
+		const float Side = bConstruction ? 1.0f : -1.0f;
+		const float FirstColumn = bConstruction ? 1.0f : 0.0f;
+		const float Mirror = Team == EGuLiTeam::Red ? 1.0f : -1.0f;
+		return FVector(Side * (FirstColumn + Index % Columns) * SpacingCm,
+			(Index / Columns) * SpacingCm, 0.0f) * Mirror;
+	}

@@ -1,0 +1,24 @@
+{
+  "kind": "offline_arithmetic_review_of_existing_traces",
+  "configured_speed_cm_s": 720,
+  "threshold_cm": 200,
+  "source_sha256": "41fa38a5a8196f66f330203073688593bb64eae67294e3ad2ea1f1d1fdaea9f1",
+  "traces": [
+    {
+      "trace": "Artifacts\\MassStutter\\20260923\\prediction-baseline-20260923-122033-9360.csv",
+      "previous_runtime_hard_snaps": 14,
+      "sample_pairs": 44,
+      "new_rule_excess_over_200cm": 0,
+      "maximum_excess_cm": 16.003859511745958
+    },
+    {
+      "trace": "Artifacts\\MassStutter\\20260923\\prediction-baseline-20260923-122037-9426.csv",
+      "previous_runtime_hard_snaps": 19,
+      "sample_pairs": 58,
+      "new_rule_excess_over_200cm": 0,
+      "maximum_excess_cm": 17.236514965960055
+    }
+  ],
+  "compiled": false,
+  "runtime_after_fix_executed": false
+}

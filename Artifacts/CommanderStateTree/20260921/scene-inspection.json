@@ -1,0 +1,370 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "game_mode_override": "<Object '/Script/GuLiStrike.GuLiCommanderGameMode' (0x000001D2EED63980) Class 'Class'>",
+  "actors": [
+    {
+      "name": "DirectionalLight_0",
+      "label": "DirectionalLight",
+      "class": "DirectionalLight",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D38A0925E0) {x: -51776.830378, y: -105577.453533, z: 21261.767134}>"
+    },
+    {
+      "name": "ExponentialHeightFog_0",
+      "label": "ExponentialHeightFog",
+      "class": "ExponentialHeightFog",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B94F10) {x: 379987.250000, y: 551521.312500, z: -45742.304688}>"
+    },
+    {
+      "name": "PostProcessVolume_2",
+      "label": "PostProcessVolume",
+      "class": "PostProcessVolume",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B95140) {x: -198420.000000, y: -23480.000000, z: 9800.000000}>"
+    },
+    {
+      "name": "SkyLight_1",
+      "label": "SkyLight",
+      "class": "SkyLight",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B95140) {x: 86334.390625, y: 61456.609375, z: 70144.519531}>"
+    },
+    {
+      "name": "Landscape_0",
+      "label": "Landscape",
+      "class": "Landscape",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B95140) {x: -408000.000000, y: -408000.000000, z: 100.000000}>"
+    },
+    {
+      "name": "PlayerStart_0",
+      "label": "CommanderPlayerStart_Red",
+      "class": "PlayerStart",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B95000) {x: -221397.000000, y: 130463.000000, z: 5000.000000}>"
+    },
+    {
+      "name": "SkyAtmosphere_0",
+      "label": "SkyAtmosphere_Commander",
+      "class": "SkyAtmosphere",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B95050) {x: 0.000000, y: 0.000000, z: 0.000000}>"
+    },
+    {
+      "name": "NavMeshBoundsVolume_0",
+      "label": "NavMeshBounds_CommanderPlayableLandscape",
+      "class": "NavMeshBoundsVolume",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B94B00) {x: 0.000000, y: 0.000000, z: 8432.000000}>"
+    },
+    {
+      "name": "StaticMeshActor_1",
+      "label": "Cylinder",
+      "class": "StaticMeshActor",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B94B50) {x: -234040.000000, y: 113090.000000, z: -5110.000000}>"
+    },
+    {
+      "name": "StaticMeshActor_2",
+      "label": "Cylinder2",
+      "class": "StaticMeshActor",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B94BF0) {x: -234040.000000, y: 115915.000000, z: -5110.000000}>"
+    },
+    {
+      "name": "StaticMeshActor_3",
+      "label": "Cylinder3",
+      "class": "StaticMeshActor",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B94BA0) {x: -230900.000000, y: 115915.000000, z: -5110.000000}>"
+    },
+    {
+      "name": "GuLiFlightNavigationVolume_0",
+      "label": "FlightNav_LVL_CommanderMassPrototype",
+      "class": "GuLiFlightNavigationVolume",
+      "folder": "GuLiStrike/Navigation",
+      "location": "<Struct 'Vector' (0x000001D301B953C0) {x: 0.000000, y: 0.000000, z: 8432.617188}>"
+    },
+    {
+      "name": "GuLiMapMarker_0",
+      "label": "Outpost_R5C3",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95460) {x: 0.000000, y: -224000.000000, z: -6419.143665}>"
+    },
+    {
+      "name": "GuLiMapMarker_1",
+      "label": "Outpost_R5C1",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B954B0) {x: -224000.000000, y: -224000.000000, z: 22934.900542}>"
+    },
+    {
+      "name": "GuLiMapMarker_3",
+      "label": "Outpost_R3C1",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95550) {x: -224000.000000, y: 0.000000, z: -6398.048645}>"
+    },
+    {
+      "name": "GuLiMapMarker_4",
+      "label": "Outpost_R3C3",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B956E0) {x: 0.000000, y: 0.000000, z: 6499.609375}>"
+    },
+    {
+      "name": "GuLiMapMarker_5",
+      "label": "Outpost_R3C5",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95730) {x: 224000.000000, y: 0.000000, z: -6398.048645}>"
+    },
+    {
+      "name": "GuLiMapMarker_6",
+      "label": "Outpost_R1C5",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95780) {x: 224000.000000, y: 224000.000000, z: 22934.857626}>"
+    },
+    {
+      "name": "GuLiMapMarker_7",
+      "label": "Outpost_R1C1",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B957D0) {x: -224000.000000, y: 224000.000000, z: 22934.983513}>"
+    },
+    {
+      "name": "GuLiMapMarker_8",
+      "label": "Outpost_R5C5",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95820) {x: 224000.000000, y: -224000.000000, z: 22934.843643}>"
+    },
+    {
+      "name": "GuLiMapMarker_9",
+      "label": "Outpost_R1C3",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95870) {x: 0.000000, y: 224000.000000, z: -6419.143665}>"
+    },
+    {
+      "name": "Actor_3",
+      "label": "Top",
+      "class": "Actor",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B95870) {x: 13333.640229, y: 5844.917974, z: 563145.002489}>"
+    },
+    {
+      "name": "GuLiMapMarker_2",
+      "label": "Outpost_R1C2",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B958C0) {x: -112000.000000, y: 224000.000000, z: -6117.973131}>"
+    },
+    {
+      "name": "GuLiMapMarker_10",
+      "label": "Outpost_R1C4",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95960) {x: 112000.000000, y: 224000.000000, z: -6117.973131}>"
+    },
+    {
+      "name": "GuLiMapMarker_11",
+      "label": "Outpost_R2C1",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95A00) {x: -224000.000000, y: 112000.000000, z: -6127.349079}>"
+    },
+    {
+      "name": "GuLiMapMarker_12",
+      "label": "Outpost_R2C2",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95AA0) {x: -112000.000000, y: 112000.000000, z: -6954.688913}>"
+    },
+    {
+      "name": "GuLiMapMarker_13",
+      "label": "Outpost_R2C3",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95B40) {x: 0.000000, y: 112000.000000, z: -7230.078357}>"
+    },
+    {
+      "name": "GuLiMapMarker_14",
+      "label": "Outpost_R2C4",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95BE0) {x: 112000.000000, y: 112000.000000, z: -6954.688913}>"
+    },
+    {
+      "name": "GuLiMapMarker_15",
+      "label": "Outpost_R2C5",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95C80) {x: 224000.000000, y: 112000.000000, z: -6127.349079}>"
+    },
+    {
+      "name": "GuLiMapMarker_16",
+      "label": "Outpost_R3C2",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95D20) {x: -112000.000000, y: 0.000000, z: -5992.586368}>"
+    },
+    {
+      "name": "GuLiMapMarker_17",
+      "label": "Outpost_R3C4",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95DC0) {x: 112000.000000, y: 0.000000, z: -5992.586368}>"
+    },
+    {
+      "name": "GuLiMapMarker_18",
+      "label": "Outpost_R4C1",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B952D0) {x: -224000.000000, y: -112000.000000, z: -6127.349079}>"
+    },
+    {
+      "name": "GuLiMapMarker_19",
+      "label": "Outpost_R4C2",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95E60) {x: -112000.000000, y: -112000.000000, z: -6954.688913}>"
+    },
+    {
+      "name": "GuLiMapMarker_20",
+      "label": "Outpost_R4C3",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95F00) {x: 0.000000, y: -112000.000000, z: -7230.078357}>"
+    },
+    {
+      "name": "GuLiMapMarker_21",
+      "label": "Outpost_R4C4",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B95FA0) {x: 112000.000000, y: -112000.000000, z: -6954.688913}>"
+    },
+    {
+      "name": "GuLiMapMarker_22",
+      "label": "Outpost_R4C5",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B96040) {x: 224000.000000, y: -112000.000000, z: -6127.349079}>"
+    },
+    {
+      "name": "GuLiMapMarker_23",
+      "label": "Outpost_R5C2",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B960E0) {x: -112000.000000, y: -224000.000000, z: -6117.973131}>"
+    },
+    {
+      "name": "GuLiMapMarker_24",
+      "label": "Outpost_R5C4",
+      "class": "GuLiMapMarker",
+      "folder": "GuLi/MapAuthoring/Outposts",
+      "location": "<Struct 'Vector' (0x000001D301B96180) {x: 112000.000000, y: -224000.000000, z: -6117.973131}>"
+    },
+    {
+      "name": "GuLiMapDensityMap_0",
+      "label": "GuLi Map Density",
+      "class": "GuLiMapDensityMap",
+      "folder": "GuLi/MapAuthoring",
+      "location": "<Struct 'Vector' (0x000001D301B962C0) {x: 0.000000, y: 0.000000, z: 0.000000}>"
+    },
+    {
+      "name": "CameraActor_2",
+      "label": "MiningAcceptanceCamera",
+      "class": "CameraActor",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B96310) {x: 0.000000, y: 0.000000, z: 1000.000000}>"
+    },
+    {
+      "name": "RecastNavMesh-Default",
+      "label": "RecastNavMesh-Default",
+      "class": "RecastNavMesh",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B963B0) {x: 0.000000, y: 0.000000, z: 0.000000}>"
+    },
+    {
+      "name": "RecastNavMesh-CommanderSoldier",
+      "label": "RecastNavMesh-CommanderSoldier",
+      "class": "RecastNavMesh",
+      "folder": "None",
+      "location": "<Struct 'Vector' (0x000001D301B96450) {x: 0.000000, y: 0.000000, z: 0.000000}>"
+    }
+  ],
+  "map_definition_asset": {
+    "path": "/Game/GuLiStrike/Data/Resources/DA_CommanderResourceMap",
+    "loaded": true,
+    "map_package": "/Game/Maps/LVL_CommanderMassPrototype",
+    "spawn_anchors": {
+      "red_factory": [
+        0.0,
+        252000.0,
+        -5857.818722819909
+      ],
+      "blue_factory": [
+        0.0,
+        -252000.0,
+        -5857.818722819909
+      ],
+      "red_assembly": [
+        0.0,
+        196000.0,
+        -6672.268432421726
+      ],
+      "blue_assembly": [
+        0.0,
+        -196000.0,
+        -6672.268432421726
+      ]
+    },
+    "territories": [
+      "(TerritoryId=\"Outpost_R1C1\",BoardRow=1,BoardColumn=1,InitialOwner=Unassigned,BlueClusterBudget=6,RedClusterBudget=0,Center=(X=-224000.000000,Y=224000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R1C2\",BoardRow=1,BoardColumn=2,InitialOwner=Unassigned,BlueClusterBudget=7,RedClusterBudget=1,Center=(X=-112000.000000,Y=224000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R1C3\",BoardRow=1,BoardColumn=3,InitialOwner=Red,BlueClusterBudget=10,RedClusterBudget=2,Center=(X=0.000000,Y=224000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R1C4\",BoardRow=1,BoardColumn=4,InitialOwner=Unassigned,BlueClusterBudget=7,RedClusterBudget=1,Center=(X=112000.000000,Y=224000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R1C5\",BoardRow=1,BoardColumn=5,InitialOwner=Unassigned,BlueClusterBudget=6,RedClusterBudget=0,Center=(X=224000.000000,Y=224000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R2C1\",BoardRow=2,BoardColumn=1,InitialOwner=Unassigned,BlueClusterBudget=7,RedClusterBudget=1,Center=(X=-224000.000000,Y=112000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R2C2\",BoardRow=2,BoardColumn=2,InitialOwner=Unassigned,BlueClusterBudget=9,RedClusterBudget=2,Center=(X=-112000.000000,Y=112000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R2C3\",BoardRow=2,BoardColumn=3,InitialOwner=Unassigned,BlueClusterBudget=10,RedClusterBudget=3,Center=(X=0.000000,Y=112000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R2C4\",BoardRow=2,BoardColumn=4,InitialOwner=Unassigned,BlueClusterBudget=9,RedClusterBudget=2,Center=(X=112000.000000,Y=112000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R2C5\",BoardRow=2,BoardColumn=5,InitialOwner=Unassigned,BlueClusterBudget=7,RedClusterBudget=1,Center=(X=224000.000000,Y=112000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R3C1\",BoardRow=3,BoardColumn=1,InitialOwner=Unassigned,BlueClusterBudget=8,RedClusterBudget=2,Center=(X=-224000.000000,Y=0.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R3C2\",BoardRow=3,BoardColumn=2,InitialOwner=Unassigned,BlueClusterBudget=9,RedClusterBudget=3,Center=(X=-112000.000000,Y=0.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R3C3\",BoardRow=3,BoardColumn=3,InitialOwner=Unassigned,BlueClusterBudget=10,RedClusterBudget=4,Center=(X=0.000000,Y=0.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R3C4\",BoardRow=3,BoardColumn=4,InitialOwner=Unassigned,BlueClusterBudget=9,RedClusterBudget=3,Center=(X=112000.000000,Y=0.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R3C5\",BoardRow=3,BoardColumn=5,InitialOwner=Unassigned,BlueClusterBudget=8,RedClusterBudget=2,Center=(X=224000.000000,Y=0.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R4C1\",BoardRow=4,BoardColumn=1,InitialOwner=Unassigned,BlueClusterBudget=7,RedClusterBudget=1,Center=(X=-224000.000000,Y=-112000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R4C2\",BoardRow=4,BoardColumn=2,InitialOwner=Unassigned,BlueClusterBudget=9,RedClusterBudget=2,Center=(X=-112000.000000,Y=-112000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R4C3\",BoardRow=4,BoardColumn=3,InitialOwner=Unassigned,BlueClusterBudget=10,RedClusterBudget=3,Center=(X=0.000000,Y=-112000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R4C4\",BoardRow=4,BoardColumn=4,InitialOwner=Unassigned,BlueClusterBudget=9,RedClusterBudget=2,Center=(X=112000.000000,Y=-112000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R4C5\",BoardRow=4,BoardColumn=5,InitialOwner=Unassigned,BlueClusterBudget=7,RedClusterBudget=1,Center=(X=224000.000000,Y=-112000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R5C1\",BoardRow=5,BoardColumn=1,InitialOwner=Unassigned,BlueClusterBudget=6,RedClusterBudget=0,Center=(X=-224000.000000,Y=-224000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R5C2\",BoardRow=5,BoardColumn=2,InitialOwner=Unassigned,BlueClusterBudget=7,RedClusterBudget=1,Center=(X=-112000.000000,Y=-224000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R5C3\",BoardRow=5,BoardColumn=3,InitialOwner=Blue,BlueClusterBudget=10,RedClusterBudget=2,Center=(X=0.000000,Y=-224000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R5C4\",BoardRow=5,BoardColumn=4,InitialOwner=Unassigned,BlueClusterBudget=7,RedClusterBudget=1,Center=(X=112000.000000,Y=-224000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))",
+      "(TerritoryId=\"Outpost_R5C5\",BoardRow=5,BoardColumn=5,InitialOwner=Unassigned,BlueClusterBudget=6,RedClusterBudget=0,Center=(X=224000.000000,Y=-224000.000000,Z=0.000000),LocalPolygon=((X=-56000.000000,Y=-56000.000000),(X=56000.000000,Y=-56000.000000),(X=56000.000000,Y=56000.000000),(X=-56000.000000,Y=56000.000000)))"
+    ],
+    "clusters": 240,
+    "nodes": 6240,
+    "layout_hash": "5710cc3994205e33848d7d4051a80c2d6cd3b458",
+    "calculated_hash": "5710cc3994205e33848d7d4051a80c2d6cd3b458"
+  },
+  "economy_config_asset": {
+    "path": "/Game/GuLiStrike/Data/Resources/DA_ResourceEconomy",
+    "loaded": true,
+    "config": {
+      "mining_vehicle_unit_type_id": "3",
+      "construction_vehicle_unit_type_id": "4",
+      "initial_construction_vehicles_per_team": "1",
+      "initial_blue_inventory": "40",
+      "initial_red_inventory": "0"
+    }
+  },
+  "success": true
+}

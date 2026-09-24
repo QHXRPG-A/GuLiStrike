@@ -13,15 +13,20 @@
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
+#include "Gameplay/Data/GuLiGameText.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Blueprint/UserWidget.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Engine/Canvas.h"
 #include "Engine/Engine.h"
+#include "Engine/NetConnection.h"
+#include "Engine/NetDriver.h"
 #include "Engine/UserInterfaceSettings.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "GameFramework/PlayerState.h"
+#include "HAL/PlatformTime.h"
 
 namespace GuLiCommanderHUD
 {
@@ -351,6 +356,84 @@ void AGuLiCommanderHUD::DrawHUD()
 		}
 	}
 	DrawBuildingFeedback();
+	DrawPerformanceStats();
+}
+
+void AGuLiCommanderHUD::DrawPerformanceStats()
+{
+	if (!Canvas || Canvas->ClipX <= 0.0f || Canvas->ClipY <= 0.0f
+		|| !PlayerOwner || !PlayerOwner->IsLocalController() || !GEngine)
+	{
+		return;
+	}
+	UFont* Font = GEngine->GetSmallFont();
+	if (!Font)
+	{
+		return;
+	}
+
+	// Real elapsed time and engine frames keep pause/time dilation out of FPS.
+	// Each local HUD caches its own text; no RPC, actor scan, or extra timer.
+	const double Now = FPlatformTime::Seconds();
+	const bool bFirstSample = PerformanceStatsText.IsEmpty();
+	const double Elapsed = Now - PerformanceSampleWallSeconds;
+	if (bFirstSample || Elapsed >= 0.5)
+	{
+		const FString FrameRateText = bFirstSample ? GuLiGameText::Text(TEXT("UI.Performance.FPSPending"))
+			: GuLiGameText::Format(TEXT("UI.Performance.FPS"),
+				{ FString::Printf(TEXT("%.0f"), static_cast<double>(GFrameCounter - PerformanceSampleFrame) / Elapsed) });
+		FString LatencyText = GuLiGameText::Text(TEXT("UI.Performance.LatencyPending"));
+		if (GetNetMode() != NM_Client)
+		{
+			LatencyText = GuLiGameText::Text(TEXT("UI.Performance.LatencyLocal"));
+		}
+		else
+		{
+			double RoundTripMilliseconds = 0.0;
+			const UNetDriver* NetDriver = GetWorld() ? GetWorld()->GetNetDriver() : nullptr;
+			if (const UNetConnection* Connection = NetDriver ? NetDriver->ServerConnection : nullptr)
+			{
+				if (FMath::IsFinite(Connection->AvgLag) && Connection->AvgLag > 0.0f)
+				{
+					RoundTripMilliseconds = Connection->AvgLag * 1000.0;
+				}
+				else if (FMath::IsFinite(Connection->RawPingInSeconds) && Connection->RawPingInSeconds > 0.0)
+				{
+					RoundTripMilliseconds = Connection->RawPingInSeconds * 1000.0;
+				}
+			}
+			if (RoundTripMilliseconds <= 0.0)
+			{
+				if (const APlayerState* State = PlayerOwner->GetPlayerState<APlayerState>())
+				{
+					RoundTripMilliseconds = State->GetPingInMilliseconds();
+				}
+			}
+			if (FMath::IsFinite(RoundTripMilliseconds) && RoundTripMilliseconds > 0.0)
+			{
+				LatencyText = GuLiGameText::Format(TEXT("UI.Performance.LatencyRTT"),
+					{ FString::FromInt(FMath::RoundToInt(FMath::Min(RoundTripMilliseconds, 999999.0))) });
+			}
+		}
+		PerformanceStatsText = FrameRateText + TEXT("  |  ") + LatencyText;
+		PerformanceSampleWallSeconds = Now;
+		PerformanceSampleFrame = GFrameCounter;
+	}
+
+	float TextWidth = 0.0f, TextHeight = 0.0f;
+	Canvas->StrLen(Font, PerformanceStatsText, TextWidth, TextHeight);
+	const float DPIScale = GetDefault<UUserInterfaceSettings>()->GetDPIScaleBasedOnSize(
+		FIntPoint(Canvas->SizeX, Canvas->SizeY));
+	const float X = FMath::Min(16.0f * DPIScale, Canvas->ClipX * 0.05f);
+	// The authored top status strip occupies HUD-local Y=12..56.
+	const float Y = FMath::Min(64.0f * DPIScale, Canvas->ClipY * 0.25f);
+	const float Scale = FMath::Min(DPIScale,
+		FMath::Min((Canvas->ClipX - X * 2.0f) / FMath::Max(1.0f, TextWidth + 20.0f),
+			(Canvas->ClipY - Y) / FMath::Max(1.0f, TextHeight + 12.0f)));
+	DrawRect(FLinearColor(0.01f, 0.025f, 0.04f, 0.78f), X, Y,
+		(TextWidth + 20.0f) * Scale, (TextHeight + 12.0f) * Scale);
+	DrawText(PerformanceStatsText, FLinearColor(0.9f, 0.95f, 1.0f),
+		X + 10.0f * Scale, Y + 6.0f * Scale, Font, Scale, false);
 }
 
 void AGuLiCommanderHUD::BindBuildingFeedback()
@@ -1327,74 +1410,7 @@ void AGuLiCommanderHUD::DrawSelectionRectangle(const AGuLiCommanderPlayerControl
 void AGuLiCommanderHUD::DrawActiveCommandLine(
 	const AGuLiCommanderPlayerController& Controller)
 {
-	// Authoritative accepted routes are one static 1px line per still-selected moving Soldier.
-	// The endpoints already carry the real commit location and the actual freely assigned slot.
-	if (const UGuLiCommanderNetSyncComponent* NetSync = Controller.GetCommanderNetSyncComponent();
-		NetSync && NetSync->IsSoldierStreamReady())
-	{
-		const AGuLiSoldierStateReplicator* SoldierStates = FindSoldierStateReplicator();
-		TMap<FGuLiSoldierId, const FGuLiSoldierStateItem*> StatesBySoldier;
-		if (SoldierStates)
-		{
-			StatesBySoldier.Reserve(SoldierStates->GetItems().Num());
-			for (const FGuLiSoldierStateItem& SoldierState : SoldierStates->GetItems())
-			{
-				if (SoldierState.SoldierId.IsValid())
-				{
-					StatesBySoldier.Add(SoldierState.SoldierId, &SoldierState);
-				}
-			}
-		}
-		TSet<FGuLiSoldierId> SelectedSoldiers;
-		SelectedSoldiers.Reserve(
-			NetSync->GetSelectionState().Cohorts.Num()
-			* static_cast<int32>(GULI_CONTROL_COHORT_TARGET_SIZE));
-		for (const FGuLiControlCohortDescriptor& Cohort : NetSync->GetSelectionState().Cohorts)
-		{
-			for (const FGuLiSoldierId SoldierId : Cohort.MemberIds)
-			{
-				SelectedSoldiers.Add(SoldierId);
-			}
-		}
-		const FLinearColor StaticRouteColor(0.08f, 0.94f, 0.20f, 0.92f);
-		for (const FGuLiMoveEndpointItem& Endpoint : NetSync->GetMoveEndpoints().Items)
-		{
-			const FGuLiSoldierStateItem* const* SoldierState = StatesBySoldier.Find(Endpoint.SoldierId);
-			if (!GuLiCommanderHUD::ShouldDrawMoveEndpoint(
-					Endpoint,
-					SelectedSoldiers.Contains(Endpoint.SoldierId),
-					SoldierState ? *SoldierState : nullptr))
-			{
-				continue;
-			}
-			FVector2D StartScreen;
-			FVector2D EndScreen;
-			if (!Controller.ProjectWorldLocationToScreen(
-					FVector(Endpoint.CommandStart), StartScreen, false)
-				|| !Controller.ProjectWorldLocationToScreen(
-					FVector(Endpoint.FinalDestination), EndScreen, false))
-			{
-				continue;
-			}
-			const FBox2D ScreenBounds(
-				FVector2D::ZeroVector,
-				FVector2D(Canvas->ClipX, Canvas->ClipY));
-			if (!GuLiCommanderHUD::ClipScreenLineToBounds(
-					ScreenBounds, StartScreen, EndScreen)
-				|| FVector2D::Distance(StartScreen, EndScreen) < 2.0f)
-			{
-				continue;
-			}
-			DrawLine(
-				StartScreen.X,
-				StartScreen.Y,
-				EndScreen.X,
-				EndScreen.Y,
-				StaticRouteColor,
-				1.0f);
-		}
-	}
-
+// Persistent green routes are rendered by UGuLiCommanderRouteLineComponent.
 	FVector Start;
 	FVector End;
 	float Alpha = 0.0f;

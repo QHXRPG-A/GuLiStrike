@@ -1,0 +1,15 @@
+{
+  "checks": [
+    "ordinary samples retain history and monotonic render clock",
+    "only explicit teleport or reliable displacement bypasses final continuity guard",
+    "final displayed position including prediction/contact is capped by published standard speed * 3 * frame duration",
+    "normal interpolation steps pass through without added lag; catch-up reaches the target in finite time",
+    "new flag resets on network/epoch reset; existing teardown removes all state",
+    "100 ms extrapolation and 8-sample buffer remain bounded",
+    "server movement/navigation, collision and replication cadence unchanged",
+    "existing obsolete scale-contract expectations updated; no additional tests or runtime test execution",
+    "git diff --check"
+  ],
+  "cpp_sha256": "60544a4a7e364fb8d92a584f0960f3fb272e736f1933048a81ed5874c8cf81fb",
+  "runtime_verified": false
+}

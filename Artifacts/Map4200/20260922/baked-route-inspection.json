@@ -1,0 +1,3590 @@
+{
+  "success": true,
+  "query_count": 648,
+  "failures": [],
+  "static_source_routes": [
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R1C1",
+      "to": "Outpost_R2C1",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R1C1",
+      "to": "Outpost_R1C2",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R1C2",
+      "to": "Outpost_R2C2",
+      "complete": true,
+      "length_cm": 40000.47530967601
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R1C2",
+      "to": "Outpost_R1C3",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R1C3",
+      "to": "Outpost_R2C3",
+      "complete": true,
+      "length_cm": 40001.40278790233
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R1C3",
+      "to": "Outpost_R1C4",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R1C4",
+      "to": "Outpost_R2C4",
+      "complete": true,
+      "length_cm": 40001.40278790233
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R1C4",
+      "to": "Outpost_R1C5",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R1C5",
+      "to": "Outpost_R2C5",
+      "complete": true,
+      "length_cm": 40001.40278790233
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R1C5",
+      "to": "Outpost_R1C6",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R1C6",
+      "to": "Outpost_R2C6",
+      "complete": true,
+      "length_cm": 40000.47530967601
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R1C6",
+      "to": "Outpost_R1C7",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R1C7",
+      "to": "Outpost_R2C7",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R2C1",
+      "to": "Outpost_R3C1",
+      "complete": true,
+      "length_cm": 40000.1653121584
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R2C1",
+      "to": "Outpost_R2C2",
+      "complete": true,
+      "length_cm": 40000.81280424187
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R2C2",
+      "to": "Outpost_R3C2",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R2C2",
+      "to": "Outpost_R2C3",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R2C3",
+      "to": "Outpost_R3C3",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R2C3",
+      "to": "Outpost_R2C4",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R2C4",
+      "to": "Outpost_R3C4",
+      "complete": true,
+      "length_cm": 40137.120624143114
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R2C4",
+      "to": "Outpost_R2C5",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R2C5",
+      "to": "Outpost_R3C5",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R2C5",
+      "to": "Outpost_R2C6",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R2C6",
+      "to": "Outpost_R3C6",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R2C6",
+      "to": "Outpost_R2C7",
+      "complete": true,
+      "length_cm": 40000.81280424187
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R2C7",
+      "to": "Outpost_R3C7",
+      "complete": true,
+      "length_cm": 40000.1653121584
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R3C1",
+      "to": "Outpost_R4C1",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R3C1",
+      "to": "Outpost_R3C2",
+      "complete": true,
+      "length_cm": 40001.44497390063
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R3C2",
+      "to": "Outpost_R4C2",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R3C2",
+      "to": "Outpost_R3C3",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R3C3",
+      "to": "Outpost_R4C3",
+      "complete": true,
+      "length_cm": 40376.354466444835
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R3C3",
+      "to": "Outpost_R3C4",
+      "complete": true,
+      "length_cm": 40146.365028480475
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R3C4",
+      "to": "Outpost_R4C4",
+      "complete": true,
+      "length_cm": 40165.7319739103
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R3C4",
+      "to": "Outpost_R3C5",
+      "complete": true,
+      "length_cm": 40146.365028480475
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R3C5",
+      "to": "Outpost_R4C5",
+      "complete": true,
+      "length_cm": 40376.354466444835
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R3C5",
+      "to": "Outpost_R3C6",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R3C6",
+      "to": "Outpost_R4C6",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R3C6",
+      "to": "Outpost_R3C7",
+      "complete": true,
+      "length_cm": 40001.44497390063
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R3C7",
+      "to": "Outpost_R4C7",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R4C1",
+      "to": "Outpost_R5C1",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R4C1",
+      "to": "Outpost_R4C2",
+      "complete": true,
+      "length_cm": 40001.4877848312
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R4C2",
+      "to": "Outpost_R5C2",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R4C2",
+      "to": "Outpost_R4C3",
+      "complete": true,
+      "length_cm": 40358.1865920658
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R4C3",
+      "to": "Outpost_R5C3",
+      "complete": true,
+      "length_cm": 40376.354466444835
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R4C3",
+      "to": "Outpost_R4C4",
+      "complete": true,
+      "length_cm": 40030.799392467794
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R4C4",
+      "to": "Outpost_R5C4",
+      "complete": true,
+      "length_cm": 40165.7319739103
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R4C4",
+      "to": "Outpost_R4C5",
+      "complete": true,
+      "length_cm": 40030.799392467794
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R4C5",
+      "to": "Outpost_R5C5",
+      "complete": true,
+      "length_cm": 40376.354466444835
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R4C5",
+      "to": "Outpost_R4C6",
+      "complete": true,
+      "length_cm": 40358.1865920658
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R4C6",
+      "to": "Outpost_R5C6",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R4C6",
+      "to": "Outpost_R4C7",
+      "complete": true,
+      "length_cm": 40001.4877848312
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R4C7",
+      "to": "Outpost_R5C7",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R5C1",
+      "to": "Outpost_R6C1",
+      "complete": true,
+      "length_cm": 40000.1653121584
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R5C1",
+      "to": "Outpost_R5C2",
+      "complete": true,
+      "length_cm": 40001.44497390063
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R5C2",
+      "to": "Outpost_R6C2",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R5C2",
+      "to": "Outpost_R5C3",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R5C3",
+      "to": "Outpost_R6C3",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R5C3",
+      "to": "Outpost_R5C4",
+      "complete": true,
+      "length_cm": 40146.365028480475
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R5C4",
+      "to": "Outpost_R6C4",
+      "complete": true,
+      "length_cm": 40154.95656505431
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R5C4",
+      "to": "Outpost_R5C5",
+      "complete": true,
+      "length_cm": 40146.365028480475
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R5C5",
+      "to": "Outpost_R6C5",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R5C5",
+      "to": "Outpost_R5C6",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R5C6",
+      "to": "Outpost_R6C6",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R5C6",
+      "to": "Outpost_R5C7",
+      "complete": true,
+      "length_cm": 40001.44497390063
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R5C7",
+      "to": "Outpost_R6C7",
+      "complete": true,
+      "length_cm": 40000.1653121584
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R6C1",
+      "to": "Outpost_R7C1",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R6C1",
+      "to": "Outpost_R6C2",
+      "complete": true,
+      "length_cm": 40000.81280424187
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R6C2",
+      "to": "Outpost_R7C2",
+      "complete": true,
+      "length_cm": 40000.47530967601
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R6C2",
+      "to": "Outpost_R6C3",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R6C3",
+      "to": "Outpost_R7C3",
+      "complete": true,
+      "length_cm": 40001.40278790233
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R6C3",
+      "to": "Outpost_R6C4",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R6C4",
+      "to": "Outpost_R7C4",
+      "complete": true,
+      "length_cm": 40001.40278790233
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R6C4",
+      "to": "Outpost_R6C5",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R6C5",
+      "to": "Outpost_R7C5",
+      "complete": true,
+      "length_cm": 40001.40278790233
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R6C5",
+      "to": "Outpost_R6C6",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R6C6",
+      "to": "Outpost_R7C6",
+      "complete": true,
+      "length_cm": 40000.47530967601
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R6C6",
+      "to": "Outpost_R6C7",
+      "complete": true,
+      "length_cm": 40000.81280424187
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R6C7",
+      "to": "Outpost_R7C7",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R7C1",
+      "to": "Outpost_R7C2",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R7C2",
+      "to": "Outpost_R7C3",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R7C3",
+      "to": "Outpost_R7C4",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R7C4",
+      "to": "Outpost_R7C5",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R7C5",
+      "to": "Outpost_R7C6",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "from": "Outpost_R7C6",
+      "to": "Outpost_R7C7",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 1,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 2,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 3,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 4,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 5,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 6,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 7,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 8,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 9,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 10,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 11,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 12,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 13,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 14,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 15,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 16,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 17,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 18,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 19,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 20,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 21,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 22,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 23,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 24,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 25,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 26,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 27,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 28,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 29,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 30,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 31,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 32,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 33,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 34,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 35,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 36,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 37,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 38,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 39,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 40,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 41,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 42,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 43,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 44,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 45,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 46,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 47,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 48,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 49,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 50,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 51,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 52,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 53,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 54,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 55,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 56,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 57,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 58,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 59,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 60,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 61,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 62,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 63,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 64,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 65,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 66,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 67,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 68,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 69,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 70,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 71,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 72,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 73,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 74,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 75,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 76,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 77,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 78,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 79,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 80,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 81,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 82,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 83,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 84,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 85,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 86,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 87,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 88,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 89,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 90,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 91,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 92,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 93,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 94,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 95,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 96,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 97,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 98,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 99,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 100,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 101,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 102,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 103,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 104,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 105,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 106,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 107,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 108,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 109,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 110,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 111,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 112,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 113,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 114,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 115,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 116,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 117,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 118,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 119,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 120,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 121,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 122,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 123,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 124,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 125,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 126,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 127,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 128,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 129,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 130,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 131,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 132,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 133,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 134,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 135,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 136,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 137,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 138,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 139,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 140,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 141,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 142,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 143,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 144,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 145,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 146,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 147,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 148,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 149,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 150,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 151,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 152,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 153,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 154,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 155,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 156,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 157,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 158,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 159,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 160,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 161,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 162,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 163,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 164,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 165,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 166,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 167,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 168,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 169,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 170,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 171,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 172,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 173,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 174,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 175,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 176,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 177,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 178,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 179,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 180,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 181,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 182,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 183,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 184,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 185,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 186,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 187,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 188,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 189,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 190,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 191,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 192,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 193,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 194,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 195,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 196,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 197,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 198,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 199,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 200,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 201,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 202,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 203,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 204,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 205,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 206,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 207,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 208,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 209,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 210,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 211,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 212,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 213,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 214,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 215,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 216,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 217,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 218,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 219,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 220,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 221,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 222,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 223,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 224,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 225,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 226,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 227,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 228,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 229,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 230,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 231,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 232,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 233,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 234,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 235,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 236,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 237,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 238,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 239,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "territory_to_cluster": 240,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R1C1",
+      "to": "Outpost_R2C1",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R1C1",
+      "to": "Outpost_R1C2",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R1C2",
+      "to": "Outpost_R2C2",
+      "complete": true,
+      "length_cm": 40000.47530967601
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R1C2",
+      "to": "Outpost_R1C3",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R1C3",
+      "to": "Outpost_R2C3",
+      "complete": true,
+      "length_cm": 40001.40278790233
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R1C3",
+      "to": "Outpost_R1C4",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R1C4",
+      "to": "Outpost_R2C4",
+      "complete": true,
+      "length_cm": 40001.40278790233
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R1C4",
+      "to": "Outpost_R1C5",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R1C5",
+      "to": "Outpost_R2C5",
+      "complete": true,
+      "length_cm": 40001.40278790233
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R1C5",
+      "to": "Outpost_R1C6",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R1C6",
+      "to": "Outpost_R2C6",
+      "complete": true,
+      "length_cm": 40000.47530967601
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R1C6",
+      "to": "Outpost_R1C7",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R1C7",
+      "to": "Outpost_R2C7",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R2C1",
+      "to": "Outpost_R3C1",
+      "complete": true,
+      "length_cm": 40000.1653121584
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R2C1",
+      "to": "Outpost_R2C2",
+      "complete": true,
+      "length_cm": 40000.81280424187
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R2C2",
+      "to": "Outpost_R3C2",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R2C2",
+      "to": "Outpost_R2C3",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R2C3",
+      "to": "Outpost_R3C3",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R2C3",
+      "to": "Outpost_R2C4",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R2C4",
+      "to": "Outpost_R3C4",
+      "complete": true,
+      "length_cm": 40135.48336572017
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R2C4",
+      "to": "Outpost_R2C5",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R2C5",
+      "to": "Outpost_R3C5",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R2C5",
+      "to": "Outpost_R2C6",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R2C6",
+      "to": "Outpost_R3C6",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R2C6",
+      "to": "Outpost_R2C7",
+      "complete": true,
+      "length_cm": 40000.81280424187
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R2C7",
+      "to": "Outpost_R3C7",
+      "complete": true,
+      "length_cm": 40000.1653121584
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R3C1",
+      "to": "Outpost_R4C1",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R3C1",
+      "to": "Outpost_R3C2",
+      "complete": true,
+      "length_cm": 40001.44497390063
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R3C2",
+      "to": "Outpost_R4C2",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R3C2",
+      "to": "Outpost_R3C3",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R3C3",
+      "to": "Outpost_R4C3",
+      "complete": true,
+      "length_cm": 40376.354466444835
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R3C3",
+      "to": "Outpost_R3C4",
+      "complete": true,
+      "length_cm": 40146.365028480475
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R3C4",
+      "to": "Outpost_R4C4",
+      "complete": true,
+      "length_cm": 40165.74130837225
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R3C4",
+      "to": "Outpost_R3C5",
+      "complete": true,
+      "length_cm": 40146.365028480475
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R3C5",
+      "to": "Outpost_R4C5",
+      "complete": true,
+      "length_cm": 40376.354466444835
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R3C5",
+      "to": "Outpost_R3C6",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R3C6",
+      "to": "Outpost_R4C6",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R3C6",
+      "to": "Outpost_R3C7",
+      "complete": true,
+      "length_cm": 40001.44497390063
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R3C7",
+      "to": "Outpost_R4C7",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R4C1",
+      "to": "Outpost_R5C1",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R4C1",
+      "to": "Outpost_R4C2",
+      "complete": true,
+      "length_cm": 40001.4877848312
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R4C2",
+      "to": "Outpost_R5C2",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R4C2",
+      "to": "Outpost_R4C3",
+      "complete": true,
+      "length_cm": 40400.935589852015
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R4C3",
+      "to": "Outpost_R5C3",
+      "complete": true,
+      "length_cm": 40376.354466444835
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R4C3",
+      "to": "Outpost_R4C4",
+      "complete": true,
+      "length_cm": 40030.799392467794
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R4C4",
+      "to": "Outpost_R5C4",
+      "complete": true,
+      "length_cm": 40165.74130837225
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R4C4",
+      "to": "Outpost_R4C5",
+      "complete": true,
+      "length_cm": 40030.799392467794
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R4C5",
+      "to": "Outpost_R5C5",
+      "complete": true,
+      "length_cm": 40376.354466444835
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R4C5",
+      "to": "Outpost_R4C6",
+      "complete": true,
+      "length_cm": 40400.935589852015
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R4C6",
+      "to": "Outpost_R5C6",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R4C6",
+      "to": "Outpost_R4C7",
+      "complete": true,
+      "length_cm": 40001.4877848312
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R4C7",
+      "to": "Outpost_R5C7",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R5C1",
+      "to": "Outpost_R6C1",
+      "complete": true,
+      "length_cm": 40000.1653121584
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R5C1",
+      "to": "Outpost_R5C2",
+      "complete": true,
+      "length_cm": 40001.44497390063
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R5C2",
+      "to": "Outpost_R6C2",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R5C2",
+      "to": "Outpost_R5C3",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R5C3",
+      "to": "Outpost_R6C3",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R5C3",
+      "to": "Outpost_R5C4",
+      "complete": true,
+      "length_cm": 40146.365028480475
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R5C4",
+      "to": "Outpost_R6C4",
+      "complete": true,
+      "length_cm": 40135.48336572017
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R5C4",
+      "to": "Outpost_R5C5",
+      "complete": true,
+      "length_cm": 40146.365028480475
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R5C5",
+      "to": "Outpost_R6C5",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R5C5",
+      "to": "Outpost_R5C6",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R5C6",
+      "to": "Outpost_R6C6",
+      "complete": true,
+      "length_cm": 40000.49999687504
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R5C6",
+      "to": "Outpost_R5C7",
+      "complete": true,
+      "length_cm": 40001.44497390063
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R5C7",
+      "to": "Outpost_R6C7",
+      "complete": true,
+      "length_cm": 40000.1653121584
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R6C1",
+      "to": "Outpost_R7C1",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R6C1",
+      "to": "Outpost_R6C2",
+      "complete": true,
+      "length_cm": 40000.81280424187
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R6C2",
+      "to": "Outpost_R7C2",
+      "complete": true,
+      "length_cm": 40000.47530967601
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R6C2",
+      "to": "Outpost_R6C3",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R6C3",
+      "to": "Outpost_R7C3",
+      "complete": true,
+      "length_cm": 40001.40278790233
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R6C3",
+      "to": "Outpost_R6C4",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R6C4",
+      "to": "Outpost_R7C4",
+      "complete": true,
+      "length_cm": 40001.40278790233
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R6C4",
+      "to": "Outpost_R6C5",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R6C5",
+      "to": "Outpost_R7C5",
+      "complete": true,
+      "length_cm": 40001.40278790233
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R6C5",
+      "to": "Outpost_R6C6",
+      "complete": true,
+      "length_cm": 40000.52530905063
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R6C6",
+      "to": "Outpost_R7C6",
+      "complete": true,
+      "length_cm": 40000.47530967601
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R6C6",
+      "to": "Outpost_R6C7",
+      "complete": true,
+      "length_cm": 40000.81280424187
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R6C7",
+      "to": "Outpost_R7C7",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R7C1",
+      "to": "Outpost_R7C2",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R7C2",
+      "to": "Outpost_R7C3",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R7C3",
+      "to": "Outpost_R7C4",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R7C4",
+      "to": "Outpost_R7C5",
+      "complete": true,
+      "length_cm": 40000.061249953105
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R7C5",
+      "to": "Outpost_R7C6",
+      "complete": true,
+      "length_cm": 40000.05281246514
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "from": "Outpost_R7C6",
+      "to": "Outpost_R7C7",
+      "complete": true,
+      "length_cm": 40000.01124999842
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 1,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 2,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 3,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 4,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 5,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 6,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 7,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 8,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 9,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 10,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 11,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 12,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 13,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 14,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 15,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 16,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 17,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 18,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 19,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 20,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 21,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 22,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 23,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 24,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 25,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 26,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 27,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 28,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 29,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 30,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 31,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 32,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 33,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 34,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 35,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 36,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 37,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 38,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 39,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 40,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 41,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 42,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 43,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 44,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 45,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 46,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 47,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 48,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 49,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 50,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 51,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 52,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 53,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 54,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 55,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 56,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 57,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 58,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 59,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 60,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 61,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 62,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 63,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 64,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 65,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 66,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 67,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 68,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 69,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 70,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 71,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 72,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 73,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 74,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 75,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 76,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 77,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 78,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 79,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 80,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 81,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 82,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 83,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 84,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 85,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 86,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 87,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 88,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 89,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 90,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 91,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 92,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 93,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 94,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 95,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 96,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 97,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 98,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 99,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 100,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 101,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 102,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 103,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 104,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 105,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 106,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 107,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 108,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 109,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 110,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 111,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 112,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 113,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 114,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 115,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 116,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 117,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 118,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 119,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 120,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 121,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 122,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 123,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 124,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 125,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 126,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 127,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 128,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 129,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 130,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 131,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 132,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 133,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 134,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 135,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 136,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 137,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 138,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 139,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 140,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 141,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 142,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 143,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 144,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 145,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 146,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 147,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 148,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 149,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 150,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 151,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 152,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 153,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 154,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 155,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 156,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 157,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 158,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 159,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 160,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 161,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 162,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 163,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 164,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 165,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 166,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 167,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 168,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 169,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 170,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 171,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 172,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 173,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 174,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 175,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 176,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 177,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 178,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 179,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 180,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 181,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 182,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 183,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 184,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 185,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 186,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 187,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 188,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 189,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 190,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 191,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 192,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 193,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 194,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 195,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 196,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 197,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 198,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 199,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 200,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 201,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 202,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 203,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 204,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 205,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 206,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 207,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 208,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 209,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 210,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 211,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 212,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 213,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 214,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 215,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 216,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 217,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 218,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 219,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 220,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 221,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 222,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 223,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 224,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 225,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 226,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 227,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 228,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 229,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 230,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 231,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 232,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 233,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 234,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 235,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 236,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 237,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 238,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 239,
+      "complete": true
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "territory_to_cluster": 240,
+      "complete": true
+    }
+  ],
+  "projection_extent_cm": [
+    2500,
+    2500,
+    5000
+  ],
+  "agent_settings_changed": false,
+  "pie_run": false
+}

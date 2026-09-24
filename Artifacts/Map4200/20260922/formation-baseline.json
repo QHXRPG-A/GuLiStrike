@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "formations": [
+    {
+      "path": "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_DoubleRing.DA_WingmanFormation_DoubleRing",
+      "model": "<GuLiWingmanFormationModel.DOUBLE_RING_LEGACY: 0>",
+      "outer_radius": 18000.0,
+      "inner_radius": 12000.0,
+      "inner_height": 3000.0,
+      "outer_height": -3000.0,
+      "swarm_radius": 10400.0,
+      "swarm_height": 2800.0,
+      "agent_radius": 300.0,
+      "recovery_distance": 50000.0
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_SwarmOrbit.DA_WingmanFormation_SwarmOrbit",
+      "model": "<GuLiWingmanFormationModel.SWARM_ORBIT: 1>",
+      "outer_radius": 18000.0,
+      "inner_radius": 12000.0,
+      "inner_height": 3000.0,
+      "outer_height": -3000.0,
+      "swarm_radius": 10400.0,
+      "swarm_height": 2800.0,
+      "agent_radius": 300.0,
+      "recovery_distance": 18000.0
+    }
+  ],
+  "trace_doc": "X.line_trace_single(world_context_object, start, end, trace_channel, trace_complex, actors_to_ignore, draw_debug_type, ignore_self=True, trace_color=[1.000000, 0.000000, 0.000000, 1.000000], trace_hit_color=[0.000000, 1.000000, 0.000000, 1.000000], draw_time=5.000000) -> HitResult or None\r\nDoes a collision trace along the given line and returns the first blocking hit encountered.\nThis trace finds the objects that RESPONDS to the given TraceChannel\r\n\r\nArgs:\r\n    world_context_object (Object): \r\n    start (Vector): Start of line segment.\r\n    end (Vector): End of line segment.\r\n    trace_channel (TraceTypeQuery): \r\n    trace_complex (bool): True to test against complex collision, false to test against simplified collision.\r\n    actors_to_ignore (Array[Actor]): \r\n    draw_debug_type (DrawDebugTrace): \r\n    ignore_self (bool): \r\n    trace_color (LinearColor): \r\n    trace_hit_color (LinearColor): \r\n    draw_time (float): \r\n\r\nReturns:\r\n    HitResult or None: True if there was a hit, false otherwise.\r\n\r\n    out_hit (HitResult): Properties of the trace hit.",
+  "hit_doc": "Structure containing information about one hit of a trace, such as point of impact and surface normal at that point.\r\n\r\n**C++ Source:**\r\n\r\n- **Module**: Engine\r\n- **File**: HitResult.h\r\n"
+}

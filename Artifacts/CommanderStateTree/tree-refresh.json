@@ -1,0 +1,76 @@
+{
+	"condition_properties": [
+		{
+			"node_type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+			"property": "Required",
+			"category": "Condition",
+			"parameter": true
+		},
+		{
+			"node_type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+			"property": "Forbidden",
+			"category": "Condition",
+			"parameter": true
+		},
+		{
+			"node_type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+			"property": "Phase",
+			"category": "Condition",
+			"parameter": true
+		},
+		{
+			"node_type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+			"property": "Result",
+			"category": "Condition",
+			"parameter": true
+		},
+		{
+			"node_type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+			"property": "Required",
+			"category": "Condition",
+			"parameter": true
+		},
+		{
+			"node_type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+			"property": "Forbidden",
+			"category": "Condition",
+			"parameter": true
+		},
+		{
+			"node_type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+			"property": "Phase",
+			"category": "Condition",
+			"parameter": true
+		},
+		{
+			"node_type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+			"property": "Result",
+			"category": "Condition",
+			"parameter": true
+		}
+	],
+	"assets": [
+		{
+			"asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+			"compiled": true,
+			"ready": true,
+			"editor_graph_unchanged": true,
+			"saved": true
+		},
+		{
+			"asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
+			"compiled": true,
+			"ready": true,
+			"editor_graph_unchanged": true,
+			"saved": true
+		},
+		{
+			"asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder",
+			"compiled": true,
+			"ready": true,
+			"editor_graph_unchanged": true,
+			"saved": true
+		}
+	],
+	"success": true
+}

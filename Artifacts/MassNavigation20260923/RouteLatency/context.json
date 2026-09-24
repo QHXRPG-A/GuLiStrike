@@ -1,0 +1,26 @@
+{
+  "worlds": [
+    "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype"
+  ],
+  "apis": [
+    "__getstate__",
+    "static_class"
+  ],
+  "net_apis": [
+    "get_package",
+    "is_package_external"
+  ],
+  "pc_apis": [
+    "get_commander_net_sync_component",
+    "get_player_net_sync_component",
+    "net_sync_component",
+    "player_net_sync_component",
+    "streaming_source_debug_color"
+  ],
+  "previous_cvars": {
+    "guli.Commander.StateStreamDiagnostics": 0,
+    "guli.Commander.RouteLineDiagnostics": 0
+  },
+  "capture_seconds": 60
+}

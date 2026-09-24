@@ -1,0 +1,46 @@
+{
+  "interval_seconds": [
+    667.658848,
+    734.190657
+  ],
+  "cpu_total_ms": 354.18900000001594,
+  "scope": "All planning jobs in the captured game-thread interval, including automatic advance. Candidate generation/start/review outside the three trace scopes are not included.",
+  "stages": [
+    {
+      "name": "GuLiCommander_MovePlanning_Route",
+      "cpu_ms": 196.63800000000347,
+      "share_percent": 55.51781675884757,
+      "slices": 11901
+    },
+    {
+      "name": "GuLiCommander_MovePlanning_ProjectCandidates",
+      "cpu_ms": 152.8593000000125,
+      "share_percent": 43.157551476755515,
+      "slices": 12165
+    },
+    {
+      "name": "GuLiCommander_MovePlanning_AssignDestinations",
+      "cpu_ms": 4.691699999999999,
+      "share_percent": 1.3246317643969145,
+      "slices": 55
+    }
+  ],
+  "commands": [
+    {
+      "command": 930003,
+      "selected": 100,
+      "first_commit_ms": 198.08799773454666,
+      "members_by_200ms": 6,
+      "committed_before_next_input": 73,
+      "last_commit_ms": 6845.998998731375
+    },
+    {
+      "command": 930004,
+      "selected": 100,
+      "first_commit_ms": 244.27499994635582,
+      "members_by_200ms": 0,
+      "committed_before_next_input": 52,
+      "last_commit_ms": 3425.3760017454624
+    }
+  ]
+}

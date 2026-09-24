@@ -106,9 +106,13 @@ namespace GuLiCommanderAvoidancePolicy
 			{
 				continue;
 			}
-			FAvoidanceBucket& Bucket = InOutGrid.FindOrAdd(MakeSpatialCell(Agent.Location));
-			Bucket.Add(AgentIndex);
-			MaximumBucketOccupancy = FMath::Max(MaximumBucketOccupancy, Bucket.Num());
+			const FVector Extent=Agent.bEnvironment ? FVector(Agent.Radius,Agent.Radius,0) : FVector::ZeroVector;
+			const auto Min=MakeSpatialCell(Agent.Location-Extent),Max=MakeSpatialCell(Agent.Location+Extent);
+			for (int32 X=Min.X; X<=Max.X; ++X) for (int32 Y=Min.Y; Y<=Max.Y; ++Y)
+			{
+				auto& Bucket=InOutGrid.FindOrAdd({X,Y}); Bucket.Add(AgentIndex);
+				MaximumBucketOccupancy=FMath::Max(MaximumBucketOccupancy,Bucket.Num());
+			}
 		}
 		return MaximumBucketOccupancy;
 	}
@@ -138,6 +142,7 @@ namespace GuLiCommanderAvoidancePolicy
 		const int32 CellRadius = FMath::CeilToInt(DetectionDistance / SpatialCellSizeCentimeters);
 		const FIntPoint CenterCell = MakeSpatialCell(Agent.Location);
 		const double DistanceCutoffSquared = FMath::Square(static_cast<double>(DetectionDistance));
+		TSet<int32> Seen; FNearestCandidateList Environment;
 		for (int32 CellX = CenterCell.X - CellRadius; CellX <= CenterCell.X + CellRadius; ++CellX)
 		{
 			for (int32 CellY = CenterCell.Y - CellRadius; CellY <= CenterCell.Y + CellRadius; ++CellY)
@@ -154,13 +159,16 @@ namespace GuLiCommanderAvoidancePolicy
 						continue;
 					}
 					++Metrics.BucketEntriesVisited;
+					if (Seen.Contains(OtherIndex)) continue;
+					Seen.Add(OtherIndex);
 					const FAgentSnapshot& Other = Agents[OtherIndex];
 					if (!Other.bParticipates || Other.StableKey == 0u
 						|| FMath::Abs(Agent.Location.Z - Other.Location.Z) > MaximumHeightDifference)
 					{
 						continue;
 					}
-					const double DistanceSquared = FVector::DistSquared(Agent.Location, Other.Location);
+					const double CenterDistance = FVector::Dist2D(Agent.Location, Other.Location);
+					const double DistanceSquared=FMath::Square(Other.bEnvironment ? FMath::Max(0.,CenterDistance-Other.Radius-Agent.Radius) : CenterDistance);
 					if (!FMath::IsFinite(DistanceSquared) || DistanceSquared > DistanceCutoffSquared)
 					{
 						continue;
@@ -171,23 +179,29 @@ namespace GuLiCommanderAvoidancePolicy
 					Candidate.DistanceSquared = DistanceSquared;
 					Candidate.StableKey = Other.StableKey;
 
+					auto& List=Other.bEnvironment ? Environment : OutCandidates;
+					const int32 Limit=Other.bEnvironment ? 4 : MaximumNearestCandidates;
 					int32 InsertIndex = 0;
-					while (InsertIndex < OutCandidates.Num()
-						&& !IsCandidateBefore(Candidate, OutCandidates[InsertIndex]))
+					while (InsertIndex < List.Num()
+						&& !IsCandidateBefore(Candidate, List[InsertIndex]))
 					{
 						++InsertIndex;
 					}
-					if (InsertIndex < MaximumNearestCandidates)
+					if (InsertIndex < Limit)
 					{
-						OutCandidates.Insert(Candidate, InsertIndex);
-						if (OutCandidates.Num() > MaximumNearestCandidates)
+						List.Insert(Candidate, InsertIndex);
+						if (List.Num() > Limit)
 						{
-							OutCandidates.Pop(EAllowShrinking::No);
+							List.Pop(EAllowShrinking::No);
 						}
 					}
 				}
 			}
 		}
+		// Reserve two of the six CPA collider slots for environmental geometry.
+		const int32 Reserved=FMath::Min(2,Environment.Num());
+		for (int32 I=Reserved-1; I>=0; --I) OutCandidates.Insert(Environment[I],0);
+		if (OutCandidates.Num()>MaximumNearestCandidates) OutCandidates.SetNum(MaximumNearestCandidates,EAllowShrinking::No);
 		return Metrics;
 	}
 

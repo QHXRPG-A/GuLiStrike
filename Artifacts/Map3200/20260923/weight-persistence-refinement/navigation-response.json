@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "message": "All source navigation is ready.",
+    "ground_rebuilds": 0,
+    "flight_rebuilds": 0,
+    "total_seconds": 66.39794940128922,
+    "entries": [
+      {
+        "kind": "Ground",
+        "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+        "status": "Hit",
+        "source_hash": "6fc419375b22b8c2",
+        "message": "Validated saved ground tiles.",
+        "build_seconds": 0.0
+      },
+      {
+        "kind": "Ground",
+        "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+        "status": "Hit",
+        "source_hash": "a60b7e4351187c4c",
+        "message": "Validated saved ground tiles.",
+        "build_seconds": 0.0
+      },
+      {
+        "kind": "Flight",
+        "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+        "status": "Hit",
+        "source_hash": "387aebfca201bfc7",
+        "message": "Validated saved flight graph.",
+        "build_seconds": 0.0
+      }
+    ]
+  }
+}

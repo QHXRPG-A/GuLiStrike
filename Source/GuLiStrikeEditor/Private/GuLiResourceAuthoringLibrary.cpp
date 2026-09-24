@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GuLiResourceAuthoringLibrary.h"
+#include "GuLiInitialArmyAuthoring.h"
 
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
@@ -49,10 +50,10 @@ namespace GuLiResourceAuthoring
 		TEXT("/Game/GuLiStrike/Data/Resources/DA_ResourceEconomy.DA_ResourceEconomy");
 	constexpr TCHAR EconomyPackage[] =
 		TEXT("/Game/GuLiStrike/Data/Resources/DA_ResourceEconomy");
-	constexpr float TerritoryBoundaryMargin = 3000.0f;
+	constexpr float TerritoryBoundaryMargin = GULI_RESOURCE_TERRITORY_BOUNDARY_MARGIN_CM;
 	constexpr float MinimumClusterSpacing = 5500.0f;
-	constexpr float OutpostExclusionRadius = 13000.0f;
-	constexpr float SpawnExclusionRadius = 12000.0f;
+	constexpr float OutpostExclusionRadius = 6500.0f;
+	constexpr float BoardRoadHalfWidth = 2500.0f;
 	constexpr float MaximumSlopeDegrees = 15.0f;
 	constexpr double Pi = UE_DOUBLE_PI;
 
@@ -130,6 +131,15 @@ namespace GuLiResourceAuthoring
 			Hash.Update(reinterpret_cast<const uint8*>(&ContentsLength), sizeof(ContentsLength));
 			Hash.Update(reinterpret_cast<const uint8*>(ContentsUtf8.Get()), ContentsLength);
 		}
+		// Unit sizes, spacing, home facilities and engineering deployments invalidate
+		// a resource bake too; the public density/layout exchange remains schema v1.
+		FGuLiInitialArmyAuthoring InitialArmy;
+		FString Error;
+		UWorld* World = GetEditorWorld();
+		if (!World || !InitialArmy.Build(*World, Error)) return false;
+		const FString SpawnJson = InitialArmy.ToJson();
+		FTCHARToUTF8 SpawnUtf8(*SpawnJson);
+		Hash.Update(reinterpret_cast<const uint8*>(SpawnUtf8.Get()), SpawnUtf8.Length());
 		Hash.Final();
 		uint8 Digest[FSHA1::DigestSize];
 		Hash.GetHash(Digest);
@@ -271,8 +281,8 @@ namespace GuLiResourceAuthoring
 		Type.DefaultParameters.SetValueName(TEXT("InitialOwner"), TEXT("Neutral"));
 		Type.DefaultParameters.SetValueInt32(TEXT("BlueClusterBudget"), 0);
 		Type.DefaultParameters.SetValueInt32(TEXT("RedClusterBudget"), 0);
-		ConfigureFieldRule(Type, TEXT("BoardRow"), TEXT("棋盘行"), true, 1.0, 5.0);
-		ConfigureFieldRule(Type, TEXT("BoardColumn"), TEXT("棋盘列"), true, 1.0, 5.0);
+		ConfigureFieldRule(Type, TEXT("BoardRow"), TEXT("棋盘行"), true, 1.0, GULI_RESOURCE_BOARD_DIMENSION);
+		ConfigureFieldRule(Type, TEXT("BoardColumn"), TEXT("棋盘列"), true, 1.0, GULI_RESOURCE_BOARD_DIMENSION);
 		ConfigureFieldRule(Type, TEXT("InitialOwner"), TEXT("初始归属"), false, 0.0, 0.0);
 		ConfigureFieldRule(Type, TEXT("BlueClusterBudget"), TEXT("蓝矿簇预算"), true, 0.0, 10.0);
 		ConfigureFieldRule(Type, TEXT("RedClusterBudget"), TEXT("红矿簇预算"), true, 0.0, 4.0);
@@ -333,6 +343,16 @@ namespace GuLiResourceAuthoring
 
 	bool IsExplicitlyExcluded(const FVector2D Location)
 	{
+		// The orthogonal roads connect the canonical centers. Keep ore off their
+		// 50 m corridors, including the approaches outside each outpost reserve.
+		if (FMath::Abs(Location.X) <= GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM
+			&& FMath::Abs(Location.Y) <= GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM)
+		{
+			const double RoadX = FMath::GridSnap(Location.X, static_cast<double>(GULI_RESOURCE_TERRITORY_SIZE_CM));
+			const double RoadY = FMath::GridSnap(Location.Y, static_cast<double>(GULI_RESOURCE_TERRITORY_SIZE_CM));
+			if (FMath::Abs(Location.X - RoadX) < BoardRoadHalfWidth + GULI_RESOURCE_CLUSTER_OBSTACLE_RADIUS_CM
+				|| FMath::Abs(Location.Y - RoadY) < BoardRoadHalfWidth + GULI_RESOURCE_CLUSTER_OBSTACLE_RADIUS_CM) return true;
+		}
 		for (int32 Row = 1; Row <= GULI_RESOURCE_BOARD_DIMENSION; ++Row)
 		{
 			for (int32 Column = 1; Column <= GULI_RESOURCE_BOARD_DIMENSION; ++Column)
@@ -340,14 +360,6 @@ namespace GuLiResourceAuthoring
 				if (FVector2D::DistSquared(Location, FVector2D(GuLiResources::GetTerritoryCenter(Row, Column)))
 					< FMath::Square(OutpostExclusionRadius)) return true;
 			}
-		}
-		const FVector2D Anchors[] = {
-			FVector2D(0.0, 252000.0), FVector2D(0.0, 196000.0),
-			FVector2D(0.0, -252000.0), FVector2D(0.0, -196000.0)
-		};
-		for (const FVector2D Anchor : Anchors)
-		{
-			if (FVector2D::DistSquared(Location, Anchor) < FMath::Square(SpawnExclusionRadius)) return true;
 		}
 		return false;
 	}
@@ -404,10 +416,12 @@ namespace GuLiResourceAuthoring
 		return true;
 	}
 
-	bool ValidateClusterCandidate(UWorld& World, const FVector2D XY, FVector& OutCenter)
+	bool ValidateClusterCandidate(UWorld& World, const FGuLiInitialArmyAuthoring& InitialArmy,
+		const FVector2D XY, FVector& OutCenter)
 	{
 		FVector Normal;
 		return !IsExplicitlyExcluded(XY)
+			&& InitialArmy.IsOreClear(XY)
 			&& TraceGround(World, XY, OutCenter, Normal)
 			&& IsNavigable(World, OutCenter)
 			&& IsSpatiallyClear(World, OutCenter);
@@ -457,37 +471,27 @@ namespace GuLiResourceAuthoring
 			Center.Y - GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM + TerritoryBoundaryMargin, CellSize);
 		const int32 MaximumCellY = GuLiMap::WorldToDensityCell(
 			Center.Y + GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM - TerritoryBoundaryMargin - UE_DOUBLE_SMALL_NUMBER, CellSize);
+		constexpr double Fractions[] = { 0.25, 0.5, 0.75 };
 		for (int32 CellY = MinimumCellY; CellY <= MaximumCellY; ++CellY)
+		for (int32 CellX = MinimumCellX; CellX <= MaximumCellX; ++CellX)
+		for (int32 SampleY = 0; SampleY < 3; ++SampleY)
+		for (int32 SampleX = 0; SampleX < 3; ++SampleX)
 		{
-			for (int32 CellX = MinimumCellX; CellX <= MaximumCellX; ++CellX)
-			{
-				const FVector2D Location(
-					(static_cast<double>(CellX) + 0.5) * CellSize,
-					(static_cast<double>(CellY) + 0.5) * CellSize);
-				const FVector2D Local = Location - Center;
-				if (FMath::Abs(Local.X) > GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM - TerritoryBoundaryMargin
-					|| FMath::Abs(Local.Y) > GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM - TerritoryBoundaryMargin)
-				{
-					continue;
-				}
-				if (TerritoryIndex == MirrorTerritoryIndex
-					&& (Location.X < 0.0 || (FMath::IsNearlyZero(Location.X) && Location.Y <= 0.0)))
-				{
-					continue;
-				}
-				const FIntPoint Cell(CellX, CellY);
-				const FIntPoint MirrorCell(
-					GuLiMap::WorldToDensityCell(-Location.X, CellSize),
-					GuLiMap::WorldToDensityCell(-Location.Y, CellSize));
-				const int32 Weight = static_cast<int32>(GuLiMap::GetDensityCell(Layer, Cell))
-					+ static_cast<int32>(GuLiMap::GetDensityCell(Layer, MirrorCell));
-				if (Weight <= 0) continue;
-				const double UnitRandom = (static_cast<double>(CandidateHash(TerritoryIndex, Type, Cell)) + 1.0)
-					/ (static_cast<double>(MAX_uint32) + 2.0);
-				FWeightedCandidate& Candidate = OutCandidates.AddDefaulted_GetRef();
-				Candidate.Location = Location;
-				Candidate.Priority = -FMath::Loge(UnitRandom) / static_cast<double>(Weight);
-			}
+			const FVector2D Location((CellX + Fractions[SampleX]) * CellSize, (CellY + Fractions[SampleY]) * CellSize);
+			const FVector2D Local = Location - Center;
+			if (FMath::Abs(Local.X) > GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM - TerritoryBoundaryMargin
+				|| FMath::Abs(Local.Y) > GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM - TerritoryBoundaryMargin) continue;
+			if (TerritoryIndex == MirrorTerritoryIndex && Location.X <= 0.0) continue;
+			const FIntPoint Cell(CellX, CellY);
+			const FIntPoint MirrorCell(GuLiMap::WorldToDensityCell(-Location.X, CellSize), GuLiMap::WorldToDensityCell(-Location.Y, CellSize));
+			const int32 Weight = static_cast<int32>(GuLiMap::GetDensityCell(Layer, Cell))
+				+ static_cast<int32>(GuLiMap::GetDensityCell(Layer, MirrorCell));
+			if (Weight <= 0) continue;
+			const uint32 Hash = HashCombineFast(CandidateHash(TerritoryIndex, Type, Cell), GetTypeHash(SampleY * 3 + SampleX));
+			const double UnitRandom = (static_cast<double>(Hash) + 1.0) / (static_cast<double>(MAX_uint32) + 2.0);
+			FWeightedCandidate& Candidate = OutCandidates.AddDefaulted_GetRef();
+			Candidate.Location = Location;
+			Candidate.Priority = -FMath::Loge(UnitRandom) / static_cast<double>(Weight);
 		}
 		OutCandidates.Sort([](const FWeightedCandidate& A, const FWeightedCandidate& B)
 		{
@@ -525,8 +529,8 @@ namespace GuLiResourceAuthoring
 		{
 			FVector Location;
 			FVector Normal;
-			if (!TraceGround(World, PrimaryCenter + Node.LocalOffset, Location, Normal)
-				|| !TraceGround(World, MirrorCenter - Node.LocalOffset, Location, Normal))
+			if (!TraceGround(World, PrimaryCenter + Node.LocalOffset * GULI_RESOURCE_OBJECT_SCALE, Location, Normal)
+				|| !TraceGround(World, MirrorCenter - Node.LocalOffset * GULI_RESOURCE_OBJECT_SCALE, Location, Normal))
 			{
 				return false;
 			}
@@ -541,86 +545,138 @@ namespace GuLiResourceAuthoring
 		FString& OutError)
 	{
 		OutClusters.Reset();
+		FGuLiInitialArmyAuthoring InitialArmy;
+		if (!InitialArmy.Build(World, OutError)) return false;
 		TArray<FVector2D> AcceptedLocations;
 		int32 PairId = 0;
-		for (int32 TerritoryIndex = 0; TerritoryIndex < GULI_RESOURCE_TERRITORY_COUNT; ++TerritoryIndex)
+		TArray<int32> TerritoryOrder;
+		for (int32 Index = 0; Index <= GULI_RESOURCE_TERRITORY_COUNT / 2; ++Index) TerritoryOrder.Add(Index);
+		TerritoryOrder.Sort([](int32 A, int32 B)
+		{
+			const int32 Center = GULI_RESOURCE_TERRITORY_COUNT / 2;
+			if (A == Center || B == Center) return A == Center && B != Center;
+			auto Budget = [](int32 Index) {
+				const int32 R = Index / GULI_RESOURCE_BOARD_DIMENSION + 1, C = Index % GULI_RESOURCE_BOARD_DIMENSION + 1;
+				return GuLiResources::GetBlueClusterBudget(R, C) + GuLiResources::GetRedClusterBudget(R, C);
+			};
+			return Budget(A) == Budget(B) ? A < B : Budget(A) > Budget(B);
+		});
+		for (const int32 TerritoryIndex : TerritoryOrder)
 		{
 			const int32 MirrorTerritoryIndex = GULI_RESOURCE_TERRITORY_COUNT - 1 - TerritoryIndex;
 			if (TerritoryIndex > MirrorTerritoryIndex) continue;
 			const int32 Row = TerritoryIndex / GULI_RESOURCE_BOARD_DIMENSION + 1;
 			const int32 Column = TerritoryIndex % GULI_RESOURCE_BOARD_DIMENSION + 1;
-			for (const EGuLiResourceType Type : { EGuLiResourceType::Blue, EGuLiResourceType::Red })
+			struct FPairCandidate { FVector Primary; FVector Mirror; };
+			TArray<FPairCandidate> Candidates[2];
+			const int32 Divisor = TerritoryIndex == MirrorTerritoryIndex ? 2 : 1;
+			const int32 Required[] = { GuLiResources::GetBlueClusterBudget(Row, Column) / Divisor,
+				GuLiResources::GetRedClusterBudget(Row, Column) / Divisor };
+			for (int32 TypeIndex = 0; TypeIndex < 2; ++TypeIndex)
 			{
-				const int32 Budget = Type == EGuLiResourceType::Blue
-					? GuLiResources::GetBlueClusterBudget(Row, Column)
-					: GuLiResources::GetRedClusterBudget(Row, Column);
-				if (Budget == 0) continue;
-				const FGuLiMapDensityLayer* Layer = FindDensityLayer(Density, Type);
-				if (!Layer)
+				if (Required[TypeIndex] == 0) continue;
+				const auto Type = static_cast<EGuLiResourceType>(TypeIndex);
+				const auto* Layer = FindDensityLayer(Density, Type);
+				TArray<FWeightedCandidate> Weighted;
+				if (!Layer || !BuildWeightedCandidates(Density, *Layer, TerritoryIndex, MirrorTerritoryIndex, Type, Weighted))
 				{
-					OutError = TEXT("Required BlueOre/RedOre density layer is missing.");
-					return false;
+					OutError = FString::Printf(TEXT("R%dC%d type=%d has no painted candidates."), Row, Column, TypeIndex); return false;
 				}
-				TArray<FWeightedCandidate> Candidates;
-				if (!BuildWeightedCandidates(
-					Density, *Layer, TerritoryIndex, MirrorTerritoryIndex, Type, Candidates))
+				for (const auto& Candidate : Weighted)
 				{
-					OutError = FString::Printf(TEXT("%s has no painted candidates in R%dC%d."),
-						Type == EGuLiResourceType::Blue ? TEXT("BlueOre") : TEXT("RedOre"), Row, Column);
-					return false;
+					FPairCandidate Pair;
+					if (ValidateClusterCandidate(World, InitialArmy, Candidate.Location, Pair.Primary)
+						&& ValidateClusterCandidate(World, InitialArmy, -Candidate.Location, Pair.Mirror))
+						Candidates[TypeIndex].Add(Pair);
 				}
-				const int32 RequiredCandidatePairs = TerritoryIndex == MirrorTerritoryIndex
-					? Budget / 2 : Budget;
-				if (TerritoryIndex == MirrorTerritoryIndex && Budget % 2 != 0)
+			}
+			// Search both colors together. A greedy blue pass can strand the center's
+			// red pairs even though a valid 10-cluster packing exists inside the density cells.
+			auto Compatible = [](const FPairCandidate& A, const FPairCandidate& B)
+			{
+				const double MinimumSquared = FMath::Square(MinimumClusterSpacing);
+				return FVector::DistSquared2D(A.Primary, B.Primary) >= MinimumSquared
+					&& FVector::DistSquared2D(A.Primary, B.Mirror) >= MinimumSquared
+					&& FVector::DistSquared2D(A.Mirror, B.Primary) >= MinimumSquared
+					&& FVector::DistSquared2D(A.Mirror, B.Mirror) >= MinimumSquared;
+			};
+			// Each band contains mutually conflicting pairs, so at most one can be
+			// chosen from it. This is an upper bound, never a greedy packing decision.
+			auto HasCapacity = [&](const TArray<const FPairCandidate*>& Pool, int32 Needed)
+			{
+				if (Needed <= 0) return true;
+				TArray<TArray<const FPairCandidate*>> Bands;
+				for (const auto* Pair : Pool)
 				{
-					OutError = TEXT("The center Territory budget must be even for 180-degree pairing.");
-					return false;
-				}
-				int32 AcceptedPairCount = 0;
-				for (const FWeightedCandidate& Candidate : Candidates)
-				{
-					const FVector2D MirrorLocation = -Candidate.Location;
-					if (!HasMinimumSpacing(Candidate.Location, AcceptedLocations)
-						|| !HasMinimumSpacing(MirrorLocation, AcceptedLocations)
-						|| FVector2D::DistSquared(Candidate.Location, MirrorLocation)
-							< FMath::Square(MinimumClusterSpacing))
+					bool bGrouped = false;
+					for (auto& Band : Bands)
+						if (!Band.ContainsByPredicate([&](const auto* Other) { return Compatible(*Pair, *Other); }))
+						{
+							Band.Add(Pair); bGrouped = true; break;
+						}
+					if (!bGrouped)
 					{
-						continue;
+						Bands.AddDefaulted_GetRef().Add(Pair);
+						if (Bands.Num() >= Needed) return true;
 					}
-					FVector Center;
-					FVector MirrorCenter;
-					if (!ValidateClusterCandidate(World, Candidate.Location, Center)
-						|| !ValidateClusterCandidate(World, MirrorLocation, MirrorCenter)
-						|| !ValidateNodePatternFootprint(
-							World, Candidate.Location, MirrorLocation, PairId, Type))
-					{
-						continue;
-					}
-					FClusterBakeSeed& Primary = OutClusters.AddDefaulted_GetRef();
-					Primary.TerritoryIndex = static_cast<uint8>(TerritoryIndex);
-					Primary.ResourceType = Type;
-					Primary.Center = Center;
-					Primary.SymmetryPair = PairId;
-					Primary.bMirrored = false;
-					FClusterBakeSeed& Mirror = OutClusters.AddDefaulted_GetRef();
-					Mirror.TerritoryIndex = static_cast<uint8>(MirrorTerritoryIndex);
-					Mirror.ResourceType = Type;
-					Mirror.Center = MirrorCenter;
-					Mirror.SymmetryPair = PairId;
-					Mirror.bMirrored = true;
-					++PairId;
-					AcceptedLocations.Add(Candidate.Location);
-					AcceptedLocations.Add(MirrorLocation);
-					if (++AcceptedPairCount == RequiredCandidatePairs) break;
 				}
-				if (AcceptedPairCount != RequiredCandidatePairs)
+				return false;
+			};
+			TArray<int32> Choices;
+			int32 SearchSteps = 0;
+			TFunction<bool(int32, int32)> Choose = [&](int32 Depth, int32 First) -> bool
+			{
+				if (Depth == Required[0] + Required[1]) return true;
+				const int32 TypeIndex = Depth < Required[0] ? 0 : 1;
+				const int32 Remaining[] = { FMath::Max(0, Required[0] - Depth),
+					Required[0] + Required[1] - FMath::Max(Depth, Required[0]) };
+				TArray<int32> Available[2];
+				TArray<const FPairCandidate*> Combined;
+				for (int32 Color = 0; Color < 2; ++Color)
 				{
-					OutError = FString::Printf(
-						TEXT("Bake rejected R%dC%d %s: accepted %d/%d symmetric candidates after ground, slope, nav, occupancy and spacing checks."),
-						Row, Column, Type == EGuLiResourceType::Blue ? TEXT("BlueOre") : TEXT("RedOre"),
-						AcceptedPairCount, RequiredCandidatePairs);
-					return false;
+					if (Remaining[Color] == 0) continue;
+					TArray<const FPairCandidate*> Pool;
+					for (int32 Index = Color == TypeIndex ? First : 0; Index < Candidates[Color].Num(); ++Index)
+					{
+						const auto& Pair = Candidates[Color][Index];
+						if (HasMinimumSpacing(FVector2D(Pair.Primary), AcceptedLocations)
+							&& HasMinimumSpacing(FVector2D(Pair.Mirror), AcceptedLocations)
+							&& FVector::DistSquared2D(Pair.Primary, Pair.Mirror) >= FMath::Square(MinimumClusterSpacing))
+						{
+							Available[Color].Add(Index); Pool.Add(&Pair); Combined.Add(&Pair);
+						}
+					}
+					if (!HasCapacity(Pool, Remaining[Color])) return false;
 				}
+				if (!HasCapacity(Combined, Remaining[0] + Remaining[1])) return false;
+				for (const int32 Index : Available[TypeIndex])
+				{
+					if (++SearchSteps > 100000) return false;
+					const auto& Pair = Candidates[TypeIndex][Index];
+					const FVector2D XY(Pair.Primary), MirrorXY(Pair.Mirror);
+					if (!HasMinimumSpacing(XY, AcceptedLocations) || !HasMinimumSpacing(MirrorXY, AcceptedLocations)
+						|| FVector2D::DistSquared(XY, MirrorXY) < FMath::Square(MinimumClusterSpacing)
+						|| !ValidateNodePatternFootprint(World, XY, MirrorXY, PairId + Depth, static_cast<EGuLiResourceType>(TypeIndex))) continue;
+					AcceptedLocations.Add(XY); AcceptedLocations.Add(MirrorXY); Choices.Add(Index);
+					if (Choose(Depth + 1, Depth + 1 == Required[0] ? 0 : Index + 1)) return true;
+					Choices.Pop(); AcceptedLocations.SetNum(AcceptedLocations.Num() - 2, EAllowShrinking::No);
+				}
+				return false;
+			};
+			if (!Choose(0, 0))
+			{
+				OutError = FString::Printf(TEXT("Bake rejected R%dC%d: no packing for %d blue/%d red symmetric pairs; clear candidates=%d/%d, search=%d (limit 100000)."),
+					Row, Column, Required[0], Required[1], Candidates[0].Num(), Candidates[1].Num(), SearchSteps);
+				return false;
+			}
+			for (int32 Depth = 0; Depth < Choices.Num(); ++Depth)
+			{
+				const int32 TypeIndex = Depth < Required[0] ? 0 : 1;
+				const auto& Pair = Candidates[TypeIndex][Choices[Depth]];
+				const auto Type = static_cast<EGuLiResourceType>(TypeIndex);
+				OutClusters.Add({ static_cast<uint8>(TerritoryIndex), Type, Pair.Primary, PairId, false });
+				OutClusters.Add({ static_cast<uint8>(MirrorTerritoryIndex), Type, Pair.Mirror, PairId, true });
+				++PairId;
 			}
 		}
 		if (OutClusters.Num() != GULI_RESOURCE_CLUSTER_COUNT)
@@ -686,9 +742,13 @@ namespace GuLiResourceAuthoring
 		}
 		// Unchanged authoring retains ALL world anchors and source-local layouts, even if
 		// navigation clearance has changed. Cluster array order is NOT symmetry-pair order.
+		// A partially written, failed bake must never enter this certified-layout fast path.
 		const bool bRetainCenters = Definition.SourceHash == SourceHash
+			&& Definition.LayoutVersion == GULI_RESOURCE_LAYOUT_VERSION
+			&& Definition.Territories.Num() == GULI_RESOURCE_TERRITORY_COUNT
 			&& Definition.Clusters.Num() == GULI_RESOURCE_CLUSTER_COUNT
 			&& Definition.Nodes.Num() == GULI_RESOURCE_NODE_COUNT
+			&& Definition.CalculateLayoutHash() == Definition.LayoutHash
 			&& Definition.DeterministicSeed == GULI_RESOURCE_BAKE_SEED;
 		if (bRetainCenters)
 		{
@@ -743,10 +803,10 @@ namespace GuLiResourceAuthoring
 		Definition.SourceHash = SourceHash;
 		Definition.PlayableMinimum = FVector2D(-GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM);
 		Definition.PlayableMaximum = FVector2D(GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM);
-		Definition.SpawnAnchors.RedFactory = ProjectGroundOrXY(World, FVector2D(0.0, 252000.0));
-		Definition.SpawnAnchors.RedAssembly = ProjectGroundOrXY(World, FVector2D(0.0, 196000.0));
-		Definition.SpawnAnchors.BlueFactory = ProjectGroundOrXY(World, FVector2D(0.0, -252000.0));
-		Definition.SpawnAnchors.BlueAssembly = ProjectGroundOrXY(World, FVector2D(0.0, -196000.0));
+		Definition.SpawnAnchors.RedFactory = ProjectGroundOrXY(World, FVector2D(0.0, GULI_RESOURCE_FACTORY_ANCHOR_Y_CM));
+		Definition.SpawnAnchors.RedAssembly = ProjectGroundOrXY(World, FVector2D(0.0, GULI_RESOURCE_ASSEMBLY_ANCHOR_Y_CM));
+		Definition.SpawnAnchors.BlueFactory = ProjectGroundOrXY(World, FVector2D(0.0, -GULI_RESOURCE_FACTORY_ANCHOR_Y_CM));
+		Definition.SpawnAnchors.BlueAssembly = ProjectGroundOrXY(World, FVector2D(0.0, -GULI_RESOURCE_ASSEMBLY_ANCHOR_Y_CM));
 
 		TMap<int32, const FGuLiMapSnapshotEntry*> OutpostsByIndex;
 		for (const FGuLiMapSnapshotEntry& Entry : Snapshot.Markers)
@@ -772,7 +832,7 @@ namespace GuLiResourceAuthoring
 		}
 		if (OutpostsByIndex.Num() != GULI_RESOURCE_TERRITORY_COUNT)
 		{
-			OutError = FString::Printf(TEXT("Expected 25 Outpost markers, found %d."), OutpostsByIndex.Num());
+			OutError = FString::Printf(TEXT("Expected %d Outpost markers, found %d."), GULI_RESOURCE_TERRITORY_COUNT, OutpostsByIndex.Num());
 			return false;
 		}
 
@@ -800,8 +860,7 @@ namespace GuLiResourceAuthoring
 			Territory.TerritoryId = Entry->Record.MarkerKey;
 			Territory.BoardRow = static_cast<uint8>(Row);
 			Territory.BoardColumn = static_cast<uint8>(Column);
-			Territory.InitialOwner = Row == 1 && Column == 3 ? EGuLiTeam::Red
-				: (Row == 5 && Column == 3 ? EGuLiTeam::Blue : EGuLiTeam::Unassigned);
+			Territory.InitialOwner = GuLiResources::GetInitialTerritoryOwner(Row, Column);
 			Territory.BlueClusterBudget = GuLiResources::GetBlueClusterBudget(Row, Column);
 			Territory.RedClusterBudget = GuLiResources::GetRedClusterBudget(Row, Column);
 			Territory.Center = GuLiResources::GetTerritoryCenter(Row, Column);
@@ -981,8 +1040,8 @@ namespace GuLiResourceAuthoring
 		}
 		if (ExistingOutposts.Num() > GULI_RESOURCE_TERRITORY_COUNT)
 		{
-			OutError = FString::Printf(TEXT("Found %d Outpost markers; expected no more than 25."),
-				ExistingOutposts.Num());
+			OutError = FString::Printf(TEXT("Found %d Outpost markers; expected no more than %d."),
+				ExistingOutposts.Num(), GULI_RESOURCE_TERRITORY_COUNT);
 			return false;
 		}
 
@@ -1013,8 +1072,8 @@ namespace GuLiResourceAuthoring
 			return A.Record.MarkerId < B.Record.MarkerId;
 		});
 		TArray<int32> OddIntersections;
-		for (const int32 Row : { 1, 3, 5 })
-			for (const int32 Column : { 1, 3, 5 })
+		for (int32 Row = 1; Row <= GULI_RESOURCE_BOARD_DIMENSION; Row += 2)
+			for (int32 Column = 1; Column <= GULI_RESOURCE_BOARD_DIMENSION; Column += 2)
 				if (!MarkerByIndex.Contains(GuLiResources::ToTerritoryIndex(Row, Column)))
 					OddIntersections.Add(GuLiResources::ToTerritoryIndex(Row, Column));
 		if (LegacyMarkers.Num() > OddIntersections.Num())
@@ -1051,9 +1110,10 @@ namespace GuLiResourceAuthoring
 			Marker->Record.Parameters = MoveTemp(Migrated);
 			Marker->Record.Parameters.SetValueInt32(TEXT("BoardRow"), Row);
 			Marker->Record.Parameters.SetValueInt32(TEXT("BoardColumn"), Column);
+			const EGuLiTeam InitialOwner = GuLiResources::GetInitialTerritoryOwner(Row, Column);
 			Marker->Record.Parameters.SetValueName(TEXT("InitialOwner"),
-				Row == 1 && Column == 3 ? TEXT("Red")
-				: (Row == 5 && Column == 3 ? TEXT("Blue") : TEXT("Neutral")));
+				InitialOwner == EGuLiTeam::Red ? TEXT("Red")
+				: (InitialOwner == EGuLiTeam::Blue ? TEXT("Blue") : TEXT("Neutral")));
 			Marker->Record.Parameters.SetValueInt32(
 				TEXT("BlueClusterBudget"), GuLiResources::GetBlueClusterBudget(Row, Column));
 			Marker->Record.Parameters.SetValueInt32(
@@ -1115,9 +1175,9 @@ namespace GuLiResourceAuthoring
 					(static_cast<double>(CellX) + 0.5) * Density.CellSizeCm,
 					(static_cast<double>(CellY) + 0.5) * Density.CellSizeCm);
 				const int32 Column = FMath::Clamp(FMath::FloorToInt(
-					(XY.X + GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM) / GULI_RESOURCE_TERRITORY_SIZE_CM) + 1, 1, 5);
+					(XY.X + GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM) / GULI_RESOURCE_TERRITORY_SIZE_CM) + 1, 1, GULI_RESOURCE_BOARD_DIMENSION);
 				const int32 Row = FMath::Clamp(FMath::FloorToInt(
-					(GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM - XY.Y) / GULI_RESOURCE_TERRITORY_SIZE_CM) + 1, 1, 5);
+					(GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM - XY.Y) / GULI_RESOURCE_TERRITORY_SIZE_CM) + 1, 1, GULI_RESOURCE_BOARD_DIMENSION);
 				const FVector2D TerritoryCenter(GuLiResources::GetTerritoryCenter(Row, Column));
 				const FVector2D Local = XY - TerritoryCenter;
 				if (FMath::Abs(Local.X) > GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM - TerritoryBoundaryMargin
@@ -1230,10 +1290,11 @@ FGuLiResourceBakeResult UGuLiResourceAuthoringLibrary::BakeCurrentMap(const bool
 		AddIssue(Result, TEXT("Could not create/load the managed resource DataAssets."));
 		return Result;
 	}
-	Definition->Modify();
-	Economy->Modify();
+	// A failed sample or deployment audit must not leave a half-written live definition.
+	UGuLiResourceMapDefinition* Candidate = DuplicateObject<UGuLiResourceMapDefinition>(Definition, GetTransientPackage());
+	Candidate->SetFlags(RF_Transient);
 	FString Error;
-	if (!BuildRuntimeDefinition(*World, Snapshot, Result.SourceHash, *Definition, Error))
+	if (!BuildRuntimeDefinition(*World, Snapshot, Result.SourceHash, *Candidate, Error))
 	{
 		AddIssue(Result, Error);
 		return Result;
@@ -1243,8 +1304,28 @@ FGuLiResourceBakeResult UGuLiResourceAuthoringLibrary::BakeCurrentMap(const bool
 		AddIssue(Result, FString::Printf(TEXT("Economy config validation failed: %s"), *Error));
 		return Result;
 	}
+	FGuLiInitialArmyAuthoring InitialArmy;
+	if (!InitialArmy.Build(*World, Error)) { AddIssue(Result, Error); return Result; }
+	Result.InitialSoldierCount = InitialArmy.Slots.Num();
+	if (!InitialArmy.Validate(*World, *Candidate, Result.ValidatedInitialSoldierCount, Error))
+	{
+		AddIssue(Result, TEXT("Initial army deployment rejected: ") + Error); return Result;
+	}
+	Definition->Modify();
+	Definition->MapPackage = Candidate->MapPackage;
+	Definition->LayoutVersion = Candidate->LayoutVersion;
+	Definition->BakedObjectScale = Candidate->BakedObjectScale;
+	Definition->DeterministicSeed = Candidate->DeterministicSeed;
+	Definition->SourceHash = Candidate->SourceHash;
+	Definition->LayoutHash = Candidate->LayoutHash;
+	Definition->PlayableMinimum = Candidate->PlayableMinimum;
+	Definition->PlayableMaximum = Candidate->PlayableMaximum;
+	Definition->SpawnAnchors = Candidate->SpawnAnchors;
+	Definition->Territories = MoveTemp(Candidate->Territories);
+	Definition->Clusters = MoveTemp(Candidate->Clusters);
+	Definition->Nodes = MoveTemp(Candidate->Nodes);
 	Definition->MarkPackageDirty();
-	Economy->MarkPackageDirty();
+	if (bEconomyCreated) Economy->MarkPackageDirty();
 	if (bSavePackages && !SaveManagedAssets(*Definition, *Economy, Error))
 	{
 		AddIssue(Result, Error);
@@ -1295,6 +1376,13 @@ FGuLiResourceBakeResult UGuLiResourceAuthoringLibrary::ValidateCurrentBake()
 	{
 		return Fail(TEXT("GuLiMapAuthoring source changed after the last resource bake; rebake before PIE."));
 	}
+	FGuLiInitialArmyAuthoring InitialArmy;
+	if (!InitialArmy.Build(*World, Error)) return Fail(Error);
+	Result.InitialSoldierCount = InitialArmy.Slots.Num();
+	if (!InitialArmy.Validate(*World, *Definition, Result.ValidatedInitialSoldierCount, Error))
+	{
+		AddIssue(Result, TEXT("Initial army deployment rejected: ") + Error); return Result;
+	}
 	Result.bSuccess = true;
 	Result.Message = TEXT("Resource authoring source and baked runtime definition are current.");
 	Result.LayoutHash = Definition->LayoutHash;
@@ -1302,6 +1390,19 @@ FGuLiResourceBakeResult UGuLiResourceAuthoringLibrary::ValidateCurrentBake()
 	Result.ClusterCount = Definition->Clusters.Num();
 	Result.NodeCount = Definition->Nodes.Num();
 	return Result;
+}
+
+FString UGuLiResourceAuthoringLibrary::GetInitialArmySpawnLayoutJson()
+{
+	UWorld* World = GuLiResourceAuthoring::GetEditorWorld();
+	FGuLiInitialArmyAuthoring InitialArmy;
+	FString Error;
+	if (!World || !InitialArmy.Build(*World, Error))
+	{
+		UE_LOG(LogGuLiResourceBake, Error, TEXT("Initial army preview failed: %s"), *Error);
+		return FString();
+	}
+	return InitialArmy.ToJson();
 }
 
 bool UGuLiResourceAuthoringLibrary::ConfigureDedicatedServerPIE(const int32 ClientCount)

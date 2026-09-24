@@ -6,8 +6,8 @@
 #include "GuLiBattleTypes.generated.h"
 
 /** 战局连接的公共协议版本；不等于 MatchEpoch、快照版本或每连接同步代次。 */
-// v18 replaces cosmetic player-bullet asset NetGUIDs with registry VfxId integers.
-inline constexpr uint16 GULI_BATTLE_PROTOCOL_VERSION = 18u;
+// v19 replaces shared soldier/endpoint FastArray publication with per-connection budgeted batches.
+inline constexpr uint16 GULI_BATTLE_PROTOCOL_VERSION = 19u;
 
 /** 历史指挥官协议常量保留别名，现有士兵 RPC/序列化仍使用原名称与数值。 */
 inline constexpr uint16 GULI_COMMANDER_PROTOCOL_VERSION = GULI_BATTLE_PROTOCOL_VERSION;

@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "transform": "<Struct 'Transform' (0x00000234C2B8C450) {rotation: {x: 0.000000, y: 0.000000, z: 0.680601, w: 0.732654}, translation: {x: -79354.000000, y: 43012.000001, z: -1666.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+    "methods": [
+      "custom_time_dilation",
+      "get_actor_time_dilation",
+      "get_game_time_since_creation",
+      "runtime_grid"
+    ],
+    "ping_methods": [
+      "flush_net_dormancy",
+      "force_net_update",
+      "get_commander_net_sync_component",
+      "get_overlapping_actors",
+      "get_overlapping_components",
+      "get_player_net_sync_component",
+      "is_overlapping_actor",
+      "min_net_update_frequency",
+      "net_cull_distance_squared",
+      "net_dormancy",
+      "net_priority",
+      "net_sync_component",
+      "net_update_frequency",
+      "net_use_owner_relevancy",
+      "player_net_sync_component",
+      "set_net_dormancy"
+    ]
+  }
+}

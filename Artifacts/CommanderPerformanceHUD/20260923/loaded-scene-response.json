@@ -1,0 +1,48 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "pid": 5552,
+    "pie": false,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+    "hud": "/Script/GuLiStrike.GuLiCommanderHUD",
+    "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+    "correction_speed_multiplier": 3.0,
+    "interpolation_seconds": 0.11999999731779099,
+    "max_adaptive_delay_seconds": 0.3499999940395355,
+    "max_extrapolation_seconds": 0.10000000149011612,
+    "text_rows": 191,
+    "text_readback_matches_source": true,
+    "performance_texts": {
+      "UI.Performance.FPSPending": "FPS --",
+      "UI.Performance.FPS": "FPS {0}",
+      "UI.Performance.LatencyPending": "延迟 --",
+      "UI.Performance.LatencyLocal": "延迟 本地",
+      "UI.Performance.LatencyRTT": "延迟 {0} ms (RTT)"
+    },
+    "entry_actors": [
+      {
+        "name": "Note_0",
+        "label": "StateTreeReview_Entry",
+        "location": [
+          0.0,
+          72500.0,
+          -1266.0856246948242
+        ],
+        "text": "2.3 km / 9×9 地图验收入口\n整张地形2.3×2.3 km，战场1.8×1.8 km；81据点，每格200m。红方R1C5，蓝方R9C5。\n正常指挥官玩法入口。双方各250个Mass、8矿车、8建造车；初始编队向战场内展开。\n先确认部队出现与框选就绪，再验证移动、S停止、B施工及运输。"
+      },
+      {
+        "name": "GuLiMapMarker_27",
+        "label": "Outpost_R2C4",
+        "location": [
+          -20000.0,
+          60000.0,
+          -1778.5985372025318
+        ]
+      }
+    ],
+    "dirty_maps": [],
+    "dirty_content": []
+  }
+}

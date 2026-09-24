@@ -1,0 +1,19 @@
+{
+  "changed_runtime_files": [
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp"
+  ],
+  "public_api_change": false,
+  "new_replication_fields": false,
+  "new_dependencies": false,
+  "checks": [
+    "git diff --check",
+    "const UWorld::GetGameState API verified in source UE",
+    "replicated speed getter, finite positive setter and Commander GameMode binding verified",
+    "newest/late sample and explicit teleport branches retained",
+    "first sample has no prior authority sample and remains initialisation",
+    "turns use scalar reachable-distance bound, not linear direction extrapolation",
+    "start-stop between samples uses replicated configured speed bound"
+  ],
+  "compiled": false,
+  "runtime_tests_executed": false
+}

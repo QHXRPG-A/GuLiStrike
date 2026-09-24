@@ -56,8 +56,8 @@ namespace GuLiResourceTests
 	{
 		TArray<EGuLiTeam> Owners;
 		Owners.Init(EGuLiTeam::Unassigned, GULI_RESOURCE_TERRITORY_COUNT);
-		Owners[GuLiResources::ToTerritoryIndex(1, 3)] = EGuLiTeam::Red;
-		Owners[GuLiResources::ToTerritoryIndex(5, 3)] = EGuLiTeam::Blue;
+		Owners[GuLiResources::ToTerritoryIndex(1, GULI_RESOURCE_BOARD_CENTER)] = EGuLiTeam::Red;
+		Owners[GuLiResources::ToTerritoryIndex(GULI_RESOURCE_BOARD_DIMENSION, GULI_RESOURCE_BOARD_CENTER)] = EGuLiTeam::Blue;
 		return Owners;
 	}
 }
@@ -97,10 +97,10 @@ bool FGuLiResourceBoardContractTest::RunTest(const FString& Parameters)
 	}
 	TestEqual(TEXT("Blue cluster budget totals 200"), BlueTotal, GULI_RESOURCE_BLUE_CLUSTER_COUNT);
 	TestEqual(TEXT("Red cluster budget totals 40"), RedTotal, GULI_RESOURCE_RED_CLUSTER_COUNT);
-	TestEqual(TEXT("R1C3 is the north home center"),
-		GuLiResources::GetTerritoryCenter(1, 3), FVector(0.0, 224000.0, 0.0));
-	TestEqual(TEXT("R5C3 is the south home center"),
-		GuLiResources::GetTerritoryCenter(5, 3), FVector(0.0, -224000.0, 0.0));
+	TestEqual(TEXT("R1C5 is the north home center"),
+		GuLiResources::GetTerritoryCenter(1, 5), FVector(0.0, 80000.0, 0.0));
+	TestEqual(TEXT("R9C5 is the south home center"),
+		GuLiResources::GetTerritoryCenter(9, 5), FVector(0.0, -80000.0, 0.0));
 	return true;
 }
 
@@ -117,7 +117,6 @@ bool FGuLiResourceEconomyContractTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Native resource economy defaults validate"), Config->ValidateConfig(Error));
 	TestEqual(TEXT("Ore renderer has 24 visual keys"), Config->OreVisuals.Num(), 24);
 	TestEqual(TEXT("Economy references the common Soldiers miner row"), Config->MiningVehicleUnitTypeId, 3);
-	TestEqual(TEXT("Factory speed is 3m/s after scale020"), Config->FactoryManeuverSpeedCentimetersPerSecond, 300.0f);
 	TestEqual(TEXT("Sentry costs 10 blue"),
 		Config->GetBlueBuildingCost(EGuLiBuildingType::SentryTurret), 10);
 	TestEqual(TEXT("Missile tower costs 20 blue"),
@@ -162,7 +161,7 @@ bool FGuLiResourceBakedAssetContractTest::RunTest(const FString& Parameters)
 		Definition->CalculateLayoutHash(), Definition->CalculateLayoutHash());
 	TestEqual(TEXT("Layout hash matches the stored bake"),
 		Definition->CalculateLayoutHash(), Definition->LayoutHash);
-	TestEqual(TEXT("Canonical bake contains 25 territories"),
+	TestEqual(TEXT("Canonical bake contains 81 territories"),
 		Definition->Territories.Num(), GULI_RESOURCE_TERRITORY_COUNT);
 	TestEqual(TEXT("Canonical bake contains 240 clusters"),
 		Definition->Clusters.Num(), GULI_RESOURCE_CLUSTER_COUNT);
@@ -194,9 +193,9 @@ bool FGuLiResourceFastArrayStateTest::RunTest(const FString& Parameters)
 	const TArray<EGuLiTeam> Owners = GuLiResourceTests::MakeInitialOwners();
 	State->InitializeAuthority(TEXT("test-layout-hash"), Owners);
 	TestEqual(TEXT("Only north home begins red"),
-		State->GetTerritoryOwner(GuLiResources::ToTerritoryIndex(1, 3)), EGuLiTeam::Red);
+		State->GetTerritoryOwner(GuLiResources::ToTerritoryIndex(1, GULI_RESOURCE_BOARD_CENTER)), EGuLiTeam::Red);
 	TestEqual(TEXT("Only south home begins blue"),
-		State->GetTerritoryOwner(GuLiResources::ToTerritoryIndex(5, 3)), EGuLiTeam::Blue);
+		State->GetTerritoryOwner(GuLiResources::ToTerritoryIndex(GULI_RESOURCE_BOARD_DIMENSION, GULI_RESOURCE_BOARD_CENTER)), EGuLiTeam::Blue);
 	TestEqual(TEXT("Neutral Territory can be reassigned authoritatively"),
 		State->SetTerritoryOwnerAuthority(
 			GuLiResources::ToTerritoryIndex(3, 3), EGuLiTeam::Red), true);

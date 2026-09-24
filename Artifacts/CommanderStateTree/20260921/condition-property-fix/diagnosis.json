@@ -1,0 +1,17 @@
+{
+  "root_cause": "Category=Context is reserved by UE StateTree for automatic object/struct context binding; the four fixed integer/enum settings were incorrectly classified as context.",
+  "fix": "Change all four fields on both Actor and Mass condition structs to Category=Condition, which UE classifies as Parameter.",
+  "source_files": [
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeNodes.h",
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeAssetCommands.cpp"
+  ],
+  "source_sha256": {
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeNodes.h": "8ac6357eab612260cf563648a65cdd68c1c4c7869cbf8a831b902c74da1d5534",
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeAssetCommands.cpp": "19b73ee070240875e63a92ad4d2476ca0582cc4fe04924dfbbe003f5257f8195"
+  },
+  "runtime_algorithms_changed": false,
+  "network_or_schedule_changed": false,
+  "asset_delivery": "Refresh existing compiled trees in place, check editor graph hash unchanged, and inspect actual FProperty metadata through the UE StateTree usage helper.",
+  "prior_subsystem_registration_fix_retained": true,
+  "runtime_verification": "not_run"
+}

@@ -22,6 +22,7 @@ public class GuLiStrikeEditor : ModuleRules
 			"AIModule",
 			"Json",
 			"Landscape",
+			"Foliage", // LandscapeEdit.h exposes foliage integration to editor callers.
 			"NavigationSystem",
 			"Navmesh",
 			"Niagara",

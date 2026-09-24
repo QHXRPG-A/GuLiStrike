@@ -1,4 +1,4 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
@@ -28,9 +28,8 @@ struct FGuLiSoldierRosterDelta
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierRosterDeltaSignature, const FGuLiSoldierRosterDelta&);
 
 /**
- * Reliable, always-relevant roster and gameplay state for the current Soldier population.
- * Continuous transforms deliberately travel through the owning controller's unreliable
- * pose stream instead of this FastArray.
+ * Public local read model of the soldier roster. Authority reconciles complete captures;
+ * clients merge explicit state-stream deltas. Only actor existence uses shared replication.
  */
 // 服务器维护、相关客户端读取的公共士兵名册 Actor；bAlwaysRelevant，连续姿态另走 NetSync。
 UCLASS(BlueprintType)
@@ -50,6 +49,11 @@ public:
 	int32 ApplyAuthoritySnapshot(
 		TConstArrayView<FGuLiSoldierStateItem> InStates,
 		uint32 MatchEpoch);
+	int32 ApplyAuthorityDelta(TConstArrayView<FGuLiSoldierStateItem> States, uint32 MatchEpoch);
+	/** Connection stream only. Omitted IDs are retained; removals are always explicit. */
+	void ResetRemoteRoster(uint32 MatchEpoch);
+	void ApplyRemoteDelta(const TArray<FGuLiSoldierStateItem>& States,
+		const TArray<FGuLiSoldierId>& Removed, uint32 MatchEpoch, uint32 BatchSequence);
 
 	// 读取本端当前副本；未找到返回 nullptr，客户端读取结果不代表服务器实时状态。
 	const FGuLiSoldierStateItem* FindSoldierState(FGuLiSoldierId SoldierId) const;
@@ -82,6 +86,8 @@ private:
 	friend class FGuLiCommanderRosterCacheTest;
 	void ApplyLocalDelta(const TArray<FGuLiSoldierStateItem>& States, const TArray<FGuLiSoldierId>& Removed);
 	void RefreshLocalEpoch();
+	TMap<FGuLiSoldierId,int32> AuthorityItemIndices;
+	int32 ApplyAuthorityState(TConstArrayView<FGuLiSoldierStateItem> States, uint32 MatchEpoch, bool bComplete);
 	TMap<FGuLiSoldierId, FGuLiSoldierStateItem> LocalSoldierStates;
 	uint32 LocalCacheEpoch = 0;
 	int32 FindItemIndex(FGuLiSoldierId SoldierId) const;
@@ -89,14 +95,13 @@ private:
 	UFUNCTION()
 	void OnRep_SnapshotRevision();
 
-	UPROPERTY(Replicated)
+	UPROPERTY(Transient)
 	FGuLiSoldierStateFastArray ReplicatedSoldiers;
 
-	/** Match identity and high-water mark applied with the reliable FastArray snapshot. */
-	// 和名册版本均是独立复制属性；Bootstrap 还会核对名册数量和有效唯一 ID，不能只看版本通知。
-	UPROPERTY(Replicated)
+	/** Local read-model epoch/revision; bootstrap verifies a per-connection completion barrier. */
+	UPROPERTY(Transient)
 	uint32 SnapshotMatchEpoch = 0u;
 
-	UPROPERTY(ReplicatedUsing = OnRep_SnapshotRevision)
+	UPROPERTY(Transient)
 	uint32 SnapshotRevision = 0u;
 };

@@ -1,0 +1,71 @@
+{
+  "controller": {
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "success": true
+  },
+  "validate": {
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_ParallaxRevealCard": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "/Game/GuLiStrike/Cards/RevealDemo/UI/WBP_CardRevealHUD": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "assets": [
+      "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector.BP_CardRevealDirector",
+      "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector.BP_CardRevealDirector_C",
+      "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode.BP_CardRevealGameMode",
+      "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode.BP_CardRevealGameMode_C",
+      "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController.BP_CardRevealPlayerController",
+      "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController.BP_CardRevealPlayerController_C",
+      "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_ParallaxRevealCard.BP_ParallaxRevealCard",
+      "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_ParallaxRevealCard.BP_ParallaxRevealCard_C",
+      "/Game/GuLiStrike/Cards/RevealDemo/Input/IA_CardRevealClick.IA_CardRevealClick",
+      "/Game/GuLiStrike/Cards/RevealDemo/Input/IMC_CardReveal.IMC_CardReveal",
+      "/Game/GuLiStrike/Cards/RevealDemo/Maps/LVL_CardRevealDemo.LVL_CardRevealDemo",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardBack.M_CardBack",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardConfirmFlash.M_CardConfirmFlash",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_DemoBackdrop.M_DemoBackdrop",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon.MI_Card_Moon",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon_UI.MI_Card_Moon_UI",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star.MI_Card_Star",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star_UI.MI_Card_Star_UI",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower.MI_Card_Tower",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower_UI.MI_Card_Tower_UI",
+      "/Game/GuLiStrike/Cards/RevealDemo/UI/WBP_CardRevealHUD.WBP_CardRevealHUD",
+      "/Game/GuLiStrike/Cards/RevealDemo/UI/WBP_CardRevealHUD.WBP_CardRevealHUD_C"
+    ],
+    "card_hierarchy": "[{component_name: \"PositionRoot\", component_class: \"SceneComponent\", attach_parent: \"\", is_root_component: True, is_scene_component: True, is_inherited: False, children: (\"HoverPivot\",\"ConfirmationFlash\")}, {component_name: \"HoverPivot\", component_class: \"SceneComponent\", attach_parent: \"\", is_root_component: False, is_scene_component: True, is_inherited: False, children: (\"FlipPivot\")}, {component_name: \"FlipPivot\", component_class: \"SceneComponent\", attach_parent: \"\", is_root_component: False, is_scene_component: True, is_inherited: False, children: (\"ArtworkCenter\")}, {component_name: \"ArtworkCenter\", component_class: \"SceneComponent\", attach_parent: \"\", is_root_component: False, is_scene_component: True, is_inherited: False, children: (\"CardFace\",\"CardText\",\"CardFrame\",\"CardPictograms\",\"CardVignette\",\"CardBack\")}, {component_name: \"CardFace\", component_class: \"StaticMeshComponent\", attach_parent: \"\", is_root_component: False, is_scene_component: True, is_inherited: False, children: }, {component_name: \"CardText\", component_class: \"StaticMeshComponent\", attach_parent: \"\", is_root_component: False, is_scene_component: True, is_inherited: False, children: }, {component_name: \"CardFrame\", component_class: \"StaticMeshComponent\", attach_parent: \"\", is_root_component: False, is_scene_component: True, is_inherited: False, children: }, {component_name: \"CardPictograms\", component_class: \"StaticMeshComponent\", attach_parent: \"\", is_root_component: False, is_scene_component: True, is_inherited: False, children: }, {component_name: \"CardVignette\", component_class: \"StaticMeshComponent\", attach_parent: \"\", is_root_component: False, is_scene_component: True, is_inherited: False, children: }, {component_name: \"CardBack\", component_class: \"StaticMeshComponent\", attach_parent: \"\", is_root_component: False, is_scene_component: True, is_inherited: False, children: }, {component_name: \"ConfirmationFlash\", component_class: \"StaticMeshComponent\", attach_parent: \"\", is_root_component: False, is_scene_component: True, is_inherited: False, children: }]",
+    "director_hierarchy": "[{component_name: \"PresentationRoot\", component_class: \"SceneComponent\", attach_parent: \"\", is_root_component: True, is_scene_component: True, is_inherited: False, children: (\"PresentationCamera\",\"Backdrop\")}, {component_name: \"PresentationCamera\", component_class: \"CameraComponent\", attach_parent: \"\", is_root_component: False, is_scene_component: True, is_inherited: False, children: }, {component_name: \"Backdrop\", component_class: \"StaticMeshComponent\", attach_parent: \"\", is_root_component: False, is_scene_component: True, is_inherited: False, children: }]",
+    "hud": "<Struct 'WidgetValidationResult' (0x0000029A33D5AB00) {is_valid: True, errors: , validation_message: \"Widget hierarchy is valid\"}>",
+    "input": "[{mapping_index: 0, action_name: \"IA_CardRevealClick\", action_path: \"/Game/GuLiStrike/Cards/RevealDemo/Input/IA_CardRevealClick.IA_CardRevealClick\", key_name: \"LeftMouseButton\", modifier_count: 0, trigger_count: 0}]",
+    "success": true
+  }
+}

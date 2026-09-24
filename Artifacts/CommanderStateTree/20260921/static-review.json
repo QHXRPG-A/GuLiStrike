@@ -1,0 +1,23 @@
+{
+  "checks": "static only; no native build, gameplay, PIE or automation executed",
+  "soldiers_original_columns_unchanged": true,
+  "bindings": [
+    "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+    "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+    "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
+    "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder"
+  ],
+  "exported_tables": 18,
+  "python_syntax": [
+    "Tools/DataPipeline/export_data_from_excel.py",
+    "Scripts/import_data_to_engine.py",
+    "Scripts/author_commander_state_trees.py"
+  ],
+  "protected_files_unchanged": [
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp",
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h",
+    "Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskTypes.cpp",
+    "Source/GuLiStrike/Gameplay/Units/GuLiEngineeringTravelComponent.cpp"
+  ]
+}

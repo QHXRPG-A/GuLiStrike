@@ -6,6 +6,7 @@
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
 #include "Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h"
 #include "Engine/World.h"
+#include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
 #include "MassCommonFragments.h"
 #include "MassExecutionContext.h"
 #include "MassLODTypes.h"
@@ -46,6 +47,7 @@ UGuLiCommanderPredictiveAvoidanceProcessor::UGuLiCommanderPredictiveAvoidancePro
 	, ReceiverQuery(*this)
 {
 	bAutoRegisterWithProcessingPhases = true;
+	bRequiresGameThreadExecution = true; // Snapshot publication touches the world registry; solver reads immutable values only.
 	ExecutionFlags = static_cast<int32>(
 		EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
 	ExecutionOrder.ExecuteInGroup = UE::Mass::ProcessorGroupNames::Avoidance;
@@ -153,6 +155,18 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 				AgentIndexByEntity.Add(Entry.Entity, Agents.Num() - 1);
 			}
 		});
+
+		if (auto* Registry=World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>())
+		{
+			const auto Snapshot=Registry->GetSnapshot();
+			for (const auto& Obstacle : Snapshot->Obstacles)
+			{
+				auto& Entry=Agents.AddDefaulted_GetRef();
+				Entry.Agent.StableKey=(uint64(1)<<63)|Obstacle.Handle.Value;
+				Entry.Agent.Location=Obstacle.Location; Entry.Agent.Radius=Obstacle.RadiusCentimeters;
+				Entry.Agent.bParticipates=true; Entry.Agent.bEnvironment=true;
+			}
+		}
 
 		TArray<FAgentSnapshot> PolicyAgents;
 		PolicyAgents.Reserve(Agents.Num());

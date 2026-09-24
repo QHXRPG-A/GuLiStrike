@@ -1,0 +1,172 @@
+--- Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp.before
++++ Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp
+@@ -1440,6 +1440,7 @@
+ 			Pair.Value.Samples.Reset();
+ 			Pair.Value.bHasAuthoritativeTransform = false;
+ 			Pair.Value.bHasPresentedTransform = false;
++			Pair.Value.bResetPresentationOnNextPose = false;
+ 			Pair.Value.LastPoseReceiptLocalTimeSeconds = 0.0;
+ 			Pair.Value.MaximumPoseReceiptGapSeconds = 0.0;
+ 			Pair.Value.PreviousAdaptivePoseReceiptLocalTimeSeconds = 0.0;
+@@ -1621,30 +1622,9 @@
+ 		}
+ 	}
+ 
+-	// Compare consecutive authority samples, not the intentionally delayed rendered pose.
+-	// Allow ordinary travel over their timestamp gap before applying the correction tolerance.
+-	bool bCorrectionTooLarge = false;
+-	if (bAdvancesLatest && bHasLatestSample && Soldier.bHasPresentedTransform)
+-	{
+-		const FGuLiCommanderBufferedSoldierPose& PreviousLatest = Soldier.Samples.Last();
+-		const double SampleSeconds = FMath::Max(
+-			0.0, Sample.ServerTimeSeconds - PreviousLatest.ServerTimeSeconds);
+-		double SpeedBound = FMath::Max(PreviousLatest.Velocity.Size(), Sample.Velocity.Size());
+-		if (const UWorld* World = GetWorld())
+-		{
+-			if (const AGuLiCommanderGameState* GameState = World->GetGameState<AGuLiCommanderGameState>())
+-			{
+-				// Both endpoint velocities can be zero after starting and stopping between samples.
+-				SpeedBound = FMath::Max(SpeedBound,
+-					static_cast<double>(GameState->GetEffectiveSoldierMoveSpeedCmPerSecond()));
+-			}
+-		}
+-		const double MaximumContinuousDistance = SpeedBound * SampleSeconds;
+-		bCorrectionTooLarge = FVector::DistSquared(PreviousLatest.Location, Sample.Location)
+-			> FMath::Square(MaximumContinuousDistance + static_cast<double>(HardSnapDistanceCentimeters));
+-	}
+-	// Explicit teleports still reset immediately; untagged discontinuities remain separately counted.
+-	if ((Sample.bTeleport && bAdvancesLatest) || bCorrectionTooLarge)
++	// Ordinary samples always join the retained timeline, even after a large correction.
++	// Only an explicitly marked teleport can discard history and move immediately.
++	if (Sample.bTeleport && bAdvancesLatest)
+ 	{
+ #if !UE_BUILD_SHIPPING
+ 		if (bPredictionTraceActive && SoldierId == PredictionTraceSoldier)
+@@ -1652,31 +1632,8 @@
+ 			AppendPredictionTrace(EGuLiPredictionTraceEvent::HardSnap, &Sample);
+ 		}
+ #endif
+-		if (Sample.bTeleport && bAdvancesLatest)
+-		{
+-			++Soldier.TeleportSnapCount;
+-		}
+-		else if (bCorrectionTooLarge)
+-		{
+-			++Soldier.UntaggedHardSnapCount;
+-			Soldier.LastUntaggedHardSnapDelta = Sample.Location - Soldier.PresentedTransform.GetLocation();
+-			Soldier.LastHardSnapSampleVelocity = Sample.Velocity;
+-			Soldier.LastHardSnapCurrentLocation = Sample.Location;
+-			Soldier.LastHardSnapCurrentChunkIndex = Sample.ChunkIndex;
+-			Soldier.LastHardSnapCurrentSampleIndex = Sample.SampleIndex;
+-			if (bHasLatestSample)
+-			{
+-				const FGuLiCommanderBufferedSoldierPose& PreviousLatest = Soldier.Samples.Last();
+-				Soldier.LastHardSnapPriorSampleDelta = Sample.Location - PreviousLatest.Location;
+-				Soldier.LastHardSnapPreviousLocation = PreviousLatest.Location;
+-				Soldier.LastHardSnapPreviousChunkIndex = PreviousLatest.ChunkIndex;
+-				Soldier.LastHardSnapPreviousSampleIndex = PreviousLatest.SampleIndex;
+-				Soldier.LastHardSnapServerTimeGapSeconds = FMath::Max(
+-					0.0,
+-					Sample.ServerTimeSeconds - PreviousLatest.ServerTimeSeconds);
+-				Soldier.LastHardSnapFrameGap = Sample.FrameSequence - PreviousLatest.FrameSequence;
+-			}
+-		}
++		++Soldier.TeleportSnapCount;
++		Soldier.bResetPresentationOnNextPose = true;
+ 		Soldier.Samples.Reset();
+ 		Soldier.AuthoritativeTransform = GuLiCommanderPresentation::MakePoseTransform(
+ 			Sample.Location,
+@@ -2106,6 +2063,7 @@
+ 		Pair.Value.DisplacementFrameFloor = 0;
+ 		Pair.Value.bHasAuthoritativeTransform = false;
+ 		Pair.Value.bHasPresentedTransform = false;
++		Pair.Value.bResetPresentationOnNextPose = false;
+ 		Pair.Value.bLifeStateInitialized = false;
+ 		Pair.Value.HitFlashStartTime = -1000.0f;
+ 		Pair.Value.LastPoseReceiptLocalTimeSeconds = 0.0;
+@@ -2256,6 +2214,7 @@
+ 		{
+ 			Soldier.DisplacementFrameFloor = ReliableState.DisplacementFrameFloor;
+ 			Soldier.bRenderClockInitialized = false;
++			Soldier.bResetPresentationOnNextPose = true;
+ 			Soldier.Samples.RemoveAll([&](const auto& Sample) { return int32(Sample.FrameSequence - Soldier.DisplacementFrameFloor) < 0; });
+ 			PredictedMoves.Remove(ReliableState.SoldierId);
+ 			if (Soldier.Samples.IsEmpty())
+@@ -2466,6 +2425,23 @@
+ 	TMap<uint16,TArray<FTransform>> DesiredHitTransforms;
+ 	TMap<uint16,TArray<float>> DesiredHitStartTimes;
+ 	auto* UnitFeedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>();
++	// Match the speed published by authority (including runtime tuning), not a
++	// possibly erroneous packet velocity or the distance of the latest correction.
++	float StandardMoveSpeed = 0.0f;
++	if (const auto* GameState = GetWorld()->GetGameState<AGuLiCommanderGameState>())
++	{
++		StandardMoveSpeed = GameState->GetEffectiveSoldierMoveSpeedCmPerSecond();
++	}
++	if (!FMath::IsFinite(StandardMoveSpeed) || StandardMoveSpeed <= 0.0f)
++	{
++		const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
++		StandardMoveSpeed = Data ? Data->GetDefaultSoldierDefinition().MovementSpeedCmPerSecond
++			: FGuLiSoldierDefinition().MovementSpeedCmPerSecond;
++	}
++	const float CorrectionMultiplier = FMath::IsFinite(MaximumCorrectionSpeedMultiplier)
++		? FMath::Clamp(MaximumCorrectionSpeedMultiplier, 1.0f, 3.0f) : 3.0f;
++	const double MaximumDisplayedStep = static_cast<double>(StandardMoveSpeed) * CorrectionMultiplier
++		* (FMath::IsFinite(DeltaSeconds) ? FMath::Max(0.0f, DeltaSeconds) : 0.0f);
+ 
+ 	{
+ 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_Interpolation);
+@@ -2532,8 +2508,19 @@
+ 			ApplyPrediction(ReliableState.SoldierId, LocalNowSeconds, PresentedTransform);
+ 			if (Contacts)
+ 				Contacts->ApplyContactPresentation(ReliableState.SoldierId, PresentedTransform);
++			if (Soldier.bHasPresentedTransform && !Soldier.bResetPresentationOnNextPose)
++			{
++				// Continue from the last displayed position towards the history-evaluated
++				// target. Small steps pass through exactly; large corrections catch up
++				// at a bounded speed, without an asymptotic tail or extra normal-move lag.
++				const FVector PreviousLocation = Soldier.PresentedTransform.GetLocation();
++				const FVector DisplayedDelta = PresentedTransform.GetLocation() - PreviousLocation;
++				PresentedTransform.SetLocation(PreviousLocation
++					+ DisplayedDelta.GetClampedToMaxSize(MaximumDisplayedStep));
++			}
+ 			Soldier.PresentedTransform = PresentedTransform;
+ 			Soldier.bHasPresentedTransform = true;
++			Soldier.bResetPresentationOnNextPose = false;
+ #if !UE_BUILD_SHIPPING
+ 			if (bPredictionTraceActive && ReliableState.SoldierId == PredictionTraceSoldier)
+ 			{
+--- Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h.before
++++ Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h
+@@ -83,6 +83,8 @@
+ 	bool bHasPresentedTransform = false;
+ 	bool bLifeStateInitialized = false;
+ 	bool bRenderClockInitialized = false;
++	// Explicit displacement only; ordinary pose corrections never bypass continuity.
++	bool bResetPresentationOnNextPose = false;
+ };
+ 
+ /** Non-authoritative diagnostics used by the development network acceptance gate. */
+@@ -440,8 +442,9 @@
+ 	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Smoothing", meta = (ClampMin = "0.0"))
+ 	float MaximumExtrapolationSeconds = 0.1f;
+ 
+-	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Smoothing", meta = (ClampMin = "0.0", Units = "cm"))
+-	float HardSnapDistanceCentimeters = 200.0f;
++	// Total displayed travel speed during catch-up, relative to the published Mass move speed.
++	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Smoothing", meta = (ClampMin = "1.0", ClampMax = "3.0"))
++	float MaximumCorrectionSpeedMultiplier = 3.0f;
+ 
+ 	// 本地预表现最长时间；再受距离上限约束，不能代替服务器寻路。
+ 	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Prediction", meta = (ClampMin = "0.0"))
+--- Config/DefaultGame.ini.before
++++ Config/DefaultGame.ini
+@@ -107,7 +107,7 @@
+ InterpolationBackTimeSeconds=0.12
+ MaximumAdaptiveInterpolationBackTimeSeconds=0.35
+ MaximumExtrapolationSeconds=0.1
+-HardSnapDistanceCentimeters=200.0
++MaximumCorrectionSpeedMultiplier=3.0
+ PredictionDurationSeconds=0.25
+ MaximumPredictionDistanceCentimeters=180.0
+ PredictionResolveSeconds=0.15

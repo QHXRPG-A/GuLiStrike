@@ -1,0 +1,104 @@
+{
+  "scope": "Source-only structural/interface/diff review; not a compiler or runtime test",
+  "errors": [],
+  "files": [
+    {
+      "path": "Source/GuLiStrike/Battle/Network/GuLiBattleTypes.h",
+      "sha256": "e912f27e4895e649a4bf86e04b1a755083c3280ed5928dfd03900eebd3ca75fe",
+      "lines": 33
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h",
+      "sha256": "69fab9f987fd2108e9f8fdfc1900b111a067b6fc73426e35440dad68ebf9ae4f",
+      "lines": 486
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp",
+      "sha256": "add39693845c58c1242a6d5ca7fc3df7240b4ed5f25f6d6caa7ba75ca4ee7ed6",
+      "lines": 2119
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderStateDispatch.cpp",
+      "sha256": "5e98ef38a3078390c2516064098b9a01adc3f56a17d10843b5e168df92c6e544",
+      "lines": 292
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.h",
+      "sha256": "4f459ce7d820cc933ba5e62583af2d83f9f2682d46925072a3e64454c2fd2eec",
+      "lines": 53
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp",
+      "sha256": "36b59bfadeffc609701d97217e08f7c5259d676b5d837f85e14f46345a2f7562",
+      "lines": 233
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiCommanderStateStream.h",
+      "sha256": "3c160c4adf83dc0d950248c3f63b9196a4c7406e3f15e87f8db5e3296edfcb1c",
+      "lines": 135
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiCommanderStateStream.cpp",
+      "sha256": "c0a591de858c509ad4426f8cef789a200a308210eb8ce76c44ddf4da0c6dcbef",
+      "lines": 376
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.h",
+      "sha256": "ac8e5730d3c89be6658e0337faa199a4a78e2cec9dd57df7748fb981463b5fec",
+      "lines": 125
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.cpp",
+      "sha256": "60c607ed23e3b4edee76f19ce2541dcc8b372bcf84e7f599efbb058499a9f1d7",
+      "lines": 485
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.h",
+      "sha256": "93b6d96db4e48a5adc669a0f4aada04c2da969cf61bf50443907fdeba956378f",
+      "lines": 104
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.cpp",
+      "sha256": "52269b65f256180627845593cb193fff35e988ffad85da226a9cc1fd2a3e8d0f",
+      "lines": 286
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h",
+      "sha256": "50f7045302289647dd0c0413fb651d259f6d116ef561dc8052add06131179bdf",
+      "lines": 540
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp",
+      "sha256": "bc93fa7023ea910bb6bd7803b64a6c1979baa9c4cbc50c305da6409ab1d577cb",
+      "lines": 7554
+    }
+  ],
+  "git_diff_check_exit_code": 0,
+  "manual_review": [
+    "UE5.7 NetConnection credit fields and IsNetReady API",
+    "RPC declarations and reliable application ACK during bootstrap",
+    "per-connection publication baseline and 4-batch window",
+    "1,000-byte encoding bound and 256-record decoder/sender limit",
+    "birth/order/teleport pose barriers; health-only changes do not close pose gate",
+    "death-before-removal and stale-authority-capture retirement suppression",
+    "fixed initial ID coverage; count/hash/sequence completion proof",
+    "prepare/commit pose encoding; queue only cleared after admission",
+    "public roster and owning commander endpoints; no listen-server read-model replay",
+    "epoch, connection, generation and explicit resync cleanup",
+    "Cross-actor same-generation identity reset and decode rejection request a fresh baseline; stale requests cannot restart the replacement generation"
+  ],
+  "not_executed": [
+    "compile",
+    "PIE start/stop",
+    "automation tests",
+    "stress test",
+    "runtime acceptance"
+  ],
+  "deferred": [
+    "120 Hz engine refill limit",
+    "VFX/building replication",
+    "server navigation jumps",
+    "3x correction remains unchanged"
+  ],
+  "source_patch_note": "Network files were clean at this turn start; authority patch isolates only this task additions and preserves pre-existing workspace edits."
+}

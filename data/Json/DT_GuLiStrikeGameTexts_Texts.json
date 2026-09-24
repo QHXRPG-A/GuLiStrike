@@ -764,31 +764,31 @@
   {
     "Name": "UI.SpecialTaskExecutor.128",
     "TextId": "UI.SpecialTaskExecutor.128",
-    "Introduction": "Commander/Orders/GuLiSpecialTaskExecutor.cpp；界面文案",
+    "Introduction": "Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案",
     "Content": "无可采集的目标矿区"
   },
   {
     "Name": "UI.SpecialTaskExecutor.129",
     "TextId": "UI.SpecialTaskExecutor.129",
-    "Introduction": "Commander/Orders/GuLiSpecialTaskExecutor.cpp；界面文案",
+    "Introduction": "Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案",
     "Content": "采矿或返厂路径失效"
   },
   {
     "Name": "UI.SpecialTaskExecutor.130",
     "TextId": "UI.SpecialTaskExecutor.130",
-    "Introduction": "Commander/Orders/GuLiSpecialTaskExecutor.cpp；界面文案",
+    "Introduction": "Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案",
     "Content": "工地无效或无可达施工位置"
   },
   {
     "Name": "UI.SpecialTaskExecutor.131",
     "TextId": "UI.SpecialTaskExecutor.131",
-    "Introduction": "Commander/Orders/GuLiSpecialTaskExecutor.cpp；界面文案",
+    "Introduction": "Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案",
     "Content": "工地已失效"
   },
   {
     "Name": "UI.SpecialTaskExecutor.132",
     "TextId": "UI.SpecialTaskExecutor.132",
-    "Introduction": "Commander/Orders/GuLiSpecialTaskExecutor.cpp；界面文案",
+    "Introduction": "Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案",
     "Content": "施工已中断"
   },
   {
@@ -1108,5 +1108,41 @@
     "TextId": "UI.TeleportFieldActor.185",
     "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
     "Content": "施法者已离开或失去指挥官资格"
+  },
+  {
+    "Name": "UI.BuildingPlacementComponent.RotateHint",
+    "TextId": "UI.BuildingPlacementComponent.RotateHint",
+    "Introduction": "建筑放置操作提示",
+    "Content": "R：旋转90°"
+  },
+  {
+    "Name": "UI.Performance.FPSPending",
+    "TextId": "UI.Performance.FPSPending",
+    "Introduction": "Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标",
+    "Content": "FPS --"
+  },
+  {
+    "Name": "UI.Performance.FPS",
+    "TextId": "UI.Performance.FPS",
+    "Introduction": "Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标",
+    "Content": "FPS {0}"
+  },
+  {
+    "Name": "UI.Performance.LatencyPending",
+    "TextId": "UI.Performance.LatencyPending",
+    "Introduction": "Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标",
+    "Content": "延迟 --"
+  },
+  {
+    "Name": "UI.Performance.LatencyLocal",
+    "TextId": "UI.Performance.LatencyLocal",
+    "Introduction": "Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标",
+    "Content": "延迟 本地"
+  },
+  {
+    "Name": "UI.Performance.LatencyRTT",
+    "TextId": "UI.Performance.LatencyRTT",
+    "Introduction": "Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标",
+    "Content": "延迟 {0} ms (RTT)"
   }
 ]

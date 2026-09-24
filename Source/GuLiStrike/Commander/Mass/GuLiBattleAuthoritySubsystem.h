@@ -17,6 +17,11 @@ struct FGuLiBattleAuthorityState;
 class UGuLiCommanderSkillCatalog;
 struct FGuLiActiveSkillUnitResult;
 struct FGuLiActiveSkillRuntime;
+struct FGuLiCommanderInitialSpawnSlot;
+struct FGuLiSoldierDefinition;
+struct FGuLiSharedMoveIntent;
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierRetiringSignature, const FGuLiSoldierStateItem&);
 
 /**
  * 将 PImpl 的 delete 放在 .cpp 中执行，那里能看到 FGuLiBattleAuthorityState 的完整定义。
@@ -73,6 +78,9 @@ struct FGuLiSoldierNavigationDebug
 	FVector Location = FVector::ZeroVector;
 	FVector Velocity = FVector::ZeroVector;
 	FVector LastValidNavLocation = FVector::ZeroVector;
+	uint64 NavigationNodeRef = 0u;
+	uint32 NavigationGeneration = 0u;
+	bool bNavigationNodeRefValid = false;
 	FVector FinalSlot = FVector::ZeroVector;
 	FVector CurrentWaypoint = FVector::ZeroVector;
 	float DistanceToFinalSlotCentimeters = 0.0f;
@@ -149,15 +157,50 @@ enum class EGuLiMovePlanningStatus : uint8
 	Completed
 };
 
-/** Server snapshot converted by NetSync into the OwnerOnly endpoint FastArray. */
+/** Native request identity; never serialized. Epoch prevents reuse after a new battle. */
+struct FGuLiMovePlanHandle
+{
+	uint64 Value = 0;
+	uint32 Epoch = 0;
+	bool IsValid() const { return Value != 0 && Epoch != 0; }
+};
+
+struct FGuLiMovePlanProgress
+{
+	FGuLiMovePlanHandle Handle;
+	uint32 BatchOrderId = 0;
+	TArray<FGuLiSoldierId> Committed;
+	TArray<FGuLiSoldierId> Failed;
+	bool bComplete = false;
+};
+
+/** Server endpoint event paired with command state in the existing owner-only v19 stream. */
 struct FGuLiMoveEndpointSnapshot
 {
 	FGuLiSoldierId SoldierId;
+	EGuLiTeam Team = EGuLiTeam::Unassigned;
 	uint32 ActiveOrderId = 0u;
 	FVector CommandStart = FVector::ZeroVector;
 	FVector FinalDestination = FVector::ZeroVector;
 	uint32 Revision = 0u;
 };
+
+struct FGuLiMoveEndpointDelta
+{
+	TArray<FGuLiMoveEndpointSnapshot> Upserts;
+	TArray<FGuLiSoldierId> Removed;
+	bool bReset = false;
+};
+
+struct FGuLiAuthorityMoveDelta
+{
+ uint32 Epoch = 0;
+ TArray<FGuLiSoldierStateItem> States;
+ FGuLiMoveEndpointDelta Endpoints;
+};
+DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiAuthorityMoveDeltaSignature, const FGuLiAuthorityMoveDelta&);
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiAuthorityMoveEndpointsChanged, const FGuLiMoveEndpointDelta&);
 
 /** One completed request's bounded diagnostics; candidate failures are aggregated, never spammed. */
 struct FGuLiMoveCohortPlanningDebug
@@ -212,6 +255,21 @@ class GULISTRIKE_API UGuLiBattleAuthoritySubsystem final : public UTickableWorld
 	GENERATED_BODY()
 
 public:
+	/** Authority lifecycle notification, emitted before the final wreck record is destroyed. */
+	FGuLiSoldierRetiringSignature OnSoldierRetiring;
+	FGuLiAuthorityMoveEndpointsChanged OnMoveEndpointsChanged;
+	FGuLiAuthorityMoveDeltaSignature OnAuthorityMoveDelta;
+	const FGuLiMoveEndpointSnapshot* FindActiveMoveEndpoint(FGuLiSoldierId SoldierId) const;
+	FGuLiMovePlanHandle FindMovePlan(const AGuLiBattlePlayerState& Owner, uint32 ClientCommandId) const;
+	bool ConsumeMovePlanProgress(FGuLiMovePlanHandle Handle, FGuLiMovePlanProgress& OutProgress);
+	FGuLiMovePlanHandle BeginAutomaticMovePlanning(EGuLiTeam Team,
+		TConstArrayView<FGuLiSoldierId> Soldiers, const FVector& Destination);
+	/** Pure deployment geometry; callable on the CDO without starting a game world. */
+	bool BuildInitialArmySpawnLayout(const TArray<FGuLiSoldierDefinition>& Definitions,
+		const FVector& RedAssembly, const FVector& BlueAssembly,
+		TArray<FGuLiCommanderInitialSpawnSlot>& OutSlots, FString& OutError,
+		float InwardInsetCentimeters = 0.0f) const;
+
 	/** 在 .cpp 中使用 = default，按默认规则构造父类和成员；世界相关初始化放在 Initialize。 */
 	UGuLiBattleAuthoritySubsystem();
 
@@ -236,7 +294,7 @@ public:
 	//~ 生命周期接口结束
 
 	//~ FTickableGameObject 更新与性能统计
-	/** 每世界帧处理流场预算，再按 1/10 秒固定步追赶模拟；累计时间最多保留 4 步。 */
+	/** 每世界帧接纳命令、处理共享路线及站位预算，再按 1/10 秒固定步推进移动。 */
 	virtual void Tick(float DeltaTime) override;
 
 	/** 为引擎 Tick 性能统计提供本子系统的标识。 */
@@ -245,6 +303,12 @@ public:
 
 	/** 服务器本地模块生命周期入口，由唯一士兵发布组件调用；公共 Battle 世界默认不启动部队模拟。 */
 	void SetSoldierSimulationEnabled(bool bEnabled);
+	/** On-demand observation only; never advances or repairs simulation. */
+	UFUNCTION(BlueprintCallable, Category="Commander|Diagnostics", meta=(DevelopmentOnly))
+	FString GetMoveResponseDiagnostics() const;
+	bool FindSoldierEntity(FGuLiSoldierId Id, struct FMassEntityHandle& OutEntity) const;
+	void SetMovePlanOrigin(const AGuLiBattlePlayerState& Owner, uint32 ExecutionId, uint32 CommandId);
+	TSharedPtr<FGuLiSharedMoveIntent> CreateSharedMoveIntent(const FVector& Target, uint32 RandomSeed);
 
 	/**
 	 * 按权威位置、兵种、阵营和存活状态解析点/框/范围/同兵种意图，精确成员按最多 25 人分组。
@@ -258,14 +322,15 @@ public:
 		FGuLiCommandAck& OutAck);
 
 	/**
-	 * Starts or attaches to a deterministic, frame-budgeted free-destination plan.
-	 * Global validation errors are returned immediately; accepted work remains Pending until a fixed-step commit.
+	 * Starts a budgeted world-frame command commit; shared corridors and random slots do not block admission.
+	 * SharedIntent belongs to the complete command, including members admitted in later slices.
 	 */
 	bool BeginMovePlanning(
 		const AGuLiBattlePlayerState& PlayerState,
 		const FGuLiMoveRequest& Request,
 		const FGuLiCommanderSelectionState& Selection,
-		FGuLiCommandAck& OutImmediateAck);
+		FGuLiCommandAck& OutImmediateAck,
+		const TSharedPtr<FGuLiSharedMoveIntent>& SharedIntent = {});
 
 	/** Returns and consumes a completed result; Pending and NotFound never mutate OutUpdatedSelection. */
 	EGuLiMovePlanningStatus PollMovePlanning(
@@ -430,6 +495,12 @@ private:
 
 	/** 执行一个固定步：提交待生效速度、更新编队、积分士兵位移，再按批次收尾。 */
 	void TickAuthority(float FixedDeltaSeconds);
+	void PrepareNextMoveBatch(uint64 PlanId);
+	void RefreshSoldierNavigationState(FGuLiSoldierId SoldierId);
+	void PublishMoveEndpointChanges();
+	bool BuildSoldierState(FGuLiSoldierId Id, FGuLiSoldierStateItem& Out) const;
+	void TickSteeringValidation();
+	bool ResolveValidatedSteeringTargets(FGuLiSoldierId Id, uint32 PathRevision, const FVector& Lane, const FVector& Slot, FVector& OutLane, FVector& OutSlot);
 	void CommitCombatProfiles();
 	void TickSoldierCombat();
 	void RegisterCombatLedgerTargets();
@@ -438,14 +509,15 @@ private:
 
 	/** 每世界帧按预算采样可走性、提交纯数据后台构建，并核对版本后接收流场结果。 */
 	void TickLocalFlowFields();
+	void TickSharedNavigation(int32 Category);
 
 	/** Advances candidate projection/routing budgets once per rendered world frame. */
-	void TickMovePlanning(int32& RemainingProjectionBudget, int32& RemainingPathBudget);
+	void TickMovePlanning(int32& RemainingProjectionBudget, int32& RemainingPathBudget, bool bManualFirst);
 
 	/** Advances a NavMesh-generation repair job without exceeding the shared per-frame query budgets. */
 	void TickNavigationRepairs(int32& RemainingProjectionBudget, int32& RemainingPathBudget);
 
-	/** Commits every ready plan at the start of one authoritative 10 Hz step. */
+	/** Commits accepted intents each world frame, independently of the 10 Hz position step. */
 	void CommitReadyMovePlans();
 
 	/** Applies one completed navigation repair at a 10 Hz boundary before movement reads its results. */
@@ -487,6 +559,17 @@ private:
 	/** 当前已提交的移动速度上限（cm/s）；调参时延迟到固定步边界更新。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Movement", meta = (ClampMin = "1.0", Units = "cm/s"))
 	float MovementSpeedCentimetersPerSecond = 720.0f;
+
+	UPROPERTY(Config, EditAnywhere, Category="Commander|Authority|Planning", meta=(ClampMin="0.1"))
+	float MovePlanningMilliseconds = 2.0f;
+	UPROPERTY(Config, EditAnywhere, Category="Commander|Authority|Planning", meta=(ClampMin="1"))
+	int32 MovePositionQueriesPerFrame = 64;
+	UPROPERTY(Config, EditAnywhere, Category="Commander|Authority|Planning", meta=(ClampMin="1"))
+	int32 MovePathQueriesPerFrame = 4;
+	UPROPERTY(Config, EditAnywhere, Category="Commander|Authority|Planning", meta=(ClampMin="0.1"))
+	float MoveCommitMilliseconds = .5f;
+	UPROPERTY(Config, EditAnywhere, Category="Commander|Authority|Planning", meta=(ClampMin="25"))
+	int32 MoveCommitMembersPerFrame = 100;
 
 	/** 士兵与编队引导方向的最大转向速率（度/秒），按固定步时长限制本步转角。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Movement", meta = (ClampMin = "1.0", Units = "deg/s"))

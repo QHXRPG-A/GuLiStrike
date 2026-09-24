@@ -8,21 +8,30 @@
 #include "Gameplay/Economy/GuLiEconomyTypes.h"
 #include "GuLiResourceTypes.generated.h"
 
-inline constexpr int32 GULI_RESOURCE_BOARD_DIMENSION = 5;
-inline constexpr int32 GULI_RESOURCE_TERRITORY_COUNT = 25;
+inline constexpr int32 GULI_RESOURCE_BOARD_DIMENSION = 9;
+inline constexpr int32 GULI_RESOURCE_BOARD_CENTER = (GULI_RESOURCE_BOARD_DIMENSION + 1) / 2;
+inline constexpr int32 GULI_RESOURCE_TERRITORY_COUNT = GULI_RESOURCE_BOARD_DIMENSION * GULI_RESOURCE_BOARD_DIMENSION;
 inline constexpr int32 GULI_RESOURCE_BLUE_CLUSTER_COUNT = 200;
 inline constexpr int32 GULI_RESOURCE_RED_CLUSTER_COUNT = 40;
 inline constexpr int32 GULI_RESOURCE_CLUSTER_COUNT = 240;
 inline constexpr int32 GULI_RESOURCE_NODES_PER_CLUSTER = 26;
 inline constexpr int32 GULI_RESOURCE_NODE_COUNT = 6240;
 inline constexpr int32 GULI_RESOURCE_RAW_PER_CLUSTER = 40;
-inline constexpr int32 GULI_RESOURCE_LAYOUT_VERSION = 2;
+inline constexpr int32 GULI_RESOURCE_LAYOUT_VERSION = 5;
 // Source meshes and the deterministic authored pattern remain in their original units.
 inline constexpr float GULI_RESOURCE_OBJECT_SCALE = 0.2f;
 inline constexpr int32 GULI_RESOURCE_BAKE_SEED = 20260911;
-inline constexpr float GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM = 280000.0f;
-inline constexpr float GULI_RESOURCE_TERRITORY_SIZE_CM = 112000.0f;
-inline constexpr float GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM = 56000.0f;
+inline constexpr float GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM = 90000.0f;
+inline constexpr float GULI_RESOURCE_TERRITORY_SIZE_CM =
+	2.0f * GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM / GULI_RESOURCE_BOARD_DIMENSION;
+inline constexpr float GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM = GULI_RESOURCE_TERRITORY_SIZE_CM * 0.5f;
+inline constexpr float GULI_RESOURCE_TERRITORY_BOUNDARY_MARGIN_CM = 1250.0f;
+inline constexpr float GULI_RESOURCE_FACTORY_ANCHOR_Y_CM =
+	GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM - GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM + 7500.0f;
+inline constexpr float GULI_RESOURCE_ASSEMBLY_ANCHOR_Y_CM =
+	GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM - GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM - 7500.0f;
+// Keep the unchanged 500-unit formation clear of the second row of 200 m outposts.
+inline constexpr float GULI_RESOURCE_INITIAL_ARMY_INSET_CM = 4000.0f;
 inline constexpr float GULI_RESOURCE_CLUSTER_OBSTACLE_RADIUS_CM = 520.0f;
 inline constexpr float GULI_RESOURCE_FACTORY_OBSTACLE_HALF_EXTENT_CM = 500.0f;
 inline constexpr float GULI_RESOURCE_MINING_VEHICLE_NAV_RADIUS_CM = 150.0f;
@@ -57,9 +66,9 @@ enum class EGuLiMiningTaskState : uint8
 	PlayerMoving,
 	Blocked,
 	WaitingForFactoryDoor UMETA(Hidden), // Legacy ordinal, no longer emitted: doors are presentation only.
-	EnteringFactory,
+	EnteringFactory UMETA(Hidden), // Legacy ordinal; vehicles now navigate directly to an unload point.
 	TurningInFactory UMETA(Hidden), // Legacy ordinal, turn at unload is immediate.
-	ExitingFactory
+	ExitingFactory UMETA(Hidden)
 };
 
 /** Public cosmetic state; cargo and player orders remain team-private. */
@@ -137,10 +146,10 @@ struct GULISTRIKE_API FGuLiTerritoryDefinition
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board")
 	FName TerritoryId;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board", meta = (ClampMin = "1", ClampMax = "5"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board", meta = (ClampMin = "1", ClampMax = "9"))
 	uint8 BoardRow = 1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board", meta = (ClampMin = "1", ClampMax = "5"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board", meta = (ClampMin = "1", ClampMax = "9"))
 	uint8 BoardColumn = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board")
@@ -223,16 +232,16 @@ struct GULISTRIKE_API FGuLiResourceSpawnAnchors
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Spawn")
-	FVector RedFactory = FVector(0.0, 252000.0, 0.0);
+	FVector RedFactory = FVector(0.0, GULI_RESOURCE_FACTORY_ANCHOR_Y_CM, 0.0);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Spawn")
-	FVector RedAssembly = FVector(0.0, 196000.0, 0.0);
+	FVector RedAssembly = FVector(0.0, GULI_RESOURCE_ASSEMBLY_ANCHOR_Y_CM, 0.0);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Spawn")
-	FVector BlueFactory = FVector(0.0, -252000.0, 0.0);
+	FVector BlueFactory = FVector(0.0, -GULI_RESOURCE_FACTORY_ANCHOR_Y_CM, 0.0);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Spawn")
-	FVector BlueAssembly = FVector(0.0, -196000.0, 0.0);
+	FVector BlueAssembly = FVector(0.0, -GULI_RESOURCE_ASSEMBLY_ANCHOR_Y_CM, 0.0);
 
 	bool IsWellFormed() const;
 };
@@ -356,7 +365,10 @@ namespace GuLiResources
 	GULISTRIKE_API FName MakeTerritoryId(int32 Row, int32 Column);
 	GULISTRIKE_API int32 ToTerritoryIndex(int32 Row, int32 Column);
 	GULISTRIKE_API FVector GetTerritoryCenter(int32 Row, int32 Column);
+	GULISTRIKE_API EGuLiTeam GetInitialTerritoryOwner(int32 Row, int32 Column);
 	GULISTRIKE_API EGuLiOreVisualStage AmountToVisualStage(uint8 RemainingAmount);
+	/** Shared initial engineering layout for runtime spawning and resource exclusion. */
+	GULISTRIKE_API FVector InitialEngineeringVehicleOffset(EGuLiTeam Team, int32 Index, bool bConstruction);
 	GULISTRIKE_API uint8 GetBlueClusterBudget(int32 Row, int32 Column);
 	GULISTRIKE_API uint8 GetRedClusterBudget(int32 Row, int32 Column);
 	GULISTRIKE_API bool IsPlayableTeam(EGuLiTeam Team);

@@ -1,4 +1,4 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
@@ -21,6 +21,7 @@ class UInstancedStaticMeshComponent;
 class UMaterialInterface;
 class UMassEntitySubsystem;
 class USceneComponent;
+class UGuLiCommanderRouteLineComponent;
 class UStaticMesh;
 struct FGuLiSoldierRosterDelta;
 
@@ -83,6 +84,8 @@ struct FGuLiCommanderPresentedSoldier
 	bool bHasPresentedTransform = false;
 	bool bLifeStateInitialized = false;
 	bool bRenderClockInitialized = false;
+	// Explicit displacement only; ordinary pose corrections never bypass continuity.
+	bool bResetPresentationOnNextPose = false;
 };
 
 /** Non-authoritative diagnostics used by the development network acceptance gate. */
@@ -197,6 +200,7 @@ UCLASS(Config = Game)
 class GULISTRIKE_API AGuLiCommanderPresentationActor : public AActor
 {
 	GENERATED_BODY()
+UPROPERTY(Transient) TObjectPtr<UGuLiCommanderRouteLineComponent> RouteLines;
 
 public:
 	AGuLiCommanderPresentationActor();
@@ -440,8 +444,9 @@ private:
 	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Smoothing", meta = (ClampMin = "0.0"))
 	float MaximumExtrapolationSeconds = 0.1f;
 
-	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Smoothing", meta = (ClampMin = "0.0", Units = "cm"))
-	float HardSnapDistanceCentimeters = 200.0f;
+	// Total displayed travel speed during catch-up, relative to the published Mass move speed.
+	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Smoothing", meta = (ClampMin = "1.0", ClampMax = "3.0"))
+	float MaximumCorrectionSpeedMultiplier = 3.0f;
 
 	// 本地预表现最长时间；再受距离上限约束，不能代替服务器寻路。
 	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Prediction", meta = (ClampMin = "0.0"))

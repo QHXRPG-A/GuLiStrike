@@ -1,4 +1,4 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 
@@ -28,15 +28,54 @@ void AGuLiSoldierStateReplicator::GetLifetimeReplicatedProps(
 	TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(AGuLiSoldierStateReplicator, ReplicatedSoldiers);
-	DOREPLIFETIME(AGuLiSoldierStateReplicator, SnapshotMatchEpoch);
-	DOREPLIFETIME(AGuLiSoldierStateReplicator, SnapshotRevision);
+	// Actor existence remains public; data is admitted by each owning connection's state stream.
 }
 
-int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(
-	const TConstArrayView<FGuLiSoldierStateItem> InStates,
-	const uint32 MatchEpoch)
+void AGuLiSoldierStateReplicator::ResetRemoteRoster(uint32 MatchEpoch)
 {
+	if (HasAuthority()) return; // Listen-server presentation reads the authoritative cache.
+	TArray<FGuLiSoldierId> Removed;
+	for (const auto& Item : ReplicatedSoldiers.Items) Removed.Add(Item.SoldierId);
+	ReplicatedSoldiers.Items.Reset(); LocalSoldierStates.Reset();
+	SnapshotMatchEpoch = LocalCacheEpoch = MatchEpoch; SnapshotRevision = 0;
+	if (!Removed.IsEmpty()) ReplicatedSoldiers.OnRemoved.Broadcast(Removed);
+	FGuLiSoldierRosterDelta Delta; Delta.bReset = true; Delta.Removed = MoveTemp(Removed);
+	OnRosterDelta.Broadcast(Delta);
+}
+
+void AGuLiSoldierStateReplicator::ApplyRemoteDelta(const TArray<FGuLiSoldierStateItem>& States,
+	const TArray<FGuLiSoldierId>& Removed, uint32 MatchEpoch, uint32 BatchSequence)
+{
+	if (HasAuthority() || !MatchEpoch || SnapshotMatchEpoch != MatchEpoch) return;
+	for (const auto& State : States)
+	{
+		const int32 Index = FindItemIndex(State.SoldierId);
+		if (Index == INDEX_NONE) ReplicatedSoldiers.Items.Add(State);
+		else ReplicatedSoldiers.Items[Index] = State;
+	}
+	// Death followed by retirement in one batch must notify death before erasing the identity.
+	if (!States.IsEmpty()) ApplyLocalDelta(States, {});
+	if (!Removed.IsEmpty())
+	{
+		const TSet<FGuLiSoldierId> Ids(Removed);
+		ReplicatedSoldiers.OnRemoved.Broadcast(Removed);
+		ReplicatedSoldiers.Items.RemoveAll([&](const auto& State) { return Ids.Contains(State.SoldierId); });
+		ApplyLocalDelta({}, Removed);
+	}
+	SnapshotRevision = BatchSequence;
+	OnSoldierStatesChanged.Broadcast(SnapshotRevision);
+}
+
+int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(TConstArrayView<FGuLiSoldierStateItem> States, uint32 Epoch)
+{ return ApplyAuthorityState(States,Epoch,true); }
+int32 AGuLiSoldierStateReplicator::ApplyAuthorityDelta(TConstArrayView<FGuLiSoldierStateItem> States, uint32 Epoch)
+{ return ApplyAuthorityState(States,Epoch,false); }
+
+int32 AGuLiSoldierStateReplicator::ApplyAuthorityState(
+	const TConstArrayView<FGuLiSoldierStateItem> InStates,
+	const uint32 MatchEpoch, const bool bComplete)
+{
+	if (!bComplete && SnapshotMatchEpoch != MatchEpoch) return 0;
 	if (!HasAuthority() || MatchEpoch == 0u)
 	{
 		return 0;
@@ -65,10 +104,12 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(
 		}
 
 		SnapshotIds.Add(SanitizedState.SoldierId);
-		const int32 ExistingIndex = FindItemIndex(SanitizedState.SoldierId);
+		const int32* KnownIndex = AuthorityItemIndices.Find(SanitizedState.SoldierId);
+		const int32 ExistingIndex = KnownIndex ? *KnownIndex : INDEX_NONE;
 		if (ExistingIndex == INDEX_NONE)
 		{
 			FGuLiSoldierStateItem& NewItem = ReplicatedSoldiers.Items.AddDefaulted_GetRef();
+			AuthorityItemIndices.Add(SanitizedState.SoldierId,ReplicatedSoldiers.Items.Num()-1);
 			NewItem.SoldierId = SanitizedState.SoldierId;
 			NewItem.Team = SanitizedState.Team;
 			NewItem.UnitTypeId = SanitizedState.UnitTypeId;
@@ -133,7 +174,7 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(
 
 	bool bRemovedAny = false;
 	TArray<FGuLiSoldierId> RemovedIds;
-	for (int32 Index = ReplicatedSoldiers.Items.Num() - 1; Index >= 0; --Index)
+	for (int32 Index = bComplete ? ReplicatedSoldiers.Items.Num() - 1 : -1; Index >= 0; --Index)
 	{
 		if (SnapshotIds.Contains(ReplicatedSoldiers.Items[Index].SoldierId))
 		{
@@ -141,7 +182,9 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(
 		}
 
 		RemovedIds.Add(ReplicatedSoldiers.Items[Index].SoldierId);
+		AuthorityItemIndices.Remove(ReplicatedSoldiers.Items[Index].SoldierId);
 		ReplicatedSoldiers.Items.RemoveAtSwap(Index, 1, EAllowShrinking::No);
+		if (ReplicatedSoldiers.Items.IsValidIndex(Index)) AuthorityItemIndices.Add(ReplicatedSoldiers.Items[Index].SoldierId,Index);
 		bRemovedAny = true;
 		++ChangedItemCount;
 	}

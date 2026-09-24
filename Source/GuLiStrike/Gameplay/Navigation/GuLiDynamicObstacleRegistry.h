@@ -43,7 +43,32 @@ struct GULISTRIKE_API FGuLiDynamicObstacle
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
 };
 
+/** Exact local dependencies, including empty cells an obstacle can subsequently enter. */
+struct FGuLiObstacleRegionStamp
+{
+	TMap<FIntPoint, uint64> Cells;
+	uint32 SnapshotRevision = 0;
+	bool bComplete = true;
+};
+
+/** Immutable game-thread publication shared by movement and predictive avoidance. */
+struct GULISTRIKE_API FGuLiDynamicObstacleSnapshot
+{
+	static constexpr float CellSize=600.f;
+	uint32 Revision=0;
+	TArray<FGuLiDynamicObstacle> Obstacles;
+	TMap<FIntPoint,TArray<int32>> Cells;
+	TMap<uint32,int32> ByHandle;
+	TMap<FIntPoint,uint64> CellVersions;
+	FGuLiObstacleRegionStamp CaptureRegion(const FVector& From, const FVector& To, float Radius) const;
+	bool IsRegionCurrent(const FGuLiObstacleRegionStamp& Stamp) const;
+	static FIntPoint Cell(const FVector& P) { return {FMath::FloorToInt32(P.X/CellSize),FMath::FloorToInt32(P.Y/CellSize)}; }
+	void Query(const FVector& Position,float Radius,TArray<int32>& Out) const;
+	bool IsSegmentClear(const FVector& From,const FVector& To,float Radius,bool bAllowEscape=false) const;
+};
+
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiDynamicObstaclesChanged, uint32 /* Revision */);
+DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiStaticObstacleRegionChanged, const FBox&);
 
 /** Registration and query seam shared by world obstacles and avoidance consumers. */
 class GULISTRIKE_API IGuLiDynamicObstacleRegistry
@@ -81,14 +106,28 @@ public:
 	virtual void UnregisterObstacle(FGuLiDynamicObstacleHandle Handle) override;
 	virtual TConstArrayView<FGuLiDynamicObstacle> GetObstacles() const override { return Obstacles; }
 	virtual uint32 GetRevision() const override { return Revision; }
+	TSharedRef<const FGuLiDynamicObstacleSnapshot,ESPMode::ThreadSafe> GetSnapshot();
 	virtual FGuLiDynamicObstaclesChanged& OnObstaclesChanged() override { return ObstaclesChanged; }
+	FGuLiStaticObstacleRegionChanged StaticRegionChanged;
+	uint32 GetStaticRevision() const { return StaticRevision; }
+	bool HasStaticChangesSince(uint32 Since, const FBox& Bounds) const;
+	/** Invalidate nearby route/work-position caches when existing world geometry changes. */
+	void NotifyStaticGeometryChanged(const FBox& Bounds);
 
 private:
+	TSharedPtr<const FGuLiDynamicObstacleSnapshot,ESPMode::ThreadSafe> Snapshot;
 	TArray<FGuLiDynamicObstacle> Obstacles;
 	TMap<uint32, int32> IndexByHandle;
 	FGuLiDynamicObstaclesChanged ObstaclesChanged;
 	uint32 NextHandle = 1u;
 	uint32 Revision = 0u;
+	uint32 StaticRevision = 0;
+	uint64 NextCellVersion = 0;
+	TMap<FIntPoint,uint64> CellVersions;
+	void DirtyObstacleCells(const FGuLiDynamicObstacle& Obstacle);
+	struct FRegionChange { uint32 Revision; FBox Bounds; };
+	TArray<FRegionChange> RegionChanges;
+	void PublishStaticRegion(const FGuLiDynamicObstacle& Obstacle);
 
 	void PublishChange();
 };

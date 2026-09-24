@@ -1,0 +1,181 @@
+--- GuLiBattleAuthoritySubsystem.before.cpp
++++ Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
+@@ -704,6 +704,27 @@
+ 		FMovePlanningJob& Job,
+ 		const EGuLiCommandAckResult Result = EGuLiCommandAckResult::PathFailed)
+ 	{
++		if (Result != EGuLiCommandAckResult::Cancelled)
++		{
++			const TCHAR* StageName = TEXT("Unknown");
++			switch (Job.Stage)
++			{
++			case EMovePlanningStage::ValidateStarts: StageName = TEXT("ValidateStarts"); break;
++			case EMovePlanningStage::ProjectCandidates: StageName = TEXT("ProjectCandidates"); break;
++			case EMovePlanningStage::AssignDestinations: StageName = TEXT("AssignDestinations"); break;
++			case EMovePlanningStage::Route: StageName = TEXT("Route"); break;
++			case EMovePlanningStage::ReconcileReservations: StageName = TEXT("ReconcileReservations"); break;
++			case EMovePlanningStage::ReadyToCommit: StageName = TEXT("ReadyToCommit"); break;
++			case EMovePlanningStage::Completed: StageName = TEXT("Completed"); break;
++			}
++			UE_LOG(LogGuLiCommanderMass, Warning,
++				TEXT("Move planning terminated command=%u team=%u ack=%u stage=%s elapsed=%.3fs frames=%d starts=%d/%d legal=%d projections=%d paths=%d pending_routes=%d connector_failures=%llu."),
++				Job.Request.ClientCommandId, static_cast<uint8>(Job.Team), static_cast<uint8>(Result),
++				StageName, FPlatformTime::Seconds() - Job.PlanningStartedAt, Job.Debug.PlanningWorldFrames,
++				Job.NextStartValidationIndex, Job.Members.Num(), Job.LegalSlots.Num(),
++				Job.Debug.CandidateProjectionQueries, Job.Debug.PathQueries, Job.RouteTasks.Num(),
++				Job.Debug.FailureCounts[static_cast<uint8>(EGuLiMovePlanFailureStage::Connector)]);
++		}
+ 		Job.Ack.Result = Result;
+ 		Job.Ack.BatchOrderId = 0u;
+ 		for (FGuLiCohortCommandAck& CohortAck : Job.Ack.CohortResults)
+@@ -909,6 +930,32 @@
+ 			&& !Result.Path->IsPartial();
+ 	}
+ 
++	bool FindMoveAlongCurrentNavigationSurface(
++		const ANavigationData& NavigationData,
++		const FNavLocation& Start,
++		const FVector& Target,
++		FNavLocation& OutLocation,
++		const UObject* Querier = nullptr)
++	{
++		FNavLocation CurrentStart = Start;
++		if (!NavigationData.IsNodeRefValid(CurrentStart.NodeRef))
++		{
++			// Dynamic tile rebuilds invalidate polygon references even when the same
++			// ground remains walkable. Refresh only the reference at this position;
++			// never turn a stale reference into a teleport past a new obstacle.
++			if (!NavigationData.ProjectPoint(Start.Location, CurrentStart,
++					FVector(10.0f, 10.0f, 5000.0f), nullptr, Querier)
++				|| FVector::DistSquared2D(Start.Location, CurrentStart.Location) > FMath::Square(10.0f)
++				|| FMath::Abs(Start.Location.Z - CurrentStart.Location.Z) > MaximumSurfaceStepZCentimeters)
++			{
++				return false;
++			}
++			CurrentStart.Location.X = Start.Location.X;
++			CurrentStart.Location.Y = Start.Location.Y;
++		}
++		return NavigationData.FindMoveAlongSurface(CurrentStart, Target, OutLocation, nullptr, Querier);
++	}
++
+ 	bool HasReachableSurfaceSegment(
+ 		const ANavigationData& NavigationData,
+ 		const FNavLocation& Start,
+@@ -917,12 +964,11 @@
+ 		uint64* const InOutFallbackPathQueryCount = nullptr)
+ 	{
+ 		FNavLocation ReachedLocation;
+-		if (NavigationData.FindMoveAlongSurface(
++		if (FindMoveAlongCurrentNavigationSurface(
++				NavigationData,
+ 				Start,
+ 				Target,
+-				ReachedLocation,
+-				nullptr,
+-				nullptr)
++				ReachedLocation)
+ 			&& FVector::DistSquared(ReachedLocation.Location, Target)
+ 				<= FMath::Square(static_cast<double>(TargetToleranceCentimeters)))
+ 		{
+@@ -1043,7 +1089,7 @@
+ 		const float ToleranceCentimeters = 20.0f)
+ 	{
+ 		FNavLocation Reached;
+-		return NavigationData.FindMoveAlongSurface(Start, Target, Reached, nullptr, nullptr)
++		return FindMoveAlongCurrentNavigationSurface(NavigationData, Start, Target, Reached)
+ 			&& FVector::DistSquared(Reached.Location, Target)
+ 				<= FMath::Square(static_cast<double>(ToleranceCentimeters));
+ 	}
+@@ -4994,11 +5040,11 @@
+ 			{
+ 				FNavLocation SurfaceDestination;
+ 				++AuthorityState->SurfaceMoveCalls;
+-				const bool bFinalSurfaceMoveSucceeded = CommanderNavigationData->FindMoveAlongSurface(
++				const bool bFinalSurfaceMoveSucceeded = FindMoveAlongCurrentNavigationSurface(
++					*CommanderNavigationData,
+ 					Soldier.LastValidNavLocation,
+ 					FinalDestination->Location,
+ 					SurfaceDestination,
+-					nullptr,
+ 					this);
+ 				const bool bFinalSurfaceMoveAccepted =
+ 					GuLiCommanderNavigationPolicy::IsSurfaceMoveResultAcceptable(
+@@ -5326,11 +5372,11 @@
+ 				FNavLocation SurfaceLocation;
+ 				++AuthorityState->SurfaceMoveCalls;
+ 				const bool bSurfaceMoveSucceeded = CommanderNavigationData
+-					&& CommanderNavigationData->FindMoveAlongSurface(
++					&& FindMoveAlongCurrentNavigationSurface(
++						*CommanderNavigationData,
+ 						Soldier.LastValidNavLocation,
+ 						CandidateLocation,
+ 						SurfaceLocation,
+-						nullptr,
+ 						this);
+ 				const bool bSurfaceMoveAccepted =
+ 					GuLiCommanderNavigationPolicy::IsSurfaceMoveResultAcceptable(
+@@ -5447,11 +5493,11 @@
+ 			++AuthorityState->SurfaceMoveCalls;
+ 			const bool bSurfaceMoveSucceeded = bCandidateClear
+ 				&& CommanderNavigationData
+-				&& CommanderNavigationData->FindMoveAlongSurface(
++				&& FindMoveAlongCurrentNavigationSurface(
++					*CommanderNavigationData,
+ 					Soldier.LastValidNavLocation,
+ 					CandidateLocation,
+ 					SurfaceLocation,
+-					nullptr,
+ 					this);
+ 			const bool bSurfaceMoveAccepted =
+ 				GuLiCommanderNavigationPolicy::IsSurfaceMoveResultAcceptable(
+@@ -6971,6 +7017,15 @@
+ 	OutDebug.Location = Soldier.Location;
+ 	OutDebug.Velocity = Soldier.Velocity;
+ 	OutDebug.LastValidNavLocation = Soldier.LastValidNavLocation.Location;
++	OutDebug.NavigationNodeRef = Soldier.LastValidNavLocation.NodeRef;
++	OutDebug.NavigationGeneration = AuthorityState->NavigationGeneration;
++	if (UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld()))
++	{
++		if (const ANavigationData* NavigationData = GuLiCommanderMassPrivate::GetCommanderNavigationData(*NavigationSystem))
++		{
++			OutDebug.bNavigationNodeRefValid = NavigationData->IsNodeRefValid(Soldier.LastValidNavLocation.NodeRef);
++		}
++	}
+ 	OutDebug.FinalSlot = Soldier.FinalDestination.Location;
+ 	OutDebug.CurrentWaypoint = Soldier.CurrentNavigationWaypoint;
+ 	OutDebug.DistanceToFinalSlotCentimeters = Soldier.bHasFinalDestination
+
+--- GuLiBattleAuthoritySubsystem.before.h
++++ Commander/Mass/GuLiBattleAuthoritySubsystem.h
+@@ -75,6 +75,9 @@
+ 	FVector Location = FVector::ZeroVector;
+ 	FVector Velocity = FVector::ZeroVector;
+ 	FVector LastValidNavLocation = FVector::ZeroVector;
++	uint64 NavigationNodeRef = 0u;
++	uint32 NavigationGeneration = 0u;
++	bool bNavigationNodeRefValid = false;
+ 	FVector FinalSlot = FVector::ZeroVector;
+ 	FVector CurrentWaypoint = FVector::ZeroVector;
+ 	float DistanceToFinalSlotCentimeters = 0.0f;
+
+--- GuLiCommanderDebugCommands.before.cpp
++++ Commander/Framework/GuLiCommanderDebugCommands.cpp
+@@ -626,7 +626,7 @@
+ 		UE_LOG(
+ 			LogGuLiStrike,
+ 			Display,
+-			TEXT("Commander nav soldier=%u team=%u state=%s moving=%d order=%u completed=%u failed_order=%u failure=%s failure_time=%.3fs location=%s last_nav=%s final=%s distance=%.1fcm waypoint=%s path_index=%d no_progress=%.3fs surface_failures=%d/%d personal_queries=%d combat_target=%u cooldown=%.3fs combat_stop=%s."),
++			TEXT("Commander nav soldier=%u team=%u state=%s moving=%d order=%u completed=%u failed_order=%u failure=%s failure_time=%.3fs location=%s last_nav=%s nav_ref=%llu nav_ref_valid=%d nav_generation=%u final=%s distance=%.1fcm waypoint=%s path_index=%d no_progress=%.3fs surface_failures=%d/%d personal_queries=%d combat_target=%u cooldown=%.3fs combat_stop=%s."),
+ 			Navigation.SoldierId.Value,
+ 			static_cast<uint8>(Navigation.Team),
+ 			NavigationStateToString(Navigation.State),
+@@ -638,6 +638,9 @@
+ 			Navigation.FailureSimulationSeconds,
+ 			*Navigation.Location.ToCompactString(),
+ 			*Navigation.LastValidNavLocation.ToCompactString(),
++			Navigation.NavigationNodeRef,
++			Navigation.bNavigationNodeRefValid ? 1 : 0,
++			Navigation.NavigationGeneration,
+ 			Navigation.bHasFinalSlot ? *Navigation.FinalSlot.ToCompactString() : TEXT("none"),
+ 			Navigation.DistanceToFinalSlotCentimeters,
+ 			*Navigation.CurrentWaypoint.ToCompactString(),

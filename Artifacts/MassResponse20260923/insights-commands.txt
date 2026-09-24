@@ -1,0 +1,2 @@
+TimingInsights.ExportTimerStatistics D:/UE5.7/test1/Artifacts/MassResponse20260923/stage-timers.csv -threads=GameThread -timers=GuLiCommander_MovePlanning_*
+TimingInsights.ExportTimingEvents D:/UE5.7/test1/Artifacts/MassResponse20260923/stage-events.csv -threads=GameThread -timers=GuLiCommander_MovePlanning_* -columns=ThreadId,TimerName,StartTime,EndTime,Duration

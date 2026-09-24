@@ -1,0 +1,71 @@
+{
+  "map": "/Game/GuLiStrike/Cards/RevealDemo/Maps/LVL_CardRevealDemo",
+  "actors": [
+    {
+      "label": "CardReveal_Key",
+      "class": "/Script/Engine.DirectionalLight",
+      "location": [
+        0.0,
+        250.0,
+        120.0
+      ]
+    },
+    {
+      "label": "CardReveal_Ambient",
+      "class": "/Script/Engine.SkyLight",
+      "location": [
+        0.0,
+        0.0,
+        100.0
+      ]
+    },
+    {
+      "label": "CardReveal_PlayerStart",
+      "class": "/Script/Engine.PlayerStart",
+      "location": [
+        0.0,
+        140.0,
+        0.0
+      ]
+    },
+    {
+      "label": "CardReveal_Director",
+      "class": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector.BP_CardRevealDirector_C",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "game_mode": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode.BP_CardRevealGameMode_C",
+  "controller": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController.BP_CardRevealPlayerController_C",
+  "camera": {
+    "location": [
+      0.0,
+      140.0,
+      0.0
+    ],
+    "rotation": "<Struct 'Rotator' (0x000001A6014A2C70) {pitch: -0.000000, yaw: -90.000000, roll: 0.000000}>",
+    "horizontal_fov": 50.0,
+    "aspect_constraint": "<AspectRatioAxisConstraint.ASPECT_RATIO_MAINTAIN_XFOV: 1>",
+    "exposure_override": true,
+    "exposure_method": "<AutoExposureMethod.AEM_MANUAL: 2>",
+    "physical_exposure": false,
+    "exposure_bias": 0.0
+  },
+  "parameters": {
+    "EntryDuration": 0.5,
+    "FlipDuration": 0.44999998807907104,
+    "FlashDuration": 0.25,
+    "ExitDuration": 0.5,
+    "MaximumTilt": 12.0,
+    "HoverInterpSpeed": 12.0,
+    "FlashIntensity": 8.0,
+    "CameraDistance": 140.0,
+    "HorizontalFOV": 50.0,
+    "FarDistance": 1100.0
+  },
+  "runtime_card_count": 3,
+  "runtime_cards_spawned_by": "BP_CardRevealDirector.StartPresentation"
+}

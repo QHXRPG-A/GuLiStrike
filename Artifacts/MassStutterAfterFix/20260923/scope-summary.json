@@ -1,0 +1,84 @@
+{
+  "selected_scopes": [
+    {
+      "thread": "GPU0-Graphics0",
+      "timer": "Frame",
+      "count": 659,
+      "mean_ms": 15.144162367223066,
+      "max_ms": 30.6463
+    },
+    {
+      "thread": "GPU0-Compute0",
+      "timer": "Frame",
+      "count": 659,
+      "mean_ms": 23.186074810318665,
+      "max_ms": 38.4172
+    },
+    {
+      "thread": "GameThread",
+      "timer": "FEngineLoop::Tick",
+      "count": 659,
+      "mean_ms": 27.375078148710166,
+      "max_ms": 41.8369
+    }
+  ],
+  "game_thread_top_inclusive_seconds": [
+    [
+      "FEngineLoop::Tick",
+      18.040176500000005
+    ],
+    [
+      "Frame",
+      18.033459299999997
+    ],
+    [
+      "Tick_Engine",
+      13.891429200000001
+    ],
+    [
+      "UWorld_Tick",
+      12.123439600000003
+    ],
+    [
+      "TickCompletionEvents",
+      6.604567599999859
+    ],
+    [
+      "ProcessUntilTasksComplete",
+      6.5856853999999325
+    ],
+    [
+      "Slate::Tick (Time and Widgets)",
+      3.391294800000002
+    ],
+    [
+      "Slate::DrawWindows",
+      3.3446884000000017
+    ],
+    [
+      "FActorComponentTickFunction::ExecuteTick",
+      2.6130972999979787
+    ],
+    [
+      "Slate::DrawWindow",
+      1.548490100000001
+    ],
+    [
+      "Slate_PaintSlowPath",
+      1.5397413000000009
+    ],
+    [
+      "Slate::Prepass",
+      1.5242399
+    ],
+    [
+      "Door",
+      1.374468799998335
+    ],
+    [
+      "CharMoveComp",
+      1.3259079000000065
+    ]
+  ],
+  "note": "Scopes nest/overlap; inclusive costs are not additive. No fixed-camera or power-mode A/B."
+}

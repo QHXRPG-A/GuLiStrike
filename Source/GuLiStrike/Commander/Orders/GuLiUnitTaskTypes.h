@@ -6,7 +6,8 @@
 
 class APawn;
 class AGuLiBattlePlayerState;
-class UGuLiSpecialTaskExecutor;
+class UGuLiCommanderStateTreeComponent;
+struct FGuLiSharedMoveIntent;
 
 UENUM()
 enum class EGuLiTaskLifetime : uint8 { InitialOnce, Persistent };
@@ -36,6 +37,8 @@ USTRUCT()
 struct FGuLiUnitTaskCommand
 {
 	GENERATED_BODY()
+	/** Authority-only context; intentionally absent from reflection and network serialization. */
+	TSharedPtr<FGuLiSharedMoveIntent> SharedMoveIntent;
 	UPROPERTY() uint32 CommandId = 0;
 	UPROPERTY() uint32 SelectionRevision = 0;
 	UPROPERTY() EGuLiTaskDisposition Disposition = EGuLiTaskDisposition::Replace;
@@ -87,17 +90,6 @@ struct FGuLiCommanderControlGroup
 	UPROPERTY() TArray<FGuLiControllableActorId> Actors;
 };
 
-struct FGuLiSpecialTaskDefinition
-{
-	int32 Id = 0;
-	FString DisplayName;
-	FGameplayTag Tag;
-	TArray<uint16> UnitTypes;
-	bool bAutoActivate = false;
-	EGuLiTaskLifetime Lifetime = EGuLiTaskLifetime::Persistent;
-	UGuLiSpecialTaskExecutor* Executor = nullptr;
-};
-
 struct FGuLiTaskUnitContext
 {
 	FGuLiTaskUnitId Unit;
@@ -125,9 +117,9 @@ struct FGuLiTaskExecution
 };
 
 /** Pure lifecycle state is also used by the authority regression tests. */
-struct FGuLiSpecialTaskGrant
+struct FGuLiCommanderAutomaticBehavior
 {
-	int32 TaskId = 0;
+	int32 BehaviorId = 0;
 	EGuLiTaskLifetime Lifetime = EGuLiTaskLifetime::Persistent;
 	bool bConsumed = false;
 	void ConsumeIfInitial() { bConsumed |= Lifetime == EGuLiTaskLifetime::InitialOnce; }
@@ -137,7 +129,11 @@ struct FGuLiUnitTaskState
 {
 	FGuLiTaskUnitContext Context;
 	TWeakObjectPtr<AGuLiBattlePlayerState> Owner;
-	TArray<FGuLiSpecialTaskGrant> Grants;
+	TArray<FGuLiCommanderAutomaticBehavior> AutomaticBehaviors;
+	TWeakObjectPtr<UGuLiCommanderStateTreeComponent> ActorTree;
+	bool bBehaviorStepDone = true;
+	bool bUnregisterPending = false;
+	uint64 LastBehaviorRequestRound = 0;
 	TArray<FGuLiUnitTaskCommand> Queue;
 	TOptional<FGuLiTaskExecution> Active;
 	/** New move being prepared while Active continues along its committed route. Server only. */
@@ -147,6 +143,6 @@ struct FGuLiUnitTaskState
 	bool bCancelPending = false;
 	double NextAutomaticTime = 0;
 	FString Error;
-	void ConsumeInitialGrants() { for (auto& Grant : Grants) Grant.ConsumeIfInitial(); }
+	void ConsumeInitialBehaviors() { for (auto& Grant : AutomaticBehaviors) Grant.ConsumeIfInitial(); }
 	int32 ManualTaskCount() const { return Queue.Num() + (PendingMove.IsSet() || (Active.IsSet() && !Active->bAutomatic && !bCancelPending) ? 1 : 0); }
 };

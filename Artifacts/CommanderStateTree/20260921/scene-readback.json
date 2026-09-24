@@ -1,0 +1,31 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "anchors": [
+    {
+      "name": "Note_0",
+      "label": "StateTreeReview_Entry",
+      "text": "指挥官 StateTree 场景入口（WORK-20260921-005）\n使用本地图正常的指挥官入口。原有双方各250名士兵、各1辆矿车和1辆建造车由权威端创建。\n3棵共享树资产；每个单位独立运行实例。采矿、建造、推进说明点在同一Outliner文件夹。\n已完成原生构建、树资产编译和数据回读。尚未运行PIE；实际行为由玩家验证。",
+      "editor_only": true
+    },
+    {
+      "name": "Note_1",
+      "label": "StateTreeReview_MiningFactory",
+      "text": "电磁矿车 / ST_CommanderMiner\n开局矿车从红方集合区自动寻找本方矿点：去矿点 → 采矿 → 回厂 → 卸货 → 离厂。\n观察货物、任务面板和工厂资源；Shift追加在原工作边界让出，S停止保留货物并完成厂内安全退出。\n树资产：/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner",
+      "editor_only": true
+    },
+    {
+      "name": "Note_2",
+      "label": "StateTreeReview_Construction",
+      "text": "建造车 / ST_CommanderBuilder\n红方初始建造车位于集合区。使用正常B建造入口，在合法区域放置可负担的建筑。\n自动选工地 → 移动 → 施工；观察工程进度，停止/替换时保留已有进度。\n树资产：/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder",
+      "editor_only": true
+    },
+    {
+      "name": "Note_3",
+      "label": "StateTreeReview_StrongholdAdvance",
+      "text": "扫荡者、战争机器 / ST_CommanderMass\n双方初始军队使用原有生成布局；出生授予一次据点推进。R2C3是红方前方的一个可观察据点，实际目标由原拓扑规则选择。\n观察选目标 → 推进 → 等待占领；手动移动、Shift追加、S停止使用原指令入口。\n树资产：/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass",
+      "editor_only": true
+    }
+  ],
+  "dirty_maps": [],
+  "game_world": null
+}

@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "message": "All source navigation is ready.",
+  "ground_rebuilds": 2,
+  "flight_rebuilds": 1,
+  "total_seconds": 157.0627714022994,
+  "entries": [
+    {
+      "kind": "Ground",
+      "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+      "status": "Rebuilt",
+      "source_hash": "c927b7707d8106d8",
+      "message": "Source geometry/settings changed, or no versioned bake record exists.",
+      "build_seconds": 40.10766910016537
+    },
+    {
+      "kind": "Ground",
+      "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+      "status": "Rebuilt",
+      "source_hash": "da4687cfe396c83a",
+      "message": "Source geometry/settings changed, or no versioned bake record exists.",
+      "build_seconds": 38.41888789832592
+    },
+    {
+      "kind": "Flight",
+      "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+      "status": "Rebuilt",
+      "source_hash": "6480d461f3eed230",
+      "message": "Stale flight-navigation bake: static blocking geometry changed.",
+      "build_seconds": 3.670446801930666
+    }
+  ]
+}

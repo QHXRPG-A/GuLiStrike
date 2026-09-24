@@ -1,0 +1,89 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "before": {
+      "origin": [
+        0.0,
+        0.0,
+        8432.6171875
+      ],
+      "extent": [
+        278300.0,
+        278300.0,
+        42317.3828125
+      ],
+      "graph_counts": {
+        "nodes": 14089,
+        "cells": 6101,
+        "portals": 18534,
+        "links": 37068
+      }
+    },
+    "after": {
+      "origin": [
+        0.0,
+        0.0,
+        12875.0
+      ],
+      "extent": [
+        262300.0,
+        262300.0,
+        37875.0
+      ],
+      "graph_counts": {
+        "nodes": 16225,
+        "cells": 7374,
+        "portals": 22040,
+        "links": 44080
+      }
+    },
+    "formations": [
+      {
+        "asset": "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_DoubleRing",
+        "radial_envelope_cm": 50000.0,
+        "rotated_formation_extent_cm": 18248.28759089466,
+        "agent_radius_cm": 300.0,
+        "recovery_probe_cm": 2000,
+        "xy_padding_cm": 52300.0,
+        "lower_padding_cm": 20548.28759089466
+      },
+      {
+        "asset": "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_SwarmOrbit",
+        "radial_envelope_cm": 18000.0,
+        "rotated_formation_extent_cm": 18248.28759089466,
+        "agent_radius_cm": 300.0,
+        "recovery_probe_cm": 2000,
+        "xy_padding_cm": 20300.0,
+        "lower_padding_cm": 20548.28759089466
+      }
+    ],
+    "landscape_min_z": -3796.156939338235,
+    "ground_rebuilds": 0,
+    "flight_rebuilds": 1,
+    "resource_layout_hash": "2a2871a55df65731175f5add36673195e58d3b0a",
+    "navigation": [
+      {
+        "kind": "Ground",
+        "status": "Hit",
+        "source_hash": "c927b7707d8106d8",
+        "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier"
+      },
+      {
+        "kind": "Ground",
+        "status": "Hit",
+        "source_hash": "da4687cfe396c83a",
+        "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default"
+      },
+      {
+        "kind": "Flight",
+        "status": "Rebuilt",
+        "source_hash": "506066a3e2f5da41",
+        "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0"
+      }
+    ],
+    "pie_run": false,
+    "saved": false
+  }
+}

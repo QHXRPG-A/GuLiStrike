@@ -1,0 +1,532 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "actors": 105,
+  "landscape": {
+    "actor_label": "Landscape_2300",
+    "actor_name": "Landscape_1",
+    "component_size_quads": 255,
+    "layers": [
+      {
+        "is_weight_blended": true,
+        "layer_info_path": "/Game/Assets/Environments/Scifi_Skies/Materials/Base_Layer_LayerInfo.Base_Layer_LayerInfo",
+        "layer_name": "Base_Layer"
+      },
+      {
+        "is_weight_blended": true,
+        "layer_info_path": "/Game/Assets/Environments/Scifi_Skies/Materials/Layer_02_LayerInfo.Layer_02_LayerInfo",
+        "layer_name": "Layer_02"
+      },
+      {
+        "is_weight_blended": true,
+        "layer_info_path": "/Game/Assets/Environments/Scifi_Skies/Materials/Layer_03_LayerInfo.Layer_03_LayerInfo",
+        "layer_name": "Layer_03"
+      }
+    ],
+    "location": [
+      -115000.0,
+      -115000.0,
+      28.186274509803923
+    ],
+    "material_path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial",
+    "num_components": 256,
+    "num_subsections": 1,
+    "resolution_x": 4081,
+    "resolution_y": 4081,
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      56.372549019607845,
+      56.372549019607845,
+      42.279411764705884
+    ],
+    "subsection_size_quads": 255
+  },
+  "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+  "player_controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+  "unique_outposts": 81,
+  "old_marker_and_region_ids_preserved": 81,
+  "new_outposts": 0,
+  "resource": {
+    "version": 5,
+    "source_hash": "5d327daef9821399e54956efbe50c629290d042a",
+    "layout_hash": "61a8ab9f86f2f37336d20e11572540739258fa9e",
+    "territories": 81,
+    "blue_clusters": 200,
+    "red_clusters": 40,
+    "nodes": 6240,
+    "center_blue_clusters": 6,
+    "center_red_clusters": 4,
+    "road_clear_width_cm": 5000,
+    "minimum_cluster_spacing_cm": 5590.169943749474,
+    "maximum_placement_slope_deg": 11.737505440840225,
+    "maximum_ground_error_cm": 0.08891250779538495,
+    "anchors": {
+      "blue_assembly": [
+        0.0,
+        -72500.0,
+        -1766.0462924959868
+      ],
+      "blue_factory": [
+        0.0,
+        -87500.0,
+        -1751.192058492525
+      ],
+      "red_assembly": [
+        0.0,
+        72500.0,
+        -1766.0462924959868
+      ],
+      "red_factory": [
+        0.0,
+        87500.0,
+        -1751.184785519334
+      ]
+    }
+  },
+  "initial_army": {
+    "expected": 500,
+    "validated": 500
+  },
+  "navigation": [
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavMeshBoundsVolume_0",
+      "class": "NavMeshBoundsVolume",
+      "origin": [
+        0.0,
+        0.0,
+        6590.564727783203
+      ],
+      "extent": [
+        90000.0,
+        90000.0,
+        9642.78564453125
+      ]
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+      "class": "GuLiFlightNavigationVolume",
+      "origin": [
+        0.0,
+        0.0,
+        13875.0
+      ],
+      "extent": [
+        167300.0,
+        167300.0,
+        36875.0
+      ],
+      "AuthoringBakeSettings": {
+        "agent_radius": 300.0,
+        "collision_channel": "<CollisionChannel.ECC_WORLD_STATIC: 0>",
+        "face_coordinate_tolerance": 0.10000000149011612,
+        "maximum_cells": 100000,
+        "maximum_depth": 6,
+        "maximum_nodes": 200000,
+        "minimum_cell_size": 8000.0,
+        "minimum_portal_span": 5.0,
+        "trace_complex": false
+      },
+      "navigation_data": "/Game/GuLiStrike/Navigation/Baked/LVL_CommanderMassPrototype/DA_FlightNav_LVL_CommanderMassPrototype.DA_FlightNav_LVL_CommanderMassPrototype",
+      "graph_counts": {
+        "nodes": 10193,
+        "cells": 4799,
+        "portals": 14569,
+        "links": 29138
+      }
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+      "class": "RecastNavMesh",
+      "origin": [
+        0.0,
+        0.0,
+        -107.22091674804688
+      ],
+      "extent": [
+        94943.0,
+        94943.0,
+        1940.0
+      ],
+      "AgentRadius": 6.800000190734863,
+      "AgentHeight": 28.799999237060547,
+      "AgentMaxSlope": 44.0,
+      "RuntimeGeneration": "<RuntimeGenerationType.DYNAMIC: 2>",
+      "TileSizeUU": 5000.0,
+      "NavMeshResolutionParams": "[{}, {}, {}]",
+      "bDoFullyAsyncNavDataGathering": true
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+      "class": "RecastNavMesh",
+      "origin": [
+        0.0,
+        0.0,
+        -107.22091674804688
+      ],
+      "extent": [
+        94943.0,
+        94943.0,
+        1940.0
+      ],
+      "AgentRadius": 150.0,
+      "AgentHeight": 28.799999237060547,
+      "AgentMaxSlope": 44.0,
+      "RuntimeGeneration": "<RuntimeGenerationType.DYNAMIC: 2>",
+      "TileSizeUU": 5000.0,
+      "NavMeshResolutionParams": "[{}, {}, {}]",
+      "bDoFullyAsyncNavDataGathering": true
+    }
+  ],
+  "navigation_validation": {
+    "entries": [
+      {
+        "build_seconds": 0.0,
+        "check_seconds": 0.07093370000075083,
+        "kind": "Ground",
+        "message": "Validated saved ground tiles.",
+        "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+        "source_hash": "71ebc108c12ab5dc",
+        "status": "Hit"
+      },
+      {
+        "build_seconds": 0.0,
+        "check_seconds": 0.07028310000168858,
+        "kind": "Ground",
+        "message": "Validated saved ground tiles.",
+        "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+        "source_hash": "73704bf986a22492",
+        "status": "Hit"
+      },
+      {
+        "build_seconds": 0.0,
+        "check_seconds": 0.15310540000064066,
+        "kind": "Flight",
+        "message": "Validated saved flight graph.",
+        "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+        "source_hash": "d93198731383b212",
+        "status": "Hit"
+      }
+    ],
+    "flight_rebuilds": 0,
+    "ground_rebuilds": 0,
+    "message": "",
+    "save_seconds": 0.0,
+    "success": true,
+    "total_seconds": 0.2943952977657318
+  },
+  "economy": {
+    "auto_retry_seconds": 1.0,
+    "cargo_capacity": 10,
+    "construction_vehicle_unit_type_id": 4,
+    "docking_seconds": 1.0,
+    "factory_dock_offset_centimeters": 800.0,
+    "factory_maneuver_speed_centimeters_per_second": 300.0,
+    "factory_presentation_class": {
+      "path": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C",
+      "class": "BlueprintGeneratedClass"
+    },
+    "factory_processing_rate_per_second": 2.0,
+    "initial_blue_inventory": 40,
+    "initial_construction_vehicles_per_team": 8,
+    "initial_mining_vehicles_per_team": 8,
+    "initial_red_inventory": 0,
+    "mining_distance_centimeters": 0.0,
+    "mining_rate_per_second": 1.0,
+    "mining_vehicle_unit_type_id": 3,
+    "missile_turret_blue_cost": 20,
+    "ore_visuals": [
+      {
+        "family_index": 0,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_01_Remnant.SM_Ore_Blue_01_Remnant",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.BLUE: 0>",
+        "stage": "<GuLiOreVisualStage.REMNANT: 1>"
+      },
+      {
+        "family_index": 0,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_01_Partial.SM_Ore_Blue_01_Partial",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.BLUE: 0>",
+        "stage": "<GuLiOreVisualStage.PARTIAL: 2>"
+      },
+      {
+        "family_index": 0,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_01_Full.SM_Ore_Blue_01_Full",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.BLUE: 0>",
+        "stage": "<GuLiOreVisualStage.FULL: 3>"
+      },
+      {
+        "family_index": 1,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_02_Remnant.SM_Ore_Blue_02_Remnant",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.BLUE: 0>",
+        "stage": "<GuLiOreVisualStage.REMNANT: 1>"
+      },
+      {
+        "family_index": 1,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_02_Partial.SM_Ore_Blue_02_Partial",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.BLUE: 0>",
+        "stage": "<GuLiOreVisualStage.PARTIAL: 2>"
+      },
+      {
+        "family_index": 1,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_02_Full.SM_Ore_Blue_02_Full",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.BLUE: 0>",
+        "stage": "<GuLiOreVisualStage.FULL: 3>"
+      },
+      {
+        "family_index": 2,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_03_Remnant.SM_Ore_Blue_03_Remnant",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.BLUE: 0>",
+        "stage": "<GuLiOreVisualStage.REMNANT: 1>"
+      },
+      {
+        "family_index": 2,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_03_Partial.SM_Ore_Blue_03_Partial",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.BLUE: 0>",
+        "stage": "<GuLiOreVisualStage.PARTIAL: 2>"
+      },
+      {
+        "family_index": 2,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_03_Full.SM_Ore_Blue_03_Full",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.BLUE: 0>",
+        "stage": "<GuLiOreVisualStage.FULL: 3>"
+      },
+      {
+        "family_index": 3,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_04_Remnant.SM_Ore_Blue_04_Remnant",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.BLUE: 0>",
+        "stage": "<GuLiOreVisualStage.REMNANT: 1>"
+      },
+      {
+        "family_index": 3,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_04_Partial.SM_Ore_Blue_04_Partial",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.BLUE: 0>",
+        "stage": "<GuLiOreVisualStage.PARTIAL: 2>"
+      },
+      {
+        "family_index": 3,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_04_Full.SM_Ore_Blue_04_Full",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.BLUE: 0>",
+        "stage": "<GuLiOreVisualStage.FULL: 3>"
+      },
+      {
+        "family_index": 0,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_01_Remnant.SM_Ore_Red_01_Remnant",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.RED: 1>",
+        "stage": "<GuLiOreVisualStage.REMNANT: 1>"
+      },
+      {
+        "family_index": 0,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_01_Partial.SM_Ore_Red_01_Partial",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.RED: 1>",
+        "stage": "<GuLiOreVisualStage.PARTIAL: 2>"
+      },
+      {
+        "family_index": 0,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_01_Full.SM_Ore_Red_01_Full",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.RED: 1>",
+        "stage": "<GuLiOreVisualStage.FULL: 3>"
+      },
+      {
+        "family_index": 1,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_02_Remnant.SM_Ore_Red_02_Remnant",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.RED: 1>",
+        "stage": "<GuLiOreVisualStage.REMNANT: 1>"
+      },
+      {
+        "family_index": 1,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_02_Partial.SM_Ore_Red_02_Partial",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.RED: 1>",
+        "stage": "<GuLiOreVisualStage.PARTIAL: 2>"
+      },
+      {
+        "family_index": 1,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_02_Full.SM_Ore_Red_02_Full",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.RED: 1>",
+        "stage": "<GuLiOreVisualStage.FULL: 3>"
+      },
+      {
+        "family_index": 2,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_03_Remnant.SM_Ore_Red_03_Remnant",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.RED: 1>",
+        "stage": "<GuLiOreVisualStage.REMNANT: 1>"
+      },
+      {
+        "family_index": 2,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_03_Partial.SM_Ore_Red_03_Partial",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.RED: 1>",
+        "stage": "<GuLiOreVisualStage.PARTIAL: 2>"
+      },
+      {
+        "family_index": 2,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_03_Full.SM_Ore_Red_03_Full",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.RED: 1>",
+        "stage": "<GuLiOreVisualStage.FULL: 3>"
+      },
+      {
+        "family_index": 3,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_04_Remnant.SM_Ore_Red_04_Remnant",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.RED: 1>",
+        "stage": "<GuLiOreVisualStage.REMNANT: 1>"
+      },
+      {
+        "family_index": 3,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_04_Partial.SM_Ore_Red_04_Partial",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.RED: 1>",
+        "stage": "<GuLiOreVisualStage.PARTIAL: 2>"
+      },
+      {
+        "family_index": 3,
+        "mesh": {
+          "path": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_04_Full.SM_Ore_Red_04_Full",
+          "class": "StaticMesh"
+        },
+        "resource_type": "<GuLiResourceType.RED: 1>",
+        "stage": "<GuLiOreVisualStage.FULL: 3>"
+      }
+    ],
+    "outpost_blue_cost": 40,
+    "player_order_grace_seconds": 3.0,
+    "sentry_turret_blue_cost": 10
+  },
+  "notes": [
+    {
+      "label": "StateTreeReview_Entry",
+      "location": [
+        0.0,
+        72500.0,
+        -1266.0856246948242
+      ],
+      "text": "2.3 km / 9×9 地图验收入口\n整张地形2.3×2.3 km，战场1.8×1.8 km；81据点，每格200m。红方R1C5，蓝方R9C5。\n正常指挥官玩法入口。双方各250个Mass、8矿车、8建造车；初始编队向战场内展开。\n先确认部队出现与框选就绪，再验证移动、S停止、B施工及运输。"
+    },
+    {
+      "label": "StateTreeReview_MiningFactory",
+      "location": [
+        0.0,
+        86100.0,
+        -1251.1844635009766
+      ],
+      "text": "采矿返厂\n工厂锚点(0,±87500 cm)，集合点(0,±72500 cm)。\n观察矿车采矿、返厂直接卸货、接续任务；采空矿簇应解除导航阻挡。"
+    },
+    {
+      "label": "StateTreeReview_Construction",
+      "location": [
+        1800.0,
+        72500.0,
+        -1266.0856246948242
+      ],
+      "text": "施工验收\n每队8建造车；B进入建造，在基地合法平地放置可负担建筑。\n每车自主接单：当前据点优先，同级最早工单优先；无本地单时接其他据点。\n途中不占位，到位抢位；发现占位冲突退单。外据点单途中可换为当前据点新单；已施工车暂停接单。\n验证四车协作、S停止、手动命令和完工通行。"
+    },
+    {
+      "label": "StateTreeReview_StrongholdAdvance",
+      "location": [
+        0.0,
+        60000.0,
+        -1278.6026000976562
+      ],
+      "text": "据点推进与运输：R2C5\n红方从R1C5推进，沿用相邻占领、围合及运输规则。\n检查中央四向坡道、四角据点和易主后的运输通道。"
+    },
+    {
+      "label": "ConstructionReview_Placement",
+      "location": [
+        2200.0,
+        72500.0,
+        -1266.0856246948242
+      ],
+      "text": "动态阻挡\n沿用建筑尺寸、价格和15°落位限制。道路保留50m走廊。\n施工后局部导航更新；拆除或采空后恢复通行。"
+    },
+    {
+      "label": "ConstructionReview_Progress",
+      "location": [
+        2600.0,
+        72500.0,
+        -1266.0856246948242
+      ],
+      "text": "Mass与框选验收\n完整出生位预检应为500/500，双方各250。\n正常框选己方Mass和工程车并移动、停止。若启动失败，检查含阵营/编队/槽位的错误；不能以工程车出现代替部队就绪。"
+    },
+    {
+      "label": "ConstructionReview_Mining",
+      "location": [
+        1800.0,
+        86100.0,
+        -1251.1844635009766
+      ],
+      "text": "矿区与飞行边界\n200蓝矿簇、40红矿簇、6240节点；55m簇间距，据点65m中心避让。\n完整出生队形、工厂、工程车和设施参与避让。检查僚机边缘编队与高台避障；PIE及内存实测单独验收。"
+    }
+  ],
+  "dirty_maps": [],
+  "dirty_content": [],
+  "pie_run": false,
+  "memory_benefit_measured": false
+}

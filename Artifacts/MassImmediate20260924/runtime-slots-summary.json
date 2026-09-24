@@ -1,0 +1,512 @@
+{
+  "clock_scope": "Single editor PID, separate PIE worlds; all latency clocks in this capture share FPlatformTime. Green timing is render submission, not screen presentation.",
+  "commands": [
+    {
+      "command": 970104,
+      "selected": 100,
+      "types": [
+        1
+      ],
+      "timing": {
+        "admission": {
+          "first_ms": 35.165,
+          "last_ms": 36.703,
+          "events": 13,
+          "members": 0
+        },
+        "client-apply": {
+          "first_ms": 87.259,
+          "last_ms": 87.259,
+          "events": 1,
+          "members": 1
+        },
+        "commit": {
+          "first_ms": 36.745,
+          "last_ms": 36.923,
+          "events": 13,
+          "members": 100
+        },
+        "complete": {
+          "first_ms": 36.754,
+          "last_ms": 36.927,
+          "events": 13,
+          "members": 100
+        },
+        "direction": {
+          "first_ms": 37.024,
+          "last_ms": 37.205,
+          "events": 100,
+          "members": 100
+        },
+        "displacement": {
+          "first_ms": 37.63,
+          "last_ms": 37.978,
+          "events": 100,
+          "members": 100
+        },
+        "first-work": {
+          "first_ms": 35.177,
+          "last_ms": 36.707,
+          "events": 13,
+          "members": 0
+        },
+        "input": {
+          "first_ms": 0.0,
+          "last_ms": 0.0,
+          "events": 1,
+          "members": 0
+        },
+        "receive": {
+          "first_ms": 32.236,
+          "last_ms": 32.236,
+          "events": 1,
+          "members": 0
+        },
+        "render-submit": {
+          "first_ms": 94.714,
+          "last_ms": 94.714,
+          "events": 1,
+          "members": 1
+        },
+        "send": {
+          "first_ms": 81.172,
+          "last_ms": 81.172,
+          "events": 1,
+          "members": 1
+        },
+        "work-cost": {
+          "first_ms": 36.756,
+          "last_ms": 36.933,
+          "events": 52,
+          "members": 400
+        }
+      },
+      "assigned": 100,
+      "unique_slots": 100,
+      "pitch_cm": [
+        302.1048278808594
+      ],
+      "command_member_counts": [
+        100
+      ],
+      "minimum_target_gap_cm": 302.10472738252565,
+      "assignment_changes": [],
+      "all_slots_observed_after_seconds": 0.2042271999962395,
+      "last_observed_t": 133.99906360000023,
+      "members_within_20cm_at_last_observation": 98,
+      "still_moving_at_last_observation": 0,
+      "remaining_distances": {
+        "316": 25.77,
+        "370": 29.84
+      }
+    },
+    {
+      "command": 970108,
+      "selected": 50,
+      "types": [
+        1,
+        2
+      ],
+      "timing": {
+        "admission": {
+          "first_ms": 22.562,
+          "last_ms": 23.358,
+          "events": 6,
+          "members": 0
+        },
+        "client-apply": {
+          "first_ms": 107.551,
+          "last_ms": 107.551,
+          "events": 1,
+          "members": 1
+        },
+        "commit": {
+          "first_ms": 23.647,
+          "last_ms": 23.767,
+          "events": 6,
+          "members": 50
+        },
+        "complete": {
+          "first_ms": 23.658,
+          "last_ms": 23.773,
+          "events": 6,
+          "members": 50
+        },
+        "direction": {
+          "first_ms": 89.934,
+          "last_ms": 90.042,
+          "events": 50,
+          "members": 50
+        },
+        "displacement": {
+          "first_ms": 90.471,
+          "last_ms": 90.717,
+          "events": 50,
+          "members": 50
+        },
+        "first-work": {
+          "first_ms": 22.575,
+          "last_ms": 23.362,
+          "events": 6,
+          "members": 0
+        },
+        "input": {
+          "first_ms": 0.0,
+          "last_ms": 0.0,
+          "events": 1,
+          "members": 0
+        },
+        "receive": {
+          "first_ms": 16.828,
+          "last_ms": 16.828,
+          "events": 1,
+          "members": 0
+        },
+        "render-submit": {
+          "first_ms": 122.013,
+          "last_ms": 122.013,
+          "events": 1,
+          "members": 1
+        },
+        "send": {
+          "first_ms": 88.861,
+          "last_ms": 88.861,
+          "events": 1,
+          "members": 1
+        },
+        "work-cost": {
+          "first_ms": 23.662,
+          "last_ms": 23.784,
+          "events": 24,
+          "members": 200
+        }
+      },
+      "assigned": 50,
+      "unique_slots": 50,
+      "pitch_cm": [
+        1249.904052734375
+      ],
+      "command_member_counts": [
+        50
+      ],
+      "minimum_target_gap_cm": 1249.9036369406945,
+      "assignment_changes": [],
+      "all_slots_observed_after_seconds": 0.42161639999540057,
+      "last_observed_t": 124.98491549999744,
+      "members_within_20cm_at_last_observation": 48,
+      "still_moving_at_last_observation": 2,
+      "remaining_distances": {
+        "251": 2368.94,
+        "377": 106.98
+      }
+    },
+    {
+      "command": 970109,
+      "selected": 50,
+      "types": [
+        1,
+        2
+      ],
+      "timing": {
+        "admission": {
+          "first_ms": 21.331,
+          "last_ms": 22.219,
+          "events": 7,
+          "members": 0
+        },
+        "client-apply": {
+          "first_ms": 115.454,
+          "last_ms": 115.454,
+          "events": 1,
+          "members": 1
+        },
+        "commit": {
+          "first_ms": 22.473,
+          "last_ms": 22.577,
+          "events": 7,
+          "members": 50
+        },
+        "complete": {
+          "first_ms": 22.481,
+          "last_ms": 22.581,
+          "events": 7,
+          "members": 50
+        },
+        "direction": {
+          "first_ms": 102.769,
+          "last_ms": 102.916,
+          "events": 50,
+          "members": 50
+        },
+        "displacement": {
+          "first_ms": 103.639,
+          "last_ms": 103.964,
+          "events": 50,
+          "members": 50
+        },
+        "first-work": {
+          "first_ms": 21.344,
+          "last_ms": 22.222,
+          "events": 7,
+          "members": 0
+        },
+        "input": {
+          "first_ms": 0.0,
+          "last_ms": 0.0,
+          "events": 1,
+          "members": 0
+        },
+        "receive": {
+          "first_ms": 16.81,
+          "last_ms": 16.81,
+          "events": 1,
+          "members": 0
+        },
+        "render-submit": {
+          "first_ms": 135.592,
+          "last_ms": 135.592,
+          "events": 1,
+          "members": 1
+        },
+        "send": {
+          "first_ms": 101.375,
+          "last_ms": 101.375,
+          "events": 1,
+          "members": 1
+        },
+        "work-cost": {
+          "first_ms": 22.484,
+          "last_ms": 22.587,
+          "events": 28,
+          "members": 200
+        }
+      },
+      "assigned": 0,
+      "unique_slots": 0,
+      "pitch_cm": [],
+      "command_member_counts": [],
+      "minimum_target_gap_cm": null,
+      "assignment_changes": [],
+      "all_slots_observed_after_seconds": null,
+      "last_observed_t": null,
+      "members_within_20cm_at_last_observation": 0,
+      "still_moving_at_last_observation": 0,
+      "remaining_distances": {}
+    },
+    {
+      "command": 970110,
+      "selected": 50,
+      "types": [
+        1,
+        2
+      ],
+      "timing": {
+        "admission": {
+          "first_ms": 36.391,
+          "last_ms": 37.071,
+          "events": 7,
+          "members": 0
+        },
+        "client-apply": {
+          "first_ms": 99.739,
+          "last_ms": 99.739,
+          "events": 1,
+          "members": 1
+        },
+        "commit": {
+          "first_ms": 37.256,
+          "last_ms": 37.349,
+          "events": 7,
+          "members": 50
+        },
+        "complete": {
+          "first_ms": 37.264,
+          "last_ms": 37.353,
+          "events": 7,
+          "members": 50
+        },
+        "direction": {
+          "first_ms": 88.771,
+          "last_ms": 88.876,
+          "events": 50,
+          "members": 50
+        },
+        "displacement": {
+          "first_ms": 89.396,
+          "last_ms": 89.617,
+          "events": 50,
+          "members": 50
+        },
+        "first-work": {
+          "first_ms": 36.406,
+          "last_ms": 37.075,
+          "events": 7,
+          "members": 0
+        },
+        "input": {
+          "first_ms": 0.0,
+          "last_ms": 0.0,
+          "events": 1,
+          "members": 0
+        },
+        "receive": {
+          "first_ms": 31.337,
+          "last_ms": 31.337,
+          "events": 1,
+          "members": 0
+        },
+        "render-submit": {
+          "first_ms": 117.044,
+          "last_ms": 117.044,
+          "events": 1,
+          "members": 1
+        },
+        "send": {
+          "first_ms": 87.849,
+          "last_ms": 2918.775,
+          "events": 2,
+          "members": 2
+        },
+        "work-cost": {
+          "first_ms": 37.267,
+          "last_ms": 37.359,
+          "events": 28,
+          "members": 200
+        }
+      },
+      "assigned": 50,
+      "unique_slots": 50,
+      "pitch_cm": [
+        1249.904052734375
+      ],
+      "command_member_counts": [
+        50
+      ],
+      "minimum_target_gap_cm": 1249.9036369406954,
+      "assignment_changes": [],
+      "all_slots_observed_after_seconds": 0.8379393999930471,
+      "last_observed_t": 133.99906360000023,
+      "members_within_20cm_at_last_observation": 9,
+      "still_moving_at_last_observation": 0,
+      "remaining_distances": {
+        "251": 5089.84,
+        "252": 5010.13,
+        "254": 189.54,
+        "256": 3699.87,
+        "257": 7399.84,
+        "259": 4321.96,
+        "260": 6266.35,
+        "261": 3222.93,
+        "262": 12555.09,
+        "263": 8259.29,
+        "264": 6309.56,
+        "265": 3455.39,
+        "267": 4963.47,
+        "269": 28.08,
+        "270": 3585.77,
+        "271": 11589.27,
+        "272": 5405.68,
+        "273": 7830.95,
+        "274": 2684.82,
+        "275": 9607.85,
+        "376": 2683.18,
+        "378": 3906.51,
+        "379": 4317.47,
+        "381": 5390.27,
+        "382": 1599.37,
+        "383": 7807.64,
+        "384": 4071.95,
+        "385": 930.66,
+        "386": 1490.13,
+        "387": 3468.74,
+        "388": 4679.39,
+        "390": 3539.08,
+        "391": 3259.24,
+        "392": 2016.45,
+        "393": 94.41,
+        "394": 2365.95,
+        "396": 9009.93,
+        "397": 3426.23,
+        "398": 3227.28,
+        "399": 1456.59,
+        "400": 7984.63
+      }
+    }
+  ],
+  "sample_count": 229,
+  "maximums": {
+    "positions": 64,
+    "paths": 4,
+    "commit_members": 100,
+    "planning_ms": 1.4963075518608093,
+    "commit_ms": 0.1905001699924469,
+    "shared_cache_bytes": 5007264,
+    "recovery_pending": 0,
+    "reservations": 0,
+    "invalid_lines": 0,
+    "endpoint_mismatches": 0,
+    "line_queue": 0,
+    "dirty": 0,
+    "pending_batches": 0
+  },
+  "final_client": {
+    "lines": 0,
+    "line_queue": 0,
+    "invalid_lines": 0,
+    "endpoint_mismatches": 0,
+    "selected": [
+      251,
+      258,
+      254,
+      252,
+      256,
+      255,
+      259,
+      257,
+      260,
+      261,
+      262,
+      263,
+      253,
+      265,
+      264,
+      268,
+      269,
+      267,
+      273,
+      266,
+      270,
+      272,
+      274,
+      271,
+      275,
+      376,
+      388,
+      384,
+      378,
+      377,
+      386,
+      382,
+      387,
+      389,
+      381,
+      380,
+      392,
+      400,
+      383,
+      399,
+      394,
+      396,
+      393,
+      379,
+      390,
+      398,
+      385,
+      395,
+      397,
+      391
+    ],
+    "ready": true
+  },
+  "last_t": 133.99906360000023
+}

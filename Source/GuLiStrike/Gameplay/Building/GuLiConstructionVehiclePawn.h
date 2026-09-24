@@ -16,9 +16,10 @@ public:
 	AGuLiConstructionVehiclePawn(const FObjectInitializer& Initializer = FObjectInitializer::Get());
 	void InitializeVehicle(EGuLiTeam InTeam, FGuLiControllableActorId InId, const FGuLiSoldierDefinition& Definition);
 	UFUNCTION(BlueprintCallable,BlueprintAuthorityOnly) bool IssueMove(const FVector& Target);
-	UFUNCTION(BlueprintCallable,BlueprintAuthorityOnly) bool IssueConstruction(UGuLiBuildingLifecycleComponent* Building);
+	UFUNCTION(BlueprintCallable,BlueprintAuthorityOnly) bool IssueConstruction(UGuLiBuildingLifecycleComponent* Building, bool bAutomatic = false);
 	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
 	virtual EGuLiTransitOrderResult IssueStrongholdTransit(const FGuLiStrongholdTransitOrder& Order, EGuLiTeam RequestingTeam) override;
+	UFUNCTION(BlueprintPure, Category = "Construction")
 	virtual EGuLiTeam GetTeam() const override { return Team; }
 	virtual int32 GetUnitTypeId() const override { return UnitTypeId; }
 	virtual FGuLiControllableActorId GetStableActorId() const override { return StableId; }

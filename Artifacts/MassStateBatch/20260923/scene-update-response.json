@@ -1,0 +1,35 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "saved": true,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "loaded_protocol": 19,
+    "protocol_evidence": "GETALL protected ProtocolVersion on loaded GuLiBattleGameState CDO",
+    "editor_pid": 43844,
+    "entry": {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_0",
+      "class": "/Script/Engine.Note",
+      "label": "StateTreeReview_Entry",
+      "location": [
+        0.0,
+        72500.0,
+        -1266.0856246948242
+      ],
+      "editor_only": true,
+      "tags": [
+        "CommanderStateTreeReview",
+        "MassStateBatchReview"
+      ],
+      "text": "2.3 km / 9×9 地图验收入口\n整张地形2.3×2.3 km，战场1.8×1.8 km；81据点，每格200m。红方R1C5，蓝方R9C5。\n正常指挥官玩法入口。双方各250个Mass、8矿车、8建造车；初始编队向战场内展开。\n先确认部队出现与框选就绪，再验证移动、S停止、B施工及运输。\n\nMass 按连接预算同步（协议 19，待玩家验收）\n沿用本地图正常双客户端指挥官入口与现有单位；代码静态检查不代表运行效果通过。\n大量移动、连续改目标、S停止、明确传送；观察样本缺口及三倍追赶是否减少。\n排队期间死亡并等残骸回收；未列入单批的士兵应保留，最终回收不得留下幽灵。\n晚加入、重连及双连接对照：同步完成前禁用选择/命令，完成后数量与状态收敛。\n可手动开启 guli.Commander.StateStreamDiagnostics 1；MassStream/MassStreamRX 输出逐连接字节、队列、等待、合并、延期、未确认批次与样本间隔。\n状态批次最多1000字节/4批未确认；位置留额50%，最新样本留队，保留采样时间。\n120Hz补额限制、战斗特效/建筑复制及三倍纠偏规则本轮保持；不能只凭低Ping验收。"
+    },
+    "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+    "initial_dirty_maps": [],
+    "initial_dirty_content": [],
+    "dirty_maps_after": [],
+    "backup": "D:\\UE5.7\\test1\\Artifacts\\MassStateBatch\\20260923\\LVL_CommanderMassPrototype-before-note.umap",
+    "runtime_verified": false,
+    "pie_started": false
+  }
+}

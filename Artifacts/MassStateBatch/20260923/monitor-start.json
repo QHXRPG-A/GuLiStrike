@@ -1,0 +1,44 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "game_world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "worlds": [
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype"
+    ],
+    "diagnostics_before": 0,
+    "actors": [
+      {
+        "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "controllers": [
+          "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+          "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_1"
+        ],
+        "rosters": [
+          "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiSoldierStateReplicator"
+        ]
+      },
+      {
+        "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "controllers": [
+          "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0"
+        ],
+        "rosters": [
+          "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiSoldierStateReplicator_0"
+        ]
+      },
+      {
+        "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "controllers": [
+          "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0"
+        ],
+        "rosters": [
+          "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiSoldierStateReplicator_0"
+        ]
+      }
+    ]
+  }
+}

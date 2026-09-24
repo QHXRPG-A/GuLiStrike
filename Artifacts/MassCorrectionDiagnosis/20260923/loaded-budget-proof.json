@@ -1,0 +1,539 @@
+{
+  "start_frame": 161798,
+  "end_frame": 162427,
+  "seconds": 30.029917892068624,
+  "attempted_pose_blocks": 8862,
+  "sent_pose_blocks": 8815,
+  "skipped_pose_blocks": 47,
+  "engine_frames_with_skips": 7,
+  "csv_log_frames_match": true,
+  "ipv4_udp_overhead_bytes": 28,
+  "credit_per_frame_bits": 16666,
+  "maximum_accumulated_credit_bits": 33332,
+  "connections": [
+    {
+      "connection": "IpConnection_10",
+      "address": "127.0.0.1:57573",
+      "total_budget_accounted_bytes": 1176933,
+      "counter_bytes_match_exactly": true,
+      "reconstructed_end_queued_bits": -31166,
+      "observed_end_queued_bits": -31166,
+      "start_queued_bits": -33332,
+      "queue_arithmetic_matches": true,
+      "network_packet_loss_delta": 0,
+      "drop_frames": [
+        {
+          "drop_frame": 161896,
+          "skipped": 6,
+          "previous_frame": 161895,
+          "previous_frame_bytes": 5231,
+          "previous_frame_pose_calls": 14,
+          "previous_frame_properties": {
+            "GuLiCommanderPlayerController.MoveEndpoints": 3428.125,
+            "GuLiCommanderGameState.ReplicatedWorldTimeSecondsDouble": 8.0
+          },
+          "previous_frame_rpc_bytes": {
+            "ClientReceiveEncodedPoseBlock": 1494.25
+          },
+          "reconstructed_start_queued_bytes": -38.25,
+          "current_frame_sent_pose_blocks": 1
+        },
+        {
+          "drop_frame": 161899,
+          "skipped": 5,
+          "previous_frame": 161898,
+          "previous_frame_bytes": 3766,
+          "previous_frame_pose_calls": 7,
+          "previous_frame_properties": {
+            "GuLiSoldierStateReplicator.ReplicatedSoldiers": 2501.0,
+            "GuLiResourceWorldState.OreDeltas": 57.5,
+            "GuLiPlacedBuilding.HealthState": 20.0,
+            "GuLiPlacedBuilding.TargetHandle": 19.0,
+            "GuLiPlacedBuilding.State": 16.5,
+            "GuLiCommanderGameState.ReplicatedWorldTimeSecondsDouble": 8.0,
+            "GuLiPlacedBuilding.DefinitionId": 4.0,
+            "GuLiSoldierStateReplicator.SnapshotRevision": 4.0,
+            "GuLiPlacedBuilding.Team": 0.5,
+            "GuLiPlacedBuilding.RemoteRole": 0.375,
+            "GuLiPlacedBuilding.Role": 0.375,
+            "GuLiPlacedBuilding.BuildingType": 0.375,
+            "GuLiPlacedBuilding.bEnabled": 0.125
+          },
+          "previous_frame_rpc_bytes": {
+            "ClientReceiveEncodedPoseBlock": 836.625,
+            "ClientReceivePublicPoseFrame": 4.0
+          },
+          "reconstructed_start_queued_bytes": -215.0,
+          "current_frame_sent_pose_blocks": 2
+        },
+        {
+          "drop_frame": 161951,
+          "skipped": 7,
+          "previous_frame": 161950,
+          "previous_frame_bytes": 4656,
+          "previous_frame_pose_calls": 7,
+          "previous_frame_properties": {
+            "GuLiSoldierStateReplicator.ReplicatedSoldiers": 2815.125,
+            "GuLiPlacedBuilding.TargetHandle": 99.0,
+            "GuLiCommanderPlayerController.MoveEndpoints": 86.875,
+            "GuLiPlacedBuilding.HealthState": 84.0,
+            "GuLiPlacedBuilding.State": 82.5,
+            "GuLiPlacedBuilding.DefinitionId": 20.0,
+            "GuLiMiningVehiclePawn.ReplicatedMovement": 16.5,
+            "GuLiCommanderGameState.ReplicatedWorldTimeSecondsDouble": 8.0,
+            "GuLiPlacedBuilding.CycleSeconds": 8.0,
+            "GuLiSoldierStateReplicator.SnapshotRevision": 4.0,
+            "GuLiPlacedBuilding.Team": 2.5,
+            "GuLiPlacedBuilding.RemoteRole": 1.875,
+            "GuLiPlacedBuilding.Role": 1.875,
+            "GuLiPlacedBuilding.BuildingType": 1.875,
+            "GuLiPlacedBuilding.bEnabled": 0.375,
+            "GuLiPlacedBuilding.bProducing": 0.25
+          },
+          "previous_frame_rpc_bytes": {
+            "ClientReceiveEncodedPoseBlock": 871.625,
+            "ClientReceivePublicPoseFrame": 4.0
+          },
+          "reconstructed_start_queued_bytes": 435.75,
+          "current_frame_sent_pose_blocks": 0
+        },
+        {
+          "drop_frame": 162014,
+          "skipped": 6,
+          "previous_frame": 162013,
+          "previous_frame_bytes": 4033,
+          "previous_frame_pose_calls": 7,
+          "previous_frame_properties": {
+            "GuLiSoldierStateReplicator.ReplicatedSoldiers": 2023.625,
+            "GuLiPlacedBuilding.TargetHandle": 137.0,
+            "GuLiPlacedBuilding.HealthState": 124.0,
+            "GuLiPlacedBuilding.State": 115.5,
+            "GuLiMiningVehiclePawn.ReplicatedMovement": 33.75,
+            "GuLiPlacedBuilding.DefinitionId": 28.0,
+            "GuLiPlacedBuilding.CycleSeconds": 8.0,
+            "GuLiSoldierStateReplicator.SnapshotRevision": 4.0,
+            "GuLiPlacedBuilding.Team": 3.5,
+            "GuLiPlacedBuilding.RemoteRole": 2.625,
+            "GuLiPlacedBuilding.Role": 2.625,
+            "GuLiPlacedBuilding.BuildingType": 2.625,
+            "GuLiCommanderPlayerState.CompressedPing": 1.0,
+            "GuLiPlacedBuilding.bEnabled": 0.625,
+            "GuLiPlacedBuilding.bProducing": 0.25
+          },
+          "previous_frame_rpc_bytes": {
+            "ClientReceiveEncodedPoseBlock": 873.625,
+            "ClientReceivePublicPoseFrame": 4.0
+          },
+          "reconstructed_start_queued_bytes": -177.0,
+          "current_frame_sent_pose_blocks": 1
+        }
+      ]
+    },
+    {
+      "connection": "IpConnection_11",
+      "address": "127.0.0.1:57574",
+      "total_budget_accounted_bytes": 1167636,
+      "counter_bytes_match_exactly": true,
+      "reconstructed_end_queued_bits": -24458,
+      "observed_end_queued_bits": -24458,
+      "start_queued_bits": -33332,
+      "queue_arithmetic_matches": true,
+      "network_packet_loss_delta": 0,
+      "drop_frames": [
+        {
+          "drop_frame": 161897,
+          "skipped": 1,
+          "previous_frame": 161896,
+          "previous_frame_bytes": 3964,
+          "previous_frame_pose_calls": 7,
+          "previous_frame_properties": {
+            "GuLiSoldierStateReplicator.ReplicatedSoldiers": 2501.0,
+            "GuLiPlacedBuilding.HealthState": 60.0,
+            "GuLiPlacedBuilding.TargetHandle": 57.0,
+            "GuLiPlacedBuilding.State": 49.5,
+            "GuLiPlacedBuilding.DefinitionId": 12.0,
+            "GuLiCommanderPlayerState.ResourcePrivateState": 12.0,
+            "GuLiSoldierStateReplicator.SnapshotRevision": 4.0,
+            "GuLiPlacedBuilding.Team": 1.5,
+            "GuLiPlacedBuilding.RemoteRole": 1.125,
+            "GuLiPlacedBuilding.Role": 1.125,
+            "GuLiPlacedBuilding.BuildingType": 1.125,
+            "GuLiPlacedBuilding.bEnabled": 0.375
+          },
+          "previous_frame_rpc_bytes": {
+            "ClientReceiveEncodedPoseBlock": 839.625,
+            "ClientReceivePublicPoseFrame": 5.0
+          },
+          "reconstructed_start_queued_bytes": -741.5,
+          "current_frame_sent_pose_blocks": 6
+        },
+        {
+          "drop_frame": 161951,
+          "skipped": 7,
+          "previous_frame": 161950,
+          "previous_frame_bytes": 6369,
+          "previous_frame_pose_calls": 7,
+          "previous_frame_properties": {
+            "GuLiSoldierStateReplicator.ReplicatedSoldiers": 2815.125,
+            "GuLiCommanderPlayerController.MoveEndpoints": 1712.875,
+            "GuLiPlacedBuilding.TargetHandle": 99.0,
+            "GuLiPlacedBuilding.HealthState": 84.0,
+            "GuLiPlacedBuilding.State": 82.5,
+            "GuLiPlacedBuilding.DefinitionId": 20.0,
+            "GuLiMiningVehiclePawn.ReplicatedMovement": 16.5,
+            "GuLiCommanderGameState.ReplicatedWorldTimeSecondsDouble": 8.0,
+            "GuLiPlacedBuilding.CycleSeconds": 8.0,
+            "GuLiSoldierStateReplicator.SnapshotRevision": 4.0,
+            "GuLiPlacedBuilding.Team": 2.5,
+            "GuLiPlacedBuilding.RemoteRole": 1.875,
+            "GuLiPlacedBuilding.Role": 1.875,
+            "GuLiPlacedBuilding.BuildingType": 1.875,
+            "GuLiPlacedBuilding.bEnabled": 0.375,
+            "GuLiPlacedBuilding.bProducing": 0.25
+          },
+          "previous_frame_rpc_bytes": {
+            "ClientReceiveEncodedPoseBlock": 878.625,
+            "ClientReceivePublicPoseFrame": 5.0
+          },
+          "reconstructed_start_queued_bytes": 526.75,
+          "current_frame_sent_pose_blocks": 0
+        },
+        {
+          "drop_frame": 161960,
+          "skipped": 6,
+          "previous_frame": 161959,
+          "previous_frame_bytes": 4615,
+          "previous_frame_pose_calls": 7,
+          "previous_frame_properties": {
+            "GuLiSoldierStateReplicator.ReplicatedSoldiers": 1983.75,
+            "GuLiCommanderPlayerController.MoveEndpoints": 392.125,
+            "GuLiPlacedBuilding.HealthState": 160.0,
+            "GuLiPlacedBuilding.TargetHandle": 152.0,
+            "GuLiPlacedBuilding.State": 132.0,
+            "GuLiMiningVehiclePawn.ReplicatedMovement": 32.25,
+            "GuLiPlacedBuilding.DefinitionId": 32.0,
+            "GuLiMiningVehiclePawn.MiningVisual": 12.75,
+            "GuLiCommanderGameState.ReplicatedWorldTimeSecondsDouble": 8.0,
+            "GuLiPlacedBuilding.Team": 4.0,
+            "GuLiSoldierStateReplicator.SnapshotRevision": 4.0,
+            "GuLiPlacedBuilding.RemoteRole": 3.0,
+            "GuLiPlacedBuilding.Role": 3.0,
+            "GuLiPlacedBuilding.BuildingType": 3.0,
+            "GuLiPlacedBuilding.bEnabled": 1.0
+          },
+          "previous_frame_rpc_bytes": {
+            "ClientReceiveEncodedPoseBlock": 891.625,
+            "ClientReceivePublicPoseFrame": 5.0
+          },
+          "reconstructed_start_queued_bytes": -140.5,
+          "current_frame_sent_pose_blocks": 1
+        },
+        {
+          "drop_frame": 161976,
+          "skipped": 6,
+          "previous_frame": 161975,
+          "previous_frame_bytes": 4034,
+          "previous_frame_pose_calls": 7,
+          "previous_frame_properties": {
+            "GuLiSoldierStateReplicator.ReplicatedSoldiers": 2018.625,
+            "GuLiPlacedBuilding.TargetHandle": 139.0,
+            "GuLiPlacedBuilding.HealthState": 116.0,
+            "GuLiPlacedBuilding.State": 115.5,
+            "GuLiMiningVehiclePawn.ReplicatedMovement": 33.75,
+            "GuLiPlacedBuilding.DefinitionId": 28.0,
+            "GuLiPlacedBuilding.CycleSeconds": 12.0,
+            "GuLiMiningVehiclePawn.MiningVisual": 5.375,
+            "GuLiSoldierStateReplicator.SnapshotRevision": 4.0,
+            "GuLiPlacedBuilding.Team": 3.5,
+            "GuLiPlacedBuilding.RemoteRole": 2.625,
+            "GuLiPlacedBuilding.Role": 2.625,
+            "GuLiPlacedBuilding.BuildingType": 2.625,
+            "GuLiPlacedBuilding.bEnabled": 0.5,
+            "GuLiPlacedBuilding.bProducing": 0.375
+          },
+          "previous_frame_rpc_bytes": {
+            "ClientReceiveEncodedPoseBlock": 877.625,
+            "ClientReceivePublicPoseFrame": 5.0
+          },
+          "reconstructed_start_queued_bytes": -81.25,
+          "current_frame_sent_pose_blocks": 1
+        },
+        {
+          "drop_frame": 162014,
+          "skipped": 3,
+          "previous_frame": 162013,
+          "previous_frame_bytes": 4064,
+          "previous_frame_pose_calls": 7,
+          "previous_frame_properties": {
+            "GuLiSoldierStateReplicator.ReplicatedSoldiers": 2023.625,
+            "GuLiPlacedBuilding.TargetHandle": 137.0,
+            "GuLiPlacedBuilding.HealthState": 124.0,
+            "GuLiPlacedBuilding.State": 115.5,
+            "GuLiMiningVehiclePawn.ReplicatedMovement": 33.75,
+            "GuLiPlacedBuilding.DefinitionId": 28.0,
+            "GuLiCommanderPlayerState.ResourcePrivateState": 16.0,
+            "GuLiPlacedBuilding.CycleSeconds": 8.0,
+            "GuLiSoldierStateReplicator.SnapshotRevision": 4.0,
+            "GuLiPlacedBuilding.Team": 3.5,
+            "GuLiPlacedBuilding.RemoteRole": 2.625,
+            "GuLiPlacedBuilding.Role": 2.625,
+            "GuLiPlacedBuilding.BuildingType": 2.625,
+            "GuLiPlacedBuilding.bEnabled": 0.625,
+            "GuLiPlacedBuilding.bProducing": 0.25
+          },
+          "previous_frame_rpc_bytes": {
+            "ClientReceiveEncodedPoseBlock": 880.625,
+            "ClientReceivePublicPoseFrame": 5.0
+          },
+          "reconstructed_start_queued_bytes": -474.0,
+          "current_frame_sent_pose_blocks": 4
+        }
+      ]
+    }
+  ],
+  "skipped_events": [
+    {
+      "frame": 161896,
+      "client": 0,
+      "text": "[2026.09.23-06.54.35:314][896]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161896,
+      "client": 0,
+      "text": "[2026.09.23-06.54.35:314][896]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161896,
+      "client": 0,
+      "text": "[2026.09.23-06.54.35:314][896]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161896,
+      "client": 0,
+      "text": "[2026.09.23-06.54.35:314][896]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161896,
+      "client": 0,
+      "text": "[2026.09.23-06.54.35:314][896]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161896,
+      "client": 0,
+      "text": "[2026.09.23-06.54.35:314][896]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161897,
+      "client": 1,
+      "text": "[2026.09.23-06.54.35:370][897]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161899,
+      "client": 0,
+      "text": "[2026.09.23-06.54.35:479][899]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161899,
+      "client": 0,
+      "text": "[2026.09.23-06.54.35:479][899]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161899,
+      "client": 0,
+      "text": "[2026.09.23-06.54.35:479][899]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161899,
+      "client": 0,
+      "text": "[2026.09.23-06.54.35:479][899]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161899,
+      "client": 0,
+      "text": "[2026.09.23-06.54.35:479][899]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 0,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 0,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 0,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 0,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 0,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 0,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 0,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 1,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 1,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 1,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 1,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 1,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 1,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161951,
+      "client": 1,
+      "text": "[2026.09.23-06.54.38:251][951]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161960,
+      "client": 1,
+      "text": "[2026.09.23-06.54.38:727][960]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161960,
+      "client": 1,
+      "text": "[2026.09.23-06.54.38:727][960]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161960,
+      "client": 1,
+      "text": "[2026.09.23-06.54.38:727][960]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161960,
+      "client": 1,
+      "text": "[2026.09.23-06.54.38:727][960]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161960,
+      "client": 1,
+      "text": "[2026.09.23-06.54.38:727][960]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161960,
+      "client": 1,
+      "text": "[2026.09.23-06.54.38:727][960]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161976,
+      "client": 1,
+      "text": "[2026.09.23-06.54.39:524][976]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161976,
+      "client": 1,
+      "text": "[2026.09.23-06.54.39:524][976]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161976,
+      "client": 1,
+      "text": "[2026.09.23-06.54.39:524][976]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161976,
+      "client": 1,
+      "text": "[2026.09.23-06.54.39:524][976]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161976,
+      "client": 1,
+      "text": "[2026.09.23-06.54.39:524][976]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 161976,
+      "client": 1,
+      "text": "[2026.09.23-06.54.39:524][976]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 162014,
+      "client": 0,
+      "text": "[2026.09.23-06.54.41:358][ 14]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 162014,
+      "client": 0,
+      "text": "[2026.09.23-06.54.41:359][ 14]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 162014,
+      "client": 0,
+      "text": "[2026.09.23-06.54.41:359][ 14]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 162014,
+      "client": 0,
+      "text": "[2026.09.23-06.54.41:359][ 14]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 162014,
+      "client": 0,
+      "text": "[2026.09.23-06.54.41:359][ 14]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 162014,
+      "client": 0,
+      "text": "[2026.09.23-06.54.41:359][ 14]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_0::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 162014,
+      "client": 1,
+      "text": "[2026.09.23-06.54.41:359][ 14]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 162014,
+      "client": 1,
+      "text": "[2026.09.23-06.54.41:359][ 14]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    },
+    {
+      "frame": 162014,
+      "client": 1,
+      "text": "[2026.09.23-06.54.41:359][ 14]LogNet: VeryVerbose: Network saturated, not calling GuLiCommanderPlayerController_1::ClientReceiveEncodedPoseBlock"
+    }
+  ],
+  "scope": [
+    "Actor/RPC/content/socket layers are nested; attribution does not sum their bytes twice.",
+    "Queue reconstruction uses native packet sizes and UE source Tick formula. Only begin/end queue counters were directly read; intervening values are reconstructed.",
+    "Full 630-frame native stream accounts for BOTH cumulative connection byte deltas exactly and reconstructs both final queued-bit counters exactly.",
+    "The separate rate summary excludes the final frame to have a complete timestamp interval. Do not compare its 629-frame totals directly with the full-counter totals.",
+    "All 47 logged skipped pose RPCs align exactly with the seven CSV saturation frames. Count of 8862 attempts equals 8815 sent blocks plus 47 skipped.",
+    "This identifies the burst/drop path in the new PIE; it does not retroactively attribute the historical 470 ms sample gap."
+  ]
+}

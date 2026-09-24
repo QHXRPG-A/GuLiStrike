@@ -1,0 +1,64 @@
+{
+  "pid": 5552,
+  "wall_time": 1790142970.8647017,
+  "worlds": [
+    {
+      "index": 0,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "world_seconds": 190.97999711334705,
+      "delta_seconds": 0.03794099763035774,
+      "paused": false,
+      "replication_settings": {
+        "full_rate_pose_distance_centimeters": 32000.0,
+        "far_moving_pose_frame_divisor": 2,
+        "stationary_pose_frame_divisor": 2
+      }
+    },
+    {
+      "index": 1,
+      "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "world_seconds": 189.63821360468864,
+      "delta_seconds": 0.03794099763035774,
+      "paused": false,
+      "snapshot": "D:\\UE5.7\\test1\\outputs\\mass-correction-diagnosis-20260923\\client-1.json",
+      "presentation": {
+        "interpolation_back_time_seconds": 0.11999999731779099,
+        "maximum_adaptive_interpolation_back_time_seconds": 0.3499999940395355,
+        "maximum_extrapolation_seconds": 0.10000000149011612,
+        "maximum_correction_speed_multiplier": 3.0
+      },
+      "camera_location": [
+        1.0913936421275139e-11,
+        81677.22298161674,
+        11570.38644397545
+      ],
+      "camera_fov": 45.0
+    },
+    {
+      "index": 2,
+      "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "world_seconds": 189.36760780587792,
+      "delta_seconds": 0.03794099763035774,
+      "paused": false,
+      "snapshot": "D:\\UE5.7\\test1\\outputs\\mass-correction-diagnosis-20260923\\client-2.json",
+      "presentation": {
+        "interpolation_back_time_seconds": 0.11999999731779099,
+        "maximum_adaptive_interpolation_back_time_seconds": 0.3499999940395355,
+        "maximum_extrapolation_seconds": 0.10000000149011612,
+        "maximum_correction_speed_multiplier": 3.0
+      },
+      "camera_location": [
+        1.0913936421275139e-11,
+        81677.22298161674,
+        11570.38644397545
+      ],
+      "camera_fov": 45.0
+    }
+  ],
+  "cvars": {
+    "t.MaxFPS": 0.0,
+    "r.VSync": 0.0,
+    "t.IdleWhenNotForeground": 0.0,
+    "r.ScreenPercentage": 0.0
+  }
+}

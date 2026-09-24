@@ -1,0 +1,1090 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "profile": 500,
+  "gameplay_started": false,
+  "native_build_executed": false,
+  "runtime_verified": false,
+  "saved": true,
+  "actors": [
+    {
+      "name": "StaticMeshActor_0",
+      "label": "MassNav_CornerLong",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        11200.0,
+        64000.0,
+        -1174.6344088945264
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        26.0,
+        2.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll",
+      "mobility": "<ComponentMobility.STATIC: 0>"
+    },
+    {
+      "name": "StaticMeshActor_4",
+      "label": "MassNav_CornerReturn",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        12600.0,
+        65000.0,
+        -1173.6435507035715
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        2.0,
+        22.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll",
+      "mobility": "<ComponentMobility.STATIC: 0>"
+    },
+    {
+      "name": "StaticMeshActor_5",
+      "label": "MassNav_NarrowLeft",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        5200.0,
+        62500.0,
+        -1176.2859131353582
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        2.0,
+        24.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll",
+      "mobility": "<ComponentMobility.STATIC: 0>"
+    },
+    {
+      "name": "StaticMeshActor_6",
+      "label": "MassNav_NarrowRight",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        6200.0,
+        62500.0,
+        -1176.2859131353546
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        2.0,
+        24.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll",
+      "mobility": "<ComponentMobility.STATIC: 0>"
+    },
+    {
+      "name": "StaticMeshActor_7",
+      "label": "MassNav_ClosedNorth",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        16500.0,
+        62000.0,
+        -1176.6165083297712
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        30.0,
+        2.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll",
+      "mobility": "<ComponentMobility.STATIC: 0>"
+    },
+    {
+      "name": "StaticMeshActor_8",
+      "label": "MassNav_ClosedSouth",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        16500.0,
+        59000.0,
+        -1179.5892341079018
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        30.0,
+        2.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll",
+      "mobility": "<ComponentMobility.STATIC: 0>"
+    },
+    {
+      "name": "StaticMeshActor_9",
+      "label": "MassNav_ClosedWest",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        15000.0,
+        60500.0,
+        -1178.2676698386642
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        2.0,
+        32.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll",
+      "mobility": "<ComponentMobility.STATIC: 0>"
+    },
+    {
+      "name": "StaticMeshActor_10",
+      "label": "MassNav_ClosedEast",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        18000.0,
+        60500.0,
+        -1178.2676698386642
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        2.0,
+        32.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll",
+      "mobility": "<ComponentMobility.STATIC: 0>"
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_0",
+      "label": "MassNav_Deployment_000",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        50680.0,
+        -1831.404093593763
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 9,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_1",
+      "label": "MassNav_Deployment_001",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        51040.0,
+        -1816.9689354609256
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 13,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_2",
+      "label": "MassNav_Deployment_002",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        51400.0,
+        -1804.7075673493675
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 15,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_3",
+      "label": "MassNav_Deployment_003",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        51760.0,
+        -1794.9401737473856
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 17,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_4",
+      "label": "MassNav_Deployment_004",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        52120.0,
+        -1788.7969887238908
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 19,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_5",
+      "label": "MassNav_Deployment_005",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        52480.0,
+        -1786.1970554540678
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 21,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_6",
+      "label": "MassNav_Deployment_006",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        52840.0,
+        -1785.8668231522863
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 23,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_7",
+      "label": "MassNav_Deployment_007",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        53200.0,
+        -1785.5365908505084
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 23,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_8",
+      "label": "MassNav_Deployment_008",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12180.0,
+        53560.0,
+        -1785.206358548727
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 24,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_9",
+      "label": "MassNav_Deployment_009",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        53920.0,
+        -1784.876126246949
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 25,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_10",
+      "label": "MassNav_Deployment_010",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        54280.0,
+        -1784.5458939451712
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 25,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_11",
+      "label": "MassNav_Deployment_011",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        54640.0,
+        -1784.127791135263
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 25,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_12",
+      "label": "MassNav_Deployment_012",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        55000.0,
+        -1783.6700604491455
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 25,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_13",
+      "label": "MassNav_Deployment_013",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        55360.0,
+        -1783.224964738056
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 25,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_14",
+      "label": "MassNav_Deployment_014",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        55720.0,
+        -1782.8947324362782
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 25,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_15",
+      "label": "MassNav_Deployment_015",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        56080.0,
+        -1782.5645001344967
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 25,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_16",
+      "label": "MassNav_Deployment_016",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        56440.0,
+        -1782.2342678327188
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 23,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_17",
+      "label": "MassNav_Deployment_017",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        56800.0,
+        -1781.9040355309446
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 23,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_18",
+      "label": "MassNav_Deployment_018",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        57160.0,
+        -1781.5738032291667
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 23,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_19",
+      "label": "MassNav_Deployment_019",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        57520.0,
+        -1781.2404258578429
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 21,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_20",
+      "label": "MassNav_Deployment_020",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        57880.0,
+        -1780.910213716765
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 19,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_21",
+      "label": "MassNav_Deployment_021",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        58240.0,
+        -1780.538050835967
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 17,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_22",
+      "label": "MassNav_Deployment_022",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        58600.0,
+        -1780.0801544814678
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 15,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_23",
+      "label": "MassNav_Deployment_023",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        58960.0,
+        -1779.6222523417275
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 13,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_24",
+      "label": "MassNav_Deployment_024",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -12000.0,
+        59320.0,
+        -1779.258709475933
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "deployment": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": 1,
+        "rows": 7,
+        "columns": 1,
+        "spacing_centimeters": 360.0,
+        "allow_automatic_fire": false
+      }
+    },
+    {
+      "name": "Note_7",
+      "label": "MassNav_Entry",
+      "class": "/Script/Engine.Note",
+      "location": [
+        0.0,
+        72500.0,
+        -1266.0462924959868
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "Mass分帧寻路验收入口，当前档位：500。\n先经单独授权编译新C++，再由玩家从正常指挥官入口开局。\n档位500为红方500扫荡者；25/2000/10000通过Scripts/author_mass_navigation_scene.py的MASS_NAV_PROFILE切换并保存；0恢复原图双方各250。\n框选或Ctrl+点击同类，S停止出生自动推进；右键25米外下令，再连续改令、S、减选。首批先走，绿线逐批保留。\n先检查名册就绪，再观察500/2000；10000用于选择与终点容量不足的部分成功，不要求10000终点全部获分配。"
+    },
+    {
+      "name": "Note_8",
+      "label": "MassNav_CornerObserve",
+      "class": "/Script/Engine.Note",
+      "location": [
+        11000.0,
+        62000.0,
+        -1276.6161252764289
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "从拐角西侧向东北右键移动，观察贴墙时中心线回退、侧向归位暂停、稳定绕行。不可穿墙投影。"
+    },
+    {
+      "name": "Note_9",
+      "label": "MassNav_NarrowObserve",
+      "class": "/Script/Engine.Note",
+      "location": [
+        5700.0,
+        60500.0,
+        -1278.2678512849818
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "向(5700,64500)下令穿过800cm净宽通道，观察缩列、出口恢复与反复改令。"
+    },
+    {
+      "name": "Note_10",
+      "label": "MassNav_CapacityObserve",
+      "class": "/Script/Engine.Note",
+      "location": [
+        16500.0,
+        60500.0,
+        -1278.2676698386642
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "封闭区用于不可达候选与部分失败；向围墙中心下令。后续失败不得回滚先前已提交批次。"
+    },
+    {
+      "name": "Note_11",
+      "label": "MassNav_OreMechObserve",
+      "class": "/Script/Engine.Note",
+      "location": [
+        5625.0,
+        71875.0,
+        -1266.7068780636912
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "现有520cm矿体：向矿体另一侧下令。切到地面机甲角色穿行队伍，观察环境预测、贴障减速及友方让行。\n建筑/导航重建使用本图正常B建造/拆除入口；运输用既有T指挥官传送。重连使用新客户端晚加入。"
+    },
+    {
+      "name": "CameraActor_0",
+      "label": "MassNav_Overview",
+      "class": "/Script/Engine.CameraActor",
+      "location": [
+        -12000.0,
+        85000.0,
+        28000.0
+      ],
+      "rotation": [
+        0.0,
+        -90.0,
+        -52.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "configured_red_soldiers": 500,
+  "default_population_restored": false,
+  "existing_actors_unchanged": 105,
+  "resource_layout_hash": "61a8ab9f86f2f37336d20e11572540739258fa9e",
+  "clusters": 240,
+  "game_mode": "<Object '/Script/GuLiStrike.GuLiCommanderGameMode' (0x000001D5CF280A00) Class 'Class'>",
+  "miners_per_team": 8,
+  "builders_per_team": 8,
+  "nav_actors": [
+    {
+      "name": "NavMeshBoundsVolume_0",
+      "label": "NavMeshBounds_CommanderPlayableLandscape",
+      "class": "/Script/NavigationSystem.NavMeshBoundsVolume",
+      "location": [
+        0.0,
+        0.0,
+        6590.564727783203
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        900.0,
+        900.0,
+        96.4278564453125
+      ]
+    },
+    {
+      "name": "RecastNavMesh-Default",
+      "label": "RecastNavMesh-Default",
+      "class": "/Script/NavigationSystem.RecastNavMesh",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "RecastNavMesh-CommanderSoldier",
+      "label": "RecastNavMesh-CommanderSoldier",
+      "class": "/Script/NavigationSystem.RecastNavMesh",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ]
+}

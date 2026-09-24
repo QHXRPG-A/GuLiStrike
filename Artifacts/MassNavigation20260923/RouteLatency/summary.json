@@ -1,0 +1,98 @@
+{
+  "MassPlanning": {
+    "ms": {
+      "count": 59,
+      "min": 0.081,
+      "median": 0.21,
+      "max": 0.837
+    },
+    "positions": {
+      "count": 59,
+      "min": 0.0,
+      "median": 64.0,
+      "max": 64.0
+    },
+    "paths": {
+      "count": 59,
+      "min": 0.0,
+      "median": 1.0,
+      "max": 4.0
+    },
+    "recoveryPending": {
+      "count": 59,
+      "min": 0.0,
+      "median": 0.0,
+      "max": 400.0
+    }
+  },
+  "MassRouteLines": {
+    "queued": {
+      "count": 118,
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.0
+    },
+    "work": {
+      "count": 118,
+      "min": 0.0,
+      "median": 0.0,
+      "max": 27.0
+    },
+    "ms": {
+      "count": 118,
+      "min": 0.0,
+      "median": 0.001,
+      "max": 0.009
+    }
+  },
+  "MassStream owner": {
+    "stateAgeMs": {
+      "count": 116,
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.0
+    },
+    "stateQueue": {
+      "count": 116,
+      "min": 0.0,
+      "median": 0.0,
+      "max": 24.0
+    },
+    "poseAgeMs": {
+      "count": 116,
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.0
+    },
+    "inflight": {
+      "count": 116,
+      "min": 0.0,
+      "median": 0.0,
+      "max": 2.0
+    }
+  },
+  "Incremental move": {
+    "firstBatchMs": {
+      "count": 23,
+      "min": 87.92,
+      "median": 260.3,
+      "max": 882.2
+    },
+    "totalMs": {
+      "count": 23,
+      "min": 177.45,
+      "median": 409.3,
+      "max": 1088.6
+    }
+  },
+  "saturation_samples": {
+    "positions64": 43,
+    "paths4": 29,
+    "either": 59,
+    "samples": 59
+  },
+  "time_range": [
+    "[2026.09.23-13.47.51:820]",
+    "[2026.09.23-13.48.51:498]"
+  ]
+}

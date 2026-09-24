@@ -38,6 +38,11 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [Mass历史插值与三倍速度纠偏](../DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md) | commander, movement, network, performance | 13/15 (87%) | 定位位置队列长等待中引擎补额、保守预留与命令状态屏障的占比；独立追查导航单步跳点，保留晚加入/重连及紧急状态专项验收。 | 2026-09-23 |
+| [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | commander, performance, ui | 3/4 (75%) | 由玩家核对原地图左上角显示、窗口适配和RTT；不自动启动PIE。 | 2026-09-23 |
+| [导航内存优化与对局容量预算](../DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md) | navigation, performance | 11/13 (85%) | 玩家核对连续纠偏与HUD；服务端异常XY位移、姿态供给及专服容量测量继续后续处理。 | 2026-09-23 |
+| [三张视差3D卡牌交互演示 — 技术方案](../DevelopmentDocumentation/20260922-三张视差3D卡牌交互演示.md) | presentation, ui, vfx | 9/10 (90%) | 在 LVL_CardRevealDemo 体验两次点击流程、±12° 悬停以及窗口失焦回正，确认视觉与手感。 | 2026-09-22 |
+| [指挥官部队StateTree接入与特殊任务退役 — 技术方案](../DevelopmentDocumentation/20260921-指挥官部队StateTree接入与特殊任务退役.md) | building, commander, resources | 10/13 (77%) | 在LVL_CommanderMassPrototype补齐矿位、施工、改令及通道异常矩阵，再完成新逻辑10/30台负载与30分钟性能验收，并收集玩家效果反馈。 | 2026-09-22 |
 | [地面机甲辅助瞄准 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md) | combat, data, ground-mech, input | 6/7 (86%) | 玩家在既有FireReview观察射向修正、最近目标切换、离圈自由瞄准及鼠标位置不变。 | 2026-09-21 |
 | [玩家地面机甲与Mass单位立体碰撞 — 技术方案与实施记录](../DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md) | movement, navigation, network, performance | 14/16 (88%) | 完成Listen/Dedicated真实接触验收并记录仍未覆盖的视觉与网络条件。 | 2026-09-20 |
 | [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | combat, input, network, vfx | 8/9 (89%) | 用户审核FireReview的枪口、弹道及缓冲后坐；批准后将已验证配置接到正式BP_GroundMech_Light。 | 2026-09-20 |
@@ -54,6 +59,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [Mass分帧寻路与避障稳定性](../DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md) | commander, network, performance | — | 本次响应与随机站位已获玩家验收；大人口合法部署及完整环境回归另列后续范围。 | 2026-09-24 |
 | [FireReview双阵营靶场与敌方描边 — 技术方案](../DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md) | combat, commander, ground-mech, presentation | 9/9 (100%) | 玩家在/Game/Maps/LVL_GroundMech_FireReview确认两队待命、敌方红色描边及受击销毁效果。 | 2026-09-21 |
 | [统一特效目录与ID引用 — 技术方案](../DevelopmentDocumentation/20260921-统一特效目录与ID引用.md) | combat, vfx | 6/6 (100%) | — | 2026-09-21 |
 | [地面机甲动画蓝图与空中战斗 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲动画蓝图与空中战斗.md) | animation, combat, ground-mech | 8/8 (100%) | 按后续实际使用反馈调整；未覆盖专项和容量条视觉终验见本文边界。 | 2026-09-21 |

@@ -29,6 +29,7 @@ namespace
 {
 	constexpr TCHAR CanonicalResourceMapPackage[] = TEXT("/Game/Maps/LVL_CommanderMassPrototype");
 
+
 	/** Keep the individual dirty bounds, and let Recast coalesce overlapping tiles once spawning finishes. */
 	class FResourceNavigationBuildBatch
 	{
@@ -54,7 +55,7 @@ namespace
 	TAutoConsoleVariable<int32> CVarDrawResourceBoard(
 		TEXT("gs.Resources.DrawBoard"),
 		0,
-		TEXT("Draw the canonical 5x5 board, Outpost_RxCy labels and public Territory ownership."),
+		TEXT("Draw the canonical 9x9 board, Outpost_RxCy labels and public Territory ownership."),
 		ECVF_Cheat);
 #endif
 
@@ -77,16 +78,21 @@ void UGuLiResourceWorldSubsystem::RegisterFactory(AGuLiResourceFactoryActor& Fac
 }
 AGuLiResourceFactoryActor* UGuLiResourceWorldSubsystem::FindNearestFriendlyFactory(EGuLiTeam Team, const FVector& Location) const
 {
-	AGuLiResourceFactoryActor* Best = nullptr;
-	double Distance = TNumericLimits<double>::Max();
+	TArray<AGuLiResourceFactoryActor*> Candidates;
+	QueryFriendlyFactories(Team, Location, Candidates);
+	return Candidates.IsEmpty() ? nullptr : Candidates[0];
+}
+void UGuLiResourceWorldSubsystem::QueryFriendlyFactories(EGuLiTeam Team, const FVector& Location,
+	TArray<AGuLiResourceFactoryActor*>& Out) const
+{
+	Out.Reset();
 	for (const auto& Factory : Factories)
 		if (IsValid(Factory) && !Factory->IsActorBeingDestroyed() && Factory->GetTeam() == Team
 			&& Factory->FindComponentByClass<UGuLiBuildingLifecycleComponent>()->IsCompleted())
-		{
-			const double Candidate = FVector::DistSquared2D(Location, Factory->GetDockPoint());
-			if (Candidate < Distance) { Distance = Candidate; Best = Factory; }
-		}
-	return Best;
+			Out.Add(Factory);
+	Out.StableSort([&](const auto& A, const auto& B) {
+		return FVector::DistSquared2D(Location, A.GetActorLocation()) < FVector::DistSquared2D(Location, B.GetActorLocation());
+	});
 }
 
 AGuLiConstructionVehiclePawn* UGuLiResourceWorldSubsystem::SpawnConstructionVehicle(EGuLiTeam Team, const FVector& GroundLocation)
@@ -130,7 +136,7 @@ void UGuLiResourceWorldSubsystem::Initialize(FSubsystemCollectionBase& Collectio
 
 void UGuLiResourceWorldSubsystem::Deinitialize()
 {
-	if (WorldState) WorldState->OnStateChanged().RemoveAll(this);
+	if (WorldState) { WorldState->OnStateChanged().RemoveAll(this); WorldState->OreNodeChanged.RemoveAll(this); }
 	bEconomyMatchStarted = false;
 	ClusterObstacleHandles.Reset();
 	Factories.Reset();
@@ -309,6 +315,7 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 	WorldState->InitializeAuthority(MapDefinition->LayoutHash, Owners);
 	MaintenanceAccount = FGuid::NewGuid();
 	WorldState->OnStateChanged().AddUObject(this, &ThisClass::HandleWorldStateChanged);
+	WorldState->OreNodeChanged.AddUObject(this, &ThisClass::HandleOreNodeChanged);
 
 	NodeRemaining.SetNum(MapDefinition->Nodes.Num());
 	for (int32 Index = 0; Index < MapDefinition->Nodes.Num(); ++Index)
@@ -341,7 +348,7 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 			AGuLiTerritoryOutpostActor::StaticClass(), FTransform(FRotator::ZeroRotator, Location), Params);
 		if (!Outpost)
 		{
-			InitializationError = TEXT("Could not spawn all 25 Territory landmarks.");
+			InitializationError = TEXT("Could not spawn all canonical Territory landmarks.");
 			return false;
 		}
 		Outpost->InitializeOutpost(static_cast<uint8>(Index), Territory.TerritoryId, Territory.InitialOwner);
@@ -372,7 +379,7 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 			Cluster.Center, Cluster.ObstacleRadiusCentimeters));
 	}
 
-	auto SpawnFactoryAndVehicle = [&](const EGuLiTeam Team, const FVector& FactoryAnchor,
+	auto SpawnFactoryAndVehicles = [&](const EGuLiTeam Team, const FVector& FactoryAnchor,
 		const FVector& VehicleAnchor) -> bool
 	{
 		const FVector InteriorDirection = FVector(-FactoryAnchor.X, -FactoryAnchor.Y, 0.0f).GetSafeNormal();
@@ -387,14 +394,20 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 		if (!Factory) return false;
 		Factory->InitializeFactory(Team, *EconomyConfig, DockPoint);
 		Factories.AddUnique(Factory);
-		FVector VehicleLocation = ProjectAnchorToGround(VehicleAnchor);
-		VehicleLocation.Z += 130.0f;
-		return World->GetSubsystem<UGuLiMiningVehicleManager>()->SpawnMiningVehicle(Factory,
-			FTransform(FRotator(0.0f, Team == EGuLiTeam::Red ? -90.0f : 90.0f, 0.0f), VehicleLocation)) != nullptr;
+		for (int32 Index = 0; Index < EconomyConfig->InitialMiningVehiclesPerTeam; ++Index)
+		{
+			FVector VehicleLocation = ProjectAnchorToGround(
+				VehicleAnchor + GuLiResources::InitialEngineeringVehicleOffset(Team, Index, false));
+			VehicleLocation.Z += 130.0f;
+			if (!World->GetSubsystem<UGuLiMiningVehicleManager>()->SpawnMiningVehicle(Factory,
+				FTransform(FRotator(0.0f, Team == EGuLiTeam::Red ? -90.0f : 90.0f, 0.0f), VehicleLocation)))
+				return false;
+		}
+		return true;
 	};
-	if (!SpawnFactoryAndVehicle(EGuLiTeam::Red, MapDefinition->SpawnAnchors.RedFactory,
+	if (!SpawnFactoryAndVehicles(EGuLiTeam::Red, MapDefinition->SpawnAnchors.RedFactory,
 			MapDefinition->SpawnAnchors.RedAssembly)
-		|| !SpawnFactoryAndVehicle(EGuLiTeam::Blue, MapDefinition->SpawnAnchors.BlueFactory,
+		|| !SpawnFactoryAndVehicles(EGuLiTeam::Blue, MapDefinition->SpawnAnchors.BlueFactory,
 			MapDefinition->SpawnAnchors.BlueAssembly))
 	{
 		InitializationError = TEXT("Could not spawn both team factories and mining vehicles.");
@@ -402,15 +415,21 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 	}
 	for (int32 Index = 0; Index < EconomyConfig->InitialConstructionVehiclesPerTeam; ++Index)
 	{
-		const FVector Offset(1200 + Index * 400, 0, 0);
-		SpawnConstructionVehicle(EGuLiTeam::Red, MapDefinition->SpawnAnchors.RedAssembly + Offset);
-		SpawnConstructionVehicle(EGuLiTeam::Blue, MapDefinition->SpawnAnchors.BlueAssembly + Offset);
+		if (!SpawnConstructionVehicle(EGuLiTeam::Red, MapDefinition->SpawnAnchors.RedAssembly
+				+ GuLiResources::InitialEngineeringVehicleOffset(EGuLiTeam::Red, Index, true))
+			|| !SpawnConstructionVehicle(EGuLiTeam::Blue, MapDefinition->SpawnAnchors.BlueAssembly
+				+ GuLiResources::InitialEngineeringVehicleOffset(EGuLiTeam::Blue, Index, true)))
+		{
+			InitializationError = FString::Printf(TEXT("Could not spawn both teams' initial construction vehicle %d."), Index);
+			return false;
+		}
 	}
 	RefreshEncirclement();
 	bAuthorityActorsSpawned = true;
 	NavigationWaitStartSeconds = FPlatformTime::Seconds();
 	UE_LOG(LogGuLiResources, Display,
-		TEXT("Initialized 25 territories, 240 ore clusters, 6240 nodes, 24 HISMs, 2 factories and 2 miners; waiting for dynamic navigation."));
+		TEXT("Initialized 81 territories, 240 ore clusters, 6240 nodes, 24 HISMs, 2 factories, %d miners and %d builders; waiting for dynamic navigation."),
+		EconomyConfig->InitialMiningVehiclesPerTeam * 2, EconomyConfig->InitialConstructionVehiclesPerTeam * 2);
 	return true;
 }
 
@@ -422,6 +441,7 @@ void UGuLiResourceWorldSubsystem::DiscoverReplicatedActors()
 		{
 			WorldState = *It;
 			WorldState->OnStateChanged().AddUObject(this, &ThisClass::HandleWorldStateChanged);
+			WorldState->OreNodeChanged.AddUObject(this, &ThisClass::HandleOreNodeChanged);
 			bReplicatedStateDirty = true;
 			break;
 		}
@@ -522,7 +542,8 @@ bool UGuLiResourceWorldSubsystem::CanTeamMineAt(const EGuLiTeam Team, const int3
 	const FGuLiResourceClusterDefinition* Cluster = MapDefinition && ClusterId > 0 && ClusterId <= MAX_uint16
 		? MapDefinition->FindCluster(static_cast<uint16>(ClusterId)) : nullptr;
 	return bRuntimeReady && Cluster && WorldState && GuLiResources::IsPlayableTeam(Team)
-		&& WorldState->GetTerritoryOwner(Cluster->TerritoryIndex) == Team
+		&& (WorldState->GetTerritoryOwner(Cluster->TerritoryIndex) == Team
+			|| WorldState->GetTerritoryOwner(Cluster->TerritoryIndex) == EGuLiTeam::Unassigned)
 		&& !IsClusterEmpty(ClusterId);
 }
 
@@ -657,6 +678,17 @@ FGuLiResourceAmounts UGuLiResourceWorldSubsystem::GetTeamInventory(const EGuLiTe
 void UGuLiResourceWorldSubsystem::HandleWorldStateChanged()
 {
 	bReplicatedStateDirty = true;
-	if (GetWorld() && GetWorld()->GetNetMode() != NM_Client && OreField)
-		OreField->ApplyReplicatedState();
+
+}
+
+void UGuLiResourceWorldSubsystem::HandleOreNodeChanged(uint32 NodeId,uint8 Remaining)
+{
+    if (!MapDefinition || NodeId==0 || !NodeRemaining.IsValidIndex(NodeId-1)) return;
+    if (GetWorld()->GetNetMode()==NM_Client && bOreFieldInitialized)
+    {
+        const int32 Cluster=MapDefinition->Nodes[NodeId-1].ClusterId-1;
+        if (ClusterRemaining.IsValidIndex(Cluster)) ClusterRemaining[Cluster]+=int32(Remaining)-int32(NodeRemaining[NodeId-1]);
+        NodeRemaining[NodeId-1]=Remaining;
+    }
+    if (OreField) OreField->ApplyNodeAmount(NodeId,Remaining);
 }

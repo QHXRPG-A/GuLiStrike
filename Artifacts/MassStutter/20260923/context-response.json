@@ -1,0 +1,48 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "pid": 24508,
+    "captured_at": 1790137075.73688,
+    "worlds": [
+      {
+        "index": 0,
+        "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "world_seconds": 342.2084027417004,
+        "delta_seconds": 0.06855949759483337,
+        "paused": false,
+        "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0"
+      },
+      {
+        "index": 1,
+        "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "world_seconds": 340.9462522417307,
+        "delta_seconds": 0.06855949759483337,
+        "paused": false,
+        "controller": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "snapshot": "D:/UE5.7/test1/outputs/mass-stutter-20260923/client-1.json",
+        "presentation": {
+          "interpolation_back_time_seconds": 0.11999999731779099,
+          "maximum_adaptive_interpolation_back_time_seconds": 0.3499999940395355,
+          "maximum_extrapolation_seconds": 0.10000000149011612,
+          "hard_snap_distance_centimeters": 200.0
+        }
+      },
+      {
+        "index": 2,
+        "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "world_seconds": 340.05004892870784,
+        "delta_seconds": 0.06855949759483337,
+        "paused": false,
+        "controller": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "snapshot": "D:/UE5.7/test1/outputs/mass-stutter-20260923/client-2.json",
+        "presentation": {
+          "interpolation_back_time_seconds": 0.11999999731779099,
+          "maximum_adaptive_interpolation_back_time_seconds": 0.3499999940395355,
+          "maximum_extrapolation_seconds": 0.10000000149011612,
+          "hard_snap_distance_centimeters": 200.0
+        }
+      }
+    ]
+  }
+}

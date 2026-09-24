@@ -1,0 +1,943 @@
+{
+  "header": {
+    "version": 14,
+    "tag": "",
+    "game": "GuLiStrike",
+    "url": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype"
+  },
+  "engine_seconds": [
+    3718.75390625,
+    3748.73828125
+  ],
+  "seconds": 29.984375,
+  "frames": 1240,
+  "fps": 41.3548723293382,
+  "native_token_counts": {
+    "0": 1241,
+    "17": 125,
+    "18": 3,
+    "16": 11884,
+    "13": 113117,
+    "3": 6812,
+    "9": 7650,
+    "4": 382363,
+    "15": 249562,
+    "5": 384992,
+    "2": 55452,
+    "1": 7650,
+    "6": 1
+  },
+  "skipped_rpcs": {},
+  "connection_budget_bytes_s": 250000,
+  "runtime_max_net_tick_rate": 120,
+  "inferred_credit_per_frame_bytes": 2083.25,
+  "connections": [
+    {
+      "id": 0,
+      "address": "127.0.0.1:64714",
+      "packets": 2636,
+      "budget_accounted_bytes": 1998935,
+      "bytes_s": 66665.88848358521,
+      "socket_plus_ipv4_udp_bytes": 2001275,
+      "wire_bytes_s": 66743.92912975508,
+      "categories": [
+        {
+          "name": "protocol_and_unattributed",
+          "bytes": 871012.875,
+          "bytes_s": 29048.892131318396,
+          "share_percent": 43.57384682343348
+        },
+        {
+          "name": "building_properties",
+          "bytes": 603122.75,
+          "bytes_s": 20114.56800416884,
+          "share_percent": 30.172204198735823
+        },
+        {
+          "name": "ground_projectile_snapshots",
+          "bytes": 254489.375,
+          "bytes_s": 8487.399687337154,
+          "share_percent": 12.731248139634355
+        },
+        {
+          "name": "mass_pose",
+          "bytes": 144350.5,
+          "bytes_s": 4814.190724335592,
+          "share_percent": 7.221370379727205
+        },
+        {
+          "name": "combat_states_and_shots",
+          "bytes": 122374.5,
+          "bytes_s": 4081.275664408546,
+          "share_percent": 6.121984956989597
+        },
+        {
+          "name": "other_properties",
+          "bytes": 2385.0,
+          "bytes_s": 79.54142782699323,
+          "share_percent": 0.1193135344570984
+        },
+        {
+          "name": "other_rpc",
+          "bytes": 1200.0,
+          "bytes_s": 40.02084418968212,
+          "share_percent": 0.06003196702243945
+        }
+      ],
+      "rpcs": [
+        {
+          "name": "MulticastGroundProjectileSnapshot",
+          "calls": 300,
+          "bytes": 254489.375,
+          "bytes_s": 8487.399687337154,
+          "share_percent": 12.731248139634355
+        },
+        {
+          "name": "ClientReceiveEncodedPoseBlock",
+          "calls": 1772,
+          "bytes": 144350.5,
+          "bytes_s": 4814.190724335592,
+          "share_percent": 7.221370379727205
+        },
+        {
+          "name": "MulticastReliableStates",
+          "calls": 432,
+          "bytes": 74674.5,
+          "bytes_s": 2490.4471078686815,
+          "share_percent": 3.735714267847629
+        },
+        {
+          "name": "MulticastShots",
+          "calls": 300,
+          "bytes": 47700.0,
+          "bytes_s": 1590.8285565398646,
+          "share_percent": 2.386270689141968
+        },
+        {
+          "name": "ClientReceivePublicPoseFrame",
+          "calls": 300,
+          "bytes": 1200.0,
+          "bytes_s": 40.02084418968212,
+          "share_percent": 0.06003196702243945
+        }
+      ],
+      "properties": [
+        {
+          "name": "GuLiPlacedBuilding.HealthState",
+          "calls": 48010,
+          "bytes": 192040.0,
+          "bytes_s": 6404.669098488796,
+          "share_percent": 9.607115789157726
+        },
+        {
+          "name": "GuLiPlacedBuilding.TargetHandle",
+          "calls": 9602,
+          "bytes": 190239.0,
+          "bytes_s": 6344.604481500782,
+          "share_percent": 9.517017811984882
+        },
+        {
+          "name": "GuLiPlacedBuilding.State",
+          "calls": 57612,
+          "bytes": 158433.0,
+          "bytes_s": 5283.852006253257,
+          "share_percent": 7.9258705260551245
+        },
+        {
+          "name": "GuLiPlacedBuilding.DefinitionId",
+          "calls": 9602,
+          "bytes": 38408.0,
+          "bytes_s": 1280.9338196977592,
+          "share_percent": 1.9214231578315453
+        },
+        {
+          "name": "GuLiPlacedBuilding.RemoteRole",
+          "calls": 19201,
+          "bytes": 7200.375,
+          "bytes_s": 240.13757165190202,
+          "share_percent": 0.3602105621243312
+        },
+        {
+          "name": "GuLiPlacedBuilding.Role",
+          "calls": 19201,
+          "bytes": 7200.375,
+          "bytes_s": 240.13757165190202,
+          "share_percent": 0.3602105621243312
+        },
+        {
+          "name": "GuLiPlacedBuilding.Team",
+          "calls": 19204,
+          "bytes": 4801.0,
+          "bytes_s": 160.1167274622199,
+          "share_percent": 0.24017789472894316
+        },
+        {
+          "name": "GuLiPlacedBuilding.BuildingType",
+          "calls": 9602,
+          "bytes": 3600.75,
+          "bytes_s": 120.08754559666492,
+          "share_percent": 0.18013342104670738
+        },
+        {
+          "name": "GuLiCommanderGameState.ReplicatedWorldTimeSecondsDouble",
+          "calls": 298,
+          "bytes": 2384.0,
+          "bytes_s": 79.50807712350182,
+          "share_percent": 0.11926350781791303
+        },
+        {
+          "name": "GuLiPlacedBuilding.bEnabled",
+          "calls": 9602,
+          "bytes": 1200.25,
+          "bytes_s": 40.029181865554975,
+          "share_percent": 0.06004447368223579
+        },
+        {
+          "name": "GuLiCommanderPlayerState.CompressedPing",
+          "calls": 1,
+          "bytes": 1.0,
+          "bytes_s": 0.03335070349140177,
+          "share_percent": 5.002663918536621e-05
+        }
+      ],
+      "frame_bytes": {
+        "count": 1240,
+        "mean": 1612.0443548387098,
+        "p50": 1505,
+        "p95": 3304,
+        "p99": 3825,
+        "maximum": 4214
+      },
+      "frame_overlap": {
+        "pose": 886,
+        "projectile": 150,
+        "building": 1240,
+        "combat": 432,
+        "pose_and_projectile": 108,
+        "pose_and_building": 886,
+        "pose_and_combat": 336,
+        "all_four": 11
+      },
+      "largest_frames": [
+        {
+          "frame": 139454,
+          "connection": 0,
+          "engine_seconds": 3742.37158203125,
+          "mass_pose": 163.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 4218,
+          "accounted_bytes": 4214,
+          "packets": 5,
+          "other_rpc": 4.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 1051.25
+        },
+        {
+          "frame": 138662,
+          "connection": 0,
+          "engine_seconds": 3723.39013671875,
+          "mass_pose": 169.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 4146,
+          "accounted_bytes": 4142,
+          "packets": 5,
+          "other_rpc": 4.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 931.75
+        },
+        {
+          "frame": 138875,
+          "connection": 0,
+          "engine_seconds": 3728.385498046875,
+          "mass_pose": 155.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 4125,
+          "accounted_bytes": 4121,
+          "packets": 5,
+          "other_rpc": 4.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 934.75
+        },
+        {
+          "frame": 138959,
+          "connection": 0,
+          "engine_seconds": 3730.366943359375,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 4065,
+          "accounted_bytes": 4061,
+          "packets": 5,
+          "other_rpc": 4.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 995.0
+        },
+        {
+          "frame": 139614,
+          "connection": 0,
+          "engine_seconds": 3746.382568359375,
+          "mass_pose": 161.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 4036,
+          "accounted_bytes": 4032,
+          "packets": 5,
+          "other_rpc": 4.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 875.75
+        },
+        {
+          "frame": 139567,
+          "connection": 0,
+          "engine_seconds": 3745.1748046875,
+          "mass_pose": 163.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1665.125,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 4031,
+          "accounted_bytes": 4028,
+          "packets": 5,
+          "other_rpc": 4.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 879.75
+        },
+        {
+          "frame": 139374,
+          "connection": 0,
+          "engine_seconds": 3740.38330078125,
+          "mass_pose": 163.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 3979,
+          "accounted_bytes": 3975,
+          "packets": 5,
+          "other_rpc": 4.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 870.5
+        },
+        {
+          "frame": 139086,
+          "connection": 0,
+          "engine_seconds": 3733.367919921875,
+          "mass_pose": 163.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1778.875,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 3878,
+          "accounted_bytes": 3874,
+          "packets": 5,
+          "other_rpc": 4.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 808.5
+        },
+        {
+          "frame": 138739,
+          "connection": 0,
+          "engine_seconds": 3725.18115234375,
+          "mass_pose": 148.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1608.25,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 3872,
+          "accounted_bytes": 3869,
+          "packets": 5,
+          "other_rpc": 4.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 877.5
+        },
+        {
+          "frame": 139211,
+          "connection": 0,
+          "engine_seconds": 3736.371337890625,
+          "mass_pose": 155.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 3847,
+          "accounted_bytes": 3843,
+          "packets": 5,
+          "other_rpc": 4.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 810.0
+        }
+      ],
+      "initial_flag_counts": {
+        "GuLiCommanderGameState/0": 441,
+        "GuLiCommanderPlayerController/4": 882,
+        "GuLiCommanderCameraPawn/4": 888,
+        "GuLiPlacedBuilding/2": 9602,
+        "GuLiConstructionVehiclePawn/0": 14080,
+        "WorldSettings/0": 242,
+        "GuLiMiningVehiclePawn/0": 6405,
+        "GuLiSoldierStateReplicator/0": 399,
+        "GuLiArmySkillReplicationActor/0": 891,
+        "GameplayDebuggerCategoryReplicator/4": 895,
+        "GuLiTerritoryOutpostActor/0": 73193,
+        "GuLiResourceFactoryActor/0": 66689,
+        "GuLiOreFieldActor/0": 897,
+        "GuLiPlacedBuilding/0": 19197,
+        "GuLiCommanderPresentationActor/0": 863,
+        "GuLiResourceWorldState/0": 242,
+        "GuLiCommanderPlayerState/4": 29,
+        "GuLiCommanderPlayerState/0": 29
+      },
+      "frames_above_one_tick_credit": 245
+    },
+    {
+      "id": 1,
+      "address": "127.0.0.1:64715",
+      "packets": 2528,
+      "budget_accounted_bytes": 1906828,
+      "bytes_s": 63594.05523710266,
+      "socket_plus_ipv4_udp_bytes": 1909061,
+      "wire_bytes_s": 63668.52735799896,
+      "categories": [
+        {
+          "name": "protocol_and_unattributed",
+          "bytes": 784032.375,
+          "bytes_s": 26148.031266284524,
+          "share_percent": 41.11709996916345
+        },
+        {
+          "name": "building_properties",
+          "bytes": 595924.25,
+          "bytes_s": 19874.49296508598,
+          "share_percent": 31.252123946155606
+        },
+        {
+          "name": "ground_projectile_snapshots",
+          "bytes": 254489.375,
+          "bytes_s": 8487.399687337154,
+          "share_percent": 13.346215547495632
+        },
+        {
+          "name": "mass_pose",
+          "bytes": 146122.5,
+          "bytes_s": 4873.288170922356,
+          "share_percent": 7.663119064750465
+        },
+        {
+          "name": "combat_states_and_shots",
+          "bytes": 122374.5,
+          "bytes_s": 4081.275664408546,
+          "share_percent": 6.417699970841628
+        },
+        {
+          "name": "other_properties",
+          "bytes": 2385.0,
+          "bytes_s": 79.54142782699323,
+          "share_percent": 0.12507682916340646
+        },
+        {
+          "name": "other_rpc",
+          "bytes": 1500.0,
+          "bytes_s": 50.02605523710266,
+          "share_percent": 0.07866467242981538
+        }
+      ],
+      "rpcs": [
+        {
+          "name": "MulticastGroundProjectileSnapshot",
+          "calls": 300,
+          "bytes": 254489.375,
+          "bytes_s": 8487.399687337154,
+          "share_percent": 13.346215547495632
+        },
+        {
+          "name": "ClientReceiveEncodedPoseBlock",
+          "calls": 1772,
+          "bytes": 146122.5,
+          "bytes_s": 4873.288170922356,
+          "share_percent": 7.663119064750465
+        },
+        {
+          "name": "MulticastReliableStates",
+          "calls": 432,
+          "bytes": 74674.5,
+          "bytes_s": 2490.4471078686815,
+          "share_percent": 3.916163387573499
+        },
+        {
+          "name": "MulticastShots",
+          "calls": 300,
+          "bytes": 47700.0,
+          "bytes_s": 1590.8285565398646,
+          "share_percent": 2.501536583268129
+        },
+        {
+          "name": "ClientReceivePublicPoseFrame",
+          "calls": 300,
+          "bytes": 1500.0,
+          "bytes_s": 50.02605523710266,
+          "share_percent": 0.07866467242981538
+        }
+      ],
+      "properties": [
+        {
+          "name": "GuLiPlacedBuilding.HealthState",
+          "calls": 48010,
+          "bytes": 192040.0,
+          "bytes_s": 6404.669098488796,
+          "share_percent": 10.071175795614497
+        },
+        {
+          "name": "GuLiPlacedBuilding.TargetHandle",
+          "calls": 9602,
+          "bytes": 190239.0,
+          "bytes_s": 6344.604481500782,
+          "share_percent": 9.976725745583765
+        },
+        {
+          "name": "GuLiPlacedBuilding.State",
+          "calls": 57612,
+          "bytes": 158433.0,
+          "bytes_s": 5283.852006253257,
+          "share_percent": 8.30872003138196
+        },
+        {
+          "name": "GuLiPlacedBuilding.DefinitionId",
+          "calls": 9602,
+          "bytes": 38408.0,
+          "bytes_s": 1280.9338196977592,
+          "share_percent": 2.0142351591228995
+        },
+        {
+          "name": "GuLiPlacedBuilding.Team",
+          "calls": 19204,
+          "bytes": 4801.0,
+          "bytes_s": 160.1167274622199,
+          "share_percent": 0.25177939489036244
+        },
+        {
+          "name": "GuLiPlacedBuilding.RemoteRole",
+          "calls": 9603,
+          "bytes": 3601.125,
+          "bytes_s": 120.10005211047421,
+          "share_percent": 0.1888542123358793
+        },
+        {
+          "name": "GuLiPlacedBuilding.Role",
+          "calls": 9603,
+          "bytes": 3601.125,
+          "bytes_s": 120.10005211047421,
+          "share_percent": 0.1888542123358793
+        },
+        {
+          "name": "GuLiPlacedBuilding.BuildingType",
+          "calls": 9602,
+          "bytes": 3600.75,
+          "bytes_s": 120.08754559666492,
+          "share_percent": 0.18883454616777182
+        },
+        {
+          "name": "GuLiCommanderGameState.ReplicatedWorldTimeSecondsDouble",
+          "calls": 298,
+          "bytes": 2384.0,
+          "bytes_s": 79.50807712350182,
+          "share_percent": 0.12502438604845323
+        },
+        {
+          "name": "GuLiPlacedBuilding.bEnabled",
+          "calls": 9602,
+          "bytes": 1200.25,
+          "bytes_s": 40.029181865554975,
+          "share_percent": 0.06294484872259061
+        },
+        {
+          "name": "GuLiCommanderPlayerState.CompressedPing",
+          "calls": 1,
+          "bytes": 1.0,
+          "bytes_s": 0.03335070349140177,
+          "share_percent": 5.244311495321025e-05
+        }
+      ],
+      "frame_bytes": {
+        "count": 1240,
+        "mean": 1537.7645161290322,
+        "p50": 1430,
+        "p95": 3203,
+        "p99": 3777,
+        "maximum": 4217
+      },
+      "frame_overlap": {
+        "pose": 886,
+        "projectile": 150,
+        "building": 1191,
+        "combat": 432,
+        "pose_and_projectile": 108,
+        "pose_and_building": 853,
+        "pose_and_combat": 336,
+        "all_four": 9
+      },
+      "largest_frames": [
+        {
+          "frame": 139454,
+          "connection": 1,
+          "engine_seconds": 3742.37158203125,
+          "mass_pose": 165.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 4220,
+          "accounted_bytes": 4217,
+          "packets": 5,
+          "other_rpc": 5.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 1051.25
+        },
+        {
+          "frame": 138875,
+          "connection": 1,
+          "engine_seconds": 3728.385498046875,
+          "mass_pose": 157.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 4053,
+          "accounted_bytes": 4049,
+          "packets": 5,
+          "other_rpc": 5.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 925.75
+        },
+        {
+          "frame": 138662,
+          "connection": 1,
+          "engine_seconds": 3723.39013671875,
+          "mass_pose": 171.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 4037,
+          "accounted_bytes": 4033,
+          "packets": 5,
+          "other_rpc": 5.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 925.75
+        },
+        {
+          "frame": 139614,
+          "connection": 1,
+          "engine_seconds": 3746.382568359375,
+          "mass_pose": 163.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 3957,
+          "accounted_bytes": 3953,
+          "packets": 5,
+          "other_rpc": 5.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 864.5
+        },
+        {
+          "frame": 138959,
+          "connection": 1,
+          "engine_seconds": 3730.366943359375,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 3946,
+          "accounted_bytes": 3942,
+          "packets": 4,
+          "other_rpc": 5.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 989.0
+        },
+        {
+          "frame": 139374,
+          "connection": 1,
+          "engine_seconds": 3740.38330078125,
+          "mass_pose": 165.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 3906,
+          "accounted_bytes": 3903,
+          "packets": 5,
+          "other_rpc": 5.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 864.5
+        },
+        {
+          "frame": 139567,
+          "connection": 1,
+          "engine_seconds": 3745.1748046875,
+          "mass_pose": 165.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1665.125,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 3878,
+          "accounted_bytes": 3875,
+          "packets": 5,
+          "other_rpc": 5.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 871.5
+        },
+        {
+          "frame": 139086,
+          "connection": 1,
+          "engine_seconds": 3733.367919921875,
+          "mass_pose": 165.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1778.875,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 3831,
+          "accounted_bytes": 3827,
+          "packets": 5,
+          "other_rpc": 5.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 803.25
+        },
+        {
+          "frame": 139651,
+          "connection": 1,
+          "engine_seconds": 3747.370849609375,
+          "mass_pose": 150.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1722.0,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 3831,
+          "accounted_bytes": 3827,
+          "packets": 5,
+          "other_rpc": 5.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 865.5
+        },
+        {
+          "frame": 138739,
+          "connection": 1,
+          "engine_seconds": 3725.18115234375,
+          "mass_pose": 150.75,
+          "ClientReceiveEncodedPoseBlock_calls": 2,
+          "ground_projectile_snapshots": 1608.25,
+          "MulticastGroundProjectileSnapshot_calls": 2,
+          "wire_bytes": 3785,
+          "accounted_bytes": 3782,
+          "packets": 5,
+          "other_rpc": 5.0,
+          "ClientReceivePublicPoseFrame_calls": 1,
+          "building_properties": 871.5
+        }
+      ],
+      "initial_flag_counts": {
+        "GuLiCommanderGameState/0": 441,
+        "GuLiCommanderCameraPawn/4": 871,
+        "GuLiCommanderPlayerController/4": 874,
+        "GuLiPlacedBuilding/2": 9602,
+        "GuLiConstructionVehiclePawn/0": 14080,
+        "WorldSettings/0": 242,
+        "GuLiMiningVehiclePawn/0": 6405,
+        "GuLiSoldierStateReplicator/0": 399,
+        "GameplayDebuggerCategoryReplicator/4": 886,
+        "GuLiArmySkillReplicationActor/0": 891,
+        "GuLiTerritoryOutpostActor/0": 73193,
+        "GuLiResourceFactoryActor/0": 66689,
+        "GuLiPlacedBuilding/0": 9602,
+        "GuLiOreFieldActor/0": 897,
+        "GuLiCommanderPresentationActor/0": 863,
+        "GuLiResourceWorldState/0": 242,
+        "GuLiCommanderPlayerState/0": 29,
+        "GuLiCommanderPlayerState/4": 29
+      },
+      "frames_above_one_tick_credit": 220
+    },
+    {
+      "id": 2,
+      "address": "127.0.0.1:17777",
+      "packets": 2480,
+      "budget_accounted_bytes": 144940,
+      "bytes_s": 4833.850964043772,
+      "socket_plus_ipv4_udp_bytes": 147420,
+      "wire_bytes_s": 4916.560708702449,
+      "categories": [
+        {
+          "name": "protocol_and_unattributed",
+          "bytes": 96040.0,
+          "bytes_s": 3203.001563314226,
+          "share_percent": 66.26190147647303
+        },
+        {
+          "name": "pose_ack",
+          "bytes": 48900.0,
+          "bytes_s": 1630.8494007295467,
+          "share_percent": 33.73809852352698
+        }
+      ],
+      "rpcs": [
+        {
+          "name": "ServerAcknowledgePoseBlocks",
+          "calls": 600,
+          "bytes": 48900.0,
+          "bytes_s": 1630.8494007295467,
+          "share_percent": 33.73809852352698
+        }
+      ],
+      "properties": [],
+      "frame_bytes": {
+        "count": 1240,
+        "mean": 116.88709677419355,
+        "p50": 76,
+        "p95": 245,
+        "p99": 245,
+        "maximum": 245
+      },
+      "frame_overlap": {
+        "pose": 0,
+        "projectile": 0,
+        "building": 0,
+        "combat": 0,
+        "pose_and_projectile": 0,
+        "pose_and_building": 0,
+        "pose_and_combat": 0,
+        "all_four": 0
+      },
+      "largest_frames": [
+        {
+          "frame": 138463,
+          "connection": 2,
+          "engine_seconds": 3718.75390625,
+          "pose_ack": 163.0,
+          "ServerAcknowledgePoseBlocks_calls": 2,
+          "wire_bytes": 247,
+          "accounted_bytes": 245,
+          "packets": 2
+        },
+        {
+          "frame": 138467,
+          "connection": 2,
+          "engine_seconds": 3718.853271484375,
+          "pose_ack": 163.0,
+          "ServerAcknowledgePoseBlocks_calls": 2,
+          "wire_bytes": 247,
+          "accounted_bytes": 245,
+          "packets": 2
+        },
+        {
+          "frame": 138472,
+          "connection": 2,
+          "engine_seconds": 3718.96875,
+          "pose_ack": 163.0,
+          "ServerAcknowledgePoseBlocks_calls": 2,
+          "wire_bytes": 247,
+          "accounted_bytes": 245,
+          "packets": 2
+        },
+        {
+          "frame": 138476,
+          "connection": 2,
+          "engine_seconds": 3719.058837890625,
+          "pose_ack": 163.0,
+          "ServerAcknowledgePoseBlocks_calls": 2,
+          "wire_bytes": 247,
+          "accounted_bytes": 245,
+          "packets": 2
+        },
+        {
+          "frame": 138480,
+          "connection": 2,
+          "engine_seconds": 3719.146728515625,
+          "pose_ack": 163.0,
+          "ServerAcknowledgePoseBlocks_calls": 2,
+          "wire_bytes": 247,
+          "accounted_bytes": 245,
+          "packets": 2
+        },
+        {
+          "frame": 138485,
+          "connection": 2,
+          "engine_seconds": 3719.258544921875,
+          "pose_ack": 163.0,
+          "ServerAcknowledgePoseBlocks_calls": 2,
+          "wire_bytes": 247,
+          "accounted_bytes": 245,
+          "packets": 2
+        },
+        {
+          "frame": 138490,
+          "connection": 2,
+          "engine_seconds": 3719.367431640625,
+          "pose_ack": 163.0,
+          "ServerAcknowledgePoseBlocks_calls": 2,
+          "wire_bytes": 247,
+          "accounted_bytes": 245,
+          "packets": 2
+        },
+        {
+          "frame": 138493,
+          "connection": 2,
+          "engine_seconds": 3719.454833984375,
+          "pose_ack": 163.0,
+          "ServerAcknowledgePoseBlocks_calls": 2,
+          "wire_bytes": 247,
+          "accounted_bytes": 245,
+          "packets": 2
+        },
+        {
+          "frame": 138497,
+          "connection": 2,
+          "engine_seconds": 3719.551513671875,
+          "pose_ack": 163.0,
+          "ServerAcknowledgePoseBlocks_calls": 2,
+          "wire_bytes": 247,
+          "accounted_bytes": 245,
+          "packets": 2
+        },
+        {
+          "frame": 138502,
+          "connection": 2,
+          "engine_seconds": 3719.665771484375,
+          "pose_ack": 163.0,
+          "ServerAcknowledgePoseBlocks_calls": 2,
+          "wire_bytes": 247,
+          "accounted_bytes": 245,
+          "packets": 2
+        }
+      ],
+      "initial_flag_counts": {},
+      "frames_above_one_tick_credit": 0
+    }
+  ],
+  "cumulative_cross_check": {
+    "seconds": 30.034388903528452,
+    "connections": [
+      {
+        "name": "IpConnection_6",
+        "bytes": 2000313,
+        "bytes_s": 66600.7557678326,
+        "queued_bits_start": -33332,
+        "queued_bits_end": -33332,
+        "packet_loss_delta": 0
+      },
+      {
+        "name": "IpConnection_7",
+        "bytes": 1908127,
+        "bytes_s": 63531.40748523212,
+        "queued_bits_start": -33332,
+        "queued_bits_end": -33332,
+        "packet_loss_delta": 0
+      }
+    ]
+  },
+  "notes": [
+    "Passive capture of existing PIE; no movement, selections, actor changes, network emulation, bandwidth setting change or restart.",
+    "Profile is process-wide. Destination 17777 combines both client uplinks; destinations 64714/64715 are independent server downlinks.",
+    "RPC totals include content/field headers. Property totals include serialized values. Container/socket layers are not added again.",
+    "IPv4/UDP overhead 28 bytes derives from engine IpConnection default. Cumulative counters are retained for near-window cross-check.",
+    "Only first 1240 complete native frames are analyzed; last partial frame excluded. Frame-index mapping checked against begin/end GFrameCounter.",
+    "Replication attribute totals measure serialization; retransmissions/unattributed protocol remain residual. Per-frame RPC serialization and socket flush can have boundary skew.",
+    "This window has no saturation. Following read-only census at 14:48:53: alive=177 active=0; do not claim these were the counts for the entire earlier window.",
+    "120 MaxNetTickRate and queued_bits lower cap -33332 support 16666 bits of credit per tick when time is clamped to 1/120 second. This is a source/runtime inference, not a direct DesiredTickRate instrument."
+  ],
+  "sha256": {
+    "breakdown-network.nprof": "ace59d3382998688737f8479b36ad84975aa65d450994cf178336d5b68baf81d",
+    "breakdown-network.log": "ab096f89a13036f18bdad3a2564d2890138ca61338eca764749e551a6b083bce",
+    "breakdown-engine.csv": "7ab9deb6676ad152be3d811916f2115b909ec01a221658ef0156d17083cac6a7"
+  }
+}

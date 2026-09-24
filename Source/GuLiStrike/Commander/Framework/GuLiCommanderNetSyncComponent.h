@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
@@ -6,11 +6,16 @@
 #include "Battle/Network/GuLiPlayerNetSyncComponent.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "Commander/Network/GuLiCommanderPoseCodec.h"
+#include "Commander/Network/GuLiCommanderStateStream.h"
 #include "Commander/Orders/GuLiUnitTaskTypes.h"
 #include "GuLiCommanderNetSyncComponent.generated.h"
 
 class AGuLiBattlePlayerState;
 class AGuLiSoldierStateReplicator;
+class UGuLiBattleAuthoritySubsystem;
+struct FGuLiSoldierRosterDelta;
+struct FGuLiMoveEndpointDelta;
+DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiMoveEndpointIdsChanged, TConstArrayView<FGuLiSoldierId>, bool);
 namespace GuLiOrderNetworkProbe { struct FRun; }
 
 /** 把专业名册代次绑定到公共连接；单独属性用于保留旧 Bootstrap RPC 的参数布局。 */
@@ -73,8 +78,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Commander|Network")
 	bool IsSoldierStreamReady() const;
 
-	/** 服务器把已构造的姿态块发给拥有者；捕获目标为 10 Hz，具体分块/调度不在本函数。 */
+	/** Queue latest samples for this connection. Capture remains 10 Hz; admission runs each Tick. */
 	void SendPoseChunk(const FGuLiSoldierPoseChunk& Chunk);
+	/** Called before the authoritative wreck is retired; preserves a queued terminal death. */
+	void QueueSoldierRetirement(const FGuLiSoldierStateItem& FinalState, uint32 MatchEpoch);
 	uint64 GetPoseCodecAllocatedBytes() const { return PoseSender.GetAllocatedBytes() + PoseReceiver.GetAllocatedBytes(); }
 
 	/** 服务器刷新选择中的存活/命令摘要并剔除全灭控制组；仅发生变化时返回 true 并请求复制。 */
@@ -95,6 +102,12 @@ public:
 	void SubmitOrderedSelection(FGuLiSelectionRequest Request);
 	bool SubmitPanelSelection(FGuLiPanelSelectionRequest Request);
 	void SubmitOrderedTask(FGuLiUnitTaskCommand Command);
+	UFUNCTION(BlueprintCallable, Category="Commander|Diagnostics", meta=(DevelopmentOnly))
+	FString GetMoveResponseDiagnostics() const;
+	/** Explicit development input through the normal client selection/task channel; requires diagnostics enabled. */
+	UFUNCTION(BlueprintCallable, Category="Commander|Diagnostics", meta=(DevelopmentOnly))
+	bool SubmitMoveResponseDiagnostic(FName Action, int32 CommandId, int32 SoldierSeed, FVector Position);
+	bool DispatchMoveResponseDiagnostic(FName Action, int32 CommandId, int32 SoldierSeed, FVector Position);
 	void SubmitControlGroup(uint8 Slot, bool bSet, bool bAppend, bool bSteal, bool bFocus);
 	const TArray<FGuLiUnitTaskSummary>& GetTaskSummaries() const;
 	const TArray<int32>& GetControlGroupCounts() const { return ControlGroupCounts; }
@@ -122,7 +135,8 @@ public:
 	UFUNCTION(Server, Reliable)
 	void ServerRequestBootstrap(uint32 ClientBootstrapRequestId);
 
-	// 拥有客户端 → 服务器，确认已具备名册；服务器核对代次、协议、战局、数量与快照版本后放行。
+	// AppliedSnapshotRevision is the completed state batch sequence, not a global roster revision.
+	// Server verifies the frozen connection-specific completion count, ID hash and sequence.
 	// 参数来自客户端当前已应用的数据，不能只凭收到 ClientBootstrapStarted 就确认。
 	UFUNCTION(Server, Reliable)
 	void ServerAcknowledgeBootstrap(
@@ -130,21 +144,23 @@ public:
 		uint16 ClientProtocolVersion,
 		uint32 ClientMatchEpoch,
 		uint16 AppliedRosterCount,
-		uint32 AppliedSnapshotRevision);
+		uint32 AppliedSnapshotRevision,
+		uint64 AppliedIdHash);
 
-	/** 预留事实流确认 RPC：当前仅记录连续序号，尚无配套 8 KiB 事实分块发送/重传实现。 */
-	UFUNCTION(Server, Unreliable)
+	/** Application ACK releases the bounded reliable window, including during bootstrap. */
+	UFUNCTION(Server, Reliable)
 	void ServerAcknowledgeFacts(uint32 InSyncGeneration, uint32 HighestContiguousStreamSeq);
 
 	const FGuLiCommanderSelectionState& GetSelectionState() const { return SelectionState; }
 
 	const FGuLiCommandAck& GetLastCommandAck() const { return LastCommandAck; }
 
-	/** Current OwnerOnly authoritative endpoints; consumers must still check IsSoldierStreamReady(). */
+	/** Owner-visible endpoint read model; consumers must still check IsSoldierStreamReady(). */
 	const FGuLiMoveEndpointFastArray& GetMoveEndpoints() const { return MoveEndpoints; }
 	const FGuLiMoveEndpointItem* FindMoveEndpoint(FGuLiSoldierId SoldierId) const
 	{
-		return MoveEndpoints.Find(SoldierId);
+		const int32* I=MoveEndpointIndex.Find(SoldierId);
+		return I && MoveEndpoints.Items.IsValidIndex(*I) ? &MoveEndpoints.Items[*I] : nullptr;
 	}
 
 	/** Authority-only endpoint mutation API used by the movement planner and completion/blocked cleanup. */
@@ -185,6 +201,7 @@ public:
 	FGuLiSoldierPoseChunkReceivedSignature OnPoseChunkReceived;
 
 	FGuLiMoveEndpointsChangedSignature OnMoveEndpointsChanged;
+	FGuLiMoveEndpointIdsChanged OnMoveEndpointIdsChanged;
 
 #if WITH_DEV_AUTOMATION_TESTS
 	void TestOnly_ConfigureDeferredSelectionMove(const FGuLiSelectionRequest& Selection, const FGuLiMoveRequest& Move);
@@ -240,6 +257,32 @@ protected:
 	virtual void OnConnectionBootstrapReady() override;
 
 private:
+	UFUNCTION(Client, Reliable)
+	void ClientReceiveStateBatch(const FGuLiEncodedStateBatch& Batch);
+	UFUNCTION(Server, Reliable)
+	void ServerRequestStateResync(uint32 ConnectionGeneration, uint32 ExpectedSyncGeneration);
+	void TickStateStream();
+	void TickEndpointSource();
+	void HandleAuthorityEndpoints(const FGuLiMoveEndpointDelta& Delta);
+	void HandleStreamRoster(const FGuLiSoldierRosterDelta& Delta);
+	void RefreshStreamMember(FGuLiSoldierId Id, double Now);
+	void SetLocalMoveEndpoint(FGuLiSoldierId Id, const FGuLiMoveEndpointItem* Endpoint);
+	void ClearLocalMoveEndpoints();
+	TMap<FGuLiSoldierId,int32> MoveEndpointIndex;
+	TSet<FGuLiSoldierId> DirtyStreamMembers, UrgentStreamMembers;
+	TSet<uint32> LatencySentBatches, LatencyAppliedBatches;
+	TWeakObjectPtr<UGuLiBattleAuthoritySubsystem> EndpointAuthority;
+	EGuLiTeam EndpointTeam = EGuLiTeam::Unassigned;
+	void ApplyPendingStateBatches();
+	void ResetStateStream();
+	GuLiCommanderStateStream::FSender StateSender;
+	GuLiCommanderStateStream::FReceiver StateReceiver;
+	GuLiCommanderStateStream::FDiagnostics StreamDiagnostics;
+	TMap<FGuLiSoldierId, GuLiCommanderStateStream::FPendingPose> QueuedPoses;
+	TArray<FGuLiEncodedStateBatch> ReceivedStateBatches;
+	uint64 ClientAppliedIdHash = 0;
+	uint32 PendingStateResyncGeneration = 0;
+	double NextStateResyncTime = 0;
 	UFUNCTION(Server, Reliable) void ServerPanelSelection(FGuLiPanelSelectionRequest Request, uint32 Sequence, uint32 Generation);
 	UFUNCTION(Server, Reliable) void ServerOrderedSelection(FGuLiSelectionRequest Request, uint32 Sequence, uint32 Generation);
 	UFUNCTION(Server, Reliable) void ServerOrderedTask(FGuLiUnitTaskCommand Command, uint32 Sequence, uint32 Generation);
@@ -370,8 +413,8 @@ private:
 	UPROPERTY(Replicated)
 	FGuLiSoldierBootstrapBinding SoldierBootstrapBinding;
 
-	// 仅拥有者需要查看选中单位的权威起终点；连续姿态仍走独立 10 Hz 流。
-	UPROPERTY(ReplicatedUsing = OnRep_MoveEndpoints)
+	// Local container retained for consumers. The owning connection publishes it in state batches.
+	UPROPERTY(Transient)
 	FGuLiMoveEndpointFastArray MoveEndpoints;
 
 	// 服务器去重状态：选兵与移动各有独立序号空间，并分别缓存最近请求及 ACK。

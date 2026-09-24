@@ -1,0 +1,37 @@
+--- GuLiCommanderPresentationActor.before.cpp
++++ Source\GuLiStrike\Commander\Presentation\GuLiCommanderPresentationActor.cpp
+@@ -1621,11 +1621,29 @@
+ 		}
+ 	}
+ 
+-	// 仅最新帧可触发硬校正；显式瞬移与未标记的大误差分别计数，后者用于网络验收排错。
+-	const bool bCorrectionTooLarge = bAdvancesLatest && Soldier.bHasPresentedTransform
+-		&& FVector::DistSquared(
+-			Soldier.PresentedTransform.GetLocation(),
+-			Sample.Location) > FMath::Square(HardSnapDistanceCentimeters);
++	// Compare consecutive authority samples, not the intentionally delayed rendered pose.
++	// Allow ordinary travel over their timestamp gap before applying the correction tolerance.
++	bool bCorrectionTooLarge = false;
++	if (bAdvancesLatest && bHasLatestSample && Soldier.bHasPresentedTransform)
++	{
++		const FGuLiCommanderBufferedSoldierPose& PreviousLatest = Soldier.Samples.Last();
++		const double SampleSeconds = FMath::Max(
++			0.0, Sample.ServerTimeSeconds - PreviousLatest.ServerTimeSeconds);
++		double SpeedBound = FMath::Max(PreviousLatest.Velocity.Size(), Sample.Velocity.Size());
++		if (const UWorld* World = GetWorld())
++		{
++			if (const AGuLiCommanderGameState* GameState = World->GetGameState<AGuLiCommanderGameState>())
++			{
++				// Both endpoint velocities can be zero after starting and stopping between samples.
++				SpeedBound = FMath::Max(SpeedBound,
++					static_cast<double>(GameState->GetEffectiveSoldierMoveSpeedCmPerSecond()));
++			}
++		}
++		const double MaximumContinuousDistance = SpeedBound * SampleSeconds;
++		bCorrectionTooLarge = FVector::DistSquared(PreviousLatest.Location, Sample.Location)
++			> FMath::Square(MaximumContinuousDistance + static_cast<double>(HardSnapDistanceCentimeters));
++	}
++	// Explicit teleports still reset immediately; untagged discontinuities remain separately counted.
+ 	if ((Sample.bTeleport && bAdvancesLatest) || bCorrectionTooLarge)
+ 	{
+ #if !UE_BUILD_SHIPPING

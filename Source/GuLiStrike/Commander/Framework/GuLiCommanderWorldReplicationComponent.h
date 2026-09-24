@@ -8,6 +8,7 @@
 #include "GuLiCommanderWorldReplicationComponent.generated.h"
 
 class AGuLiSoldierStateReplicator;
+struct FGuLiAuthorityMoveDelta;
 class AGuLiCommanderPresentationActor;
 
 /** 服务器士兵世界发布器：挂在战局 GameMode 上，独占快照捕获及逐连接姿态调度；自身不是 RPC 对象。 */
@@ -26,6 +27,8 @@ private:
 	void EnsureSoldierStateReplicator();
 	void EnsurePresentationActor();
 	void PublishSoldierSnapshotAndPoses();
+	void OnAuthorityMoveDelta(const FGuLiAuthorityMoveDelta& Delta);
+	void OnSoldierRetiring(const FGuLiSoldierStateItem& FinalState);
 
 	UPROPERTY(Transient)
 	TObjectPtr<AGuLiSoldierStateReplicator> SoldierStateReplicator;
@@ -46,10 +49,7 @@ private:
 	uint8 StationaryPoseFrameDivisor = 2u;
 
 	uint32 LastPublishedPoseSimTick = 0u;
-	double PoseFrameCapturedAtSeconds = 0.0;
 	uint32 PublishedMatchEpoch = 0u;
-	TArray<FGuLiSoldierPoseChunk> PendingPoseChunks;
-	uint8 PendingPoseDispatchPhase = 0u;
 	bool bOwnsSoldierSimulation = false;
 	bool bSoldierSimulationStarted = false;
 };

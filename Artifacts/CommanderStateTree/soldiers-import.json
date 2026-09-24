@@ -1,0 +1,93 @@
+{
+  "table": {
+    "asset": "DT_GuLiStrikeCommander_Soldiers",
+    "source_rows": [
+      "DefaultSoldier",
+      "WM01",
+      "ElectromagneticMiner",
+      "ConstructionVehicle"
+    ],
+    "created": false,
+    "row_names": [
+      "DefaultSoldier",
+      "WM01",
+      "ElectromagneticMiner",
+      "ConstructionVehicle"
+    ],
+    "row_checks": {
+      "DefaultSoldier": true,
+      "WM01": true,
+      "ElectromagneticMiner": true,
+      "ConstructionVehicle": true
+    },
+    "imported": true
+  },
+  "rows": [
+    {
+      "Name": "DefaultSoldier",
+      "Id": 1,
+      "Note": "扫射调试兵种A；数值非平衡定案",
+      "MovementSpeedCmPerSecond": 720,
+      "MaxHealth": 100,
+      "ModelAsset": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel.SM_Sweeper_Cel",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 0.2,
+      "DisplayName": "扫荡者",
+      "ModelWidthMeters": 3.1,
+      "MinAvoidanceDistanceMeters": 0.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass"
+    },
+    {
+      "Name": "WM01",
+      "Id": 2,
+      "Note": "WM01 第二兵种；首版沿用调试数值，尚未平衡",
+      "MovementSpeedCmPerSecond": 720,
+      "MaxHealth": 300.5,
+      "ModelAsset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 0.2,
+      "DisplayName": "战争机器",
+      "ModelWidthMeters": 12.5,
+      "MinAvoidanceDistanceMeters": 2.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass"
+    },
+    {
+      "Name": "ElectromagneticMiner",
+      "Id": 3,
+      "Note": "指挥官可控制矿车；Scale020后车长3.6米，900cm/s；采矿业务由矿车Manager调度",
+      "MovementSpeedCmPerSecond": 900,
+      "MaxHealth": 1000,
+      "ModelAsset": "None",
+      "Defense": 0,
+      "ActorClass": "/Script/GuLiStrike.GuLiMiningVehiclePawn",
+      "PresentationClass": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
+      "PresentationScale": 0.608458,
+      "DisplayName": "电磁矿车",
+      "ModelWidthMeters": 3.6,
+      "MinAvoidanceDistanceMeters": 1,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner"
+    },
+    {
+      "Name": "ConstructionVehicle",
+      "Id": 4,
+      "Note": "开局每队一辆；独立建造车，施工与采矿分工",
+      "MovementSpeedCmPerSecond": 900,
+      "MaxHealth": 1000,
+      "ModelAsset": "None",
+      "Defense": 0,
+      "ActorClass": "/Script/GuLiStrike.GuLiConstructionVehiclePawn",
+      "PresentationClass": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle.BP_ConstructionVehicle_C",
+      "PresentationScale": 0.608458,
+      "DisplayName": "建造车",
+      "ModelWidthMeters": 3.6,
+      "MinAvoidanceDistanceMeters": 1,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder"
+    }
+  ],
+  "bindings_match": true,
+  "success": true
+}

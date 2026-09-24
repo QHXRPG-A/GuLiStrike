@@ -1,8 +1,10 @@
+﻿#include "TimerManager.h"
+#include "Commander/Network/GuLiMoveLatency.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Gameplay/Data/GuLiGameText.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
-#include "Commander/Orders/GuLiSpecialTaskCatalog.h"
+#include "Commander/Behavior/GuLiCommanderBehaviorSchema.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
@@ -122,6 +124,7 @@ void UGuLiCommanderNetSyncComponent::ServerPanelSelection_Implementation(
 }
 void UGuLiCommanderNetSyncComponent::SubmitOrderedTask(FGuLiUnitTaskCommand Command)
 {
+	GuLiMoveLatency::Record(TEXT("input"),GuLiMoveLatency::Context(this,Command.CommandId));
 	const uint32 Sequence = NextOrderedSequence++; if (!NextOrderedSequence) ++NextOrderedSequence;
 	PendingOrderedTasks.Add(Command.CommandId);
 	if (Command.Disposition != EGuLiTaskDisposition::Stop)
@@ -160,21 +163,21 @@ void UGuLiCommanderNetSyncComponent::ServerOrderedSelection_Implementation(FGuLi
 }
 void UGuLiCommanderNetSyncComponent::ServerOrderedTask_Implementation(FGuLiUnitTaskCommand Command, uint32 Sequence, uint32 Generation)
 {
+	GuLiMoveLatency::Record(TEXT("receive"),GuLiMoveLatency::Context(this,Command.CommandId));
 	FGuLiCommandAck Ack; InitializeAck(Ack, Command.CommandId, EGuLiCommandKind::Move);
 	if (!AdmitOrderedSequence(Sequence, Generation) || !bOrderedSelectionValid)
 	{ Ack.Result = EGuLiCommandAckResult::InvalidRequest; ClientTaskReceipt(Ack, GuLiGameText::Text(TEXT("UI.OrderedCommands.107")), Generation); return; }
 	if (!SelectionState.SelectionRevision) SelectionState.SelectionRevision = 1;
 	Command.SelectionRevision = SelectionState.SelectionRevision;
 	auto* Tasks = GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>();
-	// The client requests task semantics only. The server resolves context and the authored class.
+	// The client requests task semantics only. The server resolves context and the authored tree capability.
 	Tasks->BuildContextCommand(SelectionState, Command);
-	const auto* Catalog = GetWorld()->GetSubsystem<UGuLiSpecialTaskCatalog>();
-	const auto* Special = Catalog ? Catalog->Find(Command.SpecialTaskId) : nullptr;
+	const auto* Special = GuLiCommanderBehavior::FindPolicyByWireId(*GetWorld(), Command.SpecialTaskId);
 	const FName Intent = Command.TargetIntent;
 	const bool bTargetMatches = Intent.IsNone()
 		|| (Intent == TEXT("Move") && Command.Kind == EGuLiUnitTaskKind::Move)
-		|| (Intent == TEXT("Mine") && Command.Kind == EGuLiUnitTaskKind::Special && Special && Special->Tag == FGameplayTag::RequestGameplayTag(TEXT("Task.Special.Mining")))
-		|| (Intent == TEXT("Construct") && Command.Kind == EGuLiUnitTaskKind::Special && Special && Special->Tag == FGameplayTag::RequestGameplayTag(TEXT("Task.Special.Construction")))
+		|| (Intent == TEXT("Mine") && Command.Kind == EGuLiUnitTaskKind::Special && Special && Special->Behavior == EGuLiCommanderBehavior::Mining)
+		|| (Intent == TEXT("Construct") && Command.Kind == EGuLiUnitTaskKind::Special && Special && Special->Behavior == EGuLiCommanderBehavior::Construction)
 		|| (Intent == TEXT("Return") && Command.Kind == EGuLiUnitTaskKind::ReturnToFactory)
 		|| (Intent == TEXT("Transit") && Command.Kind == EGuLiUnitTaskKind::Transit);
 	if (!bTargetMatches)
@@ -330,4 +333,58 @@ void UGuLiCommanderNetSyncComponent::ClientTaskSnapshot_Implementation(uint32 Re
 		TaskSummaries = MoveTemp(ReceivedTaskSnapshot); ControlGroupCounts = ReceivedGroupCounts; RelatedControlGroups = ReceivedRelatedGroups;
 		DisplayedTaskSelectionRevision = SelectionRevision;
 	}
+}
+
+
+bool UGuLiCommanderNetSyncComponent::SubmitMoveResponseDiagnostic(FName Action, int32 CommandId, int32 SoldierSeed, FVector Position)
+{
+#if !UE_BUILD_SHIPPING
+ if (!GetWorld() || !GuLiMoveLatency::IsEnabled()) return false;
+ // Editor Python enables local-only actor script execution. Dispatch on the real world tick
+ // so the normal RPC callspace, input sequence and owning connection are used.
+ GetWorld()->GetTimerManager().SetTimerForNextTick(FTimerDelegate::CreateWeakLambda(this,[this,Action,CommandId,SoldierSeed,Position]()
+ { DispatchMoveResponseDiagnostic(Action,CommandId,SoldierSeed,Position); }));
+ return true;
+#else
+ return false;
+#endif
+}
+
+bool UGuLiCommanderNetSyncComponent::DispatchMoveResponseDiagnostic(FName Action, int32 CommandId, int32 SoldierSeed, FVector Position)
+{
+#if !UE_BUILD_SHIPPING
+ const auto* PC=Cast<APlayerController>(GetOwner());
+ if (!GuLiMoveLatency::IsEnabled() || !PC || !PC->IsLocalController() || !IsSoldierStreamReady() || CommandId<=0 || Position.ContainsNaN()) return false;
+ if (Action==TEXT("radius") || Action==TEXT("same-type") || Action==TEXT("clear"))
+ {
+  FGuLiSelectionRequest Request; Request.ClientRequestId=uint32(CommandId); Request.Center=Position;
+  Request.RadiusPreset=EGuLiSelectionRadiusPreset::Large;
+  if (Action==TEXT("clear")) Request.Modifier=EGuLiSelectionModifier::Clear;
+  if (Action==TEXT("same-type"))
+  {
+   Request.Kind=EGuLiSelectionKind::SameType; Request.SeedSoldierId=FGuLiSoldierId(uint32(SoldierSeed));
+   Request.RayOrigin=Position+FVector(0,0,20000); Request.RayDirection=FVector(0,0,-1);
+   Request.BoxTopLeftRay=FVector(-60000,-60000,-20000).GetSafeNormal();
+   Request.BoxTopRightRay=FVector(60000,-60000,-20000).GetSafeNormal();
+   Request.BoxBottomRightRay=FVector(60000,60000,-20000).GetSafeNormal();
+   Request.BoxBottomLeftRay=FVector(-60000,60000,-20000).GetSafeNormal();
+  }
+  SubmitOrderedSelection(Request); return true;
+ }
+ if (Action==TEXT("group") || Action==TEXT("remove-group"))
+ {
+  FGuLiPanelSelectionRequest Request; Request.Action=Action==TEXT("remove-group") ? EGuLiPanelSelectionAction::RemoveGroup : EGuLiPanelSelectionAction::SingleGroup;
+  Request.SoldierId=FGuLiSoldierId(uint32(SoldierSeed)); return SubmitPanelSelection(Request);
+ }
+ if (Action==TEXT("resync"))
+ {
+  ServerRequestStateResync(GetConnectionGeneration(),StateReceiver.Session.Generation); return true;
+ }
+ if (Action!=TEXT("move") && Action!=TEXT("stop")) return false;
+ FGuLiUnitTaskCommand Command; Command.CommandId=uint32(CommandId); Command.Target=Position; Command.bGroundMoveOnly=true;
+ Command.Disposition=Action==TEXT("stop") ? EGuLiTaskDisposition::Stop : EGuLiTaskDisposition::Replace;
+ SubmitOrderedTask(Command); return true;
+#else
+ return false;
+#endif
 }

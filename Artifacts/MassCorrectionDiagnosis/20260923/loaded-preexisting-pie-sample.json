@@ -1,0 +1,1631 @@
+[
+	{
+		"world": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype",
+		"net_mode": 1,
+		"time": 458.1830851957202,
+		"connections": [
+			{
+				"name": "IpConnection_4",
+				"budget_bytes_s": 250000,
+				"in_bytes_s": 8331,
+				"out_bytes_s": 25366,
+				"in_total_bytes": 4081560,
+				"out_total_bytes": 19259667,
+				"queued_bits": -66666,
+				"in_lost": 0,
+				"out_lost": 0
+			},
+			{
+				"name": "IpConnection_5",
+				"budget_bytes_s": 250000,
+				"in_bytes_s": 29124,
+				"out_bytes_s": 66275,
+				"in_total_bytes": 12335008,
+				"out_total_bytes": 34446333,
+				"queued_bits": -59644,
+				"in_lost": 0,
+				"out_lost": 0
+			}
+		],
+		"missiles": 12191,
+		"gun_bursts": 535,
+		"logical_gun_shots": 11745,
+		"network_shot_cues": 0,
+		"damage": 6914,
+		"relays": [
+			{
+				"owner": "GuLiCommanderPlayerController_0",
+				"lifecycle": 4,
+				"config_valid": false,
+				"accepted": 3137,
+				"automatic_target_count": 8,
+				"target": 21,
+				"target_location": "X=24785.000 Y=106066.000 Z=14894.000",
+				"ship_location": "X=10000.000 Y=102500.000 Z=15000.000",
+				"normal_reject": 0,
+				"atomic_reject": 0,
+				"server_motion_writes": 0,
+				"accepted_flights": [],
+				"bootstrap_valid": false,
+				"attack_hash_valid": false,
+				"ground": false,
+				"automatic_targets": [
+					{
+						"member": 1,
+						"target": 21,
+						"revision": 3,
+						"location": "X=24785.000 Y=106066.000 Z=14894.000"
+					},
+					{
+						"member": 3,
+						"target": 24,
+						"revision": 2,
+						"location": "X=24741.000 Y=104681.000 Z=14962.000"
+					},
+					{
+						"member": 4,
+						"target": 18,
+						"revision": 2,
+						"location": "X=18627.000 Y=102797.000 Z=15380.000"
+					},
+					{
+						"member": 5,
+						"target": 17,
+						"revision": 2,
+						"location": "X=18145.000 Y=98654.000 Z=13256.000"
+					},
+					{
+						"member": 6,
+						"target": 20,
+						"revision": 1,
+						"location": "X=22227.000 Y=105201.000 Z=16340.000"
+					},
+					{
+						"member": 14,
+						"target": 23,
+						"revision": 2,
+						"location": "X=18642.000 Y=104368.000 Z=13978.000"
+					},
+					{
+						"member": 22,
+						"target": 3,
+						"revision": 1,
+						"location": "X=25015.000 Y=94499.000 Z=11045.000"
+					},
+					{
+						"member": 23,
+						"target": 13,
+						"revision": 2,
+						"location": "X=21033.000 Y=102133.000 Z=12217.000"
+					}
+				],
+				"checkpoints": [
+					{
+						"member": 1,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1881
+					},
+					{
+						"member": 22,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1972
+					},
+					{
+						"member": 3,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1915
+					},
+					{
+						"member": 23,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1941
+					},
+					{
+						"member": 5,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1813
+					},
+					{
+						"member": 14,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1868
+					},
+					{
+						"member": 4,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1899
+					}
+				]
+			},
+			{
+				"owner": "GuLiCommanderPlayerController_1",
+				"lifecycle": 2,
+				"config_valid": true,
+				"accepted": 22100,
+				"automatic_target_count": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"ship_location": "X=30000.000 Y=102500.000 Z=15000.000",
+				"normal_reject": 0,
+				"atomic_reject": 0,
+				"server_motion_writes": 0,
+				"accepted_flights": [
+					{
+						"flight": 0,
+						"frame": 4420,
+						"tick": 13580,
+						"receipt_time": 458.09853629395366
+					},
+					{
+						"flight": 1,
+						"frame": 4420,
+						"tick": 13580,
+						"receipt_time": 458.09853629395366
+					},
+					{
+						"flight": 2,
+						"frame": 4420,
+						"tick": 13580,
+						"receipt_time": 458.09853629395366
+					},
+					{
+						"flight": 3,
+						"frame": 4420,
+						"tick": 13580,
+						"receipt_time": 458.09853629395366
+					},
+					{
+						"flight": 4,
+						"frame": 4420,
+						"tick": 13580,
+						"receipt_time": 458.09853629395366
+					}
+				],
+				"bootstrap_valid": false,
+				"attack_hash_valid": false,
+				"ground": false,
+				"automatic_targets": [],
+				"checkpoints": [
+					{
+						"member": 3,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13123
+					},
+					{
+						"member": 19,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13315
+					},
+					{
+						"member": 4,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 12708
+					},
+					{
+						"member": 1,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13335
+					},
+					{
+						"member": 13,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 12708
+					},
+					{
+						"member": 20,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13354
+					},
+					{
+						"member": 7,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13016
+					},
+					{
+						"member": 17,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13043
+					},
+					{
+						"member": 2,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13018
+					},
+					{
+						"member": 14,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 12708
+					},
+					{
+						"member": 23,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13043
+					},
+					{
+						"member": 21,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13011
+					},
+					{
+						"member": 6,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13374
+					},
+					{
+						"member": 12,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13005
+					},
+					{
+						"member": 22,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13028
+					},
+					{
+						"member": 16,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 12708
+					},
+					{
+						"member": 5,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13050
+					},
+					{
+						"member": 24,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13293
+					},
+					{
+						"member": 11,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13060
+					},
+					{
+						"member": 10,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13005
+					},
+					{
+						"member": 8,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13351
+					},
+					{
+						"member": 0,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13015
+					},
+					{
+						"member": 9,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13047
+					},
+					{
+						"member": 15,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13037
+					},
+					{
+						"member": 18,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13362
+					},
+					{
+						"member": 4,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10424
+					},
+					{
+						"member": 2,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10442
+					},
+					{
+						"member": 22,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10041
+					},
+					{
+						"member": 5,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 9527
+					},
+					{
+						"member": 7,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10284
+					},
+					{
+						"member": 1,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10083
+					},
+					{
+						"member": 16,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10035
+					},
+					{
+						"member": 8,
+						"slot": "GroundWeapon",
+						"shot": 7,
+						"run": 9958
+					},
+					{
+						"member": 20,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10057
+					},
+					{
+						"member": 9,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 9927
+					},
+					{
+						"member": 17,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10427
+					},
+					{
+						"member": 3,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10448
+					},
+					{
+						"member": 23,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10035
+					},
+					{
+						"member": 24,
+						"slot": "GroundWeapon",
+						"shot": 8,
+						"run": 10000
+					},
+					{
+						"member": 6,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10293
+					},
+					{
+						"member": 10,
+						"slot": "GroundWeapon",
+						"shot": 8,
+						"run": 9582
+					},
+					{
+						"member": 13,
+						"slot": "GroundWeapon",
+						"shot": 7,
+						"run": 10344
+					},
+					{
+						"member": 19,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 9967
+					},
+					{
+						"member": 14,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 9972
+					},
+					{
+						"member": 21,
+						"slot": "GroundWeapon",
+						"shot": 8,
+						"run": 10455
+					},
+					{
+						"member": 0,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10009
+					},
+					{
+						"member": 11,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10392
+					},
+					{
+						"member": 15,
+						"slot": "GroundWeapon",
+						"shot": 7,
+						"run": 10425
+					},
+					{
+						"member": 12,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10359
+					},
+					{
+						"member": 18,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 9952
+					}
+				]
+			}
+		],
+		"planes": []
+	},
+	{
+		"world": "/Game/Maps/UEDPIE_1_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype",
+		"net_mode": 3,
+		"time": 456.66893067955971,
+		"connections": [
+			{
+				"name": "IpConnection_2",
+				"budget_bytes_s": 250000,
+				"in_bytes_s": 25265,
+				"out_bytes_s": 8323,
+				"in_total_bytes": 19259667,
+				"out_total_bytes": 4081719,
+				"queued_bits": -66666,
+				"in_lost": 0,
+				"out_lost": 0
+			}
+		],
+		"received_effect_states": 41205,
+		"received_network_shots": 0,
+		"synthesized_gun_shots": 0,
+		"relays": [
+			{
+				"owner": "GuLiCommanderPlayerController_0",
+				"lifecycle": 4,
+				"config_valid": false,
+				"accepted": 3137,
+				"automatic_target_count": 8,
+				"target": 21,
+				"target_location": "X=24785.000 Y=106066.000 Z=14894.000",
+				"ship_location": "X=10000.000 Y=102500.000 Z=15000.000",
+				"normal_reject": 0,
+				"atomic_reject": 0,
+				"server_motion_writes": -1,
+				"accepted_flights": [],
+				"bootstrap_valid": false,
+				"attack_hash_valid": false,
+				"ground": false,
+				"automatic_targets": [
+					{
+						"member": 1,
+						"target": 21,
+						"revision": 3,
+						"location": "X=24785.000 Y=106066.000 Z=14894.000"
+					},
+					{
+						"member": 3,
+						"target": 24,
+						"revision": 2,
+						"location": "X=24741.000 Y=104681.000 Z=14962.000"
+					},
+					{
+						"member": 4,
+						"target": 18,
+						"revision": 2,
+						"location": "X=18627.000 Y=102797.000 Z=15380.000"
+					},
+					{
+						"member": 5,
+						"target": 17,
+						"revision": 2,
+						"location": "X=18145.000 Y=98654.000 Z=13256.000"
+					},
+					{
+						"member": 6,
+						"target": 20,
+						"revision": 1,
+						"location": "X=22227.000 Y=105201.000 Z=16340.000"
+					},
+					{
+						"member": 14,
+						"target": 23,
+						"revision": 2,
+						"location": "X=18642.000 Y=104368.000 Z=13978.000"
+					},
+					{
+						"member": 22,
+						"target": 3,
+						"revision": 1,
+						"location": "X=25015.000 Y=94499.000 Z=11045.000"
+					},
+					{
+						"member": 23,
+						"target": 13,
+						"revision": 2,
+						"location": "X=21033.000 Y=102133.000 Z=12217.000"
+					}
+				],
+				"checkpoints": [
+					{
+						"member": 1,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1881
+					},
+					{
+						"member": 22,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1972
+					},
+					{
+						"member": 3,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1915
+					},
+					{
+						"member": 23,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1941
+					},
+					{
+						"member": 5,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1813
+					},
+					{
+						"member": 14,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1868
+					},
+					{
+						"member": 4,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 1899
+					}
+				]
+			}
+		],
+		"planes": []
+	},
+	{
+		"world": "/Game/Maps/UEDPIE_2_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype",
+		"net_mode": 3,
+		"time": 455.88775188103318,
+		"connections": [
+			{
+				"name": "IpConnection_3",
+				"budget_bytes_s": 250000,
+				"in_bytes_s": 66218,
+				"out_bytes_s": 27971,
+				"in_total_bytes": 34446333,
+				"out_total_bytes": 12335247,
+				"queued_bits": -66666,
+				"in_lost": 0,
+				"out_lost": 0
+			}
+		],
+		"received_effect_states": 41205,
+		"received_network_shots": 0,
+		"synthesized_gun_shots": 0,
+		"relays": [
+			{
+				"owner": "GuLiCommanderPlayerController_0",
+				"lifecycle": 2,
+				"config_valid": true,
+				"accepted": 22100,
+				"automatic_target_count": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"ship_location": "X=30000.000 Y=102500.000 Z=15000.000",
+				"normal_reject": 0,
+				"atomic_reject": 0,
+				"server_motion_writes": -1,
+				"accepted_flights": [],
+				"bootstrap_valid": true,
+				"attack_hash_valid": true,
+				"ground": false,
+				"automatic_targets": [],
+				"checkpoints": [
+					{
+						"member": 3,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13123
+					},
+					{
+						"member": 19,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13315
+					},
+					{
+						"member": 4,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 12708
+					},
+					{
+						"member": 1,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13335
+					},
+					{
+						"member": 13,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 12708
+					},
+					{
+						"member": 20,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13354
+					},
+					{
+						"member": 7,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13016
+					},
+					{
+						"member": 17,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13043
+					},
+					{
+						"member": 2,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13018
+					},
+					{
+						"member": 14,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 12708
+					},
+					{
+						"member": 23,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13043
+					},
+					{
+						"member": 21,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13011
+					},
+					{
+						"member": 6,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13374
+					},
+					{
+						"member": 12,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13005
+					},
+					{
+						"member": 22,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13028
+					},
+					{
+						"member": 16,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 12708
+					},
+					{
+						"member": 5,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13050
+					},
+					{
+						"member": 24,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13293
+					},
+					{
+						"member": 11,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13060
+					},
+					{
+						"member": 10,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13005
+					},
+					{
+						"member": 8,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13351
+					},
+					{
+						"member": 0,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13015
+					},
+					{
+						"member": 9,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13047
+					},
+					{
+						"member": 15,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13037
+					},
+					{
+						"member": 18,
+						"slot": "AirWeapon",
+						"shot": 0,
+						"run": 13362
+					},
+					{
+						"member": 4,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10424
+					},
+					{
+						"member": 2,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10442
+					},
+					{
+						"member": 22,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10041
+					},
+					{
+						"member": 5,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 9527
+					},
+					{
+						"member": 7,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10284
+					},
+					{
+						"member": 1,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10083
+					},
+					{
+						"member": 16,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10035
+					},
+					{
+						"member": 8,
+						"slot": "GroundWeapon",
+						"shot": 7,
+						"run": 9958
+					},
+					{
+						"member": 20,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10057
+					},
+					{
+						"member": 9,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 9927
+					},
+					{
+						"member": 17,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10427
+					},
+					{
+						"member": 3,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10448
+					},
+					{
+						"member": 23,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10035
+					},
+					{
+						"member": 24,
+						"slot": "GroundWeapon",
+						"shot": 8,
+						"run": 10000
+					},
+					{
+						"member": 6,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10293
+					},
+					{
+						"member": 10,
+						"slot": "GroundWeapon",
+						"shot": 8,
+						"run": 9582
+					},
+					{
+						"member": 13,
+						"slot": "GroundWeapon",
+						"shot": 7,
+						"run": 10344
+					},
+					{
+						"member": 19,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 9967
+					},
+					{
+						"member": 14,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 9972
+					},
+					{
+						"member": 21,
+						"slot": "GroundWeapon",
+						"shot": 8,
+						"run": 10455
+					},
+					{
+						"member": 0,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10009
+					},
+					{
+						"member": 11,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10392
+					},
+					{
+						"member": 15,
+						"slot": "GroundWeapon",
+						"shot": 7,
+						"run": 10425
+					},
+					{
+						"member": 12,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 10359
+					},
+					{
+						"member": 18,
+						"slot": "GroundWeapon",
+						"shot": 9,
+						"run": 9952
+					}
+				]
+			}
+		],
+		"planes": [
+			{
+				"member": 0,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=37765.813 Y=104883.948 Z=11298.862",
+				"forward": "X=-0.271 Y=0.909 Z=0.316",
+				"entry": "X=46093.201 Y=102595.475 Z=-2936.275",
+				"target_distance": 22611.9,
+				"carrier_distance": 8926.9,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13327,
+				"completed_ground_runs": 4,
+				"start": 449.685253392905,
+				"phase_start": 456.69125659391284,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 1,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=35958.354 Y=106749.854 Z=10332.008",
+				"forward": "X=-0.759 Y=0.645 Z=0.088",
+				"entry": "X=46094.921 Y=102625.197 Z=-2936.275",
+				"target_distance": 22938.1,
+				"carrier_distance": 8680.63,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13335,
+				"completed_ground_runs": 3,
+				"start": 449.96308429539204,
+				"phase_start": 456.45402859523892,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 2,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=36172.661 Y=105701.584 Z=10761.339",
+				"forward": "X=-0.569 Y=0.822 Z=0.029",
+				"entry": "X=46113.851 Y=102795.703 Z=-2936.275",
+				"target_distance": 23016.9,
+				"carrier_distance": 8143.59,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13325,
+				"completed_ground_runs": 4,
+				"start": 449.62144029513001,
+				"phase_start": 456.45402859523892,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 3,
+				"phase": 6,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=33165.716 Y=106039.132 Z=5274.284",
+				"forward": "X=0.717 Y=-0.171 Z=-0.676",
+				"entry": "X=46111.582 Y=102780.850 Z=-2936.275",
+				"target_distance": 20700.4,
+				"carrier_distance": 10823,
+				"desired": "X=1289.913 Y=-307.745 Z=-1217.136",
+				"guiding": true,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13477,
+				"completed_ground_runs": 4,
+				"start": 454.69157899543643,
+				"phase_start": 454.69157899543643,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 4,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=37304.631 Y=105638.692 Z=11355.015",
+				"forward": "X=-0.144 Y=0.988 Z=0.057",
+				"entry": "X=46096.653 Y=102350.772 Z=-2936.275",
+				"target_distance": 22964.6,
+				"carrier_distance": 8746.14,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13325,
+				"completed_ground_runs": 2,
+				"start": 449.62144029513001,
+				"phase_start": 456.40810999274254,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 5,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=36984.929 Y=101442.939 Z=7798.523",
+				"forward": "X=-0.161 Y=0.431 Z=0.888",
+				"entry": "X=46091.019 Y=102471.883 Z=-2936.275",
+				"target_distance": 19885,
+				"carrier_distance": 10088,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13364,
+				"completed_ground_runs": 4,
+				"start": 450.91435779258609,
+				"phase_start": 458.06003729254007,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 6,
+				"phase": 8,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=37922.036 Y=101672.968 Z=6906.432",
+				"forward": "X=-0.295 Y=0.268 Z=0.917",
+				"entry": "X=46091.411 Y=102547.839 Z=-2936.275",
+				"target_distance": 18615.3,
+				"carrier_distance": 11355.5,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13374,
+				"completed_ground_runs": 4,
+				"start": 451.25977109372616,
+				"phase_start": 456.26130129396915,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 7,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=36791.924 Y=105174.882 Z=8994.268",
+				"forward": "X=-0.107 Y=0.236 Z=0.966",
+				"entry": "X=46094.419 Y=102617.307 Z=-2936.275",
+				"target_distance": 21134.8,
+				"carrier_distance": 9452.73,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13337,
+				"completed_ground_runs": 4,
+				"start": 450.01958219334483,
+				"phase_start": 457.72164569422603,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 8,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=37463.904 Y=103928.073 Z=8834.801",
+				"forward": "X=-0.244 Y=0.299 Z=0.923",
+				"entry": "X=46105.282 Y=102734.613 Z=-2936.275",
+				"target_distance": 20526.2,
+				"carrier_distance": 9785.65,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13351,
+				"completed_ground_runs": 4,
+				"start": 450.48167379572988,
+				"phase_start": 457.91236169263721,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 9,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=37345.831 Y=102361.015 Z=8501.518",
+				"forward": "X=-0.271 Y=0.386 Z=0.882",
+				"entry": "X=46092.195 Y=102572.669 Z=-2936.275",
+				"target_distance": 20253.8,
+				"carrier_distance": 9808.71,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13357,
+				"completed_ground_runs": 4,
+				"start": 450.69147579371929,
+				"phase_start": 457.9580715931952,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 10,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=30758.068 Y=105908.441 Z=10198.761",
+				"forward": "X=-0.806 Y=0.217 Z=0.551",
+				"entry": "X=46115.004 Y=102802.965 Z=-2936.275",
+				"target_distance": 25825.1,
+				"carrier_distance": 5936.67,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13301,
+				"completed_ground_runs": 4,
+				"start": 448.82283309474587,
+				"phase_start": 456.0871012955904,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 11,
+				"phase": 8,
+				"flight_mode": 2,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=36623.439 Y=103396.211 Z=4758.097",
+				"forward": "X=-0.205 Y=0.090 Z=0.975",
+				"entry": "X=46114.267 Y=102798.349 Z=-2936.275",
+				"target_distance": 17662.7,
+				"carrier_distance": 12229.9,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13387,
+				"completed_ground_runs": 4,
+				"start": 451.68864009529352,
+				"phase_start": 456.69125659391284,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 12,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=31264.958 Y=105282.165 Z=9397.096",
+				"forward": "X=-0.774 Y=0.261 Z=0.577",
+				"entry": "X=46091.511 Y=102448.341 Z=-2936.275",
+				"target_distance": 24822.2,
+				"carrier_distance": 6382.25,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13316,
+				"completed_ground_runs": 4,
+				"start": 449.31627219542861,
+				"phase_start": 456.38615039363503,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 13,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=30937.999 Y=105848.779 Z=10146.948",
+				"forward": "X=-0.809 Y=0.219 Z=0.545",
+				"entry": "X=46103.009 Y=102715.466 Z=-2936.275",
+				"target_distance": 25659.4,
+				"carrier_distance": 5970.45,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13301,
+				"completed_ground_runs": 4,
+				"start": 448.82283309474587,
+				"phase_start": 456.10804269462824,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 14,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=31688.360 Y=105532.478 Z=9367.464",
+				"forward": "X=-0.794 Y=0.227 Z=0.563",
+				"entry": "X=46110.881 Y=102776.094 Z=-2936.275",
+				"target_distance": 24546.5,
+				"carrier_distance": 6616.04,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13310,
+				"completed_ground_runs": 4,
+				"start": 449.12019169330597,
+				"phase_start": 456.51860849559307,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 15,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=31966.536 Y=98375.666 Z=7395.451",
+				"forward": "X=-0.859 Y=-0.434 Z=0.270",
+				"entry": "X=46121.835 Y=102157.221 Z=-2936.275",
+				"target_distance": 23106,
+				"carrier_distance": 8871.67,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13335,
+				"completed_ground_runs": 4,
+				"start": 449.96308429539204,
+				"phase_start": 456.69125659391284,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 16,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=28976.506 Y=98331.356 Z=9711.903",
+				"forward": "X=-0.811 Y=-0.087 Z=0.579",
+				"entry": "X=46091.072 Y=102531.513 Z=-2936.275",
+				"target_distance": 26816.4,
+				"carrier_distance": 6810.95,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13310,
+				"completed_ground_runs": 4,
+				"start": 449.12019169330597,
+				"phase_start": 455.64503649249673,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 17,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=34113.715 Y=98975.793 Z=6304.741",
+				"forward": "X=-0.223 Y=-0.668 Z=0.709",
+				"entry": "X=46098.736 Y=102326.236 Z=-2936.275",
+				"target_distance": 20762.5,
+				"carrier_distance": 10244.5,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13370,
+				"completed_ground_runs": 4,
+				"start": 451.10675089433789,
+				"phase_start": 458.01845549419522,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 18,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=33995.562 Y=98508.223 Z=7390.138",
+				"forward": "X=-0.683 Y=-0.460 Z=0.568",
+				"entry": "X=46090.834 Y=102509.244 Z=-2936.275",
+				"target_distance": 21718.5,
+				"carrier_distance": 9476.75,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13362,
+				"completed_ground_runs": 4,
+				"start": 450.85287489369512,
+				"phase_start": 457.55873979255557,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 19,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=30319.000 Y=97685.944 Z=10266.685",
+				"forward": "X=-0.875 Y=-0.359 Z=0.325",
+				"entry": "X=46122.742 Y=102152.292 Z=-2936.275",
+				"target_distance": 26389.4,
+				"carrier_distance": 6758.78,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13315,
+				"completed_ground_runs": 4,
+				"start": 449.29101679474115,
+				"phase_start": 455.84716029465199,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 20,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=35355.852 Y=97566.920 Z=9175.152",
+				"forward": "X=-0.475 Y=-0.511 Z=0.716",
+				"entry": "X=46092.527 Y=102580.918 Z=-2936.275",
+				"target_distance": 22462.3,
+				"carrier_distance": 9324.66,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13354,
+				"completed_ground_runs": 4,
+				"start": 450.58585889264941,
+				"phase_start": 457.22087099403143,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 21,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=31601.047 Y=95423.693 Z=12576.748",
+				"forward": "X=-0.903 Y=-0.079 Z=0.423",
+				"entry": "X=46120.287 Y=102165.814 Z=-2936.275",
+				"target_distance": 27797.1,
+				"carrier_distance": 7649.16,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13297,
+				"completed_ground_runs": 4,
+				"start": 448.6783320941031,
+				"phase_start": 455.48610339313745,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 22,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=32574.861 Y=94553.752 Z=11144.684",
+				"forward": "X=-0.815 Y=-0.509 Z=0.276",
+				"entry": "X=46135.726 Y=102088.318 Z=-2936.275",
+				"target_distance": 26378.1,
+				"carrier_distance": 9199.79,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13313,
+				"completed_ground_runs": 4,
+				"start": 449.22458479553461,
+				"phase_start": 455.76018979400396,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 23,
+				"phase": 9,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=36159.669 Y=96605.448 Z=10461.032",
+				"forward": "X=-0.285 Y=-0.894 Z=0.346",
+				"entry": "X=46123.412 Y=102148.691 Z=-2936.275",
+				"target_distance": 23301.7,
+				"carrier_distance": 9658.65,
+				"desired": "X=0.000 Y=0.000 Z=0.000",
+				"guiding": false,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13325,
+				"completed_ground_runs": 4,
+				"start": 449.62144029513001,
+				"phase_start": 456.3448298946023,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			},
+			{
+				"member": 24,
+				"phase": 6,
+				"flight_mode": 0,
+				"target": 700002,
+				"target_location": "X=48000.000 Y=102500.000 Z=-8723.048",
+				"target_ground": false,
+				"slot": "AirWeapon",
+				"position": "X=30449.096 Y=95910.239 Z=13390.138",
+				"forward": "X=-0.939 Y=0.339 Z=-0.060",
+				"entry": "X=46091.603 Y=102554.946 Z=-2936.275",
+				"target_distance": 28990.6,
+				"carrier_distance": 6798.4,
+				"desired": "X=1089.721 Y=409.153 Z=-1372.990",
+				"guiding": true,
+				"next_shot": 1,
+				"cancel_reason": 7,
+				"ground_path_failure_mask": 0,
+				"ground_navigation_failure_mask": 0,
+				"run": 13576,
+				"completed_ground_runs": 4,
+				"start": 457.97915539517999,
+				"phase_start": 457.97915539517999,
+				"blocked_seconds": 0,
+				"controlled_recovery": false
+			}
+		]
+	}
+]

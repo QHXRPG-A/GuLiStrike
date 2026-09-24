@@ -1,0 +1,109 @@
+{
+  "traces": [
+    {
+      "file": "outputs\\commander-selection-20260831\\diagnostics\\prediction-baseline-20260923-131628-22755.csv",
+      "soldier": 737,
+      "duration": 24.01986899999997,
+      "frames": 816,
+      "samples": 106,
+      "hard_snaps": 0,
+      "samples_per_second": 4.4130132433278515,
+      "arrival_mean_ms": 226.28316190476178,
+      "arrival_p95_ms": 251.9295999999713,
+      "arrival_max_ms": 260.70800000002237,
+      "moving_sample_steps": 0,
+      "zero_display_steps_while_latest_sample_moving": 0,
+      "dot_negative_to_latest_sample_velocity": 0,
+      "frames_over_extrapolation_limit": 0,
+      "max_display_frame_step_cm": 0.004472135955910674,
+      "top_display_speeds_cm_s": [
+        [
+          0.004472135955910674,
+          0.022033000000078573,
+          0.2029744454179969,
+          855.615709
+        ],
+        [
+          0.004472135955910674,
+          0.0251060000000507,
+          0.17813016633082301,
+          854.219539
+        ],
+        [
+          0.004472135955910674,
+          0.026101000000039676,
+          0.1713396404698623,
+          851.836762
+        ],
+        [
+          0.004472135955910674,
+          0.026972000000000662,
+          0.16580661263200963,
+          855.860171
+        ],
+        [
+          0.004472135955910674,
+          0.027391999999963446,
+          0.163264309138312,
+          853.75554
+        ]
+      ]
+    },
+    {
+      "file": "outputs\\commander-selection-20260831\\diagnostics\\prediction-baseline-20260923-131630-22822.csv",
+      "soldier": 737,
+      "duration": 26.028756999999928,
+      "frames": 883,
+      "samples": 117,
+      "hard_snaps": 0,
+      "samples_per_second": 4.495028325785988,
+      "arrival_mean_ms": 223.23593965517207,
+      "arrival_p95_ms": 253.69850000006977,
+      "arrival_max_ms": 460.2910000000975,
+      "moving_sample_steps": 25,
+      "zero_display_steps_while_latest_sample_moving": 0,
+      "dot_negative_to_latest_sample_velocity": 0,
+      "frames_over_extrapolation_limit": 5,
+      "max_display_frame_step_cm": 33.79505136850792,
+      "top_display_speeds_cm_s": [
+        [
+          33.79505136850792,
+          0.03542400000003454,
+          954.0156777460188,
+          866.756958
+        ],
+        [
+          25.93472430931191,
+          0.02835699999991448,
+          914.5792682367714,
+          866.945078
+        ],
+        [
+          28.828311431647844,
+          0.032466999999996915,
+          887.926554090325,
+          866.916721
+        ],
+        [
+          32.29997526315477,
+          0.036789999999996326,
+          877.9552939156836,
+          867.006815
+        ],
+        [
+          21.013301692017944,
+          0.024946999999997388,
+          842.3177813773257,
+          866.970025
+        ]
+      ]
+    }
+  ],
+  "session_authority_jump_count": 17,
+  "latest_authority_jumps": [
+    "[2026.09.23-05.04.02:687][280]LogGuLiCommanderMass: Error: Authority pose discontinuity: soldier=271 previous_frame=813 frame=814 step_cm=1232.8 previous=(24968.6,-17372.8,-2009.7) current=(26201.0,-17404.0,-2012.2) velocity=(288.6,-35.0,31.8) sample_seconds=0.100 allowed_step_cm=200.0.",
+    "[2026.09.23-05.12.35:596][820]LogGuLiCommanderMass: Error: Authority pose discontinuity: soldier=737 previous_frame=4759 frame=4760 step_cm=605.8 previous=(15006.5,3499.3,308.0) current=(14421.0,3648.0,352.8) velocity=(-416.8,547.1,-118.2) sample_seconds=0.100 allowed_step_cm=200.0.",
+    "[2026.09.23-05.17.26:849][741]LogGuLiCommanderMass: Error: Authority pose discontinuity: soldier=136 previous_frame=7301 frame=7302 step_cm=664.8 previous=(14991.2,3306.6,335.4) current=(14421.0,3648.0,352.8) velocity=(-158.3,247.6,-25.2) sample_seconds=0.100 allowed_step_cm=200.0."
+  ],
+  "scope": "single soldier in two clients; no injected commands; latest-velocity stall heuristic is not a complete movement classifier"
+}

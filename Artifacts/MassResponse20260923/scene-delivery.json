@@ -1,0 +1,252 @@
+{
+  "success": true,
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "actors": [
+    {
+      "name": "StaticMeshActor_0",
+      "label": "MassNav_CornerLong",
+      "class": "StaticMeshActor",
+      "position": [
+        11200.0,
+        70500.0,
+        -1168.157470388662
+      ],
+      "scale": [
+        26.0,
+        2.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "name": "StaticMeshActor_4",
+      "label": "MassNav_CornerReturn",
+      "class": "StaticMeshActor",
+      "position": [
+        12600.0,
+        71500.0,
+        -1167.2526677167045
+      ],
+      "scale": [
+        2.0,
+        22.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "name": "StaticMeshActor_5",
+      "label": "MassNav_NarrowLeft",
+      "class": "StaticMeshActor",
+      "position": [
+        5200.0,
+        69000.0,
+        -1169.6796744043097
+      ],
+      "scale": [
+        2.0,
+        24.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "name": "StaticMeshActor_6",
+      "label": "MassNav_NarrowRight",
+      "class": "StaticMeshActor",
+      "position": [
+        6200.0,
+        69000.0,
+        -1169.6796744043097
+      ],
+      "scale": [
+        2.0,
+        24.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "name": "StaticMeshActor_7",
+      "label": "MassNav_ClosedNorth",
+      "class": "StaticMeshActor",
+      "position": [
+        16500.0,
+        68500.0,
+        -1170.297667859057
+      ],
+      "scale": [
+        30.0,
+        2.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "name": "StaticMeshActor_8",
+      "label": "MassNav_ClosedSouth",
+      "class": "StaticMeshActor",
+      "position": [
+        16500.0,
+        65500.0,
+        -1173.3135502498665
+      ],
+      "scale": [
+        30.0,
+        2.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "name": "StaticMeshActor_9",
+      "label": "MassNav_ClosedWest",
+      "class": "StaticMeshActor",
+      "position": [
+        15000.0,
+        67000.0,
+        -1171.6617536788547
+      ],
+      "scale": [
+        2.0,
+        32.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "name": "StaticMeshActor_10",
+      "label": "MassNav_ClosedEast",
+      "class": "StaticMeshActor",
+      "position": [
+        18000.0,
+        67000.0,
+        -1171.6617536788547
+      ],
+      "scale": [
+        2.0,
+        32.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "name": "Note_7",
+      "label": "MassNav_Entry",
+      "class": "Note",
+      "position": [
+        0.0,
+        72500.0,
+        -1266.0462924959868
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "Mass首批响应：保留原图红蓝各250名，自动据点推进保持。选25人或当前可选规模，向25米外下令。首批算好复核后立即提交绿线，位移仍10Hz。连续改令、S停止、减选、双指挥官同时下令均需检查。2000/10000单方部署入口仍待办。"
+    },
+    {
+      "name": "Note_8",
+      "label": "MassNav_CornerObserve",
+      "class": "Note",
+      "position": [
+        11000.0,
+        68500.0,
+        -1270.2972493053533
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "从拐角西侧向东北右键移动，观察贴墙时中心线回退、侧向归位暂停、稳定绕行。不可穿墙投影。"
+    },
+    {
+      "name": "Note_9",
+      "label": "MassNav_NarrowObserve",
+      "class": "Note",
+      "position": [
+        5700.0,
+        67000.0,
+        -1271.6616125539406
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "向(5700,71000)下令穿过800cm净宽通道，观察缩列、出口恢复与反复改令。"
+    },
+    {
+      "name": "Note_10",
+      "label": "MassNav_CapacityObserve",
+      "class": "Note",
+      "position": [
+        16500.0,
+        67000.0,
+        -1271.6617536788547
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "封闭区中心(16500,67000)：检查路径拆分与部分失败。已经完成的合法子批可先提交；其余成员保留旧指令和预约。失败、停止和旧命令不得覆盖新绿线。"
+    },
+    {
+      "name": "Note_11",
+      "label": "MassNav_OreMechObserve",
+      "class": "Note",
+      "position": [
+        5625.0,
+        71875.0,
+        -1266.7068780636912
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "矿体和地面机甲：比较远处建造/拆除与沿途导航变化，远处变化不应重置无关规划。原地或移动机甲仍受局部障碍校验。重连后重新选择，检查配对终点及旧线不复活。诊断开关 guli.Commander.MoveLatencyDiagnostics 1；采样后恢复0。"
+    },
+    {
+      "name": "CameraActor_0",
+      "label": "MassNav_Overview",
+      "class": "CameraActor",
+      "position": [
+        -12000.0,
+        85000.0,
+        28000.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "unrelated_transforms_preserved": true,
+  "population": {
+    "red": 250,
+    "blue": 250,
+    "overrides": 0
+  },
+  "validation": {
+    "success": "True",
+    "message": "Resource authoring source and baked runtime definition are current.",
+    "source_hash": "5d327daef9821399e54956efbe50c629290d042a",
+    "initial_soldier_count": "500",
+    "validated_initial_soldier_count": "500"
+  },
+  "runtime_verified": false
+}

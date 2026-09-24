@@ -26,7 +26,7 @@ bool FGuLiScale020InterpolationContract::RunTest(const FString& Parameters)
 	TestEqual(TEXT("10 Hz interpolation baseline remains 120 ms"), Actor->InterpolationBackTimeSeconds, .12f);
 	TestEqual(TEXT("Jitter allowance remains 350 ms"), Actor->MaximumAdaptiveInterpolationBackTimeSeconds, .35f);
 	TestEqual(TEXT("Extrapolation remains bounded to 100 ms"), Actor->MaximumExtrapolationSeconds, .1f);
-	TestEqual(TEXT("Hard snap is now 2 m, not 10 m"), Actor->HardSnapDistanceCentimeters, 200.f);
+	TestEqual(TEXT("Ordinary correction is capped at three times standard speed"), Actor->MaximumCorrectionSpeedMultiplier, 3.f);
 	TestEqual(TEXT("Prediction cap is now 1.8 m, not 9 m"), Actor->MaximumPredictionDistanceCentimeters, 180.f);
 	TestEqual(TEXT("Prediction duration unchanged"), Actor->PredictionDurationSeconds, .25f);
 	TestEqual(TEXT("Correction duration unchanged"), Actor->PredictionResolveSeconds, .15f);
@@ -69,10 +69,10 @@ bool FGuLiScale020InterpolationContract::RunTest(const FString& Parameters)
 	Pose.FrameSequence = 2; Pose.ServerTimeSeconds += .1; Pose.Location = Anchor + FVector(200, 0, 0);
 	Actor->InsertPoseSample(Id, Pose, 20.1);
 	TestEqual(TEXT("Exactly 2 m does not hard-snap"), Soldier.UntaggedHardSnapCount, uint64(0));
-	Pose.FrameSequence = 3; Pose.ServerTimeSeconds += .1; Pose.Location = Anchor + FVector(201, 0, 0);
+	Pose.FrameSequence = 3; Pose.ServerTimeSeconds += .1; Pose.Location = Anchor + FVector(901, 0, 0);
 	Actor->InsertPoseSample(Id, Pose, 20.2);
-	TestEqual(TEXT("2.01 m does hard-snap"), Soldier.UntaggedHardSnapCount, uint64(1));
-	TestEqual(TEXT("Hard correction clears the old interpolation history"), Soldier.Samples.Num(), 1);
+	TestEqual(TEXT("Large ordinary correction does not hard-snap"), Soldier.UntaggedHardSnapCount, uint64(0));
+	TestEqual(TEXT("Ordinary correction retains interpolation history"), Soldier.Samples.Num(), 3);
 
 	auto& Prediction = Actor->PredictedMoves.FindOrAdd(Id);
 	Prediction.StartTimeSeconds = 30.0;

@@ -34,6 +34,9 @@ Content/Characters/Mannequins/
 
 # Marketplace / asset packs (not versioned, huge binary trees)
 Content/Assets/
+# World Partition sidecars belong to the same local-only marketplace packs.
+Content/__ExternalActors__/Assets/
+Content/__ExternalObjects__/Assets/
 Content/MafiaBarnPack/
 Content/Fab/Missile_Turret/
 Content/Fab/Stylized_Turrets_-_Tower_Defense/
@@ -137,7 +140,16 @@ TestResults/Scale020/FXReview/NS_WM01_Explosion_*/frame_*.png
 TestResults/**/*.uasset
 TestResults/**/*.umap
 Artifacts/**/*.uasset
+Artifacts/**/*.umap
 Artifacts/**/*-inspection.t3d
+# Reproducible terrain buffers and raw profiling captures stay local; keep scripts and summaries.
+Artifacts/**/*.raw
+Artifacts/**/*.r16
+Artifacts/**/*.r8
+Artifacts/**/*.jsonl
+Artifacts/**/*.nprof
+Artifacts/**/insights/events.csv
+Artifacts/Map*/**/terrain/*.png
 
 # Live editor control scratch files and local command notes
 Progress/Commander*.json

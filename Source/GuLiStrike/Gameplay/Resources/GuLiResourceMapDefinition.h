@@ -51,7 +51,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Bake")
 	int32 DeterministicSeed = GULI_RESOURCE_BAKE_SEED;
 
-	/** Hash of markers, property bags, territories, density payloads and referenced map package. */
+	/** Hash of markers, property bags, territories, density payloads, initial deployment reservations and referenced map package. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Bake")
 	FString SourceHash;
 
@@ -101,13 +101,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Mining", meta = (ClampMin = "1", ClampMax = "65535"))
 	int32 MiningVehicleUnitTypeId = 3;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Mining", meta = (ClampMin = "0"))
+	int32 InitialMiningVehiclesPerTeam = 8;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Resources|Construction") int32 ConstructionVehicleUnitTypeId = 4;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Resources|Construction") int32 InitialConstructionVehiclesPerTeam = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Construction", meta = (ClampMin = "0"))
+	int32 InitialConstructionVehiclesPerTeam = 8;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Mining", meta = (ClampMin = "1.0"))
-	float MiningDistanceCentimeters = 1080.0f;
+	/** Serialized compatibility only. Mining now has no maximum distance from an occupied slot. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Legacy",
+		meta = (DeprecatedProperty, DeprecationMessage = "Mining distance is unlimited after occupying a mining slot; this value is ignored."))
+	float MiningDistanceCentimeters = 0.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Factory", meta = (ClampMin = "1.0"))
+	/** Serialized compatibility only; all factory movement now follows navigation. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Legacy",
+		meta = (DeprecatedProperty, DeprecationMessage = "Factory manoeuvres were removed; this value is ignored."))
 	float FactoryManeuverSpeedCentimetersPerSecond = 300.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Mining", meta = (ClampMin = "0.01"))

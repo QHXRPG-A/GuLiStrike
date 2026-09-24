@@ -36,6 +36,12 @@ struct GULISTRIKEEDITOR_API FGuLiResourceBakeResult
 
 	UPROPERTY(BlueprintReadOnly, Category = "Resources|Bake")
 	int32 NodeCount = 0;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Resources|Bake")
+	int32 InitialSoldierCount = 0;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Resources|Bake")
+	int32 ValidatedInitialSoldierCount = 0;
 };
 
 /**
@@ -48,7 +54,7 @@ class GULISTRIKEEDITOR_API UGuLiResourceAuthoringLibrary final : public UBluepri
 	GENERATED_BODY()
 
 public:
-	/** Idempotently creates/migrates the canonical 5x5 authoring data, then performs a strict bake. */
+	/** Idempotently prepares the canonical 9x9 authoring data, then performs a strict bake. */
 	UFUNCTION(BlueprintCallable, Category = "GuLiStrike|Editor|Resources")
 	static FGuLiResourceBakeResult PrepareCanonicalAuthoringAndBake(
 		bool bInitializeDensityWhenEmpty = true,
@@ -61,6 +67,10 @@ public:
 	/** Compares current authoring source, baked source hash and baked layout validation. */
 	UFUNCTION(BlueprintCallable, Category = "GuLiStrike|Editor|Resources")
 	static FGuLiResourceBakeResult ValidateCurrentBake();
+
+	/** Read-only geometry/clearance preview from the same configuration as authority spawning. */
+	UFUNCTION(BlueprintCallable, Category = "GuLiStrike|Editor|Resources")
+	static FString GetInitialArmySpawnLayoutJson();
 
 	/** Configures one in-process dedicated server plus N clients without persisting user settings. */
 	UFUNCTION(BlueprintCallable, Category = "GuLiStrike|Editor|Resources")

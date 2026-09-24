@@ -1,0 +1,53 @@
+{
+  "checks": [
+    {
+      "name": "null controller is safely unfocused",
+      "passed": true
+    },
+    {
+      "name": "PIE game window is focused",
+      "passed": true
+    },
+    {
+      "name": "active window accepts hover",
+      "passed": true
+    },
+    {
+      "name": "open owned material editor",
+      "passed": true
+    },
+    {
+      "name": "other UE window disables pointer",
+      "passed": true
+    },
+    {
+      "name": "focus loss smoothly recenters",
+      "passed": true
+    },
+    {
+      "name": "background press cannot select",
+      "passed": true
+    }
+  ],
+  "snapshots": {
+    "active_hover": {
+      "focused": true,
+      "mouse_valid": true,
+      "hovered": 1,
+      "phase": 1,
+      "yaw": -9.533267974853516,
+      "roll": 9.597045898437502
+    },
+    "game_window_deactivated": {
+      "focused": false,
+      "mouse_valid": false,
+      "hovered": -1,
+      "phase": 1,
+      "yaw": 0.0,
+      "roll": -0.0
+    }
+  },
+  "errors": [],
+  "method": "Actual PIE window focus, then focus the owned flash material editor; no OS keyboard simulation.",
+  "success": true
+}

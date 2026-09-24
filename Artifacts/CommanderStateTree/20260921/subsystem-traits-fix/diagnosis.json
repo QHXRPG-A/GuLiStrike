@@ -1,0 +1,53 @@
+{
+  "reported_log": "reported-ensure.log",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "scenario": "User-reported game tick allocating the first Commander Mass StateTree instance; exact user input sequence not provided.",
+  "expected": "AllocateInstanceData resolves all compiled schema dependencies and starts a per-entity instance without an ensure.",
+  "observed": "Handled ensure in MassRequirements.cpp:75: Failed to find type information for GuLiUnitTaskSubsystem.",
+  "first_bad_transition": "UMassStateTreeSubsystem::AllocateInstanceData -> CreateProcessorForStateTree -> FMassSubsystemRequirements::IsGameThreadOnlySubsystem -> GetTypeInfo returns null",
+  "cause": "Typed AddSubsystemRequirement<T> only sets the query bitsets and thread requirement; ordinary project UWorldSubsystem classes had not been registered in the per-world Mass FTypeManager used by compiled StateTree dependencies.",
+  "affected_subsystems": [
+    "UGuLiUnitTaskSubsystem",
+    "UGuLiArmyAdvanceSubsystem",
+    "UGuLiUnitDataSubsystem"
+  ],
+  "fix": "Register all three subsystem traits during Commander processor ConfigureQueries, before first allocation; skip existing registrations because UE 5.7 forbids overriding runtime types after built-in registration.",
+  "thread_policy": {
+    "GameThreadOnly": true,
+    "ThreadSafeWrite": false,
+    "source": "UE 5.7 default TMassExternalSubsystemTraits"
+  },
+  "source_changed": [
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderMassStateTreeProcessor.cpp"
+  ],
+  "engine_source_changed": false,
+  "network_and_schedule_changed": false,
+  "asset_changes_required": false,
+  "hypotheses": [
+    {
+      "rank": 1,
+      "hypothesis": "Missing runtime subsystem type registration",
+      "result": "confirmed by supplied stack and source inspection"
+    },
+    {
+      "rank": 2,
+      "hypothesis": "Missing or uncompiled StateTree asset",
+      "result": "stack had already entered native instance allocation and dependency conversion; source checks readiness before this call"
+    },
+    {
+      "rank": 3,
+      "hypothesis": "Async asset streaming failure",
+      "result": "FlushAsyncLoading is a display message; no failed package reported in supplied log"
+    }
+  ],
+  "static_validation": [
+    "All project subsystem dependencies declared by the Mass task/condition are covered.",
+    "Processor CallInitialize runs inside UnitTaskSubsystem initialization before Tick can call Execute/AllocateInstanceData.",
+    "Registration stays outside entity queries; entity composition, instance handles, main-thread execution, 10Hz task clock and network code unchanged."
+  ],
+  "runtime_verified": false,
+  "player_check": "Start the existing Commander prototype again and confirm first Mass instance creation no longer emits the reported TypeInfo ensure; observe both Mass unit types starting birth advance. PIE not started by assistant.",
+  "source_sha256": {
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderMassStateTreeProcessor.cpp": "c48ed71daa2e5f19746ebdeca005de8e0a664b3da0a1511adddf798437385d1f"
+  }
+}

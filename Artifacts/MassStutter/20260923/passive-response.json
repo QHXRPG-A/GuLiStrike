@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "mode": "passive_existing_pie",
+    "duration_seconds": 18,
+    "soldier_id": 1,
+    "traces": [
+      {
+        "client": 1,
+        "duration": 12,
+        "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype"
+      },
+      {
+        "client": 2,
+        "duration": 16,
+        "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype"
+      }
+    ],
+    "replication_settings": {
+      "full_rate_pose_distance_centimeters": 32000.0,
+      "far_moving_pose_frame_divisor": 2,
+      "stationary_pose_frame_divisor": 2
+    }
+  }
+}

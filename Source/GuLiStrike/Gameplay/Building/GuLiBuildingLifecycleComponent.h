@@ -3,6 +3,7 @@
 #include "Components/ActorComponent.h"
 #include "UObject/Interface.h"
 #include "Gameplay/Building/GuLiBuildingTypes.h"
+#include "Gameplay/Building/GuLiConstructionSlots.h"
 #include "GuLiBuildingLifecycleComponent.generated.h"
 
 UINTERFACE(MinimalAPI)
@@ -44,6 +45,23 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out) const override;
 	void InitializeBuilding(int32 DefinitionId, int32 TerritoryIndex, EGuLiBuildingOrigin Origin, bool bCompleted, const FGuid& Builder = FGuid());
 	void AddConstructionWork(float Work);
+	void AccumulateConstructionWork(float Work);
+	virtual void TickComponent(float Dt, ELevelTick TickType, FActorComponentTickFunction* Function) override;
+	void PrepareConstructionSlots(ACharacter& Prototype);
+	bool BuildNextConstructionSlot();
+	void InvalidateConstructionSlots(const FBox& Bounds);
+	EGuLiWorkPositionAvailability GetConstructionAvailability() const;
+	uint32 GetConstructionSlotGeneration() const { return SlotGeneration; }
+	UFUNCTION(BlueprintPure, Category="Building") TArray<FTransform> GetConstructionSlotPoses() const;
+	UFUNCTION(BlueprintPure, Category="Building") int32 GetReservedConstructionSlots() const;
+	UFUNCTION(BlueprintPure, Category="Building") bool AreConstructionSlotsReady() const { return !bSlotsPending; }
+	EGuLiWorkPositionAvailability QueryConstructionPosition(const ACharacter& Vehicle, uint32 StableVehicleId,
+		TConstArrayView<int32> ExcludedSlots, FGuLiConstructionSlotIntent& Out, FVector& Position) const;
+	bool IsConstructionPositionAvailable(const ACharacter& Vehicle, const FGuLiConstructionSlotIntent& Intent) const;
+	bool TryOccupyConstructionSlot(ACharacter& Vehicle, uint32 Task, const FGuLiConstructionSlotIntent& Intent,
+		FGuLiConstructionSlotReservation& Out);
+	bool ValidateConstructionSlot(const ACharacter& Vehicle, const FGuLiConstructionSlotReservation& Reservation) const;
+	void ReleaseConstructionSlot(const ACharacter& Vehicle, const FGuLiConstructionSlotReservation& Reservation);
 	void RefreshTeam();
 	UFUNCTION(BlueprintPure, Category="Building") const FGuLiBuildingLifecycleState& GetState() const { return State; }
 	const FGuLiBuildingDefinition& GetDefinition() const;
@@ -51,9 +69,18 @@ public:
 	FVector GetGroundLocation() const;
 	bool IsCompleted() const { return State.Phase == EGuLiBuildingPhase::Completed; }
 	bool CountsForManualLimit() const { return State.Origin == EGuLiBuildingOrigin::Manual; }
+	UFUNCTION(BlueprintPure, Category="Building") float GetConstructionProgress() const;
+	/** Local notification on authority and replicas; observers read the current snapshot. */
+	FSimpleMulticastDelegate OnConstructionStateChanged;
 private:
 	UPROPERTY(ReplicatedUsing=OnRep_State) FGuLiBuildingLifecycleState State;
 	UFUNCTION() void OnRep_State();
 	UFUNCTION() void HandleDeath();
 	void RegisterInstance();
+	TArray<FGuLiConstructionSlot> ConstructionSlots;
+	TWeakObjectPtr<ACharacter> ConstructionPrototype;
+	uint32 SlotGeneration = 1;
+	int32 NextSlotSample = 0;
+	bool bSlotsPending = true;
+	float PendingConstructionWork = 0;
 };

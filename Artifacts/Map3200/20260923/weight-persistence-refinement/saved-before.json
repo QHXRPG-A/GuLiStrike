@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "saved": [
+    "/Game/Maps/LVL_CommanderMassPrototype",
+    "/Game/GuLiStrike/Navigation/Baked/LVL_CommanderMassPrototype/DA_FlightNav_LVL_CommanderMassPrototype",
+    "/Game/GuLiStrike/Editor/MapAuthoring/Types/DA_Outpost",
+    "/Game/GuLiStrike/Data/Resources/DA_CommanderResourceMap"
+  ],
+  "unrelated_dirty_not_saved": [],
+  "resource_source_hash": "694d19e892dc479b248705d4f907433d2fab28ee",
+  "resource_layout_hash": "2472a7eab327edae8cffdef5d57aa5cbb4ff73a1",
+  "navigation": [
+    {
+      "kind": "Ground",
+      "status": "Hit",
+      "source_hash": "6fc419375b22b8c2",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier"
+    },
+    {
+      "kind": "Ground",
+      "status": "Hit",
+      "source_hash": "a60b7e4351187c4c",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default"
+    },
+    {
+      "kind": "Flight",
+      "status": "Hit",
+      "source_hash": "387aebfca201bfc7",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0"
+    }
+  ],
+  "pie_run": false
+}

@@ -1,0 +1,239 @@
+{
+  "compile": {
+    "Blueprints/BP_ParallaxRevealCard": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "UI/WBP_CardRevealHUD": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "Blueprints/BP_CardRevealDirector": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "Blueprints/BP_CardRevealPlayerController": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "Blueprints/BP_CardRevealGameMode": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    }
+  },
+  "scene": {
+    "map": "/Game/GuLiStrike/Cards/RevealDemo/Maps/LVL_CardRevealDemo",
+    "actors": [
+      {
+        "label": "CardReveal_Key",
+        "class": "/Script/Engine.DirectionalLight",
+        "location": [
+          0.0,
+          250.0,
+          120.0
+        ]
+      },
+      {
+        "label": "CardReveal_Ambient",
+        "class": "/Script/Engine.SkyLight",
+        "location": [
+          0.0,
+          0.0,
+          100.0
+        ]
+      },
+      {
+        "label": "CardReveal_PlayerStart",
+        "class": "/Script/Engine.PlayerStart",
+        "location": [
+          0.0,
+          140.0,
+          0.0
+        ]
+      },
+      {
+        "label": "CardReveal_Director",
+        "class": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector.BP_CardRevealDirector_C",
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "game_mode": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode.BP_CardRevealGameMode_C",
+    "controller": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController.BP_CardRevealPlayerController_C",
+    "camera": {
+      "location": [
+        0.0,
+        140.0,
+        0.0
+      ],
+      "rotation": "<Struct 'Rotator' (0x000001A6014A2C70) {pitch: -0.000000, yaw: -90.000000, roll: 0.000000}>",
+      "horizontal_fov": 50.0,
+      "aspect_constraint": "<AspectRatioAxisConstraint.ASPECT_RATIO_MAINTAIN_XFOV: 1>",
+      "exposure_override": true,
+      "exposure_method": "<AutoExposureMethod.AEM_MANUAL: 2>",
+      "physical_exposure": false,
+      "exposure_bias": 0.0
+    },
+    "parameters": {
+      "EntryDuration": 0.5,
+      "FlipDuration": 0.44999998807907104,
+      "FlashDuration": 0.25,
+      "ExitDuration": 0.5,
+      "MaximumTilt": 12.0,
+      "HoverInterpSpeed": 12.0,
+      "FlashIntensity": 8.0,
+      "CameraDistance": 140.0,
+      "HorizontalFOV": 50.0,
+      "FarDistance": 1100.0
+    },
+    "runtime_card_count": 3,
+    "runtime_cards_spawned_by": "BP_CardRevealDirector.StartPresentation"
+  },
+  "materials": {
+    "M_CardBack": "<Struct 'MaterialDetailedInfo' (0x000001A68B4D8680) {material_name: \"M_CardBack\", material_path: \"/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardBack\", parent_material: \"\", material_domain: \"MD_Surface\", blend_mode: \"BLEND_Opaque\", shading_model: \"MSM_Unlit\", is_material_instance: False, two_sided: False, expression_count: 1, texture_sample_count: 1, parameters: ((ParameterName=\"CardBackTexture\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/RewardCards/Textures/T_CardBG_00.T_CardBG_00\",DefaultValue=\"/Game/Assets/card/RewardCards/Textures/T_CardBG_00.T_CardBG_00\"))}>",
+    "M_DemoBackdrop": "<Struct 'MaterialDetailedInfo' (0x000001A68B4D8680) {material_name: \"M_DemoBackdrop\", material_path: \"/Game/GuLiStrike/Cards/RevealDemo/Materials/M_DemoBackdrop\", parent_material: \"\", material_domain: \"MD_Surface\", blend_mode: \"BLEND_Opaque\", shading_model: \"MSM_Unlit\", is_material_instance: False, two_sided: False, expression_count: 1, texture_sample_count: 0, parameters: ((ParameterName=\"BackgroundColor\",ParameterType=\"Vector\",CurrentValue=\"(R=0.012,G=0.014,B=0.019,A=1.000)\",DefaultValue=\"(R=0.012,G=0.014,B=0.019,A=1.000)\"))}>",
+    "M_CardConfirmFlash": "<Struct 'MaterialDetailedInfo' (0x000001A68B4D8780) {material_name: \"M_CardConfirmFlash\", material_path: \"/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardConfirmFlash\", parent_material: \"\", material_domain: \"MD_Surface\", blend_mode: \"BLEND_Additive\", shading_model: \"MSM_Unlit\", is_material_instance: False, two_sided: False, expression_count: 12, texture_sample_count: 0, parameters: ((ParameterName=\"Progress\",ParameterType=\"Scalar\",CurrentValue=\"0.000\",DefaultValue=\"0.000\"),(ParameterName=\"Intensity\",ParameterType=\"Scalar\",CurrentValue=\"8.000\",DefaultValue=\"8.000\"),(ParameterName=\"FlashColor\",ParameterType=\"Vector\",CurrentValue=\"(R=1.000,G=0.840,B=0.550,A=1.000)\",DefaultValue=\"(R=1.000,G=0.840,B=0.550,A=1.000)\"))}>"
+  },
+  "front_materials": {
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon": "<Struct 'VibeUEMaterialInstanceInfo' (0x000001A642F2F420) {instance_name: \"MI_Card_Moon\", instance_path: \"/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon\", parent_material_path: \"/Game/Assets/card/ParallaxCardMaterial/Materials/M_Card_Demo.M_Card_Demo\", parent_material_name: \"M_Card_Demo\", scalar_parameters: ((ParameterName=\"Specular\",ParameterType=\"Scalar\",CurrentValue=\"0.100\",DefaultValue=\"0.100\"),(ParameterName=\"Roughness\",ParameterType=\"Scalar\",CurrentValue=\"0.350\",DefaultValue=\"0.350\"),(ParameterName=\"Layers global depth\",ParameterType=\"Scalar\",CurrentValue=\"0.660\",DefaultValue=\"0.660\"),(ParameterName=\"Detail emissive exponent (R mask)\",ParameterType=\"Scalar\",CurrentValue=\"2.000\",DefaultValue=\"2.000\"),(ParameterName=\"Scale 6th layer\",ParameterType=\"Scalar\",CurrentValue=\"6.000\",DefaultValue=\"6.000\"),(ParameterName=\"Scale 5th layer\",ParameterType=\"Scalar\",CurrentValue=\"2.750\",DefaultValue=\"2.750\"),(ParameterName=\"Scale 4th layer\",ParameterType=\"Scalar\",CurrentValue=\"1.500\",DefaultValue=\"1.500\"),(ParameterName=\"Scale 3rd layer\",ParameterType=\"Scalar\",CurrentValue=\"1.100\",DefaultValue=\"1.100\"),(ParameterName=\"Scale 2nd layer\",ParameterType=\"Scalar\",CurrentValue=\"0.500\",DefaultValue=\"0.500\"),(ParameterName=\"Detail Pattern resolution  (R mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.900\",DefaultValue=\"0.900\"),(ParameterName=\"Detail scroll speed X  (R mask)\",ParameterType=\"Scalar\",CurrentValue=\"-0.050\",DefaultValue=\"-0.050\"),(ParameterName=\"Detail scroll speed Y  (R mask)\",ParameterType=\"Scalar\",CurrentValue=\"-0.040\",DefaultValue=\"-0.040\"),(ParameterName=\"Detail emissive exponent (G mask)\",ParameterType=\"Scalar\",CurrentValue=\"2.000\",DefaultValue=\"2.000\"),(ParameterName=\"Detail Pattern resolution (G mask)\",ParameterType=\"Scalar\",CurrentValue=\"1.000\",DefaultValue=\"1.000\"),(ParameterName=\"Detail scroll speed X (G mask)\",ParameterType=\"Scalar\",CurrentValue=\"-0.050\",DefaultValue=\"-0.050\"),(ParameterName=\"Detail scroll speed Y (G mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.050\",DefaultValue=\"0.050\"),(ParameterName=\"Detail emissive exponent (B mask)\",ParameterType=\"Scalar\",CurrentValue=\"6.000\",DefaultValue=\"6.000\"),(ParameterName=\"Detail Pattern resolution (B mask)\",ParameterType=\"Scalar\",CurrentValue=\"2.000\",DefaultValue=\"2.000\"),(ParameterName=\"Detail scroll speed X (B mask)\",ParameterType=\"Scalar\",CurrentValue=\"-0.050\",DefaultValue=\"-0.050\"),(ParameterName=\"Detail scroll speed Y (B mask)\",ParameterType=\"Scalar\",CurrentValue=\"-0.050\",DefaultValue=\"-0.050\"),(ParameterName=\"Detail emissive exponent (A mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.000\",DefaultValue=\"0.000\"),(ParameterName=\"Detail Pattern resolution (A mask)\",ParameterType=\"Scalar\",CurrentValue=\"2.000\",DefaultValue=\"2.000\"),(ParameterName=\"Detail scroll speed X (A mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.000\",DefaultValue=\"0.000\"),(ParameterName=\"Detail scroll speed Y (A mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.000\",DefaultValue=\"0.000\"),(ParameterName=\"Layers global scale\",ParameterType=\"Scalar\",CurrentValue=\"0.250\",DefaultValue=\"0.250\")), vector_parameters: ((ParameterName=\"Detail emissive color (R mask)\",ParameterType=\"Vector\",CurrentValue=\"(R=0.406,G=0.855,B=1.000,A=1.000)\",DefaultValue=\"(R=0.406,G=0.855,B=1.000,A=1.000)\"),(ParameterName=\"Detail emissive color (G mask)\",ParameterType=\"Vector\",CurrentValue=\"(R=1.000,G=0.209,B=0.209,A=1.000)\",DefaultValue=\"(R=1.000,G=0.209,B=0.209,A=1.000)\"),(ParameterName=\"Detail emissive color (B mask)\",ParameterType=\"Vector\",CurrentValue=\"(R=1.000,G=0.284,B=0.011,A=1.000)\",DefaultValue=\"(R=1.000,G=0.284,B=0.011,A=1.000)\"),(ParameterName=\"Detail emissive color (A mask)\",ParameterType=\"Vector\",CurrentValue=\"(R=0.000,G=0.000,B=0.000,A=1.000)\",DefaultValue=\"(R=0.000,G=0.000,B=0.000,A=1.000)\")), texture_parameters: ((ParameterName=\"BaseColor Map\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_D.T_Card_Moon_D\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_D.T_Card_Moon_D\"),(ParameterName=\"Detail Pattern (R mask)\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_Pattern_01.T_Card_Moon_Pattern_01\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_Pattern_01.T_Card_Moon_Pattern_01\"),(ParameterName=\"Detail RGB Masks\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_M.T_Card_Moon_M\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_M.T_Card_Moon_M\"),(ParameterName=\"Detail Pattern (G mask)\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_Pattern_02.T_Card_Moon_Pattern_02\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_Pattern_02.T_Card_Moon_Pattern_02\"),(ParameterName=\"Detail Pattern (B mask)\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_Pattern_03.T_Card_Moon_Pattern_03\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_Pattern_03.T_Card_Moon_Pattern_03\"),(ParameterName=\"Detail Pattern (A mask)\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03.T_Card_Demo_Pattern_03\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03.T_Card_Demo_Pattern_03\"))}>",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon_UI": "<Struct 'VibeUEMaterialInstanceInfo' (0x000001A642F23E90) {instance_name: \"MI_Card_Moon_UI\", instance_path: \"/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon_UI\", parent_material_path: \"/Game/Assets/card/ParallaxCardMaterial/Materials/M_Card_Demo_UI.M_Card_Demo_UI\", parent_material_name: \"M_Card_Demo_UI\", scalar_parameters: , vector_parameters: , texture_parameters: ((ParameterName=\"UI Map\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_UI.T_Card_Moon_UI\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_UI.T_Card_Moon_UI\"))}>",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star": "<Struct 'VibeUEMaterialInstanceInfo' (0x000001A642F23410) {instance_name: \"MI_Card_Star\", instance_path: \"/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star\", parent_material_path: \"/Game/Assets/card/ParallaxCardMaterial/Materials/M_Card_Demo.M_Card_Demo\", parent_material_name: \"M_Card_Demo\", scalar_parameters: ((ParameterName=\"Specular\",ParameterType=\"Scalar\",CurrentValue=\"0.100\",DefaultValue=\"0.100\"),(ParameterName=\"Roughness\",ParameterType=\"Scalar\",CurrentValue=\"0.350\",DefaultValue=\"0.350\"),(ParameterName=\"Layers global depth\",ParameterType=\"Scalar\",CurrentValue=\"0.300\",DefaultValue=\"0.300\"),(ParameterName=\"Detail emissive exponent (R mask)\",ParameterType=\"Scalar\",CurrentValue=\"3.200\",DefaultValue=\"3.200\"),(ParameterName=\"Scale 6th layer\",ParameterType=\"Scalar\",CurrentValue=\"0.420\",DefaultValue=\"0.420\"),(ParameterName=\"Scale 5th layer\",ParameterType=\"Scalar\",CurrentValue=\"0.450\",DefaultValue=\"0.450\"),(ParameterName=\"Scale 4th layer\",ParameterType=\"Scalar\",CurrentValue=\"0.080\",DefaultValue=\"0.080\"),(ParameterName=\"Scale 3rd layer\",ParameterType=\"Scalar\",CurrentValue=\"0.120\",DefaultValue=\"0.120\"),(ParameterName=\"Scale 2nd layer\",ParameterType=\"Scalar\",CurrentValue=\"0.110\",DefaultValue=\"0.110\"),(ParameterName=\"Detail Pattern resolution  (R mask)\",ParameterType=\"Scalar\",CurrentValue=\"1.600\",DefaultValue=\"1.600\"),(ParameterName=\"Detail scroll speed X  (R mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.120\",DefaultValue=\"0.120\"),(ParameterName=\"Detail scroll speed Y  (R mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.200\",DefaultValue=\"0.200\"),(ParameterName=\"Detail emissive exponent (G mask)\",ParameterType=\"Scalar\",CurrentValue=\"2.000\",DefaultValue=\"2.000\"),(ParameterName=\"Detail Pattern resolution (G mask)\",ParameterType=\"Scalar\",CurrentValue=\"2.000\",DefaultValue=\"2.000\"),(ParameterName=\"Detail scroll speed X (G mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.000\",DefaultValue=\"0.000\"),(ParameterName=\"Detail scroll speed Y (G mask)\",ParameterType=\"Scalar\",CurrentValue=\"-0.150\",DefaultValue=\"-0.150\"),(ParameterName=\"Detail emissive exponent (B mask)\",ParameterType=\"Scalar\",CurrentValue=\"6.000\",DefaultValue=\"6.000\"),(ParameterName=\"Detail Pattern resolution (B mask)\",ParameterType=\"Scalar\",CurrentValue=\"2.000\",DefaultValue=\"2.000\"),(ParameterName=\"Detail scroll speed X (B mask)\",ParameterType=\"Scalar\",CurrentValue=\"-0.050\",DefaultValue=\"-0.050\"),(ParameterName=\"Detail scroll speed Y (B mask)\",ParameterType=\"Scalar\",CurrentValue=\"-0.050\",DefaultValue=\"-0.050\"),(ParameterName=\"Detail emissive exponent (A mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.000\",DefaultValue=\"0.000\"),(ParameterName=\"Detail Pattern resolution (A mask)\",ParameterType=\"Scalar\",CurrentValue=\"2.000\",DefaultValue=\"2.000\"),(ParameterName=\"Detail scroll speed X (A mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.000\",DefaultValue=\"0.000\"),(ParameterName=\"Detail scroll speed Y (A mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.000\",DefaultValue=\"0.000\"),(ParameterName=\"Layers global scale\",ParameterType=\"Scalar\",CurrentValue=\"1.010\",DefaultValue=\"1.010\")), vector_parameters: ((ParameterName=\"Detail emissive color (R mask)\",ParameterType=\"Vector\",CurrentValue=\"(R=1.000,G=0.521,B=0.042,A=1.000)\",DefaultValue=\"(R=1.000,G=0.521,B=0.042,A=1.000)\"),(ParameterName=\"Detail emissive color (G mask)\",ParameterType=\"Vector\",CurrentValue=\"(R=1.000,G=0.125,B=0.125,A=1.000)\",DefaultValue=\"(R=1.000,G=0.125,B=0.125,A=1.000)\"),(ParameterName=\"Detail emissive color (B mask)\",ParameterType=\"Vector\",CurrentValue=\"(R=0.000,G=0.000,B=0.000,A=1.000)\",DefaultValue=\"(R=0.000,G=0.000,B=0.000,A=1.000)\"),(ParameterName=\"Detail emissive color (A mask)\",ParameterType=\"Vector\",CurrentValue=\"(R=0.000,G=0.000,B=0.000,A=1.000)\",DefaultValue=\"(R=0.000,G=0.000,B=0.000,A=1.000)\")), texture_parameters: ((ParameterName=\"BaseColor Map\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_D.T_Card_Star_D\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_D.T_Card_Star_D\"),(ParameterName=\"Detail Pattern (R mask)\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_Pattern_01.T_Card_Star_Pattern_01\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_Pattern_01.T_Card_Star_Pattern_01\"),(ParameterName=\"Detail RGB Masks\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_M.T_Card_Star_M\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_M.T_Card_Star_M\"),(ParameterName=\"Detail Pattern (G mask)\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_Pattern_02.T_Card_Star_Pattern_02\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_Pattern_02.T_Card_Star_Pattern_02\"),(ParameterName=\"Detail Pattern (B mask)\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03.T_Card_Demo_Pattern_03\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03.T_Card_Demo_Pattern_03\"),(ParameterName=\"Detail Pattern (A mask)\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03.T_Card_Demo_Pattern_03\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03.T_Card_Demo_Pattern_03\"))}>",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star_UI": "<Struct 'VibeUEMaterialInstanceInfo' (0x000001A642F23100) {instance_name: \"MI_Card_Star_UI\", instance_path: \"/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star_UI\", parent_material_path: \"/Game/Assets/card/ParallaxCardMaterial/Materials/M_Card_Demo_UI.M_Card_Demo_UI\", parent_material_name: \"M_Card_Demo_UI\", scalar_parameters: , vector_parameters: , texture_parameters: ((ParameterName=\"UI Map\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_UI.T_Card_Star_UI\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_UI.T_Card_Star_UI\"))}>",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower": "<Struct 'VibeUEMaterialInstanceInfo' (0x000001A642F20070) {instance_name: \"MI_Card_Tower\", instance_path: \"/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower\", parent_material_path: \"/Game/Assets/card/ParallaxCardMaterial/Materials/M_Card_Demo.M_Card_Demo\", parent_material_name: \"M_Card_Demo\", scalar_parameters: ((ParameterName=\"Specular\",ParameterType=\"Scalar\",CurrentValue=\"0.100\",DefaultValue=\"0.100\"),(ParameterName=\"Roughness\",ParameterType=\"Scalar\",CurrentValue=\"0.350\",DefaultValue=\"0.350\"),(ParameterName=\"Layers global depth\",ParameterType=\"Scalar\",CurrentValue=\"0.550\",DefaultValue=\"0.550\"),(ParameterName=\"Detail emissive exponent (R mask)\",ParameterType=\"Scalar\",CurrentValue=\"60.000\",DefaultValue=\"60.000\"),(ParameterName=\"Scale 6th layer\",ParameterType=\"Scalar\",CurrentValue=\"0.800\",DefaultValue=\"0.800\"),(ParameterName=\"Scale 5th layer\",ParameterType=\"Scalar\",CurrentValue=\"0.550\",DefaultValue=\"0.550\"),(ParameterName=\"Scale 4th layer\",ParameterType=\"Scalar\",CurrentValue=\"0.650\",DefaultValue=\"0.650\"),(ParameterName=\"Scale 3rd layer\",ParameterType=\"Scalar\",CurrentValue=\"0.220\",DefaultValue=\"0.220\"),(ParameterName=\"Scale 2nd layer\",ParameterType=\"Scalar\",CurrentValue=\"0.120\",DefaultValue=\"0.120\"),(ParameterName=\"Detail Pattern resolution  (R mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.850\",DefaultValue=\"0.850\"),(ParameterName=\"Detail scroll speed X  (R mask)\",ParameterType=\"Scalar\",CurrentValue=\"-0.050\",DefaultValue=\"-0.050\"),(ParameterName=\"Detail scroll speed Y  (R mask)\",ParameterType=\"Scalar\",CurrentValue=\"-0.080\",DefaultValue=\"-0.080\"),(ParameterName=\"Detail emissive exponent (G mask)\",ParameterType=\"Scalar\",CurrentValue=\"2.000\",DefaultValue=\"2.000\"),(ParameterName=\"Detail Pattern resolution (G mask)\",ParameterType=\"Scalar\",CurrentValue=\"2.000\",DefaultValue=\"2.000\"),(ParameterName=\"Detail scroll speed X (G mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.000\",DefaultValue=\"0.000\"),(ParameterName=\"Detail scroll speed Y (G mask)\",ParameterType=\"Scalar\",CurrentValue=\"-0.250\",DefaultValue=\"-0.250\"),(ParameterName=\"Detail emissive exponent (B mask)\",ParameterType=\"Scalar\",CurrentValue=\"6.000\",DefaultValue=\"6.000\"),(ParameterName=\"Detail Pattern resolution (B mask)\",ParameterType=\"Scalar\",CurrentValue=\"2.000\",DefaultValue=\"2.000\"),(ParameterName=\"Detail scroll speed X (B mask)\",ParameterType=\"Scalar\",CurrentValue=\"-0.050\",DefaultValue=\"-0.050\"),(ParameterName=\"Detail scroll speed Y (B mask)\",ParameterType=\"Scalar\",CurrentValue=\"-0.050\",DefaultValue=\"-0.050\"),(ParameterName=\"Detail emissive exponent (A mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.000\",DefaultValue=\"0.000\"),(ParameterName=\"Detail Pattern resolution (A mask)\",ParameterType=\"Scalar\",CurrentValue=\"2.000\",DefaultValue=\"2.000\"),(ParameterName=\"Detail scroll speed X (A mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.000\",DefaultValue=\"0.000\"),(ParameterName=\"Detail scroll speed Y (A mask)\",ParameterType=\"Scalar\",CurrentValue=\"0.000\",DefaultValue=\"0.000\"),(ParameterName=\"Layers global scale\",ParameterType=\"Scalar\",CurrentValue=\"1.250\",DefaultValue=\"1.250\")), vector_parameters: ((ParameterName=\"Detail emissive color (R mask)\",ParameterType=\"Vector\",CurrentValue=\"(R=1.000,G=0.521,B=0.042,A=1.000)\",DefaultValue=\"(R=1.000,G=0.521,B=0.042,A=1.000)\"),(ParameterName=\"Detail emissive color (G mask)\",ParameterType=\"Vector\",CurrentValue=\"(R=0.000,G=0.000,B=0.000,A=1.000)\",DefaultValue=\"(R=0.000,G=0.000,B=0.000,A=1.000)\"),(ParameterName=\"Detail emissive color (B mask)\",ParameterType=\"Vector\",CurrentValue=\"(R=0.000,G=0.000,B=0.000,A=1.000)\",DefaultValue=\"(R=0.000,G=0.000,B=0.000,A=1.000)\"),(ParameterName=\"Detail emissive color (A mask)\",ParameterType=\"Vector\",CurrentValue=\"(R=0.000,G=0.000,B=0.000,A=1.000)\",DefaultValue=\"(R=0.000,G=0.000,B=0.000,A=1.000)\")), texture_parameters: ((ParameterName=\"BaseColor Map\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Tower_D.T_Card_Tower_D\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Tower_D.T_Card_Tower_D\"),(ParameterName=\"Detail Pattern (R mask)\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Tower_Pattern_01.T_Card_Tower_Pattern_01\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Tower_Pattern_01.T_Card_Tower_Pattern_01\"),(ParameterName=\"Detail RGB Masks\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Tower_M.T_Card_Tower_M\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Tower_M.T_Card_Tower_M\"),(ParameterName=\"Detail Pattern (G mask)\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_02.T_Card_Demo_Pattern_02\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_02.T_Card_Demo_Pattern_02\"),(ParameterName=\"Detail Pattern (B mask)\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03.T_Card_Demo_Pattern_03\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03.T_Card_Demo_Pattern_03\"),(ParameterName=\"Detail Pattern (A mask)\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03.T_Card_Demo_Pattern_03\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03.T_Card_Demo_Pattern_03\"))}>",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower_UI": "<Struct 'VibeUEMaterialInstanceInfo' (0x000001A642F23170) {instance_name: \"MI_Card_Tower_UI\", instance_path: \"/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower_UI\", parent_material_path: \"/Game/Assets/card/ParallaxCardMaterial/Materials/M_Card_Demo_UI.M_Card_Demo_UI\", parent_material_name: \"M_Card_Demo_UI\", scalar_parameters: , vector_parameters: , texture_parameters: ((ParameterName=\"UI Map\",ParameterType=\"Texture\",CurrentValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Tower_UI.T_Card_Tower_UI\",DefaultValue=\"/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Tower_UI.T_Card_Tower_UI\"))}>"
+  },
+  "assets": [
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector",
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode",
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController",
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_ParallaxRevealCard",
+    "/Game/GuLiStrike/Cards/RevealDemo/Input/IA_CardRevealClick",
+    "/Game/GuLiStrike/Cards/RevealDemo/Input/IMC_CardReveal",
+    "/Game/GuLiStrike/Cards/RevealDemo/Maps/LVL_CardRevealDemo",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon_UI",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star_UI",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower_UI",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardBack",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardConfirmFlash",
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_DemoBackdrop",
+    "/Game/GuLiStrike/Cards/RevealDemo/UI/WBP_CardRevealHUD"
+  ],
+  "dependencies": {
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector": [
+      "/Engine/BasicShapes/Plane",
+      "/Script/GuLiStrike",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon_UI",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star_UI",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower_UI",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_DemoBackdrop",
+      "/Game/GuLiStrike/Cards/RevealDemo/UI/WBP_CardRevealHUD",
+      "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_ParallaxRevealCard"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode": [
+      "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController": [
+      "/Script/UMG",
+      "/Script/EnhancedInput",
+      "/Script/InputBlueprintNodes",
+      "/Game/GuLiStrike/Cards/RevealDemo/Input/IA_CardRevealClick",
+      "/Game/GuLiStrike/Cards/RevealDemo/Input/IMC_CardReveal",
+      "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector",
+      "/Game/GuLiStrike/Cards/RevealDemo/UI/WBP_CardRevealHUD"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_ParallaxRevealCard": [
+      "/Engine/BasicShapes/Plane",
+      "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_Base",
+      "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_UI",
+      "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Base",
+      "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Pictograms",
+      "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Vignette",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon_UI",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardBack",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardConfirmFlash"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Input/IA_CardRevealClick": [
+      "/Script/EnhancedInput"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Input/IMC_CardReveal": [
+      "/Script/EnhancedInput",
+      "/Game/GuLiStrike/Cards/RevealDemo/Input/IA_CardRevealClick"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Maps/LVL_CardRevealDemo": [
+      "/Script/NavigationSystem",
+      "/Engine/EngineMaterials/WorldGridMaterial",
+      "/Engine/MapTemplates/Sky/DaylightAmbientCubemap",
+      "/Engine/EditorResources/LightIcons/S_LightError",
+      "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector",
+      "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon": [
+      "/Engine/Functions/Engine_MaterialFunctions02/ExampleContent/Textures/flipbook",
+      "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Card_Demo",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_D",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_M",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_Pattern_01",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_Pattern_02",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_Pattern_03"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon_UI": [
+      "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Card_Demo_UI",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Moon_UI"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star": [
+      "/Engine/Functions/Engine_MaterialFunctions02/ExampleContent/Textures/flipbook",
+      "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Card_Demo",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_D",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_M",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_Pattern_01",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_Pattern_02"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star_UI": [
+      "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Card_Demo_UI",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Star_UI"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower": [
+      "/Engine/Functions/Engine_MaterialFunctions02/ExampleContent/Textures/flipbook",
+      "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Card_Demo",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Tower_D",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Tower_M",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Tower_Pattern_01",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_02"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower_UI": [
+      "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Card_Demo_UI",
+      "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Tower_UI"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardBack": [
+      "/Game/Assets/card/RewardCards/Textures/T_CardBG_00"
+    ],
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardConfirmFlash": [],
+    "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_DemoBackdrop": [],
+    "/Game/GuLiStrike/Cards/RevealDemo/UI/WBP_CardRevealHUD": [
+      "/Script/SlateCore",
+      "/Script/UMGEditor",
+      "/Script/UMG"
+    ]
+  },
+  "missing_asset_dependencies": [],
+  "saved_map": true,
+  "success": true
+}

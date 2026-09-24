@@ -4,6 +4,38 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-09-24 | [Mass随机站位玩家验收](../Archive/20260924-Mass随机站位玩家验收.md) | commander, network, performance | passed | 用户在即时移动、随机唯一站位及模型包围盒间距修复后明确确认符合预期，要求收尾。 |
+| 2026-09-24 | [Mass即时移动与随机站位交付](../Archive/20260924-Mass即时移动与随机站位交付.md) | commander, network, performance | partial | 实现即时移动和共享NavMesh路线，按最新截图反馈改为整单随机唯一站位及模型包围盒间距；编译及100人、混合50人动态数据核对通过，未确认全部到达和完整回归。 |
+| 2026-09-24 | [Mass三阶段耗时与百人响应实测](../Archive/20260924-Mass三阶段耗时与百人响应实测.md) | commander, network, performance | partial | 当前三段计算累计CPU占比为终点检查43.2%、匹配1.3%、路径及连接55.5%；两条100单位命令都未达200ms全部完成。 |
+| 2026-09-23 | [Mass首条绿线延迟现场诊断](../Archive/20260923-Mass首条绿线延迟现场诊断.md) | commander, network, performance | partial | 玩家首条绿线约1秒的反馈指向服务端首批规划等待；现场查询次数预算饱和，客户端未观察到绿线积压，导航全局失效会扩大工作量。 |
+| 2026-09-23 | [Mass验证场景PIE阻塞修复](../Archive/20260923-Mass验证场景PIE阻塞修复.md) | commander, network, performance | partial | 移除不兼容的专项部署并移开占用出生位的墙体，默认500个出生和导航前置检查通过；修正此前人口档位交付结论。 |
+| 2026-09-23 | [Mass分帧寻路与基础避障编译交付](../Archive/20260923-Mass分帧寻路与基础避障编译交付.md) | commander, network, performance | partial | 用户授权后修正编译错误，源码版Editor构建退出0，8份BuildId一致；运行效果待玩家验收。 |
+| 2026-09-23 | [Mass分帧寻路与基础避障源码交付](../Archive/20260923-Mass分帧寻路与基础避障源码交付.md) | commander, network, performance | partial | 交付统一预算分帧规划、25人增量提交、终点事件与持久绿线、基础环境避障；原型图500人部署及障碍场景已保存回读，尚未编译或运行验收。 |
+| 2026-09-23 | [Mass协议19运行监控与残余阻塞](../Archive/20260923-Mass协议19运行监控与残余阻塞.md) | commander, movement, network, performance | partial | 协议19用户PIE中名册最终收敛，但位置发送仍有4.8/5.4秒样本间隔及服务器单步跳点，不能宣布平滑问题解决。 |
+| 2026-09-23 | [Mass按连接预算分批同步编译交付](../Archive/20260923-Mass按连接预算分批同步编译交付.md) | commander, movement, network, performance | partial | 获准源码Editor构建退出0并重启，协议19与8份BuildId核对通过，原图验收说明已保存重载读回；运行效果待玩家验证。 |
+| 2026-09-23 | [Mass按连接预算分批同步源码实现](../Archive/20260923-Mass按连接预算分批同步源码实现.md) | commander, movement, network, performance | partial | 协议19按连接合并并分批发送名册和终点，位置先预算准入再提交编码历史；代码静态审查完成，编译和运行效果未验证。 |
+| 2026-09-23 | [Mass复制流量与同帧突发定位](../Archive/20260923-Mass复制流量与同帧突发定位.md) | commander, network, movement, performance | partial | 新局600单位移动时，30秒记录47次姿态RPC被跳过；名册和移动终点同帧突发耗用余额，120Hz计时上限将每帧补充限制到2083.25字节。 |
+| 2026-09-23 | [Mass姿态RPC发送预算饱和诊断](../Archive/20260923-Mass姿态RPC发送预算饱和诊断.md) | commander, network, movement, performance | partial | 当前PIE的35秒窗口确认4217次姿态RPC因连接发送预算饱和在UE发送入口被跳过；每连接有效限额250000字节每秒。 |
+| 2026-09-23 | [Mass姿态缺帧与三倍追赶现场诊断](../Archive/20260923-Mass姿态缺帧与三倍追赶现场诊断.md) | commander, movement, network, performance | partial | 三倍限速有效但玩家平滑体验未通过；常规帧率下抓到470ms样本缺口和随后三帧满速纠偏，另有权威导航跳变。 |
+| 2026-09-23 | [客户端连续纠偏与性能HUD交付](../Archive/20260923-客户端连续纠偏与性能HUD交付.md) | commander, movement, network, ui, performance | partial | 保留普通位置历史并以最多3倍标准速度纠偏，新增FPS/RTT；源码Editor编译加载与资产读回完成，用户自行验收。 |
+| 2026-09-23 | [电源模式与Mass残余跳步诊断](../Archive/20260923-电源模式与Mass残余跳步诊断.md) | commander, network, performance | partial | 用户切换节能至平衡后持续卡顿缓解，但部分部队仍偶发跳步；本局17次权威位置突变，需继续修复位置连续性。 |
+| 2026-09-23 | [客户端Mass硬校正修复编译交付](../Archive/20260923-客户端Mass硬校正修复编译交付.md) | commander, network, performance | partial | 用户授权后完成源码Editor构建，退出0且8份BuildId一致；冷启动加载新DLL与原图入口，效果由玩家验证。 |
+| 2026-09-23 | [客户端Mass硬校正最小修复](../Archive/20260923-客户端Mass硬校正最小修复.md) | commander, network, performance | partial | 仅改客户端硬校正判定，用相邻权威样本时间与速度预算排除正常插值滞后；旧轨迹重算0误触发，静态检查通过，尚未编译。 |
+| 2026-09-23 | [客户端Mass行走顿挫分析](../Archive/20260923-客户端Mass行走顿挫分析.md) | commander, network, performance, navigation | partial | 已有双客户端PIE只读采样确认硬校正把插值延迟误判为位置错误，正常行进单位反复跳动停留；另有低帧率降频和服务器大步跳变，本轮仅分析。 |
+| 2026-09-23 | [红方移动修复源码Editor构建](../Archive/20260923-红方移动修复源码Editor构建.md) | commander, navigation, performance | partial | 红方移动的导航引用刷新及诊断修复已通过源码Editor编译，8份BuildId一致；用户关闭旧局后要求直接编译，未重启或运行新PIE。 |
+| 2026-09-23 | [红方移动超时诊断与导航引用修复](../Archive/20260923-红方移动超时诊断与导航引用修复.md) | commander, navigation, performance | partial | 玩家双客户端PIE确认红方选择正常，新移动命令5秒超时后回Idle；现场15个位置均有完整导航路径，补动态导航引用刷新及失败阶段日志，尚未编译加载。 |
+| 2026-09-23 | [1.8km战场与建造车自主接单](../Archive/20260923-1.8km战场与建造车自主接单.md) | map, navigation, commander, building, performance | partial | 2.3km地形与1.8km战场保持81据点身份、256组件和6240矿节点；建造车本据点优先、途中换单、施工暂停接单及抵达抢位已编译，场景和资产保存回读通过。 |
+| 2026-09-23 | [3.2km地形与9×9据点及Mass出生修复](../Archive/20260923-3.2km地形与9x9据点及Mass出生修复.md) | performance, navigation, commander, map | partial | 原型图保存为3.2km地形、2.7km战场、81据点，256组件和资源总量保持；共享出生布局并避让完整初始军队，500槽编辑器预检通过。 |
+| 2026-09-22 | [FlightNav边界复核与收紧](../Archive/20260922-FlightNav边界复核与收紧.md) | performance, navigation | partial | 用户指出FlightNav大于地图后，复核相对母舰的编队与恢复距离，去除重复余量，收紧至5.246km并减少下方空间；重新烘焙、保存及实体核对通过。 |
+| 2026-09-22 | [4.2km地图与7×7据点重布局交付](../Archive/20260922-4.2km地图与7x7据点重布局交付.md) | performance, navigation | partial | Commander原型图重建为4.2km、256组件和7×7据点，资源及地空导航已烘焙保存，最新源码Editor重启回读通过；新图玩家效果和内存收益待验证。 |
+| 2026-09-22 | [工程车四点返厂简化与32辆专项验证](../Archive/20260922-工程车四点返厂简化与32辆专项验证.md) | commander, resources, building, navigation, performance | partial | 工程车互相忽略碰撞与避让，矿车直接寻路到厂内四个无占用状态的卸货点；新模块与现有StateTree已加载，32辆配置下16辆矿车完成34次卸货。此次为返厂专项，完整功能与30分钟性能验收仍待完成。 |
+| 2026-09-22 | [卡牌窗口焦点原生接口补齐](../Archive/20260922-卡牌窗口焦点原生接口补齐.md) | ui, presentation | partial | 根据追加授权增加最小只读窗口焦点接口，补齐卡牌失焦回正与后台点击拦截。 |
+| 2026-09-22 | [三张视差3D卡牌演示场景交付](../Archive/20260922-三张视差3D卡牌演示场景交付.md) | ui, presentation, vfx | partial | 交付纯蓝图三牌入场、压动、锁定翻面、二次确认闪光、退场与重播场景；悬停按用户要求增加到 ±12°。 |
+| 2026-09-22 | [三维动态卡牌与视差卡牌资产迁移](../Archive/20260922-三维动态卡牌与视差卡牌资产迁移.md) | ui, assets | partial | Reward Cards 3D 与 Parallax Card Material 经 UE5.7 引用安全重定位后迁入 /Game/Assets/card，共登记并静态验证 104 个资产和 2 张示例地图。 |
+| 2026-09-21 | [外部特效与蓝图资源包迁移](../Archive/20260921-外部特效与蓝图资源包迁移.md) | vfx, assets | partial | 7 个外部 UE 资源包经 UE5.7 路径重定位后迁入 Content/Assets/ExternalPacks，共登记 1678 个资产、19 张地图，并补齐 57 个世界分区支持包。 |
+| 2026-09-21 | [指挥官StateTree条件属性分类修复](../Archive/20260921-指挥官StateTree条件属性分类修复.md) | commander | partial | 修复Actor和Mass条件参数误用Context分类导致的无效类型显示；源码Editor构建成功，8个字段反射用途正确，三棵既有树编译保存且图结构不变。 |
+| 2026-09-21 | [指挥官MassStateTree类型登记修复](../Archive/20260921-指挥官MassStateTree类型登记修复.md) | commander | partial | 玩家反馈首次分配Mass树实例时GuLiUnitTaskSubsystem类型信息缺失；补齐三个项目Subsystem的每World Mass类型登记，源码Editor增量构建成功，运行复查待玩家。 |
+| 2026-09-21 | [指挥官StateTree迁移与场景交付](../Archive/20260921-指挥官StateTree迁移与场景交付.md) | commander, resources, building | partial | Commander Actor/Mass接入三棵共享StateTree，退役特殊任务目录及源表，内部业务阶段迁入树；原生构建、资产和原型地图保存读回完成，运行效果待玩家。 |
 | 2026-09-21 | [地面机甲辅助瞄准编译与配置落地](../Archive/20260921-地面机甲辅助瞄准编译与配置落地.md) | ground-mech, combat, input, data | partial | 用户追加授权编译后，源码Editor构建通过且8份BuildId一致；机甲Skills表已导入保存并回读机枪开启/100cm，FireReview待玩家确认效果。 |
 | 2026-09-21 | [地面机甲辅助瞄准代码与源表静态交付](../Archive/20260921-地面机甲辅助瞄准代码与源表静态交付.md) | ground-mech, combat, input, data | partial | 完成辅助射向代码及机甲Excel机枪行开关/100cm半径配置，保存并读回既有FireReview；未编译、未导入新行结构、未运行测试。 |
 | 2026-09-21 | [FireReview导航阻塞与资产校验修复](../Archive/20260921-FireReview导航阻塞与资产校验修复.md) | ground-mech, commander, combat, presentation | partial | 修复动态装饰网格持续更新导航引起的0单位问题，原双端PIE恢复16台；修复飞行导航校验器适用范围，地图保存重载及资产验证通过。 |

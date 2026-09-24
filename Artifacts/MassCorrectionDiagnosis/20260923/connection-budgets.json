@@ -1,0 +1,59 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "worlds": [
+      {
+        "index": 0,
+        "delta": 0.024804402142763138,
+        "controllers": [
+          {
+            "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+            "connections": [],
+            "Player_read_error": "GuLiCommanderPlayerController: Property 'Player' for attribute 'Player' on 'GuLiCommanderPlayerController' is protected and cannot be read",
+            "NetConnection_read_error": "GuLiCommanderPlayerController: Property 'NetConnection' for attribute 'NetConnection' on 'GuLiCommanderPlayerController' is protected and cannot be read"
+          },
+          {
+            "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_1",
+            "connections": [],
+            "Player_read_error": "GuLiCommanderPlayerController: Property 'Player' for attribute 'Player' on 'GuLiCommanderPlayerController' is protected and cannot be read",
+            "NetConnection_read_error": "GuLiCommanderPlayerController: Property 'NetConnection' for attribute 'NetConnection' on 'GuLiCommanderPlayerController' is protected and cannot be read"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "delta": 0.024804402142763138,
+        "controllers": [
+          {
+            "controller": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+            "connections": [],
+            "Player_read_error": "GuLiCommanderPlayerController: Property 'Player' for attribute 'Player' on 'GuLiCommanderPlayerController' is protected and cannot be read",
+            "NetConnection_read_error": "GuLiCommanderPlayerController: Property 'NetConnection' for attribute 'NetConnection' on 'GuLiCommanderPlayerController' is protected and cannot be read"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "delta": 0.024804402142763138,
+        "controllers": [
+          {
+            "controller": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+            "connections": [],
+            "Player_read_error": "GuLiCommanderPlayerController: Property 'Player' for attribute 'Player' on 'GuLiCommanderPlayerController' is protected and cannot be read",
+            "NetConnection_read_error": "GuLiCommanderPlayerController: Property 'NetConnection' for attribute 'NetConnection' on 'GuLiCommanderPlayerController' is protected and cannot be read"
+          }
+        ]
+      }
+    ],
+    "/Script/Engine.Default__GameNetworkManager": {
+      "TotalNetBandwidth": "GameNetworkManager: Property 'TotalNetBandwidth' for attribute 'TotalNetBandwidth' on 'GameNetworkManager' is protected and cannot be read",
+      "MaxDynamicBandwidth": "GameNetworkManager: Property 'MaxDynamicBandwidth' for attribute 'MaxDynamicBandwidth' on 'GameNetworkManager' is protected and cannot be read",
+      "MinDynamicBandwidth": "GameNetworkManager: Property 'MinDynamicBandwidth' for attribute 'MinDynamicBandwidth' on 'GameNetworkManager' is protected and cannot be read"
+    },
+    "/Script/OnlineSubsystemUtils.Default__IpNetDriver": {
+      "MaxClientRate": "Object: Property 'MaxClientRate' for attribute 'MaxClientRate' on 'IpNetDriver' is protected and cannot be read",
+      "MaxInternetClientRate": "Object: Property 'MaxInternetClientRate' for attribute 'MaxInternetClientRate' on 'IpNetDriver' is protected and cannot be read"
+    }
+  }
+}

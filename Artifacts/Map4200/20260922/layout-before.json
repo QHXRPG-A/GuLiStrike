@@ -1,0 +1,3827 @@
+{
+  "angle_unit": "degree",
+  "coordinate_system": "Unreal left-handed Z-up; local polygon XY at z=0; implicit closure",
+  "length_unit": "cm",
+  "map_package": "/Game/Maps/LVL_CommanderMassPrototype",
+  "markers": [
+    {
+      "display_name": "R1C1 据点",
+      "enabled": true,
+      "marker_id": "be99f11c-4fc0-166c-8572-adbaf49b09ad",
+      "marker_key": "Outpost_R1C1",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 6,
+        "BoardColumn": 1,
+        "BoardRow": 1,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 0,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "2e7343f4-4248-847e-c52c-8cb887136690",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              -224000,
+              224000,
+              22934.98351310368
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "8aa9a881-4652-ada2-39e3-26a8ff233447",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              -224000,
+              224000,
+              22934.98351310368
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          -224000,
+          224000,
+          22934.98351310368
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R1C2 据点",
+      "enabled": true,
+      "marker_id": "d0fc8cd8-427e-c347-bfea-50a284051095",
+      "marker_key": "Outpost_R1C2",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 7,
+        "BoardColumn": 2,
+        "BoardRow": 1,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 1,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "f5b14cc4-4c0d-baf9-e221-23aca192972e",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              -112000,
+              224000,
+              -6117.973131008213
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "dab461e8-45b4-892c-b7da-2381398d806d",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              -112000,
+              224000,
+              -6117.973131008213
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          -112000,
+          224000,
+          -6117.973131008213
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R1C3 据点",
+      "enabled": true,
+      "marker_id": "e3144d5a-4a43-a99e-ae03-62af71958b93",
+      "marker_key": "Outpost_R1C3",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 10,
+        "BoardColumn": 3,
+        "BoardRow": 1,
+        "InitialOwner": "Red",
+        "RedClusterBudget": 2,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "946821f9-4a74-04e4-3d30-939fe5bea21b",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              0,
+              224000,
+              -6419.143664883333
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "f2050951-4b0c-6d7a-beb4-b1948482f41b",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              0,
+              224000,
+              -6419.143664883333
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          0,
+          224000,
+          -6419.143664883333
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R1C4 据点",
+      "enabled": true,
+      "marker_id": "e705354a-4709-d3f4-8669-a28f2eb3ea59",
+      "marker_key": "Outpost_R1C4",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 7,
+        "BoardColumn": 4,
+        "BoardRow": 1,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 1,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "63eb5a67-4ffc-ce94-05e6-6fb3e6ff326c",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              112000,
+              224000,
+              -6117.973131008213
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "86ec07a8-4ff4-f30f-3ff6-a18f9f8348d1",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              112000,
+              224000,
+              -6117.973131008213
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          112000,
+          224000,
+          -6117.973131008213
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R1C5 据点",
+      "enabled": true,
+      "marker_id": "fbe16e86-4f47-b2c8-0f79-2dbf571fb265",
+      "marker_key": "Outpost_R1C5",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 6,
+        "BoardColumn": 5,
+        "BoardRow": 1,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 0,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "30c76149-4fe0-b2e1-a0df-8794af94a73e",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              224000,
+              224000,
+              22934.857626172947
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "9686922c-41aa-5c11-2c6a-40be577ffbae",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              224000,
+              224000,
+              22934.857626172947
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          224000,
+          224000,
+          22934.857626172947
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R2C1 据点",
+      "enabled": true,
+      "marker_id": "949cf70f-4e18-6d62-6fdf-669759037642",
+      "marker_key": "Outpost_R2C1",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 7,
+        "BoardColumn": 1,
+        "BoardRow": 2,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 1,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "56cad38f-4e52-5255-6236-b99fba520d8e",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              -224000,
+              112000,
+              -6127.349078736501
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "3b65a34f-4e33-d136-57f9-b397fdbabe51",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              -224000,
+              112000,
+              -6127.349078736501
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          -224000,
+          112000,
+          -6127.349078736501
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R2C2 据点",
+      "enabled": true,
+      "marker_id": "a7c6723f-44b3-86d5-5259-4ba0f7798d45",
+      "marker_key": "Outpost_R2C2",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 9,
+        "BoardColumn": 2,
+        "BoardRow": 2,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 2,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "13d536e8-47d9-1e20-5431-afafae675dbe",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              -112000,
+              112000,
+              -6954.688912651734
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "c42611f1-47bc-bb7a-7f41-568aa394fa25",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              -112000,
+              112000,
+              -6954.688912651734
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          -112000,
+          112000,
+          -6954.688912651734
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R2C3 据点",
+      "enabled": true,
+      "marker_id": "438245b1-4443-6252-0dfb-2aaa3a437b10",
+      "marker_key": "Outpost_R2C3",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 10,
+        "BoardColumn": 3,
+        "BoardRow": 2,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 3,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "e7571c16-4523-9515-39b2-f9b3a4e84bbb",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              0,
+              112000,
+              -7230.078357461607
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "7cfab4ba-46d7-df5c-d84e-6992661023b0",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              0,
+              112000,
+              -7230.078357461607
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          0,
+          112000,
+          -7230.078357461607
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R2C4 据点",
+      "enabled": true,
+      "marker_id": "8692b226-4e28-d54d-2bd1-b0a1276a787c",
+      "marker_key": "Outpost_R2C4",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 9,
+        "BoardColumn": 4,
+        "BoardRow": 2,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 2,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "5eec42df-4eae-92f8-c04a-0fa35cc26f0e",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              112000,
+              112000,
+              -6954.688912651734
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "b2b8fecc-4f50-5cc0-8ebe-5aae6703dc7d",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              112000,
+              112000,
+              -6954.688912651734
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          112000,
+          112000,
+          -6954.688912651734
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R2C5 据点",
+      "enabled": true,
+      "marker_id": "b14188fd-47a7-214a-8928-0fbf8194b775",
+      "marker_key": "Outpost_R2C5",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 7,
+        "BoardColumn": 5,
+        "BoardRow": 2,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 1,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "5a9a8b40-4a49-1a10-1874-bf8fd8b226c5",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              224000,
+              112000,
+              -6127.349078736501
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "2898d3f9-4189-8c0c-abfc-4195ae493427",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              224000,
+              112000,
+              -6127.349078736501
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          224000,
+          112000,
+          -6127.349078736501
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R3C1 据点",
+      "enabled": true,
+      "marker_id": "2b50fe79-456d-0116-e424-c5a4372ce3c6",
+      "marker_key": "Outpost_R3C1",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 8,
+        "BoardColumn": 1,
+        "BoardRow": 3,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 2,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "c4f8a562-4538-e4e9-be76-bebfd5b34153",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              -224000,
+              0,
+              -6398.048645285075
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "78a5ffc8-4bc8-3042-f726-798514e70a42",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              -224000,
+              0,
+              -6398.048645285075
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          -224000,
+          0,
+          -6398.048645285075
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R3C2 据点",
+      "enabled": true,
+      "marker_id": "1701ca7d-4c07-62b6-dd05-169fc4632a9e",
+      "marker_key": "Outpost_R3C2",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 9,
+        "BoardColumn": 2,
+        "BoardRow": 3,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 3,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "7bfd4d2f-4c0f-f47a-1cfa-08962a910796",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              -112000,
+              0,
+              -5992.586368448101
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "1107a068-4e26-a46b-2138-f8bed5a644a1",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              -112000,
+              0,
+              -5992.586368448101
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          -112000,
+          0,
+          -5992.586368448101
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R3C3 据点",
+      "enabled": true,
+      "marker_id": "9f07fb87-4ad1-5310-326d-4f984cb4bde8",
+      "marker_key": "Outpost_R3C3",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 10,
+        "BoardColumn": 3,
+        "BoardRow": 3,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 4,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "5ec3648b-46d4-50eb-0e2f-80bd33d4085e",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              0,
+              0,
+              6499.609375
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "8a339c8a-4ef1-f1a9-1e7c-67890a6b0c81",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              0,
+              0,
+              6499.609375
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          0,
+          0,
+          6499.609375
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R3C4 据点",
+      "enabled": true,
+      "marker_id": "83c9fce7-4e4f-3bb9-646a-f68f2de09e2a",
+      "marker_key": "Outpost_R3C4",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 9,
+        "BoardColumn": 4,
+        "BoardRow": 3,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 3,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "193e1fd5-4f7c-2119-517f-92a4d5ec1578",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              112000,
+              0,
+              -5992.586368448101
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "c4e3c235-40b9-7ec6-7e7f-fdb5218ae4ba",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              112000,
+              0,
+              -5992.586368448101
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          112000,
+          0,
+          -5992.586368448101
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R3C5 据点",
+      "enabled": true,
+      "marker_id": "e321ef46-4108-3cdf-7372-74acadf4af99",
+      "marker_key": "Outpost_R3C5",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 8,
+        "BoardColumn": 5,
+        "BoardRow": 3,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 2,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "7c52a052-4690-84ac-cc58-2595932c2720",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              224000,
+              0,
+              -6398.048645285075
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "6a8ad076-4b68-3f4f-e2e0-2790e4381c09",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              224000,
+              0,
+              -6398.048645285075
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          224000,
+          0,
+          -6398.048645285075
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R4C1 据点",
+      "enabled": true,
+      "marker_id": "090f30c7-4277-b457-60e2-0cb0bd0442ca",
+      "marker_key": "Outpost_R4C1",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 7,
+        "BoardColumn": 1,
+        "BoardRow": 4,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 1,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "44d81b65-4afa-389a-7c4c-cca15648f2b9",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              -224000,
+              -112000,
+              -6127.349078736501
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "0516645c-4a27-a3d1-11ae-b8bd362aed21",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              -224000,
+              -112000,
+              -6127.349078736501
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          -224000,
+          -112000,
+          -6127.349078736501
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R4C2 据点",
+      "enabled": true,
+      "marker_id": "44e9e3d2-4739-7d3a-2178-c5b4fbd89a8f",
+      "marker_key": "Outpost_R4C2",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 9,
+        "BoardColumn": 2,
+        "BoardRow": 4,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 2,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "9a02ed87-4fc6-f30d-7bdc-c7a46e8a061b",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              -112000,
+              -112000,
+              -6954.688912651734
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "65db038c-48ac-fb96-bed2-03a456d3b1ca",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              -112000,
+              -112000,
+              -6954.688912651734
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          -112000,
+          -112000,
+          -6954.688912651734
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R4C3 据点",
+      "enabled": true,
+      "marker_id": "662e07a5-47ad-f083-41fa-1aba9f2140a6",
+      "marker_key": "Outpost_R4C3",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 10,
+        "BoardColumn": 3,
+        "BoardRow": 4,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 3,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "66b371e1-4cdd-7f11-b54b-cea0d7d478af",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              0,
+              -112000,
+              -7230.078357461607
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "cc7bab53-4507-4ca9-bfb1-789191cb6830",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              0,
+              -112000,
+              -7230.078357461607
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          0,
+          -112000,
+          -7230.078357461607
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R4C4 据点",
+      "enabled": true,
+      "marker_id": "6cb389d4-487b-7016-95f5-a480dfe083f1",
+      "marker_key": "Outpost_R4C4",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 9,
+        "BoardColumn": 4,
+        "BoardRow": 4,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 2,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "fb6f0c06-4f87-b6a5-6a85-bda5a510cb04",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              112000,
+              -112000,
+              -6954.688912651734
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "66acbab6-48e1-e71f-a36d-43935608efb2",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              112000,
+              -112000,
+              -6954.688912651734
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          112000,
+          -112000,
+          -6954.688912651734
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R4C5 据点",
+      "enabled": true,
+      "marker_id": "54c1d2f6-448d-da9d-16e2-dbb360206999",
+      "marker_key": "Outpost_R4C5",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 7,
+        "BoardColumn": 5,
+        "BoardRow": 4,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 1,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "915b4536-49a5-eb9e-7c5b-bea340156fa9",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              224000,
+              -112000,
+              -6127.349078736501
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "8671608e-491b-334c-cc0f-b2a8be32518e",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              224000,
+              -112000,
+              -6127.349078736501
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          224000,
+          -112000,
+          -6127.349078736501
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R5C1 据点",
+      "enabled": true,
+      "marker_id": "dac206cb-4278-3370-5af0-638697547d7a",
+      "marker_key": "Outpost_R5C1",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 6,
+        "BoardColumn": 1,
+        "BoardRow": 5,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 0,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "52df148a-4739-dca5-2397-5585855d341e",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              -224000,
+              -224000,
+              22934.90054217202
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "6d4e09a2-4f35-58cd-29d8-91911902a2f0",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              -224000,
+              -224000,
+              22934.90054217202
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          -224000,
+          -224000,
+          22934.90054217202
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R5C2 据点",
+      "enabled": true,
+      "marker_id": "3f257c5a-4a3f-96ec-7d23-40b8dacc5d63",
+      "marker_key": "Outpost_R5C2",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 7,
+        "BoardColumn": 2,
+        "BoardRow": 5,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 1,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "7f47b02f-40bc-5c35-7021-6cb080795dd1",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              -112000,
+              -224000,
+              -6117.973131008213
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "86993fdf-4534-42a8-6be0-b4a7cf96855a",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              -112000,
+              -224000,
+              -6117.973131008213
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          -112000,
+          -224000,
+          -6117.973131008213
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R5C3 据点",
+      "enabled": true,
+      "marker_id": "d2a1c2ec-41dd-afaf-d7b1-9c83d051863e",
+      "marker_key": "Outpost_R5C3",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 10,
+        "BoardColumn": 3,
+        "BoardRow": 5,
+        "InitialOwner": "Blue",
+        "RedClusterBudget": 2,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "53566b08-45aa-3e87-53f7-3e81ace0f092",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              0,
+              -224000,
+              -6419.143664883333
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "f9fcbfe1-4ca2-989f-60e8-e695cc7839f0",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              0,
+              -224000,
+              -6419.143664883333
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          0,
+          -224000,
+          -6419.143664883333
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R5C4 据点",
+      "enabled": true,
+      "marker_id": "ba0f90f7-4b0a-6f66-ce51-60a0554730d7",
+      "marker_key": "Outpost_R5C4",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 7,
+        "BoardColumn": 4,
+        "BoardRow": 5,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 1,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "4a4736bd-42ff-e15a-63e1-aa90803edd4b",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              112000,
+              -224000,
+              -6117.973131008213
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "6a3db558-4802-b05a-9b73-dd857cfc3130",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              112000,
+              -224000,
+              -6117.973131008213
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          112000,
+          -224000,
+          -6117.973131008213
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "display_name": "R5C5 据点",
+      "enabled": true,
+      "marker_id": "36c6816c-4ca5-39b1-6db1-7f9a9fc76a5b",
+      "marker_key": "Outpost_R5C5",
+      "note": "",
+      "parameters": {
+        "BlueClusterBudget": 6,
+        "BoardColumn": 5,
+        "BoardRow": 5,
+        "InitialOwner": "Neutral",
+        "RedClusterBudget": 0,
+        "Tier": 1
+      },
+      "regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "27ef6bee-47a4-cb7a-008d-1eb00f7a31cd",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              224000,
+              -224000,
+              22934.843642709893
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "3cb1ed43-4fa3-ff0e-96c2-c0b8924a9631",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              224000,
+              -224000,
+              22934.843642709893
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "type_id": "Outpost",
+      "world_transform": {
+        "position": [
+          224000,
+          -224000,
+          22934.843642709893
+        ],
+        "rotation_pitch_yaw_roll": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    }
+  ],
+  "schema_version": 1,
+  "types": [
+    {
+      "allowed_shapes": [
+        "Box",
+        "Cylinder",
+        "PolygonPrism",
+        "Sphere"
+      ],
+      "asset_path": "/Game/GuLiStrike/Editor/MapAuthoring/Types/DA_Outpost.DA_Outpost",
+      "color_alpha": 1,
+      "color_rgb": [
+        1,
+        0.550000011920929,
+        0.10000000149011612
+      ],
+      "default_regions": [
+        {
+          "display_name": "占领区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 10000,
+            "min_z": -10000,
+            "radius": 10000
+          },
+          "region_id": "c18e106e-4a4c-137d-e6c2-e79483dcc3c8",
+          "region_key": "Capture",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "Cylinder",
+          "world_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "display_name": "据点辖区",
+          "enabled": true,
+          "geometry": {
+            "max_z": 50000,
+            "min_z": -50000,
+            "vertices": [
+              [
+                -56000,
+                -56000
+              ],
+              [
+                56000,
+                -56000
+              ],
+              [
+                56000,
+                56000
+              ],
+              [
+                -56000,
+                56000
+              ]
+            ]
+          },
+          "region_id": "5fb6fdfb-4924-d211-596a-27ba60a2b0fb",
+          "region_key": "Territory",
+          "relative_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "shape_type": "PolygonPrism",
+          "world_transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation_pitch_yaw_roll": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "display_name": "据点",
+      "editor_icon": "Icons.Location",
+      "fields": [
+        {
+          "default": 0,
+          "display_name": "蓝矿簇预算",
+          "field_id": "5ab13b8a-4276-4027-75f0-0f8b35aa1c4c",
+          "field_key": "BlueClusterBudget",
+          "field_type": "int32",
+          "maximum": 10,
+          "minimum": 0,
+          "required": true,
+          "value_type_object": ""
+        },
+        {
+          "default": 1,
+          "display_name": "棋盘列",
+          "field_id": "9a640b2a-4151-e6d6-d633-848c0d08982e",
+          "field_key": "BoardColumn",
+          "field_type": "int32",
+          "maximum": 5,
+          "minimum": 1,
+          "required": true,
+          "value_type_object": ""
+        },
+        {
+          "default": 1,
+          "display_name": "棋盘行",
+          "field_id": "01176706-4863-da17-140b-34b5e94e5950",
+          "field_key": "BoardRow",
+          "field_type": "int32",
+          "maximum": 5,
+          "minimum": 1,
+          "required": true,
+          "value_type_object": ""
+        },
+        {
+          "default": "Neutral",
+          "display_name": "初始归属",
+          "field_id": "a5d87242-41b9-f9b8-202c-af8279e0fb87",
+          "field_key": "InitialOwner",
+          "field_type": "name",
+          "required": true,
+          "value_type_object": ""
+        },
+        {
+          "default": 0,
+          "display_name": "红矿簇预算",
+          "field_id": "1f5554c0-49e7-9472-80d4-51a5b0320f86",
+          "field_key": "RedClusterBudget",
+          "field_type": "int32",
+          "maximum": 4,
+          "minimum": 0,
+          "required": true,
+          "value_type_object": ""
+        },
+        {
+          "default": 1,
+          "field_id": "d286351c-4a81-9d66-3d78-589e63268595",
+          "field_key": "Tier",
+          "field_type": "int32",
+          "value_type_object": ""
+        }
+      ],
+      "type_id": "Outpost"
+    }
+  ]
+}

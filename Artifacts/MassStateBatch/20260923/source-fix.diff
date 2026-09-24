@@ -1,0 +1,1933 @@
+--- a/Source/GuLiStrike/Battle/Network/GuLiBattleTypes.h
++++ b/Source/GuLiStrike/Battle/Network/GuLiBattleTypes.h
+@@ -6,8 +6,8 @@
+ #include "GuLiBattleTypes.generated.h"
+ 
+ /** 战局连接的公共协议版本；不等于 MatchEpoch、快照版本或每连接同步代次。 */
+-// v18 replaces cosmetic player-bullet asset NetGUIDs with registry VfxId integers.
+-inline constexpr uint16 GULI_BATTLE_PROTOCOL_VERSION = 18u;
++// v19 replaces shared soldier/endpoint FastArray publication with per-connection budgeted batches.
++inline constexpr uint16 GULI_BATTLE_PROTOCOL_VERSION = 19u;
+ 
+ /** 历史指挥官协议常量保留别名，现有士兵 RPC/序列化仍使用原名称与数值。 */
+ inline constexpr uint16 GULI_COMMANDER_PROTOCOL_VERSION = GULI_BATTLE_PROTOCOL_VERSION;
+--- a/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h
++++ b/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h
+@@ -6,6 +6,7 @@
+ #include "Battle/Network/GuLiPlayerNetSyncComponent.h"
+ #include "Commander/Network/GuLiCommanderTypes.h"
+ #include "Commander/Network/GuLiCommanderPoseCodec.h"
++#include "Commander/Network/GuLiCommanderStateStream.h"
+ #include "Commander/Orders/GuLiUnitTaskTypes.h"
+ #include "GuLiCommanderNetSyncComponent.generated.h"
+ 
+@@ -73,8 +74,10 @@
+ 	UFUNCTION(BlueprintPure, Category = "Commander|Network")
+ 	bool IsSoldierStreamReady() const;
+ 
+-	/** 服务器把已构造的姿态块发给拥有者；捕获目标为 10 Hz，具体分块/调度不在本函数。 */
++	/** Queue latest samples for this connection. Capture remains 10 Hz; admission runs each Tick. */
+ 	void SendPoseChunk(const FGuLiSoldierPoseChunk& Chunk);
++	/** Called before the authoritative wreck is retired; preserves a queued terminal death. */
++	void QueueSoldierRetirement(const FGuLiSoldierStateItem& FinalState, uint32 MatchEpoch);
+ 	uint64 GetPoseCodecAllocatedBytes() const { return PoseSender.GetAllocatedBytes() + PoseReceiver.GetAllocatedBytes(); }
+ 
+ 	/** 服务器刷新选择中的存活/命令摘要并剔除全灭控制组；仅发生变化时返回 true 并请求复制。 */
+@@ -122,7 +125,8 @@
+ 	UFUNCTION(Server, Reliable)
+ 	void ServerRequestBootstrap(uint32 ClientBootstrapRequestId);
+ 
+-	// 拥有客户端 → 服务器，确认已具备名册；服务器核对代次、协议、战局、数量与快照版本后放行。
++	// AppliedSnapshotRevision is the completed state batch sequence, not a global roster revision.
++	// Server verifies the frozen connection-specific completion count, ID hash and sequence.
+ 	// 参数来自客户端当前已应用的数据，不能只凭收到 ClientBootstrapStarted 就确认。
+ 	UFUNCTION(Server, Reliable)
+ 	void ServerAcknowledgeBootstrap(
+@@ -130,17 +134,18 @@
+ 		uint16 ClientProtocolVersion,
+ 		uint32 ClientMatchEpoch,
+ 		uint16 AppliedRosterCount,
+-		uint32 AppliedSnapshotRevision);
+-
+-	/** 预留事实流确认 RPC：当前仅记录连续序号，尚无配套 8 KiB 事实分块发送/重传实现。 */
+-	UFUNCTION(Server, Unreliable)
++		uint32 AppliedSnapshotRevision,
++		uint64 AppliedIdHash);
++
++	/** Application ACK releases the bounded reliable window, including during bootstrap. */
++	UFUNCTION(Server, Reliable)
+ 	void ServerAcknowledgeFacts(uint32 InSyncGeneration, uint32 HighestContiguousStreamSeq);
+ 
+ 	const FGuLiCommanderSelectionState& GetSelectionState() const { return SelectionState; }
+ 
+ 	const FGuLiCommandAck& GetLastCommandAck() const { return LastCommandAck; }
+ 
+-	/** Current OwnerOnly authoritative endpoints; consumers must still check IsSoldierStreamReady(). */
++	/** Owner-visible endpoint read model; consumers must still check IsSoldierStreamReady(). */
+ 	const FGuLiMoveEndpointFastArray& GetMoveEndpoints() const { return MoveEndpoints; }
+ 	const FGuLiMoveEndpointItem* FindMoveEndpoint(FGuLiSoldierId SoldierId) const
+ 	{
+@@ -240,6 +245,21 @@
+ 	virtual void OnConnectionBootstrapReady() override;
+ 
+ private:
++	UFUNCTION(Client, Reliable)
++	void ClientReceiveStateBatch(const FGuLiEncodedStateBatch& Batch);
++	UFUNCTION(Server, Reliable)
++	void ServerRequestStateResync(uint32 ConnectionGeneration, uint32 ExpectedSyncGeneration);
++	void TickStateStream();
++	void ApplyPendingStateBatches();
++	void ResetStateStream();
++	GuLiCommanderStateStream::FSender StateSender;
++	GuLiCommanderStateStream::FReceiver StateReceiver;
++	GuLiCommanderStateStream::FDiagnostics StreamDiagnostics;
++	TMap<FGuLiSoldierId, GuLiCommanderStateStream::FPendingPose> QueuedPoses;
++	TArray<FGuLiEncodedStateBatch> ReceivedStateBatches;
++	uint64 ClientAppliedIdHash = 0;
++	uint32 PendingStateResyncGeneration = 0;
++	double NextStateResyncTime = 0;
+ 	UFUNCTION(Server, Reliable) void ServerPanelSelection(FGuLiPanelSelectionRequest Request, uint32 Sequence, uint32 Generation);
+ 	UFUNCTION(Server, Reliable) void ServerOrderedSelection(FGuLiSelectionRequest Request, uint32 Sequence, uint32 Generation);
+ 	UFUNCTION(Server, Reliable) void ServerOrderedTask(FGuLiUnitTaskCommand Command, uint32 Sequence, uint32 Generation);
+@@ -370,8 +390,8 @@
+ 	UPROPERTY(Replicated)
+ 	FGuLiSoldierBootstrapBinding SoldierBootstrapBinding;
+ 
+-	// 仅拥有者需要查看选中单位的权威起终点；连续姿态仍走独立 10 Hz 流。
+-	UPROPERTY(ReplicatedUsing = OnRep_MoveEndpoints)
++	// Local container retained for consumers. The owning connection publishes it in state batches.
++	UPROPERTY(Transient)
+ 	FGuLiMoveEndpointFastArray MoveEndpoints;
+ 
+ 	// 服务器去重状态：选兵与移动各有独立序号空间，并分别缓存最近请求及 ACK。
+--- a/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp
++++ b/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp
+@@ -64,8 +64,8 @@
+ 			&& FVector(Lhs.Target).Equals(FVector(Rhs.Target), 0.5f);
+ 	}
+ 
+-	// 跨 Actor 的属性与 RPC 不构成原子快照：显式核对同战局、非零版本和名册数量。
+-	// 允许已应用的快照比启动标记更新，不能要求版本严格相等而把持续更新的客户端卡住。
++	// Historical predicate retained for existing test callers only. Production readiness
++	// now requires the per-connection state stream completion sequence/count/hash.
+ 	static bool IsBootstrapSnapshotCompatible(
+ 		const uint16 ProtocolVersion,
+ 		const uint32 GameStateMatchEpoch,
+@@ -188,11 +188,10 @@
+ 		}
+ 
+ 		const bool bCanPublishMoveEndpoints = BattlePlayerState && Authority
+-			&& BattlePlayerState->IsCommander() && IsSoldierStreamReady();
++			&& BattlePlayerState->IsCommander() && IsConnectionReady() && BootstrapMatchEpoch != 0u;
+ 		if (!bCanPublishMoveEndpoints)
+ 		{
+-			// Do not repopulate a just-reset OwnerOnly array before the replacement identity has
+-			// completed its soldier bootstrap, and never expose a team's routes to a non-commander.
++			// Never expose a team's routes to a non-commander or an unbound public identity.
+ 			ServerClearMoveEndpoints();
+ 		}
+ 		const double Now = GetWorld()->GetRealTimeSeconds();
+@@ -217,6 +216,7 @@
+ 			ServerBootstrapMoveEndpoints(ReplicatedEndpoints);
+ 		}
+ 	}
++	TickStateStream();
+ }
+ 
+ void UGuLiCommanderNetSyncComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+@@ -224,6 +224,7 @@
+ 	CancelPendingServerMovePlanning();
+ 	if (PoseRoster.IsValid()) PoseRoster->OnSoldiersRemoved().RemoveAll(this);
+ 	PoseSender.Reset(); PoseReceiver.Reset();
++	ResetStateStream();
+ 	Super::EndPlay(EndPlayReason);
+ }
+ 
+@@ -256,6 +257,14 @@
+ 
+ void UGuLiCommanderNetSyncComponent::ResetClientSoldierState()
+ {
++	StateReceiver.Reset(); ReceivedStateBatches.Reset(); ClientAppliedIdHash = 0;
++	PendingStateResyncGeneration = 0; NextStateResyncTime = 0;
++	if (GetOwner() && !GetOwner()->HasAuthority())
++	{
++		StreamDiagnostics = {};
++		if (PoseRoster.IsValid()) PoseRoster->ResetRemoteRoster(0);
++		MoveEndpoints.Items.Reset(); OnMoveEndpointsChanged.Broadcast(MoveEndpoints);
++	}
+ 	LastAppliedClientSelection = FGuLiCommanderSelectionState{};
+ 	PoseReceiver.Reset();
+ 	NextPoseAckTime = 0.0;
+@@ -309,6 +318,10 @@
+ 
+ void UGuLiCommanderNetSyncComponent::OnConnectionBootstrapReset()
+ {
++	// A temporary cross-actor identity mismatch can reset the client without a new server generation.
++	// Request a fresh baseline after public readiness returns; never replay already-ACKed facts locally.
++	const uint32 InterruptedGeneration = GetOwner() && !GetOwner()->HasAuthority()
++		&& StateReceiver.Session.ConnectionGeneration == GetConnectionGeneration() ? StateReceiver.Session.Generation : 0;
+ 	PendingOrderedSelections.Reset(); PendingOrderedTasks.Reset(); LastOrderedSelectionSequence = 0;
+ 	LastTaskFeedback.Reset(); TaskSummaries.Reset(); bOrderedSelectionValid = true;
+ 	PendingTaskSnapshot.Reset(); ReceivedTaskSnapshot.Reset(); PendingGroupCounts.Reset(); ReceivedGroupCounts.Reset();
+@@ -318,8 +331,10 @@
+ 	// captured when planning began so an old connection cannot commit after this reset.
+ 	CancelPendingServerMovePlanning();
+ 	Super::OnConnectionBootstrapReset();
++	ResetStateStream();
+ 	PoseSender.Reset();
+ 	ResetClientSoldierState();
++	PendingStateResyncGeneration = InterruptedGeneration;
+ 	SelectionState = FGuLiCommanderSelectionState{};
+ 	LastSelectionAck = FGuLiCommandAck{};
+ 	LastMoveAck = FGuLiCommandAck{};
+@@ -394,7 +409,7 @@
+ 	DOREPLIFETIME_CONDITION(UGuLiCommanderNetSyncComponent, SelectionState, COND_OwnerOnly);
+ 	DOREPLIFETIME_CONDITION(UGuLiCommanderNetSyncComponent, SyncGeneration, COND_OwnerOnly);
+ 	DOREPLIFETIME_CONDITION(UGuLiCommanderNetSyncComponent, SoldierBootstrapBinding, COND_OwnerOnly);
+-	DOREPLIFETIME_CONDITION(UGuLiCommanderNetSyncComponent, MoveEndpoints, COND_OwnerOnly);
++	// MoveEndpoints is a local read model; wire publication is through bounded state batches.
+ }
+ 
+ // 服务器先发布权威名册，再发送期望值标记；这只是发送侧顺序，客户端仍必须检查到达条件。
+@@ -431,7 +446,7 @@
+ 	const int32 ExpectedRosterCount = Authority ? Authority->GetAuthoritativeMemberCount() : 0;
+ 	if (!BattleGameState || BattleGameState->GetProtocolVersion() != GULI_COMMANDER_PROTOCOL_VERSION
+ 		|| BattleGameState->GetMatchEpoch() == 0u || !SoldierReplicator
+-		|| ExpectedRosterCount <= 0 || ExpectedRosterCount > MAX_uint16)
++		|| !Authority || !Authority->HasSpawnedAuthorityPopulation() || ExpectedRosterCount > MAX_uint16)
+ 	{
+ 		return;
+ 	}
+@@ -491,6 +506,9 @@
+ 	HighestAckedStreamSeq = 0u;
+ 	BootstrapMatchEpoch = BattleGameState->GetMatchEpoch();
+ 	PoseSender.Reset(SyncGeneration, BootstrapMatchEpoch);
++	StateSender.Reset(GetConnectionGeneration(), SyncGeneration, BootstrapMatchEpoch);
++	StateSender.Begin(SoldierReplicator->GetItems(), World->GetRealTimeSeconds());
++	QueuedPoses.Reset(); StreamDiagnostics = {};
+ 	BindPoseRoster(*SoldierReplicator);
+ 	BootstrapExpectedRosterCount = static_cast<uint16>(ExpectedRosterCount);
+ 	BootstrapExpectedSnapshotRevision = SoldierReplicator->GetSnapshotRevision();
+@@ -525,16 +543,20 @@
+ 
+ void UGuLiCommanderNetSyncComponent::SendPoseChunk(const FGuLiSoldierPoseChunk& Chunk)
+ {
+-	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Send);
+-	GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Send);
+-	if (!GetOwner() || !GetOwner()->HasAuthority()
+-		|| !IsSoldierStreamReady() || Chunk.AuthorityEpoch != ServerAcceptedMatchEpoch)
+-	{
+-		return;
+-	}
+-	TArray<FGuLiEncodedPoseBlock> Blocks;
+-	PoseSender.Encode(Chunk, Blocks);
+-	for (const FGuLiEncodedPoseBlock& Block : Blocks) ClientReceiveEncodedPoseBlock(Block);
++	if (!GetOwner() || !GetOwner()->HasAuthority() || !GetWorld()
++		|| !IsSoldierStreamReady() || Chunk.AuthorityEpoch != ServerAcceptedMatchEpoch) return;
++	const double Now = GetWorld()->GetRealTimeSeconds();
++	for (const auto& Sample : Chunk.Samples)
++	{
++		auto* Previous = QueuedPoses.Find(Sample.SoldierId);
++		if (Previous && !IsNewerSerial(Chunk.FrameSequence, Previous->Frame)) continue;
++		GuLiCommanderStateStream::FPendingPose Pending;
++		Pending.Sample = Sample; Pending.Frame = Chunk.FrameSequence; Pending.SimTick = Chunk.ServerSimTick;
++		Pending.SampleTime = Chunk.ServerTimeSeconds;
++		Pending.FirstWaitingTime = Previous ? Previous->FirstWaitingTime : Now;
++		if (Previous) ++StreamDiagnostics.PoseMerges;
++		QueuedPoses.Add(Sample.SoldierId, MoveTemp(Pending));
++	}
+ }
+ 
+ bool UGuLiCommanderNetSyncComponent::RefreshServerSelection()
+@@ -1516,141 +1538,73 @@
+ 
+ // 服务器再次核对客户端的就绪声明，旧代次或旧战局 ACK 不能打开当前连接的就绪门。
+ void UGuLiCommanderNetSyncComponent::ServerAcknowledgeBootstrap_Implementation(
+-	const uint32 InSyncGeneration,
+-	const uint16 ClientProtocolVersion,
+-	const uint32 ClientMatchEpoch,
+-	const uint16 AppliedRosterCount,
+-	const uint32 AppliedSnapshotRevision)
++	const uint32 InSyncGeneration, const uint16 ClientProtocolVersion, const uint32 ClientMatchEpoch,
++	const uint16 AppliedRosterCount, const uint32 AppliedSnapshotRevision, const uint64 AppliedIdHash)
+ {
+ 	EnsureServerConnectionBootstrap();
+-	if (!GetOwner() || !GetOwner()->HasAuthority() || !IsConnectionReady())
+-	{
+-		return;
+-	}
+-	const AGuLiBattleGameState* BattleGameState = GetWorld()
+-		? GetWorld()->GetGameState<AGuLiBattleGameState>()
+-		: nullptr;
+-	if (InSyncGeneration == 0u || InSyncGeneration != SyncGeneration
++	const auto* GameState = GetBattleGameState();
++	if (!GetOwner() || !GetOwner()->HasAuthority() || !IsConnectionReady() || !GameState
++		|| ClientProtocolVersion != GULI_COMMANDER_PROTOCOL_VERSION || GameState->GetProtocolVersion() != GULI_COMMANDER_PROTOCOL_VERSION
++		|| InSyncGeneration != SyncGeneration || !InSyncGeneration || ClientMatchEpoch != BootstrapMatchEpoch
++		|| GameState->GetMatchEpoch() != BootstrapMatchEpoch
+ 		|| SoldierBootstrapBinding.ConnectionGeneration != GetConnectionGeneration()
+ 		|| SoldierBootstrapBinding.SoldierSyncGeneration != SyncGeneration
+-		|| !BattleGameState
+-		|| BattleGameState->GetProtocolVersion() != GULI_COMMANDER_PROTOCOL_VERSION
+-		|| !GuLiCommanderNetwork::IsBootstrapSnapshotCompatible(
+-			ClientProtocolVersion,
+-			BattleGameState->GetMatchEpoch(),
+-			ClientMatchEpoch,
+-			AppliedSnapshotRevision,
+-			static_cast<int32>(AppliedRosterCount),
+-			BootstrapMatchEpoch,
+-			BootstrapExpectedSnapshotRevision,
+-			BootstrapExpectedRosterCount))
++		|| !StateSender.CompleteSequence || AppliedSnapshotRevision != StateSender.CompleteSequence
++		|| AppliedRosterCount != StateSender.CompleteCount || AppliedIdHash != StateSender.CompleteHash)
+ 	{
+ 		LogRejectedRpc(TEXT("ServerAcknowledgeBootstrap"), EGuLiCommandAckResult::InvalidRequest);
+ 		return;
+ 	}
+-
+-	if (AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState())
+-	{
+-		ServerAcceptedSyncGeneration = SyncGeneration;
+-		ServerAcceptedMatchEpoch = BootstrapMatchEpoch;
+-		BattlePlayerState->SetServerSoldierStreamReady(true);
+-		MirrorSyncReadyToRoleSlot(*BattlePlayerState, true);
+-		UE_LOG(
+-			LogGuLiStrike,
+-			Display,
+-			TEXT("Commander bootstrap ready: generation=%u owner=%s player=%s."),
+-			SyncGeneration,
+-			*GetNameSafe(GetOwner()),
+-			*BattlePlayerState->GetPlayerGuid().ToString());
+-	}
+-}
+-
+-// 占位路径只推进 HighestAckedStreamSeq；当前没有在此组装、发送或补传事实分块。
+-void UGuLiCommanderNetSyncComponent::ServerAcknowledgeFacts_Implementation(
+-	uint32 InSyncGeneration,
+-	uint32 HighestContiguousStreamSeq)
+-{
+-	const AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState();
+-	if (!BattlePlayerState || !IsSoldierStreamReady()
+-		|| InSyncGeneration == 0 || InSyncGeneration != SyncGeneration)
+-	{
+-		return;
+-	}
+-
+-	if (HighestAckedStreamSeq == 0 || IsNewerSerial(HighestContiguousStreamSeq, HighestAckedStreamSeq))
+-	{
+-		HighestAckedStreamSeq = HighestContiguousStreamSeq;
+-	}
++	// A completion ACK is also a cumulative facts ACK for this same reliable barrier.
++	StateSender.Confirm(AppliedSnapshotRevision); HighestAckedStreamSeq = StateSender.AckedSequence;
++	if (AGuLiBattlePlayerState* Player = GetBattlePlayerState())
++	{
++		ServerAcceptedSyncGeneration = SyncGeneration; ServerAcceptedMatchEpoch = BootstrapMatchEpoch;
++		Player->SetServerSoldierStreamReady(true); MirrorSyncReadyToRoleSlot(*Player, true);
++		UE_LOG(LogGuLiStrike, Display, TEXT("Commander bootstrap ready: generation=%u owner=%s player=%s roster=%u batch=%u hash=%llu."),
++			SyncGeneration, *GetNameSafe(GetOwner()), *Player->GetPlayerGuid().ToString(), AppliedRosterCount, AppliedSnapshotRevision, AppliedIdHash);
++	}
++}
++
++// Application ACK only; UE owns reliable transport retransmission.
++void UGuLiCommanderNetSyncComponent::ServerAcknowledgeFacts_Implementation(uint32 InSyncGeneration, uint32 HighestContiguousStreamSeq)
++{
++	const auto* GameState = GetBattleGameState();
++	if (!GetOwner() || !GetOwner()->HasAuthority() || !IsConnectionReady() || !GameState
++		|| !InSyncGeneration || InSyncGeneration != SyncGeneration || GameState->GetMatchEpoch() != BootstrapMatchEpoch
++		|| StateSender.Session.ConnectionGeneration != GetConnectionGeneration()) return;
++	if (StateSender.Confirm(HighestContiguousStreamSeq)) HighestAckedStreamSeq = StateSender.AckedSequence;
+ }
+ 
+ // 收到启动标记先清空旧接收/重试状态并关闭姿态门；满足名册条件后才重新开放。
+ void UGuLiCommanderNetSyncComponent::ClientBootstrapStarted_Implementation(
+-	const uint32 NewSyncGeneration,
+-	const uint16 ServerProtocolVersion,
+-	const uint32 MatchEpoch,
+-	const uint16 ExpectedRosterCount,
+-	const uint32 ExpectedSnapshotRevision)
+-{
+-	if (NewSyncGeneration == 0u || MatchEpoch == 0u || ExpectedRosterCount == 0u
+-		|| ExpectedSnapshotRevision == 0u || !IsConnectionReady()
+-		|| SoldierBootstrapBinding.ConnectionGeneration != GetConnectionGeneration()
+-		|| SoldierBootstrapBinding.SoldierSyncGeneration != NewSyncGeneration)
+-	{
+-		return;
+-	}
+-	const AGuLiBattleGameState* BattleGameState = GetBattleGameState();
+-	if (!BattleGameState || BattleGameState->GetMatchEpoch() != MatchEpoch
+-		|| (SyncGeneration != 0u && NewSyncGeneration != SyncGeneration
+-			&& !IsNewerSerial(NewSyncGeneration, SyncGeneration)))
+-	{
+-		return;
+-	}
+-	// 同代次标记重发只补查依赖，不能清除已确认命令；旧代次不能覆盖新名册门。
+-	if (ServerProtocolVersion == GULI_COMMANDER_PROTOCOL_VERSION
+-		&& bClientPoseReady && ClientAcceptedSyncGeneration == NewSyncGeneration
+-		&& ClientAcceptedMatchEpoch == MatchEpoch)
+-	{
+-		ServerAcknowledgeBootstrap(
+-			NewSyncGeneration, ServerProtocolVersion, MatchEpoch,
+-			ClientAppliedRosterCount, ClientAppliedSnapshotRevision);
+-		return;
+-	}
+-	if (ServerProtocolVersion == GULI_COMMANDER_PROTOCOL_VERSION
+-		&& PendingBootstrapGeneration == NewSyncGeneration
+-		&& PendingBootstrapMatchEpoch == MatchEpoch
+-		&& PendingBootstrapRosterCount == ExpectedRosterCount
+-		&& PendingBootstrapSnapshotRevision == ExpectedSnapshotRevision)
+-	{
+-		TryCompleteClientBootstrap();
+-		return;
+-	}
++	const uint32 NewSyncGeneration, const uint16 ServerProtocolVersion, const uint32 MatchEpoch,
++	const uint16 ExpectedRosterCount, const uint32 ExpectedSnapshotRevision)
++{
++	if (!NewSyncGeneration || !MatchEpoch || ServerProtocolVersion != GULI_COMMANDER_PROTOCOL_VERSION)
++	{
++		UE_LOG(LogGuLiStrike, Error, TEXT("Commander bootstrap protocol/session rejected: server=%u client=%u generation=%u"),
++			ServerProtocolVersion, GULI_COMMANDER_PROTOCOL_VERSION, NewSyncGeneration);
++		return;
++	}
++	if (PendingStateResyncGeneration == NewSyncGeneration) return;
++	const uint32 Latest = PendingBootstrapGeneration ? PendingBootstrapGeneration : ClientAcceptedSyncGeneration;
++	if (Latest && NewSyncGeneration != Latest && !IsNewerSerial(NewSyncGeneration, Latest)) return;
++	if (bClientPoseReady && ClientAcceptedSyncGeneration == NewSyncGeneration && ClientAcceptedMatchEpoch == MatchEpoch)
++	{
++		ServerAcknowledgeBootstrap(NewSyncGeneration, ServerProtocolVersion, MatchEpoch,
++			ClientAppliedRosterCount, ClientAppliedSnapshotRevision, ClientAppliedIdHash);
++		return;
++	}
++	if (PendingBootstrapGeneration == NewSyncGeneration && PendingBootstrapMatchEpoch == MatchEpoch)
++	{
++		ApplyPendingStateBatches(); TryCompleteClientBootstrap(); return;
++	}
++	// Retain the reliable marker even if public properties/the roster actor arrive later.
+ 	ResetClientSoldierState();
+-	if (SyncGeneration != NewSyncGeneration)
+-	{
+-		SyncGeneration = NewSyncGeneration;
+-		OnRep_SyncGeneration();
+-	}
+-	PendingBootstrapGeneration = NewSyncGeneration;
+-	PendingBootstrapMatchEpoch = MatchEpoch;
+-	PendingBootstrapRosterCount = ExpectedRosterCount;
+-	PendingBootstrapSnapshotRevision = ExpectedSnapshotRevision;
+-	if (ServerProtocolVersion != GULI_COMMANDER_PROTOCOL_VERSION)
+-	{
+-		if (!bLoggedBootstrapProtocolMismatch)
+-		{
+-			UE_LOG(
+-				LogGuLiStrike,
+-				Error,
+-				TEXT("Commander bootstrap protocol mismatch: server=%u client=%u generation=%u."),
+-				ServerProtocolVersion,
+-				GULI_COMMANDER_PROTOCOL_VERSION,
+-				NewSyncGeneration);
+-			bLoggedBootstrapProtocolMismatch = true;
+-		}
+-		return;
+-	}
+-	bLoggedBootstrapProtocolMismatch = false;
+-	TryCompleteClientBootstrap();
++	SyncGeneration = NewSyncGeneration;
++	PendingBootstrapGeneration = NewSyncGeneration; PendingBootstrapMatchEpoch = MatchEpoch;
++	PendingBootstrapRosterCount = ExpectedRosterCount; PendingBootstrapSnapshotRevision = ExpectedSnapshotRevision;
+ }
+ 
+ void UGuLiCommanderNetSyncComponent::ClientReceiveCommandAck_Implementation(
+@@ -1766,7 +1720,18 @@
+ {
+ 	FGuLiSoldierPoseChunk Chunk;
+ 	const auto Result = PoseReceiver.Decode(Block, Chunk);
+-	if (Result == GuLiCommanderPoseCodec::EDecodeResult::Decoded) QueueDecodedPoseChunk(MoveTemp(Chunk));
++	if (Result == GuLiCommanderPoseCodec::EDecodeResult::Decoded)
++	{
++		StreamDiagnostics.ReceivedPoseBytes += Block.Data.Num() + 2; ++StreamDiagnostics.ReceivedPoseBlocks;
++		for (const auto& Sample : Chunk.Samples)
++		{
++			float* Last = StreamDiagnostics.LastReceivedSampleTimes.Find(Sample.SoldierId);
++			if (Last && Chunk.ServerTimeSeconds > *Last)
++				StreamDiagnostics.MaxReceivedSampleGap = FMath::Max(StreamDiagnostics.MaxReceivedSampleGap, double(Chunk.ServerTimeSeconds - *Last));
++			if (!Last || Chunk.ServerTimeSeconds > *Last) StreamDiagnostics.LastReceivedSampleTimes.Add(Sample.SoldierId, Chunk.ServerTimeSeconds);
++		}
++		QueueDecodedPoseChunk(MoveTemp(Chunk));
++	}
+ 	else if (Result == GuLiCommanderPoseCodec::EDecodeResult::MissingBaseline
+ 		|| Result == GuLiCommanderPoseCodec::EDecodeResult::InvalidPayload) GuLiCommanderPoseMetrics::RecordFailure();
+ }
+@@ -1825,6 +1790,14 @@
+ {
+ 	PoseSender.Forget(Removed);
+ 	PoseReceiver.Forget(Removed);
++	const TSet<FGuLiSoldierId> RemovedIds(Removed);
++	for (auto& Chunk : PendingPoseChunks)
++		Chunk.Samples.RemoveAll([&](const auto& Sample) { return RemovedIds.Contains(Sample.SoldierId); });
++	PendingPoseChunks.RemoveAll([](const auto& Chunk) { return Chunk.Samples.IsEmpty(); });
++	for (auto Id : Removed)
++	{
++		QueuedPoses.Remove(Id); StreamDiagnostics.LastSentSampleTimes.Remove(Id); StreamDiagnostics.LastReceivedSampleTimes.Remove(Id);
++	}
+ }
+ 
+ void UGuLiCommanderNetSyncComponent::OnRep_SelectionState()
+@@ -1840,22 +1813,17 @@
+ 
+ void UGuLiCommanderNetSyncComponent::OnRep_SyncGeneration()
+ {
+-	if ((PendingBootstrapGeneration != 0u && PendingBootstrapGeneration != SyncGeneration)
+-		|| (ClientAcceptedSyncGeneration != 0u && ClientAcceptedSyncGeneration != SyncGeneration))
+-	{
+-		bClientPoseReady = false;
+-		ClientAcceptedSyncGeneration = 0u;
+-		ClientAcceptedMatchEpoch = 0u;
+-		PendingPoseChunks.Reset();
+-		PoseReceiver.Reset();
+-		NextPoseAckTime = 0.0;
++	const uint32 Active = PendingBootstrapGeneration ? PendingBootstrapGeneration : ClientAcceptedSyncGeneration;
++	if (Active && IsNewerSerial(SyncGeneration, Active))
++	{
++		ResetClientSoldierState();
+ 	}
+ }
+ 
+ void UGuLiCommanderNetSyncComponent::ResendServerBootstrapMarker()
+ {
+ 	if (!GetOwner() || !GetOwner()->HasAuthority() || SyncGeneration == 0u
+-		|| BootstrapMatchEpoch == 0u || BootstrapExpectedRosterCount == 0u
++		|| BootstrapMatchEpoch == 0u
+ 		|| BootstrapExpectedSnapshotRevision == 0u || !IsConnectionReady())
+ 	{
+ 		return;
+@@ -1869,104 +1837,29 @@
+ 		BootstrapExpectedSnapshotRevision);
+ }
+ 
+-// 本地控制端持续检查跨对象依赖；GameState、快照版本和有效唯一 SoldierId 名册都满足后确认。
++// Complete only after this connection's reliable baseline barrier has been applied and verified.
+ void UGuLiCommanderNetSyncComponent::TryCompleteClientBootstrap()
+ {
+-	APlayerController* Controller = GetOwningPlayerController();
+-	UWorld* World = GetWorld();
+-	if (!Controller || !Controller->IsLocalController() || !World
+-		|| PendingBootstrapGeneration == 0u || PendingBootstrapMatchEpoch == 0u
+-		|| PendingBootstrapRosterCount == 0u || PendingBootstrapSnapshotRevision == 0u
+-		|| bClientPoseReady || !IsConnectionReady()
++	const APlayerController* Controller = GetOwningPlayerController();
++	const auto* GameState = GetBattleGameState();
++	if (!Controller || !Controller->IsLocalController() || !GameState || !IsConnectionReady() || bClientPoseReady
++		|| !PendingBootstrapGeneration || !PendingBootstrapMatchEpoch || !StateReceiver.CompleteSequence
++		|| GameState->GetProtocolVersion() != GULI_COMMANDER_PROTOCOL_VERSION || GameState->GetMatchEpoch() != PendingBootstrapMatchEpoch
+ 		|| SoldierBootstrapBinding.ConnectionGeneration != GetConnectionGeneration()
+-		|| SoldierBootstrapBinding.SoldierSyncGeneration != PendingBootstrapGeneration)
+-	{
+-		return;
+-	}
+-
+-	const AGuLiBattleGameState* BattleGameState = World->GetGameState<AGuLiBattleGameState>();
+-	if (!BattleGameState)
+-	{
+-		return;
+-	}
+-	if (BattleGameState->GetProtocolVersion() != GULI_COMMANDER_PROTOCOL_VERSION)
+-	{
+-		if (!bLoggedBootstrapProtocolMismatch)
+-		{
+-			UE_LOG(
+-				LogGuLiStrike,
+-				Error,
+-				TEXT("Commander GameState protocol mismatch: server=%u client=%u generation=%u."),
+-				BattleGameState->GetProtocolVersion(),
+-				GULI_COMMANDER_PROTOCOL_VERSION,
+-				PendingBootstrapGeneration);
+-			bLoggedBootstrapProtocolMismatch = true;
+-		}
+-		return;
+-	}
+-	if (BattleGameState->GetMatchEpoch() == 0u
+-		|| BattleGameState->GetMatchEpoch() != PendingBootstrapMatchEpoch)
+-	{
+-		return;
+-	}
+-
+-	AGuLiSoldierStateReplicator* SoldierReplicator = nullptr;
+-	for (TActorIterator<AGuLiSoldierStateReplicator> It(World); It; ++It)
+-	{
+-		SoldierReplicator = *It;
+-		break;
+-	}
+-	if (!SoldierReplicator
+-		|| !GuLiCommanderNetwork::IsBootstrapSnapshotCompatible(
+-			BattleGameState->GetProtocolVersion(),
+-			BattleGameState->GetMatchEpoch(),
+-			SoldierReplicator->GetSnapshotMatchEpoch(),
+-			SoldierReplicator->GetSnapshotRevision(),
+-			SoldierReplicator->GetItems().Num(),
+-			PendingBootstrapMatchEpoch,
+-			PendingBootstrapSnapshotRevision,
+-			PendingBootstrapRosterCount))
+-	{
+-		return;
+-	}
+-
+-	TSet<FGuLiSoldierId> AppliedRoster;
+-	AppliedRoster.Reserve(SoldierReplicator->GetItems().Num());
+-	for (const FGuLiSoldierStateItem& Item : SoldierReplicator->GetItems())
+-	{
+-		if (Item.SoldierId.IsValid())
+-		{
+-			AppliedRoster.Add(Item.SoldierId);
+-		}
+-	}
+-	if (AppliedRoster.Num() < PendingBootstrapRosterCount)
+-	{
+-		return;
+-	}
+-
+-	const uint32 CompletedGeneration = PendingBootstrapGeneration;
+-	const uint32 CompletedMatchEpoch = PendingBootstrapMatchEpoch;
+-	const uint16 CompletedRosterCount = PendingBootstrapRosterCount;
+-	const uint32 CompletedSnapshotRevision = SoldierReplicator->GetSnapshotRevision();
+-	PendingBootstrapGeneration = 0u;
+-	PendingBootstrapMatchEpoch = 0u;
+-	PendingBootstrapRosterCount = 0u;
+-	PendingBootstrapSnapshotRevision = 0u;
+-	PoseReceiver.Reset(CompletedGeneration, CompletedMatchEpoch);
+-	BindPoseRoster(*SoldierReplicator);
+-	NextPoseAckTime = 0.0;
+-	ClientAcceptedMatchEpoch = CompletedMatchEpoch;
+-	ClientAcceptedSyncGeneration = CompletedGeneration;
+-	ClientAppliedRosterCount = CompletedRosterCount;
+-	ClientAppliedSnapshotRevision = CompletedSnapshotRevision;
+-	// 客户端先打开本地姿态门并回报；服务器收到下面的可靠 ACK 后才设置 PlayerState 的 bSyncReady。
++		|| SoldierBootstrapBinding.SoldierSyncGeneration != PendingBootstrapGeneration || SyncGeneration != PendingBootstrapGeneration
++		|| StateReceiver.Session.Generation != PendingBootstrapGeneration || StateReceiver.Session.Epoch != PendingBootstrapMatchEpoch
++		|| StateReceiver.CompleteCount != uint32(StateReceiver.Values.Num())
++		|| StateReceiver.CompleteHash != GuLiCommanderStateStream::HashIds(StateReceiver.Values)
++		|| StateReceiver.CompleteCount > MAX_uint16 || !PoseRoster.IsValid()) return;
++	const uint32 Generation = PendingBootstrapGeneration, Epoch = PendingBootstrapMatchEpoch;
++	ClientAppliedRosterCount = uint16(StateReceiver.CompleteCount);
++	ClientAppliedSnapshotRevision = StateReceiver.CompleteSequence; ClientAppliedIdHash = StateReceiver.CompleteHash;
++	ClientAcceptedMatchEpoch = Epoch; ClientAcceptedSyncGeneration = Generation;
++	PendingBootstrapGeneration = 0; PendingBootstrapMatchEpoch = 0; PendingBootstrapRosterCount = 0; PendingBootstrapSnapshotRevision = 0;
++	PoseReceiver.Reset(Generation, Epoch); NextPoseAckTime = 0;
+ 	bClientPoseReady = true;
+-	ServerAcknowledgeBootstrap(
+-		CompletedGeneration,
+-		GULI_COMMANDER_PROTOCOL_VERSION,
+-		CompletedMatchEpoch,
+-		CompletedRosterCount,
+-		CompletedSnapshotRevision);
++	ServerAcknowledgeBootstrap(Generation, GULI_COMMANDER_PROTOCOL_VERSION, Epoch,
++		ClientAppliedRosterCount, ClientAppliedSnapshotRevision, ClientAppliedIdHash);
+ }
+ 
+ #if WITH_DEV_AUTOMATION_TESTS
+--- a/Source/GuLiStrike/Commander/Framework/GuLiCommanderStateDispatch.cpp
++++ b/Source/GuLiStrike/Commander/Framework/GuLiCommanderStateDispatch.cpp
+@@ -0,0 +1,292 @@
++#include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
++#include "Battle/Framework/GuLiBattleGameState.h"
++#include "Battle/Framework/GuLiBattlePlayerState.h"
++#include "Commander/Network/GuLiSoldierStateReplicator.h"
++#include "Commander/Network/GuLiCommanderPoseMetrics.h"
++#include "Engine/NetConnection.h"
++#include "Engine/World.h"
++#include "EngineUtils.h"
++#include "GameFramework/PlayerController.h"
++#include "HAL/IConsoleManager.h"
++#include "GuLiStrike.h"
++#include "ProfilingDebugging/CsvProfiler.h"
++#include "ProfilingDebugging/CpuProfilerTrace.h"
++
++CSV_DECLARE_CATEGORY_EXTERN(GuLiCommanderPoseDispatch);
++
++namespace
++{
++TAutoConsoleVariable<int32> CVarStateStreamDiagnostics(TEXT("guli.Commander.StateStreamDiagnostics"), 0,
++	TEXT("Log per-connection Mass state/pose queue and budget counters once per second."));
++
++/** Credit is already accounted for by UE. Only reserve the part of our estimate not yet visible there. */
++struct FConnectionBudget
++{
++	UNetConnection* Connection;
++	int64 UnreflectedBits = 0;
++	int32 LocalRemaining = 16384;
++	explicit FConnectionBudget(UNetConnection* InConnection) : Connection(InConnection) {}
++	int64 UsedBits() const { return Connection ? int64(Connection->QueuedBits) + Connection->SendBuffer.GetNumBits() : 0; }
++	int32 Available() const
++	{
++		if (!Connection) return LocalRemaining;
++		if (!Connection->IsNetReady()) return 0;
++		return int32(FMath::Clamp<int64>((-UsedBits() - UnreflectedBits) / 8, 0, MAX_int32));
++	}
++	int32 Reconcile(int64 Before, int32 EstimatedBytes, GuLiCommanderStateStream::FDiagnostics& Stats)
++	{
++		const int64 ObservedBits = Connection ? FMath::Max<int64>(0, UsedBits() - Before) : int64(EstimatedBytes) * 8;
++		const int32 Charged = int32(FMath::Max<int64>(int64(EstimatedBytes) * 8, ObservedBits) + 7) / 8;
++		UnreflectedBits += FMath::Max<int64>(0, int64(EstimatedBytes) * 8 - ObservedBits);
++		LocalRemaining = FMath::Max(0, LocalRemaining - Charged);
++		Stats.ObservedBytes += (ObservedBits + 7) / 8; Stats.ChargedBytes += Charged;
++		return Charged;
++	}
++};
++}
++
++void UGuLiCommanderNetSyncComponent::ResetStateStream()
++{
++	StateSender.Reset(); StateReceiver.Reset(); ReceivedStateBatches.Reset();
++	QueuedPoses.Reset(); StreamDiagnostics = {}; ClientAppliedIdHash = 0;
++	PendingStateResyncGeneration = 0; NextStateResyncTime = 0;
++}
++
++void UGuLiCommanderNetSyncComponent::ServerRequestStateResync_Implementation(uint32 ConnectionGeneration, uint32 ExpectedSyncGeneration)
++{
++	EnsureServerConnectionBootstrap();
++	if (!GetOwner() || !GetOwner()->HasAuthority() || !IsConnectionReady()
++		|| ConnectionGeneration != GetConnectionGeneration() || !ExpectedSyncGeneration
++		|| ExpectedSyncGeneration != SyncGeneration || !ConsumeCommandRateLimit()) return;
++	// Same request cannot restart the replacement generation; its expected generation is now stale.
++	BootstrapMatchEpoch = 0;
++	StartServerBootstrap();
++}
++
++void UGuLiCommanderNetSyncComponent::QueueSoldierRetirement(const FGuLiSoldierStateItem& FinalState, uint32 MatchEpoch)
++{
++	if (!GetOwner() || !GetOwner()->HasAuthority() || StateSender.Session.Epoch != MatchEpoch || !GetWorld()) return;
++	StateSender.Retire(FinalState, GetWorld()->GetRealTimeSeconds());
++	QueuedPoses.Remove(FinalState.SoldierId);
++	StreamDiagnostics.LastSentSampleTimes.Remove(FinalState.SoldierId);
++}
++
++void UGuLiCommanderNetSyncComponent::ClientReceiveStateBatch_Implementation(const FGuLiEncodedStateBatch& Batch)
++{
++	GuLiCommanderStateStream::FHeader Header;
++	if (!GuLiCommanderStateStream::ReadHeader(Batch, Header)) return;
++	const uint32 Expected = PendingBootstrapGeneration ? PendingBootstrapGeneration : ClientAcceptedSyncGeneration;
++	if (!Expected || Header.Generation != Expected) return;
++	if (Header.Generation == StateReceiver.Session.Generation && StateReceiver.AppliedSequence
++		&& !IsNewerSerial(Header.Sequence, StateReceiver.AppliedSequence)) return;
++	// The sender cannot advance beyond this window without our application ACK.
++	if (ReceivedStateBatches.Num() >= GuLiCommanderStateStream::MaxInFlight)
++	{
++		UE_LOG(LogGuLiStrike, Error, TEXT("Mass state receive window exceeded owner=%s generation=%u"), *GetNameSafe(GetOwner()), Header.Generation);
++		return;
++	}
++	ReceivedStateBatches.Add(Batch);
++	ApplyPendingStateBatches();
++}
++
++void UGuLiCommanderNetSyncComponent::ApplyPendingStateBatches()
++{
++	if (PendingStateResyncGeneration) return;
++	const APlayerController* Controller = GetOwningPlayerController();
++	const AGuLiBattleGameState* GameState = GetBattleGameState();
++	if (!Controller || !Controller->IsLocalController() || !IsConnectionReady() || !GameState
++		|| GameState->GetProtocolVersion() != GULI_COMMANDER_PROTOCOL_VERSION) return;
++	const uint32 Generation = PendingBootstrapGeneration ? PendingBootstrapGeneration : ClientAcceptedSyncGeneration;
++	const uint32 Epoch = PendingBootstrapMatchEpoch ? PendingBootstrapMatchEpoch : ClientAcceptedMatchEpoch;
++	if (!Generation || GameState->GetMatchEpoch() != Epoch || SoldierBootstrapBinding.ConnectionGeneration != GetConnectionGeneration()
++		|| SoldierBootstrapBinding.SoldierSyncGeneration != Generation || SyncGeneration != Generation) return;
++	AGuLiSoldierStateReplicator* Roster = PoseRoster.Get();
++	if (!Roster) for (TActorIterator<AGuLiSoldierStateReplicator> It(GetWorld()); It; ++It) { Roster = *It; break; }
++	if (!Roster) return; // Reliable RPC and this always-relevant actor need not arrive in the same frame.
++	BindPoseRoster(*Roster);
++	if (!StateReceiver.Session.Generation)
++	{
++		StateReceiver.Session.ConnectionGeneration = GetConnectionGeneration();
++		StateReceiver.Session.Generation = Generation; StateReceiver.Session.Epoch = Epoch;
++	}
++	while (!ReceivedStateBatches.IsEmpty())
++	{
++		GuLiCommanderStateStream::FHeader Header;
++		GuLiCommanderStateStream::ReadHeader(ReceivedStateBatches[0], Header);
++		TArray<GuLiCommanderStateStream::FRecord> Records;
++		if (!StateReceiver.Apply(ReceivedStateBatches[0], Records))
++		{
++			UE_LOG(LogGuLiStrike, Error, TEXT("Mass state batch rejected owner=%s generation=%u expected=%u received=%u; readiness remains closed"),
++				*GetNameSafe(GetOwner()), Generation, StateReceiver.AppliedSequence + 1, Header.Sequence);
++			bClientPoseReady = false;
++			PendingStateResyncGeneration = Generation;
++			return; // Never acknowledge a partially decoded/applied batch.
++		}
++		ReceivedStateBatches.RemoveAt(0, 1, EAllowShrinking::No);
++		if (!GetOwner()->HasAuthority())
++		{
++			if (Header.bStart) { Roster->ResetRemoteRoster(Epoch); MoveEndpoints.Items.Reset(); }
++			TArray<FGuLiSoldierStateItem> Changed; TArray<FGuLiSoldierId> Removed;
++			for (const auto& Record : Records)
++			{
++				const auto Id = Record.Value.State.SoldierId;
++				const int32 Index = MoveEndpoints.Items.IndexOfByPredicate([Id](const auto& E) { return E.SoldierId == Id; });
++				if (Record.bRemove || !Record.Value.Endpoint.IsSet())
++				{
++					if (Index != INDEX_NONE) MoveEndpoints.Items.RemoveAtSwap(Index, 1, EAllowShrinking::No);
++				}
++				else if (Index == INDEX_NONE) MoveEndpoints.Items.Add(Record.Value.Endpoint.GetValue());
++				else MoveEndpoints.Items[Index] = Record.Value.Endpoint.GetValue();
++				if (Record.bRemove) Removed.Add(Id); else Changed.Add(Record.Value.State);
++			}
++			// Endpoints and order state are committed before notifying presentation/UI consumers.
++			Roster->ApplyRemoteDelta(Changed, Removed, Epoch, Header.Sequence);
++			if (Header.bStart || !Records.IsEmpty()) OnRep_MoveEndpoints();
++		}
++	}
++	TryCompleteClientBootstrap();
++}
++
++void UGuLiCommanderNetSyncComponent::TickStateStream()
++{
++	using namespace GuLiCommanderStateStream;
++	ApplyPendingStateBatches();
++	const APlayerController* Controller = GetOwningPlayerController();
++	if (Controller && Controller->IsLocalController() && !Controller->HasAuthority() && IsConnectionReady() && GetWorld()
++		&& PendingStateResyncGeneration && GetWorld()->GetRealTimeSeconds() >= NextStateResyncTime)
++	{
++		NextStateResyncTime = GetWorld()->GetRealTimeSeconds() + 1.0;
++		ServerRequestStateResync(GetConnectionGeneration(), PendingStateResyncGeneration);
++	}
++	if (Controller && Controller->IsLocalController() && IsConnectionReady()
++		&& StateReceiver.AppliedSequence != StateReceiver.AckSentSequence)
++	{
++		// One cumulative reliable ACK per client Tick; bootstrap uses this same window.
++		StateReceiver.AckSentSequence = StateReceiver.AppliedSequence;
++		ServerAcknowledgeFacts(StateReceiver.Session.Generation, StateReceiver.AppliedSequence);
++	}
++	if (Controller && !Controller->HasAuthority() && GetWorld() && StateReceiver.Session.Generation
++		&& CVarStateStreamDiagnostics.GetValueOnGameThread() && GetWorld()->GetRealTimeSeconds() >= StreamDiagnostics.NextLogTime)
++	{
++		StreamDiagnostics.NextLogTime = GetWorld()->GetRealTimeSeconds() + 1.0;
++		UE_LOG(LogGuLiStrike, Display, TEXT("MassStreamRX owner=%s epoch=%u gen=%u applied=%u roster=%d pendingBatches=%d poseBytes=%llu poseBlocks=%llu maxSampleGapMs=%.1f ready=%d"),
++			*GetNameSafe(GetOwner()), StateReceiver.Session.Epoch, StateReceiver.Session.Generation, StateReceiver.AppliedSequence,
++			StateReceiver.Values.Num(), ReceivedStateBatches.Num(), StreamDiagnostics.ReceivedPoseBytes, StreamDiagnostics.ReceivedPoseBlocks,
++			StreamDiagnostics.MaxReceivedSampleGap * 1000, IsSoldierStreamReady());
++	}
++	if (!GetOwner() || !GetOwner()->HasAuthority() || !IsConnectionReady() || !GetWorld()
++		|| !StateSender.Session.Generation || StateSender.Session.Generation != SyncGeneration) return;
++	const auto* GameState = GetBattleGameState();
++	AGuLiSoldierStateReplicator* Roster = PoseRoster.Get();
++	if (!GameState || GameState->GetMatchEpoch() != StateSender.Session.Epoch || !Roster
++		|| Roster->GetSnapshotMatchEpoch() != StateSender.Session.Epoch) return;
++	const double Now = GetWorld()->GetRealTimeSeconds();
++	StateSender.Refresh(Roster->GetItems(), MoveEndpoints, Now);
++	// A teleport floor invalidates pre-landing samples even while its reliable event waits for credit.
++	for (auto It = QueuedPoses.CreateIterator(); It; ++It)
++	{
++		const auto* State = Roster->FindSoldierState(It.Key());
++		if (!State || (State->DisplacementFrameFloor && int32(It.Value().Frame - State->DisplacementFrameFloor) < 0)) It.RemoveCurrent();
++	}
++	UNetConnection* Connection = Controller ? Controller->GetNetConnection() : nullptr;
++	if (!Connection && (!Controller || !Controller->IsLocalController())) return;
++	FConnectionBudget Budget(Connection);
++	const int32 InitialCredit = Budget.Available();
++	const bool bReady = IsSoldierStreamReady();
++	// Keep the completion barrier stable until its explicit bootstrap acknowledgment.
++	const bool bCanSendState = !StateSender.CompleteSequence || bReady;
++	bool bBudgetDeferred = false;
++	auto SendStates = [&](int32 Allowance, bool bUrgentOnly)
++	{
++		int32 Spent = 0;
++		while (bCanSendState && StateSender.InFlight.Num() < MaxInFlight)
++		{
++			if (StateSender.CompleteSequence && !IsSoldierStreamReady()) break;
++			const int32 Limit = FMath::Min(Allowance - Spent, Budget.Available()) - RpcOverheadBytes;
++			FPrepared Prepared;
++			const bool bPrepared = StateSender.Prepare(Limit, bUrgentOnly, Now, Prepared);
++			bBudgetDeferred |= Prepared.bBudgetLimited;
++			if (!bPrepared) break;
++			const int32 Cost = Prepared.Block.Data.Num() + 2 + RpcOverheadBytes;
++			if (Cost > Budget.Available()) { bBudgetDeferred = true; break; }
++			const int64 Before = Budget.UsedBits();
++			StateSender.Commit(Prepared); // Commit before local listen-server RPC/ACK can re-enter.
++			ClientReceiveStateBatch(Prepared.Block);
++			Spent += Budget.Reconcile(Before, Cost, StreamDiagnostics);
++			StreamDiagnostics.StateBytes += Prepared.Block.Data.Num() + 2;
++		}
++		return Spent;
++	};
++	const bool bHasPoses = bReady && !QueuedPoses.IsEmpty();
++	SendStates(bHasPoses ? InitialCredit / 2 : InitialCredit, true);
++	if (bHasPoses)
++	{
++		TArray<FGuLiSoldierId> Ids; QueuedPoses.GetKeys(Ids);
++		Ids.Sort([&](auto A, auto B)
++		{
++			const auto& PA = QueuedPoses.FindChecked(A); const auto& PB = QueuedPoses.FindChecked(B);
++			return PA.FirstWaitingTime == PB.FirstWaitingTime ? A < B : PA.FirstWaitingTime < PB.FirstWaitingTime;
++		});
++		const auto Admissible = [&](FGuLiSoldierId Id)
++		{
++			const auto* V = StateSender.Published.Find(Id);
++			const auto* P = QueuedPoses.Find(Id);
++			return P && V && V->PublishedSequence && StateSender.AckedSequence
++				&& int32(StateSender.AckedSequence - V->PublishedSequence) >= 0 && V->State.ActiveOrderId == P->Sample.ActiveOrderId
++				&& V->State.IsAlive() == (P->Sample.State != EGuLiSoldierPoseState::Destroyed)
++				&& (!V->State.DisplacementFrameFloor || int32(P->Frame - V->State.DisplacementFrameFloor) >= 0);
++		};
++		while (Budget.Available() > RpcOverheadBytes)
++		{
++			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Send);
++			GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Send);
++			const auto* First = Ids.FindByPredicate([&](auto Id) { return Admissible(Id); });
++			if (!First) break;
++			const FPendingPose Source = QueuedPoses.FindChecked(*First);
++			FGuLiSoldierPoseChunk Chunk; Chunk.AuthorityEpoch = BootstrapMatchEpoch;
++			Chunk.FrameSequence = Source.Frame; Chunk.ServerSimTick = Source.SimTick; Chunk.ServerTimeSeconds = Source.SampleTime;
++			for (auto Id : Ids)
++			{
++				if (!Admissible(Id)) continue;
++				const auto& P = QueuedPoses.FindChecked(Id);
++				if (P.Frame == Source.Frame && P.SimTick == Source.SimTick && P.SampleTime == Source.SampleTime) Chunk.Samples.Add(P.Sample);
++				if (Chunk.Samples.Num() == GULI_MAX_POSE_SAMPLES_PER_CHUNK) break;
++			}
++			GuLiCommanderPoseCodec::FPreparedBlock Prepared;
++			if (!PoseSender.Prepare(Chunk, Budget.Available() - RpcOverheadBytes, Prepared)) { bBudgetDeferred = true; break; }
++			const int32 Cost = Prepared.Block.Data.Num() + 2 + RpcOverheadBytes;
++			if (Cost > Budget.Available()) { bBudgetDeferred = true; break; }
++			const int64 Before = Budget.UsedBits();
++			PoseSender.Commit(Prepared);
++			CSV_CUSTOM_STAT(GuLiCommanderPoseDispatch, AttemptedChunks, 1, ECsvCustomStatOp::Accumulate);
++			ClientReceiveEncodedPoseBlock(Prepared.Block);
++			Budget.Reconcile(Before, Cost, StreamDiagnostics);
++			StreamDiagnostics.PoseBytes += Prepared.Block.Data.Num() + 2;
++			for (const auto& Sample : Prepared.Samples)
++			{
++				if (const auto* Last = StreamDiagnostics.LastSentSampleTimes.Find(Sample.SoldierId))
++					StreamDiagnostics.MaxSampleGap = FMath::Max(StreamDiagnostics.MaxSampleGap, double(Source.SampleTime - *Last));
++				StreamDiagnostics.LastSentSampleTimes.Add(Sample.SoldierId, Source.SampleTime);
++				QueuedPoses.Remove(Sample.SoldierId);
++			}
++		}
++	}
++	SendStates(Budget.Available(), false);
++	if (bBudgetDeferred || (!QueuedPoses.IsEmpty() && Budget.Available() <= RpcOverheadBytes))
++	{
++		++StreamDiagnostics.BudgetDeferrals;
++		CSV_CUSTOM_STAT(GuLiCommanderPoseDispatch, SaturatedAtAttempt, 1, ECsvCustomStatOp::Accumulate);
++	}
++	if (StateSender.InFlight.Num() == MaxInFlight && !StateSender.Pending.IsEmpty()) ++StreamDiagnostics.WindowDeferrals;
++	if (CVarStateStreamDiagnostics.GetValueOnGameThread() && Now >= StreamDiagnostics.NextLogTime)
++	{
++		StreamDiagnostics.NextLogTime = Now + 1.0;
++		double PoseAge = 0; for (const auto& P : QueuedPoses) PoseAge = FMath::Max(PoseAge, Now - P.Value.FirstWaitingTime);
++		UE_LOG(LogGuLiStrike, Display, TEXT("MassStream owner=%s epoch=%u gen=%u credit=%d stateBytes=%llu poseBytes=%llu observedBytes=%llu chargedBytes=%llu stateQueue=%d poseQueue=%d stateAgeMs=%.1f poseAgeMs=%.1f stateMerges=%llu poseMerges=%llu budgetDeferred=%llu windowDeferred=%llu inflight=%d ack=%u sent=%u maxSampleGapMs=%.1f"),
++			*GetNameSafe(GetOwner()), BootstrapMatchEpoch, SyncGeneration, Budget.Available(), StreamDiagnostics.StateBytes,
++			StreamDiagnostics.PoseBytes, StreamDiagnostics.ObservedBytes, StreamDiagnostics.ChargedBytes, StateSender.Pending.Num(), QueuedPoses.Num(),
++			StateSender.OldestWait(Now) * 1000, PoseAge * 1000, StateSender.MergeCount, StreamDiagnostics.PoseMerges,
++			StreamDiagnostics.BudgetDeferrals, StreamDiagnostics.WindowDeferrals, StateSender.InFlight.Num(), StateSender.AckedSequence,
++			StateSender.LastSequence, StreamDiagnostics.MaxSampleGap * 1000);
++	}
++}
+--- a/Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.h
++++ b/Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.h
+@@ -26,6 +26,7 @@
+ 	void EnsureSoldierStateReplicator();
+ 	void EnsurePresentationActor();
+ 	void PublishSoldierSnapshotAndPoses();
++	void OnSoldierRetiring(const FGuLiSoldierStateItem& FinalState);
+ 
+ 	UPROPERTY(Transient)
+ 	TObjectPtr<AGuLiSoldierStateReplicator> SoldierStateReplicator;
+@@ -46,10 +47,7 @@
+ 	uint8 StationaryPoseFrameDivisor = 2u;
+ 
+ 	uint32 LastPublishedPoseSimTick = 0u;
+-	double PoseFrameCapturedAtSeconds = 0.0;
+ 	uint32 PublishedMatchEpoch = 0u;
+-	TArray<FGuLiSoldierPoseChunk> PendingPoseChunks;
+-	uint8 PendingPoseDispatchPhase = 0u;
+ 	bool bOwnsSoldierSimulation = false;
+ 	bool bSoldierSimulationStarted = false;
+ };
+--- a/Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp
++++ b/Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp
+@@ -22,7 +22,6 @@
+ namespace
+ {
+ 	static_assert(GuLiCommanderSimulationTiming::RateHz % GULI_POSE_CAPTURE_RATE_HZ == 0u);
+-	constexpr uint8 PoseDispatchPhaseCount = GULI_POSE_DISPATCH_PHASE_COUNT;
+ 
+ 	uint8 GetPoseRateDivisor(
+ 		const FGuLiQuantizedSoldierPose& Pose,
+@@ -96,10 +95,14 @@
+ 	check(StationaryPoseFrameDivisor >= 1u);
+ 	EnsureSoldierStateReplicator();
+ 	EnsurePresentationActor();
++	if (auto* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>())
++		Authority->OnSoldierRetiring.AddUObject(this, &ThisClass::OnSoldierRetiring);
+ }
+ 
+ void UGuLiCommanderWorldReplicationComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+ {
++	if (GetWorld()) if (auto* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>())
++		Authority->OnSoldierRetiring.RemoveAll(this);
+ 	if (bOwnsSoldierSimulation && bSoldierSimulationStarted && GetWorld())
+ 	{
+ 		if (UGuLiBattleAuthoritySubsystem* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>())
+@@ -180,127 +183,51 @@
+ 		SpawnParameters);
+ }
+ 
++void UGuLiCommanderWorldReplicationComponent::OnSoldierRetiring(const FGuLiSoldierStateItem& FinalState)
++{
++	const auto* GameState = GetWorld()->GetGameState<AGuLiBattleGameState>();
++	if (!GameState) return;
++	for (TActorIterator<APlayerController> It(GetWorld()); It; ++It)
++		if (auto* Sync = It->FindComponentByClass<UGuLiCommanderNetSyncComponent>())
++			Sync->QueueSoldierRetirement(FinalState, GameState->GetMatchEpoch());
++}
++
+ void UGuLiCommanderWorldReplicationComponent::PublishSoldierSnapshotAndPoses()
+ {
+ 	EnsureSoldierStateReplicator();
+-	if (!IsValid(SoldierStateReplicator) || !GetWorld())
+-	{
+-		return;
+-	}
+-
+-	UGuLiBattleAuthoritySubsystem* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+-	if (!Authority || !Authority->HasSpawnedAuthorityPopulation())
+-	{
+-		return;
+-	}
++	if (!IsValid(SoldierStateReplicator) || !GetWorld()) return;
++	auto* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
++	const auto* GameState = GetWorld()->GetGameState<AGuLiBattleGameState>();
++	if (!Authority || !Authority->HasSpawnedAuthorityPopulation() || !GameState || !GameState->GetMatchEpoch()) return;
++	const uint32 MatchEpoch = GameState->GetMatchEpoch();
++	if (PublishedMatchEpoch != MatchEpoch) { PublishedMatchEpoch = MatchEpoch; LastPublishedPoseSimTick = 0; }
+ 	const uint32 CurrentSimTick = Authority->GetServerSimTick();
+-	// 10 Hz 权威模拟每步捕获一次；渲染 Tick 不等于模拟 Tick，也不等于网络包到达频率。
+ 	constexpr uint32 SimulationTicksPerPoseFrame = GuLiCommanderSimulationTiming::RateHz / GULI_POSE_CAPTURE_RATE_HZ;
+-	if (CurrentSimTick == 0u)
+-	{
+-		return;
+-	}
+-	const double Now = GetWorld()->GetTimeSeconds();
+-
+-	const AGuLiBattleGameState* CommanderGameState = GetWorld()->GetGameState<AGuLiBattleGameState>();
+-	const uint32 MatchEpoch = CommanderGameState ? CommanderGameState->GetMatchEpoch() : 0u;
+-	if (MatchEpoch == 0u)
+-	{
+-		return;
+-	}
+-
+-	if (PublishedMatchEpoch != MatchEpoch)
+-	{
+-		PublishedMatchEpoch = MatchEpoch;
+-		PendingPoseChunks.Reset();
+-		PendingPoseDispatchPhase = 0u;
+-		LastPublishedPoseSimTick = 0u;
+-	}
+-
+-	// 上一帧的块发送完才捕获新帧；同次捕获分别生成离散状态与连续姿态，两条通路独立到达。
+-	const bool bCapturePoseFrame = PendingPoseChunks.IsEmpty()
+-		&& (LastPublishedPoseSimTick == 0u
+-			|| CurrentSimTick - LastPublishedPoseSimTick >= SimulationTicksPerPoseFrame);
+-	if (bCapturePoseFrame)
+-	{
+-		LastPublishedPoseSimTick = CurrentSimTick;
+-		TArray<FGuLiSoldierStateItem> SoldierStates;
+-		Authority->BuildSoldierStateSnapshot(SoldierStates);
+-		SoldierStateReplicator->ApplyAuthoritySnapshot(SoldierStates, MatchEpoch);
+-
+-		PendingPoseChunks.Reset();
+-		{
+-			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Capture);
+-			GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Capture);
+-			Authority->CaptureSoldierPoseChunks(PendingPoseChunks, MatchEpoch);
+-		}
+-		PendingPoseDispatchPhase = 0u;
+-		PoseFrameCapturedAtSeconds = Now;
+-	}
+-
+-	if (PendingPoseChunks.IsEmpty())
+-	{
+-		return;
+-	}
+-
+-	// 网络三相按世界时间独立推进；权威步仍为 10 Hz，每单位每捕获帧只发一次。
+-	// 较慢的世界帧可以一次推进已到期相位，最多处理当前捕获帧的三个相位。
+-	const uint8 ReadyPhaseCount = static_cast<uint8>(FMath::Min<int32>(PoseDispatchPhaseCount,
+-		1 + FMath::FloorToInt((Now - PoseFrameCapturedAtSeconds) * GULI_POSE_CAPTURE_RATE_HZ * PoseDispatchPhaseCount)));
+-	for (; PendingPoseDispatchPhase < ReadyPhaseCount; ++PendingPoseDispatchPhase)
+-	{
+-		for (TActorIterator<APlayerController> It(GetWorld()); It; ++It)
+-		{
+-			if (UGuLiCommanderNetSyncComponent* NetSync = It->FindComponentByClass<UGuLiCommanderNetSyncComponent>())
+-			{
+-				NetSync->EnsureServerBootstrapForMatch(MatchEpoch);
+-				if (!NetSync->IsSoldierStreamReady())
+-				{
+-					// 首次登录可能早于 Mass 创建，无缝切图也可能带着旧的非零代次。
+-					// EnsureServerBootstrapForMatch 兼顾两种情况，不会反复递增已经有效的当前代次。
+-					continue;
+-				}
+-
+-				NetSync->RefreshServerSelection();
+-				FVector ViewLocation;
+-				FRotator ViewRotation;
+-				It->GetPlayerViewPoint(ViewLocation, ViewRotation);
+-				check(!ViewLocation.ContainsNaN());
+-				for (const FGuLiSoldierPoseChunk& SourceChunk : PendingPoseChunks)
+-				{
+-					check(!SourceChunk.Samples.IsEmpty());
+-					const uint8 ChunkPhase = static_cast<uint8>(
+-						SourceChunk.Samples[0].SoldierId.Value % PoseDispatchPhaseCount);
+-					if (ChunkPhase != PendingPoseDispatchPhase)
+-					{
+-						continue;
+-					}
+-					FGuLiSoldierPoseChunk ConnectionChunk;
+-					if (BuildConnectionPoseChunk(
+-						SourceChunk,
+-						ViewLocation,
+-						FullRatePoseDistanceCentimeters,
+-						FarMovingPoseFrameDivisor,
+-						StationaryPoseFrameDivisor,
+-						ConnectionChunk))
+-					{
+-						CSV_CUSTOM_STAT(GuLiCommanderPoseDispatch, AttemptedChunks, 1, ECsvCustomStatOp::Accumulate);
+-						if (const UNetConnection* Connection = It->GetNetConnection(); Connection && !Connection->IsNetReady())
+-						{
+-							CSV_CUSTOM_STAT(GuLiCommanderPoseDispatch, SaturatedAtAttempt, 1, ECsvCustomStatOp::Accumulate);
+-						}
+-						NetSync->SendPoseChunk(ConnectionChunk);
+-					}
+-				}
+-			}
+-		}
+-	}
+-
+-	// 姿态是通过不可靠 RPC 发送的时效性快照，没有就绪客户端也应推进并丢弃过时帧。
+-	// 否则空服可能一直保留同一帧，下一位晚加入者会先收到积压的旧姿态。
+-	if (PendingPoseDispatchPhase >= PoseDispatchPhaseCount)
+-	{
+-		PendingPoseChunks.Reset();
+-		PendingPoseDispatchPhase = 0u;
+-	}
+-}
++	if (!CurrentSimTick || (LastPublishedPoseSimTick && CurrentSimTick - LastPublishedPoseSimTick < SimulationTicksPerPoseFrame)) return;
++	LastPublishedPoseSimTick = CurrentSimTick;
++	TArray<FGuLiSoldierStateItem> States;
++	Authority->BuildSoldierStateSnapshot(States);
++	SoldierStateReplicator->ApplyAuthoritySnapshot(States, MatchEpoch);
++	TArray<FGuLiSoldierPoseChunk> Chunks;
++	{
++		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Capture);
++		GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Capture);
++		Authority->CaptureSoldierPoseChunks(Chunks, MatchEpoch);
++	}
++	// Capture never waits for a connection to drain. Each connection keeps only its latest unsent sample per ID.
++	for (TActorIterator<APlayerController> It(GetWorld()); It; ++It)
++	{
++		auto* Sync = It->FindComponentByClass<UGuLiCommanderNetSyncComponent>();
++		if (!Sync) continue;
++		Sync->EnsureServerBootstrapForMatch(MatchEpoch);
++		if (!Sync->IsSoldierStreamReady()) continue;
++		Sync->RefreshServerSelection();
++		FVector ViewLocation; FRotator ViewRotation; It->GetPlayerViewPoint(ViewLocation, ViewRotation);
++		for (const auto& Source : Chunks)
++		{
++			FGuLiSoldierPoseChunk Filtered;
++			if (BuildConnectionPoseChunk(Source, ViewLocation, FullRatePoseDistanceCentimeters,
++				FarMovingPoseFrameDivisor, StationaryPoseFrameDivisor, Filtered)) Sync->SendPoseChunk(Filtered);
++		}
++	}
++}
+--- a/Source/GuLiStrike/Commander/Network/GuLiCommanderStateStream.h
++++ b/Source/GuLiStrike/Commander/Network/GuLiCommanderStateStream.h
+@@ -0,0 +1,135 @@
++#pragma once
++
++#include "CoreMinimal.h"
++#include "Commander/Network/GuLiCommanderTypes.h"
++#include "GuLiCommanderStateStream.generated.h"
++
++/** Bounded reliable transport. The two-byte length is part of the 1,000-byte limit. */
++USTRUCT()
++struct GULISTRIKE_API FGuLiEncodedStateBatch
++{
++	GENERATED_BODY()
++	UPROPERTY() TArray<uint8> Data;
++	bool NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess);
++};
++
++template <> struct TStructOpsTypeTraits<FGuLiEncodedStateBatch> : TStructOpsTypeTraitsBase2<FGuLiEncodedStateBatch>
++{
++	enum { WithNetSerializer = true };
++};
++
++namespace GuLiCommanderStateStream
++{
++inline constexpr int32 MaxWireBytes = 1000;
++inline constexpr int32 MaxInFlight = 4;
++inline constexpr int32 MaxRecords = 256;
++inline constexpr int32 RpcOverheadBytes = 128;
++
++struct FValue
++{
++	FGuLiSoldierStateItem State;
++	TOptional<FGuLiMoveEndpointItem> Endpoint;
++	// Poses wait for births, command changes and teleport baselines to be applied.
++	uint32 PublishedSequence = 0;
++};
++
++struct FPending
++{
++	FValue Value;
++	double FirstWaitingTime = 0;
++	bool bRemove = false;
++	uint8 Priority = 2;
++};
++
++struct FRecord
++{
++	FValue Value;
++	uint16 Mask = 0;
++	bool bRemove = false;
++};
++
++struct FHeader
++{
++	uint16 Protocol = GULI_COMMANDER_PROTOCOL_VERSION;
++	uint32 ConnectionGeneration = 0, Generation = 0, Epoch = 0, Sequence = 0;
++	bool bStart = false, bComplete = false;
++	uint32 RosterCount = 0;
++	uint64 IdHash = 0;
++};
++
++struct FPrepared
++{
++	FHeader Header;
++	FGuLiEncodedStateBatch Block;
++	TArray<FRecord> Records;
++	TArray<FGuLiSoldierId> CompletedIds;
++	bool bBudgetLimited = false;
++};
++
++struct FInFlight
++{
++	uint32 Sequence = 0;
++	// UE owns retransmission. Retain explicit removals until application ACK.
++	TArray<FGuLiSoldierId> Removed;
++};
++
++GULISTRIKE_API uint64 HashIds(const TMap<FGuLiSoldierId, FValue>& Values);
++GULISTRIKE_API bool ReadHeader(const FGuLiEncodedStateBatch& Block, FHeader& OutHeader);
++
++/** One instance per owning connection, never the shared authority roster. */
++struct GULISTRIKE_API FSender
++{
++	FHeader Session;
++	TMap<FGuLiSoldierId, FValue> Published;
++	TMap<FGuLiSoldierId, FPending> Pending;
++	TSet<FGuLiSoldierId> RequiredBaseline;
++	// Retirement may precede the next 10 Hz roster capture. Suppress it until absence is observed.
++	TSet<FGuLiSoldierId> Retiring;
++	TArray<FInFlight> InFlight;
++	uint32 LastSequence = 0, AckedSequence = 0, CompleteSequence = 0;
++	uint32 CompleteCount = 0;
++	uint64 CompleteHash = 0, MergeCount = 0;
++	bool bStarted = false;
++
++	void Reset(uint32 Connection = 0, uint32 Generation = 0, uint32 Epoch = 0);
++	void Begin(TConstArrayView<FGuLiSoldierStateItem> States, double Now);
++	void Refresh(TConstArrayView<FGuLiSoldierStateItem> States,
++		const FGuLiMoveEndpointFastArray& Endpoints, double Now);
++	void Retire(const FGuLiSoldierStateItem& FinalState, double Now);
++	bool Prepare(int32 MaxBytes, bool bUrgentOnly, double Now, FPrepared& Out) const;
++	void Commit(const FPrepared& Batch);
++	bool Confirm(uint32 Sequence);
++	double OldestWait(double Now) const;
++};
++
++struct GULISTRIKE_API FReceiver
++{
++	FHeader Session;
++	TMap<FGuLiSoldierId, FValue> Values;
++	uint32 AppliedSequence = 0, AckSentSequence = 0, CompleteSequence = 0;
++	uint32 CompleteCount = 0;
++	uint64 CompleteHash = 0;
++	bool bStarted = false;
++	void Reset() { *this = FReceiver{}; }
++	/** Decode and validate the entire batch before committing any state. */
++	bool Apply(const FGuLiEncodedStateBatch& Block, TArray<FRecord>& OutRecords);
++};
++
++struct FPendingPose
++{
++	FGuLiQuantizedSoldierPose Sample;
++	uint32 Frame = 0, SimTick = 0;
++	float SampleTime = 0;
++	double FirstWaitingTime = 0;
++};
++
++struct FDiagnostics
++{
++	uint64 StateBytes = 0, PoseBytes = 0, ChargedBytes = 0, ObservedBytes = 0;
++	uint64 BudgetDeferrals = 0, WindowDeferrals = 0, PoseMerges = 0;
++	uint64 ReceivedPoseBytes = 0, ReceivedPoseBlocks = 0;
++	double NextLogTime = 0, MaxSampleGap = 0, MaxReceivedSampleGap = 0;
++	TMap<FGuLiSoldierId, float> LastSentSampleTimes;
++	TMap<FGuLiSoldierId, float> LastReceivedSampleTimes;
++};
++}
+--- a/Source/GuLiStrike/Commander/Network/GuLiCommanderStateStream.cpp
++++ b/Source/GuLiStrike/Commander/Network/GuLiCommanderStateStream.cpp
+@@ -0,0 +1,376 @@
++#include "Commander/Network/GuLiCommanderStateStream.h"
++#include "Serialization/MemoryReader.h"
++#include "Serialization/MemoryWriter.h"
++
++namespace GuLiCommanderStateStream
++{
++namespace
++{
++enum : uint16
++{
++	Team = 1 << 0, Type = 1 << 1, Life = 1 << 2, Control = 1 << 3,
++	Displacement = 1 << 4, Health = 1 << 5, Revision = 1 << 6, Order = 1 << 7,
++	Endpoint = 1 << 8, All = (1 << 9) - 1, Remove = 1 << 9
++};
++
++uint32 Next(uint32 Sequence) { return Sequence == MAX_uint32 ? 1u : Sequence + 1u; }
++bool Newer(uint32 A, uint32 B) { return int32(A - B) > 0; }
++
++bool SameEndpoint(const TOptional<FGuLiMoveEndpointItem>& A, const TOptional<FGuLiMoveEndpointItem>& B)
++{
++	return A.IsSet() == B.IsSet() && (!A.IsSet() || (A->ActiveOrderId == B->ActiveOrderId
++		&& A->CommandStart == B->CommandStart && A->FinalDestination == B->FinalDestination
++		&& A->Revision == B->Revision));
++}
++
++uint16 Delta(const FValue& A, const FValue* B)
++{
++	if (!B) return All;
++	const auto& X = A.State; const auto& Y = B->State;
++	uint16 Mask = 0;
++	if (X.Team != Y.Team) Mask |= Team;
++	if (X.UnitTypeId != Y.UnitTypeId) Mask |= Type;
++	if (X.LifeState != Y.LifeState) Mask |= Life;
++	if (X.bPhased != Y.bPhased || X.bExternalActionsLocked != Y.bExternalActionsLocked) Mask |= Control;
++	if (X.DisplacementFrameFloor != Y.DisplacementFrameFloor || X.DisplacementLocation != Y.DisplacementLocation
++		|| X.DisplacementYaw != Y.DisplacementYaw || X.DisplacementSimulationTime != Y.DisplacementSimulationTime) Mask |= Displacement;
++	if (X.Health != Y.Health || X.MaxHealth != Y.MaxHealth) Mask |= Health;
++	if (X.StateRevision != Y.StateRevision) Mask |= Revision;
++	if (X.ActiveOrderId != Y.ActiveOrderId) Mask |= Order;
++	if (!SameEndpoint(A.Endpoint, B->Endpoint)) Mask |= Endpoint;
++	return Mask;
++}
++
++uint8 Priority(const FValue& Value, const FValue* Previous)
++{
++	if (!Value.State.IsAlive()) return 0;
++	if (Previous && ((Previous->State.ActiveOrderId && !Value.State.ActiveOrderId)
++		|| Previous->State.DisplacementFrameFloor != Value.State.DisplacementFrameFloor
++		|| Previous->State.bPhased != Value.State.bPhased
++		|| Previous->State.bExternalActionsLocked != Value.State.bExternalActionsLocked)) return 1;
++	return 2;
++}
++
++void SerializeHeader(FArchive& Ar, FHeader& Header, uint16& Count)
++{
++	Ar << Header.Protocol << Header.ConnectionGeneration << Header.Generation << Header.Epoch << Header.Sequence;
++	uint8 Flags = (Header.bStart ? 1 : 0) | (Header.bComplete ? 2 : 0);
++	Ar << Flags << Count << Header.RosterCount << Header.IdHash;
++	if (Ar.IsLoading())
++	{
++		Header.bStart = (Flags & 1) != 0; Header.bComplete = (Flags & 2) != 0;
++		if (Flags > 3 || (Header.bStart && Header.bComplete)) Ar.SetError();
++	}
++}
++
++// Preserve FVector_NetQuantize's whole-centimetre precision, without object references.
++void SerializeEndpointVector(FArchive& Ar, FVector_NetQuantize& Value)
++{
++	int32 X = FMath::RoundToInt(Value.X), Y = FMath::RoundToInt(Value.Y), Z = FMath::RoundToInt(Value.Z);
++	Ar << X << Y << Z;
++	if (Ar.IsLoading()) Value = FVector(X, Y, Z);
++}
++
++void SerializeRecord(FArchive& Ar, FRecord& Record)
++{
++	auto& S = Record.Value.State;
++	Ar.SerializeIntPacked(S.SoldierId.Value);
++	uint16 Mask = Record.bRemove ? Remove : Record.Mask;
++	Ar << Mask;
++	Record.Mask = Mask; Record.bRemove = Mask == Remove;
++	if (!S.SoldierId.IsValid() || Mask == 0 || (Mask & ~(All | Remove)) || ((Mask & Remove) && Mask != Remove))
++	{
++		Ar.SetError(); return;
++	}
++	if (Record.bRemove) return;
++	if (Mask & Team) { uint8 V = uint8(S.Team); Ar << V; S.Team = EGuLiTeam(V); }
++	if (Mask & Type) Ar << S.UnitTypeId;
++	if (Mask & Life) { uint8 V = uint8(S.LifeState); Ar << V; S.LifeState = EGuLiSoldierLifeState(V); }
++	if (Mask & Control)
++	{
++		uint8 V = (S.bPhased ? 1 : 0) | (S.bExternalActionsLocked ? 2 : 0);
++		Ar << V; if (V > 3) Ar.SetError();
++		S.bPhased = (V & 1) != 0; S.bExternalActionsLocked = (V & 2) != 0;
++	}
++	if (Mask & Displacement)
++	{
++		Ar.SerializeIntPacked(S.DisplacementFrameFloor);
++		Ar << S.DisplacementLocation << S.DisplacementYaw << S.DisplacementSimulationTime;
++	}
++	if (Mask & Health) Ar << S.Health << S.MaxHealth;
++	if (Mask & Revision) Ar.SerializeIntPacked(S.StateRevision);
++	if (Mask & Order) Ar.SerializeIntPacked(S.ActiveOrderId);
++	if (Mask & Endpoint)
++	{
++		uint8 Present = Record.Value.Endpoint.IsSet() ? 1 : 0; Ar << Present;
++		if (Present > 1) { Ar.SetError(); return; }
++		if (Present)
++		{
++			if (!Record.Value.Endpoint.IsSet()) Record.Value.Endpoint.Emplace();
++			auto& E = Record.Value.Endpoint.GetValue(); E.SoldierId = S.SoldierId;
++			Ar.SerializeIntPacked(E.ActiveOrderId); Ar.SerializeIntPacked(E.Revision);
++			SerializeEndpointVector(Ar, E.CommandStart); SerializeEndpointVector(Ar, E.FinalDestination);
++		}
++		else Record.Value.Endpoint.Reset();
++	}
++}
++
++bool Valid(const FValue& V)
++{
++	const auto& S = V.State;
++	return S.SoldierId.IsValid() && S.UnitTypeId != 0
++		&& (S.Team == EGuLiTeam::Red || S.Team == EGuLiTeam::Blue || S.Team == EGuLiTeam::Unassigned)
++		&& (S.LifeState == EGuLiSoldierLifeState::Alive || S.LifeState == EGuLiSoldierLifeState::Destroyed)
++		&& FMath::IsFinite(S.Health) && FMath::IsFinite(S.MaxHealth) && S.Health >= 0 && S.MaxHealth > 0
++		&& !S.DisplacementLocation.ContainsNaN() && FMath::IsFinite(S.DisplacementYaw)
++		&& FMath::IsFinite(S.DisplacementSimulationTime) && S.DisplacementSimulationTime >= 0
++		&& (!V.Endpoint.IsSet() || (V.Endpoint->IsValid() && S.IsAlive() && V.Endpoint->ActiveOrderId == S.ActiveOrderId));
++}
++
++void Encode(FPrepared& Batch)
++{
++	Batch.Block.Data.Reset();
++	FMemoryWriter Writer(Batch.Block.Data);
++	uint16 Count = uint16(Batch.Records.Num());
++	SerializeHeader(Writer, Batch.Header, Count);
++	for (FRecord& Record : Batch.Records) SerializeRecord(Writer, Record);
++}
++}
++
++uint64 HashIds(const TMap<FGuLiSoldierId, FValue>& Values)
++{
++	TArray<FGuLiSoldierId> Ids; Values.GetKeys(Ids); Ids.Sort();
++	uint64 Hash = 14695981039346656037ull;
++	for (const auto Id : Ids) for (uint32 Shift = 0; Shift < 32; Shift += 8)
++	{
++		Hash ^= uint8(Id.Value >> Shift); Hash *= 1099511628211ull;
++	}
++	return Hash;
++}
++
++bool ReadHeader(const FGuLiEncodedStateBatch& Block, FHeader& OutHeader)
++{
++	if (Block.Data.IsEmpty() || Block.Data.Num() > MaxWireBytes - 2) return false;
++	FMemoryReader Reader(Block.Data); uint16 Count = 0; SerializeHeader(Reader, OutHeader, Count);
++	return !Reader.IsError() && OutHeader.Protocol == GULI_COMMANDER_PROTOCOL_VERSION
++		&& OutHeader.ConnectionGeneration && OutHeader.Generation && OutHeader.Epoch && OutHeader.Sequence;
++}
++
++void FSender::Reset(uint32 Connection, uint32 Generation, uint32 Epoch)
++{
++	*this = FSender{};
++	Session.ConnectionGeneration = Connection; Session.Generation = Generation; Session.Epoch = Epoch;
++}
++
++void FSender::Begin(TConstArrayView<FGuLiSoldierStateItem> States, double Now)
++{
++	for (const auto& State : States) RequiredBaseline.Add(State.SoldierId);
++	FGuLiMoveEndpointFastArray Empty; Refresh(States, Empty, Now);
++}
++
++void FSender::Refresh(TConstArrayView<FGuLiSoldierStateItem> States,
++	const FGuLiMoveEndpointFastArray& Endpoints, double Now)
++{
++	TMap<FGuLiSoldierId, const FGuLiMoveEndpointItem*> EndpointById;
++	for (const auto& E : Endpoints.Items) EndpointById.Add(E.SoldierId, &E);
++	TSet<FGuLiSoldierId> Current;
++	for (const auto& State : States)
++	{
++		Current.Add(State.SoldierId);
++		if (Retiring.Contains(State.SoldierId)) continue;
++		FPending* Existing = Pending.Find(State.SoldierId);
++		if (Existing && Existing->bRemove) continue; // Authoritative retirement is terminal within an epoch.
++		const FValue* Baseline = Published.Find(State.SoldierId);
++		FValue Desired; Desired.State = State;
++		if (State.IsAlive() && State.ActiveOrderId)
++		{
++			const auto* E = EndpointById.Find(State.SoldierId);
++			if (E && (*E)->ActiveOrderId == State.ActiveOrderId) Desired.Endpoint = **E;
++			else if (E) // The planner can be newer than the 10 Hz roster. Do not publish mismatched orders.
++			{
++				const FValue* Previous = Existing ? &Existing->Value : Baseline;
++				if (Previous && Previous->Endpoint.IsSet() && Previous->Endpoint->ActiveOrderId == State.ActiveOrderId)
++					Desired.Endpoint = Previous->Endpoint;
++			}
++		}
++		if (Delta(Desired, Baseline) == 0)
++		{
++			if (Existing && Delta(Desired, &Existing->Value)) ++MergeCount;
++			Pending.Remove(State.SoldierId); continue;
++		}
++		if (Existing)
++		{
++			if (Delta(Desired, &Existing->Value)) ++MergeCount;
++			Existing->Value = MoveTemp(Desired);
++			Existing->Priority = FMath::Min(Existing->Priority, Priority(Existing->Value, Baseline));
++		}
++		else
++		{
++			FPending P; P.Value = MoveTemp(Desired); P.FirstWaitingTime = Now; P.Priority = Priority(P.Value, Baseline);
++			Pending.Add(State.SoldierId, MoveTemp(P));
++		}
++	}
++	// This is a full authority capture. Its absence means removal only on the sender, never on a client batch.
++	for (const auto& Pair : Published) if (!Current.Contains(Pair.Key) && !Pending.Contains(Pair.Key))
++	{
++		FPending P; P.Value = Pair.Value; P.FirstWaitingTime = Now; P.bRemove = true; P.Priority = 0;
++		Pending.Add(Pair.Key, MoveTemp(P));
++	}
++	for (auto& Pair : Pending) if (!Current.Contains(Pair.Key)) { Pair.Value.bRemove = true; Pair.Value.Priority = 0; }
++	for (auto It = Retiring.CreateIterator(); It; ++It) if (!Current.Contains(*It)) It.RemoveCurrent();
++}
++
++void FSender::Retire(const FGuLiSoldierStateItem& FinalState, double Now)
++{
++	const auto Id = FinalState.SoldierId;
++	Retiring.Add(Id);
++	if (!Published.Contains(Id) && !Pending.Contains(Id) && !RequiredBaseline.Contains(Id)) return;
++	FPending* P = Pending.Find(Id);
++	if (!P) { FPending New; New.FirstWaitingTime = Now; P = &Pending.Add(Id, MoveTemp(New)); }
++	P->Value.State = FinalState; P->Value.Endpoint.Reset(); P->bRemove = true; P->Priority = 0;
++}
++
++bool FSender::Prepare(int32 MaxBytes, bool bUrgentOnly, double Now, FPrepared& Out) const
++{
++	Out = FPrepared{};
++	if (!Session.Generation || InFlight.Num() >= MaxInFlight) return false;
++	MaxBytes = FMath::Min(MaxBytes, MaxWireBytes);
++	Out.Header = Session; Out.Header.Sequence = Next(LastSequence);
++	if (!bStarted) Out.Header.bStart = true;
++	else if (!CompleteSequence && RequiredBaseline.IsEmpty())
++	{
++		Out.Header.bComplete = true; Out.Header.RosterCount = Published.Num(); Out.Header.IdHash = HashIds(Published);
++	}
++	Encode(Out);
++	if (Out.Block.Data.Num() + 2 > MaxBytes)
++	{
++		Out.bBudgetLimited = Out.Header.bStart || Out.Header.bComplete || !Pending.IsEmpty(); return false;
++	}
++	if (Out.Header.bStart || Out.Header.bComplete) return true;
++	TArray<FGuLiSoldierId> Ids; Pending.GetKeys(Ids);
++	const auto EffectivePriority = [this, Now](FGuLiSoldierId Id)
++	{
++		const FPending& P = Pending.FindChecked(Id);
++		return P.Priority == 2 && Now - P.FirstWaitingTime >= 1.0 ? uint8(1) : P.Priority;
++	};
++	Ids.Sort([&](auto A, auto B)
++	{
++		const auto PA = EffectivePriority(A), PB = EffectivePriority(B);
++		if (PA != PB) return PA < PB;
++		const double TA = Pending.FindChecked(A).FirstWaitingTime, TB = Pending.FindChecked(B).FirstWaitingTime;
++		return TA == TB ? A < B : TA < TB;
++	});
++	for (auto Id : Ids)
++	{
++		if (Out.Records.Num() >= MaxRecords) break;
++		if (bUrgentOnly && EffectivePriority(Id) > 1) continue;
++		const FPending& P = Pending.FindChecked(Id);
++		const FValue* Baseline = Published.Find(Id);
++		const uint16 Mask = Delta(P.Value, Baseline);
++		// A terminal death is encoded before final removal, even if no alive state was ever delivered.
++		if (Mask && (!P.bRemove || !P.Value.State.IsAlive()))
++		{
++			FRecord R; R.Value = P.Value; R.Mask = Mask; Out.Records.Add(MoveTemp(R)); Encode(Out);
++			if (Out.Block.Data.Num() + 2 > MaxBytes) { Out.Records.Pop(); Encode(Out); Out.bBudgetLimited = true; continue; }
++		}
++		if (P.bRemove)
++		{
++			if (Out.Records.Num() >= MaxRecords) continue; // Keep the removal pending after a terminal death filled the batch.
++			FRecord R; R.Value.State.SoldierId = Id; R.bRemove = true; Out.Records.Add(MoveTemp(R)); Encode(Out);
++			if (Out.Block.Data.Num() + 2 > MaxBytes) { Out.Records.Pop(); Encode(Out); Out.bBudgetLimited = true; continue; }
++		}
++		Out.CompletedIds.Add(Id);
++	}
++	return !Out.Records.IsEmpty();
++}
++
++void FSender::Commit(const FPrepared& Batch)
++{
++	check(Batch.Header.Sequence == Next(LastSequence) && InFlight.Num() < MaxInFlight);
++	LastSequence = Batch.Header.Sequence; bStarted = true;
++	FInFlight Flight; Flight.Sequence = LastSequence;
++	for (const auto& R : Batch.Records)
++	{
++		const auto Id = R.Value.State.SoldierId;
++		RequiredBaseline.Remove(Id);
++		if (R.bRemove) { Published.Remove(Id); Flight.Removed.Add(Id); }
++		else
++		{
++			FValue V = R.Value;
++			const auto* Previous = Published.Find(Id);
++			const bool bPoseBarrier = !Previous || Previous->State.ActiveOrderId != V.State.ActiveOrderId
++				|| Previous->State.DisplacementFrameFloor != V.State.DisplacementFrameFloor
++				|| Previous->State.IsAlive() != V.State.IsAlive()
++				|| Previous->State.bPhased != V.State.bPhased
++				|| Previous->State.bExternalActionsLocked != V.State.bExternalActionsLocked;
++			// Health-only changes must not repeatedly close the pose gate while fighting.
++			V.PublishedSequence = bPoseBarrier ? LastSequence : Previous->PublishedSequence;
++			Published.Add(Id, MoveTemp(V));
++		}
++	}
++	for (auto Id : Batch.CompletedIds) Pending.Remove(Id);
++	if (Batch.Header.bComplete)
++	{
++		CompleteSequence = LastSequence; CompleteCount = Batch.Header.RosterCount; CompleteHash = Batch.Header.IdHash;
++	}
++	InFlight.Add(MoveTemp(Flight));
++}
++
++bool FSender::Confirm(uint32 Sequence)
++{
++	if (!Sequence || Newer(Sequence, LastSequence) || (AckedSequence && Newer(AckedSequence, Sequence))) return false;
++	AckedSequence = Sequence;
++	InFlight.RemoveAll([Sequence](const auto& Flight) { return !Newer(Flight.Sequence, Sequence); });
++	return true;
++}
++
++double FSender::OldestWait(double Now) const
++{
++	double Age = 0; for (const auto& P : Pending) Age = FMath::Max(Age, Now - P.Value.FirstWaitingTime); return Age;
++}
++
++bool FReceiver::Apply(const FGuLiEncodedStateBatch& Block, TArray<FRecord>& OutRecords)
++{
++	OutRecords.Reset(); FHeader Header;
++	if (!ReadHeader(Block, Header)) return false;
++	if (Header.ConnectionGeneration != Session.ConnectionGeneration || Header.Generation != Session.Generation || Header.Epoch != Session.Epoch)
++		return false;
++	if (Header.Sequence != Next(AppliedSequence) || Header.bStart != !bStarted) return false;
++	FMemoryReader Reader(Block.Data); uint16 Count = 0; SerializeHeader(Reader, Header, Count);
++	if (Count > MaxRecords || ((Header.bStart || Header.bComplete) && Count != 0)) return false;
++	TMap<FGuLiSoldierId, FValue> Staged = Header.bStart ? TMap<FGuLiSoldierId, FValue>{} : Values;
++	for (uint16 Index = 0; Index < Count; ++Index)
++	{
++		const int64 Offset = Reader.Tell(); uint32 IdValue = 0; uint16 Mask = 0;
++		Reader.SerializeIntPacked(IdValue); Reader << Mask;
++		if (Reader.IsError()) return false;
++		Reader.Seek(Offset);
++		const auto* Previous = Staged.Find(FGuLiSoldierId(IdValue));
++		if (!Previous && Mask != All && Mask != Remove) return false;
++		FRecord R; if (Previous) R.Value = *Previous;
++		SerializeRecord(Reader, R);
++		if (Reader.IsError() || (!R.bRemove && !Valid(R.Value))) return false;
++		if (R.bRemove) Staged.Remove(R.Value.State.SoldierId);
++		else { R.Value.PublishedSequence = Header.Sequence; Staged.Add(R.Value.State.SoldierId, R.Value); }
++		OutRecords.Add(MoveTemp(R));
++	}
++	if (Reader.IsError() || Reader.Tell() != Block.Data.Num()) return false;
++	if (Header.bComplete && (CompleteSequence || Header.RosterCount != uint32(Staged.Num()) || Header.IdHash != HashIds(Staged))) return false;
++	Values = MoveTemp(Staged); AppliedSequence = Header.Sequence; bStarted = true;
++	if (Header.bComplete) { CompleteSequence = Header.Sequence; CompleteCount = Header.RosterCount; CompleteHash = Header.IdHash; }
++	return true;
++}
++}
++
++bool FGuLiEncodedStateBatch::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)
++{
++	uint16 Size = uint16(Data.Num());
++	if (Ar.IsSaving() && (Data.IsEmpty() || Data.Num() > GuLiCommanderStateStream::MaxWireBytes - 2))
++	{
++		Ar.SetError(); bOutSuccess = false; return true;
++	}
++	Ar.SerializeBits(&Size, 10);
++	if (Size == 0 || Size > GuLiCommanderStateStream::MaxWireBytes - 2) { Ar.SetError(); bOutSuccess = false; return true; }
++	if (Ar.IsLoading()) Data.SetNumUninitialized(Size);
++	Ar.Serialize(Data.GetData(), Size); bOutSuccess = !Ar.IsError(); return true;
++}
+--- a/Source/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.h
++++ b/Source/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.h
+@@ -78,11 +78,21 @@
+ 	uint32 SimTick = 0;
+ };
+ 
++struct FPreparedBlock
++{
++	FGuLiEncodedPoseBlock Block;
++	TArray<FGuLiQuantizedSoldierPose> Samples;
++	uint32 Sequence = 0, SimTick = 0, AbsoluteCount = 0;
++};
++
+ class GULISTRIKE_API FSender
+ {
+ public:
+ 	void Reset(uint32 Generation = 0, uint32 Epoch = 0);
+ 	void Encode(const FGuLiSoldierPoseChunk& Chunk, TArray<FGuLiEncodedPoseBlock>& OutBlocks);
++	/** No sequence/history mutation until the caller has admitted the encoded bytes. */
++	bool Prepare(const FGuLiSoldierPoseChunk& Chunk, int32 MaxBytes, FPreparedBlock& Out) const;
++	void Commit(const FPreparedBlock& Prepared);
+ 	/** Validates the complete acknowledgment before promoting any baseline. */
+ 	bool Confirm(const FGuLiPoseAcknowledgment& Ack);
+ 	void Forget(TConstArrayView<FGuLiSoldierId> Removed);
+--- a/Source/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.cpp
++++ b/Source/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.cpp
+@@ -195,57 +195,76 @@
+ 	History.Reset(); Confirmed.Empty();
+ }
+ 
+-void FSender::Encode(const FGuLiSoldierPoseChunk& Chunk, TArray<FGuLiEncodedPoseBlock>& OutBlocks)
++bool FSender::Prepare(const FGuLiSoldierPoseChunk& Chunk, int32 MaxBytes, FPreparedBlock& Out) const
+ {
+ 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Encode);
+-	check(SyncGeneration != 0 && MatchEpoch == Chunk.AuthorityEpoch);
+-	check(Chunk.FrameSequence != 0);
+-	check(Chunk.ChunkCount > 0 && Chunk.ChunkCount <= GULI_MAX_POSE_CHUNKS_PER_FRAME && Chunk.ChunkIndex < Chunk.ChunkCount);
+-	check(FMath::IsFinite(Chunk.ServerTimeSeconds) && Chunk.ServerTimeSeconds >= 0);
+-	OutBlocks.Reset();
+-	TArray<FGuLiQuantizedSoldierPose, TInlineAllocator<GULI_MAX_POSE_SAMPLES_PER_CHUNK>> Sorted(Chunk.Samples);
++	Out = FPreparedBlock{};
++	if (!SyncGeneration || MatchEpoch != Chunk.AuthorityEpoch || !Chunk.FrameSequence
++		|| !Chunk.ChunkCount || Chunk.ChunkCount > GULI_MAX_POSE_CHUNKS_PER_FRAME || Chunk.ChunkIndex >= Chunk.ChunkCount
++		|| !FMath::IsFinite(Chunk.ServerTimeSeconds) || Chunk.ServerTimeSeconds < 0 || Chunk.Samples.IsEmpty()) return false;
++	const int32 DataBudget = FMath::Min(MaxBytes, MaxWireBytes) - 2;
++	if (DataBudget <= 0) return false;
++	TArray<FGuLiQuantizedSoldierPose> Sorted = Chunk.Samples;
+ 	Sorted.Sort([](const auto& A, const auto& B) { return A.SoldierId < B.SoldierId; });
+ 	for (int32 Index = 0; Index < Sorted.Num(); ++Index)
+-		check(IsPoseValid(Sorted[Index]) && (Index == 0 || Sorted[Index - 1].SoldierId < Sorted[Index].SoldierId));
+-	int32 Start = 0;
+-	while (Start < Sorted.Num())
+-	{
+-		if (++LastSequence == 0) ++LastSequence;
+-		FBitWriter Writer(MaxDataBytes * 8, true);
+-		uint16 Version = GULI_COMMANDER_PROTOCOL_VERSION;
+-		Writer.SerializeBits(&Version, 16);
+-		WriteUnsigned(Writer, SyncGeneration); WriteUnsigned(Writer, MatchEpoch);
+-		WriteUnsigned(Writer, LastSequence); WriteUnsigned(Writer, Chunk.FrameSequence);
+-		WriteUnsigned(Writer, Chunk.ServerSimTick);
+-		float Time = Chunk.ServerTimeSeconds;
+-		Writer.SerializeBits(&Time, 32);
+-		WriteUnsigned(Writer, Chunk.ChunkIndex); WriteUnsigned(Writer, Chunk.ChunkCount);
+-		const int32 CountBitOffset = int32(Writer.GetNumBits());
+-		uint8 Count = 0;
+-		Writer.SerializeBits(&Count, 6);
+-		uint32 PreviousId = 0;
+-		uint32 AbsoluteCount = 0;
+-		while (Start + Count < Sorted.Num() && Count < GULI_MAX_POSE_SAMPLES_PER_CHUNK)
+-		{
+-			const auto& Pose = Sorted[Start + Count];
+-			const FBaseline* Baseline = Confirmed.Find(Pose.SoldierId);
+-			if (Baseline && (Pose.IsTeleport() || Chunk.ServerSimTick - Baseline->SimTick > MaxBaselineSteps
+-				|| LastSequence - Baseline->Sequence > MaxBaselineBlocks)) Baseline = nullptr;
+-			FBitWriter Record(512, true);
+-			WriteRecord(Record, Pose, PreviousId, Baseline, LastSequence, Chunk.ServerSimTick);
+-			if (Writer.GetNumBits() + Record.GetNumBits() > MaxDataBytes * 8) break;
+-			Writer.SerializeBits(Record.GetData(), Record.GetNumBits());
+-			PreviousId = Pose.SoldierId.Value;
+-			AbsoluteCount += Baseline == nullptr;
+-			++Count;
+-		}
+-		check(Count > 0);
+-		appBitsCpy(Writer.GetData(), CountBitOffset, &Count, 0, 6);
+-		auto& Block = OutBlocks.AddDefaulted_GetRef();
+-		Block.Data.Append(Writer.GetData(), int32(Writer.GetNumBytes()));
+-		History.Store(LastSequence, Chunk.ServerSimTick, MakeArrayView(Sorted.GetData() + Start, Count));
+-		GuLiCommanderPoseMetrics::RecordEncoded(AbsoluteCount, Count - AbsoluteCount, Block.Data.Num() + 2);
+-		Start += Count;
++		if (!IsPoseValid(Sorted[Index]) || (Index && Sorted[Index - 1].SoldierId == Sorted[Index].SoldierId)) return false;
++	Out.Sequence = LastSequence == MAX_uint32 ? 1u : LastSequence + 1u;
++	Out.SimTick = Chunk.ServerSimTick;
++	FBitWriter Writer(DataBudget * 8, true);
++	uint16 Version = GULI_COMMANDER_PROTOCOL_VERSION;
++	Writer.SerializeBits(&Version, 16);
++	WriteUnsigned(Writer, SyncGeneration); WriteUnsigned(Writer, MatchEpoch);
++	WriteUnsigned(Writer, Out.Sequence); WriteUnsigned(Writer, Chunk.FrameSequence);
++	WriteUnsigned(Writer, Chunk.ServerSimTick);
++	float Time = Chunk.ServerTimeSeconds;
++	Writer.SerializeBits(&Time, 32);
++	WriteUnsigned(Writer, Chunk.ChunkIndex); WriteUnsigned(Writer, Chunk.ChunkCount);
++	const int32 CountBitOffset = int32(Writer.GetNumBits());
++	uint8 Count = 0;
++	Writer.SerializeBits(&Count, 6);
++	uint32 PreviousId = 0;
++	for (const auto& Pose : Sorted)
++	{
++		if (Count == GULI_MAX_POSE_SAMPLES_PER_CHUNK) break;
++		const FBaseline* Baseline = Confirmed.Find(Pose.SoldierId);
++		if (Baseline && (Pose.IsTeleport() || Chunk.ServerSimTick - Baseline->SimTick > MaxBaselineSteps
++			|| Out.Sequence - Baseline->Sequence > MaxBaselineBlocks)) Baseline = nullptr;
++		FBitWriter Record(512, true);
++		WriteRecord(Record, Pose, PreviousId, Baseline, Out.Sequence, Chunk.ServerSimTick);
++		if (Writer.GetNumBits() + Record.GetNumBits() > DataBudget * 8) break;
++		Writer.SerializeBits(Record.GetData(), Record.GetNumBits());
++		PreviousId = Pose.SoldierId.Value;
++		Out.AbsoluteCount += Baseline == nullptr;
++		Out.Samples.Add(Pose);
++		++Count;
++	}
++	if (!Count) return false;
++	appBitsCpy(Writer.GetData(), CountBitOffset, &Count, 0, 6);
++	Out.Block.Data.Append(Writer.GetData(), int32(Writer.GetNumBytes()));
++	return true;
++}
++
++void FSender::Commit(const FPreparedBlock& Prepared)
++{
++	check(Prepared.Sequence == (LastSequence == MAX_uint32 ? 1u : LastSequence + 1u) && !Prepared.Samples.IsEmpty());
++	LastSequence = Prepared.Sequence;
++	History.Store(LastSequence, Prepared.SimTick, Prepared.Samples);
++	GuLiCommanderPoseMetrics::RecordEncoded(Prepared.AbsoluteCount, Prepared.Samples.Num() - Prepared.AbsoluteCount,
++		Prepared.Block.Data.Num() + 2);
++}
++
++void FSender::Encode(const FGuLiSoldierPoseChunk& Chunk, TArray<FGuLiEncodedPoseBlock>& OutBlocks)
++{
++	OutBlocks.Reset();
++	FGuLiSoldierPoseChunk Remaining = Chunk;
++	FPreparedBlock Prepared;
++	while (Prepare(Remaining, MaxWireBytes, Prepared))
++	{
++		Commit(Prepared);
++		TSet<FGuLiSoldierId> Sent;
++		for (const auto& Sample : Prepared.Samples) Sent.Add(Sample.SoldierId);
++		Remaining.Samples.RemoveAll([&](const auto& Sample) { return Sent.Contains(Sample.SoldierId); });
++		OutBlocks.Add(MoveTemp(Prepared.Block));
+ 	}
+ }
+ 
+--- a/Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.h
++++ b/Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.h
+@@ -28,9 +28,8 @@
+ DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierRosterDeltaSignature, const FGuLiSoldierRosterDelta&);
+ 
+ /**
+- * Reliable, always-relevant roster and gameplay state for the current Soldier population.
+- * Continuous transforms deliberately travel through the owning controller's unreliable
+- * pose stream instead of this FastArray.
++ * Public local read model of the soldier roster. Authority reconciles complete captures;
++ * clients merge explicit state-stream deltas. Only actor existence uses shared replication.
+  */
+ // 服务器维护、相关客户端读取的公共士兵名册 Actor；bAlwaysRelevant，连续姿态另走 NetSync。
+ UCLASS(BlueprintType)
+@@ -50,6 +49,10 @@
+ 	int32 ApplyAuthoritySnapshot(
+ 		TConstArrayView<FGuLiSoldierStateItem> InStates,
+ 		uint32 MatchEpoch);
++	/** Connection stream only. Omitted IDs are retained; removals are always explicit. */
++	void ResetRemoteRoster(uint32 MatchEpoch);
++	void ApplyRemoteDelta(const TArray<FGuLiSoldierStateItem>& States,
++		const TArray<FGuLiSoldierId>& Removed, uint32 MatchEpoch, uint32 BatchSequence);
+ 
+ 	// 读取本端当前副本；未找到返回 nullptr，客户端读取结果不代表服务器实时状态。
+ 	const FGuLiSoldierStateItem* FindSoldierState(FGuLiSoldierId SoldierId) const;
+@@ -89,14 +92,13 @@
+ 	UFUNCTION()
+ 	void OnRep_SnapshotRevision();
+ 
+-	UPROPERTY(Replicated)
++	UPROPERTY(Transient)
+ 	FGuLiSoldierStateFastArray ReplicatedSoldiers;
+ 
+-	/** Match identity and high-water mark applied with the reliable FastArray snapshot. */
+-	// 和名册版本均是独立复制属性；Bootstrap 还会核对名册数量和有效唯一 ID，不能只看版本通知。
+-	UPROPERTY(Replicated)
++	/** Local read-model epoch/revision; bootstrap verifies a per-connection completion barrier. */
++	UPROPERTY(Transient)
+ 	uint32 SnapshotMatchEpoch = 0u;
+ 
+-	UPROPERTY(ReplicatedUsing = OnRep_SnapshotRevision)
++	UPROPERTY(Transient)
+ 	uint32 SnapshotRevision = 0u;
+ };
+--- a/Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.cpp
++++ b/Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.cpp
+@@ -28,9 +28,42 @@
+ 	TArray<FLifetimeProperty>& OutLifetimeProps) const
+ {
+ 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+-	DOREPLIFETIME(AGuLiSoldierStateReplicator, ReplicatedSoldiers);
+-	DOREPLIFETIME(AGuLiSoldierStateReplicator, SnapshotMatchEpoch);
+-	DOREPLIFETIME(AGuLiSoldierStateReplicator, SnapshotRevision);
++	// Actor existence remains public; data is admitted by each owning connection's state stream.
++}
++
++void AGuLiSoldierStateReplicator::ResetRemoteRoster(uint32 MatchEpoch)
++{
++	if (HasAuthority()) return; // Listen-server presentation reads the authoritative cache.
++	TArray<FGuLiSoldierId> Removed;
++	for (const auto& Item : ReplicatedSoldiers.Items) Removed.Add(Item.SoldierId);
++	ReplicatedSoldiers.Items.Reset(); LocalSoldierStates.Reset();
++	SnapshotMatchEpoch = LocalCacheEpoch = MatchEpoch; SnapshotRevision = 0;
++	if (!Removed.IsEmpty()) ReplicatedSoldiers.OnRemoved.Broadcast(Removed);
++	FGuLiSoldierRosterDelta Delta; Delta.bReset = true; Delta.Removed = MoveTemp(Removed);
++	OnRosterDelta.Broadcast(Delta);
++}
++
++void AGuLiSoldierStateReplicator::ApplyRemoteDelta(const TArray<FGuLiSoldierStateItem>& States,
++	const TArray<FGuLiSoldierId>& Removed, uint32 MatchEpoch, uint32 BatchSequence)
++{
++	if (HasAuthority() || !MatchEpoch || SnapshotMatchEpoch != MatchEpoch) return;
++	for (const auto& State : States)
++	{
++		const int32 Index = FindItemIndex(State.SoldierId);
++		if (Index == INDEX_NONE) ReplicatedSoldiers.Items.Add(State);
++		else ReplicatedSoldiers.Items[Index] = State;
++	}
++	// Death followed by retirement in one batch must notify death before erasing the identity.
++	if (!States.IsEmpty()) ApplyLocalDelta(States, {});
++	if (!Removed.IsEmpty())
++	{
++		const TSet<FGuLiSoldierId> Ids(Removed);
++		ReplicatedSoldiers.OnRemoved.Broadcast(Removed);
++		ReplicatedSoldiers.Items.RemoveAll([&](const auto& State) { return Ids.Contains(State.SoldierId); });
++		ApplyLocalDelta({}, Removed);
++	}
++	SnapshotRevision = BatchSequence;
++	OnSoldierStatesChanged.Broadcast(SnapshotRevision);
+ }
+ 
+ int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(
+--- a/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h
++++ b/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h
+@@ -19,6 +19,8 @@
+ struct FGuLiActiveSkillRuntime;
+ struct FGuLiCommanderInitialSpawnSlot;
+ struct FGuLiSoldierDefinition;
++
++DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierRetiringSignature, const FGuLiSoldierStateItem&);
+ 
+ /**
+  * 将 PImpl 的 delete 放在 .cpp 中执行，那里能看到 FGuLiBattleAuthorityState 的完整定义。
+@@ -217,6 +219,8 @@
+ 	GENERATED_BODY()
+ 
+ public:
++	/** Authority lifecycle notification, emitted before the final wreck record is destroyed. */
++	FGuLiSoldierRetiringSignature OnSoldierRetiring;
+ 	/** Pure deployment geometry; callable on the CDO without starting a game world. */
+ 	bool BuildInitialArmySpawnLayout(const TArray<FGuLiSoldierDefinition>& Definitions,
+ 		const FVector& RedAssembly, const FVector& BlueAssembly,
+--- a/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
++++ b/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
+@@ -7278,6 +7278,15 @@
+ 	{
+ 		const auto& Soldier = AuthorityState->Soldiers[Index];
+ 		if (!Soldier.bWreckExpired) continue;
++		FGuLiSoldierStateItem FinalState;
++		FinalState.SoldierId = Soldier.SoldierId; FinalState.Team = Soldier.Team; FinalState.UnitTypeId = Soldier.UnitTypeId;
++		FinalState.LifeState = EGuLiSoldierLifeState::Destroyed; FinalState.Health = 0; FinalState.MaxHealth = Soldier.MaxHealth;
++		FinalState.StateRevision = Soldier.StateRevision; FinalState.ActiveOrderId = 0;
++		FinalState.bPhased = Soldier.bPhased; FinalState.bExternalActionsLocked = Soldier.bExternalActionsLocked;
++		FinalState.DisplacementFrameFloor = Soldier.DisplacementFrameFloor;
++		FinalState.DisplacementLocation = Soldier.DisplacementLocation; FinalState.DisplacementYaw = Soldier.FacingYawDegrees;
++		FinalState.DisplacementSimulationTime = Soldier.DisplacementSimulationTime;
++		OnSoldierRetiring.Broadcast(FinalState);
+ 		const auto Handle = MakeSoldierTargetHandle(Soldier.SoldierId);
+ 		Ledger.UnregisterTarget(Handle, this); RegisteredCombatLedgerTargets.Remove(Handle);
+ 		Manager.DestroyEntity(Soldier.Entity);

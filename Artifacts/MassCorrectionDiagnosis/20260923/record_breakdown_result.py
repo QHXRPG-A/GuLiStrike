@@ -1,0 +1,146 @@
+"""Append this measured diagnostic stage without modifying prior archives."""
+import hashlib
+import json
+from pathlib import Path
+import re
+import sys
+
+ROOT=Path(__file__).resolve().parents[3]
+OUT=Path(__file__).parent
+sys.path.insert(0,str(ROOT/'.agents/skills/gulistrike-progress/scripts'))
+import progress_docs as docs
+
+archive=ROOT/'Progress/Archive/20260923-Mass复制流量与同帧突发定位.md'
+assert not archive.exists()
+dev=ROOT/'Progress/DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md'
+parent=ROOT/'Progress/Gameplay/指挥官.md'
+children=[ROOT/'Progress/Gameplay/指挥官'/s for s in ('01-战局选兵与移动.md','02-UI表现与性能.md','03-数据技能与武器表现.md','04-验证边界.md','05-数值与演进.md')]
+paths=[dev,parent,*children]
+original={p:p.read_text(encoding='utf-8') for p in paths}
+(OUT/'breakdown-docs-before.json').write_text(json.dumps({str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths},indent=2),encoding='utf-8')
+archive_text='''---
+schema: guli-progress/v1
+id: ARC-20260923-012
+work_id: ''
+kind: archive
+role: root
+title: Mass复制流量与同帧突发定位
+areas: [commander, network, movement, performance]
+categories: [gameplay, performance]
+status: recorded
+verification: partial
+created: '2026-09-23'
+updated: '2026-09-23'
+summary: 新局600单位移动时，30秒记录47次姿态RPC被跳过；名册和移动终点同帧突发耗用余额，120Hz计时上限将每帧补充限制到2083.25字节。
+next_action: 修正网络预算与实际帧率的关系，预算化名册/终点批量更新并保障姿态连续供给；按同一诊断链验证后交玩家验收。
+relations:
+  work_items: [WORK-20260923-002, WORK-20260922-002]
+status_note: 用户自行重启PIE恢复大量部队后被动采样；无玩法输入、原生代码改动、编译或Git操作，诊断日志已恢复。
+---
+
+# Mass复制流量与同帧突发定位
+
+用户要求找出哪些复制数据耗尽预算、是否同帧集中发送。沿用PID5552的源码版编辑器，在`/Game/Maps/LVL_CommanderMassPrototype`被动使用原生NetworkProfiler、CSV、网络日志和已有只读计数器；助手未重启PIE或下达游戏命令。预期为位置样本稳定供给，实际为应用内预算检查跳过姿态块。本轮是定位，没有实施修复。
+
+## 两段窗口的边界
+
+- 14:46:02～14:46:32，旧局对照约41.35FPS，下行66.67/63.59KB/s，未记录饱和；随后14:48:53只读普查为177存活、0主动移动。不能把这个普查倒写成整个采样期间的人数。建筑属性约20KB/s、弹道快照8.49KB/s、战斗状态/枪火4.08KB/s是该段来源，但不能据此归因先前饱和。
+- 用户随后明确“已重新启动了PIE，恢复了大量部队的状况，你再来验证”。14:54:29～14:54:59新局采样约20.99FPS；窗口内14:54:57原生导航统计为600存活、600主动移动。该窗口直接抓到饱和，结论以下段为准。两窗口不是同等负载的A/B性能测试。
+
+## 新局每连接发送来源
+
+下表使用完整时间区间的629帧、29.964秒，KB=1000字节。双方下行约39.20/38.89KB/s，表中是各自范围，不能把两条连接相加后与单连接预算比较。
+
+| 来源 | 每连接KB/s | 占总发送量 |
+|---|---:|---:|
+| Mass姿态`ClientReceiveEncodedPoseBlock` | 16.27～16.43 | 41.5～42.2% |
+| 建筑属性：TargetHandle、HealthState、State、DefinitionId等 | 6.59～6.69 | 16.8～17.2% |
+| 其余属性：采矿车移动、移动终点、资源及运输等 | 2.91～3.10 | 7.4～8.0% |
+| 士兵名册及离散状态`ReplicatedSoldiers`等 | 1.38 | 3.5% |
+| 其余RPC | 0.15～0.16 | 0.4% |
+| 协议封装及未单独归属部分 | 11.14～11.90 | 28.6～30.3% |
+
+RPC计量已含其内容头；没有把RPC、属性、bunch、socket等嵌套层重复相加。协议/未归属部分不武断归给某个玩法系统。采样中的弹道快照、枪火及可靠战斗特效RPC均为0，不能将本次丢姿态归因于开火流量。上行姿态ACK与下行分开统计。
+
+## 同帧突发与下一帧跳过
+
+全630帧流中，尝试8862个姿态块，实际发送8815个、跳过47个；服务器Controller_0为24个、Controller_1为23个，集中在7个引擎帧。CSV的AttemptedChunks/SaturatedAtAttempt与原生RPC记录、逐条日志完全一致。两连接此窗口网络丢包计数增量均为0；被跳过的47块没有发到socket，不能称为UDP丢包率。
+
+最明确的连接1案例：
+
+| 引擎帧161950内容 | 字节 |
+|---|---:|
+| ReplicatedSoldiers批量变化 | 2815.125 |
+| MoveEndpoints批量变化 | 1712.875 |
+| 7个姿态RPC | 878.625 |
+| 建筑属性 | 302.250 |
+| 其他属性、RPC及封装 | 660.125 |
+| 总计 | 6369 |
+
+下一帧161951，两连接各有7个姿态块被预算检查跳过；这一帧下行仅剩各38字节的ACK包。连接0前帧亦包含2815.125字节名册，前帧共4656字节。
+
+另一例：连接0帧161895在同帧发送3428.125字节MoveEndpoints、1494.25字节的14个姿态RPC，总计5231字节；下一帧161896跳过6个姿态块。名册平均只有约1.38KB/s，却会集中成约2～2.8KB单帧增量；只看每秒平均值会遗漏触发点。其余跳过对应的前帧同样记录有名册集中变化，详细9个连接/帧事件均保留在证据中。
+
+## 为什么标称250KB/s仍会耗尽
+
+运行读回每连接CurrentNetSpeed=250000，三个IpNetDriver的MaxNetTickRate=120。拥塞控制开关与禁用带宽限制开关均为0。引擎`UNetConnection::Tick`将带宽步长限制为最多`1/DesiredTickRate`，再按`CurrentNetSpeed × 步长 × 8`补充，负余额最多积累两帧。
+
+本局每帧实际补充16666bit=2083.25字节，最多积累33332bit=4166.5字节可用余额。用原生抓包逐帧字节代入引擎公式：`QueuedBits = max(-33332, QueuedBits + 本帧发送字节×8 - 16666)`，630帧后两连接分别得到-31166/-24458bit，与运行结束计数**完全一致**；重建发送总量1176933/1167636字节也与两连接累计OutTotalBytes增量**完全一致**。中间余额为基于源码和原生字节的重建值，起止余额才是直接读取值。
+
+因此该采样约21FPS时，持续补充约43.73KB/s，当前约39KB/s已经消耗大部分持续额度。若稳定37FPS且相同计时分支成立，则约77KB/s，而非250KB/s。这个37FPS数值是公式推算，不是本轮新增运行测量。
+
+首个分歧发生在UE发送入口：`NetDriver.cpp:2929`在连接不就绪时直接跳过不可靠、非组播RPC。项目位置流正是该类型；可靠/收敛属性的集中更新占用了余额，下一次姿态缺乏额度。项目三相调度已存在，但慢帧可以一次处理多个到期相位，也没有统一按连接为名册、终点和姿态安排字节额度。被跳过的姿态块当前没有延期发送队列。
+
+## 修复方向与验证边界
+
+高置信结论是本次新局的“名册/终点同帧突发及已有持续流量→预算余额不足→下一帧姿态跳过”。应先校准实际服务器帧率与预算补充关系，再对批量状态和终点更新安排字节额度、保护姿态持续供给。建筑静态状态/休眠唤醒也是优化候选，但本轮未隔离实验，不能把全部建筑流量认定为无效或把它认定为唯一触发者。
+
+战斗复制还存在允许最多8KiB突发欠账的自定义分支（GuLiCombatEffectReplicationComponent.cpp:30），而位置RPC使用严格就绪检查。它可能放大战斗期竞争，但本次新局窗口没有这类RPC，不把此源码风险写成本次已观测原因。
+
+用户历史470ms对应的旧6298帧仍没有同步发送层记录。本轮确认同类供给中断的具体机制，并未逆推出那个历史帧，也未声称已修好抖动。未来验证需要在相同大部队、集中命令及战斗场景中重看预算/跳过数、单兵样本间隔与玩家观感；独立的服务器导航异常XY问题仍保留。此轮没有修改C++、地图、网络预算或质量参数，没有编译、另启测试或Git提交推送。NetworkProfiler/CSV均已停止，LogNet已恢复Log。
+
+## 证据
+
+- [新局逐项/逐帧统计](../../Artifacts/MassCorrectionDiagnosis/20260923/loaded-analysis.json)、[逐帧发送量](../../Artifacts/MassCorrectionDiagnosis/20260923/loaded-frames.csv)。
+- [预算、字节与CSV对齐证明](../../Artifacts/MassCorrectionDiagnosis/20260923/loaded-budget-proof.json)、[可重算脚本](../../Artifacts/MassCorrectionDiagnosis/20260923/verify_loaded_budget.py)。
+- [原生nprof](../../Artifacts/MassCorrectionDiagnosis/20260923/loaded-network.nprof)、[原生日志](../../Artifacts/MassCorrectionDiagnosis/20260923/loaded-network.log)、[CSV](../../Artifacts/MassCorrectionDiagnosis/20260923/loaded-engine.csv)、[采样元数据](../../Artifacts/MassCorrectionDiagnosis/20260923/loaded-capture.json)。
+- [旧局无饱和对照](../../Artifacts/MassCorrectionDiagnosis/20260923/breakdown-analysis.json)、[上一轮发送层证据](20260923-Mass姿态RPC发送预算饱和诊断.md)。
+'''
+def meta(text,key,value):
+    return re.sub(r'^'+re.escape(key)+r':.*$',key+': '+value,text,count=1,flags=re.M)
+
+new=dict(original)
+t=new[dev]
+t=meta(t,'summary','600单位移动新局已定位名册/终点同帧突发与120Hz预算补充限制；30秒47个姿态块被跳过，来源修复未实施。')
+t=meta(t,'next_action','校准实际帧率与连接预算补充、拆分名册/终点突发并保障姿态供给，再复核样本间隔和玩家平滑体验。')
+t=t.replace('## 最新：发送层饱和已取得直接证据（2026-09-23）','''## 最新：复制流量及同帧突发已定位（2026-09-23）
+
+用户自行重启PIE后，600单位主动移动的30秒窗口记录47次姿态RPC跳过，CSV与日志精确对齐到7帧。逐连接约39KB/s，主要持续流量为姿态、建筑及协议封装；直接突发来自名册/移动终点，最大同帧6369字节，紧接下一帧双方各跳过7块。120Hz预算计时上限将补充限制为每帧2083.25字节，在本轮约21FPS时约43.73KB/s；按原生字节重建的起止预算及累计发送量完全吻合。未实施修复，不能以低Ping或标称250KB/s排除该问题。[证据及完整边界](../Archive/20260923-Mass复制流量与同帧突发定位.md)。
+
+## 先前：发送层饱和已取得直接证据（2026-09-23）''',1)
+new[dev]=t
+addition='''### 最新：名册/终点突发与每帧预算（2026-09-23）
+
+用户重启的大部队PIE中，600单位移动时30秒记录47个姿态块被跳过；7个异常帧的CSV/日志完全一致。名册与MoveEndpoints可在同帧累积至6.37KB总发送量，挤掉下一帧姿态。运行120Hz预算计时上限使每帧仅补2083.25字节，约21FPS窗口实际持续补充约43.73KB/s，双连接字节及起止余额重建与计数完全吻合。当前仅诊断、未修复或改变参数，历史470ms具体帧与导航异常仍独立保留。[新增证据](../../Archive/20260923-Mass复制流量与同帧突发定位.md)。
+
+'''
+for p in (children[1],children[3]):
+    t=new[p].replace(docs.SPLIT_CONTENT_MARKER,docs.SPLIT_CONTENT_MARKER+addition,1)
+    t=meta(t,'status_note','已定位大部队名册/终点突发与每帧预算限制导致姿态跳过；未实施源头修复，玩家体验仍未通过。')
+    payload=docs.split_front_matter(t)[1].split(docs.SPLIT_CONTENT_MARKER,1)[1]
+    new[p]=meta(t,'split_segment_sha256',docs.normalized_payload_hash(payload,p))
+t=new[parent]
+old_hash=re.search(r'^split_payload_sha256: (.+)$',t,re.M)[1]
+payloads=[docs.split_front_matter(new[p])[1].split(docs.SPLIT_CONTENT_MARKER,1)[1] for p in children]
+digest=hashlib.sha256(''.join(docs.transform_markdown_links(s,p) for s,p in zip(payloads,children)).encode()).hexdigest()
+t=t.replace(old_hash,digest)
+t=meta(t,'split_previous_payload_sha256',old_hash)
+t=meta(t,'split_revision','20260923-pose-budget-bursts')
+t=meta(t,'status_note','600单位新局确认名册/终点突发及每帧2083.25字节补充导致姿态跳过；诊断完成，来源修复及玩家效果待验证。')
+t=t.replace('## 当前摘要\n','## 当前摘要\n\n- 2026-09-23大部队追加诊断：名册/终点同帧突发和120Hz预算补充限制已通过逐字节及逐帧证据确认，30秒47个姿态块被跳过；当前尚未修复。[诊断](../Archive/20260923-Mass复制流量与同帧突发定位.md)。\n',1)
+new[parent]=t
+for p in paths:assert p.read_text(encoding='utf-8')==original[p], 'Concurrent edit: '+str(p)
+archive.write_text(archive_text,encoding='utf-8')
+for p in paths:
+    if new[p]!=original[p]:p.write_text(new[p],encoding='utf-8')
+print(json.dumps({'archive':str(archive),'parent_hash':digest,'modified':[str(p.relative_to(ROOT)) for p in paths if new[p]!=original[p]]},ensure_ascii=False))

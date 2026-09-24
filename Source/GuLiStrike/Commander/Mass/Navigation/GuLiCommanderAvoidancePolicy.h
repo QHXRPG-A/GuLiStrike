@@ -41,6 +41,7 @@ namespace GuLiCommanderAvoidancePolicy
 		float Radius = 0.0f;
 		bool bParticipates = false;
 		bool bMoving = false;
+		bool bEnvironment = false;
 	};
 
 	/** One exact-range candidate, ordered by distance then stable entity key. */
@@ -92,7 +93,7 @@ namespace GuLiCommanderAvoidancePolicy
 
 	GULISTRIKE_API FIntPoint MakeSpatialCell(const FVector& Location);
 
-	/** Rebuilds the 1500 cm center-point grid and returns its largest bucket occupancy. */
+	/** Rebuilds the radius-covered environment / center-point soldier grid and returns its largest bucket occupancy. */
 	GULISTRIKE_API int32 BuildSpatialGrid(
 		TConstArrayView<FAgentSnapshot> Agents,
 		FAvoidanceSpatialGrid& InOutGrid);

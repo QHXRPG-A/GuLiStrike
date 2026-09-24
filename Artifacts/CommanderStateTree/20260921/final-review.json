@@ -1,0 +1,49 @@
+{
+  "static_diff": "git diff --check passed",
+  "protected_files_unchanged": [
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp",
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h",
+    "Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskTypes.cpp",
+    "Source/GuLiStrike/Gameplay/Units/GuLiEngineeringTravelComponent.cpp"
+  ],
+  "python_syntax": [
+    "Tools/DataPipeline/export_data_from_excel.py",
+    "Scripts/import_data_to_engine.py",
+    "Scripts/author_commander_state_trees.py",
+    "Scripts/author_commander_state_tree_scene.py"
+  ],
+  "tables": 18,
+  "tree_states": {
+    "ST_CommanderMass": 18,
+    "ST_CommanderMiner": 64,
+    "ST_CommanderBuilder": 14
+  },
+  "tree_assets_compiled_and_saved": true,
+  "soldiers_bindings_match": true,
+  "retired_table_absent": true,
+  "scene_saved": true,
+  "runtime_verified": false,
+  "PIE": "not_run",
+  "automation": "not_run",
+  "build": {
+    "target": "GuLiStrikeEditor Win64 Development",
+    "engine": "D:/UnrealEngine-5.7",
+    "exit_code": 0,
+    "build_ids": {
+      "engine": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+      "project": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+      "GuLiFlightNavigation": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    "matching": true,
+    "PIE": "not_run",
+    "automation": "not_run"
+  },
+  "editor": {
+    "active_game_world": false,
+    "dirty_map_packages": [],
+    "dirty_content_packages": []
+  },
+  "prototype_map_git_ignored": true,
+  "scene_reproduction_script": "Scripts/author_commander_state_tree_scene.py"
+}

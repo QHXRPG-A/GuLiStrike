@@ -205,6 +205,12 @@ GuLiMap::UnregisterValidator("SupplyRules");
 
 新格式实现 `IGuLiMapExportProvider::Generate`，返回额外文件内容，再使用 RegisterExporter / UnregisterExporter。默认校验和六个标准文件始终执行；注册顺序不影响输出顺序。
 
+## 原型图的 PIE 前置检查
+
+`/Game/Maps/LVL_CommanderMassPrototype`的PIE资源检查由项目`GuLiStrikeEditor`适配层执行。`Could not hash GuLiMapAuthoring output`也可能表示初始军队配置构建失败，不一定是导出文件损坏。可在停止的编辑器中调用`unreal.GuLiResourceAuthoringLibrary.get_initial_army_spawn_layout_json()`，具体失败原因会写入`LogGuLiResourceBake`；`validate_current_bake()`核对资源及出生位置，`GuLiNavigationBakeLibrary.validate_world_navigation(world)`核对导航。
+
+当前该图只接受默认双方各250名军队，任何`GuLiCommanderDeploymentPoint`覆盖都会被拒绝。场景障碍还必须避开实际初始军队、设施和矿体；移动障碍后须完成导航准备与保存。不要关闭校验或重烘焙矿体来掩盖部署配置错误。2026-09-23专项验证场景的此类阻塞已通过移除覆盖部署、移动验证墙体和重新准备导航修复，详见[场景修复记录](../../Progress/Archive/20260923-Mass验证场景PIE阻塞修复.md)。
+
 ## 验证命令
 
 仅运行已授权 `GuLi.MapAuthoring` 十项测试（原五项 + 密度五项）。生命周期测试必须在独立进程加 `-GuLiMapAuthoringTestSession`，避免切换用户当前地图；临时地图和导出证据会保留在 `Content/GuLiStrike/Editor/MapAuthoring/Validation` 和 `Data/MapAuthoringValidation`。

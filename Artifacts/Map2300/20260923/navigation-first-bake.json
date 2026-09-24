@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "message": "All source navigation is ready.",
+  "ground_rebuilds": 2,
+  "flight_rebuilds": 1,
+  "total_seconds": 70.553173199296,
+  "entries": [
+    {
+      "kind": "Ground",
+      "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+      "status": "Rebuilt",
+      "source_hash": "71ebc108c12ab5dc",
+      "message": "Source geometry/settings changed, or no versioned bake record exists.",
+      "build_seconds": 17.763032898306847
+    },
+    {
+      "kind": "Ground",
+      "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+      "status": "Rebuilt",
+      "source_hash": "73704bf986a22492",
+      "message": "Source geometry/settings changed, or no versioned bake record exists.",
+      "build_seconds": 16.78334429860115
+    },
+    {
+      "kind": "Flight",
+      "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+      "status": "Rebuilt",
+      "source_hash": "d93198731383b212",
+      "message": "Stale flight-navigation bake: the volume bounds changed.",
+      "build_seconds": 3.3186023011803627
+    }
+  ]
+}

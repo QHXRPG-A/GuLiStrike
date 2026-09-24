@@ -1,0 +1,385 @@
+{
+  "meta": {
+    "wall_start": 1790156652.6456795,
+    "perf_start": 64962.160261,
+    "pid": 43844,
+    "frame_start": 159494,
+    "duration_seconds": 40,
+    "trace_soldier": 477,
+    "initial_active_orders": 456,
+    "input_injected": false,
+    "prior_diagnostics": 0,
+    "cvars": {
+      "t.MaxFPS": 0.0,
+      "r.VSync": 0.0,
+      "t.IdleWhenNotForeground": 0.0
+    },
+    "wall_end": 1790156692.6646674,
+    "frame_end": 160812,
+    "error": null,
+    "restored_diagnostics": 0
+  },
+  "window_seconds": 40.01898789405823,
+  "frame_ms": {
+    "n": 1318,
+    "mean": 30.34133816388472,
+    "p50": 28.87120000377763,
+    "p95": 40.29849999642465,
+    "p99": 43.78499999438645,
+    "max": 47.507800001767464
+  },
+  "fps": 32.958335410212705,
+  "foreground_frames": 0,
+  "frames": 1319,
+  "sampling_overhead_ms": {
+    "n": 1319,
+    "mean": 0.09094260797839947,
+    "p50": 0.08379999781027436,
+    "p95": 0.13590000162366778,
+    "p99": 0.18549999367678538,
+    "max": 0.30020000122021884
+  },
+  "server_connections": {
+    "GuLiCommanderPlayerController_0": {
+      "seconds": 39.62399983406067,
+      "delta": {
+        "stateBytes": 97372,
+        "poseBytes": 692826,
+        "observedBytes": 854252,
+        "chargedBytes": 1412150,
+        "stateMerges": 265,
+        "poseMerges": 2467,
+        "budgetDeferred": 739,
+        "windowDeferred": 0
+      },
+      "bytes_per_second": {
+        "stateBytes": 2457.4,
+        "poseBytes": 17485.0,
+        "observedBytes": 21559.0,
+        "chargedBytes": 35638.8
+      },
+      "maxima": {
+        "stateQueue": 54,
+        "poseQueue": 421,
+        "stateAgeMs": 992.7,
+        "poseAgeMs": 1565.4,
+        "inflight": 2
+      },
+      "last_queue": {
+        "state": 0,
+        "pose": 0
+      },
+      "cumulative_max_sample_gap_ms_start": 4800.0,
+      "cumulative_max_sample_gap_ms_end": 4800.0,
+      "observed_seconds_without_state_backlog": 21,
+      "observations": 39
+    },
+    "GuLiCommanderPlayerController_1": {
+      "seconds": 39.621999979019165,
+      "delta": {
+        "stateBytes": 105847,
+        "poseBytes": 692769,
+        "observedBytes": 868520,
+        "chargedBytes": 1422488,
+        "stateMerges": 252,
+        "poseMerges": 2480,
+        "budgetDeferred": 750,
+        "windowDeferred": 0
+      },
+      "bytes_per_second": {
+        "stateBytes": 2671.4,
+        "poseBytes": 17484.5,
+        "observedBytes": 21920.1,
+        "chargedBytes": 35901.5
+      },
+      "maxima": {
+        "stateQueue": 53,
+        "poseQueue": 477,
+        "stateAgeMs": 989.3,
+        "poseAgeMs": 1565.4,
+        "inflight": 2
+      },
+      "last_queue": {
+        "state": 0,
+        "pose": 0
+      },
+      "cumulative_max_sample_gap_ms_start": 5400.0,
+      "cumulative_max_sample_gap_ms_end": 5400.0,
+      "observed_seconds_without_state_backlog": 22,
+      "observations": 39
+    }
+  },
+  "roster_checks": {
+    "initial": {
+      "authority_count": 598,
+      "active_orders": 456,
+      "clients": [
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "count": 598,
+          "missing_ids": [],
+          "extra_ids": [],
+          "different_states": 24
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "count": 598,
+          "missing_ids": [],
+          "extra_ids": [],
+          "different_states": 24
+        }
+      ]
+    },
+    "final": {
+      "authority_count": 601,
+      "active_orders": 445,
+      "clients": [
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "count": 601,
+          "missing_ids": [],
+          "extra_ids": [],
+          "different_states": 0
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "count": 601,
+          "missing_ids": [],
+          "extra_ids": [],
+          "different_states": 0
+        }
+      ]
+    }
+  },
+  "traces": [
+    {
+      "client_index_by_stop_order": 1,
+      "source": "D:\\UE5.7\\test1\\outputs\\commander-selection-20260831\\diagnostics\\prediction-baseline-20260923-174444-160560.csv",
+      "soldier": 477,
+      "events": {
+        "start": 1,
+        "frame": 1067,
+        "sample_arrival": 159,
+        "stop": 1
+      },
+      "receipt_gap_ms": {
+        "n": 158,
+        "mean": 201.0165822784811,
+        "p50": 201.48900000003778,
+        "p95": 235.6959999999617,
+        "p99": 315.8730000000105,
+        "max": 340.3170000000273
+      },
+      "source_gap_ms": {
+        "n": 158,
+        "mean": 201.26574683544294,
+        "p50": 200.01200000001518,
+        "p95": 200.01200000001518,
+        "p99": 200.01200000001518,
+        "max": 399.9939999999924
+      },
+      "display_speed": {
+        "n": 1066,
+        "mean": 585.3155981537265,
+        "p50": 682.2768600301866,
+        "p95": 794.7805060539583,
+        "p99": 847.6605528370103,
+        "max": 886.5476358145575
+      },
+      "display_error_cm": {
+        "n": 1066,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "frames_over_1p5x": 0,
+      "frames_at_3x": 0,
+      "frames_over_3x": 0,
+      "moving_frames": 872,
+      "longest_gaps": [
+        {
+          "at": 422.810017,
+          "receipt_ms": 340.3170000000273,
+          "source_ms": 199.98199999997723,
+          "distance_cm": 144.23591785682234,
+          "reported_cm_s": 721.1102550927978
+        },
+        {
+          "at": 426.171705,
+          "receipt_ms": 316.86999999999443,
+          "source_ms": 199.98199999997723,
+          "distance_cm": 128.06248474865697,
+          "reported_cm_s": 728.0109889280518
+        },
+        {
+          "at": 422.187597,
+          "receipt_ms": 315.8730000000105,
+          "source_ms": 199.98199999997723,
+          "distance_cm": 144.22205101855957,
+          "reported_cm_s": 721.1102550927978
+        },
+        {
+          "at": 420.978277,
+          "receipt_ms": 309.63700000000927,
+          "source_ms": 200.01200000001518,
+          "distance_cm": 144.22205101855957,
+          "reported_cm_s": 721.1102550927978
+        },
+        {
+          "at": 418.666901,
+          "receipt_ms": 246.93700000000263,
+          "source_ms": 199.98199999997723,
+          "distance_cm": 144.22205101855957,
+          "reported_cm_s": 721.1102550927978
+        }
+      ],
+      "largest_errors": [
+        {
+          "at": 408.140912,
+          "dt": 0.028200000000026648,
+          "speed": 777.9177581387436,
+          "history_speed": 777.9177581387436,
+          "error_cm": 0.0
+        },
+        {
+          "at": 408.176376,
+          "dt": 0.03546399999999039,
+          "speed": 773.9014956412016,
+          "history_speed": 773.9014956412016,
+          "error_cm": 0.0
+        },
+        {
+          "at": 408.199564,
+          "dt": 0.02318800000000465,
+          "speed": 636.4814877058615,
+          "history_speed": 636.4814877058615,
+          "error_cm": 0.0
+        }
+      ]
+    },
+    {
+      "client_index_by_stop_order": 2,
+      "source": "D:\\UE5.7\\test1\\outputs\\commander-selection-20260831\\diagnostics\\prediction-baseline-20260923-174447-160650.csv",
+      "soldier": 477,
+      "events": {
+        "start": 1,
+        "frame": 1157,
+        "sample_arrival": 175,
+        "stop": 1
+      },
+      "receipt_gap_ms": {
+        "n": 174,
+        "mean": 199.59861494252883,
+        "p50": 199.49600000001055,
+        "p95": 242.3849999999561,
+        "p99": 326.31500000002234,
+        "max": 335.61400000002095
+      },
+      "source_gap_ms": {
+        "n": 174,
+        "mean": 199.99993103448267,
+        "p50": 200.01200000001518,
+        "p95": 200.01200000001518,
+        "p99": 200.01200000001518,
+        "max": 200.01200000001518
+      },
+      "display_speed": {
+        "n": 1156,
+        "mean": 539.8719304659302,
+        "p50": 660.5728867198504,
+        "p95": 796.2667747918207,
+        "p99": 863.7585458694144,
+        "max": 1257.652298192654
+      },
+      "display_error_cm": {
+        "n": 1156,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "frames_over_1p5x": 1,
+      "frames_at_3x": 0,
+      "frames_over_3x": 0,
+      "moving_frames": 871,
+      "longest_gaps": [
+        {
+          "at": 422.71807,
+          "receipt_ms": 335.61400000002095,
+          "source_ms": 200.01200000001518,
+          "distance_cm": 144.23591785682234,
+          "reported_cm_s": 721.1102550927978
+        },
+        {
+          "at": 420.722959,
+          "receipt_ms": 335.26699999998755,
+          "source_ms": 200.01200000001518,
+          "distance_cm": 144.22205101855957,
+          "reported_cm_s": 721.1102550927978
+        },
+        {
+          "at": 423.502476,
+          "receipt_ms": 326.31500000002234,
+          "source_ms": 199.98199999997723,
+          "distance_cm": 144.22205101855957,
+          "reported_cm_s": 721.1102550927978
+        },
+        {
+          "at": 425.890757,
+          "receipt_ms": 316.86999999999443,
+          "source_ms": 199.98199999997723,
+          "distance_cm": 128.06248474865697,
+          "reported_cm_s": 728.0109889280518
+        },
+        {
+          "at": 421.90665,
+          "receipt_ms": 315.874000000008,
+          "source_ms": 199.98199999997723,
+          "distance_cm": 144.22205101855957,
+          "reported_cm_s": 721.1102550927978
+        }
+      ],
+      "largest_errors": [
+        {
+          "at": 407.859964,
+          "dt": 0.028199999999969805,
+          "speed": 777.9177581399354,
+          "history_speed": 777.9177581399354,
+          "error_cm": 0.0
+        },
+        {
+          "at": 407.895429,
+          "dt": 0.03546499999998787,
+          "speed": 777.9071810174853,
+          "history_speed": 777.9071810174853,
+          "error_cm": 0.0
+        },
+        {
+          "at": 407.918617,
+          "dt": 0.02318800000000465,
+          "speed": 636.4814877058615,
+          "history_speed": 636.4814877058615,
+          "error_cm": 0.0
+        }
+      ]
+    }
+  ],
+  "errors": [
+    "[2026.09.23-09.44.15:548][597]LogGuLiCommanderMass: Error: Authority pose discontinuity: soldier=661 previous_frame=4028 frame=4029 step_cm=627.2 previous=(15029.3,3503.3,304.3) current=(14421.0,3648.0,352.8) velocity=(-426.8,558.6,-84.0) sample_seconds=0.100 allowed_step_cm=200.0.",
+    "[2026.09.23-09.44.16:050][614]LogGuLiCommanderMass: Error: Authority pose discontinuity: soldier=657 previous_frame=4033 frame=4034 step_cm=581.2 previous=(14991.1,3546.1,303.8) current=(14421.0,3648.0,352.8) velocity=(-378.8,544.5,-105.2) sample_seconds=0.100 allowed_step_cm=200.0.",
+    "[2026.09.23-09.44.16:653][634]LogGuLiCommanderMass: Error: Authority pose discontinuity: soldier=689 previous_frame=4039 frame=4040 step_cm=586.2 previous=(14994.3,3535.1,304.8) current=(14421.0,3648.0,352.8) velocity=(-511.4,421.3,-86.4) sample_seconds=0.100 allowed_step_cm=200.0.",
+    "[2026.09.23-09.44.20:176][754]LogGuLiCommanderMass: Error: Authority pose discontinuity: soldier=660 previous_frame=4074 frame=4075 step_cm=612.5 previous=(15004.8,3467.1,312.5) current=(14421.0,3648.0,352.8) velocity=(-293.7,310.3,-307.9) sample_seconds=0.100 allowed_step_cm=200.0.",
+    "[2026.09.23-09.44.28:664][ 55]LogGuLiCommanderMass: Error: Authority pose discontinuity: soldier=690 previous_frame=4159 frame=4160 step_cm=663.3 previous=(14994.8,3315.9,334.1) current=(14421.0,3648.0,352.8) velocity=(-371.9,574.2,-69.8) sample_seconds=0.100 allowed_step_cm=200.0.",
+    "[2026.09.23-09.44.32:175][167]LogGuLiCommanderMass: Error: Authority pose discontinuity: soldier=658 previous_frame=4194 frame=4195 step_cm=648.1 previous=(14993.9,3345.8,330.4) current=(14421.0,3648.0,352.8) velocity=(-372.7,572.1,-72.4) sample_seconds=0.100 allowed_step_cm=200.0."
+  ],
+  "receivers": {
+    "observations": 78,
+    "ready_false": 0,
+    "pending_batches_max": 0,
+    "min_roster": 577,
+    "max_roster": 615
+  }
+}

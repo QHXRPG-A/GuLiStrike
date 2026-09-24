@@ -1,0 +1,167 @@
+{
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "game_world": "None",
+  "resource": {
+    "success": "True",
+    "message": "Resource authoring source and baked runtime definition are current.",
+    "source_hash": "5d327daef9821399e54956efbe50c629290d042a",
+    "layout_hash": "61a8ab9f86f2f37336d20e11572540739258fa9e",
+    "initial_soldier_count": "500",
+    "validated_initial_soldier_count": "500"
+  },
+  "navigation": {
+    "success": "True",
+    "message": "",
+    "total_seconds": "0.12589959800243378"
+  },
+  "navigation_entries": [
+    {
+      "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+      "kind": "Ground",
+      "status": "Hit",
+      "message": "Validated saved ground tiles."
+    },
+    {
+      "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+      "kind": "Ground",
+      "status": "Hit",
+      "message": "Validated saved ground tiles."
+    },
+    {
+      "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+      "kind": "Flight",
+      "status": "Hit",
+      "message": "Validated saved flight graph."
+    }
+  ],
+  "deployment_points": 0,
+  "review_actors": [
+    {
+      "label": "MassNav_CornerLong",
+      "class": "StaticMeshActor",
+      "location": [
+        11200.0,
+        70500.0,
+        -1168.157470388662
+      ]
+    },
+    {
+      "label": "MassNav_CornerReturn",
+      "class": "StaticMeshActor",
+      "location": [
+        12600.0,
+        71500.0,
+        -1167.2526677167045
+      ]
+    },
+    {
+      "label": "MassNav_NarrowLeft",
+      "class": "StaticMeshActor",
+      "location": [
+        5200.0,
+        69000.0,
+        -1169.6796744043097
+      ]
+    },
+    {
+      "label": "MassNav_NarrowRight",
+      "class": "StaticMeshActor",
+      "location": [
+        6200.0,
+        69000.0,
+        -1169.6796744043097
+      ]
+    },
+    {
+      "label": "MassNav_ClosedNorth",
+      "class": "StaticMeshActor",
+      "location": [
+        16500.0,
+        68500.0,
+        -1170.297667859057
+      ]
+    },
+    {
+      "label": "MassNav_ClosedSouth",
+      "class": "StaticMeshActor",
+      "location": [
+        16500.0,
+        65500.0,
+        -1173.3135502498665
+      ]
+    },
+    {
+      "label": "MassNav_ClosedWest",
+      "class": "StaticMeshActor",
+      "location": [
+        15000.0,
+        67000.0,
+        -1171.6617536788547
+      ]
+    },
+    {
+      "label": "MassNav_ClosedEast",
+      "class": "StaticMeshActor",
+      "location": [
+        18000.0,
+        67000.0,
+        -1171.6617536788547
+      ]
+    },
+    {
+      "label": "MassNav_Entry",
+      "class": "Note",
+      "location": [
+        0.0,
+        72500.0,
+        -1266.0462924959868
+      ]
+    },
+    {
+      "label": "MassNav_CornerObserve",
+      "class": "Note",
+      "location": [
+        11000.0,
+        68500.0,
+        -1270.2972493053533
+      ]
+    },
+    {
+      "label": "MassNav_NarrowObserve",
+      "class": "Note",
+      "location": [
+        5700.0,
+        67000.0,
+        -1271.6616125539406
+      ]
+    },
+    {
+      "label": "MassNav_CapacityObserve",
+      "class": "Note",
+      "location": [
+        16500.0,
+        67000.0,
+        -1271.6617536788547
+      ]
+    },
+    {
+      "label": "MassNav_OreMechObserve",
+      "class": "Note",
+      "location": [
+        5625.0,
+        71875.0,
+        -1266.7068780636912
+      ]
+    },
+    {
+      "label": "MassNav_Overview",
+      "class": "CameraActor",
+      "location": [
+        -12000.0,
+        85000.0,
+        28000.0
+      ]
+    }
+  ],
+  "dirty_maps": []
+}

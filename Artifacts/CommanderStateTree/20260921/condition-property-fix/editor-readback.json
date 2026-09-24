@@ -1,0 +1,32 @@
+{
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "anchors": [
+    {
+      "label": "StateTreeReview_Entry",
+      "editor_only": true
+    },
+    {
+      "label": "StateTreeReview_MiningFactory",
+      "editor_only": true
+    },
+    {
+      "label": "StateTreeReview_Construction",
+      "editor_only": true
+    },
+    {
+      "label": "StateTreeReview_StrongholdAdvance",
+      "editor_only": true
+    }
+  ],
+  "soldiers_bindings": {
+    "1": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+    "2": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+    "3": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
+    "4": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder"
+  },
+  "dirty_maps": [],
+  "dirty_content": [],
+  "game_world": null,
+  "PIE": "not_run",
+  "automation": "not_run"
+}

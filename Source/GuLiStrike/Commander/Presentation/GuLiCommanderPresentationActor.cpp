@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Commander/Presentation/GuLiCommanderRouteLineComponent.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
 
@@ -252,6 +253,8 @@ AGuLiCommanderPresentationActor::AGuLiCommanderPresentationActor()
 
 	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
 	SetRootComponent(SceneRoot);
+RouteLines = CreateDefaultSubobject<UGuLiCommanderRouteLineComponent>(TEXT("RouteLines"));
+RouteLines->SetupAttachment(SceneRoot);
 
 	UnitInstances = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("UnitInstances"));
 	UnitInstances->SetupAttachment(SceneRoot);
@@ -1440,6 +1443,7 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 			Pair.Value.Samples.Reset();
 			Pair.Value.bHasAuthoritativeTransform = false;
 			Pair.Value.bHasPresentedTransform = false;
+			Pair.Value.bResetPresentationOnNextPose = false;
 			Pair.Value.LastPoseReceiptLocalTimeSeconds = 0.0;
 			Pair.Value.MaximumPoseReceiptGapSeconds = 0.0;
 			Pair.Value.PreviousAdaptivePoseReceiptLocalTimeSeconds = 0.0;
@@ -1621,12 +1625,9 @@ void AGuLiCommanderPresentationActor::InsertPoseSample(
 		}
 	}
 
-	// 仅最新帧可触发硬校正；显式瞬移与未标记的大误差分别计数，后者用于网络验收排错。
-	const bool bCorrectionTooLarge = bAdvancesLatest && Soldier.bHasPresentedTransform
-		&& FVector::DistSquared(
-			Soldier.PresentedTransform.GetLocation(),
-			Sample.Location) > FMath::Square(HardSnapDistanceCentimeters);
-	if ((Sample.bTeleport && bAdvancesLatest) || bCorrectionTooLarge)
+	// Ordinary samples always join the retained timeline, even after a large correction.
+	// Only an explicitly marked teleport can discard history and move immediately.
+	if (Sample.bTeleport && bAdvancesLatest)
 	{
 #if !UE_BUILD_SHIPPING
 		if (bPredictionTraceActive && SoldierId == PredictionTraceSoldier)
@@ -1634,31 +1635,8 @@ void AGuLiCommanderPresentationActor::InsertPoseSample(
 			AppendPredictionTrace(EGuLiPredictionTraceEvent::HardSnap, &Sample);
 		}
 #endif
-		if (Sample.bTeleport && bAdvancesLatest)
-		{
-			++Soldier.TeleportSnapCount;
-		}
-		else if (bCorrectionTooLarge)
-		{
-			++Soldier.UntaggedHardSnapCount;
-			Soldier.LastUntaggedHardSnapDelta = Sample.Location - Soldier.PresentedTransform.GetLocation();
-			Soldier.LastHardSnapSampleVelocity = Sample.Velocity;
-			Soldier.LastHardSnapCurrentLocation = Sample.Location;
-			Soldier.LastHardSnapCurrentChunkIndex = Sample.ChunkIndex;
-			Soldier.LastHardSnapCurrentSampleIndex = Sample.SampleIndex;
-			if (bHasLatestSample)
-			{
-				const FGuLiCommanderBufferedSoldierPose& PreviousLatest = Soldier.Samples.Last();
-				Soldier.LastHardSnapPriorSampleDelta = Sample.Location - PreviousLatest.Location;
-				Soldier.LastHardSnapPreviousLocation = PreviousLatest.Location;
-				Soldier.LastHardSnapPreviousChunkIndex = PreviousLatest.ChunkIndex;
-				Soldier.LastHardSnapPreviousSampleIndex = PreviousLatest.SampleIndex;
-				Soldier.LastHardSnapServerTimeGapSeconds = FMath::Max(
-					0.0,
-					Sample.ServerTimeSeconds - PreviousLatest.ServerTimeSeconds);
-				Soldier.LastHardSnapFrameGap = Sample.FrameSequence - PreviousLatest.FrameSequence;
-			}
-		}
+		++Soldier.TeleportSnapCount;
+		Soldier.bResetPresentationOnNextPose = true;
 		Soldier.Samples.Reset();
 		Soldier.AuthoritativeTransform = GuLiCommanderPresentation::MakePoseTransform(
 			Sample.Location,
@@ -2088,6 +2066,7 @@ void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
 		Pair.Value.DisplacementFrameFloor = 0;
 		Pair.Value.bHasAuthoritativeTransform = false;
 		Pair.Value.bHasPresentedTransform = false;
+		Pair.Value.bResetPresentationOnNextPose = false;
 		Pair.Value.bLifeStateInitialized = false;
 		Pair.Value.HitFlashStartTime = -1000.0f;
 		Pair.Value.LastPoseReceiptLocalTimeSeconds = 0.0;
@@ -2238,6 +2217,7 @@ void AGuLiCommanderPresentationActor::ApplyReliableStateChanges(const AGuLiSoldi
 		{
 			Soldier.DisplacementFrameFloor = ReliableState.DisplacementFrameFloor;
 			Soldier.bRenderClockInitialized = false;
+			Soldier.bResetPresentationOnNextPose = true;
 			Soldier.Samples.RemoveAll([&](const auto& Sample) { return int32(Sample.FrameSequence - Soldier.DisplacementFrameFloor) < 0; });
 			PredictedMoves.Remove(ReliableState.SoldierId);
 			if (Soldier.Samples.IsEmpty())
@@ -2448,6 +2428,23 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	TMap<uint16,TArray<FTransform>> DesiredHitTransforms;
 	TMap<uint16,TArray<float>> DesiredHitStartTimes;
 	auto* UnitFeedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>();
+	// Match the speed published by authority (including runtime tuning), not a
+	// possibly erroneous packet velocity or the distance of the latest correction.
+	float StandardMoveSpeed = 0.0f;
+	if (const auto* GameState = GetWorld()->GetGameState<AGuLiCommanderGameState>())
+	{
+		StandardMoveSpeed = GameState->GetEffectiveSoldierMoveSpeedCmPerSecond();
+	}
+	if (!FMath::IsFinite(StandardMoveSpeed) || StandardMoveSpeed <= 0.0f)
+	{
+		const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+		StandardMoveSpeed = Data ? Data->GetDefaultSoldierDefinition().MovementSpeedCmPerSecond
+			: FGuLiSoldierDefinition().MovementSpeedCmPerSecond;
+	}
+	const float CorrectionMultiplier = FMath::IsFinite(MaximumCorrectionSpeedMultiplier)
+		? FMath::Clamp(MaximumCorrectionSpeedMultiplier, 1.0f, 3.0f) : 3.0f;
+	const double MaximumDisplayedStep = static_cast<double>(StandardMoveSpeed) * CorrectionMultiplier
+		* (FMath::IsFinite(DeltaSeconds) ? FMath::Max(0.0f, DeltaSeconds) : 0.0f);
 
 	{
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_Interpolation);
@@ -2514,8 +2511,19 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			ApplyPrediction(ReliableState.SoldierId, LocalNowSeconds, PresentedTransform);
 			if (Contacts)
 				Contacts->ApplyContactPresentation(ReliableState.SoldierId, PresentedTransform);
+			if (Soldier.bHasPresentedTransform && !Soldier.bResetPresentationOnNextPose)
+			{
+				// Continue from the last displayed position towards the history-evaluated
+				// target. Small steps pass through exactly; large corrections catch up
+				// at a bounded speed, without an asymptotic tail or extra normal-move lag.
+				const FVector PreviousLocation = Soldier.PresentedTransform.GetLocation();
+				const FVector DisplayedDelta = PresentedTransform.GetLocation() - PreviousLocation;
+				PresentedTransform.SetLocation(PreviousLocation
+					+ DisplayedDelta.GetClampedToMaxSize(MaximumDisplayedStep));
+			}
 			Soldier.PresentedTransform = PresentedTransform;
 			Soldier.bHasPresentedTransform = true;
+			Soldier.bResetPresentationOnNextPose = false;
 #if !UE_BUILD_SHIPPING
 			if (bPredictionTraceActive && ReliableState.SoldierId == PredictionTraceSoldier)
 			{

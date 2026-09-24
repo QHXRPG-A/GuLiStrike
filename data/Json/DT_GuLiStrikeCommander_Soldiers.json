@@ -12,7 +12,8 @@
     "PresentationScale": 0.2,
     "DisplayName": "扫荡者",
     "ModelWidthMeters": 3.1,
-    "MinAvoidanceDistanceMeters": 0.5
+    "MinAvoidanceDistanceMeters": 0.5,
+    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass"
   },
   {
     "Name": "WM01",
@@ -27,7 +28,8 @@
     "PresentationScale": 0.2,
     "DisplayName": "战争机器",
     "ModelWidthMeters": 12.5,
-    "MinAvoidanceDistanceMeters": 2.5
+    "MinAvoidanceDistanceMeters": 2.5,
+    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass"
   },
   {
     "Name": "ElectromagneticMiner",
@@ -42,7 +44,8 @@
     "PresentationScale": 0.6084579714416871,
     "DisplayName": "电磁矿车",
     "ModelWidthMeters": 3.6,
-    "MinAvoidanceDistanceMeters": 1.0
+    "MinAvoidanceDistanceMeters": 1.0,
+    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner"
   },
   {
     "Name": "ConstructionVehicle",
@@ -57,6 +60,7 @@
     "PresentationScale": 0.6084579714416871,
     "DisplayName": "建造车",
     "ModelWidthMeters": 3.6,
-    "MinAvoidanceDistanceMeters": 1.0
+    "MinAvoidanceDistanceMeters": 1.0,
+    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder"
   }
 ]

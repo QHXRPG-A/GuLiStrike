@@ -1,0 +1,46 @@
+{
+  "navigation_resolution": [
+    {
+      "name": "RecastNavMesh-Default",
+      "resolutions": [
+        {
+          "CellSize": 38.0,
+          "CellHeight": 5.0,
+          "AgentMaxStepHeight": 7.0
+        },
+        {
+          "CellSize": 19.0,
+          "CellHeight": 5.0,
+          "AgentMaxStepHeight": 7.0
+        },
+        {
+          "CellSize": 19.0,
+          "CellHeight": 5.0,
+          "AgentMaxStepHeight": 7.0
+        }
+      ]
+    },
+    {
+      "name": "RecastNavMesh-CommanderSoldier",
+      "resolutions": [
+        {
+          "CellSize": 38.0,
+          "CellHeight": 5.0,
+          "AgentMaxStepHeight": 7.0
+        },
+        {
+          "CellSize": 19.0,
+          "CellHeight": 5.0,
+          "AgentMaxStepHeight": 7.0
+        },
+        {
+          "CellSize": 19.0,
+          "CellHeight": 5.0,
+          "AgentMaxStepHeight": 7.0
+        }
+      ]
+    }
+  ],
+  "note3": "据点推进与运输验收：R2C4\n红方从R1C4向内部推进，实际目标由原邻接与围合规则选择。\n检查相邻占领、友方据点运输、易主后的通道更新；中央与四角均应连续可达。",
+  "pie": false
+}

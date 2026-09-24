@@ -1,0 +1,226 @@
+{
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "actor_count": 119,
+  "unrelated_transforms_preserved": true,
+  "fixtures": [
+    {
+      "label": "MassNav_CornerLong",
+      "class": "StaticMeshActor",
+      "position": [
+        11200.0,
+        70500.0,
+        -1168.157470388662
+      ],
+      "scale": [
+        26.0,
+        2.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "label": "MassNav_CornerReturn",
+      "class": "StaticMeshActor",
+      "position": [
+        12600.0,
+        71500.0,
+        -1167.2526677167045
+      ],
+      "scale": [
+        2.0,
+        22.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "label": "MassNav_NarrowLeft",
+      "class": "StaticMeshActor",
+      "position": [
+        5200.0,
+        69000.0,
+        -1169.6796744043097
+      ],
+      "scale": [
+        2.0,
+        24.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "label": "MassNav_NarrowRight",
+      "class": "StaticMeshActor",
+      "position": [
+        6200.0,
+        69000.0,
+        -1169.6796744043097
+      ],
+      "scale": [
+        2.0,
+        24.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "label": "MassNav_ClosedNorth",
+      "class": "StaticMeshActor",
+      "position": [
+        16500.0,
+        68500.0,
+        -1170.297667859057
+      ],
+      "scale": [
+        30.0,
+        2.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "label": "MassNav_ClosedSouth",
+      "class": "StaticMeshActor",
+      "position": [
+        16500.0,
+        65500.0,
+        -1173.3135502498665
+      ],
+      "scale": [
+        30.0,
+        2.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "label": "MassNav_ClosedWest",
+      "class": "StaticMeshActor",
+      "position": [
+        15000.0,
+        67000.0,
+        -1171.6617536788547
+      ],
+      "scale": [
+        2.0,
+        32.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "label": "MassNav_ClosedEast",
+      "class": "StaticMeshActor",
+      "position": [
+        18000.0,
+        67000.0,
+        -1171.6617536788547
+      ],
+      "scale": [
+        2.0,
+        32.0,
+        14.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "BlockAll"
+    },
+    {
+      "label": "MassNav_Entry",
+      "class": "Note",
+      "position": [
+        0.0,
+        72500.0,
+        -1266.0462924959868
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "Mass即时移动：保留NavMesh与自动推进。命令接纳后立即行进，共享路线随后接管。整条命令内随机分配不同站位；取选中模型缩放后包围盒XY最长边作为间距，圈距等于此宽度，点距不小于此宽度。10Hz位移、客户端插值；绿线仍指向点击点。测试25/100及混合体型选兵，确认全部批次使用同一间距、站位不重复，并记录实际移动响应。"
+    },
+    {
+      "label": "MassNav_CornerObserve",
+      "class": "Note",
+      "position": [
+        11000.0,
+        68500.0,
+        -1270.2972493053533
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "墙角：点击墙后方，路线尚未完成时保持趋近及表面约束；共享路线准备好后沿走廊绕行。禁止穿墙和到达吸附。远处造楼不应清空无关路线。"
+    },
+    {
+      "label": "MassNav_NarrowObserve",
+      "class": "Note",
+      "position": [
+        5700.0,
+        67000.0,
+        -1271.6616125539406
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "窄通道：群体共享NavMesh走廊，不执行个人连接校验、槽位匹配或失败拆组。保留局部避障，拥堵时允许重叠和持续等待。"
+    },
+    {
+      "label": "MassNav_CapacityObserve",
+      "class": "Note",
+      "position": [
+        16500.0,
+        67000.0,
+        -1271.6617536788547
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "封闭区(16500,67000)：允许长期受阻，不因5/30秒超时结束任务。站位仅查NavMesh覆盖，同一命令不重复分配；点数不足的成员保留移动意图，不争夺已分配位置、不新增个人寻路。S停止后旧绿线不得复活。大人口合法部署入口仍沿用原待办。"
+    },
+    {
+      "label": "MassNav_OreMechObserve",
+      "class": "Note",
+      "position": [
+        5625.0,
+        71875.0,
+        -1266.7068780636912
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "矿体与机甲：保留行进避障、绕行侧滞回、最后合法位置与真实速度回写。分别验证矿体消失、机甲通过、沿途/远处导航变化、连续改令、双指挥官、重同步。诊断开关：guli.Commander.MoveLatencyDiagnostics 1。"
+    },
+    {
+      "label": "MassNav_Overview",
+      "class": "CameraActor",
+      "position": [
+        -12000.0,
+        85000.0,
+        28000.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "validation": "Note text only; actor configuration read back. PIE authoring gate is recorded separately in the runtime log."
+}

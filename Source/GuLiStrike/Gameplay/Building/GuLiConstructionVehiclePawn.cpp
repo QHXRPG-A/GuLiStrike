@@ -20,6 +20,8 @@ AGuLiConstructionVehiclePawn::AGuLiConstructionVehiclePawn(const FObjectInitiali
 {
 	bReplicates = true; bAlwaysRelevant = true; SetReplicateMovement(true);
 	GetCapsuleComponent()->InitCapsuleSize(130,130);
+	GetCapsuleComponent()->SetMaskFilterOnBodyInstance(GuLiEngineeringCollision::VehicleMask);
+	GetCapsuleComponent()->SetMoveIgnoreMask(GuLiEngineeringCollision::VehicleMask);
 	GetCapsuleComponent()->SetCanEverAffectNavigation(false);
 	GetCharacterMovement()->SetUpdateNavAgentWithOwnersCollisions(false);
 	GetCharacterMovement()->NavAgentProps.AgentRadius = GULI_RESOURCE_MINING_VEHICLE_NAV_RADIUS_CM;
@@ -86,8 +88,10 @@ EGuLiTransitOrderResult AGuLiConstructionVehiclePawn::IssueStrongholdTransit(
 	FGuLiPreparedTransit Prepared;
 	const auto Decision = Travel->PrepareTransport(Order,Prepared);
 	if (Decision != Result::Accepted) return Decision;
-	Work->StopWork(); LastTransitRequestId = uint32(Order.RequestId);
-	Travel->BeginTransport(Prepared);
+	FGuLiUnitTaskCommand Task; Task.CommandId = uint32(Order.RequestId); Task.SelectionRevision = uint32(Order.SelectionRevision);
+	Task.Kind = EGuLiUnitTaskKind::Transit; Task.TerritoryId = Order.TerritoryId; Task.Target = Order.ClickLocation;
+	if (!GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()->SubmitActorCommand(*this, Task)) return Result::InvalidRequest;
+	LastTransitRequestId = uint32(Order.RequestId);
 	return Result::Accepted;
 }
 bool AGuLiConstructionVehiclePawn::IssueMove(const FVector& Target)
@@ -95,10 +99,10 @@ bool AGuLiConstructionVehiclePawn::IssueMove(const FVector& Target)
 	if (!HasAuthority() || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return false;
 	Work->StopWork(); return Travel->BeginMove(Target,100);
 }
-bool AGuLiConstructionVehiclePawn::IssueConstruction(UGuLiBuildingLifecycleComponent* Building)
+bool AGuLiConstructionVehiclePawn::IssueConstruction(UGuLiBuildingLifecycleComponent* Building, bool bAutomatic)
 {
 	if (!HasAuthority() || !IsValid(Building) || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return false;
-	return Work->AssignBuilding(*Building);
+	return Work->AssignBuilding(*Building, bAutomatic);
 }
 void AGuLiConstructionVehiclePawn::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
