@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
+#include "Gameplay/Cards/GuLiRogueCardPresentation.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
 #include "Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h"
@@ -17,6 +18,7 @@
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/GameViewportClient.h"
 #include "Engine/Console.h"
 #include "UnrealClient.h"
@@ -24,6 +26,7 @@
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/HUD.h"
+#include "GameFramework/PlayerInput.h"
 #include "InputCoreTypes.h"
 #include "LandscapeProxy.h"
 #include "Gameplay/Resources/GuLiResourceActors.h"
@@ -126,6 +129,7 @@ AGuLiCommanderPlayerController::AGuLiCommanderPlayerController(const FObjectInit
 	// 替换公共默认子对象的具体类型；旧属性继续指向同一个对象，不再额外创建组件。
 	NetSyncComponent = CastChecked<UGuLiCommanderNetSyncComponent>(GetPlayerNetSyncComponent());
 	TeleportInput = CreateDefaultSubobject<UGuLiTeleportInputComponent>(TEXT("CommanderTeleportInput"));
+	RogueCardPresentation = CreateDefaultSubobject<UGuLiRogueCardPresentation>(TEXT("RogueCardPresentation"));
 	BuildingPlacementComponent = CreateDefaultSubobject<UGuLiBuildingPlacementComponent>(
 		TEXT("BuildingPlacement"));
 }
@@ -141,6 +145,25 @@ void AGuLiCommanderPlayerController::BeginPlay()
 			&ThisClass::HandleCommandAckChanged);
 	}
 	UpdateCommanderInputMode();
+}
+
+void AGuLiCommanderPlayerController::OpenRogueCards()
+{ if (RogueCardPresentation) RogueCardPresentation->Open(); }
+
+void AGuLiCommanderPlayerController::SetRogueCardModal(bool bActive)
+{
+	if (bRogueCardModal==bActive) return;
+	if (bActive)
+	{
+		CancelSelectionDrag(); ActivateSelectionTool();
+		if (TeleportInput && TeleportInput->IsAiming()) TeleportInput->CancelTeleport();
+		if (BuildingPlacementComponent) BuildingPlacementComponent->HandleCancelAction();
+		FlushPressedKeys(); RestoreCommanderCursor();
+	}
+	bRogueCardModal=bActive;
+	if (auto* HUD=Cast<AGuLiCommanderHUD>(GetHUD())) HUD->SetRogueCardHidden(bActive);
+	if (bActive) { bShowMouseCursor=true; DefaultMouseCursor=EMouseCursor::Default; }
+	else { bCommanderInputModeInitialized=false; UpdateCommanderInputMode(); UWidgetBlueprintLibrary::SetFocusToGameViewport(); }
 }
 
 void AGuLiCommanderPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -175,6 +198,9 @@ void AGuLiCommanderPlayerController::FlushPressedKeys()
 void AGuLiCommanderPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
+	// Existing local Input.ini overrides can survive a project config update.
+	if (PlayerInput) PlayerInput->DebugExecBindings.RemoveAll([](const FKeyBind& Binding)
+	{ return Binding.Key == EKeys::F4 && Binding.Command.Contains(TEXT("viewmode lit_detaillighting")); });
 	auto& Enhanced=*CastChecked<UEnhancedInputComponent>(InputComponent);
 	BattleCommandMappings=LoadObject<UInputMappingContext>(nullptr,TEXT("/Game/GuLiStrike/GroundMech/Input/IMC_BattleCommands"));
 	CommanderCommandMappings = NewObject<UInputMappingContext>(this);
@@ -224,6 +250,7 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
 		CommanderActions.Add(Action); CommanderCommandMappings->MapKey(Action, Key); return Action;
 	};
 	Enhanced.BindAction(MakeAction(EKeys::M), ETriggerEvent::Started, this, &ThisClass::HandleArmMoveToolInput);
+	Enhanced.BindAction(MakeAction(EKeys::F4), ETriggerEvent::Started, this, &ThisClass::OpenRogueCards);
 	Enhanced.BindAction(MakeAction(EKeys::S), ETriggerEvent::Started, this, &ThisClass::StopSelectedUnits);
 	Enhanced.BindAction(MakeAction(EKeys::Tab), ETriggerEvent::Started, this, &ThisClass::HandleInspectionTab);
 	Enhanced.BindAction(MakeAction(EKeys::F10), ETriggerEvent::Started, this, &ThisClass::HandleLocalMenu);
@@ -242,6 +269,7 @@ void AGuLiCommanderPlayerController::PlayerTick(const float DeltaTime)
 	Super::PlayerTick(DeltaTime);
 
 	UpdateCommanderInputMode();
+	if (bRogueCardModal) return;
 	if (BuildingPlacementComponent)
 	{
 		BuildingPlacementComponent->UpdatePlacementPreview(IsCursorOverCommanderUI());
@@ -571,6 +599,7 @@ void AGuLiCommanderPlayerController::HandleSelectBuildingSixInput() { BuildingPl
 
 void AGuLiCommanderPlayerController::HandleCancelInput()
 {
+	if (bRogueCardModal) { RogueCardPresentation->Cancel(); return; }
 	if (auto* UIHUD = Cast<AGuLiCommanderHUD>(GetHUD()))
 		if (auto* UI = UIHUD->GetRuntimeHUDWidget(); UI && UI->DismissTopLayer()) return;
 	if (TeleportInput && TeleportInput->IsAiming()) { TeleportInput->CancelTeleport(); return; }
@@ -1156,6 +1185,7 @@ bool AGuLiCommanderPlayerController::IsCommanderViewActive() const
 
 void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 {
+	if (bRogueCardModal) return;
 	if (!IsLocalController())
 	{
 		return;

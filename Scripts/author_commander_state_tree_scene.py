@@ -3,12 +3,13 @@
 Uses the map's normal runtime population and resources. Does not start gameplay.
 """
 import json
+import runpy
 import traceback
 from pathlib import Path
 import unreal
 
 ROOT = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
-OUT = ROOT / 'outputs/engineering-navigation'
+OUT = ROOT / 'Artifacts/CommanderStateTree/HierarchyV2'
 MAP = '/Game/Maps/LVL_CommanderMassPrototype'
 TAG = 'CommanderStateTreeReview'
 FOLDER = 'GuLiStrike/Review/CommanderStateTree'
@@ -30,6 +31,12 @@ def actor_record(actor):
 
 
 def run():
+    inspect = runpy.run_path(str(ROOT / 'Scripts/inspect_commander_state_trees.py'))['inspect']
+    trees = inspect()
+    assert trees['success'] and all(a.get('hierarchy_version') == '2' and not a['dirty'] for a in trees['assets']), \
+        'Compile, save, and read back all three hierarchy-v2 assets before scene delivery.'
+    report['hierarchy_assets'] = [{k: a[k] for k in ('asset', 'editor_hash', 'hierarchy_version', 'compiled_matches_editor')}
+                                  for a in trees['assets']]
     assert hasattr(unreal.GuLiMiningVehicleManager, 'get_cluster_slot_poses'), 'Load the new native build first.'
     assert hasattr(unreal.GuLiResourceFactoryActor, 'get_unload_points'), 'Load the four-point factory build first.'
     editor = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem)
@@ -76,27 +83,40 @@ def run():
 
     specs = [
         ('StateTreeReview_Entry', assembly + unreal.Vector(0, 0, 500),
-         '工程车新逻辑验证入口\n'
+         '三棵分层 StateTree 审核入口\n'
          f'使用本地图正常的指挥官入口。双方各250名士兵、各{miners_per_team}辆矿车和{builders_per_team}辆建造车由权威端创建。\n'
          '3棵共享树资产；每个单位独立运行实例。采矿、建造、推进说明点在同一Outliner文件夹。\n'
-         '本轮先核对场景与树资产，再验证新逻辑和记录服务端性能。'),
+         '移动、采集、卸货、施工和占领应持续停留在阶段中；失败检查局部恢复路径。\n'
+         '打开对应 StateTree 并选中服务端单位实例观察当前状态；本轮运行效果由玩家验证。'),
         ('StateTreeReview_MiningFactory', factory + unreal.Vector(0, -1400, 500),
          '电磁矿车 / ST_CommanderMiner\n'
          '矿车优先当前据点的我方或中立矿簇；矿簇提供0–8个矿位。预占 → 排队寻路 → 落位采矿 → 回厂卸货。\n'
          '工程车互相忽略碰撞和避让。矿厂内部4个卸货点不占用、不预约；直接寻路到点卸货，卸完直接接下一任务。\n'
-         '点不可达则换点，四点都失败则换厂；全失败退避重试。观察8辆同时返厂持续交矿，S可立即停止并保留未卸货物。\n'
+         '点不可达则换点，四点都失败则换厂；自动任务按原规则退避，人工任务按原规则报告失败。\n'
+         '采矿循环和独立返厂共用返货分支。覆盖目标丢失、有货返厂、卸货点失败、S停止保留未卸货物及Shift交接。\n'
          '矿位被占用时5Hz等待；跨据点按步行距离估算选择快速通道。\n'
          '树资产：/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner'),
         ('StateTreeReview_Construction', assembly + unreal.Vector(1800, 0, 500),
          '建造车 / ST_CommanderBuilder\n'
          f'红方初始{builders_per_team}辆建造车位于集合区。使用正常B建造入口，在合法区域放置可负担的建筑。\n'
-         '待建建筑保持碰撞并提供0–4个建造位；最多四车同时施工。预占 → 排队寻路 → 施工，停工保留进度。\n'
+         '待建建筑保持碰撞并提供0–4个建造位；最多四车同时施工。选目的地 → 前往 → 100cm内抵达抢位 → 持续施工。\n'
+         '途中不占位；本地优先，途中出现本地工地可退单换单；开始施工后不自动换单。\n'
+         '抢位失败排除该位置1秒再取单；路径不可达保留现有位置/导航版本排除规则。停工保留进度。\n'
          '树资产：/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder'),
         ('StateTreeReview_StrongholdAdvance', next_outpost.get_actor_location() + unreal.Vector(0, 0, 500),
          '扫荡者、战争机器 / ST_CommanderMass\n'
          '双方初始军队使用烘焙集合点；出生授予一次据点推进。R2C4是红方前方的一个可观察据点，实际目标由原拓扑规则选择。\n'
-         '观察选目标 → 推进 → 等待占领；手动移动、Shift追加、S停止使用原指令入口。\n'
+         '观察选目标 → 持续推进 → 持续占领 → 阶段交接。不可达排除重选，无目标按原节拍等待。\n'
+         'Shift追加在据点阶段交接；人工接管后不重新授予InitialOnce。手动移动与S使用原入口。\n'
          '树资产：/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass'),
+        ('StateTreeReview_Control', assembly + unreal.Vector(-1800, 0, 500),
+         '公共控制与请求回执审核\n'
+         '选中单位按S：持续停止；运输途中先安全退出，落地后保持停止。\n'
+         '连续替换移动：新路未接受前沿旧路移动；再次改令后旧寻路回执不能抢回控制。\n'
+         '通过现有运输/外部控制入口暂停，再释放：回到适当业务阶段，避免重复寻路、重复占位。\n'
+         'Shift追加：按采卸循环、施工完成或据点阶段交接；观察任务只收尾一次。\n'
+         '父状态优先关系：安全退出 → 持续停止 → 替换移动 → 正常业务。\n'
+         '新树资产与Xmind仅证明结构；以上效果需要玩家实际操作确认。'),
     ]
     notes = []
     with unreal.ScopedEditorTransaction('Author Commander StateTree review anchors'):

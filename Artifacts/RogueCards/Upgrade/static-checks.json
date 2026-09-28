@@ -1,0 +1,65 @@
+{
+  "python_syntax": [
+    "Scripts/Cards/author_rogue_upgrade_vfx.py",
+    "Scripts/Cards/validate_rogue_card_runtime.py",
+    "Scripts/Cards/benchmark_rogue_upgrade.py",
+    "Scripts/Cards/validate_rogue_upgrade_network.py",
+    "Scripts/Cards/validate_rogue_upgrade_lifecycle.py",
+    "Tools/DataPipeline/extend_rogue_upgrade_fields.py",
+    "Tools/DataPipeline/export_data_from_excel.py",
+    "Scripts/Cards/finalize_rogue_upgrade_scene.py"
+  ],
+  "excel_headers": [
+    "id",
+    "name",
+    "Note",
+    "Type",
+    "TextIds",
+    "ImplementationClass",
+    "UnitTypeId",
+    "BonusPercent",
+    "FrontMaterial",
+    "UpgradeVfx",
+    "UpgradeVfxScale",
+    "UpgradeVfxColor"
+  ],
+  "excel_types": [
+    "str",
+    "str",
+    "str",
+    "int",
+    "str[]",
+    "softclass",
+    "int",
+    "float",
+    "softobject",
+    "softobject",
+    "float",
+    "str"
+  ],
+  "ids": [
+    "01.01",
+    "02.01",
+    "03.01"
+  ],
+  "upgrade_values": [
+    [
+      "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+      "1",
+      "(R=20,G=6.930114,B=0.933554,A=1)"
+    ],
+    [
+      "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+      "1",
+      "(R=20,G=6.930114,B=0.933554,A=1)"
+    ],
+    [
+      "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+      "1",
+      "(R=20,G=6.930114,B=0.933554,A=1)"
+    ]
+  ],
+  "workbook_sha256": "c215e3aeecd959269ce11c67d902149bd9d2f70a29656caf610ace0822e0f2e5",
+  "final_python_ast_passed": true,
+  "workbook_hash_unchanged": true
+}

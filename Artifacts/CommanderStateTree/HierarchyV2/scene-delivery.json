@@ -1,0 +1,340 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "gameplay_started": false,
+  "hierarchy_assets": [
+    {
+      "asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
+      "editor_hash": "7ee2bb31",
+      "hierarchy_version": "2",
+      "compiled_matches_editor": true
+    },
+    {
+      "asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder",
+      "editor_hash": "3a881a2e",
+      "hierarchy_version": "2",
+      "compiled_matches_editor": true
+    },
+    {
+      "asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+      "editor_hash": "6ea003e8",
+      "hierarchy_version": "2",
+      "compiled_matches_editor": true
+    }
+  ],
+  "factory_unload_points": [
+    {
+      "component": "UnloadPoint0",
+      "local_location": [
+        -100.0,
+        -60.0,
+        24.0
+      ]
+    },
+    {
+      "component": "UnloadPoint1",
+      "local_location": [
+        -100.0,
+        60.0,
+        24.0
+      ]
+    },
+    {
+      "component": "UnloadPoint2",
+      "local_location": [
+        80.0,
+        -60.0,
+        24.0
+      ]
+    },
+    {
+      "component": "UnloadPoint3",
+      "local_location": [
+        80.0,
+        60.0,
+        24.0
+      ]
+    }
+  ],
+  "saved": true,
+  "anchors": [
+    {
+      "name": "Note_0",
+      "label": "StateTreeReview_Entry",
+      "class": "/Script/Engine.Note",
+      "location": [
+        0.0,
+        72500.0,
+        -1266.0462924959868
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "folder": "GuLiStrike/Review/CommanderStateTree",
+      "editor_only": true,
+      "text": "三棵分层 StateTree 审核入口\n使用本地图正常的指挥官入口。双方各250名士兵、各8辆矿车和8辆建造车由权威端创建。\n3棵共享树资产；每个单位独立运行实例。采矿、建造、推进说明点在同一Outliner文件夹。\n移动、采集、卸货、施工和占领应持续停留在阶段中；失败检查局部恢复路径。\n打开对应 StateTree 并选中服务端单位实例观察当前状态；本轮运行效果由玩家验证。"
+    },
+    {
+      "name": "Note_1",
+      "label": "StateTreeReview_MiningFactory",
+      "class": "/Script/Engine.Note",
+      "location": [
+        0.0,
+        86100.0,
+        -1251.184785519334
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "folder": "GuLiStrike/Review/CommanderStateTree",
+      "editor_only": true,
+      "text": "电磁矿车 / ST_CommanderMiner\n矿车优先当前据点的我方或中立矿簇；矿簇提供0–8个矿位。预占 → 排队寻路 → 落位采矿 → 回厂卸货。\n工程车互相忽略碰撞和避让。矿厂内部4个卸货点不占用、不预约；直接寻路到点卸货，卸完直接接下一任务。\n点不可达则换点，四点都失败则换厂；自动任务按原规则退避，人工任务按原规则报告失败。\n采矿循环和独立返厂共用返货分支。覆盖目标丢失、有货返厂、卸货点失败、S停止保留未卸货物及Shift交接。\n矿位被占用时5Hz等待；跨据点按步行距离估算选择快速通道。\n树资产：/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner"
+    },
+    {
+      "name": "Note_2",
+      "label": "StateTreeReview_Construction",
+      "class": "/Script/Engine.Note",
+      "location": [
+        1800.0,
+        72500.0,
+        -1266.0462924959868
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "folder": "GuLiStrike/Review/CommanderStateTree",
+      "editor_only": true,
+      "text": "建造车 / ST_CommanderBuilder\n红方初始8辆建造车位于集合区。使用正常B建造入口，在合法区域放置可负担的建筑。\n待建建筑保持碰撞并提供0–4个建造位；最多四车同时施工。选目的地 → 前往 → 100cm内抵达抢位 → 持续施工。\n途中不占位；本地优先，途中出现本地工地可退单换单；开始施工后不自动换单。\n抢位失败排除该位置1秒再取单；路径不可达保留现有位置/导航版本排除规则。停工保留进度。\n树资产：/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder"
+    },
+    {
+      "name": "Note_3",
+      "label": "StateTreeReview_StrongholdAdvance",
+      "class": "/Script/Engine.Note",
+      "location": [
+        -20000.0,
+        60000.0,
+        -1278.5985372025318
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "folder": "GuLiStrike/Review/CommanderStateTree",
+      "editor_only": true,
+      "text": "扫荡者、战争机器 / ST_CommanderMass\n双方初始军队使用烘焙集合点；出生授予一次据点推进。R2C4是红方前方的一个可观察据点，实际目标由原拓扑规则选择。\n观察选目标 → 持续推进 → 持续占领 → 阶段交接。不可达排除重选，无目标按原节拍等待。\nShift追加在据点阶段交接；人工接管后不重新授予InitialOnce。手动移动与S使用原入口。\n树资产：/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass"
+    },
+    {
+      "name": "Note_23",
+      "label": "StateTreeReview_Control",
+      "class": "/Script/Engine.Note",
+      "location": [
+        -1800.0,
+        72500.0,
+        -1266.0462924959868
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "folder": "GuLiStrike/Review/CommanderStateTree",
+      "editor_only": true,
+      "text": "公共控制与请求回执审核\n选中单位按S：持续停止；运输途中先安全退出，落地后保持停止。\n连续替换移动：新路未接受前沿旧路移动；再次改令后旧寻路回执不能抢回控制。\n通过现有运输/外部控制入口暂停，再释放：回到适当业务阶段，避免重复寻路、重复占位。\nShift追加：按采卸循环、施工完成或据点阶段交接；观察任务只收尾一次。\n父状态优先关系：安全退出 → 持续停止 → 替换移动 → 正常业务。\n新树资产与Xmind仅证明结构；以上效果需要玩家实际操作确认。"
+    }
+  ],
+  "existing_actors_unchanged": 128,
+  "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+  "soldiers_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Soldiers.DT_GuLiStrikeCommander_Soldiers",
+  "state_tree_bindings": {
+    "1": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+    "2": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+    "3": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
+    "4": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder"
+  },
+  "resource_map": "/Game/GuLiStrike/Data/Resources/DA_CommanderResourceMap.DA_CommanderResourceMap",
+  "resource_layout_hash": "61a8ab9f86f2f37336d20e11572540739258fa9e",
+  "economy_config": "/Game/GuLiStrike/Data/Resources/DA_ResourceEconomy.DA_ResourceEconomy",
+  "territories": 81,
+  "ore_clusters": 240,
+  "ore_nodes": 6240,
+  "related_actors": [
+    {
+      "name": "PlayerStart_0",
+      "label": "CommanderPlayerStart_Red",
+      "class": "/Script/Engine.PlayerStart",
+      "location": [
+        0.0,
+        72500.0,
+        233.91437530517578
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -90.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "NavMeshBoundsVolume_0",
+      "label": "NavMeshBounds_CommanderPlayableLandscape",
+      "class": "/Script/NavigationSystem.NavMeshBoundsVolume",
+      "location": [
+        0.0,
+        0.0,
+        6590.564727783203
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        900.0,
+        900.0,
+        96.4278564453125
+      ]
+    },
+    {
+      "name": "RecastNavMesh-Default",
+      "label": "RecastNavMesh-Default",
+      "class": "/Script/NavigationSystem.RecastNavMesh",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "RecastNavMesh-CommanderSoldier",
+      "label": "RecastNavMesh-CommanderSoldier",
+      "class": "/Script/NavigationSystem.RecastNavMesh",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "GuLiMapMarker_25",
+      "label": "Outpost_R1C4",
+      "class": "/Script/GuLiMapAuthoringEditor.GuLiMapMarker",
+      "location": [
+        -20000.0,
+        80000.0,
+        -1758.779941973815
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "GuLiMapMarker_27",
+      "label": "Outpost_R2C4",
+      "class": "/Script/GuLiMapAuthoringEditor.GuLiMapMarker",
+      "location": [
+        -20000.0,
+        60000.0,
+        -1778.5985372025318
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "GuLiMapMarker_71",
+      "label": "Outpost_R7C4",
+      "class": "/Script/GuLiMapAuthoringEditor.GuLiMapMarker",
+      "location": [
+        -20000.0,
+        -40000.0,
+        -1960.6010251120463
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "initial_instances_from_configuration": {
+    "mass": 500,
+    "actor": 32,
+    "total": 532
+  },
+  "runtime_verified": false
+}

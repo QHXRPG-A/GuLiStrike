@@ -29,6 +29,7 @@ public class GuLiStrikeEditor : ModuleRules
 			"Navmesh",
 			"Niagara",
 			"NiagaraEditor",
+			"UMG", "InputCore", "RHI", // Scoped rogue-card lifecycle and GPU timing acceptance adapters.
 			"GuLiFlightNavigationRuntime",
 			"GuLiFlightNavigationEditor",
 			"DeveloperToolSettings",

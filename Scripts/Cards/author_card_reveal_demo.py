@@ -14,8 +14,9 @@ SCRIPT_DIR = Path('D:/UE5.7/test1/Scripts/Cards')
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 from card_reveal_graph import B, Graph, Node, require, variable, function, compile_save
+from card_artwork_config import ensure_artwork_variables, write_artwork_function, write_start_function
 
-ROOT = '/Game/GuLiStrike/Cards/RevealDemo'
+ROOT = '/Game/GuLiStrike/CardSystem/RevealDemo'
 CARD = ROOT + '/Blueprints/BP_ParallaxRevealCard'
 DIRECTOR = ROOT + '/Blueprints/BP_CardRevealDirector'
 PC = ROOT + '/Blueprints/BP_CardRevealPlayerController'
@@ -178,7 +179,7 @@ def foundation():
     for name, kind, default in [('CurrentYaw', 'float', 0), ('CurrentRoll', 'float', 0),
                                 ('FlashMID', 'UMaterialInstanceDynamic', '')]:
         variable(CARD, name, kind, default)
-    function(CARD, 'SetArtwork', [('FrontMaterial', 'UMaterialInterface'), ('TextMaterial', 'UMaterialInterface')])
+    function(CARD, 'SetArtwork', [('FrontMaterial', 'UMaterialInterface'), ('TextMaterial', 'UMaterialInterface'), ('HideDecorativeFrame', 'bool')])
     function(CARD, 'ApplyFrame', [(n, 'float') for n in ['DisplayX', 'DisplayScale', 'FlightAlpha', 'FarDistance', 'FlipAngle',
                                                      'HoverX', 'HoverY', 'MaxTilt', 'HoverSpeed', 'DeltaSeconds', 'FlashProgress', 'FlashIntensity']] + [('Visible', 'bool')])
 
@@ -221,6 +222,7 @@ def foundation():
         variable(DIRECTOR, name, kind, default)
     for i in range(3):
         variable(DIRECTOR, f'Card{i}', CARD, '')
+    ensure_artwork_variables()
     signatures = {
         'Initialize': [('PlayerController', 'APlayerController'), ('HUD', HUD)],
         'StartPresentation': [], 'CleanupCards': [], 'UpdatePointer': [], 'ProcessClick': [], 'ActivateHit': [('HitIndex', 'int')],
@@ -259,15 +261,11 @@ def card_graphs():
     mid = g.method('PrimitiveComponent', 'CreateDynamicMaterialInstance', g.get('ConfirmationFlash'), ElementIndex=0)
     g.set('FlashMID', mid['ReturnValue'])
     g.layout()
-    g = Graph(CARD, 'SetArtwork', True)
-    for comp, param in [('CardFace', 'FrontMaterial'), ('CardText', 'TextMaterial')]:
-        g.method('PrimitiveComponent', 'SetMaterial', g.get(comp), ElementIndex=0, Material=g.arg(param))
-    g.call('Actor', 'PrestreamTextures', Seconds=5.0, bEnableStreaming=True, CinematicTextureGroups=0)
-    g.layout()
+    write_artwork_function()
     g = Graph(CARD, 'ApplyFrame', True)
     a = g.arg('FlightAlpha')
     loc = g.vec(g.arg('DisplayX') * a, g.math('Subtract', a, 1) * g.arg('FarDistance'), 0)
-    g.call('Actor', 'K2_SetActorLocation', NewLocation=loc, bSweep=False, bTeleport=True)
+    g.call('Actor', 'K2_SetActorRelativeLocation', NewRelativeLocation=loc, bSweep=False, bTeleport=True)
     size = g.arg('DisplayScale') * g.native('Lerp', A=.015, B=1, Alpha=a)
     g.call('Actor', 'SetActorScale3D', NewScale3D=g.vec(size, size, size))
     g.call('Actor', 'SetActorHiddenInGame', bNewHidden=g.native('Not_PreBool', A=g.arg('Visible')))
@@ -354,37 +352,9 @@ def director_graphs():
         g.branch(valid)
         g.method('Actor', 'K2_DestroyActor', g.get(f'Card{i}'))
     g.layout()
-    g = Graph(DIRECTOR, 'StartPresentation', True)
-    g.branch(g.compare('Equal', g.get('Phase'), 6, 'Int'))
-    g.invoke('CleanupCards')
-    g.set('SelectedIndex', -1)
-    g.set('HoveredIndex', -1)
-    for i, title in enumerate(['Moon', 'Star', 'Tower']):
-        transform = g.native('MakeTransform', Location=g.vec(0, -1100, 0), Rotation=g.rot(), Scale=g.vec(.001, .001, .001))
-        spawn = g.call('GameplayStatics', 'BeginDeferredActorSpawnFromClass', ActorClass=asset_class(CARD), SpawnTransform=transform,
-                       CollisionHandlingOverride='AlwaysSpawn')
-        end = g.call('GameplayStatics', 'FinishSpawningActor', Actor=spawn['ReturnValue'], SpawnTransform=transform)
-        actor = g.cast(CARD, end['ReturnValue'])
-        g.set(f'Card{i}', actor)
-        g.method(CARD, 'SetArtwork', actor, FrontMaterial=ROOT + f'/Materials/MI_Card_{title}',
-                 TextMaterial=ROOT + f'/Materials/MI_Card_{title}_UI')
-    g.invoke('SetPhase', NewPhase=0)
-    g.layout()
-    g = Graph(DIRECTOR, 'UpdatePointer', True)
-    size = g.method('PlayerController', 'GetViewportSize', g.get('Controller'))
-    sx = g.native('Conv_IntToDouble', InInt=size['SizeX'])
-    sy = g.native('Conv_IntToDouble', InInt=size['SizeY'])
-    mx = g.method('PlayerController', 'GetMousePosition', g.get('Controller'))
-    g.set('MouseU', mx['LocationX'] / g.native('FMax', A=sx, B=1))
-    g.set('MouseV', mx['LocationY'] / g.native('FMax', A=sy, B=1))
-    focused = g.call('GuLiCardRevealViewportLibrary', 'IsCardRevealViewportFocused', PlayerController=g.get('Controller'))['ReturnValue']
-    g.set('MouseValid', g.both(mx['ReturnValue'], focused, g.get('WindowActive'), g.compare('Greater', sx, 0), g.compare('Greater', sy, 0)))
-    half = g.get('CameraDistance') * g.native('Tan', A=g.get('HorizontalFOV') * (math.pi / 360))
-    g.set('ViewWidth', half * 2)
-    g.set('ViewHeight', g.get('ViewWidth') * sy / g.native('FMax', A=sx, B=1))
-    g.set('CardScale', g.native('FMin', A=g.get('ViewHeight') * (.5 / 48.617), B=g.get('ViewWidth') * (.24 / 32.175)))
-    g.set('HoveredIndex', -1)
-    g.layout()
+    write_start_function()
+    from card_presentation_size import write_pointer_function
+    write_pointer_function()
     g = Graph(DIRECTOR, 'UpdateCard', True)
     phase = g.get('Phase')
     t = g.get('PhaseTime')
@@ -468,6 +438,9 @@ def director_graphs():
         g = Graph(DIRECTOR, name, True)
         g.set('WindowActive', active)
         g.layout()
+    if B.variable_exists(DIRECTOR, 'ExternalConfirmation'):
+        from author_rogue_card_entry import confirmation_contract
+        confirmation_contract()
     REPORT[DIRECTOR] = compile_save(DIRECTOR)
 
 

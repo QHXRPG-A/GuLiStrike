@@ -1,0 +1,246 @@
+{
+  "success": true,
+  "textures": [
+    {
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_CelCardFrame.T_CelCardFrame",
+      "size": [
+        1024,
+        1536
+      ],
+      "alpha": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_Layers.T_FireRate_Layers",
+      "size": [
+        1254,
+        1254
+      ],
+      "alpha": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_MissileDamage_Layers.T_MissileDamage_Layers",
+      "size": [
+        1254,
+        1254
+      ],
+      "alpha": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_Layers.T_HighSpeed_Layers",
+      "size": [
+        1254,
+        1254
+      ],
+      "alpha": true
+    }
+  ],
+  "materials": [
+    {
+      "name": "FireRate",
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate.MI_FireRate",
+      "text": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_UI.MI_FireRate_UI",
+      "layers": 6,
+      "depth": 1.0,
+      "layout": {
+        "1": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "2": [
+          [
+            0.35,
+            0.025
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "3": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "4": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "5": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "6": [
+          [
+            0,
+            0
+          ],
+          [
+            1.12,
+            1.12
+          ]
+        ]
+      }
+    },
+    {
+      "name": "MissileDamage",
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage.MI_MissileDamage",
+      "text": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_UI.MI_MissileDamage_UI",
+      "layers": 6,
+      "depth": 1.0,
+      "layout": {
+        "1": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "2": [
+          [
+            -0.16,
+            -0.1
+          ],
+          [
+            0.65,
+            0.65
+          ]
+        ],
+        "3": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "4": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "5": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "6": [
+          [
+            0,
+            0
+          ],
+          [
+            1.12,
+            1.12
+          ]
+        ]
+      }
+    },
+    {
+      "name": "HighSpeed",
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed.MI_HighSpeed",
+      "text": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_UI.MI_HighSpeed_UI",
+      "layers": 6,
+      "depth": 1.0,
+      "layout": {
+        "1": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "2": [
+          [
+            0.17,
+            -0.06
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "3": [
+          [
+            0,
+            -0.06
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "4": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "5": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "6": [
+          [
+            0,
+            0
+          ],
+          [
+            1.12,
+            1.12
+          ]
+        ]
+      }
+    }
+  ]
+}

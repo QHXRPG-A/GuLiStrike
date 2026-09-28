@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
+#include "Gameplay/Cards/GuLiRogueUpgradeTypes.h"
 #include "GuLiCombatEffectPresentationSubsystem.generated.h"
 
 class UNiagaraComponent;
@@ -49,6 +50,33 @@ struct GULISTRIKE_API FGuLiCombatEffectVisualCounters
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 LaserCapacity = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 LaserVisible = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") double LastUpdateMilliseconds = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 UpgradeActive = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 UpgradeVisible = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 UpgradeComponents = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 UpgradeVisibleParticles = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") double UpgradeUpdateMilliseconds = 0;
+};
+
+struct FGuLiRogueUpgradeSlot
+{
+	FGuLiSoldierId Soldier;
+	EGuLiTeam Team=EGuLiTeam::Unassigned;
+	uint16 UnitTypeId=0;
+	float StartTime=0.f, Scale=1.f;
+	FLinearColor Color=FLinearColor::Transparent;
+	bool bActive=false;
+};
+
+USTRUCT()
+struct FGuLiRogueUpgradeBlock
+{
+	GENERATED_BODY()
+	UPROPERTY() TObjectPtr<UNiagaraComponent> Component;
+	UPROPERTY() TObjectPtr<UNiagaraSystem> System;
+	TArray<FGuLiRogueUpgradeSlot> Slots;
+	TArray<int32> Free;
+	TArray<FVector> Positions, Parameters;
+	TArray<FLinearColor> Colors;
 };
 
 /** A fixed block of persistent particle slots. Empty rows have zero alpha. */
@@ -83,6 +111,7 @@ public:
 	void ApplyState(const FGuLiCombatEffectState& State, bool bFromSnapshot = false);
 	void ApplyCorrection(const FGuLiCombatEffectCorrection& Correction);
 	void ApplyShots(const TArray<FGuLiCombatShotCue>& Cues);
+	void ApplyRogueUpgrade(const FGuLiRogueUpgradeCue& Cue);
 	using FPoseResolver = TFunction<bool(const FGuLiTargetHandle&, FTransform&, int32&)>;
 	void RegisterPoseResolver(EGuLiTargetKind Kind, UObject* Owner, FPoseResolver Resolver);
 	void UnregisterPoseResolver(EGuLiTargetKind Kind, const UObject* Owner);
@@ -97,6 +126,7 @@ public:
 	UFUNCTION(BlueprintPure, Category="Combat Effects") int32 GetActiveVisualCount() const { return Visuals.Num(); }
 
 private:
+	friend class UGuLiRogueCardQALibrary;
 	struct FPoseProvider { TWeakObjectPtr<UObject> Owner; FPoseResolver Resolve; };
 	struct FMuzzleProvider { TWeakObjectPtr<UObject> Owner; FMuzzleResolver Resolve; };
 	struct FActiveMuzzleKey
@@ -127,6 +157,9 @@ private:
 	void FreeLaserSlot(int32 Slot);
 	void UpdateLaserPool(float Now, bool bEnabled);
 	void ResetLaserPool();
+	void PlayMachineGunImpact(const FGuLiCombatEffectState& State);
+	void UpdateRogueUpgradePool(float Now,bool bEnabled);
+	void ResetRogueUpgradePool();
 	bool ResolvePose(const FGuLiTargetHandle& Target, FTransform& Transform, int32& UnitTypeId) const;
 	bool ResolveMuzzlePosition(const FGuLiCombatShotCue& Cue, FVector& Position) const;
 	bool ResolveTargetPosition(const FGuLiCombatShotCue& Cue, FVector& Position) const;
@@ -144,6 +177,11 @@ private:
 	UPROPERTY(Transient) TMap<FGuid, FGuLiLocalCombatEffect> Visuals;
 	UPROPERTY(Transient) TArray<FGuLiRetiringCombatEffect> Retiring;
 	UPROPERTY(Transient) TArray<FGuLiLaserRenderBlock> LaserBlocks;
+	UPROPERTY(Transient) TArray<FGuLiRogueUpgradeBlock> UpgradeBlocks;
+	TMap<FGuLiSoldierId,int32> UpgradeSlots;
+	struct FUpgradeReceipt { float Expires=0.f; TSet<uint16> Batches; };
+	TMap<FGuid,FUpgradeReceipt> UpgradeReceipts;
+	TWeakObjectPtr<class AGuLiSoldierStateReplicator> UpgradeRoster;
 	TMap<int32, TArray<int32>> FreeLaserSlots;
 	TMap<EGuLiTargetKind, FPoseProvider> PoseProviders;
 	TMap<EGuLiTargetKind, FMuzzleProvider> MuzzleProviders;

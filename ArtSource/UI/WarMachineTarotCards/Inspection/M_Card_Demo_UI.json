@@ -1,0 +1,97 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Masked",
+		"shading_model": "MSM_Unlit",
+		"two_sided": false
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionTextureSample_000002169FFED200",
+			"class": "TextureSample",
+			"class_full": "MaterialExpressionTextureSample",
+			"pos_x": -208,
+			"pos_y": 52,
+			"properties":
+			{
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_UI.T_Card_Demo_UI'",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"inputs": [
+				"Coordinates",
+				"TextureObject",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureObjectParameter_000002169FFECF80",
+			"class": "TextureObjectParameter",
+			"class_full": "MaterialExpressionTextureObjectParameter",
+			"pos_x": -464,
+			"pos_y": 64,
+			"properties":
+			{
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_UI.T_Card_Demo_UI'",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "UI Map",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		}
+	],
+	"connections": [
+		{
+			"source_id": "MaterialExpressionTextureObjectParameter_000002169FFECF80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionTextureSample_000002169FFED200",
+			"target_input": "TextureObject"
+		}
+	],
+	"output_connections": [
+		{
+			"property": "EmissiveColor",
+			"expression_id": "MaterialExpressionTextureSample_000002169FFED200",
+			"output_index": 0,
+			"output_name": "RGB"
+		},
+		{
+			"property": "OpacityMask",
+			"expression_id": "MaterialExpressionTextureSample_000002169FFED200",
+			"output_index": 4,
+			"output_name": "A"
+		}
+	]
+}

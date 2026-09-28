@@ -1,0 +1,670 @@
+{
+  "pie": true,
+  "cards": [
+    {
+      "index": 0,
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/UEDPIE_0_LVL_WarMachineTarotReview.LVL_WarMachineTarotReview:PersistentLevel.BP_ParallaxRevealCard_C_0",
+      "components": [
+        {
+          "name": "PositionRoot",
+          "location": [
+            -39.16984558105469,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B89F6E3D98) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            0.8922336101531982,
+            0.8922336101531982,
+            0.8922336101531982
+          ]
+        },
+        {
+          "name": "HoverPivot",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B89F6EC498) {pitch: -0.000000, yaw: -0.000094, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FlipPivot",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B89F6EA698) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "ArtworkCenter",
+          "location": [
+            0.0,
+            -0.189,
+            -0.8745
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B89F6E8898) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "CardFace",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8F63DA198) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_Base.S_Card_Base",
+          "materials": [
+            "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_Comic_v6.MI_FireRate_Comic_v6"
+          ]
+        },
+        {
+          "name": "CardText",
+          "location": [
+            0.0,
+            0.03500000002532033,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8F63D8998) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_Base.S_Card_Base",
+          "materials": [
+            "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_UI_Comic_v6.MI_FireRate_UI_Comic_v6"
+          ]
+        },
+        {
+          "name": "CardFrame",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8F63D9998) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Base.S_Deck_Base",
+          "materials": [
+            "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Deck_Base.M_Deck_Base"
+          ]
+        },
+        {
+          "name": "CardPictograms",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8F63DD198) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Pictograms.S_Deck_Pictograms",
+          "materials": [
+            "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Deck_Base.M_Deck_Base"
+          ]
+        },
+        {
+          "name": "CardVignette",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8F63D6998) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Vignette.S_Deck_Vignette",
+          "materials": [
+            "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Deck_Vignette.M_Deck_Vignette"
+          ]
+        },
+        {
+          "name": "CardBack",
+          "location": [
+            0.0,
+            -0.9340214019175619,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8F63DE998) {pitch: 0.000000, yaw: 180.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_Base.S_Card_Base",
+          "materials": [
+            "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardBack.M_CardBack"
+          ]
+        },
+        {
+          "name": "EditableText",
+          "location": [
+            0.0,
+            0.23,
+            -18.15
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B975CC6198) {pitch: 0.000000, yaw: 90.000000, roll: 0.000000}>",
+          "scale": [
+            0.031421,
+            0.031421,
+            0.031421
+          ]
+        },
+        {
+          "name": "CardSolidEdge",
+          "location": [
+            0.0,
+            -0.46701070095878094,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8F63A7998) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            0.3,
+            0.01271131078455054,
+            0.45
+          ],
+          "mesh": "/Engine/BasicShapes/Cube.Cube",
+          "materials": [
+            "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardEdge.M_CelCardEdge"
+          ]
+        },
+        {
+          "name": "ConfirmationFlash",
+          "location": [
+            0.0,
+            5.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8F63A3998) {pitch: 0.000000, yaw: 0.000000, roll: 90.000000}>",
+          "scale": [
+            0.65,
+            0.65,
+            0.65
+          ],
+          "mesh": "/Engine/BasicShapes/Plane.Plane",
+          "materials": [
+            "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/UEDPIE_0_LVL_WarMachineTarotReview.LVL_WarMachineTarotReview:PersistentLevel.BP_ParallaxRevealCard_C_0.ConfirmationFlash.MID_M_CardConfirmFlash_0"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/UEDPIE_0_LVL_WarMachineTarotReview.LVL_WarMachineTarotReview:PersistentLevel.BP_ParallaxRevealCard_C_1",
+      "components": [
+        {
+          "name": "PositionRoot",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B89F6E0D98) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            0.8922336101531982,
+            0.8922336101531982,
+            0.8922336101531982
+          ]
+        },
+        {
+          "name": "HoverPivot",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B89F6EE898) {pitch: 0.000000, yaw: 0.000000, roll: -0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FlipPivot",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B89F6E4F98) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "ArtworkCenter",
+          "location": [
+            0.0,
+            -0.189,
+            -0.8745
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B89F6E3498) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "CardFace",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B97560F998) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_Base.S_Card_Base",
+          "materials": [
+            "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_Comic_v6.MI_MissileDamage_Comic_v6"
+          ]
+        },
+        {
+          "name": "CardText",
+          "location": [
+            0.0,
+            0.03500000002532033,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B97560A198) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_Base.S_Card_Base",
+          "materials": [
+            "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_UI_Comic_v6.MI_MissileDamage_UI_Comic_v6"
+          ]
+        },
+        {
+          "name": "CardFrame",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B97560C998) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Base.S_Deck_Base",
+          "materials": [
+            "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Deck_Base.M_Deck_Base"
+          ]
+        },
+        {
+          "name": "CardPictograms",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B975606998) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Pictograms.S_Deck_Pictograms",
+          "materials": [
+            "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Deck_Base.M_Deck_Base"
+          ]
+        },
+        {
+          "name": "CardVignette",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B975600998) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Vignette.S_Deck_Vignette",
+          "materials": [
+            "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Deck_Vignette.M_Deck_Vignette"
+          ]
+        },
+        {
+          "name": "CardBack",
+          "location": [
+            0.0,
+            -0.9340214019175619,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B975607198) {pitch: 0.000000, yaw: 180.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_Base.S_Card_Base",
+          "materials": [
+            "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardBack.M_CardBack"
+          ]
+        },
+        {
+          "name": "EditableText",
+          "location": [
+            0.0,
+            0.23,
+            -18.15
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B97560E998) {pitch: 0.000000, yaw: 90.000000, roll: 0.000000}>",
+          "scale": [
+            0.031421,
+            0.031421,
+            0.031421
+          ]
+        },
+        {
+          "name": "CardSolidEdge",
+          "location": [
+            0.0,
+            -0.46701070095878094,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B825CE5198) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            0.3,
+            0.01271131078455054,
+            0.45
+          ],
+          "mesh": "/Engine/BasicShapes/Cube.Cube",
+          "materials": [
+            "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardEdge.M_CelCardEdge"
+          ]
+        },
+        {
+          "name": "ConfirmationFlash",
+          "location": [
+            0.0,
+            5.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B772CA9198) {pitch: 0.000000, yaw: 0.000000, roll: 90.000000}>",
+          "scale": [
+            0.65,
+            0.65,
+            0.65
+          ],
+          "mesh": "/Engine/BasicShapes/Plane.Plane",
+          "materials": [
+            "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/UEDPIE_0_LVL_WarMachineTarotReview.LVL_WarMachineTarotReview:PersistentLevel.BP_ParallaxRevealCard_C_1.ConfirmationFlash.MID_M_CardConfirmFlash_0"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/UEDPIE_0_LVL_WarMachineTarotReview.LVL_WarMachineTarotReview:PersistentLevel.BP_ParallaxRevealCard_C_2",
+      "components": [
+        {
+          "name": "PositionRoot",
+          "location": [
+            39.16984558105469,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B89F6EAC98) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            0.8922336101531982,
+            0.8922336101531982,
+            0.8922336101531982
+          ]
+        },
+        {
+          "name": "HoverPivot",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B89F6E9D98) {pitch: 0.000000, yaw: 0.000000, roll: -0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FlipPivot",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B89F6E1698) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "ArtworkCenter",
+          "location": [
+            0.0,
+            -0.189,
+            -0.8745
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8B5426798) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "CardFace",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B82E604198) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_Base.S_Card_Base",
+          "materials": [
+            "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_Comic_v6.MI_HighSpeed_Comic_v6"
+          ]
+        },
+        {
+          "name": "CardText",
+          "location": [
+            0.0,
+            0.03500000002532033,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8C7888998) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_Base.S_Card_Base",
+          "materials": [
+            "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_UI_Comic_v6.MI_HighSpeed_UI_Comic_v6"
+          ]
+        },
+        {
+          "name": "CardFrame",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8C7882998) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Base.S_Deck_Base",
+          "materials": [
+            "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Deck_Base.M_Deck_Base"
+          ]
+        },
+        {
+          "name": "CardPictograms",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8C7885998) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Pictograms.S_Deck_Pictograms",
+          "materials": [
+            "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Deck_Base.M_Deck_Base"
+          ]
+        },
+        {
+          "name": "CardVignette",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8C7886998) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Vignette.S_Deck_Vignette",
+          "materials": [
+            "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Deck_Vignette.M_Deck_Vignette"
+          ]
+        },
+        {
+          "name": "CardBack",
+          "location": [
+            0.0,
+            -0.9340214019175619,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8C788A198) {pitch: 0.000000, yaw: 180.000000, roll: 0.000000}>",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_Base.S_Card_Base",
+          "materials": [
+            "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardBack.M_CardBack"
+          ]
+        },
+        {
+          "name": "EditableText",
+          "location": [
+            0.0,
+            0.23,
+            -18.15
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8C788B198) {pitch: 0.000000, yaw: 90.000000, roll: 0.000000}>",
+          "scale": [
+            0.031421,
+            0.031421,
+            0.031421
+          ]
+        },
+        {
+          "name": "CardSolidEdge",
+          "location": [
+            0.0,
+            -0.46701070095878094,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8B67B2198) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+          "scale": [
+            0.3,
+            0.01271131078455054,
+            0.45
+          ],
+          "mesh": "/Engine/BasicShapes/Cube.Cube",
+          "materials": [
+            "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardEdge.M_CelCardEdge"
+          ]
+        },
+        {
+          "name": "ConfirmationFlash",
+          "location": [
+            0.0,
+            5.0,
+            0.0
+          ],
+          "rotation": "<Struct 'Rotator' (0x000001B8B67B1998) {pitch: 0.000000, yaw: 0.000000, roll: 90.000000}>",
+          "scale": [
+            0.65,
+            0.65,
+            0.65
+          ],
+          "mesh": "/Engine/BasicShapes/Plane.Plane",
+          "materials": [
+            "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/UEDPIE_0_LVL_WarMachineTarotReview.LVL_WarMachineTarotReview:PersistentLevel.BP_ParallaxRevealCard_C_2.ConfirmationFlash.MID_M_CardConfirmFlash_0"
+          ]
+        }
+      ]
+    }
+  ],
+  "viewport": [
+    2835,
+    1332
+  ],
+  "phase": 1
+}

@@ -1,0 +1,1065 @@
+{
+  "migration": [
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardRevealDirector"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardRevealGameMode"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardRevealPlayerController"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_ParallaxRevealCard",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_ParallaxRevealCard"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Input/IA_CardRevealClick",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Input/IA_CardRevealClick"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Input/IMC_CardReveal",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Input/IMC_CardReveal"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Maps/LVL_CardRevealDemo",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardRevealDemo"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/MI_Card_Moon"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon_UI",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/MI_Card_Moon_UI"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/MI_Card_Star"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star_UI",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/MI_Card_Star_UI"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/MI_Card_Tower"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower_UI",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/MI_Card_Tower_UI"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardBack",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardBack"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardConfirmFlash",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardConfirmFlash"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_DemoBackdrop",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_DemoBackdrop"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/RevealDemo/UI/WBP_CardRevealHUD",
+      "destination": "/Game/GuLiStrike/CardSystem/RevealDemo/UI/WBP_CardRevealHUD"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardEdge",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/M_CelCardEdge"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Data/FCardTextRow",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Data/FCardTextRow"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/UI/WBP_CardText",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/UI/WBP_CardText"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Data/DT_CardText",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Data/DT_CardText"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Maps/LVL_WarMachineTarotReview"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_Clean_v4",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_Clean_v4"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_Comic_v6",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_Comic_v6"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_ModelComic_v9",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_ModelComic_v9"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_Redraw_v5",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_Redraw_v5"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_UI",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_UI"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_UI_Clean_v4",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_UI_Clean_v4"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_UI_Comic_v6",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_UI_Comic_v6"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_UI_Redraw_v5",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_UI_Redraw_v5"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_Clean_v4",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_Clean_v4"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_Comic_v6",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_Comic_v6"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_ModelComic_v9",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_ModelComic_v9"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_Redraw_v5",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_Redraw_v5"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_UI",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_UI"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_UI_Clean_v4",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_UI_Clean_v4"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_UI_Comic_v6",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_UI_Comic_v6"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_UI_Redraw_v5",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_UI_Redraw_v5"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_Clean_v4",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_Clean_v4"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_Comic_v6",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_Comic_v6"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_ModelComic_v9",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_ModelComic_v9"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_Redraw_v5",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_Redraw_v5"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_UI",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_UI"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_UI_Clean_v4",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_UI_Clean_v4"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_UI_Comic_v6",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_UI_Comic_v6"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_UI_Redraw_v5",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_UI_Redraw_v5"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardParallax",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/M_CelCardParallax"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardParallax_Comic_v6",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/M_CelCardParallax_Comic_v6"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardParallax_ModelComic_v9",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/M_CelCardParallax_ModelComic_v9"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardUI",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/M_CelCardUI"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardUI_Comic_v6",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/M_CelCardUI_Comic_v6"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardUI_Redraw_v5",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/M_CelCardUI_Redraw_v5"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/ModelReferences/v8/Materials/M_WarMachine_Cel",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/ModelReferences/v8/Materials/M_WarMachine_Cel"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/ModelReferences/v8/Materials/M_WarMachine_Contour",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/ModelReferences/v8/Materials/M_WarMachine_Contour"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/ModelReferences/v8/Meshes/SM_WarMachine_LevelNodes_Reference",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/ModelReferences/v8/Meshes/SM_WarMachine_LevelNodes_Reference"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/ModelReferences/v8/Textures/T_WarMachine_BaseColor",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/ModelReferences/v8/Textures/T_WarMachine_BaseColor"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/ModelReferences/v8/Textures/T_WarMachine_LineMask",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/ModelReferences/v8/Textures/T_WarMachine_LineMask"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_CelCardFrame",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Textures/T_CelCardFrame"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_CelCardFrame_Clean_v4",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Textures/T_CelCardFrame_Clean_v4"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_CelCardFrame_Comic_v6",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Textures/T_CelCardFrame_Comic_v6"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_CelCardFrame_Redraw_v5",
+      "destination": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Textures/T_CelCardFrame_Redraw_v5"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_Layers",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Textures/T_FireRate_Layers"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_Layers_Clean_v4",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Textures/T_FireRate_Layers_Clean_v4"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_Layers_Comic_v6",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Textures/T_FireRate_Layers_Comic_v6"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_Layers_ModelComic_v9",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Textures/T_FireRate_Layers_ModelComic_v9"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_Layers_Redraw_v5",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Textures/T_FireRate_Layers_Redraw_v5"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_UI",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Textures/T_FireRate_UI"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_Ability_Comic_v6",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Textures/T_HighSpeed_Ability_Comic_v6"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_Layers",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Textures/T_HighSpeed_Layers"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_Layers_Clean_v4",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Textures/T_HighSpeed_Layers_Clean_v4"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_Layers_Comic_v6",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Textures/T_HighSpeed_Layers_Comic_v6"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_Layers_ModelComic_v9",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Textures/T_HighSpeed_Layers_ModelComic_v9"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_Layers_Redraw_v5",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Textures/T_HighSpeed_Layers_Redraw_v5"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_UI",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Textures/T_HighSpeed_UI"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_MissileDamage_Layers",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Textures/T_MissileDamage_Layers"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_MissileDamage_Layers_Clean_v4",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Textures/T_MissileDamage_Layers_Clean_v4"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_MissileDamage_Layers_Comic_v6",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Textures/T_MissileDamage_Layers_Comic_v6"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_MissileDamage_Layers_ModelComic_v9",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Textures/T_MissileDamage_Layers_ModelComic_v9"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_MissileDamage_Layers_Redraw_v5",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Textures/T_MissileDamage_Layers_Redraw_v5"
+    },
+    {
+      "source": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_MissileDamage_UI",
+      "destination": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Textures/T_MissileDamage_UI"
+    }
+  ],
+  "tables": {
+    "tables": [
+      {
+        "asset": "DT_GuLiStrikeGameTexts_Texts",
+        "source_rows": [
+          "UI.ConsoleLayout.001",
+          "UI.ConsoleLayout.002",
+          "UI.ConsoleLayout.003",
+          "UI.ConsoleLayout.004",
+          "UI.ConsoleLayout.005",
+          "UI.ConsoleLayout.006",
+          "UI.ConsoleLayout.007",
+          "UI.ConsoleLayout.008",
+          "UI.ConsoleLayout.009",
+          "UI.ConsoleLayout.010",
+          "UI.ConsoleLayout.011",
+          "UI.ConsoleLayout.012",
+          "UI.ConsoleLayout.013",
+          "UI.ConsoleLayout.014",
+          "UI.ConsoleLayout.015",
+          "UI.ConsoleLayout.016",
+          "UI.ConsoleLayout.017",
+          "UI.ConsoleLayout.018",
+          "UI.ConsoleLayout.019",
+          "UI.ConsoleLayout.020",
+          "UI.ConsoleLayout.021",
+          "UI.ConsoleLayout.022",
+          "UI.ConsoleLayout.023",
+          "UI.ConsoleLayout.024",
+          "UI.ConsoleLayout.025",
+          "UI.ConsoleLayout.026",
+          "UI.ConsoleLayout.027",
+          "UI.ConsoleLayout.028",
+          "UI.ConsoleLayout.029",
+          "UI.ConsoleLayout.030",
+          "UI.ConsoleLayout.031",
+          "UI.ConsoleLayout.032",
+          "UI.ConsoleView.033",
+          "UI.ConsoleView.034",
+          "UI.ConsoleView.035",
+          "UI.ConsoleView.036",
+          "UI.ConsoleView.037",
+          "UI.ConsoleView.038",
+          "UI.ConsoleView.039",
+          "UI.ConsoleView.040",
+          "UI.ConsoleView.041",
+          "UI.ConsoleView.042",
+          "UI.ConsoleView.043",
+          "UI.ConsoleView.044",
+          "UI.ConsoleView.045",
+          "UI.ConsoleView.046",
+          "UI.ConsoleView.047",
+          "UI.ConsoleView.048",
+          "UI.ConsoleView.049",
+          "UI.ConsoleView.050",
+          "UI.ConsoleView.051",
+          "UI.ConsoleView.052",
+          "UI.ConsoleView.053",
+          "UI.ConsoleView.054",
+          "UI.ConsoleView.055",
+          "UI.ConsoleView.056",
+          "UI.ConsoleView.057",
+          "UI.ConsoleView.058",
+          "UI.ConsoleView.059",
+          "UI.ConsoleView.060",
+          "UI.ConsoleView.061",
+          "UI.ConsoleView.062",
+          "UI.ConsoleView.063",
+          "UI.ConsoleView.064",
+          "UI.ConsoleView.065",
+          "UI.ConsoleView.066",
+          "UI.ConsoleView.067",
+          "UI.ConsoleView.068",
+          "UI.ConsoleView.069",
+          "UI.ConsoleView.070",
+          "UI.ConsoleView.071",
+          "UI.ConsoleView.072",
+          "UI.ConsoleView.073",
+          "UI.ConsoleView.074",
+          "UI.ConsoleView.075",
+          "UI.ConsoleView.076",
+          "UI.ConsoleView.077",
+          "UI.ConsoleView.078",
+          "UI.ConsoleView.079",
+          "UI.ConsoleView.080",
+          "UI.ConsoleView.081",
+          "UI.ConsoleView.082",
+          "UI.ConsoleView.083",
+          "UI.ConsoleView.084",
+          "UI.ConsoleView.085",
+          "UI.ConsoleView.086",
+          "UI.ConsoleView.087",
+          "UI.ConsoleView.088",
+          "UI.ConsoleView.089",
+          "UI.ConsoleView.090",
+          "UI.ConsoleView.091",
+          "UI.HUDWidget.092",
+          "UI.HUDWidget.093",
+          "UI.HUDWidget.094",
+          "UI.HUDWidget.095",
+          "UI.HUDWidget.096",
+          "UI.HUDWidget.097",
+          "UI.HUDWidget.098",
+          "UI.HUDWidget.099",
+          "UI.HUDWidget.100",
+          "UI.OrderedCommands.101",
+          "UI.OrderedCommands.102",
+          "UI.OrderedCommands.103",
+          "UI.OrderedCommands.104",
+          "UI.OrderedCommands.105",
+          "UI.OrderedCommands.106",
+          "UI.OrderedCommands.107",
+          "UI.OrderedCommands.108",
+          "UI.OrderedCommands.109",
+          "UI.UnitTaskSubsystem.110",
+          "UI.UnitTaskSubsystem.111",
+          "UI.UnitTaskSubsystem.112",
+          "UI.UnitTaskSubsystem.113",
+          "UI.UnitTaskSubsystem.114",
+          "UI.UnitTaskSubsystem.115",
+          "UI.UnitTaskSubsystem.116",
+          "UI.UnitTaskSubsystem.117",
+          "UI.UnitTaskSubsystem.118",
+          "UI.UnitTaskSubsystem.119",
+          "UI.UnitTaskSubsystem.120",
+          "UI.UnitTaskSubsystem.121",
+          "UI.UnitTaskSubsystem.122",
+          "UI.UnitTaskSubsystem.123",
+          "UI.UnitTaskSubsystem.124",
+          "UI.UnitTaskSubsystem.125",
+          "UI.UnitTaskSubsystem.126",
+          "UI.UnitTaskSubsystem.127",
+          "UI.SpecialTaskExecutor.128",
+          "UI.SpecialTaskExecutor.129",
+          "UI.SpecialTaskExecutor.130",
+          "UI.SpecialTaskExecutor.131",
+          "UI.SpecialTaskExecutor.132",
+          "UI.BuildingPlacementComponent.133",
+          "UI.BuildingPlacementComponent.134",
+          "UI.BuildingPlacementComponent.135",
+          "UI.BuildingPlacementComponent.136",
+          "UI.BuildingPlacementComponent.137",
+          "UI.BuildingPlacementComponent.138",
+          "UI.BuildingTypes.139",
+          "UI.BuildingTypes.140",
+          "UI.BuildingTypes.141",
+          "UI.BuildingTypes.142",
+          "UI.BuildingTypes.143",
+          "UI.BuildingTypes.144",
+          "UI.BuildingTypes.145",
+          "UI.BuildingTypes.146",
+          "UI.BuildingTypes.147",
+          "UI.BuildingTypes.148",
+          "UI.BuildingTypes.149",
+          "UI.BuildingTypes.150",
+          "UI.BuildingTypes.151",
+          "UI.BuildingTypes.152",
+          "UI.BuildingTypes.153",
+          "UI.BuildingTypes.154",
+          "UI.BuildingTypes.155",
+          "UI.BuildingTypes.156",
+          "UI.BuildingTypes.157",
+          "UI.BuildingTypes.158",
+          "UI.BuildingTypes.159",
+          "UI.BuildingTypes.160",
+          "UI.BuildingTypes.161",
+          "UI.BuildingTypes.162",
+          "UI.TeleportInputComponent.163",
+          "UI.TeleportInputComponent.164",
+          "UI.TeleportInputComponent.165",
+          "UI.TeleportInputComponent.166",
+          "UI.TeleportInputComponent.167",
+          "UI.TeleportInputComponent.168",
+          "UI.TeleportInputComponent.169",
+          "UI.TeleportInputComponent.170",
+          "UI.TeleportInputComponent.171",
+          "UI.TeleportFieldActor.172",
+          "UI.TeleportFieldActor.173",
+          "UI.TeleportFieldActor.174",
+          "UI.TeleportFieldActor.175",
+          "UI.TeleportFieldActor.176",
+          "UI.TeleportFieldActor.177",
+          "UI.TeleportFieldActor.178",
+          "UI.TeleportFieldActor.179",
+          "UI.TeleportFieldActor.180",
+          "UI.TeleportFieldActor.181",
+          "UI.TeleportFieldActor.182",
+          "UI.TeleportFieldActor.183",
+          "UI.TeleportFieldActor.184",
+          "UI.TeleportFieldActor.185",
+          "UI.BuildingPlacementComponent.RotateHint",
+          "UI.Performance.FPSPending",
+          "UI.Performance.FPS",
+          "UI.Performance.LatencyPending",
+          "UI.Performance.LatencyLocal",
+          "UI.Performance.LatencyRTT",
+          "Card.WM01.FireRate.Title",
+          "Card.WM01.FireRate.Description",
+          "Card.WM01.HighSpeed.Title",
+          "Card.WM01.HighSpeed.Description",
+          "Card.WM01.MissileDamage.Title",
+          "Card.WM01.MissileDamage.Description",
+          "UI.RogueCards.Title",
+          "UI.RogueCards.Entering",
+          "UI.RogueCards.Choose",
+          "UI.RogueCards.Flip",
+          "UI.RogueCards.Confirm",
+          "UI.RogueCards.Submitting",
+          "UI.RogueCards.Success",
+          "UI.RogueCards.Failed",
+          "UI.RogueCards.OpenFailed",
+          "UI.RogueCards.Replay",
+          "UI.RogueCards.Done"
+        ],
+        "created": false,
+        "row_names": [
+          "UI.ConsoleLayout.001",
+          "UI.ConsoleLayout.002",
+          "UI.ConsoleLayout.003",
+          "UI.ConsoleLayout.004",
+          "UI.ConsoleLayout.005",
+          "UI.ConsoleLayout.006",
+          "UI.ConsoleLayout.007",
+          "UI.ConsoleLayout.008",
+          "UI.ConsoleLayout.009",
+          "UI.ConsoleLayout.010",
+          "UI.ConsoleLayout.011",
+          "UI.ConsoleLayout.012",
+          "UI.ConsoleLayout.013",
+          "UI.ConsoleLayout.014",
+          "UI.ConsoleLayout.015",
+          "UI.ConsoleLayout.016",
+          "UI.ConsoleLayout.017",
+          "UI.ConsoleLayout.018",
+          "UI.ConsoleLayout.019",
+          "UI.ConsoleLayout.020",
+          "UI.ConsoleLayout.021",
+          "UI.ConsoleLayout.022",
+          "UI.ConsoleLayout.023",
+          "UI.ConsoleLayout.024",
+          "UI.ConsoleLayout.025",
+          "UI.ConsoleLayout.026",
+          "UI.ConsoleLayout.027",
+          "UI.ConsoleLayout.028",
+          "UI.ConsoleLayout.029",
+          "UI.ConsoleLayout.030",
+          "UI.ConsoleLayout.031",
+          "UI.ConsoleLayout.032",
+          "UI.ConsoleView.033",
+          "UI.ConsoleView.034",
+          "UI.ConsoleView.035",
+          "UI.ConsoleView.036",
+          "UI.ConsoleView.037",
+          "UI.ConsoleView.038",
+          "UI.ConsoleView.039",
+          "UI.ConsoleView.040",
+          "UI.ConsoleView.041",
+          "UI.ConsoleView.042",
+          "UI.ConsoleView.043",
+          "UI.ConsoleView.044",
+          "UI.ConsoleView.045",
+          "UI.ConsoleView.046",
+          "UI.ConsoleView.047",
+          "UI.ConsoleView.048",
+          "UI.ConsoleView.049",
+          "UI.ConsoleView.050",
+          "UI.ConsoleView.051",
+          "UI.ConsoleView.052",
+          "UI.ConsoleView.053",
+          "UI.ConsoleView.054",
+          "UI.ConsoleView.055",
+          "UI.ConsoleView.056",
+          "UI.ConsoleView.057",
+          "UI.ConsoleView.058",
+          "UI.ConsoleView.059",
+          "UI.ConsoleView.060",
+          "UI.ConsoleView.061",
+          "UI.ConsoleView.062",
+          "UI.ConsoleView.063",
+          "UI.ConsoleView.064",
+          "UI.ConsoleView.065",
+          "UI.ConsoleView.066",
+          "UI.ConsoleView.067",
+          "UI.ConsoleView.068",
+          "UI.ConsoleView.069",
+          "UI.ConsoleView.070",
+          "UI.ConsoleView.071",
+          "UI.ConsoleView.072",
+          "UI.ConsoleView.073",
+          "UI.ConsoleView.074",
+          "UI.ConsoleView.075",
+          "UI.ConsoleView.076",
+          "UI.ConsoleView.077",
+          "UI.ConsoleView.078",
+          "UI.ConsoleView.079",
+          "UI.ConsoleView.080",
+          "UI.ConsoleView.081",
+          "UI.ConsoleView.082",
+          "UI.ConsoleView.083",
+          "UI.ConsoleView.084",
+          "UI.ConsoleView.085",
+          "UI.ConsoleView.086",
+          "UI.ConsoleView.087",
+          "UI.ConsoleView.088",
+          "UI.ConsoleView.089",
+          "UI.ConsoleView.090",
+          "UI.ConsoleView.091",
+          "UI.HUDWidget.092",
+          "UI.HUDWidget.093",
+          "UI.HUDWidget.094",
+          "UI.HUDWidget.095",
+          "UI.HUDWidget.096",
+          "UI.HUDWidget.097",
+          "UI.HUDWidget.098",
+          "UI.HUDWidget.099",
+          "UI.HUDWidget.100",
+          "UI.OrderedCommands.101",
+          "UI.OrderedCommands.102",
+          "UI.OrderedCommands.103",
+          "UI.OrderedCommands.104",
+          "UI.OrderedCommands.105",
+          "UI.OrderedCommands.106",
+          "UI.OrderedCommands.107",
+          "UI.OrderedCommands.108",
+          "UI.OrderedCommands.109",
+          "UI.UnitTaskSubsystem.110",
+          "UI.UnitTaskSubsystem.111",
+          "UI.UnitTaskSubsystem.112",
+          "UI.UnitTaskSubsystem.113",
+          "UI.UnitTaskSubsystem.114",
+          "UI.UnitTaskSubsystem.115",
+          "UI.UnitTaskSubsystem.116",
+          "UI.UnitTaskSubsystem.117",
+          "UI.UnitTaskSubsystem.118",
+          "UI.UnitTaskSubsystem.119",
+          "UI.UnitTaskSubsystem.120",
+          "UI.UnitTaskSubsystem.121",
+          "UI.UnitTaskSubsystem.122",
+          "UI.UnitTaskSubsystem.123",
+          "UI.UnitTaskSubsystem.124",
+          "UI.UnitTaskSubsystem.125",
+          "UI.UnitTaskSubsystem.126",
+          "UI.UnitTaskSubsystem.127",
+          "UI.SpecialTaskExecutor.128",
+          "UI.SpecialTaskExecutor.129",
+          "UI.SpecialTaskExecutor.130",
+          "UI.SpecialTaskExecutor.131",
+          "UI.SpecialTaskExecutor.132",
+          "UI.BuildingPlacementComponent.133",
+          "UI.BuildingPlacementComponent.134",
+          "UI.BuildingPlacementComponent.135",
+          "UI.BuildingPlacementComponent.136",
+          "UI.BuildingPlacementComponent.137",
+          "UI.BuildingPlacementComponent.138",
+          "UI.BuildingTypes.139",
+          "UI.BuildingTypes.140",
+          "UI.BuildingTypes.141",
+          "UI.BuildingTypes.142",
+          "UI.BuildingTypes.143",
+          "UI.BuildingTypes.144",
+          "UI.BuildingTypes.145",
+          "UI.BuildingTypes.146",
+          "UI.BuildingTypes.147",
+          "UI.BuildingTypes.148",
+          "UI.BuildingTypes.149",
+          "UI.BuildingTypes.150",
+          "UI.BuildingTypes.151",
+          "UI.BuildingTypes.152",
+          "UI.BuildingTypes.153",
+          "UI.BuildingTypes.154",
+          "UI.BuildingTypes.155",
+          "UI.BuildingTypes.156",
+          "UI.BuildingTypes.157",
+          "UI.BuildingTypes.158",
+          "UI.BuildingTypes.159",
+          "UI.BuildingTypes.160",
+          "UI.BuildingTypes.161",
+          "UI.BuildingTypes.162",
+          "UI.TeleportInputComponent.163",
+          "UI.TeleportInputComponent.164",
+          "UI.TeleportInputComponent.165",
+          "UI.TeleportInputComponent.166",
+          "UI.TeleportInputComponent.167",
+          "UI.TeleportInputComponent.168",
+          "UI.TeleportInputComponent.169",
+          "UI.TeleportInputComponent.170",
+          "UI.TeleportInputComponent.171",
+          "UI.TeleportFieldActor.172",
+          "UI.TeleportFieldActor.173",
+          "UI.TeleportFieldActor.174",
+          "UI.TeleportFieldActor.175",
+          "UI.TeleportFieldActor.176",
+          "UI.TeleportFieldActor.177",
+          "UI.TeleportFieldActor.178",
+          "UI.TeleportFieldActor.179",
+          "UI.TeleportFieldActor.180",
+          "UI.TeleportFieldActor.181",
+          "UI.TeleportFieldActor.182",
+          "UI.TeleportFieldActor.183",
+          "UI.TeleportFieldActor.184",
+          "UI.TeleportFieldActor.185",
+          "UI.BuildingPlacementComponent.RotateHint",
+          "UI.Performance.FPSPending",
+          "UI.Performance.FPS",
+          "UI.Performance.LatencyPending",
+          "UI.Performance.LatencyLocal",
+          "UI.Performance.LatencyRTT",
+          "Card.WM01.FireRate.Title",
+          "Card.WM01.FireRate.Description",
+          "Card.WM01.HighSpeed.Title",
+          "Card.WM01.HighSpeed.Description",
+          "Card.WM01.MissileDamage.Title",
+          "Card.WM01.MissileDamage.Description",
+          "UI.RogueCards.Title",
+          "UI.RogueCards.Entering",
+          "UI.RogueCards.Choose",
+          "UI.RogueCards.Flip",
+          "UI.RogueCards.Confirm",
+          "UI.RogueCards.Submitting",
+          "UI.RogueCards.Success",
+          "UI.RogueCards.Failed",
+          "UI.RogueCards.OpenFailed",
+          "UI.RogueCards.Replay",
+          "UI.RogueCards.Done"
+        ],
+        "row_checks": {
+          "UI.ConsoleLayout.001": true,
+          "UI.ConsoleLayout.002": true,
+          "UI.ConsoleLayout.003": true,
+          "UI.ConsoleLayout.004": true,
+          "UI.ConsoleLayout.005": true,
+          "UI.ConsoleLayout.006": true,
+          "UI.ConsoleLayout.007": true,
+          "UI.ConsoleLayout.008": true,
+          "UI.ConsoleLayout.009": true,
+          "UI.ConsoleLayout.010": true,
+          "UI.ConsoleLayout.011": true,
+          "UI.ConsoleLayout.012": true,
+          "UI.ConsoleLayout.013": true,
+          "UI.ConsoleLayout.014": true,
+          "UI.ConsoleLayout.015": true,
+          "UI.ConsoleLayout.016": true,
+          "UI.ConsoleLayout.017": true,
+          "UI.ConsoleLayout.018": true,
+          "UI.ConsoleLayout.019": true,
+          "UI.ConsoleLayout.020": true,
+          "UI.ConsoleLayout.021": true,
+          "UI.ConsoleLayout.022": true,
+          "UI.ConsoleLayout.023": true,
+          "UI.ConsoleLayout.024": true,
+          "UI.ConsoleLayout.025": true,
+          "UI.ConsoleLayout.026": true,
+          "UI.ConsoleLayout.027": true,
+          "UI.ConsoleLayout.028": true,
+          "UI.ConsoleLayout.029": true,
+          "UI.ConsoleLayout.030": true,
+          "UI.ConsoleLayout.031": true,
+          "UI.ConsoleLayout.032": true,
+          "UI.ConsoleView.033": true,
+          "UI.ConsoleView.034": true,
+          "UI.ConsoleView.035": true,
+          "UI.ConsoleView.036": true,
+          "UI.ConsoleView.037": true,
+          "UI.ConsoleView.038": true,
+          "UI.ConsoleView.039": true,
+          "UI.ConsoleView.040": true,
+          "UI.ConsoleView.041": true,
+          "UI.ConsoleView.042": true,
+          "UI.ConsoleView.043": true,
+          "UI.ConsoleView.044": true,
+          "UI.ConsoleView.045": true,
+          "UI.ConsoleView.046": true,
+          "UI.ConsoleView.047": true,
+          "UI.ConsoleView.048": true,
+          "UI.ConsoleView.049": true,
+          "UI.ConsoleView.050": true,
+          "UI.ConsoleView.051": true,
+          "UI.ConsoleView.052": true,
+          "UI.ConsoleView.053": true,
+          "UI.ConsoleView.054": true,
+          "UI.ConsoleView.055": true,
+          "UI.ConsoleView.056": true,
+          "UI.ConsoleView.057": true,
+          "UI.ConsoleView.058": true,
+          "UI.ConsoleView.059": true,
+          "UI.ConsoleView.060": true,
+          "UI.ConsoleView.061": true,
+          "UI.ConsoleView.062": true,
+          "UI.ConsoleView.063": true,
+          "UI.ConsoleView.064": true,
+          "UI.ConsoleView.065": true,
+          "UI.ConsoleView.066": true,
+          "UI.ConsoleView.067": true,
+          "UI.ConsoleView.068": true,
+          "UI.ConsoleView.069": true,
+          "UI.ConsoleView.070": true,
+          "UI.ConsoleView.071": true,
+          "UI.ConsoleView.072": true,
+          "UI.ConsoleView.073": true,
+          "UI.ConsoleView.074": true,
+          "UI.ConsoleView.075": true,
+          "UI.ConsoleView.076": true,
+          "UI.ConsoleView.077": true,
+          "UI.ConsoleView.078": true,
+          "UI.ConsoleView.079": true,
+          "UI.ConsoleView.080": true,
+          "UI.ConsoleView.081": true,
+          "UI.ConsoleView.082": true,
+          "UI.ConsoleView.083": true,
+          "UI.ConsoleView.084": true,
+          "UI.ConsoleView.085": true,
+          "UI.ConsoleView.086": true,
+          "UI.ConsoleView.087": true,
+          "UI.ConsoleView.088": true,
+          "UI.ConsoleView.089": true,
+          "UI.ConsoleView.090": true,
+          "UI.ConsoleView.091": true,
+          "UI.HUDWidget.092": true,
+          "UI.HUDWidget.093": true,
+          "UI.HUDWidget.094": true,
+          "UI.HUDWidget.095": true,
+          "UI.HUDWidget.096": true,
+          "UI.HUDWidget.097": true,
+          "UI.HUDWidget.098": true,
+          "UI.HUDWidget.099": true,
+          "UI.HUDWidget.100": true,
+          "UI.OrderedCommands.101": true,
+          "UI.OrderedCommands.102": true,
+          "UI.OrderedCommands.103": true,
+          "UI.OrderedCommands.104": true,
+          "UI.OrderedCommands.105": true,
+          "UI.OrderedCommands.106": true,
+          "UI.OrderedCommands.107": true,
+          "UI.OrderedCommands.108": true,
+          "UI.OrderedCommands.109": true,
+          "UI.UnitTaskSubsystem.110": true,
+          "UI.UnitTaskSubsystem.111": true,
+          "UI.UnitTaskSubsystem.112": true,
+          "UI.UnitTaskSubsystem.113": true,
+          "UI.UnitTaskSubsystem.114": true,
+          "UI.UnitTaskSubsystem.115": true,
+          "UI.UnitTaskSubsystem.116": true,
+          "UI.UnitTaskSubsystem.117": true,
+          "UI.UnitTaskSubsystem.118": true,
+          "UI.UnitTaskSubsystem.119": true,
+          "UI.UnitTaskSubsystem.120": true,
+          "UI.UnitTaskSubsystem.121": true,
+          "UI.UnitTaskSubsystem.122": true,
+          "UI.UnitTaskSubsystem.123": true,
+          "UI.UnitTaskSubsystem.124": true,
+          "UI.UnitTaskSubsystem.125": true,
+          "UI.UnitTaskSubsystem.126": true,
+          "UI.UnitTaskSubsystem.127": true,
+          "UI.SpecialTaskExecutor.128": true,
+          "UI.SpecialTaskExecutor.129": true,
+          "UI.SpecialTaskExecutor.130": true,
+          "UI.SpecialTaskExecutor.131": true,
+          "UI.SpecialTaskExecutor.132": true,
+          "UI.BuildingPlacementComponent.133": true,
+          "UI.BuildingPlacementComponent.134": true,
+          "UI.BuildingPlacementComponent.135": true,
+          "UI.BuildingPlacementComponent.136": true,
+          "UI.BuildingPlacementComponent.137": true,
+          "UI.BuildingPlacementComponent.138": true,
+          "UI.BuildingTypes.139": true,
+          "UI.BuildingTypes.140": true,
+          "UI.BuildingTypes.141": true,
+          "UI.BuildingTypes.142": true,
+          "UI.BuildingTypes.143": true,
+          "UI.BuildingTypes.144": true,
+          "UI.BuildingTypes.145": true,
+          "UI.BuildingTypes.146": true,
+          "UI.BuildingTypes.147": true,
+          "UI.BuildingTypes.148": true,
+          "UI.BuildingTypes.149": true,
+          "UI.BuildingTypes.150": true,
+          "UI.BuildingTypes.151": true,
+          "UI.BuildingTypes.152": true,
+          "UI.BuildingTypes.153": true,
+          "UI.BuildingTypes.154": true,
+          "UI.BuildingTypes.155": true,
+          "UI.BuildingTypes.156": true,
+          "UI.BuildingTypes.157": true,
+          "UI.BuildingTypes.158": true,
+          "UI.BuildingTypes.159": true,
+          "UI.BuildingTypes.160": true,
+          "UI.BuildingTypes.161": true,
+          "UI.BuildingTypes.162": true,
+          "UI.TeleportInputComponent.163": true,
+          "UI.TeleportInputComponent.164": true,
+          "UI.TeleportInputComponent.165": true,
+          "UI.TeleportInputComponent.166": true,
+          "UI.TeleportInputComponent.167": true,
+          "UI.TeleportInputComponent.168": true,
+          "UI.TeleportInputComponent.169": true,
+          "UI.TeleportInputComponent.170": true,
+          "UI.TeleportInputComponent.171": true,
+          "UI.TeleportFieldActor.172": true,
+          "UI.TeleportFieldActor.173": true,
+          "UI.TeleportFieldActor.174": true,
+          "UI.TeleportFieldActor.175": true,
+          "UI.TeleportFieldActor.176": true,
+          "UI.TeleportFieldActor.177": true,
+          "UI.TeleportFieldActor.178": true,
+          "UI.TeleportFieldActor.179": true,
+          "UI.TeleportFieldActor.180": true,
+          "UI.TeleportFieldActor.181": true,
+          "UI.TeleportFieldActor.182": true,
+          "UI.TeleportFieldActor.183": true,
+          "UI.TeleportFieldActor.184": true,
+          "UI.TeleportFieldActor.185": true,
+          "UI.BuildingPlacementComponent.RotateHint": true,
+          "UI.Performance.FPSPending": true,
+          "UI.Performance.FPS": true,
+          "UI.Performance.LatencyPending": true,
+          "UI.Performance.LatencyLocal": true,
+          "UI.Performance.LatencyRTT": true,
+          "Card.WM01.FireRate.Title": true,
+          "Card.WM01.FireRate.Description": true,
+          "Card.WM01.HighSpeed.Title": true,
+          "Card.WM01.HighSpeed.Description": true,
+          "Card.WM01.MissileDamage.Title": true,
+          "Card.WM01.MissileDamage.Description": true,
+          "UI.RogueCards.Title": true,
+          "UI.RogueCards.Entering": true,
+          "UI.RogueCards.Choose": true,
+          "UI.RogueCards.Flip": true,
+          "UI.RogueCards.Confirm": true,
+          "UI.RogueCards.Submitting": true,
+          "UI.RogueCards.Success": true,
+          "UI.RogueCards.Failed": true,
+          "UI.RogueCards.OpenFailed": true,
+          "UI.RogueCards.Replay": true,
+          "UI.RogueCards.Done": true
+        },
+        "imported": true
+      },
+      {
+        "asset": "DT_GuLiStrikeRogueCards_Cards",
+        "source_rows": [
+          "WM01_FireRate_Lv1",
+          "WM01_MoveSpeed_Lv1",
+          "WM01_MissileDamage_Lv1"
+        ],
+        "created": true,
+        "row_names": [
+          "WM01_FireRate_Lv1",
+          "WM01_MoveSpeed_Lv1",
+          "WM01_MissileDamage_Lv1"
+        ],
+        "row_checks": {
+          "WM01_FireRate_Lv1": true,
+          "WM01_MoveSpeed_Lv1": true,
+          "WM01_MissileDamage_Lv1": true
+        },
+        "imported": true
+      }
+    ],
+    "config_wired": [
+      "DT_GuLiStrikeGameTexts_Texts",
+      "DT_GuLiStrikeRogueCards_Cards"
+    ],
+    "unwired": [],
+    "errors": [],
+    "part_ids": {},
+    "orphan_tables": []
+  },
+  "card": {
+    "success": true,
+    "errors": [],
+    "warnings": []
+  },
+  "director": {
+    "success": true,
+    "errors": [],
+    "warnings": []
+  },
+  "success": true,
+  "capture_material": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardCaptureUI",
+  "scene": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "saved": true,
+    "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+    "player_controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+    "component": "/Script/GuLiStrike.GuLiRogueCardPresentation",
+    "input": "Enhanced Input F4; UMG Escape/LMB",
+    "review_map": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Maps/LVL_WarMachineTarotReview",
+    "external_confirmation_default": false,
+    "actors": [
+      {
+        "name": "PlayerStart_0",
+        "class": "/Script/Engine.PlayerStart",
+        "location": "<Struct 'Vector' (0x000001CEE5C71500) {x: 0.000000, y: 72500.000000, z: 233.914375}>"
+      },
+      {
+        "name": "Note_24",
+        "class": "/Script/Engine.Note",
+        "location": "<Struct 'Vector' (0x000001CFEF5A3D00) {x: -3200.000000, y: 72500.000000, z: -1200.000000}>"
+      }
+    ],
+    "materials": [
+      {
+        "id": "01.01",
+        "material": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_ModelComic_v9.MI_FireRate_ModelComic_v9",
+        "depth": 4.0
+      },
+      {
+        "id": "02.01",
+        "material": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_ModelComic_v9.MI_HighSpeed_ModelComic_v9",
+        "depth": 4.0
+      },
+      {
+        "id": "03.01",
+        "material": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_ModelComic_v9.MI_MissileDamage_ModelComic_v9",
+        "depth": 4.0
+      }
+    ],
+    "settings_references": {
+      "Cards": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards.DT_GuLiStrikeRogueCards_Cards' (0x000001CFD5735A00) Class 'DataTable'>",
+      "Texts": "<Object '/Game/GuLiStrike/Data/ST_GuLiStrikeGameTexts.ST_GuLiStrikeGameTexts' (0x000001CFA4FC7300) Class 'StringTable'>",
+      "DirectorClass": "<Object '/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardRevealDirector.BP_CardRevealDirector_C' (0x000001CFA879C400) Class 'BlueprintGeneratedClass'>",
+      "CaptureMaterial": "<Object '/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardCaptureUI.M_CardCaptureUI' (0x000001CFCE6A9A00) Class 'Material'>",
+      "FrameMaterial": "<Object '/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/MI_WarMachineFrame.MI_WarMachineFrame' (0x000001D0D04D8000) Class 'MaterialInstanceConstant'>"
+    },
+    "blur_strength": 8.0,
+    "fade_seconds": 0.20000000298023224,
+    "runtime": "not_run",
+    "visual_acceptance": "user_pending"
+  }
+}

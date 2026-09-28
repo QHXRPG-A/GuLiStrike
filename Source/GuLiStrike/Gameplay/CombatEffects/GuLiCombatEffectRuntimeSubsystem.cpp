@@ -794,7 +794,7 @@ void UGuLiCombatEffectRuntimeSubsystem::BuildGroundProjectileSnapshot(TArray<FGu
 void UGuLiCombatEffectRuntimeSubsystem::HandlePooledState(const FGuLiCombatEffectState& State, const bool bReliable)
 {
 	if (!Ledger || State.MatchEpoch != Ledger->GetMatchEpoch()) return;
-	if (State.Phase != EGuLiCombatEffectPhase::Finished) ++Counters.ProjectilesLaunched;
+	if (State.Phase != EGuLiCombatEffectPhase::Finished && State.Sequence == 1) ++Counters.ProjectilesLaunched;
 	else if (State.EndReason == EGuLiCombatEffectEndReason::Impact) ++Counters.DamageCommits;
 	OnState.Broadcast(State, bReliable);
 }

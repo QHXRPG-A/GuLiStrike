@@ -1,0 +1,218 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Masked",
+		"shading_model": "MSM_Unlit",
+		"two_sided": false
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionTextureSampleParameter2D_000001B91ACD9B00",
+			"class": "TextureSampleParameter2D",
+			"class_full": "MaterialExpressionTextureSampleParameter2D",
+			"pos_x": -600,
+			"pos_y": 200,
+			"properties":
+			{
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_UI.T_FireRate_UI'",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "UI Map",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSampleParameter2D_000001B91ACDAC80",
+			"class": "TextureSampleParameter2D",
+			"class_full": "MaterialExpressionTextureSampleParameter2D",
+			"pos_x": -600,
+			"pos_y": 200,
+			"properties":
+			{
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_CelCardFrame.T_CelCardFrame'",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "UI Map",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureCoordinate_000001B973BE2060",
+			"class": "TextureCoordinate",
+			"class_full": "MaterialExpressionTextureCoordinate",
+			"pos_x": -600,
+			"pos_y": 0,
+			"properties":
+			{
+				"CoordinateIndex": "0",
+				"UTiling": "1.000000",
+				"VTiling": "1.000000",
+				"UnMirrorU": "False",
+				"UnMirrorV": "False"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSampleParameter2D_000001B91ACD5000",
+			"class": "TextureSampleParameter2D",
+			"class_full": "MaterialExpressionTextureSampleParameter2D",
+			"pos_x": -600,
+			"pos_y": 200,
+			"properties":
+			{
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_CelCardFrame.T_CelCardFrame'",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "UI Map",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_000001B87F779740",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -600,
+			"pos_y": 400,
+			"properties":
+			{
+				"DefaultValue": "0.775000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Text panel start",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionCustom_000001B87F7717C0",
+			"class": "Custom",
+			"class_full": "MaterialExpressionCustom",
+			"pos_x": 0,
+			"pos_y": 0,
+			"properties":
+			{
+				"Code": "float edge=max(max(step(UV.x,0.052),step(0.948,UV.x)),step(UV.y,0.050));\nfloat corners=max(step(UV.x+UV.y*0.666667,0.124),step((1.0-UV.x)+UV.y*0.666667,0.124));\nreturn max(max(edge,corners),step(PanelStart,UV.y));",
+				"OutputType": "CMOT_Float1",
+				"Description": "Custom",
+				"Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardUI_Comic_v6.M_CelCardUI_Comic_v6:MaterialExpressionTextureCoordinate_3'\")),(InputName=\"PanelStart\",Input=(Expression=\"/Script/Engine.MaterialExpressionScalarParameter'/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardUI_Comic_v6.M_CelCardUI_Comic_v6:MaterialExpressionScalarParameter_3'\")))",
+				"ShowCode": "False"
+			},
+			"hlsl_code": "float edge=max(max(step(UV.x,0.052),step(0.948,UV.x)),step(UV.y,0.050));\nfloat corners=max(step(UV.x+UV.y*0.666667,0.124),step((1.0-UV.x)+UV.y*0.666667,0.124));\nreturn max(max(edge,corners),step(PanelStart,UV.y));",
+			"output_type": "CMOT_Float1",
+			"custom_input_names": "UV,PanelStart",
+			"inputs": [
+				"UV",
+				"PanelStart"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		}
+	],
+	"connections": [
+		{
+			"source_id": "MaterialExpressionTextureCoordinate_000001B973BE2060",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionCustom_000001B87F7717C0",
+			"target_input": "UV"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_000001B87F779740",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionCustom_000001B87F7717C0",
+			"target_input": "PanelStart"
+		}
+	],
+	"output_connections": [
+		{
+			"property": "EmissiveColor",
+			"expression_id": "MaterialExpressionTextureSampleParameter2D_000001B91ACD5000",
+			"output_index": 0,
+			"output_name": "RGB"
+		},
+		{
+			"property": "OpacityMask",
+			"expression_id": "MaterialExpressionCustom_000001B87F7717C0",
+			"output_index": 0,
+			"output_name": ""
+		}
+	]
+}

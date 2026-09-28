@@ -1,0 +1,247 @@
+{
+  "success": true,
+  "dryRun": false,
+  "file": "Artifacts/CommanderStateTree/HierarchyV2/Overview.xmind",
+  "root": "三棵指挥官 StateTree｜V2 资产审核",
+  "recipe": {
+    "requested": "code-architecture",
+    "effective": "code-architecture",
+    "createSkill": "recipe-code-architecture"
+  },
+  "route": {
+    "structuralType": "hierarchy_tree",
+    "density": "light",
+    "structureCommitment": "preferred",
+    "qualityGate": {
+      "pass": true,
+      "blockingWarnings": [],
+      "advisoryWarnings": []
+    },
+    "skeleton": "TreeChart-3",
+    "skeletonReason": "free tree variant with better balance than single-column trees on mixed deep maps",
+    "skeletonSource": "spec",
+    "color": "Dawn-#ffffff-MULTI_LINE_COLORS",
+    "colorSource": "spec",
+    "draft": {
+      "N": 16,
+      "K": 4,
+      "depth": 2,
+      "notesPct": 38
+    },
+    "structureCard": {
+      "skeleton": "TreeChart-3",
+      "measuredOn": "TreeChart-1",
+      "texture": "downward tree",
+      "draft": {
+        "nodes": 16,
+        "branches": 4,
+        "maxDepth": 2,
+        "notesCoverage": 0.375
+      },
+      "envelopeReference": {
+        "verdict": "awkward",
+        "total": 3,
+        "evidence": "png-output/real-map-r1/skel-TreeChart-1.png",
+        "confidence": "reference",
+        "caveat": "base envelope measured at N≈50 single content-type; R13/R14 added two real basemaps x three content types at N=40-64 (semantic-matched seats + K conditions, see sizeTrajectory notes). Still reference, not a gate."
+      },
+      "sizeTrajectory": {
+        "tiny": 1.4,
+        "full": 0.22,
+        "large": 0.2,
+        "trend": "narrows",
+        "form": "scroll",
+        "note": "document scroll at depth: 16-19k px tall on two real maps (R14) — linear document flow only",
+        "band": "tiny",
+        "confidence": "single-basemap-ablation"
+      },
+      "variantNote": "TreeChart-4 renders as a stepped vertical cascade (structureClass maps to timeline.vertical — mapping under review, verify before relying). Whole family is a 16-19k px scroll on deep content.",
+      "sublayouts": [
+        {
+          "sublayout": "grid",
+          "relation": "equivalence",
+          "usability": "A",
+          "distinctiveness": "A",
+          "expansionPct": 0
+        },
+        {
+          "sublayout": "spreadsheet",
+          "relation": "equivalence-2d",
+          "usability": "A",
+          "distinctiveness": "A",
+          "expansionPct": 0
+        },
+        {
+          "sublayout": "logic-right",
+          "relation": "sequence",
+          "usability": "A",
+          "distinctiveness": "C",
+          "expansionPct": 0
+        },
+        {
+          "sublayout": "tree-right",
+          "relation": null,
+          "usability": "A",
+          "distinctiveness": "D",
+          "expansionPct": 0
+        },
+        {
+          "sublayout": "brace-right",
+          "relation": "part-whole",
+          "usability": "A",
+          "distinctiveness": "S",
+          "expansionPct": 0
+        },
+        {
+          "sublayout": "org-chart-down",
+          "relation": "hierarchy",
+          "usability": "C",
+          "distinctiveness": "C",
+          "expansionPct": 70
+        },
+        {
+          "sublayout": "fishbone-right",
+          "relation": "causality",
+          "usability": "B",
+          "distinctiveness": "S",
+          "expansionPct": 32
+        }
+      ],
+      "contentTypeSublayout": {
+        "process_steps": {
+          "relation": "sequence",
+          "first": [
+            "timeline-vertical"
+          ],
+          "alt": [
+            "logic-right"
+          ],
+          "note": "timeline-vertical in narrow/column parents"
+        },
+        "temporal_sequence": {
+          "relation": "time-sequence",
+          "first": [
+            "logic-right"
+          ],
+          "alt": [],
+          "note": "local chronology uses normal ordered flow; Timeline is reserved for the root"
+        },
+        "roadmap_phases": {
+          "relation": "time-milestones",
+          "first": [
+            "logic-right"
+          ],
+          "alt": [],
+          "note": "local phases use normal ordered flow; Timeline is reserved for the root"
+        },
+        "causal_analysis": {
+          "relation": "causality",
+          "first": [
+            "fishbone-right"
+          ],
+          "alt": [],
+          "note": "only for genuine cause-effect content"
+        },
+        "comparison": {
+          "relation": "equivalence-2d",
+          "first": [
+            "spreadsheet"
+          ],
+          "alt": [
+            "grid"
+          ],
+          "note": ""
+        },
+        "parallel_sections": {
+          "relation": "equivalence",
+          "first": [
+            "grid"
+          ],
+          "alt": [
+            "spreadsheet"
+          ],
+          "note": ""
+        },
+        "resource_index": {
+          "relation": "equivalence-list",
+          "first": [
+            "grid"
+          ],
+          "alt": [
+            "logic-right"
+          ],
+          "note": ""
+        },
+        "hierarchy_classification": {
+          "relation": "hierarchy",
+          "first": [
+            "tree-right"
+          ],
+          "alt": [
+            "org-chart-down"
+          ],
+          "note": ""
+        },
+        "org_team": {
+          "relation": "reporting",
+          "first": [
+            "org-chart-down"
+          ],
+          "alt": [
+            "tree-right"
+          ],
+          "note": ""
+        },
+        "part_whole": {
+          "relation": "composition",
+          "first": [
+            "brace-right"
+          ],
+          "alt": [],
+          "note": ""
+        },
+        "knowledge_overview": {
+          "relation": "neutral-mixed",
+          "first": [
+            "logic-right"
+          ],
+          "alt": [
+            "grid"
+          ],
+          "note": "mixed maps: decide per subtree"
+        }
+      },
+      "note": "decision is yours — measurements, not instructions."
+    }
+  },
+  "anchors": {
+    "requested": {
+      "layout": 0,
+      "group": 0,
+      "focus": 0,
+      "image": 0
+    },
+    "applied": []
+  },
+  "hints": [],
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "warnings": []
+  },
+  "billing": {
+    "charged": false,
+    "consumed": 0,
+    "balance": 0,
+    "unit": "Xmind credits",
+    "plan": "unsubscribed",
+    "breakdown": [
+      {
+        "featureId": "skill:recipe-code-architecture",
+        "cost": 0,
+        "displayName": "Skill: recipe-code-architecture",
+        "charged": false
+      }
+    ]
+  }
+}

@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+#include "Gameplay/Cards/GuLiRogueCardSubsystem.h"
 #include "Commander/Mass/GuLiCommanderSpawnLayout.h"
 #include "Commander/Behavior/GuLiCommanderMassStateTreeProcessor.h"
 #include "Gameplay/Data/GuLiUnitDataSubsystem.h"
@@ -15,6 +16,7 @@
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Commander/Framework/GuLiCommanderDeploymentPoint.h"
+#include "Commander/Framework/GuLiCommanderGameState.h"
 #include "Commander/Framework/GuLiCommanderResourceAdapter.h"
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
 #include "Commander/Mass/GuLiCommanderSelectionQuery.h"
@@ -59,6 +61,7 @@
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Subsystems/SubsystemCollection.h"
 #include "UObject/ObjectKey.h"
+#include "UObject/UnrealType.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
 
@@ -148,6 +151,7 @@ namespace GuLiCommanderMassPrivate
 		EGuLiTeam Team = EGuLiTeam::Unassigned;
 		uint16 UnitTypeId = GULI_DEFAULT_SOLDIER_UNIT_TYPE_ID;
 		float AvoidanceRadiusCentimeters = 150.0f;
+		bool bMovementEvenArchetype = true;
 		FVector Location = FVector::ZeroVector;
 		FVector Velocity = FVector::ZeroVector;
 		double LastMovementUpdateSimulationSeconds = 0.0;
@@ -2600,7 +2604,7 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyMovePlans()
 				Order.ActiveOrderId=S.ActiveOrderId; Order.OrderRevision=S.StateRevision; Order.FormationTarget=Intent->Click; Order.bHasMoveTarget=true;
 				auto& Move=Manager.GetFragmentDataChecked<FMassMoveTargetFragment>(S.Entity);
 				Move.CreateNewAction(EMassMovementAction::Move,*World); Move.IntentAtGoal=EMassMovementAction::Stand;
-				Move.Center=Intent->Click; Move.DesiredSpeed=FMassInt16Real(MovementSpeedCentimetersPerSecond);
+				Move.Center=Intent->Click; Move.DesiredSpeed=FMassInt16Real(GetUnitMovementSpeed(S.Team,S.UnitTypeId));
 				Manager.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(S.Entity).Value=FVector::ZeroVector;
 				RefreshSoldierNavigationState(S.SoldierId); Job.Progress.Committed.Add(S.SoldierId); Job.FinishedIds.Add(S.SoldierId.Value);
 				Receipt.AcceptedMemberMask|=1u<<M.CohortMemberIndex; Updated.MemberIds.Add(S.SoldierId); ++Accepted;
@@ -3258,13 +3262,27 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		return;
 	}
 
-	CommitCombatProfiles();
+	ResetRogueMovementForMatch();
 	ApplyPendingMovementSpeed();
+	UGuLiRogueCardSubsystem* RogueCards=World->GetSubsystem<UGuLiRogueCardSubsystem>();
+	bApplyingRogueFixedStep=true;
+	if (RogueCards) RogueCards->BeginFixedStep();
+	bApplyingRogueFixedStep=false;
+	CommitCombatProfiles();
+	if (RogueCards) RogueCards->EndFixedStep();
+	float MaximumUnitMovementSpeed=MovementSpeedCentimetersPerSecond;
+	for (const auto& Unit : AuthorityState->Soldiers) MaximumUnitMovementSpeed=FMath::Max(MaximumUnitMovementSpeed,GetUnitMovementSpeed(Unit.Team,Unit.UnitTypeId));
 	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
 	UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
 	ANavigationData* CommanderNavigationData = NavigationSystem
 		? GetCommanderNavigationData(*NavigationSystem)
 		: nullptr;
+	const ARecastNavMesh* CommanderRecast = Cast<ARecastNavMesh>(CommanderNavigationData);
+	// UE 5.7 exposes the authored slope as a reflected setting, without a native getter.
+	static const FFloatProperty* MaximumSlopeProperty =
+		FindFProperty<FFloatProperty>(ARecastNavMesh::StaticClass(), TEXT("AgentMaxSlope"));
+	const float MaximumSurfaceSlopeDegrees = CommanderRecast && MaximumSlopeProperty
+		? MaximumSlopeProperty->GetPropertyValue_InContainer(CommanderRecast) : 0.0f;
 	AuthorityState->SimulationSeconds += FixedDeltaSeconds;
 	++AuthorityState->ServerSimTick;
 
@@ -3560,7 +3578,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				SetGroundMechYieldStandTarget(Soldier);
 				continue;
 			}
-			const float MaximumSpeed = MovementSpeedCentimetersPerSecond
+			const float MaximumSpeed = GetUnitMovementSpeed(Soldier.Team,Soldier.UnitTypeId)
 				* GroundMechYieldSpeedFraction;
 			const float Speed = FMath::Min(MaximumSpeed, Distance / FixedDeltaSeconds);
 			GroundMechYieldVelocities[SoldierIndex] = ToTarget / Distance * Speed;
@@ -3663,7 +3681,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		if (Distance<S.BestWaypointDistanceCentimeters-ProgressDistanceCentimeters)
 		{ S.BestWaypointDistanceCentimeters=Distance; S.NoProgressSeconds=0; }
 		else S.NoProgressSeconds+=MovementUpdateDeltaSeconds[I];
-		const float Tolerance=FMath::Max(20.f,MovementSpeedCentimetersPerSecond*MovementUpdateDeltaSeconds[I]);
+		const float Tolerance=FMath::Max(20.f,GetUnitMovementSpeed(S.Team,S.UnitTypeId)*MovementUpdateDeltaSeconds[I]);
 		if (S.bHasDockTarget && FVector::DistSquared2D(S.Location,S.FinalDestination.Location)<=FMath::Square(20.f)
 			&& FMath::Abs(S.Location.Z-S.FinalDestination.Location.Z)<=MaximumSurfaceStepZCentimeters)
 		{ SetTerminalNavigationState(S,EGuLiSoldierNavigationState::Arrived,EGuLiSoldierNavigationFailure::None); continue; }
@@ -3676,8 +3694,8 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		}
 		S.CurrentNavigationWaypoint=Waypoint;
 		const float StepSpeed=S.bHasDockTarget && Waypoint.Equals(S.FinalDestination.Location,.01)
-			? FMath::Min(MovementSpeedCentimetersPerSecond,FVector::Dist2D(S.Location,Waypoint)/FMath::Max(.001f,MovementUpdateDeltaSeconds[I]))
-			: MovementSpeedCentimetersPerSecond;
+			? FMath::Min(GetUnitMovementSpeed(S.Team,S.UnitTypeId),FVector::Dist2D(S.Location,Waypoint)/FMath::Max(.001f,MovementUpdateDeltaSeconds[I]))
+			: GetUnitMovementSpeed(S.Team,S.UnitTypeId);
 		DesiredVelocities[I]=(Waypoint-S.Location).GetSafeNormal2D()*StepSpeed;
 		bReceivesAvoidance[I]=true; ++AuthorityState->MovementUpdateCalls;
 		AuthorityState->ForcedMovementUpdateCalls+=bForcedMovementUpdate[I]?1u:0u;
@@ -3688,7 +3706,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			GuLiMoveLatency::Record(TEXT("direction"),S.MoveTrace,1,*Detail);
 		}
 		auto& Move=EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(S.Entity);
-		Move.Center=Waypoint; Move.Forward=DesiredVelocities[I].GetSafeNormal(); Move.DesiredSpeed=FMassInt16Real(MovementSpeedCentimetersPerSecond);
+		Move.Center=Waypoint; Move.Forward=DesiredVelocities[I].GetSafeNormal(); Move.DesiredSpeed=FMassInt16Real(GetUnitMovementSpeed(S.Team,S.UnitTypeId));
 		EntityManager.GetFragmentDataChecked<FGuLiMassSlotTargetFragment>(S.Entity).WorldTarget=Waypoint;
 	}
 
@@ -3739,7 +3757,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 					AvoidanceCellSizeCentimeters,
 					MinimumAvoidanceDistanceCentimeters,
 					AvoidanceAgentHeightCentimeters,
-					MovementSpeedCentimetersPerSecond,
+					MaximumUnitMovementSpeed,
 					ManualAvoidanceStrength,
 					AuthorityState->ManualAvoidanceSpatialGrid,
 					AuthorityState->CachedManualAvoidanceVelocities);
@@ -3814,13 +3832,13 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				const FGuLiMassAvoidanceOutputFragment& AvoidanceOutput = EntityManager
 					.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(Soldier.Entity);
 				AvoidanceVelocity += AvoidanceOutput.Value.GetClampedToMaxSize(
-					MovementSpeedCentimetersPerSecond * 4.0f) * MovementDeltaSeconds;
+					GetUnitMovementSpeed(Soldier.Team,Soldier.UnitTypeId) * 4.0f) * MovementDeltaSeconds;
 			}
 
 			FVector TargetVelocity = (DesiredVelocities[SoldierIndex] + AvoidanceVelocity)
-				.GetClampedToMaxSize(MovementSpeedCentimetersPerSecond);
+				.GetClampedToMaxSize(GetUnitMovementSpeed(Soldier.Team,Soldier.UnitTypeId));
 			if (auto* Registry=World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>())
-				TargetVelocity=ConstrainEnvironmentVelocity(Soldier,*Registry->GetSnapshot(),TargetVelocity,MovementDeltaSeconds,MovementSpeedCentimetersPerSecond);
+				TargetVelocity=ConstrainEnvironmentVelocity(Soldier,*Registry->GetSnapshot(),TargetVelocity,MovementDeltaSeconds,GetUnitMovementSpeed(Soldier.Team,Soldier.UnitTypeId));
 			Soldier.Velocity = TargetVelocity.IsNearlyZero(1.0f)
 				? FVector::ZeroVector
 				: FMath::VInterpTo(
@@ -3850,7 +3868,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 						bSurfaceMoveSucceeded,
 						Soldier.LastValidNavLocation.Location,
 						SurfaceLocation.Location,
-						MaximumSurfaceStepZCentimeters);
+						MaximumSurfaceStepZCentimeters, MaximumSurfaceSlopeDegrees);
 				if (bSurfaceMoveAccepted)
 				{
 					if (Soldier.MoveIntent && !Soldier.FirstDisplacementAt && FVector::DistSquared2D(SurfaceLocation.Location,Soldier.CommandStartLocation)>1.)
@@ -3916,7 +3934,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			const FVector CandidateLocation = Soldier.LastValidNavLocation.Location
 				+ YieldVelocity * FixedDeltaSeconds;
 			bool bCandidateClear = true;
-			const float MaximumEarlierStepCentimeters = MovementSpeedCentimetersPerSecond
+			const float MaximumEarlierStepCentimeters = MaximumUnitMovementSpeed
 				* GuLiCommanderNavigationPolicy::MaximumMovementUpdateDeltaSeconds;
 			const float QueryRadiusCentimeters = Soldier.AvoidanceRadiusCentimeters
 				+ MaximumGroundMechYieldBodyRadiusCentimeters
@@ -3979,7 +3997,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 					bSurfaceMoveSucceeded,
 					Soldier.LastValidNavLocation.Location,
 					SurfaceLocation.Location,
-					MaximumSurfaceStepZCentimeters);
+					MaximumSurfaceStepZCentimeters, MaximumSurfaceSlopeDegrees);
 			if (bSurfaceMoveAccepted)
 			{
 				Soldier.Velocity=(SurfaceLocation.Location-Soldier.Location)/FMath::Max(FixedDeltaSeconds,UE_SMALL_NUMBER);
@@ -4546,6 +4564,80 @@ int32 UGuLiBattleAuthoritySubsystem::ApplyRuntimeTuning(
 }
 
 // 通过 Even/Odd Archetype 迁移替换 const-shared 参数，迁移后重新取 Fragment，避免持有旧引用。
+float UGuLiBattleAuthoritySubsystem::GetUnitMovementSpeed(EGuLiTeam Team, uint16 UnitTypeId) const
+{
+	const float* Multiplier=RogueMovementMultipliers.Find((static_cast<uint32>(Team)<<16)|UnitTypeId);
+	return MovementSpeedCentimetersPerSecond*(Multiplier ? *Multiplier : 1.f);
+}
+
+bool UGuLiBattleAuthoritySubsystem::RefreshRogueMovementEntities(uint32 Key, float Multiplier, FString& Error)
+{
+	using namespace GuLiCommanderMassPrivate;
+	if (!AuthorityState || !AuthorityState->MassEntitySubsystem.IsValid()
+		|| !AuthorityState->RuntimeTuningEvenBaseArchetype.IsValid() || !AuthorityState->RuntimeTuningOddBaseArchetype.IsValid())
+	{ Error=TEXT("Mass movement is not ready"); return false; }
+	auto& Manager=AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
+	struct FChange { int32 Index; float Speed; FMassArchetypeHandle Archetype; FMassArchetypeSharedFragmentValues Shared; };
+	TArray<FChange> Changes;
+	// Resolve every target before touching the ledger or any entity.
+	for (int32 I=0; I<AuthorityState->Soldiers.Num(); ++I)
+	{
+		const auto& S=AuthorityState->Soldiers[I];
+		if (Key!=MAX_uint32 && Key!=((static_cast<uint32>(S.Team)<<16)|S.UnitTypeId)) continue;
+		if (!Manager.IsEntityValid(S.Entity)) continue;
+		auto& Change=Changes.AddDefaulted_GetRef(); Change.Index=I;
+		Change.Speed=Key==MAX_uint32 ? GetUnitMovementSpeed(S.Team,S.UnitTypeId) : MovementSpeedCentimetersPerSecond*Multiplier;
+		Change.Shared=MakeAuthoritySharedFragmentValues(Manager,Change.Speed,S.AvoidanceRadiusCentimeters);
+		Change.Archetype=Manager.GetOrCreateSuitableArchetype(S.bMovementEvenArchetype ? AuthorityState->RuntimeTuningOddBaseArchetype : AuthorityState->RuntimeTuningEvenBaseArchetype,
+			Change.Shared.GetSharedFragmentBitSet(),Change.Shared.GetConstSharedFragmentBitSet());
+		if (!Change.Archetype.IsValid()) { Error=TEXT("Cannot resolve Mass movement archetype"); return false; }
+	}
+	for (const auto& Change : Changes)
+	{
+		auto& S=AuthorityState->Soldiers[Change.Index];
+		Manager.MoveEntityToAnotherArchetype(S.Entity,Change.Archetype,&Change.Shared);
+		S.bMovementEvenArchetype=!S.bMovementEvenArchetype;
+		S.Velocity=S.Velocity.GetClampedToMaxSize(Change.Speed);
+		Manager.GetFragmentDataChecked<FMassVelocityFragment>(S.Entity).Value=S.Velocity;
+		if (S.ActiveOrderId) Manager.GetFragmentDataChecked<FMassMoveTargetFragment>(S.Entity).DesiredSpeed=FMassInt16Real(Change.Speed);
+		S.bForceMovementUpdate=true;
+	}
+	AuthorityState->bForceManualAvoidanceRefresh=true; return true;
+}
+
+bool UGuLiBattleAuthoritySubsystem::ApplyRogueMovementSource(EGuLiTeam Team, uint16 UnitTypeId, FGuid SourceId, float Bonus, FString& Error)
+{
+	if (!bApplyingRogueFixedStep || GetWorld()->GetNetMode()==NM_Client || !GuLiCommanderProtocol::IsPlayableTeam(Team)
+		|| !SourceId.IsValid() || !FMath::IsFinite(Bonus) || Bonus<=0)
+	{ Error=TEXT("Invalid movement card request"); return false; }
+	const uint32 Key=(static_cast<uint32>(Team)<<16)|UnitTypeId;
+	const auto* Sources=RogueMovementSources.Find(Key);
+	if (Sources && Sources->Contains(SourceId)) return true;
+	const float* Current=RogueMovementMultipliers.Find(Key);
+	const float Next=(Current ? *Current : 1.f)*(1.f+Bonus);
+	const float Speed=MovementSpeedCentimetersPerSecond*Next;
+	if (!FMath::IsFinite(Speed) || Speed>MAX_int16)
+	{ Error=TEXT("Movement speed exceeds the Mass numeric limit"); return false; }
+	if (!RefreshRogueMovementEntities(Key,Next,Error)) return false;
+	RogueMovementSources.FindOrAdd(Key).Add(SourceId,Bonus); RogueMovementMultipliers.Add(Key,Next);
+	if (auto* Published = GetWorld()->GetGameState<AGuLiCommanderGameState>())
+		Published->SetAuthoritativeUnitMovementMultiplier(Team, UnitTypeId, Next);
+	return true;
+}
+
+void UGuLiBattleAuthoritySubsystem::ResetRogueMovementForMatch()
+{
+	const auto* State=GetWorld()->GetGameState<AGuLiBattleGameState>();
+	const uint32 Epoch=State ? State->GetMatchEpoch() : 0;
+	if (!Epoch || Epoch==RogueMovementEpoch) return;
+	RogueMovementEpoch=Epoch;
+	const bool bHadBonuses=!RogueMovementMultipliers.IsEmpty();
+	RogueMovementSources.Reset(); RogueMovementMultipliers.Reset();
+	if (auto* Published = GetWorld()->GetGameState<AGuLiCommanderGameState>())
+		Published->ResetAuthoritativeUnitMovementMultipliers();
+	if (bHadBonuses) { FString Error; RefreshRogueMovementEntities(MAX_uint32,1.f,Error); }
+}
+
 void UGuLiBattleAuthoritySubsystem::ApplyPendingMovementSpeed()
 {
 	using namespace GuLiCommanderMassPrivate;
@@ -4581,45 +4673,18 @@ void UGuLiBattleAuthoritySubsystem::ApplyPendingMovementSpeed()
 		return;
 	}
 
-	FMassArchetypeSharedFragmentValues SharedValues = MakeAuthoritySharedFragmentValues(
-		EntityManager,
-		NewMovementSpeed,
-		MemberAgentRadiusCentimeters);
-	const FMassArchetypeHandle TargetArchetype = EntityManager.GetOrCreateSuitableArchetype(
-		TargetBaseArchetype,
-		SharedValues.GetSharedFragmentBitSet(),
-		SharedValues.GetConstSharedFragmentBitSet());
-	if (!TargetArchetype.IsValid())
-	{
-		UE_LOG(LogGuLiCommanderMass, Error, TEXT("Cannot apply Soldier movement tuning: target Mass archetype is invalid."));
-		return;
-	}
-
-	int32 UpdatedEntityCount = 0;
-	for (FSoldierRuntime& Soldier : AuthorityState->Soldiers)
-	{
-		if (!EntityManager.IsEntityValid(Soldier.Entity))
+	for (const auto& Pair : RogueMovementMultipliers)
+		if (!FMath::IsFinite(NewMovementSpeed*Pair.Value) || NewMovementSpeed*Pair.Value>MAX_int16)
 		{
-			continue;
+			UE_LOG(LogGuLiCommanderMass,Warning,TEXT("Movement tuning rejected: rogue multiplier exceeds Mass speed limit."));
+			PendingMovementSpeedCmPerSecond.Reset(); return;
 		}
-		EntityManager.MoveEntityToAnotherArchetype(
-			Soldier.Entity,
-			TargetArchetype,
-			&SharedValues);
-
-		Soldier.Velocity = Soldier.Velocity.GetClampedToMaxSize(NewMovementSpeed);
-		EntityManager.GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value = Soldier.Velocity;
-		if (Soldier.ActiveOrderId != 0u)
-		{
-			EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity)
-				.DesiredSpeed = FMassInt16Real(NewMovementSpeed);
-		}
-		++UpdatedEntityCount;
-	}
-
-	AuthorityState->AuthorityArchetype = TargetArchetype;
-	AuthorityState->bUsingRuntimeTuningEvenArchetype = !AuthorityState->bUsingRuntimeTuningEvenArchetype;
-	MovementSpeedCentimetersPerSecond = NewMovementSpeed;
+	const float PreviousSpeed=MovementSpeedCentimetersPerSecond;
+	MovementSpeedCentimetersPerSecond=NewMovementSpeed;
+	FString Error;
+	if (!RefreshRogueMovementEntities(MAX_uint32,1.f,Error))
+	{ MovementSpeedCentimetersPerSecond=PreviousSpeed; return; }
+	const int32 UpdatedEntityCount=AuthorityState->Soldiers.Num();
 	AuthorityState->bForceManualAvoidanceRefresh = true;
 	PendingMovementSpeedCmPerSecond.Reset();
 	NotifyMovementSpeedCommitted(UpdatedEntityCount);
@@ -5133,7 +5198,7 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 					Soldier.LastCapturedPoseLocation,
 					Soldier.Location);
 				const double SampleSeconds = FMath::Max(0.0, AuthorityState->SimulationSeconds - Soldier.LastCapturedPoseSimulationSeconds);
-				const double SpeedBound = FMath::Max(MovementSpeedCentimetersPerSecond, Soldier.LastCapturedMovementSpeed);
+				const double SpeedBound = FMath::Max(GetUnitMovementSpeed(Soldier.Team,Soldier.UnitTypeId), Soldier.LastCapturedMovementSpeed);
 				const double AllowedStep = FMath::Max(200.0, SpeedBound * (SampleSeconds + GuLiCommanderSimulationTiming::StepSeconds));
 				if (CapturedStepCentimeters > AllowedStep)
 				{
@@ -5159,7 +5224,7 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 			Soldier.LastCapturedPoseLocation = Soldier.Location;
 			Soldier.LastCapturedPoseFrameSequence = FrameSequence;
 			Soldier.LastCapturedPoseSimulationSeconds = AuthorityState->SimulationSeconds;
-			Soldier.LastCapturedMovementSpeed = MovementSpeedCentimetersPerSecond;
+			Soldier.LastCapturedMovementSpeed = GetUnitMovementSpeed(Soldier.Team,Soldier.UnitTypeId);
 			FGuLiQuantizedSoldierPose& Pose = Chunk.Samples.AddDefaulted_GetRef();
 			Pose.SoldierId = Soldier.SoldierId;
 			if (!GuLiCommanderPoseCodec::Quantize(Soldier.Location, Soldier.Velocity, Soldier.FacingYawDegrees, Pose))
@@ -5606,10 +5671,13 @@ bool UGuLiBattleAuthoritySubsystem::SpawnReservedSoldier(const EGuLiTeam Team, c
 		FQuat::Identity, ECC_Pawn, FCollisionShape::MakeSphere(SpawnRadius))) return false;
 	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
 	FMassArchetypeSharedFragmentValues SharedValues = MakeAuthoritySharedFragmentValues(
-		EntityManager, MovementSpeedCentimetersPerSecond, MemberAgentRadiusCentimeters);
+		EntityManager, GetUnitMovementSpeed(Team,UnitTypeId), SpawnRadius);
+	const FMassArchetypeHandle SpawnArchetype=EntityManager.GetOrCreateSuitableArchetype(
+		AuthorityState->RuntimeTuningEvenBaseArchetype,SharedValues.GetSharedFragmentBitSet(),SharedValues.GetConstSharedFragmentBitSet());
+	if (!SpawnArchetype.IsValid()) return false;
 	TArray<FMassEntityHandle> Handles;
 	TSharedRef<FMassEntityManager::FEntityCreationContext> CreationContext = EntityManager.BatchCreateEntities(
-		AuthorityState->AuthorityArchetype, SharedValues, 1, Handles);
+		SpawnArchetype, SharedValues, 1, Handles);
 	if (Handles.Num() != 1)
 	{
 		if (!Handles.IsEmpty()) EntityManager.BatchDestroyEntities(Handles);

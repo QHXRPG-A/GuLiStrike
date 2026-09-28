@@ -1,0 +1,404 @@
+{
+  "source": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LegClevis_v2\\WarMachine_LegClevis_Editable.blend",
+  "editable": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_Slope30_v3\\WarMachine_Slope30_Editable.blend",
+  "parts": 279,
+  "triangles": 21372,
+  "symmetry_error_m": 3.814697265625e-06,
+  "beam_axes": [
+    {
+      "corner": "F_L",
+      "start_m": [
+        4.188459396362305,
+        6.424403190612793,
+        16.273221969604492
+      ],
+      "end_pin_m": [
+        13.051329612731934,
+        14.785600662231445,
+        9.238545417785645
+      ],
+      "outward_down_degrees_from_horizontal": 29.999994312174685,
+      "horizontal_reach_m": 12.184419995929517,
+      "vertical_drop_m": 7.034676551818848
+    },
+    {
+      "corner": "F_R",
+      "start_m": [
+        4.188459396362305,
+        -6.424403190612793,
+        16.273221969604492
+      ],
+      "end_pin_m": [
+        13.051329612731934,
+        -14.785600662231445,
+        9.238545417785645
+      ],
+      "outward_down_degrees_from_horizontal": 29.999994312174685,
+      "horizontal_reach_m": 12.184419995929517,
+      "vertical_drop_m": 7.034676551818848
+    },
+    {
+      "corner": "R_L",
+      "start_m": [
+        -9.857049942016602,
+        6.424403190612793,
+        14.193992614746094
+      ],
+      "end_pin_m": [
+        -14.32677173614502,
+        13.751815795898438,
+        9.238545417785645
+      ],
+      "outward_down_degrees_from_horizontal": 29.999997128714952,
+      "horizontal_reach_m": 8.583087312697153,
+      "vertical_drop_m": 4.955447196960449
+    },
+    {
+      "corner": "R_R",
+      "start_m": [
+        -9.857049942016602,
+        -6.424403190612793,
+        14.193992614746094
+      ],
+      "end_pin_m": [
+        -14.32677173614502,
+        -13.751815795898438,
+        9.238545417785645
+      ],
+      "outward_down_degrees_from_horizontal": 29.999997128714952,
+      "horizontal_reach_m": 8.583087312697153,
+      "vertical_drop_m": 4.955447196960449
+    }
+  ],
+  "contacts": [
+    {
+      "corner": "F_L",
+      "vertical_gap_m": 0.0,
+      "center_error_xy_m": 6.03156597169567e-06,
+      "disc_normal": [
+        0,
+        0,
+        1
+      ],
+      "all_disc_geometry_unchanged": true
+    },
+    {
+      "corner": "F_R",
+      "vertical_gap_m": 0.0,
+      "center_error_xy_m": 6.03156597169567e-06,
+      "disc_normal": [
+        0,
+        0,
+        1
+      ],
+      "all_disc_geometry_unchanged": true
+    },
+    {
+      "corner": "R_L",
+      "vertical_gap_m": 0.0,
+      "center_error_xy_m": 2.6973983046972182e-06,
+      "disc_normal": [
+        0,
+        0,
+        1
+      ],
+      "all_disc_geometry_unchanged": true
+    },
+    {
+      "corner": "R_R",
+      "vertical_gap_m": 0.0,
+      "center_error_xy_m": 2.6973983046972182e-06,
+      "disc_normal": [
+        0,
+        0,
+        1
+      ],
+      "all_disc_geometry_unchanged": true
+    }
+  ],
+  "pin_holes": [
+    {
+      "name": "WM suspension pivot eye_F_L",
+      "axis_error_m": 9.72122337239986e-07,
+      "radial_clearance_m": 0.1574571721590753
+    },
+    {
+      "name": "WM suspension clevis lug_F_L inner",
+      "axis_error_m": 2.5511902045050496e-06,
+      "radial_clearance_m": 0.12596459024299222
+    },
+    {
+      "name": "WM suspension clevis lug_F_L outer",
+      "axis_error_m": 1.8810908601354956e-06,
+      "radial_clearance_m": 0.12596334597666503
+    },
+    {
+      "name": "WM suspension pivot eye_F_R",
+      "axis_error_m": 9.72122337239986e-07,
+      "radial_clearance_m": 0.1574571721590753
+    },
+    {
+      "name": "WM suspension clevis lug_F_R inner",
+      "axis_error_m": 2.5511902045050496e-06,
+      "radial_clearance_m": 0.12596459024299222
+    },
+    {
+      "name": "WM suspension clevis lug_F_R outer",
+      "axis_error_m": 1.8810908601354956e-06,
+      "radial_clearance_m": 0.12596334597666503
+    },
+    {
+      "name": "WM suspension pivot eye_R_L",
+      "axis_error_m": 2.218221910706567e-06,
+      "radial_clearance_m": 0.15745768720914666
+    },
+    {
+      "name": "WM suspension clevis lug_R_L inner",
+      "axis_error_m": 1.1496127558938211e-06,
+      "radial_clearance_m": 0.12596642544532088
+    },
+    {
+      "name": "WM suspension clevis lug_R_L outer",
+      "axis_error_m": 1.066240299940009e-06,
+      "radial_clearance_m": 0.12596629181842334
+    },
+    {
+      "name": "WM suspension pivot eye_R_R",
+      "axis_error_m": 2.218221910706567e-06,
+      "radial_clearance_m": 0.15745768720914666
+    },
+    {
+      "name": "WM suspension clevis lug_R_R inner",
+      "axis_error_m": 1.1496127558938211e-06,
+      "radial_clearance_m": 0.12596642544532088
+    },
+    {
+      "name": "WM suspension clevis lug_R_R outer",
+      "axis_error_m": 1.066240299940009e-06,
+      "radial_clearance_m": 0.12596629181842334
+    }
+  ],
+  "leg_disc_surface_intersections": [],
+  "non_manifold_or_inward_rebuilt_parts": [],
+  "hover_parts_unchanged": true,
+  "hover_parts_count": 56,
+  "ankle_and_pin_parts_unchanged": true,
+  "ankle_and_pin_parts_count": 60,
+  "body_lift_author_units": 1.198633770942688,
+  "hip_lift_author_units": {
+    "F": 1.363692979812622,
+    "R": 1.0335745620727539
+  },
+  "rigidly_translated_parts": {
+    "WM belly armor": 7.549516318175218,
+    "WM mechanical waist": 7.549516318175218,
+    "WM main armor": 7.549516318175218,
+    "WM rear ivory saddle": 7.549516318175218,
+    "WM rear saddle vent": 7.549516318175218,
+    "WM raised dorsal crest": 7.549516318175218,
+    "WM dorsal ivory lid seam": 7.549516318175218,
+    "WM dorsal ivory lid": 7.549516318175218,
+    "WM dorsal latch": 7.549516318175218,
+    "WM brow orange surround": 7.549516318175218,
+    "WM forehead ivory seam": 7.549516318175218,
+    "WM forehead ivory": 7.549516318175218,
+    "WM central amber optic housing": 7.549516318175218,
+    "WM central amber optic lens": 7.549516318175218,
+    "WM recessed chin intake": 7.549516318175218,
+    "WM crest inset vent": 7.549516318175218,
+    "WM crest inset vent.001": 7.549516318175218,
+    "WM broad shoulder armor_L": 7.549516318175218,
+    "WM formed ivory cheek_L": 7.549516318175218,
+    "WM rear ivory clasp_L": 7.549516318175218,
+    "WM broad shoulder armor_R": 7.549516318175218,
+    "WM formed ivory cheek_R": 7.549516318175218,
+    "WM rear ivory clasp_R": 7.549516318175218,
+    "WM lower forward prow": 7.549516318175218,
+    "WM prow ivory seam": 7.549516318175218,
+    "WM prow ivory": 7.549516318175218,
+    "WM prow hatch latch": 7.549516318175218,
+    "WM prow opening": 7.549516318175218,
+    "WM prow ivory corner": 7.549516318175218,
+    "WM prow ivory corner.001": 7.549516318175218,
+    "WM rear engine frame": 7.549516318175218,
+    "WM rear engine cover": 7.549516318175218,
+    "WM rear vent recess": 7.549516318175218,
+    "WM rear vent recess.001": 7.549516318175218,
+    "WM rear vent recess.002": 7.549516318175218,
+    "WM suspension round joint_F_L": 8.589130936949582,
+    "WM suspension hub rim_F_L": 8.589130936949582,
+    "WM suspension hub_F_L": 8.589130936949582,
+    "WM suspension ivory arch_F_L": 8.589130936949582,
+    "WM suspension round joint_R_L": 6.5099016994008565,
+    "WM suspension hub rim_R_L": 6.5099016994008565,
+    "WM suspension hub_R_L": 6.5099016994008565,
+    "WM suspension ivory arch_R_L": 6.5099016994008565,
+    "WM suspension round joint_F_R": 8.589130936949582,
+    "WM suspension hub rim_F_R": 8.589130936949582,
+    "WM suspension hub_F_R": 8.589130936949582,
+    "WM suspension ivory arch_F_R": 8.589130936949582,
+    "WM suspension round joint_R_R": 6.5099016994008565,
+    "WM suspension hub rim_R_R": 6.5099016994008565,
+    "WM suspension hub_R_R": 6.5099016994008565,
+    "WM suspension ivory arch_R_R": 6.5099016994008565,
+    "WM lower flank armored lobe_L": 7.549516318175218,
+    "WM rear flank armored lobe_L": 7.549516318175218,
+    "WM lower flank armored lobe_R": 7.549516318175218,
+    "WM rear flank armored lobe_R": 7.549516318175218,
+    "WM cannon rear shoulder_L": 7.549516318175218,
+    "WM cannon shoulder ivory strap_L": 7.549516318175218,
+    "WM cannon underside ivory seat_L": 7.549516318175218,
+    "WM twin cannon receiver_L": 7.549516318175218,
+    "WM cannon orange cage_L": 7.549516318175218,
+    "WM cannon side lamp gasket_L": 7.549516318175218,
+    "WM cannon side amber panel_L": 7.549516318175218,
+    "WM cannon side receiver latch_L": 7.549516318175218,
+    "WM cannon small amber optic_L": 7.549516318175218,
+    "WM receiver upper ridge_L": 7.549516318175218,
+    "WM receiver upper ridge_L.001": 7.549516318175218,
+    "WM receiver upper ridge_L.002": 7.549516318175218,
+    "WM ivory barrel collar_L": 7.549516318175218,
+    "WM twin gun barrel_L": 7.549516318175218,
+    "WM twin gun muzzle_L": 7.549516318175218,
+    "WM gun barrel sleeve_L": 7.549516318175218,
+    "WM gun cooling slot_L": 7.549516318175218,
+    "WM gun cooling slot_L.001": 7.549516318175218,
+    "WM ivory barrel collar_L.001": 7.549516318175218,
+    "WM twin gun barrel_L.001": 7.549516318175218,
+    "WM twin gun muzzle_L.001": 7.549516318175218,
+    "WM gun barrel sleeve_L.001": 7.549516318175218,
+    "WM gun cooling slot_L.002": 7.549516318175218,
+    "WM gun cooling slot_L.003": 7.549516318175218,
+    "WM cannon ivory rear top_L": 7.549516318175218,
+    "WM cannon rear shoulder_R": 7.549516318175218,
+    "WM cannon shoulder ivory strap_R": 7.549516318175218,
+    "WM cannon underside ivory seat_R": 7.549516318175218,
+    "WM twin cannon receiver_R": 7.549516318175218,
+    "WM cannon orange cage_R": 7.549516318175218,
+    "WM cannon side lamp gasket_R": 7.549516318175218,
+    "WM cannon side amber panel_R": 7.549516318175218,
+    "WM cannon side receiver latch_R": 7.549516318175218,
+    "WM cannon small amber optic_R": 7.549516318175218,
+    "WM receiver upper ridge_R": 7.549516318175218,
+    "WM receiver upper ridge_R.001": 7.549516318175218,
+    "WM receiver upper ridge_R.002": 7.549516318175218,
+    "WM ivory barrel collar_R": 7.549516318175218,
+    "WM twin gun barrel_R": 7.549516318175218,
+    "WM twin gun muzzle_R": 7.549516318175218,
+    "WM gun barrel sleeve_R": 7.549516318175218,
+    "WM gun cooling slot_R": 7.549516318175218,
+    "WM gun cooling slot_R.001": 7.549516318175218,
+    "WM ivory barrel collar_R.001": 7.549516318175218,
+    "WM twin gun barrel_R.001": 7.549516318175218,
+    "WM twin gun muzzle_R.001": 7.549516318175218,
+    "WM gun barrel sleeve_R.001": 7.549516318175218,
+    "WM gun cooling slot_R.002": 7.549516318175218,
+    "WM gun cooling slot_R.003": 7.549516318175218,
+    "WM cannon ivory rear top_R": 7.549516318175218,
+    "WM missile pod armored shell": 7.549516318175218,
+    "WM missile pod ivory rim": 7.549516318175218,
+    "WM missile tube backplate": 7.549516318175218,
+    "WM rim upper wrap": 7.549516318175218,
+    "WM launch tube socket": 7.549516318175218,
+    "WM rounded missile tip": 7.549516318175218,
+    "WM launch tube socket.001": 7.549516318175218,
+    "WM rounded missile tip.001": 7.549516318175218,
+    "WM launch tube socket.002": 7.549516318175218,
+    "WM rounded missile tip.002": 7.549516318175218,
+    "WM launch tube socket.003": 7.549516318175218,
+    "WM rounded missile tip.003": 7.549516318175218,
+    "WM launcher rear panel seam": 7.549516318175218,
+    "WM launcher rear access hatch": 7.549516318175218,
+    "WM launcher rear latch": 7.549516318175218,
+    "WM launcher hinge socket": 7.549516318175218,
+    "WM launcher hinge inset": 7.549516318175218,
+    "WM launcher side service recess": 7.549516318175218,
+    "WM launcher hinge socket.001": 7.549516318175218,
+    "WM launcher hinge inset.001": 7.549516318175218,
+    "WM launcher side service recess.001": 7.549516318175218,
+    "WM launcher underside shoe": 7.549516318175218,
+    "WM launcher foot block": 7.549516318175218,
+    "WM launcher upper cradle": 7.549516318175218,
+    "WM launcher cradle rib": 7.549516318175218,
+    "WM launcher cradle rib.001": 7.549516318175218,
+    "WM launcher cradle rib.002": 7.549516318175218,
+    "WM missile pod armored shell.001": 7.549516318175218,
+    "WM missile pod ivory rim.001": 7.549516318175218,
+    "WM missile tube backplate.001": 7.549516318175218,
+    "WM rim upper wrap.001": 7.549516318175218,
+    "WM launch tube socket.004": 7.549516318175218,
+    "WM rounded missile tip.004": 7.549516318175218,
+    "WM launch tube socket.005": 7.549516318175218,
+    "WM rounded missile tip.005": 7.549516318175218,
+    "WM launch tube socket.006": 7.549516318175218,
+    "WM rounded missile tip.006": 7.549516318175218,
+    "WM launch tube socket.007": 7.549516318175218,
+    "WM rounded missile tip.007": 7.549516318175218,
+    "WM launcher rear panel seam.001": 7.549516318175218,
+    "WM launcher rear access hatch.001": 7.549516318175218,
+    "WM launcher rear latch.001": 7.549516318175218,
+    "WM launcher hinge socket.002": 7.549516318175218,
+    "WM launcher hinge inset.002": 7.549516318175218,
+    "WM launcher side service recess.002": 7.549516318175218,
+    "WM launcher hinge socket.003": 7.549516318175218,
+    "WM launcher hinge inset.003": 7.549516318175218,
+    "WM launcher side service recess.003": 7.549516318175218,
+    "WM launcher underside shoe.001": 7.549516318175218,
+    "WM launcher foot block.001": 7.549516318175218,
+    "WM launcher upper cradle.001": 7.549516318175218,
+    "WM launcher cradle rib.003": 7.549516318175218,
+    "WM launcher cradle rib.004": 7.549516318175218,
+    "WM launcher cradle rib.005": 7.549516318175218
+  },
+  "translation_max_error_m": 1.430511474609375e-06,
+  "bounds_before_m": [
+    [
+      -27.327335357666016,
+      -28.807466506958008,
+      0.0
+    ],
+    [
+      27.327333450317383,
+      28.807466506958008,
+      34.17231750488281
+    ]
+  ],
+  "bounds_after_m": [
+    [
+      -27.327335357666016,
+      -28.807466506958008,
+      0.0
+    ],
+    [
+      27.327333450317383,
+      28.807466506958008,
+      41.721832275390625
+    ]
+  ],
+  "sockets_m": {
+    "Muzzle_Cannon_L": [
+      17.6986026763916,
+      14.6123685836792,
+      23.358587859007738
+    ],
+    "Muzzle_Cannon_R": [
+      17.6986026763916,
+      -14.6123685836792,
+      23.358587859007738
+    ],
+    "Muzzle_Missile_R": [
+      -7.2916035652160645,
+      -9.321683883666992,
+      38.77283823284807
+    ],
+    "Muzzle_Missile_L": [
+      -7.2916035652160645,
+      9.321683883666992,
+      38.77283823284807
+    ]
+  },
+  "sockets_relative_to_hull_unchanged": true,
+  "art_review": "pending_user_review",
+  "ue_import": "not_performed",
+  "card_generation": "waiting_for_model_approval"
+}

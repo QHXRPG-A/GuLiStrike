@@ -1,0 +1,111 @@
+{
+  "schema": "GuLiStrike.CardArtwork.ModelComic.v9",
+  "date": "2026-09-28",
+  "user_authorization": "Replace UE resources; FireRate/HighSpeed v9 and explicitly chosen MissileDamage v7.",
+  "cards": [
+    {
+      "card": "FireRate",
+      "illustration_version": "v9",
+      "inputs": [
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v9/FireRate.png",
+          "sha256": "c1ed8476ad9777baef8d67d10973bab4b8018d5020e8d4ae3ad23dfbdea714ae"
+        }
+      ],
+      "prompt_file": "ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Production/Prompts/FireRate_Layers.txt",
+      "prompt_sha256": "2f861f2be9ecab379c9c242380a2018496d90f5648841f21c05c96ea9f786945",
+      "atlas": "ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Production/Layers/FireRate_Atlas.png",
+      "atlas_source_output": "C:/Users/a/.codex/generated_images/01a0c4a6-55da-79a3-a89d-4a78cb43dd89/exec-09558bc3-e1e4-4398-a935-b4f6a114adf0.png",
+      "atlas_sha256": "6219f7912329862a4c19e6c6cc80696fe0c8100e9dd1da6cf5c770c8655b9b69",
+      "actual_size": [
+        1254,
+        1254
+      ],
+      "layers": 6,
+      "tile_size": [
+        418,
+        627
+      ],
+      "ue_material": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_ModelComic_v9",
+      "ue_texture": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_Layers_ModelComic_v9"
+    },
+    {
+      "card": "HighSpeed",
+      "illustration_version": "v9",
+      "inputs": [
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v9/HighSpeed.png",
+          "sha256": "aaeca6ab49e00d5cd2fd48f6814063c20a19dcab63712a29b41f998f7ce4075b"
+        }
+      ],
+      "prompt_file": "ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Production/Prompts/HighSpeed_Layers.txt",
+      "prompt_sha256": "6d5a4cece3409a8c8b8129110d831f867f6b917229ee7551955a462dc33b60bc",
+      "atlas": "ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Production/Layers/HighSpeed_Atlas.png",
+      "atlas_source_output": "C:/Users/a/.codex/generated_images/01a0c4a6-55da-79a3-a89d-4a78cb43dd89/exec-f34af832-cb3d-48ac-b26e-3364cdeb23c7.png",
+      "atlas_sha256": "73fa408f61dfb3e4d3c40dc64d91927d2f00c725b19b2f12b286542764887ee0",
+      "actual_size": [
+        1254,
+        1254
+      ],
+      "layers": 6,
+      "tile_size": [
+        418,
+        627
+      ],
+      "ue_material": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_ModelComic_v9",
+      "ue_texture": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_Layers_ModelComic_v9"
+    },
+    {
+      "card": "MissileDamage",
+      "illustration_version": "v7",
+      "inputs": [
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/MissileDamage.png",
+          "sha256": "c1a87913a1d37e352dab381178d1bda2bd3d14e83845643b73afb9076e337d0a"
+        }
+      ],
+      "prompt_file": "ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Production/Prompts/MissileDamage_Layers.txt",
+      "prompt_sha256": "facbb0da794290521a1dfbc029e9b442dba4df2dfe9353b6b58951ba636ecd33",
+      "atlas": "ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Production/Layers/MissileDamage_Atlas.png",
+      "atlas_source_output": "C:/Users/a/.codex/generated_images/01a0c4a6-55da-79a3-a89d-4a78cb43dd89/exec-37f11e79-a7b0-486c-afb6-a1c6a5a8b902.png",
+      "atlas_sha256": "3934c3d3a7fc691292442c449887d705c8943f4746bacece80815bc02395c974",
+      "actual_size": [
+        1254,
+        1254
+      ],
+      "layers": 6,
+      "tile_size": [
+        418,
+        627
+      ],
+      "ue_material": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_ModelComic_v9",
+      "ue_texture": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_MissileDamage_Layers_ModelComic_v9"
+    }
+  ],
+  "source_modification": "Imagegen atlas outputs copied unchanged; source illustrations/prompts retained.",
+  "parameters": {
+    "Layers global depth": 4,
+    "MaximumTilt": 16,
+    "CardAreaMultiplier": 2,
+    "CardThicknessMultiplier": 2,
+    "layer_depths": [
+      0.1,
+      0.04,
+      0,
+      -0.4,
+      -0.75,
+      -1.1
+    ]
+  },
+  "map": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview",
+  "evidence": {
+    "integration": "Inspection/integration.json",
+    "saved_readback": "Inspection/final-readback.json",
+    "backup": "Inspection/map-artwork-before.json",
+    "preview_incident": "Inspection/preview-incident.json"
+  },
+  "gameplay_run": false,
+  "native_compile": false,
+  "assistant_visual_review": "not_performed_per_user_request",
+  "user_visual_acceptance": "pending"
+}

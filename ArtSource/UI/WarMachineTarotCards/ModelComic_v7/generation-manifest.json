@@ -1,0 +1,80 @@
+{
+  "version": "ModelComic_v7",
+  "date": "2026-09-28",
+  "tool": "built-in image_gen.imagegen",
+  "source_model": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel",
+  "assistant_visual_review": "not_performed_per_user_request",
+  "user_review": "pending",
+  "ue_import": "not_performed",
+  "cards": [
+    {
+      "id": "FireRate",
+      "title": "增加射速",
+      "source_output": "C:/Users/a/.codex/generated_images/01a0c4a6-55da-79a3-a89d-4a78cb43dd89/exec-71808856-6ea6-4474-93e2-66731d5dbe2a.png",
+      "output": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/FireRate.png",
+      "sha256": "8f678314fcf462f0f27a5adfd6998a22f8365d5018e5871833280e04dc2c7f38",
+      "bytes": 2142736,
+      "input_images_ordered": [
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/References/FullModel.png",
+          "sha256": "136e2de9e886e157e10fe06512319080100dfac48990e40d9be8d9911d9567b9",
+          "role": "reference image"
+        },
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/References/FireRate_Model.png",
+          "sha256": "61906b3c7f0aa545a21f818e968a193d54b6037cb9660b4acd2a26803e72c2c5",
+          "role": "reference image"
+        }
+      ],
+      "prompt_file": "Prompts/FireRate.txt",
+      "prompt": "用途：战争机器肉鸽能力卡插画，竖版2:3，经典美漫画风。\n输入图1是真实UE战争机器模型的整体截图，只用来约束机械身份、部件数量、配色和装配；输入图2是该能力重点部位的真实模型截图，用来约束局部结构、透视和镜头。依据这两张截图重新绘制插画。\n精确保留模型的橙红/暖白装甲、蓝灰机械、双联侧炮、平行双导弹舱、悬浮盘及支架结构。只画与能力有关的局部，不要求整机出镜。不要把机械改造成类人机器人，不要捏造连接、随意增减武器或改变炮口口径。\n绘画语言：经典美式超级英雄漫画的手绘墨线、粗细分明的轮廓、大块黑影与干净的平涂色块，具有力量和明确的明暗层次。干净视觉图，让它更干净、更清晰。清理背景噪点、随机颗粒、脏纹理、浑浊阴影和过度光效。背景简洁、低噪点、低干扰，只提供空间感，不抢主体。不要纸张做旧、密集网点、满屏排线或塑料3D渲染质感。\n构图适合后续分层视差：机械连接保持完整，主体与背景分离清楚；背景、地面和尾流延伸到画布边缘，保留裁切余量。画面不含文字、数字、卡框、UI、水印。\n禁止项：no grain, no dirty texture, no random speckles, no messy background, no harsh glow.\n\n能力：增加射速。沿用输入图2的侧前方局部镜头，重点表现真实模型的一侧双联炮、炮管、炮口与安装装甲。两根炮管口径一致且平行，两处短促金白色枪口火光准确接在炮口，少量连续弹迹表现密集射击。旁边安排少量近处和远处被击溃的无人部队残骸，其中部分刚爆炸、部分冒烟；残骸和烟柱用简洁可读的形状，不堆成杂乱碎片。射击方向留出空间，炮口不被大光团遮挡。主体结构和相机角度以真实模型截图为准。\n",
+      "transparent_background": false
+    },
+    {
+      "id": "MissileDamage",
+      "title": "增加导弹伤害",
+      "source_output": "C:/Users/a/.codex/generated_images/01a0c4a6-55da-79a3-a89d-4a78cb43dd89/exec-110a9a69-184a-4363-8413-b2f06c8e8fef.png",
+      "output": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/MissileDamage.png",
+      "sha256": "c1a87913a1d37e352dab381178d1bda2bd3d14e83845643b73afb9076e337d0a",
+      "bytes": 1780539,
+      "input_images_ordered": [
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/References/FullModel.png",
+          "sha256": "136e2de9e886e157e10fe06512319080100dfac48990e40d9be8d9911d9567b9",
+          "role": "reference image"
+        },
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/References/MissileDamage_Model.png",
+          "sha256": "5925e8d18c23f55f3ec14921bca6737922d9ccdd27af8d62e509018fa28be6e8",
+          "role": "reference image"
+        }
+      ],
+      "prompt_file": "Prompts/MissileDamage.txt",
+      "prompt": "用途：战争机器肉鸽能力卡插画，竖版2:3，经典美漫画风。\n输入图1是真实UE战争机器模型的整体截图，只用来约束机械身份、部件数量、配色和装配；输入图2是该能力重点部位的真实模型截图，用来约束局部结构、透视和镜头。依据这两张截图重新绘制插画。\n精确保留模型的橙红/暖白装甲、蓝灰机械、双联侧炮、平行双导弹舱、悬浮盘及支架结构。只画与能力有关的局部，不要求整机出镜。不要把机械改造成类人机器人，不要捏造连接、随意增减武器或改变炮口口径。\n绘画语言：经典美式超级英雄漫画的手绘墨线、粗细分明的轮廓、大块黑影与干净的平涂色块，具有力量和明确的明暗层次。干净视觉图，让它更干净、更清晰。清理背景噪点、随机颗粒、脏纹理、浑浊阴影和过度光效。背景简洁、低噪点、低干扰，只提供空间感，不抢主体。不要纸张做旧、密集网点、满屏排线或塑料3D渲染质感。\n构图适合后续分层视差：机械连接保持完整，主体与背景分离清楚；背景、地面和尾流延伸到画布边缘，保留裁切余量。画面不含文字、数字、卡框、UI、水印。\n禁止项：no grain, no dirty texture, no random speckles, no messy background, no harsh glow.\n\n能力：增加导弹伤害。沿用输入图2的仰视镜头，聚焦真实模型背部的平行双导弹舱及支座，保留每舱2×2发射孔、朝前上方的共同发射方向。三枚已经飞离的导弹位于上方天空，另有一枚刚从可见发射孔出膛，起点和尾焰必须对齐该孔；不要让导弹穿过装甲。远景有一处简洁有力的橙红与白金色命中爆炸。用清楚的导弹轮廓、有限尾焰和漫画形状强调威力，保持舱口可读。\n",
+      "transparent_background": false
+    },
+    {
+      "id": "HighSpeed",
+      "title": "极速机动",
+      "source_output": "C:/Users/a/.codex/generated_images/01a0c4a6-55da-79a3-a89d-4a78cb43dd89/exec-db9f4b7a-f4ae-4318-8e1c-86bbe97dc534.png",
+      "output": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/HighSpeed.png",
+      "sha256": "05bf3e65f548d8974010f35c70ef22094d9caae7024b3f5b8f54195833a0d4d4",
+      "bytes": 2036919,
+      "input_images_ordered": [
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/References/FullModel.png",
+          "sha256": "136e2de9e886e157e10fe06512319080100dfac48990e40d9be8d9911d9567b9",
+          "role": "reference image"
+        },
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/References/HighSpeed_Model.png",
+          "sha256": "927efd645130fd464b2411a5c830c1e0542116252acd895f0ae941001c0d5d56",
+          "role": "reference image"
+        }
+      ],
+      "prompt_file": "Prompts/HighSpeed.txt",
+      "prompt": "用途：战争机器肉鸽能力卡插画，竖版2:3，经典美漫画风。\n输入图1是真实UE战争机器模型的整体截图，只用来约束机械身份、部件数量、配色和装配；输入图2是该能力重点部位的真实模型截图，用来约束局部结构、透视和镜头。依据这两张截图重新绘制插画。\n精确保留模型的橙红/暖白装甲、蓝灰机械、双联侧炮、平行双导弹舱、悬浮盘及支架结构。只画与能力有关的局部，不要求整机出镜。不要把机械改造成类人机器人，不要捏造连接、随意增减武器或改变炮口口径。\n绘画语言：经典美式超级英雄漫画的手绘墨线、粗细分明的轮廓、大块黑影与干净的平涂色块，具有力量和明确的明暗层次。干净视觉图，让它更干净、更清晰。清理背景噪点、随机颗粒、脏纹理、浑浊阴影和过度光效。背景简洁、低噪点、低干扰，只提供空间感，不抢主体。不要纸张做旧、密集网点、满屏排线或塑料3D渲染质感。\n构图适合后续分层视差：机械连接保持完整，主体与背景分离清楚；背景、地面和尾流延伸到画布边缘，保留裁切余量。画面不含文字、数字、卡框、UI、水印。\n禁止项：no grain, no dirty texture, no random speckles, no messy background, no harsh glow.\n\n能力：极速机动，效果为增加移动速度。沿用输入图2的低位侧前方镜头，聚焦真实模型最近的一只完整悬浮盘、盘底推进区域，以及连续连接到机身的真实悬挂支架。完整展示主盘外圈，画布四周为主盘留至少10%的安全余量；不能截断盘缘、把支架画成散开的零件或捏造孤立飞盘。青蓝与少量紫色尾流从实际盘底向后延伸，干净的地面速度线形成前冲动势。背景只保留稀疏工业剪影与简洁地面。保持真实机械比例和装配。\n",
+      "transparent_background": false
+    }
+  ]
+}

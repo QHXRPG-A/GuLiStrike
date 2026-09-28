@@ -1,0 +1,33 @@
+{
+  "date": "2026-09-28",
+  "status": "failed",
+  "stage": "optional_static_editor_preview_after_successful_asset_and_map_save",
+  "first_error_utc": "2026-09-28 06:35:44",
+  "assertion": "WindowsWindow.cpp:220 Window Creation Failed (Error Code 87)",
+  "callstack_path": [
+    "Python set_editor_property(target_gamma)",
+    "UTextureRenderTarget2D::PostEditChangeProperty",
+    "FMessageDialog::Open",
+    "FSlateApplication::AddModalWindow",
+    "Slate post-tick callback reentry",
+    "FWindowsWindow::Initialize"
+  ],
+  "cause": "The 2100 x 900 render target exceeded UE's 2048-pixel modal warning threshold. Editing target_gamma inside a Slate tick callback caused nested modal callbacks and window creation failure.",
+  "source_evidence": "D:/UnrealEngine-5.7/Engine/Source/Runtime/Engine/Private/TextureRenderTarget2D.cpp:224-236",
+  "material_save_result": "Inspection/integration.json success=true, map.saved=true before preview",
+  "partial_files": ["three-cards-16x9.png", "three-cards-16x10.png"],
+  "partial_preview_limitations": [
+    "No assistant image inspection per user instruction.",
+    "UMG text requires runtime and is absent from these editor captures.",
+    "21:9, tilt previews and capture cleanup were not completed."
+  ],
+  "retired_script": "Scripts/Cards/preview_modelcomic_v9_editor.py",
+  "mitigation": "Script now raises before any mutation; no retry of this preview route.",
+  "recovery": "User skipped recovery-package dialog. Editor reloaded the saved review map; all three new material bindings, shader compilation, 14 relevant packages and text rows were verified successfully.",
+  "post_recovery_evidence": "Inspection/final-readback.json",
+  "temporary_actors_after_disk_reload": 0,
+  "original_map_actor_count": 4,
+  "gameplay_run": false,
+  "native_compile": false,
+  "visual_acceptance": "pending_user"
+}

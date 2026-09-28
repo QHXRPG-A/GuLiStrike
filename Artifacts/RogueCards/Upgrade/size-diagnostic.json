@@ -1,0 +1,89 @@
+{
+  "pid": 104572,
+  "pie": false,
+  "mesh": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel",
+  "mesh_bounds": {
+    "min": [
+      -3347.9111328125,
+      -3351.830078125,
+      -309.320068359375
+    ],
+    "max": [
+      2859.3681640625,
+      2897.6900634765625,
+      3432.577880859375
+    ]
+  },
+  "soldier": {
+    "Name": "WM01",
+    "Id": 2,
+    "Note": "WM01 第二兵种；首版沿用调试数值，尚未平衡",
+    "MovementSpeedCmPerSecond": 720,
+    "MaxHealth": 300.5,
+    "ModelAsset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel",
+    "Defense": 0,
+    "ActorClass": "None",
+    "PresentationClass": "None",
+    "PresentationScale": 0.2,
+    "DisplayName": "战争机器",
+    "ModelWidthMeters": 12.5,
+    "MinAvoidanceDistanceMeters": 2.5,
+    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass"
+  },
+  "cards": [
+    {
+      "Name": "WM01_FireRate_Lv1",
+      "Id": "01.01",
+      "Note": "己方本局所有现有及后续战争机器：增加射速；独立来源逐次乘算。",
+      "Type": 1,
+      "TextIds": [
+        "Card.WM01.FireRate.Title",
+        "Card.WM01.FireRate.Description"
+      ],
+      "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardFireRateEffect",
+      "UnitTypeId": 2,
+      "BonusPercent": 0.2,
+      "FrontMaterial": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_ModelComic_v9.MI_FireRate_ModelComic_v9",
+      "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+      "UpgradeVfxScale": 1,
+      "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)"
+    },
+    {
+      "Name": "WM01_MoveSpeed_Lv1",
+      "Id": "02.01",
+      "Note": "己方本局所有现有及后续战争机器：极速机动；独立来源逐次乘算。",
+      "Type": 1,
+      "TextIds": [
+        "Card.WM01.HighSpeed.Title",
+        "Card.WM01.HighSpeed.Description"
+      ],
+      "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardMoveSpeedEffect",
+      "UnitTypeId": 2,
+      "BonusPercent": 0.5,
+      "FrontMaterial": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_ModelComic_v9.MI_HighSpeed_ModelComic_v9",
+      "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+      "UpgradeVfxScale": 1,
+      "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)"
+    },
+    {
+      "Name": "WM01_MissileDamage_Lv1",
+      "Id": "03.01",
+      "Note": "己方本局所有现有及后续战争机器：增加导弹伤害；独立来源逐次乘算。",
+      "Type": 1,
+      "TextIds": [
+        "Card.WM01.MissileDamage.Title",
+        "Card.WM01.MissileDamage.Description"
+      ],
+      "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardMissileDamageEffect",
+      "UnitTypeId": 2,
+      "BonusPercent": 0.2,
+      "FrontMaterial": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_ModelComic_v9.MI_MissileDamage_ModelComic_v9",
+      "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+      "UpgradeVfxScale": 1,
+      "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)"
+    }
+  ],
+  "world": null,
+  "runtime_components": [],
+  "controllers": []
+}

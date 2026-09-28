@@ -60,6 +60,13 @@ class GULISTRIKE_API UGuLiCommanderNetSyncComponent : public UGuLiPlayerNetSyncC
 
 public:
 	UGuLiCommanderNetSyncComponent();
+	UFUNCTION(Server, Reliable) void ServerRequestRogueCards(FGuid Request);
+	UFUNCTION(Server, Reliable) void ServerConfirmRogueCard(FGuid Session, const FString& CardId);
+	UFUNCTION(Server, Reliable) void ServerCancelRogueCards(FGuid Session);
+	/** Cosmetic readiness only. The server requires an already committed, owned session. */
+	UFUNCTION(Server, Reliable) void ServerRogueCardPresentationClosed(FGuid Session);
+	UFUNCTION(Client, Reliable) void ClientRogueCardOffer(FGuid Request, FGuid Session, uint32 Epoch, const TArray<FString>& Cards, const FString& Error);
+	UFUNCTION(Client, Reliable) void ClientRogueCardResult(FGuid Session, bool bSuccess, const FString& Error);
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void TickComponent(

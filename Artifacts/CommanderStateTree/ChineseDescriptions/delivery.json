@@ -1,0 +1,407 @@
+{
+  "success": true,
+  "assets": [
+    {
+      "asset": "ST_CommanderMiner",
+      "backup": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\ChineseDescriptions\\Backup\\ST_CommanderMiner.uasset",
+      "backup_size": 877340,
+      "edited": [
+        {
+          "path": "CommanderOrders",
+          "previous": "Asset-authored hierarchy v2. Persistent phases; local recovery. Root reselection is reserved for control or order identity changes.",
+          "description": "统一处理控制打断、任务选择与执行。持续动作留在业务阶段；控制或命令身份变化时才重新选择根分支。"
+        },
+        {
+          "path": "CommanderOrders/Control",
+          "previous": "",
+          "description": "按安全退出、持续停止、替换移动的优先顺序处理公共打断，完成后回到任务管理层。"
+        },
+        {
+          "path": "CommanderOrders/Control/WaitForSafeExit",
+          "previous": "",
+          "description": "取消命令需要安全退出时，在此等待退出回执；完成后重新选择任务。"
+        },
+        {
+          "path": "CommanderOrders/Control/Stopped",
+          "previous": "",
+          "description": "停止命令生效后持续停留，不自动恢复旧任务；新的控制变化会触发重新选择。"
+        },
+        {
+          "path": "CommanderOrders/Control/PrepareReplacementMove",
+          "previous": "",
+          "description": "提交替换移动请求；新路径被接受前保留旧移动，处理完后返回任务管理层。"
+        },
+        {
+          "path": "CommanderOrders/SelectOrder",
+          "previous": "",
+          "description": "没有活动任务时优先领取人工队列，再检查可用的自动任务；都不可用则保持空闲。"
+        },
+        {
+          "path": "CommanderOrders/SelectOrder/TakeManualOrder",
+          "previous": "",
+          "description": "领取队列中的人工命令并绑定当前执行身份；领取成功后转入执行层。"
+        },
+        {
+          "path": "CommanderOrders/SelectOrder/TakeAutomaticOrder",
+          "previous": "",
+          "description": "在人工队列没有优先命令时领取已就绪的自动任务，然后转入执行层。"
+        },
+        {
+          "path": "CommanderOrders/SelectOrder/Idle",
+          "previous": "",
+          "description": "暂时无任务可领时持续等待；人工队列或自动资格就绪后重新选择。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder",
+          "previous": "",
+          "description": "执行当前活动命令，选择启动、手动移动或本兵种业务分支；暂停和终态收尾在本层处理。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/FinishOrder",
+          "previous": "",
+          "description": "观察已结束任务并统一收尾：释放执行资格、记录结果及办理队列交接，避免重复收尾。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/Suspended",
+          "previous": "",
+          "description": "外部控制暂停期间保留当前任务和已有进度；解除暂停后回到合适的执行阶段。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/StartOrder",
+          "previous": "",
+          "description": "提交当前任务的启动动作；收到有效回执后进入相应移动或业务阶段。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ManualMove",
+          "previous": "",
+          "description": "持续观察人工移动及路径结果；停止或替换命令由公共控制层优先接管。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ManualTransit",
+          "previous": "",
+          "description": "持续观察工程车运输状态；需要停止时先由公共控制层安全退出。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob",
+          "previous": "Mining and standalone return share ReturnCargo. Local slot, factory and point recovery preserve cargo; only order completion returns to order selection.",
+          "description": "矿车资源任务的业务分支。采矿循环与独立返厂共用返货阶段，矿位、工厂和卸货点失败在此恢复。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/AcquireResource",
+          "previous": "",
+          "description": "采矿分支依次处理矿位恢复、选位、前往和持续采集，普通矿位失败留在本分支。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/AcquireResource/RecoverMiningPosition",
+          "previous": "",
+          "description": "矿位失效或移动失败时重新定位矿位，再回到资源任务选择。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/AcquireResource/SelectMiningPosition",
+          "previous": "",
+          "description": "按现有矿簇规则选择可用矿位；可直接采集则进入采集，否则前往目标矿位。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/AcquireResource/TravelToMine",
+          "previous": "",
+          "description": "持续观察前往矿位的路径和到达结果；请求已接受后不重复提交寻路。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/AcquireResource/ExtractResource",
+          "previous": "",
+          "description": "在矿位持续采集并保留进度；装满或矿点耗尽后进入共用返货分支。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/ReturnCargo",
+          "previous": "",
+          "description": "采矿循环与独立返厂共用选厂、返厂和卸货流程；卸货点或工厂失效先在此恢复。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/ReturnCargo/SelectFactory",
+          "previous": "",
+          "description": "根据命令和当前货物选择可用工厂；工厂失效或不可达时按原规则重新选择。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/ReturnCargo/TravelToFactory",
+          "previous": "",
+          "description": "持续返回目标工厂；卸货点不可达时换点，工厂失效时重新选厂。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/ReturnCargo/UnloadCargo",
+          "previous": "",
+          "description": "在工厂卸货点持续等待卸货和资源结算完成，随后交给采卸循环处理。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/ReturnCargo/RecoverUnloadPoint",
+          "previous": "",
+          "description": "当前卸货点失败后保留货物，换用下一可用卸货点并重新返厂。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/CycleHandoff",
+          "previous": "",
+          "description": "卸货完成后按当前命令决定继续采矿循环，或结束并交接下一任务。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/PrepareAutomaticRetry",
+          "previous": "",
+          "description": "自动资源任务失败时沿用原有重试规则，准备在既定时机再次尝试。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/FailManualResourceOrder",
+          "previous": "",
+          "description": "人工资源任务失败时报告失败并进入统一收尾，不自动无限重试。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ResourceJob/WaitForResourceRetry",
+          "previous": "",
+          "description": "自动任务尚未到原有重试时机时持续等待；条件满足后重新进入资源业务分支。"
+        }
+      ],
+      "preserved_chinese": [],
+      "state_count": 30
+    },
+    {
+      "asset": "ST_CommanderBuilder",
+      "backup": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\ChineseDescriptions\\Backup\\ST_CommanderBuilder.uasset",
+      "backup_size": 411550,
+      "edited": [
+        {
+          "path": "CommanderOrders",
+          "previous": "Asset-authored hierarchy v2. Persistent phases; local recovery. Root reselection is reserved for control or order identity changes.",
+          "description": "统一处理控制打断、任务选择与执行。持续动作留在业务阶段；控制或命令身份变化时才重新选择根分支。"
+        },
+        {
+          "path": "CommanderOrders/Control",
+          "previous": "",
+          "description": "按安全退出、持续停止、替换移动的优先顺序处理公共打断，完成后回到任务管理层。"
+        },
+        {
+          "path": "CommanderOrders/Control/WaitForSafeExit",
+          "previous": "",
+          "description": "取消命令需要安全退出时，在此等待退出回执；完成后重新选择任务。"
+        },
+        {
+          "path": "CommanderOrders/Control/Stopped",
+          "previous": "",
+          "description": "停止命令生效后持续停留，不自动恢复旧任务；新的控制变化会触发重新选择。"
+        },
+        {
+          "path": "CommanderOrders/Control/PrepareReplacementMove",
+          "previous": "",
+          "description": "提交替换移动请求；新路径被接受前保留旧移动，处理完后返回任务管理层。"
+        },
+        {
+          "path": "CommanderOrders/SelectOrder",
+          "previous": "",
+          "description": "没有活动任务时优先领取人工队列，再检查可用的自动任务；都不可用则保持空闲。"
+        },
+        {
+          "path": "CommanderOrders/SelectOrder/TakeManualOrder",
+          "previous": "",
+          "description": "领取队列中的人工命令并绑定当前执行身份；领取成功后转入执行层。"
+        },
+        {
+          "path": "CommanderOrders/SelectOrder/TakeAutomaticOrder",
+          "previous": "",
+          "description": "在人工队列没有优先命令时领取已就绪的自动任务，然后转入执行层。"
+        },
+        {
+          "path": "CommanderOrders/SelectOrder/Idle",
+          "previous": "",
+          "description": "暂时无任务可领时持续等待；人工队列或自动资格就绪后重新选择。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder",
+          "previous": "",
+          "description": "执行当前活动命令，选择启动、手动移动或本兵种业务分支；暂停和终态收尾在本层处理。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/FinishOrder",
+          "previous": "",
+          "description": "观察已结束任务并统一收尾：释放执行资格、记录结果及办理队列交接，避免重复收尾。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/Suspended",
+          "previous": "",
+          "description": "外部控制暂停期间保留当前任务和已有进度；解除暂停后回到合适的执行阶段。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/StartOrder",
+          "previous": "",
+          "description": "提交当前任务的启动动作；收到有效回执后进入相应移动或业务阶段。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ManualMove",
+          "previous": "",
+          "description": "持续观察人工移动及路径结果；停止或替换命令由公共控制层优先接管。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ManualTransit",
+          "previous": "",
+          "description": "持续观察工程车运输状态；需要停止时先由公共控制层安全退出。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ConstructionJob",
+          "previous": "Intent during travel; atomic occupancy only on arrival. Rejected positions keep existing expiry. Automatic local replacement remains disabled once construction begins.",
+          "description": "施工业务分支包含选目的地、移动、抵达抢位、持续施工和失败退单。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+          "previous": "",
+          "description": "工地失效或施工任务失败时保留排除记录并退单，再交给任务收尾或取单层。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ConstructionJob/RejectConstructionPosition",
+          "previous": "",
+          "description": "目标位置失效或抢位失败后记录原有排除期，再退单重新选择。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite",
+          "previous": "",
+          "description": "施工准备依次选目的地、持续前往、抵达后抢占施工位；移动途中不占位。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite/SelectConstructionDestination",
+          "previous": "",
+          "description": "按本地优先规则选择工地和目标位置，此时只确定前往意图，尚不占用施工位。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite/TravelToConstructionSite",
+          "previous": "",
+          "description": "持续观察前往工地的路径；途中可按原规则换单，开始施工后不自动换单。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite/ClaimPositionOnArrival",
+          "previous": "",
+          "description": "接近目标到100厘米内时原子抢占施工位；抢位结果决定施工或退单。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ConstructionJob/ConstructBuilding",
+          "previous": "",
+          "description": "占有施工位后持续施工并保留进度；完工后收尾，工地失效时退单。"
+        }
+      ],
+      "preserved_chinese": [],
+      "state_count": 23
+    },
+    {
+      "asset": "ST_CommanderMass",
+      "backup": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\ChineseDescriptions\\Backup\\ST_CommanderMass.uasset",
+      "backup_size": 365179,
+      "edited": [
+        {
+          "path": "CommanderOrders",
+          "previous": "Asset-authored hierarchy v2. Persistent phases; local recovery. Root reselection is reserved for control or order identity changes.",
+          "description": "统一处理控制打断、任务选择与执行。持续动作留在业务阶段；控制或命令身份变化时才重新选择根分支。"
+        },
+        {
+          "path": "CommanderOrders/Control",
+          "previous": "",
+          "description": "按安全退出、持续停止、替换移动的优先顺序处理公共打断，完成后回到任务管理层。"
+        },
+        {
+          "path": "CommanderOrders/Control/WaitForSafeExit",
+          "previous": "",
+          "description": "取消命令需要安全退出时，在此等待退出回执；完成后重新选择任务。"
+        },
+        {
+          "path": "CommanderOrders/Control/Stopped",
+          "previous": "",
+          "description": "停止命令生效后持续停留，不自动恢复旧任务；新的控制变化会触发重新选择。"
+        },
+        {
+          "path": "CommanderOrders/Control/PrepareReplacementMove",
+          "previous": "",
+          "description": "提交替换移动请求；新路径被接受前保留旧移动，处理完后返回任务管理层。"
+        },
+        {
+          "path": "CommanderOrders/SelectOrder",
+          "previous": "",
+          "description": "没有活动任务时优先领取人工队列，再检查可用的自动任务；都不可用则保持空闲。"
+        },
+        {
+          "path": "CommanderOrders/SelectOrder/TakeManualOrder",
+          "previous": "",
+          "description": "领取队列中的人工命令并绑定当前执行身份；领取成功后转入执行层。"
+        },
+        {
+          "path": "CommanderOrders/SelectOrder/TakeAutomaticOrder",
+          "previous": "",
+          "description": "在人工队列没有优先命令时领取已就绪的自动任务，然后转入执行层。"
+        },
+        {
+          "path": "CommanderOrders/SelectOrder/Idle",
+          "previous": "",
+          "description": "暂时无任务可领时持续等待；人工队列或自动资格就绪后重新选择。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder",
+          "previous": "",
+          "description": "执行当前活动命令，选择启动、手动移动或本兵种业务分支；暂停和终态收尾在本层处理。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/FinishOrder",
+          "previous": "",
+          "description": "观察已结束任务并统一收尾：释放执行资格、记录结果及办理队列交接，避免重复收尾。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/Suspended",
+          "previous": "",
+          "description": "外部控制暂停期间保留当前任务和已有进度；解除暂停后回到合适的执行阶段。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/StartOrder",
+          "previous": "",
+          "description": "提交当前任务的启动动作；收到有效回执后进入相应移动或业务阶段。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/ManualMove",
+          "previous": "",
+          "description": "持续观察人工移动及路径结果；停止或替换命令由公共控制层优先接管。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance",
+          "previous": "",
+          "description": "据点业务分支持续处理选目标、推进、占领、阶段交接、不可达恢复和无目标等待。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/StrongholdStageHandoff",
+          "previous": "",
+          "description": "当前据点阶段完成后办理交接；按原规则继续下一据点或由人工队列接管。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/RejectUnreachableStronghold",
+          "previous": "",
+          "description": "当前据点不可达时排除失败目标，然后在本业务分支重新选择。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/SelectStronghold",
+          "previous": "",
+          "description": "按现有拓扑规则选择可推进据点；找到目标进入行军，暂无目标则限频等待。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/AdvanceToStronghold",
+          "previous": "",
+          "description": "持续观察前往据点的行军和抵达结果；共享小组阶段变化时同步切换。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/CaptureStronghold",
+          "previous": "",
+          "description": "保持占领阶段持续运行，直到出现实际占领结果，再转入阶段交接。"
+        },
+        {
+          "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/WaitForStronghold",
+          "previous": "",
+          "description": "暂无合适据点时沿用原有半秒节拍等待，再尝试选择目标。"
+        }
+      ],
+      "preserved_chinese": [],
+      "state_count": 21
+    }
+  ],
+  "gameplay_started": false,
+  "edited_count": 74,
+  "preserved_chinese_count": 0,
+  "graph_unchanged": true,
+  "compiled_and_saved": true
+}

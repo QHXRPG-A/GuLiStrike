@@ -1,0 +1,65 @@
+{
+  "version": "WarMachine_LegClevis_v2",
+  "date": "2026-09-28",
+  "baseline_model": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_HubSeat_v1\\WarMachine_HubSeat_Editable.blend",
+  "user_feedback_image": "References/User_BeamJoint_Feedback.png",
+  "user_approval": "pending",
+  "assistant_model_visual_review": {
+    "status": "completed_for_connection_scope",
+    "images": [
+      "After_Hero.png",
+      "After_Connection_Oblique.png",
+      "After_Connection_Side.png",
+      "After_Connection_Top.png",
+      "Connection_Before_After.png"
+    ],
+    "findings": "Hub seats contact their original caps; the tapered beam is visibly held between drilled clevis lugs with exposed cross-pin caps. Four copies share one authored construction. Whole model proportions and disc geometry retained.",
+    "boundary": "Static modeling review, not animation, UE or card artwork acceptance"
+  },
+  "technical_validation": "passed",
+  "ue_import": "not_performed",
+  "imagegen_calls_this_model_revision": 0,
+  "card_redraw": "waiting_for_explicit_model_approval",
+  "locked_prompts": [
+    {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v7\\Prompts\\FireRate.txt",
+      "sha256": "1bba0df596833d2f867dae6817e8974174b00ce9e1cdb9d698165b5a599310f4",
+      "unchanged": true
+    },
+    {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v7\\Prompts\\HighSpeed.txt",
+      "sha256": "c679b2e69f6277560621ddee7d1f8e8689498b984d9727856cfcb7280b724146",
+      "unchanged": true
+    }
+  ],
+  "files": [
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LegClevis_v2\\WarMachine_LegClevis_Editable.blend",
+      "sha256": "732641b0b7ff70f3f3a30992a09f273404627fedfddd8645a38de8c939596a56"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LegClevis_v2\\WarMachine_LegClevis_Review.blend",
+      "sha256": "97b857b58be398065ffc73843d3ff8baf94bb855d852fd8aada802aae1e63903"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LegClevis_v2\\Previews\\After_Hero.png",
+      "sha256": "3843d5a41b5dd904d7733e1cbe608cc55b8038183a036e899be0e8f546f7f0c7"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LegClevis_v2\\Previews\\After_Connection_Oblique.png",
+      "sha256": "0652463cc59738bf22088e2f2b3ed3322159afc92661cb2cb0d09443c907e1b1"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LegClevis_v2\\Previews\\After_Connection_Side.png",
+      "sha256": "d2983da38ffc19644ec3cbd9dd6c35ed0cfae00164790c138d5649eed2f1c04b"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LegClevis_v2\\Previews\\After_Connection_Top.png",
+      "sha256": "070ebce320126ad6664b7014e760220771aa8659cc497ab4efdc48dea0ac4b5f"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LegClevis_v2\\Previews\\Connection_Before_After.png",
+      "sha256": "2383bb7ee5b8e508ad27f00721060bce3a28baba57e61564656c14068b05eb38"
+    }
+  ]
+}

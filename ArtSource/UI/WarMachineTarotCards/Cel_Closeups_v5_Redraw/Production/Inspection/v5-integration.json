@@ -1,0 +1,296 @@
+{
+  "success": true,
+  "textures": [
+    {
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_CelCardFrame_Redraw_v5.T_CelCardFrame_Redraw_v5",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v5_Redraw\\Production\\EmptyCardFrame.png",
+      "size": [
+        1024,
+        1536
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_Layers_Redraw_v5.T_FireRate_Layers_Redraw_v5",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v5_Redraw\\Production\\Layers\\Corrected\\FireRate_Atlas.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_MissileDamage_Layers_Redraw_v5.T_MissileDamage_Layers_Redraw_v5",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v5_Redraw\\Production\\Layers\\MissileDamage_Atlas.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_Layers_Redraw_v5.T_HighSpeed_Layers_Redraw_v5",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v5_Redraw\\Production\\Layers\\Corrected\\HighSpeed_Atlas.png",
+      "size": [
+        1254,
+        1254
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "card": "FireRate",
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_Redraw_v5.MI_FireRate_Redraw_v5",
+      "frame": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_UI_Redraw_v5.MI_FireRate_UI_Redraw_v5",
+      "depth": 2.0,
+      "depths": [
+        0.0,
+        -0.16,
+        -0.16,
+        -0.45,
+        -0.75,
+        -1.1
+      ],
+      "layouts": {
+        "1": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "2": [
+          [
+            0.0,
+            -0.065
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "3": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "4": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "5": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "6": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            1.104,
+            0.858
+          ]
+        ]
+      }
+    },
+    {
+      "card": "MissileDamage",
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_Redraw_v5.MI_MissileDamage_Redraw_v5",
+      "frame": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_UI_Redraw_v5.MI_MissileDamage_UI_Redraw_v5",
+      "depth": 2.0,
+      "depths": [
+        0.0,
+        -0.1,
+        -0.25,
+        -0.45,
+        -0.75,
+        -1.1
+      ],
+      "layouts": {
+        "1": [
+          [
+            -0.36,
+            -0.13
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "2": [
+          [
+            -0.1,
+            -0.1
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "3": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "4": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "5": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "6": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            1.104,
+            0.858
+          ]
+        ]
+      }
+    },
+    {
+      "card": "HighSpeed",
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_Redraw_v5.MI_HighSpeed_Redraw_v5",
+      "frame": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_UI_Redraw_v5.MI_HighSpeed_UI_Redraw_v5",
+      "depth": 2.0,
+      "depths": [
+        0.0,
+        -0.16,
+        -0.16,
+        -0.45,
+        -0.75,
+        -1.1
+      ],
+      "layouts": {
+        "1": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "2": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "3": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "4": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "5": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            0.92,
+            0.715
+          ]
+        ],
+        "6": [
+          [
+            0.0,
+            -0.0825
+          ],
+          [
+            1.104,
+            0.858
+          ]
+        ]
+      }
+    }
+  ],
+  "previous_fronts": [
+    "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_Redraw_v5.MI_FireRate_Redraw_v5",
+    "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_Redraw_v5.MI_MissileDamage_Redraw_v5",
+    "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_Redraw_v5.MI_HighSpeed_Redraw_v5"
+  ],
+  "map": {
+    "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview",
+    "saved": true,
+    "actor": "WarMachine_CardDirector",
+    "fronts": [
+      "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_Redraw_v5.MI_FireRate_Redraw_v5",
+      "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_Redraw_v5.MI_MissileDamage_Redraw_v5",
+      "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_Redraw_v5.MI_HighSpeed_Redraw_v5"
+    ],
+    "frames": [
+      "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_UI_Redraw_v5.MI_FireRate_UI_Redraw_v5",
+      "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_UI_Redraw_v5.MI_MissileDamage_UI_Redraw_v5",
+      "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_UI_Redraw_v5.MI_HighSpeed_UI_Redraw_v5"
+    ],
+    "area": 2.0,
+    "thickness": 2.0,
+    "tilt": 12.0,
+    "text_table": "/Game/GuLiStrike/Cards/WarMachineTarot/Data/DT_CardText.DT_CardText",
+    "text_rows": [
+      "WarMachine_FireRate",
+      "WarMachine_MissileDamage",
+      "WarMachine_HighSpeed"
+    ]
+  }
+}

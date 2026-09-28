@@ -1,0 +1,50 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "read_only": true,
+    "assets": [
+      {
+        "asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
+        "hierarchy_version": "2",
+        "state_count": 30,
+        "max_depth": 4,
+        "persistent_task_count": 23,
+        "compiled_matches_editor": true,
+        "dirty": false,
+        "schema_properties": {
+          "Policy": "(Behavior=Mining,DisplayName=\"采矿\",bAutoActivate=True,Lifetime=Persistent)",
+          "ContextActorClass": "/Script/CoreUObject.Class'/Script/Engine.Actor'",
+          "ScheduledTickPolicy": "Denied"
+        }
+      },
+      {
+        "asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder",
+        "hierarchy_version": "2",
+        "state_count": 23,
+        "max_depth": 4,
+        "persistent_task_count": 17,
+        "compiled_matches_editor": true,
+        "dirty": false,
+        "schema_properties": {
+          "Policy": "(Behavior=Construction,DisplayName=\"建造\",bAutoActivate=True,Lifetime=Persistent)",
+          "ContextActorClass": "/Script/CoreUObject.Class'/Script/Engine.Actor'",
+          "ScheduledTickPolicy": "Denied"
+        }
+      },
+      {
+        "asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+        "hierarchy_version": "2",
+        "state_count": 21,
+        "max_depth": 3,
+        "persistent_task_count": 16,
+        "compiled_matches_editor": true,
+        "dirty": false,
+        "schema_properties": {
+          "Policy": "(Behavior=StrongholdAdvance,DisplayName=\"据点推进\",bAutoActivate=True,Lifetime=InitialOnce)"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "source": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\HierarchyV2\\assets-readback.json",
+  "source_sha256": "5b0d9bf1ddd3145cae7056db7343d6455579930733ca5c20002f17e0e6c63b71",
+  "sheets": [
+    "Overview",
+    "Miner",
+    "Miner-Transitions",
+    "Builder",
+    "Builder-Transitions",
+    "Mass",
+    "Mass-Transitions"
+  ],
+  "source_kind": "actual_ue_assets",
+  "cli_executed": true,
+  "final_file": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\HierarchyV2\\GuLiStrike_StateTree_HierarchyV2.xmind",
+  "final_skeleton": "OrgChart-1",
+  "final_structure_class": "org-chart-down",
+  "validated": true,
+  "validation_errors": 0,
+  "validation_warnings": 0,
+  "credits_consumed": 0,
+  "sheet_count": 7,
+  "asset_checks": [
+    {
+      "asset": "ST_CommanderMiner",
+      "all_state_ids_present": true,
+      "hierarchy_matches": true,
+      "all_transition_ids_present": true,
+      "state_count": 30,
+      "transition_count": 71,
+      "continuous_leaves": 10
+    },
+    {
+      "asset": "ST_CommanderBuilder",
+      "all_state_ids_present": true,
+      "hierarchy_matches": true,
+      "all_transition_ids_present": true,
+      "state_count": 23,
+      "transition_count": 39,
+      "continuous_leaves": 8
+    },
+    {
+      "asset": "ST_CommanderMass",
+      "all_state_ids_present": true,
+      "hierarchy_matches": true,
+      "all_transition_ids_present": true,
+      "state_count": 21,
+      "transition_count": 32,
+      "continuous_leaves": 7
+    }
+  ],
+  "scratch_drafts_removed": true
+}

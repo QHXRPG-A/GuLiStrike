@@ -1,0 +1,163 @@
+{
+  "source_count": 14,
+  "source_mismatches": [],
+  "engine_build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+  "project_build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+  "source_diff_check_exit": 0,
+  "source_diff_check_output": "warning: in the working copy of 'Source/GuLiStrike/Commander/Framework/GuLiCommanderGameState.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Commander/Framework/GuLiCommanderGameState.h', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.h', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.cpp', LF will be replaced by CRLF the next time Git touches it\n",
+  "bullet_summary": {
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "gameplay_read_only": true,
+    "camera_only_temporary_change": true,
+    "measurement": "Native Niagara CPU upload arrays, not GPU particle readback",
+    "frames": 235,
+    "visible_array_samples": 702,
+    "unmatched_array_samples": 86,
+    "focus_location": [
+      -62414.356848638185,
+      -3191.4892030195333,
+      -1548.866559107049
+    ],
+    "error": null,
+    "camera_restored": true,
+    "original_camera_pivot": [
+      -76122.66481089288,
+      2620.5307712631875,
+      -1435.7320556640625
+    ],
+    "duration_seconds": 15.063000000023749,
+    "counters": "(ReceivedShots=3750,WrittenShots=0,DroppedShots=0,ReceivedStates=20735,RejectedStates=0,BurstsPlayed=0,MachineGunImpactsPlayed=135,SynthesizedGunShots=0,ComponentCount=9,LaserActive=3,LaserCapacity=1024,LaserVisible=3,LastUpdateMilliseconds=0.087800,UpgradeActive=0,UpgradeVisible=0,UpgradeComponents=0,UpgradeVisibleParticles=0,UpgradeUpdateMilliseconds=0.000000)"
+  },
+  "slope_summary": {
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "fixture": {
+      "units": [
+        {
+          "id": 670,
+          "x": -17740,
+          "y": 14340,
+          "z": -1597.9394960832954,
+          "attack_rate": 2,
+          "move_speed": 5467.5
+        }
+      ],
+      "created": 1,
+      "restored_unit_cap": 10000
+    },
+    "input_path": "Existing development adapter -> normal ordered selection/task RPC channel",
+    "selected_ids": [
+      670
+    ],
+    "diagnostic_cvar_restored": 0,
+    "error": null,
+    "duration": 5.030999999959022
+  },
+  "slope_start": {
+    "time": 380.1151505410671,
+    "sim_tick": 3720,
+    "id": 670,
+    "team": 1,
+    "unit_type": 2,
+    "alive": true,
+    "can_act": true,
+    "order": 0,
+    "revision": 1,
+    "task_version": 0,
+    "automatic": false,
+    "nav_state": 0,
+    "budget_pending": false,
+    "no_progress": 0,
+    "radius": 625,
+    "nav_repair_pending": false,
+    "position": [
+      -17740,
+      14340,
+      -1597.9394960832954
+    ],
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "legal_position": [
+      -17740,
+      14340,
+      -1597.9394960832954
+    ],
+    "command": 0,
+    "accepted_at": 0,
+    "direction_at": 0,
+    "displacement_at": 0,
+    "movement_target": [
+      0,
+      0,
+      0
+    ],
+    "waypoint": [
+      0,
+      0,
+      0
+    ],
+    "has_dock": false,
+    "route": 0,
+    "hex_points": 0,
+    "slot_pitch": 0,
+    "slot_members": 0,
+    "slot_assignments": 0
+  },
+  "slope_end": {
+    "time": 385.02749014273286,
+    "sim_tick": 3769,
+    "id": 670,
+    "team": 1,
+    "unit_type": 2,
+    "alive": true,
+    "can_act": true,
+    "order": 0,
+    "revision": 6,
+    "task_version": 2,
+    "automatic": false,
+    "nav_state": 0,
+    "budget_pending": false,
+    "no_progress": 0,
+    "radius": 625,
+    "nav_repair_pending": false,
+    "position": [
+      -8999.999999473477,
+      14499.999998839783,
+      -428.73131168215497
+    ],
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "legal_position": [
+      -8999.999999473477,
+      14499.999998839783,
+      -428.73131168215497
+    ],
+    "command": 11002,
+    "accepted_at": 17285266.1858195,
+    "direction_at": 17285266.2416593,
+    "displacement_at": 17285266.2426298,
+    "movement_target": [
+      -9000,
+      14500,
+      -428.7313119106693
+    ],
+    "waypoint": [
+      -8999.999999473477,
+      14499.999998839783,
+      -428.73131168215497
+    ],
+    "has_dock": true,
+    "route": 0,
+    "hex_points": 0,
+    "slot_pitch": 0,
+    "slot_members": 0,
+    "slot_assignments": 0
+  },
+  "presentation_frames": 443,
+  "max_extra_presentation_lag_cm": 0.0
+}

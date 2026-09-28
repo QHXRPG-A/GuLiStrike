@@ -15,6 +15,7 @@ class UInputMappingContext;
 class UInputAction;
 class UEnhancedInputLocalPlayerSubsystem;
 class UGuLiTeleportInputComponent;
+class UGuLiRogueCardPresentation;
 class SWidget;
 namespace GuLiOrderNetworkProbe { struct FRun; }
 
@@ -130,6 +131,8 @@ public:
 	void RecallControlGroupFromUI(int32 Slot, bool bControl, bool bShift, bool bAlt);
 	bool IssueMapMove(const FVector& Point, bool bAppend);
 	bool IsCommanderMenuOpen() const;
+	bool IsRogueCardModal() const { return bRogueCardModal; }
+	void SetRogueCardModal(bool bActive);
 	void StopSelectedUnits();
 	FVector GetSelectedUnitCenter() const { return FindConfirmedSelectionCenter(); }
 	void ToggleSelectionShape();
@@ -165,6 +168,9 @@ protected:
 #endif
 
 private:
+	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiRogueCardPresentation> RogueCardPresentation;
+	bool bRogueCardModal=false;
+	void OpenRogueCards();
 	friend class UGuLiTeleportInputComponent;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiTeleportInputComponent> TeleportInput;
 	void HandlePrimaryActionAtCursor();

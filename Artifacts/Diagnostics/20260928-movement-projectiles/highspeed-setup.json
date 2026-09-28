@@ -1,0 +1,32 @@
+{
+  "phase": "settle",
+  "cards": 5,
+  "events": [
+    {
+      "card": 1,
+      "world_time": 11.112704403698444
+    },
+    {
+      "card": 2,
+      "world_time": 15.401292603462934
+    },
+    {
+      "card": 3,
+      "world_time": 19.702267106622458
+    },
+    {
+      "card": 4,
+      "world_time": 24.004389204084873
+    },
+    {
+      "card": 5,
+      "world_time": 28.33372090011835
+    }
+  ],
+  "start": 507667.328,
+  "since": 507697.093,
+  "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "published_base_speed": 720.0,
+  "error": "Traceback (most recent call last):\n  File \"D:/UE5.7/test1/Artifacts/Diagnostics/20260928-movement-projectiles/highspeed-repro-setup.py\", line 61, in tick\n    state['published_multipliers']=[x.export_text() for x in game_state.get_editor_property('UnitMovementMultipliers')]\n                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nException: GuLiCommanderGameState: Property 'UnitMovementMultipliers' for attribute 'UnitMovementMultipliers' on 'GuLiCommanderGameState' is protected and cannot be read\n",
+  "duration": 31.09299999999348
+}

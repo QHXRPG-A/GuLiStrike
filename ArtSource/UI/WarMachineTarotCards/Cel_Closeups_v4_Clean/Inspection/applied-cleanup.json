@@ -1,0 +1,65 @@
+{
+  "success": false,
+  "textures": [
+    {
+      "asset": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_CelCardFrame_Clean_v4.T_CelCardFrame_Clean_v4",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v4_Clean\\EmptyCardFrame.png",
+      "size": [
+        1024,
+        1536
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_Layers_Clean_v4.T_FireRate_Layers_Clean_v4",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v4_Clean\\Layers\\FireRate_Atlas.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_MissileDamage_Layers_Clean_v4.T_MissileDamage_Layers_Clean_v4",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v4_Clean\\Layers\\MissileDamage_Atlas.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_Layers_Clean_v4.T_HighSpeed_Layers_Clean_v4",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v4_Clean\\Layers\\HighSpeed_Atlas.png",
+      "size": [
+        1254,
+        1254
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "card": "FireRate",
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_Clean_v4.MI_FireRate_Clean_v4",
+      "frame": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_UI_Clean_v4.MI_FireRate_UI_Clean_v4"
+    },
+    {
+      "card": "MissileDamage",
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_Clean_v4.MI_MissileDamage_Clean_v4",
+      "frame": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_UI_Clean_v4.MI_MissileDamage_UI_Clean_v4"
+    },
+    {
+      "card": "HighSpeed",
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_Clean_v4.MI_HighSpeed_Clean_v4",
+      "frame": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_UI_Clean_v4.MI_HighSpeed_UI_Clean_v4"
+    }
+  ],
+  "previous_fronts": [
+    "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate.MI_FireRate",
+    "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage.MI_MissileDamage",
+    "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed.MI_HighSpeed"
+  ],
+  "previous_frames": [
+    "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_UI.MI_FireRate_UI",
+    "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_UI.MI_MissileDamage_UI",
+    "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_UI.MI_HighSpeed_UI"
+  ],
+  "error": "Traceback (most recent call last):\n  File \"<string>\", line 68, in <module>\nAssertionError\n"
+}

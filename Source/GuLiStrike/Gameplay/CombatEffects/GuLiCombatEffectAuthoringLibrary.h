@@ -34,6 +34,13 @@ public:
 	/** Bind project-owned laser particle slots to User arrays. Editor-only; does not save. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool WireLaserPoolReader(UNiagaraSystem* System, UNiagaraScript* ParticleUpdateScript, bool bMuzzle, FString& Error);
+	/** Binds the task-owned upgrade pool to per-unit positions/age/scale/color arrays. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool WireRogueUpgradePoolReader(UNiagaraSystem* System, UNiagaraScript* ParticleUpdateScript, FString& Error);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool ConfigureRogueUpgradeSystem(UNiagaraSystem* System, FString& Error);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static FString GetRogueUpgradeCompileDiagnostics(UNiagaraSystem* System);
 	/** Project explosion refraction meshes already multiply Engine.Owner.Scale. Prevent LocalSpace applying it twice.
 	 * Editor-only, idempotent, no saving; refuses unrelated assets and only changes the refr_mesh emitter. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")

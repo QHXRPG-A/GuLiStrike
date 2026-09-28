@@ -1,0 +1,77 @@
+{
+  "success": true,
+  "map": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview",
+  "actors": [
+    {
+      "label": "WarMachine_CardDirector",
+      "class": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector.BP_CardRevealDirector_C",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "label": "WarMachine_Key",
+      "class": "/Script/Engine.DirectionalLight",
+      "location": [
+        0.0,
+        250.0,
+        120.0
+      ]
+    },
+    {
+      "label": "WarMachine_Ambient",
+      "class": "/Script/Engine.SkyLight",
+      "location": [
+        0.0,
+        0.0,
+        100.0
+      ]
+    },
+    {
+      "label": "WarMachine_PlayerStart",
+      "class": "/Script/Engine.PlayerStart",
+      "location": [
+        0.0,
+        140.0,
+        0.0
+      ]
+    }
+  ],
+  "config": {
+    "CardFrontMaterials": [
+      "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate.MI_FireRate",
+      "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage.MI_MissileDamage",
+      "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed.MI_HighSpeed"
+    ],
+    "CardTextMaterials": [
+      "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_UI.MI_FireRate_UI",
+      "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_UI.MI_MissileDamage_UI",
+      "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_UI.MI_HighSpeed_UI"
+    ],
+    "SimpleCardFrame": true,
+    "MaximumTilt": 12.0,
+    "EntryDuration": 0.5,
+    "FlipDuration": 0.44999998807907104,
+    "FlashDuration": 0.25,
+    "ExitDuration": 0.5,
+    "text_table": "<Object '/Game/GuLiStrike/Cards/WarMachineTarot/Data/DT_CardText.DT_CardText' (0x0000018B540E1980) Class 'DataTable'>",
+    "text_rows": [
+      "WarMachine_FireRate",
+      "WarMachine_MissileDamage",
+      "WarMachine_HighSpeed"
+    ]
+  },
+  "game_mode": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode.BP_CardRevealGameMode_C",
+  "controller": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController.BP_CardRevealPlayerController_C",
+  "camera": {
+    "location": [
+      0.0,
+      140.0,
+      0.0
+    ],
+    "fov": 50.0,
+    "exposure": "<AutoExposureMethod.AEM_MANUAL: 2>"
+  }
+}

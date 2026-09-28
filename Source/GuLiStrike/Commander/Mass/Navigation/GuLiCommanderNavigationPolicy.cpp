@@ -299,19 +299,24 @@ namespace GuLiCommanderNavigationPolicy
 		const bool bSurfaceMoveSucceeded,
 		const FVector& PreviousLocation,
 		const FVector& CandidateLocation,
-		const float MaximumZDeltaCentimeters)
+		const float MaximumZDeltaCentimeters,
+		const float MaximumSlopeDegrees)
 	{
 		if (!bSurfaceMoveSucceeded
 			|| PreviousLocation.ContainsNaN()
 			|| CandidateLocation.ContainsNaN()
 			|| !FMath::IsFinite(MaximumZDeltaCentimeters)
-			|| MaximumZDeltaCentimeters < 0.0f)
+			|| MaximumZDeltaCentimeters < 0.0f
+			|| !FMath::IsFinite(MaximumSlopeDegrees)
+			|| MaximumSlopeDegrees < 0.0f || MaximumSlopeDegrees >= 90.0f)
 		{
 			return false;
 		}
 
+		const double SlopeRise = FVector::Dist2D(PreviousLocation, CandidateLocation)
+			* FMath::Tan(FMath::DegreesToRadians(static_cast<double>(MaximumSlopeDegrees)));
 		return FMath::Abs(CandidateLocation.Z - PreviousLocation.Z)
-			<= static_cast<double>(MaximumZDeltaCentimeters);
+			<= static_cast<double>(MaximumZDeltaCentimeters) + SlopeRise;
 	}
 
 	bool HasMeaningfulNavigationProgress(

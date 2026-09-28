@@ -1,0 +1,295 @@
+{
+  "pie_running": false,
+  "world": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview.LVL_WarMachineTarotReview",
+  "actor": "WarMachine_CardDirector",
+  "actor_location": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "tuning": {
+    "MaximumTilt": 16.0,
+    "CardAreaMultiplier": 2.0,
+    "CardThicknessMultiplier": 2.0
+  },
+  "blend_mode": "<BlendMode.BLEND_MASKED: 1>",
+  "fixed_aperture": "return step(0.045,UV.x)*step(UV.x,0.955)*step(0.043,UV.y)*step(UV.y,0.772);",
+  "materials": [
+    {
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_Comic_v6.MI_FireRate_Comic_v6",
+      "parent": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardParallax_Comic_v6.M_CelCardParallax_Comic_v6",
+      "depth": 4.0,
+      "layouts": {
+        "1": {
+          "Offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        "2": {
+          "Offset": [
+            0.20000000298023224,
+            -0.07999999821186066,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            0.550000011920929,
+            0.3400000035762787,
+            1.0,
+            1.0
+          ]
+        },
+        "3": {
+          "Offset": [
+            -0.05000000074505806,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        "4": {
+          "Offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        "5": {
+          "Offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        "6": {
+          "Offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.350000023841858,
+            1.100000023841858,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_Comic_v6.MI_MissileDamage_Comic_v6",
+      "parent": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardParallax_Comic_v6.M_CelCardParallax_Comic_v6",
+      "depth": 4.0,
+      "layouts": {
+        "1": {
+          "Offset": [
+            -0.20000000298023224,
+            -0.10750000178813934,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        "2": {
+          "Offset": [
+            -0.18000000715255737,
+            -0.13750000298023224,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        "3": {
+          "Offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        "4": {
+          "Offset": [
+            0.0,
+            -0.14749999344348907,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        "5": {
+          "Offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        "6": {
+          "Offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.350000023841858,
+            1.100000023841858,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_Comic_v6.MI_HighSpeed_Comic_v6",
+      "parent": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardParallax_Comic_v6.M_CelCardParallax_Comic_v6",
+      "depth": 4.0,
+      "layouts": {
+        "1": {
+          "Offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.159999966621399,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        "2": {
+          "Offset": [
+            0.0,
+            0.02500000037252903,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.2000000476837158,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        "3": {
+          "Offset": [
+            -0.019999999552965164,
+            -0.11999999731779099,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        "4": {
+          "Offset": [
+            -0.06599999964237213,
+            -0.039000000804662704,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.1799999475479126,
+            0.9555000066757202,
+            1.0,
+            1.0
+          ]
+        },
+        "5": {
+          "Offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.3200000524520874,
+            0.9599999785423279,
+            1.0,
+            1.0
+          ]
+        },
+        "6": {
+          "Offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.350000023841858,
+            1.100000023841858,
+            1.0,
+            1.0
+          ]
+        }
+      }
+    }
+  ],
+  "text_table": "/Game/GuLiStrike/Cards/WarMachineTarot/Data/DT_CardText.DT_CardText",
+  "saved": true,
+  "success": true
+}

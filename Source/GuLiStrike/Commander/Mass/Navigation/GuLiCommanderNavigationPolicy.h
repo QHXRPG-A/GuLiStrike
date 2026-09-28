@@ -164,13 +164,15 @@ namespace GuLiCommanderNavigationPolicy
 
 	/**
 	 * Accepts a FindMoveAlongSurface result only when the query succeeded and the
-	 * candidate remains finite and within the permitted vertical step.
+	 * candidate remains finite and within the permitted step plus walkable slope.
+	 * A long horizontal step on a ramp is not a vertical teleport.
 	 */
 	GULISTRIKE_API bool IsSurfaceMoveResultAcceptable(
 		bool bSurfaceMoveSucceeded,
 		const FVector& PreviousLocation,
 		const FVector& CandidateLocation,
-		float MaximumZDeltaCentimeters = MaximumSurfaceMoveZDeltaCentimeters);
+		float MaximumZDeltaCentimeters = MaximumSurfaceMoveZDeltaCentimeters,
+		float MaximumSlopeDegrees = 0.0f);
 
 	/**
 	 * A navigation step makes progress only by advancing its monotonic path cursor

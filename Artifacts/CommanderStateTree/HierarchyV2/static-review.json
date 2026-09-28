@@ -1,0 +1,46 @@
+{
+  "date": "2026-09-26",
+  "scope": "source review and Python syntax only",
+  "source_review": "complete",
+  "native_build": "not_run_pending_user_confirmation",
+  "ue_asset_readback": "pending_new_native_build",
+  "runtime_verification": "not_run_player_acceptance",
+  "checks": [
+    "Existing behavior-step enum values retained; new lifecycle values appended.",
+    "Actor and Mass wrappers share persistent Enter/Tick/Exit helpers.",
+    "Queued work verifies unit, command version, execution ID and active operation serial before commit.",
+    "Exit invalidates queued operation; accepted stages observe instead of resubmitting entry.",
+    "Deferred admission and persistent waiting yield at the existing 10Hz/four-round boundary.",
+    "Task terminal status is latched; once-only finalization handles grants/logging and safe cancellation.",
+    "Shared return branch, mining position recovery, construction return and Mass shared-stage recovery reviewed.",
+    "Explicit parent control/identity/pause transitions outrank ordinary business transitions.",
+    "V2 migration is the sole graph initializer; daily commands inspect without asset writes.",
+    "Recursive export reads editor states, conditions, tasks and GUID-targeted transitions from loaded assets.",
+    "Four source bindings remain IDs 1/2 Mass, 3 Miner, 4 Builder; actual assets pending readback.",
+    "Six affected editor/export Python scripts parsed successfully with ast.parse; no tests added or run."
+  ],
+  "new_files": [
+    "Progress/DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md",
+    "Progress/RequirementDocument/20260926-三棵指挥官StateTree分层重构.md",
+    "Scripts/export_commander_xmind.py",
+    "Scripts/inspect_commander_state_trees.py",
+    "Scripts/migrate_commander_state_trees_v2.py",
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderOperationTypes.h",
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeHierarchy.cpp",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskOperations.cpp"
+  ],
+  "modified_files": [
+    "Scripts/Engineering/author_engineering_state_trees.py",
+    "Scripts/Map2300/README.md",
+    "Scripts/author_commander_state_tree_scene.py",
+    "Scripts/author_commander_state_trees.py",
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeAssetCommands.cpp",
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeNodes.cpp",
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeNodes.h",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.cpp",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.h",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskTypes.h"
+  ],
+  "engine_source_reference": "D:/UnrealEngine-5.7/Engine/Plugins/Runtime/StateTree/Source",
+  "editor_preflight": "No UnrealEditor process; port 12029 refused connection."
+}

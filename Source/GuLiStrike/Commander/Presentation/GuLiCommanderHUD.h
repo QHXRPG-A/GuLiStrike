@@ -39,6 +39,7 @@ class GULISTRIKE_API AGuLiCommanderHUD : public AHUD
 	GENERATED_BODY()
 
 public:
+	void SetRogueCardHidden(bool bShouldHide);
 	UGuLiCommanderHUDWidget* GetRuntimeHUDWidget() const { return RuntimeHUDWidget; }
 	void ShowCommandFeedback(const FText& Message, bool bAccepted);
 	AGuLiCommanderHUD();
@@ -55,6 +56,7 @@ public:
 	bool IsScreenPositionOverCommanderUI(const FVector2D& ScreenPosition) const;
 
 private:
+	bool bRogueCardHidden=false;
 	void CreateRuntimeHUD();
 	void DestroyRuntimeHUD();
 	AGuLiSoldierStateReplicator* FindSoldierStateReplicator() const;

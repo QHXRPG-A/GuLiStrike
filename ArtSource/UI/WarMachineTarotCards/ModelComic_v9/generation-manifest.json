@@ -1,0 +1,105 @@
+{
+  "version": "ModelComic_v9",
+  "date": "2026-09-28",
+  "tool": "built-in image_gen.imagegen",
+  "intent": "localized edits of v8 per new annotated feedback",
+  "authorization": "图一，缺了一脚；图二，加几条速度光效线",
+  "base_version": "ModelComic_v8",
+  "assistant_visual_review": "not_performed_per_user_request",
+  "user_art_review": "pending",
+  "ue_import": "not_performed",
+  "layer_separation": "not_performed",
+  "prior_prompt_files": "v7 and v8 untouched; new edit prompts recorded separately",
+  "cards": [
+    {
+      "id": "FireRate",
+      "title": "增加射速",
+      "source_output": "C:/Users/a/.codex/generated_images/01a0c4a6-55da-79a3-a89d-4a78cb43dd89/exec-6a5f9569-8bea-4557-8c49-2f9a4581c0d3.png",
+      "output": {
+        "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v9/FireRate.png",
+        "bytes": 2102501,
+        "sha256": "c1ed8476ad9777baef8d67d10973bab4b8018d5020e8d4ae3ad23dfbdea714ae",
+        "resolution": [
+          1024,
+          1536
+        ]
+      },
+      "raw_output_unchanged": true,
+      "input_images_ordered": [
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Inputs/FireRate_v8.png",
+          "bytes": 2095079,
+          "sha256": "21efce9d220282d41da87761e89334f9b792c9b0a06f0485fd0a0607b97b6a9c",
+          "resolution": [
+            1024,
+            1536
+          ],
+          "role": "edit target"
+        },
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Inputs/FireRate_UserFeedback.png",
+          "bytes": 1706211,
+          "sha256": "d3f1fc2f346325e77bd181fd2a39482aa26927a3e6bc321add3988225debe6c8",
+          "resolution": [
+            883,
+            1254
+          ],
+          "role": "user annotation reference"
+        },
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Inputs/FullModel_v6_UE.png",
+          "bytes": 3090912,
+          "sha256": "d033b12121e5286497027f6ab7fc387eb4bd9040024752a3f0932a91c3a8601f",
+          "resolution": [
+            1536,
+            1536
+          ],
+          "role": "model structure reference"
+        }
+      ],
+      "prompt_file": "Prompts/FireRate_Edit.txt",
+      "prompt": "编辑输入图1这张“增加射速”插画，只修复用户指出的一处缺失机械结构。输入图1是无标注原图，是唯一编辑底图；输入图2是用户红框反馈，只用于定位；输入图3是真实新版战争机器模型的UE整机截图，只用于核对四腿布局和机械连接，不能把其渲染风格套入插画。\n在输入图2红框标出的机身右侧远侧位置，补齐缺失的一条支架腿与该腿对应的悬浮盘。参照输入图3对应结构，让支架连续连接到真实的机身侧关节，向外下倾，经销轴叉耳连接到水平的橙红方形末端节点；白色套环与指示灯随节点，末端底座贴合悬浮盘中央圆环上表面，悬浮盘保持水平。按原相机透视处理这条远侧腿的大小与前后遮挡，允许机身遮挡一部分，但可见的连接和悬浮盘必须完整合理，不能穿模、悬空或成为孤立飞盘。只补这条缺失腿，不额外增加其他腿，不为了显示四腿而移动现有机体。\n严格保留输入图1的画幅、主体位置、姿态、镜头、配色、经典美漫画风、现有双联炮与枪口火光、其他已有腿和悬浮盘、残骸、爆炸和背景。仅在补腿必要的局部修改遮挡，其他内容尽量保持原样。保持干净墨线、清晰色块与明暗层次。输出与原图同样的2:3竖版完整插画，不含红框、箭头、标注、文字、数字、卡框、水印或UI。no grain, no dirty texture, no random speckles, no messy background, no harsh glow.",
+      "prompt_sha256": "5a6d0fb832807d09b19f5d842aac84732b32f566e86981cb3bd64f86fbd2105a"
+    },
+    {
+      "id": "HighSpeed",
+      "title": "极速机动",
+      "source_output": "C:/Users/a/.codex/generated_images/01a0c4a6-55da-79a3-a89d-4a78cb43dd89/exec-a13705ad-d482-4de8-bb8e-0a109d3b2bd0.png",
+      "output": {
+        "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v9/HighSpeed.png",
+        "bytes": 2025298,
+        "sha256": "aaeca6ab49e00d5cd2fd48f6814063c20a19dcab63712a29b41f998f7ce4075b",
+        "resolution": [
+          1024,
+          1536
+        ]
+      },
+      "raw_output_unchanged": true,
+      "input_images_ordered": [
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Inputs/HighSpeed_v8.png",
+          "bytes": 2050924,
+          "sha256": "e3c64e10f7555cc8e614bea27b92533f5404285fd0ceeef07c4cf86599707f03",
+          "resolution": [
+            1024,
+            1536
+          ],
+          "role": "edit target"
+        },
+        {
+          "path": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Inputs/HighSpeed_UserFeedback.png",
+          "bytes": 1632839,
+          "sha256": "ae5b4878fa28a33454252469fe0e2c0575eddeb554eff10d6f5fbd6e49137864",
+          "resolution": [
+            869,
+            1191
+          ],
+          "role": "user annotation reference"
+        }
+      ],
+      "prompt_file": "Prompts/HighSpeed_Edit.txt",
+      "prompt": "编辑输入图1这张“极速机动”插画，只增加几条速度光效线。输入图1是无标注原图，是唯一编辑底图；输入图2是用户的红色箭头标注，仅用于说明光线的方向和大致分布，不把标注画入结果。\n沿输入图2三个箭头指示的方向，在炮组附近、机身侧面附近和前景悬浮盘附近添加约3到5条疏落、细长、清晰的青蓝或青白色速度光效线，允许极少量紫色边光。光线方向从画面右下向左上、顺着机器向后掠过，形成连贯前冲速度感；采用经典美漫的利落线条，前端短亮，向后细长收尖，少量分段，方向一致。光效要可见但克制，不加箭头，不形成粗大激光束，不遮住炮口、关节连接和完整悬浮盘轮廓，不在机体上制造贯穿孔洞。保留现有盘底尾流和地面速度线。\n除此之外，严格保留输入图1的主体身份、所有机械结构、腿与悬浮盘数量、构图、姿态、相机、配色、经典美漫画风、背景和原有明暗。保持干净墨线、清晰色块、简洁低干扰背景。输出与原图同样的2:3竖版完整插画，不包含输入图2的红箭头、下载按钮、圆角遮罩或任何文字、数字、卡框、水印、UI。no grain, no dirty texture, no random speckles, no messy background, no harsh glow.",
+      "prompt_sha256": "7efd8b975fdd2009bb84dbab65f1961c46e60ec3a86b32344c9bb32cc16645a3"
+    }
+  ]
+}

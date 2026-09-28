@@ -1,0 +1,400 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "trees": [
+      {
+        "asset": "ST_CommanderMiner",
+        "editor_data": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0",
+        "count": 30,
+        "states": [
+          {
+            "path": "CommanderOrders",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0",
+            "description": "Asset-authored hierarchy v2. Persistent phases; local recovery. Root reselection is reserved for control or order identity changes."
+          },
+          {
+            "path": "CommanderOrders/Control",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/Control/WaitForSafeExit",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_0.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/Control/Stopped",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_0.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/Control/PrepareReplacementMove",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_0.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/SelectOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/SelectOrder/TakeManualOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_1.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/SelectOrder/TakeAutomaticOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_1.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/SelectOrder/Idle",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_1.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/FinishOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/Suspended",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/StartOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ManualMove",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_3",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ManualTransit",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_4",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5",
+            "description": "Mining and standalone return share ReturnCargo. Local slot, factory and point recovery preserve cargo; only order completion returns to order selection."
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/AcquireResource",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/AcquireResource/RecoverMiningPosition",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_0.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/AcquireResource/SelectMiningPosition",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_0.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/AcquireResource/TravelToMine",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_0.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/AcquireResource/ExtractResource",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_0.StateTreeState_3",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/ReturnCargo",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/ReturnCargo/SelectFactory",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_1.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/ReturnCargo/TravelToFactory",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_1.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/ReturnCargo/UnloadCargo",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_1.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/ReturnCargo/RecoverUnloadPoint",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_1.StateTreeState_3",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/CycleHandoff",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/PrepareAutomaticRetry",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_3",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/FailManualResourceOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_4",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ResourceJob/WaitForResourceRetry",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_5",
+            "description": ""
+          }
+        ]
+      },
+      {
+        "asset": "ST_CommanderBuilder",
+        "editor_data": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0",
+        "count": 23,
+        "states": [
+          {
+            "path": "CommanderOrders",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0",
+            "description": "Asset-authored hierarchy v2. Persistent phases; local recovery. Root reselection is reserved for control or order identity changes."
+          },
+          {
+            "path": "CommanderOrders/Control",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/Control/WaitForSafeExit",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_0.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/Control/Stopped",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_0.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/Control/PrepareReplacementMove",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_0.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/SelectOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/SelectOrder/TakeManualOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_1.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/SelectOrder/TakeAutomaticOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_1.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/SelectOrder/Idle",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_1.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/FinishOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/Suspended",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/StartOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ManualMove",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_3",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ManualTransit",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_4",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ConstructionJob",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5",
+            "description": "Intent during travel; atomic occupancy only on arrival. Rejected positions keep existing expiry. Automatic local replacement remains disabled once construction begins."
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ConstructionJob/RejectConstructionPosition",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite/SelectConstructionDestination",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_2.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite/TravelToConstructionSite",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_2.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite/ClaimPositionOnArrival",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_2.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ConstructionJob/ConstructBuilding",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_5.StateTreeState_3",
+            "description": ""
+          }
+        ]
+      },
+      {
+        "asset": "ST_CommanderMass",
+        "editor_data": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0",
+        "count": 21,
+        "states": [
+          {
+            "path": "CommanderOrders",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0",
+            "description": "Asset-authored hierarchy v2. Persistent phases; local recovery. Root reselection is reserved for control or order identity changes."
+          },
+          {
+            "path": "CommanderOrders/Control",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/Control/WaitForSafeExit",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_0.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/Control/Stopped",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_0.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/Control/PrepareReplacementMove",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_0.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/SelectOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/SelectOrder/TakeManualOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_1.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/SelectOrder/TakeAutomaticOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_1.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/SelectOrder/Idle",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_1.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/FinishOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/Suspended",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/StartOrder",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/ManualMove",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_3",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_4",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/StrongholdStageHandoff",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_4.StateTreeState_0",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/RejectUnreachableStronghold",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_4.StateTreeState_1",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/SelectStronghold",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_4.StateTreeState_2",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/AdvanceToStronghold",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_4.StateTreeState_3",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/CaptureStronghold",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_4.StateTreeState_4",
+            "description": ""
+          },
+          {
+            "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/WaitForStronghold",
+            "object": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass:CommanderHierarchyEditorData_0.StateTreeState_0.StateTreeState_2.StateTreeState_4.StateTreeState_5",
+            "description": ""
+          }
+        ]
+      }
+    ]
+  }
+}

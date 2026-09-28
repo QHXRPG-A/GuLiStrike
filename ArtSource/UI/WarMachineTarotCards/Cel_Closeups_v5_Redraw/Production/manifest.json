@@ -1,0 +1,99 @@
+{
+  "date": "2026-09-28",
+  "tool": "built-in image_gen",
+  "active_layers": {
+    "FireRate": {
+      "path": "Layers/Corrected/FireRate_Atlas.png",
+      "source": "C:/Users/a/.codex/generated_images/01a0c4a6-55da-79a3-a89d-4a78cb43dd89/exec-be6dd267-986a-4e66-a3fd-b07f45f2c35e.png",
+      "sha256": "c9c119ca757e38b2fb16d68ba6b23af7b66f6cdfcd2c6e2626fb114d422ef111",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    "MissileDamage": {
+      "path": "Layers/MissileDamage_Atlas.png",
+      "source": "C:\\Users\\a\\.codex\\generated_images\\01a0c4a6-55da-79a3-a89d-4a78cb43dd89\\exec-6baac796-f68c-468e-b355-e7d9c309fe03.png",
+      "sha256": "a1d8cee8893ea5615db7f0f27fdaad9d3315b439d9c70f0f353f018da68414ec",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    "HighSpeed": {
+      "path": "Layers/Corrected/HighSpeed_Atlas.png",
+      "source": "C:/Users/a/.codex/generated_images/01a0c4a6-55da-79a3-a89d-4a78cb43dd89/exec-1c005879-a7d1-4240-a3bd-f2c53d37418c.png",
+      "sha256": "50bb5ae5275d66d95986769a06b40095f0f38de7521784168ac618ba44c7bfd8",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    }
+  },
+  "frame": {
+    "file": "EmptyCardFrame.png",
+    "sha256": "8db0cfb3fce0eb1d6225ee76dd7c9210a829779b187d4166ef8b95977457ebe0",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a0c4a6-55da-79a3-a89d-4a78cb43dd89\\exec-fca261c5-84f4-4e09-93e3-57dfdba27c79.png"
+  },
+  "prompts": [
+    {
+      "file": "Prompts/EmptyCardFrame.txt",
+      "sha256": "521e9e87e4065fba5c9d673a1362a0115c68409df970b1aa7e102d1d2002622e"
+    },
+    {
+      "file": "Prompts/FireRate_Layers.txt",
+      "sha256": "4760a503bbdd532e1f4ded10765f5ed2eaea84cbb810cac9793fba8d2d443132"
+    },
+    {
+      "file": "Prompts/FireRate_MuzzleCorrection.txt",
+      "sha256": "c3a9b1db94231c86df8fd8e7c945691edc38ab29e9a94d2524f68d854d7ab27e"
+    },
+    {
+      "file": "Prompts/HighSpeed_BackgroundCorrection.txt",
+      "sha256": "98cdaa6bdba1f8be8697aeb37f6b8432fbd35149eba0638e485e64226b66b368"
+    },
+    {
+      "file": "Prompts/HighSpeed_BackgroundCorrection_Retry.txt",
+      "sha256": "76017fd519c57e3ff6b08eea5c6d566bfbbfaadf3a3105fbab074f56be015d13"
+    },
+    {
+      "file": "Prompts/HighSpeed_Layers.txt",
+      "sha256": "785a407083844b9ef481734fd5b0cd4fceb6cf8c23b437845f911fe2a40f3655"
+    },
+    {
+      "file": "Prompts/MissileDamage_Layers.txt",
+      "sha256": "9070fb0949a2a30f7608f233d0a47a623460c291d619ceffe123c77bfa9cb7d5"
+    }
+  ],
+  "production_authorization": "用户在看过v5三图后要求开始制作UE资源并替换旧版。",
+  "user_final_UE_acceptance": "pending",
+  "revisions": [
+    "原六格生成：真实RGBA，原始版保留",
+    "插画材质统一映射到文字区上方；远景预留余量",
+    "射速：只修订第二格炮口火光，再在材质中微调高度",
+    "导弹：用图层参数错开前景导弹与出膛口",
+    "机动：从第六格删除重复高架建筑；第一次调用网络错误，内置工具重试完成"
+  ],
+  "tuning": {
+    "internal_depth": 2,
+    "area": 2,
+    "width_and_height": 1.4142135623730951,
+    "thickness": 2,
+    "whole_card_tilt": 12
+  }
+}

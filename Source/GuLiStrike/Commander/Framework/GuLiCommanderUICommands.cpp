@@ -10,6 +10,7 @@
 
 bool AGuLiCommanderPlayerController::IsCommanderMenuOpen() const
 {
+	if (IsRogueCardModal()) return true;
 	const auto* HUD=Cast<AGuLiCommanderHUD>(GetHUD());
 	return HUD && HUD->GetRuntimeHUDWidget() && HUD->GetRuntimeHUDWidget()->IsLocalMenuOpen();
 }

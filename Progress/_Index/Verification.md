@@ -4,6 +4,10 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [提速单位坡面卡住与子弹提前显示修复](../DevelopmentDocumentation/20260928-提速单位坡面卡住与子弹提前显示修复.md) | verification | partial | 在LVL_CommanderMassPrototype通过F4叠加五张机动卡，框选战争机器上坡并观察交战弹道，完成玩家效果验收。 | 2026-09-28 |
+| [肉鸽卡牌数据表与实战选牌 — 技术方案](../DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md) | verification | partial | 玩家在 LVL_CommanderMassPrototype 按 F4 选牌，核验光粒随机散布、错时上升和密度。 | 2026-09-28 |
+| [战争机器能力卡 — 六层视差与可编辑文案交付](../DevelopmentDocumentation/20260926-战争机器塔罗风视差卡牌复刻验证.md) | verification | partial | 用户在LVL_WarMachineTarotReview核验三张新牌面、极限偏转与既有两次点击流程。 | 2026-09-28 |
+| [三棵指挥官StateTree分层重构 — 技术方案与交付](../DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md) | verification | partial | 在 /Game/Maps/LVL_CommanderMassPrototype 按审核步骤确认三棵树的持续阶段、局部恢复和公共打断效果。 | 2026-09-28 |
 | [Mass分帧寻路与避障稳定性](../DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md) | verification | partial | 玩家在LVL_CommanderMassPrototype的MassNavRepair_GiftEdge确认R2效果。 | 2026-09-24 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | verification | partial | 在已加载屋顶修复的原型地图验证据点出口、赠品清场与矿厂正常入厂；原包围和边界未验证项继续保留。 | 2026-09-24 |
 | [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | verification | partial | 在已加载新代码的 /Game/Maps/LVL_CommanderMassPrototype 的 TeleportGround 观察点验收落位与回源。 | 2026-09-24 |

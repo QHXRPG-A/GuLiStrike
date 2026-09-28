@@ -312,6 +312,7 @@ void AGuLiCommanderHUD::DestroyRuntimeHUD()
 
 void AGuLiCommanderHUD::DrawHUD()
 {
+	if (bRogueCardHidden) return;
 	Super::DrawHUD();
 	if (!Canvas)
 	{
@@ -357,6 +358,13 @@ void AGuLiCommanderHUD::DrawHUD()
 	}
 	DrawBuildingFeedback();
 	DrawPerformanceStats();
+}
+
+void AGuLiCommanderHUD::SetRogueCardHidden(bool bShouldHide)
+{
+	bRogueCardHidden=bShouldHide;
+	if (RuntimeHUDWidget) RuntimeHUDWidget->SetVisibility(bShouldHide?ESlateVisibility::Collapsed:ESlateVisibility::SelfHitTestInvisible);
+	if (HealthBarRenderer) HealthBarRenderer->SetActorHiddenInGame(bShouldHide);
 }
 
 void AGuLiCommanderHUD::DrawPerformanceStats()

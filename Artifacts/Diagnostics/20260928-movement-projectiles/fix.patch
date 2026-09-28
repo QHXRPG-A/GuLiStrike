@@ -1,0 +1,482 @@
+--- before/Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h
++++ Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h
+@@ -164,13 +164,15 @@
+ 
+ 	/**
+ 	 * Accepts a FindMoveAlongSurface result only when the query succeeded and the
+-	 * candidate remains finite and within the permitted vertical step.
++	 * candidate remains finite and within the permitted step plus walkable slope.
++	 * A long horizontal step on a ramp is not a vertical teleport.
+ 	 */
+ 	GULISTRIKE_API bool IsSurfaceMoveResultAcceptable(
+ 		bool bSurfaceMoveSucceeded,
+ 		const FVector& PreviousLocation,
+ 		const FVector& CandidateLocation,
+-		float MaximumZDeltaCentimeters = MaximumSurfaceMoveZDeltaCentimeters);
++		float MaximumZDeltaCentimeters = MaximumSurfaceMoveZDeltaCentimeters,
++		float MaximumSlopeDegrees = 0.0f);
+ 
+ 	/**
+ 	 * A navigation step makes progress only by advancing its monotonic path cursor
+--- before/Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.cpp
++++ Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.cpp
+@@ -299,19 +299,24 @@
+ 		const bool bSurfaceMoveSucceeded,
+ 		const FVector& PreviousLocation,
+ 		const FVector& CandidateLocation,
+-		const float MaximumZDeltaCentimeters)
++		const float MaximumZDeltaCentimeters,
++		const float MaximumSlopeDegrees)
+ 	{
+ 		if (!bSurfaceMoveSucceeded
+ 			|| PreviousLocation.ContainsNaN()
+ 			|| CandidateLocation.ContainsNaN()
+ 			|| !FMath::IsFinite(MaximumZDeltaCentimeters)
+-			|| MaximumZDeltaCentimeters < 0.0f)
++			|| MaximumZDeltaCentimeters < 0.0f
++			|| !FMath::IsFinite(MaximumSlopeDegrees)
++			|| MaximumSlopeDegrees < 0.0f || MaximumSlopeDegrees >= 90.0f)
+ 		{
+ 			return false;
+ 		}
+ 
++		const double SlopeRise = FVector::Dist2D(PreviousLocation, CandidateLocation)
++			* FMath::Tan(FMath::DegreesToRadians(static_cast<double>(MaximumSlopeDegrees)));
+ 		return FMath::Abs(CandidateLocation.Z - PreviousLocation.Z)
+-			<= static_cast<double>(MaximumZDeltaCentimeters);
++			<= static_cast<double>(MaximumZDeltaCentimeters) + SlopeRise;
+ 	}
+ 
+ 	bool HasMeaningfulNavigationProgress(
+--- before/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
++++ Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
+@@ -16,6 +16,7 @@
+ #include "Battle/Framework/GuLiBattleGameState.h"
+ #include "Battle/Framework/GuLiBattlePlayerState.h"
+ #include "Commander/Framework/GuLiCommanderDeploymentPoint.h"
++#include "Commander/Framework/GuLiCommanderGameState.h"
+ #include "Commander/Framework/GuLiCommanderResourceAdapter.h"
+ #include "Commander/Mass/GuLiCommanderMassFragments.h"
+ #include "Commander/Mass/GuLiCommanderSelectionQuery.h"
+@@ -60,6 +61,7 @@
+ #include "ProfilingDebugging/CpuProfilerTrace.h"
+ #include "Subsystems/SubsystemCollection.h"
+ #include "UObject/ObjectKey.h"
++#include "UObject/UnrealType.h"
+ #include "Dom/JsonObject.h"
+ #include "Serialization/JsonSerializer.h"
+ 
+@@ -3275,6 +3277,12 @@
+ 	ANavigationData* CommanderNavigationData = NavigationSystem
+ 		? GetCommanderNavigationData(*NavigationSystem)
+ 		: nullptr;
++	const ARecastNavMesh* CommanderRecast = Cast<ARecastNavMesh>(CommanderNavigationData);
++	// UE 5.7 exposes the authored slope as a reflected setting, without a native getter.
++	static const FFloatProperty* MaximumSlopeProperty =
++		FindFProperty<FFloatProperty>(ARecastNavMesh::StaticClass(), TEXT("AgentMaxSlope"));
++	const float MaximumSurfaceSlopeDegrees = CommanderRecast && MaximumSlopeProperty
++		? MaximumSlopeProperty->GetPropertyValue_InContainer(CommanderRecast) : 0.0f;
+ 	AuthorityState->SimulationSeconds += FixedDeltaSeconds;
+ 	++AuthorityState->ServerSimTick;
+ 
+@@ -3860,7 +3868,7 @@
+ 						bSurfaceMoveSucceeded,
+ 						Soldier.LastValidNavLocation.Location,
+ 						SurfaceLocation.Location,
+-						MaximumSurfaceStepZCentimeters);
++						MaximumSurfaceStepZCentimeters, MaximumSurfaceSlopeDegrees);
+ 				if (bSurfaceMoveAccepted)
+ 				{
+ 					if (Soldier.MoveIntent && !Soldier.FirstDisplacementAt && FVector::DistSquared2D(SurfaceLocation.Location,Soldier.CommandStartLocation)>1.)
+@@ -3989,7 +3997,7 @@
+ 					bSurfaceMoveSucceeded,
+ 					Soldier.LastValidNavLocation.Location,
+ 					SurfaceLocation.Location,
+-					MaximumSurfaceStepZCentimeters);
++					MaximumSurfaceStepZCentimeters, MaximumSurfaceSlopeDegrees);
+ 			if (bSurfaceMoveAccepted)
+ 			{
+ 				Soldier.Velocity=(SurfaceLocation.Location-Soldier.Location)/FMath::Max(FixedDeltaSeconds,UE_SMALL_NUMBER);
+@@ -4611,7 +4619,10 @@
+ 	if (!FMath::IsFinite(Speed) || Speed>MAX_int16)
+ 	{ Error=TEXT("Movement speed exceeds the Mass numeric limit"); return false; }
+ 	if (!RefreshRogueMovementEntities(Key,Next,Error)) return false;
+-	RogueMovementSources.FindOrAdd(Key).Add(SourceId,Bonus); RogueMovementMultipliers.Add(Key,Next); return true;
++	RogueMovementSources.FindOrAdd(Key).Add(SourceId,Bonus); RogueMovementMultipliers.Add(Key,Next);
++	if (auto* Published = GetWorld()->GetGameState<AGuLiCommanderGameState>())
++		Published->SetAuthoritativeUnitMovementMultiplier(Team, UnitTypeId, Next);
++	return true;
+ }
+ 
+ void UGuLiBattleAuthoritySubsystem::ResetRogueMovementForMatch()
+@@ -4622,6 +4633,8 @@
+ 	RogueMovementEpoch=Epoch;
+ 	const bool bHadBonuses=!RogueMovementMultipliers.IsEmpty();
+ 	RogueMovementSources.Reset(); RogueMovementMultipliers.Reset();
++	if (auto* Published = GetWorld()->GetGameState<AGuLiCommanderGameState>())
++		Published->ResetAuthoritativeUnitMovementMultipliers();
+ 	if (bHadBonuses) { FString Error; RefreshRogueMovementEntities(MAX_uint32,1.f,Error); }
+ }
+ 
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.h
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.h
+@@ -214,6 +214,9 @@
+ 
+ namespace GuLiCombatEffects
+ {
++	// Ground collision and its presentation buffer share one cadence. Render only
++	// the part of a straight trajectory whose collision sweep has completed.
++	inline constexpr float GroundProjectileStepSeconds = 0.2f;
+ 	GULISTRIKE_API FVector LiftPosition(const FGuLiCombatEffectState& State, float Age);
+ 	/** Pure, fixed-step, seed-stable flight. Caller owns target refresh and authoritative swept collision. */
+ 	GULISTRIKE_API FVector AdvanceProjectile(FGuLiCombatEffectState& State, float NewAge, float DeltaSeconds);
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.cpp
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.cpp
+@@ -71,6 +71,7 @@
+ 			|| Source.Kind == EGuLiTargetKind::GroundActor) && !MuzzleOffset.ContainsNaN()
+ 			&& (SourceTeam == EGuLiTeam::Red || SourceTeam == EGuLiTeam::Blue)
+ 			&& FMath::IsFinite(Motion.Speed) && Motion.Speed > 0 && Motion.Speed <= 1000000
++			&& SampleTime <= EndTime
+ 			&& EndTime > StartTime && EndTime - StartTime <= 120.01f && !FVector(LaunchDirection).IsNearlyZero();
+ 	return Target.IsValid() && !SlotId.IsNone() && !MuzzleOffset.ContainsNaN()
+ 		&& MuzzleOffset.GetAbsMax() <= 1000000.0
+@@ -125,7 +126,8 @@
+ 	bool bMapped=true, bVector=true;
+ 	if (Kind == EGuLiCombatEffectKind::LinearProjectile)
+ 	{
+-		// Straight flight needs one launch payload and a terminal point; player rounds carry only the stable VfxId.
++		// Ground rounds additionally carry the latest completed collision time.
++		// Position is reconstructed from the launch payload, without another vector.
+ 		if (Phase == EGuLiCombatEffectPhase::Finished)
+ 		{
+ 			Location.NetSerialize(Ar, Map, bVector); Ar << SampleTime;
+@@ -143,12 +145,15 @@
+ 			LaunchLocation.NetSerialize(Ar, Map, bVector); LaunchDirection.NetSerialize(Ar, Map, bVector);
+ 			FVector_NetQuantize Muzzle(MuzzleOffset); Muzzle.NetSerialize(Ar, Map, bVector);
+ 			Ar << Motion.Speed << StartTime << EndTime;
++			if (Source.Kind == EGuLiTargetKind::CommanderSoldier) Ar << SampleTime;
+ 			uint8 Team = static_cast<uint8>(SourceTeam); Ar.SerializeBits(&Team, 2);
+ 			if (Ar.IsLoading())
+ 			{
+ 				SourceTeam = static_cast<EGuLiTeam>(Team); MuzzleOffset = Muzzle;
+-				Location = LaunchLocation; Velocity = FVector(LaunchDirection) * Motion.Speed;
+-				SampleTime = ActivationTime = StartTime;
++				Velocity = FVector(LaunchDirection) * Motion.Speed;
++				if (Source.Kind != EGuLiTargetKind::CommanderSoldier) SampleTime = StartTime;
++				Location = FVector(LaunchLocation) + FVector(Velocity) * (SampleTime - StartTime);
++				ActivationTime = StartTime;
+ 			}
+ 		}
+ 		bOutSuccess = !Ar.IsError() && bVector && IsWellFormed(); return bMapped;
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.cpp
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.cpp
+@@ -228,7 +228,7 @@
+ 	if (!bHasGround) { GroundHistory = {}; NextGroundStepTime = Now; }
+ 	else if (Now + UE_KINDA_SMALL_NUMBER >= NextGroundStepTime)
+ 	{
+-		NextGroundStepTime = Now + 0.2f;
++		NextGroundStepTime = Now + GuLiCombatEffects::GroundProjectileStepSeconds;
+ 		StepDomain(Now, true, GroundHistory);
+ 	}
+ 	if (Epoch == StepEpoch) Stats.LastStepMilliseconds = (FPlatformTime::Seconds() - Started) * 1000.0;
+@@ -302,7 +302,17 @@
+ 				FMath::Lerp(State.SampleTime, EndTime, FirstAlpha), &HitHandle);
+ 		}
+ 		else if (EndTime >= State.EndTime) Retire(Handle, EGuLiCombatEffectEndReason::Expired, End, EndTime);
+-		else if (Matches(Handle)) { Slots[Handle.Slot].State.Location = End; Slots[Handle.Slot].State.SampleTime = EndTime; }
++		else if (Matches(Handle))
++		{
++			auto& Confirmed = Slots[Handle.Slot].State;
++			Confirmed.Location = End; Confirmed.SampleTime = EndTime;
++			if (bGround)
++			{
++				++Confirmed.Sequence;
++				const FGuLiCombatEffectState Published = Confirmed;
++				OnState.Broadcast(Published, false);
++			}
++		}
+ 	}
+ 	if (Epoch == StepEpoch)
+ 	{
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.cpp
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.cpp
+@@ -794,7 +794,7 @@
+ void UGuLiCombatEffectRuntimeSubsystem::HandlePooledState(const FGuLiCombatEffectState& State, const bool bReliable)
+ {
+ 	if (!Ledger || State.MatchEpoch != Ledger->GetMatchEpoch()) return;
+-	if (State.Phase != EGuLiCombatEffectPhase::Finished) ++Counters.ProjectilesLaunched;
++	if (State.Phase != EGuLiCombatEffectPhase::Finished && State.Sequence == 1) ++Counters.ProjectilesLaunched;
+ 	else if (State.EndReason == EGuLiCombatEffectEndReason::Impact) ++Counters.DamageCommits;
+ 	OnState.Broadcast(State, bReliable);
+ }
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.cpp
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.cpp
+@@ -134,7 +134,10 @@
+ 		if (Pending) *Pending=State; else ReliableQueue.Add(State);
+ 		if (State.Phase == EGuLiCombatEffectPhase::Finished) Corrections.Remove(State.EffectId);
+ 	}
+-	else Corrections.Add(State.EffectId, State);
++	else if (State.Kind != EGuLiCombatEffectKind::LinearProjectile)
++		Corrections.Add(State.EffectId, State);
++	// Ground linear confirmations reach remote peers in the existing 5 Hz batches.
++	// The listen view consumes them here without a second correction RPC stream.
+ 	// Listen presentation consumes immediately; multicast application below runs on remote clients only.
+ 	if (auto* Visuals = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>()) Visuals->ApplyState(State);
+ }
+@@ -189,12 +192,12 @@
+ 		}
+ 		MulticastCorrections(Batch);
+ 	}
+-	// Straight ground bullets are analytically reconstructed from these compact launch records.
++	// Reconstruct straight ground bullets only up to the confirmed collision time.
+ 	// Rotate the first batch so a saturated connection cannot always starve the same tail.
+ 	GroundSnapshotAccumulator += DeltaTime;
+-	if (Runtime.IsValid() && GroundSnapshotAccumulator >= 0.2f)
+-	{
+-		GroundSnapshotAccumulator = FMath::Fmod(GroundSnapshotAccumulator, 0.2f);
++	if (Runtime.IsValid() && GroundSnapshotAccumulator >= GuLiCombatEffects::GroundProjectileStepSeconds)
++	{
++		GroundSnapshotAccumulator = FMath::Fmod(GroundSnapshotAccumulator, GuLiCombatEffects::GroundProjectileStepSeconds);
+ 		Runtime->BuildGroundProjectileSnapshot(GroundSnapshot);
+ 		const int32 Total = GroundSnapshot.Num();
+ 		if (Total > 0)
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h
+@@ -157,6 +157,7 @@
+ 	void FreeLaserSlot(int32 Slot);
+ 	void UpdateLaserPool(float Now, bool bEnabled);
+ 	void ResetLaserPool();
++	void PlayMachineGunImpact(const FGuLiCombatEffectState& State);
+ 	void UpdateRogueUpgradePool(float Now,bool bEnabled);
+ 	void ResetRogueUpgradePool();
+ 	bool ResolvePose(const FGuLiTargetHandle& Target, FTransform& Transform, int32& UnitTypeId) const;
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp
+@@ -263,11 +263,17 @@
+ 	if (Existing && !GuLiCombatEffects::IsNewerState(State, Existing->State)) { ++Counters.RejectedStates; return; }
+ 	if (State.Phase == EGuLiCombatEffectPhase::Finished)
+ 	{
++		const bool bDeferGroundImpact = State.Kind == EGuLiCombatEffectKind::LinearProjectile
++			&& Existing && Existing->State.Source.Kind == EGuLiTargetKind::CommanderSoldier;
+ 		if (State.Kind == EGuLiCombatEffectKind::LinearProjectile && Existing)
+ 		{
+ 			Existing->State.Location = State.Location; Existing->State.Phase = State.Phase;
+ 			Existing->State.EndReason = State.EndReason; Existing->State.SampleTime = State.SampleTime;
+-			Existing->LaserFadeUntil = GetWorld()->GetTimeSeconds() + 0.04f;
++			Existing->State.Sequence = State.Sequence;
++			Existing->bActivationPlayed = bFromSnapshot;
++			const float RemainingFlight = bDeferGroundImpact
++				? FMath::Max(0.0f, State.SampleTime + GuLiCombatEffects::GroundProjectileStepSeconds - ServerTime()) : 0.0f;
++			Existing->LaserFadeUntil = GetWorld()->GetTimeSeconds() + RemainingFlight + 0.04f;
+ 		}
+ 		else RemoveVisual(State.EffectId, State.EndReason == EGuLiCombatEffectEndReason::EpochEnded);
+ 		Tombstones.Add(State.EffectId, State.Sequence); TombstoneOrder.Add(State.EffectId);
+@@ -278,21 +284,7 @@
+ 		}
+ 		// Terminal wire records deliberately omit the source and launch payload. A fresh
+ 		// hit must work even if its flight was culled, expired locally, or never received.
+-		if (State.Kind == EGuLiCombatEffectKind::LinearProjectile && !bFromSnapshot
+-			&& (State.EndReason == EGuLiCombatEffectEndReason::Impact || State.EndReason == EGuLiCombatEffectEndReason::Blocked)
+-			&& ServerTime() - State.SampleTime <= 0.5f && GetCatalog() && IsVisibleLocation(State.Location))
+-		{
+-			const FGuLiEffectVisualVariant& Impact = Catalog->MachineGunImpact;
+-			if (Impact.VfxId > 0
+-				&& FMath::IsFinite(Impact.MaximumLifetime) && Impact.MaximumLifetime > 0.0f)
+-			{
+-				if (UNiagaraComponent* Burst = SpawnPooled(Impact.VfxId, State.Location, 1.0f))
+-				{
+-					Retire(Burst, FMath::Min(Impact.MaximumLifetime, 3.0f), false);
+-					++Counters.MachineGunImpactsPlayed;
+-				}
+-			}
+-		}
++		if (!bFromSnapshot && !bDeferGroundImpact) PlayMachineGunImpact(State);
+ 		return;
+ 	}
+ 	// Never resurrect an expired projectile/burst or replay one after a long network stall.
+@@ -326,6 +318,22 @@
+ 	}
+ 	else Existing->State = State;
+ 	UpdateGroundWarning(State, CVarGuLiCombatEffectVisuals.GetValueOnGameThread() != 0);
++}
++
++void UGuLiCombatEffectPresentationSubsystem::PlayMachineGunImpact(const FGuLiCombatEffectState& State)
++{
++	if (State.Kind != EGuLiCombatEffectKind::LinearProjectile
++		|| (State.EndReason != EGuLiCombatEffectEndReason::Impact && State.EndReason != EGuLiCombatEffectEndReason::Blocked)
++		|| ServerTime() - State.SampleTime > 0.5f || !GetCatalog() || !IsVisibleLocation(State.Location)) return;
++	const FGuLiEffectVisualVariant& Impact = Catalog->MachineGunImpact;
++	if (Impact.VfxId > 0 && FMath::IsFinite(Impact.MaximumLifetime) && Impact.MaximumLifetime > 0.0f)
++	{
++		if (UNiagaraComponent* Burst = SpawnPooled(Impact.VfxId, State.Location, 1.0f))
++		{
++			Retire(Burst, FMath::Min(Impact.MaximumLifetime, 3.0f), false);
++			++Counters.MachineGunImpactsPlayed;
++		}
++	}
+ }
+ 
+ void UGuLiCombatEffectPresentationSubsystem::UpdateGroundWarning(const FGuLiCombatEffectState& State, bool bEnabled)
+@@ -680,7 +688,8 @@
+ 				else if (Visual.Flight) { Retire(Visual.Flight, 0); Visual.Flight = nullptr; }
+ 			}
+ 			if ((Visual.State.Phase == EGuLiCombatEffectPhase::Finished && GetWorld()->GetTimeSeconds() >= Visual.LaserFadeUntil)
+-				|| (Visual.State.Phase != EGuLiCombatEffectPhase::Finished && Now >= Visual.State.EndTime)) Expired.Add(Pair.Key);
++				|| (Visual.State.Phase != EGuLiCombatEffectPhase::Finished && Now >= Visual.State.EndTime
++					+ (State.Source.Kind == EGuLiTargetKind::CommanderSoldier ? GuLiCombatEffects::GroundProjectileStepSeconds + 0.25f : 0.0f))) Expired.Add(Pair.Key);
+ 			continue;
+ 		}
+ 		if (!bEnabled)
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp
+@@ -77,8 +77,16 @@
+ 		if (State.Kind != EGuLiCombatEffectKind::LinearProjectile || Visual.LaserSlot == INDEX_NONE) continue;
+ 		const bool bFinished = State.Phase == EGuLiCombatEffectPhase::Finished;
+ 		const bool bGround = State.Source.Kind == EGuLiTargetKind::CommanderSoldier;
+-		const float Age = FMath::Clamp(Now - State.StartTime, 0.0f, State.EndTime - State.StartTime);
+-		const FVector Head = bFinished ? FVector(State.Location) : FVector(State.LaunchLocation) + FVector(State.Velocity) * Age;
++		const float RenderTime = bGround
++			? FMath::Min(Now - GuLiCombatEffects::GroundProjectileStepSeconds, State.SampleTime) : Now;
++		const bool bReachedTerminal = bFinished && (!bGround || RenderTime >= State.SampleTime);
++		const float Age = FMath::Clamp(RenderTime - State.StartTime, 0.0f, State.EndTime - State.StartTime);
++		const FVector Head = bReachedTerminal ? FVector(State.Location) : FVector(State.LaunchLocation) + FVector(State.Velocity) * Age;
++		if (bGround && bReachedTerminal && !Visual.bActivationPlayed)
++		{
++			Visual.bActivationPlayed = true;
++			PlayMachineGunImpact(State);
++		}
+ 		Visual.RenderLocation = Head;
+ 		const bool bBoltVisible = IsVisibleLocation(Head);
+ 		FVector Muzzle = State.LaunchLocation;
+--- before/Source/GuLiStrike/Commander/Framework/GuLiCommanderGameState.h
++++ Source/GuLiStrike/Commander/Framework/GuLiCommanderGameState.h
+@@ -10,6 +10,16 @@
+ 	FGuLiCommanderRuntimeTuningChangedSignature,
+ 	float,
+ 	uint32);
++
++/** Committed per-team/unit movement bonuses, including late-joining viewers. */
++USTRUCT()
++struct FGuLiCommanderUnitMovementMultiplier
++{
++	GENERATED_BODY()
++	UPROPERTY() EGuLiTeam Team = EGuLiTeam::Unassigned;
++	UPROPERTY() uint16 UnitTypeId = 0;
++	UPROPERTY() float Multiplier = 1.0f;
++};
+ 
+ /**
+  * 指挥官地图的兼容 GameState：身份、战局和席位复制由 Battle 基类统一维护。
+@@ -25,6 +35,9 @@
+ 
+ 	/** 服务器本地发布已提交士兵速度（cm/s）及调参版本，不是客户端调参 RPC。 */
+ 	void SetAuthoritativeSoldierMovementTuning(float EffectiveMoveSpeedCmPerSecond, uint32 TuningRevision);
++	void SetAuthoritativeUnitMovementMultiplier(EGuLiTeam Team, uint16 UnitTypeId, float Multiplier);
++	void ResetAuthoritativeUnitMovementMultipliers();
++	float GetEffectiveUnitMoveSpeedCmPerSecond(EGuLiTeam Team, uint16 UnitTypeId) const;
+ 
+ 	UFUNCTION(BlueprintPure, Category = "Commander|Tuning")
+ 	float GetEffectiveSoldierMoveSpeedCmPerSecond() const
+@@ -47,4 +60,7 @@
+ 	// 两个独立复制属性；客户端不得将两个回调顺序当作原子事务。
+ 	UPROPERTY(ReplicatedUsing = OnRep_RuntimeTuning)
+ 	uint32 RuntimeTuningRevision = 0u;
++
++	UPROPERTY(Replicated)
++	TArray<FGuLiCommanderUnitMovementMultiplier> UnitMovementMultipliers;
+ };
+--- before/Source/GuLiStrike/Commander/Framework/GuLiCommanderGameState.cpp
++++ Source/GuLiStrike/Commander/Framework/GuLiCommanderGameState.cpp
+@@ -10,6 +10,41 @@
+ 
+ 	DOREPLIFETIME(AGuLiCommanderGameState, EffectiveSoldierMoveSpeedCmPerSecond);
+ 	DOREPLIFETIME(AGuLiCommanderGameState, RuntimeTuningRevision);
++	DOREPLIFETIME(AGuLiCommanderGameState, UnitMovementMultipliers);
++}
++
++float AGuLiCommanderGameState::GetEffectiveUnitMoveSpeedCmPerSecond(EGuLiTeam Team, uint16 UnitTypeId) const
++{
++	const auto* Entry = UnitMovementMultipliers.FindByPredicate(
++		[Team, UnitTypeId](const FGuLiCommanderUnitMovementMultiplier& Row)
++		{ return Row.Team == Team && Row.UnitTypeId == UnitTypeId; });
++	const float Speed = EffectiveSoldierMoveSpeedCmPerSecond * (Entry ? Entry->Multiplier : 1.0f);
++	return FMath::IsFinite(Speed) && Speed > 0.0f ? Speed : EffectiveSoldierMoveSpeedCmPerSecond;
++}
++
++void AGuLiCommanderGameState::SetAuthoritativeUnitMovementMultiplier(EGuLiTeam Team, uint16 UnitTypeId, float Multiplier)
++{
++	if (!HasAuthority() || (Team != EGuLiTeam::Red && Team != EGuLiTeam::Blue)
++		|| UnitTypeId == 0 || !FMath::IsFinite(Multiplier) || Multiplier <= 0.0f) return;
++	auto* Entry = UnitMovementMultipliers.FindByPredicate(
++		[Team, UnitTypeId](const FGuLiCommanderUnitMovementMultiplier& Row)
++		{ return Row.Team == Team && Row.UnitTypeId == UnitTypeId; });
++	if (Entry && Entry->Multiplier == Multiplier) return;
++	if (!Entry)
++	{
++		Entry = &UnitMovementMultipliers.AddDefaulted_GetRef();
++		Entry->Team = Team;
++		Entry->UnitTypeId = UnitTypeId;
++	}
++	Entry->Multiplier = Multiplier;
++	ForceNetUpdate();
++}
++
++void AGuLiCommanderGameState::ResetAuthoritativeUnitMovementMultipliers()
++{
++	if (!HasAuthority() || UnitMovementMultipliers.IsEmpty()) return;
++	UnitMovementMultipliers.Reset();
++	ForceNetUpdate();
+ }
+ 
+ void AGuLiCommanderGameState::SetAuthoritativeSoldierMovementTuning(
+--- before/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp
++++ Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp
+@@ -848,10 +848,7 @@
+ 				->GetDefaultSoldierDefinition().MovementSpeedCmPerSecond;
+ 		}
+ 	}
+-	const float EffectivePredictionDistance = GuLiRuntimeTuning::CalculatePredictionDistance(
+-		EffectiveMoveSpeedCmPerSecond,
+-		PredictionDurationSeconds,
+-		MaximumPredictionDistanceCentimeters);
++	const auto* MovementGameState = GetWorld()->GetGameState<AGuLiCommanderGameState>();
+ 	TSet<FGuLiSoldierId> AddedSoldiers;
+ 	for (const FGuLiControlCohortDescriptor& Cohort : Selection.Cohorts)
+ 	{
+@@ -915,7 +912,11 @@
+ 			Prediction.ClientCommandId = ClientCommandId;
+ 			Prediction.StartTimeSeconds = Now;
+ 			Prediction.Direction = FVector(ToTarget.X, ToTarget.Y, 0.0).GetSafeNormal();
+-			Prediction.MaximumDistance = FMath::Min(Distance, EffectivePredictionDistance);
++			const float UnitMoveSpeed = MovementGameState
++				? MovementGameState->GetEffectiveUnitMoveSpeedCmPerSecond(ReliableState->Team, ReliableState->UnitTypeId)
++				: EffectiveMoveSpeedCmPerSecond;
++			Prediction.MaximumDistance = FMath::Min(Distance, GuLiRuntimeTuning::CalculatePredictionDistance(
++				UnitMoveSpeed, PredictionDurationSeconds, MaximumPredictionDistanceCentimeters));
+ 			Prediction.TargetYawDegrees = Prediction.Direction.Rotation().Yaw;
+ 		}
+ 	}
+@@ -2443,8 +2444,8 @@
+ 	}
+ 	const float CorrectionMultiplier = FMath::IsFinite(MaximumCorrectionSpeedMultiplier)
+ 		? FMath::Clamp(MaximumCorrectionSpeedMultiplier, 1.0f, 3.0f) : 3.0f;
+-	const double MaximumDisplayedStep = static_cast<double>(StandardMoveSpeed) * CorrectionMultiplier
+-		* (FMath::IsFinite(DeltaSeconds) ? FMath::Max(0.0f, DeltaSeconds) : 0.0f);
++	const auto* MovementGameState = GetWorld()->GetGameState<AGuLiCommanderGameState>();
++	const double DisplayedStepSeconds = FMath::IsFinite(DeltaSeconds) ? FMath::Max(0.0f, DeltaSeconds) : 0.0f;
+ 
+ 	{
+ 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_Interpolation);
+@@ -2518,6 +2519,12 @@
+ 				// at a bounded speed, without an asymptotic tail or extra normal-move lag.
+ 				const FVector PreviousLocation = Soldier.PresentedTransform.GetLocation();
+ 				const FVector DisplayedDelta = PresentedTransform.GetLocation() - PreviousLocation;
++				// A movement upgrade changes the legal unit speed, not just its server
++				// simulation. A base-speed cap makes a fast model fall behind its shots.
++				const float UnitMoveSpeed = MovementGameState
++					? MovementGameState->GetEffectiveUnitMoveSpeedCmPerSecond(ReliableState.Team, ReliableState.UnitTypeId)
++					: StandardMoveSpeed;
++				const double MaximumDisplayedStep = static_cast<double>(UnitMoveSpeed) * CorrectionMultiplier * DisplayedStepSeconds;
+ 				PresentedTransform.SetLocation(PreviousLocation
+ 					+ DisplayedDelta.GetClampedToMaxSize(MaximumDisplayedStep));
+ 			}

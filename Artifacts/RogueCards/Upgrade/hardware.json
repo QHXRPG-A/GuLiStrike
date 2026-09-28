@@ -1,0 +1,28 @@
+{
+  "cpu": {
+    "Name": "Intel(R) Core(TM) i9-14900KF",
+    "NumberOfCores": 24,
+    "NumberOfLogicalProcessors": 32
+  },
+  "target": "Editor Win64 Development",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "gpu": [
+    {
+      "Name": "Mirage Driver",
+      "DriverVersion": "2.0.105.0"
+    },
+    {
+      "Name": "Sharing Monitor",
+      "DriverVersion": "12.35.25.181"
+    },
+    {
+      "Name": "GameViewer Virtual Display Adapter",
+      "DriverVersion": "15.6.5.199"
+    },
+    {
+      "Name": "NVIDIA GeForce RTX 4090",
+      "DriverVersion": "32.0.15.9186"
+    }
+  ],
+  "engine": "UE5.7 source"
+}

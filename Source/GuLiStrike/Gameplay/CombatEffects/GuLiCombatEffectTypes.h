@@ -214,6 +214,9 @@ struct GULISTRIKE_API FGuLiCombatEffectCounters
 
 namespace GuLiCombatEffects
 {
+	// Ground collision and its presentation buffer share one cadence. Render only
+	// the part of a straight trajectory whose collision sweep has completed.
+	inline constexpr float GroundProjectileStepSeconds = 0.2f;
 	GULISTRIKE_API FVector LiftPosition(const FGuLiCombatEffectState& State, float Age);
 	/** Pure, fixed-step, seed-stable flight. Caller owns target refresh and authoritative swept collision. */
 	GULISTRIKE_API FVector AdvanceProjectile(FGuLiCombatEffectState& State, float NewAge, float DeltaSeconds);

@@ -1,0 +1,9 @@
+{
+  "reason": "Requested real-unit 1000-unit VFX performance fixture exceeded the existing crowd manager capacity with the map initial population still alive.",
+  "assertion": "ActiveAgents.Num() < MaxAgents; Ground crowd capacity 1024 exhausted; update CrowdManager MaxAgents.",
+  "source": "Source/GuLiStrike/Gameplay/Units/GuLiGroundCrowdManager.cpp:47",
+  "time_utc": "2026-09-28 10:54:03",
+  "asset_changes_lost": false,
+  "resolution": "Temporary benchmark CDO MaxAgents=4096 before PIE creation, restored to 1024 at end; no production crowd code or config change.",
+  "benchmark_adapters": "Tagged temporary population-cap override removed after fixture creation; cap restores to 300."
+}

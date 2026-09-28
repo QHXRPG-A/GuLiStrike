@@ -1,0 +1,328 @@
+[
+  {
+    "name": "PositionRoot",
+    "parent": null,
+    "loc": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rot": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "HoverPivot",
+    "parent": "PositionRoot",
+    "loc": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rot": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "FlipPivot",
+    "parent": "HoverPivot",
+    "loc": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rot": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "ArtworkCenter",
+    "parent": "FlipPivot",
+    "loc": [
+      0.0,
+      -0.189,
+      -0.8745
+    ],
+    "rot": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "CardFace",
+    "parent": "ArtworkCenter",
+    "loc": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rot": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_Base.S_Card_Base",
+    "mesh_origin": [
+      0.0,
+      0.18855483829975128,
+      0.0
+    ],
+    "mesh_extent": [
+      15.0,
+      9.834766387939453e-07,
+      22.5
+    ],
+    "materials": [
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon.MI_Card_Moon"
+    ]
+  },
+  {
+    "name": "CardText",
+    "parent": "ArtworkCenter",
+    "loc": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rot": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_UI.S_Card_UI",
+    "mesh_origin": [
+      -0.000209808349609375,
+      0.7916965484619141,
+      1.5995674133300781
+    ],
+    "mesh_extent": [
+      12.985208511352539,
+      0.5011140704154968,
+      23.583396911621094
+    ],
+    "materials": [
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon_UI.MI_Card_Moon_UI"
+    ]
+  },
+  {
+    "name": "CardFrame",
+    "parent": "ArtworkCenter",
+    "loc": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rot": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Base.S_Deck_Base",
+    "mesh_origin": [
+      0.07271766662597656,
+      0.10217100381851196,
+      0.7776966094970703
+    ],
+    "mesh_extent": [
+      16.08735466003418,
+      1.0593619346618652,
+      24.211673736572266
+    ],
+    "materials": [
+      "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Deck_Base.M_Deck_Base"
+    ]
+  },
+  {
+    "name": "CardPictograms",
+    "parent": "ArtworkCenter",
+    "loc": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rot": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Pictograms.S_Deck_Pictograms",
+    "mesh_origin": [
+      -0.00010967254638671875,
+      0.7835221290588379,
+      2.1900863647460938
+    ],
+    "mesh_extent": [
+      12.448083877563477,
+      0.44697102904319763,
+      22.769237518310547
+    ],
+    "materials": [
+      "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Deck_Base.M_Deck_Base"
+    ]
+  },
+  {
+    "name": "CardVignette",
+    "parent": "ArtworkCenter",
+    "loc": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rot": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Deck_Vignette.S_Deck_Vignette",
+    "mesh_origin": [
+      0.0,
+      0.19879844784736633,
+      0.0
+    ],
+    "mesh_extent": [
+      15.0,
+      9.834766387939453e-07,
+      22.5
+    ],
+    "materials": [
+      "/Game/Assets/card/ParallaxCardMaterial/Materials/M_Deck_Vignette.M_Deck_Vignette"
+    ]
+  },
+  {
+    "name": "CardBack",
+    "parent": "ArtworkCenter",
+    "loc": [
+      0.0,
+      -0.55,
+      0.0
+    ],
+    "rot": [
+      0.0,
+      0.0,
+      180.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "mesh": "/Game/Assets/card/ParallaxCardMaterial/Geometry/S_Card_Base.S_Card_Base",
+    "mesh_origin": [
+      0.0,
+      0.18855483829975128,
+      0.0
+    ],
+    "mesh_extent": [
+      15.0,
+      9.834766387939453e-07,
+      22.5
+    ],
+    "materials": [
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardBack.M_CardBack"
+    ]
+  },
+  {
+    "name": "EditableText",
+    "parent": "ArtworkCenter",
+    "loc": [
+      0.0,
+      0.23,
+      -18.15
+    ],
+    "rot": [
+      0.0,
+      0.0,
+      90.0
+    ],
+    "scale": [
+      0.031421,
+      0.031421,
+      0.031421
+    ]
+  },
+  {
+    "name": "ConfirmationFlash",
+    "parent": "PositionRoot",
+    "loc": [
+      0.0,
+      5.0,
+      0.0
+    ],
+    "rot": [
+      90.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      0.65,
+      0.65,
+      0.65
+    ],
+    "mesh": "/Engine/BasicShapes/Plane.Plane",
+    "mesh_origin": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "mesh_extent": [
+      50.0,
+      50.0,
+      8.040613564774899e-15
+    ],
+    "materials": [
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/M_CardConfirmFlash.M_CardConfirmFlash"
+    ]
+  }
+]

@@ -50,6 +50,7 @@ WIRING = {
 
 # 由 C++ Config settings 通过软引用接线；成功导入后不应被误报为未接线。
 CONFIG_WIRED_TABLES = {
+    "DT_GuLiStrikeRogueCards_Cards",
     "DT_GuLiStrikeVfx_Effects",
     "DT_GuLiStrikeGameTexts_Texts",
     "DT_GuLiStrikeBuildings_Buildings",
@@ -79,6 +80,8 @@ def to_cell(value):
         return ""
     if isinstance(value, bool):
         return "True" if value else "False"
+    if isinstance(value, list):
+        return "(" + ",".join(json.dumps(item, ensure_ascii=False) for item in value) + ")"
     if isinstance(value, dict):  # 向量：结构体 ImportText 需要带括号格式
         return "(X={:.6f},Y={:.6f},Z={:.6f})".format(
             float(value["X"]), float(value["Y"]), float(value["Z"]))
@@ -119,6 +122,8 @@ def vfx_table_matches_source(dt, source_rows):
             elif isinstance(value, float):
                 if actual is None or not math.isclose(float(actual), value, rel_tol=5.e-6, abs_tol=1.e-6):return False
             elif isinstance(value, (int, bool)):
+                if actual != value:return False
+            elif isinstance(value, list):
                 if actual != value:return False
             else:
                 # Unreal may qualify a soft path with its class; compare the complete object path.
@@ -228,6 +233,8 @@ def import_table(table_name, table_cfg):
                         round(a, 3) == round(float(b), 3) for a, b in zip(ev_vec, [sv["X"], sv["Y"], sv["Z"]]))
                 elif isinstance(sv, bool):
                     ok_row = ok_row and bool(ev) == sv
+                elif isinstance(sv, list):
+                    ok_row = ok_row and ev == sv
                 elif isinstance(sv, (int, float)):
                     # DataTable JSON export formats large floats with limited significant digits
                     # (for example 13333.333 -> 13333.3). Compare with a tight relative

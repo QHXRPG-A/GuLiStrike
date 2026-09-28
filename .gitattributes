@@ -26,3 +26,10 @@
 *.py text
 *.json text
 *.uplugin text
+
+# Preserve archived image-generation prompt bytes and their recorded SHA-256 values.
+ArtSource/UI/WarMachineTarotCards/**/Prompts/*.txt -text
+.agents/skills/guli-rogue-card-production/references/prompts/wm01-v7/*.txt -text
+
+# Large runtime evidence exceeds GitHub's regular blob limit; retain it through LFS.
+Artifacts/Diagnostics/20260928-movement-projectiles/post-build-observation.json filter=lfs diff=lfs merge=lfs -text

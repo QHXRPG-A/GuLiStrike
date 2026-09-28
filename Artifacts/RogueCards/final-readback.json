@@ -1,0 +1,80 @@
+{
+  "success": true,
+  "gameplay": "not_run",
+  "visual_review": "user_pending",
+  "review": {
+    "map": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Maps/LVL_WarMachineTarotReview",
+    "director": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Maps/LVL_WarMachineTarotReview.LVL_WarMachineTarotReview:PersistentLevel.BP_CardRevealDirector_C_0",
+    "tuning": {
+      "MaximumTilt": 16.0,
+      "CardAreaMultiplier": 2.0,
+      "CardThicknessMultiplier": 2.0,
+      "EntryDuration": 0.5,
+      "FlipDuration": 0.44999998807907104,
+      "FlashDuration": 0.25,
+      "ExitDuration": 0.5,
+      "ExternalConfirmation": false,
+      "UseLiveCardData": false
+    },
+    "fronts": [
+      "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_ModelComic_v9.MI_FireRate_ModelComic_v9",
+      "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_ModelComic_v9.MI_MissileDamage_ModelComic_v9",
+      "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_ModelComic_v9.MI_HighSpeed_ModelComic_v9"
+    ],
+    "frames": [
+      "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_UI_Comic_v6.MI_FireRate_UI_Comic_v6",
+      "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_UI_Comic_v6.MI_MissileDamage_UI_Comic_v6",
+      "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_UI_Comic_v6.MI_HighSpeed_UI_Comic_v6"
+    ],
+    "legacy_text_table": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Data/DT_CardText.DT_CardText"
+  },
+  "original_demo_fronts": [
+    "MI_Card_Moon",
+    "MI_Card_Star",
+    "MI_Card_Tower"
+  ],
+  "candidates": [
+    "01.01",
+    "03.01",
+    "02.01"
+  ],
+  "settings": {
+    "Cards": "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards.DT_GuLiStrikeRogueCards_Cards",
+    "Texts": "/Game/GuLiStrike/Data/ST_GuLiStrikeGameTexts.ST_GuLiStrikeGameTexts",
+    "DirectorClass": "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardRevealDirector.BP_CardRevealDirector_C",
+    "CaptureMaterial": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardCaptureUI.M_CardCaptureUI",
+    "FrameMaterial": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/MI_WarMachineFrame.MI_WarMachineFrame"
+  },
+  "shaders": {
+    "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardCaptureUI.M_CardCaptureUI": {
+      "compiled_ok": true,
+      "errors": []
+    },
+    "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/M_CelCardParallax_ModelComic_v9": {
+      "compiled_ok": true,
+      "errors": []
+    }
+  },
+  "legacy_entries": [
+    {
+      "path": "/Game/GuLiStrike/Cards/RevealDemo/Maps/LVL_CardRevealDemo",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview",
+      "class": "ObjectRedirector"
+    }
+  ],
+  "battle": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "reloaded_from_disk": true,
+    "marker": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_24",
+    "label": "RogueCards_F4_Entry",
+    "position": [
+      -3200.0,
+      72500.0,
+      -1200.0
+    ],
+    "instructions": "Rogue Cards: enter a ready commander seat, press F4. Left FireRate +20%, middle MissileDamage +20%, right MoveSpeed +50%. Click once to flip, click again to confirm. Esc cancels before submit. Battlefield continues with background blur. Runtime and visual acceptance pending player review."
+  }
+}

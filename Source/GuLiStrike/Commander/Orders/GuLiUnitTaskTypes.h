@@ -2,6 +2,7 @@
 #include "CoreMinimal.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "GameplayTagContainer.h"
+#include "Commander/Behavior/GuLiCommanderOperationTypes.h"
 #include "GuLiUnitTaskTypes.generated.h"
 
 class APawn;
@@ -113,6 +114,9 @@ struct FGuLiTaskExecution
 	bool bPlanning = false;
 	bool bWaitingForTarget = false;
 	EGuLiTaskStatus Status = EGuLiTaskStatus::Waiting;
+	/** Latched until the StateTree explicitly consumes the order's terminal result. */
+	bool bTerminalObserved = false;
+	bool bFinishRequested = false;
 	FString Error;
 };
 
@@ -134,6 +138,11 @@ struct FGuLiUnitTaskState
 	bool bBehaviorStepDone = true;
 	bool bUnregisterPending = false;
 	uint64 LastBehaviorRequestRound = 0;
+	uint64 NextOperationSerial = 0;
+	uint64 LastOperationRequestRound = 0;
+	FGuLiCommanderOperationToken ActiveOperation;
+	FGuLiCommanderOperationReceipt OperationReceipt;
+	EGuLiCommanderControlState OperationControl = EGuLiCommanderControlState::Normal;
 	TArray<FGuLiUnitTaskCommand> Queue;
 	TOptional<FGuLiTaskExecution> Active;
 	/** New move being prepared while Active continues along its committed route. Server only. */

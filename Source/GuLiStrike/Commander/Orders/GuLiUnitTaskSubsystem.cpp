@@ -480,6 +480,7 @@ uint32 UGuLiUnitTaskSubsystem::GetBehaviorFacts(FGuLiTaskUnitId Unit) const
 		Facts |= Active;
 		if (Task.bAutomatic) Facts |= Automatic;
 		if (Task.bStarted) Facts |= Started;
+		if (Task.bTerminalObserved) Facts |= OrderTerminal;
 		if (Task.bWaitingForTarget || Task.Status == EGuLiTaskStatus::Waiting) Facts |= WaitingTarget;
 		switch (Task.Command.Kind)
 		{
@@ -507,6 +508,14 @@ uint32 UGuLiUnitTaskSubsystem::GetBehaviorFacts(FGuLiTaskUnitId Unit) const
 	if (const auto* Pawn = State->Context.Pawn.Get())
 		if (UGuLiExternalUnitControlComponent::AreActorActionsLocked(Pawn)
 			|| Pawn->FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsRouting()) Facts |= Suspended;
+	if (State->ActiveOperation.IsValid())
+	{
+		const auto Desired = State->bCancelPending ? EGuLiCommanderControlState::SafeExit
+			: State->bStopped ? EGuLiCommanderControlState::Stopped
+			: State->PendingMove.IsSet() ? EGuLiCommanderControlState::ReplacementMove : EGuLiCommanderControlState::Normal;
+		if (State->OperationControl != Desired) Facts |= ControlChanged;
+		if (!IsBehaviorOperationCurrent(Unit, State->ActiveOperation)) Facts |= OperationStale;
+	}
 	return Facts;
 }
 
@@ -556,23 +565,45 @@ void UGuLiUnitTaskSubsystem::PollPendingMove(FGuLiUnitTaskState& State)
 bool UGuLiUnitTaskSubsystem::RunActiveTask(FGuLiUnitTaskState& State, double Now)
 {
 	if (!State.Active.IsSet()) return true;
+	ObserveActiveTask(State, true);
+	if (!State.Active->bTerminalObserved) return false;
+	return FinishActiveTask(State, Now) && !State.Active.IsSet();
+}
+
+void UGuLiUnitTaskSubsystem::ObserveActiveTask(FGuLiUnitTaskState& State, bool bAllowStart)
+{
+	if (!State.Active.IsSet() || State.Active->bTerminalObserved) return;
 	auto& Task = *State.Active;
+	if (!Task.bStarted && !bAllowStart) return;
 	Task.Status = Task.bStarted ? Poll(State) : Start(State);
-	if (Task.Status == EGuLiTaskStatus::Waiting) return false;
+	if (Task.Status == EGuLiTaskStatus::Waiting) return;
 	Task.bStarted = true;
-	if (Task.Status == EGuLiTaskStatus::Running) return false;
+	Task.bTerminalObserved = Task.Status == EGuLiTaskStatus::Completed || Task.Status == EGuLiTaskStatus::WorkUnitComplete
+		|| Task.Status == EGuLiTaskStatus::Failed;
+}
+
+bool UGuLiUnitTaskSubsystem::FinishActiveTask(FGuLiUnitTaskState& State, double Now)
+{
+	if (!State.Active.IsSet()) return true;
+	auto& Task = *State.Active;
+	if (!Task.bTerminalObserved) return false;
 	if (Task.Status == EGuLiTaskStatus::WorkUnitComplete && !Task.bAutomatic && State.Queue.IsEmpty()
 		&& Task.Command.Kind == EGuLiUnitTaskKind::Special && Task.Command.SpecialTaskId == int32(EGuLiCommanderBehavior::Mining))
 	{
-		Task.bStarted = false; Task.ExecutionId = AllocateExecutionId(); Task.Status = EGuLiTaskStatus::Waiting; return false;
+		Task.bStarted = false; Task.bTerminalObserved = false;
+		Task.ExecutionId = AllocateExecutionId(); Task.Status = EGuLiTaskStatus::Waiting; return true;
 	}
-	if (Task.Status == EGuLiTaskStatus::Failed)
+	if (!Task.bFinishRequested)
 	{
-		if (Task.Command.Kind == EGuLiUnitTaskKind::Move) LogMoveFailure(State, Task, TEXT("Execution"));
-		else State.Error = Task.Error.IsEmpty() ? GuLiGameText::Text(TEXT("UI.UnitTaskSubsystem.125")) : Task.Error;
+		Task.bFinishRequested = true;
+		if (Task.Status == EGuLiTaskStatus::Failed)
+		{
+			if (Task.Command.Kind == EGuLiUnitTaskKind::Move) LogMoveFailure(State, Task, TEXT("Execution"));
+			else State.Error = Task.Error.IsEmpty() ? GuLiGameText::Text(TEXT("UI.UnitTaskSubsystem.125")) : Task.Error;
+		}
+		if (Task.bAutomatic)
+			for (auto& Entry : State.AutomaticBehaviors) if (Entry.BehaviorId == Task.Command.SpecialTaskId) Entry.ConsumeIfInitial();
 	}
-	if (Task.bAutomatic)
-		for (auto& Entry : State.AutomaticBehaviors) if (Entry.BehaviorId == Task.Command.SpecialTaskId) Entry.ConsumeIfInitial();
 	if (!Cancel(State))
     {
         State.bCancelPending = true;
@@ -610,12 +641,10 @@ void UGuLiUnitTaskSubsystem::TakeAutomaticTask(FGuLiUnitTaskState& State, double
 	}
 }
 
-bool UGuLiUnitTaskSubsystem::RunWorkAction(FGuLiUnitTaskState& State, EGuLiCommanderBehaviorStep Step, double Now)
+void UGuLiUnitTaskSubsystem::ExecuteWorkAction(FGuLiUnitTaskState& State, EGuLiCommanderBehaviorStep Step)
 {
 	using Action = EGuLiMiningBehaviorAction;
 	using Operation = EGuLiCommanderBehaviorStep;
-	const auto BeforePhase = GetWorkPhase(State.Context.Unit);
-	const auto BeforeResult = GetWorkResult(State.Context.Unit);
 	auto* Pawn = State.Context.Pawn.Get();
 	auto* Miner = Cast<AGuLiMiningVehiclePawn>(Pawn);
 	auto* Work = Pawn ? Pawn->FindComponentByClass<UGuLiConstructionWorkComponent>() : nullptr;
@@ -648,6 +677,13 @@ bool UGuLiUnitTaskSubsystem::RunWorkAction(FGuLiUnitTaskState& State, EGuLiComma
 	case Operation::AdvanceWait: if (Advance) Advance->WaitForBehaviorTarget(Soldier); break;
 	default: break;
 	}
+}
+
+bool UGuLiUnitTaskSubsystem::RunWorkAction(FGuLiUnitTaskState& State, EGuLiCommanderBehaviorStep Step, double Now)
+{
+	const auto BeforePhase = GetWorkPhase(State.Context.Unit);
+	const auto BeforeResult = GetWorkResult(State.Context.Unit);
+	ExecuteWorkAction(State, Step);
 	if (State.bCancelPending)
 	{
 		if (!Cancel(State)) { if (State.Active.IsSet()) State.Active->Status = EGuLiTaskStatus::WaitingSafeExit; return false; }
@@ -669,6 +705,26 @@ void UGuLiUnitTaskSubsystem::CommitBehaviorRequests()
 	for (const auto& Request : Requests)
 	{
 		auto* State = States.Find(Request.Unit);
+		if (Request.Token.IsValid())
+		{
+			if (!State || !IsBehaviorOperationCurrent(Request.Unit, Request.Token)) continue;
+			const auto BeforePhase = GetWorkPhase(Request.Unit);
+			const auto BeforeResult = GetWorkResult(Request.Unit);
+			const bool bWasTerminal = State->Active.IsSet() && State->Active->bTerminalObserved;
+			State->bBehaviorStepDone = true;
+			const auto Result = CommitBehaviorOperation(*State, Request.Step, Now);
+			State->OperationReceipt = {Request.Token, Result};
+			const auto AfterResult = GetWorkResult(Request.Unit);
+			const bool bTerminalChanged = State->Active.IsSet() && State->Active->bTerminalObserved && !bWasTerminal;
+			const bool bPhaseChanged = BeforePhase != GetWorkPhase(Request.Unit) || BeforeResult != AfterResult;
+			const bool bImmediate = bTerminalChanged || (Request.Step == EGuLiCommanderBehaviorStep::FinishOrder && !State->Active.IsSet())
+				|| Request.Step == EGuLiCommanderBehaviorStep::CancelPending
+				|| (bPhaseChanged && AfterResult != EGuLiCommanderWorkResult::Running && AfterResult != EGuLiCommanderWorkResult::None);
+			if (bImmediate && Result != EGuLiCommanderOperationResult::Deferred
+				&& Request.Step != EGuLiCommanderBehaviorStep::TakeManual && Request.Step != EGuLiCommanderBehaviorStep::TakeAutomatic
+				&& Request.Step != EGuLiCommanderBehaviorStep::StartOrder) State->bBehaviorStepDone = false;
+			continue;
+		}
 		if (!State || State->bBehaviorStepDone || State->Version != Request.Version) continue;
 		State->bBehaviorStepDone = true;
 		switch (Request.Step)
@@ -724,7 +780,11 @@ void UGuLiUnitTaskSubsystem::Tick(float DeltaTime)
 		if (!bPending) break;
 	}
 	for (auto& Pair : States) if (!Pair.Value.bBehaviorStepDone)
-		ReportBehaviorError(Pair.Key, TEXT("Commander StateTree did not produce a bounded operation."));
+	{
+		// A persistent graph can use the full immediate-transition budget and resume next fixed step.
+		if (Pair.Value.ActiveOperation.IsValid()) Pair.Value.bBehaviorStepDone = true;
+		else ReportBehaviorError(Pair.Key, TEXT("Commander StateTree did not produce a bounded operation."));
+	}
 	for (auto It = States.CreateIterator(); It; ++It)
 		if (It.Value().bUnregisterPending && !It.Value().bCancelPending)
 		{

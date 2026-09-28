@@ -1,0 +1,249 @@
+{
+  "source": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_EqualLegs_v4\\WarMachine_EqualLegs_Editable.blend",
+  "editable": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelFeet_v5\\WarMachine_LevelFeet_Editable.blend",
+  "parts": 279,
+  "triangles": 21292,
+  "front_connector_down_degrees": 17.074193387000076,
+  "front_foot_offset_author_units": [
+    -0.4558718204498291,
+    -0.4300675690174103,
+    0.0
+  ],
+  "front_foot_move_from_v4_m": {
+    "F_L": [
+      -0.25169387459754944,
+      -0.23744627833366394,
+      -2.0792293548583984
+    ],
+    "F_R": [
+      -0.25169387459754944,
+      0.23744627833366394,
+      -2.0792293548583984
+    ]
+  },
+  "axes": [
+    {
+      "corner": "F_L",
+      "length_m": 9.910896920150105,
+      "start_m": [
+        4.188459396362305,
+        6.424403190612793,
+        16.273221969604492
+      ],
+      "end_pin_m": [
+        10.431743621826172,
+        12.31429386138916,
+        11.317773818969727
+      ],
+      "down_degrees": 29.99999804930189
+    },
+    {
+      "corner": "F_R",
+      "length_m": 9.910896920150105,
+      "start_m": [
+        4.188459396362305,
+        -6.424403190612793,
+        16.273221969604492
+      ],
+      "end_pin_m": [
+        10.431743621826172,
+        -12.31429386138916,
+        11.317773818969727
+      ],
+      "down_degrees": 29.99999804930189
+    },
+    {
+      "corner": "R_L",
+      "length_m": 9.910895284327953,
+      "start_m": [
+        -9.857049942016602,
+        6.424403190612793,
+        14.193992614746094
+      ],
+      "end_pin_m": [
+        -14.32677173614502,
+        13.751815795898438,
+        9.238545417785645
+      ],
+      "down_degrees": 29.999997128714952
+    },
+    {
+      "corner": "R_R",
+      "length_m": 9.910895284327953,
+      "start_m": [
+        -9.857049942016602,
+        -6.424403190612793,
+        14.193992614746094
+      ],
+      "end_pin_m": [
+        -14.32677173614502,
+        -13.751815795898438,
+        9.238545417785645
+      ],
+      "down_degrees": 29.999997128714952
+    }
+  ],
+  "beam_axes_max_change_m": 0.0,
+  "four_arm_length_spread_m": 1.6358221515133664e-06,
+  "four_disc_height_spread_m": 4.76837158203125e-07,
+  "contacts": [
+    {
+      "corner": "F_L",
+      "gap_m": -4.76837158203125e-07,
+      "base_center_error_xy_m": 6.877043295791605e-06,
+      "cap_top_m": 6.246788024902344,
+      "disc_axis": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "corner": "F_R",
+      "gap_m": -4.76837158203125e-07,
+      "base_center_error_xy_m": 6.877043295791605e-06,
+      "cap_top_m": 6.246788024902344,
+      "disc_axis": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "corner": "R_L",
+      "gap_m": 0.0,
+      "base_center_error_xy_m": 2.6973983046972182e-06,
+      "cap_top_m": 6.2467875480651855,
+      "disc_axis": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "corner": "R_R",
+      "gap_m": 0.0,
+      "base_center_error_xy_m": 2.6973983046972182e-06,
+      "cap_top_m": 6.2467875480651855,
+      "disc_axis": [
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "pin_holes": [
+    {
+      "name": "WM suspension pivot eye_F_L",
+      "axis_error_m": 1.1680077279964342e-06,
+      "radial_clearance_m": 0.15745966915978227
+    },
+    {
+      "name": "WM suspension clevis lug_F_L inner",
+      "axis_error_m": 2.6656007498500226e-07,
+      "radial_clearance_m": 0.12596711445511677
+    },
+    {
+      "name": "WM suspension clevis lug_F_L outer",
+      "axis_error_m": 2.0230487285229133e-06,
+      "radial_clearance_m": 0.12596614309217813
+    },
+    {
+      "name": "WM suspension pivot eye_F_R",
+      "axis_error_m": 1.1680077279964342e-06,
+      "radial_clearance_m": 0.15745966915978227
+    },
+    {
+      "name": "WM suspension clevis lug_F_R inner",
+      "axis_error_m": 2.6656007498500226e-07,
+      "radial_clearance_m": 0.12596711445511677
+    },
+    {
+      "name": "WM suspension clevis lug_F_R outer",
+      "axis_error_m": 2.0230487285229133e-06,
+      "radial_clearance_m": 0.12596614309217813
+    },
+    {
+      "name": "WM suspension pivot eye_R_L",
+      "axis_error_m": 2.218221910706567e-06,
+      "radial_clearance_m": 0.15745768720914666
+    },
+    {
+      "name": "WM suspension clevis lug_R_L inner",
+      "axis_error_m": 1.1496127558938211e-06,
+      "radial_clearance_m": 0.12596642544532088
+    },
+    {
+      "name": "WM suspension clevis lug_R_L outer",
+      "axis_error_m": 1.066240299940009e-06,
+      "radial_clearance_m": 0.12596629181842334
+    },
+    {
+      "name": "WM suspension pivot eye_R_R",
+      "axis_error_m": 2.218221910706567e-06,
+      "radial_clearance_m": 0.15745768720914666
+    },
+    {
+      "name": "WM suspension clevis lug_R_R inner",
+      "axis_error_m": 1.1496127558938211e-06,
+      "radial_clearance_m": 0.12596642544532088
+    },
+    {
+      "name": "WM suspension clevis lug_R_R outer",
+      "axis_error_m": 1.066240299940009e-06,
+      "radial_clearance_m": 0.12596629181842334
+    }
+  ],
+  "leg_disc_surface_intersections": [],
+  "invalid_rebuilt_meshes": [],
+  "untouched_count": 219,
+  "untouched_identical": true,
+  "regenerated_identical_front_parts": [
+    "WM suspension diagonal_F_L",
+    "WM suspension pivot eye_F_L",
+    "WM suspension cross pin_F_L",
+    "WM suspension diagonal_F_R",
+    "WM suspension pivot eye_F_R",
+    "WM suspension cross pin_F_R"
+  ],
+  "disc_translation_error_m": 4.712160915387242e-07,
+  "symmetry_error_m": 3.814697265625e-06,
+  "bounds_m": [
+    [
+      -27.327335357666016,
+      -28.807466506958008,
+      0.0
+    ],
+    [
+      24.4560546875,
+      28.807466506958008,
+      41.721832275390625
+    ]
+  ],
+  "sockets_m": {
+    "Muzzle_Cannon_L": [
+      17.6986026763916,
+      14.6123685836792,
+      23.358587859007738
+    ],
+    "Muzzle_Cannon_R": [
+      17.6986026763916,
+      -14.6123685836792,
+      23.358587859007738
+    ],
+    "Muzzle_Missile_R": [
+      -7.2916035652160645,
+      -9.321683883666992,
+      38.77283823284807
+    ],
+    "Muzzle_Missile_L": [
+      -7.2916035652160645,
+      9.321683883666992,
+      38.77283823284807
+    ]
+  },
+  "art_review": "pending_user_review",
+  "assistant_visual_inspection": "not_performed_per_user_instruction",
+  "ue_import": "not_performed",
+  "card_generation": "waiting_for_model_approval"
+}

@@ -1,0 +1,136 @@
+{
+  "success": true,
+  "compile": {
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_ParallaxRevealCard": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "/Game/GuLiStrike/Cards/RevealDemo/UI/WBP_CardRevealHUD": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "/Game/GuLiStrike/Cards/WarMachineTarot/UI/WBP_CardText": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    }
+  },
+  "materials": [
+    {
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_Comic_v6.MI_FireRate_Comic_v6",
+      "frame": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_UI_Comic_v6.MI_FireRate_UI_Comic_v6",
+      "texture": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_Layers_Comic_v6.T_FireRate_Layers_Comic_v6",
+      "global_depth": 4.0
+    },
+    {
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_Comic_v6.MI_MissileDamage_Comic_v6",
+      "frame": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_UI_Comic_v6.MI_MissileDamage_UI_Comic_v6",
+      "texture": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_MissileDamage_Layers_Comic_v6.T_MissileDamage_Layers_Comic_v6",
+      "global_depth": 4.0
+    },
+    {
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_Comic_v6.MI_HighSpeed_Comic_v6",
+      "frame": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_UI_Comic_v6.MI_HighSpeed_UI_Comic_v6",
+      "texture": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_Layers_Comic_v6.T_HighSpeed_Layers_Comic_v6",
+      "global_depth": 4.0
+    }
+  ],
+  "map": {
+    "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview",
+    "actors": [
+      {
+        "label": "WarMachine_Key",
+        "class": "/Script/Engine.DirectionalLight",
+        "location": [
+          0.0,
+          250.0,
+          120.0
+        ]
+      },
+      {
+        "label": "WarMachine_Ambient",
+        "class": "/Script/Engine.SkyLight",
+        "location": [
+          0.0,
+          0.0,
+          100.0
+        ]
+      },
+      {
+        "label": "WarMachine_PlayerStart",
+        "class": "/Script/Engine.PlayerStart",
+        "location": [
+          0.0,
+          140.0,
+          0.0
+        ]
+      },
+      {
+        "label": "WarMachine_CardDirector",
+        "class": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector.BP_CardRevealDirector_C",
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "game_mode": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode.BP_CardRevealGameMode_C",
+    "player_controller": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController.BP_CardRevealPlayerController_C",
+    "camera": {
+      "location": [
+        0.0,
+        140.0,
+        0.0
+      ],
+      "fov": 50.0,
+      "exposure": "<AutoExposureMethod.AEM_MANUAL: 2>"
+    },
+    "tuning": {
+      "CardAreaMultiplier": 2.0,
+      "CardThicknessMultiplier": 2.0,
+      "MaximumTilt": 16.0,
+      "EntryDuration": 0.5,
+      "FlipDuration": 0.44999998807907104,
+      "FlashDuration": 0.25,
+      "ExitDuration": 0.5
+    },
+    "text_table": "/Game/GuLiStrike/Cards/WarMachineTarot/Data/DT_CardText.DT_CardText",
+    "row_ids": [
+      "WarMachine_FireRate",
+      "WarMachine_MissileDamage",
+      "WarMachine_HighSpeed"
+    ],
+    "saved": true
+  },
+  "original_defaults": {
+    "CardAreaMultiplier": 1.0,
+    "CardThicknessMultiplier": 1.0,
+    "MaximumTilt": 12.0,
+    "SimpleCardFrame": false
+  },
+  "original_fronts": [
+    "MI_Card_Moon",
+    "MI_Card_Star",
+    "MI_Card_Tower"
+  ],
+  "checked_packages": 22,
+  "missing_game_dependencies": []
+}

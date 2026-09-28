@@ -1,0 +1,431 @@
+{
+  "success": true,
+  "gameplay_run": false,
+  "assistant_visual_review": "not_performed_per_user_request",
+  "static_preview": {
+    "status": "incomplete_editor_crash",
+    "reason": "2100-pixel render target property edit opened a modal warning inside Slate tick; nested window creation failed with error 87.",
+    "visual_review": "not_performed",
+    "partial_files": [
+      "three-cards-16x10.png",
+      "three-cards-16x9.png"
+    ]
+  },
+  "map": {
+    "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview.LVL_WarMachineTarotReview",
+    "reloaded_from_disk": true,
+    "actors": [
+      {
+        "label": "WarMachine_Key",
+        "class": "/Script/Engine.DirectionalLight"
+      },
+      {
+        "label": "WarMachine_Ambient",
+        "class": "/Script/Engine.SkyLight"
+      },
+      {
+        "label": "WarMachine_PlayerStart",
+        "class": "/Script/Engine.PlayerStart"
+      },
+      {
+        "label": "WarMachine_CardDirector",
+        "class": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector.BP_CardRevealDirector_C"
+      }
+    ],
+    "camera": {
+      "location": [
+        0.0,
+        140.0,
+        0.0
+      ],
+      "fov": 50.0
+    },
+    "game_mode": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode.BP_CardRevealGameMode_C",
+    "tuning": {
+      "MaximumTilt": 16.0,
+      "CardAreaMultiplier": 2.0,
+      "CardThicknessMultiplier": 2.0,
+      "EntryDuration": 0.5,
+      "FlipDuration": 0.44999998807907104,
+      "FlashDuration": 0.25,
+      "ExitDuration": 0.5,
+      "SimpleCardFrame": true
+    }
+  },
+  "materials": [
+    {
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_ModelComic_v9.MI_FireRate_ModelComic_v9",
+      "parent": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardParallax_ModelComic_v9.M_CelCardParallax_ModelComic_v9",
+      "texture": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_Layers_ModelComic_v9.T_FireRate_Layers_ModelComic_v9",
+      "frame": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_FireRate_UI_Comic_v6.MI_FireRate_UI_Comic_v6",
+      "size": [
+        1254,
+        1254
+      ],
+      "global_depth": 4.0,
+      "layers": [
+        {
+          "index": 1,
+          "depth": 0.10000000149011612,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 2,
+          "depth": 0.03999999910593033,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 3,
+          "depth": 0.0,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 4,
+          "depth": -0.4000000059604645,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 5,
+          "depth": -0.75,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.3600000143051147,
+            1.100000023841858,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 6,
+          "depth": -1.100000023841858,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.649999976158142,
+            1.340000033378601,
+            1.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_ModelComic_v9.MI_MissileDamage_ModelComic_v9",
+      "parent": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardParallax_ModelComic_v9.M_CelCardParallax_ModelComic_v9",
+      "texture": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_MissileDamage_Layers_ModelComic_v9.T_MissileDamage_Layers_ModelComic_v9",
+      "frame": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_MissileDamage_UI_Comic_v6.MI_MissileDamage_UI_Comic_v6",
+      "size": [
+        1254,
+        1254
+      ],
+      "global_depth": 4.0,
+      "layers": [
+        {
+          "index": 1,
+          "depth": 0.10000000149011612,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 2,
+          "depth": 0.03999999910593033,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 3,
+          "depth": 0.0,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 4,
+          "depth": -0.4000000059604645,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 5,
+          "depth": -0.75,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.3600000143051147,
+            1.100000023841858,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 6,
+          "depth": -1.100000023841858,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.649999976158142,
+            1.340000033378601,
+            1.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "front": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_ModelComic_v9.MI_HighSpeed_ModelComic_v9",
+      "parent": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/M_CelCardParallax_ModelComic_v9.M_CelCardParallax_ModelComic_v9",
+      "texture": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_Layers_ModelComic_v9.T_HighSpeed_Layers_ModelComic_v9",
+      "frame": "/Game/GuLiStrike/Cards/WarMachineTarot/Materials/MI_HighSpeed_UI_Comic_v6.MI_HighSpeed_UI_Comic_v6",
+      "size": [
+        1254,
+        1254
+      ],
+      "global_depth": 4.0,
+      "layers": [
+        {
+          "index": 1,
+          "depth": 0.10000000149011612,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 2,
+          "depth": 0.03999999910593033,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.2999999523162842,
+            1.0499999523162842,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 3,
+          "depth": 0.0,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.9200000166893005,
+            0.7450000047683716,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 4,
+          "depth": -0.4000000059604645,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.340000033378601,
+            1.0800000429153442,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 5,
+          "depth": -0.75,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.3600000143051147,
+            1.100000023841858,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "index": 6,
+          "depth": -1.100000023841858,
+          "opacity": 1.0,
+          "offset": [
+            0.0,
+            -0.08749999850988388,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.649999976158142,
+            1.340000033378601,
+            1.0,
+            1.0
+          ]
+        }
+      ]
+    }
+  ],
+  "shader": {
+    "compiled_ok": true,
+    "errors": [],
+    "samples": 59
+  },
+  "aperture": "return step(0.045,UV.x)*step(UV.x,0.955)*step(0.043,UV.y)*step(UV.y,0.772);",
+  "text": {
+    "table": "/Game/GuLiStrike/Cards/WarMachineTarot/Data/DT_CardText.DT_CardText",
+    "rows": [
+      "WarMachine_FireRate",
+      "WarMachine_MissileDamage",
+      "WarMachine_HighSpeed"
+    ],
+    "csv": "---,Title,Description\nWarMachine_FireRate,\"NSLOCTEXT(\"\"GuLiStrike.Cards\"\", \"\"WarMachine_FireRate.Title\"\", \"\"增加射速\"\")\",\"NSLOCTEXT(\"\"GuLiStrike.Cards\"\", \"\"WarMachine_FireRate.Description\"\", \"\"提升战争机器的射击频率。\"\")\"\nWarMachine_MissileDamage,\"NSLOCTEXT(\"\"GuLiStrike.Cards\"\", \"\"WarMachine_MissileDamage.Title\"\", \"\"增加导弹伤害\"\")\",\"NSLOCTEXT(\"\"GuLiStrike.Cards\"\", \"\"WarMachine_MissileDamage.Description\"\", \"\"提升战争机器的导弹伤害。\"\")\"\nWarMachine_HighSpeed,\"NSLOCTEXT(\"\"GuLiStrike.Cards\"\", \"\"WarMachine_HighSpeed.Title\"\", \"\"极速机动\"\")\",\"NSLOCTEXT(\"\"GuLiStrike.Cards\"\", \"\"WarMachine_HighSpeed.Description\"\", \"\"提升战争机器的移动速度。\"\")\"\n"
+  },
+  "original_tarot_defaults": {
+    "CardAreaMultiplier": 1.0,
+    "CardThicknessMultiplier": 1.0,
+    "MaximumTilt": 12.0,
+    "SimpleCardFrame": false
+  },
+  "original_tarot_fronts": [
+    "MI_Card_Moon",
+    "MI_Card_Star",
+    "MI_Card_Tower"
+  ],
+  "missing_dependencies": [],
+  "checked_packages": 14,
+  "preview_images": 2
+}

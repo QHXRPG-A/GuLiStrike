@@ -57,7 +57,7 @@ SPELL_FIELD_TABLE = "DT_GuLiStrikeSpellFields_Fields"
 FIELD_REFERENCE_COLUMN = "产生的法术场"
 FIELD_REFERENCE_SHEETS = {"Skills", "WingmanWeapons"}
 
-TYPES = {"int", "float", "bool", "str", "softclass", "softobject"}
+TYPES = {"int", "float", "bool", "str", "str[]", "softclass", "softobject"}
 MARKS = {"Necessary", "Optional"}
 IDENT_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
@@ -67,6 +67,7 @@ CPP_OF = {
     "float": ("float", "0.0f"),
     "bool": ("bool", "false"),
     "str": ("FString", None),
+    "str[]": ("TArray<FString>", None),
     "softclass": ("TSoftClassPtr<UObject>", None),
     "softobject": ("TSoftObjectPtr<UObject>", None),
 }
@@ -157,8 +158,16 @@ def check_value(sheet, col, row_idx, raw):
         if col["necessary"]:
             raise SheetError(f"{where}: 列 '{col['name']}' 标记 Necessary 但单元格为空")
         return {"int": 0, "float": 0.0, "bool": False,
-                "str": "", "softclass": "", "softobject": ""}[col["type"]]
+                "str": "", "str[]": [], "softclass": "", "softobject": ""}[col["type"]]
     t = col["type"]
+    if t == "str[]":
+        try:
+            value = json.loads(raw) if isinstance(raw, str) else None
+        except (ValueError, TypeError):
+            value = None
+        if not isinstance(value, list) or not all(isinstance(v, str) and v.strip() for v in value):
+            raise SheetError(f"{where}: str[] 必须为 JSON 字符串列表")
+        return value
     if t == "int":
         if isinstance(raw, bool) or not isinstance(raw, (int, float)) or float(raw) != int(raw):
             raise SheetError(f"{where}: int 列 '{col['name']}' 的值不是整数: {raw!r}")
@@ -296,6 +305,36 @@ def validate_game_text_references(tables):
     missing = used - available
     if missing:
         raise SheetError(f"原生 UI 引用缺少游戏文本: {sorted(missing)}")
+
+
+def validate_rogue_cards(tables):
+    entry = tables.get("DT_GuLiStrikeRogueCards_Cards")
+    if entry is None:
+        return
+    texts = {r["TextId"] for r in tables["DT_GuLiStrikeGameTexts_Texts"]["rows"]}
+    units = {r["Id"] for r in tables["DT_GuLiStrikeCommander_Soldiers"]["rows"]}
+    for row in entry["rows"]:
+        if not re.fullmatch(r"[0-9]{2}\.[0-9]{2}", row["Id"]) or row["Id"].endswith(".00"):
+            raise SheetError(f"卡牌 {row['Name']} 的 id 必须为文本 卡族.两位等级，例如 01.01")
+        if row["Type"] not in range(1, 5) or row["UnitTypeId"] not in units:
+            raise SheetError(f"卡牌 {row['Name']} 的类型或目标兵种无效")
+        if len(row["TextIds"]) != 2 or any(t not in texts for t in row["TextIds"]):
+            raise SheetError(f"卡牌 {row['Name']} 必须引用两项已存在的文本，顺序为标题、说明")
+        if not math.isfinite(row["BonusPercent"]) or row["BonusPercent"] <= 0:
+            raise SheetError(f"卡牌 {row['Name']} 的加成必须为有限正数")
+        for key in ("ImplementationClass", "FrontMaterial", "UpgradeVfx"):
+            if not row[key].startswith(("/Script/", "/Game/")) or "." not in row[key].rsplit("/", 1)[-1]:
+                raise SheetError(f"卡牌 {row['Name']}.{key} 必须为完整对象路径")
+        if not row['UpgradeVfx'].startswith('/Game/'):
+            raise SheetError(f"卡牌 {row['Name']} 的升级特效必须为项目Niagara资产")
+        if not math.isfinite(row['UpgradeVfxScale']) or row['UpgradeVfxScale'] <= 0:
+            raise SheetError(f"卡牌 {row['Name']} 的升级特效缩放必须为有限正数")
+        number = r'[+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?'
+        color = re.fullmatch(r'\(\s*R=(' + number + r')\s*,\s*G=(' + number +
+                             r')\s*,\s*B=(' + number + r')\s*,\s*A=(' + number + r')\s*\)', row['UpgradeVfxColor'])
+        values = [float(v) for v in color.groups()] if color else []
+        if not values or not all(math.isfinite(v) for v in values) or not 0 <= values[3] <= 1:
+            raise SheetError(f"卡牌 {row['Name']} 的升级特效颜色须为线性HDR (R=...,G=...,B=...,A=...)，alpha在0~1")
 
 
 def gen_header_text(stem, sheets_props):
@@ -529,7 +568,7 @@ def main():
                 if is_mech and ws.title not in ("升级表", "技能表"):
                     raise SheetError("机甲表仅接受升级表和技能表")
                 rows, props = export_game_texts(ws) if stem == "GuLiStrikeGameTexts" else \
-                    export_sheet(ws, allow_text_id=is_mech and ws.title == "升级表")
+                    export_sheet(ws, allow_text_id=(is_mech and ws.title == "升级表") or stem == "GuLiStrikeRogueCards")
                 if consolidated and stem != SECONDARY_WORKBOOK:
                     retired = {(s, t) for s, t in SECONDARY_TABLE_IDENTITIES.values()
                                if s != "GuLiStrikeSpellFields"}
@@ -563,6 +602,7 @@ def main():
             validate_building_references(tables)
             validate_commander_state_trees(tables)
             validate_game_text_references(tables)
+            validate_rogue_cards(tables)
             validate_vfx_references(tables)
             if any(name.startswith('DT_GuLiStrikeMech_') for name in tables):
                 if not all(name in tables for name in ('DT_GuLiStrikeMech_Upgrades','DT_GuLiStrikeMech_Skills')):

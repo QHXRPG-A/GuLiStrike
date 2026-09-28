@@ -67,3 +67,81 @@ EStateTreeRunStatus FGuLiCommanderMassBehaviorTask::Tick(FStateTreeExecutionCont
 { return EStateTreeRunStatus::Succeeded; }
 void FGuLiCommanderMassBehaviorTask::GetDependencies(UE::MassBehavior::FStateTreeDependencyBuilder& Builder) const
 { Builder.AddReadOnly<FGuLiMassIdentityFragment>().AddReadWrite<UGuLiUnitTaskSubsystem>(); }
+
+namespace
+{
+	bool CanResume(UGuLiUnitTaskSubsystem& Tasks, FGuLiTaskUnitId Unit, const FGuLiCommanderPersistentOperation& Operation)
+	{
+		using Result = EGuLiCommanderWorkResult;
+		const auto Value = Tasks.GetWorkResult(Unit);
+		return Operation.ResumePhases.Contains(Tasks.GetWorkPhase(Unit)) && Value != Result::Failed && Value != Result::OutOfRange
+			&& Value != Result::TargetLost && Value != Result::FactoryLost && Value != Result::FactoryUnreachable && Value != Result::NoTarget;
+	}
+
+	EStateTreeRunStatus EnterPersistent(FStateTreeExecutionContext& Context, FGuLiTaskUnitId Unit,
+		FGuLiCommanderPersistentNodeData& Data, const FGuLiCommanderPersistentOperation& Operation)
+	{
+		auto* Tasks = Context.GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>();
+		if (!Tasks || !Tasks->HasState(Unit)) return EStateTreeRunStatus::Failed;
+		const auto Token = Tasks->BeginBehaviorOperation(Unit, Operation.Control);
+		Data.Version = Token.Version; Data.ExecutionId = Token.ExecutionId; Data.Serial = Token.Serial;
+		Data.bEntryApplied = CanResume(*Tasks, Unit, Operation);
+		Tasks->RequestBehaviorOperation(Unit, Token, Data.bEntryApplied ? Operation.WhileRunning : Operation.Entry);
+		return EStateTreeRunStatus::Running;
+	}
+
+	EStateTreeRunStatus TickPersistent(FStateTreeExecutionContext& Context, FGuLiTaskUnitId Unit,
+		FGuLiCommanderPersistentNodeData& Data, const FGuLiCommanderPersistentOperation& Operation)
+	{
+		auto* Tasks = Context.GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>();
+		if (!Tasks || !Tasks->HasState(Unit)) return EStateTreeRunStatus::Failed;
+		const auto Token = Data.Token();
+		const auto Receipt = Tasks->GetBehaviorOperationReceipt(Unit, Token);
+		// Taking/finalizing an order can change its identity. Consume that operation's receipt first.
+		if (Operation.bCompleteOnReceipt && Receipt == EGuLiCommanderOperationResult::Applied)
+			return EStateTreeRunStatus::Succeeded;
+		if (!Tasks->IsBehaviorOperationCurrent(Unit, Token))
+		{
+			Tasks->WaitBehaviorRound(Unit, Token);
+			return EStateTreeRunStatus::Running; // The common parent transition rebinds the new order.
+		}
+		if (Receipt == EGuLiCommanderOperationResult::Failed) return EStateTreeRunStatus::Failed;
+		if (Receipt == EGuLiCommanderOperationResult::Applied) Data.bEntryApplied = true;
+		// A resumed shared Mass group may have accepted this phase through another member.
+		if (!Data.bEntryApplied && CanResume(*Tasks, Unit, Operation)) Data.bEntryApplied = true;
+		Tasks->RequestBehaviorOperation(Unit, Token, Data.bEntryApplied ? Operation.WhileRunning : Operation.Entry);
+		return EStateTreeRunStatus::Running;
+	}
+
+	void ExitPersistent(FStateTreeExecutionContext& Context, FGuLiTaskUnitId Unit, const FGuLiCommanderPersistentNodeData& Data)
+	{
+		if (auto* Tasks = Context.GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()) Tasks->EndBehaviorOperation(Unit, Data.Token());
+	}
+}
+
+FGuLiCommanderActorPersistentTask::FGuLiCommanderActorPersistentTask()
+{ bShouldCallTick = true; bShouldStateChangeOnReselect = true; }
+FGuLiCommanderActorPersistentTask::FGuLiCommanderActorPersistentTask(const FGuLiCommanderPersistentOperation& InOperation)
+	: FGuLiCommanderActorPersistentTask() { Operation = InOperation; }
+EStateTreeRunStatus FGuLiCommanderActorPersistentTask::EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult&) const
+{ return EnterPersistent(Context, ActorUnit(Context), Context.GetInstanceData(*this), Operation); }
+EStateTreeRunStatus FGuLiCommanderActorPersistentTask::Tick(FStateTreeExecutionContext& Context, float) const
+{ return TickPersistent(Context, ActorUnit(Context), Context.GetInstanceData(*this), Operation); }
+void FGuLiCommanderActorPersistentTask::ExitState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult&) const
+{ ExitPersistent(Context, ActorUnit(Context), Context.GetInstanceData(*this)); }
+
+FGuLiCommanderMassPersistentTask::FGuLiCommanderMassPersistentTask()
+{ bShouldCallTick = true; bShouldStateChangeOnReselect = true; }
+FGuLiCommanderMassPersistentTask::FGuLiCommanderMassPersistentTask(const FGuLiCommanderPersistentOperation& InOperation)
+	: FGuLiCommanderMassPersistentTask() { Operation = InOperation; }
+EStateTreeRunStatus FGuLiCommanderMassPersistentTask::EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult&) const
+{ return EnterPersistent(Context, MassUnit(Context), Context.GetInstanceData(*this), Operation); }
+EStateTreeRunStatus FGuLiCommanderMassPersistentTask::Tick(FStateTreeExecutionContext& Context, float) const
+{ return TickPersistent(Context, MassUnit(Context), Context.GetInstanceData(*this), Operation); }
+void FGuLiCommanderMassPersistentTask::ExitState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult&) const
+{ ExitPersistent(Context, MassUnit(Context), Context.GetInstanceData(*this)); }
+void FGuLiCommanderMassPersistentTask::GetDependencies(UE::MassBehavior::FStateTreeDependencyBuilder& Builder) const
+{
+	Builder.AddReadOnly<FGuLiMassIdentityFragment>().AddReadWrite<UGuLiUnitTaskSubsystem>()
+		.AddReadOnly<UGuLiArmyAdvanceSubsystem>().AddReadOnly<UGuLiUnitDataSubsystem>();
+}

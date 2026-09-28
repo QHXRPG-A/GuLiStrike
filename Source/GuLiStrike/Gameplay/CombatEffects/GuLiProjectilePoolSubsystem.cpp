@@ -228,7 +228,7 @@ void UGuLiProjectilePoolSubsystem::Step(const float Now)
 	if (!bHasGround) { GroundHistory = {}; NextGroundStepTime = Now; }
 	else if (Now + UE_KINDA_SMALL_NUMBER >= NextGroundStepTime)
 	{
-		NextGroundStepTime = Now + 0.2f;
+		NextGroundStepTime = Now + GuLiCombatEffects::GroundProjectileStepSeconds;
 		StepDomain(Now, true, GroundHistory);
 	}
 	if (Epoch == StepEpoch) Stats.LastStepMilliseconds = (FPlatformTime::Seconds() - Started) * 1000.0;
@@ -302,7 +302,17 @@ void UGuLiProjectilePoolSubsystem::StepDomain(const float Now, const bool bGroun
 				FMath::Lerp(State.SampleTime, EndTime, FirstAlpha), &HitHandle);
 		}
 		else if (EndTime >= State.EndTime) Retire(Handle, EGuLiCombatEffectEndReason::Expired, End, EndTime);
-		else if (Matches(Handle)) { Slots[Handle.Slot].State.Location = End; Slots[Handle.Slot].State.SampleTime = EndTime; }
+		else if (Matches(Handle))
+		{
+			auto& Confirmed = Slots[Handle.Slot].State;
+			Confirmed.Location = End; Confirmed.SampleTime = EndTime;
+			if (bGround)
+			{
+				++Confirmed.Sequence;
+				const FGuLiCombatEffectState Published = Confirmed;
+				OnState.Broadcast(Published, false);
+			}
+		}
 	}
 	if (Epoch == StepEpoch)
 	{

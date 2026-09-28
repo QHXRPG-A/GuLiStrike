@@ -1,0 +1,6363 @@
+{
+	"source": "UE UStateTreeEditorData recursive readback",
+	"exported_utc": "2026-09-26T07:05:27.454Z",
+	"read_only": true,
+	"success": true,
+	"assets": [
+		{
+			"asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
+			"schema": "/Script/GuLiStrike.GuLiCommanderActorStateTreeSchema",
+			"schema_properties":
+			{
+				"Policy": "(Behavior=Mining,DisplayName=\"采矿\",bAutoActivate=True,Lifetime=Persistent)",
+				"ContextActorClass": "/Script/CoreUObject.Class'/Script/Engine.Actor'",
+				"ScheduledTickPolicy": "Denied"
+			},
+			"hierarchy_version": "",
+			"ready": true,
+			"dirty": false,
+			"compiled_matches_editor": true,
+			"editor_hash": "c2a2bfb7",
+			"mutated": false,
+			"roots": [
+				{
+					"id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+					"name": "CommanderOrders",
+					"path": "CommanderOrders",
+					"description": "Authority task selection; clocked by the existing 10 Hz dispatcher. Business components execute requests outside Mass iteration.",
+					"type": "State",
+					"selection": "TrySelectChildrenInOrder",
+					"enabled": true,
+					"enter_conditions": [],
+					"tasks": [],
+					"transitions": [],
+					"children": [
+						{
+							"id": "64262F2C44D6CFF0920FD3AF6FC1A6B4",
+							"name": "WaitingSafeExit",
+							"path": "CommanderOrders/WaitingSafeExit",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "8F594474480DE5CD19D48EBCF7915A0D",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "1",
+										"Forbidden": "",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "772EA5ED4B29B6DDE909A996EA2B5234",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "CancelPending",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "EED3EAA44C2083940E5236B7A8EAD3BD",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "7BDF4BDB40CC15B7963AD6AC29707683",
+							"name": "Stopped",
+							"path": "CommanderOrders/Stopped",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "75E5C6AD494AD96AA1DC679C02B8ABF4",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "2",
+										"Forbidden": "1",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "009538404CF4C992D0BDCEA9AE4E80D7",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "3D5D1B18450F5675FC93579E6111E791",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "04954D85463FB4BEF1394E85136D383D",
+							"name": "PreparingReplacementMove",
+							"path": "CommanderOrders/PreparingReplacementMove",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "7F264DDF49EDFD8B2FB8668965034FC4",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "4",
+										"Forbidden": "3",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "AEF3AE984D829C418DD337AA9E15BC80",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "ReplaceMove",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "A8935B404EEDD67FC8DA1BA37640E0EB",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "F53E06DC44439A2450397ABBFE1112EB",
+							"name": "SuspendedByExternalControl",
+							"path": "CommanderOrders/SuspendedByExternalControl",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "D080355F4D0C8852194FC388E29DC1D5",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "131080",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "B456793D47CC631E089D63B5403BCCBC",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "D68D424841451420E45FEA86C6F57242",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "DF09C51C4854FDA728D6C794A20618CD",
+							"name": "StartTask",
+							"path": "CommanderOrders/StartTask",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "3020F9E34B6BFE1D2FAFAE8C42F83719",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "8",
+										"Forbidden": "32775",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "72F29E404C71AC47091C29AB1E79B64E",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "C376C15C424FFB7597B787B94A0BAAE6",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "5D0C9D0F41953ABFCA2AAE843A948055",
+							"name": "WorkUnitFinished",
+							"path": "CommanderOrders/WorkUnitFinished",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "BF859DBD4C6F5BB68FB05189F5FEDAB0",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "294920",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "74758EF4449E7D1D6D3258AF33DA7A31",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "8FF630814F0BCD91E99CCC9492D58EA9",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "D028916A41049097787CEE9087955808",
+							"name": "ManualMove",
+							"path": "CommanderOrders/ManualMove",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "353616C641D5C39A77D9E9B932A08DB7",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "2056",
+										"Forbidden": "23",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "D5E634604C301EC2B425449FF32F51B6",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "2875C6444841FFD1F8AECE9AF7E0257F",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "50A92A154565F47B5B3868AB0EBED37A",
+							"name": "ManualTransit",
+							"path": "CommanderOrders/ManualTransit",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "F0BF677E4218DE489F6877948FC006D8",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "8200",
+										"Forbidden": "23",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "EEF6893F40D6D8B8ED6869B1EE49FCF2",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "EA38C29E4A302F70C9A5C6B7168579F4",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "1805D3A54FD64598BD2DCD8851BDCEED",
+							"name": "Mining_SelectFactoryWithCargo",
+							"path": "CommanderOrders/Mining_SelectFactoryWithCargo",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "5A43A62B4ACDAA25245FFCB5B3683ABB",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "622856",
+										"Forbidden": "7",
+										"Phase": "MiningIdle",
+										"Result": "None",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "CA802478415FC9AF4E453782D8CF9C21",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "697ED9034518D78CF6AC7F9ADD87DFAB",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "B40D17A94974EF8FF5F2F18339037CE2",
+							"name": "Mining_SelectMineTarget",
+							"path": "CommanderOrders/Mining_SelectMineTarget",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "E1BF970145E792F938215E865E9D6C46",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "98568",
+										"Forbidden": "524295",
+										"Phase": "MiningIdle",
+										"Result": "None",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "956A27A64A111EEEB589B3B16F41A0C2",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningSelect",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "AA66B4FA4657C7BE914BE68DE0AAF105",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "87E304AC4D9B032C7DC2A2B9E17E986C",
+							"name": "Mining_WaitForMiningPosition",
+							"path": "CommanderOrders/Mining_WaitForMiningPosition",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "C76C08574A7A3BDB62609DB828E2608B",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "98568",
+										"Forbidden": "7",
+										"Phase": "MiningWaitingPosition",
+										"Result": "WaitingPosition",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "919D720644E4B54BB29B40BB2EDA524E",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningSelect",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "7676AD124E5851A993616C985B730166",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "120D6DB34269ECE26C8A63A3D18117F8",
+							"name": "Mining_WaitForBudgetedMiningPath",
+							"path": "CommanderOrders/Mining_WaitForBudgetedMiningPath",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "14565055424ADB1067263D8C58622C7A",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "MiningWaitingPath",
+										"Result": "Running",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "9496C74E4150B962B9F6AD93F68F9BA5",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "FC732EDC4B8D2E81D32CA38EE2C84484",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "FD5999A1480C6CB5BF735281CFC1A81C",
+							"name": "Mining_MoveToMine",
+							"path": "CommanderOrders/Mining_MoveToMine",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "4EB1C2F04FDAACAA401827B20A3795B7",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "MiningReserved",
+										"Result": "TargetReady",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "0BB1A52046041E8816E26DB87A13B01A",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningMove",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "8BA2E678497E67A7D46A3898E85CE3B1",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "D6E58A2E440AD1215C5588B29FEE3BE6",
+							"name": "Mining_BeginExtraction",
+							"path": "CommanderOrders/Mining_BeginExtraction",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "25E9E19E458180D2F2CD769EDB442395",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "MiningMoving",
+										"Result": "CanMine",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "FB6F9F224A2A10338D0FF09284706E1E",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningExtract",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "047598A442C59335568E5D99EFE1698D",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "16B1EED94F9079D2751CC7A4AF2D5699",
+							"name": "Mining_RepositionForExtraction",
+							"path": "CommanderOrders/Mining_RepositionForExtraction",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "201BE33945FDB24BAAA6DBACFE3F0C6D",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "OutOfRange",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "AD8DD8124DC25BE8ACE974884D453B64",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningReposition",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "582FB8B24C3A954890A7E38F12B5F833",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "6B335729498766928725198ED134D002",
+							"name": "Mining_RejectUnreachableMiningPosition",
+							"path": "CommanderOrders/Mining_RejectUnreachableMiningPosition",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "7B67A8AE4D07A97A146133A2A5CA2D2D",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "MiningMoving",
+										"Result": "Failed",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "7371F7BE413A8197795F03A106B69683",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningReposition",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "8D2567C0491A9E57EB5EA69574D4073E",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "3D918EA64EAA82F8A6B5D9A85DAF15B3",
+							"name": "Mining_CargoFull_SelectFactory",
+							"path": "CommanderOrders/Mining_CargoFull_SelectFactory",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "5B587E514684D731DE3FF4A7A309C251",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "MiningExtracting",
+										"Result": "Full",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "BDDC844448328FF4DB182E8580D9B4F6",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "5B237C8D4ADBB4B3F4E707ADC0A2ED5B",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "EED3E3A84EE91EAE1B6A098E92B5BD00",
+							"name": "Mining_MineDepleted_SelectFactory",
+							"path": "CommanderOrders/Mining_MineDepleted_SelectFactory",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "1DC7B6D24F184CE20B26639D5789CAC4",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "MiningExtracting",
+										"Result": "Depleted",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "508CC9E24229741324A284A83FFB8814",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "76A47FAE494C77479ED52AA5E6C94C37",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "BA0162604894ED65AA6D3AA8961A3356",
+							"name": "Mining_LostMine_ReturnCargo",
+							"path": "CommanderOrders/Mining_LostMine_ReturnCargo",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "BF4A52454AF80A9875C41191609A8F61",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "49416",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "TargetLost",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "2FD55FEE418CCA7A2EFBF6B38F4F7C0E",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "B4A775234883882C96D9B09096A3843C",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "9B710C6B4D5EB81C6CEE899A66A04B18",
+							"name": "Mining_LostMine_Retry",
+							"path": "CommanderOrders/Mining_LostMine_Retry",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "605CA05F411D6A8B379A368E8AE68A85",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33048",
+										"Forbidden": "16391",
+										"Phase": "",
+										"Result": "TargetLost",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "10D56BD04A3B676BF6AD709637F9D76B",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningRetry",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "69FA3408471A26EE03506BA40983462C",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "6112D4E441480AC026FD97A076924353",
+							"name": "Mining_LostMine_ManualFailure",
+							"path": "CommanderOrders/Mining_LostMine_ManualFailure",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "CFFC5FC44634824DE78E4FB94F2298D3",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "16407",
+										"Phase": "",
+										"Result": "TargetLost",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "E1D5EA4146721AE16F351E98FB2EB444",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFail",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "BBC244C643970984E9478A9586501DBF",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "B1E9BDC34761FE89E851E8BF65CE149D",
+							"name": "Mining_NoTarget_Retry",
+							"path": "CommanderOrders/Mining_NoTarget_Retry",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "C0954B7A41AEAD79D1D6F9987401D62A",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33048",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "NoTarget",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "53966CFC4E125ACAB5B177940BFCECDE",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningRetry",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "6CFF292B4D45797776E36EBD8127AD63",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "B9AEF0494375645FF7278FA2756D8A9B",
+							"name": "Mining_NoTarget_ManualFailure",
+							"path": "CommanderOrders/Mining_NoTarget_ManualFailure",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "CFDC005044510801DEC1448A66DAA1B9",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "23",
+										"Phase": "",
+										"Result": "NoTarget",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "337918394813BCD3BBDF9991730904E4",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFail",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "14728DC647614DC8353DED923C030CFA",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "49240BE34796E64012879F84887F6634",
+							"name": "Mining_TryNextUnloadPoint",
+							"path": "CommanderOrders/Mining_TryNextUnloadPoint",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "2FB44D8C4C2CE11FEB0FA3A81930F9D2",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "MiningReturning",
+										"Result": "Failed",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "223D926E44D0FA41C266979C815B0C04",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningReturn",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "8C3736F54A7943BB982292B271A425D3",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "214611454F1F0574EECA7089086171C8",
+							"name": "Mining_UnreachableFactory_SelectNext",
+							"path": "CommanderOrders/Mining_UnreachableFactory_SelectNext",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "B65CEF104CE96694607683AB70098D88",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "MiningReturning",
+										"Result": "FactoryUnreachable",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "6663D04644CAA516E6A005B98D9466A3",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "FEBCC0B745972D9C3E1BAFBAC745938D",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "A458E54A4ABB80C3555601892CC2EB16",
+							"name": "Mining_FailedAction_Retry",
+							"path": "CommanderOrders/Mining_FailedAction_Retry",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "2D2E595C42E019351E492C97B7F52AAB",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33048",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "Failed",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "4433DB03454C46C0BEA384A0935E2D40",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningRetry",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "D2D625554164B05D901C3B8A1394227A",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "6DC0E572492A2E1C6B39E1AF466C0291",
+							"name": "Mining_FailedAction_ManualFailure",
+							"path": "CommanderOrders/Mining_FailedAction_ManualFailure",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "ED3DC956408A934C1FAEDE8503E191FE",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "23",
+										"Phase": "",
+										"Result": "Failed",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "91D7672647F7AC0496A056A06DD4EB5C",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFail",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "25807E1B4CDDD4BF082AE785C89BCE0C",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "73087AF14717EC7A4EEDE282372C5242",
+							"name": "Mining_ReturnToFactory",
+							"path": "CommanderOrders/Mining_ReturnToFactory",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "A90D317D480E71D178E121A704E107DD",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "MiningIdle",
+										"Result": "FactoryReady",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "9FE3FCD1419159C3DDEFD58F24246C2D",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningReturn",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "976D8D33484ACFF99368CBA00DADE9D7",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "D5E9B47D47D1531627566B8AF8207731",
+							"name": "Mining_FactoryLost_SelectAgain",
+							"path": "CommanderOrders/Mining_FactoryLost_SelectAgain",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "0D395B244BD0A4FDB393FDB7A50E11A1",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "FactoryLost",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "F2FA2B704000DC40DB08CDBB58408A0E",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "B3417A8F49C4DC199D96E7B67C3F9DF9",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "E946DE7F46C1061FB1FB45B3FC049253",
+							"name": "Mining_Unload",
+							"path": "CommanderOrders/Mining_Unload",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "B11A06554EC8DECFA6789398A2FA9CD8",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "MiningReturning",
+										"Result": "AtFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "52F59B39479101E01FC253A62AA43577",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningUnload",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "EC8BC356408C97705F39C7966F103F2D",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "E4A8BD6E490E853613EA448A871AD02A",
+							"name": "Mining_FinishCycle",
+							"path": "CommanderOrders/Mining_FinishCycle",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "BDDD676644F884F04C861AB2A659E9C6",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "MiningUnloading",
+										"Result": "Unloaded",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "E0EF28424570D72147C4439BD0EA34BF",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFinish",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "36ECFE884F89C9CBFABD319C9FE631D5",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "9653DBE64BF1629E8D9720B595501812",
+							"name": "Mining_WaitForActionOrRetry",
+							"path": "CommanderOrders/Mining_WaitForActionOrRetry",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "449E670F4A48F857DE42E2AA97E47096",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33032",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "E7C4C98443CCB695107B6F86F1834790",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "7E3A456E460CE80F412690B90E95436B",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "29B86AF44CEBAC7162CA97AD881A2052",
+							"name": "Return_SelectFactoryWithCargo",
+							"path": "CommanderOrders/Return_SelectFactoryWithCargo",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "D856469140464C3866C4D2940FEBC6AA",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "626696",
+										"Forbidden": "7",
+										"Phase": "MiningIdle",
+										"Result": "None",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "79D27F8E40D83D6A7303FC845211CA31",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "A708C4094AA7A5EBE9237BB8A7B7688B",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "63C002404C56F3D97BB5058DD74F9C49",
+							"name": "Return_WaitForBudgetedMiningPath",
+							"path": "CommanderOrders/Return_WaitForBudgetedMiningPath",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "1069B24B479B162D3ED91A87A2F11A70",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "MiningWaitingPath",
+										"Result": "Running",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "F412523D427077E3703B4B81E51CA72F",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "54C985CD41F63CC256D451BDDA50AF69",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "4D2B388D487760E9CD95048122A70C2D",
+							"name": "Return_MoveToMine",
+							"path": "CommanderOrders/Return_MoveToMine",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "8DE4A5EF4176598EF157A1A7795E8DE8",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "MiningReserved",
+										"Result": "TargetReady",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "88C9FAC94309EF4E3B33768B1A6DDB9D",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningMove",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "1BE4E64D4066DD8BD013AB9B56FDDA03",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "D8E3CA044ED156C1321CC9B882CA5B7D",
+							"name": "Return_BeginExtraction",
+							"path": "CommanderOrders/Return_BeginExtraction",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "E2B8F7DF4E43968E1A1C4CB0EB5E1593",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "MiningMoving",
+										"Result": "CanMine",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "1A598BF44340BB6A0CBF97846F334E70",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningExtract",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "8CD3B9CE45E49C03555369A1B655DA6C",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "DA9F693F4C9BE94E7694139CC265ED37",
+							"name": "Return_RepositionForExtraction",
+							"path": "CommanderOrders/Return_RepositionForExtraction",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "AF7EF9E340BB71B3FF3789BB343BB0F6",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "OutOfRange",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "DDA4AE5F41403C4E19160F89C8ED12A3",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningReposition",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "884F3430448DC8D8633E339E0BC1A530",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "BDCB5CD4472DBAE2A03DB5822E54A55C",
+							"name": "Return_RejectUnreachableMiningPosition",
+							"path": "CommanderOrders/Return_RejectUnreachableMiningPosition",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "15707CDB440F39D928CC8F9E628345D0",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "MiningMoving",
+										"Result": "Failed",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "BFA89CEA4C805FFCB702DE8E153969D3",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningReposition",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "FE8AD4994EFDBC20077BE1B9E8E62836",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "9E0FE56D4DBB0C6B9C99F689CD68664B",
+							"name": "Return_CargoFull_SelectFactory",
+							"path": "CommanderOrders/Return_CargoFull_SelectFactory",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "6B340CCA4E21808D1BFBCE8CD4EEC5BE",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "MiningExtracting",
+										"Result": "Full",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "E94B1CE7419A06BA0FB05E8FF94D2952",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "09B2491243369AD3B73B4D9FFC1EC3F8",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "50BD9DD141E125C18572CBA7ADD32C12",
+							"name": "Return_MineDepleted_SelectFactory",
+							"path": "CommanderOrders/Return_MineDepleted_SelectFactory",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "D1C29F124D1F06641227D58CAB855321",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "MiningExtracting",
+										"Result": "Depleted",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "BA4BA7714F7A80D9C0D9728CDEED9713",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "9179B2784AABF27BE47308BF221527E0",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "E2A45D0241000A85C92F30BA03DABCE8",
+							"name": "Return_LostMine_ReturnCargo",
+							"path": "CommanderOrders/Return_LostMine_ReturnCargo",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "B10D58384080E9B1EBA3999418774E74",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "53256",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "TargetLost",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "3F74C06444ACC7BC36276FA464581FF4",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "6A425C8946F00F963A27B6854C2918C2",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "302E86124A4B9781FFDAD6B4CCC9B6A2",
+							"name": "Return_LostMine_Retry",
+							"path": "CommanderOrders/Return_LostMine_Retry",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "429D295C43F6F592BA535C972ECE20B8",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36888",
+										"Forbidden": "16391",
+										"Phase": "",
+										"Result": "TargetLost",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "3C7B8C0F4ED3471E3E018CAA7C09E635",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningRetry",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "C330AB3947556148FC7CD6B0D1CE6B98",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "6D07D9FC40DE312B1485C9A89063BD9E",
+							"name": "Return_LostMine_ManualFailure",
+							"path": "CommanderOrders/Return_LostMine_ManualFailure",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "4C9087924A67A0AA86091AABB57343B5",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "16407",
+										"Phase": "",
+										"Result": "TargetLost",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "551678294F642A5F3BCFE4BF3395DC30",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFail",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "4B990F04423FE2D5C6B4A8B9B6A7BCB3",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "E0FC1E1D439FFC5F0AC7729ED71BF980",
+							"name": "Return_NoTarget_Retry",
+							"path": "CommanderOrders/Return_NoTarget_Retry",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "64D7EE64473958C844CD0B9A4986398D",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36888",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "NoTarget",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "9B9D946D42B045EED0F0BFA1C364FFA6",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningRetry",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "B7899D894AD278EA27391F8E13FC4A3D",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "344BDE65404C5CD2BD33E9881A93F77E",
+							"name": "Return_NoTarget_ManualFailure",
+							"path": "CommanderOrders/Return_NoTarget_ManualFailure",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "E8ABF60B428DE8A419276F9509C7733E",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "23",
+										"Phase": "",
+										"Result": "NoTarget",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "7C14151A4FCF91B4C11EB6AB8E7ED724",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFail",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "563849C745B5634C6A85DEAA50D4FBB1",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "2D477C594F8372ED4191E3A516780C2B",
+							"name": "Return_TryNextUnloadPoint",
+							"path": "CommanderOrders/Return_TryNextUnloadPoint",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "520FF0A4424CB084F33BDABDF2754C55",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "MiningReturning",
+										"Result": "Failed",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "535E723840FD47F103487DBB562F1A39",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningReturn",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "B898D916469D67DF31D79EAF04683788",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "4582F1FD427088F7209ED9B3698B77CE",
+							"name": "Return_UnreachableFactory_SelectNext",
+							"path": "CommanderOrders/Return_UnreachableFactory_SelectNext",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "83E0F8014C95320A18925AA5D094831D",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "MiningReturning",
+										"Result": "FactoryUnreachable",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "569096444852588A6827EAB448F38647",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "B6B23375476963DC5AF83ABA0C7C8F7A",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "175C444F4AEE743C22C28993E04A5197",
+							"name": "Return_FailedAction_Retry",
+							"path": "CommanderOrders/Return_FailedAction_Retry",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "4D8E94FC4373F61A6E9C6F84A748FF39",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36888",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "Failed",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "16335E7D402EE0E0DCEDE58F41F78536",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningRetry",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "3D56683947DD26A2928BA89077D3768B",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "D59B9DC0462A71E45697A5B2126C120A",
+							"name": "Return_FailedAction_ManualFailure",
+							"path": "CommanderOrders/Return_FailedAction_ManualFailure",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "DB82535E400299ADFE5417BF26A0F629",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "23",
+										"Phase": "",
+										"Result": "Failed",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "90EFD93D4C064D7B406AF3A149F68E36",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFail",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "BBA307A84E8067D6AFD71DB967DBC40D",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "B26140334273C711AA779C8DE2FF7B8A",
+							"name": "Return_ReturnToFactory",
+							"path": "CommanderOrders/Return_ReturnToFactory",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "234B0D6F48B180212B78188D9FFA5169",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "MiningIdle",
+										"Result": "FactoryReady",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "5F616DC749314A0250632EA600B7A89F",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningReturn",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "77939D7D4A8AC0A3CC8137B707D31EAE",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "2E6FFC014A7511BED206DEADFEB16652",
+							"name": "Return_FactoryLost_SelectAgain",
+							"path": "CommanderOrders/Return_FactoryLost_SelectAgain",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "589FF50B445BF259FE829D94EF55C144",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "FactoryLost",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "E0D1D2584BF6827A2375369A4E36A8CC",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "5D1EB1F14E7C1E70DB35C7A8DD76B241",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "A46796C348B25B414E09EDBA0365B7C3",
+							"name": "Return_Unload",
+							"path": "CommanderOrders/Return_Unload",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "446B8F6244F1B7E103263E856DD6F6D8",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "MiningReturning",
+										"Result": "AtFactory",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "9D6B4F194196655AFC8DC38B9BA8D332",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningUnload",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "089BB78442F81897B95F788712166A31",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "4B708B7B412E37B70C4E268B8398F17B",
+							"name": "Return_FinishCycle",
+							"path": "CommanderOrders/Return_FinishCycle",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "7CF21DC342915BDB89B68EA82D5137DF",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "MiningUnloading",
+										"Result": "Unloaded",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "C260B1944B4BD5DA7B43BBBB2991609E",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "MiningFinish",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "5E217A004F760E7EE42041A05D6145B0",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "E68D741E49487BEA610C43BA37CF13AB",
+							"name": "Return_WaitForActionOrRetry",
+							"path": "CommanderOrders/Return_WaitForActionOrRetry",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "7853DB6446BBEA2A5401C2B54906B0A2",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "36872",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "011CE876469F06D024B45E80A5B10757",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "064AB10248A0112990F1C6B0E4014E50",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "F775BB4A45614EF4B3E248A9CD4E87E0",
+							"name": "SelectManualTask",
+							"path": "CommanderOrders/SelectManualTask",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "F3545F5A43ECFC81DA1438B1965FED42",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "32",
+										"Forbidden": "15",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "04C3329B47F8CD47D4F13AB9031B4903",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "TakeManual",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "CE01D11A411624482635B1A09EC97D39",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "7E9409DA4426073CB444B09F6B35AD6D",
+							"name": "SelectAutomaticTask",
+							"path": "CommanderOrders/SelectAutomaticTask",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "6A038372462519344A92ABA2B13E879C",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "64",
+										"Forbidden": "47",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "93B4436D433E0084958D0B98418C0248",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "TakeAutomatic",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "15AB462D4B302E5FBD3C8EBE6E178B3E",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "6E5EADE1489D56DBCFC5B98811760E7F",
+							"name": "Idle",
+							"path": "CommanderOrders/Idle",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "0156A0DF46C049CB6DE8A7A3643DD415",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "",
+										"Forbidden": "",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "A24D433747D1FCED825DF1ADF9823690",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "77EE5DFC423D2F01A51D9297FA63EE66",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "CEFBCEF54753EC2D3CCFBF8FF1151E5E",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						}
+					]
+				}
+			],
+			"states": [
+				"CommanderOrders",
+				"WaitingSafeExit",
+				"Stopped",
+				"PreparingReplacementMove",
+				"SuspendedByExternalControl",
+				"StartTask",
+				"WorkUnitFinished",
+				"ManualMove",
+				"ManualTransit",
+				"Mining_SelectFactoryWithCargo",
+				"Mining_SelectMineTarget",
+				"Mining_WaitForMiningPosition",
+				"Mining_WaitForBudgetedMiningPath",
+				"Mining_MoveToMine",
+				"Mining_BeginExtraction",
+				"Mining_RepositionForExtraction",
+				"Mining_RejectUnreachableMiningPosition",
+				"Mining_CargoFull_SelectFactory",
+				"Mining_MineDepleted_SelectFactory",
+				"Mining_LostMine_ReturnCargo",
+				"Mining_LostMine_Retry",
+				"Mining_LostMine_ManualFailure",
+				"Mining_NoTarget_Retry",
+				"Mining_NoTarget_ManualFailure",
+				"Mining_TryNextUnloadPoint",
+				"Mining_UnreachableFactory_SelectNext",
+				"Mining_FailedAction_Retry",
+				"Mining_FailedAction_ManualFailure",
+				"Mining_ReturnToFactory",
+				"Mining_FactoryLost_SelectAgain",
+				"Mining_Unload",
+				"Mining_FinishCycle",
+				"Mining_WaitForActionOrRetry",
+				"Return_SelectFactoryWithCargo",
+				"Return_WaitForBudgetedMiningPath",
+				"Return_MoveToMine",
+				"Return_BeginExtraction",
+				"Return_RepositionForExtraction",
+				"Return_RejectUnreachableMiningPosition",
+				"Return_CargoFull_SelectFactory",
+				"Return_MineDepleted_SelectFactory",
+				"Return_LostMine_ReturnCargo",
+				"Return_LostMine_Retry",
+				"Return_LostMine_ManualFailure",
+				"Return_NoTarget_Retry",
+				"Return_NoTarget_ManualFailure",
+				"Return_TryNextUnloadPoint",
+				"Return_UnreachableFactory_SelectNext",
+				"Return_FailedAction_Retry",
+				"Return_FailedAction_ManualFailure",
+				"Return_ReturnToFactory",
+				"Return_FactoryLost_SelectAgain",
+				"Return_Unload",
+				"Return_FinishCycle",
+				"Return_WaitForActionOrRetry",
+				"SelectManualTask",
+				"SelectAutomaticTask",
+				"Idle"
+			],
+			"evaluators": [],
+			"global_tasks": [],
+			"state_count": 58,
+			"max_depth": 1,
+			"persistent_task_count": 0,
+			"errors": [],
+			"valid": true
+		},
+		{
+			"asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder",
+			"schema": "/Script/GuLiStrike.GuLiCommanderActorStateTreeSchema",
+			"schema_properties":
+			{
+				"Policy": "(Behavior=Construction,DisplayName=\"建造\",bAutoActivate=True,Lifetime=Persistent)",
+				"ContextActorClass": "/Script/CoreUObject.Class'/Script/Engine.Actor'",
+				"ScheduledTickPolicy": "Denied"
+			},
+			"hierarchy_version": "",
+			"ready": true,
+			"dirty": false,
+			"compiled_matches_editor": true,
+			"editor_hash": "f5b924ad",
+			"mutated": false,
+			"roots": [
+				{
+					"id": "9939F8574AA75393ED7E539E1A13D364",
+					"name": "CommanderOrders",
+					"path": "CommanderOrders",
+					"description": "Authority task selection; clocked by the existing 10 Hz dispatcher. Business components execute requests outside Mass iteration.",
+					"type": "State",
+					"selection": "TrySelectChildrenInOrder",
+					"enabled": true,
+					"enter_conditions": [],
+					"tasks": [],
+					"transitions": [],
+					"children": [
+						{
+							"id": "8A7CCC424C6FFA8E1C48DC8CB51ED56C",
+							"name": "WaitingSafeExit",
+							"path": "CommanderOrders/WaitingSafeExit",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "2A2E7AFE400A9C41E2ECF2A363DE5FC0",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "1",
+										"Forbidden": "",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "A5DB67AD4BC36F367EBC369AE637C614",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "CancelPending",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "7DDB4AE94AFF2458FC6DE29077062845",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "056F0AE84E762597B2304E937B099DE0",
+							"name": "Stopped",
+							"path": "CommanderOrders/Stopped",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "552A152C4F6BEA0D17E964A5ADA87F18",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "2",
+										"Forbidden": "1",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "8C85477E4C57A3D8BE80BA9913DBC1AB",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "C942D05A44C6B77B3DCF0EBEDE4FC0EC",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "B89DE3EA486B474990BBA8A58AF7002A",
+							"name": "PreparingReplacementMove",
+							"path": "CommanderOrders/PreparingReplacementMove",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "C7C5D87D4092D9F7D1F9238C4D64D870",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "4",
+										"Forbidden": "3",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "A2CE7D894C323CEEFE24BEAC3A868146",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "ReplaceMove",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "EA135B6644419472B7A6398CCE7C0478",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "8254643F43E4B9D8B16284B45EDD5391",
+							"name": "SuspendedByExternalControl",
+							"path": "CommanderOrders/SuspendedByExternalControl",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "2C96242B4FF28C9FD24B629733D78AD8",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "131080",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "65485B7F446FED6355074EBD49C2D4DE",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "CA592F0645EEF50ACCF445B49785E9A8",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "68E64A964669A34C744C699B4FD2A426",
+							"name": "StartTask",
+							"path": "CommanderOrders/StartTask",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "8C6A7D6C432520566E0F44BF32C45DB6",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "8",
+										"Forbidden": "32775",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "78833A5947C096CFA8D7D5A81359CD51",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "74F7EE384D9CD35C16D3A5BC15F2B2E1",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "43B81ED543E4DB93F65651AC22D7D458",
+							"name": "WorkUnitFinished",
+							"path": "CommanderOrders/WorkUnitFinished",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "B00FDAB24ACDB07778C046AA194EC4F4",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "294920",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "7B00307F49C278D6537EB795A2D64FE2",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "0FFF4A0C47F0B9FECA2C9696A81FCF9D",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "991CF0614637B3EDB20F51BC7F129593",
+							"name": "ManualMove",
+							"path": "CommanderOrders/ManualMove",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "339B82B2449D2639A6429E80082F2505",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "2056",
+										"Forbidden": "23",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "6982A781469BA1D306CF589D4C257F42",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "73D4392E45A5E6D9F37E5BB32BDE7BC1",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "B0DE90A94409E707DA18708CCD52B642",
+							"name": "ManualTransit",
+							"path": "CommanderOrders/ManualTransit",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "5F1CB4504BF82A2C43C40DB8C35131DF",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "8200",
+										"Forbidden": "23",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "3E13F87F4D9739AF059E12A13DA0C0EC",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "AA794AB0498B01FCC0937A88D12B19FD",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "F49371B94456F2419B1832BB41DBE488",
+							"name": "SelectConstructionDestination",
+							"path": "CommanderOrders/SelectConstructionDestination",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "7D53AD754B3AC6C3917A5BAA2716DBEA",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33288",
+										"Forbidden": "7",
+										"Phase": "ConstructionPrepared",
+										"Result": "None",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "F7006654457F35F08A334E8E418FB5E8",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "ConstructionReserve",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "C8D2ABEB4AAF60A2592D0BA7A7A7419C",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "9D6694D04ACED264A4CE1583EF579094",
+							"name": "ReturnCancelledConstructionOrder",
+							"path": "CommanderOrders/ReturnCancelledConstructionOrder",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "86475D32472441BC63C9058499BBB987",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33288",
+										"Forbidden": "7",
+										"Phase": "ConstructionCancelled",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "AE1A32314DB7B4ED8EBC01878A16A721",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "108230E34D0773AA73F16B8D3928BAAA",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "AD02B0344C78335A8AD437B8A3912709",
+							"name": "MoveToConstructionSite",
+							"path": "CommanderOrders/MoveToConstructionSite",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "86C7EF9949C96B36281C56A504A24402",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33288",
+										"Forbidden": "7",
+										"Phase": "ConstructionIntended",
+										"Result": "TargetReady",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "93ACA873430E0DF1694D0A9D50DF51EF",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "ConstructionMove",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "4264F85A4C7E31CDBAC220BB286221A7",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "E59C92BC4A082FB4D0E0189EDD3D7FF9",
+							"name": "WaitForBudgetedConstructionPath",
+							"path": "CommanderOrders/WaitForBudgetedConstructionPath",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "728A05F54FA8C23813AAADA7CE468CE3",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33288",
+										"Forbidden": "7",
+										"Phase": "ConstructionWaitingPath",
+										"Result": "Running",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "BC9290D24B6D6DA7FAF6E6980CD43C43",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "61F231DE4F824EAF60D0BC84776083AB",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "E0A782A64F9B55766574AF9D3897BB9B",
+							"name": "RetryConstructionPosition",
+							"path": "CommanderOrders/RetryConstructionPosition",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "E6D894C24C5FF414C6F62588AD2D251C",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33288",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "OutOfRange",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "401A109D43F3C3678B4698989C2DE86C",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "ConstructionRetry",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "43CB2570430B3237AF9F558FE943729B",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "05807B5E4DF1658A4F1F70B001505CC3",
+							"name": "ClaimPositionOnArrivalAndConstruct",
+							"path": "CommanderOrders/ClaimPositionOnArrivalAndConstruct",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "AA85B52E4E3D496D6115BEB820785FF3",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33288",
+										"Forbidden": "7",
+										"Phase": "ConstructionMoving",
+										"Result": "Arrived",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "B9BDE5254C4F5E116E75B2A80DF2E1CF",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "ConstructionWork",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "E31C61964A37F63DA72B1996F1B7C8BD",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "C05B1474400340D5A8D4BC8E54BB9845",
+							"name": "WorkingOrWaitingForArrival",
+							"path": "CommanderOrders/WorkingOrWaitingForArrival",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "EB2307B6455E87C74AF4B68AC4AAE769",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33288",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "2DE214B6496105A96B16258175129E7E",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "E83CAF3C424E15043B961C8F91056972",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "6E496B26401F6E0747AA30A79E35B66F",
+							"name": "SelectManualTask",
+							"path": "CommanderOrders/SelectManualTask",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "2B5153CD464DD755036CD786CF458BCA",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "32",
+										"Forbidden": "15",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "312CBA6D48BFD0E517385A8E4FDA866A",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "TakeManual",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "F7FCD77F40A23E2C4407F2A1543D546F",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "29A34C914A65EAD836BBB39AB71D6929",
+							"name": "SelectAutomaticConstructionSite",
+							"path": "CommanderOrders/SelectAutomaticConstructionSite",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "20CC1E3A4869EFED59D64A90A9875F8E",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "64",
+										"Forbidden": "47",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "4C4FF25E4F914F66AE958F88B29C4F71",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "TakeAutomatic",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "4855FF3A4D32CB7217C83885F1D5B065",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "8FD3F9A045AD02478EF154AD1F008141",
+							"name": "Idle",
+							"path": "CommanderOrders/Idle",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "3344847E466998FB94DE52ADB7FD3DD8",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "",
+										"Forbidden": "",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "700352CF4509CA2234BAFDA17592CD08",
+									"name": "Commander Actor Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "64648B994FD00C43DC167DB834821269",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "9939F8574AA75393ED7E539E1A13D364",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						}
+					]
+				}
+			],
+			"states": [
+				"CommanderOrders",
+				"WaitingSafeExit",
+				"Stopped",
+				"PreparingReplacementMove",
+				"SuspendedByExternalControl",
+				"StartTask",
+				"WorkUnitFinished",
+				"ManualMove",
+				"ManualTransit",
+				"SelectConstructionDestination",
+				"ReturnCancelledConstructionOrder",
+				"MoveToConstructionSite",
+				"WaitForBudgetedConstructionPath",
+				"RetryConstructionPosition",
+				"ClaimPositionOnArrivalAndConstruct",
+				"WorkingOrWaitingForArrival",
+				"SelectManualTask",
+				"SelectAutomaticConstructionSite",
+				"Idle"
+			],
+			"evaluators": [],
+			"global_tasks": [],
+			"state_count": 19,
+			"max_depth": 1,
+			"persistent_task_count": 0,
+			"errors": [],
+			"valid": true
+		},
+		{
+			"asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+			"schema": "/Script/GuLiStrike.GuLiCommanderMassStateTreeSchema",
+			"schema_properties":
+			{
+				"Policy": "(Behavior=StrongholdAdvance,DisplayName=\"据点推进\",bAutoActivate=True)"
+			},
+			"hierarchy_version": "",
+			"ready": true,
+			"dirty": false,
+			"compiled_matches_editor": true,
+			"editor_hash": "5dae1be2",
+			"mutated": false,
+			"roots": [
+				{
+					"id": "782C58E344F78CAEC813798B466AA604",
+					"name": "CommanderOrders",
+					"path": "CommanderOrders",
+					"description": "Authority task selection; clocked by the existing 10 Hz dispatcher. Business components execute requests outside Mass iteration.",
+					"type": "State",
+					"selection": "TrySelectChildrenInOrder",
+					"enabled": true,
+					"enter_conditions": [],
+					"tasks": [],
+					"transitions": [],
+					"children": [
+						{
+							"id": "2A312388440772C9B4A66F864B7B62E1",
+							"name": "WaitingSafeExit",
+							"path": "CommanderOrders/WaitingSafeExit",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "595C2FBA43C005A1930725885C077194",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "1",
+										"Forbidden": "",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "3C8FF074449DE5E59F7B5ABA92639BF7",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "CancelPending",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "AFA8977F4450BB7A25EBABB171D125A8",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "968A03A94310AF8266EA5C8711AE2876",
+							"name": "Stopped",
+							"path": "CommanderOrders/Stopped",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "5D4DA4804C9F4AE81ED2768FB67DA819",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "2",
+										"Forbidden": "1",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "751301454E4485C96EB3799F39BB0238",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "048A5825450D96F3C48A3F89C7324199",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "89043301417D335821A7E6AAAF389B17",
+							"name": "PreparingReplacementMove",
+							"path": "CommanderOrders/PreparingReplacementMove",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "A445795B4D849C3F906B9BAE335BEC9D",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "4",
+										"Forbidden": "3",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "5773D79043E1F0693501AF97C8D55E4C",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "ReplaceMove",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "1538DEBB47015B0FCAC04F982833064E",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "144B32284BC99D7F5B45F4B8CE16FEF3",
+							"name": "SuspendedByExternalControl",
+							"path": "CommanderOrders/SuspendedByExternalControl",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "54CF0D9D4EFECEAB76EF7E9477DD40DC",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "131080",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "FC7AB26946DF30E0F296EFB9E8CB18F0",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "8F5991B14D52E8BBC5E7369EB218C3BA",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "4D1B9A1E4A1FE13540B184AC2DE8A04E",
+							"name": "StartTask",
+							"path": "CommanderOrders/StartTask",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "F5FFD4C64ED1160A57ADF6B753A76E53",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "8",
+										"Forbidden": "32775",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "6C5CA7CB449136A3069A20AA581C7F6F",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "8F72909D44C9790A6F80D7941AE37FC6",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "AE41D9B34FA64EA4CF1F69871019628B",
+							"name": "WorkUnitFinished",
+							"path": "CommanderOrders/WorkUnitFinished",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "FC81CDCD4FB76F6B8C019783E9A72A25",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "294920",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "734995BA4172BCA89E8AFA93EF96D553",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "77EA8C4C4D7CE84C8A43ED82FFB0B337",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "F0F2057344C79C29808CA58703125DE1",
+							"name": "ManualMove",
+							"path": "CommanderOrders/ManualMove",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "A3289097469A160C0BD14B8C71CB7B7C",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "2056",
+										"Forbidden": "23",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "A4625FD54E2B38C0CDD3A6B0D3FBBF67",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "BD1721BC479B5EFF766CF0B6E77F3CB8",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "D422CB2144FF9F7B3481719BEC0D02D3",
+							"name": "SelectStronghold",
+							"path": "CommanderOrders/SelectStronghold",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "A00B296E42853FAE060BB5A99BE90F3C",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33800",
+										"Forbidden": "7",
+										"Phase": "AdvanceSelecting",
+										"Result": "None",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "DCD1A86E41C80AC7C1771E823C751B90",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "AdvanceSelect",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "A210CFA3478BB566B371AF8A1C67BE4C",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "542E1CFE4C51BA5898EC2CA7496A4E41",
+							"name": "MoveToStronghold",
+							"path": "CommanderOrders/MoveToStronghold",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "779361D84BFB59D924250299EB6E821A",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33800",
+										"Forbidden": "7",
+										"Phase": "AdvanceSelecting",
+										"Result": "TargetReady",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "BFF227044ADFC64CAB0A5AA3B7ECBF0C",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "AdvanceMove",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "DE453C0C45AEE2070A5D2080F3571BA2",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "445B6E434E494D67DA5E4D8CA5096CB0",
+							"name": "NoStronghold_Wait",
+							"path": "CommanderOrders/NoStronghold_Wait",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "C9A6F9EB44C458FA97AF7B8589722D23",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33800",
+										"Forbidden": "7",
+										"Phase": "AdvanceSelecting",
+										"Result": "NoTarget",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "1F570DA0470C9DE97E0629B19BD234EB",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "AdvanceWait",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "4C3F6D2347D52333226FC293757CF5A2",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "8EBA15954A55A14C2D27D1B880E7D123",
+							"name": "WaitForCapture",
+							"path": "CommanderOrders/WaitForCapture",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "C917EA2A4808EDC9E50B4185D5F3B0C0",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33800",
+										"Forbidden": "7",
+										"Phase": "AdvanceMoving",
+										"Result": "Arrived",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "7A81F58B408C49E32DC03DBE83989908",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "AdvanceCapture",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "D0DB8EC846242605E0DDAAAC89071A4C",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "01E4A6E04D8781BF56645DA717AD6A58",
+							"name": "RejectUnreachableStronghold",
+							"path": "CommanderOrders/RejectUnreachableStronghold",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "F6AF90CB45DC1BF4DB5BA387945FA40F",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33800",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "Failed",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "3262BADC4C1DA11D4678AE9E16656010",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "AdvanceReject",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "BD9A8BA3445669E8B48ECFBC2FC4E221",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "419600D9462B8382C13EC4B889F3D55C",
+							"name": "StrongholdCaptured",
+							"path": "CommanderOrders/StrongholdCaptured",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "F5423D2C4FD7FE9D937751A726EC23E0",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33800",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "Complete",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "F8D005934FF8CB51646F9F8135D89AD5",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "AdvanceComplete",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "C56A9B1D4E6D4872ADF4ECB86F188C2E",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "5BF729334464F7F2E81EBB9913D0304D",
+							"name": "RetryStrongholdSelection",
+							"path": "CommanderOrders/RetryStrongholdSelection",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "5A60C2BA4B172BF5A88D2DB21FA9F925",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33800",
+										"Forbidden": "7",
+										"Phase": "AdvanceWaiting",
+										"Result": "NoTarget",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "976AA78B4A6FD8077A9D80AD32D089A7",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "AdvanceSelect",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "82B1C5294F15BE6C06089AB7D5486040",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "31BCF65D457D27375A1B7B9A1637DF73",
+							"name": "AdvancingOrCapturing",
+							"path": "CommanderOrders/AdvancingOrCapturing",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "705F3B1440D0110FAE24A8A88675927E",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "33800",
+										"Forbidden": "7",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "7358B3B24D4ADE96B025F9BE44A432DE",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "RunTask",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "2C91E0FA452FB8747B94F89030C611D0",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "0D14361F46E4E1AA9711A3A9FB86EC05",
+							"name": "SelectManualTask",
+							"path": "CommanderOrders/SelectManualTask",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "51F44C5E486D4FE2CCF3D2AE3D25B3CD",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "32",
+										"Forbidden": "15",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "BB25FB274E76FB369537C78ED0299444",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "TakeManual",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "E43F097F46BBA38FFFBC619EF9FC3631",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "586CD36A4C9D49F70F9D14A68FA76235",
+							"name": "SelectAutomaticTask",
+							"path": "CommanderOrders/SelectAutomaticTask",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "3810F16449897BF3976CB48D1A229458",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "64",
+										"Forbidden": "47",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "230115BD4333E9E7BF3F6AB93ED51EB6",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "TakeAutomatic",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "E8D853B0486F4C3434925CAD31D841B1",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "59F913B74FA19A8CD4670CB357B75923",
+							"name": "Idle",
+							"path": "CommanderOrders/Idle",
+							"description": "",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "BA7156B64B567B20B785C8A2E6517760",
+									"name": "Commander Mass Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "",
+										"Forbidden": "",
+										"Phase": "",
+										"Result": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "D867CA524F3212F44C9CB0BF2112D631",
+									"name": "Commander Mass Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderMassBehaviorTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Step": "",
+										"Name": ""
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "2DE48989452914B2894F229F31CEB6BB",
+									"trigger": "OnStateSucceeded",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "782C58E344F78CAEC813798B466AA604",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						}
+					]
+				}
+			],
+			"states": [
+				"CommanderOrders",
+				"WaitingSafeExit",
+				"Stopped",
+				"PreparingReplacementMove",
+				"SuspendedByExternalControl",
+				"StartTask",
+				"WorkUnitFinished",
+				"ManualMove",
+				"SelectStronghold",
+				"MoveToStronghold",
+				"NoStronghold_Wait",
+				"WaitForCapture",
+				"RejectUnreachableStronghold",
+				"StrongholdCaptured",
+				"RetryStrongholdSelection",
+				"AdvancingOrCapturing",
+				"SelectManualTask",
+				"SelectAutomaticTask",
+				"Idle"
+			],
+			"evaluators": [],
+			"global_tasks": [],
+			"state_count": 19,
+			"max_depth": 1,
+			"persistent_task_count": 0,
+			"errors": [],
+			"valid": true
+		}
+	]
+}

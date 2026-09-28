@@ -11,6 +11,16 @@ DECLARE_MULTICAST_DELEGATE_TwoParams(
 	float,
 	uint32);
 
+/** Committed per-team/unit movement bonuses, including late-joining viewers. */
+USTRUCT()
+struct FGuLiCommanderUnitMovementMultiplier
+{
+	GENERATED_BODY()
+	UPROPERTY() EGuLiTeam Team = EGuLiTeam::Unassigned;
+	UPROPERTY() uint16 UnitTypeId = 0;
+	UPROPERTY() float Multiplier = 1.0f;
+};
+
 /**
  * 指挥官地图的兼容 GameState：身份、战局和席位复制由 Battle 基类统一维护。
  * 本类只额外发布士兵表现预测使用的已提交速度；保留旧 UCLASS 路径及访问 API。
@@ -25,6 +35,9 @@ public:
 
 	/** 服务器本地发布已提交士兵速度（cm/s）及调参版本，不是客户端调参 RPC。 */
 	void SetAuthoritativeSoldierMovementTuning(float EffectiveMoveSpeedCmPerSecond, uint32 TuningRevision);
+	void SetAuthoritativeUnitMovementMultiplier(EGuLiTeam Team, uint16 UnitTypeId, float Multiplier);
+	void ResetAuthoritativeUnitMovementMultipliers();
+	float GetEffectiveUnitMoveSpeedCmPerSecond(EGuLiTeam Team, uint16 UnitTypeId) const;
 
 	UFUNCTION(BlueprintPure, Category = "Commander|Tuning")
 	float GetEffectiveSoldierMoveSpeedCmPerSecond() const
@@ -47,4 +60,7 @@ private:
 	// 两个独立复制属性；客户端不得将两个回调顺序当作原子事务。
 	UPROPERTY(ReplicatedUsing = OnRep_RuntimeTuning)
 	uint32 RuntimeTuningRevision = 0u;
+
+	UPROPERTY(Replicated)
+	TArray<FGuLiCommanderUnitMovementMultiplier> UnitMovementMultipliers;
 };

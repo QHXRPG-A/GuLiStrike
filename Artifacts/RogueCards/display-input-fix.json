@@ -1,0 +1,57 @@
+{
+  "date": "2026-09-28",
+  "source": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Cards\\GuLiRogueCardPresentation.cpp",
+  "source_sha256": "3ab0e4f4caa3ea1b21c06f58f1448b1f45d0022b2a257ea7335831bdb18c0ff7",
+  "player_reports": [
+    "Card colors washed out/pale blue",
+    "Cannot click cards"
+  ],
+  "repro": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "steps": [
+      "Player enters ready commander role",
+      "F4",
+      "Wait for cards to enter",
+      "Left click a card"
+    ],
+    "expected": "Normal card colors, first click flips, fresh second click confirms"
+  },
+  "first_bad_transitions": [
+    {
+      "path": "CreateStage -> direct ShowFlags edit -> RegisterComponent -> OnRegister -> UpdateShowFlags",
+      "evidence": "UE5.7 resets ShowFlags from archetype, then reapplies ShowFlagSettings; original code supplied none",
+      "fix": "SetShowFlagSettings with Atmosphere, Fog, VolumetricFog, Cloud, MotionBlur disabled"
+    },
+    {
+      "path": "Slate hit-test -> native modal widget -> NativeOnMouseButtonDown",
+      "evidence": "UserWidget and Overlay default SelfHitTestInvisible; all visual children HitTestInvisible",
+      "fix": "Explicit Visible on native UserWidget and root Overlay; decorative children non-hit-testable"
+    }
+  ],
+  "static_review": {
+    "ue_api_names_verified": true,
+    "material_graphs_read": true,
+    "no_gamma_or_artwork_changes": true,
+    "scope": "GuLiRogueCardPresentation.cpp only"
+  },
+  "editor_processes_at_diagnosis": {
+    "python_12029": 54904,
+    "player_session": 101032
+  },
+  "compile": {
+    "result": "succeeded",
+    "exit_code": 0,
+    "target": "GuLiStrikeEditor Win64 Development",
+    "engine": "D:/UnrealEngine-5.7",
+    "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "project_engine_build_ids_match": true,
+    "log": "display-input-fix-build.log"
+  },
+  "loaded_code": "Editor PID 97784 launched after build, then closed normally before final readback",
+  "gameplay": "not_run_by_assistant",
+  "visual_review": "user_pending",
+  "next_action": "Reopen the existing battle map, read the saved entry configuration, then player validates F4 colors and clicks",
+  "authorization": "可以，编译并重新打开",
+  "post_restart_readback": "not_completed; connection refused after editor exit",
+  "computer_use": "stopped_by_user_physical_escape; no further UI input"
+}

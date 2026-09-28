@@ -1,4 +1,2476 @@
 {
-	"success": true,
-	"asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder"
+	"asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder",
+	"schema": "/Script/GuLiStrike.GuLiCommanderActorStateTreeSchema",
+	"schema_properties":
+	{
+		"Policy": "(Behavior=Construction,DisplayName=\"建造\",bAutoActivate=True,Lifetime=Persistent)",
+		"ContextActorClass": "/Script/CoreUObject.Class'/Script/Engine.Actor'",
+		"ScheduledTickPolicy": "Denied"
+	},
+	"hierarchy_version": "2",
+	"ready": true,
+	"dirty": false,
+	"compiled_matches_editor": true,
+	"editor_hash": "f0856e25",
+	"mutated": false,
+	"roots": [
+		{
+			"id": "E8F3A0944785077481FDFFA91E0157C8",
+			"name": "CommanderOrders",
+			"path": "CommanderOrders",
+			"description": "统一处理控制打断、任务选择与执行。持续动作留在业务阶段；控制或命令身份变化时才重新选择根分支。",
+			"type": "State",
+			"selection": "TrySelectChildrenInOrder",
+			"enabled": true,
+			"enter_conditions": [],
+			"tasks": [],
+			"transitions": [
+				{
+					"id": "217CBE514B0CBB695D2C398AE0ED2876",
+					"trigger": "OnTick",
+					"priority": "Critical",
+					"priority_value": 5,
+					"target_type": "GotoState",
+					"target_id": "E8F3A0944785077481FDFFA91E0157C8",
+					"target_name": "CommanderOrders",
+					"target_path": "CommanderOrders",
+					"enabled": true,
+					"delayed": false,
+					"delay_seconds": 0,
+					"delay_variance": 0,
+					"event_tag": "None",
+					"event_payload_type": "None",
+					"conditions": [
+						{
+							"id": "7F43534C46717A29049CF0A747143218",
+							"name": "Commander Actor Context",
+							"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+							"operand": "And",
+							"indent": 0,
+							"properties":
+							{
+								"Required": "2097152",
+								"Forbidden": "0",
+								"Phase": "Any",
+								"Result": "Any",
+								"Name": "None"
+							},
+							"instance":
+							{
+							}
+						}
+					]
+				},
+				{
+					"id": "201965124171B308F3BF8B9DA6EFCEF2",
+					"trigger": "OnTick",
+					"priority": "High",
+					"priority_value": 4,
+					"target_type": "GotoState",
+					"target_id": "E8F3A0944785077481FDFFA91E0157C8",
+					"target_name": "CommanderOrders",
+					"target_path": "CommanderOrders",
+					"enabled": true,
+					"delayed": false,
+					"delay_seconds": 0,
+					"delay_variance": 0,
+					"event_tag": "None",
+					"event_payload_type": "None",
+					"conditions": [
+						{
+							"id": "449034D046EA5790BCFCF18050650A13",
+							"name": "Commander Actor Context",
+							"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+							"operand": "And",
+							"indent": 0,
+							"properties":
+							{
+								"Required": "4194304",
+								"Forbidden": "0",
+								"Phase": "Any",
+								"Result": "Any",
+								"Name": "None"
+							},
+							"instance":
+							{
+							}
+						}
+					]
+				},
+				{
+					"id": "63D3520743C4FA47E65390A43463CE49",
+					"trigger": "OnStateFailed",
+					"priority": "Normal",
+					"priority_value": 2,
+					"target_type": "Failed",
+					"target_id": "00000000000000000000000000000000",
+					"target_name": "None",
+					"target_path": "",
+					"enabled": true,
+					"delayed": false,
+					"delay_seconds": 0,
+					"delay_variance": 0,
+					"event_tag": "None",
+					"event_payload_type": "None",
+					"conditions": []
+				}
+			],
+			"children": [
+				{
+					"id": "C62AD4A04F4CDA71224F1AA48ECD7380",
+					"name": "Control",
+					"path": "CommanderOrders/Control",
+					"description": "按安全退出、持续停止、替换移动的优先顺序处理公共打断，完成后回到任务管理层。",
+					"type": "State",
+					"selection": "TrySelectChildrenInOrder",
+					"enabled": true,
+					"enter_conditions": [],
+					"tasks": [],
+					"transitions": [],
+					"children": [
+						{
+							"id": "91F31B8C48D2BD3ABCB2F784EDBDAA72",
+							"name": "WaitForSafeExit",
+							"path": "CommanderOrders/Control/WaitForSafeExit",
+							"description": "取消命令需要安全退出时，在此等待退出回执；完成后重新选择任务。",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "E1369DC943087AF886EBA4B84BDFD278",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "1",
+										"Forbidden": "0",
+										"Phase": "Any",
+										"Result": "Any",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "02F2DB674AD9176F2ABFB68945096942",
+									"name": "Commander Actor Persistent Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Operation": "(Entry=CancelPending,WhileRunning=ObserveOrder,bCompleteOnReceipt=True,Control=SafeExit,ResumePhases=)",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "DF87A5EC46272662EAC0E080E164DCD5",
+									"trigger": "OnStateCompleted",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "E8F3A0944785077481FDFFA91E0157C8",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "70F55B414381F1B74756439E43255C80",
+							"name": "Stopped",
+							"path": "CommanderOrders/Control/Stopped",
+							"description": "停止命令生效后持续停留，不自动恢复旧任务；新的控制变化会触发重新选择。",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "1E055FF5404DBEC93F469982100220B6",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "2",
+										"Forbidden": "1",
+										"Phase": "Any",
+										"Result": "Any",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "49F50C85494D460AACBE4098F276A2D1",
+									"name": "Commander Actor Persistent Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Operation": "(Entry=Wait,WhileRunning=Wait,bCompleteOnReceipt=False,Control=Stopped,ResumePhases=)",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [],
+							"children": []
+						},
+						{
+							"id": "430616E6490D8A21E2A23AB757BFAE97",
+							"name": "PrepareReplacementMove",
+							"path": "CommanderOrders/Control/PrepareReplacementMove",
+							"description": "提交替换移动请求；新路径被接受前保留旧移动，处理完后返回任务管理层。",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "4780C3DC4631FEE7CB7762B2910F06DF",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "4",
+										"Forbidden": "3",
+										"Phase": "Any",
+										"Result": "Any",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "AF3236CB4932CD395096EE82EC49E35E",
+									"name": "Commander Actor Persistent Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Operation": "(Entry=ReplaceMove,WhileRunning=ObserveOrder,bCompleteOnReceipt=True,Control=ReplacementMove,ResumePhases=)",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "AEFAEB064A29336819FDE48635259406",
+									"trigger": "OnStateCompleted",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "E8F3A0944785077481FDFFA91E0157C8",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						}
+					]
+				},
+				{
+					"id": "C1080031493AB41B7BEA57BB91768C19",
+					"name": "SelectOrder",
+					"path": "CommanderOrders/SelectOrder",
+					"description": "没有活动任务时优先领取人工队列，再检查可用的自动任务；都不可用则保持空闲。",
+					"type": "State",
+					"selection": "TrySelectChildrenInOrder",
+					"enabled": true,
+					"enter_conditions": [
+						{
+							"id": "072ADAE04932566788B8C9B5281DA5EA",
+							"name": "Commander Actor Context",
+							"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+							"operand": "And",
+							"indent": 0,
+							"properties":
+							{
+								"Required": "0",
+								"Forbidden": "15",
+								"Phase": "Any",
+								"Result": "Any",
+								"Name": "None"
+							},
+							"instance":
+							{
+							}
+						}
+					],
+					"tasks": [],
+					"transitions": [],
+					"children": [
+						{
+							"id": "CDE7EFAF46D7FC96D76720821EC3D8AC",
+							"name": "TakeManualOrder",
+							"path": "CommanderOrders/SelectOrder/TakeManualOrder",
+							"description": "领取队列中的人工命令并绑定当前执行身份；领取成功后转入执行层。",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "E66D6B6D418AC89BB739E59D556D173D",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "32",
+										"Forbidden": "0",
+										"Phase": "Any",
+										"Result": "Any",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "365F2E0649B69DC7A9CC70A511124F7A",
+									"name": "Commander Actor Persistent Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Operation": "(Entry=TakeManual,WhileRunning=ObserveOrder,bCompleteOnReceipt=True,Control=Normal,ResumePhases=)",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "C82E186048CC123968F2B3B6218E58FE",
+									"trigger": "OnStateCompleted",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "E8F3A0944785077481FDFFA91E0157C8",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "476F58F143629B9DF4E2E8ACFA068788",
+							"name": "TakeAutomaticOrder",
+							"path": "CommanderOrders/SelectOrder/TakeAutomaticOrder",
+							"description": "在人工队列没有优先命令时领取已就绪的自动任务，然后转入执行层。",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "DA68A25D4A25A9F17E2416AB7A9EF45C",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "64",
+										"Forbidden": "32",
+										"Phase": "Any",
+										"Result": "Any",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "EB6C7B7842BD096042DEB6A53DF39DB0",
+									"name": "Commander Actor Persistent Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Operation": "(Entry=TakeAutomatic,WhileRunning=ObserveOrder,bCompleteOnReceipt=True,Control=Normal,ResumePhases=)",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "CD263D0145F75D77E9E50B940E323A09",
+									"trigger": "OnStateCompleted",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "E8F3A0944785077481FDFFA91E0157C8",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "5DA351F74131A44F3CC3B4A83A24E30B",
+							"name": "Idle",
+							"path": "CommanderOrders/SelectOrder/Idle",
+							"description": "暂时无任务可领时持续等待；人工队列或自动资格就绪后重新选择。",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [],
+							"tasks": [
+								{
+									"id": "A9FFB5524491F853AA6CB3994EE3A6B9",
+									"name": "Commander Actor Persistent Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Operation": "(Entry=Wait,WhileRunning=Wait,bCompleteOnReceipt=False,Control=Normal,ResumePhases=)",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "BD6842344C872E01E44941999AB0383E",
+									"trigger": "OnTick",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "C1080031493AB41B7BEA57BB91768C19",
+									"target_name": "SelectOrder",
+									"target_path": "CommanderOrders/SelectOrder",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": [
+										{
+											"id": "7DD8F77D4D9ADE7BFC6A77A1B14A389C",
+											"name": "Commander Actor Context",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+											"operand": "And",
+											"indent": 0,
+											"properties":
+											{
+												"Required": "32",
+												"Forbidden": "0",
+												"Phase": "Any",
+												"Result": "Any",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										},
+										{
+											"id": "BEC2AA724D443AE9E8B5C9AC3421D92F",
+											"name": "Commander Actor Context",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+											"operand": "Or",
+											"indent": 0,
+											"properties":
+											{
+												"Required": "64",
+												"Forbidden": "0",
+												"Phase": "Any",
+												"Result": "Any",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										}
+									]
+								}
+							],
+							"children": []
+						}
+					]
+				},
+				{
+					"id": "5A83010242C252CE9F4639AFA87D23E9",
+					"name": "ExecuteOrder",
+					"path": "CommanderOrders/ExecuteOrder",
+					"description": "执行当前活动命令，选择启动、手动移动或本兵种业务分支；暂停和终态收尾在本层处理。",
+					"type": "State",
+					"selection": "TrySelectChildrenInOrder",
+					"enabled": true,
+					"enter_conditions": [
+						{
+							"id": "1CA636E44264F8B81A1D2AA40EE9A87B",
+							"name": "Commander Actor Context",
+							"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+							"operand": "And",
+							"indent": 0,
+							"properties":
+							{
+								"Required": "8",
+								"Forbidden": "7",
+								"Phase": "Any",
+								"Result": "Any",
+								"Name": "None"
+							},
+							"instance":
+							{
+							}
+						}
+					],
+					"tasks": [],
+					"transitions": [
+						{
+							"id": "F0AF65F74DBEAC4B3CCCBD8EE4689C5D",
+							"trigger": "OnTick",
+							"priority": "Normal",
+							"priority_value": 2,
+							"target_type": "GotoState",
+							"target_id": "E5082E4340AE8FABB3F8E5BFF18AACF7",
+							"target_name": "FinishOrder",
+							"target_path": "CommanderOrders/ExecuteOrder/FinishOrder",
+							"enabled": true,
+							"delayed": false,
+							"delay_seconds": 0,
+							"delay_variance": 0,
+							"event_tag": "None",
+							"event_payload_type": "None",
+							"conditions": [
+								{
+									"id": "58FB3EF741BFB2A4282A9FB405E3728B",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "1048576",
+										"Forbidden": "7",
+										"Phase": "Any",
+										"Result": "Any",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							]
+						}
+					],
+					"children": [
+						{
+							"id": "E5082E4340AE8FABB3F8E5BFF18AACF7",
+							"name": "FinishOrder",
+							"path": "CommanderOrders/ExecuteOrder/FinishOrder",
+							"description": "观察已结束任务并统一收尾：释放执行资格、记录结果及办理队列交接，避免重复收尾。",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "FBCDA9E944640E89AA24EC9AADAFA7C7",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "1048576",
+										"Forbidden": "0",
+										"Phase": "Any",
+										"Result": "Any",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "A9DECF7E4AE8A09608375BA17BB898E6",
+									"name": "Commander Actor Persistent Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Operation": "(Entry=FinishOrder,WhileRunning=ObserveOrder,bCompleteOnReceipt=True,Control=Normal,ResumePhases=)",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "5D596D75462FD78F9EC5818CF56EEA2D",
+									"trigger": "OnStateCompleted",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "E8F3A0944785077481FDFFA91E0157C8",
+									"target_name": "CommanderOrders",
+									"target_path": "CommanderOrders",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "C14BA4914731350902ED3EACB7BD1DF4",
+							"name": "Suspended",
+							"path": "CommanderOrders/ExecuteOrder/Suspended",
+							"description": "外部控制暂停期间保留当前任务和已有进度；解除暂停后回到合适的执行阶段。",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "78FE2F4C40523B2577E2AE815FC123FE",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "131072",
+										"Forbidden": "1048576",
+										"Phase": "Any",
+										"Result": "Any",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "2CC75D9F4AA6F4B597D65A9A58AA43B8",
+									"name": "Commander Actor Persistent Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Operation": "(Entry=ObserveOrder,WhileRunning=ObserveOrder,bCompleteOnReceipt=False,Control=Normal,ResumePhases=)",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "438218FB4B7125A27D7A88AAEFCEA47A",
+									"trigger": "OnTick",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "5A83010242C252CE9F4639AFA87D23E9",
+									"target_name": "ExecuteOrder",
+									"target_path": "CommanderOrders/ExecuteOrder",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": [
+										{
+											"id": "11989DD746DA47FA19206B817A1DB4D5",
+											"name": "Commander Actor Context",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+											"operand": "And",
+											"indent": 0,
+											"properties":
+											{
+												"Required": "0",
+												"Forbidden": "131079",
+												"Phase": "Any",
+												"Result": "Any",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										}
+									]
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "1ADDC59D44662D762743878A492BA129",
+							"name": "StartOrder",
+							"path": "CommanderOrders/ExecuteOrder/StartOrder",
+							"description": "提交当前任务的启动动作；收到有效回执后进入相应移动或业务阶段。",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "147D3264444FC3E72C87BDBD28A9D89F",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "0",
+										"Forbidden": "1081344",
+										"Phase": "Any",
+										"Result": "Any",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "7D41B54040DCD93869F0BEAC3FCD13CE",
+									"name": "Commander Actor Persistent Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Operation": "(Entry=StartOrder,WhileRunning=ObserveOrder,bCompleteOnReceipt=True,Control=Normal,ResumePhases=)",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "7F5D1AC941CD0DD123C8D1B498DC79C1",
+									"trigger": "OnTick",
+									"priority": "Medium",
+									"priority_value": 3,
+									"target_type": "GotoState",
+									"target_id": "39285454435438A5B9A590B40BDE7E93",
+									"target_name": "ReturnConstructionOrder",
+									"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": [
+										{
+											"id": "989DD1AD493D7B9A3376CAAC954BB39E",
+											"name": "Commander Actor Context",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+											"operand": "And",
+											"indent": 0,
+											"properties":
+											{
+												"Required": "1048576",
+												"Forbidden": "0",
+												"Phase": "Any",
+												"Result": "Failed",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										}
+									]
+								},
+								{
+									"id": "52CEB1DF4EB427FAC96AF9A82E79E604",
+									"trigger": "OnTick",
+									"priority": "Medium",
+									"priority_value": 3,
+									"target_type": "GotoState",
+									"target_id": "C14BA4914731350902ED3EACB7BD1DF4",
+									"target_name": "Suspended",
+									"target_path": "CommanderOrders/ExecuteOrder/Suspended",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": [
+										{
+											"id": "3E4E81AC4381B5CE3E591C9810C3D45C",
+											"name": "Commander Actor Context",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+											"operand": "And",
+											"indent": 0,
+											"properties":
+											{
+												"Required": "131072",
+												"Forbidden": "1048583",
+												"Phase": "Any",
+												"Result": "Any",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										}
+									]
+								},
+								{
+									"id": "EC05D50B4E765647DE0FA0AF96C8E2AF",
+									"trigger": "OnStateCompleted",
+									"priority": "Normal",
+									"priority_value": 2,
+									"target_type": "GotoState",
+									"target_id": "5A83010242C252CE9F4639AFA87D23E9",
+									"target_name": "ExecuteOrder",
+									"target_path": "CommanderOrders/ExecuteOrder",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": []
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "87CC30934E7FB666FF1AFF809ADA147D",
+							"name": "ManualMove",
+							"path": "CommanderOrders/ExecuteOrder/ManualMove",
+							"description": "持续观察人工移动及路径结果；停止或替换命令由公共控制层优先接管。",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "7B10C496498D0F86456A3B85C0A7FF96",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "2048",
+										"Forbidden": "16",
+										"Phase": "Any",
+										"Result": "Any",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "C560FF35438EB2AD75377397052EC61F",
+									"name": "Commander Actor Persistent Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Operation": "(Entry=ObserveOrder,WhileRunning=ObserveOrder,bCompleteOnReceipt=False,Control=Normal,ResumePhases=)",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "2C09946049D1C9AF574168A8F5FE61FB",
+									"trigger": "OnTick",
+									"priority": "Medium",
+									"priority_value": 3,
+									"target_type": "GotoState",
+									"target_id": "C14BA4914731350902ED3EACB7BD1DF4",
+									"target_name": "Suspended",
+									"target_path": "CommanderOrders/ExecuteOrder/Suspended",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": [
+										{
+											"id": "35261B014BE2867FA78E6C81D7D69669",
+											"name": "Commander Actor Context",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+											"operand": "And",
+											"indent": 0,
+											"properties":
+											{
+												"Required": "131072",
+												"Forbidden": "1048583",
+												"Phase": "Any",
+												"Result": "Any",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										}
+									]
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "62FBD61F4AC0571049F1AE994A24218A",
+							"name": "ManualTransit",
+							"path": "CommanderOrders/ExecuteOrder/ManualTransit",
+							"description": "持续观察工程车运输状态；需要停止时先由公共控制层安全退出。",
+							"type": "State",
+							"selection": "TryEnterState",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "E4B870844094DA7F62BAED820748C351",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "8192",
+										"Forbidden": "16",
+										"Phase": "Any",
+										"Result": "Any",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [
+								{
+									"id": "F04F55B143D1F73D48452482AEA369DC",
+									"name": "Commander Actor Persistent Operation",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Operation": "(Entry=ObserveOrder,WhileRunning=ObserveOrder,bCompleteOnReceipt=False,Control=Normal,ResumePhases=)",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"transitions": [
+								{
+									"id": "CA18A92547DCB8543895BBA036A0E81B",
+									"trigger": "OnTick",
+									"priority": "Medium",
+									"priority_value": 3,
+									"target_type": "GotoState",
+									"target_id": "C14BA4914731350902ED3EACB7BD1DF4",
+									"target_name": "Suspended",
+									"target_path": "CommanderOrders/ExecuteOrder/Suspended",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": [
+										{
+											"id": "06D7BE46470C53EC6049A4B9D572FDC6",
+											"name": "Commander Actor Context",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+											"operand": "And",
+											"indent": 0,
+											"properties":
+											{
+												"Required": "131072",
+												"Forbidden": "1048583",
+												"Phase": "Any",
+												"Result": "Any",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										}
+									]
+								}
+							],
+							"children": []
+						},
+						{
+							"id": "46DD6A7749DB21FE489DBEBDD7A83F16",
+							"name": "ConstructionJob",
+							"path": "CommanderOrders/ExecuteOrder/ConstructionJob",
+							"description": "施工业务分支包含选目的地、移动、抵达抢位、持续施工和失败退单。",
+							"type": "State",
+							"selection": "TrySelectChildrenInOrder",
+							"enabled": true,
+							"enter_conditions": [
+								{
+									"id": "1139AD7748F4F03D7A0E0CB95844ED98",
+									"name": "Commander Actor Context",
+									"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+									"operand": "And",
+									"indent": 0,
+									"properties":
+									{
+										"Required": "512",
+										"Forbidden": "0",
+										"Phase": "Any",
+										"Result": "Any",
+										"Name": "None"
+									},
+									"instance":
+									{
+									}
+								}
+							],
+							"tasks": [],
+							"transitions": [
+								{
+									"id": "3D83118F4BD05DC06551F08E1266FA9B",
+									"trigger": "OnTick",
+									"priority": "Medium",
+									"priority_value": 3,
+									"target_type": "GotoState",
+									"target_id": "C14BA4914731350902ED3EACB7BD1DF4",
+									"target_name": "Suspended",
+									"target_path": "CommanderOrders/ExecuteOrder/Suspended",
+									"enabled": true,
+									"delayed": false,
+									"delay_seconds": 0,
+									"delay_variance": 0,
+									"event_tag": "None",
+									"event_payload_type": "None",
+									"conditions": [
+										{
+											"id": "C9003AB9444F8A66F7475C9A966BAB5B",
+											"name": "Commander Actor Context",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+											"operand": "And",
+											"indent": 0,
+											"properties":
+											{
+												"Required": "131072",
+												"Forbidden": "1048583",
+												"Phase": "Any",
+												"Result": "Any",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										}
+									]
+								}
+							],
+							"children": [
+								{
+									"id": "39285454435438A5B9A590B40BDE7E93",
+									"name": "ReturnConstructionOrder",
+									"path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+									"description": "工地失效或施工任务失败时保留排除记录并退单，再交给任务收尾或取单层。",
+									"type": "State",
+									"selection": "TryEnterState",
+									"enabled": true,
+									"enter_conditions": [
+										{
+											"id": "829DC14A40DCF09345ADA8B9F7B4E545",
+											"name": "Commander Actor Context",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+											"operand": "And",
+											"indent": 0,
+											"properties":
+											{
+												"Required": "0",
+												"Forbidden": "0",
+												"Phase": "ConstructionCancelled",
+												"Result": "Any",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										},
+										{
+											"id": "F727FB3540F3FEE4B8D672890B0EB647",
+											"name": "Commander Actor Context",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+											"operand": "Or",
+											"indent": 0,
+											"properties":
+											{
+												"Required": "0",
+												"Forbidden": "0",
+												"Phase": "Any",
+												"Result": "Failed",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										}
+									],
+									"tasks": [
+										{
+											"id": "16C73C9B44921E64C0AD2EB4DC54E9D9",
+											"name": "Commander Actor Persistent Operation",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+											"operand": "And",
+											"indent": 0,
+											"properties":
+											{
+												"Operation": "(Entry=ObserveOrder,WhileRunning=ObserveOrder,bCompleteOnReceipt=False,Control=Normal,ResumePhases=)",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										}
+									],
+									"transitions": [
+										{
+											"id": "55196C7C473A8BCCA809B3A3F497BBF9",
+											"trigger": "OnTick",
+											"priority": "Normal",
+											"priority_value": 2,
+											"target_type": "GotoState",
+											"target_id": "E5082E4340AE8FABB3F8E5BFF18AACF7",
+											"target_name": "FinishOrder",
+											"target_path": "CommanderOrders/ExecuteOrder/FinishOrder",
+											"enabled": true,
+											"delayed": false,
+											"delay_seconds": 0,
+											"delay_variance": 0,
+											"event_tag": "None",
+											"event_payload_type": "None",
+											"conditions": [
+												{
+													"id": "2A946D2C42970E0B06F6229DE590CEFC",
+													"name": "Commander Actor Context",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+													"operand": "And",
+													"indent": 0,
+													"properties":
+													{
+														"Required": "1048576",
+														"Forbidden": "0",
+														"Phase": "Any",
+														"Result": "Any",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												}
+											]
+										}
+									],
+									"children": []
+								},
+								{
+									"id": "963D27C34E09896F279BD2AFD2F752AF",
+									"name": "RejectConstructionPosition",
+									"path": "CommanderOrders/ExecuteOrder/ConstructionJob/RejectConstructionPosition",
+									"description": "目标位置失效或抢位失败后记录原有排除期，再退单重新选择。",
+									"type": "State",
+									"selection": "TryEnterState",
+									"enabled": true,
+									"enter_conditions": [
+										{
+											"id": "E7E52D1946DF6B048ABCF1A786C71196",
+											"name": "Commander Actor Context",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+											"operand": "And",
+											"indent": 0,
+											"properties":
+											{
+												"Required": "0",
+												"Forbidden": "0",
+												"Phase": "Any",
+												"Result": "OutOfRange",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										}
+									],
+									"tasks": [
+										{
+											"id": "BC70B4D947613C8FAFFCC3B4B5F901E6",
+											"name": "Commander Actor Persistent Operation",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+											"operand": "And",
+											"indent": 0,
+											"properties":
+											{
+												"Operation": "(Entry=ConstructionRetry,WhileRunning=ObserveOrder,bCompleteOnReceipt=True,Control=Normal,ResumePhases=)",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										}
+									],
+									"transitions": [
+										{
+											"id": "CCE2D42C45C59B3B1FA998A77D94D041",
+											"trigger": "OnStateCompleted",
+											"priority": "Normal",
+											"priority_value": 2,
+											"target_type": "GotoState",
+											"target_id": "39285454435438A5B9A590B40BDE7E93",
+											"target_name": "ReturnConstructionOrder",
+											"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+											"enabled": true,
+											"delayed": false,
+											"delay_seconds": 0,
+											"delay_variance": 0,
+											"event_tag": "None",
+											"event_payload_type": "None",
+											"conditions": []
+										},
+										{
+											"id": "D1A0DE7A42888581E02E20935F73D229",
+											"trigger": "OnTick",
+											"priority": "Medium",
+											"priority_value": 3,
+											"target_type": "GotoState",
+											"target_id": "39285454435438A5B9A590B40BDE7E93",
+											"target_name": "ReturnConstructionOrder",
+											"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+											"enabled": true,
+											"delayed": false,
+											"delay_seconds": 0,
+											"delay_variance": 0,
+											"event_tag": "None",
+											"event_payload_type": "None",
+											"conditions": [
+												{
+													"id": "E32C10F54F267F7017E688B7EF1D72FD",
+													"name": "Commander Actor Context",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+													"operand": "And",
+													"indent": 0,
+													"properties":
+													{
+														"Required": "1048576",
+														"Forbidden": "0",
+														"Phase": "Any",
+														"Result": "Any",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												}
+											]
+										}
+									],
+									"children": []
+								},
+								{
+									"id": "118C1B6F4F4025E452742289DFA9C192",
+									"name": "ApproachConstructionSite",
+									"path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite",
+									"description": "施工准备依次选目的地、持续前往、抵达后抢占施工位；移动途中不占位。",
+									"type": "State",
+									"selection": "TrySelectChildrenInOrder",
+									"enabled": true,
+									"enter_conditions": [],
+									"tasks": [],
+									"transitions": [],
+									"children": [
+										{
+											"id": "D8DEAF88466BBF2F908D85976D7CFD98",
+											"name": "SelectConstructionDestination",
+											"path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite/SelectConstructionDestination",
+											"description": "按本地优先规则选择工地和目标位置，此时只确定前往意图，尚不占用施工位。",
+											"type": "State",
+											"selection": "TryEnterState",
+											"enabled": true,
+											"enter_conditions": [
+												{
+													"id": "AD6FC4924840847AC8D13F8C28B1D858",
+													"name": "Commander Actor Context",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+													"operand": "And",
+													"indent": 0,
+													"properties":
+													{
+														"Required": "0",
+														"Forbidden": "0",
+														"Phase": "ConstructionPrepared",
+														"Result": "None",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												}
+											],
+											"tasks": [
+												{
+													"id": "4324DD52421974F962BD74B84EC01005",
+													"name": "Commander Actor Persistent Operation",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+													"operand": "And",
+													"indent": 0,
+													"properties":
+													{
+														"Operation": "(Entry=ConstructionReserve,WhileRunning=ObserveOrder,bCompleteOnReceipt=True,Control=Normal,ResumePhases=)",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												}
+											],
+											"transitions": [
+												{
+													"id": "7F0AB6B74F7452EA15CBBCBDCCCDC9A6",
+													"trigger": "OnStateCompleted",
+													"priority": "Normal",
+													"priority_value": 2,
+													"target_type": "GotoState",
+													"target_id": "96BD316B40250C71217A6ABD192AC95D",
+													"target_name": "TravelToConstructionSite",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite/TravelToConstructionSite",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "6BA4941448370C6D0E1D53B5A38BE43C",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "ConstructionIntended",
+																"Result": "Any",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												},
+												{
+													"id": "3B0EDF6B43FE34C66F4086BCD0335E3D",
+													"trigger": "OnTick",
+													"priority": "Medium",
+													"priority_value": 3,
+													"target_type": "GotoState",
+													"target_id": "39285454435438A5B9A590B40BDE7E93",
+													"target_name": "ReturnConstructionOrder",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "4D4A92C34144EF01069AC8A6A8D02F00",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "ConstructionCancelled",
+																"Result": "Any",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														},
+														{
+															"id": "5DB2A15743B4A4278E103E8E4ADB7BD4",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "Or",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "Any",
+																"Result": "Failed",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												},
+												{
+													"id": "BC058F954C85D9E87B7C39A8F6893F18",
+													"trigger": "OnTick",
+													"priority": "Normal",
+													"priority_value": 2,
+													"target_type": "GotoState",
+													"target_id": "963D27C34E09896F279BD2AFD2F752AF",
+													"target_name": "RejectConstructionPosition",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/RejectConstructionPosition",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "FA521D324C912BD2F7FD5A8DED53FD7C",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "Any",
+																"Result": "OutOfRange",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												},
+												{
+													"id": "8FD6441245D564F3649CBB9DE03BFD86",
+													"trigger": "OnStateFailed",
+													"priority": "Medium",
+													"priority_value": 3,
+													"target_type": "GotoState",
+													"target_id": "39285454435438A5B9A590B40BDE7E93",
+													"target_name": "ReturnConstructionOrder",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "FDC1D3C2436BFDF779D17681D7F62D64",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "ConstructionCancelled",
+																"Result": "Any",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														},
+														{
+															"id": "A587AE1C46AFA742441DA2B13CC96B7B",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "Or",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "Any",
+																"Result": "Failed",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												},
+												{
+													"id": "762B66C24F778AC378B77DAF912D3FFC",
+													"trigger": "OnStateFailed",
+													"priority": "Normal",
+													"priority_value": 2,
+													"target_type": "GotoState",
+													"target_id": "963D27C34E09896F279BD2AFD2F752AF",
+													"target_name": "RejectConstructionPosition",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/RejectConstructionPosition",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "40094F5443C27A843DC1ED89FF740274",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "Any",
+																"Result": "OutOfRange",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												}
+											],
+											"children": []
+										},
+										{
+											"id": "96BD316B40250C71217A6ABD192AC95D",
+											"name": "TravelToConstructionSite",
+											"path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite/TravelToConstructionSite",
+											"description": "持续观察前往工地的路径；途中可按原规则换单，开始施工后不自动换单。",
+											"type": "State",
+											"selection": "TryEnterState",
+											"enabled": true,
+											"enter_conditions": [
+												{
+													"id": "5B615E5F4306297188F41AB446CB2CAC",
+													"name": "Commander Actor Context",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+													"operand": "And",
+													"indent": 0,
+													"properties":
+													{
+														"Required": "0",
+														"Forbidden": "0",
+														"Phase": "ConstructionIntended",
+														"Result": "TargetReady",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												},
+												{
+													"id": "1A3470EE443E5BB1C48111BD35288520",
+													"name": "Commander Actor Context",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+													"operand": "Or",
+													"indent": 0,
+													"properties":
+													{
+														"Required": "0",
+														"Forbidden": "0",
+														"Phase": "ConstructionWaitingPath",
+														"Result": "Any",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												},
+												{
+													"id": "71FC866A410BA0BA74AABB8B1F2CA6D0",
+													"name": "Commander Actor Context",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+													"operand": "Or",
+													"indent": 0,
+													"properties":
+													{
+														"Required": "0",
+														"Forbidden": "0",
+														"Phase": "ConstructionMoving",
+														"Result": "Any",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												}
+											],
+											"tasks": [
+												{
+													"id": "53BA8FBF488779DA7929DF993E585844",
+													"name": "Commander Actor Persistent Operation",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+													"operand": "And",
+													"indent": 0,
+													"properties":
+													{
+														"Operation": "(Entry=ConstructionMove,WhileRunning=ObserveOrder,bCompleteOnReceipt=False,Control=Normal,ResumePhases=(ConstructionWaitingPath,ConstructionMoving))",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												}
+											],
+											"transitions": [
+												{
+													"id": "171B11C2464235E43C8E19A26439C8EF",
+													"trigger": "OnTick",
+													"priority": "Normal",
+													"priority_value": 2,
+													"target_type": "GotoState",
+													"target_id": "D5F6874A48306445BC77B28AE4B4BEC4",
+													"target_name": "ClaimPositionOnArrival",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite/ClaimPositionOnArrival",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "0F1B71E24D89A0DAD5B539B7CCF6707F",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "Any",
+																"Result": "Arrived",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												},
+												{
+													"id": "E79E2D29464D5C88BEBF65BEC68A10B2",
+													"trigger": "OnTick",
+													"priority": "Medium",
+													"priority_value": 3,
+													"target_type": "GotoState",
+													"target_id": "39285454435438A5B9A590B40BDE7E93",
+													"target_name": "ReturnConstructionOrder",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "79BBDE0F42251376188EFEA13AA9F19A",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "ConstructionCancelled",
+																"Result": "Any",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														},
+														{
+															"id": "24BBB41A449FF9CF1333F88A76919B9F",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "Or",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "Any",
+																"Result": "Failed",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												},
+												{
+													"id": "2AFAAC7C44E82428B7902BBF362A5BC9",
+													"trigger": "OnTick",
+													"priority": "Normal",
+													"priority_value": 2,
+													"target_type": "GotoState",
+													"target_id": "963D27C34E09896F279BD2AFD2F752AF",
+													"target_name": "RejectConstructionPosition",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/RejectConstructionPosition",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "EC81279F4C08C929C319C5A8EE061969",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "Any",
+																"Result": "OutOfRange",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												},
+												{
+													"id": "650CDF124838F59567008C988D8B239B",
+													"trigger": "OnStateFailed",
+													"priority": "Medium",
+													"priority_value": 3,
+													"target_type": "GotoState",
+													"target_id": "39285454435438A5B9A590B40BDE7E93",
+													"target_name": "ReturnConstructionOrder",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "D070E10340EA403A39343486B2C0743B",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "ConstructionCancelled",
+																"Result": "Any",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														},
+														{
+															"id": "E817E937400B279E8560F39924FF706F",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "Or",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "Any",
+																"Result": "Failed",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												},
+												{
+													"id": "205B95AA4C0EB1D728E6EAA9209B0F69",
+													"trigger": "OnStateFailed",
+													"priority": "Normal",
+													"priority_value": 2,
+													"target_type": "GotoState",
+													"target_id": "963D27C34E09896F279BD2AFD2F752AF",
+													"target_name": "RejectConstructionPosition",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/RejectConstructionPosition",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "A4362F974E4DDDCD75BBC288F4B4C5B2",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "Any",
+																"Result": "OutOfRange",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												}
+											],
+											"children": []
+										},
+										{
+											"id": "D5F6874A48306445BC77B28AE4B4BEC4",
+											"name": "ClaimPositionOnArrival",
+											"path": "CommanderOrders/ExecuteOrder/ConstructionJob/ApproachConstructionSite/ClaimPositionOnArrival",
+											"description": "接近目标到100厘米内时原子抢占施工位；抢位结果决定施工或退单。",
+											"type": "State",
+											"selection": "TryEnterState",
+											"enabled": true,
+											"enter_conditions": [
+												{
+													"id": "F9149B2A4AB8600E3DAA24B032772105",
+													"name": "Commander Actor Context",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+													"operand": "And",
+													"indent": 0,
+													"properties":
+													{
+														"Required": "0",
+														"Forbidden": "0",
+														"Phase": "ConstructionMoving",
+														"Result": "Arrived",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												}
+											],
+											"tasks": [
+												{
+													"id": "133B26AA418840C4A2B7D3834E88C981",
+													"name": "Commander Actor Persistent Operation",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+													"operand": "And",
+													"indent": 0,
+													"properties":
+													{
+														"Operation": "(Entry=ConstructionWork,WhileRunning=ObserveOrder,bCompleteOnReceipt=True,Control=Normal,ResumePhases=)",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												}
+											],
+											"transitions": [
+												{
+													"id": "33E00CBF4186ED2C09C43A8BAE57D4C6",
+													"trigger": "OnStateCompleted",
+													"priority": "Normal",
+													"priority_value": 2,
+													"target_type": "GotoState",
+													"target_id": "9BFE1ABF4675292B7C58ECA061669295",
+													"target_name": "ConstructBuilding",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ConstructBuilding",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "11746C1D40D812CEC9AD5C9681E3B5DF",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "ConstructionWorking",
+																"Result": "Any",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												},
+												{
+													"id": "C2600BDE479BF0BE3D20D68B8582E40C",
+													"trigger": "OnTick",
+													"priority": "Medium",
+													"priority_value": 3,
+													"target_type": "GotoState",
+													"target_id": "39285454435438A5B9A590B40BDE7E93",
+													"target_name": "ReturnConstructionOrder",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "055E4AC84C3D75488D2FA7B4C8DBC046",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "ConstructionCancelled",
+																"Result": "Any",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														},
+														{
+															"id": "50C8072446AE4864900788BD4A171FC1",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "Or",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "Any",
+																"Result": "Failed",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												},
+												{
+													"id": "FBB17F724C8EF71B48B93D8639AF1093",
+													"trigger": "OnTick",
+													"priority": "Normal",
+													"priority_value": 2,
+													"target_type": "GotoState",
+													"target_id": "963D27C34E09896F279BD2AFD2F752AF",
+													"target_name": "RejectConstructionPosition",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/RejectConstructionPosition",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "4A4B760C47DA6B3DF54C80A73877B6A4",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "Any",
+																"Result": "OutOfRange",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												},
+												{
+													"id": "94FB24FF43B9BCB78013C59607ED85D5",
+													"trigger": "OnStateFailed",
+													"priority": "Medium",
+													"priority_value": 3,
+													"target_type": "GotoState",
+													"target_id": "39285454435438A5B9A590B40BDE7E93",
+													"target_name": "ReturnConstructionOrder",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "D48C6BDF4CBFA725190B89B4BBAC2868",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "ConstructionCancelled",
+																"Result": "Any",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														},
+														{
+															"id": "F73CF28444CF6160C59C76867EA3DC63",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "Or",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "Any",
+																"Result": "Failed",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												},
+												{
+													"id": "FF1FA96841166E88D28AC9BF3D9C8698",
+													"trigger": "OnStateFailed",
+													"priority": "Normal",
+													"priority_value": 2,
+													"target_type": "GotoState",
+													"target_id": "963D27C34E09896F279BD2AFD2F752AF",
+													"target_name": "RejectConstructionPosition",
+													"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/RejectConstructionPosition",
+													"enabled": true,
+													"delayed": false,
+													"delay_seconds": 0,
+													"delay_variance": 0,
+													"event_tag": "None",
+													"event_payload_type": "None",
+													"conditions": [
+														{
+															"id": "CC5557A84CABF99804EA548977EDF283",
+															"name": "Commander Actor Context",
+															"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+															"operand": "And",
+															"indent": 0,
+															"properties":
+															{
+																"Required": "0",
+																"Forbidden": "0",
+																"Phase": "Any",
+																"Result": "OutOfRange",
+																"Name": "None"
+															},
+															"instance":
+															{
+															}
+														}
+													]
+												}
+											],
+											"children": []
+										}
+									]
+								},
+								{
+									"id": "9BFE1ABF4675292B7C58ECA061669295",
+									"name": "ConstructBuilding",
+									"path": "CommanderOrders/ExecuteOrder/ConstructionJob/ConstructBuilding",
+									"description": "占有施工位后持续施工并保留进度；完工后收尾，工地失效时退单。",
+									"type": "State",
+									"selection": "TryEnterState",
+									"enabled": true,
+									"enter_conditions": [
+										{
+											"id": "85588CD5473E032C8099B781B8C4A717",
+											"name": "Commander Actor Context",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+											"operand": "And",
+											"indent": 0,
+											"properties":
+											{
+												"Required": "0",
+												"Forbidden": "0",
+												"Phase": "ConstructionWorking",
+												"Result": "Any",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										}
+									],
+									"tasks": [
+										{
+											"id": "B21EC43249CE68D8731CF79656A5FB49",
+											"name": "Commander Actor Persistent Operation",
+											"type": "/Script/GuLiStrike.GuLiCommanderActorPersistentTask",
+											"operand": "And",
+											"indent": 0,
+											"properties":
+											{
+												"Operation": "(Entry=ObserveOrder,WhileRunning=ObserveOrder,bCompleteOnReceipt=False,Control=Normal,ResumePhases=)",
+												"Name": "None"
+											},
+											"instance":
+											{
+											}
+										}
+									],
+									"transitions": [
+										{
+											"id": "BEC754004BD350EDB45FF089E06ADA7E",
+											"trigger": "OnTick",
+											"priority": "Medium",
+											"priority_value": 3,
+											"target_type": "GotoState",
+											"target_id": "39285454435438A5B9A590B40BDE7E93",
+											"target_name": "ReturnConstructionOrder",
+											"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+											"enabled": true,
+											"delayed": false,
+											"delay_seconds": 0,
+											"delay_variance": 0,
+											"event_tag": "None",
+											"event_payload_type": "None",
+											"conditions": [
+												{
+													"id": "7ED66FAB4C5A75BC5A25CDA628126D54",
+													"name": "Commander Actor Context",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+													"operand": "And",
+													"indent": 0,
+													"properties":
+													{
+														"Required": "0",
+														"Forbidden": "0",
+														"Phase": "ConstructionCancelled",
+														"Result": "Any",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												},
+												{
+													"id": "9629C89341E4A6CBC9F8D087391AFAA5",
+													"name": "Commander Actor Context",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+													"operand": "Or",
+													"indent": 0,
+													"properties":
+													{
+														"Required": "0",
+														"Forbidden": "0",
+														"Phase": "Any",
+														"Result": "Failed",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												}
+											]
+										},
+										{
+											"id": "7ADA9C4F426D09B639D4E3909A8DD6CE",
+											"trigger": "OnTick",
+											"priority": "Normal",
+											"priority_value": 2,
+											"target_type": "GotoState",
+											"target_id": "963D27C34E09896F279BD2AFD2F752AF",
+											"target_name": "RejectConstructionPosition",
+											"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/RejectConstructionPosition",
+											"enabled": true,
+											"delayed": false,
+											"delay_seconds": 0,
+											"delay_variance": 0,
+											"event_tag": "None",
+											"event_payload_type": "None",
+											"conditions": [
+												{
+													"id": "B6E118464398C7B69806A6A71998CF73",
+													"name": "Commander Actor Context",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+													"operand": "And",
+													"indent": 0,
+													"properties":
+													{
+														"Required": "0",
+														"Forbidden": "0",
+														"Phase": "Any",
+														"Result": "OutOfRange",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												}
+											]
+										},
+										{
+											"id": "1EEC537F4895A8D54ADDA08D3CEAD346",
+											"trigger": "OnStateFailed",
+											"priority": "Medium",
+											"priority_value": 3,
+											"target_type": "GotoState",
+											"target_id": "39285454435438A5B9A590B40BDE7E93",
+											"target_name": "ReturnConstructionOrder",
+											"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/ReturnConstructionOrder",
+											"enabled": true,
+											"delayed": false,
+											"delay_seconds": 0,
+											"delay_variance": 0,
+											"event_tag": "None",
+											"event_payload_type": "None",
+											"conditions": [
+												{
+													"id": "12A267C144161CD7AF5D9BA92AECA0F0",
+													"name": "Commander Actor Context",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+													"operand": "And",
+													"indent": 0,
+													"properties":
+													{
+														"Required": "0",
+														"Forbidden": "0",
+														"Phase": "ConstructionCancelled",
+														"Result": "Any",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												},
+												{
+													"id": "334A121047147A08302CFDBC4173308D",
+													"name": "Commander Actor Context",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+													"operand": "Or",
+													"indent": 0,
+													"properties":
+													{
+														"Required": "0",
+														"Forbidden": "0",
+														"Phase": "Any",
+														"Result": "Failed",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												}
+											]
+										},
+										{
+											"id": "A0BDCD4A4C763D180F5F9DAB40148CB3",
+											"trigger": "OnStateFailed",
+											"priority": "Normal",
+											"priority_value": 2,
+											"target_type": "GotoState",
+											"target_id": "963D27C34E09896F279BD2AFD2F752AF",
+											"target_name": "RejectConstructionPosition",
+											"target_path": "CommanderOrders/ExecuteOrder/ConstructionJob/RejectConstructionPosition",
+											"enabled": true,
+											"delayed": false,
+											"delay_seconds": 0,
+											"delay_variance": 0,
+											"event_tag": "None",
+											"event_payload_type": "None",
+											"conditions": [
+												{
+													"id": "3DF15F57456E65CAAC64CBAA68A009A3",
+													"name": "Commander Actor Context",
+													"type": "/Script/GuLiStrike.GuLiCommanderActorBehaviorCondition",
+													"operand": "And",
+													"indent": 0,
+													"properties":
+													{
+														"Required": "0",
+														"Forbidden": "0",
+														"Phase": "Any",
+														"Result": "OutOfRange",
+														"Name": "None"
+													},
+													"instance":
+													{
+													}
+												}
+											]
+										}
+									],
+									"children": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"states": [
+		"CommanderOrders",
+		"Control",
+		"WaitForSafeExit",
+		"Stopped",
+		"PrepareReplacementMove",
+		"SelectOrder",
+		"TakeManualOrder",
+		"TakeAutomaticOrder",
+		"Idle",
+		"ExecuteOrder",
+		"FinishOrder",
+		"Suspended",
+		"StartOrder",
+		"ManualMove",
+		"ManualTransit",
+		"ConstructionJob",
+		"ReturnConstructionOrder",
+		"RejectConstructionPosition",
+		"ApproachConstructionSite",
+		"SelectConstructionDestination",
+		"TravelToConstructionSite",
+		"ClaimPositionOnArrival",
+		"ConstructBuilding"
+	],
+	"evaluators": [],
+	"global_tasks": [],
+	"state_count": 23,
+	"max_depth": 4,
+	"persistent_task_count": 17,
+	"errors": [],
+	"valid": true,
+	"success": true
 }

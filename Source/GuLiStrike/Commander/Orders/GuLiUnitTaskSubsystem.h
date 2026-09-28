@@ -52,6 +52,12 @@ public:
 	uint32 GetBehaviorFacts(FGuLiTaskUnitId Unit) const;
 	bool NeedsBehaviorStep(FGuLiTaskUnitId Unit) const;
 	void RequestBehaviorStep(FGuLiTaskUnitId Unit, EGuLiCommanderBehaviorStep Step);
+	FGuLiCommanderOperationToken BeginBehaviorOperation(FGuLiTaskUnitId Unit, EGuLiCommanderControlState Control);
+	void EndBehaviorOperation(FGuLiTaskUnitId Unit, const FGuLiCommanderOperationToken& Token);
+	bool IsBehaviorOperationCurrent(FGuLiTaskUnitId Unit, const FGuLiCommanderOperationToken& Token) const;
+	EGuLiCommanderOperationResult GetBehaviorOperationReceipt(FGuLiTaskUnitId Unit, const FGuLiCommanderOperationToken& Token) const;
+	void RequestBehaviorOperation(FGuLiTaskUnitId Unit, const FGuLiCommanderOperationToken& Token, EGuLiCommanderBehaviorStep Step);
+	void WaitBehaviorRound(FGuLiTaskUnitId Unit, const FGuLiCommanderOperationToken& Token);
 	void ReportBehaviorError(FGuLiTaskUnitId Unit, const FString& Error);
 private:
 	TMap<FGuLiTaskUnitId, FGuLiUnitTaskState> States;
@@ -63,12 +69,17 @@ private:
 		FGuLiTaskUnitId Unit;
 		EGuLiCommanderBehaviorStep Step;
 		uint64 Version;
+		FGuLiCommanderOperationToken Token;
 	};
 	TArray<FBehaviorRequest> BehaviorRequests;
 	uint64 BehaviorRound = 0;
 	void CommitBehaviorRequests();
 	void PollPendingMove(FGuLiUnitTaskState& State);
 	bool RunWorkAction(FGuLiUnitTaskState& State, EGuLiCommanderBehaviorStep Step, double Now);
+	void ExecuteWorkAction(FGuLiUnitTaskState& State, EGuLiCommanderBehaviorStep Step);
+	void ObserveActiveTask(FGuLiUnitTaskState& State, bool bAllowStart);
+	bool FinishActiveTask(FGuLiUnitTaskState& State, double Now);
+	EGuLiCommanderOperationResult CommitBehaviorOperation(FGuLiUnitTaskState& State, EGuLiCommanderBehaviorStep Step, double Now);
 	bool RunActiveTask(FGuLiUnitTaskState& State, double Now);
 	void TakeManualTask(FGuLiUnitTaskState& State);
 	void TakeAutomaticTask(FGuLiUnitTaskState& State, double Now);

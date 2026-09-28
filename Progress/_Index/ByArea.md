@@ -29,6 +29,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [战争机器新版美漫三牌UE替换](../Archive/20260928-战争机器新版美漫三牌UE替换.md) | archive | recorded | 2026-09-28 |
+| [战争机器射速补腿与机动速度光线](../Archive/20260928-战争机器射速补腿与机动速度光线.md) | archive | recorded | 2026-09-28 |
+| [战争机器新版模型参考射速与机动重绘](../Archive/20260928-战争机器新版模型参考射速与机动重绘.md) | archive | recorded | 2026-09-28 |
+| [战争机器前方方块水平修订候选](../Archive/20260928-战争机器前方方块水平修订候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器前端连接下倾与四盘同高候选](../Archive/20260928-战争机器前端连接下倾与四盘同高候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器前支架等长与前盘抬高审核候选](../Archive/20260928-战争机器前支架等长与前盘抬高审核候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器支架外下倾30度审核候选](../Archive/20260928-战争机器支架外下倾30度审核候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器盘心承接与叉耳销轴审核候选](../Archive/20260928-战争机器盘心承接与叉耳销轴审核候选.md) | archive | recorded | 2026-09-28 |
 | [玩法地图对齐Demo光照](../DevelopmentDocumentation/20260918-玩法地图对齐Demo光照.md) | development | done | 2026-09-21 |
 | [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | done | 2026-09-21 |
 | [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | done | 2026-09-21 |
@@ -102,6 +110,22 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [战争机器能力卡 — 局部特写、可编辑文案与美漫风试绘](../RequirementDocument/20260926-战争机器塔罗风视差卡牌复刻验证.md) | requirement | approved | 2026-09-28 |
+| [战争机器能力卡 — 六层视差与可编辑文案交付](../DevelopmentDocumentation/20260926-战争机器塔罗风视差卡牌复刻验证.md) | development | verification | 2026-09-28 |
+| [战争机器新版美漫三牌UE替换](../Archive/20260928-战争机器新版美漫三牌UE替换.md) | archive | recorded | 2026-09-28 |
+| [战争机器射速补腿与机动速度光线](../Archive/20260928-战争机器射速补腿与机动速度光线.md) | archive | recorded | 2026-09-28 |
+| [战争机器新版模型参考射速与机动重绘](../Archive/20260928-战争机器新版模型参考射速与机动重绘.md) | archive | recorded | 2026-09-28 |
+| [战争机器前方方块水平修订候选](../Archive/20260928-战争机器前方方块水平修订候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器前端连接下倾与四盘同高候选](../Archive/20260928-战争机器前端连接下倾与四盘同高候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器前支架等长与前盘抬高审核候选](../Archive/20260928-战争机器前支架等长与前盘抬高审核候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器支架外下倾30度审核候选](../Archive/20260928-战争机器支架外下倾30度审核候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器盘心承接与叉耳销轴审核候选](../Archive/20260928-战争机器盘心承接与叉耳销轴审核候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器真实模型参考经典美漫三图重绘](../Archive/20260928-战争机器真实模型参考经典美漫三图重绘.md) | archive | recorded | 2026-09-28 |
+| [战争机器机动卡视差边缘覆盖修复](../Archive/20260928-战争机器机动卡视差边缘覆盖修复.md) | archive | recorded | 2026-09-28 |
+| [战争机器美漫卡牌接入与四倍视差](../Archive/20260928-战争机器美漫卡牌接入与四倍视差.md) | archive | recorded | 2026-09-28 |
+| [战争机器干净牌面接入与双倍尺寸](../Archive/20260928-战争机器干净牌面接入与双倍尺寸.md) | archive | recorded | 2026-09-28 |
+| [战争机器卡牌干净视觉图三张重绘预览](../Archive/20260927-战争机器卡牌干净视觉图三张重绘预览.md) | archive | recorded | 2026-09-27 |
+| [战争机器三渲二分层卡牌与可编辑文案交付](../Archive/20260926-战争机器分层卡牌与可编辑文案交付.md) | archive | recorded | 2026-09-26 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-24 |
 | [尼亚加拉辉光与HUDuiPRO资源迁入](../Archive/20260924-尼亚加拉辉光与HUDuiPRO资源迁入.md) | archive | recorded | 2026-09-24 |
 | [三维动态卡牌与视差卡牌资产迁移](../Archive/20260922-三维动态卡牌与视差卡牌资产迁移.md) | archive | recorded | 2026-09-22 |
@@ -249,6 +273,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [三棵指挥官StateTree分层重构](../RequirementDocument/20260926-三棵指挥官StateTree分层重构.md) | requirement | approved | 2026-09-28 |
+| [三棵指挥官StateTree分层重构 — 技术方案与交付](../DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md) | development | verification | 2026-09-28 |
+| [三棵指挥官StateTree状态中文描述补全](../Archive/20260928-指挥官StateTree中文描述补全.md) | archive | recorded | 2026-09-28 |
+| [指挥官StateTree分层资产、原生编译与Xmind审核交付](../Archive/20260926-指挥官StateTree分层资产与审核交付.md) | archive | recorded | 2026-09-26 |
+| [指挥官StateTree分层重构 — 源码与迁移前备份](../Archive/20260926-指挥官StateTree分层重构源码阶段.md) | archive | recorded | 2026-09-26 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-24 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-24 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-24 |
@@ -313,6 +342,16 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [肉鸽卡牌数据表与实战选牌](../RequirementDocument/肉鸽卡牌数据表与实战选牌.md) | requirement | approved | 2026-09-28 |
+| [提速单位坡面卡住与子弹提前显示修复](../DevelopmentDocumentation/20260928-提速单位坡面卡住与子弹提前显示修复.md) | development | verification | 2026-09-28 |
+| [肉鸽卡牌数据表与实战选牌 — 技术方案](../DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md) | development | verification | 2026-09-28 |
+| [升级光粒独立随机散布](../Archive/20260928-升级光粒独立随机散布.md) | archive | recorded | 2026-09-28 |
+| [升级细线改为短发光粒子](../Archive/20260928-升级细线改为短发光粒子.md) | archive | recorded | 2026-09-28 |
+| [战争机器升级特效尺寸适配](../Archive/20260928-战争机器升级特效尺寸适配.md) | archive | recorded | 2026-09-28 |
+| [高速单位显示限速修复与原生PIE复验](../Archive/20260928-高速单位显示限速修复与原生PIE复验.md) | archive | recorded | 2026-09-28 |
+| [坡面卡住与子弹超前显示现场诊断及源码修复](../Archive/20260928-坡面卡住与子弹超前显示现场诊断及源码修复.md) | archive | recorded | 2026-09-28 |
+| [选牌白模修复与批量升级特效](../Archive/20260928-选牌白模修复与批量升级特效.md) | archive | recorded | 2026-09-28 |
+| [肉鸽卡牌 Excel 与 F4 实战接入](../Archive/20260928-肉鸽卡牌Excel与F4实战接入.md) | archive | recorded | 2026-09-28 |
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-24 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-24 |
 | [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | development | verification | 2026-09-24 |
@@ -474,6 +513,22 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [肉鸽卡牌数据表与实战选牌](../RequirementDocument/肉鸽卡牌数据表与实战选牌.md) | requirement | approved | 2026-09-28 |
+| [三棵指挥官StateTree分层重构](../RequirementDocument/20260926-三棵指挥官StateTree分层重构.md) | requirement | approved | 2026-09-28 |
+| [星际2风格指挥官操作指令集](../Gameplay/指挥官操作攻略.md) | gameplay | current | 2026-09-28 |
+| [提速单位坡面卡住与子弹提前显示修复](../DevelopmentDocumentation/20260928-提速单位坡面卡住与子弹提前显示修复.md) | development | verification | 2026-09-28 |
+| [肉鸽卡牌数据表与实战选牌 — 技术方案](../DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md) | development | verification | 2026-09-28 |
+| [三棵指挥官StateTree分层重构 — 技术方案与交付](../DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md) | development | verification | 2026-09-28 |
+| [升级光粒独立随机散布](../Archive/20260928-升级光粒独立随机散布.md) | archive | recorded | 2026-09-28 |
+| [升级细线改为短发光粒子](../Archive/20260928-升级细线改为短发光粒子.md) | archive | recorded | 2026-09-28 |
+| [战争机器升级特效尺寸适配](../Archive/20260928-战争机器升级特效尺寸适配.md) | archive | recorded | 2026-09-28 |
+| [高速单位显示限速修复与原生PIE复验](../Archive/20260928-高速单位显示限速修复与原生PIE复验.md) | archive | recorded | 2026-09-28 |
+| [坡面卡住与子弹超前显示现场诊断及源码修复](../Archive/20260928-坡面卡住与子弹超前显示现场诊断及源码修复.md) | archive | recorded | 2026-09-28 |
+| [选牌白模修复与批量升级特效](../Archive/20260928-选牌白模修复与批量升级特效.md) | archive | recorded | 2026-09-28 |
+| [肉鸽卡牌 Excel 与 F4 实战接入](../Archive/20260928-肉鸽卡牌Excel与F4实战接入.md) | archive | recorded | 2026-09-28 |
+| [三棵指挥官StateTree状态中文描述补全](../Archive/20260928-指挥官StateTree中文描述补全.md) | archive | recorded | 2026-09-28 |
+| [指挥官StateTree分层资产、原生编译与Xmind审核交付](../Archive/20260926-指挥官StateTree分层资产与审核交付.md) | archive | recorded | 2026-09-26 |
+| [指挥官StateTree分层重构 — 源码与迁移前备份](../Archive/20260926-指挥官StateTree分层重构源码阶段.md) | archive | recorded | 2026-09-26 |
 | [Mass分帧寻路与避障稳定性](../RequirementDocument/20260923-Mass分帧寻路与避障稳定性.md) | requirement | approved | 2026-09-24 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-24 |
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-24 |
@@ -520,7 +575,6 @@
 | [工程车四点返厂简化与32辆专项验证](../Archive/20260922-工程车四点返厂简化与32辆专项验证.md) | archive | recorded | 2026-09-22 |
 | [指挥官部队StateTree接入与特殊任务退役](../RequirementDocument/20260921-指挥官部队StateTree接入与特殊任务退役.md) | requirement | approved | 2026-09-21 |
 | [FireReview双阵营靶场与敌方描边](../RequirementDocument/20260921-FireReview双阵营靶场与敌方描边.md) | requirement | approved | 2026-09-21 |
-| [星际2风格指挥官操作指令集](../Gameplay/指挥官操作攻略.md) | gameplay | current | 2026-09-21 |
 | [FireReview双阵营靶场与敌方描边 — 技术方案](../DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md) | development | done | 2026-09-21 |
 | [星际UI拆解与指挥官界面重构 — 技术方案](../DevelopmentDocumentation/20260920-星际UI拆解与指挥官界面重构.md) | development | done | 2026-09-21 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
@@ -1045,6 +1099,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [星际2风格指挥官操作指令集](../Gameplay/指挥官操作攻略.md) | gameplay | current | 2026-09-28 |
 | [Mass分帧寻路与避障稳定性](../RequirementDocument/20260923-Mass分帧寻路与避障稳定性.md) | requirement | approved | 2026-09-24 |
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-24 |
 | [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-09-24 |
@@ -1082,7 +1137,6 @@
 | [客户端Mass行走顿挫分析](../Archive/20260923-客户端Mass行走顿挫分析.md) | archive | recorded | 2026-09-23 |
 | [地面机甲火箭跳](../RequirementDocument/20260920-地面机甲火箭跳.md) | requirement | approved | 2026-09-21 |
 | [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-21 |
-| [星际2风格指挥官操作指令集](../Gameplay/指挥官操作攻略.md) | gameplay | current | 2026-09-21 |
 | [地面机甲火箭跳 — 实施与验证](../DevelopmentDocumentation/20260920-地面机甲火箭跳.md) | development | done | 2026-09-21 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
 | [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | in_progress | 2026-09-21 |
@@ -1290,6 +1344,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [肉鸽卡牌数据表与实战选牌](../RequirementDocument/肉鸽卡牌数据表与实战选牌.md) | requirement | approved | 2026-09-28 |
+| [肉鸽卡牌数据表与实战选牌 — 技术方案](../DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md) | development | verification | 2026-09-28 |
+| [升级光粒独立随机散布](../Archive/20260928-升级光粒独立随机散布.md) | archive | recorded | 2026-09-28 |
+| [升级细线改为短发光粒子](../Archive/20260928-升级细线改为短发光粒子.md) | archive | recorded | 2026-09-28 |
+| [战争机器升级特效尺寸适配](../Archive/20260928-战争机器升级特效尺寸适配.md) | archive | recorded | 2026-09-28 |
+| [选牌白模修复与批量升级特效](../Archive/20260928-选牌白模修复与批量升级特效.md) | archive | recorded | 2026-09-28 |
 | [Mass分帧寻路与避障稳定性](../RequirementDocument/20260923-Mass分帧寻路与避障稳定性.md) | requirement | approved | 2026-09-24 |
 | [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-09-24 |
 | [Mass分帧寻路与避障稳定性](../DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md) | development | verification | 2026-09-24 |
@@ -1395,6 +1455,22 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [战争机器能力卡 — 局部特写、可编辑文案与美漫风试绘](../RequirementDocument/20260926-战争机器塔罗风视差卡牌复刻验证.md) | requirement | approved | 2026-09-28 |
+| [战争机器能力卡 — 六层视差与可编辑文案交付](../DevelopmentDocumentation/20260926-战争机器塔罗风视差卡牌复刻验证.md) | development | verification | 2026-09-28 |
+| [战争机器新版美漫三牌UE替换](../Archive/20260928-战争机器新版美漫三牌UE替换.md) | archive | recorded | 2026-09-28 |
+| [战争机器射速补腿与机动速度光线](../Archive/20260928-战争机器射速补腿与机动速度光线.md) | archive | recorded | 2026-09-28 |
+| [战争机器新版模型参考射速与机动重绘](../Archive/20260928-战争机器新版模型参考射速与机动重绘.md) | archive | recorded | 2026-09-28 |
+| [战争机器前方方块水平修订候选](../Archive/20260928-战争机器前方方块水平修订候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器前端连接下倾与四盘同高候选](../Archive/20260928-战争机器前端连接下倾与四盘同高候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器前支架等长与前盘抬高审核候选](../Archive/20260928-战争机器前支架等长与前盘抬高审核候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器支架外下倾30度审核候选](../Archive/20260928-战争机器支架外下倾30度审核候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器盘心承接与叉耳销轴审核候选](../Archive/20260928-战争机器盘心承接与叉耳销轴审核候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器真实模型参考经典美漫三图重绘](../Archive/20260928-战争机器真实模型参考经典美漫三图重绘.md) | archive | recorded | 2026-09-28 |
+| [战争机器机动卡视差边缘覆盖修复](../Archive/20260928-战争机器机动卡视差边缘覆盖修复.md) | archive | recorded | 2026-09-28 |
+| [战争机器美漫卡牌接入与四倍视差](../Archive/20260928-战争机器美漫卡牌接入与四倍视差.md) | archive | recorded | 2026-09-28 |
+| [战争机器干净牌面接入与双倍尺寸](../Archive/20260928-战争机器干净牌面接入与双倍尺寸.md) | archive | recorded | 2026-09-28 |
+| [战争机器卡牌干净视觉图三张重绘预览](../Archive/20260927-战争机器卡牌干净视觉图三张重绘预览.md) | archive | recorded | 2026-09-27 |
+| [战争机器三渲二分层卡牌与可编辑文案交付](../Archive/20260926-战争机器分层卡牌与可编辑文案交付.md) | archive | recorded | 2026-09-26 |
 | [玩法地图对齐Demo光照](../DevelopmentDocumentation/20260918-玩法地图对齐Demo光照.md) | development | done | 2026-09-21 |
 | [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | done | 2026-09-21 |
 | [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | done | 2026-09-21 |
@@ -1443,6 +1519,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [三棵指挥官StateTree分层重构](../RequirementDocument/20260926-三棵指挥官StateTree分层重构.md) | requirement | approved | 2026-09-28 |
+| [三棵指挥官StateTree分层重构 — 技术方案与交付](../DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md) | development | verification | 2026-09-28 |
+| [三棵指挥官StateTree状态中文描述补全](../Archive/20260928-指挥官StateTree中文描述补全.md) | archive | recorded | 2026-09-28 |
+| [指挥官StateTree分层资产、原生编译与Xmind审核交付](../Archive/20260926-指挥官StateTree分层资产与审核交付.md) | archive | recorded | 2026-09-26 |
+| [指挥官StateTree分层重构 — 源码与迁移前备份](../Archive/20260926-指挥官StateTree分层重构源码阶段.md) | archive | recorded | 2026-09-26 |
 | [指挥官部队StateTree接入与特殊任务退役 — 技术方案](../DevelopmentDocumentation/20260921-指挥官部队StateTree接入与特殊任务退役.md) | development | verification | 2026-09-22 |
 | [工程车四点返厂简化与32辆专项验证](../Archive/20260922-工程车四点返厂简化与32辆专项验证.md) | archive | recorded | 2026-09-22 |
 | [指挥官部队StateTree接入与特殊任务退役](../RequirementDocument/20260921-指挥官部队StateTree接入与特殊任务退役.md) | requirement | approved | 2026-09-21 |
@@ -1635,6 +1716,30 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [肉鸽卡牌数据表与实战选牌](../RequirementDocument/肉鸽卡牌数据表与实战选牌.md) | requirement | approved | 2026-09-28 |
+| [战争机器能力卡 — 局部特写、可编辑文案与美漫风试绘](../RequirementDocument/20260926-战争机器塔罗风视差卡牌复刻验证.md) | requirement | approved | 2026-09-28 |
+| [星际2风格指挥官操作指令集](../Gameplay/指挥官操作攻略.md) | gameplay | current | 2026-09-28 |
+| [肉鸽卡牌数据表与实战选牌 — 技术方案](../DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md) | development | verification | 2026-09-28 |
+| [战争机器能力卡 — 六层视差与可编辑文案交付](../DevelopmentDocumentation/20260926-战争机器塔罗风视差卡牌复刻验证.md) | development | verification | 2026-09-28 |
+| [升级光粒独立随机散布](../Archive/20260928-升级光粒独立随机散布.md) | archive | recorded | 2026-09-28 |
+| [升级细线改为短发光粒子](../Archive/20260928-升级细线改为短发光粒子.md) | archive | recorded | 2026-09-28 |
+| [战争机器升级特效尺寸适配](../Archive/20260928-战争机器升级特效尺寸适配.md) | archive | recorded | 2026-09-28 |
+| [选牌白模修复与批量升级特效](../Archive/20260928-选牌白模修复与批量升级特效.md) | archive | recorded | 2026-09-28 |
+| [肉鸽卡牌 Excel 与 F4 实战接入](../Archive/20260928-肉鸽卡牌Excel与F4实战接入.md) | archive | recorded | 2026-09-28 |
+| [战争机器新版美漫三牌UE替换](../Archive/20260928-战争机器新版美漫三牌UE替换.md) | archive | recorded | 2026-09-28 |
+| [战争机器射速补腿与机动速度光线](../Archive/20260928-战争机器射速补腿与机动速度光线.md) | archive | recorded | 2026-09-28 |
+| [战争机器新版模型参考射速与机动重绘](../Archive/20260928-战争机器新版模型参考射速与机动重绘.md) | archive | recorded | 2026-09-28 |
+| [战争机器前方方块水平修订候选](../Archive/20260928-战争机器前方方块水平修订候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器前端连接下倾与四盘同高候选](../Archive/20260928-战争机器前端连接下倾与四盘同高候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器前支架等长与前盘抬高审核候选](../Archive/20260928-战争机器前支架等长与前盘抬高审核候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器支架外下倾30度审核候选](../Archive/20260928-战争机器支架外下倾30度审核候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器盘心承接与叉耳销轴审核候选](../Archive/20260928-战争机器盘心承接与叉耳销轴审核候选.md) | archive | recorded | 2026-09-28 |
+| [战争机器真实模型参考经典美漫三图重绘](../Archive/20260928-战争机器真实模型参考经典美漫三图重绘.md) | archive | recorded | 2026-09-28 |
+| [战争机器机动卡视差边缘覆盖修复](../Archive/20260928-战争机器机动卡视差边缘覆盖修复.md) | archive | recorded | 2026-09-28 |
+| [战争机器美漫卡牌接入与四倍视差](../Archive/20260928-战争机器美漫卡牌接入与四倍视差.md) | archive | recorded | 2026-09-28 |
+| [战争机器干净牌面接入与双倍尺寸](../Archive/20260928-战争机器干净牌面接入与双倍尺寸.md) | archive | recorded | 2026-09-28 |
+| [战争机器卡牌干净视觉图三张重绘预览](../Archive/20260927-战争机器卡牌干净视觉图三张重绘预览.md) | archive | recorded | 2026-09-27 |
+| [战争机器三渲二分层卡牌与可编辑文案交付](../Archive/20260926-战争机器分层卡牌与可编辑文案交付.md) | archive | recorded | 2026-09-26 |
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-24 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-24 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-24 |
@@ -1651,7 +1756,6 @@
 | [三张视差3D卡牌演示场景交付](../Archive/20260922-三张视差3D卡牌演示场景交付.md) | archive | recorded | 2026-09-22 |
 | [三维动态卡牌与视差卡牌资产迁移](../Archive/20260922-三维动态卡牌与视差卡牌资产迁移.md) | archive | recorded | 2026-09-22 |
 | [地面机甲火箭跳](../RequirementDocument/20260920-地面机甲火箭跳.md) | requirement | approved | 2026-09-21 |
-| [星际2风格指挥官操作指令集](../Gameplay/指挥官操作攻略.md) | gameplay | current | 2026-09-21 |
 | [地面机甲火箭跳 — 实施与验证](../DevelopmentDocumentation/20260920-地面机甲火箭跳.md) | development | done | 2026-09-21 |
 | [星际UI拆解与指挥官界面重构 — 技术方案](../DevelopmentDocumentation/20260920-星际UI拆解与指挥官界面重构.md) | development | done | 2026-09-21 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
@@ -1739,6 +1843,15 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [肉鸽卡牌数据表与实战选牌](../RequirementDocument/肉鸽卡牌数据表与实战选牌.md) | requirement | approved | 2026-09-28 |
+| [提速单位坡面卡住与子弹提前显示修复](../DevelopmentDocumentation/20260928-提速单位坡面卡住与子弹提前显示修复.md) | development | verification | 2026-09-28 |
+| [肉鸽卡牌数据表与实战选牌 — 技术方案](../DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md) | development | verification | 2026-09-28 |
+| [升级光粒独立随机散布](../Archive/20260928-升级光粒独立随机散布.md) | archive | recorded | 2026-09-28 |
+| [升级细线改为短发光粒子](../Archive/20260928-升级细线改为短发光粒子.md) | archive | recorded | 2026-09-28 |
+| [战争机器升级特效尺寸适配](../Archive/20260928-战争机器升级特效尺寸适配.md) | archive | recorded | 2026-09-28 |
+| [高速单位显示限速修复与原生PIE复验](../Archive/20260928-高速单位显示限速修复与原生PIE复验.md) | archive | recorded | 2026-09-28 |
+| [坡面卡住与子弹超前显示现场诊断及源码修复](../Archive/20260928-坡面卡住与子弹超前显示现场诊断及源码修复.md) | archive | recorded | 2026-09-28 |
+| [选牌白模修复与批量升级特效](../Archive/20260928-选牌白模修复与批量升级特效.md) | archive | recorded | 2026-09-28 |
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-24 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-24 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-24 |

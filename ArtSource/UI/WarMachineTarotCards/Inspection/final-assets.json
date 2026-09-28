@@ -1,0 +1,77 @@
+{
+  "success": true,
+  "blueprints": {
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_ParallaxRevealCard": {
+      "success": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector": {
+      "success": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealPlayerController": {
+      "success": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealGameMode": {
+      "success": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "/Game/GuLiStrike/Cards/RevealDemo/UI/WBP_CardRevealHUD": {
+      "success": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "/Game/GuLiStrike/Cards/WarMachineTarot/UI/WBP_CardText": {
+      "success": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "missing_dependencies": [],
+  "text": {
+    "rows": [
+      "WarMachine_FireRate",
+      "WarMachine_MissileDamage",
+      "WarMachine_HighSpeed"
+    ],
+    "ftext_identities": 6,
+    "namespace": "GuLiStrike.Cards"
+  },
+  "original_defaults": {
+    "simple_frame": false,
+    "text_table": "None",
+    "front_materials": [
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Moon.MI_Card_Moon",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Star.MI_Card_Star",
+      "/Game/GuLiStrike/Cards/RevealDemo/Materials/MI_Card_Tower.MI_Card_Tower"
+    ]
+  },
+  "owned_asset_count": 19,
+  "layer_textures": {
+    "FireRate": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_FireRate_Layers.T_FireRate_Layers",
+    "MissileDamage": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_MissileDamage_Layers.T_MissileDamage_Layers",
+    "HighSpeed": "/Game/GuLiStrike/Cards/WarMachineTarot/Textures/T_HighSpeed_Layers.T_HighSpeed_Layers"
+  },
+  "map": {
+    "path": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview",
+    "saved": true,
+    "director": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview.LVL_WarMachineTarotReview:PersistentLevel.BP_CardRevealDirector_C_0",
+    "row_ids": [
+      "WarMachine_FireRate",
+      "WarMachine_MissileDamage",
+      "WarMachine_HighSpeed"
+    ],
+    "actor_labels": [
+      "WarMachine_Key",
+      "WarMachine_Ambient",
+      "WarMachine_PlayerStart",
+      "WarMachine_CardDirector"
+    ]
+  },
+  "dirty_owned": []
+}

@@ -3,6 +3,7 @@
 #include "StateTreeTaskBase.h"
 #include "MassStateTreeTypes.h"
 #include "Commander/Behavior/GuLiCommanderWorkTypes.h"
+#include "Commander/Behavior/GuLiCommanderOperationTypes.h"
 #include "GuLiCommanderStateTreeNodes.generated.h"
 
 /** Observations only; priority and transitions live in the authored StateTree. */
@@ -28,18 +29,10 @@ namespace GuLiCommanderBehaviorFacts
 	constexpr uint32 Suspended = 1u << 17;
 	constexpr uint32 WorkComplete = 1u << 18;
 	constexpr uint32 ReturnFirst = 1u << 19;
+	constexpr uint32 OrderTerminal = 1u << 20;
+	constexpr uint32 ControlChanged = 1u << 21;
+	constexpr uint32 OperationStale = 1u << 22;
 }
-
-UENUM()
-enum class EGuLiCommanderBehaviorStep : uint8
-{
-	Wait, CancelPending, ReplaceMove, RunTask, TakeManual, TakeAutomatic,
-	MiningSelect, MiningMove, MiningExtract, MiningFactory, MiningReturn, MiningEnter, MiningUnload, MiningExit,
-	MiningFinish, MiningRetry, MiningFail, MiningComplete,
-	ConstructionMove, ConstructionWork,
-	AdvanceSelect, AdvanceMove, AdvanceCapture, AdvanceComplete, AdvanceReject, AdvanceWait,
-	MiningReposition, ConstructionReserve, ConstructionRetry
-};
 
 USTRUCT()
 struct FGuLiCommanderBehaviorNodeData { GENERATED_BODY() };
@@ -105,4 +98,56 @@ struct FGuLiCommanderMassBehaviorTask final : public FMassStateTreeTaskBase
 	virtual EStateTreeRunStatus Tick(FStateTreeExecutionContext& Context, float DeltaTime) const override;
 	virtual void GetDependencies(UE::MassBehavior::FStateTreeDependencyBuilder& Builder) const override;
 	UPROPERTY(EditAnywhere, Category="Operation") EGuLiCommanderBehaviorStep Step = EGuLiCommanderBehaviorStep::Wait;
+};
+
+USTRUCT()
+struct FGuLiCommanderPersistentNodeData
+{
+	GENERATED_BODY()
+	UPROPERTY(Transient) uint64 Version = 0;
+	UPROPERTY(Transient) uint32 ExecutionId = 0;
+	UPROPERTY(Transient) uint64 Serial = 0;
+	UPROPERTY(Transient) bool bEntryApplied = false;
+	FGuLiCommanderOperationToken Token() const { return {Version, ExecutionId, Serial}; }
+};
+
+USTRUCT()
+struct FGuLiCommanderPersistentOperation
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, Category="Operation") EGuLiCommanderBehaviorStep Entry = EGuLiCommanderBehaviorStep::Wait;
+	UPROPERTY(EditAnywhere, Category="Operation") EGuLiCommanderBehaviorStep WhileRunning = EGuLiCommanderBehaviorStep::ObserveOrder;
+	UPROPERTY(EditAnywhere, Category="Operation") bool bCompleteOnReceipt = false;
+	UPROPERTY(EditAnywhere, Category="Operation") EGuLiCommanderControlState Control = EGuLiCommanderControlState::Normal;
+	/** Resume an already accepted action without resetting its path, reservation or accumulator. */
+	UPROPERTY(EditAnywhere, Category="Operation") TArray<EGuLiCommanderWorkPhase> ResumePhases;
+};
+
+USTRUCT(meta=(DisplayName="Commander Actor Persistent Operation", Category="GuLiStrike|Commander"))
+struct FGuLiCommanderActorPersistentTask final : public FStateTreeTaskCommonBase
+{
+	GENERATED_BODY()
+	FGuLiCommanderActorPersistentTask();
+	explicit FGuLiCommanderActorPersistentTask(const FGuLiCommanderPersistentOperation& InOperation);
+	using FInstanceDataType = FGuLiCommanderPersistentNodeData;
+	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
+	virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;
+	virtual EStateTreeRunStatus Tick(FStateTreeExecutionContext& Context, float DeltaTime) const override;
+	virtual void ExitState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;
+	UPROPERTY(EditAnywhere, Category="Operation") FGuLiCommanderPersistentOperation Operation;
+};
+
+USTRUCT(meta=(DisplayName="Commander Mass Persistent Operation", Category="GuLiStrike|Commander"))
+struct FGuLiCommanderMassPersistentTask final : public FMassStateTreeTaskBase
+{
+	GENERATED_BODY()
+	FGuLiCommanderMassPersistentTask();
+	explicit FGuLiCommanderMassPersistentTask(const FGuLiCommanderPersistentOperation& InOperation);
+	using FInstanceDataType = FGuLiCommanderPersistentNodeData;
+	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
+	virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;
+	virtual EStateTreeRunStatus Tick(FStateTreeExecutionContext& Context, float DeltaTime) const override;
+	virtual void ExitState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;
+	virtual void GetDependencies(UE::MassBehavior::FStateTreeDependencyBuilder& Builder) const override;
+	UPROPERTY(EditAnywhere, Category="Operation") FGuLiCommanderPersistentOperation Operation;
 };

@@ -10,6 +10,26 @@
 #include "Engine/NetConnection.h"
 #include "Engine/ActorChannel.h"
 
+void UGuLiCombatEffectReplicationComponent::PublishRogueUpgrade(UWorld* World,const FGuLiRogueUpgradeCue& Cue)
+{
+	auto* State=World ? World->GetGameState() : nullptr;
+	auto* Channel=State ? State->FindComponentByClass<UGuLiCombatEffectReplicationComponent>() : nullptr;
+	if (!Channel || !State->HasAuthority() || !Cue.Session.IsValid() || !Cue.MatchEpoch) return;
+	for (int32 First=0; First<Cue.Soldiers.Num(); First+=GuLiRogueUpgrade::NetworkBatchSize)
+	{
+		FGuLiRogueUpgradeCue Batch;
+		Batch.Session=Cue.Session; Batch.MatchEpoch=Cue.MatchEpoch; Batch.Team=Cue.Team; Batch.UnitTypeId=Cue.UnitTypeId;
+		Batch.System=Cue.System; Batch.Scale=Cue.Scale; Batch.Color=Cue.Color;
+		Batch.StartTime=State->GetServerWorldTimeSeconds(); Batch.BatchIndex=First/GuLiRogueUpgrade::NetworkBatchSize;
+		Batch.Soldiers.Append(Cue.Soldiers.GetData()+First,FMath::Min(GuLiRogueUpgrade::NetworkBatchSize,Cue.Soldiers.Num()-First));
+		Channel->MulticastRogueUpgrade(Batch);
+	}
+}
+void UGuLiCombatEffectReplicationComponent::MulticastRogueUpgrade_Implementation(const FGuLiRogueUpgradeCue& Cue)
+{
+	if (auto* Visuals=GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>()) Visuals->ApplyRogueUpgrade(Cue);
+}
+
 bool UGuLiCombatEffectReplicationComponent::CallRemoteFunction(UFunction* Function, void* Parameters, FOutParmRec* OutParms, FFrame* Stack)
 {
 	const bool bFreshCue = Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastShots)
@@ -114,7 +134,10 @@ void UGuLiCombatEffectReplicationComponent::HandleState(const FGuLiCombatEffectS
 		if (Pending) *Pending=State; else ReliableQueue.Add(State);
 		if (State.Phase == EGuLiCombatEffectPhase::Finished) Corrections.Remove(State.EffectId);
 	}
-	else Corrections.Add(State.EffectId, State);
+	else if (State.Kind != EGuLiCombatEffectKind::LinearProjectile)
+		Corrections.Add(State.EffectId, State);
+	// Ground linear confirmations reach remote peers in the existing 5 Hz batches.
+	// The listen view consumes them here without a second correction RPC stream.
 	// Listen presentation consumes immediately; multicast application below runs on remote clients only.
 	if (auto* Visuals = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>()) Visuals->ApplyState(State);
 }
@@ -169,12 +192,12 @@ void UGuLiCombatEffectReplicationComponent::TickComponent(float DeltaTime, ELeve
 		}
 		MulticastCorrections(Batch);
 	}
-	// Straight ground bullets are analytically reconstructed from these compact launch records.
+	// Reconstruct straight ground bullets only up to the confirmed collision time.
 	// Rotate the first batch so a saturated connection cannot always starve the same tail.
 	GroundSnapshotAccumulator += DeltaTime;
-	if (Runtime.IsValid() && GroundSnapshotAccumulator >= 0.2f)
+	if (Runtime.IsValid() && GroundSnapshotAccumulator >= GuLiCombatEffects::GroundProjectileStepSeconds)
 	{
-		GroundSnapshotAccumulator = FMath::Fmod(GroundSnapshotAccumulator, 0.2f);
+		GroundSnapshotAccumulator = FMath::Fmod(GroundSnapshotAccumulator, GuLiCombatEffects::GroundProjectileStepSeconds);
 		Runtime->BuildGroundProjectileSnapshot(GroundSnapshot);
 		const int32 Total = GroundSnapshot.Num();
 		if (Total > 0)

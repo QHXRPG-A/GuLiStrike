@@ -1,0 +1,28 @@
+{
+  "success": true,
+  "world": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview.LVL_WarMachineTarotReview",
+  "pie": false,
+  "actors": [
+    {
+      "label": "WarMachine_Key",
+      "class": "/Script/Engine.DirectionalLight"
+    },
+    {
+      "label": "WarMachine_Ambient",
+      "class": "/Script/Engine.SkyLight"
+    },
+    {
+      "label": "WarMachine_PlayerStart",
+      "class": "/Script/Engine.PlayerStart"
+    },
+    {
+      "label": "WarMachine_CardDirector",
+      "class": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_CardRevealDirector.BP_CardRevealDirector_C"
+    }
+  ],
+  "dirty_maps": [
+    "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview"
+  ],
+  "map_exists": true,
+  "card_blueprint": "/Game/GuLiStrike/Cards/RevealDemo/Blueprints/BP_ParallaxRevealCard.BP_ParallaxRevealCard"
+}

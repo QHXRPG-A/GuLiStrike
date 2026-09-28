@@ -1,0 +1,250 @@
+{
+  "success": true,
+  "saved": [
+    "/Game/GuLiStrike/FX/RogueCards/M_UpgradeGlow",
+    "/Game/GuLiStrike/FX/RogueCards/M_UpgradeRingMotes",
+    "/Game/GuLiStrike/FX/RogueCards/SM_UpgradeCylinder",
+    "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite"
+  ],
+  "source": "/Game/Assets/VFX/NiagaraUpgradeGlow/Particles/P_UpgradeGlow04_Converted",
+  "visual_review": "user_pending",
+  "source_emitters": [
+    {
+      "name": "light01",
+      "simulation": "CPUSim",
+      "material": "/Game/Assets/VFX/NiagaraUpgradeGlow/Materials/M_Circle1_5.M_Circle1_5",
+      "mesh": "/Game/Assets/VFX/NiagaraUpgradeGlow/Mesh/SM_cylinder.SM_cylinder",
+      "burst": [
+        "10"
+      ]
+    },
+    {
+      "name": "fire02",
+      "simulation": "CPUSim",
+      "material": "/Game/Assets/VFX/NiagaraUpgradeGlow/Materials/MI_Circle_2.MI_Circle_2",
+      "mesh": "",
+      "burst": [
+        "1"
+      ]
+    },
+    {
+      "name": "Particle01",
+      "simulation": "CPUSim",
+      "material": "/Game/Assets/VFX/NiagaraUpgradeGlow/Materials/MI_Mask.MI_Mask",
+      "mesh": "",
+      "burst": [
+        "10"
+      ]
+    },
+    {
+      "name": "Particle02",
+      "simulation": "CPUSim",
+      "material": "/Game/Assets/VFX/NiagaraUpgradeGlow/Materials/MI_Mask.MI_Mask",
+      "mesh": "",
+      "burst": [
+        "10"
+      ]
+    }
+  ],
+  "source_color_curves": [
+    {
+      "path": "/Game/Assets/VFX/NiagaraUpgradeGlow/Particles/P_UpgradeGlow04_Converted.P_UpgradeGlow04_Converted:fire02_1.NiagaraScriptSource_0.NiagaraGraph_0.NiagaraNodeInput_0.VectorFromCurve_VectorCurve",
+      "keys": {
+        "XCurve": [
+          [
+            0.0,
+            20.0
+          ],
+          [
+            1.0,
+            10.0
+          ]
+        ],
+        "YCurve": [
+          [
+            0.0,
+            6.930113792419434
+          ],
+          [
+            1.0,
+            8.929780960083008
+          ]
+        ],
+        "ZCurve": [
+          [
+            0.0,
+            0.9335539937019348
+          ],
+          [
+            1.0,
+            1.4869149923324585
+          ]
+        ]
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/NiagaraUpgradeGlow/Particles/P_UpgradeGlow04_Converted.P_UpgradeGlow04_Converted:light01_0.NiagaraScriptSource_0.NiagaraGraph_0.NiagaraNodeInput_0.VectorFromCurve_VectorCurve",
+      "keys": {
+        "XCurve": [
+          [
+            0.0,
+            5.0
+          ],
+          [
+            1.0,
+            0.03891799971461296
+          ]
+        ],
+        "YCurve": [
+          [
+            0.0,
+            3.3554940223693848
+          ],
+          [
+            1.0,
+            0.04547100141644478
+          ]
+        ],
+        "ZCurve": [
+          [
+            0.0,
+            0.7083190083503723
+          ],
+          [
+            1.0,
+            0.5
+          ]
+        ]
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/NiagaraUpgradeGlow/Particles/P_UpgradeGlow04_Converted.P_UpgradeGlow04_Converted:Particle01_2.NiagaraScriptSource_0.NiagaraGraph_0.NiagaraNodeInput_0.VectorFromCurve_VectorCurve",
+      "keys": {
+        "XCurve": [
+          [
+            0.0,
+            20.0
+          ],
+          [
+            1.0,
+            5.0
+          ]
+        ],
+        "YCurve": [
+          [
+            0.0,
+            7.0
+          ],
+          [
+            1.0,
+            2.418828010559082
+          ]
+        ],
+        "ZCurve": [
+          [
+            0.0,
+            0.800000011920929
+          ],
+          [
+            1.0,
+            0.9514549970626831
+          ]
+        ]
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/NiagaraUpgradeGlow/Particles/P_UpgradeGlow04_Converted.P_UpgradeGlow04_Converted:Particle02_3.NiagaraScriptSource_0.NiagaraGraph_0.NiagaraNodeInput_0.VectorFromCurve_VectorCurve",
+      "keys": {
+        "XCurve": [
+          [
+            0.0,
+            20.0
+          ],
+          [
+            1.0,
+            5.0
+          ]
+        ],
+        "YCurve": [
+          [
+            0.0,
+            7.0
+          ],
+          [
+            1.0,
+            2.418828010559082
+          ]
+        ],
+        "ZCurve": [
+          [
+            0.0,
+            0.800000011920929
+          ],
+          [
+            1.0,
+            0.9514549970626831
+          ]
+        ]
+      }
+    }
+  ],
+  "materials": {
+    "/Game/GuLiStrike/FX/RogueCards/M_UpgradeGlow": {
+      "compiled_ok": true,
+      "errors": []
+    },
+    "/Game/GuLiStrike/FX/RogueCards/M_UpgradeRingMotes": {
+      "compiled_ok": true,
+      "errors": []
+    }
+  },
+  "compile": {
+    "success": true,
+    "errors": [],
+    "warnings": []
+  },
+  "native_diagnostics": "",
+  "readback": [
+    {
+      "name": "UpgradeGlow",
+      "sim_target": "GPUComputeSim",
+      "local_space": false,
+      "bounds": "Fixed",
+      "renderer": "Mesh",
+      "material": "/Game/GuLiStrike/FX/RogueCards/M_UpgradeGlow.M_UpgradeGlow",
+      "mesh": "/Game/GuLiStrike/FX/RogueCards/SM_UpgradeCylinder.SM_UpgradeCylinder",
+      "modules": [
+        "ParticleState",
+        "EmitterState",
+        "InitializeParticle",
+        "SpawnBurst_Instantaneous",
+        "AssignUpgradeSlot",
+        "ReadUpgradePool",
+        "ShapeUpgradeGlow"
+      ]
+    },
+    {
+      "name": "UpgradeRingMotes",
+      "sim_target": "GPUComputeSim",
+      "local_space": false,
+      "bounds": "Fixed",
+      "renderer": "Sprite",
+      "material": "/Game/GuLiStrike/FX/RogueCards/M_UpgradeRingMotes.M_UpgradeRingMotes",
+      "mesh": "",
+      "modules": [
+        "ParticleState",
+        "EmitterState",
+        "InitializeParticle",
+        "SpawnBurst_Instantaneous",
+        "AssignUpgradeSlot",
+        "ReadUpgradePool",
+        "ShapeUpgradeRingMotes"
+      ]
+    }
+  ],
+  "user_parameters": [
+    "User.UpgradeColors",
+    "User.UpgradeParameters",
+    "User.UpgradePositions"
+  ]
+}

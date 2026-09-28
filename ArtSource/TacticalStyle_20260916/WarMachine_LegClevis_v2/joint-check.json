@@ -1,0 +1,94 @@
+{
+  "pin_hole_alignment": [
+    {
+      "corner": "F_L",
+      "pin_radius_m": 0.7243219509898582,
+      "eye_to_lug_clearance_each_side_m": 0.22044520815421514,
+      "holes": [
+        {
+          "object": "WM suspension pivot eye_F_L",
+          "axis_error_m": 9.573923590307838e-07,
+          "minimum_radial_clearance_m": 0.15745751197414404
+        },
+        {
+          "object": "WM suspension clevis lug_F_L inner",
+          "axis_error_m": 2.7829688858816033e-06,
+          "minimum_radial_clearance_m": 0.12596459176559716
+        },
+        {
+          "object": "WM suspension clevis lug_F_L outer",
+          "axis_error_m": 1.5859764451563442e-06,
+          "minimum_radial_clearance_m": 0.12596390829538928
+        }
+      ]
+    },
+    {
+      "corner": "F_R",
+      "pin_radius_m": 0.7243219509898582,
+      "eye_to_lug_clearance_each_side_m": 0.22044520815421514,
+      "holes": [
+        {
+          "object": "WM suspension pivot eye_F_R",
+          "axis_error_m": 9.573923590307838e-07,
+          "minimum_radial_clearance_m": 0.15745751197414404
+        },
+        {
+          "object": "WM suspension clevis lug_F_R inner",
+          "axis_error_m": 2.7829688858816033e-06,
+          "minimum_radial_clearance_m": 0.12596459176559716
+        },
+        {
+          "object": "WM suspension clevis lug_F_R outer",
+          "axis_error_m": 1.5859764451563442e-06,
+          "minimum_radial_clearance_m": 0.12596390829538928
+        }
+      ]
+    },
+    {
+      "corner": "R_L",
+      "pin_radius_m": 0.7243216912605371,
+      "eye_to_lug_clearance_each_side_m": 0.22044520815421514,
+      "holes": [
+        {
+          "object": "WM suspension pivot eye_R_L",
+          "axis_error_m": 2.1565023082644394e-06,
+          "minimum_radial_clearance_m": 0.15745772100656552
+        },
+        {
+          "object": "WM suspension clevis lug_R_L inner",
+          "axis_error_m": 1.1496127558938211e-06,
+          "minimum_radial_clearance_m": 0.12596641996880908
+        },
+        {
+          "object": "WM suspension clevis lug_R_L outer",
+          "axis_error_m": 9.830249847454215e-07,
+          "minimum_radial_clearance_m": 0.1259663378211281
+        }
+      ]
+    },
+    {
+      "corner": "R_R",
+      "pin_radius_m": 0.7243216912605371,
+      "eye_to_lug_clearance_each_side_m": 0.22044520815421514,
+      "holes": [
+        {
+          "object": "WM suspension pivot eye_R_R",
+          "axis_error_m": 2.1565023082644394e-06,
+          "minimum_radial_clearance_m": 0.15745772100656552
+        },
+        {
+          "object": "WM suspension clevis lug_R_R inner",
+          "axis_error_m": 1.1496127558938211e-06,
+          "minimum_radial_clearance_m": 0.12596641996880908
+        },
+        {
+          "object": "WM suspension clevis lug_R_R outer",
+          "axis_error_m": 9.830249847454215e-07,
+          "minimum_radial_clearance_m": 0.1259663378211281
+        }
+      ]
+    }
+  ],
+  "non_manifold_or_inward_new_parts": [],
+  "display_note": "Static mechanical assembly only; no skeleton or animated constraints added"
+}

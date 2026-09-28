@@ -77,8 +77,16 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 		if (State.Kind != EGuLiCombatEffectKind::LinearProjectile || Visual.LaserSlot == INDEX_NONE) continue;
 		const bool bFinished = State.Phase == EGuLiCombatEffectPhase::Finished;
 		const bool bGround = State.Source.Kind == EGuLiTargetKind::CommanderSoldier;
-		const float Age = FMath::Clamp(Now - State.StartTime, 0.0f, State.EndTime - State.StartTime);
-		const FVector Head = bFinished ? FVector(State.Location) : FVector(State.LaunchLocation) + FVector(State.Velocity) * Age;
+		const float RenderTime = bGround
+			? FMath::Min(Now - GuLiCombatEffects::GroundProjectileStepSeconds, State.SampleTime) : Now;
+		const bool bReachedTerminal = bFinished && (!bGround || RenderTime >= State.SampleTime);
+		const float Age = FMath::Clamp(RenderTime - State.StartTime, 0.0f, State.EndTime - State.StartTime);
+		const FVector Head = bReachedTerminal ? FVector(State.Location) : FVector(State.LaunchLocation) + FVector(State.Velocity) * Age;
+		if (bGround && bReachedTerminal && !Visual.bActivationPlayed)
+		{
+			Visual.bActivationPlayed = true;
+			PlayMachineGunImpact(State);
+		}
 		Visual.RenderLocation = Head;
 		const bool bBoltVisible = IsVisibleLocation(Head);
 		FVector Muzzle = State.LaunchLocation;

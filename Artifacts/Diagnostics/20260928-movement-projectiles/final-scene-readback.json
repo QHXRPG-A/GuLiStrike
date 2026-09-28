@@ -1,0 +1,25 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "saved": true,
+  "marker": {
+    "name": "Note_25",
+    "label": "Movement_Projectile_HighSpeed_Regression",
+    "location": "<Struct 'Vector' (0x0000015A732DA1D0) {x: -16600.000000, y: 14400.000000, z: -1550.000000}>",
+    "text": "High-speed movement / machine-gun regression. Map: LVL_CommanderMassPrototype. F4: choose the RIGHT MoveSpeed +50% card five times (720 -> 5467.5 cm/s). Select War Machines and move uphill from (-17740,14340,-1598) toward (-1071,5407,1531). Units should climb legal ramps and their models should keep up with the upgraded speed. During combat, bullets should originate at the corresponding firing pose and stay within confirmed collision travel. Existing RogueCards_F4_Entry and CommanderPlayerStart_Red are reused. User visual acceptance pending."
+  },
+  "entries": [
+    {
+      "name": "PlayerStart_0",
+      "label": "CommanderPlayerStart_Red",
+      "class": "PlayerStart",
+      "location": "<Struct 'Vector' (0x0000015CFFC60BA0) {x: 0.000000, y: 72500.000000, z: 233.914375}>"
+    },
+    {
+      "name": "Note_24",
+      "label": "RogueCards_F4_Entry",
+      "class": "Note",
+      "location": "<Struct 'Vector' (0x0000015CFFC61230) {x: -3200.000000, y: 72500.000000, z: -1200.000000}>"
+    }
+  ],
+  "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode"
+}

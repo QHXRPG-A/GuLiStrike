@@ -1,0 +1,57 @@
+{
+  "success": true,
+  "source_model_version": "WarMachine_LevelNodes_v6",
+  "original_materials": [
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour",
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel"
+  ],
+  "world": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview.LVL_WarMachineTarotReview",
+  "assets": [
+    {
+      "path": "/Game/GuLiStrike/Cards/WarMachineTarot/ModelReferences/v8/Meshes/SM_WarMachine_LevelNodes_Reference.SM_WarMachine_LevelNodes_Reference",
+      "dimensions_cm": [
+        5207.016357421875,
+        5790.170166015625,
+        4203.237199783325
+      ],
+      "triangles": 38843,
+      "uv_channels": 1,
+      "slots": [
+        "CardReference_Body",
+        "CardReference_Contour"
+      ]
+    }
+  ],
+  "materials": [
+    "/Game/GuLiStrike/Cards/WarMachineTarot/ModelReferences/v8/Materials/M_WarMachine_Cel.M_WarMachine_Cel",
+    "/Game/GuLiStrike/Cards/WarMachineTarot/ModelReferences/v8/Materials/M_WarMachine_Contour.M_WarMachine_Contour"
+  ],
+  "source_export": {
+    "success": true,
+    "source": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\WarMachine_LevelNodes_Review.blend",
+    "source_sha256": "0d2568d45953e0e53526438dac5c9bf06b940a18e86c525dbd432fa3f5bf4df6",
+    "exported_objects": [
+      "WarMachine_After_Body",
+      "WarMachine_After_Contour"
+    ],
+    "source_unchanged": true,
+    "triangles": 39620,
+    "files": [
+      {
+        "file": "SM_WarMachine_LevelNodes_Reference.fbx",
+        "bytes": 1116908,
+        "sha256": "66a3d6daab9c1401a1a65566353f72d4bb179052cf357dab8b9be1a0562fd80f"
+      },
+      {
+        "file": "T_WarMachine_BaseColor.png",
+        "bytes": 228872,
+        "sha256": "478630a51fb3e6cbb80503fcfb2cc152098e370c7f00c763b7a179ba8d9dbc0b"
+      },
+      {
+        "file": "T_WarMachine_LineMask.png",
+        "bytes": 469976,
+        "sha256": "66adb72883896e13b6e35859d7fc2baf0649972a023fee2bb6de7ba42f1c86e8"
+      }
+    ]
+  }
+}

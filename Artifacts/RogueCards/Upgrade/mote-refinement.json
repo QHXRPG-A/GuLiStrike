@@ -1,0 +1,42 @@
+{
+  "success": true,
+  "visual_review": "user_pending",
+  "images_inspected": false,
+  "gpu_carriers_per_unit": 6,
+  "glints_per_carrier": 3,
+  "high_quality_glints": 18,
+  "medium_quality_glints": 6,
+  "low_quality_glints": 0,
+  "native_build": "not_needed",
+  "previous_mask": "float Shape=Dynamic.x; float Phase=Dynamic.y; float2 p=UV*2-1; float r=length(p); float ring=pow(saturate(1-abs(r-.78)*12),1.5); float mote=pow(saturate(1-abs(p.x)*2),1.5)*saturate((1-abs(p.y))*3); return lerp(ring*.55,mote,saturate(Shape))*Alpha;",
+  "previous_motion": "float t=saturate(Params.x); float s=Params.y; float fade=saturate(t/.06)*(1-smoothstep(.60,1.0,t)); float angle=(Part-1)*1.04719755+Slot*.61; float radius=(105+Part*4)*s; bool ring=Part==0; float visible=ring || Part<=Params.z ? 1.0:0.0; Position=Center+(ring ? float3(0,0,4*s) : float3(cos(angle)*radius,sin(angle)*radius,(30+210*t)*s)); Size=(ring ? float2(320,320)*(.78+.32*t) : float2(10+Part,26+Part*3))*s*visible; Color=float4(Tint.rgb*lerp(ring?float3(1,1,1):float3(1,1.01008,.85694),ring?float3(.5,1.28855,1.59278):float3(.25,.34904,1.01918),t),Tint.a*fade*visible); Facing=float3(0,0,1); Alignment=float3(0,1,0); Rotation=ring?0:angle; Dynamic=float4(ring?0:1,t,0,0);",
+  "material": {
+    "compiled_ok": true,
+    "errors": []
+  },
+  "compile": {
+    "success": true,
+    "errors": [],
+    "warnings": []
+  },
+  "native_diagnostics": "",
+  "saved": [
+    "/Game/GuLiStrike/FX/RogueCards/M_UpgradeRingMotes",
+    "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite"
+  ],
+  "readback_motion": "float t=saturate(Params.x); float s=Params.y; float fade=saturate(t/.06)*(1-smoothstep(.60,1.0,t)); float angle=(Part-1)*1.04719755+Slot*.61; float radius=(105+Part*4)*s; bool ring=Part==0; float visible=ring || Part<=Params.z ? 1.0:0.0; Position=Center+(ring ? float3(0,0,4*s) : float3(cos(angle)*radius,sin(angle)*radius,(30+210*t)*s)); Size=(ring ? float2(320,320)*(.78+.32*t) : float2(18,26))*s*visible; Color=float4(Tint.rgb*lerp(ring?float3(1,1,1):float3(1,1.01008,.85694),ring?float3(.5,1.28855,1.59278):float3(.25,.34904,1.01918),t),Tint.a*fade*visible); Facing=float3(0,0,1); Alignment=float3(0,1,0); Rotation=ring?0:angle; Dynamic=float4(ring?0:1,ring?t:t+Part*.173+Slot*.047,0,0);",
+  "readback_mask": "float Shape=Dynamic.x; float Phase=Dynamic.y; float2 p=UV*2-1; if(Shape<.5){float r=length(p); return pow(saturate(1-abs(r-.78)*12),1.5)*.55*Alpha;} float2 q0=(p-float2(-.46,-.50))/float2(.26,.28); float2 q1=(p-float2(.42,-.04))/float2(.24,.27); float2 q2=(p-float2(-.14,.52))/float2(.25,.29); float3 g=saturate(1-float3(dot(q0,q0),dot(q1,q1),dot(q2,q2))); float3 core=g*g; core=.16*core+.84*core*core; float3 pulse=.82+.18*sin(Phase*15+float3(0,2.1,4.2)); return saturate(dot(core,pulse))*Alpha;",
+  "emitters": [
+    {
+      "name": "UpgradeGlow",
+      "simulation": "GPUComputeSim",
+      "material": "/Game/GuLiStrike/FX/RogueCards/M_UpgradeGlow.M_UpgradeGlow"
+    },
+    {
+      "name": "UpgradeRingMotes",
+      "simulation": "GPUComputeSim",
+      "material": "/Game/GuLiStrike/FX/RogueCards/M_UpgradeRingMotes.M_UpgradeRingMotes"
+    }
+  ],
+  "ring_glow_and_slot_assignment_preserved": true
+}

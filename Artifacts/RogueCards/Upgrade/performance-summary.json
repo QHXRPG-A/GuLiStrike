@@ -1,0 +1,322 @@
+{
+  "success": true,
+  "method": "Pooled sample median and nearest-rank p95, 3 repetitions; full scene timings, not isolated VFX cost.",
+  "scope": "same PIE scene/camera and 1000 real Mass War Machines; varies upgraded subset; standalone rendering comparison, not network throughput",
+  "viewport": [
+    640,
+    364
+  ],
+  "created_units": 1000,
+  "inside_viewport": {
+    "100": 100,
+    "500": 500,
+    "1000": 1000
+  },
+  "crowd_capacity_restored": 1024,
+  "population_cap_restored": 300,
+  "limitations": [
+    "640x364 Editor Development on i9-14900KF/RTX4090; no target-hardware budget supplied.",
+    "Fixed 8192 GPU slots per lite block; nominal visible counts are not allocation counts.",
+    "Lite benchmark updates arrays through Python, not full production-pool or network throughput.",
+    "100-unit game-thread median did not improve; no universal performance-pass claim."
+  ],
+  "rows": [
+    {
+      "count": 100,
+      "kind": "baseline",
+      "repeats": 3,
+      "sample_count": 70,
+      "components": 0,
+      "nominal_visible_particles": 0,
+      "gpu_particle_capacity": 0,
+      "timings_ms": {
+        "game_ms": {
+          "median": 19.2172,
+          "p95": 39.0093
+        },
+        "render_ms": {
+          "median": 0.0002,
+          "p95": 0.0003
+        },
+        "gpu_ms": {
+          "median": 4.3305,
+          "p95": 4.5721
+        },
+        "frame_ms": {
+          "median": 19.3135,
+          "p95": 38.7513
+        }
+      },
+      "setup_ms": {
+        "median": 0.0004,
+        "p95": 0.0007
+      },
+      "python_array_upload_ms": null
+    },
+    {
+      "count": 100,
+      "kind": "original",
+      "repeats": 3,
+      "sample_count": 53,
+      "components": 100,
+      "nominal_visible_particles": 3100,
+      "gpu_particle_capacity": 0,
+      "timings_ms": {
+        "game_ms": {
+          "median": 24.7761,
+          "p95": 64.3334
+        },
+        "render_ms": {
+          "median": 0.0002,
+          "p95": 0.0003
+        },
+        "gpu_ms": {
+          "median": 5.0325,
+          "p95": 8.7269
+        },
+        "frame_ms": {
+          "median": 25.8097,
+          "p95": 57.6913
+        }
+      },
+      "setup_ms": {
+        "median": 6.9878,
+        "p95": 7.6505
+      },
+      "python_array_upload_ms": null
+    },
+    {
+      "count": 100,
+      "kind": "lite",
+      "repeats": 3,
+      "sample_count": 57,
+      "components": 1,
+      "nominal_visible_particles": 800,
+      "gpu_particle_capacity": 8192,
+      "timings_ms": {
+        "game_ms": {
+          "median": 27.1882,
+          "p95": 43.7969
+        },
+        "render_ms": {
+          "median": 0.0002,
+          "p95": 0.0003
+        },
+        "gpu_ms": {
+          "median": 4.5766,
+          "p95": 5.2894
+        },
+        "frame_ms": {
+          "median": 27.8645,
+          "p95": 44.3673
+        }
+      },
+      "setup_ms": {
+        "median": 3.7069,
+        "p95": 20.6642
+      },
+      "python_array_upload_ms": {
+        "median": 1.1659,
+        "p95": 1.5429
+      }
+    },
+    {
+      "count": 500,
+      "kind": "baseline",
+      "repeats": 3,
+      "sample_count": 69,
+      "components": 0,
+      "nominal_visible_particles": 0,
+      "gpu_particle_capacity": 0,
+      "timings_ms": {
+        "game_ms": {
+          "median": 21.0605,
+          "p95": 35.3907
+        },
+        "render_ms": {
+          "median": 0.0002,
+          "p95": 0.0003
+        },
+        "gpu_ms": {
+          "median": 4.5208,
+          "p95": 5.009
+        },
+        "frame_ms": {
+          "median": 20.6384,
+          "p95": 36.1527
+        }
+      },
+      "setup_ms": {
+        "median": 0.0004,
+        "p95": 0.0008
+      },
+      "python_array_upload_ms": null
+    },
+    {
+      "count": 500,
+      "kind": "original",
+      "repeats": 3,
+      "sample_count": 58,
+      "components": 500,
+      "nominal_visible_particles": 15500,
+      "gpu_particle_capacity": 0,
+      "timings_ms": {
+        "game_ms": {
+          "median": 24.7792,
+          "p95": 38.7561
+        },
+        "render_ms": {
+          "median": 0.0002,
+          "p95": 0.0003
+        },
+        "gpu_ms": {
+          "median": 6.4359,
+          "p95": 6.9247
+        },
+        "frame_ms": {
+          "median": 24.8429,
+          "p95": 37.9875
+        }
+      },
+      "setup_ms": {
+        "median": 31.601,
+        "p95": 35.554
+      },
+      "python_array_upload_ms": null
+    },
+    {
+      "count": 500,
+      "kind": "lite",
+      "repeats": 3,
+      "sample_count": 66,
+      "components": 1,
+      "nominal_visible_particles": 4000,
+      "gpu_particle_capacity": 8192,
+      "timings_ms": {
+        "game_ms": {
+          "median": 21.3802,
+          "p95": 35.7831
+        },
+        "render_ms": {
+          "median": 0.0002,
+          "p95": 0.0003
+        },
+        "gpu_ms": {
+          "median": 4.5793,
+          "p95": 4.9149
+        },
+        "frame_ms": {
+          "median": 21.2024,
+          "p95": 35.6924
+        }
+      },
+      "setup_ms": {
+        "median": 3.1253,
+        "p95": 3.7964
+      },
+      "python_array_upload_ms": {
+        "median": 1.2538,
+        "p95": 1.72
+      }
+    },
+    {
+      "count": 1000,
+      "kind": "baseline",
+      "repeats": 3,
+      "sample_count": 68,
+      "components": 0,
+      "nominal_visible_particles": 0,
+      "gpu_particle_capacity": 0,
+      "timings_ms": {
+        "game_ms": {
+          "median": 21.0166,
+          "p95": 35.9157
+        },
+        "render_ms": {
+          "median": 0.0002,
+          "p95": 0.0003
+        },
+        "gpu_ms": {
+          "median": 4.5463,
+          "p95": 4.7012
+        },
+        "frame_ms": {
+          "median": 20.8592,
+          "p95": 36.2321
+        }
+      },
+      "setup_ms": {
+        "median": 0.0003,
+        "p95": 0.0003
+      },
+      "python_array_upload_ms": null
+    },
+    {
+      "count": 1000,
+      "kind": "original",
+      "repeats": 3,
+      "sample_count": 48,
+      "components": 1000,
+      "nominal_visible_particles": 31000,
+      "gpu_particle_capacity": 0,
+      "timings_ms": {
+        "game_ms": {
+          "median": 29.5114,
+          "p95": 45.1506
+        },
+        "render_ms": {
+          "median": 0.0002,
+          "p95": 0.0003
+        },
+        "gpu_ms": {
+          "median": 8.377,
+          "p95": 8.9978
+        },
+        "frame_ms": {
+          "median": 30.0059,
+          "p95": 54.2138
+        }
+      },
+      "setup_ms": {
+        "median": 63.8274,
+        "p95": 64.9079
+      },
+      "python_array_upload_ms": null
+    },
+    {
+      "count": 1000,
+      "kind": "lite",
+      "repeats": 3,
+      "sample_count": 60,
+      "components": 1,
+      "nominal_visible_particles": 8000,
+      "gpu_particle_capacity": 8192,
+      "timings_ms": {
+        "game_ms": {
+          "median": 24.1918,
+          "p95": 40.7787
+        },
+        "render_ms": {
+          "median": 0.0002,
+          "p95": 0.0003
+        },
+        "gpu_ms": {
+          "median": 4.6286,
+          "p95": 5.0008
+        },
+        "frame_ms": {
+          "median": 23.6851,
+          "p95": 41.4026
+        }
+      },
+      "setup_ms": {
+        "median": 4.1012,
+        "p95": 4.1021
+      },
+      "python_array_upload_ms": {
+        "median": 1.5124,
+        "p95": 1.8991
+      }
+    }
+  ]
+}

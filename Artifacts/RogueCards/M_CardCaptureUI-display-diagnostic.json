@@ -1,0 +1,144 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Translucent",
+		"shading_model": "MSM_Unlit",
+		"two_sided": false
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionTextureSampleParameter2D_000001CFDB70E380",
+			"class": "TextureSampleParameter2D",
+			"class_full": "MaterialExpressionTextureSampleParameter2D",
+			"pos_x": -400,
+			"pos_y": 0,
+			"properties":
+			{
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Engine/EngineResources/WhiteSquareTexture.WhiteSquareTexture'",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "CardCapture",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionOneMinus_000001CFD071ED00",
+			"class": "OneMinus",
+			"class_full": "MaterialExpressionOneMinus",
+			"pos_x": -200,
+			"pos_y": 180,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMax_000001D062ADAC80",
+			"class": "Max",
+			"class_full": "MaterialExpressionMax",
+			"pos_x": -40,
+			"pos_y": 180,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "0.000100"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionDivide_000001CFDEEFC940",
+			"class": "Divide",
+			"class_full": "MaterialExpressionDivide",
+			"pos_x": 110,
+			"pos_y": 0,
+			"properties":
+			{
+				"ConstA": "1.000000",
+				"ConstB": "2.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		}
+	],
+	"connections": [
+		{
+			"source_id": "MaterialExpressionTextureSampleParameter2D_000001CFDB70E380",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionOneMinus_000001CFD071ED00",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionOneMinus_000001CFD071ED00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMax_000001D062ADAC80",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSampleParameter2D_000001CFDB70E380",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionDivide_000001CFDEEFC940",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMax_000001D062ADAC80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionDivide_000001CFDEEFC940",
+			"target_input": "B"
+		}
+	],
+	"output_connections": [
+		{
+			"property": "EmissiveColor",
+			"expression_id": "MaterialExpressionDivide_000001CFDEEFC940",
+			"output_index": 0,
+			"output_name": ""
+		},
+		{
+			"property": "Opacity",
+			"expression_id": "MaterialExpressionOneMinus_000001CFD071ED00",
+			"output_index": 0,
+			"output_name": ""
+		}
+	]
+}

@@ -1,0 +1,41 @@
+{
+  "recorded": "2026-09-28",
+  "kind": "exact_byte_archive",
+  "subject": "WM01 classic comic v7 prompts; frozen source, not a new generation",
+  "project_root": "D:/UE5.7/test1",
+  "files": [
+    {
+      "file": "wm01-v7/Common.txt",
+      "source": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/Prompts/Common.txt",
+      "sha256": "a4d25c5e96c98b0b57df706a315ca4ec0e52a45824b6b074a81d621f0aba2c88",
+      "bytes": 1379,
+      "newline": "LF",
+      "copied_byte_for_byte": true
+    },
+    {
+      "file": "wm01-v7/FireRate.txt",
+      "source": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/Prompts/FireRate.txt",
+      "sha256": "1bba0df596833d2f867dae6817e8974174b00ce9e1cdb9d698165b5a599310f4",
+      "bytes": 1948,
+      "newline": "CRLF",
+      "copied_byte_for_byte": true
+    },
+    {
+      "file": "wm01-v7/MissileDamage.txt",
+      "source": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/Prompts/MissileDamage.txt",
+      "sha256": "c742f47d8b47db69591b5f27ce1cb68f14cb860af14f6d4b8411addea8520c55",
+      "bytes": 1883,
+      "newline": "CRLF",
+      "copied_byte_for_byte": true
+    },
+    {
+      "file": "wm01-v7/HighSpeed.txt",
+      "source": "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v7/Prompts/HighSpeed.txt",
+      "sha256": "c679b2e69f6277560621ddee7d1f8e8689498b984d9727856cfcb7280b724146",
+      "bytes": 1951,
+      "newline": "CRLF",
+      "copied_byte_for_byte": true
+    }
+  ],
+  "note": "Common.txt uses LF; complete per-card prompts use CRLF. Read complete frozen files without newline normalization when exact text is required. Current artwork: FireRate v9, HighSpeed v9, MissileDamage v7; original prompt provenance is distinct from later edit prompts."
+}

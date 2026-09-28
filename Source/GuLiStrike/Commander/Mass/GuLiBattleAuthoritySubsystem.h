@@ -255,6 +255,9 @@ class GULISTRIKE_API UGuLiBattleAuthoritySubsystem final : public UTickableWorld
 	GENERATED_BODY()
 
 public:
+	/** Called only inside the authority fixed step; validates before changing existing entities. */
+	bool ApplyRogueMovementSource(EGuLiTeam Team, uint16 UnitTypeId, FGuid SourceId, float BonusPercent, FString& Error);
+	float GetUnitMovementSpeed(EGuLiTeam Team, uint16 UnitTypeId) const;
 	/** Authority lifecycle notification, emitted before the final wreck record is destroyed. */
 	FGuLiSoldierRetiringSignature OnSoldierRetiring;
 	FGuLiAuthorityMoveEndpointsChanged OnMoveEndpointsChanged;
@@ -601,6 +604,12 @@ private:
 
 	/** 待下个固定步提交的速度；最后一次请求覆盖或取消旧值，未设置表示无待提交修改。 */
 	TOptional<float> PendingMovementSpeedCmPerSecond;
+	TMap<uint32, TMap<FGuid, float>> RogueMovementSources;
+	TMap<uint32, float> RogueMovementMultipliers;
+	uint32 RogueMovementEpoch=0;
+	bool bApplyingRogueFixedStep=false;
+	void ResetRogueMovementForMatch();
+	bool RefreshRogueMovementEntities(uint32 Key, float Multiplier, FString& Error);
 
 	/** 独占本 World 的运行时状态；Initialize 分配、Deinitialize 释放，Mass 子系统只被弱引用。 */
 	TUniquePtr<FGuLiBattleAuthorityState, FGuLiBattleAuthorityStateDeleter> AuthorityState;

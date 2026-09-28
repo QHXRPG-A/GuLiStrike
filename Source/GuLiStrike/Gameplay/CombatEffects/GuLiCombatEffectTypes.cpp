@@ -71,6 +71,7 @@ bool FGuLiCombatEffectState::IsWellFormed() const
 			|| Source.Kind == EGuLiTargetKind::GroundActor) && !MuzzleOffset.ContainsNaN()
 			&& (SourceTeam == EGuLiTeam::Red || SourceTeam == EGuLiTeam::Blue)
 			&& FMath::IsFinite(Motion.Speed) && Motion.Speed > 0 && Motion.Speed <= 1000000
+			&& SampleTime <= EndTime
 			&& EndTime > StartTime && EndTime - StartTime <= 120.01f && !FVector(LaunchDirection).IsNearlyZero();
 	return Target.IsValid() && !SlotId.IsNone() && !MuzzleOffset.ContainsNaN()
 		&& MuzzleOffset.GetAbsMax() <= 1000000.0
@@ -125,7 +126,8 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 	bool bMapped=true, bVector=true;
 	if (Kind == EGuLiCombatEffectKind::LinearProjectile)
 	{
-		// Straight flight needs one launch payload and a terminal point; player rounds carry only the stable VfxId.
+		// Ground rounds additionally carry the latest completed collision time.
+		// Position is reconstructed from the launch payload, without another vector.
 		if (Phase == EGuLiCombatEffectPhase::Finished)
 		{
 			Location.NetSerialize(Ar, Map, bVector); Ar << SampleTime;
@@ -143,12 +145,15 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 			LaunchLocation.NetSerialize(Ar, Map, bVector); LaunchDirection.NetSerialize(Ar, Map, bVector);
 			FVector_NetQuantize Muzzle(MuzzleOffset); Muzzle.NetSerialize(Ar, Map, bVector);
 			Ar << Motion.Speed << StartTime << EndTime;
+			if (Source.Kind == EGuLiTargetKind::CommanderSoldier) Ar << SampleTime;
 			uint8 Team = static_cast<uint8>(SourceTeam); Ar.SerializeBits(&Team, 2);
 			if (Ar.IsLoading())
 			{
 				SourceTeam = static_cast<EGuLiTeam>(Team); MuzzleOffset = Muzzle;
-				Location = LaunchLocation; Velocity = FVector(LaunchDirection) * Motion.Speed;
-				SampleTime = ActivationTime = StartTime;
+				Velocity = FVector(LaunchDirection) * Motion.Speed;
+				if (Source.Kind != EGuLiTargetKind::CommanderSoldier) SampleTime = StartTime;
+				Location = FVector(LaunchLocation) + FVector(Velocity) * (SampleTime - StartTime);
+				ActivationTime = StartTime;
 			}
 		}
 		bOutSuccess = !Ar.IsError() && bVector && IsWellFormed(); return bMapped;

@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "find_object_help": "find_object(outer: Optional[Object], name: str, type: Union[Class, type]=Object.static_class(), follow_redirectors: bool=True) -> Any -- find an already loaded Unreal object with the given outer and name, optionally validating its type",
+    "state_tree_classes": [
+      "StateTreeEditorData",
+      "StateTreeState"
+    ],
+    "related_functions": [],
+    "found": [
+      {
+        "query": "outer:CommanderHierarchyEditorData_0",
+        "error": "StateTreeEditorData: Failed to find property 'sub_trees' for attribute 'sub_trees' on 'StateTreeEditorData'"
+      }
+    ]
+  }
+}

@@ -848,10 +848,7 @@ void AGuLiCommanderPresentationActor::BeginPredictedMove(
 				->GetDefaultSoldierDefinition().MovementSpeedCmPerSecond;
 		}
 	}
-	const float EffectivePredictionDistance = GuLiRuntimeTuning::CalculatePredictionDistance(
-		EffectiveMoveSpeedCmPerSecond,
-		PredictionDurationSeconds,
-		MaximumPredictionDistanceCentimeters);
+	const auto* MovementGameState = GetWorld()->GetGameState<AGuLiCommanderGameState>();
 	TSet<FGuLiSoldierId> AddedSoldiers;
 	for (const FGuLiControlCohortDescriptor& Cohort : Selection.Cohorts)
 	{
@@ -915,7 +912,11 @@ void AGuLiCommanderPresentationActor::BeginPredictedMove(
 			Prediction.ClientCommandId = ClientCommandId;
 			Prediction.StartTimeSeconds = Now;
 			Prediction.Direction = FVector(ToTarget.X, ToTarget.Y, 0.0).GetSafeNormal();
-			Prediction.MaximumDistance = FMath::Min(Distance, EffectivePredictionDistance);
+			const float UnitMoveSpeed = MovementGameState
+				? MovementGameState->GetEffectiveUnitMoveSpeedCmPerSecond(ReliableState->Team, ReliableState->UnitTypeId)
+				: EffectiveMoveSpeedCmPerSecond;
+			Prediction.MaximumDistance = FMath::Min(Distance, GuLiRuntimeTuning::CalculatePredictionDistance(
+				UnitMoveSpeed, PredictionDurationSeconds, MaximumPredictionDistanceCentimeters));
 			Prediction.TargetYawDegrees = Prediction.Direction.Rotation().Yaw;
 		}
 	}
@@ -2443,8 +2444,8 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	}
 	const float CorrectionMultiplier = FMath::IsFinite(MaximumCorrectionSpeedMultiplier)
 		? FMath::Clamp(MaximumCorrectionSpeedMultiplier, 1.0f, 3.0f) : 3.0f;
-	const double MaximumDisplayedStep = static_cast<double>(StandardMoveSpeed) * CorrectionMultiplier
-		* (FMath::IsFinite(DeltaSeconds) ? FMath::Max(0.0f, DeltaSeconds) : 0.0f);
+	const auto* MovementGameState = GetWorld()->GetGameState<AGuLiCommanderGameState>();
+	const double DisplayedStepSeconds = FMath::IsFinite(DeltaSeconds) ? FMath::Max(0.0f, DeltaSeconds) : 0.0f;
 
 	{
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_Interpolation);
@@ -2518,6 +2519,12 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 				// at a bounded speed, without an asymptotic tail or extra normal-move lag.
 				const FVector PreviousLocation = Soldier.PresentedTransform.GetLocation();
 				const FVector DisplayedDelta = PresentedTransform.GetLocation() - PreviousLocation;
+				// A movement upgrade changes the legal unit speed, not just its server
+				// simulation. A base-speed cap makes a fast model fall behind its shots.
+				const float UnitMoveSpeed = MovementGameState
+					? MovementGameState->GetEffectiveUnitMoveSpeedCmPerSecond(ReliableState.Team, ReliableState.UnitTypeId)
+					: StandardMoveSpeed;
+				const double MaximumDisplayedStep = static_cast<double>(UnitMoveSpeed) * CorrectionMultiplier * DisplayedStepSeconds;
 				PresentedTransform.SetLocation(PreviousLocation
 					+ DisplayedDelta.GetClampedToMaxSize(MaximumDisplayedStep));
 			}

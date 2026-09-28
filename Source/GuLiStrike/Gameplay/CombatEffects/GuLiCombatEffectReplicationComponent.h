@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectTypes.h"
+#include "Gameplay/Cards/GuLiRogueUpgradeTypes.h"
 #include "GuLiCombatEffectReplicationComponent.generated.h"
 
 class UGuLiCombatEffectRuntimeSubsystem;
@@ -33,8 +34,10 @@ public:
 	virtual bool CallRemoteFunction(UFunction* Function, void* Parameters, FOutParmRec* OutParms, FFrame* Stack) override;
 	/** Authority-originated cosmetics; no damage or health is accepted from clients. */
 	static void PublishWingmanFeedback(UWorld* World, const FGuLiWingmanHandle& Wingman, const FVector& Location, bool bDestroyed, uint16 HealthPermille);
+	static void PublishRogueUpgrade(UWorld* World,const FGuLiRogueUpgradeCue& Cue);
 
 private:
+	UFUNCTION(NetMulticast, Reliable) void MulticastRogueUpgrade(const FGuLiRogueUpgradeCue& Cue);
 	UFUNCTION() void OnRep_Epoch();
 	UFUNCTION(NetMulticast, Reliable) void MulticastReliableStates(const TArray<FGuLiCombatEffectState>& States);
 	/** Bounded one-Hz live snapshots: new peers rebuild without replaying old one-shots. */

@@ -1,0 +1,49 @@
+{
+  "date": "2026-09-28",
+  "integration_success": true,
+  "static_assets_success": true,
+  "blueprints": 6,
+  "runtime_checks": 113,
+  "runtime_passed": true,
+  "final_visual_preview": true,
+  "layout_checks": {
+    "16x9": {
+      "viewport": [
+        1600,
+        900
+      ],
+      "no_overlap": true,
+      "in_bounds": true
+    },
+    "16x10": {
+      "viewport": [
+        1600,
+        1000
+      ],
+      "no_overlap": true,
+      "in_bounds": true
+    },
+    "21x9": {
+      "viewport": [
+        1680,
+        720
+      ],
+      "no_overlap": true,
+      "in_bounds": true
+    }
+  },
+  "assistant_visual_review": [
+    "最终三牌与左右上/下极限偏转已查看",
+    "炮口附着火光对齐且共用深度",
+    "第二导弹舱与主盘下沿可见，底栏不再裁掉主体",
+    "速度最远背景移除重复高架",
+    "翻面侧边、卡背与局部闪光截图已查看"
+  ],
+  "user_final_approval": "pending",
+  "editor_handoff": {
+    "map": "/Game/GuLiStrike/Cards/WarMachineTarot/Maps/LVL_WarMachineTarotReview",
+    "pie_stopped": true,
+    "selected_actor": "WarMachine_CardDirector"
+  },
+  "evidence_boundary": "Flow checks and 16x10/21x9 layout captures precede final texture-only correction. Final 16x9 front/hover captures use corrected atlases. No gameplay logic changed after flow checks; OS mouse/focus, localization catalogs and user visual acceptance were not automated."
+}

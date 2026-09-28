@@ -3,7 +3,10 @@
 #if WITH_EDITOR
 #include "NiagaraSystem.h"
 #include "NiagaraEmitter.h"
+#include "NiagaraMeshRendererProperties.h"
+#include "NiagaraSpriteRendererProperties.h"
 #include "Engine/StaticMesh.h"
+#include "Materials/MaterialInterface.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "NiagaraScript.h"
 #include "NiagaraScriptSource.h"
@@ -211,6 +214,7 @@ bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* Syst
 		TEXT("/Game/GuLiStrike/FX/WingmanFlight/"))))
 	{
 		if (!System || (System->GetOutermost()->GetName() != TEXT("/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool")
+			&& System->GetOutermost()->GetName() != TEXT("/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite")
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/Buildings/Construction/")))) return false;
 	}
 	ForEachObjectWithOuter(System, [](UObject* Object)
@@ -315,5 +319,88 @@ bool UGuLiCombatEffectAuthoringLibrary::NormalizeExplosionRefractionSpace(UNiaga
 	}
 	Error = TEXT("The required refr_mesh emitter was not found");
 	return false;
+}
+
+bool UGuLiCombatEffectAuthoringLibrary::WireRogueUpgradePoolReader(UNiagaraSystem* System,
+	UNiagaraScript* ParticleUpdateScript,FString& Error)
+{
+	if (!System || System->GetOutermost()->GetName()!=TEXT("/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite")
+		|| !ParticleUpdateScript || ParticleUpdateScript->GetOutermost()!=System->GetOutermost())
+	{ Error=TEXT("Upgrade reader is outside the task-owned system"); return false; }
+	FModuleGraph Module;
+	if (!Module.Initialize(ParticleUpdateScript)) { Error=TEXT("Invalid upgrade scratch graph"); return false; }
+	struct FBinding { UClass* Class; FName User,Attribute; };
+	const TArray<FBinding> Bindings={
+		{UNiagaraDataInterfaceArrayPosition::StaticClass(),TEXT("User.UpgradePositions"),TEXT("Particles.UpgradeCenter")},
+		{UNiagaraDataInterfaceArrayFloat3::StaticClass(),TEXT("User.UpgradeParameters"),TEXT("Particles.UpgradeParameters")},
+		{UNiagaraDataInterfaceArrayColor::StaticClass(),TEXT("User.UpgradeColors"),TEXT("Particles.UpgradeTint")}};
+	System->Modify();
+	for (const auto& Binding:Bindings)
+	{
+		const FNiagaraTypeDefinition DIType(Binding.Class); const FNiagaraVariable Variable(DIType,Binding.User);
+		auto& Parameters=System->GetExposedParameters();
+		if (!Parameters.FindParameterOffset(Variable))
+		{ Parameters.AddParameter(Variable);
+			Parameters.SetDataInterface(NewObject<UNiagaraDataInterface>(System,Binding.Class,NAME_None,RF_Transactional),Variable); }
+		TArray<FNiagaraFunctionSignature> Signatures;
+		Binding.Class->GetDefaultObject<UNiagaraDataInterface>()->GetFunctionSignatures(Signatures);
+		const auto* Signature=Signatures.FindByPredicate([](const auto& S) { return S.Name==TEXT("Get"); });
+		if (!Signature || Signature->Outputs.Num()!=1) { Error=TEXT("Array Get signature missing"); return false; }
+		auto* Node=NewObject<UNiagaraNodeFunctionCall>(Module.Graph,NAME_None,RF_Transactional);
+		Node->Signature=*Signature; Module.Graph->AddNode(Node,false,false);
+		Node->CreateNewGuid(); Node->PostPlacedNewNode(); Node->AllocateDefaultPins();
+		Module.Link(Read(Module.Get,DIType,Binding.User),Node->FindPin(TEXT("Array interface"),EGPD_Input));
+		Module.Link(Read(Module.Get,FNiagaraTypeDefinition::GetIntDef(),TEXT("Particles.UpgradeSlot")),Node->FindPin(TEXT("Index"),EGPD_Input));
+		Module.Link(Node->FindPin(TEXT("Value"),EGPD_Output),Write(Module.Set,Signature->Outputs[0].GetType(),Binding.Attribute));
+	}
+	Module.Graph->NotifyGraphChanged(); ParticleUpdateScript->MarkPackageDirty(); System->MarkPackageDirty();
+	FinalizeScratchPins(System);
+	if (!Module.bValid) { Error=TEXT("Upgrade array graph connection failed"); return false; }
+	return true;
+}
+
+bool UGuLiCombatEffectAuthoringLibrary::ConfigureRogueUpgradeSystem(UNiagaraSystem* System,FString& Error)
+{
+	if (!System || System->GetOutermost()->GetName()!=TEXT("/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite"))
+	{ Error=TEXT("Unexpected upgrade asset"); return false; }
+	System->Modify();
+	for (const auto& Handle:System->GetEmitterHandles())
+	{
+		auto* Data=Handle.GetEmitterData(); auto* Emitter=Handle.GetInstance().Emitter.Get();
+		if (!Data || !Emitter) { Error=TEXT("Missing upgrade emitter data"); return false; }
+		Emitter->Modify(); Data->SimTarget=ENiagaraSimTarget::GPUComputeSim; Data->bLocalSpace=false;
+		Data->CalculateBoundsMode=ENiagaraEmitterCalculateBoundMode::Fixed;
+		Data->FixedBounds=FBox(FVector(-500),FVector(500));
+		for (auto* Renderer:Data->GetRenderers())
+		{
+			Renderer->Modify();
+			if (auto* Mesh=Cast<UNiagaraMeshRendererProperties>(Renderer))
+			{
+				Mesh->SortMode=ENiagaraSortMode::None; Mesh->Meshes.SetNum(1);
+				Mesh->Meshes[0].Mesh=LoadObject<UStaticMesh>(nullptr,TEXT("/Game/GuLiStrike/FX/RogueCards/SM_UpgradeCylinder.SM_UpgradeCylinder"));
+				Mesh->bOverrideMaterials=true; Mesh->OverrideMaterials.SetNum(1);
+				Mesh->OverrideMaterials[0].ExplicitMat=LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/GuLiStrike/FX/RogueCards/M_UpgradeGlow.M_UpgradeGlow"));
+				if (!Mesh->Meshes[0].Mesh || !Mesh->OverrideMaterials[0].ExplicitMat) { Error=TEXT("Upgrade mesh/material missing"); return false; }
+			}
+			if (auto* Sprite=Cast<UNiagaraSpriteRendererProperties>(Renderer)) Sprite->SortMode=ENiagaraSortMode::None;
+		}
+		FPropertyChangedEvent Changed(FindFProperty<FEnumProperty>(FVersionedNiagaraEmitterData::StaticStruct(),TEXT("SimTarget")));
+		Emitter->PostEditChangeVersionedProperty(Changed,Handle.GetInstance().Version);
+	}
+	System->MarkPackageDirty(); return true;
+}
+
+FString UGuLiCombatEffectAuthoringLibrary::GetRogueUpgradeCompileDiagnostics(UNiagaraSystem* System)
+{
+	if (!System || System->GetOutermost()->GetName()!=TEXT("/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite")) return TEXT("Unexpected upgrade system");
+	FString Result;
+	ForEachObjectWithOuter(System,[&Result](UObject* Object)
+	{
+		if (auto* Script=Cast<UNiagaraScript>(Object))
+		{ const auto& VM=Script->GetVMExecutableData();
+			if (!VM.ErrorMsg.IsEmpty()) Result+=Script->GetPathName()+TEXT(": ")+VM.ErrorMsg+TEXT("\n");
+			for (const auto& Event:VM.LastCompileEvents)
+				Result+=FString::Printf(TEXT("%s [%d] %s\n"),*Script->GetPathName(),int32(Event.Severity),*Event.Message); }
+	},true); return Result;
 }
 #endif

@@ -12,6 +12,7 @@ public class GuLiStrike : ModuleRules
 			"Core",
 			"CoreUObject",
 			"Engine",
+			"DeveloperSettings",
 			"InputCore",
 			"EnhancedInput",
 			"AnimGraphRuntime",

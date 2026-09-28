@@ -1,0 +1,44 @@
+{
+  "pid": 54904,
+  "materials": {
+    "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardCaptureUI": {
+      "props": {
+        "blend_mode": "<BlendMode.BLEND_TRANSLUCENT: 2>",
+        "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+        "material_domain": "<MaterialDomain.MD_UI: 5>",
+        "two_sided": "False"
+      }
+    },
+    "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/MI_WarMachineFrame": {
+      "parent": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/M_CelCardUI_Comic_v6.M_CelCardUI_Comic_v6",
+      "textures": "[{parameter_info: {name: \"UI Map\", association: GlobalParameter, index: -1}, parameter_value: \"/Script/Engine.Texture2D'/Game/GuLiStrike/CardSystem/WarMachineTarot/Textures/T_CelCardFrame_Comic_v6.T_CelCardFrame_Comic_v6'\"}]",
+      "scalars": "[{parameter_info: {name: \"Text panel start\", association: GlobalParameter, index: -1}, parameter_value: 0.765000}]",
+      "props": {
+        "blend_mode": "<BlendMode.BLEND_MASKED: 1>",
+        "shading_model": "<MaterialShadingModel.MSM_UNLIT: 0>",
+        "material_domain": "<MaterialDomain.MD_SURFACE: 0>",
+        "two_sided": "False"
+      }
+    },
+    "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_ModelComic_v9": {
+      "parent": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/M_CelCardParallax_ModelComic_v9.M_CelCardParallax_ModelComic_v9",
+      "textures": "[{parameter_info: {name: \"BaseColor Map\", association: GlobalParameter, index: -1}, parameter_value: \"/Script/Engine.Texture2D'/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Textures/T_FireRate_Layers_ModelComic_v9.T_FireRate_Layers_ModelComic_v9'\"}, {parameter_info: {name: \"Ability Layer Map\", association: GlobalParameter, index: -1}, parameter_value: \"/Script/Engine.Texture2D'/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Textures/T_FireRate_Layers_ModelComic_v9.T_FireRate_Layers_ModelComic_v9'\"}]",
+      "scalars": "[{parameter_info: {name: \"Layers global depth\", association: GlobalParameter, index: -1}, parameter_value: 4.000000}, {parameter_info: {name: \"Layers global scale\", association: GlobalParameter, index: -1}, parameter_value: 1.000000}, {parameter_info: {name: \"Scale 2nd layer\", association: GlobalParameter, index: -1}, parameter_value: 0.000000}, {parameter_info: {name: \"Scale 3rd layer\", association: GlobalParameter, index: -1}, parameter_value: 0.000000}, {parameter_info: {name: \"Scale 4th layer\", association: GlobalParameter, index: -1}, parameter_value: 0.000000}, {parameter_info: {name: \"Scale 5th layer\", association: GlobalParameter, index: -1}, parameter_value: 0.000000}, {parameter_info: {name: \"Scale 6th layer\", association: GlobalParameter, index: -1}, parameter_value: -0.100000}, {parameter_info: {name: \"Specular\", association: GlobalParameter, index: -1}, parameter_value: 0.000000}, {parameter_info: {name: \"Roughness\", association: GlobalParameter, index: -1}, parameter_value: 1.000000}, {parameter_info: {name: \"Detail emissive exponent (R mask)\", association: GlobalParameter, index: -1}, parameter_value: 0.012000}, {parameter_info: {name: \"Detail emissive exponent (G mask)\", association: GlobalParameter, index: -1}, parameter_value: 0.012000}, {parameter_info: {name: \"Detail emissive exponent (B mask)\", association: GlobalParameter, index: -1}, parameter_value: 0.000000}, {parameter_info: {name: \"Detail emissive exponent (A mask)\", association: GlobalParameter, index: -1}, parameter_value: 0.000000}, {parameter_info: {name: \"Ability behind machinery\", association: GlobalParameter, index: -1}, parameter_value: 0.000000}, {parameter_info: {name: \"Layer 1 Opacity\", association: GlobalParameter, index: -1}, parameter_value: 1.000000}, {parameter_info: {name: \"Foreground behind machinery\", association: GlobalParameter, index: -1}, parameter_value: 0.000000}, {parameter_info: {name: \"Layer 1 Depth\", association: GlobalParameter, index: -1}, parameter_value: 0.100000}, {parameter_info: {name: \"Layer 2 Depth\", association: GlobalParameter, index: -1}, parameter_value: 0.040000}, {parameter_info: {name: \"Layer 2 Opacity\", association: GlobalParameter, index: -1}, parameter_value: 1.000000}, {parameter_info: {name: \"Layer 3 Depth\", association: GlobalParameter, index: -1}, parameter_value: 0.000000}, {parameter_info: {name: \"Layer 3 Opacity\", association: GlobalParameter, index: -1}, parameter_value: 1.000000}, {parameter_info: {name: \"Layer 4 Depth\", association: GlobalParameter, index: -1}, parameter_value: -0.400000}, {parameter_info: {name: \"Layer 4 Opacity\", association: GlobalParameter, index: -1}, parameter_value: 1.000000}, {parameter_info: {name: \"Layer 5 Depth\", association: GlobalParameter, index: -1}, parameter_value: -0.750000}, {parameter_info: {name: \"Layer 5 Opacity\", association: GlobalParameter, index: -1}, parameter_value: 1.000000}, {parameter_info: {name: \"Layer 6 Depth\", association: GlobalParameter, index: -1}, parameter_value: -1.100000}, {parameter_info: {name: \"Layer 6 Opacity\", association: GlobalParameter, index: -1}, parameter_value: 1.000000}]",
+      "props": {
+        "blend_mode": "<BlendMode.BLEND_MASKED: 1>",
+        "shading_model": "<MaterialShadingModel.MSM_UNLIT: 0>",
+        "material_domain": "<MaterialDomain.MD_SURFACE: 0>",
+        "two_sided": "False"
+      }
+    }
+  },
+  "widgets": [
+    {
+      "path": "/Script/GuLiStrike.Default__GuLiRogueCardOverlay",
+      "visibility": "<SlateVisibility.SELF_HIT_TEST_INVISIBLE: 4>",
+      "enabled": true,
+      "opacity": 1.0
+    }
+  ],
+  "captures": []
+}
