@@ -16,7 +16,10 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
+#include "Gameplay/Presentation/GuLiWarMachineHoverComponent.h"
+#include "Gameplay/Presentation/GuLiWarMachineHoverPreviewComponent.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
+#include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
 #include "Gameplay/Tuning/GuLiRuntimeTuningTypes.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Components/SceneComponent.h"
@@ -45,6 +48,16 @@ CSV_DEFINE_CATEGORY(GuLiCommanderPresentation, true);
 
 namespace GuLiCommanderPresentation
 {
+	void DisableUnitDistanceCulling(UInstancedStaticMeshComponent& Component)
+	{
+		Component.SetCullDistances(0, 0);
+		Component.SetCullDistance(0.0f);
+		Component.bNeverDistanceCull = true;
+		Component.bAllowCullDistanceVolume = false;
+		if (Component.NumCustomDataFloats != FGuLiMechanicalAnimationFrame::CustomDataFloats)
+			Component.SetNumCustomDataFloats(FGuLiMechanicalAnimationFrame::CustomDataFloats);
+	}
+
 	void DeferMirrorDestruction(FMassEntityManager& Manager, TArray<FMassEntityHandle>&& Entities)
 	{
 		Manager.Defer().PushCommand<FMassDeferredDestroyCommand>(
@@ -253,6 +266,7 @@ AGuLiCommanderPresentationActor::AGuLiCommanderPresentationActor()
 
 	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
 	SetRootComponent(SceneRoot);
+	HoverEffects = CreateDefaultSubobject<UGuLiWarMachineHoverComponent>(TEXT("WarMachineHoverEffects"));
 RouteLines = CreateDefaultSubobject<UGuLiCommanderRouteLineComponent>(TEXT("RouteLines"));
 RouteLines->SetupAttachment(SceneRoot);
 
@@ -262,9 +276,7 @@ RouteLines->SetupAttachment(SceneRoot);
 	UnitInstances->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	UnitInstances->SetCanEverAffectNavigation(false);
 	UnitInstances->SetIsReplicated(false);
-	UnitInstances->SetCullDistances(
-		FGuLiCommanderPresentationPerformanceSettings::DefaultUnitCullDistanceCentimeters,
-		FGuLiCommanderPresentationPerformanceSettings::DefaultUnitCullDistanceCentimeters);
+	GuLiCommanderPresentation::DisableUnitDistanceCulling(*UnitInstances);
 	UnitInstances->SetCastShadow(false);
 	UnitInstances->SetAffectDistanceFieldLighting(false);
 	UnitInstances->SetAffectDynamicIndirectLighting(false);
@@ -303,6 +315,10 @@ void AGuLiCommanderPresentationActor::BeginPlay()
 	check(InterpolationBackTimeSeconds > 1.0f / static_cast<float>(GULI_POSE_CAPTURE_RATE_HZ));
 	check(MaximumAdaptiveInterpolationBackTimeSeconds >= InterpolationBackTimeSeconds);
 	InitializePresentationPerformanceSettings();
+	// The saved test-map actor remains static in production maps unless explicitly tagged for review.
+	for (TActorIterator<AActor> It(GetWorld()); It; ++It)
+		if (It->ActorHasTag(TEXT("WarMachineHoverPreview20260929")) && !It->FindComponentByClass<UGuLiWarMachineHoverPreviewComponent>())
+			NewObject<UGuLiWarMachineHoverPreviewComponent>(*It)->RegisterComponent();
 	if (const UGuLiCommanderDataSubsystem* DataSubsystem = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
 	{
 		DefaultUnitTypeId = DataSubsystem->GetDefaultSoldierDefinition().UnitTypeId;
@@ -329,10 +345,15 @@ void AGuLiCommanderPresentationActor::BeginPlay()
 				if (!Self) return false;
 				const FGuLiSoldierId Id(Target.LocalId);
 				const auto* Handle = Self->SoldierInstanceHandles.Find(Id);
-				if (!Handle || !Self->TryGetPresentedSoldierTransform(Id, Pose)) return false;
+				if (!Handle || !Self->TryGetPresentedVisualTransform(Id, Pose)) return false;
 				UnitTypeId = Handle->RequestedUnitTypeId;
 				return true;
 			});
+		Effects->RegisterMuzzleResolver(EGuLiTargetKind::CommanderSoldier, this,
+			[WeakThis](const FGuLiCombatShotCue& Cue, FTransform& Muzzle, float& RenderTime)
+			{ return WeakThis.IsValid() && WeakThis->ResolveMechanicalMuzzle(Cue, Muzzle, RenderTime); },
+			[WeakThis](const FGuLiCombatShotCue& Cue)
+			{ if (WeakThis.IsValid()) WeakThis->ObserveMechanicalShot(Cue); });
 	}
 }
 
@@ -407,9 +428,7 @@ void AGuLiCommanderPresentationActor::ConfigureUnitInstanceComponent(
 	Component.SetIsReplicated(false);
 	const FGuLiCommanderPresentationPerformanceSettings Effective =
 		PerformanceSettingsRegistry.GetEffectiveSettings();
-	Component.SetCullDistances(
-		Effective.UnitCullDistanceCentimeters,
-		Effective.UnitCullDistanceCentimeters);
+	GuLiCommanderPresentation::DisableUnitDistanceCulling(Component);
 	Component.SetCastShadow(Effective.bUnitCastShadow);
 	Component.SetAffectDistanceFieldLighting(Effective.bUnitAffectDistanceFieldLighting);
 	Component.SetAffectDynamicIndirectLighting(Effective.bUnitAffectDynamicIndirectLighting);
@@ -545,6 +564,10 @@ int32 AGuLiCommanderPresentationActor::AcquireUnitInstanceSlot(
 	}
 
 	const FTransform HiddenTransform = GuLiCommanderPresentation::MakeHiddenTransform();
+	FGuLiMechanicalAnimationFrame InitialFrame;
+	const auto* Army = GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
+	const auto* Missile = Army ? Army->FindResolvedSkill(Team, BatchUnitTypeId, TEXT("MissileLauncher")) : nullptr;
+	InitialFrame.MissilePodVisible = Missile && Missile->bUnlocked ? 1.f : 0.f;
 	while (!BatchState->FreeInstanceIndices.IsEmpty())
 	{
 		const int32 ReusedIndex = BatchState->FreeInstanceIndices.Pop(EAllowShrinking::No);
@@ -552,6 +575,7 @@ int32 AGuLiCommanderPresentationActor::AcquireUnitInstanceSlot(
 			&& Component->GetInstanceCount() > ReusedIndex)
 		{
 			BatchState->CachedTransforms[ReusedIndex] = HiddenTransform;
+			GuLiMechanicalAnimation::WriteInstance(*Component, ReusedIndex, InitialFrame, InitialFrame);
 			return ReusedIndex;
 		}
 	}
@@ -567,6 +591,7 @@ int32 AGuLiCommanderPresentationActor::AcquireUnitInstanceSlot(
 		return INDEX_NONE;
 	}
 	BatchState->CachedTransforms.Add(HiddenTransform);
+	GuLiMechanicalAnimation::WriteInstance(*Component, InstanceIndex, InitialFrame, InitialFrame);
 	return InstanceIndex;
 }
 
@@ -587,6 +612,7 @@ void AGuLiCommanderPresentationActor::ReleaseUnitInstanceSlot(
 	Component->UpdateInstanceTransform(InstanceIndex, HiddenTransform, true, true, false);
 	BatchState->CachedTransforms[InstanceIndex] = HiddenTransform;
 	BatchState->FreeInstanceIndices.AddUnique(InstanceIndex);
+	GuLiMechanicalAnimation::WriteInstance(*Component, InstanceIndex, {}, {});
 }
 
 TArray<FGuLiCommanderPresentationSettingView>
@@ -715,9 +741,7 @@ void AGuLiCommanderPresentationActor::ApplyPresentationPerformanceSettings()
 	}
 	for (UInstancedStaticMeshComponent* Component : UnitComponents)
 	{
-		Component->SetCullDistances(
-			Effective.UnitCullDistanceCentimeters,
-			Effective.UnitCullDistanceCentimeters);
+		GuLiCommanderPresentation::DisableUnitDistanceCulling(*Component);
 		Component->SetCastShadow(Effective.bUnitCastShadow);
 		Component->SetAffectDistanceFieldLighting(
 			Effective.bUnitAffectDistanceFieldLighting);
@@ -739,7 +763,10 @@ void AGuLiCommanderPresentationActor::ApplyPresentationPerformanceSettings()
 void AGuLiCommanderPresentationActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	if (GetWorld()) if (auto* Effects = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>())
+	{
 		Effects->UnregisterPoseResolver(EGuLiTargetKind::CommanderSoldier, this);
+		Effects->UnregisterMuzzleResolver(EGuLiTargetKind::CommanderSoldier, this);
+	}
 #if !UE_BUILD_SHIPPING
 	if (bPredictionTraceActive)
 	{
@@ -1539,6 +1566,12 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 		Sample.Location = QuantizedPose.GetWorldLocationCentimeters();
 		Sample.Velocity = QuantizedPose.GetVelocityCentimetersPerSecond();
 		Sample.FacingYawDegrees = GuLiCommanderProtocol::DequantizeYawDegrees(QuantizedPose.FacingYaw);
+		Sample.UpperYawDegrees = FRotator::DecompressAxisFromShort(QuantizedPose.UpperYaw);
+		Sample.GunPitchDegrees[0] = QuantizedPose.LeftGunPitch * 0.01f;
+		Sample.GunPitchDegrees[1] = QuantizedPose.RightGunPitch * 0.01f;
+		Sample.HoverBlendStartMilliseconds = QuantizedPose.HoverBlendStartMilliseconds;
+		Sample.HoverBlendFromWeight = QuantizedPose.HoverBlendFromWeight;
+		Sample.bHoverIdleTarget = QuantizedPose.bHoverIdleTarget;
 		Sample.ActiveOrderId = QuantizedPose.ActiveOrderId;
 		Sample.State = QuantizedPose.State;
 		Sample.ChunkIndex = Chunk.ChunkIndex;
@@ -2044,6 +2077,7 @@ void AGuLiCommanderPresentationActor::DestroyClientMirrorEntities()
 // 同步代次变化时丢弃旧样本、预测和时钟，防止把新战局数据接到旧时间线上。
 void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
 {
+	if (HoverEffects) HoverEffects->Reset();
 	HideInstancePool();
 	PendingStateIds.Reset(); PendingDestructionIds.Reset(); PendingVisualChangeIds.Reset();
 	PendingPoolIds.Reset(); RetryPoolIds.Reset(); PendingRemovedIds.Reset();
@@ -2064,6 +2098,8 @@ void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
 	for (TPair<FGuLiSoldierId, FGuLiCommanderPresentedSoldier>& Pair : PresentedSoldiers)
 	{
 		Pair.Value.Samples.Reset();
+		Pair.Value.MechanicalPose = {}; Pair.Value.MechanicalFrame = {}; Pair.Value.PreviousMechanicalFrame = {};
+		Pair.Value.PendingRecoil.Reset();
 		Pair.Value.DisplacementFrameFloor = 0;
 		Pair.Value.bHasAuthoritativeTransform = false;
 		Pair.Value.bHasPresentedTransform = false;
@@ -2351,6 +2387,12 @@ void AGuLiCommanderPresentationActor::EnsureStableInstancePool(AGuLiSoldierState
 				const int32 NewSlot = AcquireUnitInstanceSlot(BatchId, State->Team);
 				if (NewSlot == INDEX_NONE) { RetryPoolIds.Add(Id); PendingPoolIds.Remove(Id); continue; }
 				ReleaseUnitInstanceSlot(Existing->BatchUnitTypeId, Existing->BatchTeam, Existing->UnitInstanceIndex);
+				if (BatchId != Existing->BatchUnitTypeId)
+					if (auto* Soldier = PresentedSoldiers.Find(Id))
+					{
+						Soldier->MechanicalPose = {}; Soldier->MechanicalFrame = {}; Soldier->PreviousMechanicalFrame = {};
+						Soldier->PendingRecoil.Reset(); Soldier->bResetPresentationOnNextPose = true;
+					}
 				Existing->BatchUnitTypeId = BatchId; Existing->BatchTeam = State->Team; Existing->UnitInstanceIndex = NewSlot;
 			}
 			Existing->RequestedUnitTypeId = State->UnitTypeId;
@@ -2428,6 +2470,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	TMap<uint16,TArray<FTransform>> DesiredWreckTransforms;
 	TMap<uint16,TArray<FTransform>> DesiredHitTransforms;
 	TMap<uint16,TArray<float>> DesiredHitStartTimes;
+	PhasedMechanicalIds.Reset(); HitMechanicalIds.Reset(); WreckMechanicalIds.Reset();
 	auto* UnitFeedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>();
 	// Match the speed published by authority (including runtime tuning), not a
 	// possibly erroneous packet velocity or the distance of the latest correction.
@@ -2446,6 +2489,9 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		? FMath::Clamp(MaximumCorrectionSpeedMultiplier, 1.0f, 3.0f) : 3.0f;
 	const auto* MovementGameState = GetWorld()->GetGameState<AGuLiCommanderGameState>();
 	const double DisplayedStepSeconds = FMath::IsFinite(DeltaSeconds) ? FMath::Max(0.0f, DeltaSeconds) : 0.0f;
+	FVector HoverCamera = FVector::ZeroVector; FRotator HoverView;
+	if (const auto* PC = FindLocalController()) PC->GetPlayerViewPoint(HoverCamera, HoverView);
+	if (HoverEffects) HoverEffects->BeginFrame(LocalNowSeconds, HoverCamera);
 
 	{
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_Interpolation);
@@ -2465,6 +2511,8 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 
 		FGuLiCommanderPresentedSoldier& Soldier = PresentedSoldiers.FindOrAdd(ReliableState.SoldierId);
 		const bool bAlive = ReliableState.IsAlive();
+		const FTransform PreviousMechanicalRoot = Soldier.PresentedTransform;
+		const bool bResetMechanical = !Soldier.bHasPresentedTransform || Soldier.bResetPresentationOnNextPose;
 
 		FTransform AuthoritativeTransform;
 		const float AdaptiveInterpolationBackTimeSeconds =
@@ -2544,6 +2592,26 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			continue;
 		}
 		const float ModelScale = GetUnitPresentationScale(InstanceHandle->BatchUnitTypeId);
+		UpdateMechanicalPresentation(ReliableState.SoldierId, Soldier, PreviousMechanicalRoot,
+			DeltaSeconds, bResetMechanical, bAlive && !ReliableState.bPhased);
+		if (HoverEffects && bAlive && !ReliableState.bPhased)
+		{
+			const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+			const auto* Def = Data ? Data->FindSoldierDefinition(InstanceHandle->BatchUnitTypeId) : nullptr;
+			if (Def && Def->MechanicalAnimation.bHasHoverNozzles)
+				for (int32 Disc = 0; Disc < 4; ++Disc)
+				{
+					FTransform Nozzle;
+					if (!GuLiMechanicalAnimation::ResolveHoverNozzle(Def->MechanicalAnimation, Soldier.MechanicalPose, Soldier.PresentedTransform, Disc, Nozzle)) continue;
+					FGuLiHoverNozzleSource Source;
+					Source.UnitId = ReliableState.SoldierId.Value; Source.Disc = uint8(Disc);
+					Source.Position = Nozzle.GetLocation(); Source.Direction = Nozzle.GetUnitAxis(EAxis::X);
+					Source.DiscDiameter = Def->MechanicalAnimation.DiscDiameters[Disc]; Source.bReset = bResetMechanical;
+					Source.HorizontalSpeed = bResetMechanical || DeltaSeconds <= UE_SMALL_NUMBER ? 0.0f
+						: float((Soldier.PresentedTransform.GetLocation() - PreviousMechanicalRoot.GetLocation()).Size2D()) / DeltaSeconds;
+					HoverEffects->Submit(Source);
+				}
+		}
 		if (PendingDestructionIds.Remove(ReliableState.SoldierId) && UnitFeedback)
 		{
 			const auto* Batch = FindUnitInstances(InstanceHandle->BatchUnitTypeId);
@@ -2551,8 +2619,10 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			const FBox Bounds = Mesh ? Mesh->GetBoundingBox().TransformBy(
 				FTransform(FQuat::Identity, FVector::ZeroVector, FVector(ModelScale))) : FBox(ForceInit);
 			// Match actual model size, not the unscaled source or the whole ISM batch.
+			FTransform VisualPose = Soldier.PresentedTransform;
+			TryGetPresentedVisualTransform(ReliableState.SoldierId, VisualPose);
 			UnitFeedback->PlayDestruction(Bounds.IsValid
-				? Soldier.PresentedTransform.TransformPosition(Bounds.GetCenter()) : Soldier.PresentedTransform.GetLocation(),
+				? VisualPose.TransformPosition(Bounds.GetCenter()) : VisualPose.GetLocation(),
 				Bounds.IsValid ? static_cast<float>(Bounds.GetExtent().GetMax()) : 0.0f);
 		}
 
@@ -2565,7 +2635,11 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		{
 			FTransform Visible = Soldier.PresentedTransform;
 			Visible.SetScale3D(FVector(ModelScale));
-			if (ReliableState.bPhased) DesiredPhasedTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Visible);
+			if (ReliableState.bPhased)
+			{
+				DesiredPhasedTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Visible);
+				PhasedMechanicalIds.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(ReliableState.SoldierId);
+			}
 			else
 			{
 				UnitTransform = Visible;
@@ -2574,16 +2648,18 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 					&& UnitFeedback->IsWithinCullDistance(Visible.GetLocation()))
 				{
 					DesiredHitTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Visible);
+					HitMechanicalIds.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(ReliableState.SoldierId);
 					DesiredHitStartTimes.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Soldier.HitFlashStartTime);
 				}
 			}
 		}
 		else if (const double* Expire = WreckExpireTimes.Find(ReliableState.SoldierId); !bAlive && Expire && *Expire > LocalNowSeconds)
 		{
-			if (UnitFeedback && UnitFeedback->IsWithinCullDistance(Soldier.PresentedTransform.GetLocation()))
+			if (UnitFeedback)
 			{
 				auto Wreck = Soldier.PresentedTransform; Wreck.SetScale3D(FVector(ModelScale));
 				DesiredWreckTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Wreck);
+				WreckMechanicalIds.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(ReliableState.SoldierId);
 			}
 			RingTransform = BuildRingTransform(Soldier.PresentedTransform);
 		}
@@ -2595,6 +2671,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	}
 
 	}
+	if (HoverEffects) HoverEffects->EndFrame();
 	if (!PendingVisualChangeIds.IsEmpty())
 	{
 		const auto Changed = PendingVisualChangeIds.Array(); PendingVisualChangeIds.Reset();
@@ -2603,6 +2680,12 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	UpdatePhasedInstances(DesiredPhasedTransforms);
 	UpdateHitFlashInstances(DesiredHitTransforms, DesiredHitStartTimes);
 	UpdateWreckInstances(DesiredWreckTransforms);
+	for (const auto& Pair : PhasedMechanicalIds)
+		if (auto* C = PhasedInstancesByType.FindRef(Pair.Key).Get()) ApplyMechanicalOverlay(*C, Pair.Value);
+	for (const auto& Pair : WreckMechanicalIds)
+		if (auto* C = WreckInstancesByType.FindRef(Pair.Key).Get()) ApplyMechanicalOverlay(*C, Pair.Value);
+	for (const auto& Pair : HitMechanicalIds)
+		if (auto* C = HitFlashInstancesByType.FindRef(Pair.Key).Get()) ApplyMechanicalOverlay(*C, Pair.Value, DesiredHitStartTimes.Find(Pair.Key));
 	FlushClientMirrorUpdates(LocalNowSeconds);
 	if (bMaintain)
 	{
@@ -2712,12 +2795,13 @@ void AGuLiCommanderPresentationActor::UpdatePhasedInstances(const TMap<uint16,TA
   {
    const auto* Original = FindUnitInstances(Pair.Key); if (!Original) continue;
    Component = NewObject<UInstancedStaticMeshComponent>(this);
+   GuLiCommanderPresentation::DisableUnitDistanceCulling(*Component);
    Component->SetupAttachment(GetRootComponent()); Component->SetMobility(EComponentMobility::Movable);
    Component->SetCollisionEnabled(ECollisionEnabled::NoCollision); Component->SetCanEverAffectNavigation(false);
    Component->SetCastShadow(false); Component->SetStaticMesh(Original->GetStaticMesh());
    GuLiUnitRenderPolicy::ApplyReflectionExclusions(*Component);
    auto* Material = GuLiVfx::Load<UMaterialInterface>(this, GuLiVfxIds::TeleportBody);
-   for (int32 Slot=0; Slot<Component->GetNumMaterials(); ++Slot) Component->SetMaterial(Slot,Material);
+   GuLiMechanicalAnimation::ConfigureOverlay(*Component, Material);
    Component->RegisterComponent();
   }
   auto& Cached = CachedPhasedTransforms.FindOrAdd(Pair.Key);
@@ -2756,7 +2840,7 @@ void AGuLiCommanderPresentationActor::UpdateWreckInstances(const TMap<uint16,TAr
 			Component->SetRenderCustomDepth(false);
 			Component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			Component->SetStaticMesh(Original->GetStaticMesh());
-			for (int32 Slot = 0; Slot < Component->GetNumMaterials(); ++Slot) Component->SetMaterial(Slot, Material);
+			GuLiMechanicalAnimation::ConfigureOverlay(*Component, Material);
 			AddInstanceComponent(Component);
 			Component->RegisterComponent();
 		}
@@ -2800,8 +2884,8 @@ void AGuLiCommanderPresentationActor::UpdateHitFlashInstances(
 			// The live body supplies the team stencil; this temporary overlay must not overwrite it.
 			Component->SetRenderCustomDepth(false);
 			Component->SetStaticMesh(Original->GetStaticMesh());
-			Component->NumCustomDataFloats = 1;
-			for (int32 Slot = 0; Slot < Component->GetNumMaterials(); ++Slot) Component->SetMaterial(Slot, Material);
+			Component->SetNumCustomDataFloats(FGuLiMechanicalAnimationFrame::CustomDataFloats);
+			GuLiMechanicalAnimation::ConfigureOverlay(*Component, Material);
 			AddInstanceComponent(Component);
 			Component->RegisterComponent();
 		}

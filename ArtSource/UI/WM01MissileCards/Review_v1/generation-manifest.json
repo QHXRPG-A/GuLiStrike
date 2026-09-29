@@ -1,0 +1,96 @@
+{
+  "version": "Review_v1",
+  "date": "2026-09-29",
+  "tool": "built-in image_gen.imagegen",
+  "mode": "new illustration using model and style references",
+  "source_model_version": "MechanicalAnimation_20260929/WarMachine",
+  "input_images_ordered": [
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v1\\References\\FullModel.png",
+      "sha256": "fb1dc9ae29452c81c6cd8698903846626041a5a40e43e6d0dd182c3b60e94152",
+      "bytes": 3090912,
+      "resolution": [
+        1536,
+        1536
+      ],
+      "mode": "RGBA",
+      "role": "current full model identity"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v1\\References\\MissilePods.png",
+      "sha256": "fe57ac7e8ea17eb4fee7f5fb328eb92d82ec689c128eb63d0cd0bce57481ebf4",
+      "bytes": 3090912,
+      "resolution": [
+        1536,
+        1536
+      ],
+      "mode": "RGBA",
+      "role": "same model missile pod structure"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v7\\MissileDamage.png",
+      "sha256": "c1a87913a1d37e352dab381178d1bda2bd3d14e83845643b73afb9076e337d0a",
+      "bytes": 1780539,
+      "resolution": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "role": "existing card style and palette only"
+    }
+  ],
+  "cards": [
+    {
+      "id": "MissilePod",
+      "title": "重防导弹仓",
+      "user_art_review": "changes_requested",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a0ebf9-1ccc-7ca1-b549-3636cf6b33cd\\exec-4648f084-0af7-48e2-b979-c79bd86e9489.png",
+      "output": {
+        "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v1\\MissilePod.png",
+        "sha256": "8187f9a0a5f363ca4b245fc2426629a80e51ea1841151cfd6728f29c69ce8338",
+        "bytes": 2052086,
+        "resolution": [
+          1024,
+          1536
+        ],
+        "mode": "RGB"
+      },
+      "raw_output_unchanged": true,
+      "prompt_file": {
+        "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v1\\Prompts\\MissilePod.txt",
+        "sha256": "d48dedf72fd4f6fc16c78174e895877074f2d3bd10b3c78fb4a48b2a2707430d",
+        "bytes": 2421
+      },
+      "payload_prompt_utf8_sha256": "d48dedf72fd4f6fc16c78174e895877074f2d3bd10b3c78fb4a48b2a2707430d",
+      "user_feedback": "仅导弹舱，三只不同功能机械臂：激光焊接、夹钢板、扫描；不出现重防号机身。"
+    },
+    {
+      "id": "RainSalvo",
+      "title": "雨点攻势",
+      "user_art_review": "changes_requested",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a0ebf9-1ccc-7ca1-b549-3636cf6b33cd\\exec-e740b9f5-c553-4185-958d-14bd26a66e0d.png",
+      "output": {
+        "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v1\\RainSalvo.png",
+        "sha256": "9e2a681536062b458e893b4412ffc7e725618ceef718c71a42a0ed4c079e3705",
+        "bytes": 1900947,
+        "resolution": [
+          1024,
+          1536
+        ],
+        "mode": "RGB"
+      },
+      "raw_output_unchanged": true,
+      "prompt_file": {
+        "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v1\\Prompts\\RainSalvo.txt",
+        "sha256": "a82c4c11732d5ab40395c72b50e732977f1f539f913d348dd16b3303f8ef339e",
+        "bytes": 3123
+      },
+      "payload_prompt_utf8_sha256": "a82c4c11732d5ab40395c72b50e732977f1f539f913d348dd16b3303f8ef339e",
+      "user_feedback": "弹道通过；放大导弹舱作为主体，重防号仅露出少量部分。"
+    }
+  ],
+  "layer_separation": "not_started_pending_art_review",
+  "data_pipeline": "new_cards_not_imported_pending_art_review",
+  "assistant_visual_review": "reviewed raw results; user decision pending",
+  "next_revision": "Review_v2"
+}

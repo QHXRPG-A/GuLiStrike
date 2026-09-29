@@ -1,0 +1,49 @@
+{
+  "string_table": {
+    "UI.RogueCards.Reroll": "重选",
+    "UI.RogueCards.Rerolling": "正在重选…",
+    "UI.RogueCards.RerollHint": "免费重新随机可选卡牌，优先换成当前未显示的牌。",
+    "UI.RogueCards.NoAlternatives": "暂无其他可选卡牌",
+    "UI.RogueCards.RerollUnavailable": "当前无法重选，请重新打开选牌界面",
+    "UI.RogueCards.RerollBusy": "操作过快，请稍后重选"
+  },
+  "cards": {
+    "01.01": {
+      "RequiredCardIds": [],
+      "ExcludedCardIds": [],
+      "MaxAcquisitions": 0,
+      "BonusCount": 0
+    },
+    "02.01": {
+      "RequiredCardIds": [],
+      "ExcludedCardIds": [],
+      "MaxAcquisitions": 0,
+      "BonusCount": 0
+    },
+    "03.01": {
+      "RequiredCardIds": [
+        "04.01"
+      ],
+      "ExcludedCardIds": [],
+      "MaxAcquisitions": 0,
+      "BonusCount": 0
+    },
+    "04.01": {
+      "RequiredCardIds": [],
+      "ExcludedCardIds": [],
+      "MaxAcquisitions": 1,
+      "BonusCount": 0
+    },
+    "05.01": {
+      "RequiredCardIds": [
+        "04.01"
+      ],
+      "ExcludedCardIds": [],
+      "MaxAcquisitions": 0,
+      "BonusCount": 1
+    }
+  },
+  "dirty_content": [],
+  "dirty_maps": [],
+  "success": true
+}

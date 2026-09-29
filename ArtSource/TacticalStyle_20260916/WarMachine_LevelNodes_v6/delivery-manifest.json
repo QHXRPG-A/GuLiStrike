@@ -1,8 +1,8 @@
 {
   "version": "WarMachine_LevelNodes_v6",
-  "art_review": "pending_user_review",
+  "art_review": "approved_for_production_import_by_user",
   "assistant_visual_inspection": "not_performed_per_user_instruction",
-  "card_generation": "waiting_for_model_approval",
+  "card_generation": "v8_completed_then_v9_revision_integrated; no_new_generation_this_turn",
   "artifacts": [
     {
       "file": "ArtSource/TacticalStyle_20260916/WarMachine_LevelNodes_v6/WarMachine_LevelNodes_Editable.blend",
@@ -49,5 +49,14 @@
       "bytes": 2025494,
       "sha256": "ba54bb30abf50e70f0a7ef7ed8a453d35d429428afd4e600cbe8b0f56f3b7230"
     }
-  ]
+  ],
+  "original_delivery_state": {
+    "art_review": "pending_user_review",
+    "assistant_visual_inspection": "not_performed_per_user_instruction",
+    "card_generation": "waiting_for_model_approval"
+  },
+  "production_authorization": "重防号模型导出至UE成为正式资产",
+  "production_delivery": "UEProduction/README.md",
+  "production_import": "saved_and_independently_read_back",
+  "ue_visual_review": "pending_user_review"
 }

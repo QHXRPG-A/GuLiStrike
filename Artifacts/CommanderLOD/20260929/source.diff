@@ -1,0 +1,760 @@
+--- before/Source\GuLiStrike\Gameplay\CombatEffects\GuLiMissileClusterPresentation.cpp
++++ after/Source\GuLiStrike\Gameplay\CombatEffects\GuLiMissileClusterPresentation.cpp
+@@ -1,8 +1,6 @@
+ #include "Gameplay/CombatEffects/GuLiMissileClusterPresentation.h"
+-#include "Engine/GameViewportClient.h"
+-#include "Engine/LocalPlayer.h"
++#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
+ #include "Engine/World.h"
+-#include "GameFramework/PlayerController.h"
+ #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
+ #include "HAL/IConsoleManager.h"
+ #include "HAL/PlatformTime.h"
+@@ -12,7 +10,6 @@
+ #include "NiagaraSystem.h"
+ #include "ProfilingDebugging/CpuProfilerTrace.h"
+ #include "ProfilingDebugging/CsvProfiler.h"
+-#include "SceneView.h"
+ 
+ CSV_DEFINE_CATEGORY(GuLiMissileCluster, true);
+ namespace
+@@ -24,10 +21,30 @@
+ 	constexpr float CellSize = 4000.f;
+ 	constexpr int32 Lanes[] = {0, 8, 24};
+ 	constexpr int32 Ids[] = {GuLiVfxIds::WM01MissileClusterMinimal, GuLiVfxIds::WM01MissileClusterLite, GuLiVfxIds::WM01MissileClusterFull};
+-	struct FView { FVector Position; FConvexVolume Frustum; float ProjectionScale = 1; };
++	const FName LODConsumer(TEXT("WM01MissileBatches"));
++	// The legacy Niagara quality array runs in the opposite direction to public LOD0/1/2.
++	int32 ToNiagaraQuality(const EGuLiCommanderLODLevel Level)
++	{
++		switch (Level)
++		{
++		case EGuLiCommanderLODLevel::Full: return 2;
++		case EGuLiCommanderLODLevel::Reduced: return 1;
++		default: return 0;
++		}
++	}
++	EGuLiCommanderLODLevel ToCommanderLevel(const int32 Quality)
++	{
++		switch (Quality)
++		{
++		case 2: return EGuLiCommanderLODLevel::Full;
++		case 1: return EGuLiCommanderLODLevel::Reduced;
++		default: return EGuLiCommanderLODLevel::Minimal;
++		}
++	}
+ }
+ 
+ UWorld* UGuLiMissileClusterPresentation::GetWorld() const { return GetOuter() ? GetOuter()->GetWorld() : nullptr; }
++bool UGuLiMissileClusterPresentation::IsReady() const { return bResourcesReady && CommanderLOD.IsValid(); }
+ 
+ void UGuLiMissileClusterPresentation::ReleaseComponent(TWeakObjectPtr<UNiagaraComponent>& Weak)
+ {
+@@ -38,7 +55,7 @@
+ void UGuLiMissileClusterPresentation::Release(FBatch& Batch)
+ {
+ 	ReleaseComponent(Batch.Component); ReleaseComponent(Batch.Retiring.Component);
+-	Batch.Retiring = {}; Batch.Quality = -1;
++	Batch.Retiring = {}; Batch.Quality = -1; Batch.QualitySince = -1000;
+ }
+ 
+ void UGuLiMissileClusterPresentation::Reset()
+@@ -46,12 +63,14 @@
+ 	for (auto& Batch : Batches) Release(Batch);
+ 	Batches.Reset(); SlotById.Reset(); SystemCount = ParticleCapacity = ActiveMissiles = FullTrails = 0;
+ 	UpdateMilliseconds = 0;
++	if (auto* LOD = CommanderLOD.Get()) LOD->ClearConsumer(LODConsumer);
+ }
+ 
+ void UGuLiMissileClusterPresentation::BeginFrame(double Now, bool bEnabled)
+ {
+ 	if (Now < FrameTime) { Reset(); NextResourceCheck = 0; }
+ 	FrameTime = Now;
++	CommanderLOD = GetWorld() ? GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>() : nullptr;
+ 	bFrameEnabled = bEnabled && GetWorld() && GetWorld()->GetNetMode() != NM_DedicatedServer;
+ 	if (!bFrameEnabled) { Reset(); return; }
+ 	if (!bResourcesReady && Now >= NextResourceCheck)
+@@ -187,19 +206,15 @@
+ 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMissileCluster);
+ 	const double Started = FPlatformTime::Seconds();
+ 	SystemCount = ParticleCapacity = ActiveMissiles = FullTrails = 0;
+-	if (!bFrameEnabled || !IsReady()) return;
+-	TArray<FView> Views;
+-	for (auto It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+-	{
+-		const auto* Controller = It->Get(); const auto* Player = Controller ? Controller->GetLocalPlayer() : nullptr;
+-		FSceneViewProjectionData Projection;
+-		if (!Player || !Player->ViewportClient || !Player->ViewportClient->Viewport
+-			|| !Player->GetProjectionData(Player->ViewportClient->Viewport, Projection)) continue;
+-		auto& View = Views.AddDefaulted_GetRef(); View.Position = Projection.ViewOrigin;
+-		View.ProjectionScale = FMath::Max(float(Projection.ProjectionMatrix.M[0][0]), float(Projection.ProjectionMatrix.M[1][1]));
+-		GetViewFrustumBounds(View.Frustum, Projection.ComputeViewProjectionMatrix(), true);
+-	}
+-	struct FCandidate { int32 Index; double Distance; float Screen; };
++	auto* LOD = CommanderLOD.Get();
++	if (!bFrameEnabled || !IsReady())
++	{
++		UpdateMilliseconds = 0;
++		if (LOD) LOD->ClearConsumer(LODConsumer);
++		return;
++	}
++	FGuLiCommanderLODConsumerStats LODStats;
++	struct FCandidate { int32 Index; FGuLiCommanderLODDecision Decision; };
+ 	TArray<FCandidate> Visible; int32 Used = 0, UsedFull = 0, Minimum = 0;
+ 	for (int32 B = 0; B < Batches.Num(); ++B)
+ 	{
+@@ -224,40 +239,49 @@
+ 		// Includes the enlarged body/exhaust, <=27 cm drift and <=33 cm smoke width.
+ 		if (Batch.Bounds.IsValid) Batch.Bounds = Batch.Bounds.ExpandBy(210);
+ 		if (Batch.Retiring.Component.IsValid()) Batch.Bounds += Batch.Retiring.Bounds;
+-		if ((!Batch.Occupied && !Batch.Retiring.Component.IsValid()) || !Batch.Bounds.IsValid) { Release(Batch); continue; }
+-		double Closest = TNumericLimits<double>::Max(); float Screen = 0;
+-		for (const auto& View : Views)
+-		{
+-			if (!View.Frustum.IntersectBox(Batch.Bounds.GetCenter(), Batch.Bounds.GetExtent())) continue;
+-			const double Distance = FMath::Sqrt(Batch.Bounds.ComputeSquaredDistanceToPoint(View.Position));
+-			Closest = FMath::Min(Closest, Distance);
+-			Screen = FMath::Max(Screen, float(Batch.Bounds.GetExtent().Size() / FMath::Max(1.0, Distance)) * View.ProjectionScale);
+-		}
+-		if (Closest > FMath::Max(1.f, MaximumDistance.GetValueOnGameThread()) || Screen < FMath::Max(0.f, MinimumScreenFraction.GetValueOnGameThread()))
+-		{ Release(Batch); continue; }
++		if (!Batch.Occupied && !Batch.Retiring.Component.IsValid()) { Release(Batch); continue; }
++		++LODStats.Objects;
++		FGuLiCommanderLODQuery Query;
++		Query.Bounds = Batch.Bounds;
++		if (Batch.Component.IsValid() && Batch.Quality >= 0) Query.CurrentLevel = ToCommanderLevel(Batch.Quality);
++		Query.LastChangeWorldSeconds = Batch.QualitySince;
++		const auto Decision = LOD->Evaluate(Query);
++		if (!Decision.bVisible)
++		{
++			if (Decision.Reason == EGuLiCommanderLODReason::NoLocalView) ++LODStats.NoView;
++			else if (Decision.Reason == EGuLiCommanderLODReason::InvalidBounds) ++LODStats.InvalidBounds;
++			else ++LODStats.FrustumCulled;
++			Release(Batch); continue;
++		}
++		// Missile-only visibility limits: never install these as global unit culling rules.
++		if (Decision.DistanceCentimeters > FMath::Max(1.f, MaximumDistance.GetValueOnGameThread()))
++		{ ++LODStats.DistanceCulled; Release(Batch); continue; }
++		if (Decision.ScreenFraction < FMath::Max(0.f, MinimumScreenFraction.GetValueOnGameThread()))
++		{ ++LODStats.ScreenCulled; Release(Batch); continue; }
++		++LODStats.Visible;
++		++LODStats.Target[static_cast<int32>(Decision.TargetLevel)];
+ 		if (!Batch.Capacity) for (int32 I = 0; I < Batch.Slots.Num(); ++I) if (Batch.Slots[I].bAllocated) Batch.Capacity = I + 1;
+-		Visible.Add({B, Closest, Screen}); Minimum += Batch.Capacity * 2;
++		Visible.Add({B, Decision}); Minimum += Batch.Capacity * 2;
+ 		Used += Batch.Capacity * (2 + (Batch.Component.IsValid() ? Lanes[Batch.Quality] : 0));
+ 		UsedFull += Batch.Quality == 2 ? Batch.Occupied : 0;
+ 		if (Batch.Retiring.Component.IsValid()) { Used += Batch.Retiring.Capacity; UsedFull += Batch.Retiring.FullTrails; }
+ 	}
+-	Visible.Sort([](const FCandidate& A, const FCandidate& B) { return A.Distance < B.Distance; });
++	Visible.Sort([](const FCandidate& A, const FCandidate& B) { return A.Decision.DistanceCentimeters < B.Decision.DistanceCentimeters; });
+ 	// Reserve a minimal replacement per batch so downgrades can preserve history.
+ 	const int32 Limit = FMath::Max(ParticleBudget.GetValueOnGameThread(), Minimum * 2);
+ 	const int32 FullLimit = FMath::Max(0, FullTrailBudget.GetValueOnGameThread());
+ 	for (const auto& Candidate : Visible)
+ 	{
+ 		auto& Batch = Batches[Candidate.Index];
+-		const bool bFullDistance = Candidate.Distance < (Batch.Quality == 2 ? 8800 : 7200) && Candidate.Screen > (Batch.Quality == 2 ? .008f : .012f);
+-		const bool bLiteDistance = Candidate.Distance < (Batch.Quality >= 1 ? 16000 : 14000) && Candidate.Screen > (Batch.Quality >= 1 ? .002f : .003f);
+-		int32 Desired = bFullDistance ? 2 : bLiteDistance ? 1 : 0;
++		const int32 TargetQuality = ToNiagaraQuality(Candidate.Decision.TargetLevel);
++		int32 Desired = TargetQuality;
+ 		if (Used > Limit - Minimum || UsedFull > FullLimit) Desired = 0;
+ 		if (!Batch.Component.IsValid())
+ 		{
+ 			while (Desired > 0 && (Used + Batch.Capacity * Lanes[Desired] > Limit - Minimum || (Desired == 2 && UsedFull + Batch.Occupied > FullLimit))) --Desired;
+ 			if (StartBatch(Batch, Desired)) { Used += Batch.Capacity * Lanes[Desired]; if (Desired == 2) UsedFull += Batch.Occupied; }
+ 		}
+-		else if (Desired != Batch.Quality && !Batch.Retiring.Component.IsValid() && FrameTime - Batch.QualitySince >= .35)
++		else if (Desired != Batch.Quality && !Batch.Retiring.Component.IsValid() && Candidate.Decision.bCanTransition)
+ 		{
+ 			const int32 OldQuality = Batch.Quality;
+ 			while (Desired > OldQuality && (Used + Batch.Capacity * (2 + Lanes[Desired])
+@@ -274,8 +298,14 @@
+ 			}
+ 		}
+ 		Upload(Batch);
++		if (Desired < TargetQuality) ++LODStats.BudgetDowngraded;
+ 		if (Batch.Component.IsValid())
+-		{ ++SystemCount; ParticleCapacity += Batch.Capacity * (2 + Lanes[Batch.Quality]); if (Batch.Quality == 2) FullTrails += Batch.Occupied; }
++		{
++			++LODStats.Applied[static_cast<int32>(ToCommanderLevel(Batch.Quality))];
++			if (Batch.Quality != Desired) ++LODStats.TransitionPending;
++			++SystemCount; ParticleCapacity += Batch.Capacity * (2 + Lanes[Batch.Quality]); if (Batch.Quality == 2) FullTrails += Batch.Occupied;
++		}
++		else ++LODStats.ResourcesUnavailable;
+ 		if (auto* Retiring = Batch.Retiring.Component.Get())
+ 		{
+ 			Retiring->SetVariableFloat(TEXT("User.MissileTime"), float(FrameTime));
+@@ -283,6 +313,7 @@
+ 		}
+ 	}
+ 	UpdateMilliseconds = (FPlatformTime::Seconds() - Started) * 1000;
++	LOD->ReportConsumer(LODConsumer, LODStats);
+ 	CSV_CUSTOM_STAT(GuLiMissileCluster, Systems, SystemCount, ECsvCustomStatOp::Set);
+ 	CSV_CUSTOM_STAT(GuLiMissileCluster, ParticleCapacity, ParticleCapacity, ECsvCustomStatOp::Set);
+ 	CSV_CUSTOM_STAT(GuLiMissileCluster, Missiles, ActiveMissiles, ECsvCustomStatOp::Set);
+--- before/Source\GuLiStrike\Gameplay\CombatEffects\GuLiMissileClusterPresentation.h
++++ after/Source\GuLiStrike\Gameplay\CombatEffects\GuLiMissileClusterPresentation.h
+@@ -5,6 +5,7 @@
+ 
+ class UNiagaraComponent;
+ class UNiagaraSystem;
++class UGuLiCommanderLODSubsystem;
+ 
+ /** Cosmetic GPU pools, separate from collision/damage and the wingman flight asset. */
+ UCLASS()
+@@ -16,7 +17,7 @@
+ 	void BeginFrame(double Now, bool bEnabled);
+ 	/** False keeps the legacy visual alive while assets/the component are unavailable. */
+ 	bool Submit(const FGuid& Id, const FVector& Position, const FVector& Direction);
+-	bool IsReady() const { return bResourcesReady; }
++	bool IsReady() const;
+ 	void Finish(const FGuid& Id, const FVector& ImpactPosition, bool bImmediate);
+ 	void EndFrame();
+ 	void Reset();
+@@ -67,6 +68,7 @@
+ 	double FrameTime = 0;
+ 	bool bFrameEnabled = false, bResourcesReady = false;
+ 	UPROPERTY(Transient) TArray<TObjectPtr<UNiagaraSystem>> Systems;
++	TWeakObjectPtr<UGuLiCommanderLODSubsystem> CommanderLOD;
+ 	double NextResourceCheck = 0;
+ 	int32 SystemCount = 0, ParticleCapacity = 0, ActiveMissiles = 0, FullTrails = 0;
+ 	double UpdateMilliseconds = 0;
+--- before/Source\GuLiStrike\Gameplay\CombatEffects\GuLiCombatEffectPresentationSubsystem.cpp
++++ after/Source\GuLiStrike\Gameplay\CombatEffects\GuLiCombatEffectPresentationSubsystem.cpp
+@@ -1,6 +1,7 @@
+ #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+ #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
+ #include "Gameplay/CombatEffects/GuLiMissileClusterPresentation.h"
++#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
+ 
+ #include "Engine/World.h"
+ #include "EngineUtils.h"
+@@ -41,6 +42,7 @@
+ {
+ 	Super::Initialize(Collection);
+ 	Collection.InitializeDependency<UGuLiCommanderDataSubsystem>();
++	Collection.InitializeDependency<UGuLiCommanderLODSubsystem>();
+ 	CommanderData = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+ 	MissileClusters = NewObject<UGuLiMissileClusterPresentation>(this);
+ 	if (GetWorld()->GetNetMode() != NM_DedicatedServer)
+--- before/Source\GuLiStrikeEditor\Private\GuLiMissileFixture.cpp
++++ after/Source\GuLiStrikeEditor\Private\GuLiMissileFixture.cpp
+@@ -116,14 +116,18 @@
+ 		FConsoleCommandWithWorldDelegate::CreateLambda([](UWorld* World) { if (World) UE_LOG(LogTemp,Display,TEXT("%s"),*UGuLiRogueCardQALibrary::FireMissileFixture(World->GetFirstPlayerController())); }));
+ 	FAutoConsoleCommandWithWorld MissileCaseMetrics(TEXT("gs.MissileFixture.Metrics"),TEXT("Read cluster counters and frame timings; does not start profiling."),
+ 		FConsoleCommandWithWorldDelegate::CreateLambda([](UWorld* World) { if (World) UE_LOG(LogTemp,Display,TEXT("%s"),*UGuLiRogueCardQALibrary::MissileMetrics(World->GetFirstPlayerController())); }));
+-	FAutoConsoleCommandWithWorldAndArgs MissileCaseCamera(TEXT("gs.MissileFixture.Camera"),TEXT("PIE only: near|overview. Overview is the fixed performance comparison camera."),
++	FAutoConsoleCommandWithWorldAndArgs MissileCaseCamera(TEXT("gs.MissileFixture.Camera"),TEXT("PIE only: near|overview|lod0|lod1|lod2. Overview remains the fixed performance comparison camera."),
+ 		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args,UWorld* World)
+ 		{
+ 			auto* PC=World ? World->GetFirstPlayerController() : nullptr;
+ 			if (!Allowed(PC) || Args.Num()!=1) return;
+-			const bool bNear=Args[0].Equals(TEXT("near"),ESearchCase::IgnoreCase);
+-			if (!bNear && !Args[0].Equals(TEXT("overview"),ESearchCase::IgnoreCase)) return;
+-			const FName Tag=bNear ? TEXT("WM01MissileNearCamera") : TEXT("WM01MissileFixedCamera");
++			FName Tag;
++			if (Args[0].Equals(TEXT("near"),ESearchCase::IgnoreCase)) Tag=TEXT("WM01MissileNearCamera");
++			else if (Args[0].Equals(TEXT("overview"),ESearchCase::IgnoreCase)) Tag=TEXT("WM01MissileFixedCamera");
++			else if (Args[0].Equals(TEXT("lod0"),ESearchCase::IgnoreCase)) Tag=TEXT("CommanderLODCamera0");
++			else if (Args[0].Equals(TEXT("lod1"),ESearchCase::IgnoreCase)) Tag=TEXT("CommanderLODCamera1");
++			else if (Args[0].Equals(TEXT("lod2"),ESearchCase::IgnoreCase)) Tag=TEXT("CommanderLODCamera2");
++			else return;
+ 			for (TActorIterator<ACameraActor> It(World);It;++It)
+ 				if (It->ActorHasTag(Tag)) { PC->SetViewTarget(*It); break; }
+ 		}));
+--- /dev/null
++++ Source\GuLiStrike\Commander\Presentation\GuLiCommanderLODCommands.cpp
+@@ -0,0 +1,82 @@
++#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
++
++#if !UE_BUILD_SHIPPING
++#include "CoreGlobals.h"
++#include "Engine/World.h"
++#include "HAL/IConsoleManager.h"
++
++namespace GuLiCommanderLODCommands
++{
++	UGuLiCommanderLODSubsystem* Resolve(UWorld* World)
++	{
++		auto* LOD = World ? World->GetSubsystem<UGuLiCommanderLODSubsystem>() : nullptr;
++		if (!LOD) UE_LOG(LogTemp, Warning, TEXT("gs.Commander.LOD requires a local Game/PIE World; unavailable on dedicated servers."));
++		return LOD;
++	}
++	void PrintSetting(const FGuLiCommanderLODSettingView& Value)
++	{
++		UE_LOG(LogTemp, Display, TEXT("gs.Commander.LOD key=%s baseline=%.6g effective=%.6g source=%s"),
++			*Value.Key, Value.Baseline, Value.Effective, *Value.Source);
++	}
++	FAutoConsoleCommandWithWorldAndArgs List(TEXT("gs.Commander.LOD.List"), TEXT("List shared commander LOD settings: [prefix]"),
++		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
++		{
++			if (Args.Num() > 1) { UE_LOG(LogTemp, Warning, TEXT("Usage: gs.Commander.LOD.List [prefix]")); return; }
++			if (const auto* LOD = Resolve(World)) for (const auto& Value : LOD->ListSettings(Args.IsEmpty() ? FString() : Args[0])) PrintSetting(Value);
++		}));
++	FAutoConsoleCommandWithWorldAndArgs Get(TEXT("gs.Commander.LOD.Get"), TEXT("Read a shared commander LOD setting: <key>"),
++		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
++		{
++			if (Args.Num() != 1) { UE_LOG(LogTemp, Warning, TEXT("Usage: gs.Commander.LOD.Get <key>")); return; }
++			if (const auto* LOD = Resolve(World))
++			{
++				for (const auto& Value : LOD->ListSettings()) if (Value.Key.Equals(Args[0], ESearchCase::IgnoreCase)) { PrintSetting(Value); return; }
++				UE_LOG(LogTemp, Warning, TEXT("Unknown LOD key: %s"), *Args[0]);
++			}
++		}));
++	FAutoConsoleCommandWithWorldAndArgs Set(TEXT("gs.Commander.LOD.Set"), TEXT("Set a World-local commander LOD override: <key> <value>"),
++		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
++		{
++			if (Args.Num() != 2) { UE_LOG(LogTemp, Warning, TEXT("Usage: gs.Commander.LOD.Set <key> <value>")); return; }
++			if (auto* LOD = Resolve(World))
++			{
++				FString Error;
++				if (!LOD->SetSetting(Args[0], Args[1], Error)) { UE_LOG(LogTemp, Warning, TEXT("LOD override rejected: %s"), *Error); }
++				else for (const auto& Value : LOD->ListSettings()) if (Value.Key.Equals(Args[0], ESearchCase::IgnoreCase)) PrintSetting(Value);
++			}
++		}));
++	FAutoConsoleCommandWithWorldAndArgs Reset(TEXT("gs.Commander.LOD.Reset"), TEXT("Restore configuration baseline: <key|all>"),
++		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
++		{
++			if (Args.Num() != 1) { UE_LOG(LogTemp, Warning, TEXT("Usage: gs.Commander.LOD.Reset <key|all>")); return; }
++			if (auto* LOD = Resolve(World))
++			{
++				FString Error;
++				if (!LOD->ResetSetting(Args[0], Error)) { UE_LOG(LogTemp, Warning, TEXT("LOD reset rejected: %s"), *Error); }
++				else for (const auto& Value : LOD->ListSettings())
++					if (Args[0].Equals(TEXT("all"), ESearchCase::IgnoreCase) || Value.Key.Equals(Args[0], ESearchCase::IgnoreCase)) PrintSetting(Value);
++			}
++		}));
++	FAutoConsoleCommandWithWorldAndArgs Stats(TEXT("gs.Commander.LOD.Stats"), TEXT("Read per-consumer target/applied LOD counts: [consumer]"),
++		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
++		{
++			if (Args.Num() > 1) { UE_LOG(LogTemp, Warning, TEXT("Usage: gs.Commander.LOD.Stats [consumer]")); return; }
++			const auto* LOD = Resolve(World);
++			if (!LOD) return;
++			UE_LOG(LogTemp, Display, TEXT("Commander LOD views=%d queries=%d view_update_ms=%.6f view_frame=%llu current_frame=%llu (latest sampled frame; resource budgets are consumer-local)"),
++				LOD->GetLocalViewCount(), LOD->GetQueryCount(), LOD->GetViewUpdateMilliseconds(), LOD->GetViewFrame(), GFrameCounter);
++			int32 Matched = 0;
++			for (const auto& Entry : LOD->GetConsumerStats())
++			{
++				if (!Args.IsEmpty() && !Entry.Key.ToString().Equals(Args[0], ESearchCase::IgnoreCase)) continue;
++				++Matched;
++				const auto& S = Entry.Value;
++				UE_LOG(LogTemp, Display, TEXT("consumer=%s objects=%d visible=%d target[0/1/2]=%d/%d/%d applied[0/1/2]=%d/%d/%d culled[no_view/frustum/invalid/distance/screen]=%d/%d/%d/%d/%d budget_limited=%d transition_pending=%d unavailable=%d age_frames=%llu"),
++					*Entry.Key.ToString(), S.Objects, S.Visible, S.Target[0], S.Target[1], S.Target[2], S.Applied[0], S.Applied[1], S.Applied[2],
++					S.NoView, S.FrustumCulled, S.InvalidBounds, S.DistanceCulled, S.ScreenCulled, S.BudgetDowngraded,
++					S.TransitionPending, S.ResourcesUnavailable, GFrameCounter - S.ReportFrame);
++			}
++			if (!Matched) UE_LOG(LogTemp, Display, TEXT("No active consumer reports. WM01MissileBatches reports only when the missile pool runs."));
++		}));
++}
++#endif
+--- /dev/null
++++ Source\GuLiStrike\Commander\Presentation\GuLiCommanderLODPolicy.cpp
+@@ -0,0 +1,47 @@
++#include "Commander/Presentation/GuLiCommanderLODPolicy.h"
++
++bool FGuLiCommanderLODSettings::Validate(FString& Error) const
++{
++	const float Values[] = {NearEnterDistance, NearHoldDistance, NearEnterScreen, NearHoldScreen,
++		MidEnterDistance, MidHoldDistance, MidEnterScreen, MidHoldScreen, MinimumResidenceSeconds};
++	for (const float Value : Values)
++	{
++		if (!FMath::IsFinite(Value) || Value < 0)
++		{
++			Error = TEXT("LOD values must be finite and non-negative.");
++			return false;
++		}
++	}
++	if (!(0 < NearEnterDistance && NearEnterDistance < NearHoldDistance
++		&& NearHoldDistance < MidEnterDistance && MidEnterDistance < MidHoldDistance
++		&& MidHoldDistance <= 10000000.f))
++	{
++		Error = TEXT("Distances require 0 < near.enter < near.hold < mid.enter < mid.hold <= 10000000 cm.");
++		return false;
++	}
++	if (!(MidHoldScreen < MidEnterScreen && MidEnterScreen < NearHoldScreen
++		&& NearHoldScreen < NearEnterScreen && NearEnterScreen <= 1.f))
++	{
++		Error = TEXT("Screen thresholds require 0 <= mid.hold < mid.enter < near.hold < near.enter <= 1.");
++		return false;
++	}
++	if (MinimumResidenceSeconds > 10.f)
++	{
++		Error = TEXT("minimum_residence_seconds must be in [0, 10].");
++		return false;
++	}
++	Error.Reset();
++	return true;
++}
++
++EGuLiCommanderLODLevel FGuLiCommanderLODSettings::Classify(const double Distance, const float Screen,
++	const TOptional<EGuLiCommanderLODLevel> CurrentLevel) const
++{
++	const bool bWasFull = CurrentLevel.IsSet() && CurrentLevel.GetValue() == EGuLiCommanderLODLevel::Full;
++	const bool bWasDetailed = CurrentLevel.IsSet() && CurrentLevel.GetValue() != EGuLiCommanderLODLevel::Minimal;
++	if (Distance < (bWasFull ? NearHoldDistance : NearEnterDistance)
++		&& Screen > (bWasFull ? NearHoldScreen : NearEnterScreen)) return EGuLiCommanderLODLevel::Full;
++	if (Distance < (bWasDetailed ? MidHoldDistance : MidEnterDistance)
++		&& Screen > (bWasDetailed ? MidHoldScreen : MidEnterScreen)) return EGuLiCommanderLODLevel::Reduced;
++	return EGuLiCommanderLODLevel::Minimal;
++}
+--- /dev/null
++++ Source\GuLiStrike\Commander\Presentation\GuLiCommanderLODPolicy.h
+@@ -0,0 +1,82 @@
++#pragma once
++
++#include "CoreMinimal.h"
++
++/** Shared presentation policy, not a mesh LOD index or a replicated gameplay state. */
++enum class EGuLiCommanderLODLevel : uint8
++{
++	Full = 0,
++	Reduced = 1,
++	Minimal = 2
++};
++
++enum class EGuLiCommanderLODReason : uint8
++{
++	DistanceAndScreen,
++	MinimumResidence,
++	InvalidBounds,
++	NoLocalView,
++	OutsideFrustum
++};
++
++struct GULISTRIKE_API FGuLiCommanderLODSettings
++{
++	float NearEnterDistance = 7200.f;
++	float NearHoldDistance = 8800.f;
++	float NearEnterScreen = .012f;
++	float NearHoldScreen = .008f;
++	float MidEnterDistance = 14000.f;
++	float MidHoldDistance = 16000.f;
++	float MidEnterScreen = .003f;
++	float MidHoldScreen = .002f;
++	float MinimumResidenceSeconds = .35f;
++
++	bool Validate(FString& Error) const;
++	EGuLiCommanderLODLevel Classify(double Distance, float Screen,
++		TOptional<EGuLiCommanderLODLevel> CurrentLevel) const;
++};
++
++struct GULISTRIKE_API FGuLiCommanderLODQuery
++{
++	// Include displaced geometry, history and any retiring presentation here.
++	FBox Bounds = FBox(ForceInit);
++	TOptional<EGuLiCommanderLODLevel> CurrentLevel;
++	double LastChangeWorldSeconds = -1;
++};
++
++struct GULISTRIKE_API FGuLiCommanderLODDecision
++{
++	EGuLiCommanderLODLevel TargetLevel = EGuLiCommanderLODLevel::Minimal;
++	EGuLiCommanderLODReason Reason = EGuLiCommanderLODReason::NoLocalView;
++	double DistanceCentimeters = TNumericLimits<double>::Max();
++	float ScreenFraction = 0;
++	bool bVisible = false;
++	// Also applies to resource-driven changes. Initial allocation/reentry is immediate.
++	bool bCanTransition = false;
++};
++
++/** Counts objects in the consumer's own batching unit; never combines resource budgets. */
++struct GULISTRIKE_API FGuLiCommanderLODConsumerStats
++{
++	int32 Objects = 0;
++	int32 Visible = 0;
++	int32 Target[3] = {};
++	int32 Applied[3] = {};
++	int32 NoView = 0;
++	int32 FrustumCulled = 0;
++	int32 InvalidBounds = 0;
++	int32 DistanceCulled = 0;
++	int32 ScreenCulled = 0;
++	int32 BudgetDowngraded = 0;
++	int32 TransitionPending = 0;
++	int32 ResourcesUnavailable = 0;
++	uint64 ReportFrame = 0;
++};
++
++struct GULISTRIKE_API FGuLiCommanderLODSettingView
++{
++	FString Key;
++	float Baseline = 0;
++	float Effective = 0;
++	FString Source;
++};
+--- /dev/null
++++ Source\GuLiStrike\Commander\Presentation\GuLiCommanderLODSubsystem.cpp
+@@ -0,0 +1,217 @@
++#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
++
++#include "CoreGlobals.h"
++#include "Engine/GameViewportClient.h"
++#include "Engine/LocalPlayer.h"
++#include "Engine/World.h"
++#include "GameFramework/PlayerController.h"
++#include "HAL/PlatformTime.h"
++#include "Misc/ConfigCacheIni.h"
++#include "Misc/DefaultValueHelper.h"
++#include "ProfilingDebugging/CpuProfilerTrace.h"
++#include "SceneView.h"
++
++DEFINE_LOG_CATEGORY_STATIC(LogGuLiCommanderLOD, Log, All);
++
++namespace GuLiCommanderLOD
++{
++	constexpr const TCHAR* ConfigSection = TEXT("GuLiCommanderLOD");
++	struct FField { const TCHAR* Key; float FGuLiCommanderLODSettings::* Member; };
++	const FField Fields[] = {
++		{TEXT("near.enter_distance_cm"), &FGuLiCommanderLODSettings::NearEnterDistance},
++		{TEXT("near.hold_distance_cm"), &FGuLiCommanderLODSettings::NearHoldDistance},
++		{TEXT("near.enter_screen"), &FGuLiCommanderLODSettings::NearEnterScreen},
++		{TEXT("near.hold_screen"), &FGuLiCommanderLODSettings::NearHoldScreen},
++		{TEXT("mid.enter_distance_cm"), &FGuLiCommanderLODSettings::MidEnterDistance},
++		{TEXT("mid.hold_distance_cm"), &FGuLiCommanderLODSettings::MidHoldDistance},
++		{TEXT("mid.enter_screen"), &FGuLiCommanderLODSettings::MidEnterScreen},
++		{TEXT("mid.hold_screen"), &FGuLiCommanderLODSettings::MidHoldScreen},
++		{TEXT("minimum_residence_seconds"), &FGuLiCommanderLODSettings::MinimumResidenceSeconds}
++	};
++	const FField* FindField(const FString& Key)
++	{
++		for (const auto& Field : Fields) if (Key.Equals(Field.Key, ESearchCase::IgnoreCase)) return &Field;
++		return nullptr;
++	}
++	bool ParseNumber(const FString& Text, float& Out)
++	{
++		const FString Trimmed = Text.TrimStartAndEnd();
++		if (Trimmed.IsEmpty()) return false;
++		for (const TCHAR Character : Trimmed) if (FChar::IsWhitespace(Character)) return false;
++		double Parsed = 0;
++		if (!FDefaultValueHelper::ParseDouble(Trimmed, Parsed) || !FMath::IsFinite(Parsed)
++			|| FMath::Abs(Parsed) > TNumericLimits<float>::Max()) return false;
++		Out = static_cast<float>(Parsed);
++		return true;
++	}
++}
++
++bool UGuLiCommanderLODSubsystem::ShouldCreateSubsystem(UObject* Outer) const
++{
++	const auto* World = Cast<UWorld>(Outer);
++	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld()
++		&& World->GetNetMode() != NM_DedicatedServer;
++}
++
++void UGuLiCommanderLODSubsystem::Initialize(FSubsystemCollectionBase& Collection)
++{
++	Super::Initialize(Collection);
++	BaselineSettings = {};
++	ConfigKeys.Reset();
++	OverrideKeys.Reset();
++	for (const auto& Field : GuLiCommanderLOD::Fields)
++	{
++		FString Raw;
++		if (!GConfig || !GConfig->GetString(GuLiCommanderLOD::ConfigSection, Field.Key, Raw, GGameIni)) continue;
++		float Value = 0;
++		if (!GuLiCommanderLOD::ParseNumber(Raw, Value))
++		{
++			UE_LOG(LogGuLiCommanderLOD, Warning, TEXT("Invalid config %s; keeping the compiled default."), Field.Key);
++			continue;
++		}
++		BaselineSettings.*(Field.Member) = Value;
++		ConfigKeys.Add(Field.Key);
++	}
++	FString Error;
++	if (!BaselineSettings.Validate(Error))
++	{
++		UE_LOG(LogGuLiCommanderLOD, Warning, TEXT("Invalid LOD config group: %s Using compiled defaults."), *Error);
++		BaselineSettings = {};
++		ConfigKeys.Reset();
++	}
++	EffectiveSettings = BaselineSettings;
++}
++
++void UGuLiCommanderLODSubsystem::Deinitialize()
++{
++	Views.Reset();
++	ConsumerStats.Reset();
++	OverrideKeys.Reset();
++	ConfigKeys.Reset();
++	ViewFrame = MAX_uint64;
++	QueryCount = 0;
++	ViewUpdateMilliseconds = 0;
++	Super::Deinitialize();
++}
++
++void UGuLiCommanderLODSubsystem::EnsureViews()
++{
++	if (ViewFrame == GFrameCounter) return;
++	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderLODViews);
++	const double Started = FPlatformTime::Seconds();
++	ViewFrame = GFrameCounter;
++	Views.Reset();
++	QueryCount = 0;
++	for (auto It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
++	{
++		const auto* Controller = It->Get();
++		const auto* Player = Controller && Controller->IsLocalController() ? Controller->GetLocalPlayer() : nullptr;
++		FSceneViewProjectionData Projection;
++		if (!Player || !Player->ViewportClient || !Player->ViewportClient->Viewport
++			|| !Player->GetProjectionData(Player->ViewportClient->Viewport, Projection)) continue;
++		const float Scale = FMath::Max(float(Projection.ProjectionMatrix.M[0][0]), float(Projection.ProjectionMatrix.M[1][1]));
++		if (Projection.ViewOrigin.ContainsNaN() || !FMath::IsFinite(Scale) || Scale <= 0) continue;
++		auto& View = Views.AddDefaulted_GetRef();
++		View.Position = Projection.ViewOrigin;
++		View.ProjectionScale = Scale;
++		GetViewFrustumBounds(View.Frustum, Projection.ComputeViewProjectionMatrix(), true);
++	}
++	ViewUpdateMilliseconds = (FPlatformTime::Seconds() - Started) * 1000.;
++}
++
++FGuLiCommanderLODDecision UGuLiCommanderLODSubsystem::Evaluate(const FGuLiCommanderLODQuery& Query)
++{
++	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderLODEvaluate);
++	EnsureViews();
++	++QueryCount;
++	FGuLiCommanderLODDecision Result;
++	if (!Query.Bounds.IsValid || Query.Bounds.Min.ContainsNaN() || Query.Bounds.Max.ContainsNaN()
++		|| Query.Bounds.Min.X > Query.Bounds.Max.X || Query.Bounds.Min.Y > Query.Bounds.Max.Y
++		|| Query.Bounds.Min.Z > Query.Bounds.Max.Z)
++	{
++		Result.Reason = EGuLiCommanderLODReason::InvalidBounds;
++		return Result;
++	}
++	if (Views.IsEmpty()) return Result;
++	Result.Reason = EGuLiCommanderLODReason::OutsideFrustum;
++	for (const auto& View : Views)
++	{
++		if (!View.Frustum.IntersectBox(Query.Bounds.GetCenter(), Query.Bounds.GetExtent())) continue;
++		const double Distance = FMath::Sqrt(Query.Bounds.ComputeSquaredDistanceToPoint(View.Position));
++		const float Screen = float(Query.Bounds.GetExtent().Size() / FMath::Max(1.0, Distance)) * View.ProjectionScale;
++		if (!FMath::IsFinite(Distance) || !FMath::IsFinite(Screen)) continue;
++		Result.bVisible = true;
++		Result.DistanceCentimeters = FMath::Min(Result.DistanceCentimeters, Distance);
++		Result.ScreenFraction = FMath::Max(Result.ScreenFraction, Screen);
++		// Classify each view separately: never pair one view's distance with another view's screen size.
++		const auto Level = EffectiveSettings.Classify(Distance, Screen, Query.CurrentLevel);
++		if (static_cast<uint8>(Level) < static_cast<uint8>(Result.TargetLevel)) Result.TargetLevel = Level;
++	}
++	if (Result.bVisible)
++	{
++		const double Now = GetWorld()->GetTimeSeconds();
++		Result.bCanTransition = !Query.CurrentLevel.IsSet() || !FMath::IsFinite(Query.LastChangeWorldSeconds)
++			|| Now < Query.LastChangeWorldSeconds || Now - Query.LastChangeWorldSeconds >= EffectiveSettings.MinimumResidenceSeconds;
++		Result.Reason = !Result.bCanTransition && Result.TargetLevel != Query.CurrentLevel.GetValue()
++			? EGuLiCommanderLODReason::MinimumResidence : EGuLiCommanderLODReason::DistanceAndScreen;
++	}
++	return Result;
++}
++
++TArray<FGuLiCommanderLODSettingView> UGuLiCommanderLODSubsystem::ListSettings(const FString& Prefix) const
++{
++	TArray<FGuLiCommanderLODSettingView> Result;
++	for (const auto& Field : GuLiCommanderLOD::Fields)
++	{
++		if (!FString(Field.Key).StartsWith(Prefix, ESearchCase::IgnoreCase)) continue;
++		Result.Add({Field.Key, BaselineSettings.*(Field.Member), EffectiveSettings.*(Field.Member),
++			OverrideKeys.Contains(Field.Key) ? TEXT("LocalOverride") : ConfigKeys.Contains(Field.Key) ? TEXT("Config") : TEXT("CppDefault")});
++	}
++	return Result;
++}
++
++bool UGuLiCommanderLODSubsystem::SetSetting(const FString& Key, const FString& Value, FString& Error)
++{
++	const auto* Field = GuLiCommanderLOD::FindField(Key);
++	if (!Field) { Error = TEXT("Unknown LOD key. Use gs.Commander.LOD.List."); return false; }
++	float Parsed = 0;
++	if (!GuLiCommanderLOD::ParseNumber(Value, Parsed)) { Error = TEXT("Expected one finite number, without trailing text."); return false; }
++	auto Candidate = EffectiveSettings;
++	Candidate.*(Field->Member) = Parsed;
++	if (!Candidate.Validate(Error)) return false;
++	EffectiveSettings = Candidate;
++	OverrideKeys.Add(Field->Key);
++	return true;
++}
++
++bool UGuLiCommanderLODSubsystem::ResetSetting(const FString& KeyOrAll, FString& Error)
++{
++	if (KeyOrAll.Equals(TEXT("all"), ESearchCase::IgnoreCase))
++	{
++		EffectiveSettings = BaselineSettings;
++		OverrideKeys.Reset();
++		Error.Reset();
++		return true;
++	}
++	const auto* Field = GuLiCommanderLOD::FindField(KeyOrAll);
++	if (!Field) { Error = TEXT("Unknown LOD key. Use gs.Commander.LOD.List."); return false; }
++	auto Candidate = EffectiveSettings;
++	Candidate.*(Field->Member) = BaselineSettings.*(Field->Member);
++	if (!Candidate.Validate(Error)) { Error += TEXT(" Reset all to restore the complete baseline."); return false; }
++	EffectiveSettings = Candidate;
++	OverrideKeys.Remove(Field->Key);
++	return true;
++}
++
++void UGuLiCommanderLODSubsystem::ReportConsumer(const FName Consumer, const FGuLiCommanderLODConsumerStats& Stats)
++{
++	if (Consumer.IsNone()) return;
++	auto& Snapshot = ConsumerStats.FindOrAdd(Consumer);
++	Snapshot = Stats;
++	Snapshot.ReportFrame = GFrameCounter;
++}
++
++void UGuLiCommanderLODSubsystem::ClearConsumer(const FName Consumer)
++{
++	ConsumerStats.Remove(Consumer);
++}
+--- /dev/null
++++ Source\GuLiStrike\Commander\Presentation\GuLiCommanderLODSubsystem.h
+@@ -0,0 +1,51 @@
++#pragma once
++
++#include "CoreMinimal.h"
++#include "Commander/Presentation/GuLiCommanderLODPolicy.h"
++#include "ConvexVolume.h"
++#include "Subsystems/WorldSubsystem.h"
++#include "GuLiCommanderLODSubsystem.generated.h"
++
++/** Client-World policy shared by commander consumers. No actors, effects or gameplay are owned here. */
++UCLASS()
++class GULISTRIKE_API UGuLiCommanderLODSubsystem final : public UWorldSubsystem
++{
++	GENERATED_BODY()
++public:
++	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
++	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
++	virtual void Deinitialize() override;
++
++	FGuLiCommanderLODDecision Evaluate(const FGuLiCommanderLODQuery& Query);
++	const FGuLiCommanderLODSettings& GetSettings() const { return EffectiveSettings; }
++	TArray<FGuLiCommanderLODSettingView> ListSettings(const FString& Prefix = FString()) const;
++	bool SetSetting(const FString& Key, const FString& Value, FString& Error);
++	bool ResetSetting(const FString& KeyOrAll, FString& Error);
++
++	/** One complete snapshot per consumer, per frame; clear when that consumer resets or retires. */
++	void ReportConsumer(FName Consumer, const FGuLiCommanderLODConsumerStats& Stats);
++	void ClearConsumer(FName Consumer);
++	const TMap<FName, FGuLiCommanderLODConsumerStats>& GetConsumerStats() const { return ConsumerStats; }
++	uint64 GetViewFrame() const { return ViewFrame; }
++	int32 GetLocalViewCount() const { return Views.Num(); }
++	int32 GetQueryCount() const { return QueryCount; }
++	double GetViewUpdateMilliseconds() const { return ViewUpdateMilliseconds; }
++
++private:
++	struct FLocalView
++	{
++		FVector Position = FVector::ZeroVector;
++		FConvexVolume Frustum;
++		float ProjectionScale = 1;
++	};
++	void EnsureViews();
++	FGuLiCommanderLODSettings BaselineSettings;
++	FGuLiCommanderLODSettings EffectiveSettings;
++	TSet<FString> ConfigKeys;
++	TSet<FString> OverrideKeys;
++	TArray<FLocalView> Views;
++	TMap<FName, FGuLiCommanderLODConsumerStats> ConsumerStats;
++	uint64 ViewFrame = MAX_uint64;
++	int32 QueryCount = 0;
++	double ViewUpdateMilliseconds = 0;
++};

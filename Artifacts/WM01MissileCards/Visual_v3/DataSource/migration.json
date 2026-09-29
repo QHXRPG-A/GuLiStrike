@@ -1,0 +1,255 @@
+[
+  {
+    "book": "GuLiStrikeSecondaryWeapons.xlsx",
+    "sheet": "Projectiles",
+    "sha256_before": "27b2761d980397b3254b04827678933ce042e518de44cfc736ebf3f0fca9632e",
+    "sha256_after": "222c4e484610ce82f5c6213720a4fe5ac58841a29e0bc6a54c5926e6aba43bf6",
+    "info_before": {
+      "file": "D:\\UE5.7\\test1\\Data\\Excel\\GuLiStrikeSecondaryWeapons.xlsx",
+      "active_sheet": "_Guide",
+      "sheet_count": 7,
+      "sheets": [
+        {
+          "name": "_Guide",
+          "index": 0,
+          "dimension": "A1:B13",
+          "rows": 13,
+          "cols": 2
+        },
+        {
+          "name": "Skills",
+          "index": 1,
+          "dimension": "A1:H6",
+          "rows": 6,
+          "cols": 8
+        },
+        {
+          "name": "UnitSkills",
+          "index": 2,
+          "dimension": "A1:N8",
+          "rows": 8,
+          "cols": 14
+        },
+        {
+          "name": "WeaponMounts",
+          "index": 3,
+          "dimension": "A1:L10",
+          "rows": 10,
+          "cols": 12
+        },
+        {
+          "name": "WingmanWeapons",
+          "index": 4,
+          "dimension": "A1:AD7",
+          "rows": 7,
+          "cols": 30
+        },
+        {
+          "name": "WingmanTargeting",
+          "index": 5,
+          "dimension": "A1:G4",
+          "rows": 4,
+          "cols": 7
+        },
+        {
+          "name": "Projectiles",
+          "index": 6,
+          "dimension": "A1:R4",
+          "rows": 4,
+          "cols": 18
+        }
+      ]
+    },
+    "before": {
+      "id": "1",
+      "name": "WM01_Missile",
+      "Note": "WM01追踪导弹；数值在发射时从本表冻结；厘米/秒、厘米、秒、度/秒",
+      "ProjectileAsset": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile",
+      "SpeedCentimetersPerSecond": "1200",
+      "LiftSeconds": "0.25",
+      "MinimumLiftHeightCentimeters": "160",
+      "MaximumLiftHeightCentimeters": "420",
+      "LateralOffsetCentimeters": "260",
+      "ConvergenceDistanceCentimeters": "700",
+      "TurnRateDegreesPerSecond": "240",
+      "SweepRadiusCentimeters": "6",
+      "MaximumLifetimeSeconds": "8",
+      "UnitTypeId": "2",
+      "SlotId": "MissileLauncher",
+      "SkillId": "WM01_HomingMissile",
+      "VerticalCurveCentimeters": "320",
+      "LongitudinalCurveCentimeters": "220"
+    },
+    "after": {
+      "id": "1",
+      "name": "WM01_Missile",
+      "Note": "WM01追踪导弹；数值在发射时从本表冻结；厘米/秒、厘米、秒、度/秒",
+      "ProjectileAsset": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile",
+      "SpeedCentimetersPerSecond": "2400",
+      "LiftSeconds": "0.25",
+      "MinimumLiftHeightCentimeters": "160",
+      "MaximumLiftHeightCentimeters": "420",
+      "LateralOffsetCentimeters": "260",
+      "ConvergenceDistanceCentimeters": "700",
+      "TurnRateDegreesPerSecond": "240",
+      "SweepRadiusCentimeters": "6",
+      "MaximumLifetimeSeconds": "8",
+      "UnitTypeId": "2",
+      "SlotId": "MissileLauncher",
+      "SkillId": "WM01_HomingMissile",
+      "VerticalCurveCentimeters": "320",
+      "LongitudinalCurveCentimeters": "220",
+      "SmokeInitialWidthCentimeters": "63",
+      "SmokeMaximumWidthCentimeters": "99",
+      "FlameWidthCentimeters": "42",
+      "FlameLengthCentimeters": "108"
+    }
+  },
+  {
+    "book": "GuLiStrikeSecondaryUnitSkills.xlsx",
+    "sheet": "Skills",
+    "sha256_before": "55aed0403f2f7f407c00655855e831af045dc11864ca0068b7b6782284045058",
+    "sha256_after": "3179173b961608355607ea492b6f99ca1380ee77d42e39dd4231c16ce25f5f52",
+    "info_before": {
+      "file": "D:\\UE5.7\\test1\\Data\\Excel\\GuLiStrikeSecondaryUnitSkills.xlsx",
+      "active_sheet": "UnitSkills",
+      "sheet_count": 2,
+      "sheets": [
+        {
+          "name": "Skills",
+          "index": 0,
+          "dimension": "A1:R4",
+          "rows": 4,
+          "cols": 18
+        },
+        {
+          "name": "UnitSkills",
+          "index": 1,
+          "dimension": "A1:E7",
+          "rows": 7,
+          "cols": 5
+        }
+      ]
+    },
+    "before": {
+      "id": "1",
+      "name": "WM01_HomingMissile",
+      "Note": "重防号Q；每台独立6秒；射程取最终普通攻击x1.6（基线48米）；直径16米圆内独立随机落点，圆心验射程、落点允许越界；爆炸与预警半径2米，伤害与挂点引用武器槽",
+      "TargetMode": "GroundPoint",
+      "CooldownSeconds": "6",
+      "RangeCentimeters": "4800",
+      "RangeSourceSlot": "BasicAttack",
+      "RangeMultiplier": "1.6",
+      "MaximumLevel": "1",
+      "ExecutorClass": "/Script/GuLiStrike.GuLiWarMachineMissileSkillExecutor",
+      "ConfigurationClass": "/Script/GuLiStrike.GuLiPointSkillConfiguration",
+      "Configuration": "/Game/GuLiStrike/Commander/Skills/DA_WM01_MissileQ",
+      "Projectile": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile",
+      "FieldConfigId": "WM01_MissileExplosion",
+      "SourceWeaponSlot": "MissileLauncher",
+      "UseAuthoredTrajectory": "1",
+      "GroundWarningStyle": "/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red",
+      "TargetAreaDiameterCentimeters": "1600"
+    },
+    "after": {
+      "id": "1",
+      "name": "WM01_HomingMissile",
+      "Note": "重防号Q；每台独立6秒；射程取最终普通攻击x3.2（基线96米）；直径16米圆内独立随机落点，圆心验射程、落点允许越界；爆炸与预警半径3米，伤害与挂点引用武器槽",
+      "TargetMode": "GroundPoint",
+      "CooldownSeconds": "6",
+      "RangeCentimeters": "9600",
+      "RangeSourceSlot": "BasicAttack",
+      "RangeMultiplier": "3.2",
+      "MaximumLevel": "1",
+      "ExecutorClass": "/Script/GuLiStrike.GuLiWarMachineMissileSkillExecutor",
+      "ConfigurationClass": "/Script/GuLiStrike.GuLiPointSkillConfiguration",
+      "Configuration": "/Game/GuLiStrike/Commander/Skills/DA_WM01_MissileQ",
+      "Projectile": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile",
+      "FieldConfigId": "WM01_MissileExplosion",
+      "SourceWeaponSlot": "MissileLauncher",
+      "UseAuthoredTrajectory": "1",
+      "GroundWarningStyle": "/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red",
+      "TargetAreaDiameterCentimeters": "1600"
+    }
+  },
+  {
+    "book": "GuLiStrikeSpellFields.xlsx",
+    "sheet": "Fields",
+    "sha256_before": "c26484fee009c61a372c462a09a98506572a81505f13dff798fb6a6f4e0d20c8",
+    "sha256_after": "ab2578d838c3bc03bbd3b0b6909a8e0758021d6add1891537753134ff844d520",
+    "info_before": {
+      "file": "D:\\UE5.7\\test1\\Data\\Excel\\GuLiStrikeSpellFields.xlsx",
+      "active_sheet": "Fields",
+      "sheet_count": 1,
+      "sheets": [
+        {
+          "name": "Fields",
+          "index": 0,
+          "dimension": "A1:AB10",
+          "rows": 10,
+          "cols": 28
+        }
+      ]
+    },
+    "before": {
+      "id": "1",
+      "name": "WM01_MissileExplosion",
+      "Note": "WM01导弹命中后的即时球形法术场；伤害、范围和时序均在本行配置",
+      "FieldType": "Combat",
+      "Damage": "30",
+      "RadiusCentimeters": "200",
+      "Timing": "Instant",
+      "DelaySeconds": "0",
+      "DurationSeconds": "0",
+      "PulseIntervalSeconds": "1",
+      "DissipationSeconds": "3",
+      "Level": "",
+      "bAllowPlayerVehicles": "",
+      "WindupSeconds": "",
+      "RecoverySeconds": "",
+      "BeamHeightCentimeters": "",
+      "MaxTargetWaitSeconds": "",
+      "MaxShipHeightCentimeters": "",
+      "LaneHeightCentimeters": "",
+      "AscentSeconds": "",
+      "AccelerationSeconds": "",
+      "DecelerationSeconds": "",
+      "ExitFlashSeconds": "",
+      "SpeedMultiplier": "",
+      "ExitRadiusCentimeters": "",
+      "EnergyVfxId": "0",
+      "TrailVfxId": "0",
+      "FlashVfxId": "0"
+    },
+    "after": {
+      "id": "1",
+      "name": "WM01_MissileExplosion",
+      "Note": "WM01导弹命中后的即时球形法术场；伤害、范围和时序均在本行配置",
+      "FieldType": "Combat",
+      "Damage": "30",
+      "RadiusCentimeters": "300",
+      "Timing": "Instant",
+      "DelaySeconds": "0",
+      "DurationSeconds": "0",
+      "PulseIntervalSeconds": "1",
+      "DissipationSeconds": "3",
+      "Level": "",
+      "bAllowPlayerVehicles": "",
+      "WindupSeconds": "",
+      "RecoverySeconds": "",
+      "BeamHeightCentimeters": "",
+      "MaxTargetWaitSeconds": "",
+      "MaxShipHeightCentimeters": "",
+      "LaneHeightCentimeters": "",
+      "AscentSeconds": "",
+      "AccelerationSeconds": "",
+      "DecelerationSeconds": "",
+      "ExitFlashSeconds": "",
+      "SpeedMultiplier": "",
+      "ExitRadiusCentimeters": "",
+      "EnergyVfxId": "0",
+      "TrailVfxId": "0",
+      "FlashVfxId": "0"
+    }
+  }
+]

@@ -515,5 +515,49 @@
       "Y": 1.0,
       "Z": 1.0
     }
+  },
+  {
+    "Name": "WarMachineHover",
+    "Id": 48,
+    "Note": "重防号四盘蓝色喷流与世界空间余迹；1024喷口每批；独立180-200米淡出",
+    "ResourcePath": "/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "WM01MissileClusterFull",
+    "Id": 49,
+    "Note": "重防号GPU候选v2；每批按实际占用分配且最多64枚；24段2.4秒浓黑烟迹；弹体/尾焰/烟宽为v1的1.5倍",
+    "ResourcePath": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "WM01MissileClusterLite",
+    "Id": 50,
+    "Note": "重防号GPU候选v2；每批最多64枚；8段2.4秒浓黑烟迹；0.15秒平滑交接；旧烟迹自然消散",
+    "ResourcePath": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "WM01MissileClusterMinimal",
+    "Id": 51,
+    "Note": "重防号GPU候选v2；每批最多64枚；仅1.5倍弹体与短尾焰；尾焰峰值3倍；保留旧档烟迹自然消散",
+    "ResourcePath": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
   }
 ]

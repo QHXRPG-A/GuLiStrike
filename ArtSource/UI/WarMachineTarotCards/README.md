@@ -1,4 +1,4 @@
-# 战争机器能力视差卡牌
+# 重防号能力视差卡牌
 
 **当前UE版本：**[ModelComic_v9制作与操作](ModelComic_v9/Production/README.md)。射速和机动采用v9补腿/速度光线修订图，导弹伤害按用户选择采用v7美漫原图；三张六层图集、新材质与评审地图已经保存并从磁盘重载核对。视差4、偏转±16°、面积/厚度2倍与可编辑文案保留。助手未读图，最终效果待用户核验。
 
@@ -33,9 +33,9 @@ v6历史完整卡面：[增加射速](Comic_Closeups_v6/Production/Previews/Fire
 
 | 稳定行 ID | Title | Description |
 |---|---|---|
-| WarMachine_FireRate | 增加射速 | 提升战争机器的射击频率。 |
-| WarMachine_MissileDamage | 增加导弹伤害 | 提升战争机器的导弹伤害。 |
-| WarMachine_HighSpeed | 极速机动 | 提升战争机器的移动速度。 |
+| WarMachine_FireRate | 增加射速 | 提升重防号的射击频率。 |
+| WarMachine_MissileDamage | 增加导弹伤害 | 提升重防号的导弹伤害。 |
+| WarMachine_HighSpeed | 极速机动 | 提升重防号的移动速度。 |
 
 **批量填表入口：**编辑 [Data/CardTextSource.csv](Data/CardTextSource.csv)，仅有 `CardId,Title,Description` 三列。UE 打开且结束本演示游玩后，在项目根目录运行：
 

@@ -55,6 +55,20 @@ struct GULISTRIKE_API FGuLiCombatEffectVisualCounters
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 UpgradeComponents = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 UpgradeVisibleParticles = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") double UpgradeUpdateMilliseconds = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 MissileClusterComponents = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 MissileParticleCapacity = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 MissileFullTrails = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") double MissileClusterUpdateMilliseconds = 0;
+};
+
+/** One accepted shot, played when the interpolated unit reaches its shot time. */
+USTRUCT()
+struct FGuLiMechanicalMuzzleVisual
+{
+	GENERATED_BODY()
+	UPROPERTY() FGuLiCombatShotCue Cue;
+	UPROPERTY() TObjectPtr<UNiagaraComponent> Component;
+	bool bStarted = false;
 };
 
 struct FGuLiRogueUpgradeSlot
@@ -115,8 +129,9 @@ public:
 	using FPoseResolver = TFunction<bool(const FGuLiTargetHandle&, FTransform&, int32&)>;
 	void RegisterPoseResolver(EGuLiTargetKind Kind, UObject* Owner, FPoseResolver Resolver);
 	void UnregisterPoseResolver(EGuLiTargetKind Kind, const UObject* Owner);
-	using FMuzzleResolver = TFunction<bool(const FGuLiCombatShotCue&, FVector&)>;
-	void RegisterMuzzleResolver(EGuLiTargetKind Kind, UObject* Owner, FMuzzleResolver Resolver);
+	using FMuzzleResolver = TFunction<bool(const FGuLiCombatShotCue&, FTransform&, float&)>;
+	using FShotObserver = TFunction<void(const FGuLiCombatShotCue&)>;
+	void RegisterMuzzleResolver(EGuLiTargetKind Kind, UObject* Owner, FMuzzleResolver Resolver, FShotObserver Observer = {});
 	void UnregisterMuzzleResolver(EGuLiTargetKind Kind, const UObject* Owner);
 	/** Existing accepted shot cues supply cosmetic aim; no authority or network state is added. */
 	bool TryGetWeaponAim(const FGuLiTargetHandle& Source, FName SlotId, FVector& Target) const;
@@ -128,7 +143,7 @@ public:
 private:
 	friend class UGuLiRogueCardQALibrary;
 	struct FPoseProvider { TWeakObjectPtr<UObject> Owner; FPoseResolver Resolve; };
-	struct FMuzzleProvider { TWeakObjectPtr<UObject> Owner; FMuzzleResolver Resolve; };
+	struct FMuzzleProvider { TWeakObjectPtr<UObject> Owner; FMuzzleResolver Resolve; FShotObserver Observe; };
 	struct FActiveMuzzleKey
 	{
 		FGuLiTargetHandle Source;
@@ -160,7 +175,10 @@ private:
 	void PlayMachineGunImpact(const FGuLiCombatEffectState& State);
 	void UpdateRogueUpgradePool(float Now,bool bEnabled);
 	void ResetRogueUpgradePool();
+	void UpdateMechanicalMuzzles(float Now, bool bEnabled);
+	void ResetMechanicalMuzzles();
 	bool ResolvePose(const FGuLiTargetHandle& Target, FTransform& Transform, int32& UnitTypeId) const;
+	bool ResolveMuzzleTransform(const FGuLiCombatShotCue& Cue, FTransform& Transform, float& RenderTime) const;
 	bool ResolveMuzzlePosition(const FGuLiCombatShotCue& Cue, FVector& Position) const;
 	bool ResolveTargetPosition(const FGuLiCombatShotCue& Cue, FVector& Position) const;
 	void ResolveShotEndpoints(const FGuLiCombatShotCue& Cue, FVector& Start, FVector& End) const;
@@ -173,9 +191,12 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UGuLiCombatEffectCatalog> Catalog;
 	UPROPERTY(Transient) TObjectPtr<class UGuLiCommanderDataSubsystem> CommanderData;
 	UPROPERTY(Transient) TObjectPtr<class UGuLiGroundWarningSubsystem> GroundWarnings;
+	UPROPERTY(Transient) TObjectPtr<class UGuLiMissileClusterPresentation> MissileClusters;
 	UPROPERTY(Transient) TObjectPtr<UNiagaraComponent> Gunfire;
 	UPROPERTY(Transient) TMap<FGuid, FGuLiLocalCombatEffect> Visuals;
 	UPROPERTY(Transient) TArray<FGuLiRetiringCombatEffect> Retiring;
+	UPROPERTY(Transient) TArray<FGuLiMechanicalMuzzleVisual> MechanicalMuzzles;
+	UPROPERTY(Transient) TObjectPtr<UNiagaraSystem> LoadedMechanicalMuzzleSystem;
 	UPROPERTY(Transient) TArray<FGuLiLaserRenderBlock> LaserBlocks;
 	UPROPERTY(Transient) TArray<FGuLiRogueUpgradeBlock> UpgradeBlocks;
 	TMap<FGuLiSoldierId,int32> UpgradeSlots;

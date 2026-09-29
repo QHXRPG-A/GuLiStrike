@@ -258,8 +258,47 @@ def import_table(table_name, table_cfg):
     return entry
 
 
+def sync_wm01_cluster_visual_defaults(row, visual_values):
+    """Table import also updates all six saved preview defaults; runtime uploads the same row."""
+    if row['Name'] != 'WM01_Missile':
+        return []
+    parameters = {
+        'User.MissileSmokeInitialWidth': visual_values['smoke_initial_width_centimeters'],
+        'User.MissileSmokeMaximumWidth': visual_values['smoke_maximum_width_centimeters'],
+        'User.MissileFlameWidth': visual_values['flame_width_centimeters'],
+        'User.MissileFlameLength': visual_values['flame_length_centimeters'],
+    }
+    result = []
+    service = unreal.NiagaraService
+    for prefix in ['', 'Preview']:
+        for quality in ['Full', 'Lite', 'Minimal']:
+            path = '/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_' + prefix + quality
+            system = unreal.load_asset(path)
+            values = dict(parameters)
+            if prefix:
+                values['User.MissilePreviewSpeedRatio'] = row['SpeedCentimetersPerSecond'] / 1200.
+            # The first migration may precede asset generation; report this explicitly.
+            if not system or not all(service.parameter_exists(path, name) for name in values):
+                result.append({'path': path, 'status': 'pending_asset_generation'})
+                continue
+            changed = False
+            for name, value in values.items():
+                actual = float(service.get_parameter(path, name).current_value)
+                if not math.isclose(actual, value, rel_tol=5e-6, abs_tol=1e-3):
+                    if not service.set_parameter(path, name, str(value)):
+                        raise RuntimeError(f'Could not update {path}:{name}')
+                    changed = True
+                if not math.isclose(float(service.get_parameter(path, name).current_value), value,
+                                    rel_tol=5e-6, abs_tol=1e-3):
+                    raise RuntimeError(f'Niagara default differs from Projectiles: {path}:{name}')
+            if changed and not unreal.EditorAssetLibrary.save_loaded_asset(system, False):
+                raise RuntimeError(f'Could not save visual defaults: {path}')
+            result.append({'path': path, 'status': 'verified', 'changed': changed, 'parameters': values})
+    return result
+
+
 def wire_secondary_projectile_profiles():
-    """Bind table-authored motion and verify the native resolver before saving."""
+    """Bind the shared profile row and verify independent motion/visual resolvers."""
     name = 'DT_GuLiStrikeSecondaryWeapons_Projectiles'
     table = unreal.load_asset(f'{DEST_PATH}/{name}')
     if not table:
@@ -271,6 +310,7 @@ def wire_secondary_projectile_profiles():
         'minimum_lift_height': 'MinimumLiftHeightCentimeters',
         'maximum_lift_height': 'MaximumLiftHeightCentimeters',
         'lateral_offset': 'LateralOffsetCentimeters', 'convergence_distance': 'ConvergenceDistanceCentimeters',
+        'vertical_curve': 'VerticalCurveCentimeters', 'longitudinal_curve': 'LongitudinalCurveCentimeters',
         'turn_rate': 'TurnRateDegreesPerSecond', 'sweep_radius': 'SweepRadiusCentimeters',
         'maximum_lifetime': 'MaximumLifetimeSeconds',
     }
@@ -312,9 +352,24 @@ def wire_secondary_projectile_profiles():
             if changed:
                 asset.set_editor_property('motion_profile_row', previous)
             raise RuntimeError(f"Native motion resolver disagrees with Projectiles/{row['Name']}")
+        visual_fields = {
+            'smoke_initial_width_centimeters': 'SmokeInitialWidthCentimeters',
+            'smoke_maximum_width_centimeters': 'SmokeMaximumWidthCentimeters',
+            'flame_width_centimeters': 'FlameWidthCentimeters',
+            'flame_length_centimeters': 'FlameLengthCentimeters',
+        }
+        visual_values = {}
+        if row['Name'] == 'WM01_Missile' or any(row.get(column, 0) for column in visual_fields.values()):
+            visual = asset.resolve_visual_settings()
+            if visual is None or any(not math.isclose(float(visual.get_editor_property(prop)), float(row[column]),
+                    rel_tol=5e-6, abs_tol=1e-3) for prop, column in visual_fields.items()):
+                raise RuntimeError(f"Native visual resolver disagrees with Projectiles/{row['Name']}")
+            visual_values = {prop: float(visual.get_editor_property(prop)) for prop in visual_fields}
         if not unreal.EditorAssetLibrary.save_loaded_asset(asset, False):
             raise RuntimeError(f'Could not save {asset.get_path_name()}')
-        result.append({'asset': asset.get_path_name(), 'row': row['Name'], 'resolved': {
+        defaults = sync_wm01_cluster_visual_defaults(row, visual_values)
+        result.append({'asset': asset.get_path_name(), 'row': row['Name'], 'visual': visual_values,
+                       'niagara_defaults': defaults, 'resolved': {
             prop: float(resolved.get_editor_property(prop)) for prop in fields}})
     if catalog_changed:
         catalog.modify()

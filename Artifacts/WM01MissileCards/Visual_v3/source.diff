@@ -1,0 +1,685 @@
+--- Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.h (v2)
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.h (v3)
+@@ -54,6 +54,18 @@
+ 	bool IsValidDefinition() const;
+ };
+ 
++/** Cosmetic centimeters, resolved independently of authoritative flight settings. */
++USTRUCT(BlueprintType)
++struct GULISTRIKE_API FGuLiProjectileVisualSettings
++{
++	GENERATED_BODY()
++	UPROPERTY(BlueprintReadOnly, Category="Visual", meta=(Units="cm")) float SmokeInitialWidthCentimeters = 0;
++	UPROPERTY(BlueprintReadOnly, Category="Visual", meta=(Units="cm")) float SmokeMaximumWidthCentimeters = 0;
++	UPROPERTY(BlueprintReadOnly, Category="Visual", meta=(Units="cm")) float FlameWidthCentimeters = 0;
++	UPROPERTY(BlueprintReadOnly, Category="Visual", meta=(Units="cm")) float FlameLengthCentimeters = 0;
++	bool IsValid() const;
++};
++
+ UCLASS(BlueprintType)
+ class GULISTRIKE_API UGuLiProjectileEffectDefinition : public UDataAsset
+ {
+@@ -72,6 +84,9 @@
+ 	/** Resolves the authoritative table profile; invalid authored rows never fall back. */
+ 	UFUNCTION(BlueprintPure, Category="Projectile")
+ 	bool ResolveMotionSettings(FGuLiProjectileMotionSettings& OutMotion) const;
++	/** Same table handle, separate validation: missing visuals select the legacy renderer. */
++	UFUNCTION(BlueprintPure, Category="Visual")
++	bool ResolveVisualSettings(FGuLiProjectileVisualSettings& OutVisual) const;
+ 	bool IsValidDefinition() const;
+ };
+ 
+--- Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.cpp (v2)
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.cpp (v3)
+@@ -9,6 +9,27 @@
+ 		&& FMath::IsFinite(Duration) && Duration >= 0.033f && Duration <= 120
+ 		&& FMath::IsFinite(PulseInterval) && PulseInterval >= 0.033f && PulseInterval <= 120
+ 		&& FMath::IsFinite(DissipationSeconds) && DissipationSeconds >= 0 && DissipationSeconds <= 30;
++}
++
++bool FGuLiProjectileVisualSettings::IsValid() const
++{
++	return FMath::IsFinite(SmokeInitialWidthCentimeters) && SmokeInitialWidthCentimeters > 0
++		&& FMath::IsFinite(SmokeMaximumWidthCentimeters) && SmokeMaximumWidthCentimeters >= SmokeInitialWidthCentimeters
++		&& FMath::IsFinite(FlameWidthCentimeters) && FlameWidthCentimeters > 0
++		&& FMath::IsFinite(FlameLengthCentimeters) && FlameLengthCentimeters > 0;
++}
++
++bool UGuLiProjectileEffectDefinition::ResolveVisualSettings(FGuLiProjectileVisualSettings& OutVisual) const
++{
++	OutVisual = {};
++	if (MotionProfileRow.IsNull()) return false;
++	const auto* Row = MotionProfileRow.GetRow<FGuLiStrikeSecondaryWeaponsProjectilesRow>(TEXT("Secondary weapon visuals"));
++	if (!Row || Row->ProjectileAsset.ToSoftObjectPath() != FSoftObjectPath(this)) return false;
++	OutVisual.SmokeInitialWidthCentimeters = Row->SmokeInitialWidthCentimeters;
++	OutVisual.SmokeMaximumWidthCentimeters = Row->SmokeMaximumWidthCentimeters;
++	OutVisual.FlameWidthCentimeters = Row->FlameWidthCentimeters;
++	OutVisual.FlameLengthCentimeters = Row->FlameLengthCentimeters;
++	return OutVisual.IsValid();
+ }
+ 
+ bool UGuLiProjectileEffectDefinition::IsValidDefinition() const
+--- Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.h (v2)
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.h (v3)
+@@ -1,6 +1,7 @@
+ #pragma once
+ 
+ #include "CoreMinimal.h"
++#include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
+ #include "GuLiMissileClusterPresentation.generated.h"
+ 
+ class UNiagaraComponent;
+@@ -16,7 +17,7 @@
+ 	virtual UWorld* GetWorld() const override;
+ 	void BeginFrame(double Now, bool bEnabled);
+ 	/** False keeps the legacy visual alive while assets/the component are unavailable. */
+-	bool Submit(const FGuid& Id, const FVector& Position, const FVector& Direction);
++	bool Submit(const FGuid& Id, const FVector& Position, const FVector& Direction, const UGuLiProjectileEffectDefinition* Definition);
+ 	bool IsReady() const;
+ 	void Finish(const FGuid& Id, const FVector& ImpactPosition, bool bImmediate);
+ 	void EndFrame();
+@@ -50,6 +51,8 @@
+ 	struct FBatch
+ 	{
+ 		TWeakObjectPtr<UNiagaraComponent> Component;
++		TWeakObjectPtr<const UGuLiProjectileEffectDefinition> Definition;
++		FGuLiProjectileVisualSettings Visual;
+ 		FIntVector Cell = FIntVector::ZeroValue;
+ 		TArray<FSlot> Slots;
+ 		TArray<FVector> Positions, Directions;
+@@ -65,6 +68,7 @@
+ 	};
+ 	TArray<FBatch> Batches;
+ 	TMap<FGuid, int32> SlotById;
++	TMap<TWeakObjectPtr<const UGuLiProjectileEffectDefinition>, FGuLiProjectileVisualSettings> VisualProfiles;
+ 	double FrameTime = 0;
+ 	bool bFrameEnabled = false, bResourcesReady = false;
+ 	UPROPERTY(Transient) TArray<TObjectPtr<UNiagaraSystem>> Systems;
+@@ -72,7 +76,7 @@
+ 	double NextResourceCheck = 0;
+ 	int32 SystemCount = 0, ParticleCapacity = 0, ActiveMissiles = 0, FullTrails = 0;
+ 	double UpdateMilliseconds = 0;
+-	int32 Acquire(const FGuid& Id, const FVector& Position);
++	int32 Acquire(const FGuid& Id, const FVector& Position, const UGuLiProjectileEffectDefinition* Definition, const FGuLiProjectileVisualSettings& Visual);
+ 	bool StartBatch(FBatch& Batch, int32 Quality);
+ 	void Upload(FBatch& Batch);
+ 	void RetireHistory(FBatch& Batch);
+--- Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.cpp (v2)
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.cpp (v3)
+@@ -61,7 +61,7 @@
+ void UGuLiMissileClusterPresentation::Reset()
+ {
+ 	for (auto& Batch : Batches) Release(Batch);
+-	Batches.Reset(); SlotById.Reset(); SystemCount = ParticleCapacity = ActiveMissiles = FullTrails = 0;
++	Batches.Reset(); SlotById.Reset(); VisualProfiles.Reset(); SystemCount = ParticleCapacity = ActiveMissiles = FullTrails = 0;
+ 	UpdateMilliseconds = 0;
+ 	if (auto* LOD = CommanderLOD.Get()) LOD->ClearConsumer(LODConsumer);
+ }
+@@ -91,12 +91,21 @@
+ 			const FNiagaraVariable Contract(FNiagaraTypeDefinition::GetIntDef(), TEXT("User.MissileContractVersion"));
+ 			bResourcesReady &= Systems[Q] && Systems[Q]->HasAnyGPUEmitters() && Systems[Q]->IsReadyToRun()
+ 				&& Systems[Q]->GetExposedParameters().GetParameterValueOrDefault<int32>(Contract, 0) == 2;
++			// Older candidates have the same capacity contract but no independent visual inputs.
++			if (Systems[Q]) for (const TCHAR* Name : {TEXT("User.MissileSmokeInitialWidth"), TEXT("User.MissileSmokeMaximumWidth"),
++				TEXT("User.MissileFlameWidth"), TEXT("User.MissileFlameLength")})
++			{
++				const FNiagaraVariable Parameter(FNiagaraTypeDefinition::GetFloatDef(), Name);
++				const float Value = Systems[Q]->GetExposedParameters().GetParameterValueOrDefault<float>(Parameter, 0);
++				bResourcesReady &= FMath::IsFinite(Value) && Value > 0;
++			}
+ 		}
+ 	}
+ 	for (auto& Batch : Batches) for (auto& Slot : Batch.Slots) Slot.bSubmitted = false;
+ }
+ 
+-int32 UGuLiMissileClusterPresentation::Acquire(const FGuid& Id, const FVector& Position)
++int32 UGuLiMissileClusterPresentation::Acquire(const FGuid& Id, const FVector& Position,
++	const UGuLiProjectileEffectDefinition* Definition, const FGuLiProjectileVisualSettings& Visual)
+ {
+ 	if (const auto* Found = SlotById.Find(Id)) return *Found;
+ 	const FIntVector Cell(FMath::FloorToInt(Position.X / CellSize), FMath::FloorToInt(Position.Y / CellSize), FMath::FloorToInt(Position.Z / CellSize));
+@@ -106,7 +115,7 @@
+ 		const auto& Batch = Batches[B];
+ 		if (!Batch.Slots.ContainsByPredicate([](const FSlot& S) { return S.bAllocated; }) && !Batch.Retiring.Component.IsValid())
+ 		{ EmptyBatch = B; continue; }
+-		if (Batch.Cell != Cell) continue;
++		if (Batch.Cell != Cell || Batch.Definition.Get() != Definition) continue;
+ 		const int32 Limit = Batch.Capacity > 0 ? Batch.Capacity : MissilesPerBatch;
+ 		for (int32 I = 0; I < Limit; ++I) if (!Batch.Slots[I].bAllocated) { SlotIndex = I; break; }
+ 		if (SlotIndex != INDEX_NONE) { BatchIndex = B; break; }
+@@ -115,6 +124,7 @@
+ 	{
+ 		BatchIndex = EmptyBatch != INDEX_NONE ? EmptyBatch : Batches.AddDefaulted();
+ 		auto& Batch = Batches[BatchIndex]; Release(Batch); Batch.Cell = Cell; Batch.RecentBounds.Reset();
++		Batch.Definition = Definition; Batch.Visual = Visual;
+ 		Batch.Capacity = 0; Batch.RetryAt = 0; Batch.Slots.SetNum(MissilesPerBatch);
+ 		Batch.Positions.Init(FVector::ZeroVector, MissilesPerBatch); Batch.Directions.Init(FVector::ForwardVector, MissilesPerBatch);
+ 		Batch.Sizes.Init(FVector2D::ZeroVector, MissilesPerBatch); Batch.Meta.Init(FLinearColor::Transparent, MissilesPerBatch);
+@@ -128,10 +138,20 @@
+ 	SlotById.Add(Id, Index); return Index;
+ }
+ 
+-bool UGuLiMissileClusterPresentation::Submit(const FGuid& Id, const FVector& Position, const FVector& Direction)
++bool UGuLiMissileClusterPresentation::Submit(const FGuid& Id, const FVector& Position, const FVector& Direction,
++	const UGuLiProjectileEffectDefinition* Definition)
+ {
+ 	if (!bFrameEnabled || !IsReady() || !Id.IsValid() || Position.ContainsNaN() || Direction.ContainsNaN()) return false;
+-	const int32 Index = Acquire(Id, Position); auto& Batch = Batches[Index / MissilesPerBatch];
++	if (!IsValid(Definition)) return false;
++	const TWeakObjectPtr<const UGuLiProjectileEffectDefinition> Key(Definition);
++	const auto* Visual = VisualProfiles.Find(Key);
++	if (!Visual)
++	{
++		FGuLiProjectileVisualSettings Resolved;
++		if (!Definition->ResolveVisualSettings(Resolved)) return false;
++		Visual = &VisualProfiles.Add(Key, Resolved);
++	}
++	const int32 Index = Acquire(Id, Position, Definition, *Visual); auto& Batch = Batches[Index / MissilesPerBatch];
+ 	auto& Slot = Batch.Slots[Index % MissilesPerBatch];
+ 	if (Slot.FinishedAt >= 0) return false;
+ 	if (FrameTime - Slot.LastSeen > .20 || FVector::DistSquared(Slot.Position, Position) > FMath::Square(600.0))
+@@ -157,7 +177,7 @@
+ void UGuLiMissileClusterPresentation::Upload(FBatch& Batch)
+ {
+ 	auto* Component = Batch.Component.Get(); if (!Component) return;
+-	// WM01 candidate v2: enlarge all dimensions without changing the shared VFX row.
++	// Preserve the v2 body scale; exhaust dimensions are independently table-authored centimeters.
+ 	const float VisualScale = GuLiVfx::Scale(this, GuLiVfxIds::MissileFlight).X * 1.5f;
+ 	for (int32 I = 0; I < MissilesPerBatch; ++I)
+ 	{
+@@ -168,6 +188,10 @@
+ 	}
+ 	using Arrays = UNiagaraDataInterfaceArrayFunctionLibrary;
+ 	Component->SetVariableFloat(TEXT("User.MissileTime"), float(FrameTime));
++	Component->SetVariableFloat(TEXT("User.MissileSmokeInitialWidth"), Batch.Visual.SmokeInitialWidthCentimeters);
++	Component->SetVariableFloat(TEXT("User.MissileSmokeMaximumWidth"), Batch.Visual.SmokeMaximumWidthCentimeters);
++	Component->SetVariableFloat(TEXT("User.MissileFlameWidth"), Batch.Visual.FlameWidthCentimeters);
++	Component->SetVariableFloat(TEXT("User.MissileFlameLength"), Batch.Visual.FlameLengthCentimeters);
+ 	Component->SetVariableFloat(TEXT("User.MissileTrailWeight"), FMath::Clamp(float((FrameTime - Batch.QualitySince) / HandoffSeconds), 0.f, 1.f));
+ 	Arrays::SetNiagaraArrayPosition(Component, TEXT("User.LaserPositions"), Batch.Positions);
+ 	Arrays::SetNiagaraArrayVector(Component, TEXT("User.LaserDirections"), Batch.Directions);
+@@ -245,8 +269,11 @@
+ 			else Batch.RecentBounds.Add({Current, FrameTime});
+ 		}
+ 		Batch.Bounds = Current; for (const auto& Sample : Batch.RecentBounds) Batch.Bounds += Sample.Bounds;
+-		// Includes the enlarged body/exhaust, <=27 cm drift and <=33 cm smoke width.
+-		if (Batch.Bounds.IsValid) Batch.Bounds = Batch.Bounds.ExpandBy(210);
++		// Include exhaust offset, sprite half-width/overlap and <=27 cm drift around historical heads.
++		const float BodyLength = 325.f * GuLiVfx::Scale(this, GuLiVfxIds::MissileFlight).X * 1.5f;
++		const float Extent = FMath::Max(210.f, BodyLength * .5f + Batch.Visual.FlameLengthCentimeters
++			+ FMath::Max(Batch.Visual.FlameWidthCentimeters, Batch.Visual.SmokeMaximumWidthCentimeters) * .62f + 27.f);
++		if (Batch.Bounds.IsValid) Batch.Bounds = Batch.Bounds.ExpandBy(Extent);
+ 		if (Batch.Retiring.Component.IsValid()) Batch.Bounds += Batch.Retiring.Bounds;
+ 		if (!Batch.Occupied && !Batch.Retiring.Component.IsValid()) { Release(Batch); continue; }
+ 		++LODStats.Objects;
+--- Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp (v2)
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp (v3)
+@@ -769,7 +769,7 @@
+ 			&& Definition->GetPathName() == TEXT("/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile");
+ #endif
+ 		if (bUseCluster && MissileClusters && bClusterEnabled && MissileClusters->IsReady()
+-			&& MissileClusters->Submit(Pair.Key, Visual.RenderLocation, Prediction.Velocity))
++			&& MissileClusters->Submit(Pair.Key, Visual.RenderLocation, Prediction.Velocity, Definition))
+ 		{
+ 			if (Visual.Flight) { Retire(Visual.Flight, 0); Visual.Flight = nullptr; }
+ 			continue;
+--- Scripts/build_wm01_missile_cluster_fx.py (v2)
++++ Scripts/build_wm01_missile_cluster_fx.py (v3)
+@@ -6,11 +6,15 @@
+ import ast
+ import json
+ import traceback
++import sys
+ from pathlib import Path
+ import unreal
+ 
+ ROOT = Path('D:/UE5.7/test1')
+-OUT = ROOT / 'Artifacts/WM01MissileCards/Visual_v2'
++OUT = ROOT / 'Artifacts/WM01MissileCards/Visual_v3'
++sys.path.insert(0, str(ROOT/'Scripts'))
++from wm01_missile_visual_config import read_profile
++PROFILE, VISUAL_PARAMETERS = read_profile(unreal)
+ DEST = '/Game/GuLiStrike/FX/WM01Missiles'
+ SOURCE = '/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool'
+ LIB = unreal.EditorAssetLibrary
+@@ -19,9 +23,9 @@
+ NS = unreal.NiagaraService
+ EM = unreal.NiagaraEmitterService
+ SP = unreal.NiagaraScratchPadService
+-report = {'success': False, 'visual_revision': 2, 'systems': [], 'materials': [],
+-          'visual_parameters': {'dimension_multiplier':1.5,'body_length_cm':195,'flame_size_cm':[21,54],
+-              'flame_peak_rgb':[9,7.02,3.6],'smoke_lifetime':2.4,'smoke_width_cm':[21,33],
++report = {'success': False, 'visual_revision': 3, 'systems': [], 'materials': [],
++          'visual_parameters': {'source':PROFILE['Name'],'body_length_cm':195,'user_parameters':VISUAL_PARAMETERS,
++              'flame_peak_rgb':[9,7.02,3.6],'smoke_lifetime':2.4,
+               'smoke_cold_rgb':[.055,.060,.065],'smoke_alpha':.70,'smoke_fade_power':1.25,'warm_seconds':.08}}
+ 
+ 
+@@ -54,11 +58,11 @@
+     uv = node(mat, unreal.MaterialExpressionTextureCoordinate)
+     color = node(mat, unreal.MaterialExpressionParticleColor)
+     code = ('float n=.5+.25*sin(dot(World,float3(.027,.019,.013)))+.25*sin(dot(World,float3(-.013,.031,.017))); '
+-            'float x=abs(UV.x*2-1+(n-.5)*.18); return pow(saturate(1-x*x),2)*lerp(.55,1,n)*smoothstep(0,.04,UV.y)*smoothstep(0,.04,1-UV.y)*Alpha;'
++            'float x=abs(UV.x*2-1+(n-.5)*.18); float endFade=min(.04,2/max(Size.y,1)); return pow(saturate(1-x*x),2)*lerp(.55,1,n)*smoothstep(0,endFade,UV.y)*smoothstep(0,endFade,1-UV.y)*Alpha;'
+             if trail else 'float t=saturate(UV.y); float x=abs(UV.x*2-1)/lerp(.08,1,t); return pow(saturate(1-x*x),1.2)*sin(t*3.14159)*Alpha;')
+     mask = node(mat, unreal.MaterialExpressionCustom, code=code, output_type=unreal.CustomMaterialOutputType.CMOT_FLOAT1)
+     pins = []
+-    for key in (('UV', 'Alpha', 'World') if trail else ('UV', 'Alpha')):
++    for key in (('UV', 'Alpha', 'World', 'Size') if trail else ('UV', 'Alpha')):
+         entry = unreal.CustomInput()
+         entry.set_editor_property('input_name', key)
+         pins.append(entry)
+@@ -68,6 +72,10 @@
+     if trail:
+         world = node(mat, unreal.MaterialExpressionWorldPosition)
+         assert EDIT.connect_material_expressions(world, '', mask, 'World')
++        # A percentage of an 800+ cm low-detail segment leaves visible gaps.
++        # Limit longitudinal edge feathering to 2 cm; transverse soft edges stay unchanged.
++        size = node(mat, unreal.MaterialExpressionParticleSize)
++        assert EDIT.connect_material_expressions(size, '', mask, 'Size')
+     assert EDIT.connect_material_property(mask, '', unreal.MaterialProperty.MP_OPACITY)
+     if trail:
+         assert EDIT.connect_material_property(color, 'RGB', unreal.MaterialProperty.MP_EMISSIVE_COLOR)
+@@ -97,11 +105,17 @@
+     assert system
+     for entry in list(NS.list_emitters(path)):
+         assert NS.remove_emitter(path, str(prop(entry, 'emitter_name')))
+-    for name, kind, default in [('MissileTime','Float','0'), ('MissileHeads','Float','1'),
++    parameters = [('MissileTime','Float','0'), ('MissileHeads','Float','1'),
+                                 ('MissileEmitHistory','Float','1'), ('MissileTrailWeight','Float','1'),
+-                                ('MissileSlotCount','Int','64'), ('MissileHistoryCount','Int',str(64*lanes))]:
++                                ('MissileSlotCount','Int','64'), ('MissileHistoryCount','Int',str(64*lanes))]
++    if preview:
++        parameters.append(('MissilePreviewSpeedRatio','Float',str(PROFILE['SpeedCentimetersPerSecond']/1200.)))
++    parameters += [(name.removeprefix('User.'),'Float',str(value)) for name,value in VISUAL_PARAMETERS.items()]
++    for name, kind, default in parameters:
+         if not NS.parameter_exists(path, 'User.'+name):
+             assert NS.add_user_parameter(path, name, kind, default)
++        else:
++            assert NS.set_parameter(path, 'User.'+name, default)
+     entries = [('Body', 64), ('Flame', 64)] + ([('History', 64 * lanes)] if lanes else [])
+     for emitter, count in entries:
+         assert NS.add_emitter(path, '/Niagara/DefaultAssets/Templates/Emitters/SimpleSpriteBurst.SimpleSpriteBurst', emitter) == emitter
+@@ -122,7 +136,7 @@
+         scratch(path, emitter, 'ParticleSpawn', 'InitializeMissileSlot', [], outputs, init)
+         if preview:
+             scratch(path, emitter, 'ParticleUpdate', 'IllustrativePreviewPath',
+-                [('Slot','int','Particles.LaserSlot'),('Age','float','System.Age')],
++                [('Slot','int','Particles.LaserSlot'),('Age','float','System.Age'),('SpeedRatio','float','User.MissilePreviewSpeedRatio')],
+                 [('PositionOut','Position','Particles.Position'),('DirectionOut','Vector','Particles.SpriteAlignment'),
+                  ('SizeOut','vec2','Particles.SpriteSize'),('MetaOut','Color','Particles.Color'),('TimeOut','float','Particles.PreviewTime')],
+                 (ROOT/'Scripts/Niagara/GuLiMissileArtPreview.hlsl').read_text(encoding='utf-8-sig'))
+@@ -143,20 +157,22 @@
+         elif emitter == 'Flame':
+             assert EM.set_renderer_property(path, emitter, 0, 'Material', flame)
+             assert EM.set_renderer_property(path, emitter, 0, 'Alignment', 'CustomAlignment')
+-            scratch(path, emitter, 'ParticleUpdate', 'MissileFlame', common+[('Heads','float','User.MissileHeads')],
++            scratch(path, emitter, 'ParticleUpdate', 'MissileFlame', common+[('Heads','float','User.MissileHeads'),
++                    ('FlameWidth','float','User.MissileFlameWidth'),('FlameLength','float','User.MissileFlameLength')],
+                     [('PositionOut','Position','Particles.Position'), ('SizeOut','vec2','Particles.SpriteSize'), ('ColorOut','Color','Particles.Color')],
+-                    'float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; PositionOut=Head-Direction*(Size.y*.4923+27); SizeOut=float2(Size.x,54)*alive; ColorOut=float4(9,3.3,.66,.85*alive);')
++                    'float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; PositionOut=Head-Direction*(Size.y*.4923+FlameLength*.5); SizeOut=float2(FlameWidth,FlameLength)*alive; ColorOut=float4(9,3.3,.66,.85*alive);')
+         else:
+             assert EM.set_renderer_property(path, emitter, 0, 'Material', trail)
+             assert EM.set_renderer_property(path, emitter, 0, 'Alignment', 'CustomAlignment')
+-            inputs = [('Head','Position','Particles.Position'), ('Width','float','Particles.HistoryWidth'), ('Meta','Color','Particles.Color'),
++            inputs = [('Head','Position','Particles.Position'), ('Width','float','Particles.HistoryWidth'), ('MaximumWidth','float','User.MissileSmokeMaximumWidth'), ('Meta','Color','Particles.Color'),
+                       ('Lane','int','Particles.MissileLane'), ('Now','float','Particles.PreviewTime' if preview else 'User.MissileTime'), ('SavedStart','Position','Particles.HistoryStart'),
+                       ('SavedEnd','Position','Particles.HistoryEnd'), ('SavedSample','Position','Particles.HistorySample'), ('Born','float','Particles.HistoryBorn'),
+                       ('SeenGeneration','float','Particles.HistoryGeneration'), ('SeenBucket','int','Particles.HistoryBucket'),
+                       ('LastTime','float','Particles.HistoryTime'), ('SeenState','float','Particles.HistoryState'),
+                       ('EmitHistory','float','User.MissileEmitHistory'), ('TrailWeight','float','User.MissileTrailWeight')]
+-            scratch(path, emitter, 'ParticleUpdate', 'MissileTrailOrigin', common,
+-                    [('PositionOut','Position','Particles.Position'),('WidthOut','float','Particles.HistoryWidth')], 'PositionOut=Head-Direction*(Size.y*.4923+42); WidthOut=Size.x;')
++            scratch(path, emitter, 'ParticleUpdate', 'MissileTrailOrigin', common+[('SmokeWidth','float','User.MissileSmokeInitialWidth'),
++                    ('FlameLength','float','User.MissileFlameLength')],
++                    [('PositionOut','Position','Particles.Position'),('WidthOut','float','Particles.HistoryWidth')], 'PositionOut=Head-Direction*(Size.y*.4923+FlameLength*(7.0/9.0)); WidthOut=SmokeWidth;')
+             outputs = [('PositionOut','Position','Particles.Position'), ('AlignmentOut','Vector','Particles.SpriteAlignment'), ('SizeOut','vec2','Particles.SpriteSize'),
+                        ('ColorOut','Color','Particles.Color'), ('StartOut','Position','Particles.HistoryStart'), ('EndOut','Position','Particles.HistoryEnd'),
+                        ('SampleOut','Position','Particles.HistorySample'), ('BornOut','float','Particles.HistoryBorn'), ('GenerationOut','float','Particles.HistoryGeneration'),
+@@ -176,7 +192,7 @@
+     assert 'VM ERROR:' not in diagnostics and 'GPU ERROR:' not in diagnostics, diagnostics
+     assert diagnostics.count('GPU finished=1 complete=1') == len(entries), diagnostics
+     LIB.set_metadata_tag(system, 'GuLi.WM01Missiles.Contract', f'{"v2" if bound else "draft;capacity binding pending native reload"};GPU;{lanes} world-history lanes;2.4s tail;.15s handoff;no collision/lights;generation-isolated')
+-    LIB.set_metadata_tag(system, 'GuLi.WM01Missiles.VisualRevision', '2;dimensions x1.5;charcoal smoke;flame peak x3')
++    LIB.set_metadata_tag(system, 'GuLi.WM01Missiles.VisualRevision', '3;table-authored smoke/flame centimeters;2.4s charcoal history;body/brightness unchanged')
+     if preview:
+         system.set_editor_property('fixed_bounds',unreal.Box(unreal.Vector(-600,-1600,-600),unreal.Vector(3000,1600,2000)))
+         LIB.set_metadata_tag(system,'GuLi.PreviewOnly','Illustrative self-running paths; no gameplay reference; smoke/flame art review only')
+--- Scripts/preview_wm01_missile_cluster.py (v2)
++++ Scripts/preview_wm01_missile_cluster.py (v3)
+@@ -3,24 +3,30 @@
+ GPU particles advance once per rendered editor frame. The illustrative paths only
+ review smoke/flame appearance; gameplay trajectory verification remains separate.
+ """
+-import json, traceback
++import json, traceback, sys
+ from pathlib import Path
+ import unreal
+ 
+ ROOT=Path('D:/UE5.7/test1')
+-OUT=ROOT/'ArtSource/FX/WM01MissileCluster/Candidate_v2'
++OUT=ROOT/'ArtSource/FX/WM01MissileCluster/Candidate_v3'
++sys.path.insert(0,str(ROOT/'Scripts'))
++from wm01_missile_visual_config import read_profile
+ 
+-def preview(quality='Full'):
++def preview(quality='Full', distance_scale=1.):
+     assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
+     world=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
+     editor=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem)
+     old_camera=editor.get_level_viewport_camera_info()
+     state={'actors':[],'frame':-120,'frames':[],'complete':False,'quality':quality,'ready_wait_frames':0}
+-    state['visual_revision']=2
++    state['visual_revision']=3
++    profile, visual_parameters=read_profile(unreal)
++    speed_ratio=profile['SpeedCentimetersPerSecond']/1200.
++    state['table_profile']=profile
++    state['user_parameters']=visual_parameters
+     state['capture_conditions']={'resolution':[1280,720],'fov':42,'manual_exposure_bias':0,
+         'physical_camera_exposure':False,'camera_location':[100,-3900,2400],
+-        'camera_target':[1000,0,400],'flight_seconds':2.4,'tail_seconds':2.4,
+-        'comparison':'Same camera, exposure and four illustrative trajectories as Candidate_v1; no PIE.'}
++        'camera_target':[1000,0,400],'distance_scale':distance_scale,'flight_seconds':2.4/speed_ratio,'tail_seconds':2.4,
++        'comparison':'Same camera, exposure and four illustrative trajectories as Candidate_v2; table-driven 2x speed; no PIE.'}
+     origin=unreal.Vector(0,0,0)
+     a=unreal.EditorLevelLibrary.spawn_actor_from_class(unreal.NiagaraActor,origin,transient=True)
+     state['actors'].append(a)
+@@ -33,6 +39,8 @@
+     for name in ['Body','Flame']+(['History'] if quality!='Minimal' else []):
+         c.set_emitter_fixed_bounds(name,unreal.Box(unreal.Vector(-600,-1400,-1000),unreal.Vector(3200,1400,2000)))
+     for k,v in [('MissileHeads',1.),('MissileEmitHistory',1.),('MissileTrailWeight',1.),('MissileTime',0.)]: c.set_variable_float('User.'+k,v)
++    for name,value in visual_parameters.items(): c.set_variable_float(name,value)
++    c.set_variable_float('User.MissilePreviewSpeedRatio',speed_ratio)
+     c.set_variable_int('User.MissileSlotCount',4)
+     c.set_variable_int('User.MissileHistoryCount',4*({'Full':24,'Lite':8,'Minimal':0}[quality]))
+     ground=unreal.EditorLevelLibrary.spawn_actor_from_class(unreal.StaticMeshActor,origin-unreal.Vector(0,0,150),transient=True)
+@@ -43,7 +51,8 @@
+     m.set_vector_parameter_value('Color',unreal.LinearColor(.055,.10,.15,1))
+     ca=unreal.EditorLevelLibrary.spawn_actor_from_class(unreal.SceneCapture2D,origin,transient=True)
+     state['actors'].append(ca)
+-    target=origin+unreal.Vector(1000,0,400);location=target+unreal.Vector(-900,-3900,2000)
++    target=origin+unreal.Vector(1000,0,400);location=target+unreal.Vector(-900,-3900,2000)*distance_scale
++    state['capture_conditions']['camera_location']=list(location.to_tuple())
+     ca.set_actor_location_and_rotation(location,unreal.MathLibrary.find_look_at_rotation(location,target),False,True)
+     editor.set_level_viewport_camera_info(location,ca.get_actor_rotation())
+     cap=ca.capture_component2d
+@@ -59,9 +68,9 @@
+     cap.set_editor_property('texture_target',rt)
+     cap.set_editor_property('primitive_render_mode',unreal.SceneCapturePrimitiveRenderMode.PRM_USE_SHOW_ONLY_LIST)
+     cap.show_only_actor_components(a);cap.show_only_actor_components(ground)
+-    folder=OUT/quality;folder.mkdir(parents=True,exist_ok=True)
+-    # Preserve the first four v1 comparison moments; extend decay beyond 2.4+2.4 s.
+-    samples={18:'start',60:'flight',112:'long_tail',138:'peak_tail',156:'impact',174:'dissipating',252:'late_tail',306:'cleared'}
++    folder=OUT/(quality if distance_scale==1. else quality+'_Far');folder.mkdir(parents=True,exist_ok=True)
++    # Same spatial phases at double speed; include late decay and a 5.1 s clear frame.
++    samples={9:'start',30:'flight',56:'long_tail',69:'peak_tail',84:'impact',114:'dissipating',180:'late_tail',306:'cleared'}
+     def finish(error=None):
+         unreal.unregister_slate_post_tick_callback(state['handle'])
+         for actor in reversed(state['actors']): unreal.EditorLevelLibrary.destroy_actor(actor)
+@@ -141,5 +150,5 @@
+     state['handle']=unreal.register_slate_post_tick_callback(tick)
+     return state
+ 
+-WM01_SMOKE_PREVIEW=preview(globals().get('WM01_PREVIEW_QUALITY','Full'))
++WM01_SMOKE_PREVIEW=preview(globals().get('WM01_PREVIEW_QUALITY','Full'),globals().get('WM01_PREVIEW_DISTANCE_SCALE',1.))
+ unreal.MCPythonHelper.submit_result(json.dumps({'started':True,'scope':'isolated editor art preview','output':str(OUT)}))
+--- Scripts/inspect_wm01_missile_cluster.py (v2)
++++ Scripts/inspect_wm01_missile_cluster.py (v3)
+@@ -1,11 +1,15 @@
+-"""Read saved WM01 v2 assets through the editor; no gameplay or asset changes."""
++"""Read saved WM01 v3 assets through the editor; no gameplay or asset changes."""
+ import json
+ import traceback
++import sys
++import math
+ from pathlib import Path
+ import unreal
+ 
+ ROOT = Path('D:/UE5.7/test1')
+-OUT = ROOT/'Artifacts/WM01MissileCards/Visual_v2'
++OUT = ROOT/'Artifacts/WM01MissileCards/Visual_v3'
++sys.path.insert(0,str(ROOT/'Scripts'))
++from wm01_missile_visual_config import read_profile
+ BASE = '/Game/GuLiStrike/FX/WM01Missiles/'
+ NS = unreal.NiagaraService
+ EM = unreal.NiagaraEmitterService
+@@ -16,6 +20,9 @@
+ 
+ try:
+     assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
++    profile, visual_parameters=read_profile(unreal)
++    report['projectile_profile']=profile
++    report['visual_parameters']=visual_parameters
+     for prefix in ['', 'Preview']:
+         for quality, lanes in [('Full',24),('Lite',8),('Minimal',0)]:
+             path = BASE+'NS_WM01MissileCluster_'+prefix+quality
+@@ -34,7 +41,12 @@
+             # from the persisted graph/parameter validation below.
+             row['runtime_ready'] = ('System valid=1 ready=1 gpu=1' in row['diagnostics']
+                 and row['diagnostics'].count('GPU finished=1 complete=1') == (3 if lanes else 2))
+-            assert row['visual_revision'].startswith('2;'), row
++            assert row['visual_revision'].startswith('3;'), row
++            row['visual_defaults']={}
++            for name,value in visual_parameters.items():
++                actual=float(NS.get_parameter(path,name).current_value)
++                assert math.isclose(actual,value,abs_tol=1e-3), (name,actual,value)
++                row['visual_defaults'][name]=actual
+             assert 'VM ERROR:' not in row['diagnostics'] and 'GPU ERROR:' not in row['diagnostics']
+             for emitter in ['Body','Flame']+(['History'] if lanes else []):
+                 properties = EM.get_emitter_properties(path,emitter)
+@@ -50,15 +62,17 @@
+                             e['hlsl'][str(module)] = SP.get_custom_hlsl_code(path,emitter,module,str(n.node_id))
+                 code='\n'.join(e['hlsl'].values())
+                 if emitter=='Flame':
+-                    assert 'float2(Size.x,54)' in code and 'float4(9,3.3,.66' in code, code
++                    assert 'float2(FlameWidth,FlameLength)' in code and 'float4(9,3.3,.66' in code, code
+                     assert 'M_WM01MissileFlame' in e['renderer'], e['renderer']
+                 if emitter=='History':
+-                    assert 'pow(life,1.25)' in code and '.70*' in code and 'min(33,' in code, code
++                    assert 'pow(life,1.25)' in code and '.70*' in code and 'min(MaximumWidth,' in code, code
+                     assert 'float3(.055,.060,.065)' in code and 'smoothstep(0,.08,age)' in code, code
+                     assert f'lifetime/({lanes}-1)' in code and '(BucketOut+1)' in code, code
+                     assert 'M_WM01MissileHistory' in e['renderer'], e['renderer']
++                    assert 'distance(Head,SavedSample)>600' not in code
++                    assert 'WidthOut=SmokeWidth' in code and 'FlameLength*(7.0/9.0)' in code
+                 if prefix:
+-                    assert 'float2(21,195)' in code and 't<2.4?1:2,2.4,2.4' in code, code
++                    assert 'float2(21,195)' in code and 't<flight?1:2,flight,2.4' in code, code
+     for name in ['M_WM01MissileFlame','M_WM01MissileHistory','M_WM01_MissileBody']:
+         path=BASE+name
+         mat=unreal.load_asset(path)
+@@ -77,6 +91,18 @@
+     definition=unreal.load_asset('/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile')
+     report['production_cluster_enabled']=bool(definition.get_editor_property('use_missile_cluster_rendering'))
+     assert not report['production_cluster_enabled']
++    catalog=unreal.load_asset('/Game/GuLiStrike/Commander/Skills/DA_CommanderSkills_V1')
++    skill=next(s for s in catalog.skills if str(s.skill_id)=='WM01_HomingMissile')
++    report['active_skill']={k:str(skill.get_editor_property(k)) for k in ['skill_id','range_source_slot','range_multiplier','range_centimeters','cooldown_seconds','configuration']}
++    assert math.isclose(skill.range_multiplier,3.2,rel_tol=1e-6) and skill.range_centimeters==9600 and skill.cooldown_seconds==6
++    assert str(skill.range_source_slot)=='BasicAttack'
++    assert skill.configuration.target_area_diameter_centimeters==1600
++    fields=unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeSpellFields_Fields')
++    explosion=next(r for r in json.loads(unreal.DataTableFunctionLibrary.export_data_table_to_json_string(fields)) if r['Name']=='WM01_MissileExplosion')
++    report['explosion_field']=explosion
++    assert explosion['RadiusCentimeters']==300 and explosion['Damage']==30
++    impact=definition.get_editor_property('impact_field')
++    report['explosion_visual_reference_radius']=impact.get_editor_property('visual_reference_radius')
+     report['structure_success']=True
+     report['resources_ready']=all(row['runtime_ready'] for row in report['systems'])
+     assert report['resources_ready'], 'Saved structure passed, but Niagara resources are not ready: '+', '.join(
+--- Scripts/author_wm01_missile_scene.py (v2)
++++ Scripts/author_wm01_missile_scene.py (v3)
+@@ -43,10 +43,11 @@
+         a.camera_component.set_editor_property('aspect_ratio',16/9)
+     entry=actor(unreal.Note,'WM01Missile_CandidateInstructions',(-8000,73500,-1200))
+     entry.set_editor_property('text',
+-        '重防号 WM01 / UnitTypeId=2 导弹候选 v2；加载本轮原生尺寸/寿命改动后使用。\n'
+-        'v2：弹体/尾焰/烟宽1.5倍；尾焰峰值3倍；浓黑烟迹2.4秒，退场槽保留2.45秒。\n'
++        '重防号 WM01 / UnitTypeId=2 导弹候选 v3；加载本轮原生视觉字段及三张表后使用。\n'
++        'v3：弹体195cm；烟宽63→99cm、尾焰42×108cm，颜色/亮度沿用v2；烟迹2.4秒、消散槽2.45秒。速度2400cm/s；Q随最终普攻射程×3.2（基础96m），爆炸/预警半径3m；冷却6秒、伤害、齐射及16m落点散布直径保持。\n'
+         '玩法验收：新局就绪指挥官，选择重防号，初始无 Q 且无背部导弹仓；F4 获 04.01 后现有及后续本队重防号解锁，另一队保持原状；05.01 每次齐射 +1。换任保留，新局重置。\n'
+         '候选开关：gs.MissileCluster.Candidate 1；旧表现对照：gs.MissileCluster.Candidate 0。正式 DA 开关保持关闭，待用户可播放候选审核。\n'
++        '新增验收：96m内外点击圆心检查施放，射程升级后Q继续按最终普攻×3.2；检查3m预警边缘与伤害一致。远景8段高速烟迹连续，尾焰与烟衔接，边缘裁剪不切尾，命中后2.4秒自然消散。\n'
+         '冷启动验收：候选资源准备完成后应自动切到放大弹体、短亮尾焰与2.4秒黑烟，不能持续回退为旧白色尾焰；本轮已修正延迟编译请求未被触发的问题，游戏内结果待玩家复查。\n'
+         '性能场景：每次新开 PIE 并就绪，执行一组 Build，再执行 gs.MissileFixture.Fire；每次施放遵守真实冷却。Build 仅为性能准备解锁和弹量，不替代 F4 功能验收，不移除其他地图单位。\n'
+         '镜头：Build 自动固定总览；gs.MissileFixture.Camera near 查看近景；overview 恢复对照镜头。\n'
+@@ -85,7 +86,7 @@
+     report['success']=True
+ except Exception:
+     report['error']=traceback.format_exc()
+-output=ROOT/'Artifacts/WM01MissileCards/Visual_v2/scene-readback.json'
++output=ROOT/'Artifacts/WM01MissileCards/Visual_v3/scene-readback.json'
+ output.parent.mkdir(parents=True,exist_ok=True)
+ output.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf8')
+ unreal.MCPythonHelper.submit_result(json.dumps({'success':report['success'],'saved':report['saved'],'actors':len(report['actors']),'error':report.get('error'),'report':str(output)}))
+--- Scripts/import_data_to_engine.py (v2)
++++ Scripts/import_data_to_engine.py (v3)
+@@ -258,8 +258,47 @@
+     return entry
+ 
+ 
++def sync_wm01_cluster_visual_defaults(row, visual_values):
++    """Table import also updates all six saved preview defaults; runtime uploads the same row."""
++    if row['Name'] != 'WM01_Missile':
++        return []
++    parameters = {
++        'User.MissileSmokeInitialWidth': visual_values['smoke_initial_width_centimeters'],
++        'User.MissileSmokeMaximumWidth': visual_values['smoke_maximum_width_centimeters'],
++        'User.MissileFlameWidth': visual_values['flame_width_centimeters'],
++        'User.MissileFlameLength': visual_values['flame_length_centimeters'],
++    }
++    result = []
++    service = unreal.NiagaraService
++    for prefix in ['', 'Preview']:
++        for quality in ['Full', 'Lite', 'Minimal']:
++            path = '/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_' + prefix + quality
++            system = unreal.load_asset(path)
++            values = dict(parameters)
++            if prefix:
++                values['User.MissilePreviewSpeedRatio'] = row['SpeedCentimetersPerSecond'] / 1200.
++            # The first migration may precede asset generation; report this explicitly.
++            if not system or not all(service.parameter_exists(path, name) for name in values):
++                result.append({'path': path, 'status': 'pending_asset_generation'})
++                continue
++            changed = False
++            for name, value in values.items():
++                actual = float(service.get_parameter(path, name).current_value)
++                if not math.isclose(actual, value, rel_tol=5e-6, abs_tol=1e-3):
++                    if not service.set_parameter(path, name, str(value)):
++                        raise RuntimeError(f'Could not update {path}:{name}')
++                    changed = True
++                if not math.isclose(float(service.get_parameter(path, name).current_value), value,
++                                    rel_tol=5e-6, abs_tol=1e-3):
++                    raise RuntimeError(f'Niagara default differs from Projectiles: {path}:{name}')
++            if changed and not unreal.EditorAssetLibrary.save_loaded_asset(system, False):
++                raise RuntimeError(f'Could not save visual defaults: {path}')
++            result.append({'path': path, 'status': 'verified', 'changed': changed, 'parameters': values})
++    return result
++
++
+ def wire_secondary_projectile_profiles():
+-    """Bind table-authored motion and verify the native resolver before saving."""
++    """Bind the shared profile row and verify independent motion/visual resolvers."""
+     name = 'DT_GuLiStrikeSecondaryWeapons_Projectiles'
+     table = unreal.load_asset(f'{DEST_PATH}/{name}')
+     if not table:
+@@ -313,9 +352,24 @@
+             if changed:
+                 asset.set_editor_property('motion_profile_row', previous)
+             raise RuntimeError(f"Native motion resolver disagrees with Projectiles/{row['Name']}")
++        visual_fields = {
++            'smoke_initial_width_centimeters': 'SmokeInitialWidthCentimeters',
++            'smoke_maximum_width_centimeters': 'SmokeMaximumWidthCentimeters',
++            'flame_width_centimeters': 'FlameWidthCentimeters',
++            'flame_length_centimeters': 'FlameLengthCentimeters',
++        }
++        visual_values = {}
++        if row['Name'] == 'WM01_Missile' or any(row.get(column, 0) for column in visual_fields.values()):
++            visual = asset.resolve_visual_settings()
++            if visual is None or any(not math.isclose(float(visual.get_editor_property(prop)), float(row[column]),
++                    rel_tol=5e-6, abs_tol=1e-3) for prop, column in visual_fields.items()):
++                raise RuntimeError(f"Native visual resolver disagrees with Projectiles/{row['Name']}")
++            visual_values = {prop: float(visual.get_editor_property(prop)) for prop in visual_fields}
+         if not unreal.EditorAssetLibrary.save_loaded_asset(asset, False):
+             raise RuntimeError(f'Could not save {asset.get_path_name()}')
+-        result.append({'asset': asset.get_path_name(), 'row': row['Name'], 'resolved': {
++        defaults = sync_wm01_cluster_visual_defaults(row, visual_values)
++        result.append({'asset': asset.get_path_name(), 'row': row['Name'], 'visual': visual_values,
++                       'niagara_defaults': defaults, 'resolved': {
+             prop: float(resolved.get_editor_property(prop)) for prop in fields}})
+     if catalog_changed:
+         catalog.modify()
+--- Scripts/Niagara/GuLiMissileHistory.hlsl (v2)
++++ Scripts/Niagara/GuLiMissileHistory.hlsl (v3)
+@@ -9,7 +9,9 @@
+ // The other lanes span the full lifetime without increasing particle capacity.
+ float interval=lifetime/(LANES-1);
+ int bucket=(int)floor(Now/interval);
+-bool reset=abs(Meta.r-SeenGeneration)>.5 || state<.5 || Now<LastTime || Now-LastTime>.20 || distance(Head,SavedSample)>600;
++// SavedSample is spaced by lane interval, not by frame (8 lanes at 2400 cm/s
++// can span >800 cm). Teleports already change the CPU slot generation per frame.
++bool reset=abs(Meta.r-SeenGeneration)>.5 || state<.5 || Now<LastTime || Now-LastTime>.20;
+ if(reset)
+ {
+     StartOut=Head; EndOut=Head; SampleOut=Head; BornOut=-10000;
+@@ -40,7 +42,7 @@
+ float3 drift=float3(sin(midpoint.y*.002+Meta.r*.13),cos(midpoint.x*.002+Meta.r*.13),.55)*min(age,2.4)*7.4;
+ PositionOut=midpoint+drift;
+ AlignmentOut=segment>.01 ? delta/segment : float3(1,0,0);
+-float width=min(33,Width*(1+.55*saturate(age/lifetime)));
++float width=min(MaximumWidth,Width*(1+.55*saturate(age/lifetime)));
+ SizeOut=(life>0 && segment>.01 && !reset) ? float2(width,segment+width*.12) : float2(0,0);
+ // A brief warm origin gives way to dense charcoal smoke, never an emissive ribbon.
+ float heat=1-smoothstep(0,.08,age);
+--- Scripts/Niagara/GuLiMissileArtPreview.hlsl (v2)
++++ Scripts/Niagara/GuLiMissileArtPreview.hlsl (v3)
+@@ -1,13 +1,15 @@
+ // Editor-only illustrative trajectories. The registered combat assets use the
+ // authoritative CPU/client trajectory via arrays; these preview copies do not.
+-// Leave 0.8 seconds after the 2.4 s flight + 2.4 s tail before reusing slots.
++// Same v2 path and camera. Table speed controls playback rate; retain the long
++// cycle so the 2.4 s tail clears before the next generation is reused.
+ float t=fmod(Age,5.6);
+-float a=saturate(t/2.4);
++float flight=2.4/max(SpeedRatio,.01);
++float a=saturate(t/flight);
+ float s=sin(a*3.14159265),c=cos(a*3.14159265);
+ PositionOut=float3(2200*a,(Slot-1.5)*175+sin(a*6+Slot)*160*s,
+     120+s*(430+Slot*100)+sin(a*8+Slot)*70*s);
+ DirectionOut=normalize(float3(2200,160*(6*cos(a*6+Slot)*s+3.14159265*sin(a*6+Slot)*c),
+     3.14159265*c*(430+Slot*100)+70*(8*cos(a*8+Slot)*s+3.14159265*sin(a*8+Slot)*c)));
+ SizeOut=float2(21,195);
+-MetaOut=Slot<4 ? float4(floor(Age/5.6)*64+Slot+7,t<2.4?1:2,2.4,2.4) : float4(0,0,0,2.4);
++MetaOut=Slot<4 ? float4(floor(Age/5.6)*64+Slot+7,t<flight?1:2,flight,2.4) : float4(0,0,0,2.4);
+ TimeOut=Age;
+--- Tools/DataPipeline/export_data_from_excel.py (v2)
++++ Tools/DataPipeline/export_data_from_excel.py (v3)
+@@ -615,6 +615,19 @@
+             for field in required:
+                 if row.get(field, 0) not in ids:
+                     raise SheetError(f'{table}/{row["Name"]}.{field}: 必需特效未配置')
++
++
++def validate_projectile_visual_profiles(tables):
++    """Zero/empty is allowed for legacy projectiles; a configured profile must be complete."""
++    fields = ('SmokeInitialWidthCentimeters', 'SmokeMaximumWidthCentimeters',
++              'FlameWidthCentimeters', 'FlameLengthCentimeters')
++    for row in tables.get('DT_GuLiStrikeSecondaryWeapons_Projectiles', {}).get('rows', []):
++        values = [row.get(field, 0) for field in fields]
++        if row['Name'] != 'WM01_Missile' and not any(values):
++            continue
++        if not all(isinstance(v, (int, float)) and math.isfinite(v) and v > 0 for v in values) \
++                or values[1] < values[0]:
++            raise SheetError(f"Projectiles/{row['Name']}: 烟宽/尾焰尺寸必须为有限正数，烟宽上限不得小于初始宽")
+ 
+ 
+ def main():
+@@ -694,6 +707,7 @@
+             validate_rogue_cards(tables)
+             validate_rogue_card_text_styles(tables)
+             validate_vfx_references(tables)
++            validate_projectile_visual_profiles(tables)
+             if any(name.startswith('DT_GuLiStrikeMech_') for name in tables):
+                 if not all(name in tables for name in ('DT_GuLiStrikeMech_Upgrades','DT_GuLiStrikeMech_Skills')):
+                     raise SheetError('GuLiStrikeMech.xlsx必须同时包含升级表与技能表')

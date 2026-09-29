@@ -1,0 +1,432 @@
+{
+  "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "pc": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+  "pawn": "<Object '/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderCameraPawn_0' (0x000001D608F27200) Class 'GuLiCommanderCameraPawn'>",
+  "viewport": [
+    1280,
+    724
+  ],
+  "camera": "<Struct 'Vector' (0x000001D45D08B7B0) {x: 0.000000, y: 81677.222982, z: 11570.386444}>",
+  "actors": [
+    {
+      "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Actor_2",
+      "components": [
+        "InstancedStaticMeshComponent",
+        "SceneComponent",
+        "GuLiWarMachineHoverPreviewComponent",
+        "GuLiWarMachineHoverComponent"
+      ]
+    },
+    {
+      "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderCameraPawn_0",
+      "components": [
+        "SceneComponent",
+        "SpringArmComponent",
+        "CameraComponent",
+        "CameraProxyMeshComponent",
+        "DrawFrustumComponent",
+        "EnhancedInputComponent"
+      ]
+    },
+    {
+      "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiSoldierStateReplicator",
+      "components": [
+        "BillboardComponent"
+      ]
+    },
+    {
+      "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentation",
+      "components": [
+        "SceneComponent",
+        "GuLiWarMachineHoverComponent",
+        "GuLiCommanderRouteLineComponent",
+        "InstancedStaticMeshComponent",
+        "InstancedStaticMeshComponent",
+        "InstancedStaticMeshComponent",
+        "InstancedStaticMeshComponent",
+        "InstancedStaticMeshComponent",
+        "InstancedStaticMeshComponent",
+        "InstancedStaticMeshComponent"
+      ]
+    }
+  ],
+  "niagara": [
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_0.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_0.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_1.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_1.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_2.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": true
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_2.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": true
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_3.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": true
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_3.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": true
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_4.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_4.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_5.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_5.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_6.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_6.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_7.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_7.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_8.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_8.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_9.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_9.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_10.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_10.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_11.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": true
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_11.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": true
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_12.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_12.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_13.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_13.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_14.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_14.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_15.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_MiningVehicle_TransporterLvl2_C_15.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x000001D60368B600) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_0.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_0.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_1.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_1.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_2.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_2.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_3.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_3.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_4.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_4.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_5.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_5.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_6.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_6.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_7.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_7.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_8.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_8.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_9.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_9.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_10.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_10.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_11.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_11.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_12.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_12.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_13.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_13.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_14.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_14.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_15.MiningLaser_L",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ConstructionVehicle_C_15.MiningLaser_R",
+      "asset": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x000001D633FB0E00) Class 'NiagaraSystem'>",
+      "active": false
+    }
+  ],
+  "screenshot_api": "X.capture_active_window(file_path) -> ScreenshotResult\r\nCapture the currently active/foreground window to a file.\nThis captures whatever window is currently in focus.\r\n\r\nArgs:\r\n    file_path (str): Output file path (PNG format recommended)\r\n\r\nReturns:\r\n    ScreenshotResult: Screenshot result with success status and file info",
+  "world_spawn": [],
+  "actor_spawn": [
+    "AITestSpawnInfo",
+    "AITestSpawnInfoBase",
+    "AITestSpawnSet",
+    "AITestSpawnSetBase",
+    "AbilityTask_SpawnActor",
+    "CacheSpawnableTemplate",
+    "EmitterSpawnable",
+    "FXSystemSpawnParameters",
+    "FunctionalTestAISpawned",
+    "GameplayCueNotify_SpawnCondition",
+    "GameplayCueNotify_SpawnResult",
+    "GameplayTaskSpawnActorDelegate",
+    "GameplayTask_SpawnActor",
+    "GuLiResourceSpawnAnchors",
+    "GuLiStrikeSpawner",
+    "LocationXToSpawnEnum",
+    "LocationYToSpawnEnum",
+    "LocationZToSpawnEnum",
+    "MassEntityEQSSpawnPointsGenerator",
+    "MassEntitySpawnDataGeneratorBase",
+    "MassEntityZoneGraphSpawnPointsGenerator",
+    "MassSpawnDataGenerator",
+    "MassSpawnedEntityType",
+    "MassSpawner",
+    "MassSpawnerOnDespawningFinishedEvent",
+    "MassSpawnerOnSpawningFinishedEvent",
+    "MovieSceneNiagaraSystemSpawnSection",
+    "MovieSceneSpawnSection",
+    "MovieSceneSpawnTrack",
+    "MovieSceneSpawnTrackRecorder",
+    "MovieSceneSpawnableActorBinding",
+    "MovieSceneSpawnableActorBindingBase",
+    "MovieSceneSpawnableBindingBase",
+    "MovieSceneSpawnableChaosCacheBinding",
+    "MovieSceneSpawnableDirectorBlueprintBinding",
+    "NDCSpawnedSystemRef",
+    "NiagaraInterpolatedSpawnMode",
+    "NiagaraSpawnInfo",
+    "NiagaraSystemSpawnSectionEndBehavior",
+    "NiagaraSystemSpawnSectionEvaluateBehavior",
+    "NiagaraSystemSpawnSectionStartBehavior",
+    "ParticleSpawnSignature",
+    "PendingDelayedSpawn",
+    "ProceduralFoliageSpawner",
+    "ProceduralFoliageSpawnerFactory",
+    "RigDispatch_SpawnComponent",
+    "SpawnActorCollisionHandlingMethod",
+    "SpawnActorDelegate",
+    "SpawnActorScaleMethod",
+    "SpawnOwnership",
+    "TakeRecorderNearbySpawnedActorSource",
+    "TrySpawnActorIfDehydrated",
+    "TwinStickSpawner"
+  ]
+}

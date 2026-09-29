@@ -87,9 +87,12 @@ private:
 	void HandleBuildingFeedback(const FText& Message, EGuLiBuildingFeedbackTone Tone);
 	void DrawBuildingFeedback();
 	void DrawPerformanceStats();
+	void RefreshCameraGroundDistance(double Now);
 	double PerformanceSampleWallSeconds = 0.0;
 	uint64 PerformanceSampleFrame = 0;
 	FString PerformanceStatsText;
+	double CameraDistanceSampleWallSeconds = -1.0;
+	FString CameraDistanceText;
 
 	mutable TWeakObjectPtr<AGuLiSoldierStateReplicator> CachedSoldierStateReplicator;
 	mutable TWeakObjectPtr<AGuLiCommanderPresentationActor> CachedPresentationActor;

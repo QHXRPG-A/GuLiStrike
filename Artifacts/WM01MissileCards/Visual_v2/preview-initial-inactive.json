@@ -1,0 +1,89 @@
+{
+  "frame": 310,
+  "frames": [
+    {
+      "frame": 18,
+      "seconds": 0.3,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\start.png"
+    },
+    {
+      "frame": 60,
+      "seconds": 1.0,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\flight.png"
+    },
+    {
+      "frame": 112,
+      "seconds": 1.8666666666666667,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\long_tail.png"
+    },
+    {
+      "frame": 138,
+      "seconds": 2.3,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\peak_tail.png"
+    },
+    {
+      "frame": 156,
+      "seconds": 2.6,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\impact.png"
+    },
+    {
+      "frame": 174,
+      "seconds": 2.9,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\dissipating.png"
+    },
+    {
+      "frame": 252,
+      "seconds": 4.2,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\late_tail.png"
+    },
+    {
+      "frame": 306,
+      "seconds": 5.1,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\cleared.png"
+    }
+  ],
+  "complete": true,
+  "quality": "Full",
+  "visual_revision": 2,
+  "capture_conditions": {
+    "resolution": [
+      1280,
+      720
+    ],
+    "fov": 42,
+    "manual_exposure_bias": 0,
+    "physical_camera_exposure": false,
+    "camera_location": [
+      100,
+      -3900,
+      2400
+    ],
+    "camera_target": [
+      1000,
+      0,
+      400
+    ],
+    "flight_seconds": 2.4,
+    "tail_seconds": 2.4,
+    "comparison": "Same camera, exposure and four illustrative trajectories as Candidate_v1; no PIE."
+  },
+  "gpu_snapshot": {
+    "captured": false,
+    "seconds": 1.0833333333333333,
+    "active": false,
+    "visible": true,
+    "bounds": "(<Struct 'Vector' (0x000001B16032FE90) {x: 1300.000000, y: 0.000000, z: 500.000000}>, <Struct 'Vector' (0x000001B157721E60) {x: 1900.000000, y: 1400.000000, z: 1500.000000}>, 2796.42626953125)",
+    "emitters": []
+  },
+  "cleared_snapshot": {
+    "captured": false,
+    "seconds": 5.1,
+    "active": false,
+    "visible": true,
+    "bounds": "(<Struct 'Vector' (0x000001B16032FE90) {x: 1300.000000, y: 0.000000, z: 500.000000}>, <Struct 'Vector' (0x000001B157721E60) {x: 1900.000000, y: 1400.000000, z: 1500.000000}>, 2796.42626953125)",
+    "emitters": []
+  },
+  "success": true,
+  "error": null,
+  "scope": "editor art preview; illustrative paths; no PIE or gameplay/performance validation"
+}

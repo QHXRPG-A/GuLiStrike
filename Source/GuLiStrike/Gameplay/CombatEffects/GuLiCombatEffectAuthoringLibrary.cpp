@@ -6,9 +6,12 @@
 #include "NiagaraMeshRendererProperties.h"
 #include "NiagaraSpriteRendererProperties.h"
 #include "Engine/StaticMesh.h"
+#include "StaticMeshResources.h"
+#include "StaticMeshCompiler.h"
 #include "Materials/MaterialInterface.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "NiagaraScript.h"
+#include "NiagaraShared.h"
 #include "NiagaraScriptSource.h"
 #include "NiagaraGraph.h"
 #include "NiagaraDataInterface.h"
@@ -21,6 +24,8 @@
 #include "NiagaraNodeFunctionCall.h"
 #include "NiagaraNodeOp.h"
 #include "EdGraphSchema_Niagara.h"
+#include "ViewModels/Stack/NiagaraStackGraphUtilities.h"
+#include "ViewModels/Stack/NiagaraParameterHandle.h"
 #include "UObject/UnrealType.h"
 #include "UObject/UObjectHash.h"
 #include "Misc/PackageName.h"
@@ -215,7 +220,9 @@ bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* Syst
 	{
 		if (!System || (System->GetOutermost()->GetName() != TEXT("/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool")
 			&& System->GetOutermost()->GetName() != TEXT("/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite")
-			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/Buildings/Construction/")))) return false;
+			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/Buildings/Construction/"))
+			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WarMachineHover/"))
+			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WM01Missiles/")))) return false;
 	}
 	ForEachObjectWithOuter(System, [](UObject* Object)
 	{
@@ -253,7 +260,9 @@ bool UGuLiCombatEffectAuthoringLibrary::WireLaserPoolReader(UNiagaraSystem* Syst
 	UNiagaraScript* ParticleUpdateScript, const bool bMuzzle, FString& Error)
 {
 	const FString Path = TEXT("/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool");
-	if (!System || System->GetOutermost()->GetName() != Path || !ParticleUpdateScript
+	if (!System || (System->GetOutermost()->GetName() != Path
+		&& System->GetOutermost()->GetName() != TEXT("/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool")
+		&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_"))) || !ParticleUpdateScript
 		|| ParticleUpdateScript->GetOutermost() != System->GetOutermost())
 	{ Error = TEXT("Laser reader is outside its task-owned system"); return false; }
 	FModuleGraph Module;
@@ -388,6 +397,167 @@ bool UGuLiCombatEffectAuthoringLibrary::ConfigureRogueUpgradeSystem(UNiagaraSyst
 		Emitter->PostEditChangeVersionedProperty(Changed,Handle.GetInstance().Version);
 	}
 	System->MarkPackageDirty(); return true;
+}
+
+bool UGuLiCombatEffectAuthoringLibrary::ConfigureWarMachineHoverSystem(UNiagaraSystem* System, FString& Error)
+{
+	if (!System || System->GetOutermost()->GetName() != TEXT("/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool"))
+	{ Error = TEXT("Unexpected hover asset"); return false; }
+	System->Modify();
+	// VibeUE's generic parameter factory does not expose Niagara Position (LWC) user parameters.
+	const FNiagaraVariable Camera(FNiagaraTypeDefinition::GetPositionDef(), TEXT("User.HoverCamera"));
+	if (!System->GetExposedParameters().FindParameterOffset(Camera)) System->GetExposedParameters().AddParameter(Camera, true);
+	for (const auto& Handle : System->GetEmitterHandles())
+	{
+		auto* Data = Handle.GetEmitterData(); auto* Emitter = Handle.GetInstance().Emitter.Get();
+		if (!Data || !Emitter) { Error = TEXT("Missing hover emitter data"); return false; }
+		Emitter->Modify(); Data->SimTarget = ENiagaraSimTarget::GPUComputeSim; Data->bLocalSpace = false;
+		Data->CalculateBoundsMode = ENiagaraEmitterCalculateBoundMode::Fixed;
+		// Runtime overrides this envelope with nozzle + recent-history bounds on each batch component.
+		Data->FixedBounds = FBox(FVector(-1000), FVector(1000));
+		for (auto* Renderer : Data->GetRenderers())
+			if (auto* Sprite = Cast<UNiagaraSpriteRendererProperties>(Renderer))
+			{ Sprite->Modify(); Sprite->SortMode = ENiagaraSortMode::None; }
+		FPropertyChangedEvent Changed(FindFProperty<FEnumProperty>(FVersionedNiagaraEmitterData::StaticStruct(), TEXT("SimTarget")));
+		Emitter->PostEditChangeVersionedProperty(Changed, Handle.GetInstance().Version);
+	}
+	// Refresh cached GPU-emitter flags through the public editor lifecycle.
+	System->PostEditChange();
+	System->MarkPackageDirty(); return true;
+}
+
+FString UGuLiCombatEffectAuthoringLibrary::GetWarMachineHoverCompileDiagnostics(UNiagaraSystem* System)
+{
+	if (!System || (System->GetOutermost()->GetName() != TEXT("/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool")
+		&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_"))))
+		return TEXT("Unexpected hover system");
+	FString Result = FString::Printf(TEXT("System valid=%d ready=%d gpu=%d\n"),
+		System->IsValid(), System->IsReadyToRun(), System->HasAnyGPUEmitters());
+	Result += FString::Printf(TEXT("Editor needs_compile=%d outstanding_including_gpu=%d\n"),
+		System->NeedsRequestCompile(), System->HasOutstandingCompilationRequests(true));
+	// Ignore template versions and removed emitters retained by editor undo history.
+	TArray<UNiagaraScript*> Scripts { System->GetSystemSpawnScript(), System->GetSystemUpdateScript() };
+	for (const auto& Handle : System->GetEmitterHandles())
+		if (const auto* Data = Handle.GetEmitterData()) Data->GetScripts(Scripts);
+	for (auto* Script : Scripts)
+	{
+		if (Script)
+		{
+			const auto& VM = Script->GetVMExecutableData();
+			Result += FString::Printf(TEXT("%s status=%s\n"), *Script->GetPathName(),
+				*StaticEnum<ENiagaraScriptCompileStatus>()->GetNameStringByValue(int64(Script->GetLastCompileStatus())));
+			if (!VM.ErrorMsg.IsEmpty()) Result += TEXT("VM ERROR: ") + VM.ErrorMsg + TEXT("\n");
+			for (const auto& Event : VM.LastCompileEvents)
+				Result += FString::Printf(TEXT("EVENT [%d] %s\n"), int32(Event.Severity), *Event.Message);
+			if (Script->GetUsage() == ENiagaraScriptUsage::ParticleGPUComputeScript)
+			{
+				if (const auto* Shader = Script->GetRenderThreadScript())
+				{
+					Result += FString::Printf(TEXT("GPU finished=%d complete=%d\n"), Shader->IsCompilationFinished(), Shader->IsShaderMapComplete());
+					for (const auto& Error : Shader->GetCompileErrors()) Result += TEXT("GPU ERROR: ") + Error + TEXT("\n");
+				}
+				else Result += TEXT("GPU shader missing\n");
+			}
+		}
+	}
+	return Result;
+}
+
+bool UGuLiCombatEffectAuthoringLibrary::ConfigureMissileClusterSystem(UNiagaraSystem* System, FString& Error)
+{
+	if (!System || !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_")))
+	{ Error = TEXT("Unexpected missile cluster asset"); return false; }
+	System->Modify();
+	const FNiagaraVariable Contract(FNiagaraTypeDefinition::GetIntDef(), TEXT("User.MissileContractVersion"));
+	System->GetExposedParameters().SetParameterValue<int32>(0, Contract, true);
+	for (const auto& Handle : System->GetEmitterHandles())
+	{
+		auto* Data = Handle.GetEmitterData(); auto* Emitter = Handle.GetInstance().Emitter.Get();
+		if (!Data || !Emitter) { Error = TEXT("Missing cluster emitter data"); return false; }
+		Emitter->Modify(); Data->SimTarget = ENiagaraSimTarget::GPUComputeSim; Data->bLocalSpace = false;
+		// Bind the burst to the occupied batch capacity, not an unconditional 64 slots.
+		auto* Source = Cast<UNiagaraScriptSource>(Data->GraphSource);
+		if (!Source || !Source->NodeGraph) { Error = TEXT("Cluster emitter graph missing"); return false; }
+		TArray<UNiagaraNodeFunctionCall*> Functions; Source->NodeGraph->GetNodesOfClass(Functions);
+		bool bBound = false;
+		for (auto* Function : Functions)
+		{
+			if (!Function->FunctionScript || Function->FunctionScript->GetName() != TEXT("SpawnBurst_Instantaneous")) continue;
+			const FName UserName = Handle.GetName() == TEXT("History") ? TEXT("User.MissileHistoryCount") : TEXT("User.MissileSlotCount");
+			const FNiagaraVariable Parameter(FNiagaraTypeDefinition::GetIntDef(), UserName);
+			if (!System->GetExposedParameters().FindParameterOffset(Parameter))
+				System->GetExposedParameters().AddParameter(Parameter);
+			auto& Pin = FNiagaraStackGraphUtilities::GetOrCreateStackFunctionInputOverridePin(*Function,
+				FNiagaraParameterHandle(FName(Function->GetFunctionName() + TEXT(".Spawn Count"))), FNiagaraTypeDefinition::GetIntDef(), FGuid(), FGuid());
+			// The engine helper asserts on an already linked pin. Repeated authoring
+			// must reuse the correct link and reject an unexpected graph safely.
+			if (Pin.LinkedTo.IsEmpty())
+				FNiagaraStackGraphUtilities::SetLinkedParameterValueForFunctionInput(Pin, Parameter, TSet<FNiagaraVariableBase>{Parameter});
+			else if (Pin.LinkedTo.Num() != 1 || Pin.LinkedTo[0]->PinName != UserName)
+			{ Error = TEXT("Cluster burst has an unexpected override link"); return false; }
+			// Match the stack editor's linked-input conversion: remove the old
+			// fixed rapid-iteration constant from both emitter and system scripts.
+			const FNiagaraVariable OldCount(FNiagaraTypeDefinition::GetIntDef(), FName(FString::Printf(
+				TEXT("Constants.%s.%s.Spawn Count"), *Handle.GetName().ToString(), *Function->GetFunctionName())));
+			TArray<UNiagaraScript*> Affected{System->GetSystemSpawnScript(), System->GetSystemUpdateScript()};
+			Data->GetScripts(Affected);
+			for (auto* Script : Affected)
+				if (Script && Script->RapidIterationParameters.RemoveParameter(OldCount))
+					Script->MarkScriptAndSourceDesynchronized(TEXT("WM01 occupied batch capacity"), FGuid());
+			bBound = true;
+		}
+		if (!bBound) { Error = TEXT("Cluster burst count was not bound"); return false; }
+		Source->NodeGraph->NotifyGraphChanged();
+		Data->CalculateBoundsMode = ENiagaraEmitterCalculateBoundMode::Fixed;
+		Data->FixedBounds = FBox(FVector(-1000), FVector(1000));
+		for (auto* Renderer : Data->GetRenderers())
+		{
+			Renderer->Modify();
+			if (auto* Mesh = Cast<UNiagaraMeshRendererProperties>(Renderer))
+			{
+				Mesh->SortMode = ENiagaraSortMode::None; Mesh->Meshes.SetNum(1);
+				Mesh->Meshes[0].Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/GuLiStrike/FX/WM01Missiles/SM_WM01_Missile.SM_WM01_Missile"));
+				if (!Mesh->Meshes[0].Mesh) { Error = TEXT("Dedicated cluster mesh missing"); return false; }
+			}
+			if (auto* Sprite = Cast<UNiagaraSpriteRendererProperties>(Renderer)) Sprite->SortMode = ENiagaraSortMode::None;
+		}
+		FPropertyChangedEvent Changed(FindFProperty<FEnumProperty>(FVersionedNiagaraEmitterData::StaticStruct(), TEXT("SimTarget")));
+		Emitter->PostEditChangeVersionedProperty(Changed, Handle.GetInstance().Version);
+	}
+	System->GetExposedParameters().SetParameterValue<int32>(2, Contract, true);
+	System->PostEditChange(); System->MarkPackageDirty(); return true;
+}
+
+FString UGuLiCombatEffectAuthoringLibrary::GetMissilePodMeshDiagnostics(UStaticMesh* Mesh)
+{
+	if (!Mesh || Mesh->GetPathName() != TEXT("/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid"))
+		return TEXT("{\"error\":\"Unexpected mesh\"}");
+	TArray<UStaticMesh*> Pending{Mesh}; FStaticMeshCompilingManager::Get().FinishCompilation(Pending);
+	const auto* Render = Mesh->GetRenderData();
+	if (!Render) return TEXT("{\"error\":\"No render data\"}");
+	FString Result = TEXT("{\"lods\":[");
+	for (int32 L = 0; L < Render->LODResources.Num(); ++L)
+	{
+		const auto& Lod = Render->LODResources[L]; const auto& Vertices = Lod.VertexBuffers.StaticMeshVertexBuffer;
+		int32 Left = 0, Right = 0, Mixed = 0, NonIntegral = 0;
+		TArray<int32> Parts; Parts.Init(0, Vertices.GetNumVertices());
+		if (Vertices.GetNumTexCoords() >= 3)
+		{
+			for (uint32 V = 0; V < Vertices.GetNumVertices(); ++V)
+			{
+				const float Encoded = Vertices.GetVertexUV(V, 2).Y; const int32 Part = FMath::RoundToInt(Encoded); Parts[V] = Part;
+				Left += Part == 10; Right += Part == 11; NonIntegral += !FMath::IsNearlyEqual(Encoded, float(Part), .01f);
+			}
+			for (int32 I = 0; I + 2 < Lod.IndexBuffer.GetNumIndices(); I += 3)
+			{
+				const int32 A = Parts[Lod.IndexBuffer.GetIndex(I)], B = Parts[Lod.IndexBuffer.GetIndex(I+1)], C = Parts[Lod.IndexBuffer.GetIndex(I+2)];
+				if ((A == 10 || A == 11 || B == 10 || B == 11 || C == 10 || C == 11) && (A != B || A != C)) ++Mixed;
+			}
+		}
+		Result += FString::Printf(TEXT("%s{\"lod\":%d,\"uv_channels\":%u,\"left_vertices\":%d,\"right_vertices\":%d,\"mixed_pod_triangles\":%d,\"nonintegral_parts\":%d}"),
+			L ? TEXT(",") : TEXT(""), L, Vertices.GetNumTexCoords(), Left, Right, Mixed, NonIntegral);
+	}
+	return Result + TEXT("]}");
 }
 
 FString UGuLiCombatEffectAuthoringLibrary::GetRogueUpgradeCompileDiagnostics(UNiagaraSystem* System)

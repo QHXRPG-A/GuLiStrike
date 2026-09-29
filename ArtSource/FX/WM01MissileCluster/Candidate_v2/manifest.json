@@ -1,0 +1,396 @@
+{
+  "revision": 2,
+  "scope": "isolated editor art preview; no gameplay or performance run",
+  "camera_and_exposure_match_v1": true,
+  "native_build": "passed; editor restarted",
+  "production_cluster_enabled": false,
+  "user_visual_approval": "pending",
+  "runtime_validation": "not_run",
+  "performance_measurement": "not_run",
+  "source_diff_note": "Pool diff also contains preserved concurrent CommanderLOD integration; v2 parameters were rechecked after integration.",
+  "qualities": [
+    {
+      "quality": "Full",
+      "conditions": {
+        "resolution": [
+          1280,
+          720
+        ],
+        "fov": 42,
+        "manual_exposure_bias": 0,
+        "physical_camera_exposure": false,
+        "camera_location": [
+          100,
+          -3900,
+          2400
+        ],
+        "camera_target": [
+          1000,
+          0,
+          400
+        ],
+        "flight_seconds": 2.4,
+        "tail_seconds": 2.4,
+        "comparison": "Same camera, exposure and four illustrative trajectories as Candidate_v1; no PIE."
+      },
+      "frames": [
+        {
+          "frame": 18,
+          "seconds": 0.3,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\start.png"
+        },
+        {
+          "frame": 60,
+          "seconds": 1.0,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\flight.png"
+        },
+        {
+          "frame": 112,
+          "seconds": 1.8666666666666667,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\long_tail.png"
+        },
+        {
+          "frame": 138,
+          "seconds": 2.3,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\peak_tail.png"
+        },
+        {
+          "frame": 156,
+          "seconds": 2.6,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\impact.png"
+        },
+        {
+          "frame": 174,
+          "seconds": 2.9,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\dissipating.png"
+        },
+        {
+          "frame": 252,
+          "seconds": 4.2,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\late_tail.png"
+        },
+        {
+          "frame": 306,
+          "seconds": 5.1,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Full\\cleared.png"
+        }
+      ],
+      "live_particles": [
+        {
+          "name": "Body",
+          "count": 4,
+          "visible": 4
+        },
+        {
+          "name": "Flame",
+          "count": 4,
+          "visible": 4
+        },
+        {
+          "name": "History",
+          "count": 96,
+          "visible": 44
+        }
+      ],
+      "visible_at_5_1_seconds": {
+        "Body": 0,
+        "Flame": 0,
+        "History": 0
+      }
+    },
+    {
+      "quality": "Lite",
+      "conditions": {
+        "resolution": [
+          1280,
+          720
+        ],
+        "fov": 42,
+        "manual_exposure_bias": 0,
+        "physical_camera_exposure": false,
+        "camera_location": [
+          100,
+          -3900,
+          2400
+        ],
+        "camera_target": [
+          1000,
+          0,
+          400
+        ],
+        "flight_seconds": 2.4,
+        "tail_seconds": 2.4,
+        "comparison": "Same camera, exposure and four illustrative trajectories as Candidate_v1; no PIE."
+      },
+      "frames": [
+        {
+          "frame": 18,
+          "seconds": 0.3,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Lite\\start.png"
+        },
+        {
+          "frame": 60,
+          "seconds": 1.0,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Lite\\flight.png"
+        },
+        {
+          "frame": 112,
+          "seconds": 1.8666666666666667,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Lite\\long_tail.png"
+        },
+        {
+          "frame": 138,
+          "seconds": 2.3,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Lite\\peak_tail.png"
+        },
+        {
+          "frame": 156,
+          "seconds": 2.6,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Lite\\impact.png"
+        },
+        {
+          "frame": 174,
+          "seconds": 2.9,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Lite\\dissipating.png"
+        },
+        {
+          "frame": 252,
+          "seconds": 4.2,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Lite\\late_tail.png"
+        },
+        {
+          "frame": 306,
+          "seconds": 5.1,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Lite\\cleared.png"
+        }
+      ],
+      "live_particles": [
+        {
+          "name": "Body",
+          "count": 4,
+          "visible": 4
+        },
+        {
+          "name": "Flame",
+          "count": 4,
+          "visible": 4
+        },
+        {
+          "name": "History",
+          "count": 32,
+          "visible": 16
+        }
+      ],
+      "visible_at_5_1_seconds": {
+        "Body": 0,
+        "Flame": 0,
+        "History": 0
+      }
+    },
+    {
+      "quality": "Minimal",
+      "conditions": {
+        "resolution": [
+          1280,
+          720
+        ],
+        "fov": 42,
+        "manual_exposure_bias": 0,
+        "physical_camera_exposure": false,
+        "camera_location": [
+          100,
+          -3900,
+          2400
+        ],
+        "camera_target": [
+          1000,
+          0,
+          400
+        ],
+        "flight_seconds": 2.4,
+        "tail_seconds": 2.4,
+        "comparison": "Same camera, exposure and four illustrative trajectories as Candidate_v1; no PIE."
+      },
+      "frames": [
+        {
+          "frame": 18,
+          "seconds": 0.3,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\start.png"
+        },
+        {
+          "frame": 60,
+          "seconds": 1.0,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\flight.png"
+        },
+        {
+          "frame": 112,
+          "seconds": 1.8666666666666667,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\long_tail.png"
+        },
+        {
+          "frame": 138,
+          "seconds": 2.3,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\peak_tail.png"
+        },
+        {
+          "frame": 156,
+          "seconds": 2.6,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\impact.png"
+        },
+        {
+          "frame": 174,
+          "seconds": 2.9,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\dissipating.png"
+        },
+        {
+          "frame": 252,
+          "seconds": 4.2,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\late_tail.png"
+        },
+        {
+          "frame": 306,
+          "seconds": 5.1,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\cleared.png"
+        }
+      ],
+      "live_particles": [
+        {
+          "name": "Body",
+          "count": 4,
+          "visible": 4
+        },
+        {
+          "name": "Flame",
+          "count": 4,
+          "visible": 4
+        }
+      ],
+      "visible_at_5_1_seconds": {
+        "Body": 0,
+        "Flame": 0
+      }
+    }
+  ],
+  "images": [
+    {
+      "path": "Full\\start.png",
+      "seconds": 0.3,
+      "sha256": "5dc365183677600d2b715a3d5718f085d13b74cdacd1a62bbacaf60743b7a501"
+    },
+    {
+      "path": "Full\\flight.png",
+      "seconds": 1.0,
+      "sha256": "d4d80374e71eecdacef777d33437996ac8ec6e958d910917b89b2119f970fb69"
+    },
+    {
+      "path": "Full\\long_tail.png",
+      "seconds": 1.8666666666666667,
+      "sha256": "9661d32ce626b17283857d8f395e7c083579b866ea8e65b4e36115890a04afef"
+    },
+    {
+      "path": "Full\\peak_tail.png",
+      "seconds": 2.3,
+      "sha256": "b2d773a0acc9d2cadaf195e82d894be11530b81bde1e8bfe3b67d0323171796c"
+    },
+    {
+      "path": "Full\\impact.png",
+      "seconds": 2.6,
+      "sha256": "7328b17f84df4ae45efa2baf8070f4acdc59b91bdb91824139f3ce5d1c2e62ff"
+    },
+    {
+      "path": "Full\\dissipating.png",
+      "seconds": 2.9,
+      "sha256": "2db08ea502aa8cfc377d33fab48d4447f16ce4fc92092f8b88e273662529a48d"
+    },
+    {
+      "path": "Full\\late_tail.png",
+      "seconds": 4.2,
+      "sha256": "adbe917c337373551387398836f3bd340c341cb27a8eea45bb7380eb0de3b011"
+    },
+    {
+      "path": "Full\\cleared.png",
+      "seconds": 5.1,
+      "sha256": "f15d4c9ebfff2cfb791105e541373104bdc0dbf847b3dce7b720a47eafcc3aea"
+    },
+    {
+      "path": "Lite\\start.png",
+      "seconds": 0.3,
+      "sha256": "638d75e70bcaa657443df9ef5aaff1857c4b2a891bd46687fa6a9e620d01cfb1"
+    },
+    {
+      "path": "Lite\\flight.png",
+      "seconds": 1.0,
+      "sha256": "5a50d491fe5d45f5b188160f9284c94d0dbc0d72da1abd6cf1078adbd0121048"
+    },
+    {
+      "path": "Lite\\long_tail.png",
+      "seconds": 1.8666666666666667,
+      "sha256": "155d710028ea9e31dbbc11fd1aae14dc94dedd89b025a92707cc2ad359896bfd"
+    },
+    {
+      "path": "Lite\\peak_tail.png",
+      "seconds": 2.3,
+      "sha256": "73235fc6f6fd9981687119106fc5734b81c248ba4456c12553e8463e87317def"
+    },
+    {
+      "path": "Lite\\impact.png",
+      "seconds": 2.6,
+      "sha256": "3335ad4720de2ee325b0005794309be101882b79078e2cc85fd061e1f956f4c8"
+    },
+    {
+      "path": "Lite\\dissipating.png",
+      "seconds": 2.9,
+      "sha256": "250e88112a7ac613dc1fc93bc5a7eb6ddbb9516a32a00c8c4a89a74384c1a1e2"
+    },
+    {
+      "path": "Lite\\late_tail.png",
+      "seconds": 4.2,
+      "sha256": "132353688f2d5427ba193067f1da62093d67de89185f8e7c8a676f430068ff6a"
+    },
+    {
+      "path": "Lite\\cleared.png",
+      "seconds": 5.1,
+      "sha256": "a09c474182a64132cf9ffc0a18e2525a3dcf36d64881bd2ebd5bbc9c598c650e"
+    },
+    {
+      "path": "Minimal\\start.png",
+      "seconds": 0.3,
+      "sha256": "21f2c5cb42936300251240403e58f95d61c329035677afca4a9a7d05928fd19a"
+    },
+    {
+      "path": "Minimal\\flight.png",
+      "seconds": 1.0,
+      "sha256": "d99a1e1ad75cf429018ecf22f059a446477ddafb58f95704ef1de3cfab641f5a"
+    },
+    {
+      "path": "Minimal\\long_tail.png",
+      "seconds": 1.8666666666666667,
+      "sha256": "72d436530b8f822aa86760d0e13cfb8678ddbdc81c7647f12927d4af96165569"
+    },
+    {
+      "path": "Minimal\\peak_tail.png",
+      "seconds": 2.3,
+      "sha256": "036ea5b10a0321f1c42a43170460a9ecf1f858a5e477b878c6e7f80fd52c78d2"
+    },
+    {
+      "path": "Minimal\\impact.png",
+      "seconds": 2.6,
+      "sha256": "da89d8b528ef918679b71f5d672a34f76b811d960707752595d87e7f06db6520"
+    },
+    {
+      "path": "Minimal\\dissipating.png",
+      "seconds": 2.9,
+      "sha256": "da89d8b528ef918679b71f5d672a34f76b811d960707752595d87e7f06db6520"
+    },
+    {
+      "path": "Minimal\\late_tail.png",
+      "seconds": 4.2,
+      "sha256": "da89d8b528ef918679b71f5d672a34f76b811d960707752595d87e7f06db6520"
+    },
+    {
+      "path": "Minimal\\cleared.png",
+      "seconds": 5.1,
+      "sha256": "668a427f271dba692701e7c1271240eefe7b112f43d1a81304a831e4324efb0f"
+    }
+  ]
+}

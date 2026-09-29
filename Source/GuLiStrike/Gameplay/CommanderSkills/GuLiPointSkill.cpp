@@ -22,15 +22,26 @@ bool UGuLiPointSkillExecutor::ValidateDefinition(const FGuLiActiveSkillDefinitio
 FGuLiActiveSkillExecutionResult UGuLiPointSkillExecutor::Execute(const FGuLiActiveSkillExecutionContext& Context, const UDataAsset* Configuration) const
 {
 	FGuLiActiveSkillExecutionResult Result;
+	FGuLiCombatAttackRequest Request;
+	if (!BuildRequest(Context,Configuration,Request,Result.Error)) return Result;
+	auto* Runtime=Context.Commander->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>();
+	Result.EffectId=Runtime ? Runtime->LaunchPointProjectile(Request) : FGuid();
+	Result.bSucceeded=Result.EffectId.IsValid();
+	if (!Result.bSucceeded) Result.Error=TEXT("Projectile execution rejected the cast.");
+	return Result;
+}
+
+bool UGuLiPointSkillExecutor::BuildRequest(const FGuLiActiveSkillExecutionContext& Context,
+	const UDataAsset* Configuration, FGuLiCombatAttackRequest& Request, FString& Error) const
+{
 	const auto* Candidate = Cast<UGuLiPointSkillConfiguration>(Configuration);
 	if (!Candidate || !Context.Commander || !Context.Commander->HasAuthority() || !Context.Commander->GetWorld())
-	{ Result.Error = TEXT("Point projectile requires authoritative caster and configuration."); return Result; }
+	{ Error = TEXT("Point projectile requires authoritative caster and configuration."); return false; }
 	const auto& Config = *Candidate;
 	auto& World = *Context.Commander->GetWorld();
-	FGuLiCombatAttackRequest Request;
 	const auto* GameState = World.GetGameState<AGuLiBattleGameState>();
 	if (!GameState || !Config.Projectile || !Config.Projectile->ResolveMotionSettings(Request.Motion))
-	{ Result.Error = TEXT("Effect configuration is unavailable."); return Result; }
+	{ Error = TEXT("Effect configuration is unavailable."); return false; }
 	Request.Context.Source = Context.Source;
 	Request.Context.MatchEpoch = GameState->GetMatchEpoch();
 	Request.Context.RootEventId = Context.RequestId;
@@ -60,11 +71,7 @@ FGuLiActiveSkillExecutionResult UGuLiPointSkillExecutor::Execute(const FGuLiActi
 	Request.Projectile = Config.Projectile;
 	Request.bUseAuthoredPointTrajectory = Config.bUseAuthoredTrajectory;
 	Request.GroundWarningStyle = Config.GroundWarningStyle;
-	if (!ConfigurePayload(Context, Config, Request, Result.Error)) return Result;
-	Result.EffectId = World.GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>()->LaunchPointProjectile(Request);
-	Result.bSucceeded = Result.EffectId.IsValid();
-	if (!Result.bSucceeded) Result.Error = TEXT("Projectile execution rejected the cast.");
-	return Result;
+	return ConfigurePayload(Context, Config, Request, Error);
 }
 
 bool UGuLiPointSkillExecutor::ConfigurePayload(const FGuLiActiveSkillExecutionContext& Context,

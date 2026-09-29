@@ -1,0 +1,225 @@
+{
+  "success": true,
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "pie": false,
+  "assets": [
+    {
+      "path": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel",
+      "class": "StaticMesh",
+      "owner": "GuLi.CelPass.20260917",
+      "referencers": [
+        "/Game/StylizedPineEnvironment/Maps/Demo_Map",
+        "/Game/GuLiStrike/Environment/ArtReview/PineStyleAdaptation_20260918/LVL_Pine_Style_v1",
+        "/Game/GuLiStrike/Environment/ArtReview/PineStyleComparison_20260917/LVL_Pine_Units_Comparison",
+        "/Game/Commander/Units/Tactical/Cel/Review/LVL_CelModels_Review",
+        "/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Soldiers",
+        "/Game/Maps/LVL_GroundMech_Demo",
+        "/Game/Maps/LVL_GroundMech_FireReview"
+      ],
+      "dimensions_cm": [
+        6207.279296875,
+        6249.5201416015625,
+        3741.89794921875
+      ],
+      "bounds_origin": [
+        -244.271484375,
+        -227.07000732421875,
+        1561.62890625
+      ],
+      "lod_triangles": [
+        27303,
+        6826,
+        300,
+        70
+      ],
+      "lod_screens": [
+        1.0,
+        0.3199999928474426,
+        0.09000000357627869,
+        0.02500000037252903
+      ],
+      "uv_channels": 3,
+      "slots": [
+        {
+          "name": "M_Tactical_Contour",
+          "material": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour"
+        },
+        {
+          "name": "M_WarMachine_Cel",
+          "material": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel"
+        }
+      ],
+      "body_setup": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel:BodySetup_0",
+      "import_data": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel:FbxStaticMeshImportData_0",
+      "sockets": [
+        {
+          "name": "FX_AimTarget",
+          "location": [
+            0.0,
+            0.0,
+            1600.0
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FX_Muzzle_Basic_01",
+          "location": [
+            1769.8602676391602,
+            1461.23685836792,
+            1580.907154083252
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FX_Missile_01",
+          "location": [
+            -729.1603565216064,
+            932.1683883666992,
+            3122.332191467285
+          ],
+          "rotation": [
+            0.0,
+            45.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FX_Missile_02",
+          "location": [
+            -729.1603565216064,
+            -932.1683883666992,
+            3122.332191467285
+          ],
+          "rotation": [
+            0.0,
+            45.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "source_files": [
+        "D:/UE5.7/test1/ArtSource/StylePass_20260917/Models/SM_WarMachine_Cel.fbx"
+      ]
+    },
+    {
+      "path": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel",
+      "class": "Material",
+      "owner": "GuLi.CelPass.20260917",
+      "referencers": [
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel",
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel"
+      ],
+      "textures": [
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_BaseColor.T_WarMachine_BaseColor",
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_LineMask.T_WarMachine_LineMask"
+      ],
+      "shading_model": "<MaterialShadingModel.MSM_UNLIT: 0>"
+    },
+    {
+      "path": "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_LineMask.T_WarMachine_LineMask",
+      "class": "Texture2D",
+      "owner": "GuLi.CelPass.20260917",
+      "referencers": [
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel"
+      ],
+      "srgb": "False",
+      "compression": "<TextureCompressionSettings.TC_MASKS: 2>",
+      "source_files": [
+        "D:/UE5.7/test1/ArtSource/StylePass_20260917/Models/T_WarMachine_LineMask.png"
+      ]
+    },
+    {
+      "path": "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_BaseColor.T_WarMachine_BaseColor",
+      "class": "Texture2D",
+      "owner": "GuLi.CelPass.20260917",
+      "referencers": [
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel"
+      ],
+      "srgb": "True",
+      "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+      "source_files": [
+        "D:/UE5.7/test1/ArtSource/TacticalStyle_20260916/Production_Handbuilt/T_WarMachine_BaseColor.png"
+      ]
+    },
+    {
+      "path": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour",
+      "class": "Material",
+      "owner": "GuLi.CelPass.20260917",
+      "referencers": [
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel",
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel"
+      ],
+      "textures": [],
+      "shading_model": "<MaterialShadingModel.MSM_UNLIT: 0>"
+    },
+    {
+      "path": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel.SK_WarMachine_Cel",
+      "class": "SkeletalMesh",
+      "owner": "GuLi.CelPass.20260917",
+      "referencers": [
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel_Skeleton"
+      ],
+      "dimensions_cm": [
+        5494.144287109375,
+        5790.17041015625,
+        3448.2857837677
+      ],
+      "skeleton": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel_Skeleton.SK_WarMachine_Cel_Skeleton",
+      "slots": [
+        {
+          "name": "M_Tactical_Contour",
+          "material": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour"
+        },
+        {
+          "name": "M_WarMachine_Cel",
+          "material": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel"
+        }
+      ],
+      "bones": [
+        "Rig_WarMachine",
+        "root",
+        "Body"
+      ],
+      "source_files": [
+        "D:/UE5.7/test1/ArtSource/StylePass_20260917/Models/SK_WarMachine_Cel.fbx"
+      ]
+    },
+    {
+      "path": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel_Skeleton.SK_WarMachine_Cel_Skeleton",
+      "class": "Skeleton",
+      "owner": "GuLi.CelPass.20260917",
+      "referencers": [
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel"
+      ]
+    }
+  ],
+  "dirty_packages": []
+}

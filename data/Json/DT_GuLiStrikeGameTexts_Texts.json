@@ -1148,38 +1148,38 @@
   {
     "Name": "Card.WM01.FireRate.Title",
     "TextId": "Card.WM01.FireRate.Title",
-    "Introduction": "战争机器肉鸽卡标题",
+    "Introduction": "重防号肉鸽卡标题",
     "Content": "增加射速"
   },
   {
     "Name": "Card.WM01.FireRate.Description",
     "TextId": "Card.WM01.FireRate.Description",
-    "Introduction": "战争机器肉鸽卡说明；{0}来自BonusPercent×100",
-    "Content": "战争机器的普攻射速提高 {0}%。"
+    "Introduction": "重防号肉鸽卡说明；{0}来自BonusPercent×100",
+    "Content": "<Unit>重防号</> <Gain>普攻射速+{0}%</>"
   },
   {
     "Name": "Card.WM01.HighSpeed.Title",
     "TextId": "Card.WM01.HighSpeed.Title",
-    "Introduction": "战争机器肉鸽卡标题",
+    "Introduction": "重防号肉鸽卡标题",
     "Content": "极速机动"
   },
   {
     "Name": "Card.WM01.HighSpeed.Description",
     "TextId": "Card.WM01.HighSpeed.Description",
-    "Introduction": "战争机器肉鸽卡说明；{0}来自BonusPercent×100",
-    "Content": "战争机器的移动速度提高 {0}%。"
+    "Introduction": "重防号肉鸽卡说明；{0}来自BonusPercent×100",
+    "Content": "<Unit>重防号</> <Gain>移动速度+{0}%</>"
   },
   {
     "Name": "Card.WM01.MissileDamage.Title",
     "TextId": "Card.WM01.MissileDamage.Title",
-    "Introduction": "战争机器肉鸽卡标题",
+    "Introduction": "重防号肉鸽卡标题",
     "Content": "增加导弹伤害"
   },
   {
     "Name": "Card.WM01.MissileDamage.Description",
     "TextId": "Card.WM01.MissileDamage.Description",
-    "Introduction": "战争机器肉鸽卡说明；{0}来自BonusPercent×100",
-    "Content": "战争机器的导弹伤害提高 {0}%。"
+    "Introduction": "重防号肉鸽卡说明；{0}来自BonusPercent×100",
+    "Content": "<Unit>重防号</> <Gain>导弹伤害+{0}%</>"
   },
   {
     "Name": "UI.RogueCards.Title",
@@ -1246,5 +1246,107 @@
     "TextId": "UI.RogueCards.Done",
     "Introduction": "实战选牌界面",
     "Content": "选择完成"
+  },
+  {
+    "Name": "UI.Camera.GroundDistances",
+    "TextId": "UI.Camera.GroundDistances",
+    "Introduction": "指挥官只读距离采样；参数为垂直离地高度及画面中心地面距离",
+    "Content": "离地高度 {0}  |  中心地面距离 {1}"
+  },
+  {
+    "Name": "UI.Camera.Meters",
+    "TextId": "UI.Camera.Meters",
+    "Introduction": "指挥官距离数值；米，保留一位小数",
+    "Content": "{0} 米"
+  },
+  {
+    "Name": "UI.Camera.NoGround",
+    "TextId": "UI.Camera.NoGround",
+    "Introduction": "摄像机正下方无地形或中心射线未命中地形",
+    "Content": "无地形"
+  },
+  {
+    "Name": "Card.WM01.MissilePod.Title",
+    "TextId": "Card.WM01.MissilePod.Title",
+    "Introduction": "重防号肉鸽卡标题",
+    "Content": "重防导弹仓"
+  },
+  {
+    "Name": "Card.WM01.MissilePod.Description",
+    "TextId": "Card.WM01.MissilePod.Description",
+    "Introduction": "重防号导弹槽解锁；无数值占位符",
+    "Content": "<Unit>重防号</> 解锁<Gain>导弹技能</>"
+  },
+  {
+    "Name": "Card.WM01.RainSalvo.Title",
+    "TextId": "Card.WM01.RainSalvo.Title",
+    "Introduction": "重防号肉鸽卡标题",
+    "Content": "雨点攻势"
+  },
+  {
+    "Name": "Card.WM01.RainSalvo.Description",
+    "TextId": "Card.WM01.RainSalvo.Description",
+    "Introduction": "重防号肉鸽卡说明；{0}来自BonusCount",
+    "Content": "<Unit>重防号</> <Gain>导弹齐射数量+{0}</>"
+  },
+  {
+    "Name": "UI.RogueCards.Empty",
+    "TextId": "UI.RogueCards.Empty",
+    "Introduction": "无合格候选卡时显示",
+    "Content": "暂无可选牌"
+  },
+  {
+    "Name": "UI.RogueCards.AcquisitionLimit",
+    "TextId": "UI.RogueCards.AcquisitionLimit",
+    "Introduction": "结算复核：达到获取次数",
+    "Content": "该卡已达到本局获取上限"
+  },
+  {
+    "Name": "UI.RogueCards.RequirementNotMet",
+    "TextId": "UI.RogueCards.RequirementNotMet",
+    "Introduction": "结算复核：缺少依赖",
+    "Content": "尚未获得该卡要求的前置卡牌"
+  },
+  {
+    "Name": "UI.RogueCards.Excluded",
+    "TextId": "UI.RogueCards.Excluded",
+    "Introduction": "结算复核：双向互斥",
+    "Content": "该卡与本队已获得的卡牌互斥"
+  },
+  {
+    "Name": "UI.RogueCards.Reroll",
+    "TextId": "UI.RogueCards.Reroll",
+    "Introduction": "F4选牌重选按钮",
+    "Content": "重选"
+  },
+  {
+    "Name": "UI.RogueCards.Rerolling",
+    "TextId": "UI.RogueCards.Rerolling",
+    "Introduction": "F4选牌等待重选结果",
+    "Content": "正在重选…"
+  },
+  {
+    "Name": "UI.RogueCards.RerollHint",
+    "TextId": "UI.RogueCards.RerollHint",
+    "Introduction": "F4重选按钮说明",
+    "Content": "免费重新随机可选卡牌，优先换成当前未显示的牌。"
+  },
+  {
+    "Name": "UI.RogueCards.NoAlternatives",
+    "TextId": "UI.RogueCards.NoAlternatives",
+    "Introduction": "没有其他合格卡时保留当前选择",
+    "Content": "暂无其他可选卡牌"
+  },
+  {
+    "Name": "UI.RogueCards.RerollUnavailable",
+    "TextId": "UI.RogueCards.RerollUnavailable",
+    "Introduction": "重选会话过期或已提交",
+    "Content": "当前无法重选，请重新打开选牌界面"
+  },
+  {
+    "Name": "UI.RogueCards.RerollBusy",
+    "TextId": "UI.RogueCards.RerollBusy",
+    "Introduction": "重选触发服务器请求限流",
+    "Content": "操作过快，请稍后重选"
   }
 ]

@@ -33,6 +33,7 @@ struct GULISTRIKE_API FGuLiUnitSkillConfig
 	UPROPERTY() float Damage = 0.0f;
 	UPROPERTY() float AttackRatePerSecond = 0.0f;
 	UPROPERTY() float RangeCentimeters = 0.0f;
+	UPROPERTY() int32 ProjectileCount = 1;
 	/** Authored availability; rewards may unlock this stable slot during the match. */
 	UPROPERTY() bool bInitiallyUnlocked = true;
 	UPROPERTY() float ProjectileSpeedCentimetersPerSecond = 0.0f;
@@ -54,6 +55,7 @@ struct GULISTRIKE_API FGuLiResolvedSkillProfile
 	UPROPERTY() float Damage = 0.0f;
 	UPROPERTY() float AttackRatePerSecond = 0.0f;
 	UPROPERTY() float RangeCentimeters = 0.0f;
+	UPROPERTY() int32 ProjectileCount = 1;
 	UPROPERTY() uint32 Revision = 0;
 	UPROPERTY() bool bUnlocked = true;
 	UPROPERTY() bool bEquipped = true;
@@ -65,7 +67,7 @@ struct GULISTRIKE_API FGuLiResolvedSkillProfile
 };
 
 UENUM()
-enum class EGuLiSkillAttribute : uint8 { Damage, AttackRate, Range };
+enum class EGuLiSkillAttribute : uint8 { Damage, AttackRate, Range, ProjectileCount };
 UENUM()
 enum class EGuLiSkillModifierOperation : uint8 { AddFlat, AddPercent };
 
@@ -92,6 +94,8 @@ struct GULISTRIKE_API FGuLiSkillModifier
 	UPROPERTY() EGuLiSkillModifierOperation Operation = EGuLiSkillModifierOperation::AddFlat;
 	/** AddPercent uses fraction units: 0.2 means +20 percent. */
 	UPROPERTY() float Magnitude = 0.0f;
+	/** ProjectileCount uses integer addition only, without float conversion. */
+	UPROPERTY() int32 IntegerMagnitude = 0;
 };
 
 USTRUCT()

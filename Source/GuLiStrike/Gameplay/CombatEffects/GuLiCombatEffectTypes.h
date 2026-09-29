@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
+#include "Gameplay/Presentation/GuLiMechanicalAnimation.h"
 #include "GuLiCombatEffectTypes.generated.h"
 
 class UGuLiProjectileEffectDefinition;
@@ -83,6 +84,9 @@ struct GULISTRIKE_API FGuLiProjectileMotionSettings
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float MinimumLiftHeight = 120.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float MaximumLiftHeight = 200.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float LateralOffset = 40.0f;
+	/** Zero preserves legacy wingman motion. Positive values enable independent seeded curve phases. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float VerticalCurve = 0.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float LongitudinalCurve = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="1", Units="cm")) float ConvergenceDistance = 320.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="1", Units="deg/s")) float TurnRate = 240.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float SweepRadius = 6.0f;
@@ -173,6 +177,12 @@ struct GULISTRIKE_API FGuLiCombatShotCue
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") float ServerTime = 0.0f;
 	/** Flying projectiles use the pooled laser renderer and retain only the original muzzle effect here. */
 	UPROPERTY() bool bMuzzleOnly = false;
+	/** One accepted mechanical shot, not the legacy sustained muzzle activity. */
+	UPROPERTY() bool bMechanicalShot = false;
+	UPROPERTY() FVector_NetQuantizeNormal MuzzleDirection = FVector::ForwardVector;
+	UPROPERTY() float RecoilFromCentimeters = 0.0f;
+	/** Mass pose clock, distinct from the world clock used by projectile lifetimes. */
+	UPROPERTY() float MechanicalPoseTimeSeconds = 0.0f;
 	bool NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess);
 };
 
@@ -188,6 +198,12 @@ struct GULISTRIKE_API FGuLiCombatAttackRequest
 	FTransform SourceTransform = FTransform::Identity;
 	FVector TargetLocation = FVector::ZeroVector;
 	uint64 ShotOrdinal = 0;
+	FGuLiMechanicalAnimationState MechanicalPose;
+	uint8 MechanicalMuzzleIndex = 0;
+	bool bHasMechanicalPose = false;
+	float MechanicalPoseTimeSeconds = 0.0f;
+	/** Invoked synchronously only after the projectile pool accepts the shot. */
+	TFunction<void(uint8, float)> OnShotAccepted;
 	FVector MuzzleOffset = FVector::ZeroVector;
 	UGuLiProjectileEffectDefinition* Projectile = nullptr;
 	FGuLiSpellFieldConfig FrozenField;

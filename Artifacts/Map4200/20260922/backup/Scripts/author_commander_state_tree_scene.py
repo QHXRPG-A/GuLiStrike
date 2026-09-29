@@ -93,7 +93,7 @@ def run():
          '待建建筑保持碰撞并提供0–4个建造位；最多四车同时施工。预占 → 排队寻路 → 施工，停工保留进度。\n'
          '树资产：/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder'),
         ('StateTreeReview_StrongholdAdvance', next_outpost.get_actor_location() + unreal.Vector(0, 0, 500),
-         '扫荡者、战争机器 / ST_CommanderMass\n'
+         '扫荡者、重防号 / ST_CommanderMass\n'
          '双方初始军队使用原有生成布局；出生授予一次据点推进。R2C3是红方前方的一个可观察据点，实际目标由原拓扑规则选择。\n'
          '观察选目标 → 推进 → 等待占领；手动移动、Shift追加、S停止使用原指令入口。\n'
          '树资产：/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass'),

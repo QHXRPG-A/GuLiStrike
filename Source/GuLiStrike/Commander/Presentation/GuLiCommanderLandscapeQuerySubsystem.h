@@ -29,6 +29,9 @@ public:
 	/** Returns a strict Landscape height at world XY; never falls back to another actor. */
 	bool TryGetLandscapeHeight(const FVector2D& WorldXY, float& OutHeight) const;
 
+	/** Closest terrain-only segment hit; units, buildings and props cannot mask the ground. */
+	bool TryTraceLandscape(const FVector& Start, const FVector& End, FVector& OutHitLocation) const;
+
 	/** Changes only when the live proxy set or its component bounds change. */
 	uint32 GetCacheRevision() const;
 

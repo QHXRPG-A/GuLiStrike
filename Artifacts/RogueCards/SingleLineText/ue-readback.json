@@ -1,0 +1,251 @@
+{
+  "success": true,
+  "PIE": "not_run",
+  "visual": "not_run",
+  "player_acceptance": "pending",
+  "style_data_table": [
+    {
+      "Name": "Default",
+      "Id": 1,
+      "Note": "普通连接词；标题不使用本表",
+      "FontAsset": "/Engine/EngineFonts/Roboto.Roboto",
+      "FontSize": 38,
+      "Typeface": "Regular",
+      "ColorSRGB": "#FAFAF5",
+      "OutlineSize": 0,
+      "OutlineColorSRGB": "#000000"
+    },
+    {
+      "Name": "Unit",
+      "Id": 2,
+      "Note": "单位名；Bold与同色描边共同加粗中文回退字形",
+      "FontAsset": "/Engine/EngineFonts/Roboto.Roboto",
+      "FontSize": 38,
+      "Typeface": "Bold",
+      "ColorSRGB": "#FFD84A",
+      "OutlineSize": 1,
+      "OutlineColorSRGB": "#FFD84A"
+    },
+    {
+      "Name": "Gain",
+      "Id": 3,
+      "Note": "增益属性及数值；样式由公共文本中的Gain标签引用",
+      "FontAsset": "/Engine/EngineFonts/Roboto.Roboto",
+      "FontSize": 38,
+      "Typeface": "Bold",
+      "ColorSRGB": "#FFD84A",
+      "OutlineSize": 1,
+      "OutlineColorSRGB": "#FFD84A"
+    }
+  ],
+  "widget": {
+    "widget": "/Game/GuLiStrike/CardSystem/WarMachineTarot/UI/WBP_CardText",
+    "style": "/Game/GuLiStrike/CardSystem/WarMachineTarot/UI/DT_CardTextStyles",
+    "source_style_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCardUI_TextStyles",
+    "style_source": [
+      {
+        "Name": "Default",
+        "TextStyle": {
+          "Font": {
+            "FontObject": "/Engine/EngineFonts/Roboto.Roboto",
+            "TypefaceFontName": "Regular",
+            "Size": 38,
+            "OutlineSettings": {
+              "OutlineSize": 0,
+              "OutlineColor": {
+                "R": 0.0,
+                "G": 0.0,
+                "B": 0.0,
+                "A": 1.0
+              },
+              "bSeparateFillAlpha": false
+            }
+          },
+          "ColorAndOpacity": {
+            "SpecifiedColor": {
+              "R": 0.9559733532492861,
+              "G": 0.9559733532492861,
+              "B": 0.9130986517934192,
+              "A": 1.0
+            },
+            "ColorUseRule": "UseColor_Specified"
+          },
+          "ShadowOffset": {
+            "X": 0,
+            "Y": 0
+          },
+          "ShadowColorAndOpacity": {
+            "R": 0,
+            "G": 0,
+            "B": 0,
+            "A": 0
+          }
+        }
+      },
+      {
+        "Name": "Unit",
+        "TextStyle": {
+          "Font": {
+            "FontObject": "/Engine/EngineFonts/Roboto.Roboto",
+            "TypefaceFontName": "Bold",
+            "Size": 38,
+            "OutlineSettings": {
+              "OutlineSize": 1,
+              "OutlineColor": {
+                "R": 1.0,
+                "G": 0.6866853124353135,
+                "B": 0.06847816984440017,
+                "A": 1.0
+              },
+              "bSeparateFillAlpha": false
+            }
+          },
+          "ColorAndOpacity": {
+            "SpecifiedColor": {
+              "R": 1.0,
+              "G": 0.6866853124353135,
+              "B": 0.06847816984440017,
+              "A": 1.0
+            },
+            "ColorUseRule": "UseColor_Specified"
+          },
+          "ShadowOffset": {
+            "X": 0,
+            "Y": 0
+          },
+          "ShadowColorAndOpacity": {
+            "R": 0,
+            "G": 0,
+            "B": 0,
+            "A": 0
+          }
+        }
+      },
+      {
+        "Name": "Gain",
+        "TextStyle": {
+          "Font": {
+            "FontObject": "/Engine/EngineFonts/Roboto.Roboto",
+            "TypefaceFontName": "Bold",
+            "Size": 38,
+            "OutlineSettings": {
+              "OutlineSize": 1,
+              "OutlineColor": {
+                "R": 1.0,
+                "G": 0.6866853124353135,
+                "B": 0.06847816984440017,
+                "A": 1.0
+              },
+              "bSeparateFillAlpha": false
+            }
+          },
+          "ColorAndOpacity": {
+            "SpecifiedColor": {
+              "R": 1.0,
+              "G": 0.6866853124353135,
+              "B": 0.06847816984440017,
+              "A": 1.0
+            },
+            "ColorUseRule": "UseColor_Specified"
+          },
+          "ShadowOffset": {
+            "X": 0,
+            "Y": 0
+          },
+          "ShadowColorAndOpacity": {
+            "R": 0,
+            "G": 0,
+            "B": 0,
+            "A": 0
+          }
+        }
+      }
+    ],
+    "compile": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "title_preserved": true
+  },
+  "text_table": {
+    "Card.WM01.FireRate.Description": "<Unit>重防号</> <Gain>普攻射速+{0}%</>",
+    "Card.WM01.HighSpeed.Description": "<Unit>重防号</> <Gain>移动速度+{0}%</>",
+    "Card.WM01.MissileDamage.Description": "<Unit>重防号</> <Gain>导弹伤害+{0}%</>",
+    "Card.WM01.MissilePod.Description": "<Unit>重防号</> 解锁<Gain>导弹技能</>",
+    "Card.WM01.RainSalvo.Description": "<Unit>重防号</> <Gain>导弹齐射数量+{0}</>"
+  },
+  "string_table": {
+    "Card.WM01.FireRate.Description": "<Unit>重防号</> <Gain>普攻射速+{0}%</>",
+    "Card.WM01.HighSpeed.Description": "<Unit>重防号</> <Gain>移动速度+{0}%</>",
+    "Card.WM01.MissileDamage.Description": "<Unit>重防号</> <Gain>导弹伤害+{0}%</>",
+    "Card.WM01.MissilePod.Description": "<Unit>重防号</> 解锁<Gain>导弹技能</>",
+    "Card.WM01.RainSalvo.Description": "<Unit>重防号</> <Gain>导弹齐射数量+{0}</>"
+  },
+  "widget_readback": {
+    "widget_class": "RichTextBlock",
+    "properties": {
+      "TextStyleSet": "/Script/Engine.DataTable'/Game/GuLiStrike/CardSystem/WarMachineTarot/UI/DT_CardTextStyles.DT_CardTextStyles'",
+      "AutoWrapText": "False",
+      "WrapTextAt": "0.000000",
+      "Justification": "Center",
+      "Visibility": "HitTestInvisible",
+      "ToolTipText": ""
+    },
+    "style_rows": {
+      "Default": {
+        "font": "/Engine/EngineFonts/Roboto.Roboto",
+        "size": 38.0,
+        "typeface": "Regular",
+        "outline_size": 0,
+        "color_linear": {
+          "R": 0.9559730291366577,
+          "G": 0.9559730291366577,
+          "B": 0.9130989909172058,
+          "A": 1.0
+        }
+      },
+      "Unit": {
+        "font": "/Engine/EngineFonts/Roboto.Roboto",
+        "size": 38.0,
+        "typeface": "Bold",
+        "outline_size": 1,
+        "color_linear": {
+          "R": 1.0,
+          "G": 0.6866850256919861,
+          "B": 0.06847800314426422,
+          "A": 1.0
+        }
+      },
+      "Gain": {
+        "font": "/Engine/EngineFonts/Roboto.Roboto",
+        "size": 38.0,
+        "typeface": "Bold",
+        "outline_size": 1,
+        "color_linear": {
+          "R": 1.0,
+          "G": 0.6866850256919861,
+          "B": 0.06847800314426422,
+          "A": 1.0
+        }
+      }
+    },
+    "fit": {
+      "Stretch": "ScaleToFit",
+      "StretchDirection": "DownOnly",
+      "Position Y": "135.000000",
+      "Size X": "928.000000",
+      "Size Y": "136.000000"
+    }
+  },
+  "scene": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_24",
+    "label": "RogueCards_F4_Entry",
+    "location": "<Struct 'Vector' (0x000001B157740A60) {x: -3200.000000, y: 72500.000000, z: -1200.000000}>",
+    "instructions": "重防号肉鸽卡：就绪指挥官席位按F4，随机显示最多三张合格卡；底部右侧“重选”免费重抽，优先换成未显示的合格牌，无其他牌时提示并保留原牌。Esc关闭后重开保持最新候选。初始无导弹技能/导弹仓；重防导弹仓04.01每队一次。解锁后出现导弹伤害03.01与雨点攻势05.01，后者每次加一枚同时齐射导弹，可叠加。单击翻牌，再单击确认。现有/后续单位同队生效。运行与美术效果待验证。\n重选验证：F4打开后，底部右侧“重选”免费更换当前候选，优先换成未显示的合格牌；选择前或翻面完成后可用，入场/翻面/提交期间禁用。没有其他合格牌时保留原牌并提示。重选不会发奖励，单击翻牌后再次确认才结算；Esc关闭再开保持最新候选。当前5张卡中，初始合格牌只有01.01/02.01/04.01；获得04.01后，合格池扩展为01.01/02.01/03.01/05.01，可观察换牌。本次仅保存配置和核对实体；重选原生代码需编译加载后由玩家验证。\n[WM01 导弹候选 20260929]\n初始重防号无 Q、无导弹仓；F4 获 04.01 后本队现有及后续单位解锁。03.01/05.01 依赖 04.01；04.01 每队每局一次。候选与六组集群场景见 WM01Missile_CandidateInstructions，构建/运行/性能/视觉审核状态分别记录。\n[指挥官统一 LOD 20260929]\n公共三级 LOD 和 lod0/lod1/lod2 观察镜头见 CommanderLOD_Instructions；新命令需本轮原生构建后重新加载。\n单行文案验证：F4打开五种卡牌；卡名独立一行，说明仅一行。单位、增益属性及数值为黄色加粗，“解锁”为暖白；不显示叠加或获取次数说明。取得导弹仓后可见导弹伤害与雨点攻势；重选后仍保持上述样式。检查不同窗口比例下说明完整、无换行或卡框溢出。",
+    "saved_and_reloaded": true,
+    "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+    "presentation_component": "/Script/GuLiStrike.GuLiRogueCardPresentation"
+  }
+}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>重防号导弹 · Candidate v2</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,"Microsoft YaHei",sans-serif;background:#101923;color:#edf2f5}
+*{box-sizing:border-box}body{max-width:1600px;margin:32px auto;padding:0 28px}h1{font-size:28px;margin:0 0 12px}p{line-height:1.8;color:#b7c8d5;max-width:1100px}.tag{color:#f8cf87;font-size:13px;letter-spacing:.08em}nav{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}button{background:#203344;border:1px solid #3d5365;border-radius:6px;padding:10px 14px;color:#e6edf3;font:inherit;cursor:pointer}button:hover{background:#2e4d63}button[aria-pressed=true]{background:#416c87;border-color:#8ab9d5}button:focus-visible{outline:2px solid #f8cf87;outline-offset:3px}label{display:inline-flex;align-items:center;gap:9px;margin:0 0 10px;color:#c6d5df;cursor:pointer}input{accent-color:#92c5e4;width:18px;height:18px}.views{display:grid;grid-template-columns:1fr;gap:18px}.views.compare{grid-template-columns:1fr 1fr}figure{margin:0;min-width:0}figcaption{display:flex;justify-content:space-between;margin:0 0 10px;font-size:14px;color:#c4d5df}img{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#1b2b39;border-radius:8px}.empty{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;background:#192734;color:#9eafbd;border-radius:8px;padding:24px;text-align:center}.notice{border-left:3px solid #dcaf70;padding:10px 17px;background:#1d2c39;max-width:none}small{color:#a2b7c6;line-height:1.8}a{color:#96cdec}footer{margin-top:22px}[hidden]{display:none!important}@media(max-width:850px){body{padding:0 16px;margin:24px auto}.views.compare{grid-template-columns:1fr}h1{font-size:24px}}
+</style>
+<div class="tag">WM01 / UnitTypeId 2 · 视觉候选</div>
+<h1>重防号导弹 · 更大的弹体，更浓的长烟迹</h1>
+<p>长、宽、高均为 v1 的 <strong>1.5 倍</strong>。弹体约 195 cm，短尾焰 21 × 54 cm、亮核峰值 3 倍；深灰黑烟迹宽 21–33 cm，保留 2.4 秒后自然消散。</p>
+<nav id="quality" aria-label="表现档位"></nav>
+<nav id="phase" aria-label="观察时刻"></nav>
+<label><input id="compare" type="checkbox" checked>与 v1 同镜头对比</label>
+<div class="views compare" id="views">
+<figure id="old"><figcaption><span>v1 · 原始画面</span><span class="time"></span></figcaption><img id="oldImage" alt="v1 导弹烟迹"><div class="empty" id="noOld" hidden>v1 未捕获此时刻。右侧显示 v2 的延长消散过程。</div></figure>
+<figure><figcaption><strong>v2 · 当前候选</strong><span class="time"></span></figcaption><img id="newImage" alt="v2 导弹烟迹"></figure>
+</div>
+<p class="notice">这是 UE 编辑器内四条示意轨迹的分帧捕获。三档在 5.1 秒的 GPU 读数均为零个可见弹体、尾焰和烟迹。游戏内触发、切档、网络和性能尚未运行验收，正式战斗引用等待可播放候选视觉审核。</p>
+<small>近景 24 段 · 中远景 8 段 · 最低档只保留弹体及短尾焰。相同 1280 × 720 分辨率、42° 镜头和手动曝光。<br>v1 画面来自容量绑定前的美术预览；本页只比较外观，不据此比较性能。v2 实际占用为 4 个弹体、4 个尾焰，历史粒子为 96 / 32 / 0。</small>
+<footer><a href="../Candidate_v1/review.html">保留的 v1 预览</a> · <a href="manifest.json">捕获与验证记录</a> · <a href="../../../../Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md">开发记录</a></footer>
+<script>
+const qualities=[['Full','近景 · 24 段'],['Lite','中远景 · 8 段'],['Minimal','最低档 · 无烟迹']];
+const phases=[['start','出射',.3,true],['flight','飞行',1,true],['long_tail','长尾',112/60,true],['peak_tail','最长尾迹',2.3,false],['impact','停止生成',2.6,true],['dissipating','消散中',2.9,true],['late_tail','消散末段',4.2,false],['cleared','完全清空',5.1,false]];
+let quality='Full',phase='long_tail';
+function buttons(id,items,value,choose){document.getElementById(id).replaceChildren(...items.map(function(item){const b=document.createElement('button');b.type='button';b.textContent=item[1]+(item.length>2?' · '+item[2].toFixed(2)+'s':'');b.setAttribute('aria-pressed',String(item[0]===value));b.onclick=function(){choose(item[0]);draw()};return b}))}
+function draw(){buttons('quality',qualities,quality,function(x){quality=x});buttons('phase',phases,phase,function(x){phase=x});const p=phases.find(x=>x[0]===phase);const compare=document.getElementById('compare').checked;document.getElementById('views').classList.toggle('compare',compare);document.getElementById('old').hidden=!compare;document.getElementById('newImage').src=quality+'/'+phase+'.png';document.getElementById('oldImage').hidden=!p[3];document.getElementById('noOld').hidden=p[3];if(p[3])document.getElementById('oldImage').src='../Candidate_v1/'+quality+'/'+phase+'.png';document.querySelectorAll('.time').forEach(x=>x.textContent=p[2].toFixed(2)+' 秒')}
+document.getElementById('compare').onchange=draw;draw();
+</script>
+</html>

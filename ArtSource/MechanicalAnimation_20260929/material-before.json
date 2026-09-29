@@ -1,0 +1,695 @@
+{
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "api": {
+    "export_material_graph": "X.export_material_graph(material_path) -> str\r\nExport the complete material graph as a JSON string for analysis or recreation.\nMaps to action=\"export_graph\"\n\nReturns material settings, all expressions (type, position, properties),\nall connections, and material output connections \u2014 everything needed to\nrecreate the material from scratch.\r\n\r\nArgs:\r\n    material_path (str): Full path to the material\r\n\r\nReturns:\r\n    str: JSON string of complete graph, or empty string on failure Example: json_str = unreal.MaterialNodeService.export_material_graph(\"/Game/M_Landscape\")",
+    "connect_expressions": "X.connect_expressions(material_path, source_expression_id, source_output, target_expression_id, target_input) -> bool\r\nConnect two material expressions.\nMaps to action=\"connect\"\r\n\r\nArgs:\r\n    material_path (str): Full path to the material\r\n    source_expression_id (str): Source expression ID\r\n    source_output (str): Output name (empty for first output)\r\n    target_expression_id (str): Target expression ID\r\n    target_input (str): Input name on target\r\n\r\nReturns:\r\n    bool: True if successful",
+    "disconnect_output": "X.disconnect_output(material_path, material_property) -> bool\r\nDisconnect a material output property.\nMaps to action=\"disconnect_output\"\r\n\r\nArgs:\r\n    material_path (str): Full path to the material\r\n    material_property (str): Property name to disconnect\r\n\r\nReturns:\r\n    bool: True if successful",
+    "get_material_diagnostics": "X.get_material_diagnostics(material_path) -> MaterialDiagnostics\r\nComprehensive material diagnostic \u2014 compile status, errors, and the textures the\nshader actually references. Reliable replacement for `get_used_textures`.\n\nUse this after building a material graph to verify it compiles cleanly and samples\nthe expected textures. Particularly useful for materials with `MaterialFunctionCall`\nnodes (triplanar / world-aligned), where `MaterialEditingLibrary.get_used_textures`\nsilently returns 0.\r\n\r\nArgs:\r\n    material_path (str): \r\n\r\nReturns:\r\n    MaterialDiagnostics:"
+  },
+  "WarMachine": {
+    "materials": [
+      "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour",
+      "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel"
+    ]
+  },
+  "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour": {
+    "material": {
+      "blend_mode": "BLEND_Opaque",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "expressions": [
+      {
+        "id": "MaterialExpressionVectorParameter_000001761FFDE400",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -260,
+        "pos_y": 0,
+        "properties": {
+          "DefaultValue": "(R=0.008000,G=0.026000,B=0.051000,A=1.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "InkColor",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      }
+    ],
+    "connections": [],
+    "output_connections": [
+      {
+        "property": "EmissiveColor",
+        "expression_id": "MaterialExpressionVectorParameter_000001761FFDE400",
+        "output_index": 0,
+        "output_name": "RGB"
+      }
+    ]
+  },
+  "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel": {
+    "material": {
+      "blend_mode": "BLEND_Opaque",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "expressions": [
+      {
+        "id": "MaterialExpressionTextureCoordinate_000001759AD415E0",
+        "class": "TextureCoordinate",
+        "class_full": "MaterialExpressionTextureCoordinate",
+        "pos_x": -780,
+        "pos_y": 0,
+        "properties": {
+          "CoordinateIndex": "0",
+          "UTiling": "1.000000",
+          "VTiling": "1.000000",
+          "UnMirrorU": "False",
+          "UnMirrorV": "False"
+        },
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionPixelNormalWS_000001759AD423E0",
+        "class": "PixelNormalWS",
+        "class_full": "MaterialExpressionPixelNormalWS",
+        "pos_x": -520,
+        "pos_y": 176,
+        "properties": {},
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionCustom_000001765179EB00",
+        "class": "Custom",
+        "class_full": "MaterialExpressionCustom",
+        "pos_x": -260,
+        "pos_y": 0,
+        "properties": {
+          "Code": "float d=dot(normalize(N),normalize(L)); float3 tones=d<.12?float3(.43,.52,.66):(d<.55?float3(.72,.78,.88):float3(1,1,1)); float3 paint=Base*tones; return lerp(paint,Ink,saturate(Mask));",
+          "OutputType": "CMOT_Float3",
+          "Description": "Custom",
+          "Inputs": "((InputName=\"Base\",Input=(Mask=1,MaskR=1,MaskG=1,MaskB=1)),(InputName=\"N\",Input=(Expression=\"/Script/Engine.MaterialExpressionPixelNormalWS'/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel:MaterialExpressionPixelNormalWS_0'\")),(InputName=\"L\",Input=(Mask=1,MaskR=1,MaskG=1,MaskB=1)),(InputName=\"Ink\",Input=(Mask=1,MaskR=1,MaskG=1,MaskB=1)),(InputName=\"Mask\",Input=(OutputIndex=1,Mask=1,MaskR=1)))",
+          "ShowCode": "False"
+        },
+        "hlsl_code": "float d=dot(normalize(N),normalize(L)); float3 tones=d<.12?float3(.43,.52,.66):(d<.55?float3(.72,.78,.88):float3(1,1,1)); float3 paint=Base*tones; return lerp(paint,Ink,saturate(Mask));",
+        "output_type": "CMOT_Float3",
+        "custom_input_names": "Base,N,L,Ink,Mask",
+        "inputs": [
+          "Base",
+          "N",
+          "L",
+          "Ink",
+          "Mask"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVectorParameter_000001761FFDFA80",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -520,
+        "pos_y": 514,
+        "properties": {
+          "DefaultValue": "(R=0.008000,G=0.026000,B=0.051000,A=1.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "InkColor",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionTextureCoordinate_000001759AD45160",
+        "class": "TextureCoordinate",
+        "class_full": "MaterialExpressionTextureCoordinate",
+        "pos_x": -780,
+        "pos_y": 0,
+        "properties": {
+          "CoordinateIndex": "0",
+          "UTiling": "1.000000",
+          "VTiling": "1.000000",
+          "UnMirrorU": "False",
+          "UnMirrorV": "False"
+        },
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionTextureSample_0000017613647A80",
+        "class": "TextureSample",
+        "class_full": "MaterialExpressionTextureSample",
+        "pos_x": -520,
+        "pos_y": 0,
+        "properties": {
+          "MipValueMode": "TMVM_None",
+          "SamplerSource": "SSM_FromTextureAsset",
+          "GatherMode": "TGM_None",
+          "AutomaticViewMipBias": "True",
+          "ChannelNames": "()",
+          "ConstCoordinate": "0",
+          "ConstMipValue": "-1",
+          "Texture": "/Script/Engine.Texture2D'/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_BaseColor.T_WarMachine_BaseColor'",
+          "SamplerType": "SAMPLERTYPE_Color",
+          "IsDefaultMeshpaintTexture": "False"
+        },
+        "inputs": [
+          "Coordinates",
+          "TextureObject",
+          "Apply View MipBias"
+        ],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionPixelNormalWS_000001759AD45F60",
+        "class": "PixelNormalWS",
+        "class_full": "MaterialExpressionPixelNormalWS",
+        "pos_x": -520,
+        "pos_y": 176,
+        "properties": {},
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVectorParameter_000001761FFDC780",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -520,
+        "pos_y": 338,
+        "properties": {
+          "DefaultValue": "(R=0.350000,G=-0.550000,B=0.760000,A=0.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "ArtLightDirection",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionCustom_000001765179CE40",
+        "class": "Custom",
+        "class_full": "MaterialExpressionCustom",
+        "pos_x": -260,
+        "pos_y": 0,
+        "properties": {
+          "Code": "float d=dot(normalize(N),normalize(L)); float3 tones=d<.12?float3(.43,.52,.66):(d<.55?float3(.72,.78,.88):float3(1,1,1)); float3 paint=Base*tones; return lerp(paint,Ink,saturate(Mask));",
+          "OutputType": "CMOT_Float3",
+          "Description": "Custom",
+          "Inputs": "((InputName=\"Base\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureSample'/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel:MaterialExpressionTextureSample_2'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(InputName=\"N\",Input=(Expression=\"/Script/Engine.MaterialExpressionPixelNormalWS'/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel:MaterialExpressionPixelNormalWS_1'\")),(InputName=\"L\",Input=(Expression=\"/Script/Engine.MaterialExpressionVectorParameter'/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel:MaterialExpressionVectorParameter_3'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(InputName=\"Ink\",Input=(Expression=\"/Script/Engine.MaterialExpressionVectorParameter'/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel:MaterialExpressionVectorParameter_2'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(InputName=\"Mask\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureSample'/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel:MaterialExpressionTextureSample_3'\",OutputIndex=1,Mask=1,MaskR=1)))",
+          "ShowCode": "False"
+        },
+        "hlsl_code": "float d=dot(normalize(N),normalize(L)); float3 tones=d<.12?float3(.43,.52,.66):(d<.55?float3(.72,.78,.88):float3(1,1,1)); float3 paint=Base*tones; return lerp(paint,Ink,saturate(Mask));",
+        "output_type": "CMOT_Float3",
+        "custom_input_names": "Base,N,L,Ink,Mask",
+        "inputs": [
+          "Base",
+          "N",
+          "L",
+          "Ink",
+          "Mask"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionTextureCoordinate_000001759AD41420",
+        "class": "TextureCoordinate",
+        "class_full": "MaterialExpressionTextureCoordinate",
+        "pos_x": -780,
+        "pos_y": 690,
+        "properties": {
+          "CoordinateIndex": "0",
+          "UTiling": "1.000000",
+          "VTiling": "1.000000",
+          "UnMirrorU": "False",
+          "UnMirrorV": "False"
+        },
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionTextureSample_0000017613648C00",
+        "class": "TextureSample",
+        "class_full": "MaterialExpressionTextureSample",
+        "pos_x": -520,
+        "pos_y": 690,
+        "properties": {
+          "MipValueMode": "TMVM_None",
+          "SamplerSource": "SSM_FromTextureAsset",
+          "GatherMode": "TGM_None",
+          "AutomaticViewMipBias": "True",
+          "ChannelNames": "()",
+          "ConstCoordinate": "0",
+          "ConstMipValue": "-1",
+          "Texture": "/Script/Engine.Texture2D'/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_LineMask.T_WarMachine_LineMask'",
+          "SamplerType": "SAMPLERTYPE_Masks",
+          "IsDefaultMeshpaintTexture": "False"
+        },
+        "inputs": [
+          "Coordinates",
+          "TextureObject",
+          "Apply View MipBias"
+        ],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "source_id": "MaterialExpressionPixelNormalWS_000001759AD423E0",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionCustom_000001765179EB00",
+        "target_input": "N"
+      },
+      {
+        "source_id": "MaterialExpressionTextureCoordinate_000001759AD45160",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionTextureSample_0000017613647A80",
+        "target_input": "Coordinates"
+      },
+      {
+        "source_id": "MaterialExpressionTextureSample_0000017613647A80",
+        "source_output_index": 0,
+        "source_output_name": "RGB",
+        "target_id": "MaterialExpressionCustom_000001765179CE40",
+        "target_input": "Base"
+      },
+      {
+        "source_id": "MaterialExpressionPixelNormalWS_000001759AD45F60",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionCustom_000001765179CE40",
+        "target_input": "N"
+      },
+      {
+        "source_id": "MaterialExpressionVectorParameter_000001761FFDC780",
+        "source_output_index": 0,
+        "source_output_name": "RGB",
+        "target_id": "MaterialExpressionCustom_000001765179CE40",
+        "target_input": "L"
+      },
+      {
+        "source_id": "MaterialExpressionVectorParameter_000001761FFDFA80",
+        "source_output_index": 0,
+        "source_output_name": "RGB",
+        "target_id": "MaterialExpressionCustom_000001765179CE40",
+        "target_input": "Ink"
+      },
+      {
+        "source_id": "MaterialExpressionTextureSample_0000017613648C00",
+        "source_output_index": 1,
+        "source_output_name": "R",
+        "target_id": "MaterialExpressionCustom_000001765179CE40",
+        "target_input": "Mask"
+      },
+      {
+        "source_id": "MaterialExpressionTextureCoordinate_000001759AD41420",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionTextureSample_0000017613648C00",
+        "target_input": "Coordinates"
+      }
+    ],
+    "output_connections": [
+      {
+        "property": "EmissiveColor",
+        "expression_id": "MaterialExpressionCustom_000001765179CE40",
+        "output_index": 0,
+        "output_name": ""
+      }
+    ]
+  },
+  "Sweeper": {
+    "materials": [
+      "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel"
+    ]
+  },
+  "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel": {
+    "material": {
+      "blend_mode": "BLEND_Opaque",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "expressions": [
+      {
+        "id": "MaterialExpressionPixelNormalWS_0000017775B73E20",
+        "class": "PixelNormalWS",
+        "class_full": "MaterialExpressionPixelNormalWS",
+        "pos_x": -520,
+        "pos_y": 176,
+        "properties": {},
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVectorParameter_000001779754FC00",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -520,
+        "pos_y": 514,
+        "properties": {
+          "DefaultValue": "(R=0.008000,G=0.026000,B=0.051000,A=1.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "InkColor",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionTextureSample_0000017642F07D00",
+        "class": "TextureSample",
+        "class_full": "MaterialExpressionTextureSample",
+        "pos_x": -520,
+        "pos_y": 0,
+        "properties": {
+          "MipValueMode": "TMVM_None",
+          "SamplerSource": "SSM_FromTextureAsset",
+          "GatherMode": "TGM_None",
+          "AutomaticViewMipBias": "True",
+          "ChannelNames": "()",
+          "ConstCoordinate": "0",
+          "ConstMipValue": "-1",
+          "Texture": "/Script/Engine.Texture2D'/Game/Commander/Units/Tactical/Cel/Sweeper/Textures/T_Sweeper_BaseColor.T_Sweeper_BaseColor'",
+          "SamplerType": "SAMPLERTYPE_Color",
+          "IsDefaultMeshpaintTexture": "False"
+        },
+        "inputs": [
+          "Coordinates",
+          "TextureObject",
+          "Apply View MipBias"
+        ],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVectorParameter_0000017797543900",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -520,
+        "pos_y": 338,
+        "properties": {
+          "DefaultValue": "(R=0.350000,G=-0.550000,B=0.760000,A=0.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "ArtLightDirection",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionTextureCoordinate_0000017775B79920",
+        "class": "TextureCoordinate",
+        "class_full": "MaterialExpressionTextureCoordinate",
+        "pos_x": -780,
+        "pos_y": 690,
+        "properties": {
+          "CoordinateIndex": "0",
+          "UTiling": "1.000000",
+          "VTiling": "1.000000",
+          "UnMirrorU": "False",
+          "UnMirrorV": "False"
+        },
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVectorParameter_0000017797546C00",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -520,
+        "pos_y": 514,
+        "properties": {
+          "DefaultValue": "(R=0.008000,G=0.026000,B=0.051000,A=1.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "InkColor",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionTextureCoordinate_0000017775B73100",
+        "class": "TextureCoordinate",
+        "class_full": "MaterialExpressionTextureCoordinate",
+        "pos_x": -780,
+        "pos_y": 0,
+        "properties": {
+          "CoordinateIndex": "0",
+          "UTiling": "1.000000",
+          "VTiling": "1.000000",
+          "UnMirrorU": "False",
+          "UnMirrorV": "False"
+        },
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionTextureSample_0000017642F0FC80",
+        "class": "TextureSample",
+        "class_full": "MaterialExpressionTextureSample",
+        "pos_x": -520,
+        "pos_y": 0,
+        "properties": {
+          "MipValueMode": "TMVM_None",
+          "SamplerSource": "SSM_FromTextureAsset",
+          "GatherMode": "TGM_None",
+          "AutomaticViewMipBias": "True",
+          "ChannelNames": "()",
+          "ConstCoordinate": "0",
+          "ConstMipValue": "-1",
+          "Texture": "/Script/Engine.Texture2D'/Game/Commander/Units/Tactical/Cel/Sweeper/Textures/T_Sweeper_BaseColor.T_Sweeper_BaseColor'",
+          "SamplerType": "SAMPLERTYPE_Color",
+          "IsDefaultMeshpaintTexture": "False"
+        },
+        "inputs": [
+          "Coordinates",
+          "TextureObject",
+          "Apply View MipBias"
+        ],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionPixelNormalWS_0000017775B78C00",
+        "class": "PixelNormalWS",
+        "class_full": "MaterialExpressionPixelNormalWS",
+        "pos_x": -520,
+        "pos_y": 176,
+        "properties": {},
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVectorParameter_0000017797545400",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -520,
+        "pos_y": 338,
+        "properties": {
+          "DefaultValue": "(R=0.350000,G=-0.550000,B=0.760000,A=0.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "ArtLightDirection",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionCustom_0000017773EDA8C0",
+        "class": "Custom",
+        "class_full": "MaterialExpressionCustom",
+        "pos_x": -260,
+        "pos_y": 0,
+        "properties": {
+          "Code": "float d=dot(normalize(N),normalize(L)); float3 tones=d<.12?float3(.43,.52,.66):(d<.55?float3(.72,.78,.88):float3(1,1,1)); float3 paint=Base*tones; return paint;",
+          "OutputType": "CMOT_Float3",
+          "Description": "Custom",
+          "Inputs": "((InputName=\"Base\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureSample'/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel:MaterialExpressionTextureSample_0'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(InputName=\"N\",Input=(Expression=\"/Script/Engine.MaterialExpressionPixelNormalWS'/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel:MaterialExpressionPixelNormalWS_2'\")),(InputName=\"L\",Input=(Expression=\"/Script/Engine.MaterialExpressionVectorParameter'/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel:MaterialExpressionVectorParameter_1'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(InputName=\"Ink\",Input=(Expression=\"/Script/Engine.MaterialExpressionVectorParameter'/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel:MaterialExpressionVectorParameter_0'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)))",
+          "ShowCode": "False"
+        },
+        "hlsl_code": "float d=dot(normalize(N),normalize(L)); float3 tones=d<.12?float3(.43,.52,.66):(d<.55?float3(.72,.78,.88):float3(1,1,1)); float3 paint=Base*tones; return paint;",
+        "output_type": "CMOT_Float3",
+        "custom_input_names": "Base,N,L,Ink",
+        "inputs": [
+          "Base",
+          "N",
+          "L",
+          "Ink"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "source_id": "MaterialExpressionTextureCoordinate_0000017775B73100",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionTextureSample_0000017642F0FC80",
+        "target_input": "Coordinates"
+      },
+      {
+        "source_id": "MaterialExpressionTextureSample_0000017642F0FC80",
+        "source_output_index": 0,
+        "source_output_name": "RGB",
+        "target_id": "MaterialExpressionCustom_0000017773EDA8C0",
+        "target_input": "Base"
+      },
+      {
+        "source_id": "MaterialExpressionPixelNormalWS_0000017775B78C00",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionCustom_0000017773EDA8C0",
+        "target_input": "N"
+      },
+      {
+        "source_id": "MaterialExpressionVectorParameter_0000017797545400",
+        "source_output_index": 0,
+        "source_output_name": "RGB",
+        "target_id": "MaterialExpressionCustom_0000017773EDA8C0",
+        "target_input": "L"
+      },
+      {
+        "source_id": "MaterialExpressionVectorParameter_0000017797546C00",
+        "source_output_index": 0,
+        "source_output_name": "RGB",
+        "target_id": "MaterialExpressionCustom_0000017773EDA8C0",
+        "target_input": "Ink"
+      }
+    ],
+    "output_connections": [
+      {
+        "property": "EmissiveColor",
+        "expression_id": "MaterialExpressionCustom_0000017773EDA8C0",
+        "output_index": 0,
+        "output_name": ""
+      }
+    ]
+  }
+}

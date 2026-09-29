@@ -44,7 +44,7 @@ NOTE_TARGETS = {
     ('GuLiStrikeShip.xlsx','Camera','Dreadnought'):
         '无畏舰CombatAvatarFly-01；Scale020后使用最终厘米值，臂长5000、探测半径666.6666；角度不变',
     ('GuLiStrikeSecondaryUnitSkills.xlsx','Skills','WM01_HomingMissile'):
-        '战争机器Q；每台独立6秒；射程取最终普通攻击x1.6（基线48米）；直径8米圆内独立随机落点，圆心验射程、落点允许越界；爆炸与预警半径1.6米，伤害与挂点引用武器槽',
+        '重防号Q；每台独立6秒；射程取最终普通攻击x1.6（基线48米）；直径8米圆内独立随机落点，圆心验射程、落点允许越界；爆炸与预警半径1.6米，伤害与挂点引用武器槽',
 }
 
 def add_reviewed_annotations(manifest):

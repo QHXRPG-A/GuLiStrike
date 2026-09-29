@@ -58,7 +58,7 @@ split_segment_sha256: 6faac28601a9443de0a454916437eae433e6c9aa96c408e2a8bf7cf866
 
 ### 统一任务与 StateTree
 
-兵种通过 [GuLiStrikeCommander.xlsx](../../../data/Excel/GuLiStrikeCommander.xlsx) 的 Soldiers.StateTreeAsset 绑定行为：扫荡者、战争机器使用 ST_CommanderMass，矿车使用 ST_CommanderMiner，建造车使用 ST_CommanderBuilder。能力名称、自动启用和生命周期保存在对应 Commander Schema 中；缺失、未编译或 Actor／Mass Schema 不匹配时明确报错，不使用旧特殊任务目录。
+兵种通过 [GuLiStrikeCommander.xlsx](../../../data/Excel/GuLiStrikeCommander.xlsx) 的 Soldiers.StateTreeAsset 绑定行为：扫荡者、重防号使用 ST_CommanderMass，矿车使用 ST_CommanderMiner，建造车使用 ST_CommanderBuilder。能力名称、自动启用和生命周期保存在对应 Commander Schema 中；缺失、未编译或 Actor／Mass Schema 不匹配时明确报错，不使用旧特殊任务目录。
 
 共有三个共享资产，每个单位运行一个独立实例。Actor 用 StateTree Component；Mass 用原生 Mass Schema、执行上下文及实例存储。树只在权威端执行，原 10Hz 任务调度推进业务，5Hz 摘要及其他网络节拍不变。停止保留实例，死亡／注销释放；Mass 调参迁移沿用原句柄。
 

@@ -1,0 +1,70 @@
+{
+  "success": true,
+  "actors": [
+    {
+      "label": "RogueCards_F4_Entry",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_24",
+      "class": "Note",
+      "text": "重防号肉鸽卡：就绪指挥官席位按F4，随机显示最多三张合格卡；底部右侧“重选”免费重抽，优先换成未显示的合格牌，无其他牌时提示并保留原牌。Esc关闭后重开保持最新候选。初始无导弹技能/导弹仓；重防导弹仓04.01每队一次。解锁后出现导弹伤害03.01与雨点攻势05.01，后者每次加一枚同时齐射导弹，可叠加。单击翻牌，再单击确认。现有/后续单位同队生效。运行与美术效果待验证。\n重选验证：F4打开后，底部右侧“重选”免费更换当前候选，优先换成未显示的合格牌；选择前或翻面完成后可用，入场/翻面/提交期间禁用。没有其他合格牌时保留原牌并提示。重选不会发奖励，单击翻牌后再次确认才结算；Esc关闭再开保持最新候选。当前5张卡中，初始合格牌只有01.01/02.01/04.01；获得04.01后，合格池扩展为01.01/02.01/03.01/05.01，可观察换牌。本次仅保存配置和核对实体；重选原生代码需编译加载后由玩家验证。\n[WM01 导弹候选 20260929]\n初始重防号无 Q、无导弹仓；F4 获 04.01 后本队现有及后续单位解锁。03.01/05.01 依赖 04.01；04.01 每队每局一次。候选与六组集群场景见 WM01Missile_CandidateInstructions，构建/运行/性能/视觉审核状态分别记录。"
+    },
+    {
+      "label": "WM01Missile_FixtureCenter",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_0",
+      "class": "TargetPoint"
+    },
+    {
+      "label": "WM01Missile_Camera_Overview",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_4",
+      "class": "CameraActor"
+    },
+    {
+      "label": "WM01Missile_Camera_Near",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_5",
+      "class": "CameraActor"
+    },
+    {
+      "label": "WM01Missile_CandidateInstructions",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_33",
+      "class": "Note",
+      "text": "重防号 WM01 / UnitTypeId=2 导弹候选 v3；加载本轮原生视觉字段及三张表后使用。\nv3：弹体195cm；烟宽63→99cm、尾焰42×108cm，颜色/亮度沿用v2；烟迹2.4秒、消散槽2.45秒。速度2400cm/s；Q随最终普攻射程×3.2（基础96m），爆炸/预警半径3m；冷却6秒、伤害、齐射及16m落点散布直径保持。\n玩法验收：新局就绪指挥官，选择重防号，初始无 Q 且无背部导弹仓；F4 获 04.01 后现有及后续本队重防号解锁，另一队保持原状；05.01 每次齐射 +1。换任保留，新局重置。\n候选开关：gs.MissileCluster.Candidate 1；旧表现对照：gs.MissileCluster.Candidate 0。正式 DA 开关保持关闭，待用户可播放候选审核。\n新增验收：96m内外点击圆心检查施放，射程升级后Q继续按最终普攻×3.2；检查3m预警边缘与伤害一致。远景8段高速烟迹连续，尾焰与烟衔接，边缘裁剪不切尾，命中后2.4秒自然消散。\n冷启动验收：候选资源准备完成后应自动切到放大弹体、短亮尾焰与2.4秒黑烟，不能持续回退为旧白色尾焰；本轮已修正延迟编译请求未被触发的问题，游戏内结果待玩家复查。\n性能场景：每次新开 PIE 并就绪，执行一组 Build，再执行 gs.MissileFixture.Fire；每次施放遵守真实冷却。Build 仅为性能准备解锁和弹量，不替代 F4 功能验收，不移除其他地图单位。\n镜头：Build 自动固定总览；gs.MissileFixture.Camera near 查看近景；overview 恢复对照镜头。\n指标：gs.MissileFixture.Metrics。新旧必须同机、分辨率、画质、总览镜头；分别记录发射/飞行/命中后 CPU 表现、Niagara GPU、半透明和帧时间。当前未运行或测量。"
+    },
+    {
+      "label": "WM01Missile_Case_100x1",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_34",
+      "class": "Note",
+      "text": "100 台重防号 × 每台 1 发 = 100 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 100 1\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 Candidate 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_100x4",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_35",
+      "class": "Note",
+      "text": "100 台重防号 × 每台 4 发 = 400 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 100 4\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 Candidate 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_100x8",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_36",
+      "class": "Note",
+      "text": "100 台重防号 × 每台 8 发 = 800 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 100 8\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 Candidate 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_500x1",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_37",
+      "class": "Note",
+      "text": "500 台重防号 × 每台 1 发 = 500 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 500 1\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 Candidate 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_500x4",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_38",
+      "class": "Note",
+      "text": "500 台重防号 × 每台 4 发 = 2000 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 500 4\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 Candidate 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_500x8",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_39",
+      "class": "Note",
+      "text": "500 台重防号 × 每台 8 发 = 4000 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 500 8\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 Candidate 0/1，保持总览镜头和画质相同。"
+    }
+  ],
+  "candidate": 1,
+  "pie": false
+}

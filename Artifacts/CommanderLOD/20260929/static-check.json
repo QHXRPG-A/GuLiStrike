@@ -1,0 +1,93 @@
+{
+  "success": true,
+  "kind": "source_structure_and_manual_review_not_runtime_tests",
+  "checks": {
+    "authoring_python_ast": true,
+    "new_files_no_trailing_whitespace": true,
+    "pool_uses_shared_evaluate": true,
+    "pool_has_no_private_view_sampling": true,
+    "pool_has_no_private_tier_thresholds": true,
+    "residence_uses_shared_decision": true,
+    "explicit_tier_mapping": true,
+    "preserves_v2_lifetime_and_handoff": true,
+    "preserves_v2_size": true,
+    "history_and_retiring_bounds": true,
+    "pool_resource_fallback_requires_lod": true,
+    "reset_clears_consumer": true,
+    "all_five_console_commands": true,
+    "no_replication_or_disk_writes": true,
+    "server_exclusion": true,
+    "multi_view_independent_classification": true,
+    "native_camera_tags_match_scene": true,
+    "config_defaults_match_plan": true
+  },
+  "files": [
+    {
+      "path": "Source\\GuLiStrike\\Commander\\Presentation\\GuLiCommanderLODPolicy.h",
+      "sha256": "04ddfe2f26f35260f73ec4cd6b534303d0348e50f2594dc778c494eca79b4623"
+    },
+    {
+      "path": "Source\\GuLiStrike\\Commander\\Presentation\\GuLiCommanderLODSubsystem.h",
+      "sha256": "1dc81462fe3551ce288adf8af388121760506296e71290a0db441785a804d1b6"
+    },
+    {
+      "path": "Source\\GuLiStrike\\Commander\\Presentation\\GuLiCommanderLODCommands.cpp",
+      "sha256": "ba971d4fc22ff8a960570e73d56a59313e0274de1875c1e3cf4b3c8bd8173291"
+    },
+    {
+      "path": "Source\\GuLiStrike\\Commander\\Presentation\\GuLiCommanderLODPolicy.cpp",
+      "sha256": "90498e51221b4303697ecef594e20d36635b0683f6e6f42dc4faa6f09d484ee2"
+    },
+    {
+      "path": "Source\\GuLiStrike\\Commander\\Presentation\\GuLiCommanderLODSubsystem.cpp",
+      "sha256": "1ab5fa15d850db204a2f6d09812b2610c6f96c812fa4ac326de2161354bb3c66"
+    },
+    {
+      "path": "Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiMissileClusterPresentation.h",
+      "sha256": "a16ccb5814f32b327b3ffc811916814f217e7fd8c12f76ad6ca7c8906c442456"
+    },
+    {
+      "path": "Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiMissileClusterPresentation.cpp",
+      "sha256": "83ff8cf20bae464257c96d692e34b6486ff15803525e51801e4aee3dd79f91bc"
+    },
+    {
+      "path": "Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiCombatEffectPresentationSubsystem.cpp",
+      "sha256": "9929e4bb80a3ae67f846362aa2c1acfa4bc249d190fcb4f3b90ae40e9552b9c0"
+    },
+    {
+      "path": "Source\\GuLiStrikeEditor\\Private\\GuLiMissileFixture.cpp",
+      "sha256": "1c8f6d7064e8adcaf87b357b7e394e174424242e9203a25c6273fbb7bff6f676"
+    },
+    {
+      "path": "Scripts\\author_commander_lod_scene.py",
+      "sha256": "7317140f5380400fb16ce1a1b4a2a2006dafd767fa8df522367c0bb1e6a060bc"
+    }
+  ],
+  "build": "not_run_user_deferred",
+  "pie": "not_run",
+  "performance": "not_run",
+  "manual_review": [
+    "Strict comparison boundaries and Full-before-Reduced priority preserve the previous single-view policy.",
+    "Hysteresis uses the actual applied tier; residency uses the same World time as the missile pool.",
+    "Each local view is classified independently, then the highest-detail visible result wins.",
+    "Config group ordering is validated before commit; reset cannot create invalid cross-key thresholds.",
+    "World-local settings and consumer statistics are not replicated or saved by console commands.",
+    "History, retiring capacity and slot generations stay owned by the missile pool."
+  ],
+  "editor_reload": "not_run_user_deferred",
+  "user_decisions": [
+    "Preserve v2 2.4 second trail and 1.5x visual size; migrate LOD only.",
+    "Do not compile; deliver source and saved map only.",
+    "Do not run PIE or performance measurements."
+  ],
+  "scene_saved_and_read_back": true,
+  "related_actors": 15,
+  "progress_check": {
+    "errors": 0,
+    "warnings": 13,
+    "warnings_scope": "pre-existing document size/task-count warnings"
+  },
+  "scoped_diff_check": "passed",
+  "new_files_whitespace_check": "passed",
+  "cpp_compile_validation": "not_run"
+}

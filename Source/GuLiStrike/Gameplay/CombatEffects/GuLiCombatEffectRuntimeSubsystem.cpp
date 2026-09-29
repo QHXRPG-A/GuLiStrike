@@ -203,11 +203,27 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiComba
 	const FGuLiWeaponMountConfig* Mount = CommanderData && CommanderData->IsWeaponMountCatalogValid()
 		? CommanderData->FindWeaponMountConfig(Request.UnitTypeId, Request.Context.WeaponBinding.SlotId) : nullptr;
 	if (!Mount || !Mount->IsValid()) return;
-	const uint8 MuzzleIndex = static_cast<uint8>(Request.ShotOrdinal % Mount->Muzzles.Num());
+	const auto* Definition = CommanderData->FindSoldierDefinition(Request.UnitTypeId);
+	const auto* Mechanical = Definition && Definition->MechanicalAnimation.IsEnabled() && Request.bHasMechanicalPose
+		? &Definition->MechanicalAnimation : nullptr;
+	const uint8 MuzzleIndex = Mechanical ? Request.MechanicalMuzzleIndex
+		: static_cast<uint8>(Request.ShotOrdinal % Mount->Muzzles.Num());
+	if (!Mount->Muzzles.IsValidIndex(MuzzleIndex)) return;
 	FGuLiPooledProjectileLaunch Launch;
 	Launch.Context = Request.Context; Launch.MuzzleOffset = Mount->Muzzles[MuzzleIndex];
 	Launch.Position = Request.SourceTransform.TransformPosition(Launch.MuzzleOffset);
 	Launch.Direction = (Target.Location - Launch.Position).GetSafeNormal();
+	const float ShotTime = GetWorld()->GetTimeSeconds();
+	FTransform MechanicalMuzzle;
+	if (Mechanical)
+	{
+		if (!GuLiMechanicalAnimation::ResolveMuzzle(*Mechanical, Request.MechanicalPose, Request.SourceTransform,
+			Request.Context.WeaponBinding.SlotId, MuzzleIndex, ShotTime, MechanicalMuzzle)) return;
+		Launch.Position = MechanicalMuzzle.GetLocation();
+		Launch.MuzzleOffset = Request.SourceTransform.InverseTransformPosition(Launch.Position);
+		Launch.Direction = Mechanical->Model == EGuLiMechanicalModel::WarMachine
+			? MechanicalMuzzle.GetUnitAxis(EAxis::X) : (Target.Location - Launch.Position).GetSafeNormal();
+	}
 	Launch.Speed = Request.Motion.Speed; Launch.Lifetime = Request.Motion.MaximumLifetime;
 	// Acquisition range only gates firing. Once launched, the frozen lifetime governs straight flight.
 	Launch.MaximumDistance = Launch.Speed * Launch.Lifetime;
@@ -220,6 +236,11 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiComba
 	Cue.MuzzleIndex = MuzzleIndex; Cue.MuzzleOffset = Launch.MuzzleOffset;
 	Cue.Start = Launch.Position; Cue.End = Target.Location; Cue.ServerTime = Launch.ServerTime;
 	Cue.bMuzzleOnly = true;
+	Cue.bMechanicalShot = Mechanical && Mechanical->Model == EGuLiMechanicalModel::WarMachine;
+	Cue.MuzzleDirection = Launch.Direction;
+	Cue.MechanicalPoseTimeSeconds = Request.MechanicalPoseTimeSeconds;
+	if (Cue.bMechanicalShot) Cue.RecoilFromCentimeters = GuLiMechanicalAnimation::RecoilAt(*Mechanical, Request.MechanicalPose, MuzzleIndex, ShotTime);
+	if (Request.OnShotAccepted) Request.OnShotAccepted(MuzzleIndex, Launch.ServerTime);
 }
 
 void UGuLiCombatEffectRuntimeSubsystem::ExecuteProjectile(const FGuLiCombatAttackRequest& Request,
@@ -400,20 +421,59 @@ int32 UGuLiCombatEffectRuntimeSubsystem::CancelWingmanGunBurst(
 
 FGuid UGuLiCombatEffectRuntimeSubsystem::LaunchPointProjectile(const FGuLiCombatAttackRequest& Request)
 {
+	TArray<FGuid> Ids;
+	return LaunchPointProjectiles(MakeArrayView(&Request,1),Ids) ? Ids[0] : FGuid();
+}
+
+bool UGuLiCombatEffectRuntimeSubsystem::LaunchPointProjectiles(
+	TConstArrayView<FGuLiCombatAttackRequest> Requests, TArray<FGuid>& OutIds)
+{
+	OutIds.Reset();
+	if (Requests.IsEmpty() || !SynchronizeEpoch()) return false;
+	TArray<FGuLiRuntimeCombatEffect> Prepared;
+	TSet<FGuid> Unique;
+	Prepared.Reserve(Requests.Num());
+	for (const auto& Request : Requests)
+	{
+		auto& Instance=Prepared.AddDefaulted_GetRef();
+		if (!PreparePointProjectile(Request,Instance) || Effects.Contains(Instance.State.EffectId)
+			|| Unique.Contains(Instance.State.EffectId)) return false;
+		Unique.Add(Instance.State.EffectId);
+	}
+	for (auto& Instance : Prepared)
+	{
+		Instance.SourceLease=Ledger->AcquireEffectSource(Instance.Context.Source);
+		if (!Instance.SourceLease.IsValid())
+		{
+			for (const auto& Prior : Prepared)
+				if (Prior.SourceLease.IsValid()) Ledger->ReleaseEffectSource(Prior.SourceLease);
+			return false;
+		}
+	}
+	for (auto& Instance : Prepared)
+	{
+		const FGuid Id=Instance.State.EffectId;
+		Effects.Add(Id,MoveTemp(Instance)); OutIds.Add(Id);
+	}
+	Counters.ProjectilesLaunched+=OutIds.Num();
+	for (const FGuid& Id : OutIds) Publish(Id,true);
+	return true;
+}
+
+bool UGuLiCombatEffectRuntimeSubsystem::PreparePointProjectile(
+	const FGuLiCombatAttackRequest& Request, FGuLiRuntimeCombatEffect& Instance)
+{
     UGuLiProjectileEffectDefinition* Definition = Request.Projectile;
     FGuLiCombatEffectContext Prepared;
     if (!SynchronizeEpoch() || !Definition || !Definition->IsValidDefinition() || !Request.FrozenField.IsValid()
-        || !Request.Motion.IsValid() || Request.SourceTransform.ContainsNaN() || Request.TargetLocation.ContainsNaN()
+        || !Request.Motion.IsValid() || Request.SourceTransform.ContainsNaN() || Request.TargetLocation.ContainsNaN() || Request.MuzzleOffset.ContainsNaN()
         || (Request.GroundWarningStyle && !Request.GroundWarningStyle->IsValidStyle())
         || !PrepareContext(Request.Context, Prepared)) return {};
     UGuLiSpellFieldDefinition* Field = Definition->ImpactField.LoadSynchronous();
     if (!Field || !Field->IsValidDefinition()) return {};
     const FName ConfigId = Prepared.EffectConfigId.IsNone() ? Field->ConfigId : Prepared.EffectConfigId;
     if (!ConfigId.IsNone() && ConfigId != Request.FrozenField.ConfigId) return {};
-    const FGuid Lease = Ledger->AcquireEffectSource(Prepared.Source);
-    if (!Lease.IsValid()) return {};
-    FGuLiRuntimeCombatEffect Instance;
-    Instance.Context = Prepared; Instance.SourceLease = Lease; Instance.Projectile = Definition; Instance.Field = Field;
+    Instance.Context = Prepared; Instance.Projectile = Definition; Instance.Field = Field;
     Instance.GroundWarningStyle = Request.GroundWarningStyle;
     Instance.Timing = Request.FrozenField.Timing; Instance.Interval = Request.FrozenField.PulseInterval;
     Instance.Duration = Request.FrozenField.Timing == EGuLiSpellFieldTiming::Periodic ? Request.FrozenField.Duration : 0.0f;
@@ -424,7 +484,8 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::LaunchPointProjectile(const FGuLiCombat
     State.MatchEpoch = Epoch; State.EffectId = Prepared.ShotId; State.Source = Prepared.Source; State.Target = Prepared.Target;
     State.ProjectileDefinition = Definition; State.FieldDefinition = Field; State.Motion = Request.Motion;
     State.bFixedPoint = true;
-    if (!Request.bUseAuthoredPointTrajectory) { State.Motion.LiftSeconds = 0; State.Motion.LateralOffset = 0; }
+    if (!Request.bUseAuthoredPointTrajectory)
+    { State.Motion.LiftSeconds = 0; State.Motion.LateralOffset = 0; State.Motion.VerticalCurve = 0; State.Motion.LongitudinalCurve = 0; }
     State.GroundWarningStyle = Request.GroundWarningStyle;
     State.Radius = Request.FrozenField.Radius;
     State.Location = Request.SourceTransform.TransformPosition(Request.MuzzleOffset); State.LaunchLocation = State.Location;
@@ -436,10 +497,7 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::LaunchPointProjectile(const FGuLiCombat
     State.StartTime = State.SampleTime = GetWorld()->GetTimeSeconds();
     State.EndTime = State.StartTime + State.Motion.MaximumLifetime; State.Sequence = 1;
     State.RandomSeed = static_cast<int32>(State.EffectId.A ^ State.EffectId.B);
-    const FGuid Id = State.EffectId;
-    if (Effects.Contains(Id)) { Ledger->ReleaseEffectSource(Lease); return {}; }
-    Effects.Add(Id, MoveTemp(Instance)); ++Counters.ProjectilesLaunched; Publish(Id, true);
-    return Id;
+    return true;
 }
 
 FGuid UGuLiCombatEffectRuntimeSubsystem::CreateSpellField(UGuLiSpellFieldDefinition* Definition,

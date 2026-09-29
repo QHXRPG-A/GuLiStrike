@@ -34,7 +34,7 @@
   {
     "Name": "WM01_AimTarget",
     "Id": 3,
-    "Note": "战争机器车身视觉瞄准点",
+    "Note": "重防号车身视觉瞄准点",
     "UnitTypeId": 2,
     "SlotId": "",
     "PointRole": "AimTarget",
@@ -43,14 +43,14 @@
     "Offset": {
       "X": 0.0,
       "Y": 0.0,
-      "Z": 1600.0
+      "Z": 2354.9516318
     },
     "bCalibrated": true
   },
   {
     "Name": "WM01_BasicAttack_Muzzle_0",
     "Id": 4,
-    "Note": "战争机器左侧炮口；保留原攻击数量",
+    "Note": "重防号左侧炮口；保留原攻击数量",
     "UnitTypeId": 2,
     "SlotId": "BasicAttack",
     "PointRole": "Muzzle",
@@ -59,14 +59,14 @@
     "Offset": {
       "X": 1769.8602676391602,
       "Y": 1461.23685836792,
-      "Z": 1580.907154083252
+      "Z": 2335.8587859
     },
     "bCalibrated": true
   },
   {
     "Name": "WM01_MissileLauncher_Muzzle_0",
     "Id": 5,
-    "Note": "战争机器左背舱出口；前上方 45 度",
+    "Note": "重防号左背舱出口；前上方 45 度",
     "UnitTypeId": 2,
     "SlotId": "MissileLauncher",
     "PointRole": "Muzzle",
@@ -75,14 +75,14 @@
     "Offset": {
       "X": -729.1603565216064,
       "Y": 932.1683883666992,
-      "Z": 3122.332191467285
+      "Z": 3877.28382
     },
     "bCalibrated": true
   },
   {
     "Name": "WM01_MissileLauncher_Muzzle_1",
     "Id": 6,
-    "Note": "战争机器右背舱出口；前上方 45 度",
+    "Note": "重防号右背舱出口；前上方 45 度",
     "UnitTypeId": 2,
     "SlotId": "MissileLauncher",
     "PointRole": "Muzzle",
@@ -91,7 +91,23 @@
     "Offset": {
       "X": -729.1603565216064,
       "Y": -932.1683883666992,
-      "Z": 3122.332191467285
+      "Z": 3877.28382
+    },
+    "bCalibrated": true
+  },
+  {
+    "Name": "WM01_BasicAttack_Muzzle_1",
+    "Id": 7,
+    "Note": "重防号右侧双枪管；成功发射后交替",
+    "UnitTypeId": 2,
+    "SlotId": "BasicAttack",
+    "PointRole": "Muzzle",
+    "PointIndex": 1,
+    "SocketName": "FX_Muzzle_Basic_02",
+    "Offset": {
+      "X": 1769.8602676,
+      "Y": -1468.7631416,
+      "Z": 2335.8587859
     },
     "bCalibrated": true
   }

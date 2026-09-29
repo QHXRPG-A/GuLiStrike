@@ -62,14 +62,15 @@ namespace GuLiCommanderPresentationCommands
 		UE_LOG(
 			LogGuLiStrike,
 			Display,
-			TEXT("gs.Commander.Presentation.%s key=%s baseline=%s old_effective=%s effective=%s source=%s applied_actors=%d"),
+			TEXT("gs.Commander.Presentation.%s key=%s baseline=%s old_effective=%s effective=%s source=%s applied_actors=%d%s"),
 			Operation,
 			*Result.Key.ToString(),
 			*Result.Baseline,
 			*Result.PreviousEffective,
 			*Result.Effective,
 			FGuLiCommanderPresentationPerformanceRegistry::LexToString(Result.Source),
-			Result.AppliedActorCount);
+			Result.AppliedActorCount,
+			Result.Key == TEXT("unit_cull_distance_cm") ? TEXT(" distance_culling=disabled") : TEXT(""));
 	}
 
 	void List(const TArray<FString>& Args, UWorld* World)

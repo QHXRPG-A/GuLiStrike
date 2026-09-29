@@ -11,6 +11,27 @@ bool UGuLiSpellFieldDefinition::IsValidDefinition() const
 		&& FMath::IsFinite(DissipationSeconds) && DissipationSeconds >= 0 && DissipationSeconds <= 30;
 }
 
+bool FGuLiProjectileVisualSettings::IsValid() const
+{
+	return FMath::IsFinite(SmokeInitialWidthCentimeters) && SmokeInitialWidthCentimeters > 0
+		&& FMath::IsFinite(SmokeMaximumWidthCentimeters) && SmokeMaximumWidthCentimeters >= SmokeInitialWidthCentimeters
+		&& FMath::IsFinite(FlameWidthCentimeters) && FlameWidthCentimeters > 0
+		&& FMath::IsFinite(FlameLengthCentimeters) && FlameLengthCentimeters > 0;
+}
+
+bool UGuLiProjectileEffectDefinition::ResolveVisualSettings(FGuLiProjectileVisualSettings& OutVisual) const
+{
+	OutVisual = {};
+	if (MotionProfileRow.IsNull()) return false;
+	const auto* Row = MotionProfileRow.GetRow<FGuLiStrikeSecondaryWeaponsProjectilesRow>(TEXT("Secondary weapon visuals"));
+	if (!Row || Row->ProjectileAsset.ToSoftObjectPath() != FSoftObjectPath(this)) return false;
+	OutVisual.SmokeInitialWidthCentimeters = Row->SmokeInitialWidthCentimeters;
+	OutVisual.SmokeMaximumWidthCentimeters = Row->SmokeMaximumWidthCentimeters;
+	OutVisual.FlameWidthCentimeters = Row->FlameWidthCentimeters;
+	OutVisual.FlameLengthCentimeters = Row->FlameLengthCentimeters;
+	return OutVisual.IsValid();
+}
+
 bool UGuLiProjectileEffectDefinition::IsValidDefinition() const
 {
 	FGuLiProjectileMotionSettings ResolvedMotion;
@@ -33,6 +54,8 @@ bool UGuLiProjectileEffectDefinition::ResolveMotionSettings(FGuLiProjectileMotio
 	OutMotion.MinimumLiftHeight = Row->MinimumLiftHeightCentimeters;
 	OutMotion.MaximumLiftHeight = Row->MaximumLiftHeightCentimeters;
 	OutMotion.LateralOffset = Row->LateralOffsetCentimeters;
+	OutMotion.VerticalCurve = Row->VerticalCurveCentimeters;
+	OutMotion.LongitudinalCurve = Row->LongitudinalCurveCentimeters;
 	OutMotion.ConvergenceDistance = Row->ConvergenceDistanceCentimeters;
 	OutMotion.TurnRate = Row->TurnRateDegreesPerSecond;
 	OutMotion.SweepRadius = Row->SweepRadiusCentimeters;

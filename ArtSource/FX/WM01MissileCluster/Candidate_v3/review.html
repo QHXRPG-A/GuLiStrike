@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>重防号导弹 · Candidate v3</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,"Microsoft YaHei",sans-serif;background:#101923;color:#edf2f5}*{box-sizing:border-box}body{max-width:1600px;margin:32px auto;padding:0 28px}h1{font-size:28px;margin:0 0 12px}p{line-height:1.8;color:#b7c8d5;max-width:1150px}.tag{color:#f8cf87;font-size:13px;letter-spacing:.08em}nav{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}button{background:#203344;border:1px solid #3d5365;border-radius:6px;padding:10px 14px;color:#e6edf3;font:inherit;cursor:pointer}button:hover{background:#2e4d63}button[aria-pressed=true]{background:#416c87;border-color:#8ab9d5}button:focus-visible{outline:2px solid #f8cf87;outline-offset:3px}label{display:inline-flex;align-items:center;gap:9px;margin:0 0 10px;color:#c6d5df;cursor:pointer}input{accent-color:#92c5e4;width:18px;height:18px}.views{display:grid;grid-template-columns:1fr;gap:18px}.views.compare{grid-template-columns:1fr 1fr}figure{margin:0;min-width:0}figcaption{display:flex;justify-content:space-between;margin:0 0 10px;font-size:14px;color:#c4d5df}img{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#1b2b39;border-radius:8px}.notice{border-left:3px solid #dcaf70;padding:10px 17px;background:#1d2c39;max-width:none}small{color:#a2b7c6;line-height:1.8}a{color:#96cdec}footer{margin-top:22px}[hidden]{display:none!important}table{border-collapse:collapse;margin:20px 0;color:#c8d8e3}td,th{text-align:left;padding:8px 20px 8px 0;border-bottom:1px solid #354653}@media(max-width:850px){body{padding:0 16px;margin:24px auto}.views.compare{grid-template-columns:1fr}h1{font-size:24px}}
+</style>
+<div class="tag">WM01 / UnitTypeId 2 · 视觉候选 v3</div>
+<h1>更宽的烟迹，更长的尾焰</h1>
+<p>以 v2 为基准：烟宽 ×3，尾焰尺寸 ×2。弹体仍为 195cm，烟迹仍保留 2.4 秒，颜色与亮度沿用 v2。三档使用同一份表数据；远镜头补充展示简化档的可读性。</p>
+<table><tr><th>项目</th><th>v2 → v3</th></tr><tr><td>烟迹初始宽 / 最大宽</td><td>21 / 33 → 63 / 99cm</td></tr><tr><td>尾焰宽 × 长</td><td>21 × 54 → 42 × 108cm</td></tr><tr><td>导弹速度</td><td>1200 → 2400cm/s</td></tr><tr><td>基础 Q 射程 / 爆炸半径</td><td>48 → 96m / 2 → 3m</td></tr></table>
+<nav id="quality" aria-label="表现档位"></nav><nav id="phase" aria-label="观察时刻"></nav>
+<label><input id="compare" type="checkbox" checked>与 v2 同镜头、同曝光对比（速度不同，时刻分别标注）</label>
+<div class="views compare" id="views">
+<figure id="old"><figcaption><span>v2 · 保留的原画面</span><span id="oldTime"></span></figcaption><img id="oldImage" alt="v2 导弹烟迹"></figure>
+<figure><figcaption><strong>v3 · 当前候选</strong><span id="newTime"></span></figcaption><img id="newImage" alt="v3 导弹烟迹"></figure>
+</div>
+<p class="notice">这是 UE 编辑器内四条示意轨迹的分帧捕获，预览按源表速度倍率加速。8 段历史已修正高速误清空，接头羽化限制在 2cm；简化档转角仍可见折线。正式战斗表现继续等待可播放候选视觉审核。</p>
+<small>1280 × 720，42° 镜头，固定手动曝光。Full / Lite / Minimal 使用原 v2 镜头；“远镜头”将相机到目标的距离扩大至 2 倍，不作为 v2 对照。<br>实际占用为 4 个弹体、4 个尾焰，历史粒子为 96 / 32 / 0。游戏内触发、自动切档、裁剪恢复、网络和性能不由本页证明。</small>
+<footer><a href="../Candidate_v2/review.html">保留的 v2 预览</a> · <a href="manifest.json">捕获与验证记录</a> · <a href="../../../../Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md">开发记录</a></footer>
+<script>
+const qualities=[['Full','完整 · 24 段'],['Lite','简化 · 8 段'],['Minimal','最低档 · 无烟迹'],['Lite_Far','远镜头 · 8 段']];
+const phases=[['start','出射',.15,.3],['flight','飞行',.5,1],['long_tail','长尾',56/60,112/60],['peak_tail','峰值',69/60,2.3],['impact','停止生成',1.4,2.6],['dissipating','消散中',1.9,2.9],['late_tail','消散末段',3,4.2],['cleared','清空',5.1,5.1]];
+let quality='Full',phase='long_tail';
+function buttons(id,items,value,choose){document.getElementById(id).replaceChildren(...items.map(item=>{const b=document.createElement('button');b.type='button';b.textContent=item[1];b.setAttribute('aria-pressed',String(item[0]===value));b.onclick=()=>{choose(item[0]);draw()};return b}))}
+function draw(){buttons('quality',qualities,quality,x=>quality=x);buttons('phase',phases,phase,x=>phase=x);const p=phases.find(x=>x[0]===phase);const compare=document.getElementById('compare').checked&&quality!=='Lite_Far';document.getElementById('views').classList.toggle('compare',compare);document.getElementById('old').hidden=!compare;document.getElementById('newImage').src=quality+'/'+phase+'.png';document.getElementById('oldImage').src='../Candidate_v2/'+quality+'/'+phase+'.png';document.getElementById('oldTime').textContent=p[3].toFixed(2)+' 秒';document.getElementById('newTime').textContent=p[2].toFixed(2)+' 秒'}
+document.getElementById('compare').onchange=draw;draw();
+</script>
+</html>

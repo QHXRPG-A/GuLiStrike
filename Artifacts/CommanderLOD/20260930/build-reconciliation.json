@@ -1,0 +1,112 @@
+{
+  "stage": "reconcile_existing_build_readonly",
+  "build_executed_this_turn": false,
+  "source_build_evidence": "Artifacts/WM01MissileCards/Visual_v3/build-editor-result.json",
+  "source_files": [
+    {
+      "path": "Source\\GuLiStrike\\Commander\\Presentation\\GuLiCommanderLODPolicy.h",
+      "sha256": "04ddfe2f26f35260f73ec4cd6b534303d0348e50f2594dc778c494eca79b4623",
+      "matches_handoff": true,
+      "predates_current_game_dll": true
+    },
+    {
+      "path": "Source\\GuLiStrike\\Commander\\Presentation\\GuLiCommanderLODSubsystem.h",
+      "sha256": "1dc81462fe3551ce288adf8af388121760506296e71290a0db441785a804d1b6",
+      "matches_handoff": true,
+      "predates_current_game_dll": true
+    },
+    {
+      "path": "Source\\GuLiStrike\\Commander\\Presentation\\GuLiCommanderLODCommands.cpp",
+      "sha256": "ba971d4fc22ff8a960570e73d56a59313e0274de1875c1e3cf4b3c8bd8173291",
+      "matches_handoff": true,
+      "predates_current_game_dll": true
+    },
+    {
+      "path": "Source\\GuLiStrike\\Commander\\Presentation\\GuLiCommanderLODPolicy.cpp",
+      "sha256": "90498e51221b4303697ecef594e20d36635b0683f6e6f42dc4faa6f09d484ee2",
+      "matches_handoff": true,
+      "predates_current_game_dll": true
+    },
+    {
+      "path": "Source\\GuLiStrike\\Commander\\Presentation\\GuLiCommanderLODSubsystem.cpp",
+      "sha256": "1ab5fa15d850db204a2f6d09812b2610c6f96c812fa4ac326de2161354bb3c66",
+      "matches_handoff": true,
+      "predates_current_game_dll": true
+    },
+    {
+      "path": "Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiMissileClusterPresentation.h",
+      "sha256": "db48356e957a4c90e4108ab1a14ba883ebf38e7cdbc5dd5a77aa4ec0f5973fee",
+      "matches_handoff": false,
+      "predates_current_game_dll": true
+    },
+    {
+      "path": "Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiMissileClusterPresentation.cpp",
+      "sha256": "6b64c6c510e29a161f2c8fbc9d1d0cf9f82d59f06c6e4f4f0266b580cfdba2ed",
+      "matches_handoff": false,
+      "predates_current_game_dll": true
+    },
+    {
+      "path": "Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiCombatEffectPresentationSubsystem.cpp",
+      "sha256": "39ebff92268a7493447a2ebedffe4b05481e6ea82e92745d9a9277e24264e86a",
+      "matches_handoff": false,
+      "predates_current_game_dll": true
+    },
+    {
+      "path": "Source\\GuLiStrikeEditor\\Private\\GuLiMissileFixture.cpp",
+      "sha256": "1c8f6d7064e8adcaf87b357b7e394e174424242e9203a25c6273fbb7bff6f676",
+      "matches_handoff": true,
+      "predates_current_game_dll": true
+    },
+    {
+      "path": "Scripts\\author_commander_lod_scene.py",
+      "sha256": "7317140f5380400fb16ce1a1b4a2a2006dafd767fa8df522367c0bb1e6a060bc",
+      "matches_handoff": true,
+      "predates_current_game_dll": true
+    }
+  ],
+  "manifests": [
+    {
+      "path": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\GuLiMapAuthoring\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\Tripo3DUEBridge-UE5.7-Win64\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\UnrealMCP\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\UnrealMCPython\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\VibeUE\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    }
+  ],
+  "all_build_ids_match": true,
+  "latest_recorded_build": {
+    "authorization": "允许构建、打开并做冷加载重开",
+    "finished": "2026-09-29T23:51:16.5722563+08:00",
+    "started": "2026-09-29T23:50:40.0001755+08:00",
+    "target": "GuLiStrikeEditor Win64 Development",
+    "exit_code": 0,
+    "engine": "D:/UnrealEngine-5.7"
+  },
+  "native_source_predates_dll": true,
+  "build_confirmation_boundary": "Reuse recorded successful build and matching manifests; editor load will be verified separately. Not a new build or runtime test."
+}

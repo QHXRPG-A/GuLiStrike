@@ -307,12 +307,48 @@ def validate_game_text_references(tables):
         raise SheetError(f"原生 UI 引用缺少游戏文本: {sorted(missing)}")
 
 
+def validate_rogue_card_text_styles(tables):
+    table_name = 'DT_GuLiStrikeRogueCardUI_TextStyles'
+    if table_name not in tables:
+        return
+    entry = tables[table_name]
+    styles = {row['Name']: row for row in entry['rows']}
+    if 'Default' not in styles:
+        raise SheetError('GuLiStrikeRogueCardUI.xlsx::TextStyles 缺少Default样式')
+    for row in styles.values():
+        where = f"GuLiStrikeRogueCardUI.xlsx::TextStyles 行{entry['row_locations'][str(row['Id'])]} 样式{row['Name']}"
+        if row['FontSize'] <= 0 or row['OutlineSize'] < 0:
+            raise SheetError(f'{where}: FontSize必须为正整数，OutlineSize必须非负')
+        for field in ('ColorSRGB', 'OutlineColorSRGB'):
+            if not re.fullmatch(r'#[0-9A-Fa-f]{6}', row[field]):
+                raise SheetError(f'{where}: {field}必须为#RRGGBB')
+        if not row['FontAsset'].startswith(('/Engine/', '/Game/')) or '.' not in row['FontAsset'].rsplit('/', 1)[-1]:
+            raise SheetError(f'{where}: FontAsset必须使用完整字体资产路径')
+    text_rows = tables.get('DT_GuLiStrikeGameTexts_Texts', {}).get('rows', [])
+    texts = {row['TextId']: row['Content'] for row in text_rows}
+    for card in tables.get('DT_GuLiStrikeRogueCards_Cards', {}).get('rows', []):
+        key = card['TextIds'][1]
+        pattern = texts.get(key, '')
+        if any(character in pattern for character in '\r\n'):
+            raise SheetError(f'卡牌{card["Id"]}的{key}必须为单行说明')
+        tags = re.findall(r'<([^/>]+)>', pattern)
+        missing = set(tags) - set(styles)
+        if missing or pattern.count('</>') != len(tags):
+            raise SheetError(f'卡牌{card["Id"]}的{key}引用未知或未闭合富文本样式: {sorted(missing)}')
+
+
 def validate_rogue_cards(tables):
     entry = tables.get("DT_GuLiStrikeRogueCards_Cards")
     if entry is None:
         return
     texts = {r["TextId"] for r in tables["DT_GuLiStrikeGameTexts_Texts"]["rows"]}
     units = {r["Id"] for r in tables["DT_GuLiStrikeCommander_Soldiers"]["rows"]}
+    cards = {row["Id"]: row for row in entry["rows"]}
+    def fail(row, message):
+        line = entry.get("row_locations", {}).get(row["Id"], "?")
+        raise SheetError(f"GuLiStrikeRogueCards.xlsx / Cards 行{line} 卡ID={row['Id']} ({row['Name']}): {message}")
+
+    percent_effects = {"GuLiRogueCardFireRateEffect", "GuLiRogueCardMoveSpeedEffect", "GuLiRogueCardMissileDamageEffect"}
     for row in entry["rows"]:
         if not re.fullmatch(r"[0-9]{2}\.[0-9]{2}", row["Id"]) or row["Id"].endswith(".00"):
             raise SheetError(f"卡牌 {row['Name']} 的 id 必须为文本 卡族.两位等级，例如 01.01")
@@ -320,8 +356,30 @@ def validate_rogue_cards(tables):
             raise SheetError(f"卡牌 {row['Name']} 的类型或目标兵种无效")
         if len(row["TextIds"]) != 2 or any(t not in texts for t in row["TextIds"]):
             raise SheetError(f"卡牌 {row['Name']} 必须引用两项已存在的文本，顺序为标题、说明")
-        if not math.isfinite(row["BonusPercent"]) or row["BonusPercent"] <= 0:
-            raise SheetError(f"卡牌 {row['Name']} 的加成必须为有限正数")
+        effect = row["ImplementationClass"].rsplit(".", 1)[-1]
+        percent, count = row["BonusPercent"], row["BonusCount"]
+        if not math.isfinite(percent) or row["MaxAcquisitions"] < 0:
+            fail(row, "BonusPercent必须有限；MaxAcquisitions必须为非负整数，0表示无限")
+        if effect in percent_effects:
+            if percent <= 0 or count != 0:
+                fail(row, "百分比效果要求BonusPercent>0且BonusCount=0")
+        elif effect == "GuLiRogueCardMissileCountEffect":
+            if count <= 0 or percent != 0:
+                fail(row, "弹量效果要求BonusCount为正整数且BonusPercent=0")
+        elif effect == "GuLiRogueCardMissilePodEffect":
+            if percent != 0 or count != 0 or row["MaxAcquisitions"] != 1:
+                fail(row, "解锁效果要求两项增量均为0且MaxAcquisitions=1")
+        else:
+            fail(row, f"效果类 {effect} 尚未登记数值契约")
+        for key in ("RequiredCardIds", "ExcludedCardIds"):
+            refs = row[key]
+            if len(set(refs)) != len(refs):
+                fail(row, f"{key}含重复引用")
+            if row["Id"] in refs:
+                fail(row, f"{key}不能引用自身")
+            missing = set(refs) - cards.keys()
+            if missing:
+                fail(row, f"{key}引用未知卡: {sorted(missing)}")
         for key in ("ImplementationClass", "FrontMaterial", "UpgradeVfx"):
             if not row[key].startswith(("/Script/", "/Game/")) or "." not in row[key].rsplit("/", 1)[-1]:
                 raise SheetError(f"卡牌 {row['Name']}.{key} 必须为完整对象路径")
@@ -335,6 +393,33 @@ def validate_rogue_cards(tables):
         values = [float(v) for v in color.groups()] if color else []
         if not values or not all(math.isfinite(v) for v in values) or not 0 <= values[3] <= 1:
             raise SheetError(f"卡牌 {row['Name']} 的升级特效颜色须为线性HDR (R=...,G=...,B=...,A=...)，alpha在0~1")
+
+    # An exclusion authored on either endpoint applies symmetrically. Every
+    # prerequisite closure, including its owner, must be simultaneously obtainable.
+    excluded = {ident: set(row["ExcludedCardIds"]) for ident, row in cards.items()}
+    for ident, row in cards.items():
+        for other in row["ExcludedCardIds"]:
+            excluded[other].add(ident)
+    closures = {}
+    visiting = []
+    def closure(ident):
+        if ident in visiting:
+            fail(cards[ident], "依赖环: " + " -> ".join(visiting[visiting.index(ident):] + [ident]))
+        if ident in closures:
+            return closures[ident]
+        visiting.append(ident)
+        result = {ident}
+        for required in cards[ident]["RequiredCardIds"]:
+            result.update(closure(required))
+        visiting.pop()
+        for member in sorted(result):
+            conflict = result & excluded[member]
+            if conflict:
+                fail(cards[ident], f"依赖链内部互斥（含卡牌自身）: {member} 与 {sorted(conflict)}")
+        closures[ident] = result
+        return result
+    for ident in cards:
+        closure(ident)
 
 
 def gen_header_text(stem, sheets_props):
@@ -532,6 +617,19 @@ def validate_vfx_references(tables):
                     raise SheetError(f'{table}/{row["Name"]}.{field}: 必需特效未配置')
 
 
+def validate_projectile_visual_profiles(tables):
+    """Zero/empty is allowed for legacy projectiles; a configured profile must be complete."""
+    fields = ('SmokeInitialWidthCentimeters', 'SmokeMaximumWidthCentimeters',
+              'FlameWidthCentimeters', 'FlameLengthCentimeters')
+    for row in tables.get('DT_GuLiStrikeSecondaryWeapons_Projectiles', {}).get('rows', []):
+        values = [row.get(field, 0) for field in fields]
+        if row['Name'] != 'WM01_Missile' and not any(values):
+            continue
+        if not all(isinstance(v, (int, float)) and math.isfinite(v) and v > 0 for v in values) \
+                or values[1] < values[0]:
+            raise SheetError(f"Projectiles/{row['Name']}: 烟宽/尾焰尺寸必须为有限正数，烟宽上限不得小于初始宽")
+
+
 def main():
     workbooks = [w for w in sorted(EXCEL_DIR.glob("*.xlsx")) if not w.name.startswith("~$")]
     if not workbooks:
@@ -585,6 +683,10 @@ def main():
                 else:
                     tables[table] = {"stem": identity_stem, "identity_sheet": identity_sheet,
                                      "props": props, "rows": rows, "sources": [source]}
+                    if stem in {"GuLiStrikeRogueCards", "GuLiStrikeRogueCardUI"}:
+                        id_column = next(c.column for c in ws[1] if c.value == "id")
+                        tables[table]["row_locations"] = {str(ws.cell(i, id_column).value): i
+                            for i in range(4, ws.max_row + 1) if ws.cell(i, id_column).value is not None}
             except SheetError as e:
                 print(f"error: [{wb_path.name}::{ws.title}] {e}", file=sys.stderr)
                 failed = True
@@ -603,7 +705,9 @@ def main():
             validate_commander_state_trees(tables)
             validate_game_text_references(tables)
             validate_rogue_cards(tables)
+            validate_rogue_card_text_styles(tables)
             validate_vfx_references(tables)
+            validate_projectile_visual_profiles(tables)
             if any(name.startswith('DT_GuLiStrikeMech_') for name in tables):
                 if not all(name in tables for name in ('DT_GuLiStrikeMech_Upgrades','DT_GuLiStrikeMech_Skills')):
                     raise SheetError('GuLiStrikeMech.xlsx必须同时包含升级表与技能表')

@@ -12,6 +12,8 @@
     FireRate/Materials, Textures
     MissileDamage/Materials, Textures
     MoveSpeed/Materials, Textures
+    MissilePod/Materials, Textures
+    RainSalvo/Materials, Textures
 ```
 
 尚未接通的类型可采用语义清晰的Ship、GroundMech、Building目录；这是命名建议，落地前读项目已有对应目录，不宣称其运行时已实现。无适用单位时跳过单位层，不伪造WM01。
@@ -27,6 +29,8 @@
 | 商城原牌参考 | `/Game/Assets/card/RewardCards`、`/Game/Assets/card/ParallaxCardMaterial` |
 
 三张正面材质为各效果目录下 `Materials/MI_FireRate_ModelComic_v9`、`MI_MissileDamage_ModelComic_v9`、`MI_HighSpeed_ModelComic_v9`。机动美术名HighSpeed与目录MoveSpeed映射见 `Scripts/Cards/card_asset_layout.py`。FrameMaterial是共用 `.../CardSystem/WarMachineTarot/Materials/MI_WarMachineFrame`，不要为不同卡名复制UI文字贴图。
+
+2026-09-29新增 `MissilePod/Materials/MI_MissilePod_ModelComic_v1`、`RainSalvo/Materials/MI_RainSalvo_ModelComic_v1`，当前绑定 Production_v4 的独立全画布图层。原图、分层、背景外沿及UE预览分别留档；涉及数据反射类型变更时，先按已有授权完成编译加载，再导入卡表。
 
 通过UE AssetTools迁移/重命名并保存引用；不要文件系统移动二进制资产。保留仍被引用的redirector，不能因目录整理强制删除。新建版本记录旧引用用于回退；保留旧源图。
 
@@ -47,6 +51,7 @@
 - `StartPresentation()`、`OnPresentationFinished(SelectedIndex)`，索引0左/1中/2右。
 - `CardFrontMaterials`、`CardTextMaterials`各三项，`SetArtwork()`应用素材；CardTextMaterials承载框/UI材质，不是正式标题说明数据源。
 - 实战 `UseLiveCardData`、`LiveCardIds`、`ExternalConfirmation`；第二次点击发送 `OnConfirmationRequested`，服务器成功后 `CompleteConfirmation()` 才继续闪光。
+- `ActiveCardCount` 支持1/2/3张合格卡；仅实际卡参与布局、命中和交互，零张在原生入口显示暂无可选牌。Esc退出不丢弃服务器上的未确认选择，重开保留最新候选。
 - 蓝图提供的动画接口与通用效果类分工不同，不能让每个效果类各复制一套选牌流程。
 
 | 阶段 | 当前节奏与输入 |
@@ -60,6 +65,20 @@
 | 结束 | 清理；评审显示重播，实战直接回战场，F4可再次打开 |
 
 面积2、厚度2、视差4独立参数见分层参考。初始20%/50%/80%中心布局与宽高限制在不同宽高比下重新读取/核验，不因倍增面积承诺永不碰边。
+
+## 卡牌单行富文本
+
+`WBP_CardText` 保持原标题、说明区位置及尺寸。`CardDescription` 使用RichTextBlock，`SetContent`和原生`SetLiveCardText`同步赋值；共享 `/Game/GuLiStrike/CardSystem/WarMachineTarot/UI/DT_CardTextStyles` 包含Default、Unit、Gain三行。Default为现有38号暖白，Unit/Gain为同字号黄色 `#FFD84A`、Bold并使用1像素同色描边，使缺少独立粗体字面的中文回退字形也加粗。颜色从sRGB转线性后存储。
+
+这些样式值只在`GuLiStrikeRogueCardUI.xlsx/TextStyles`维护，经正常导出生成原生行结构和`/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCardUI_TextStyles`。UMG样式表由源数据表转换，不在Python、C++或UE资产中单独调数。导入采用原地填充，保存后按实际UE导出的Slate结构文本解码回读字体和颜色。
+
+AutoWrapText=false、WrapTextAt=0；沿用DescriptionFit的ScaleToFit/DownOnly，完整显示一行而不裁断或省略关键增益。说明HitTestInvisible且无Tooltip，不新增输入或焦点归属。`Scripts/Cards/card_rich_text.py`为可复用制作入口；`apply_single_line_card_text.py`在匹配原生构建已加载、UE空闲时定向导入文本、迁移控件并保存回读真实F4入口。不得在游玩期间执行，不因文案修改重跑卡图、材质或整套选牌图表。
+
+## 显式重选
+
+原生 `GuLiRogueCardOverlay` 在底部右侧创建重选按钮；Phase 1（选择）/3（翻面完成待确认）可用，动画、提交和等待重选时禁用。按钮独立命中，禁用时也阻止向卡牌穿透。UI只请求 `ServerRerollRogueCards`；服务器复核拥有者、队伍、局次和候选资格，优先换入未显示的合格牌，无其他牌则保留当前选择并提示。重选不改变获取记录，不发奖励；替换Session阻止旧确认，重复请求返回同一结果。
+
+成功重选只销毁旧卡牌、捕获与渲染目标并重建展示；覆盖层、模糊和战场输入锁保持。失败可恢复原牌，Esc重开保留最新候选。六条文案使用 `UI.RogueCards.Reroll*`、`UI.RogueCards.NoAlternatives` 公共文本。代码、资产保存回读、编译和玩家点击验收分别记录。
 
 ## 模糊、捕获与输入
 
@@ -90,8 +109,10 @@
 | `Scripts/Cards/card_asset_layout.py` | 当前目录映射，可只读复用 |
 | `Scripts/Cards/migrate_card_asset_layout.py` | UE迁移；仅需要迁移时调用 |
 | `Scripts/Cards/author_rogue_card_entry.py` | 分阶段部署：迁移、表、卡牌图表、确认契约、捕获材质、地图；不要为一处小改动整套重跑 |
-| `Scripts/Cards/readback_rogue_card_entry.py` | 当前入口核对；先读脚本确认范围 |
-| `Scripts/Cards/finalize_rogue_upgrade_scene.py` | 更新指定入口Note、保存并重载实战地图、读回数据；会写地图，不是纯查询 |
+| `Scripts/Cards/readback_rogue_card_entry.py` | 历史三卡入口核对，包含已移除Candidates假设；勿直接用于当前五卡规则 |
+| `Scripts/Cards/finalize_rogue_upgrade_scene.py` | 历史固定三卡场景脚本，勿用于当前入口以免覆盖重选说明 |
+| `Scripts/Cards/prepare_rogue_card_reroll.py` | 定向导入卡/文本、重建StringTable，保存并回读指定F4入口；不启动PIE，运行前需已加载卡表反射类型 |
+| `Scripts/Cards/apply_single_line_card_text.py` | 匹配原生模块构建加载后接入单行黄色粗体；原地导入公共文本和Excel样式表，生成UMG样式并保存回读控件及F4入口，不启动PIE |
 | `Scripts/Cards/apply_modelcomic_v9.py`、`author_warmachine_cards.py` | 历史制作来源，含旧路径/旧版/固定图像尺寸；用于参考，不原样运行覆盖当前资产 |
 | `Scripts/Cards/validate_*`、`run_*preview*`、`benchmark_*` | 部分启动PIE/创建夹具；只有当前任务相应授权时运行，不当作默认检查 |
 

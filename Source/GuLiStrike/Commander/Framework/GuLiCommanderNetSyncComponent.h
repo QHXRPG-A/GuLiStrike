@@ -61,6 +61,7 @@ class GULISTRIKE_API UGuLiCommanderNetSyncComponent : public UGuLiPlayerNetSyncC
 public:
 	UGuLiCommanderNetSyncComponent();
 	UFUNCTION(Server, Reliable) void ServerRequestRogueCards(FGuid Request);
+	UFUNCTION(Server, Reliable) void ServerRerollRogueCards(FGuid Request, FGuid Session);
 	UFUNCTION(Server, Reliable) void ServerConfirmRogueCard(FGuid Session, const FString& CardId);
 	UFUNCTION(Server, Reliable) void ServerCancelRogueCards(FGuid Session);
 	/** Cosmetic readiness only. The server requires an already committed, owned session. */

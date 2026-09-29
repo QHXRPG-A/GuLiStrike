@@ -50,7 +50,7 @@ def main():
         ('Projectile','softobject',False),('FieldConfigId','str',False),('SourceWeaponSlot','str',False),
         ('UseAuthoredTrajectory','bool',False),('GroundWarningStyle','softobject',False),
         ('TargetAreaDiameterCentimeters','float',False)]]
-    sheet('Skills', schema, [dict(id=1, name='WM01_HomingMissile', Note='Scale020：战争机器Q；独立6秒；普攻射程x1.6；直径8米随机区域，半径1.6米爆炸与预警共用服务器数据',
+    sheet('Skills', schema, [dict(id=1, name='WM01_HomingMissile', Note='Scale020：重防号Q；独立6秒；普攻射程x1.6；直径8米随机区域，半径1.6米爆炸与预警共用服务器数据',
         TargetMode='GroundPoint', CooldownSeconds=6., RangeCentimeters=4800., RangeSourceSlot='BasicAttack', RangeMultiplier=1.6,
         MaximumLevel=1, ExecutorClass='/Script/GuLiStrike.GuLiWarMachineMissileSkillExecutor',
         ConfigurationClass='/Script/GuLiStrike.GuLiPointSkillConfiguration', Configuration='/Game/GuLiStrike/Commander/Skills/DA_WM01_MissileQ',

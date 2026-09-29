@@ -1,0 +1,41 @@
+{
+  "success": true,
+  "source_asset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel",
+  "source_model_version": "WarMachine_LevelNodes_v6",
+  "camera_note": "Full-model reference framing scaled 10x with WM01 runtime presentation scale 0.2; not a gameplay screenshot",
+  "source_materials": [
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour",
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel"
+  ],
+  "scale": 0.2,
+  "origin": [
+    8000.0,
+    8000.0,
+    0.0
+  ],
+  "source_bounds": "<Struct 'BoxSphereBounds' (0x000002F35A913080) {origin: {x: -143.564087, y: 0.000122, z: 2085.910697}, box_extent: {x: 2603.508179, y: 2895.085083, z: 2101.618600}, sphere_radius: 3973.481925}>",
+  "images": [
+    {
+      "name": "UE_ProductionHero",
+      "file": "UE_ProductionHero.png",
+      "camera_local": [
+        1550,
+        1800,
+        1250
+      ],
+      "target_local": [
+        0,
+        0,
+        310
+      ],
+      "horizontal_fov": 43,
+      "resolution": [
+        1536,
+        1536
+      ]
+    }
+  ],
+  "pixel_review": "not_performed_per_user_request",
+  "renderer": "UE SceneCapture real mesh, original materials, fixed exposure; temporary scene actors cleaned",
+  "temporary_actors_removed": true
+}

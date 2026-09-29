@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>重防号导弹 · 烟迹候选</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,"Microsoft YaHei",sans-serif;background:#111b25;color:#e7eef3}body{max-width:1240px;margin:32px auto;padding:0 24px}h1{font-size:28px;margin:0 0 12px}p{color:#aebfcd;line-height:1.75}nav{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}button{background:#243747;border:1px solid #415a6c;border-radius:7px;padding:10px 16px;color:#e7eef3;font:inherit;cursor:pointer}button[aria-pressed=true]{background:#39657d;border-color:#6da6c5}img{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#1b2a38;border-radius:8px}.caption{display:flex;justify-content:space-between;margin:14px 0;color:#b8cbd8}.notice{border-left:3px solid #d6ad70;padding:10px 16px;background:#24303b}small{color:#91a9ba}a{color:#91c9ea}
+</style>
+<h1>重防号导弹 · 短尾焰与历史烟迹</h1>
+<p>导弹保持原视觉尺度。烟迹取已飞过的位置，寿命 1.2 秒；热色快速退为灰白，停止发射后留下的部分自然消散。</p>
+<nav id="quality"></nav><nav id="phase"></nav>
+<img id="frame" alt="重防号导弹烟迹候选画面"><div class="caption"><span id="caption"></span><span>UE 编辑器捕获 · 1280 × 720</span></div>
+<p class="notice">当前为隔离美术预览，四条示意轨迹用于观察烟迹和尾焰，不代表实战解锁、联网轨迹或性能验收。新原生模块已加载，容量绑定及四级导弹仓 LOD 回读通过；本页画面拍摄于容量绑定前，展示材质和烟迹外观。正式战斗引用尚未切换。</p>
+<small>近景 24 段 · 中远景 8 段 · 最低档弹体＋短尾焰。最低档不会生成烟迹。<br>预览复制资源不进入 VFX 注册表；实战候选通过指定地图中的 Candidate 开关接入。</small>
+<script>
+const qualities=[['Full','近景 · 24 段'],['Lite','中远景 · 8 段'],['Minimal','最低档 · 无烟迹']];
+const phases=[['start','出射'],['flight','飞行'],['long_tail','长烟迹'],['impact','停止生成'],['dissipating','残留消散'],['cleared','消散完成']];
+let quality='Full',phase='long_tail';
+function draw(){for(const [id,items,value,set] of [['quality',qualities,quality,x=>quality=x],['phase',phases,phase,x=>phase=x]]){const nav=document.getElementById(id);nav.replaceChildren(...items.map(([key,label])=>{const b=document.createElement('button');b.textContent=label;b.setAttribute('aria-pressed',String(key===value));b.onclick=()=>{set(key);draw()};return b}))}document.getElementById('frame').src=`${quality}/${phase}.png`;document.getElementById('caption').textContent=qualities.find(x=>x[0]===quality)[1]+' / '+phases.find(x=>x[0]===phase)[1]}
+draw();
+</script></html>

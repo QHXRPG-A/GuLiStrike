@@ -1,0 +1,49 @@
+{
+  "static_mesh_import": "passed",
+  "mesh_armature_count": 0,
+  "rigid_part_counts": {
+    "WarMachine": 10,
+    "Sweeper": 6
+  },
+  "lod_uv_and_seam_validation": true,
+  "material_shader_compile": true,
+  "visual_review": "UE SceneCapture neutral and animated poses inspected; no obvious separated contour or stretched part observed. Gameplay not run.",
+  "native_compile": "passed",
+  "native_automation": "not_run",
+  "gameplay_acceptance": "not_run",
+  "maximum_view_runtime_render_cost_ms": null,
+  "configured_runtime_population": 500,
+  "maximum_camera_arm_cm": 36000,
+  "scene_saved": true,
+  "distance_crossing_runtime_test": "not_run",
+  "network_protocol": 20,
+  "native_build_target": "GuLiStrikeEditor Win64 Development",
+  "native_engine": "D:/UnrealEngine-5.7",
+  "remaining": [
+    "Start source-engine editor to load the successfully built native modules",
+    "Run scoped native contracts and gameplay checks",
+    "Record visible instances and Game/Draw/GPU ms at 360m; repeat after spawning, teleport and wreck creation",
+    "Verify camera ground readout at zoom limits, slopes, landscape boundaries, viewport resizing and role switches"
+  ],
+  "camera_distance_hud": {
+    "source_review": "passed",
+    "text_import_readback": "passed",
+    "refresh_hz": 10,
+    "unit": "meters",
+    "decimal_places": 1,
+    "fields": [
+      "vertical_landscape_clearance",
+      "screen_center_landscape_distance"
+    ],
+    "runtime_display": "not_run_editor_not_started",
+    "scene_note": "MassRigid_CameraDistance",
+    "native_compile": "passed"
+  },
+  "scene_owned_actor_count": 8,
+  "scene_version_control": "Map follows pre-existing Git ignore rule; saved locally and reproducible from Scripts/author_mass_rigid_scene.py",
+  "native_build_exit_code": 0,
+  "native_build_id_match": true,
+  "native_build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+  "native_build_report": "native-build-report.json",
+  "native_loaded_in_editor": false
+}

@@ -1,5 +1,7 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiMissileClusterPresentation.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -23,6 +25,12 @@
 DEFINE_LOG_CATEGORY_STATIC(LogGuLiCombatEffectVisuals, Log, All);
 static TAutoConsoleVariable<int32> CVarGuLiCombatEffectVisuals(TEXT("gs.CombatEffects.Visuals"), 1,
 	TEXT("Local combat VFX only: 0 disables rendering without changing server combat. Used for scoped A/B acceptance."));
+static TAutoConsoleVariable<int32> CVarGuLiMissileClusterEnabled(TEXT("gs.MissileCluster.Enabled"), 1,
+	TEXT("WM01 visual comparison: 0 uses the existing per-projectile flight effect, 1 uses GPU clusters. Gameplay counts and trajectories do not change."));
+#if WITH_EDITOR
+static TAutoConsoleVariable<int32> CVarGuLiMissileClusterCandidate(TEXT("gs.MissileCluster.Candidate"), 0,
+	TEXT("Opt-in WM01 visual candidate, only in LVL_CommanderMassPrototype PIE. Production asset references remain unchanged."));
+#endif
 
 bool UGuLiCombatEffectPresentationSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
@@ -34,7 +42,9 @@ void UGuLiCombatEffectPresentationSubsystem::Initialize(FSubsystemCollectionBase
 {
 	Super::Initialize(Collection);
 	Collection.InitializeDependency<UGuLiCommanderDataSubsystem>();
+	Collection.InitializeDependency<UGuLiCommanderLODSubsystem>();
 	CommanderData = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+	MissileClusters = NewObject<UGuLiMissileClusterPresentation>(this);
 	if (GetWorld()->GetNetMode() != NM_DedicatedServer)
 	{
 		Collection.InitializeDependency<UGuLiGroundWarningSubsystem>();
@@ -57,6 +67,8 @@ void UGuLiCombatEffectPresentationSubsystem::ResetVisuals()
 	for (const FGuid& Id : Ids) RemoveVisual(Id, true);
 	ResetLaserPool();
 	ResetRogueUpgradePool();
+	ResetMechanicalMuzzles();
+	if (MissileClusters) MissileClusters->Reset();
 	if (Gunfire) { Gunfire->DeactivateImmediate(); Gunfire->ReleaseToPool(); Gunfire = nullptr; }
 	for (const auto& Item : Retiring) if (IsValid(Item.Component)) { Item.Component->DeactivateImmediate(); Item.Component->ReleaseToPool(); }
 	Retiring.Reset(); PendingShots.Reset(); ActiveMuzzles.Reset(); SeenShots.Reset(); ShotOrder.Reset(); Tombstones.Reset(); TombstoneOrder.Reset();
@@ -98,9 +110,9 @@ void UGuLiCombatEffectPresentationSubsystem::UnregisterPoseResolver(EGuLiTargetK
 	if (const auto* Provider = PoseProviders.Find(Kind); Provider && Provider->Owner.Get() == Owner) PoseProviders.Remove(Kind);
 }
 
-void UGuLiCombatEffectPresentationSubsystem::RegisterMuzzleResolver(EGuLiTargetKind Kind, UObject* Owner, FMuzzleResolver Resolver)
+void UGuLiCombatEffectPresentationSubsystem::RegisterMuzzleResolver(EGuLiTargetKind Kind, UObject* Owner, FMuzzleResolver Resolver, FShotObserver Observer)
 {
-	if (Owner && Resolver) MuzzleProviders.Add(Kind, {Owner, MoveTemp(Resolver)});
+	if (Owner && Resolver) MuzzleProviders.Add(Kind, {Owner, MoveTemp(Resolver), MoveTemp(Observer)});
 }
 
 void UGuLiCombatEffectPresentationSubsystem::UnregisterMuzzleResolver(EGuLiTargetKind Kind, const UObject* Owner)
@@ -139,16 +151,29 @@ bool UGuLiCombatEffectPresentationSubsystem::ResolvePose(const FGuLiTargetHandle
 
 bool UGuLiCombatEffectPresentationSubsystem::ResolveMuzzlePosition(const FGuLiCombatShotCue& Cue, FVector& Position) const
 {
+	FTransform Transform;
+	float RenderTime = 0.0f;
+	if (!ResolveMuzzleTransform(Cue, Transform, RenderTime)) return false;
+	Position = Transform.GetLocation();
+	return true;
+}
+
+bool UGuLiCombatEffectPresentationSubsystem::ResolveMuzzleTransform(const FGuLiCombatShotCue& Cue, FTransform& Transform, float& RenderTime) const
+{
 	if (const auto* Provider = MuzzleProviders.Find(Cue.Source.Kind);
-		Provider && Provider->Owner.IsValid() && Provider->Resolve && Provider->Resolve(Cue, Position))
-		return !Position.ContainsNaN();
+		Provider && Provider->Owner.IsValid() && Provider->Resolve && Provider->Resolve(Cue, Transform, RenderTime))
+		return !Transform.ContainsNaN();
+	// A mechanical burst must use the same buffered pose clock as its recoil.
+	if (Cue.bMechanicalShot) return false;
 	FTransform SourcePose;
 	int32 ResolvedUnitType = Cue.UnitTypeId;
 	if (!ResolvePose(Cue.Source, SourcePose, ResolvedUnitType)) return false;
 	// Authority resolved the Excel mount once and replicated that compact local point.
 	// Reapplying it to the current presentation pose keeps sustained muzzle flashes attached.
-	Position = SourcePose.TransformPosition(Cue.MuzzleOffset);
-	return !Position.ContainsNaN();
+	const FVector Direction = Cue.bMechanicalShot ? FVector(Cue.MuzzleDirection) : FVector(Cue.End)-FVector(Cue.Start);
+	Transform = FTransform(Direction.Rotation(), SourcePose.TransformPosition(Cue.MuzzleOffset));
+	RenderTime = ServerTime();
+	return !Transform.ContainsNaN();
 }
 
 bool UGuLiCombatEffectPresentationSubsystem::ResolveTargetPosition(const FGuLiCombatShotCue& Cue, FVector& Position) const
@@ -234,6 +259,7 @@ void UGuLiCombatEffectPresentationSubsystem::RemoveVisual(const FGuid& Id, bool 
 {
 	FGuLiLocalCombatEffect Visual;
 	if (!Visuals.RemoveAndCopyValue(Id, Visual)) return;
+	if (MissileClusters) MissileClusters->Finish(Id, Visual.RenderLocation, bImmediate);
 	if (GroundWarnings) GroundWarnings->RemoveWarning(Id);
 	if (Visual.LaserSlot != INDEX_NONE) FreeLaserSlot(Visual.LaserSlot);
 	float Tail = 0.5f;
@@ -263,6 +289,8 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 	if (Existing && !GuLiCombatEffects::IsNewerState(State, Existing->State)) { ++Counters.RejectedStates; return; }
 	if (State.Phase == EGuLiCombatEffectPhase::Finished)
 	{
+		if (State.Kind == EGuLiCombatEffectKind::Projectile && MissileClusters)
+			MissileClusters->Finish(State.EffectId, State.Location, State.EndReason == EGuLiCombatEffectEndReason::EpochEnded);
 		const bool bDeferGroundImpact = State.Kind == EGuLiCombatEffectKind::LinearProjectile
 			&& Existing && Existing->State.Source.Kind == EGuLiTargetKind::CommanderSoldier;
 		if (State.Kind == EGuLiCombatEffectKind::LinearProjectile && Existing)
@@ -424,9 +452,18 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyShots(const TArray<FGuLiCombat
 		++Counters.ReceivedShots;
 		if (Cue.MatchEpoch != Epoch || !Cue.ShotId.IsValid() || Cue.Start.ContainsNaN() || Cue.End.ContainsNaN()
 			|| !FMath::IsFinite(Cue.ServerTime) || Now - Cue.ServerTime > 0.35f || Cue.ServerTime - Now > 0.5f
-			|| SeenShots.Contains(Cue.ShotId) || PendingShots.Num() >= 2048)
+			|| SeenShots.Contains(Cue.ShotId))
 		{ ++Counters.DroppedShots; continue; }
 		SeenShots.Add(Cue.ShotId); ShotOrder.Add(Cue.ShotId);
+		if (const auto* Provider = MuzzleProviders.Find(Cue.Source.Kind);
+			Provider && Provider->Owner.IsValid() && Provider->Observe) Provider->Observe(Cue);
+		if (Cue.bMechanicalShot)
+		{
+			if (MechanicalMuzzles.Num() < 2048) { auto& Visual = MechanicalMuzzles.AddDefaulted_GetRef(); Visual.Cue = Cue; }
+			else ++Counters.DroppedShots;
+			continue;
+		}
+		if (PendingShots.Num() >= 2048) { ++Counters.DroppedShots; continue; }
 		if (!Cue.bMuzzleOnly) PendingShots.Add(Cue);
 		const FActiveMuzzleKey Key{Cue.Source, Cue.SlotId, Cue.MuzzleIndex};
 		FActiveMuzzleVisual& Muzzle = ActiveMuzzles.FindOrAdd(Key);
@@ -664,6 +701,8 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 	const double Started = FPlatformTime::Seconds();
 	const float Now = ServerTime();
 	const bool bEnabled = CVarGuLiCombatEffectVisuals.GetValueOnGameThread() != 0;
+	const bool bClusterEnabled = bEnabled && CVarGuLiMissileClusterEnabled.GetValueOnGameThread() != 0;
+	if (MissileClusters) MissileClusters->BeginFrame(GetWorld()->GetTimeSeconds(), bClusterEnabled);
 	GetCatalog(); QueueSustainedGunfire(Now, bEnabled); FlushGunfire();
 	if (!bEnabled && Gunfire) { Retire(Gunfire, 0); Gunfire = nullptr; }
 	TArray<FGuid> Expired;
@@ -723,6 +762,18 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 			GuLiCombatEffects::AdvanceProjectile(Prediction, PredictionTime - Prediction.StartTime, Step); Remaining -= Step;
 		}
 		Visual.RenderLocation = FMath::VInterpTo(Visual.RenderLocation, FVector(Prediction.Location), DeltaTime, 25.0f);
+		bool bUseCluster = Definition->bUseMissileClusterRendering;
+#if WITH_EDITOR
+		bUseCluster |= CVarGuLiMissileClusterCandidate.GetValueOnGameThread() != 0 && GetWorld()->IsPlayInEditor()
+			&& GetWorld()->GetMapName().Contains(TEXT("LVL_CommanderMassPrototype"))
+			&& Definition->GetPathName() == TEXT("/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile");
+#endif
+		if (bUseCluster && MissileClusters && bClusterEnabled && MissileClusters->IsReady()
+			&& MissileClusters->Submit(Pair.Key, Visual.RenderLocation, Prediction.Velocity, Definition))
+		{
+			if (Visual.Flight) { Retire(Visual.Flight, 0); Visual.Flight = nullptr; }
+			continue;
+		}
 		if (IsVisibleLocation(Visual.RenderLocation))
 		{
 			if (!Visual.Flight) Visual.Flight = SpawnPooled(Definition->FlightVfxId,
@@ -738,6 +789,8 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 	for (const FGuid& Id : Expired) RemoveVisual(Id, false);
 	UpdateLaserPool(Now, bEnabled);
 	UpdateRogueUpgradePool(Now, bEnabled);
+	UpdateMechanicalMuzzles(Now, bEnabled);
+	if (MissileClusters) MissileClusters->EndFrame();
 	const float LocalNow = GetWorld()->GetTimeSeconds();
 	for (int32 Index = Retiring.Num() - 1; Index >= 0; --Index)
 	{
@@ -755,6 +808,15 @@ FGuLiCombatEffectVisualCounters UGuLiCombatEffectPresentationSubsystem::GetCount
 {
 	FGuLiCombatEffectVisualCounters Result = Counters;
 	Result.ComponentCount = IsValid(Gunfire) ? 1 : 0;
+	if (MissileClusters)
+	{
+		Result.MissileClusterComponents = MissileClusters->GetSystemCount();
+		Result.MissileParticleCapacity = MissileClusters->GetParticleCapacity();
+		Result.MissileFullTrails = MissileClusters->GetFullTrails();
+		Result.MissileClusterUpdateMilliseconds = MissileClusters->GetUpdateMilliseconds();
+		Result.ComponentCount += Result.MissileClusterComponents;
+	}
+	for (const auto& Item : MechanicalMuzzles) Result.ComponentCount += IsValid(Item.Component) ? 1 : 0;
 	for (const auto& Block : LaserBlocks) Result.ComponentCount += IsValid(Block.Component) ? 1 : 0;
 	for (const auto& Block : UpgradeBlocks) Result.ComponentCount += IsValid(Block.Component) ? 1 : 0;
 	for (const auto& Pair : Visuals) Result.ComponentCount += (IsValid(Pair.Value.Flight) ? 1 : 0) + (IsValid(Pair.Value.Waiting) ? 1 : 0) + (IsValid(Pair.Value.ActiveLoop) ? 1 : 0);

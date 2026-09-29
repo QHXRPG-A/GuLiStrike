@@ -67,13 +67,13 @@ art_revision: '1.2'
 | 兵种 | 效果图 | 正视 | 侧视 | 后视 |
 |---|---|---|---|---|
 | 扫荡者 | [Concept](../../ArtSource/TacticalStyle_20260916/Concepts/Sweeper_Concept_v1.png) | [Front](../../ArtSource/TacticalStyle_20260916/Concepts/Sweeper_Front.png) | [Left](../../ArtSource/TacticalStyle_20260916/Concepts/Sweeper_Left.png) | [Back](../../ArtSource/TacticalStyle_20260916/Concepts/Sweeper_Back.png) |
-| 战争机器 | [Concept](../../ArtSource/TacticalStyle_20260916/Concepts/WarMachine_Concept_v1.png) | [Front](../../ArtSource/TacticalStyle_20260916/Concepts/WarMachine_Front.png) | [Left](../../ArtSource/TacticalStyle_20260916/Concepts/WarMachine_Left.png) | [Back](../../ArtSource/TacticalStyle_20260916/Concepts/WarMachine_Back.png) |
+| 重防号 | [Concept](../../ArtSource/TacticalStyle_20260916/Concepts/WarMachine_Concept_v1.png) | [Front](../../ArtSource/TacticalStyle_20260916/Concepts/WarMachine_Front.png) | [Left](../../ArtSource/TacticalStyle_20260916/Concepts/WarMachine_Left.png) | [Back](../../ArtSource/TacticalStyle_20260916/Concepts/WarMachine_Back.png) |
 
 扫荡者：两侧有外鼓弧面的装甲，四轮、中央机枪、完整轮毂/关节。平整表面不能被误解为拉平侧甲。
 
-战争机器还有用户后续指定的[细化效果图](../../ArtSource/ArtDirection/References/WarMachine_Hero_Detail.png)、[正视](../../ArtSource/ArtDirection/References/WarMachine_Front_Detail.png)、[侧视](../../ArtSource/ArtDirection/References/WarMachine_Side_Detail.png)、[第五张平行后视](../../ArtSource/ArtDirection/References/WarMachine_Back_Parallel_Target.png)。保留双侧炮组、四个厚实悬浮盘、装甲层叠及支座；背部左右各一独立导弹舱，平行、向前上方抬起45°。第三张外撇后视保留在参考清单中作冲突记录，当前不采用该外撇装配。
+重防号还有用户后续指定的[细化效果图](../../ArtSource/ArtDirection/References/WarMachine_Hero_Detail.png)、[正视](../../ArtSource/ArtDirection/References/WarMachine_Front_Detail.png)、[侧视](../../ArtSource/ArtDirection/References/WarMachine_Side_Detail.png)、[第五张平行后视](../../ArtSource/ArtDirection/References/WarMachine_Back_Parallel_Target.png)。保留双侧炮组、四个厚实悬浮盘、装甲层叠及支座；背部左右各一独立导弹舱，平行、向前上方抬起45°。第三张外撇后视保留在参考清单中作冲突记录，当前不采用该外撇装配。
 
-两张非三视图效果图另存为 [扫荡者 UI 原图](../../ArtSource/UI/UnitPortraits/Sweeper_Concept_UI.png) 与 [战争机器 UI 原图](../../ArtSource/UI/UnitPortraits/WarMachine_Concept_UI.png)，作为长期 UI 资源保留；不属于临时文件。裁切、缩略图、图标和导入 UE 另按实际 UI 任务制作，不能用三视图替换这两张原图。
+两张非三视图效果图另存为 [扫荡者 UI 原图](../../ArtSource/UI/UnitPortraits/Sweeper_Concept_UI.png) 与 [重防号 UI 原图](../../ArtSource/UI/UnitPortraits/WarMachine_Concept_UI.png)，作为长期 UI 资源保留；不属于临时文件。裁切、缩略图、图标和导入 UE 另按实际 UI 任务制作，不能用三视图替换这两张原图。
 
 ### 3.2 Ship 与工业建筑
 
@@ -83,7 +83,7 @@ Ship 是用户明确指定的风格锚点，参考[内部线稿烘焙版](../../
 
 此前[工业 V3 实例](../../.agents/skills/guli-model-production/references/project-examples.md)中已认可的平整面、规则曲面、装配和对称性继续适用。其旧 PBR 制作方法与配色只是实例，不能覆盖本规范的新模型默认三渲二和线稿规则。
 
-参考文件的来源、版本与 SHA256 见[统一清单](../../ArtSource/ArtDirection/reference_manifest.json)。用户临时目录中的爆炸和战争机器细化图片已原样归档到项目，后续制作不依赖临时目录。
+参考文件的来源、版本与 SHA256 见[统一清单](../../ArtSource/ArtDirection/reference_manifest.json)。用户临时目录中的爆炸和重防号细化图片已原样归档到项目，后续制作不依赖临时目录。
 
 ## 4. 造型、材质与线稿
 
@@ -112,7 +112,7 @@ Ship 是用户明确指定的风格锚点，参考[内部线稿烘焙版](../../
 | 新模型默认 | 有，控制密度 | 有，控制粗细 | 有 | 本轮明确的新默认 |
 | Ship | 保留遮罩，第四套UV | 保留独立描边 | 保留 | 已有专属要求 |
 | 扫荡者当前版本 | 删除附加线稿 | 删除附加描边 | 保留 | 用户2026-09-17明确例外，不能因新默认自动加回 |
-| 战争机器当前版本 | 保留 | 保留 | 保留 | 用户2026-09-17明确要求 |
+| 重防号当前版本 | 保留 | 保留 | 保留 | 用户2026-09-17明确要求 |
 | 爆炸烟火 | 按火烟边界设计 | 优先材质/动画贴图边缘色 | 分区色阶 | 不机械套用模型的独立描边壳 |
 | NaturePack_20260917 植被 N01–N32 | 无 | 无 | 保留 | 用户明确选择“植被无线稿”，并批准实施自然资源包计划 |
 | NaturePack_20260917 岩石 N33–N34 | 少量主折线 | 轻描边 | 保留 | 同一自然资源包计划的岩石专属要求 |

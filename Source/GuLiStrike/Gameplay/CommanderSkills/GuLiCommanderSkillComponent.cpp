@@ -6,6 +6,7 @@
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Gameplay/Skills/GuLiSkillTargeting.h"
+#include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
 #include "Gameplay/Navigation/GuLiLandingGround.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -28,6 +29,8 @@ void UGuLiCommanderSkillComponent::BeginPlay()
 	Super::BeginPlay();
 	if (GetOwner()->HasAuthority())
 	{
+		if (auto* Army=GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>())
+			Army->OnWeaponLoadoutCommitted().AddUObject(this,&ThisClass::HandleWeaponProfilesChanged);
 		PlayerState().OnCommanderPlayerStateChanged.AddDynamic(this, &ThisClass::HandlePlayerStateChanged);
 		HandlePlayerStateChanged();
 	}
@@ -36,6 +39,7 @@ void UGuLiCommanderSkillComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
 	PlayerState().OnCommanderPlayerStateChanged.RemoveDynamic(this, &ThisClass::HandlePlayerStateChanged);
 	if (BoundSelection.IsValid()) BoundSelection->OnSelectionChanged.RemoveAll(this);
+	if (auto* Army=GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>()) Army->OnWeaponLoadoutCommitted().RemoveAll(this);
 	Super::EndPlay(Reason);
 }
 void UGuLiCommanderSkillComponent::HandlePlayerStateChanged()
@@ -51,9 +55,15 @@ void UGuLiCommanderSkillComponent::HandlePlayerStateChanged()
 	}
 	if (Selection) RefreshSelectedUnitSkills(Selection->GetSelectionState());
 }
+void UGuLiCommanderSkillComponent::HandleWeaponProfilesChanged(uint32 Revision)
+{
+	if (GetOwner()->HasAuthority() && Catalog && BoundSelection.IsValid())
+		RefreshSelectedUnitSkills(BoundSelection->GetSelectionState());
+}
 void UGuLiCommanderSkillComponent::RefreshSelectedUnitSkills(const FGuLiCommanderSelectionState& Selection)
 {
 	SelectedUnitRuntime.Reset(); RuntimeSelectionRevision = Selection.SelectionRevision;
+	if (!Catalog) return;
 	auto& Authority = *GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
 	TSet<uint32> Seen;
 	for (const auto& Cohort : Selection.Cohorts) for (auto Id : Cohort.MemberIds)
@@ -120,7 +130,8 @@ void UGuLiCommanderSkillComponent::ActivateSelectedUnits(bool bHasGroundPoint, F
 		for (const auto& Cohort : Selection.Cohorts) for (auto Id : Cohort.MemberIds)
 		{
 			const auto* Soldier = It->FindSoldierState(Id);
-			if (Soldier && Catalog->FindUnitSkill(Soldier->UnitTypeId)) { bHasSkill = true; break; }
+			if (Soldier && Soldier->Team==PlayerState().GetTeam()
+				&& Catalog->FindAvailableUnitSkill(*GetWorld(),Soldier->Team,Soldier->UnitTypeId)) { bHasSkill = true; break; }
 		}
 		break;
 	}

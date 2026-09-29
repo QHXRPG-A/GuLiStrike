@@ -1,0 +1,328 @@
+{
+  "success": true,
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "actors": [
+    {
+      "label": "CommanderLOD_Camera_LOD0",
+      "class": "CameraActor",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_6",
+      "location": [
+        -8000.0,
+        66000.0,
+        1400.0
+      ],
+      "rotation": [
+        3.6950095250176673e-07,
+        -32.0053825378418,
+        90.0
+      ],
+      "tags": [
+        "CommanderLODReview20260929",
+        "CommanderLODCamera0"
+      ],
+      "fov": 65.0,
+      "aspect_ratio": 1.7777777910232544
+    },
+    {
+      "label": "CommanderLOD_Camera_LOD1",
+      "class": "CameraActor",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_7",
+      "location": [
+        -8000.0,
+        59000.0,
+        4900.0
+      ],
+      "rotation": [
+        3.3384279163328756e-07,
+        -28.61046028137207,
+        90.0
+      ],
+      "tags": [
+        "CommanderLODReview20260929",
+        "CommanderLODCamera1"
+      ],
+      "fov": 65.0,
+      "aspect_ratio": 1.7777777910232544
+    },
+    {
+      "label": "CommanderLOD_Camera_LOD2",
+      "class": "CameraActor",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_8",
+      "location": [
+        -8000.0,
+        53500.0,
+        6900.0
+      ],
+      "rotation": [
+        3.041581067009247e-07,
+        -25.866355895996094,
+        90.0
+      ],
+      "tags": [
+        "CommanderLODReview20260929",
+        "CommanderLODCamera2"
+      ],
+      "fov": 65.0,
+      "aspect_ratio": 1.7777777910232544
+    },
+    {
+      "label": "CommanderLOD_Instructions",
+      "class": "Note",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_40",
+      "location": [
+        -8000.0,
+        76500.0,
+        -1200.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tags": [
+        "CommanderLODReview20260929"
+      ],
+      "text": "指挥官统一自动三级 LOD；本次只有导弹接入，模型/升级特效/悬浮/血条待后续接入。\n当前编辑器已加载公共LOD原生类；运行范围与结果以开发记录为准。\n夹具间距与驻留修正源码尚未编译加载。旧版Build 100实际仅生成36/37台且会自动前进；不能当作完整人数验收。\n玩法入口仍为 RogueCards_F4_Entry；性能布景仍为现有六组 100/500 × 1/4/8。\n手动验证：新局指挥官就绪，先 gs.MissileCluster.Candidate 1，再 gs.MissileFixture.Build 100 1；用 gs.MissileFixture.Camera lod0 / lod1 / lod2 切换三个观察位置，gs.MissileFixture.Fire 发射（遵守冷却）。\n加载修正版夹具后，Build应回报success=true、fixture_units与stopped_units均等于请求人数；当前WM01间距按权威避让直径加20cm计算，为1270cm。人数不符时重新准备场景。\n飞行中 gs.Commander.LOD.Stats WM01MissileBatches 查看目标/实际档位、裁剪、预算和交接等待；gs.MissileFixture.Metrics 查看导弹容量；统计对象是空间批次，不是单枚导弹。\n相机名称表示观察用途，不强制档位；以含历史烟迹的包围盒、当前镜头和预算决定实际结果，多个档位可并存。\nLOD0/1/2 对应 24/8/0 段烟迹；寿命2.4秒、交接0.15秒。烟迹/尾焰尺寸读取当前Projectiles表，LOD不改写视觉数值。\n统一配置：gs.Commander.LOD.List；Get near.enter_distance_cm；Set near.enter_distance_cm 7000；Reset all。以上 Get/Set/Reset 均需完整 gs.Commander.LOD. 前缀，修改只作用当前 World，不写盘。\n恢复原固定对照镜头：gs.MissileFixture.Camera overview。正式 DA 引用保持候选审核前状态。\n检查缩放边界往返、预算不足、命中消散、屏外恢复、槽位复用与新局清理。运行和性能验收状态以开发记录为准。"
+    },
+    {
+      "label": "RogueCards_F4_Entry",
+      "class": "Note",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_24",
+      "location": [
+        -3200.0,
+        72500.0,
+        -1200.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tags": [],
+      "text": "重防号肉鸽卡：就绪指挥官席位按F4，随机显示最多三张合格卡；底部右侧“重选”免费重抽，优先换成未显示的合格牌，无其他牌时提示并保留原牌。Esc关闭后重开保持最新候选。初始无导弹技能/导弹仓；重防导弹仓04.01每队一次。解锁后出现导弹伤害03.01与雨点攻势05.01，后者每次加一枚同时齐射导弹，可叠加。单击翻牌，再单击确认。现有/后续单位同队生效。运行与美术效果待验证。\n重选验证：F4打开后，底部右侧“重选”免费更换当前候选，优先换成未显示的合格牌；选择前或翻面完成后可用，入场/翻面/提交期间禁用。没有其他合格牌时保留原牌并提示。重选不会发奖励，单击翻牌后再次确认才结算；Esc关闭再开保持最新候选。当前5张卡中，初始合格牌只有01.01/02.01/04.01；获得04.01后，合格池扩展为01.01/02.01/03.01/05.01，可观察换牌。本次仅保存配置和核对实体；重选原生代码需编译加载后由玩家验证。\n[WM01 导弹候选 20260929]\n初始重防号无 Q、无导弹仓；F4 获 04.01 后本队现有及后续单位解锁。03.01/05.01 依赖 04.01；04.01 每队每局一次。候选与六组集群场景见 WM01Missile_CandidateInstructions，构建/运行/性能/视觉审核状态分别记录。\n[指挥官统一 LOD 20260929]\n公共三级 LOD 和 lod0/lod1/lod2 观察镜头见 CommanderLOD_Instructions。当前编辑器已加载公共LOD原生类；运行范围与结果以开发记录为准。\n夹具间距与驻留修正源码尚未编译加载。旧版Build 100实际仅生成36/37台且会自动前进；不能当作完整人数验收。"
+    },
+    {
+      "label": "WM01Missile_Camera_Near",
+      "class": "CameraActor",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_5",
+      "location": [
+        -12000.0,
+        64200.0,
+        1200.0
+      ],
+      "rotation": [
+        3.4620956057551666e-07,
+        -36.039894104003906,
+        75.96375274658203
+      ],
+      "tags": [
+        "WM01MissileReview20260929",
+        "WM01MissileNearCamera"
+      ],
+      "fov": 65.0,
+      "aspect_ratio": 1.7777777910232544
+    },
+    {
+      "label": "WM01Missile_Camera_Overview",
+      "class": "CameraActor",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_4",
+      "location": [
+        -8000.0,
+        62000.0,
+        7200.0
+      ],
+      "rotation": [
+        5.800829967483878e-07,
+        -56.309932708740234,
+        90.0
+      ],
+      "tags": [
+        "WM01MissileReview20260929",
+        "WM01MissileFixedCamera"
+      ],
+      "fov": 95.0,
+      "aspect_ratio": 1.7777777910232544
+    },
+    {
+      "label": "WM01Missile_CandidateInstructions",
+      "class": "Note",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_33",
+      "location": [
+        -8000.0,
+        73500.0,
+        -1200.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tags": [
+        "WM01MissileReview20260929"
+      ],
+      "text": "重防号 WM01 / UnitTypeId=2 导弹候选 v3；加载本轮原生视觉字段及三张表后使用。\nv3：弹体195cm；烟宽63→99cm、尾焰42×108cm，颜色/亮度沿用v2；烟迹2.4秒、消散槽2.45秒。速度2400cm/s；Q随最终普攻射程×3.2（基础96m），爆炸/预警半径3m；冷却6秒、伤害、齐射及16m落点散布直径保持。\n玩法验收：新局就绪指挥官，选择重防号，初始无 Q 且无背部导弹仓；F4 获 04.01 后现有及后续本队重防号解锁，另一队保持原状；05.01 每次齐射 +1。换任保留，新局重置。\n候选开关：gs.MissileCluster.Candidate 1；旧表现对照：gs.MissileCluster.Candidate 0。正式 DA 开关保持关闭，待用户可播放候选审核。\n新增验收：96m内外点击圆心检查施放，射程升级后Q继续按最终普攻×3.2；检查3m预警边缘与伤害一致。远景8段高速烟迹连续，尾焰与烟衔接，边缘裁剪不切尾，命中后2.4秒自然消散。\n冷启动验收：候选资源准备完成后应自动切到放大弹体、短亮尾焰与2.4秒黑烟，不能持续回退为旧白色尾焰；本轮已修正延迟编译请求未被触发的问题，游戏内结果待玩家复查。\n性能场景：每次新开 PIE 并就绪，执行一组 Build，再执行 gs.MissileFixture.Fire；每次施放遵守真实冷却。Build 仅为性能准备解锁和弹量，不替代 F4 功能验收，不移除其他地图单位。\n镜头：Build 自动固定总览；gs.MissileFixture.Camera near 查看近景；overview 恢复对照镜头。\n指标：gs.MissileFixture.Metrics。新旧必须同机、分辨率、画质、总览镜头；分别记录发射/飞行/命中后 CPU 表现、Niagara GPU、半透明和帧时间。当前未运行或测量。\n[指挥官统一 LOD 20260929]\n公共三级 LOD 和 lod0/lod1/lod2 观察镜头见 CommanderLOD_Instructions。当前编辑器已加载公共LOD原生类；运行范围与结果以开发记录为准。\n夹具间距与驻留修正源码尚未编译加载。旧版Build 100实际仅生成36/37台且会自动前进；不能当作完整人数验收。"
+    },
+    {
+      "label": "WM01Missile_Case_100x1",
+      "class": "Note",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_34",
+      "location": [
+        -10500.0,
+        75000.0,
+        -1200.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tags": [
+        "WM01MissileReview20260929",
+        "WM01MissileCase_100_1"
+      ],
+      "text": "100 台重防号 × 每台 1 发 = 100 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 100 1\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 Candidate 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_100x4",
+      "class": "Note",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_35",
+      "location": [
+        -8000.0,
+        75000.0,
+        -1200.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tags": [
+        "WM01MissileReview20260929",
+        "WM01MissileCase_100_4"
+      ],
+      "text": "100 台重防号 × 每台 4 发 = 400 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 100 4\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 Candidate 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_100x8",
+      "class": "Note",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_36",
+      "location": [
+        -5500.0,
+        75000.0,
+        -1200.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tags": [
+        "WM01MissileReview20260929",
+        "WM01MissileCase_100_8"
+      ],
+      "text": "100 台重防号 × 每台 8 发 = 800 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 100 8\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 Candidate 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_500x1",
+      "class": "Note",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_37",
+      "location": [
+        -10500.0,
+        76000.0,
+        -1200.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tags": [
+        "WM01MissileReview20260929",
+        "WM01MissileCase_500_1"
+      ],
+      "text": "500 台重防号 × 每台 1 发 = 500 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 500 1\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 Candidate 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_500x4",
+      "class": "Note",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_38",
+      "location": [
+        -8000.0,
+        76000.0,
+        -1200.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tags": [
+        "WM01MissileReview20260929",
+        "WM01MissileCase_500_4"
+      ],
+      "text": "500 台重防号 × 每台 4 发 = 2000 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 500 4\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 Candidate 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_500x8",
+      "class": "Note",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_39",
+      "location": [
+        -5500.0,
+        76000.0,
+        -1200.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tags": [
+        "WM01MissileReview20260929",
+        "WM01MissileCase_500_8"
+      ],
+      "text": "500 台重防号 × 每台 8 发 = 4000 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 500 8\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 Candidate 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_FixtureCenter",
+      "class": "TargetPoint",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_0",
+      "location": [
+        -8000.0,
+        72000.0,
+        -1300.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tags": [
+        "WM01MissileReview20260929",
+        "WM01MissileFixtureCenter"
+      ]
+    }
+  ],
+  "runtime_validation": "partial",
+  "performance_validation": "not_run",
+  "fixture_native_rebuild_pending": true,
+  "runtime_evidence": "D:\\UE5.7\\test1\\Artifacts\\CommanderLOD\\20260930\\pie-summary.json",
+  "visual_profile_row": "WM01_Missile",
+  "visual_parameters": {
+    "User.MissileSmokeInitialWidth": 63.0,
+    "User.MissileSmokeMaximumWidth": 99.0,
+    "User.MissileFlameWidth": 42.0,
+    "User.MissileFlameLength": 108.0
+  },
+  "projectile": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile",
+  "production_cluster_enabled": false,
+  "systems": [
+    "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full",
+    "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite",
+    "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal"
+  ],
+  "native_lod_class_loaded": true,
+  "native_lod_class_path": "/Script/GuLiStrike.GuLiCommanderLODSubsystem",
+  "native_lod_python_alias_exists": false,
+  "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode"
+}

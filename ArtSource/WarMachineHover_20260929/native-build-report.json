@@ -1,0 +1,72 @@
+{
+  "time": "2026-09-29T14:07:14.1195628+08:00",
+  "authorization": "\u73b0\u5728\u7f16\u8bd1\u5e76\u91cd\u8f7d\u7f16\u8f91\u5668; approved GuLiStrikeEditor scope, final GPU asset generation and validation",
+  "target": "GuLiStrikeEditor Win64 Development",
+  "engine": "D:/UnrealEngine-5.7",
+  "attempts": [
+    {
+      "reason": "Private UpdateHasGPUEmitters access; replaced by public PostEditChange",
+      "exit_code": 6,
+      "log": "native-build.log"
+    },
+    {
+      "execution_seconds": 28.54,
+      "exit_code": 0,
+      "log": "native-build-retry.log",
+      "result": "Succeeded"
+    },
+    {
+      "log": "native-build-visual-revision.log",
+      "exit_code": 0,
+      "result": "Succeeded",
+      "execution_seconds": 28.52,
+      "scope": "110 percent nozzle width, stronger blue opacity, active GPU diagnostics, float test tolerance"
+    },
+    {
+      "log": "native-build-qa-fixture.log",
+      "result": "Succeeded",
+      "execution_seconds": 30.44,
+      "scope": "Opt-in 500-unit stop fixture in Mass prototype PIE",
+      "exit_code": 0
+    }
+  ],
+  "build_id_match": true,
+  "modules": [
+    {
+      "path": "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/GuLiFlightNavigation/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/GuLiMapAuthoring/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/Tripo3DUEBridge-UE5.7-Win64/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/UnrealMCP/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/UnrealMCPython/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/VibeUE/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    }
+  ],
+  "editor_dirty_packages_before_shutdown": 0,
+  "editor_restarted": true,
+  "editor_pid": 37092,
+  "native_loaded_in_editor": true
+}

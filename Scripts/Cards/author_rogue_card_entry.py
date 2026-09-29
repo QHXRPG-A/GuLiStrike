@@ -15,8 +15,14 @@ from card_reveal_graph import B,Graph,Node,variable,function,compile_save,requir
 from card_artwork_config import ROOT,CARD,DIRECTOR,write_start_function
 from card_presentation_size import write_pointer_function
 
+ENTRY_INSTRUCTIONS = ('重防号肉鸽卡：就绪指挥官席位按F4，随机显示最多三张合格卡；底部右侧“重选”免费重抽，'
+                      '优先换成未显示的合格牌，无其他牌时提示并保留原牌。Esc关闭后重开保持最新候选。'
+                      '初始无导弹技能/导弹仓；重防导弹仓04.01每队一次。解锁后出现导弹伤害03.01与雨点攻势05.01，'
+                      '后者每次加一枚同时齐射导弹，可叠加。单击翻牌，再单击确认。现有/后续单位同队生效。运行与美术效果待验证。')
+
 
 def confirmation_contract():
+    variable(DIRECTOR,'ActiveCardCount','int',3,True,'Live Presentation')
     for name in ['ExternalConfirmation','AwaitingConfirmation','UseLiveCardData']:
         variable(DIRECTOR,name,'bool',False,True,'Live Presentation')
     if not B.variable_exists(DIRECTOR,'LiveCardIds'):
@@ -32,7 +38,7 @@ def confirmation_contract():
     g.invoke('SetPhase',NewPhase=4);g.layout()
     g=Graph(DIRECTOR,'ActivateHit',True)
     g.branch(g.both(g.native('Not_PreBool',A=g.get('AwaitingConfirmation')),
-                    g.compare('GreaterEqual',g.arg('HitIndex'),0,'Int'),g.compare('Less',g.arg('HitIndex'),3,'Int')))
+                    g.compare('GreaterEqual',g.arg('HitIndex'),0,'Int'),g.compare('Less',g.arg('HitIndex'),g.get('ActiveCardCount'),'Int')))
     select=g.branch(g.compare('Equal',g.get('Phase'),1,'Int'))
     g.set('SelectedIndex',g.arg('HitIndex'));g.invoke('SetPhase',NewPhase=2)
     g.tail=select['else']
@@ -43,6 +49,8 @@ def confirmation_contract():
     event.put('execute',g.tail);event.put('SelectedIndex',g.get('SelectedIndex'))
     g.tail=external['else'];g.invoke('SetPhase',NewPhase=4);g.layout()
     write_start_function();write_pointer_function()
+    from card_artwork_config import write_update_card_function
+    write_update_card_function()
     return compile_save(DIRECTOR)
 
 
@@ -138,7 +146,7 @@ def scene_readback():
     if marker is None:
         marker=actor_api.spawn_actor_from_class(unreal.Note,unreal.Vector(-3200,72500,-1200))
         marker.set_actor_label('RogueCards_F4_Entry')
-    marker.set_editor_property('text','Rogue Cards: enter a ready commander seat, press F4. Left FireRate +20%, middle MissileDamage +20%, right MoveSpeed +50%. Click once to flip, click again to confirm. Esc cancels before submit. Battlefield continues with background blur. Runtime and visual acceptance pending player review.')
+    marker.set_editor_property('text',ENTRY_INSTRUCTIONS)
     require(level.save_current_level(),'Save battle map')
     actors=unreal.get_editor_subsystem(unreal.EditorActorSubsystem).get_all_level_actors()
     relevant=[{'name':a.get_name(),'class':a.get_class().get_path_name(),'location':str(a.get_actor_location())}

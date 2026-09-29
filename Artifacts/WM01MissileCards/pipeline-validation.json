@@ -1,0 +1,55 @@
+[
+  {
+    "case": "valid five-card catalog",
+    "result": "accepted"
+  },
+  {
+    "case": "unknown reference",
+    "result": "rejected",
+    "diagnostic": "GuLiStrikeRogueCards.xlsx / Cards 行8 卡ID=05.01 (WM01_RainSalvo_Lv1): RequiredCardIds引用未知卡: ['99.01']"
+  },
+  {
+    "case": "duplicate reference",
+    "result": "rejected",
+    "diagnostic": "GuLiStrikeRogueCards.xlsx / Cards 行8 卡ID=05.01 (WM01_RainSalvo_Lv1): RequiredCardIds含重复引用"
+  },
+  {
+    "case": "self exclusion",
+    "result": "rejected",
+    "diagnostic": "GuLiStrikeRogueCards.xlsx / Cards 行8 卡ID=05.01 (WM01_RainSalvo_Lv1): ExcludedCardIds不能引用自身"
+  },
+  {
+    "case": "cycle",
+    "result": "rejected",
+    "diagnostic": "GuLiStrikeRogueCards.xlsx / Cards 行7 卡ID=04.01 (WM01_MissilePod_Lv1): 依赖环: 04.01 -> 05.01 -> 04.01"
+  },
+  {
+    "case": "requires and excludes",
+    "result": "rejected",
+    "diagnostic": "GuLiStrikeRogueCards.xlsx / Cards 行8 卡ID=05.01 (WM01_RainSalvo_Lv1): 依赖链内部互斥（含卡牌自身）: 04.01 与 ['05.01']"
+  },
+  {
+    "case": "reverse exclusion",
+    "result": "rejected",
+    "diagnostic": "GuLiStrikeRogueCards.xlsx / Cards 行8 卡ID=05.01 (WM01_RainSalvo_Lv1): 依赖链内部互斥（含卡牌自身）: 04.01 与 ['05.01']"
+  },
+  {
+    "case": "transitive sibling exclusion",
+    "result": "rejected",
+    "diagnostic": "GuLiStrikeRogueCards.xlsx / Cards 行8 卡ID=05.01 (WM01_RainSalvo_Lv1): 依赖链内部互斥（含卡牌自身）: 01.01 与 ['02.01']"
+  },
+  {
+    "case": "percent on unlock",
+    "result": "rejected",
+    "diagnostic": "GuLiStrikeRogueCards.xlsx / Cards 行7 卡ID=04.01 (WM01_MissilePod_Lv1): 解锁效果要求两项增量均为0且MaxAcquisitions=1"
+  },
+  {
+    "case": "count effect zero",
+    "result": "rejected",
+    "diagnostic": "GuLiStrikeRogueCards.xlsx / Cards 行8 卡ID=05.01 (WM01_RainSalvo_Lv1): 弹量效果要求BonusCount为正整数且BonusPercent=0"
+  },
+  {
+    "case": "valid one-way exclusion",
+    "result": "accepted"
+  }
+]

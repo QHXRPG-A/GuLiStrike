@@ -15,7 +15,7 @@ preview_out=Path('D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/Cel_Closeups_
 
 
 def verify_text():
-    expected=[('增加射速','提升战争机器的射击频率。'),('增加导弹伤害','提升战争机器的导弹伤害。'),('极速机动','提升战争机器的移动速度。')]
+    expected=[('增加射速','提升重防号的射击频率。'),('增加导弹伤害','提升重防号的导弹伤害。'),('极速机动','提升重防号的移动速度。')]
     REPORT['editable_text']=[]
     for i,values in enumerate(expected):
         c=prop('Card'+str(i));wc=component(c,'EditableText');widget=wc.get_user_widget_object()

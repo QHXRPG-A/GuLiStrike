@@ -10,7 +10,7 @@ namespace GuLiCommanderPoseCodec
 {
 namespace
 {
-constexpr uint16 AllFields = (1u << 10u) - 1u;
+constexpr uint16 AllFields = (1u << 12u) - 1u;
 bool Newer(uint32 A, uint32 B) { return int32(A - B) > 0; }
 
 // Half steps round away from zero, including negative world coordinates and predictions.
@@ -100,7 +100,8 @@ struct FReader
 bool IsPoseValid(const FGuLiQuantizedSoldierPose& Pose)
 {
 	return Pose.SoldierId.IsValid() && uint8(Pose.State) <= uint8(EGuLiSoldierPoseState::Destroyed)
-		&& (Pose.Flags & ~GULI_VALID_SOLDIER_POSE_FLAGS) == 0;
+		&& (Pose.Flags & ~GULI_VALID_SOLDIER_POSE_FLAGS) == 0
+		&& FMath::Abs(int32(Pose.LeftGunPitch)) <= 8900 && FMath::Abs(int32(Pose.RightGunPitch)) <= 8900;
 }
 
 const FGuLiQuantizedSoldierPose* FindSample(const FHistoryBlock& Block, FGuLiSoldierId Id)
@@ -126,7 +127,11 @@ void WriteRecord(FBitWriter& Writer, const FGuLiQuantizedSoldierPose& Pose,
 	if (!Baseline || Pose.ActiveOrderId != Baseline->Pose.ActiveOrderId) Mask |= 1u << 7;
 	if (!Baseline || Pose.State != Baseline->Pose.State) Mask |= 1u << 8;
 	if (!Baseline || Pose.Flags != Baseline->Pose.Flags) Mask |= 1u << 9;
-	Writer.SerializeBits(&Mask, 10);
+	if (!Baseline || Pose.UpperYaw != Baseline->Pose.UpperYaw
+		|| Pose.LeftGunPitch != Baseline->Pose.LeftGunPitch || Pose.RightGunPitch != Baseline->Pose.RightGunPitch) Mask |= 1u << 10;
+	if (!Baseline || Pose.HoverBlendStartMilliseconds != Baseline->Pose.HoverBlendStartMilliseconds
+		|| Pose.HoverBlendFromWeight != Baseline->Pose.HoverBlendFromWeight || Pose.bHoverIdleTarget != Baseline->Pose.bHoverIdleTarget) Mask |= 1u << 11;
+	Writer.SerializeBits(&Mask, 12);
 	for (int32 Axis = 0; Axis < 6; ++Axis)
 		if (Mask & (1u << Axis)) WriteSigned(Writer, Current[Axis] - Predicted[Axis]);
 	if (Mask & (1u << 6))
@@ -137,6 +142,18 @@ void WriteRecord(FBitWriter& Writer, const FGuLiQuantizedSoldierPose& Pose,
 	if (Mask & (1u << 7)) WriteUnsigned(Writer, Pose.ActiveOrderId);
 	if (Mask & (1u << 8)) { uint8 State = uint8(Pose.State); Writer.SerializeBits(&State, 2); }
 	if (Mask & (1u << 9)) { uint8 Flags = Pose.Flags; Writer.SerializeBits(&Flags, 1); }
+	if (Mask & (1u << 10))
+	{
+		uint16 Yaw = Pose.UpperYaw;
+		int16 Left = Pose.LeftGunPitch, Right = Pose.RightGunPitch;
+		Writer.SerializeBits(&Yaw, 16); Writer.SerializeBits(&Left, 16); Writer.SerializeBits(&Right, 16);
+	}
+	if (Mask & (1u << 11))
+	{
+		WriteUnsigned(Writer, Pose.HoverBlendStartMilliseconds);
+		uint8 From = Pose.HoverBlendFromWeight, Target = Pose.bHoverIdleTarget ? 1 : 0;
+		Writer.SerializeBits(&From, 8); Writer.SerializeBits(&Target, 1);
+	}
 }
 }
 
@@ -363,7 +380,7 @@ EDecodeResult FReceiver::Decode(const FGuLiEncodedPoseBlock& Block, FGuLiSoldier
 			Predict(Pose, Chunk.ServerSimTick - Base->SimTick, Values);
 		}
 		Pose.SoldierId = Id;
-		const uint16 Mask = uint16(Reader.ReadBits(10));
+		const uint16 Mask = uint16(Reader.ReadBits(12));
 		if (!BaselineDistance && Mask != AllFields) return EDecodeResult::InvalidPayload;
 		for (int32 Axis = 0; Axis < 6; ++Axis)
 		{
@@ -386,6 +403,18 @@ EDecodeResult FReceiver::Decode(const FGuLiEncodedPoseBlock& Block, FGuLiSoldier
 		if (Mask & (1u << 7)) Pose.ActiveOrderId = Reader.ReadId();
 		if (Mask & (1u << 8)) Pose.State = EGuLiSoldierPoseState(Reader.ReadBits(2));
 		if (Mask & (1u << 9)) Pose.Flags = uint8(Reader.ReadBits(1));
+		if (Mask & (1u << 10))
+		{
+			Pose.UpperYaw = uint16(Reader.ReadBits(16));
+			Pose.LeftGunPitch = int16(Reader.ReadBits(16));
+			Pose.RightGunPitch = int16(Reader.ReadBits(16));
+		}
+		if (Mask & (1u << 11))
+		{
+			Pose.HoverBlendStartMilliseconds = Reader.ReadId();
+			Pose.HoverBlendFromWeight = uint8(Reader.ReadBits(8));
+			Pose.bHoverIdleTarget = Reader.ReadBits(1) != 0;
+		}
 		if (!Reader.bValid || !IsPoseValid(Pose) || (BaselineDistance && Pose.IsTeleport())) return EDecodeResult::InvalidPayload;
 		Chunk.Samples.Add(Pose);
 	}

@@ -428,20 +428,80 @@ void AGuLiCommanderHUD::DrawPerformanceStats()
 		PerformanceSampleFrame = GFrameCounter;
 	}
 
+	RefreshCameraGroundDistance(Now);
 	float TextWidth = 0.0f, TextHeight = 0.0f;
 	Canvas->StrLen(Font, PerformanceStatsText, TextWidth, TextHeight);
+	float CameraTextWidth = 0.0f, CameraTextHeight = 0.0f;
+	if (!CameraDistanceText.IsEmpty())
+	{
+		Canvas->StrLen(Font, CameraDistanceText, CameraTextWidth, CameraTextHeight);
+	}
+	const float PanelWidth = FMath::Max(TextWidth, CameraTextWidth) + 20.0f;
+	const float PanelHeight = TextHeight + 12.0f
+		+ (CameraDistanceText.IsEmpty() ? 0.0f : CameraTextHeight + 4.0f);
 	const float DPIScale = GetDefault<UUserInterfaceSettings>()->GetDPIScaleBasedOnSize(
 		FIntPoint(Canvas->SizeX, Canvas->SizeY));
 	const float X = FMath::Min(16.0f * DPIScale, Canvas->ClipX * 0.05f);
 	// The authored top status strip occupies HUD-local Y=12..56.
 	const float Y = FMath::Min(64.0f * DPIScale, Canvas->ClipY * 0.25f);
 	const float Scale = FMath::Min(DPIScale,
-		FMath::Min((Canvas->ClipX - X * 2.0f) / FMath::Max(1.0f, TextWidth + 20.0f),
-			(Canvas->ClipY - Y) / FMath::Max(1.0f, TextHeight + 12.0f)));
+		FMath::Min((Canvas->ClipX - X * 2.0f) / FMath::Max(1.0f, PanelWidth),
+			(Canvas->ClipY - Y) / FMath::Max(1.0f, PanelHeight)));
 	DrawRect(FLinearColor(0.01f, 0.025f, 0.04f, 0.78f), X, Y,
-		(TextWidth + 20.0f) * Scale, (TextHeight + 12.0f) * Scale);
+		PanelWidth * Scale, PanelHeight * Scale);
 	DrawText(PerformanceStatsText, FLinearColor(0.9f, 0.95f, 1.0f),
 		X + 10.0f * Scale, Y + 6.0f * Scale, Font, Scale, false);
+	if (!CameraDistanceText.IsEmpty())
+	{
+		DrawText(CameraDistanceText, FLinearColor(0.9f, 0.95f, 1.0f),
+			X + 10.0f * Scale, Y + (TextHeight + 10.0f) * Scale, Font, Scale, false);
+	}
+}
+
+void AGuLiCommanderHUD::RefreshCameraGroundDistance(const double Now)
+{
+	const AGuLiCommanderPlayerController* Controller = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
+	if (!Controller || !Controller->IsLocalController() || !Controller->IsCommanderViewActive())
+	{
+		CameraDistanceText.Reset();
+		CameraDistanceSampleWallSeconds = -1.0;
+		return;
+	}
+	// A local, passive readout at 10 Hz. No timer, RPC or per-unit work; pause does not stale it.
+	if (!CameraDistanceText.IsEmpty() && Now - CameraDistanceSampleWallSeconds < 0.1)
+	{
+		return;
+	}
+	CameraDistanceSampleWallSeconds = Now;
+	FString HeightText = GuLiGameText::Text(TEXT("UI.Camera.NoGround"));
+	FString ViewDistanceText = HeightText;
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	Controller->GetPlayerViewPoint(CameraLocation, CameraRotation);
+	const auto FormatMeters = [](const double Centimeters)
+	{
+		return GuLiGameText::Format(TEXT("UI.Camera.Meters"),
+			{ FString::Printf(TEXT("%.1f"), Centimeters / 100.0) });
+	};
+	const auto* Landscape = GetWorld()->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>();
+	if (Landscape && !CameraLocation.ContainsNaN() && !CameraRotation.ContainsNaN())
+	{
+		float GroundHeight = 0.0f;
+		if (Landscape->TryGetLandscapeHeight(FVector2D(CameraLocation.X, CameraLocation.Y), GroundHeight)
+			&& CameraLocation.Z >= GroundHeight)
+		{
+			HeightText = FormatMeters(CameraLocation.Z - GroundHeight);
+		}
+		FVector GroundHit;
+		// The active camera's forward ray is the screen centre; trace only cached Landscapes.
+		constexpr double MaximumGroundTraceCentimeters = 1000000.0;
+		if (Landscape->TryTraceLandscape(CameraLocation,
+			CameraLocation + CameraRotation.Vector() * MaximumGroundTraceCentimeters, GroundHit))
+		{
+			ViewDistanceText = FormatMeters(FVector::Distance(CameraLocation, GroundHit));
+		}
+	}
+	CameraDistanceText = GuLiGameText::Format(TEXT("UI.Camera.GroundDistances"), { HeightText, ViewDistanceText });
 }
 
 void AGuLiCommanderHUD::BindBuildingFeedback()

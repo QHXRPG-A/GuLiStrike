@@ -23,7 +23,7 @@ status_note: 用户已批准实施；随后明确允许迁移MiningVehiclePawn�
 ## 已确认范围
 
 - 保留通用命令队列、权限、任务面板、版本与安全取消语义。
-- Soldiers新增必填StateTreeAsset；扫荡者与战争机器使用ST_CommanderMass，矿车使用ST_CommanderMiner，建造车使用ST_CommanderBuilder。
+- Soldiers新增必填StateTreeAsset；扫荡者与重防号使用ST_CommanderMass，矿车使用ST_CommanderMiner，建造车使用ST_CommanderBuilder。
 - 退役特殊任务Excel、目录、执行器、对应导出产物和DataTable。旧网络编号可留作兼容标识，不保留旧调度器。
 - StateTree直接驱动去矿点、采矿、回厂、卸货，去工地、施工，以及选据点、推进、等待占领等阶段；底层保留动作执行、资源结算、路径和编队能力。
 - 已批准Mass初始与增援实体接入树，以及调参迁移保留运行实例。其他超出上述三处流程迁移的底层修改须另行确认。

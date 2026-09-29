@@ -1,0 +1,55 @@
+{
+  "success": true,
+  "before_sha256": "102cc3a1332458b2121c8a4b03f575b00b6529ae774ba8b401d8bdc848debca0",
+  "after_sha256": "fa76765caeeecafc30f8a9cfdeecbd0a94e89b18cb0d5755969ce318ca5112e1",
+  "card_workbook_sha256": "305f8c71cf48d72479314a1fa1d0c31bdf8f98897b94f1d3edcd7aa2a36dbf58",
+  "changed_cells": [
+    {
+      "cell": "C196",
+      "value": "<Unit>重防号</> <Gain>普攻射速+{0}%</>",
+      "type": "string"
+    },
+    {
+      "cell": "C198",
+      "value": "<Unit>重防号</> <Gain>移动速度+{0}%</>",
+      "type": "string"
+    },
+    {
+      "cell": "C200",
+      "value": "<Unit>重防号</> <Gain>导弹伤害+{0}%</>",
+      "type": "string"
+    },
+    {
+      "cell": "C216",
+      "value": "<Unit>重防号</> 解锁<Gain>导弹技能</>",
+      "type": "string"
+    },
+    {
+      "cell": "C218",
+      "value": "<Unit>重防号</> <Gain>导弹齐射数量+{0}</>",
+      "type": "string"
+    }
+  ],
+  "previous": {
+    "Card.WM01.FireRate.Description": "重防号的普攻射速提高 {0}%。",
+    "Card.WM01.HighSpeed.Description": "重防号的移动速度提高 {0}%。",
+    "Card.WM01.MissileDamage.Description": "重防号的导弹伤害提高 {0}%。",
+    "Card.WM01.MissilePod.Description": "为本队所有重防号装配导弹仓，解锁导弹技能。每局仅可获取一次。",
+    "Card.WM01.RainSalvo.Description": "重防号每次释放导弹技能时额外齐射 {0} 枚导弹。可重复叠加。"
+  },
+  "patterns": {
+    "Card.WM01.FireRate.Description": "<Unit>重防号</> <Gain>普攻射速+{0}%</>",
+    "Card.WM01.HighSpeed.Description": "<Unit>重防号</> <Gain>移动速度+{0}%</>",
+    "Card.WM01.MissileDamage.Description": "<Unit>重防号</> <Gain>导弹伤害+{0}%</>",
+    "Card.WM01.MissilePod.Description": "<Unit>重防号</> 解锁<Gain>导弹技能</>",
+    "Card.WM01.RainSalvo.Description": "<Unit>重防号</> <Gain>导弹齐射数量+{0}</>"
+  },
+  "plain_samples": {
+    "01.01": "重防号 普攻射速+20%",
+    "02.01": "重防号 移动速度+50%",
+    "03.01": "重防号 导弹伤害+20%",
+    "04.01": "重防号 解锁导弹技能",
+    "05.01": "重防号 导弹齐射数量+1"
+  },
+  "readback": "all rows compared; only five description cells changed"
+}

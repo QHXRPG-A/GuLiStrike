@@ -1,0 +1,169 @@
+{
+  "success": true,
+  "saved_packages": [
+    {
+      "asset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\UEProduction\\SM_WarMachine_Cel.fbx",
+      "source_sha256": "9990f7c7eb3cfbd80ce98829a07264c68f1007f9a65848983ceb356ec1ff40fe"
+    },
+    {
+      "asset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_LineMask.T_WarMachine_LineMask",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\UEProduction\\T_WarMachine_LineMask.png",
+      "source_sha256": "66adb72883896e13b6e35859d7fc2baf0649972a023fee2bb6de7ba42f1c86e8"
+    },
+    {
+      "asset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_BaseColor.T_WarMachine_BaseColor",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\UEProduction\\T_WarMachine_BaseColor.png",
+      "source_sha256": "478630a51fb3e6cbb80503fcfb2cc152098e370c7f00c763b7a179ba8d9dbc0b"
+    },
+    {
+      "asset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel.SK_WarMachine_Cel",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\UEProduction\\SK_WarMachine_Cel.fbx",
+      "source_sha256": "07ee93153daead9239d8c98071f7064c92be45d4eb2e7697685d24543803931e"
+    }
+  ],
+  "sections": [
+    {
+      "lod": 0,
+      "section": 0,
+      "slot": 1,
+      "material": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel"
+    },
+    {
+      "lod": 0,
+      "section": 1,
+      "slot": 0,
+      "material": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour"
+    },
+    {
+      "lod": 1,
+      "section": 0,
+      "slot": 1,
+      "material": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel"
+    },
+    {
+      "lod": 1,
+      "section": 1,
+      "slot": 0,
+      "material": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour"
+    },
+    {
+      "lod": 2,
+      "section": 0,
+      "slot": 1,
+      "material": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel"
+    },
+    {
+      "lod": 2,
+      "section": 1,
+      "slot": 0,
+      "material": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour"
+    },
+    {
+      "lod": 3,
+      "section": 0,
+      "slot": 1,
+      "material": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel"
+    },
+    {
+      "lod": 3,
+      "section": 1,
+      "slot": 0,
+      "material": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour"
+    }
+  ],
+  "sockets": {
+    "FX_Muzzle_Basic_01": {
+      "location_cm": [
+        1769.8602676391602,
+        1461.23685836792,
+        2335.858785900774
+      ],
+      "pitch": 0.0
+    },
+    "FX_Missile_01": {
+      "location_cm": [
+        -729.1603565216064,
+        932.1683883666992,
+        3877.283823284807
+      ],
+      "pitch": 45.0
+    },
+    "FX_Missile_02": {
+      "location_cm": [
+        -729.1603565216064,
+        -932.1683883666992,
+        3877.283823284807
+      ],
+      "pitch": 45.0
+    },
+    "FX_AimTarget": {
+      "location_cm": [
+        0.0,
+        0.0,
+        2354.951631817522
+      ]
+    }
+  },
+  "reference_preservation": {
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel": [
+      "/Game/Commander/Units/Tactical/Cel/Review/LVL_CelModels_Review",
+      "/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Soldiers",
+      "/Game/GuLiStrike/Environment/ArtReview/PineStyleAdaptation_20260918/LVL_Pine_Style_v1",
+      "/Game/GuLiStrike/Environment/ArtReview/PineStyleComparison_20260917/LVL_Pine_Units_Comparison",
+      "/Game/Maps/LVL_GroundMech_Demo",
+      "/Game/Maps/LVL_GroundMech_FireReview",
+      "/Game/StylizedPineEnvironment/Maps/Demo_Map"
+    ],
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel": [
+      "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel",
+      "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel"
+    ],
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_LineMask": [
+      "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel"
+    ],
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_BaseColor": [
+      "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel"
+    ],
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour": [
+      "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel",
+      "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel"
+    ],
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel": [
+      "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel_Skeleton"
+    ],
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel_Skeleton": [
+      "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel"
+    ]
+  },
+  "dimensions_cm": [
+    5207.016357421875,
+    5790.170166015625,
+    4203.237199783325
+  ],
+  "lod_triangles": [
+    38843,
+    9711,
+    299,
+    69
+  ],
+  "uv_channels": 3,
+  "original_material_slot_order_preserved": true,
+  "gameplay_row_unchanged": true,
+  "no_unsaved_production_packages": true,
+  "approved_source_unchanged": true,
+  "assistant_visual_review": "not_performed_per_user_instruction",
+  "user_ue_visual_review": "pending",
+  "asset_editor_opened": true,
+  "temporary_preview_actor_count": 0,
+  "preview_file": {
+    "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\UEProduction\\Previews\\UE_ProductionHero.png",
+    "bytes": 3090912,
+    "resolution": [
+      1536,
+      1536
+    ],
+    "sha256": "069b125954ac2b18cbbc5861edddbed9ea16804320a453213c99e8c4ef017f60",
+    "pixels_inspected": false
+  }
+}

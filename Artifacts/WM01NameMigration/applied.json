@@ -1,0 +1,2633 @@
+{
+  "date": "2026-09-29",
+  "applied": true,
+  "canonical_unit": "重防号",
+  "stable_identifiers": [
+    "WM01",
+    "UnitTypeId=2",
+    "WarMachine asset/class paths"
+  ],
+  "text_files": [
+    {
+      "path": "C:\\Users\\a\\.codex\\skills\\guli-rogue-card-production\\references\\data-pipeline.md",
+      "previous_path_sha256": "4415f8a2062a8e0f7d574ecc8c81b7538e2a19cf959b814511342097c1618d49",
+      "original_sha256": "79556e33cf751fa1ece343bcbe5cb3fb1b245b93a1e92adbad2a5a891f604e43",
+      "normalized_sha256": "07fd4a0a0225094be61826ca67747f131e83b668527365fc07b21b68e1fd92b5",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "C:\\Users\\a\\.codex\\skills\\guli-rogue-card-production\\references\\prompts\\wm01-v7\\Common.txt",
+      "previous_path_sha256": "df214fa96e549d82a682ac84e5adab0c4a90f29c12617ef40bc9e355d54d9aa5",
+      "original_sha256": "a4d25c5e96c98b0b57df706a315ca4ec0e52a45824b6b074a81d621f0aba2c88",
+      "normalized_sha256": "61733979948b9f50ef9e57f8c9d67661f6922e173c3a7baa8cfaf132c0c2833f",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "C:\\Users\\a\\.codex\\skills\\guli-rogue-card-production\\references\\prompts\\wm01-v7\\FireRate.txt",
+      "previous_path_sha256": "ac45f7fdc43aef499a52ebe37d540c895a3c49ecbe9498da793961bd1073a1a4",
+      "original_sha256": "1bba0df596833d2f867dae6817e8974174b00ce9e1cdb9d698165b5a599310f4",
+      "normalized_sha256": "36c2831b4b68b4828f71b41b221748a8c3255f5b4ab571d3ace34625b5604d22",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "C:\\Users\\a\\.codex\\skills\\guli-rogue-card-production\\references\\prompts\\wm01-v7\\HighSpeed.txt",
+      "previous_path_sha256": "9e7eb9db2a3ba3c23c775565dab712f7017d959e517fa74e21192ce0df7ef9d3",
+      "original_sha256": "c679b2e69f6277560621ddee7d1f8e8689498b984d9727856cfcb7280b724146",
+      "normalized_sha256": "2f0ae49b65c113210fb508b479e5dbc0a338418cb640d64cc8af06c5b49a4705",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "C:\\Users\\a\\.codex\\skills\\guli-rogue-card-production\\references\\prompts\\wm01-v7\\MissileDamage.txt",
+      "previous_path_sha256": "c0c9f67b27dda65af491100201f7bdc90cf93af7b49e4084d3be44fd8a6740e4",
+      "original_sha256": "c742f47d8b47db69591b5f27ce1cb68f14cb860af14f6d4b8411addea8520c55",
+      "normalized_sha256": "7cdf6b288c6b727f6b4ceecee2c4298de5c1c1fedd9dd7ccf9bb32f08792115b",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "C:\\Users\\a\\.codex\\skills\\guli-rogue-card-production\\SKILL.md",
+      "previous_path_sha256": "ae2fef44c8f98be4b5cac9d8851908a9a8c7dec540eeadf4f4c1af4b87d78e66",
+      "original_sha256": "147ea4afebc24358448586f72b38e161e33a8cfd9152c9f977a42b4f68955fac",
+      "normalized_sha256": "bc619e1bab5767e160817129a305e2f5b945c2ce2de3c157ee46a62dcf221b70",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\.agents\\skills\\guli-rogue-card-production\\references\\data-pipeline.md",
+      "previous_path_sha256": "708d0b30027475a9e6f1f207c4490ad5e19bbc426e8c435e2c62020e6bd581a9",
+      "original_sha256": "79556e33cf751fa1ece343bcbe5cb3fb1b245b93a1e92adbad2a5a891f604e43",
+      "normalized_sha256": "07fd4a0a0225094be61826ca67747f131e83b668527365fc07b21b68e1fd92b5",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\.agents\\skills\\guli-rogue-card-production\\references\\prompts\\wm01-v7\\Common.txt",
+      "previous_path_sha256": "6bd6ff02f05ec425c206902ebde7e72b54131576144314842dc411509fab3a09",
+      "original_sha256": "a4d25c5e96c98b0b57df706a315ca4ec0e52a45824b6b074a81d621f0aba2c88",
+      "normalized_sha256": "61733979948b9f50ef9e57f8c9d67661f6922e173c3a7baa8cfaf132c0c2833f",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\.agents\\skills\\guli-rogue-card-production\\references\\prompts\\wm01-v7\\FireRate.txt",
+      "previous_path_sha256": "f0f9eee17f79e33ae28be0326b3e83011c1a2a2f028da2f80d3d29c61082e78e",
+      "original_sha256": "1bba0df596833d2f867dae6817e8974174b00ce9e1cdb9d698165b5a599310f4",
+      "normalized_sha256": "36c2831b4b68b4828f71b41b221748a8c3255f5b4ab571d3ace34625b5604d22",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\.agents\\skills\\guli-rogue-card-production\\references\\prompts\\wm01-v7\\HighSpeed.txt",
+      "previous_path_sha256": "6f170d7949e2e7779f688b01c9248596d62ce62747835e4c00da8ab27c9ea9a2",
+      "original_sha256": "c679b2e69f6277560621ddee7d1f8e8689498b984d9727856cfcb7280b724146",
+      "normalized_sha256": "2f0ae49b65c113210fb508b479e5dbc0a338418cb640d64cc8af06c5b49a4705",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\.agents\\skills\\guli-rogue-card-production\\references\\prompts\\wm01-v7\\MissileDamage.txt",
+      "previous_path_sha256": "32811c77478dbb339c52401bdca72416dd98f7f1b53440605a8a6ecb10cea212",
+      "original_sha256": "c742f47d8b47db69591b5f27ce1cb68f14cb860af14f6d4b8411addea8520c55",
+      "normalized_sha256": "7cdf6b288c6b727f6b4ceecee2c4298de5c1c1fedd9dd7ccf9bb32f08792115b",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\.agents\\skills\\guli-rogue-card-production\\SKILL.md",
+      "previous_path_sha256": "555259a916602852b91ad7890b01e6930d4578dbd120cc3cca3ac1007f5b5e0c",
+      "original_sha256": "147ea4afebc24358448586f72b38e161e33a8cfd9152c9f977a42b4f68955fac",
+      "normalized_sha256": "bc619e1bab5767e160817129a305e2f5b945c2ce2de3c157ee46a62dcf221b70",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\.agents\\skills\\gulistrike-progress\\SKILL.md",
+      "previous_path_sha256": "cbce3ad90c2cec90d841f20a96ac6e211d675ac8545e5baba9e06646e87315e5",
+      "original_sha256": "19f20b65f59b16422f774f0389e2c7e42bcbe1c1cfccf9a42d5fde7ecf88afff",
+      "normalized_sha256": "e51858c682bba6ae4e3ab1ef82dfce9a39f58b7e299bd6d1ae59bbfe0d1b5bee",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\20260921\\scene-delivery.json",
+      "previous_path_sha256": "c699125527536c9a428263841d5fd3aa1f5712bae801d826362db659e04b2150",
+      "original_sha256": "eb51ba6dca6aff68a91ed3953f8501958ec01649dc63b28ff72f0a9f1ca587db",
+      "normalized_sha256": "855c39901e3aad4f377efe406da3e00367de13a4d3ed1d86f11eae82be85577e",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\20260921\\scene-readback.json",
+      "previous_path_sha256": "a2caa4e1b2ad7e66980bba4677a7d7aed91aa3b15236a2cb184153a1df58f8ea",
+      "original_sha256": "5bcc8b47bc17ef28b25cb3b2246016e245b14d7ad58143fe1ce6039f07116ef9",
+      "normalized_sha256": "5f4abb8abc9130d83b4c174387c9bfae909e3387c66131529a3a2c3c90741abd",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\20260921\\soldiers-before.json",
+      "previous_path_sha256": "79a113a2b7e69d12b48678191000233b04db09c5ad9fcdb0313db2b926a2851f",
+      "original_sha256": "424ddbf149b842e80a03f2e644a58952f57e2f561981569ee02075b1a6087ab4",
+      "normalized_sha256": "024ae5928e490e34d7f41c3eac91703d322e278449f3cdbf8eb86d380b6c5ca9",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\20260924\\build_review_map.py",
+      "previous_path_sha256": "40a2146e8fc16197047449efa1965c1dfbffe3eec58fab22f57667328abed453",
+      "original_sha256": "5b199efc4759892e77663183ccdc9e38cb3bfceb3d1bd6c0330d5e6ec7ec9f32",
+      "normalized_sha256": "d4837c8a1e6626c439064a6cfa3363b1cd3172901650e7dc1bd62a0f94c9fe68",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\20260924\\Mass.md",
+      "previous_path_sha256": "4c7bcd5c4be4457f1c9cf154d0b9033000cc5128a4c0beb1fb2ad8fbb20d3aba",
+      "original_sha256": "96f0917634a5bc869b0e0b3ee67a2b7e584ab941b69ecd9b029069bedc930c82",
+      "normalized_sha256": "e88dea76fb5e3986da02ea9f127a332f8879a8b9e6bfbae36d3e351c270cea97",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\20260924\\Overview.md",
+      "previous_path_sha256": "1b5e3bab84af2b61a2429a4ef44a4c7768ae85247f617597afe54f25fddf1119",
+      "original_sha256": "5164c7a03ed81af6e5985cd72bb9c85c21b9970f8a30782f03076b40f403f6a6",
+      "normalized_sha256": "5256581a1ce3e72ce60f5085f82939f4a610d42266288befe26d158e94ad594d",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\HierarchyV2\\scene-delivery.json",
+      "previous_path_sha256": "f5a3fc7ce8e5101efd91a46f2cdff64c7227744ac1122b756c4be017a8fc2293",
+      "original_sha256": "16b4431633ca5c8f16fbd6b2ed7db0af094146565603bcc075af1584a5f02aa2",
+      "normalized_sha256": "bf474678269651981da7a470889e851528ee1c38001e17f923ec81ac0b3e377c",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\soldiers-import.json",
+      "previous_path_sha256": "be1a01a5f7ecb3beda11db61156e29c4e9cb14634add2c251a676dafbd16cbdd",
+      "original_sha256": "2190e2538d79bd7a583e4ab364221d931065bc269b810d5d7979f293549be022",
+      "normalized_sha256": "6b535d666120aa7c69684f95afa5f2236b14fec69641c93fd5b41715feb4bf5a",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\CommanderStateTree\\soldiers-readback.json",
+      "previous_path_sha256": "822fac4700572fda3509e9bd717017e41ece55a47a50ae8e2d75a4662ac7f2cd",
+      "original_sha256": "82036fd3368bfe3bfe90688264661e4a9d00edf9813a2ef3d84f3a5b48070084",
+      "normalized_sha256": "6ba97ebbf717c94b9588a3e33e0097c8c0715886822b86af3ec11d776e80fb91",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\Map3200\\20260923\\source-before\\.agents\\skills\\gulistrike-progress\\SKILL.md",
+      "previous_path_sha256": "74e2067d9760a58dbcfeb3ab81d015b845f78f73ff7cfcbed597662813ce8776",
+      "original_sha256": "19f20b65f59b16422f774f0389e2c7e42bcbe1c1cfccf9a42d5fde7ecf88afff",
+      "normalized_sha256": "e51858c682bba6ae4e3ab1ef82dfce9a39f58b7e299bd6d1ae59bbfe0d1b5bee",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\Map3200\\20260923\\source-before\\Progress\\_Index\\Archive.md",
+      "previous_path_sha256": "85a77923c664d4289b38200643ae46637c7271b5442654eaeb3e07f5ffe1de30",
+      "original_sha256": "41d323ba8fc35c96ac8e3838dbce306ad6b1d68be7d6ca7a9c204156eef6deec",
+      "normalized_sha256": "36b23483f625adba1d77558c2c7de801f37a13823d7af143e732d54782908a75",
+      "renamed": false,
+      "replaced_occurrences": 22,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\Map3200\\20260923\\source-before\\Progress\\_Index\\ByArea.md",
+      "previous_path_sha256": "85ecfd0cfb506d3e312fb4d6b5eac7ae0d384d0545a036d44da24b982cb267a2",
+      "original_sha256": "86cdebe160053bca8a9408d2daad58e53110db5d6944cd456306cd2d54f447f8",
+      "normalized_sha256": "935224f099cbbcc55ddca6798790139aaec5032761a90d41fdbd56576a03dea8",
+      "renamed": false,
+      "replaced_occurrences": 142,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\Map3200\\20260923\\source-before\\Progress\\_Index\\Current.md",
+      "previous_path_sha256": "0d7673279b267f7b0bc3fe05cbdd422ecc977235dcdba55e3ca346b9c2f0f2c1",
+      "original_sha256": "e3f7991c8ab2f362157c25fce320c4188be578246700c6ebb1aca6fa47ac7d27",
+      "normalized_sha256": "12830ce72a1ca73384d779c5e277f49828be47605365cc69092795fbc2d497cd",
+      "renamed": false,
+      "replaced_occurrences": 12,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\Map3200\\20260923\\source-before\\Progress\\_Index\\Verification.md",
+      "previous_path_sha256": "02c31d101238586ab1757710ea5962ab8d8705fdbf17f5ecb518174f376f7e1a",
+      "original_sha256": "c99e83484553848e6c71954aea09c8dbb0dba8af086b0b22b40f333f2a9fb976",
+      "normalized_sha256": "8231c9d6777ed186267fc28c2287bcae676b2e18c44696d67c9e085e617ae542",
+      "renamed": false,
+      "replaced_occurrences": 8,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\Map3200\\20260923\\source-before\\Progress\\Gameplay\\指挥官\\01-战局选兵与移动.md",
+      "previous_path_sha256": "5403b6faf98e17311ccfea8bc13c63bc4365d024032ccb4c0c91d2306c60aa68",
+      "original_sha256": "c7805fa3b9e7eab9eb2a705995d87b31e2acf25c5225cce90c2e6f3df1173bd6",
+      "normalized_sha256": "4ee65fe729801558496ec363386c18d126d7446fda861d57dbc3584616672bee",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\Map3200\\20260923\\source-before\\Progress\\Gameplay\\指挥官.md",
+      "previous_path_sha256": "0b41f7bd832568466e1ed48f6764c5131ba852b4cabfdf32aa54209731a4e23e",
+      "original_sha256": "953036d83ea741594d2c15d3e5624cac528bfb9498a776f02760c50754fbc52a",
+      "normalized_sha256": "737dce378d4f05729941a89ff644ee0042d38bd137845b8d5fdf44ab1b3e8944",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\Map3200\\20260923\\source-before\\Progress\\Gameplay\\游戏对象尺度.md",
+      "previous_path_sha256": "ac7389c2a0acf5af5fe9557479804c188c91a7365f182041a90d3f516e814942",
+      "original_sha256": "ea9c996aa3cb8a9957bca4503aa8a7865277a0cb875738c56f20cf9364589109",
+      "normalized_sha256": "2068bca4f76933cfbca6955dbdd55043795726ffbb6b3cd5d93701f3b29a7f94",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\Map3200\\20260923\\source-before\\Tools\\DataPipeline\\README.md",
+      "previous_path_sha256": "103a605d015098a6f41abb4710574485bbc2ca5940b4c300d9fa1f28b1e5cf84",
+      "original_sha256": "d4552fc0092d10bce450f3ed2cdeed44093e203fcd6f2b56533a387f53ae6910",
+      "normalized_sha256": "008f309ab464024b2af78ff31a33c2f1cad6015a47367af3991bb02b89a14a72",
+      "renamed": false,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\Map4200\\20260922\\backup\\Scripts\\author_commander_state_tree_scene.py",
+      "previous_path_sha256": "cc53df0b7f812173f90cf16cbcd35950b73d82a53d0e0ddd4104c946efc7d0e7",
+      "original_sha256": "4e156b40f2606a53369f557ebeddf15a892b670927c1d1a6712d1cefc7a0e3d2",
+      "normalized_sha256": "8c93654d98418f1a23a2fadb11cfc056dd4bb09b4bd23f41549f8ed33098d74c",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\Map4200\\20260922\\baseline.json",
+      "previous_path_sha256": "1942d3e3e08fe755fca5d4ec47a10bcd00e2cc656afd4f6c394d84ccfd6f3e3d",
+      "original_sha256": "85c002d5e0b4d666ea12c9b9343b3ca2f7b94835d09455b3830518d17a6964ef",
+      "normalized_sha256": "5084a2eb8ad124852c08c289a50d4376db611d9f1a7877a86ee51fc9daf32be4",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\MassImmediate20260924\\update_docs.py",
+      "previous_path_sha256": "4a165d871de679cf5bbdbce2bd8ab628a5452d1ff350bf4e97cc18e62053c75f",
+      "original_sha256": "8ea7640f063bdfc3360d9753c1c5c2ae486451b7729949a92b97453bb226f739",
+      "normalized_sha256": "578af17e07d37c58085bba1d80081358818ad753a5f24ed1d64d109f7de00237",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\MassStateBatch\\20260923\\docs-before\\Progress__Gameplay__指挥官.md",
+      "previous_path_sha256": "4ec006e1f5941db8b54d922aec807e5db4854ea43f999f201449189cf3260b26",
+      "original_sha256": "55ae685157ee24a6e5a924da1ea15ec3e75ef387fed93b2a830782f83c9f4551",
+      "normalized_sha256": "217d618bc7d4ec59cc4107d463579d2abfbce43b8d75d62ca1f1524497b54a57",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\MassStateBatch\\20260923\\docs-before\\Progress__Gameplay__指挥官__01-战局选兵与移动.md",
+      "previous_path_sha256": "aafc413da612920aacc7ffada87665d7a8e4f86e113c4bc79ebba11c9472fb72",
+      "original_sha256": "aa271fc756d274ed834cb6e37c63be80d50e7e880b6b5519fa1da1daf1e385c6",
+      "normalized_sha256": "c29b1fffb18f556d2a780c8c141306a7a80025b466ffe717dd0c7a436837206d",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\MassStateBatch\\20260923\\docs-before-build-handoff\\Progress\\Gameplay\\指挥官\\01-战局选兵与移动.md",
+      "previous_path_sha256": "4ab25330bc925779dbbbb07c5072a5362522b060c0a733a5f048a413df6c326b",
+      "original_sha256": "a3a8bfde9df8b75e0f82227538f3daf57f6891d3860a72cc12c8a7ff0cd05047",
+      "normalized_sha256": "98ebff054103fa9c84ca37d665c525c5c13298b86e2c9b0cc3af4a132eec1760",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\MassStateBatch\\20260923\\docs-before-build-handoff\\Progress\\Gameplay\\指挥官.md",
+      "previous_path_sha256": "0744a71a5d2d5f9077b52f37f947f39716821769764d22d2f3e177294cebbc11",
+      "original_sha256": "b0043c4fa37b00a0f357d133043111c6a386b6c700a4aec31b56d980ee2eaa53",
+      "normalized_sha256": "8dfc558655c31adc7b02e7d8bcba02f17c956cf2332f59297538e87fd5956106",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\MassStateBatch\\20260923\\monitor\\docs-before\\Progress\\Gameplay\\指挥官.md",
+      "previous_path_sha256": "bbc104d8fb77c1ccadd2856db95a75791de1a32415862bbc94a5a16f7c066448",
+      "original_sha256": "69ec2927ae5bb0a88ac9a49d44243157bf839ad914c22262330de33f59d07b91",
+      "normalized_sha256": "5533d3fd2df5c28449b9081404037368d222ca656d28e88b1357afb83b08923c",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\static-checks.json",
+      "previous_path_sha256": "9b4670e772bf02189ca9a84327dd9a3eb127d149bb4e68796c92465e427f1be6",
+      "original_sha256": "9ddc558be4c91614a2063a25b9700aa1943eb743f3be3cf6924023344887ce62",
+      "normalized_sha256": "37d235ddc39180a71e74a8d6fde20f3febe552ed029629fae377d237305c618e",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\Upgrade\\size-diagnostic.json",
+      "previous_path_sha256": "04718f8d967414876b6d6d34cfb1994bb30293d4e858134e5b32ad32fd74faae",
+      "original_sha256": "401027587647dd9e51f592ce7fa8448198171a5982220e68a14f934891b76fe1",
+      "normalized_sha256": "e2793b9ab24def001e286d550f6394b748c352b01b6091ad7dedc87d18df24c6",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleAdaptation_20260918\\README.md",
+      "previous_path_sha256": "b4b268c737a98729977c903dd8e412faf6f2309a6fdee912d158f1bf9b03d636",
+      "original_sha256": "c927ddf7fab6342d372479910a1581a07592dc69ea6d894267d6e284df580b46",
+      "normalized_sha256": "ed606c7dcdbbe2726d89d5d22b0580032c02dff4a277fc977c664d5e0856a6c3",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleAdaptation_20260918\\Review_v1.html",
+      "previous_path_sha256": "e33af568474d919f9e2107d40956c92cbc40be0f4f5cd794d95e1db36451d1e3",
+      "original_sha256": "d99e0d30c1a82b763b5c10611c167c0816d2b9c6c4785831bc7e34a0d9d50359",
+      "normalized_sha256": "8fcdf7c96a4a4fb702ef32ddb34051ca780b88f96f597023d89d787c7cb52966",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleComparison_20260917\\inspection.json",
+      "previous_path_sha256": "ab18140457af1b26c4891876fd1be9b228335dd330e3d1d324ed36d23f52cbff",
+      "original_sha256": "54416bf267ff063e8edcdabdf37864acbf38454cbc599677c0eeafdf3864dba3",
+      "normalized_sha256": "de029d96adeb2c4bf79989d17c8496bff8edc9020d38f5834dbb44a4061d32f4",
+      "renamed": false,
+      "replaced_occurrences": 6,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleComparison_20260917\\README.md",
+      "previous_path_sha256": "8e35c1e02611832e2aa36b7aba76da99b32f8772de110430ec5bf7b230c995d3",
+      "original_sha256": "8bf6bcaccd2250267cae9c1ecc09ad9ca37df7e10d0ed9cb6277a5c61bd25c34",
+      "normalized_sha256": "f4dfaffd06fec97a5b4fc966238fc0e804d1052bb0f6ec76b0b8441ea3b53d12",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\MechanicalAnimation_20260929\\README.md",
+      "previous_path_sha256": "36afaf44f0c6543fa076fd2547500afc0abbf9e9217d559138d4aeb3f6776494",
+      "original_sha256": "a3c0dc2e5c7cd186729f1da45b4f8d8c0041155385b09aac73e3afa7d85893c1",
+      "normalized_sha256": "724c90cddaa1f60983503ce66b06a87b1b8c00dd6654360d71ac708cc4ce24f9",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\MechanicalAnimation_20260929\\scene-delivery.json",
+      "previous_path_sha256": "33a53d909e6c17df306f33a60440a47a8b350011c68eec0b26035c6f15a0053b",
+      "original_sha256": "b8a341e610f67bfdf3826f5b595c9c9da4503140aa7166c74eed2402d4675d08",
+      "normalized_sha256": "c1ea3bcaf248767a4cee6d15ac935e8b565e3cfebda97959592d5c98d1ca3470",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\MechanicalAnimation_20260929\\scene-final-readback.json",
+      "previous_path_sha256": "17d9346ff20ed3fb64b4fb3657e5a7b5330d945f3146c3a5bcc3af73fe828132",
+      "original_sha256": "5ce3717373204c1ba344d6f3dce1da3fb7768fcacc927be9555a5681888db151",
+      "normalized_sha256": "ff1a79899e618e0380b68f018be7dd5d23b30de1d644a8fafaaf953657797dfd",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\MechanicalAnimation_20260929\\weapon-mount-cells.json",
+      "previous_path_sha256": "26442661eeb96cb6444111873eab9f1a5adf7adb454eba269ff968edd31e3a40",
+      "original_sha256": "cd79451e95047c626aaac5dadcd39c050b97d0ac9be3b97b3bd0e5d9d1c5afef",
+      "normalized_sha256": "b36e21d4744d8eb55cadeb2c9ff0f74a396479e9dd71879396be0219a6ad1eae",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\StyleUnification_20260919\\UE_AllAssets_v10\\README.md",
+      "previous_path_sha256": "87dc50ab0180c25507a8d7fbe7d8939459e5efb9e838306430c521a0f1a5b70a",
+      "original_sha256": "ce4733298540aa640d734ba94f9a6d67ea19fc8b5d1d03a688332f9f4611bc3e",
+      "normalized_sha256": "59ede14d15fdabd5e19fb45cac81a77363bb2eb07ab165dc640137e3d7c98d30",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Ships\\ShipComponentStyle_20260917\\Source\\Standards\\GuLiStrike美术规范_1.0.md",
+      "previous_path_sha256": "d3fc73f2a9e80aeb64b0c5c71c9443ae67bb09c826de07d6916bcc7759cd26b9",
+      "original_sha256": "69d253a6ffd898c4b9c075bf27ede2610aafc60e11c32cddeedbd8904f686a2a",
+      "normalized_sha256": "119adab29a2d54e183fb9fe3da8a9ce94bf441d9f4d77859c658c9a83ace8b01",
+      "renamed": false,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\StyleAdjust_20260917\\README.md",
+      "previous_path_sha256": "142999dd0f6726e242a09aab54d14d67d9acc925fb9b20cf05669a31e8a1a7e2",
+      "original_sha256": "0fd5d30b6f2168b71d973ede1a7c318aa6b7c7871efbf7af9543730afce26ac9",
+      "normalized_sha256": "eb488444dc9109eac162b66cd23da1fc9c4931fdd09ed448823b34fc52b7454b",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\StylePass_20260917\\Models\\WarMachine_cel_report.json",
+      "previous_path_sha256": "812d2a93464a91d09e67ff0912e9b7f1a51f15c6ab59cb632493c266b3978db7",
+      "original_sha256": "b0d6f913a6bc00dd5b6779e8e1dd698a520985133d67e9e62435189eeaf1da70",
+      "normalized_sha256": "b7996976f119251c3c956db0337f87a22ffd4a7d19b509cf270abb683d3a5fdb",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\StylePass_20260917\\mount_cells.json",
+      "previous_path_sha256": "364453bd6d0fe5e7fa4472cb2b3c29d288b2f5465cde48ca9cc9b0eec8c19598",
+      "original_sha256": "0a277ed9a4ce5f057f2d5cd213295aa511a48f2cd21ad1c8e01357cff158069c",
+      "normalized_sha256": "c4530b67eb0781230ee3268ac31c8285515391c6882fd4e5799d5e9e12680684",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\StylePass_20260917\\README.md",
+      "previous_path_sha256": "9cc8935941b85302f02090021aaf2f14dad83f5d245947894a4234ed03bac866",
+      "original_sha256": "d7024df4737a0c96c4bf709dd331a196a62403909ad240b76f44f6ce54a9c316",
+      "normalized_sha256": "00eb6052acb6c7a0929764dfb8c77f05dce85d3940f011e5a5d0b25be0964353",
+      "renamed": false,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Concepts\\WarMachine_prompt.txt",
+      "previous_path_sha256": "ad23d5939af6ed96ed2057a2cd14a97c4adda8e409870027efb6627cf8cb0e9b",
+      "original_sha256": "4f3e8f81a2aadc19e73769bbbcf3bf03919987a8d68fc4b3b15839e5567c840d",
+      "normalized_sha256": "1614008d6b6bb87bca8f09e738e26b81a291d9d2253daa6489e09ff2b60083e4",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Production\\WarMachine_production.json",
+      "previous_path_sha256": "2e86617f5a66b91d38ffcb3cac72de112180d17cdce70f02649311b16b2c1dae",
+      "original_sha256": "2e04d8880784fc5921f8a507afd634a183fa8abaa743261207095b66c4a2f7d1",
+      "normalized_sha256": "89e0c9704036b005273a30af788b9f204b20b07ab067f06dc823d4044e9888ed",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Production_Handbuilt\\Before_Shoulder_Curvature\\build_tactical_from_drawings_before.py",
+      "previous_path_sha256": "f20415240ac116998e9a5dc46b5092e91f390b73235faad786e3f740486beaf5",
+      "original_sha256": "6f03f010efd8d89764da5752d256f58cb1dae8b59f803c33a61bb8bcc21fda9a",
+      "normalized_sha256": "80f9534e69bbbb15a38b218a75053aa800092ed6b55e9d92d135e3f03ef204da",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Production_Handbuilt\\Before_WarMachine_Reference_Rebuild\\WarMachine_delivery.json",
+      "previous_path_sha256": "e253730eb8419c2a0163cdd0bac5f7b5e6b39225d3c558f8c1b8b6725fb2a638",
+      "original_sha256": "9b54c3aa50adbdbc48eabd33d63b340742a1cdae67c26d3b8054d8c939fac5a7",
+      "normalized_sha256": "97da2e4c84fd454e60788cdf77e7d716ab9f804ecd76573a9458ef9eda8505cc",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Production_Handbuilt\\README.md",
+      "previous_path_sha256": "258ba3829d3c298db6291ba857f92d544d85faaa6bdc6b16025cdfaa271036fb",
+      "original_sha256": "0d91fafc1f4b1c31a326fab122cfd21b75d79dff5d371a27abc6926ff9bd48f9",
+      "normalized_sha256": "55454de13fd6605ac4110ef7f831811e5d05685fed2d03c023f9b61492d751ab",
+      "renamed": false,
+      "replaced_occurrences": 9,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Production_Handbuilt\\WarMachine_delivery.json",
+      "previous_path_sha256": "2593e44450f6440580beffd7d0ecf1951e9dd27a81a5e1d79f6d90d44549febc",
+      "original_sha256": "d3efdb5ff0c669e69c95831a56579118e17c71aa1dd0250704c932be080e5640",
+      "normalized_sha256": "b3c9d84221ac981566bbd1c9a4acb4ba5af2aed8498003955581808383321ed3",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Production_Handbuilt\\WarMachine_handbuilt_report.json",
+      "previous_path_sha256": "0722eac30ebd86af3a9ee4eefc23785835de0161f36679fef8d4f98c034f4c73",
+      "original_sha256": "97ab4475d0a7b84b2179feed167652373bb52f5d0347f66f66f215630adf0c4b",
+      "normalized_sha256": "de989014b20b5d504117874255e5be8c589505bdd92a5396de2f490d26e7a6e4",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\soldier_display_names.json",
+      "previous_path_sha256": "1b1ed574bec9f0cce51f28cf0391eb11fd36345fe30fa4e151c41e8361f1f111",
+      "original_sha256": "b9d841dae6fa6c8fb5655d74264d2430caa2c04923c530a766c6ec2d9bfca4a0",
+      "normalized_sha256": "39494c8d4dfed7b6c1883a3b62b5e43a762a15e6e944bec3fa9f2df05201e4cc",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_EqualLegs_v4\\README.md",
+      "previous_path_sha256": "4bbb152de276c88c4094da9f13adad08dbf997f0edfb80dbc1bd6e41b5528df0",
+      "original_sha256": "5b54b6b4aa7655ea9f4c4d865e41705399a547f35abdb997dea234e362bd58ce",
+      "normalized_sha256": "ea0c72d5a7789beac6342b0eaead4226f8f529e6afbafc5c527084b66c306496",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_EqualLegs_v4\\WarMachine_handbuilt_report.json",
+      "previous_path_sha256": "a8c49db776659c318802fdc5cba12220d95711774271cdcdd0d574ece63c0276",
+      "original_sha256": "f197fc5453b3761e11601cd7d50308bf2761a9696dbba6de8676c2d825e63a94",
+      "normalized_sha256": "58d88f7a8946949a20ca26e69f1379cdcd1e6e30d3e2ae96ccafdcd24be4920e",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_HubSeat_v1\\README.md",
+      "previous_path_sha256": "5617ee8ab5732fe3df8a4fafe9362fabe8d412ac483fe35d3a18c5aeb62f6450",
+      "original_sha256": "4d0ab44d12ea5802d66335d3e0a038159bc4635af2fc6386f694eb43392b4394",
+      "normalized_sha256": "d1466159e40a58272057321f8ebebbd29ee87d8052e10265cccfe0b1ceae73d3",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_HubSeat_v1\\WarMachine_handbuilt_report.json",
+      "previous_path_sha256": "df4371293765e1b91f854759079ddf6e8d9c18cf277f854b6ec612296dc9b8db",
+      "original_sha256": "70677939d107c2a788157c8f1798c7a21dbfecf56d509aca87d122b356a606e9",
+      "normalized_sha256": "0077f3b6948204147900d6e50c4b5e2045b36f1293e46f9051346b92c801666d",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LegClevis_v2\\README.md",
+      "previous_path_sha256": "26db2d019421a206376fe262026ba0485dca2c30d389c62880be2f34754e3d20",
+      "original_sha256": "5c7eac9983e30e0bcf4ece3519a5399afb56275ff2833c885a0c99a826a0b303",
+      "normalized_sha256": "ee1593531dbecda97dfcac55fa850a4f98f19330984875f12926d376df067880",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LegClevis_v2\\WarMachine_handbuilt_report.json",
+      "previous_path_sha256": "6e12302243ba73cab14afe892d391d3ccd19cdc5b56ec2566c47ec8b3a49f74d",
+      "original_sha256": "179eaa4e75c8f4738b1270c9ec962307555f2c9b79154cce2c7e0b169a09c297",
+      "normalized_sha256": "b073c1c7c440681d81ba7fc2e7f3ef7cead77c63b94d6e9117b1a8bb8b573f15",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelFeet_v5\\README.md",
+      "previous_path_sha256": "b868c127eab7d43ce7325e40553023806bcf901b9cde7c6d5dd7492e63262816",
+      "original_sha256": "651246321ada19ba564131d66aed8e904a618d6a45ce9dc7abd82cfd5f8b1185",
+      "normalized_sha256": "8bc1fc15b6cc75ba271169a841956f49e6db67b7af33acb6bebb020943518173",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelFeet_v5\\WarMachine_handbuilt_report.json",
+      "previous_path_sha256": "85088ebbd8772322d56dcffd31739b9a22d64c47f2bf761b5612a5280002b4e9",
+      "original_sha256": "37415ff2d9e8b47d86c9acd42a4a43acdac7049c6e8bb589384c919582dae61e",
+      "normalized_sha256": "0abe6fd36e42aa6c5f0421af492f19f5bbefddceb6439266227f6356ebbf079a",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\delivery-manifest.json",
+      "previous_path_sha256": "03d86f5ae57af4be519ee121323390e3bfa7b81a8b457367c2d3910338c655b1",
+      "original_sha256": "0f69d3657c8cfb82ede99f9b382bcddfae36ff8beb930ac2a92cae5cd10b6c5e",
+      "normalized_sha256": "c728d75bccaa98b37896f154447e5269af9db597e0166e18946291531d4473a6",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\README.md",
+      "previous_path_sha256": "3fd05686e8ba076ec82d029242e6523ee2c5473d6bb851e81b2b792f3ca82569",
+      "original_sha256": "7eccdcb4ab9a834890e2ad25fd74eaf3516dc44ab212c5ec65decd54db58af72",
+      "normalized_sha256": "0e4377f03eca04bbf5603797f0615b9ca4ae39a4d9e7fe819046f6a18ef1ed9a",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\UEProduction\\export-manifest.json",
+      "previous_path_sha256": "0c89ff13003de13664b072ed2c83634435b2ef6c17bace9d8186a78c5c9350cf",
+      "original_sha256": "8676fe07d34563d9f46108de2871890c414779a14b42c07ebf73658fd7dd1ada",
+      "normalized_sha256": "d5d7434c4168bef53827fc95314e8936ddcc820c53c039a47857cde1cfb7aa98",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\UEProduction\\import-manifest.json",
+      "previous_path_sha256": "4461fe4cd17085602fd81fa589c9c5ae16ea1f72c7ea4b1e64bbb26f82bcce34",
+      "original_sha256": "c08c92e763724dea7e96201d771834bc19712e75f11b9733c9254258f5c8343e",
+      "normalized_sha256": "e7b1fc44ebea58ad529860bc64c65b6997b410cf705d56b7c9cb80bdee5e6ff3",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\UEProduction\\README.md",
+      "previous_path_sha256": "8967cd0728b956caac90213f42404cab2cc8d60e1fb29e1e3cefa72750a5ef65",
+      "original_sha256": "9e8b16b0c2d2448306730361fb0292116671dab23227a30b33afcdcd0541cd0f",
+      "normalized_sha256": "69c4d710d6a45ed64cfdb428bff0da9d1ea6a185bb559f13d111c475953af95a",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\UEProduction\\SourceSnapshot\\export_warmachine_production_v6.py",
+      "previous_path_sha256": "37fa24f5115d76cf6149f48d4f9474f27e6b2081b91802abd194e1d9cbf7fbcf",
+      "original_sha256": "f82df22640dbe7965fae3ab7763df24e8fe85f12d370c05cbfa5533389b05e1a",
+      "normalized_sha256": "305fa7f425007ad161facd30f448391a692f432ceefc5524d8e75f619c1685c6",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\UEProduction\\SourceSnapshot\\import_warmachine_production_v6.py",
+      "previous_path_sha256": "40d411e0bc7d4c4660a87e66209bf9768c91a4dbb21e4a5986a7cc51274562a0",
+      "original_sha256": "fb27ebf8c40f777d35b0502fa2035734fc433504a5b50e840f7717719a98a94b",
+      "normalized_sha256": "e6c78f217d1768e1e849e234874de877607b7c4874e0b4bb92df7cd5a520dfe9",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_LevelNodes_v6\\WarMachine_handbuilt_report.json",
+      "previous_path_sha256": "e65b594597471fff7dab930bdc3aaec24b2663baee26153d87d66998ad673a5d",
+      "original_sha256": "a0dbbc54a3636b1399f10b9f549cce7c6f9c6cdb45cae217298d957fc0dcc7e4",
+      "normalized_sha256": "43b5a3504318c5229fcdb3586ffc7f69ecd2d49ce445a3dd3754dce7b8ca93e6",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_Slope30_v3\\README.md",
+      "previous_path_sha256": "8c7d70f8ae4e37df0a98a1e4bcb42e773fd77b298ca5dda701c68c9b2c075127",
+      "original_sha256": "fd9422efed85c263aaf96607c1fb9e1139b5fb83282cb3b0e8b9fb8644165c53",
+      "normalized_sha256": "fefa816d1be06abb91befdb897544c17c63470917036a24e53eaaee8329da897",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\WarMachine_Slope30_v3\\WarMachine_handbuilt_report.json",
+      "previous_path_sha256": "461978fb2855c53254d5c98693643a124c48a2754a5775d6b891c8675012e7fd",
+      "original_sha256": "0e7dec88bd7d8a7a7303cf0bf85adae402bc139097958856c6b0107e440d89a5",
+      "normalized_sha256": "0c8e60062b4b31d5875b315aefd99f23bdd35c1e241696c4076a0148fb1d62f4",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\UnitPortraits\\README.md",
+      "previous_path_sha256": "819578fc3716652075f58fd5a92adf2d263c9f6ba4ab8cfc4c4471dbf65e21b7",
+      "original_sha256": "158eba5067f3849e12a915c11bf90f647c9dd3ecdf018ede762e88cb700cd778",
+      "normalized_sha256": "ffe159be764cefdc11dbd356e27733514ec3f9edaebfe9d4e7f319d5ed7ed886",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\UnitPortraits\\source_manifest.json",
+      "previous_path_sha256": "c7510ce6d0ecac70e0c5908fa2687d3992d1c31efa6d2a5a915a3d97a583a280",
+      "original_sha256": "3b71003adaaf9c28cc73caa986715dca011f228e2ae932f642f5201b1b028991",
+      "normalized_sha256": "02870bf055f18b9801bbd6958e41226e7d9a0f3f521a7854a48cb5f5cbbfc344",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v3\\Previews\\runtime-live.json",
+      "previous_path_sha256": "38284039de034d1e9a4d4426785f635baaa7bf86d5bc8d1bbd2326f9bd7d1683",
+      "original_sha256": "e8ba5e88bae87b28e133faae15d6b0088efdce8cf834d525efa9e303140f2ffd",
+      "normalized_sha256": "f7c54d80bc5908adffcfadf063de0290fc097528e2ce7bc7792a56aaddff660d",
+      "renamed": false,
+      "replaced_occurrences": 9,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v3\\Prompts\\01_FireRate.txt",
+      "previous_path_sha256": "b4fce2073bfa5c54779d4e2bd4e954dac73cd73ea9e13a2b66cfd178fee1f2eb",
+      "original_sha256": "e9bfe1e09f223a658babee18ba21eb2ec10bce223caccbb73e18ea51848a4c90",
+      "normalized_sha256": "6d425cc11f9984f535579e74acd380fc08de8ba0279ea3415b8125ea7ec3d307",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v3\\Prompts\\02_MissileDamage.txt",
+      "previous_path_sha256": "afd1060d965b646b7ddb856c271870e541ed3f55c1f5527a2d6018c610d67438",
+      "original_sha256": "2da38a621005ecccc0c080a8d9fc6bd013980a406258aff0c79a42693a4af8bc",
+      "normalized_sha256": "14336d39efe3831bba03e89be0744e0a102aa7ac4cc238351f795401754c9b03",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v3\\Prompts\\03_HighSpeed.txt",
+      "previous_path_sha256": "7373d1dcd25a7439b3d151c25d007444d0455331ff58f57ef4296d92425ffac0",
+      "original_sha256": "2d6b8c3f2451841ad8d80a54f8c7e6c2ce66813be5f03c8a62ca7ee21a7232c9",
+      "normalized_sha256": "e9019105cd5d197d949d1c5c9b31c32e0b09e6229d2d8a45c9890278b9553f98",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v5_Redraw\\Production\\Previews\\v5-preview.json",
+      "previous_path_sha256": "4db8f706307de9990a56548a266fc29eb8e939920887e4ce393c7495ac3e2e15",
+      "original_sha256": "0c0cd871d86f5d711e49ee9ac69781950dbb8be49de29af1dc840364b7f2c425",
+      "normalized_sha256": "2aa06a7a3fe1b2ef2333cfa5545277d174037de6415176306a0459d870872a39",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v5_Redraw\\Prompts\\FireRate.txt",
+      "previous_path_sha256": "f3ecbdbba868abeca257ffbc7c6af674148354b5ee3d9c4ae588026c69864b71",
+      "original_sha256": "5aed7dc7466077689d2dbd99403e5a2e13a2fb2a6417cfb307125b4185d90a9c",
+      "normalized_sha256": "511d1f60a9d18884b34235fcd4825abb45ccc144e461b3f575351a2d28e8eab2",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v5_Redraw\\Prompts\\HighSpeed.txt",
+      "previous_path_sha256": "501c74b02e604e70cd254996dd2b5bb73097a73cae2988007643a9edf06a075f",
+      "original_sha256": "05bc04dbe211fa58b8c0edbafe1d4adae26e694254755dde0b9c24478bd58aed",
+      "normalized_sha256": "924bd887d91abb348d3a74f6089f889b53af53102f4c1dda79d6e2d257d314d3",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_Closeups_v5_Redraw\\Prompts\\MissileDamage.txt",
+      "previous_path_sha256": "0b57de6c4379a583a55d357319193dcd72cc6c50d3d71097215364a54a6292d5",
+      "original_sha256": "af59952a8252ef14f6a34ad4647a5fc12269fb1fc2ab75d820d0476720913ca3",
+      "normalized_sha256": "cba9dd8e03a872acdca55267928666f94cae902d0663695ecdc56c7c3056cee4",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Cel_v2\\Prompts\\01_FireRate.txt",
+      "previous_path_sha256": "134d1967089b82f9bf86c3d0d97b948b3d496fdd454d2a3ed01028f2409fc20b",
+      "original_sha256": "c3cec7754991d93f79a4cb5cb289c4855387da41418ca6cc8ae7de4ca1b29d39",
+      "normalized_sha256": "077994e41ad1fbcb53ffc1f7a453cb594249e85aceb9c6240ef7cb0b41ed8c4e",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Comic_Closeups_v6\\Production\\EdgeCoverageFix\\AllCardsAfter\\v6-preview.json",
+      "previous_path_sha256": "5c7e090718c001b5f20fce13b711941b62f6f9ebbcf03999b31c3ca414e6ddf2",
+      "original_sha256": "c78a03a43ed752ca45df00abcb30b03df92499bc9881e2e7b103fa96862d6f9e",
+      "normalized_sha256": "9ebdd3c977178ce0bd1ff2ef9127a008f70435e6e0293e62a3dea56cdb148ee8",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Comic_Closeups_v6\\Production\\Previews\\Iteration1\\v6-preview.json",
+      "previous_path_sha256": "db057d5c2c0007d933315f28b7a8a4cd1b8433fdfe814dfbe3c55f1ee8229095",
+      "original_sha256": "b7d2c8935fcfc5f36259d3fce451328839cc601f10d4d0a9d844a2309a016e50",
+      "normalized_sha256": "80dd1d914d93202e992075505b77af4486793ca0911dcee95cfcda92257b368d",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Comic_Closeups_v6\\Production\\Previews\\v6-preview.json",
+      "previous_path_sha256": "09b91723c68cb1abec029bb24fbe407078fde79226024a24f6efe86c3ef182e8",
+      "original_sha256": "c6f58f50b442ae7b3d30071e232047872dd3dcc432edffd7053d5e983e91d054",
+      "normalized_sha256": "859df004271cb379ea5301782b7c82f7013d15ac8d1e82c8634e7569d3eae3ff",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Comic_Closeups_v6\\Prompts\\FireRate-r1.txt",
+      "previous_path_sha256": "89860d9e5602999f7c2a21fb043ece8ccb69a85a0537142b68b8744edac9212d",
+      "original_sha256": "c6bae983b4bcb743b34eca20aeb40e644c0bb84002a150242e12aaddf5d2132b",
+      "normalized_sha256": "f8fe7260cefc986f8c65db599537f5e3e47c54dc8587c52a324a18ff3c3368bf",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Comic_Closeups_v6\\Prompts\\FireRate.txt",
+      "previous_path_sha256": "51811008314e739cdb64d0845bdda5f9eaf92c0669a25038c9c5883c24fcfaa9",
+      "original_sha256": "a0b4afe5bca895e2e214546908bb0c429b9cb3848f7acf6f7a41399518acbe82",
+      "normalized_sha256": "484a6a72c36d8489e54aa48b0f198b546d69790eba7f8926b6667be286908bd8",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Comic_Closeups_v6\\Prompts\\HighSpeed.txt",
+      "previous_path_sha256": "35ba43aad49efc39a3bf1d16507b1bba4e5b4c4f787f84e7ab82117542d6e6be",
+      "original_sha256": "0f869e5fe6e3c3e53af72df3f0b06a288c0388444b15912e714a8c4d812acf86",
+      "normalized_sha256": "1fd68e12f4494ceaa9685c919a3c73f4809559ae6aec85ef8d708181af48210c",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Comic_Closeups_v6\\Prompts\\MissileDamage.txt",
+      "previous_path_sha256": "096b9f2f198ea5738ebf262e0e820905d192f96269afbaa9876d0a98d7e23184",
+      "original_sha256": "e51a7ba38e242f67279808500169515316898050be598f569174cb57ab83b644",
+      "normalized_sha256": "a58bc6d79a94a61f053db29e254297a2360ffc7c7ec7a92b03660cf676abddfc",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Comic_Closeups_v6\\README.md",
+      "previous_path_sha256": "be0730774f8411eabda2608043fe5d4a268d563292fa6f5f714c33feaeaf3db5",
+      "original_sha256": "d60c7ee184c956b345d8e1a3f9f54c1c59e26c8ce819049b8c16d76a03bc7b2a",
+      "normalized_sha256": "08599dd82d0bd19f3ac7468c1f83ab3afb7b234ab2b2148cb9be94ec7cfc36aa",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Data\\CardText.csv",
+      "previous_path_sha256": "47cfba61ea665647a0bc402ed78f84b6fcff76113f86d128e2bf48ba3c356e11",
+      "original_sha256": "40fc3b118c184ce3350e676adf9ad50c84273dad6e62444c8ce29854c9008a43",
+      "normalized_sha256": "1ded82a274ca26900028f96966afbc8b2edddec81fa02021b18bf15db6b1b16f",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Data\\CardText_UE_Export.csv",
+      "previous_path_sha256": "cb24dd75b4dd784bd1e9cbf239d95c42eb48e4ea5faa3256ecc9bcbe4d27a29e",
+      "original_sha256": "5b47d26547029b2efd2a19b7631aaaf66e61bea969166e2c72cc5d7a1d71db81",
+      "normalized_sha256": "a336cd6390c6afebe4d6c097563339a34902fcacd2691d41588127903c2e7cc1",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Data\\CardTextSource.csv",
+      "previous_path_sha256": "3153ca10c1430212d1495466fd9ab9595d9fcc832dac5d9750a89711aaef9754",
+      "original_sha256": "9c927acdfa0ca554c296188aa82fe8e533cf68210d22c1b99706ce8e9b363310",
+      "normalized_sha256": "56ffdb77455683a801a329634076f1529eba9c0faa2a95b34b1a8a2daedabb43",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\Inspection\\runtime-text.json",
+      "previous_path_sha256": "ecd200535bd2d32bc79880907bd53404b48f5052548a9e924f0e9cf9e355b16c",
+      "original_sha256": "3ccc32e2adcfd5be24d010387b613927d4b35c536f1c57746ee27d739c0bb27d",
+      "normalized_sha256": "253ad344fb97eac5a7efac2b0b3ae0df81ed7657c3d99d8622de49dde4d7e926",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v7\\generation-manifest.json",
+      "previous_path_sha256": "5d77a464283fbad9dcd34e5e588f50bbd99a7cc219c8c7e4cc438e77c65172bb",
+      "original_sha256": "cb5cce26d6dc8c6327b19c5acf6a8c95fd0da52e8f1b3eb361c1acef8fdd7a99",
+      "normalized_sha256": "7d73d6754b705c664b9a1fef6d9f3fc82a63bace466cb773612d69d7d65800e8",
+      "renamed": false,
+      "replaced_occurrences": 6,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v7\\generation-requests.json",
+      "previous_path_sha256": "86399e7364cd259cfce62b30cbfd2f33d4c5ef3490622d75b07f7e88660055d2",
+      "original_sha256": "cc0dd7b37816e3db3344c687ba136aca00a870df425ed5125518df486bc464f0",
+      "normalized_sha256": "92f3aa810f37c8a66d63007ff5848ec70d6b804dc7a1e04674b21a1980d90efe",
+      "renamed": false,
+      "replaced_occurrences": 6,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v7\\Prompts\\Common.txt",
+      "previous_path_sha256": "29acff64756dba04ca4cca79fc685b6bdfbcbe53b4bed7e917f03bbf89bafe96",
+      "original_sha256": "a4d25c5e96c98b0b57df706a315ca4ec0e52a45824b6b074a81d621f0aba2c88",
+      "normalized_sha256": "61733979948b9f50ef9e57f8c9d67661f6922e173c3a7baa8cfaf132c0c2833f",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v7\\Prompts\\FireRate.txt",
+      "previous_path_sha256": "fa4c94888a4ada538aff49679fb7e9e585a0dc49061f88d3cf8fc87fd010dfc7",
+      "original_sha256": "1bba0df596833d2f867dae6817e8974174b00ce9e1cdb9d698165b5a599310f4",
+      "normalized_sha256": "36c2831b4b68b4828f71b41b221748a8c3255f5b4ab571d3ace34625b5604d22",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v7\\Prompts\\HighSpeed.txt",
+      "previous_path_sha256": "ddd5de87687415edd39977881eb8368655546dcc289cab4e0a61858ac275dbea",
+      "original_sha256": "c679b2e69f6277560621ddee7d1f8e8689498b984d9727856cfcb7280b724146",
+      "normalized_sha256": "2f0ae49b65c113210fb508b479e5dbc0a338418cb640d64cc8af06c5b49a4705",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v7\\Prompts\\MissileDamage.txt",
+      "previous_path_sha256": "c74264d717e1039755a9a151eee1ca93c96c34940fe116b3e0dbfa9af33aff86",
+      "original_sha256": "c742f47d8b47db69591b5f27ce1cb68f14cb860af14f6d4b8411addea8520c55",
+      "normalized_sha256": "7cdf6b288c6b727f6b4ceecee2c4298de5c1c1fedd9dd7ccf9bb32f08792115b",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v7\\README.md",
+      "previous_path_sha256": "9d86619e382b7162d6d699fc75c09ec7e09e90b9773ecf075ceae48d0e89714f",
+      "original_sha256": "81c6a1351740f97bfbc4c794d902306407ebfc74608d7efd810d34675bc12f79",
+      "normalized_sha256": "874c7845255c2ed6c85fbfa863c5709bfe8657436305ef4a9fffe8d9490415ea",
+      "renamed": false,
+      "replaced_occurrences": 7,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v8\\generation-manifest.json",
+      "previous_path_sha256": "fe2282ea0fb595af178c423ee336e2ff3e28bc6826f43f93d2257f7a3136c04e",
+      "original_sha256": "b099cc0a17ebcfc8bb0ae6198c8c3cd3cfbe009964754d3ace223bc9a216d7c8",
+      "normalized_sha256": "7e502537bc0607eaac8274b1b271fa839697a4745aa745f553ccd65762adf2b1",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v8\\generation-requests.json",
+      "previous_path_sha256": "faaf6c544ff90c437cfb441a9bc5c185f3161fb609c4926da5612d37589eb7b1",
+      "original_sha256": "3fefac7f2f7300c2e694d47cb012631141a668334f7104d0616540dcfee90ac4",
+      "normalized_sha256": "eda509a2c8b47d0cf9565e80bde52a5fb9808fcc9dcc39905c09a77eb82ca7be",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v8\\prompt-integrity.json",
+      "previous_path_sha256": "c7335192d1e9759bd472ad37f7ddd09f119d8ff041e3ad2e164cfdf0e8c9c891",
+      "original_sha256": "efb0dc8c46b1cca835facf97c67732c60748dafdcad76540d739b66d5265c782",
+      "normalized_sha256": "507899d712f3ed741bab3358c6420f27167622f8bf17e25edbd75c9a7ca2a2b0",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v8\\Prompts\\FireRate.txt",
+      "previous_path_sha256": "64d2f3c006e5aa520fa8ee5379e0acd63b73e1be6b8dd5bd16750630e615a265",
+      "original_sha256": "1bba0df596833d2f867dae6817e8974174b00ce9e1cdb9d698165b5a599310f4",
+      "normalized_sha256": "36c2831b4b68b4828f71b41b221748a8c3255f5b4ab571d3ace34625b5604d22",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v8\\Prompts\\HighSpeed.txt",
+      "previous_path_sha256": "c6ff8a575ffceb838434847b6c9efa250ff5dd87cd33f9ff11ca47c54b562253",
+      "original_sha256": "c679b2e69f6277560621ddee7d1f8e8689498b984d9727856cfcb7280b724146",
+      "normalized_sha256": "2f0ae49b65c113210fb508b479e5dbc0a338418cb640d64cc8af06c5b49a4705",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v8\\README.md",
+      "previous_path_sha256": "602093e9e9b68ad977e511a88197cbfb84be4f73ddc6e5f64bb6ccc43a98a9b7",
+      "original_sha256": "cabd7f70b0ef8b08096c4794d50493902dc69d69dfd3802d75406f77f4232c7f",
+      "normalized_sha256": "16e075706583b12e7e9b2d605e5875d9a4a095f02f58ea4db597d9576e58eda5",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v9\\generation-manifest.json",
+      "previous_path_sha256": "2be9c5afa24d7c30c99f99e88b192189bf56fc44fc8319fff5b5bb2a8ecb8398",
+      "original_sha256": "99e890558b46b09c3618847e5ae4674f9d61726fd29cc115c3b7a3ffdf6c3102",
+      "normalized_sha256": "55b6bf29139c557e6ac248a858b479441cde2e677829df8583f168e021e30567",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v9\\generation-requests.json",
+      "previous_path_sha256": "164b9ce48414a61c709efaf5fc7edd442bd8526f6567cdbd7a0b48ebd18073c9",
+      "original_sha256": "140c4d423862e54cb8dc09ccc3175ce168472b530209ab1789a5bc578eafb7b3",
+      "normalized_sha256": "8f974beb65d2801ee74ae9fc76e932c97a3622488aaa623b43e1086782aa154b",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v9\\Production\\Inspection\\final-readback.json",
+      "previous_path_sha256": "23521290579cd779bb6fb2bc2b835d3c472f22de6f83f72d49a5a63b87e33814",
+      "original_sha256": "569a31f9895a17d54de309badffcaec0bab6346018c7e1709f9e2a74eb7b513e",
+      "normalized_sha256": "6f9cb8961519620048cb02d45ffee04ab547665e32a91c728295026e306068b1",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v9\\Production\\Inspection\\integration.json",
+      "previous_path_sha256": "5b649aa419bfcc58c654d386d977abad7eb7d06cd26006dba0ec81a806487362",
+      "original_sha256": "28f6ecc7f08de36e01ee74185b7991ac59788eb8cf62c070ab009a3a80585379",
+      "normalized_sha256": "1bdbe5e6309ef763ae365f3a997bde1937ed2a84a0c8400e08892c4610bdac5f",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v9\\Production\\layer-generation-requests.json",
+      "previous_path_sha256": "efe70ba7afe6afe02243b7310861d6364128c52aed2d4550d41e9a291492cde5",
+      "original_sha256": "3ab8cc2ff8daa709391d2dc3217e758c55bc9b9c8f03bd73ca5758bd02ce7082",
+      "normalized_sha256": "dd79834ec83e808119fd71ea7051c7d790803cb4cea86d241c7175decc05cb55",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v9\\Production\\Prompts\\FireRate_Layers.txt",
+      "previous_path_sha256": "ad676b8cffe3e45f89da4ec82d5e550a5342fab2a01fa3a89b3876888cc79db6",
+      "original_sha256": "2f861f2be9ecab379c9c242380a2018496d90f5648841f21c05c96ea9f786945",
+      "normalized_sha256": "c0da6b63be0cd83260aa8182dd33ea3409c9346514a1df1c83c734cd7171cec4",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v9\\Production\\Prompts\\HighSpeed_Layers.txt",
+      "previous_path_sha256": "00f8fb856d430996f0037b851c416af7e7121b19e24916c290567b4dedd993ed",
+      "original_sha256": "6d5a4cece3409a8c8b8129110d831f867f6b917229ee7551955a462dc33b60bc",
+      "normalized_sha256": "0a9afc0b8a5411f42ab5136798a05a082fc967802ed353a750983e4c73509818",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v9\\Production\\Prompts\\MissileDamage_Layers.txt",
+      "previous_path_sha256": "ff19d78e3b42a11f41cb765e239e0868a939241f0301269e35fb11dd69da5857",
+      "original_sha256": "facbb0da794290521a1dfbc029e9b442dba4df2dfe9353b6b58951ba636ecd33",
+      "normalized_sha256": "060119b2892044a6f4e7b6e0a7057a66ea85865c22b855cdd8c84c089c21f649",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v9\\Production\\README.md",
+      "previous_path_sha256": "e0935bbe7644789d4ec7361885f0d82514cdd8688478b254051c2df44c8f4078",
+      "original_sha256": "207c7b1dfd1dc4e9062a67abdf02980b98fddf38bb67eb56bec14d25850aec21",
+      "normalized_sha256": "45de2c60cd8ee86d051131a8eb3f6b3e38db3766e35ae53d842fa8b91d47e718",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v9\\Prompts\\FireRate_Edit.txt",
+      "previous_path_sha256": "5248c0d351b87e5e0ee654dd881f9195f7ef37079dcd586ae15332d1917d02aa",
+      "original_sha256": "5a6d0fb832807d09b19f5d842aac84732b32f566e86981cb3bd64f86fbd2105a",
+      "normalized_sha256": "7c9884de58a5ce048cdbd352380dd87cb5daa7f691407d91e0cb362dd7857f17",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\ModelComic_v9\\README.md",
+      "previous_path_sha256": "df7cb0feeee4a51f69819e02b9070454f0eef47b64109a1fff0ea746a7db644c",
+      "original_sha256": "2f26b40c0faa47d979d4ac38a836e2966410eee9df6fbccb38d4c444547c7377",
+      "normalized_sha256": "1937d5de147b0c3cf981d075388bfca66ce3ee6266d3772615d7e2cc2a18b1dd",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WarMachineTarotCards\\README.md",
+      "previous_path_sha256": "69b46e01603c6a22c460a2818a37c5b1249d80f3d177174b2803376cf37ad627",
+      "original_sha256": "f67c9b2a6c1058e114d3450a3556c3e8baf3d02486be0dc891639df3c1d3f668",
+      "normalized_sha256": "934c9f1255479699a56e5f2a9d4bc2ac3f965809c52c6a1fc43075daac6f3428",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\VFX\\GroundWarning\\candidate.html",
+      "previous_path_sha256": "c578d162180c3807385fc1da1328c9f5901d258d051b3aaecf18183f008545ea",
+      "original_sha256": "404813f70e0fe89819ca0262cdb45a3bd9c40adee8be7a8e0b8ca1c327f780b2",
+      "normalized_sha256": "8fc24eb9e8ece539f005b2b41614a5bce12889c2dd1cbf84a90891506a2daa9b",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\WarMachineHover_20260929\\README.md",
+      "previous_path_sha256": "eb17a044cd8eb404c4f19698c14dc2163b5a676f585dc6294cebf318b8036406",
+      "original_sha256": "daa2a878eaeafd1abee63d00ebbcb4f715d52188adcd3aa97cba6cc604acf724",
+      "normalized_sha256": "cb67955872ad38a43561568bcb6d3780d69c55c2127a8608e0c73e84ceacd969",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\WarMachineHover_20260929\\vfx-registry-cells.json",
+      "previous_path_sha256": "df86fa65eb7dae625d1e8c83f5f895ecec73d69f73ee19109f594d1c4d921890",
+      "original_sha256": "2b6e693de20e4b306cf09e70fecbd6c39de3817eefeaa11638a1b0c6c1f25e09",
+      "normalized_sha256": "1ef0c545dea90b101b5ed446616dd995130f3389d297f5e8fdc70fe34b60668f",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Json\\DT_GuLiStrikeCommander_Skills.json",
+      "previous_path_sha256": "2bd76102b41763ce2e4b56e840ec93867adf31d76a69745f5a2c61f955d0ac05",
+      "original_sha256": "9256b497724e8fa01b002a910a6a19f22cb2411db7f12ee1c4e50be737688d7e",
+      "normalized_sha256": "2a21b9f994a7b6ba3994ec974b3b43d8d91d05de80455f3e3b19b3f323bd03e2",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Json\\DT_GuLiStrikeCommander_Soldiers.csv",
+      "previous_path_sha256": "0d2b9216b63007dd95f450e16cc4946ba01fcb571c50e9ab3b007411d2807f0f",
+      "original_sha256": "64ba258a2c11d68a286057e1d91ee3f3021d067a0608be81b45187dd7d2f9cb0",
+      "normalized_sha256": "34c06d59d302bcac061235f40759871fe5d3cef6fe1451ecf079961c17d0bdba",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Json\\DT_GuLiStrikeCommander_Soldiers.json",
+      "previous_path_sha256": "9c38616cc9159ebb753d09fca4c6087814e638c91684a5b4b79021ae1620f20b",
+      "original_sha256": "41dcd514bbdc844f4a2c2dba6e93f536a08bf48c4361a9381d63073910c88907",
+      "normalized_sha256": "c5cba5938f4029c2cd57dd4189d7b115ecb53e3cb7aa58952c48c7b80a40190f",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Json\\DT_GuLiStrikeCommander_WeaponMounts.csv",
+      "previous_path_sha256": "f8ba7e7293d8a01524b0ae30a92e9288dc556535f183b9ebd6be356576c5f6af",
+      "original_sha256": "e2b373c534761e9cc74088baf105ff1015dd5890e7b8a825a4287b89faeaad15",
+      "normalized_sha256": "bb107349ff991ddb7a79e57d6056aff4ffa87b06b1be6d17750a1dc691927eb3",
+      "renamed": false,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Json\\DT_GuLiStrikeCommander_WeaponMounts.json",
+      "previous_path_sha256": "7b3e27015d544b90a5aedee31576438b3a86924f3e71f0ca42f66c820deca83f",
+      "original_sha256": "dce15a083acae023a8004b9d53d7078a33837c4051171febebfcd7d4832608b7",
+      "normalized_sha256": "6bfd5023bc6e2ea59a61b97f6c47736f83d610e52a194b23d84c75fd126184e4",
+      "renamed": false,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Json\\DT_GuLiStrikeGameTexts_Texts.csv",
+      "previous_path_sha256": "f6a54b7791e5591067b477054e6c365d743b878c0a31611d55d67cdaa23b696c",
+      "original_sha256": "0b185dee3c2906a93514521e7e6f7d9b6581ec77583e70fd1e796654effef3fc",
+      "normalized_sha256": "8b0be5dc0233f80aee1aa193b7d4b0f79413d9d915d9663efa041063c0e3f1b8",
+      "renamed": false,
+      "replaced_occurrences": 9,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Json\\DT_GuLiStrikeGameTexts_Texts.json",
+      "previous_path_sha256": "03ff2e555704e64d2f37424cd67ab3cd7af0442a6648ff9ebf2facffd3c2db6a",
+      "original_sha256": "baf514a1711bbc4b087e0607e51324a7deb82e72505df802c85cbbc6b397987c",
+      "normalized_sha256": "1aad20d12fc4f3e32d64a23e078019dadcadcbff37495c263ff481ddaa2a2e5e",
+      "renamed": false,
+      "replaced_occurrences": 9,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Json\\DT_GuLiStrikeRogueCards_Cards.csv",
+      "previous_path_sha256": "2e8d032ddbac32e3d72316df441fed25f68404d9b0a7c9d9748a3697603b5902",
+      "original_sha256": "8081ef72444c8db96d6acb3628cd758fd865a1b9ed9a3cc8545c5f096abdcd9f",
+      "normalized_sha256": "111279df08b8a04bce3235e62df7d6a91c94bd45cad53d2d5643aa99c9ae289f",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Json\\DT_GuLiStrikeRogueCards_Cards.json",
+      "previous_path_sha256": "2d9e46f96ace74876b8f3bfdd64bb94b21885c4f0f9f83975d86fc7cafc3ccb2",
+      "original_sha256": "4d51c59cf240188a2ea2ce22a55193d57c967b67c337c2f3bc684ea737617307",
+      "normalized_sha256": "fd0d198da4b685e41d8ac17eac0412d0842d91268e45dfc3e30dc06adb5f1110",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Json\\DT_GuLiStrikeSecondaryUnitSkills_Skills.json",
+      "previous_path_sha256": "d94820276c931d8ef74afd08550459fcb4d1f7a0a2d97efba987f639edc499ae",
+      "original_sha256": "dcecf817c70022cb830b099b2ae94c629840d085a9b299969c3a31cca705006c",
+      "normalized_sha256": "326e799744e61cb9309e2192a7d7f8affc709913023eee100d1077a48d4b7d0c",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Json\\DT_GuLiStrikeSecondaryUnitSkills_UnitSkills.json",
+      "previous_path_sha256": "1b80c39cab3bacbb98a70177db76b988b0183daab9770bed32a5f5fafdac5707",
+      "original_sha256": "b3943845c5627182e673de5872b3e85677297bba0c8844ba5597656a6404e566",
+      "normalized_sha256": "b49e0ca0c38ffd285655658a825913febf42e17e4b362f4b0ebdfbb5929944dc",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Json\\DT_GuLiStrikeVfx_Effects.csv",
+      "previous_path_sha256": "a02ad2132201e06e4b49376d64ce483cb010877acff76e9ea39301d7a1dc2a8e",
+      "original_sha256": "c280f94e17fbcc4fd769dd8da21d9254fd6d6ae996197d73ac75fadf230a11bc",
+      "normalized_sha256": "02fb6ddd34d005eac53d56498e35573163dd7513402baefc027501e45937f82b",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Json\\DT_GuLiStrikeVfx_Effects.json",
+      "previous_path_sha256": "04dd65dd1c5f5cd4903084d7c2502677216a715a672e85a12a62c88ae85926a4",
+      "original_sha256": "5cc81084d21aebf821b01930f78a4debc908c9029a3b3cef2796494ea569ad9e",
+      "normalized_sha256": "e472db39cc768b4b72ea0daaa1c40a7e5b918277dab9d77a26706ffc6347d491",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260903-指挥官与地面机甲最小建造系统.md",
+      "previous_path_sha256": "6f189280224db3de12b9e40c2b3708b7dc31acea4db6691eb6ac62097cfae170",
+      "original_sha256": "a0aeea0a36f15bd95a4b9bda19075c9d411797a0d4a15f7b9375c9b1d9a47d21",
+      "normalized_sha256": "07eb816adb717503b792e988d71feabd28e2fb38fd8d12ff721c45b9b31c2b47",
+      "renamed": true,
+      "replaced_occurrences": 9,
+      "ground_context": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260916-扫荡者UE导入与重防号参考重建.md",
+      "previous_path_sha256": "367c74759a841c602d280901a8e6d22aa074b8b36f25ccc283fa2a836cd7db69",
+      "original_sha256": "ba0483c69003f16322cdf934f76759403eb86457136e732df83bd0b7c66c7261",
+      "normalized_sha256": "be912beba1338e6f20258e342fe90ef7fe808962f4215f2e70789e945ff940e6",
+      "renamed": true,
+      "replaced_occurrences": 14,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260917-Ship玩家蓝图补保存与独立读回.md",
+      "previous_path_sha256": "4e7ced46be87933629bf8d06b7b0d4addc2a830b51970b7b0ac4d9fcc9defe9b",
+      "original_sha256": "59895d07f12d4b68823c624c2101119ffa4d4bee7647c28bae1000da6bd5b069",
+      "normalized_sha256": "8029581e4bb997d3569373a23ac12ce94a14c9eb060730950020e2912b483e1e",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260917-三渲二模型与指定爆炸接入阶段记录.md",
+      "previous_path_sha256": "64879aa1f27d4aaf4e65c38bc739beb5b3404386f1f6c32401a1c6ba84a29ad2",
+      "original_sha256": "f58489ad1441749ee746980d4e2ccc2d7c91fe315f121125b8db3011a5074ae1",
+      "normalized_sha256": "66096304b488ff66fee0dd87dddbbc8f8678858d0738d72b03116a4ffc7d5b14",
+      "renamed": false,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260917-重防号Q导弹通用预警与切图断言修复.md",
+      "previous_path_sha256": "cf36fb31575ac050aa19eeb272f010c08b6eb9f7fc5bf008b08443e36b643b1b",
+      "original_sha256": "df70f02060aa60446833f730d078fdc49e285af6d6dd467b3958e4f1e6a9a391",
+      "normalized_sha256": "869869ce8b685e3b982aca9ceb37e904a77b161466d3de6e1fb4252d23a0fa08",
+      "renamed": true,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260917-扫荡者去线稿与爆炸场景明暗调整.md",
+      "previous_path_sha256": "4d1149948cac549421877151a7de528493538a490847dd7003fca795f56333e5",
+      "original_sha256": "72286c98ea7f9741189d8850d1ec778989c7e20109ca04ac721a8fc8b3fec072",
+      "normalized_sha256": "25ffe98cbd3b0747b9ccf0993b81ccb37f9ae2ff3efbf470cf2330b2748f0865",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260917-松树林与三单位独立试摆.md",
+      "previous_path_sha256": "e3c6473a20a70dccaaff2461e68a87170e6bac5a80af0fc9b67b9b2bc617bbe8",
+      "original_sha256": "f4a70af8f8f2dd6f43b9fb302d85270459bba1a4aebeb0c0a7e9d0d280e92c96",
+      "normalized_sha256": "3515b0f07cfce3fcd213b5cd774236c0bd781dad964a87f42bd192ee51118a04",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260917-美术规范建立与制作技能接入.md",
+      "previous_path_sha256": "97e483404cc9718626207cd99460793c8c824c180cb5991ba539db680730993b",
+      "original_sha256": "f79cba2de3a6b0e02b613113de758c524d24f3001283b67d278941d18b28e1f3",
+      "normalized_sha256": "e5707e558bf5d39937a18aa17a852960ffddfcb7a04ed6e9b9595e31b800529f",
+      "renamed": false,
+      "replaced_occurrences": 8,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260918-Q圆面打击与赠品清场选兵恢复实现.md",
+      "previous_path_sha256": "a7bde3e9b9d637ecfbbd3c8a528def1713a1f23822d9fc651d1467260cbd527d",
+      "original_sha256": "72bc97295b4e34c7d8689e5103951ceb6b1772b82cc471e3a2a96b1964ee3624",
+      "normalized_sha256": "b6b6bb0565c04c0b53464c5136c5d5b31b6009d9f86757ca6606d0c47c6b0287",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260918-指挥官体型净距源表与接入分析完成.md",
+      "previous_path_sha256": "1e13959102eac82b97c8cbcb1e8db19888f5ca6476c2beb754904996ba06f45d",
+      "original_sha256": "4f516d2bdc2927896ffa129c0008b6ce4b8d728364d2fe30ed47061f0b382dd0",
+      "normalized_sha256": "924d322156991ff8ccb724019a3a2089d9dcc1f7eeaaa124e923a0b8a66cbb96",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260918-本会话临时文件清理.md",
+      "previous_path_sha256": "888d99f6d9fc2c38d146cc3399a4b2b904a118ba7a053d74cd2d6e362c27f6e9",
+      "original_sha256": "3ad2bf4bfa63c28798e2d3940f55acb1deebea6f0152096bc9168ec753e16c48",
+      "normalized_sha256": "e3a350725bc5597930e489e8678c3d5497c05a89da4d9e957a1d5d4651907dee",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260918-玩法光照对齐与重防号拥挤诊断.md",
+      "previous_path_sha256": "08707b50e2b88c9de119471773bba7410bf591681de49566bbec971edbab3833",
+      "original_sha256": "da038f4ffc1251ae3bb65bb3f6b20e8401dec5f42d2f8797e9fce4ef50b6cffe",
+      "normalized_sha256": "25f2c6be45a1f9d4d5eed2c7257538ad4361b0c8eec4ae33a6996a97fb6e9a7b",
+      "renamed": true,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260919-Mass体型净距运行时接入与验证记录.md",
+      "previous_path_sha256": "e417fc03dac3e1d231200bd7b432d94aad5a2b3c3204afc932700f248170346b",
+      "original_sha256": "cf9a777e9d57d414be4343b2f3e1d16a689edd2047c7c48a87df2bb72a02ac72",
+      "normalized_sha256": "0153ee0e9fbd53009a3f52efe633d3df1f12375fcc29ca695d0e8131d0d44469",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260919-重防号导弹范围与特效调整.md",
+      "previous_path_sha256": "304bebeeeb1ca7759258d1d176498cf36ed7a0844a7f955091567a2e8ec44841",
+      "original_sha256": "00fb081860264a47d024b62423e6c216b9bfdd6e6577388f5cb241a2bc02b0ec",
+      "normalized_sha256": "298326dd5f843cac0e86b45ca2393c6f8c8140be362764429c64c7ecf523fa29",
+      "renamed": true,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260919-重防号爆炸追加四倍缩放.md",
+      "previous_path_sha256": "6ee8b64a83cad5241ebf5e97f8538071fbd507be4bc55f8ed51663e635534fa2",
+      "original_sha256": "f89682f9915d7af8e44777519bd97323181da85faf8cfaaaadfb95779ccde67c",
+      "normalized_sha256": "22b48ca729d8bdcd1b4e52dd1f3331f591b11b91ee25b65ac96a822567152f6e",
+      "renamed": true,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260919-撤回严格净距并适配重防号模型大小.md",
+      "previous_path_sha256": "c9313bcbb7ffd23406f97309ce7e2f7fd0b158085b1732f12d34d75494e67b48",
+      "original_sha256": "5a02720e57afded3285fa78c71edb0d2c0eba6c4fb9c7fab386f0e6942e83934",
+      "normalized_sha256": "ea533ec157cb6a4311ef08ea00ba2a07e1aa7988cfadd1f2b9e549d806fd8d73",
+      "renamed": true,
+      "replaced_occurrences": 7,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260919-轻型装甲地面玩家接入与根位移修复.md",
+      "previous_path_sha256": "942c9b6eaf04170749fe6179e42ab803da72f1417727f083f54665f6474de332",
+      "original_sha256": "dab2fbe6ea71e753244589d23c8c6b107ece49685bba2706ee33a6c770065465",
+      "normalized_sha256": "f802ef75eae158f03d452e8876bcf7c0664e60de5d9629f99a62747efda2b74d",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260921-FireReview双阵营靶场静态交付.md",
+      "previous_path_sha256": "d161eea084e35b75925ab22e69d20a2894731303264e0d377a0f7124ad65aa93",
+      "original_sha256": "9ba53c2a46ef589cf65d875534094cf484174d881462d13aa748ccdf272980cc",
+      "normalized_sha256": "ead48da342291ab2edd24699e0eb80686729b5d106978dc83e554d4aff1bd19d",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260921-FireReview导航阻塞与资产校验修复.md",
+      "previous_path_sha256": "6dc0fc9d35255c653512d3306fe8b0e152a757550e04ba6ddc51e7a18ac55ba0",
+      "original_sha256": "e0badfbb655e3a082b3d8f3b12cc84b7f8432f4c4075547b2da8bc144e8b87ed",
+      "normalized_sha256": "e931633d789a40fef7041449a61e6468f45bcdc2ebf6d8fa1ad30669fde0c091",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260921-指挥官StateTree迁移与场景交付.md",
+      "previous_path_sha256": "8a5f230223cea47f338cbc906d76b53f6642b7c409c42e0b573d5e41dd004888",
+      "original_sha256": "c8b14864c4b39c586bdc39ce985ff4cbd25bb777c62f9ff66c0066822f390edd",
+      "normalized_sha256": "a816a8b0da709837a949a01e7717377a8d6eeff01b3a67b134c1c575db349d6f",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260926-重防号分层卡牌与可编辑文案交付.md",
+      "previous_path_sha256": "30094bc724de34ff6b84295b17fd48884b94590b6684223bf49e374c337b8949",
+      "original_sha256": "6ba0e3b666fd9b6f94386e1770263c79eea5d724037c3ddee2a338ac311ce821",
+      "normalized_sha256": "8578822de3a0d897fb0e6e39041a40557d8393aa27a71d3fb2227ba3666b5275",
+      "renamed": true,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260927-重防号卡牌干净视觉图三张重绘预览.md",
+      "previous_path_sha256": "618fd8635c616010872fe79a1039956fb7ec87a78a13d125ed1ffa0fa384a917",
+      "original_sha256": "2359fc5778f4b9f11a9634a70f3b637d8fe500fc926a07d966a54e926e68aa1f",
+      "normalized_sha256": "2dced54ca9425b2e87afbc46bb567f9d213025304727d97ae10c3a680ff66741",
+      "renamed": true,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-升级光粒独立随机散布.md",
+      "previous_path_sha256": "4f7cdfb785567873edb041a23bea0541194ff5c9c146e5dfbe8fd98c3c3628f0",
+      "original_sha256": "5fc63910dc3394f58459ad68bdaf25db75e613ae0a56b42b0b1a17419f6dbf1a",
+      "normalized_sha256": "c5b13ade082a8993a8657a3af1ac0acc6e2b9e6e89bedac31aa12683a30ae58e",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-升级细线改为短发光粒子.md",
+      "previous_path_sha256": "6519a5da60a2703965f75c84756c7b18607caac1b28d5e8fe072cc18f45f59af",
+      "original_sha256": "8752cefb9f781fe2ac42e7cdc6e29778f1f37e5309afa95b4c75ed2abd5e338f",
+      "normalized_sha256": "d6f30ba3690146e0df540e7dd1acae6ba96d2966cfde46cd6b84011738974f8e",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-坡面卡住与子弹超前显示现场诊断及源码修复.md",
+      "previous_path_sha256": "9b057e034907091a5ff26ca6b4fa2da758385cee2bb2c02b5d1c6201cc01165a",
+      "original_sha256": "ee4bf06b3b08d2fa69a9b29f2d41b442b5f98943fa624d503513441a6fcfe718",
+      "normalized_sha256": "33438df1724ff4bbd235bd6fc852525e340d1ff759b3ac6f5504cdfc37e41174",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-重防号前支架等长与前盘抬高审核候选.md",
+      "previous_path_sha256": "fc2823046c8f7c31f5aad1cd332c01a46ff0f95b2234dd2a0fb2b4edd60f9736",
+      "original_sha256": "735a271b55b876bf146772df4f67ab78c6b7c2daffca3df27df28a20719c84ae",
+      "normalized_sha256": "eea15bbc8540fd9d9b4feba62734cce942271e144e5d6f4fe386412a57668c43",
+      "renamed": true,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-重防号前方方块水平修订候选.md",
+      "previous_path_sha256": "bd74abe00303230bbd1365c51a9e8da8d0786002eb4c98e9aa5c3b0e8d792a0d",
+      "original_sha256": "ee90413432161ae2f3cb48f6c8bd325e174d54bcbd22eda8c66c024f6208a4db",
+      "normalized_sha256": "dd8e8ccadd8e316977ca7794fffa8262b4f7e8ae53ee91f00401a2d958f44646",
+      "renamed": true,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-重防号前端连接下倾与四盘同高候选.md",
+      "previous_path_sha256": "8fce855f1f0e3a911bdcfb3e85785d878d74e8d94ac65933480cc3e2e346d98b",
+      "original_sha256": "a6591e3e132ea18ad2563f70b4e711192af99e8ce6f8f9cbc74f34a39653a90b",
+      "normalized_sha256": "82c6a9be7c61b350bf98a7a8f952ef1dcb005eb2f0cf8dad4d9ee86500833f23",
+      "renamed": true,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-重防号升级特效尺寸适配.md",
+      "previous_path_sha256": "1f78e4335288672ae884b959f29ae7fa0cc1761cb89937461e772837ee61d9fd",
+      "original_sha256": "b915b51243285c5610ae6cfc45df4c091f87c96281a4294e044d577c1a8526da",
+      "normalized_sha256": "022eacfaefb7e51e725a0170482a8af8f837d83028a6c19711001453ce4d2814",
+      "renamed": true,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-重防号射速补腿与机动速度光线.md",
+      "previous_path_sha256": "6baa264c4d5d47d834f2291b04d660f6e4cf56dd95146b7586c3c992f4aa39e3",
+      "original_sha256": "293c221595737e149ef234fa16a09b0d636c61ee47fb140b60b4b24e11a53ac6",
+      "normalized_sha256": "33fb272177cd44c866a89bf64c780ed7e82cca64f7a264483f58e84c0f66608e",
+      "renamed": true,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-重防号干净牌面接入与双倍尺寸.md",
+      "previous_path_sha256": "a102e2a19be89b58330185aa7434ff8385bfcf6f8872949a1afca5c4be69c7f6",
+      "original_sha256": "264673e8e74c993ef6a8cad0c5f1cb466530600a3e442031b95e1a34511d43cb",
+      "normalized_sha256": "5b19306ec832995ae18f49c2bdb505b6b38359ba869528d2aad8440df2706995",
+      "renamed": true,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-重防号支架外下倾30度审核候选.md",
+      "previous_path_sha256": "fb356da92e207fa2c71ced0d8c1c9bab43dad729369146733a832eb9f6af4f58",
+      "original_sha256": "d15f624b614beae3358a5769d77e587fdbedb99ecfd8add3bc7f1b2cc2ebb7d0",
+      "normalized_sha256": "90e54f60428287aefbc03492ae93987776a70d8b9a3e631f13b5921309154a98",
+      "renamed": true,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-重防号新版模型参考射速与机动重绘.md",
+      "previous_path_sha256": "f4960cc875e221d51beb2f034963ce6de539a55244365c975bb37debadaebe00",
+      "original_sha256": "13f5c619dfe89b91d2da1cb795388937e01ed9126a7b97114f5a47ceaad505aa",
+      "normalized_sha256": "e96530f128d714dfcbc26008db98f00de3997b26e0489178865884e4a2b44e98",
+      "renamed": true,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-重防号新版美漫三牌UE替换.md",
+      "previous_path_sha256": "a319d2e67f94e538d5763712e3d0a67017e9afe1cbc8cf6324e200543e3772fa",
+      "original_sha256": "1aebc429453a1614e9fe30446a584182a76bcc8869fcaeadfd15c5a51ce86560",
+      "normalized_sha256": "425ae623cc0f39613098a20ecbf1dcb39270e8c68283731f7880653a35628ff4",
+      "renamed": true,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-重防号机动卡视差边缘覆盖修复.md",
+      "previous_path_sha256": "53986796addd0b84a4852eaccdeeff616e8f2f6ea2efb89bc60cb623009eb90f",
+      "original_sha256": "1f7640e4c2526f0fa5e43fda12b7863944a3f30f7dad09eb994203caa63e47c3",
+      "normalized_sha256": "e42d3169c7b7a358d1ba738a8856d7e361421c7fb3d2ee9a628ab22e2d531525",
+      "renamed": true,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-重防号盘心承接与叉耳销轴审核候选.md",
+      "previous_path_sha256": "852892346f61524b9184b9c89db9cc9843ea750e72e4ff215e85b7d1c9f14db7",
+      "original_sha256": "de0d2110eaaab49f1ce595c6eea1f0e3593a333a65d4f3b58db65f67b6b12248",
+      "normalized_sha256": "f9301c7041cfb628cc47a824f97042b3a759722e88e82951ceb3bbefb82f5131",
+      "renamed": true,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-重防号真实模型参考经典美漫三图重绘.md",
+      "previous_path_sha256": "54137c28d8c532acadb0e2c2ecb011e59dceaec364f5b7d2a226f001b057df52",
+      "original_sha256": "95bdad500de44fc93953593843a6cbef383cddcd69d3c7ac6f2e2c04cdb1cd29",
+      "normalized_sha256": "7127861a643e44a5cfca4b0fe4f286a4046c171bee45e91767a5fe112a8502ee",
+      "renamed": true,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-重防号美漫卡牌接入与四倍视差.md",
+      "previous_path_sha256": "a9b23401b8041de88b2d79d1e9d21b47f9af7dfae4d39389fc309e2f77d272a2",
+      "original_sha256": "12c3a29538b15a7ff45228bdcd9c6a5630f418f7f06ab45cfac4620a959520f5",
+      "normalized_sha256": "b7d0bad952fde0cb34d3e51a01130040013077175ee0d92b2ee9da518428297b",
+      "renamed": true,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-肉鸽卡牌Excel与F4实战接入.md",
+      "previous_path_sha256": "346deefb51e5cecddb8e59a4130e68df169c8114f5b3187f4529cf4f26ee1a0d",
+      "original_sha256": "9a65741e17f42399af37e17dd3ab523db4cbdb424790871f391dd008cb081c8f",
+      "normalized_sha256": "8611ff5f8c4ac4fdf2ba85d3a36422bb73a0396dc4d5dbfbade32d15dbc9d6c0",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260928-选牌白模修复与批量升级特效.md",
+      "previous_path_sha256": "5576f325ef7db0e49203809a63f9e63a330bc6b8f584aa69d378499f246da878",
+      "original_sha256": "2e0f120e912973709bd737bd34176cd6a0a700a1be275183303b8c1612a51b44",
+      "normalized_sha256": "83c66e912f17c59cdcdedf6127a2cdc515efb34ab88fe365c444d2d16389a923",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260929-Mass静态WPO与相机距离采样交付.md",
+      "previous_path_sha256": "b278958d6c60d78850a6f677a630dab4bfdf5d54e4ed5f9c2806bb94b7d72e69",
+      "original_sha256": "f87c023921503212aff1df65c0ff28a82c0ac01dd976e836002a43012ec20dea",
+      "normalized_sha256": "212cabf69d3c9b9e9d01227f1317833793df0a9a3a1dcc8fc82afee79beaff5d",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260929-重防号GPU悬浮喷流构建与视觉修订.md",
+      "previous_path_sha256": "3846274e1f2113bbcc8db4ce3acd1d5263ee1ac2309c172238bee32d60d346bf",
+      "original_sha256": "e97dd0ebb4560339511831b3aabc9ac0ce3d8e64fa8d783ea549b345f0b4c572",
+      "normalized_sha256": "4abc5bcb57d85e9388d65c4722a9b8be519c7d0a8912048cf9a92bafee6f5bde",
+      "renamed": true,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Archive\\20260929-重防号v6正式模型替换.md",
+      "previous_path_sha256": "72bf2ab9c1191bbfd8df69a59a64fcb9ae4cd21b53a5c18eaa9bcc475ac426fc",
+      "original_sha256": "a652fbc7abbf147ffc4d5be4b51515196357ea233eb36fc02570a37db6e5f255",
+      "normalized_sha256": "3aa1c5438eff7076b802aea206a76ebdda7845985e7f01e0ef5ca87add02ac0f",
+      "renamed": true,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260902-僚机体系与空中三维导航\\01-架构与配置.md",
+      "previous_path_sha256": "64e3595033bd893733f0488a94fb83430e104806eac5c778e2fef3d23680c631",
+      "original_sha256": "933a0fb43dd22133149cbfcea119dfda11a7d3da0ba93f20f4a9b07ca9756d6d",
+      "normalized_sha256": "7c98a85aa032af23ab96523c24792664b957703eaa9bd22611333a8c8fb79d56",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260903-指挥官与地面机甲最小建造系统.md",
+      "previous_path_sha256": "a9ee667cf4f9fd84e7dd13854e403718bf3598047a7da84966ee4e55464e4aec",
+      "original_sha256": "db73852ebcd840b8fc363180116bb89f4d68e1d9e1be71776c6da5051f04ee68",
+      "normalized_sha256": "2d4fc76bcd2a68d3005a8ef0fdae86829192dac4bf3259579ab696346f0f2943",
+      "renamed": true,
+      "replaced_occurrences": 6,
+      "ground_context": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260916-Ship导入与扫荡者重防号风格重制.md",
+      "previous_path_sha256": "0394fc55ebbe4a64a1701605ec5ae0d32b65ea663328bbf1226168dae951dccd",
+      "original_sha256": "0dbadaf8c53533a7afab05cedbda6840942cae5e11684c42adff147613693e13",
+      "normalized_sha256": "84617ca0c88f6f25db27300c6cdefe3e63cb5726a4717f2230938a0d8654aded",
+      "renamed": true,
+      "replaced_occurrences": 18,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260917-重防号Q导弹与通用地面预警.md",
+      "previous_path_sha256": "9fb7227e60ff9cbe9119c29fb01b98285ae232d9f1523061227d897349ff3dfb",
+      "original_sha256": "ef6d46e5fa906982b261b746c0f2afcb6812387dd4ee436254a0e7c42f9bf609",
+      "normalized_sha256": "bcd18d6bdaed9634311372f88612b09c1a5292c69f79c58b32d5c2c9cd33166d",
+      "renamed": true,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260917-松树林与三单位同场景对照.md",
+      "previous_path_sha256": "76d0b6b0237616aedfe0c72da692d3de4496cdec5220ca36907f7e0c00ddf4d5",
+      "original_sha256": "c3b8f69341cfa8da5b403eed3c0733867e00acf0bf91f52cd6078a4fb5f5502e",
+      "normalized_sha256": "68d0f102c44ef27dc23201951ac0f4adf1ec842445adaecdd0329a37a2c4edb1",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260918-指挥官单位体型与避障距离配置及接入分析.md",
+      "previous_path_sha256": "b466aea93e9334c8867f94e3c8ec7b9b8400e25d1ada69069964860cd7bc7c6b",
+      "original_sha256": "346caa89f0fd6bffeaf5b3aadb1afcf9331456b2c008f7ef57cfbc9f6ee1c745",
+      "normalized_sha256": "becc5d7d5e070c8d76513cdeee9a0375c2927d8ab8c4af337be78b06e4d48f08",
+      "renamed": false,
+      "replaced_occurrences": 10,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260918-玩法地图对齐Demo光照.md",
+      "previous_path_sha256": "e50a8d9890f0551a92d1b623fadb49ddc6c7dac1e9973627a1119a7ee6247465",
+      "original_sha256": "ae82bf26e094ceb950c97c83591b1fb55f388ffa9e6137150df17e53fc724658",
+      "normalized_sha256": "1fdc099f5bf8ee557b5c9cf9590dd8a610d2843c1a262bc16c84274babccfb51",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260919-Mass单位体型与最小净距.md",
+      "previous_path_sha256": "5528313639bf6ceb302ba3758f56dc3cc1aa5c93e1cdda29e766c090f9109d2d",
+      "original_sha256": "4ed26040867d049b55dc9abce908aa9d666b7f9efddf2f348adbd5777d42aab6",
+      "normalized_sha256": "5ffae7da25f22630b8124c1858df22460a934bb5cc6b8ccce743e1bb67e62753",
+      "renamed": false,
+      "replaced_occurrences": 10,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260919-重防号导弹范围与特效调整.md",
+      "previous_path_sha256": "d71cef0f85a081bde81e8268382f43ae1e8cbb392a527f2f9ce7493b98425c2c",
+      "original_sha256": "d34d22633002123c76c7d25d6a69f7aa3a2127b8f3cac35a8936a16026986339",
+      "normalized_sha256": "aee0cd43eb65ff261730587588cf32e72679fe1c4da16b21f3422f05d2da6ed9",
+      "renamed": true,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260919-重防号模型大小适配.md",
+      "previous_path_sha256": "bfe0d27db209d9f31aa34873babe6b37acebb723d542701dfbe4f3dd175947ca",
+      "original_sha256": "3ba63aa1fe71225feb94abf0b17993aa8f8378834945323ce6bdfc54fb12cfb6",
+      "normalized_sha256": "6e0e7192acc2929f674f78b3994c20c10f5f344145d1df28b2ad3f190fa4baa4",
+      "renamed": true,
+      "replaced_occurrences": 7,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260919-轻型装甲地面玩家接入.md",
+      "previous_path_sha256": "4d236b58535996c10ae7502d5773f36a0b15d412ab5462f440f507e50c34ea6e",
+      "original_sha256": "75fcabb537c9cb63a1d5765bb7086c403c85ae7be1f8012d1c7142817406fc19",
+      "normalized_sha256": "0887940a8b9ea1de7d3bb4f406dcc469aa7f935b39a135179f0a540e89c79643",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260921-FireReview双阵营靶场与敌方描边.md",
+      "previous_path_sha256": "0cda12ba0260fdf8ee076f20afbc20b78421628bc34277490f5e73cf6379f9b4",
+      "original_sha256": "cc73d722ad56e5ff86e872d153fdf5af0170c2c1fe81056620a21dd5f7350dc8",
+      "normalized_sha256": "8938b183a6b8da993ca9f811448ec2b4e6d067c77b7009c1fd3f6c7c3301b796",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260921-指挥官部队StateTree接入与特殊任务退役.md",
+      "previous_path_sha256": "e3d272dc059d39d17ae035550442782ed56072cc8d9ea571ad4385cde66d814f",
+      "original_sha256": "cb17534062648e9869a0e66cf718cd4a0a124d0611c61be456c595d18c39b147",
+      "normalized_sha256": "becca63b551182b4aa23c00277260e6368e002e7ebec0e3cf51c7c9b9e036242",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260923-Mass分帧寻路与避障稳定性.md",
+      "previous_path_sha256": "d4256c1570778190938d38578677af943544a5e9036e2e4e9906d4d0ae536545",
+      "original_sha256": "83f7e6f0513e883ff63a2d33edea20e876530a4aa77718d8086111cd70bbeb95",
+      "normalized_sha256": "4c71aa7bd1caa34d5fb20fff07b087d95e71bf8fc1b261d0149cd339ebb2f96d",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "previous_path_sha256": "66136d6836f744cf081e19f8dcc822fd56c069d43cd5553e962677bf95f343d6",
+      "original_sha256": "106cdde857f7986b67157a0990cf46e79132e7b6dffd883e5ff223f3ed738ff7",
+      "normalized_sha256": "a68e5fe50d643c6611369f4ffaf2b3b890b72fd9ef38a89560ae50099d84f794",
+      "renamed": true,
+      "replaced_occurrences": 13,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260928-提速单位坡面卡住与子弹提前显示修复.md",
+      "previous_path_sha256": "1e0b416bfe684c1d5dee4a8ab23e418d964d6ba265960ca4f4c326f9d75f643c",
+      "original_sha256": "9029e4eccef50230daa40829d95c63f30012d3ff1f85ed10c82550c6c9c9a59d",
+      "normalized_sha256": "9f2671bc74002ac5b98b980b59e276479c6e6a250d88aef865486ae5ce58d19f",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260929-Mass无骨骼动画与远距离持续显示.md",
+      "previous_path_sha256": "3df9053f4b5c81ce0df6b9367afd0bc439a0f033bc07e6a36d2fa19f42927514",
+      "original_sha256": "8d5088bbb3de3873b31936d2bc5d750068e3ea9f54a46c59ec67bbfe2c4874e5",
+      "normalized_sha256": "22ba9caa6226277ffbba8b8f6c2082812c1637125e8b290ab9ffdbc9ea99d1e0",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\20260929-重防号悬浮与GPU引擎喷流.md",
+      "previous_path_sha256": "5313f94a40aa7e41cfebe80c1372d9adfb2a4f055aeb48130eb9b77db8463bc4",
+      "original_sha256": "f929760869b2931533e64b26676731217aa61bbc24071bcd38c273ebfa77a3cc",
+      "normalized_sha256": "c80236d3ccb454dbbc06a2535aa6b3aecd58ed6b88df35a26a3849a0984499d6",
+      "renamed": true,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\GuLiStrike美术规范.md",
+      "previous_path_sha256": "7bf5d208e5dfa586840156715976684ad8ef3fa468bb53caef1ecdcee5fc80ed",
+      "original_sha256": "bac49525de51052dac8397137aa172a0f178ccd48d074f60fada680d52201cf0",
+      "normalized_sha256": "736da8dc10d0afeafb9f172ba644051f7340607b5a1b85078ceafed85d9273c4",
+      "renamed": false,
+      "replaced_occurrences": 15,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\相关读物\\游戏拆解\\TheRiftbreaker建筑系统拆解.md",
+      "previous_path_sha256": "17e7574bfe780756016db88494cadd69e9f08e424006799d38a792c02d2c9e49",
+      "original_sha256": "87dd9fe52703dd558739fbcc2f69e29128ece6faf1783587668026b6105f45f1",
+      "normalized_sha256": "e96862473bc47594563433698500e07b5f2356d2c0c5bf067f06563ed74fc14f",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\相关读物\\游戏拆解\\星际争霸II局内UI架构拆解.md",
+      "previous_path_sha256": "7324ad1b6697abe9b23d61800279419e65e45fc5c535eb857baa791cdd6097bc",
+      "original_sha256": "541c4c86795be41ad91a3e4ef5e005cbaa104ca6c0d57e2e713004685716740f",
+      "normalized_sha256": "3fea0cb836a0549afd0ee581851c754e67e57e230d125b09222c6a7fc6128ca0",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\DevelopmentDocumentation\\肉鸽卡牌数据表与实战选牌.md",
+      "previous_path_sha256": "7cde3d1c6fd4c03af375fe4a988ef7705147443dcf1e986ef25309c22f36b52b",
+      "original_sha256": "eb7b06271cef5c66f7fa6c49471656a5ea076303440eae0aa831f0c352331767",
+      "normalized_sha256": "b4d71a7c62de60a4de584dba9d54079902fd2ea52bf2b7ed888c02993ca1c51a",
+      "renamed": false,
+      "replaced_occurrences": 8,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Gameplay\\Mass移动与避障.md",
+      "previous_path_sha256": "8e81006a8965c83b771d7813b99cf93955f97d1741f57c01ad8f32d52dc49e37",
+      "original_sha256": "3a3b0982e922ce8fe3751d96d07c3d246378f3750419167464ae4a5d648b3bda",
+      "normalized_sha256": "c39da0dcf1089c54b6c6d0d7310b362ea36591808d1dc817f3edabdbe096a6ca",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Gameplay\\地面机甲.md",
+      "previous_path_sha256": "91cced88d6f8531d9192d4727037dc7553995b05d84aaad0aca9ab09c6f9e3ef",
+      "original_sha256": "4fb88a515e1af8f6297c197fac17c157cc1f09e844dfc46f2cd61d9b2073b328",
+      "normalized_sha256": "0a64a789a5c26af33548ca827e75a83d31e860eadf471df8ca372e0d53904fbd",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Gameplay\\战斗.md",
+      "previous_path_sha256": "e4a442e26e0cbbd859a6ea87aef53090be8d413dfb5476f012038f2690ebb110",
+      "original_sha256": "b191e0e287b609d28039c067978ee8c084430acdf802fc0a9b099a2466c039a1",
+      "normalized_sha256": "d63701562d3f4a1c66c89d53fb39e3f739c0925f5d0e1c7669f67dfec0cca91e",
+      "renamed": false,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Gameplay\\指挥官\\01-战局选兵与移动.md",
+      "previous_path_sha256": "e539e9debe0357d4c51e324ebc7dd7df75c00a9c3dd378d764e540a68acfcd64",
+      "original_sha256": "f756eb253b4ebe2ec97a1a6f2661230dfbcef28d25e91667f12feabd4e9ad725",
+      "normalized_sha256": "027509c9fe9e16a950bfa5396b9d66100a035e0199d2bfc4f5359c75c4454b81",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Gameplay\\指挥官\\02-UI表现与性能.md",
+      "previous_path_sha256": "f0098f5a2176f3ec8a8f5d03815d7bb1e36703ebeca4de358bbb03e579172d25",
+      "original_sha256": "8316673fa9aa922be85c499a16d92c718607be9f5b7a825a7a18e911f126c4ed",
+      "normalized_sha256": "eb7adda4284978709ecaafd1b70129987741b25381373db9a66520a30df07a4b",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Gameplay\\指挥官\\03-数据技能与武器表现.md",
+      "previous_path_sha256": "d239ae5936a60fa00ccec5f7891668bedd473fed7c4fc93766aa921c3041cf92",
+      "original_sha256": "2548b7197bfa76872d9ff6d539a0368e06a76d3d1734ea8d3e35f57d85cab903",
+      "normalized_sha256": "aee82adee12929431cd396d299e7ec1034e095866b56e0e17c081e8232de4dd0",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Gameplay\\指挥官.md",
+      "previous_path_sha256": "48e6104c5d089dba37d03c6a7907072f3ce86decd16f3d41cfb8be096121511d",
+      "original_sha256": "7443007e0bab264586ef8ebf46ca084ca935477197c7fddc9a78506db1bf8b96",
+      "normalized_sha256": "bc5ef585d4fb5c004eaf6cf37bbf4a627677279e53d0d7c0923961dbb1a7e9ce",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Gameplay\\指挥官操作攻略.md",
+      "previous_path_sha256": "724baf25d88d825bd03b9403f0289df025a51edd2710027abbd8f42141fd2951",
+      "original_sha256": "556374ca951eb50c2f1c6740ba2eca61dd2089a3253a3a0a63c0368d2dcbc0cc",
+      "normalized_sha256": "f2f54966351065e021903d3671f6a772ea23ea045c4970f6ce80ba4d9d33fac7",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Gameplay\\次级单位技能与地面预警.md",
+      "previous_path_sha256": "dc9090f97767111fe436190b0d977155cc65bb89edbbafdbf91451f3a6c447aa",
+      "original_sha256": "6ddc84e0143036cad5ddf92621a0f2f4a9c59f45cb8082860773825a5539f56c",
+      "normalized_sha256": "51bae98a951c0d4018601f3286ebc917945bd3c14b1fbc6ce46f2007a43afcfa",
+      "renamed": false,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\Gameplay\\游戏对象尺度.md",
+      "previous_path_sha256": "f4707adbb3bea52b253942009f7880bfb6a86dc304eed219cd1b48c41ec33893",
+      "original_sha256": "0a41b4c42e4c05f23a5ab64c6c43868ea94459ec9ab8c8cdf222135da2fde40c",
+      "normalized_sha256": "e6fbfe8c438e2b437ad205cfca684da1c17d6871ec2632ad9c5ea8961f391e86",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260826-5v5大战场玩法草案.md",
+      "previous_path_sha256": "ca0fa68ccb8a44cd38af4184a0d18fa9090200a9c07e5ad2d096c9f7bbd05655",
+      "original_sha256": "c478d9eaa7bdd4751e575ffeff728070f700b3a8623657d013bfd9397346b38b",
+      "normalized_sha256": "455f803bc53d0c1f2272a45d96f2ee435055fb1d92f92ddaab2f900e063796e1",
+      "renamed": false,
+      "replaced_occurrences": 11,
+      "ground_context": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260831-公共战局框架与三类角色接入.md",
+      "previous_path_sha256": "293a01b55d592d55509a09424469315d1d7c8d3c44d6a703719f7eced8b7e11e",
+      "original_sha256": "e11e8c9d4e97f79be32f18133fd9eb5f831b6fd9f8930289b84e24c0d5b2d470",
+      "normalized_sha256": "762842e8835e21766573a249a16526b594899bdda0369989e62b420705aa1384",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260831-基地建造玩法探索.md",
+      "previous_path_sha256": "a604aa02df60e5853ec83e5a1e1c820685cd6adf39db3b70a669058afc3d09a1",
+      "original_sha256": "583bf609fa913f5264d83d74ef2eb2819d7de194d5df9e9601aec2a68bde64b2",
+      "normalized_sha256": "f8db9624af514452dfcc2e79222b9c1f17f63c46b684306f9ce3287379a33ebb",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260901-小兵扫射与指挥官GAS桥接.md",
+      "previous_path_sha256": "89507097051fa83a009f0a19233db5a2b1f91a6d131f9e0c5e175f75c257bc4a",
+      "original_sha256": "3d26c150296659a89a8f4388f5cdc9b43b8d57e4289744d3bb1c82d17b59eda3",
+      "normalized_sha256": "efb2cbb8c4f371adb46c806973f2b04bdcb64e509198543127f1e029c2d830f3",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260902-僚机体系与空中三维导航.md",
+      "previous_path_sha256": "27eff669dc2d83492da5ec2ff6961e715ed1b3b5915f6359c2726129a303b768",
+      "original_sha256": "89f627ca44b53fbf3bfdf4da8855341b08a3211afcf921051c6d5942db3480d6",
+      "normalized_sha256": "66a341b7d6a5a1979fc986f38ffa6afdc3f15fa4c05c35d2ef63f54c6e95044e",
+      "renamed": false,
+      "replaced_occurrences": 8,
+      "ground_context": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260903-指挥官与地面机甲最小建造系统.md",
+      "previous_path_sha256": "ef40ad1db97bde172fd67b3195a7d336facdfeac5c1a5e58dfca0e9f7ac64f83",
+      "original_sha256": "d880b666dc38c2f6900c103674bec40bc388371f4c035e2cb8a3958a3e2dcf2a",
+      "normalized_sha256": "083bacaa140132c2da9a5acdfa4728c8060f0abd7a7c7a90f387ae4e49669d28",
+      "renamed": true,
+      "replaced_occurrences": 5,
+      "ground_context": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260905-据点巨构导入与占位替换.md",
+      "previous_path_sha256": "72b092fd5272e9fad4a3db644f4da56648d55a4f86286968567c610b276b590b",
+      "original_sha256": "8820367df703c713b8a3ed25b6a7cdc87ffd4c3decc275cab4e3585befa38205",
+      "normalized_sha256": "fff0fe2595edc645ea290475c430392302f57777f73de7f4fe6392db3d8a8ed6",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260905-据点混凝土巨构模型.md",
+      "previous_path_sha256": "e3b97b617d9d5c192c1a1698b762a42de589fe219b4051c82f7e2b277d18cf16",
+      "original_sha256": "5416d5332d252ffdae1451fdead2828a60a866b52eb52556484773d6b5f40966",
+      "normalized_sha256": "f33d3a7f2443c938df4d8f4c8d2b5777f65c53a2a60a68f407c0d8e5d4bf305d",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260916-Ship导入与扫荡者重防号风格重制.md",
+      "previous_path_sha256": "72687d08233282b378636b0608500c4c8a1521b1e3aa8b1098c6cc1ea86d0552",
+      "original_sha256": "a5549c72dcaf440fa49cba3cf05defa10de490ec7a7eeaa6de542e5a788efe0b",
+      "normalized_sha256": "31fb62beb508ce294833bd859459fd86efe2c9a5baaf6c0279d49822bf71b00b",
+      "renamed": true,
+      "replaced_occurrences": 6,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260917-重防号Q导弹与通用地面预警.md",
+      "previous_path_sha256": "236f7421ebe3f905eb6fb2b9a314e27cb0c5d4191a9fa4881ef7b847b6ee8a03",
+      "original_sha256": "a4a947e1a2a43b27e8762719bbf8d6806c6a084cf675a2737243b105e5150d2f",
+      "normalized_sha256": "598c857e7ec2a8807adfb5b08162bc25ca7ae195bb82418344afda42a09917e5",
+      "renamed": true,
+      "replaced_occurrences": 6,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260917-松树林与三单位同场景对照.md",
+      "previous_path_sha256": "fb782bb233941d1a55d6fb8baea0ff69b6d510042cd5932102c67d25d2ec4d55",
+      "original_sha256": "2ec0d09522231ca37be960dc630aa9afe634477c407ce4db39cd35cb9ff7c398",
+      "normalized_sha256": "5da6a7e15fb07b3ee1faf8872973b791f7ec8b65f428d6cd356dbed78c563d07",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260918-Q导弹圆面打击与赠品建筑防卡死.md",
+      "previous_path_sha256": "4e394a26570227ef16514c755db2fbb26ca56dbdb658159de665228cbc1bea83",
+      "original_sha256": "17153eef5c58c3815c6af54b0ee75bd28a5a5ac65b13e6fd0fb03045d7e0314a",
+      "normalized_sha256": "97c1a1d9ce0dacb109e7fdd8663e16032ca8267685cc2c2969344e9a6a9b1b63",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260918-指挥官单位体型与避障距离配置及接入分析.md",
+      "previous_path_sha256": "0c55fdf02abcefa85b6767a475c24fdf05a2b5127b034c003acb71cb939dd97c",
+      "original_sha256": "97e8f34d00ea571754255762b4a1e81132a7905b03ebf82bc7ecf9dfc097d1d6",
+      "normalized_sha256": "73e3bbbf7d0cfd3245ddcefcef46c8a98261fbfaccd8023a8945566db30d8903",
+      "renamed": false,
+      "replaced_occurrences": 8,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260919-Mass单位体型与最小净距.md",
+      "previous_path_sha256": "d0e1d6dc82e3c7bb94e6bbac26ea1b5d7a122c72512880247dc404b0d9dec14d",
+      "original_sha256": "619425b6d019826796de0abcc6a0be1fd4e17c135e4a0da8234a6ec3e4889daf",
+      "normalized_sha256": "8a129a352b28709aac8df209f3b7dd6a1ae06aca7c3d3e737561a76ee5fe8144",
+      "renamed": false,
+      "replaced_occurrences": 6,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260919-重防号导弹范围与特效调整.md",
+      "previous_path_sha256": "3a8d74f93d9083138ce2aa68f5ef651571c7a6a07c6ac9915b741203398a56b7",
+      "original_sha256": "fe44ffca71c3e094f6692287637f81f68ed992e69c2823e303d13d9638c88a44",
+      "normalized_sha256": "db25cd1a49feb3b6a5dd9e90e27ccdb16a83ada80898dc805e29fba9a29ef9b8",
+      "renamed": true,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260919-重防号模型大小适配.md",
+      "previous_path_sha256": "7f432be4e14046fe5b16163cf2ce08d9d85db4f072d41ea72fe63603dad6fb3c",
+      "original_sha256": "ed0bf20736d3b40ec12685f3f8466e82e6a19d719d4ea71bb011e780493e975f",
+      "normalized_sha256": "cc7b8d3c94acff6e4028829708960b3aacf25234966aaf1d1cf58c6fd2614db4",
+      "renamed": true,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260919-轻型装甲地面玩家接入.md",
+      "previous_path_sha256": "73749cedc9e9c53a8e771b1c6e6968f3f4617d86fe201f4bc3442746f2d32223",
+      "original_sha256": "676ebb4ee2c4cd6a024afe55c9a3f5400512ff9adfb4d6980fab63b0fce6cfb1",
+      "normalized_sha256": "e01f25ad186b4429dbc09968b3fa757f101f0920d1c9ec42e6e51d6cfc5c0cb3",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260921-FireReview双阵营靶场与敌方描边.md",
+      "previous_path_sha256": "6262f94cf42ae22df9aa3d2b9ae39c49d8b04eb17de9fa037dc8541477ef85e1",
+      "original_sha256": "bab320c06a3962cfcaeaa4eee65f8daea0c43f1317328e90f5eaa0cfb68a5c6b",
+      "normalized_sha256": "7d2fa756cd02c5fe8837e64b2fbaeca11e8154f9880fc12893d9c4fab1888ba8",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260921-指挥官部队StateTree接入与特殊任务退役.md",
+      "previous_path_sha256": "264986dc6582b91a75a35a913ce9d1f292312371ee8fe6a047f1ca5c3661893b",
+      "original_sha256": "553d6849a61d1000dbfc6dce8543b18206afd70d68529a86468b602a955390c5",
+      "normalized_sha256": "8e4a1cf90a3b341245e24471e0077ca726725466dbbbc7868471399106626e93",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "previous_path_sha256": "9b22074ad4cfe31ff8a2d99428d315b3757c543a1ad2ac9d06ab9a5ffbe75dbd",
+      "original_sha256": "3f8da4cb4e3aefa3fc3825899e75a20598f0e290c3ee391d1df5c89da081daa3",
+      "normalized_sha256": "6f40ceaa9c7abf87356e0a8e0881fc9dd40a7acd5b20c856febda104e4067796",
+      "renamed": true,
+      "replaced_occurrences": 13,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260929-Mass无骨骼动画与远距离持续显示.md",
+      "previous_path_sha256": "95e75850ac5861ed283b8da9f5c4f6dd659cb8ca27b292581ef8da64eeff5516",
+      "original_sha256": "7edde4ba9a642d8665b01e0c262563b1f08c771eb1d3952e11bebf783c679656",
+      "normalized_sha256": "f36aedda1277065c9ad1e7f593edc89f43747149b0e88fdac4baf6a5e4cf8215",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\20260929-重防号悬浮与GPU引擎喷流.md",
+      "previous_path_sha256": "60918be6ce4d66836cd4573d2f05eb3f723f6166c60a049819960d206360f950",
+      "original_sha256": "c5a25d483c1569b27bcca6c81a6eb159a4836ce326923a2924c147324e13840f",
+      "normalized_sha256": "6047a881fc48ca15dd31204a4ab9f6c3d281af57b018313be9c19c4ebec4275b",
+      "renamed": true,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\GuLiStrike美术规范.md",
+      "previous_path_sha256": "9df907c28461b68c61cc683cb2083c339bb0e75d93153fbab047ee02a7e9c352",
+      "original_sha256": "e0541ed410f6d8b4e92e0972b30a9ec09d3a3c23a5928df6c62b2ba84985cdf2",
+      "normalized_sha256": "f63c2ae88749ff56b5514f3e02a44a859ac91ea46b3c69826adf094b762cd045",
+      "renamed": false,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Progress\\RequirementDocument\\肉鸽卡牌数据表与实战选牌.md",
+      "previous_path_sha256": "bc9e62447f230d4e07667ad2a72eb1e1235dbfec7e7140b03273292d7294d10c",
+      "original_sha256": "8fae4389d8f22346c89facf1147e33016d208e07bab34891022abc0461fa2c45",
+      "normalized_sha256": "30eed3d0fdc0ef268fdb25b716235941e4c3a462157d0cb31c5a8710cab88e8b",
+      "renamed": false,
+      "replaced_occurrences": 6,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\author_commander_state_tree_scene.py",
+      "previous_path_sha256": "0c4390d5bddd66d2b67eed918bb3de467b497218c6b95f3bb4147f8c80d3758f",
+      "original_sha256": "20c07af8170d43da5081c7bc88d31f6b2f5ceb19ef604ec6d106157d56d4720a",
+      "normalized_sha256": "80f987ef4c07b4092a4f8cdd53b27fc4affa638bd87ffdd37464505b4a2d562d",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\author_mass_rigid_scene.py",
+      "previous_path_sha256": "7ff892892239be4c943bb01b42afd1e0aee9ceb29d3394f3b763ca0982302c0a",
+      "original_sha256": "920207ea2cb3b9f05a0bdbf099adeed4ff2d4234b92f1c734a412bce890504be",
+      "normalized_sha256": "cc19657eab0c90b6ed1064acf69343e415e362e6966a609f13114f3f2e56ff82",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\author_warmachine_hover_scene.py",
+      "previous_path_sha256": "4a3aca561c101d53ea114432718ea1a8ce6bdc30e54443d94064bdb7466ffb8b",
+      "original_sha256": "00dc8ffea411a077f98a5b5d7341fc56cfac396185dc93b4c86fd89b4117cdfc",
+      "normalized_sha256": "46fab37660c1b4bf7096844e09027801f7eba2861100d014e5940c46ca0b108e",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\build_tactical_from_drawings.py",
+      "previous_path_sha256": "ec52efb7231c55dc8f848a9e840fe6a27ca8ad8ced832826f96e564ed8a71a6b",
+      "original_sha256": "58535c626c081a08d937728394cf0691fc25f954daac68f1808b50f27bf6703d",
+      "normalized_sha256": "f6ab395b94678ae610473525c94498bd87b2aab98899567b3ff595e7552e8af4",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\export_warmachine_production_v6.py",
+      "previous_path_sha256": "7bc8afd676211447ce526a0ca60a7fb3a51858aa6f123612d99582cdfefd73cf",
+      "original_sha256": "f82df22640dbe7965fae3ab7763df24e8fe85f12d370c05cbfa5533389b05e1a",
+      "normalized_sha256": "305fa7f425007ad161facd30f448391a692f432ceefc5524d8e75f619c1685c6",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\finish_tactical_ship_style.py",
+      "previous_path_sha256": "88b3f10200b6710179760eea383ab64e22f070fd7fccf2409d468936ab32d7b8",
+      "original_sha256": "8e957277635aecb8dd72abe75269e347d3c7c1c9f5ef5823e0b3cbd474edb627",
+      "normalized_sha256": "896a3b843fadb30ac4be3f6b62bfb8522d6e489bb38fb6690d98bd70a175051f",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Cards\\preview_warmachine_cards.py",
+      "previous_path_sha256": "d6196f39ab24aa73fb33683f8b4fe42bd039b2ef089c0884b4604f4ca1007da5",
+      "original_sha256": "aacd46d6184f6f082ed54a3128d1f030977ca127c8ba106aff8a86d46c278ecc",
+      "normalized_sha256": "db8c932824f62a5b360d823bae188f65d5c443b025bcab70375ffc4e0aa69432",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\create_secondary_unit_skill_source.py",
+      "previous_path_sha256": "669935675fcf531f94ba00361e8abe89bdba1bc70679af6a172c45e7d3e47489",
+      "original_sha256": "ac5126ce1243889c511e661d34c5345c700c2e993076c87400a980d0c70796a4",
+      "normalized_sha256": "1875d9df39d8af3dc4d33737d6e5a5d1ed79c0dc2d3201f732675c7a8777c596",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\GroundMech\\README.md",
+      "previous_path_sha256": "619a631891295524cff5c9555712fb0a88652f50863a64c629e46f475621fbb6",
+      "original_sha256": "90b6b4cf7da27a489056bb730425274dacd2cd512c9c745a2565d0f2c2627f36",
+      "normalized_sha256": "d66fb9215b820f30565f5cb592dcbcc9d321e95091a56dec5b2bcbf03b32f9a4",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\import_warmachine_production_v6.py",
+      "previous_path_sha256": "e862d75052261a4cb9e44ab1fae2149d402eae30639ccac13307083c703581ee",
+      "original_sha256": "fb27ebf8c40f777d35b0502fa2035734fc433504a5b50e840f7717719a98a94b",
+      "normalized_sha256": "e6c78f217d1768e1e849e234874de877607b7c4874e0b4bb92df7cd5a520dfe9",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Scale020\\migrate_workbooks.py",
+      "previous_path_sha256": "b07c9383746a9d9c51323ac08deee024149e88e9af93d2fa7362e6c0ab51cb8b",
+      "original_sha256": "f03ba4a0e780cb9055673fac796a66df9868b5a2c40793af73af9f13a18edd9e",
+      "normalized_sha256": "8dba2382e7ef7f22196828748edd68cc28681abbf89bcccbb4f33afcb122caa7",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\update_wm01_missile_source.py",
+      "previous_path_sha256": "1bf25620ab06afc679226479b5e26766f02c4ce49906dd8f207df715d28c41fb",
+      "original_sha256": "32550ff018cfcda95c04af3eead6172e060a2f94045711994dd0fc9dd18b463e",
+      "normalized_sha256": "2d7519b622c36b0ed3f7b05f895795b241dcbae8c37e5083099dbfd54ecc8a6f",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\WarMachine\\GuLiWarMachinePlaceholderPawn.h",
+      "previous_path_sha256": "dc1e190dec0ed7ec871a88b2f3d0b5ac682e31b85c40512e5d04c2d99bc86cc8",
+      "original_sha256": "3c00a8e3e55474c22c8d9fa92b7cdd5dca3a52161eb0387061e564751ce6b466",
+      "normalized_sha256": "061e90457dfe898982c2c2be56bbcc67c503dccf8af4f1d633450629e60c2a3d",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\GameplayLighting_20260918\\README.md",
+      "previous_path_sha256": "6189eeeee1fd365115c37a30b137f74a18bf68d536387580573d14e452bebdd8",
+      "original_sha256": "048bd743189d6990c2092b37a3d30144688859105d65485820f8ea346023d1dc",
+      "normalized_sha256": "21eacd5d54e8a27c945a49299cba374619eb9f283d0a1aba630dad8583cc441e",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\GameplayLighting_20260918\\Review.html",
+      "previous_path_sha256": "228f70056c087166da24e087d293f5a4f2c56bdfd562f00e83842c4d03b65da2",
+      "original_sha256": "cc0f8f01f4e1497c55a8f78c5bd11d2830d8887b76825b6cb208d6bd38cee49d",
+      "normalized_sha256": "e95b4cbc1e5d80a61fa40cb82e2a9ff35a13ee6e65d4f8ebd60f63988a824ee1",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\GameplayLighting_20260918\\WarMachineSpacing.md",
+      "previous_path_sha256": "7be208f197c2ff2c92f0cfd6bf1466d6c09a37032cc8bd6d3da7e4d2a646215d",
+      "original_sha256": "f0698b4f30d76ee4ee3d0a904888720d5cfae1433e3f640746248692355cf0b1",
+      "normalized_sha256": "ee9b48a1f17889ed9f63ed72806560bd8da7f78309b0f58a71f95d6d979bb494",
+      "renamed": false,
+      "replaced_occurrences": 9,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\Scale020\\comparison.json",
+      "previous_path_sha256": "7d71568f58c037010417c1ce3c172f34ce4a62b4a42dececd1de2072d87e20a1",
+      "original_sha256": "6573c0b7bb78f693f0760831ac53d3d5aac0618861f08b670c320242e91d1b12",
+      "normalized_sha256": "ffc1019039692495b37201e692168c6726e5048caaa640605adae3c9877797cb",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\Scale020\\GuLiStrikeSecondaryUnitSkills-Skills-cells.json",
+      "previous_path_sha256": "19a1edf8ad7fb66b281518d5ce7ae1222aaec55b916a4ecd01ef03c2b3205a52",
+      "original_sha256": "6c8e0737f25fd01e2c0a1cfc98161a269781a2fde1bc5524cd532cef837362f1",
+      "normalized_sha256": "6282b1034990f93948b12776f1ced3b18674e4439e5b17596a9e0d0dac2511a2",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\Scale020\\Review.html",
+      "previous_path_sha256": "e53791c39dc1eddfc1de7605fc828e10cb1c022a9a251e485434df0ac7058a38",
+      "original_sha256": "16e453c53ac6c00c68fecdeb4865eb664ff896683b99982d48201643b0d0e550",
+      "normalized_sha256": "e8ce9dfe7dd5648d5ee27ba8adaec9ce7bce01c5ec848081c358a1e401d83e3d",
+      "renamed": false,
+      "replaced_occurrences": 2,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\Scale020\\source-baseline.json",
+      "previous_path_sha256": "0a1175c6d8c5bf260f4e9ff27dff2ee3af20f70f2cb0d15edc9daa5ceb4554b1",
+      "original_sha256": "e23cedebea7165aa2eb0f212452b6cd0949e8c82dd6b27e4ee20ce679097a5b2",
+      "normalized_sha256": "175e596cf040c6e0588d278db60b5b9af59d45aca3875b68323f327cea88f441",
+      "renamed": false,
+      "replaced_occurrences": 3,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\Scale020\\workbook-migration-v1.json",
+      "previous_path_sha256": "12ede9a4b70e119ec66b15717cfa5a03d0b24c9188a7b5e57d0666bef2229367",
+      "original_sha256": "a5817b4c2fd1ed93a506a1cc21dc06a3f9c05df1f15f5d3f0813ce58030eb6f6",
+      "normalized_sha256": "4edeba83341dde4a8caa294e290c7031d4c392ad68d607b98a153ae53fda7225",
+      "renamed": false,
+      "replaced_occurrences": 4,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\UnitSpacing\\soldiers-import.json",
+      "previous_path_sha256": "0c5699cbea61467bc54dec04927e5fa3a59dd4e2b3f5ad851ed34407f6c1052a",
+      "original_sha256": "1cee4928bc626af5a8a7c29e7b89a24c628002e007b9438921fa6645ab0cc8f3",
+      "normalized_sha256": "d26625e8939cc99693bdce88e88dd8691a0d522df24d1c8ace2e5998cce1d276",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Tools\\DataPipeline\\author_rogue_cards.py",
+      "previous_path_sha256": "9df67881911bbac3732c09f4e1b3207211755420628269bf2f3c3b3b02f35082",
+      "original_sha256": "9b6b6fd7f20121c8a9f76bd258425bcfc22ec6ccad88068d21ca1bf993f129bf",
+      "normalized_sha256": "2f17c3c6aa3465ee6cc51a7656dd5ed09783fa8035be3103a9ddacc124eb7d7f",
+      "renamed": false,
+      "replaced_occurrences": 8,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Tools\\DataPipeline\\extend_rogue_upgrade_fields.py",
+      "previous_path_sha256": "8f2ceb1e61d75824745237e944e529c44f5805b816d2b9cc1773a3278e4fc715",
+      "original_sha256": "9e61aba8bc0ee7714ab4381f1082ac81e9c8869ec97908c2b3a3be51eca1f259",
+      "normalized_sha256": "63a50bcf7634df8434f7d7caee1d460268b7df8e2e6bf84e4987509657d21681",
+      "renamed": false,
+      "replaced_occurrences": 1,
+      "ground_context": false
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Tools\\DataPipeline\\README.md",
+      "previous_path_sha256": "3fedfe3ce97abbde4b5e1832fd0790bfbbeb502c1884e39f9c1d6e4542e8cc89",
+      "original_sha256": "d4552fc0092d10bce450f3ed2cdeed44093e203fcd6f2b56533a387f53ae6910",
+      "normalized_sha256": "008f309ab464024b2af78ff31a33c2f1cad6015a47367af3991bb02b89a14a72",
+      "renamed": false,
+      "replaced_occurrences": 5,
+      "ground_context": false
+    }
+  ],
+  "excel_sheets": [
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Excel\\GuLiStrikeCommander.xlsx",
+      "sheet": "Soldiers",
+      "cells": [
+        {
+          "cell": "K5",
+          "value": "重防号",
+          "type": "string"
+        }
+      ],
+      "original_sha256": "99578c11edeb0f9430d9f233d4132f27f8929d8d284380cb25ba565767395bc8",
+      "normalized_sha256": "277eb5bdbcd132876bd10955137b5623ba61ada3a7748fdec72316a9d1ed1ac0"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Excel\\GuLiStrikeGameTexts.xlsx",
+      "sheet": "Texts",
+      "cells": [
+        {
+          "cell": "B195",
+          "value": "重防号肉鸽卡标题",
+          "type": "string"
+        },
+        {
+          "cell": "B196",
+          "value": "重防号肉鸽卡说明；{0}来自BonusPercent×100",
+          "type": "string"
+        },
+        {
+          "cell": "C196",
+          "value": "重防号的普攻射速提高 {0}%。",
+          "type": "string"
+        },
+        {
+          "cell": "B197",
+          "value": "重防号肉鸽卡标题",
+          "type": "string"
+        },
+        {
+          "cell": "B198",
+          "value": "重防号肉鸽卡说明；{0}来自BonusPercent×100",
+          "type": "string"
+        },
+        {
+          "cell": "C198",
+          "value": "重防号的移动速度提高 {0}%。",
+          "type": "string"
+        },
+        {
+          "cell": "B199",
+          "value": "重防号肉鸽卡标题",
+          "type": "string"
+        },
+        {
+          "cell": "B200",
+          "value": "重防号肉鸽卡说明；{0}来自BonusPercent×100",
+          "type": "string"
+        },
+        {
+          "cell": "C200",
+          "value": "重防号的导弹伤害提高 {0}%。",
+          "type": "string"
+        }
+      ],
+      "original_sha256": "5ebf2915cbc1aa07f211863c90901a48d28d0416c17ab00623f7844968fae0f5",
+      "normalized_sha256": "fd650f70b2f9ccd5cb14aca5db27a5efbc78888bd38085d589efca2294f7efb3"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Excel\\GuLiStrikeRogueCards.xlsx",
+      "sheet": "Cards",
+      "cells": [
+        {
+          "cell": "C4",
+          "value": "己方本局所有现有及后续重防号：增加射速；独立来源逐次乘算。",
+          "type": "string"
+        },
+        {
+          "cell": "C5",
+          "value": "己方本局所有现有及后续重防号：极速机动；独立来源逐次乘算。",
+          "type": "string"
+        },
+        {
+          "cell": "C6",
+          "value": "己方本局所有现有及后续重防号：增加导弹伤害；独立来源逐次乘算。",
+          "type": "string"
+        }
+      ],
+      "original_sha256": "0a495f277d91878a0fc56918fd8abe37c93550fcae9bcab6701469ae72b574ff",
+      "normalized_sha256": "e661aa16dda4bf9610d5590dff1a3c25660222bc61c3e40a340a51a77822cec4"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Excel\\GuLiStrikeRogueCards.xlsx",
+      "sheet": "_说明",
+      "cells": [
+        {
+          "cell": "B8",
+          "value": "引用Commander/Soldiers.id；重防号WM01=2。",
+          "type": "string"
+        },
+        {
+          "cell": "B12",
+          "value": "本局己方当前/后续重防号，换任指挥官保留，新战局清空。",
+          "type": "string"
+        },
+        {
+          "cell": "B19",
+          "value": "有限正数。重防号当前默认6.0（实战宽约12.5米）；1.0为基础特效尺寸，光圈精灵直径约3.2米。统一缩放光圈、辉光和光粒，其他单位应单独适配。",
+          "type": "string"
+        }
+      ],
+      "original_sha256": "e661aa16dda4bf9610d5590dff1a3c25660222bc61c3e40a340a51a77822cec4",
+      "normalized_sha256": "3c75149f887d03ce87d9cd7755f04176a520103e46db7a99c258ce6a1282b779"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Excel\\GuLiStrikeSecondaryUnitSkills.xlsx",
+      "sheet": "Skills",
+      "cells": [
+        {
+          "cell": "C4",
+          "value": "重防号Q；每台独立6秒；射程取最终普通攻击x1.6（基线48米）；直径16米圆内独立随机落点，圆心验射程、落点允许越界；爆炸与预警半径2米，伤害与挂点引用武器槽",
+          "type": "string"
+        }
+      ],
+      "original_sha256": "4d742a55094451a5d37cb4f3ac4b9019067a088a2433ad00d199529bba398b0e",
+      "normalized_sha256": "791de642365c732dce66a6ef54c06c1c4adb77b282398a4e215965749902d855"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Excel\\GuLiStrikeSecondaryUnitSkills.xlsx",
+      "sheet": "UnitSkills",
+      "cells": [
+        {
+          "cell": "C5",
+          "value": "重防号；空技能表示当前无主动Q",
+          "type": "string"
+        }
+      ],
+      "original_sha256": "791de642365c732dce66a6ef54c06c1c4adb77b282398a4e215965749902d855",
+      "normalized_sha256": "55aed0403f2f7f407c00655855e831af045dc11864ca0068b7b6782284045058"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Excel\\GuLiStrikeSecondaryWeapons.xlsx",
+      "sheet": "Skills",
+      "cells": [
+        {
+          "cell": "C6",
+          "value": "重防号Q主动导弹；定点弹道，爆炸由独立法术场结算",
+          "type": "string"
+        }
+      ],
+      "original_sha256": "11fd5ebbe486874ae49ba467e44c41c30babb212fc5eb9a22b3cdf6aff59633e",
+      "normalized_sha256": "e78cd34103dc76eef9e4f2405ab1134545c4ff21f57719929365f02773490b7c"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Excel\\GuLiStrikeSecondaryWeapons.xlsx",
+      "sheet": "WeaponMounts",
+      "cells": [
+        {
+          "cell": "C6",
+          "value": "重防号车身视觉瞄准点",
+          "type": "string"
+        },
+        {
+          "cell": "C7",
+          "value": "重防号左侧炮口；保留原攻击数量",
+          "type": "string"
+        },
+        {
+          "cell": "C8",
+          "value": "重防号左背舱出口；前上方 45 度",
+          "type": "string"
+        },
+        {
+          "cell": "C9",
+          "value": "重防号右背舱出口；前上方 45 度",
+          "type": "string"
+        },
+        {
+          "cell": "C10",
+          "value": "重防号右侧双枪管；成功发射后交替",
+          "type": "string"
+        }
+      ],
+      "original_sha256": "e78cd34103dc76eef9e4f2405ab1134545c4ff21f57719929365f02773490b7c",
+      "normalized_sha256": "8cf700c51807a9f42c08513e4057afee4fe5cad7a7755213bf8a96c7a7bf360e"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Excel\\GuLiStrikeVfx.xlsx",
+      "sheet": "Effects",
+      "cells": [
+        {
+          "cell": "C51",
+          "value": "重防号四盘蓝色喷流与世界空间余迹；1024喷口每批；独立180-200米淡出",
+          "type": "string"
+        }
+      ],
+      "original_sha256": "1be07b79f6bc0d6775d3298d6c4c9648fb1ea8ff9b9747b74992f4b22d3b51f0",
+      "normalized_sha256": "f6b58ea009659f6c4e2dba97dc13abeaba215a171daa9cd54cb4f83561f40dcc"
+    }
+  ],
+  "history_note": "Human-readable nomenclature normalized by explicit user request; original content hashes retained. Images, IDs and binary assets are not edited by this script."
+}

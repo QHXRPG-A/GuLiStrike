@@ -500,7 +500,7 @@ def main(unit):
     for group in ('sockets_m','wheel_pivots_m'):report[group]={k:list((Vector(v)+offset)*scale) for k,v in report[group].items()}
     report['wheel_radius_m']*=scale
     lo,hi,tris,err=evaluated_stats(PARTS)
-    report.update(unit=unit,display_name='扫荡者' if unit=='Sweeper' else '战争机器',method='Authored Blender geometry from approved concept and three views. No Tripo geometry or texture.',references=[str(ROOT/'Concepts'/(unit+'_'+v+'.png')) for v in ('Concept_v1','Front','Left','Back')],palette=PALETTE,bounds_m=[list(lo),list(hi)],triangles=tris,symmetry_error_m=err,source_scale=scale,source_offset=list(offset),parts=len(PARTS))
+    report.update(unit=unit,display_name='扫荡者' if unit=='Sweeper' else '重防号',method='Authored Blender geometry from approved concept and three views. No Tripo geometry or texture.',references=[str(ROOT/'Concepts'/(unit+'_'+v+'.png')) for v in ('Concept_v1','Front','Left','Back')],palette=PALETTE,bounds_m=[list(lo),list(hi)],triangles=tris,symmetry_error_m=err,source_scale=scale,source_offset=list(offset),parts=len(PARTS))
     assert err<.0001,err
     for view in ('three_quarter','front','side','back','top'):render(unit,view)
     render(unit,'three_quarter',True)

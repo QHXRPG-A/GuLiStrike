@@ -2,7 +2,7 @@
 
 ## 已归档的可直接复用文本
 
-以下文件按原始字节复制自项目 `ArtSource/UI/WarMachineTarotCards/ModelComic_v7/Prompts`，不是根据记忆重写。哈希与来源见 [prompt-provenance.json](prompts/prompt-provenance.json)。
+以下文件来自项目 `ArtSource/UI/WarMachineTarotCards/ModelComic_v7/Prompts`。2026-09-29按用户要求统一单位名称后，它们是术语迁移后的可复用模板，不再声称与历史实际生成输入字节相同。迁移前原哈希与迁移后模板哈希分别保留，图像原始输出不变。哈希与来源见 [prompt-provenance.json](prompts/prompt-provenance.json)。
 
 - [Common.txt](prompts/wm01-v7/Common.txt)：共同视觉prompt，包含经典美漫、清晰墨线、大色块、干净视觉、低噪点背景及完整英文禁止项。
 - [FireRate.txt](prompts/wm01-v7/FireRate.txt)：共同词＋射速构图的完整实际prompt。
@@ -11,7 +11,7 @@
 
 完整prompt保留原CRLF；Common源文件是LF。需要逐字不变时直接用完整文件，不重新拼接Common，不做strip/翻译/润色/换行归一化。读取UTF-8原字节解码，记录送入工具的文字哈希和输入图顺序。
 
-这些文件是**WM01可复制基线**，不是所有兵种的固定身份描述。新单位复用美漫与洁净度段落，把机械身份、能力、配色和相机换成该单位已确认资料，并保存新版本；不覆盖这些原文。冻结文字的任务则只更新用户允许更换的图像参考。
+这些文件是**WM01可复制基线**，不是所有兵种的固定身份描述。新单位复用美漫与洁净度段落，把机械身份、能力、配色和相机换成该单位已确认资料，并保存新版本；不再覆盖这些模板；新任务另存版本。冻结文字的任务须明确所指版本，并只更新用户允许更换的图像参考。
 
 ## 共同美术目标
 

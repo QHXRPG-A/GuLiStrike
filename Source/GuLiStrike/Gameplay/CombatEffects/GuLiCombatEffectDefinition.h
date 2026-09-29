@@ -54,6 +54,18 @@ public:
 	bool IsValidDefinition() const;
 };
 
+/** Cosmetic centimeters, resolved independently of authoritative flight settings. */
+USTRUCT(BlueprintType)
+struct GULISTRIKE_API FGuLiProjectileVisualSettings
+{
+	GENERATED_BODY()
+	UPROPERTY(BlueprintReadOnly, Category="Visual", meta=(Units="cm")) float SmokeInitialWidthCentimeters = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Visual", meta=(Units="cm")) float SmokeMaximumWidthCentimeters = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Visual", meta=(Units="cm")) float FlameWidthCentimeters = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Visual", meta=(Units="cm")) float FlameLengthCentimeters = 0;
+	bool IsValid() const;
+};
+
 UCLASS(BlueprintType)
 class GULISTRIKE_API UGuLiProjectileEffectDefinition : public UDataAsset
 {
@@ -66,10 +78,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") TSoftObjectPtr<UGuLiSpellFieldDefinition> ImpactField;
 	/** Contains the missile mesh/bright core and flame/ribbon emitters; no replicated visual Actor. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") int32 FlightVfxId = 0;
+	/** Shared spatial GPU batches. Enable only on the dedicated WM01 projectile asset. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") bool bUseMissileClusterRendering = false;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual", meta=(ClampMin="0", Units="s")) float TrailFadeSeconds = 0.5f;
 	/** Resolves the authoritative table profile; invalid authored rows never fall back. */
 	UFUNCTION(BlueprintPure, Category="Projectile")
 	bool ResolveMotionSettings(FGuLiProjectileMotionSettings& OutMotion) const;
+	/** Same table handle, separate validation: missing visuals select the legacy renderer. */
+	UFUNCTION(BlueprintPure, Category="Visual")
+	bool ResolveVisualSettings(FGuLiProjectileVisualSettings& OutVisual) const;
 	bool IsValidDefinition() const;
 };
 

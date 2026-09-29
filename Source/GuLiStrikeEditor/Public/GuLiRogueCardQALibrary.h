@@ -22,4 +22,11 @@ public:
 	static FString BuildFixture(APlayerController* Controller,int32 Count,FVector Center,float Spacing=400.f);
 	UFUNCTION(BlueprintPure,Category="GuLiStrike|Editor|RogueCards")
 	static FString UpgradeSlots(APlayerController* Controller);
+	/** Manually invoked PIE fixture for the requested 100/500 x 1/4/8 comparison. */
+	UFUNCTION(BlueprintCallable,Category="GuLiStrike|Editor|RogueCards")
+	static FString BuildMissileFixture(APlayerController* Controller,int32 Count,int32 ProjectilesPerSalvo,FVector Center);
+	UFUNCTION(BlueprintCallable,Category="GuLiStrike|Editor|RogueCards")
+	static FString FireMissileFixture(APlayerController* Controller);
+	UFUNCTION(BlueprintPure,Category="GuLiStrike|Editor|RogueCards")
+	static FString MissileMetrics(APlayerController* Controller);
 };

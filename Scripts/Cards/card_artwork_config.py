@@ -93,6 +93,41 @@ def write_start_function():
     g.layout()
 
 
+def write_update_card_function():
+    """Same reveal/hover contract, with one to three centered, hittable cards."""
+    g=Graph(DIRECTOR,'UpdateCard',True)
+    phase=g.get('Phase'); t=g.get('PhaseTime')
+    index=g.native('Conv_IntToDouble',InInt=g.arg('Index'))
+    count=g.native('Conv_IntToDouble',InInt=g.get('ActiveCardCount'))
+    active=g.compare('Less',g.arg('Index'),g.get('ActiveCardCount'),'Int')
+    selected=g.compare('Equal',g.get('SelectedIndex'),g.arg('Index'),'Int')
+    entering=g.compare('Equal',phase,0,'Int'); exiting=g.compare('Equal',phase,5,'Int')
+    local=t-index*g.get('EntryDuration')
+    entry=g.ease(local/g.native('FMax',A=g.get('EntryDuration'),B=.01))
+    leaving=g.math('Subtract',1,g.ease(t/g.native('FMax',A=g.get('ExitDuration'),B=.01),'EaseIn'))
+    flight=g.select(entry,g.select(leaving,1,exiting),entering)
+    center=(index-(count-1)*.5)*.3+.5
+    x=(g.get('MouseU')-center)/(g.get('CardScale')*16.0875/g.get('ViewWidth'))
+    y=(g.get('MouseV')-.5)/(g.get('CardScale')*24.3085/g.get('ViewHeight'))
+    permitted=g.either(g.compare('Equal',phase,1,'Int'),g.both(g.compare('Equal',phase,3,'Int'),selected))
+    hit=g.both(active,permitted,g.get('MouseValid'),g.compare('LessEqual',g.native('Abs',A=x),1),g.compare('LessEqual',g.native('Abs',A=y),1))
+    seq=Node(g,B.create_node_by_key(DIRECTOR,g.name,'NODE K2Node_ExecutionSequence',*g.pos()))
+    seq.put('execute',g.tail); g.tail=seq['then_0']
+    g.branch(hit); g.set('HoveredIndex',g.arg('Index')); g.tail=seq['then_1']
+    flip=g.select(g.ease(t/g.native('FMax',A=g.get('FlipDuration'),B=.01),'EaseInOut'),
+                  g.select(1,0,g.compare('GreaterEqual',phase,3,'Int')),g.compare('Equal',phase,2,'Int'))
+    flash=g.select(g.clamp(t/g.native('FMax',A=g.get('FlashDuration'),B=.01)),0,
+                   g.both(selected,g.compare('Equal',phase,4,'Int')))
+    visible=g.both(active,g.compare('Less',phase,6,'Int'),g.either(g.native('Not_PreBool',A=entering),g.compare('GreaterEqual',local,0)))
+    g.method(CARD,'ApplyFrame',g.arg('Card'),DisplayX=(center-.5)*g.get('ViewWidth'),
+             DisplayScale=g.get('CardScale'),FlightAlpha=flight,FarDistance=g.get('FarDistance'),
+             FlipAngle=g.select(flip*180,0,selected),HoverX=g.select(g.clamp(x,-1,1),0,hit),
+             HoverY=g.select(g.clamp(y,-1,1),0,hit),MaxTilt=g.get('MaximumTilt'),
+             HoverSpeed=g.get('HoverInterpSpeed'),DeltaSeconds=g.arg('DeltaSeconds'),
+             FlashProgress=flash,FlashIntensity=g.get('FlashIntensity'),Visible=visible)
+    g.layout()
+
+
 def configure():
     require(not unreal.WidgetService.is_pie_running(),'PIE must be stopped before editing these Blueprints')
     ensure_artwork_variables()

@@ -1,0 +1,22 @@
+{
+  "static_checks": "passed",
+  "python_ast": "passed",
+  "engine_api_review": "UNiagaraComponent::ActivateInternal uses HasOutstandingCompilationRequests(true) then non-blocking PollForCompilationComplete before IsReadyToRun; matched under WITH_EDITOR",
+  "runtime_build": "not_run",
+  "runtime_verification": "not_run",
+  "changes": [
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.cpp",
+      "sha256": "cd5c92ef6883b90f86b806f352d63b05c097fe0c227f940e296048f0cc3a2e3b"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectAuthoringLibrary.cpp",
+      "sha256": "784e2fd8ccadf96189af52ce101edb800d758224f91801acd8fa9a4aa885bc76"
+    },
+    {
+      "path": "Scripts/inspect_wm01_missile_cluster.py",
+      "sha256": "04371b7d962cb1e57bbbdac77eb443a2e428d3fc92fc711f65a705700ff90c45"
+    }
+  ],
+  "scene_authoring_python_ast": "passed"
+}

@@ -1,0 +1,1084 @@
+{
+  "success": true,
+  "scope": "saved asset readback; no PIE or performance validation",
+  "structure_success": true,
+  "resources_ready": true,
+  "systems": [
+    {
+      "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full",
+      "lanes": 24,
+      "contract": 2,
+      "visual_revision": "3;table-authored smoke/flame centimeters;2.4s charcoal history;body/brightness unchanged",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x000001ECAB69E760) {system_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full\", system_name: \"NS_WM01MissileCluster_Full\", emitter_count: 3, emitter_names: (\"Body\",\"Flame\",\"History\"), user_parameter_count: 18, user_parameter_names: (\"User.LaserColors\",\"User.LaserDirections\",\"User.LaserPositions\",\"User.LaserSizes\",\"User.MissileContractVersion\",\"User.MissileEmitHistory\",\"User.MissileFlameLength\",\"User.MissileFlameWidth\",\"User.MissileHeads\",\"User.MissileHistoryCount\",\"User.MissileSlotCount\",\"User.MissileSmokeInitialWidth\",\"User.MissileSmokeMaximumWidth\",\"User.MissileTime\",\"User.MissileTrailWeight\",\"User.MuzzleColors\",\"User.MuzzlePositions\",\"User.MuzzleSizes\"), has_gpu_emitters: True}>",
+      "parameters": [
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69E0A0) {parameter_name: \"User.LaserColors\", parameter_type: \"NiagaraDataInterfaceArrayColor\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69C6C0) {parameter_name: \"User.LaserDirections\", parameter_type: \"NiagaraDataInterfaceArrayFloat3\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69D1A0) {parameter_name: \"User.LaserPositions\", parameter_type: \"NiagaraDataInterfaceArrayPosition\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69AC20) {parameter_name: \"User.LaserSizes\", parameter_type: \"NiagaraDataInterfaceArrayFloat2\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69A020) {parameter_name: \"User.MissileContractVersion\", parameter_type: \"Int\", namespace: \"User\", current_value: \"2\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69B820) {parameter_name: \"User.MissileEmitHistory\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69A440) {parameter_name: \"User.MissileFlameLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"108.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69B280) {parameter_name: \"User.MissileFlameWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"42.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69A7A0) {parameter_name: \"User.MissileHeads\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69CD20) {parameter_name: \"User.MissileHistoryCount\", parameter_type: \"Int\", namespace: \"User\", current_value: \"1536\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69C900) {parameter_name: \"User.MissileSlotCount\", parameter_type: \"Int\", namespace: \"User\", current_value: \"64\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69E040) {parameter_name: \"User.MissileSmokeInitialWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"63.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69F6C0) {parameter_name: \"User.MissileSmokeMaximumWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"99.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69F960) {parameter_name: \"User.MissileTime\", parameter_type: \"Float\", namespace: \"User\", current_value: \"0.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69F000) {parameter_name: \"User.MissileTrailWeight\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69D980) {parameter_name: \"User.MuzzleColors\", parameter_type: \"NiagaraDataInterfaceArrayColor\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ED6AB2C400) {parameter_name: \"User.MuzzlePositions\", parameter_type: \"NiagaraDataInterfaceArrayPosition\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ED6AB2D430) {parameter_name: \"User.MuzzleSizes\", parameter_type: \"NiagaraDataInterfaceArrayFloat2\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+      ],
+      "diagnostics": "System valid=1 ready=1 gpu=1\nEditor needs_compile=0 outstanding_including_gpu=0\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:Body_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:Body_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:Body_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:Flame_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:Flame_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:Flame_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:History_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:History_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:History_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n",
+      "emitters": [
+        {
+          "name": "Body",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001EBD0197BC0) {emitter_name: \"Body\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0198A20) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True, material_path: \"\", has_material: False, sub_image_size: \"\", alignment: \"\", facing_mode: \"\", sort_mode: \"None\", mesh_path: \"/Game/GuLiStrike/FX/WM01Missiles/SM_WM01_Missile.SM_WM01_Missile\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F91310) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F95DC0) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9C170) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F92580) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9D840) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:Body_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9C580) {module_name: \"ReadMissileSlot\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:Body_0.NiagaraScratchPadContainer_0.ReadMissileSlot\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9D110) {module_name: \"MissileBody\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:Body_0.NiagaraScratchPadContainer_0.MissileBody\", module_index: 5, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;",
+            "MissileBody": "PositionOut=Head; VelocityOut=Direction; float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; ScaleOut=float3(1,1,1)*(Size.y/325)*alive; ColorOut=float4(1,1,1,alive);"
+          }
+        },
+        {
+          "name": "Flame",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001EBD0198A20) {emitter_name: \"Flame\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0198C00) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileFlame.M_WM01MissileFlame\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9B720) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9C260) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F97620) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F96A40) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F99D80) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:Flame_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9C6C0) {module_name: \"ReadMissileSlot\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:Flame_0.NiagaraScratchPadContainer_0.ReadMissileSlot\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F93CF0) {module_name: \"MissileFlame\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:Flame_0.NiagaraScratchPadContainer_0.MissileFlame\", module_index: 5, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;",
+            "MissileFlame": "float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; PositionOut=Head-Direction*(Size.y*.4923+FlameLength*.5); SizeOut=float2(FlameWidth,FlameLength)*alive; ColorOut=float4(9,3.3,.66,.85*alive);"
+          }
+        },
+        {
+          "name": "History",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001ECA175DC80) {emitter_name: \"History\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD01988E0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileHistory.M_WM01MissileHistory\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9B9F0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9BEA0) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F98160) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9B8B0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9B040) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:History_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F961D0) {module_name: \"ReadMissileSlot\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:History_0.NiagaraScratchPadContainer_0.ReadMissileSlot\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9CA30) {module_name: \"MissileTrailOrigin\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:History_0.NiagaraScratchPadContainer_0.MissileTrailOrigin\", module_index: 5, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F93840) {module_name: \"MissileRealHistory\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full:History_0.NiagaraScratchPadContainer_0.MissileRealHistory\", module_index: 6, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;Slot=ExecIndex()/24; Lane=ExecIndex()%24; Start=Position; End=Position; Sample=Position; Born=-10000; Generation=-1; Bucket=-1; Time=-10000; State=0;",
+            "MissileTrailOrigin": "PositionOut=Head-Direction*(Size.y*.4923+FlameLength*(7.0/9.0)); WidthOut=SmokeWidth;",
+            "MissileRealHistory": "// Each GPU lane owns a historical world-space segment. Generation changes reset\n// only the reusable live slot; retired quality batches hold immutable array snapshots.\nStartOut=SavedStart; EndOut=SavedEnd; BornOut=Born;\nSampleOut=SavedSample; GenerationOut=SeenGeneration; BucketOut=SeenBucket;\nfloat state=(EmitHistory<.5 && Meta.g>.5) ? 2 : Meta.g;\nTimeOut=Now; StateOut=state;\nfloat lifetime=max(Meta.a,.05);\n// One existing lane bridges the latest sample to the live exhaust origin.\n// The other lanes span the full lifetime without increasing particle capacity.\nfloat interval=lifetime/(24-1);\nint bucket=(int)floor(Now/interval);\n// SavedSample is spaced by lane interval, not by frame (8 lanes at 2400 cm/s\n// can span >800 cm). Teleports already change the CPU slot generation per frame.\nbool reset=abs(Meta.r-SeenGeneration)>.5 || state<.5 || Now<LastTime || Now-LastTime>.20;\nif(reset)\n{\n    StartOut=Head; EndOut=Head; SampleOut=Head; BornOut=-10000;\n    GenerationOut=Meta.r; BucketOut=bucket;\n}\nelse if((state<1.5 && bucket>SeenBucket) || (state>1.5 && SeenState<1.5))\n{\n    // Use the next lane when an impact falls inside the current bucket: preserve\n    // the preceding full segment instead of overwriting it with the final stub.\n    int writeBucket=max(bucket,SeenBucket+1);\n    if(writeBucket%24==Lane)\n    {\n        StartOut=SavedSample; EndOut=Head; BornOut=Now;\n    }\n    SampleOut=Head; BucketOut=writeBucket;\n}\nif(!reset && state>.5 && state<1.5 && (BucketOut+1)%24==Lane)\n{\n    StartOut=SampleOut; EndOut=Head; BornOut=Now;\n}\nfloat age=max(0,Now-BornOut);\nfloat life=saturate(1-age/lifetime);\nfloat3 delta=EndOut-StartOut;\nfloat segment=length(delta);\n// Smooth low-frequency world-space drift, bounded to <27 cm over 2.4 seconds.\n// Both endpoints use the same field so adjacent narrow segments remain coherent.\nfloat3 midpoint=(StartOut+EndOut)*.5;\nfloat3 drift=float3(sin(midpoint.y*.002+Meta.r*.13),cos(midpoint.x*.002+Meta.r*.13),.55)*min(age,2.4)*7.4;\nPositionOut=midpoint+drift;\nAlignmentOut=segment>.01 ? delta/segment : float3(1,0,0);\nfloat width=min(MaximumWidth,Width*(1+.55*saturate(age/lifetime)));\nSizeOut=(life>0 && segment>.01 && !reset) ? float2(width,segment+width*.12) : float2(0,0);\n// A brief warm origin gives way to dense charcoal smoke, never an emissive ribbon.\nfloat heat=1-smoothstep(0,.08,age);\nColorOut=float4(lerp(float3(.055,.060,.065),float3(1.15,.62,.27),heat),.70*pow(life,1.25)*saturate(TrailWeight));\n"
+          }
+        }
+      ],
+      "runtime_ready": true,
+      "visual_defaults": {
+        "User.MissileSmokeInitialWidth": 63.0,
+        "User.MissileSmokeMaximumWidth": 99.0,
+        "User.MissileFlameWidth": 42.0,
+        "User.MissileFlameLength": 108.0
+      }
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite",
+      "lanes": 8,
+      "contract": 2,
+      "visual_revision": "3;table-authored smoke/flame centimeters;2.4s charcoal history;body/brightness unchanged",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x000001ECAB69FD20) {system_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite\", system_name: \"NS_WM01MissileCluster_Lite\", emitter_count: 3, emitter_names: (\"Body\",\"Flame\",\"History\"), user_parameter_count: 18, user_parameter_names: (\"User.LaserColors\",\"User.LaserDirections\",\"User.LaserPositions\",\"User.LaserSizes\",\"User.MissileContractVersion\",\"User.MissileEmitHistory\",\"User.MissileFlameLength\",\"User.MissileFlameWidth\",\"User.MissileHeads\",\"User.MissileHistoryCount\",\"User.MissileSlotCount\",\"User.MissileSmokeInitialWidth\",\"User.MissileSmokeMaximumWidth\",\"User.MissileTime\",\"User.MissileTrailWeight\",\"User.MuzzleColors\",\"User.MuzzlePositions\",\"User.MuzzleSizes\"), has_gpu_emitters: True}>",
+      "parameters": [
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB697A40) {parameter_name: \"User.LaserColors\", parameter_type: \"NiagaraDataInterfaceArrayColor\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB697920) {parameter_name: \"User.LaserDirections\", parameter_type: \"NiagaraDataInterfaceArrayFloat3\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69FC00) {parameter_name: \"User.LaserPositions\", parameter_type: \"NiagaraDataInterfaceArrayPosition\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69E6A0) {parameter_name: \"User.LaserSizes\", parameter_type: \"NiagaraDataInterfaceArrayFloat2\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69DEC0) {parameter_name: \"User.MissileContractVersion\", parameter_type: \"Int\", namespace: \"User\", current_value: \"2\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69B760) {parameter_name: \"User.MissileEmitHistory\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69F960) {parameter_name: \"User.MissileFlameLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"108.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69ED60) {parameter_name: \"User.MissileFlameWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"42.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69A140) {parameter_name: \"User.MissileHeads\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69E5E0) {parameter_name: \"User.MissileHistoryCount\", parameter_type: \"Int\", namespace: \"User\", current_value: \"512\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69E880) {parameter_name: \"User.MissileSlotCount\", parameter_type: \"Int\", namespace: \"User\", current_value: \"64\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69DC80) {parameter_name: \"User.MissileSmokeInitialWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"63.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB698940) {parameter_name: \"User.MissileSmokeMaximumWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"99.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB6981C0) {parameter_name: \"User.MissileTime\", parameter_type: \"Float\", namespace: \"User\", current_value: \"0.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69D980) {parameter_name: \"User.MissileTrailWeight\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ED6AB2C4E0) {parameter_name: \"User.MuzzleColors\", parameter_type: \"NiagaraDataInterfaceArrayColor\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ED6AB2C080) {parameter_name: \"User.MuzzlePositions\", parameter_type: \"NiagaraDataInterfaceArrayPosition\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB6981C0) {parameter_name: \"User.MuzzleSizes\", parameter_type: \"NiagaraDataInterfaceArrayFloat2\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+      ],
+      "diagnostics": "System valid=1 ready=1 gpu=1\nEditor needs_compile=0 outstanding_including_gpu=0\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:Body_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:Body_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:Body_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:Flame_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:Flame_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:Flame_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:History_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:History_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:History_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n",
+      "emitters": [
+        {
+          "name": "Body",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001EBD0197A80) {emitter_name: \"Body\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0198A20) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True, material_path: \"\", has_material: False, sub_image_size: \"\", alignment: \"\", facing_mode: \"\", sort_mode: \"None\", mesh_path: \"/Game/GuLiStrike/FX/WM01Missiles/SM_WM01_Missile.SM_WM01_Missile\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9A230) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9F190) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F98B60) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9D070) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9B7C0) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:Body_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F98FC0) {module_name: \"ReadMissileSlot\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:Body_0.NiagaraScratchPadContainer_0.ReadMissileSlot\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F97E90) {module_name: \"MissileBody\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:Body_0.NiagaraScratchPadContainer_0.MissileBody\", module_index: 5, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;",
+            "MissileBody": "PositionOut=Head; VelocityOut=Direction; float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; ScaleOut=float3(1,1,1)*(Size.y/325)*alive; ColorOut=float4(1,1,1,alive);"
+          }
+        },
+        {
+          "name": "Flame",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001EBD0198C00) {emitter_name: \"Flame\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0197A80) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileFlame.M_WM01MissileFlame\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9DF70) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F98CA0) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9FE10) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9A5A0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F99F60) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:Flame_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F99510) {module_name: \"ReadMissileSlot\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:Flame_0.NiagaraScratchPadContainer_0.ReadMissileSlot\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9E880) {module_name: \"MissileFlame\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:Flame_0.NiagaraScratchPadContainer_0.MissileFlame\", module_index: 5, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;",
+            "MissileFlame": "float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; PositionOut=Head-Direction*(Size.y*.4923+FlameLength*.5); SizeOut=float2(FlameWidth,FlameLength)*alive; ColorOut=float4(9,3.3,.66,.85*alive);"
+          }
+        },
+        {
+          "name": "History",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001EBD0197BC0) {emitter_name: \"History\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD01988E0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileHistory.M_WM01MissileHistory\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9E470) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F98C00) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9E240) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9C1C0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9B220) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:History_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F93750) {module_name: \"ReadMissileSlot\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:History_0.NiagaraScratchPadContainer_0.ReadMissileSlot\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F92530) {module_name: \"MissileTrailOrigin\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:History_0.NiagaraScratchPadContainer_0.MissileTrailOrigin\", module_index: 5, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9E8D0) {module_name: \"MissileRealHistory\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite:History_0.NiagaraScratchPadContainer_0.MissileRealHistory\", module_index: 6, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;Slot=ExecIndex()/8; Lane=ExecIndex()%8; Start=Position; End=Position; Sample=Position; Born=-10000; Generation=-1; Bucket=-1; Time=-10000; State=0;",
+            "MissileTrailOrigin": "PositionOut=Head-Direction*(Size.y*.4923+FlameLength*(7.0/9.0)); WidthOut=SmokeWidth;",
+            "MissileRealHistory": "// Each GPU lane owns a historical world-space segment. Generation changes reset\n// only the reusable live slot; retired quality batches hold immutable array snapshots.\nStartOut=SavedStart; EndOut=SavedEnd; BornOut=Born;\nSampleOut=SavedSample; GenerationOut=SeenGeneration; BucketOut=SeenBucket;\nfloat state=(EmitHistory<.5 && Meta.g>.5) ? 2 : Meta.g;\nTimeOut=Now; StateOut=state;\nfloat lifetime=max(Meta.a,.05);\n// One existing lane bridges the latest sample to the live exhaust origin.\n// The other lanes span the full lifetime without increasing particle capacity.\nfloat interval=lifetime/(8-1);\nint bucket=(int)floor(Now/interval);\n// SavedSample is spaced by lane interval, not by frame (8 lanes at 2400 cm/s\n// can span >800 cm). Teleports already change the CPU slot generation per frame.\nbool reset=abs(Meta.r-SeenGeneration)>.5 || state<.5 || Now<LastTime || Now-LastTime>.20;\nif(reset)\n{\n    StartOut=Head; EndOut=Head; SampleOut=Head; BornOut=-10000;\n    GenerationOut=Meta.r; BucketOut=bucket;\n}\nelse if((state<1.5 && bucket>SeenBucket) || (state>1.5 && SeenState<1.5))\n{\n    // Use the next lane when an impact falls inside the current bucket: preserve\n    // the preceding full segment instead of overwriting it with the final stub.\n    int writeBucket=max(bucket,SeenBucket+1);\n    if(writeBucket%8==Lane)\n    {\n        StartOut=SavedSample; EndOut=Head; BornOut=Now;\n    }\n    SampleOut=Head; BucketOut=writeBucket;\n}\nif(!reset && state>.5 && state<1.5 && (BucketOut+1)%8==Lane)\n{\n    StartOut=SampleOut; EndOut=Head; BornOut=Now;\n}\nfloat age=max(0,Now-BornOut);\nfloat life=saturate(1-age/lifetime);\nfloat3 delta=EndOut-StartOut;\nfloat segment=length(delta);\n// Smooth low-frequency world-space drift, bounded to <27 cm over 2.4 seconds.\n// Both endpoints use the same field so adjacent narrow segments remain coherent.\nfloat3 midpoint=(StartOut+EndOut)*.5;\nfloat3 drift=float3(sin(midpoint.y*.002+Meta.r*.13),cos(midpoint.x*.002+Meta.r*.13),.55)*min(age,2.4)*7.4;\nPositionOut=midpoint+drift;\nAlignmentOut=segment>.01 ? delta/segment : float3(1,0,0);\nfloat width=min(MaximumWidth,Width*(1+.55*saturate(age/lifetime)));\nSizeOut=(life>0 && segment>.01 && !reset) ? float2(width,segment+width*.12) : float2(0,0);\n// A brief warm origin gives way to dense charcoal smoke, never an emissive ribbon.\nfloat heat=1-smoothstep(0,.08,age);\nColorOut=float4(lerp(float3(.055,.060,.065),float3(1.15,.62,.27),heat),.70*pow(life,1.25)*saturate(TrailWeight));\n"
+          }
+        }
+      ],
+      "runtime_ready": true,
+      "visual_defaults": {
+        "User.MissileSmokeInitialWidth": 63.0,
+        "User.MissileSmokeMaximumWidth": 99.0,
+        "User.MissileFlameWidth": 42.0,
+        "User.MissileFlameLength": 108.0
+      }
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal",
+      "lanes": 0,
+      "contract": 2,
+      "visual_revision": "3;table-authored smoke/flame centimeters;2.4s charcoal history;body/brightness unchanged",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x000001ECAB69C0C0) {system_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal\", system_name: \"NS_WM01MissileCluster_Minimal\", emitter_count: 2, emitter_names: (\"Body\",\"Flame\"), user_parameter_count: 18, user_parameter_names: (\"User.LaserColors\",\"User.LaserDirections\",\"User.LaserPositions\",\"User.LaserSizes\",\"User.MissileContractVersion\",\"User.MissileEmitHistory\",\"User.MissileFlameLength\",\"User.MissileFlameWidth\",\"User.MissileHeads\",\"User.MissileHistoryCount\",\"User.MissileSlotCount\",\"User.MissileSmokeInitialWidth\",\"User.MissileSmokeMaximumWidth\",\"User.MissileTime\",\"User.MissileTrailWeight\",\"User.MuzzleColors\",\"User.MuzzlePositions\",\"User.MuzzleSizes\"), has_gpu_emitters: True}>",
+      "parameters": [
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69B2E0) {parameter_name: \"User.LaserColors\", parameter_type: \"NiagaraDataInterfaceArrayColor\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69C000) {parameter_name: \"User.LaserDirections\", parameter_type: \"NiagaraDataInterfaceArrayFloat3\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB697500) {parameter_name: \"User.LaserPositions\", parameter_type: \"NiagaraDataInterfaceArrayPosition\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69D3E0) {parameter_name: \"User.LaserSizes\", parameter_type: \"NiagaraDataInterfaceArrayFloat2\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB6978C0) {parameter_name: \"User.MissileContractVersion\", parameter_type: \"Int\", namespace: \"User\", current_value: \"2\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB698A60) {parameter_name: \"User.MissileEmitHistory\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69E340) {parameter_name: \"User.MissileFlameLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"108.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB6983A0) {parameter_name: \"User.MissileFlameWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"42.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69BAC0) {parameter_name: \"User.MissileHeads\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69B820) {parameter_name: \"User.MissileHistoryCount\", parameter_type: \"Int\", namespace: \"User\", current_value: \"0\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB697CE0) {parameter_name: \"User.MissileSlotCount\", parameter_type: \"Int\", namespace: \"User\", current_value: \"64\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB699DE0) {parameter_name: \"User.MissileSmokeInitialWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"63.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69C9C0) {parameter_name: \"User.MissileSmokeMaximumWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"99.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69E700) {parameter_name: \"User.MissileTime\", parameter_type: \"Float\", namespace: \"User\", current_value: \"0.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB697A40) {parameter_name: \"User.MissileTrailWeight\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69B760) {parameter_name: \"User.MuzzleColors\", parameter_type: \"NiagaraDataInterfaceArrayColor\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69F6C0) {parameter_name: \"User.MuzzlePositions\", parameter_type: \"NiagaraDataInterfaceArrayPosition\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB697620) {parameter_name: \"User.MuzzleSizes\", parameter_type: \"NiagaraDataInterfaceArrayFloat2\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+      ],
+      "diagnostics": "System valid=1 ready=1 gpu=1\nEditor needs_compile=0 outstanding_including_gpu=0\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:Body_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:Body_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:Body_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:Flame_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:Flame_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:Flame_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n",
+      "emitters": [
+        {
+          "name": "Body",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001ECA175E640) {emitter_name: \"Body\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0194380) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True, material_path: \"\", has_material: False, sub_image_size: \"\", alignment: \"\", facing_mode: \"\", sort_mode: \"None\", mesh_path: \"/Game/GuLiStrike/FX/WM01Missiles/SM_WM01_Missile.SM_WM01_Missile\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9B680) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9C6C0) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9F960) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F96590) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F99060) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:Body_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F98070) {module_name: \"ReadMissileSlot\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:Body_0.NiagaraScratchPadContainer_0.ReadMissileSlot\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9C260) {module_name: \"MissileBody\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:Body_0.NiagaraScratchPadContainer_0.MissileBody\", module_index: 5, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;",
+            "MissileBody": "PositionOut=Head; VelocityOut=Direction; float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; ScaleOut=float3(1,1,1)*(Size.y/325)*alive; ColorOut=float4(1,1,1,alive);"
+          }
+        },
+        {
+          "name": "Flame",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001ECA175BD00) {emitter_name: \"Flame\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0197BC0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileFlame.M_WM01MissileFlame\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F97030) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F93BB0) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F98F20) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F96EF0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9AB90) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:Flame_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9D160) {module_name: \"ReadMissileSlot\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:Flame_0.NiagaraScratchPadContainer_0.ReadMissileSlot\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F94A10) {module_name: \"MissileFlame\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal:Flame_0.NiagaraScratchPadContainer_0.MissileFlame\", module_index: 5, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;",
+            "MissileFlame": "float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; PositionOut=Head-Direction*(Size.y*.4923+FlameLength*.5); SizeOut=float2(FlameWidth,FlameLength)*alive; ColorOut=float4(9,3.3,.66,.85*alive);"
+          }
+        }
+      ],
+      "runtime_ready": true,
+      "visual_defaults": {
+        "User.MissileSmokeInitialWidth": 63.0,
+        "User.MissileSmokeMaximumWidth": 99.0,
+        "User.MissileFlameWidth": 42.0,
+        "User.MissileFlameLength": 108.0
+      }
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull",
+      "lanes": 24,
+      "contract": 2,
+      "visual_revision": "3;table-authored smoke/flame centimeters;2.4s charcoal history;body/brightness unchanged",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x000001ECAB69B160) {system_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull\", system_name: \"NS_WM01MissileCluster_PreviewFull\", emitter_count: 3, emitter_names: (\"Body\",\"Flame\",\"History\"), user_parameter_count: 19, user_parameter_names: (\"User.LaserColors\",\"User.LaserDirections\",\"User.LaserPositions\",\"User.LaserSizes\",\"User.MissileContractVersion\",\"User.MissileEmitHistory\",\"User.MissileFlameLength\",\"User.MissileFlameWidth\",\"User.MissileHeads\",\"User.MissileHistoryCount\",\"User.MissilePreviewSpeedRatio\",\"User.MissileSlotCount\",\"User.MissileSmokeInitialWidth\",\"User.MissileSmokeMaximumWidth\",\"User.MissileTime\",\"User.MissileTrailWeight\",\"User.MuzzleColors\",\"User.MuzzlePositions\",\"User.MuzzleSizes\"), has_gpu_emitters: True}>",
+      "parameters": [
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69A440) {parameter_name: \"User.LaserColors\", parameter_type: \"NiagaraDataInterfaceArrayColor\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69E280) {parameter_name: \"User.LaserDirections\", parameter_type: \"NiagaraDataInterfaceArrayFloat3\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69F540) {parameter_name: \"User.LaserPositions\", parameter_type: \"NiagaraDataInterfaceArrayPosition\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69A440) {parameter_name: \"User.LaserSizes\", parameter_type: \"NiagaraDataInterfaceArrayFloat2\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB698BE0) {parameter_name: \"User.MissileContractVersion\", parameter_type: \"Int\", namespace: \"User\", current_value: \"2\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB698C40) {parameter_name: \"User.MissileEmitHistory\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69D6E0) {parameter_name: \"User.MissileFlameLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"108.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69B4C0) {parameter_name: \"User.MissileFlameWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"42.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69A140) {parameter_name: \"User.MissileHeads\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB698100) {parameter_name: \"User.MissileHistoryCount\", parameter_type: \"Int\", namespace: \"User\", current_value: \"1536\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69FAE0) {parameter_name: \"User.MissilePreviewSpeedRatio\", parameter_type: \"Float\", namespace: \"User\", current_value: \"2.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69D1A0) {parameter_name: \"User.MissileSlotCount\", parameter_type: \"Int\", namespace: \"User\", current_value: \"64\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB697A40) {parameter_name: \"User.MissileSmokeInitialWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"63.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB697CE0) {parameter_name: \"User.MissileSmokeMaximumWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"99.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69E8E0) {parameter_name: \"User.MissileTime\", parameter_type: \"Float\", namespace: \"User\", current_value: \"0.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69E640) {parameter_name: \"User.MissileTrailWeight\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69C0C0) {parameter_name: \"User.MuzzleColors\", parameter_type: \"NiagaraDataInterfaceArrayColor\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69AC20) {parameter_name: \"User.MuzzlePositions\", parameter_type: \"NiagaraDataInterfaceArrayPosition\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69AE60) {parameter_name: \"User.MuzzleSizes\", parameter_type: \"NiagaraDataInterfaceArrayFloat2\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+      ],
+      "diagnostics": "System valid=1 ready=1 gpu=1\nEditor needs_compile=0 outstanding_including_gpu=0\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:Body_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:Body_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:Body_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:Flame_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:Flame_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:Flame_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:History_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:History_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:History_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n",
+      "emitters": [
+        {
+          "name": "Body",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001EBD01994C0) {emitter_name: \"Body\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0199BA0) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True, material_path: \"\", has_material: False, sub_image_size: \"\", alignment: \"\", facing_mode: \"\", sort_mode: \"None\", mesh_path: \"/Game/GuLiStrike/FX/WM01Missiles/SM_WM01_Missile.SM_WM01_Missile\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F90DC0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9EAB0) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9A0A0) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9D480) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9F870) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:Body_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9D390) {module_name: \"IllustrativePreviewPath\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:Body_0.NiagaraScratchPadContainer_0.IllustrativePreviewPath\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F908C0) {module_name: \"MissileBody\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:Body_0.NiagaraScratchPadContainer_0.MissileBody\", module_index: 5, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;",
+            "IllustrativePreviewPath": "// Editor-only illustrative trajectories. The registered combat assets use the\n// authoritative CPU/client trajectory via arrays; these preview copies do not.\n// Same v2 path and camera. Table speed controls playback rate; retain the long\n// cycle so the 2.4 s tail clears before the next generation is reused.\nfloat t=fmod(Age,5.6);\nfloat flight=2.4/max(SpeedRatio,.01);\nfloat a=saturate(t/flight);\nfloat s=sin(a*3.14159265),c=cos(a*3.14159265);\nPositionOut=float3(2200*a,(Slot-1.5)*175+sin(a*6+Slot)*160*s,\n    120+s*(430+Slot*100)+sin(a*8+Slot)*70*s);\nDirectionOut=normalize(float3(2200,160*(6*cos(a*6+Slot)*s+3.14159265*sin(a*6+Slot)*c),\n    3.14159265*c*(430+Slot*100)+70*(8*cos(a*8+Slot)*s+3.14159265*sin(a*8+Slot)*c)));\nSizeOut=float2(21,195);\nMetaOut=Slot<4 ? float4(floor(Age/5.6)*64+Slot+7,t<flight?1:2,flight,2.4) : float4(0,0,0,2.4);\nTimeOut=Age;\n",
+            "MissileBody": "PositionOut=Head; VelocityOut=Direction; float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; ScaleOut=float3(1,1,1)*(Size.y/325)*alive; ColorOut=float4(1,1,1,alive);"
+          }
+        },
+        {
+          "name": "Flame",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001EBD0198E80) {emitter_name: \"Flame\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0198DE0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileFlame.M_WM01MissileFlame\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F90960) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9F0A0) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F90BE0) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9B860) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9ED80) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:Flame_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9C670) {module_name: \"IllustrativePreviewPath\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:Flame_0.NiagaraScratchPadContainer_0.IllustrativePreviewPath\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F96E00) {module_name: \"MissileFlame\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:Flame_0.NiagaraScratchPadContainer_0.MissileFlame\", module_index: 5, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;",
+            "IllustrativePreviewPath": "// Editor-only illustrative trajectories. The registered combat assets use the\n// authoritative CPU/client trajectory via arrays; these preview copies do not.\n// Same v2 path and camera. Table speed controls playback rate; retain the long\n// cycle so the 2.4 s tail clears before the next generation is reused.\nfloat t=fmod(Age,5.6);\nfloat flight=2.4/max(SpeedRatio,.01);\nfloat a=saturate(t/flight);\nfloat s=sin(a*3.14159265),c=cos(a*3.14159265);\nPositionOut=float3(2200*a,(Slot-1.5)*175+sin(a*6+Slot)*160*s,\n    120+s*(430+Slot*100)+sin(a*8+Slot)*70*s);\nDirectionOut=normalize(float3(2200,160*(6*cos(a*6+Slot)*s+3.14159265*sin(a*6+Slot)*c),\n    3.14159265*c*(430+Slot*100)+70*(8*cos(a*8+Slot)*s+3.14159265*sin(a*8+Slot)*c)));\nSizeOut=float2(21,195);\nMetaOut=Slot<4 ? float4(floor(Age/5.6)*64+Slot+7,t<flight?1:2,flight,2.4) : float4(0,0,0,2.4);\nTimeOut=Age;\n",
+            "MissileFlame": "float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; PositionOut=Head-Direction*(Size.y*.4923+FlameLength*.5); SizeOut=float2(FlameWidth,FlameLength)*alive; ColorOut=float4(9,3.3,.66,.85*alive);"
+          }
+        },
+        {
+          "name": "History",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001EBD01996A0) {emitter_name: \"History\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0198A20) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileHistory.M_WM01MissileHistory\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F96310) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9B5E0) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F99510) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9C7B0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F99830) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:History_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9E1A0) {module_name: \"IllustrativePreviewPath\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:History_0.NiagaraScratchPadContainer_0.IllustrativePreviewPath\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9B6D0) {module_name: \"MissileTrailOrigin\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:History_0.NiagaraScratchPadContainer_0.MissileTrailOrigin\", module_index: 5, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9FB90) {module_name: \"MissileRealHistory\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull.NS_WM01MissileCluster_PreviewFull:History_0.NiagaraScratchPadContainer_0.MissileRealHistory\", module_index: 6, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;Slot=ExecIndex()/24; Lane=ExecIndex()%24; Start=Position; End=Position; Sample=Position; Born=-10000; Generation=-1; Bucket=-1; Time=-10000; State=0;",
+            "IllustrativePreviewPath": "// Editor-only illustrative trajectories. The registered combat assets use the\n// authoritative CPU/client trajectory via arrays; these preview copies do not.\n// Same v2 path and camera. Table speed controls playback rate; retain the long\n// cycle so the 2.4 s tail clears before the next generation is reused.\nfloat t=fmod(Age,5.6);\nfloat flight=2.4/max(SpeedRatio,.01);\nfloat a=saturate(t/flight);\nfloat s=sin(a*3.14159265),c=cos(a*3.14159265);\nPositionOut=float3(2200*a,(Slot-1.5)*175+sin(a*6+Slot)*160*s,\n    120+s*(430+Slot*100)+sin(a*8+Slot)*70*s);\nDirectionOut=normalize(float3(2200,160*(6*cos(a*6+Slot)*s+3.14159265*sin(a*6+Slot)*c),\n    3.14159265*c*(430+Slot*100)+70*(8*cos(a*8+Slot)*s+3.14159265*sin(a*8+Slot)*c)));\nSizeOut=float2(21,195);\nMetaOut=Slot<4 ? float4(floor(Age/5.6)*64+Slot+7,t<flight?1:2,flight,2.4) : float4(0,0,0,2.4);\nTimeOut=Age;\n",
+            "MissileTrailOrigin": "PositionOut=Head-Direction*(Size.y*.4923+FlameLength*(7.0/9.0)); WidthOut=SmokeWidth;",
+            "MissileRealHistory": "// Each GPU lane owns a historical world-space segment. Generation changes reset\n// only the reusable live slot; retired quality batches hold immutable array snapshots.\nStartOut=SavedStart; EndOut=SavedEnd; BornOut=Born;\nSampleOut=SavedSample; GenerationOut=SeenGeneration; BucketOut=SeenBucket;\nfloat state=(EmitHistory<.5 && Meta.g>.5) ? 2 : Meta.g;\nTimeOut=Now; StateOut=state;\nfloat lifetime=max(Meta.a,.05);\n// One existing lane bridges the latest sample to the live exhaust origin.\n// The other lanes span the full lifetime without increasing particle capacity.\nfloat interval=lifetime/(24-1);\nint bucket=(int)floor(Now/interval);\n// SavedSample is spaced by lane interval, not by frame (8 lanes at 2400 cm/s\n// can span >800 cm). Teleports already change the CPU slot generation per frame.\nbool reset=abs(Meta.r-SeenGeneration)>.5 || state<.5 || Now<LastTime || Now-LastTime>.20;\nif(reset)\n{\n    StartOut=Head; EndOut=Head; SampleOut=Head; BornOut=-10000;\n    GenerationOut=Meta.r; BucketOut=bucket;\n}\nelse if((state<1.5 && bucket>SeenBucket) || (state>1.5 && SeenState<1.5))\n{\n    // Use the next lane when an impact falls inside the current bucket: preserve\n    // the preceding full segment instead of overwriting it with the final stub.\n    int writeBucket=max(bucket,SeenBucket+1);\n    if(writeBucket%24==Lane)\n    {\n        StartOut=SavedSample; EndOut=Head; BornOut=Now;\n    }\n    SampleOut=Head; BucketOut=writeBucket;\n}\nif(!reset && state>.5 && state<1.5 && (BucketOut+1)%24==Lane)\n{\n    StartOut=SampleOut; EndOut=Head; BornOut=Now;\n}\nfloat age=max(0,Now-BornOut);\nfloat life=saturate(1-age/lifetime);\nfloat3 delta=EndOut-StartOut;\nfloat segment=length(delta);\n// Smooth low-frequency world-space drift, bounded to <27 cm over 2.4 seconds.\n// Both endpoints use the same field so adjacent narrow segments remain coherent.\nfloat3 midpoint=(StartOut+EndOut)*.5;\nfloat3 drift=float3(sin(midpoint.y*.002+Meta.r*.13),cos(midpoint.x*.002+Meta.r*.13),.55)*min(age,2.4)*7.4;\nPositionOut=midpoint+drift;\nAlignmentOut=segment>.01 ? delta/segment : float3(1,0,0);\nfloat width=min(MaximumWidth,Width*(1+.55*saturate(age/lifetime)));\nSizeOut=(life>0 && segment>.01 && !reset) ? float2(width,segment+width*.12) : float2(0,0);\n// A brief warm origin gives way to dense charcoal smoke, never an emissive ribbon.\nfloat heat=1-smoothstep(0,.08,age);\nColorOut=float4(lerp(float3(.055,.060,.065),float3(1.15,.62,.27),heat),.70*pow(life,1.25)*saturate(TrailWeight));\n"
+          }
+        }
+      ],
+      "runtime_ready": true,
+      "visual_defaults": {
+        "User.MissileSmokeInitialWidth": 63.0,
+        "User.MissileSmokeMaximumWidth": 99.0,
+        "User.MissileFlameWidth": 42.0,
+        "User.MissileFlameLength": 108.0
+      }
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite",
+      "lanes": 8,
+      "contract": 2,
+      "visual_revision": "3;table-authored smoke/flame centimeters;2.4s charcoal history;body/brightness unchanged",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x000001ECAB69F660) {system_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite\", system_name: \"NS_WM01MissileCluster_PreviewLite\", emitter_count: 3, emitter_names: (\"Body\",\"Flame\",\"History\"), user_parameter_count: 19, user_parameter_names: (\"User.LaserColors\",\"User.LaserDirections\",\"User.LaserPositions\",\"User.LaserSizes\",\"User.MissileContractVersion\",\"User.MissileEmitHistory\",\"User.MissileFlameLength\",\"User.MissileFlameWidth\",\"User.MissileHeads\",\"User.MissileHistoryCount\",\"User.MissilePreviewSpeedRatio\",\"User.MissileSlotCount\",\"User.MissileSmokeInitialWidth\",\"User.MissileSmokeMaximumWidth\",\"User.MissileTime\",\"User.MissileTrailWeight\",\"User.MuzzleColors\",\"User.MuzzlePositions\",\"User.MuzzleSizes\"), has_gpu_emitters: True}>",
+      "parameters": [
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB6985E0) {parameter_name: \"User.LaserColors\", parameter_type: \"NiagaraDataInterfaceArrayColor\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69FC00) {parameter_name: \"User.LaserDirections\", parameter_type: \"NiagaraDataInterfaceArrayFloat3\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69E880) {parameter_name: \"User.LaserPositions\", parameter_type: \"NiagaraDataInterfaceArrayPosition\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ED6AB2C470) {parameter_name: \"User.LaserSizes\", parameter_type: \"NiagaraDataInterfaceArrayFloat2\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69FC00) {parameter_name: \"User.MissileContractVersion\", parameter_type: \"Int\", namespace: \"User\", current_value: \"2\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69C720) {parameter_name: \"User.MissileEmitHistory\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69BA00) {parameter_name: \"User.MissileFlameLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"108.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB6980A0) {parameter_name: \"User.MissileFlameWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"42.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB699540) {parameter_name: \"User.MissileHeads\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69EFA0) {parameter_name: \"User.MissileHistoryCount\", parameter_type: \"Int\", namespace: \"User\", current_value: \"512\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69F000) {parameter_name: \"User.MissilePreviewSpeedRatio\", parameter_type: \"Float\", namespace: \"User\", current_value: \"2.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69E760) {parameter_name: \"User.MissileSlotCount\", parameter_type: \"Int\", namespace: \"User\", current_value: \"64\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69F960) {parameter_name: \"User.MissileSmokeInitialWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"63.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69EF40) {parameter_name: \"User.MissileSmokeMaximumWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"99.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69A860) {parameter_name: \"User.MissileTime\", parameter_type: \"Float\", namespace: \"User\", current_value: \"0.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB698640) {parameter_name: \"User.MissileTrailWeight\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69C6C0) {parameter_name: \"User.MuzzleColors\", parameter_type: \"NiagaraDataInterfaceArrayColor\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB697620) {parameter_name: \"User.MuzzlePositions\", parameter_type: \"NiagaraDataInterfaceArrayPosition\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69B100) {parameter_name: \"User.MuzzleSizes\", parameter_type: \"NiagaraDataInterfaceArrayFloat2\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+      ],
+      "diagnostics": "System valid=1 ready=1 gpu=1\nEditor needs_compile=0 outstanding_including_gpu=0\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:Body_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:Body_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:Body_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:Flame_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:Flame_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:Flame_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:History_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:History_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:History_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n",
+      "emitters": [
+        {
+          "name": "Body",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001EBD01999C0) {emitter_name: \"Body\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0198C00) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True, material_path: \"\", has_material: False, sub_image_size: \"\", alignment: \"\", facing_mode: \"\", sort_mode: \"None\", mesh_path: \"/Game/GuLiStrike/FX/WM01Missiles/SM_WM01_Missile.SM_WM01_Missile\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F947E0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECAB69E880) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECAB69F660) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECAB69A9E0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECAB6977A0) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:Body_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECAB69FC00) {module_name: \"IllustrativePreviewPath\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:Body_0.NiagaraScratchPadContainer_0.IllustrativePreviewPath\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECAB698AC0) {module_name: \"MissileBody\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:Body_0.NiagaraScratchPadContainer_0.MissileBody\", module_index: 5, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;",
+            "IllustrativePreviewPath": "// Editor-only illustrative trajectories. The registered combat assets use the\n// authoritative CPU/client trajectory via arrays; these preview copies do not.\n// Same v2 path and camera. Table speed controls playback rate; retain the long\n// cycle so the 2.4 s tail clears before the next generation is reused.\nfloat t=fmod(Age,5.6);\nfloat flight=2.4/max(SpeedRatio,.01);\nfloat a=saturate(t/flight);\nfloat s=sin(a*3.14159265),c=cos(a*3.14159265);\nPositionOut=float3(2200*a,(Slot-1.5)*175+sin(a*6+Slot)*160*s,\n    120+s*(430+Slot*100)+sin(a*8+Slot)*70*s);\nDirectionOut=normalize(float3(2200,160*(6*cos(a*6+Slot)*s+3.14159265*sin(a*6+Slot)*c),\n    3.14159265*c*(430+Slot*100)+70*(8*cos(a*8+Slot)*s+3.14159265*sin(a*8+Slot)*c)));\nSizeOut=float2(21,195);\nMetaOut=Slot<4 ? float4(floor(Age/5.6)*64+Slot+7,t<flight?1:2,flight,2.4) : float4(0,0,0,2.4);\nTimeOut=Age;\n",
+            "MissileBody": "PositionOut=Head; VelocityOut=Direction; float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; ScaleOut=float3(1,1,1)*(Size.y/325)*alive; ColorOut=float4(1,1,1,alive);"
+          }
+        },
+        {
+          "name": "Flame",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001ECA175F3C0) {emitter_name: \"Flame\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0199100) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileFlame.M_WM01MissileFlame\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9C1C0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F92760) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9DD90) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F919A0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F93B10) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:Flame_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F91040) {module_name: \"IllustrativePreviewPath\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:Flame_0.NiagaraScratchPadContainer_0.IllustrativePreviewPath\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F95E10) {module_name: \"MissileFlame\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:Flame_0.NiagaraScratchPadContainer_0.MissileFlame\", module_index: 5, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;",
+            "IllustrativePreviewPath": "// Editor-only illustrative trajectories. The registered combat assets use the\n// authoritative CPU/client trajectory via arrays; these preview copies do not.\n// Same v2 path and camera. Table speed controls playback rate; retain the long\n// cycle so the 2.4 s tail clears before the next generation is reused.\nfloat t=fmod(Age,5.6);\nfloat flight=2.4/max(SpeedRatio,.01);\nfloat a=saturate(t/flight);\nfloat s=sin(a*3.14159265),c=cos(a*3.14159265);\nPositionOut=float3(2200*a,(Slot-1.5)*175+sin(a*6+Slot)*160*s,\n    120+s*(430+Slot*100)+sin(a*8+Slot)*70*s);\nDirectionOut=normalize(float3(2200,160*(6*cos(a*6+Slot)*s+3.14159265*sin(a*6+Slot)*c),\n    3.14159265*c*(430+Slot*100)+70*(8*cos(a*8+Slot)*s+3.14159265*sin(a*8+Slot)*c)));\nSizeOut=float2(21,195);\nMetaOut=Slot<4 ? float4(floor(Age/5.6)*64+Slot+7,t<flight?1:2,flight,2.4) : float4(0,0,0,2.4);\nTimeOut=Age;\n",
+            "MissileFlame": "float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; PositionOut=Head-Direction*(Size.y*.4923+FlameLength*.5); SizeOut=float2(FlameWidth,FlameLength)*alive; ColorOut=float4(9,3.3,.66,.85*alive);"
+          }
+        },
+        {
+          "name": "History",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001ECA175E640) {emitter_name: \"History\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0199380) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileHistory.M_WM01MissileHistory\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9CE40) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F98F70) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9D2F0) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F94E70) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F93AC0) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:History_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9CA30) {module_name: \"IllustrativePreviewPath\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:History_0.NiagaraScratchPadContainer_0.IllustrativePreviewPath\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F98430) {module_name: \"MissileTrailOrigin\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:History_0.NiagaraScratchPadContainer_0.MissileTrailOrigin\", module_index: 5, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9B4F0) {module_name: \"MissileRealHistory\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite.NS_WM01MissileCluster_PreviewLite:History_0.NiagaraScratchPadContainer_0.MissileRealHistory\", module_index: 6, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;Slot=ExecIndex()/8; Lane=ExecIndex()%8; Start=Position; End=Position; Sample=Position; Born=-10000; Generation=-1; Bucket=-1; Time=-10000; State=0;",
+            "IllustrativePreviewPath": "// Editor-only illustrative trajectories. The registered combat assets use the\n// authoritative CPU/client trajectory via arrays; these preview copies do not.\n// Same v2 path and camera. Table speed controls playback rate; retain the long\n// cycle so the 2.4 s tail clears before the next generation is reused.\nfloat t=fmod(Age,5.6);\nfloat flight=2.4/max(SpeedRatio,.01);\nfloat a=saturate(t/flight);\nfloat s=sin(a*3.14159265),c=cos(a*3.14159265);\nPositionOut=float3(2200*a,(Slot-1.5)*175+sin(a*6+Slot)*160*s,\n    120+s*(430+Slot*100)+sin(a*8+Slot)*70*s);\nDirectionOut=normalize(float3(2200,160*(6*cos(a*6+Slot)*s+3.14159265*sin(a*6+Slot)*c),\n    3.14159265*c*(430+Slot*100)+70*(8*cos(a*8+Slot)*s+3.14159265*sin(a*8+Slot)*c)));\nSizeOut=float2(21,195);\nMetaOut=Slot<4 ? float4(floor(Age/5.6)*64+Slot+7,t<flight?1:2,flight,2.4) : float4(0,0,0,2.4);\nTimeOut=Age;\n",
+            "MissileTrailOrigin": "PositionOut=Head-Direction*(Size.y*.4923+FlameLength*(7.0/9.0)); WidthOut=SmokeWidth;",
+            "MissileRealHistory": "// Each GPU lane owns a historical world-space segment. Generation changes reset\n// only the reusable live slot; retired quality batches hold immutable array snapshots.\nStartOut=SavedStart; EndOut=SavedEnd; BornOut=Born;\nSampleOut=SavedSample; GenerationOut=SeenGeneration; BucketOut=SeenBucket;\nfloat state=(EmitHistory<.5 && Meta.g>.5) ? 2 : Meta.g;\nTimeOut=Now; StateOut=state;\nfloat lifetime=max(Meta.a,.05);\n// One existing lane bridges the latest sample to the live exhaust origin.\n// The other lanes span the full lifetime without increasing particle capacity.\nfloat interval=lifetime/(8-1);\nint bucket=(int)floor(Now/interval);\n// SavedSample is spaced by lane interval, not by frame (8 lanes at 2400 cm/s\n// can span >800 cm). Teleports already change the CPU slot generation per frame.\nbool reset=abs(Meta.r-SeenGeneration)>.5 || state<.5 || Now<LastTime || Now-LastTime>.20;\nif(reset)\n{\n    StartOut=Head; EndOut=Head; SampleOut=Head; BornOut=-10000;\n    GenerationOut=Meta.r; BucketOut=bucket;\n}\nelse if((state<1.5 && bucket>SeenBucket) || (state>1.5 && SeenState<1.5))\n{\n    // Use the next lane when an impact falls inside the current bucket: preserve\n    // the preceding full segment instead of overwriting it with the final stub.\n    int writeBucket=max(bucket,SeenBucket+1);\n    if(writeBucket%8==Lane)\n    {\n        StartOut=SavedSample; EndOut=Head; BornOut=Now;\n    }\n    SampleOut=Head; BucketOut=writeBucket;\n}\nif(!reset && state>.5 && state<1.5 && (BucketOut+1)%8==Lane)\n{\n    StartOut=SampleOut; EndOut=Head; BornOut=Now;\n}\nfloat age=max(0,Now-BornOut);\nfloat life=saturate(1-age/lifetime);\nfloat3 delta=EndOut-StartOut;\nfloat segment=length(delta);\n// Smooth low-frequency world-space drift, bounded to <27 cm over 2.4 seconds.\n// Both endpoints use the same field so adjacent narrow segments remain coherent.\nfloat3 midpoint=(StartOut+EndOut)*.5;\nfloat3 drift=float3(sin(midpoint.y*.002+Meta.r*.13),cos(midpoint.x*.002+Meta.r*.13),.55)*min(age,2.4)*7.4;\nPositionOut=midpoint+drift;\nAlignmentOut=segment>.01 ? delta/segment : float3(1,0,0);\nfloat width=min(MaximumWidth,Width*(1+.55*saturate(age/lifetime)));\nSizeOut=(life>0 && segment>.01 && !reset) ? float2(width,segment+width*.12) : float2(0,0);\n// A brief warm origin gives way to dense charcoal smoke, never an emissive ribbon.\nfloat heat=1-smoothstep(0,.08,age);\nColorOut=float4(lerp(float3(.055,.060,.065),float3(1.15,.62,.27),heat),.70*pow(life,1.25)*saturate(TrailWeight));\n"
+          }
+        }
+      ],
+      "runtime_ready": true,
+      "visual_defaults": {
+        "User.MissileSmokeInitialWidth": 63.0,
+        "User.MissileSmokeMaximumWidth": 99.0,
+        "User.MissileFlameWidth": 42.0,
+        "User.MissileFlameLength": 108.0
+      }
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal",
+      "lanes": 0,
+      "contract": 2,
+      "visual_revision": "3;table-authored smoke/flame centimeters;2.4s charcoal history;body/brightness unchanged",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x000001ED6AB2C390) {system_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal\", system_name: \"NS_WM01MissileCluster_PreviewMinimal\", emitter_count: 2, emitter_names: (\"Body\",\"Flame\"), user_parameter_count: 19, user_parameter_names: (\"User.LaserColors\",\"User.LaserDirections\",\"User.LaserPositions\",\"User.LaserSizes\",\"User.MissileContractVersion\",\"User.MissileEmitHistory\",\"User.MissileFlameLength\",\"User.MissileFlameWidth\",\"User.MissileHeads\",\"User.MissileHistoryCount\",\"User.MissilePreviewSpeedRatio\",\"User.MissileSlotCount\",\"User.MissileSmokeInitialWidth\",\"User.MissileSmokeMaximumWidth\",\"User.MissileTime\",\"User.MissileTrailWeight\",\"User.MuzzleColors\",\"User.MuzzlePositions\",\"User.MuzzleSizes\"), has_gpu_emitters: True}>",
+      "parameters": [
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69C5A0) {parameter_name: \"User.LaserColors\", parameter_type: \"NiagaraDataInterfaceArrayColor\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB699900) {parameter_name: \"User.LaserDirections\", parameter_type: \"NiagaraDataInterfaceArrayFloat3\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69FAE0) {parameter_name: \"User.LaserPositions\", parameter_type: \"NiagaraDataInterfaceArrayPosition\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB698640) {parameter_name: \"User.LaserSizes\", parameter_type: \"NiagaraDataInterfaceArrayFloat2\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69CE40) {parameter_name: \"User.MissileContractVersion\", parameter_type: \"Int\", namespace: \"User\", current_value: \"2\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69A4A0) {parameter_name: \"User.MissileEmitHistory\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB6981C0) {parameter_name: \"User.MissileFlameLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"108.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB697800) {parameter_name: \"User.MissileFlameWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"42.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69B940) {parameter_name: \"User.MissileHeads\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69DB60) {parameter_name: \"User.MissileHistoryCount\", parameter_type: \"Int\", namespace: \"User\", current_value: \"0\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69E340) {parameter_name: \"User.MissilePreviewSpeedRatio\", parameter_type: \"Float\", namespace: \"User\", current_value: \"2.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69EB20) {parameter_name: \"User.MissileSlotCount\", parameter_type: \"Int\", namespace: \"User\", current_value: \"64\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69B460) {parameter_name: \"User.MissileSmokeInitialWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"63.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69F5A0) {parameter_name: \"User.MissileSmokeMaximumWidth\", parameter_type: \"Float\", namespace: \"User\", current_value: \"99.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69F000) {parameter_name: \"User.MissileTime\", parameter_type: \"Float\", namespace: \"User\", current_value: \"0.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB698A60) {parameter_name: \"User.MissileTrailWeight\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69B4C0) {parameter_name: \"User.MuzzleColors\", parameter_type: \"NiagaraDataInterfaceArrayColor\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69EAC0) {parameter_name: \"User.MuzzlePositions\", parameter_type: \"NiagaraDataInterfaceArrayPosition\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001ECAB69B340) {parameter_name: \"User.MuzzleSizes\", parameter_type: \"NiagaraDataInterfaceArrayFloat2\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+      ],
+      "diagnostics": "System valid=1 ready=1 gpu=1\nEditor needs_compile=0 outstanding_including_gpu=0\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:Body_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:Body_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:Body_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:Flame_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:Flame_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:Flame_0.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n",
+      "emitters": [
+        {
+          "name": "Body",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001EBD0199A60) {emitter_name: \"Body\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0194380) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True, material_path: \"\", has_material: False, sub_image_size: \"\", alignment: \"\", facing_mode: \"\", sort_mode: \"None\", mesh_path: \"/Game/GuLiStrike/FX/WM01Missiles/SM_WM01_Missile.SM_WM01_Missile\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F96310) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9AA00) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F93700) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F94880) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9C9E0) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:Body_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F90780) {module_name: \"IllustrativePreviewPath\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:Body_0.NiagaraScratchPadContainer_0.IllustrativePreviewPath\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9DC00) {module_name: \"MissileBody\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:Body_0.NiagaraScratchPadContainer_0.MissileBody\", module_index: 5, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;",
+            "IllustrativePreviewPath": "// Editor-only illustrative trajectories. The registered combat assets use the\n// authoritative CPU/client trajectory via arrays; these preview copies do not.\n// Same v2 path and camera. Table speed controls playback rate; retain the long\n// cycle so the 2.4 s tail clears before the next generation is reused.\nfloat t=fmod(Age,5.6);\nfloat flight=2.4/max(SpeedRatio,.01);\nfloat a=saturate(t/flight);\nfloat s=sin(a*3.14159265),c=cos(a*3.14159265);\nPositionOut=float3(2200*a,(Slot-1.5)*175+sin(a*6+Slot)*160*s,\n    120+s*(430+Slot*100)+sin(a*8+Slot)*70*s);\nDirectionOut=normalize(float3(2200,160*(6*cos(a*6+Slot)*s+3.14159265*sin(a*6+Slot)*c),\n    3.14159265*c*(430+Slot*100)+70*(8*cos(a*8+Slot)*s+3.14159265*sin(a*8+Slot)*c)));\nSizeOut=float2(21,195);\nMetaOut=Slot<4 ? float4(floor(Age/5.6)*64+Slot+7,t<flight?1:2,flight,2.4) : float4(0,0,0,2.4);\nTimeOut=Age;\n",
+            "MissileBody": "PositionOut=Head; VelocityOut=Direction; float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; ScaleOut=float3(1,1,1)*(Size.y/325)*alive; ColorOut=float4(1,1,1,alive);"
+          }
+        },
+        {
+          "name": "Flame",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001ECA175F9C0) {emitter_name: \"Flame\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001EBD0199920) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileFlame.M_WM01MissileFlame\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+          "burst": "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9F3C0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+          "modules": [
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9BB30) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9F000) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F93570) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9C3F0) {module_name: \"InitializeMissileSlot\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:Flame_0.NiagaraScratchPadContainer_0.InitializeMissileSlot\", module_index: 3, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F92940) {module_name: \"IllustrativePreviewPath\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:Flame_0.NiagaraScratchPadContainer_0.IllustrativePreviewPath\", module_index: 4, is_enabled: True, inputs: }>",
+            "<Struct 'NiagaraModuleInfo_Custom' (0x000001ECA3F9E010) {module_name: \"MissileFlame\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal.NS_WM01MissileCluster_PreviewMinimal:Flame_0.NiagaraScratchPadContainer_0.MissileFlame\", module_index: 5, is_enabled: True, inputs: }>"
+          ],
+          "hlsl": {
+            "InitializeMissileSlot": "Slot=ExecIndex(); Life=1e9; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;",
+            "IllustrativePreviewPath": "// Editor-only illustrative trajectories. The registered combat assets use the\n// authoritative CPU/client trajectory via arrays; these preview copies do not.\n// Same v2 path and camera. Table speed controls playback rate; retain the long\n// cycle so the 2.4 s tail clears before the next generation is reused.\nfloat t=fmod(Age,5.6);\nfloat flight=2.4/max(SpeedRatio,.01);\nfloat a=saturate(t/flight);\nfloat s=sin(a*3.14159265),c=cos(a*3.14159265);\nPositionOut=float3(2200*a,(Slot-1.5)*175+sin(a*6+Slot)*160*s,\n    120+s*(430+Slot*100)+sin(a*8+Slot)*70*s);\nDirectionOut=normalize(float3(2200,160*(6*cos(a*6+Slot)*s+3.14159265*sin(a*6+Slot)*c),\n    3.14159265*c*(430+Slot*100)+70*(8*cos(a*8+Slot)*s+3.14159265*sin(a*8+Slot)*c)));\nSizeOut=float2(21,195);\nMetaOut=Slot<4 ? float4(floor(Age/5.6)*64+Slot+7,t<flight?1:2,flight,2.4) : float4(0,0,0,2.4);\nTimeOut=Age;\n",
+            "MissileFlame": "float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; PositionOut=Head-Direction*(Size.y*.4923+FlameLength*.5); SizeOut=float2(FlameWidth,FlameLength)*alive; ColorOut=float4(9,3.3,.66,.85*alive);"
+          }
+        }
+      ],
+      "runtime_ready": true,
+      "visual_defaults": {
+        "User.MissileSmokeInitialWidth": 63.0,
+        "User.MissileSmokeMaximumWidth": 99.0,
+        "User.MissileFlameWidth": 42.0,
+        "User.MissileFlameLength": 108.0
+      }
+    }
+  ],
+  "materials": [
+    {
+      "path": "/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileFlame",
+      "compiled": true,
+      "diagnostics": "<Struct 'MaterialDiagnostics' (0x000001ED6AC5C080) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 4, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 0, vector_parameter_count: 0}>",
+      "blend_mode": "<BlendMode.BLEND_TRANSLUCENT: 2>",
+      "shading_model": "<MaterialShadingModel.MSM_UNLIT: 0>",
+      "outputs": [
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5C440) {property_name: \"BaseColor\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5C4C0) {property_name: \"Metallic\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5C540) {property_name: \"Specular\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5C5C0) {property_name: \"Roughness\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5C640) {property_name: \"Anisotropy\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5C6C0) {property_name: \"EmissiveColor\", connected_expression_id: \"MaterialExpressionCustom_000001EC94FBF900\", is_connected: True}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5C740) {property_name: \"Opacity\", connected_expression_id: \"MaterialExpressionCustom_000001EC94FBF480\", is_connected: True}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5C7C0) {property_name: \"OpacityMask\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5C840) {property_name: \"Normal\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5C8C0) {property_name: \"Tangent\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5C940) {property_name: \"WorldPositionOffset\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5CB00) {property_name: \"SubsurfaceColor\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5CC00) {property_name: \"AmbientOcclusion\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5CDC0) {property_name: \"Refraction\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5CE40) {property_name: \"PixelDepthOffset\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AC5CFC0) {property_name: \"ShadingModel\", connected_expression_id: \"\", is_connected: False}>"
+      ],
+      "graph": {
+        "material": {
+          "blend_mode": "BLEND_Translucent",
+          "shading_model": "MSM_Unlit",
+          "two_sided": true
+        },
+        "expressions": [
+          {
+            "id": "MaterialExpressionTextureCoordinate_000001EC817C1000",
+            "class": "TextureCoordinate",
+            "class_full": "MaterialExpressionTextureCoordinate",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "CoordinateIndex": "0",
+              "UTiling": "1.000000",
+              "VTiling": "1.000000",
+              "UnMirrorU": "False",
+              "UnMirrorV": "False"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionParticleColor_000001EC8167E700",
+            "class": "ParticleColor",
+            "class_full": "MaterialExpressionParticleColor",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {},
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_000001EC94FBF480",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "Code": "float t=saturate(UV.y); float x=abs(UV.x*2-1)/lerp(.08,1,t); return pow(saturate(1-x*x),1.2)*sin(t*3.14159)*Alpha;",
+              "OutputType": "CMOT_Float1",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileFlame.M_WM01MissileFlame:MaterialExpressionTextureCoordinate_1'\")),(InputName=\"Alpha\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileFlame.M_WM01MissileFlame:MaterialExpressionParticleColor_1'\",OutputIndex=4,Mask=1,MaskA=1)))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float t=saturate(UV.y); float x=abs(UV.x*2-1)/lerp(.08,1,t); return pow(saturate(1-x*x),1.2)*sin(t*3.14159)*Alpha;",
+            "output_type": "CMOT_Float1",
+            "custom_input_names": "UV,Alpha",
+            "inputs": [
+              "UV",
+              "Alpha"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_000001EC94FBF900",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "Code": "float t=saturate(UV.y); float x=abs(UV.x*2-1)/lerp(.08,1,t); float core=pow(saturate(1-x),3)*smoothstep(.1,.55,t); return lerp(Tint,float3(Tint.r,Tint.r*.78,Tint.r*.4),core);",
+              "OutputType": "CMOT_Float3",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileFlame.M_WM01MissileFlame:MaterialExpressionTextureCoordinate_1'\")),(InputName=\"Tint\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileFlame.M_WM01MissileFlame:MaterialExpressionParticleColor_1'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float t=saturate(UV.y); float x=abs(UV.x*2-1)/lerp(.08,1,t); float core=pow(saturate(1-x),3)*smoothstep(.1,.55,t); return lerp(Tint,float3(Tint.r,Tint.r*.78,Tint.r*.4),core);",
+            "output_type": "CMOT_Float3",
+            "custom_input_names": "UV,Tint",
+            "inputs": [
+              "UV",
+              "Tint"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "source_id": "MaterialExpressionTextureCoordinate_000001EC817C1000",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_000001EC94FBF480",
+            "target_input": "UV"
+          },
+          {
+            "source_id": "MaterialExpressionParticleColor_000001EC8167E700",
+            "source_output_index": 4,
+            "source_output_name": "A",
+            "target_id": "MaterialExpressionCustom_000001EC94FBF480",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionTextureCoordinate_000001EC817C1000",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_000001EC94FBF900",
+            "target_input": "UV"
+          },
+          {
+            "source_id": "MaterialExpressionParticleColor_000001EC8167E700",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionCustom_000001EC94FBF900",
+            "target_input": "Tint"
+          }
+        ],
+        "output_connections": [
+          {
+            "property": "EmissiveColor",
+            "expression_id": "MaterialExpressionCustom_000001EC94FBF900",
+            "output_index": 0,
+            "output_name": ""
+          },
+          {
+            "property": "Opacity",
+            "expression_id": "MaterialExpressionCustom_000001EC94FBF480",
+            "output_index": 0,
+            "output_name": ""
+          }
+        ]
+      }
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileHistory",
+      "compiled": true,
+      "diagnostics": "<Struct 'MaterialDiagnostics' (0x000001ECA8F70DC0) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 5, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 0, vector_parameter_count: 0}>",
+      "blend_mode": "<BlendMode.BLEND_TRANSLUCENT: 2>",
+      "shading_model": "<MaterialShadingModel.MSM_UNLIT: 0>",
+      "outputs": [
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F72760) {property_name: \"BaseColor\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F7CC00) {property_name: \"Metallic\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F72CA0) {property_name: \"Specular\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F724C0) {property_name: \"Roughness\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F7E460) {property_name: \"Anisotropy\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F7C930) {property_name: \"EmissiveColor\", connected_expression_id: \"MaterialExpressionParticleColor_000001EC81679CA0\", is_connected: True}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F7EBB0) {property_name: \"Opacity\", connected_expression_id: \"MaterialExpressionCustom_000001EC94FBFA80\", is_connected: True}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F7FCF0) {property_name: \"OpacityMask\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F7DDD0) {property_name: \"Normal\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F7DD70) {property_name: \"Tangent\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F7D7A0) {property_name: \"WorldPositionOffset\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F7D920) {property_name: \"SubsurfaceColor\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F72220) {property_name: \"AmbientOcclusion\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECC3F72610) {property_name: \"Refraction\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECA8F71B40) {property_name: \"PixelDepthOffset\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ECA8F77380) {property_name: \"ShadingModel\", connected_expression_id: \"\", is_connected: False}>"
+      ],
+      "graph": {
+        "material": {
+          "blend_mode": "BLEND_Translucent",
+          "shading_model": "MSM_Unlit",
+          "two_sided": true
+        },
+        "expressions": [
+          {
+            "id": "MaterialExpressionTextureCoordinate_000001EC8167FC00",
+            "class": "TextureCoordinate",
+            "class_full": "MaterialExpressionTextureCoordinate",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "CoordinateIndex": "0",
+              "UTiling": "1.000000",
+              "VTiling": "1.000000",
+              "UnMirrorU": "False",
+              "UnMirrorV": "False"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionParticleColor_000001EC81679CA0",
+            "class": "ParticleColor",
+            "class_full": "MaterialExpressionParticleColor",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {},
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_000001EC94FBFA80",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "Code": "float n=.5+.25*sin(dot(World,float3(.027,.019,.013)))+.25*sin(dot(World,float3(-.013,.031,.017))); float x=abs(UV.x*2-1+(n-.5)*.18); float endFade=min(.04,2/max(Size.y,1)); return pow(saturate(1-x*x),2)*lerp(.55,1,n)*smoothstep(0,endFade,UV.y)*smoothstep(0,endFade,1-UV.y)*Alpha;",
+              "OutputType": "CMOT_Float1",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileHistory.M_WM01MissileHistory:MaterialExpressionTextureCoordinate_2'\")),(InputName=\"Alpha\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileHistory.M_WM01MissileHistory:MaterialExpressionParticleColor_2'\",OutputIndex=4,Mask=1,MaskA=1)),(InputName=\"World\",Input=(Expression=\"/Script/Engine.MaterialExpressionWorldPosition'/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileHistory.M_WM01MissileHistory:MaterialExpressionWorldPosition_2'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(InputName=\"Size\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleSize'/Game/GuLiStrike/FX/WM01Missiles/M_WM01MissileHistory.M_WM01MissileHistory:MaterialExpressionParticleSize_0'\")))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float n=.5+.25*sin(dot(World,float3(.027,.019,.013)))+.25*sin(dot(World,float3(-.013,.031,.017))); float x=abs(UV.x*2-1+(n-.5)*.18); float endFade=min(.04,2/max(Size.y,1)); return pow(saturate(1-x*x),2)*lerp(.55,1,n)*smoothstep(0,endFade,UV.y)*smoothstep(0,endFade,1-UV.y)*Alpha;",
+            "output_type": "CMOT_Float1",
+            "custom_input_names": "UV,Alpha,World,Size",
+            "inputs": [
+              "UV",
+              "Alpha",
+              "World",
+              "Size"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionWorldPosition_000001EC8167FB20",
+            "class": "WorldPosition",
+            "class_full": "MaterialExpressionWorldPosition",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "WorldPositionShaderOffset": "WPT_Default"
+            },
+            "inputs": [],
+            "outputs": [
+              "XYZ",
+              "XY",
+              "Z"
+            ]
+          },
+          {
+            "id": "MaterialExpressionParticleSize_000001EC8167CB00",
+            "class": "ParticleSize",
+            "class_full": "MaterialExpressionParticleSize",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {},
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "source_id": "MaterialExpressionTextureCoordinate_000001EC8167FC00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_000001EC94FBFA80",
+            "target_input": "UV"
+          },
+          {
+            "source_id": "MaterialExpressionParticleColor_000001EC81679CA0",
+            "source_output_index": 4,
+            "source_output_name": "A",
+            "target_id": "MaterialExpressionCustom_000001EC94FBFA80",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionWorldPosition_000001EC8167FB20",
+            "source_output_index": 0,
+            "source_output_name": "XYZ",
+            "target_id": "MaterialExpressionCustom_000001EC94FBFA80",
+            "target_input": "World"
+          },
+          {
+            "source_id": "MaterialExpressionParticleSize_000001EC8167CB00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_000001EC94FBFA80",
+            "target_input": "Size"
+          }
+        ],
+        "output_connections": [
+          {
+            "property": "EmissiveColor",
+            "expression_id": "MaterialExpressionParticleColor_000001EC81679CA0",
+            "output_index": 0,
+            "output_name": "RGB"
+          },
+          {
+            "property": "Opacity",
+            "expression_id": "MaterialExpressionCustom_000001EC94FBFA80",
+            "output_index": 0,
+            "output_name": ""
+          }
+        ]
+      }
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WM01Missiles/M_WM01_MissileBody",
+      "compiled": true,
+      "diagnostics": "<Struct 'MaterialDiagnostics' (0x000001ED6AFB41C0) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 4, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 0, vector_parameter_count: 0}>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "outputs": [
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6DE0) {property_name: \"BaseColor\", connected_expression_id: \"MaterialExpressionConstant3Vector_000001EC858B9E00\", is_connected: True}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6E10) {property_name: \"Metallic\", connected_expression_id: \"MaterialExpressionConstant_000001EC8167B440\", is_connected: True}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6E40) {property_name: \"Specular\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6E70) {property_name: \"Roughness\", connected_expression_id: \"MaterialExpressionConstant_000001EC8167AFE0\", is_connected: True}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6EA0) {property_name: \"Anisotropy\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6ED0) {property_name: \"EmissiveColor\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6F00) {property_name: \"Opacity\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6F30) {property_name: \"OpacityMask\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6E70) {property_name: \"Normal\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6DE0) {property_name: \"Tangent\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6DB0) {property_name: \"WorldPositionOffset\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6C00) {property_name: \"SubsurfaceColor\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6AB0) {property_name: \"AmbientOcclusion\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6900) {property_name: \"Refraction\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6930) {property_name: \"PixelDepthOffset\", connected_expression_id: \"\", is_connected: False}>",
+        "<Struct 'MaterialOutputConnectionInfo' (0x000001ED6AFC6780) {property_name: \"ShadingModel\", connected_expression_id: \"\", is_connected: False}>"
+      ],
+      "graph": {
+        "material": {
+          "blend_mode": "BLEND_Opaque",
+          "shading_model": "MSM_DefaultLit",
+          "two_sided": true
+        },
+        "expressions": [
+          {
+            "id": "MaterialExpressionConstant3Vector_000001EC858B9A00",
+            "class": "Constant3Vector",
+            "class_full": "MaterialExpressionConstant3Vector",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "Constant": "(R=0.160000,G=0.210000,B=0.270000,A=1.000000)"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0",
+              "Output_1",
+              "Output_2",
+              "Output_3"
+            ]
+          },
+          {
+            "id": "MaterialExpressionConstant3Vector_000001EC858B9E00",
+            "class": "Constant3Vector",
+            "class_full": "MaterialExpressionConstant3Vector",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "Constant": "(R=0.160000,G=0.210000,B=0.270000,A=1.000000)"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0",
+              "Output_1",
+              "Output_2",
+              "Output_3"
+            ]
+          },
+          {
+            "id": "MaterialExpressionConstant_000001EC8167B440",
+            "class": "Constant",
+            "class_full": "MaterialExpressionConstant",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "R": "0.650000"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionConstant_000001EC8167AFE0",
+            "class": "Constant",
+            "class_full": "MaterialExpressionConstant",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "R": "0.320000"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          }
+        ],
+        "connections": [],
+        "output_connections": [
+          {
+            "property": "BaseColor",
+            "expression_id": "MaterialExpressionConstant3Vector_000001EC858B9E00",
+            "output_index": 0,
+            "output_name": ""
+          },
+          {
+            "property": "Metallic",
+            "expression_id": "MaterialExpressionConstant_000001EC8167B440",
+            "output_index": 0,
+            "output_name": ""
+          },
+          {
+            "property": "Roughness",
+            "expression_id": "MaterialExpressionConstant_000001EC8167AFE0",
+            "output_index": 0,
+            "output_name": ""
+          }
+        ]
+      }
+    }
+  ],
+  "projectile_profile": {
+    "Name": "WM01_Missile",
+    "Id": 1,
+    "Note": "WM01追踪导弹；数值在发射时从本表冻结；厘米/秒、厘米、秒、度/秒",
+    "ProjectileAsset": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile",
+    "SpeedCentimetersPerSecond": 2400.0,
+    "LiftSeconds": 0.25,
+    "MinimumLiftHeightCentimeters": 160.0,
+    "MaximumLiftHeightCentimeters": 420.0,
+    "LateralOffsetCentimeters": 260.0,
+    "ConvergenceDistanceCentimeters": 700.0,
+    "TurnRateDegreesPerSecond": 240.0,
+    "SweepRadiusCentimeters": 6.0,
+    "MaximumLifetimeSeconds": 8.0,
+    "UnitTypeId": 2,
+    "SlotId": "MissileLauncher",
+    "SkillId": "WM01_HomingMissile",
+    "VerticalCurveCentimeters": 320.0,
+    "LongitudinalCurveCentimeters": 220.0,
+    "SmokeInitialWidthCentimeters": 63.0,
+    "SmokeMaximumWidthCentimeters": 99.0,
+    "FlameWidthCentimeters": 42.0,
+    "FlameLengthCentimeters": 108.0
+  },
+  "visual_parameters": {
+    "User.MissileSmokeInitialWidth": 63.0,
+    "User.MissileSmokeMaximumWidth": 99.0,
+    "User.MissileFlameWidth": 42.0,
+    "User.MissileFlameLength": 108.0
+  },
+  "vfx_rows": [
+    {
+      "Name": "MissileFlight",
+      "Id": 2,
+      "Note": "指挥官与僚机导弹飞行",
+      "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight.NS_WM01_MissileFlight",
+      "Scale": "(X=0.400000,Y=0.400000,Z=0.400000)"
+    },
+    {
+      "Name": "WM01MissileClusterFull",
+      "Id": 49,
+      "Note": "重防号GPU候选v2；每批按实际占用分配且最多64枚；24段2.4秒浓黑烟迹；弹体/尾焰/烟宽为v1的1.5倍",
+      "ResourcePath": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full",
+      "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)"
+    },
+    {
+      "Name": "WM01MissileClusterLite",
+      "Id": 50,
+      "Note": "重防号GPU候选v2；每批最多64枚；8段2.4秒浓黑烟迹；0.15秒平滑交接；旧烟迹自然消散",
+      "ResourcePath": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite",
+      "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)"
+    },
+    {
+      "Name": "WM01MissileClusterMinimal",
+      "Id": 51,
+      "Note": "重防号GPU候选v2；每批最多64枚；仅1.5倍弹体与短尾焰；尾焰峰值3倍；保留旧档烟迹自然消散",
+      "ResourcePath": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal",
+      "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)"
+    }
+  ],
+  "production_cluster_enabled": false,
+  "active_skill": {
+    "skill_id": "WM01_HomingMissile",
+    "range_source_slot": "BasicAttack",
+    "range_multiplier": "3.200000047683716",
+    "range_centimeters": "9600.0",
+    "cooldown_seconds": "6.0",
+    "configuration": "<Object '/Game/GuLiStrike/Commander/Skills/DA_WM01_MissileQ.DA_WM01_MissileQ' (0x000001ED6AF37440) Class 'GuLiPointSkillConfiguration'>"
+  },
+  "explosion_field": {
+    "Name": "WM01_MissileExplosion",
+    "Id": 1,
+    "Note": "WM01导弹命中后的即时球形法术场；伤害、范围和时序均在本行配置",
+    "FieldType": "Combat",
+    "Damage": 30,
+    "RadiusCentimeters": 300,
+    "Timing": "Instant",
+    "DelaySeconds": 0,
+    "DurationSeconds": 0,
+    "PulseIntervalSeconds": 1,
+    "DissipationSeconds": 3,
+    "Level": 0,
+    "bAllowPlayerVehicles": false,
+    "WindupSeconds": 0,
+    "RecoverySeconds": 0,
+    "BeamHeightCentimeters": 0,
+    "MaxTargetWaitSeconds": 0,
+    "MaxShipHeightCentimeters": 0,
+    "LaneHeightCentimeters": 0,
+    "AscentSeconds": 0,
+    "AccelerationSeconds": 0,
+    "DecelerationSeconds": 0,
+    "ExitFlashSeconds": 0,
+    "SpeedMultiplier": 0,
+    "ExitRadiusCentimeters": 0,
+    "EnergyVfxId": 0,
+    "TrailVfxId": 0,
+    "FlashVfxId": 0
+  },
+  "explosion_visual_reference_radius": 800.0
+}

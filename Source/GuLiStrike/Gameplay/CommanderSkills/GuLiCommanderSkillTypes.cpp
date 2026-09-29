@@ -11,6 +11,14 @@ const FGuLiActiveSkillDefinition* UGuLiCommanderSkillCatalog::FindUnitSkill(uint
 {
 	const FName* Id = UnitSkills.Find(UnitTypeId); return Id ? FindSkill(*Id) : nullptr;
 }
+const FGuLiActiveSkillDefinition* UGuLiCommanderSkillCatalog::FindAvailableUnitSkill(
+	UWorld& World, EGuLiTeam Team, uint16 UnitTypeId) const
+{
+	const auto* Definition=FindUnitSkill(UnitTypeId);
+	return Definition && Definition->ExecutorClass
+		&& Definition->ExecutorClass->GetDefaultObject<UGuLiCommanderSkillExecutor>()->IsAvailable(World,Team,UnitTypeId,Definition->Configuration)
+		? Definition : nullptr;
+}
 bool UGuLiCommanderSkillCatalog::Validate(FString& Error) const
 {
 	TSet<FName> Seen;

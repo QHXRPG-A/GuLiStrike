@@ -1,0 +1,388 @@
+{
+  "scope": "Editor standalone PIE, RTX 4090 / i9-14900KF; 500 mixed units. Median and p95, milliseconds unless count. No packaged performance claim.",
+  "discarded_initial_frames": 20,
+  "samples": [
+    {
+      "csv": "idle-160m-fx0.csv",
+      "distance_to_fixture_center_m": 160,
+      "fx": false,
+      "frames": 220,
+      "duration_seconds": 8.9010628,
+      "metrics": {
+        "frame_ms": {
+          "median": 38.9221,
+          "p95": 51.9501,
+          "min": 27.9481,
+          "max": 72.894
+        },
+        "game_ms": {
+          "median": 38.5428,
+          "p95": 52.8487,
+          "min": 27.5433,
+          "max": 70.5214
+        },
+        "draw_ms": {
+          "median": 0.0004,
+          "p95": 0.0014,
+          "min": 0.0002,
+          "max": 13.8046
+        },
+        "gpu_ms": {
+          "median": 6.24245,
+          "p95": 11.7596,
+          "min": 4.9158,
+          "max": 15.0363
+        },
+        "draw_calls": {
+          "median": 893.0,
+          "p95": 935.0,
+          "min": 0.0,
+          "max": 947.0
+        },
+        "nozzles": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "moving_nozzles": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "systems": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "gpu_slot_capacity": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    },
+    {
+      "csv": "idle-160m-fx1.csv",
+      "distance_to_fixture_center_m": 160,
+      "fx": true,
+      "frames": 220,
+      "duration_seconds": 8.0121064,
+      "metrics": {
+        "frame_ms": {
+          "median": 33.618700000000004,
+          "p95": 46.9433,
+          "min": 26.767,
+          "max": 142.9431
+        },
+        "game_ms": {
+          "median": 33.60225,
+          "p95": 48.3105,
+          "min": 26.4168,
+          "max": 142.3559
+        },
+        "draw_ms": {
+          "median": 0.0004,
+          "p95": 0.0018,
+          "min": 0.0002,
+          "max": 10.3587
+        },
+        "gpu_ms": {
+          "median": 6.0760000000000005,
+          "p95": 7.7073,
+          "min": 4.7491,
+          "max": 9.0752
+        },
+        "draw_calls": {
+          "median": 905.0,
+          "p95": 956.0,
+          "min": 839.0,
+          "max": 1200.0
+        },
+        "nozzles": {
+          "median": 0.0,
+          "p95": 15.0,
+          "min": 0.0,
+          "max": 22.0
+        },
+        "moving_nozzles": {
+          "median": 0.0,
+          "p95": 15.0,
+          "min": 0.0,
+          "max": 22.0
+        },
+        "systems": {
+          "median": 0.0,
+          "p95": 1.0,
+          "min": 0.0,
+          "max": 1.0
+        },
+        "gpu_slot_capacity": {
+          "median": 0.0,
+          "p95": 11264.0,
+          "min": 0.0,
+          "max": 11264.0
+        }
+      }
+    },
+    {
+      "csv": "idle-200m-fx0.csv",
+      "distance_to_fixture_center_m": 200,
+      "fx": false,
+      "frames": 220,
+      "duration_seconds": 8.9002938,
+      "metrics": {
+        "frame_ms": {
+          "median": 39.32015,
+          "p95": 51.7599,
+          "min": 27.8559,
+          "max": 85.8564
+        },
+        "game_ms": {
+          "median": 37.6377,
+          "p95": 50.9766,
+          "min": 29.159,
+          "max": 86.0238
+        },
+        "draw_ms": {
+          "median": 0.0004,
+          "p95": 0.0012,
+          "min": 0.0002,
+          "max": 9.7232
+        },
+        "gpu_ms": {
+          "median": 6.9462,
+          "p95": 13.3888,
+          "min": 5.5332,
+          "max": 16.8432
+        },
+        "draw_calls": {
+          "median": 962.0,
+          "p95": 1010.0,
+          "min": 0.0,
+          "max": 1308.0
+        },
+        "nozzles": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "moving_nozzles": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "systems": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "gpu_slot_capacity": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    },
+    {
+      "csv": "idle-200m-fx1.csv",
+      "distance_to_fixture_center_m": 200,
+      "fx": true,
+      "frames": 220,
+      "duration_seconds": 7.7454213,
+      "metrics": {
+        "frame_ms": {
+          "median": 32.61505,
+          "p95": 49.8178,
+          "min": 22.2694,
+          "max": 140.2573
+        },
+        "game_ms": {
+          "median": 32.52065,
+          "p95": 48.2014,
+          "min": 22.5224,
+          "max": 61.7347
+        },
+        "draw_ms": {
+          "median": 0.0003,
+          "p95": 0.0014,
+          "min": 0.0002,
+          "max": 0.0022
+        },
+        "gpu_ms": {
+          "median": 6.88535,
+          "p95": 8.5914,
+          "min": 5.4255,
+          "max": 10.8056
+        },
+        "draw_calls": {
+          "median": 999.0,
+          "p95": 1035.0,
+          "min": 0.0,
+          "max": 1349.0
+        },
+        "nozzles": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "moving_nozzles": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "systems": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "gpu_slot_capacity": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    },
+    {
+      "csv": "idle-360m-fx0.csv",
+      "distance_to_fixture_center_m": 360,
+      "fx": false,
+      "frames": 220,
+      "duration_seconds": 9.1301474,
+      "metrics": {
+        "frame_ms": {
+          "median": 39.1909,
+          "p95": 53.0591,
+          "min": 31.3897,
+          "max": 61.3972
+        },
+        "game_ms": {
+          "median": 39.19335,
+          "p95": 53.5846,
+          "min": 31.2138,
+          "max": 59.678
+        },
+        "draw_ms": {
+          "median": 0.0004,
+          "p95": 0.0015,
+          "min": 0.0002,
+          "max": 12.236
+        },
+        "gpu_ms": {
+          "median": 7.2639499999999995,
+          "p95": 14.3009,
+          "min": 5.8578,
+          "max": 19.597
+        },
+        "draw_calls": {
+          "median": 1077.0,
+          "p95": 1095.0,
+          "min": 1044.0,
+          "max": 1109.0
+        },
+        "nozzles": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "moving_nozzles": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "systems": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "gpu_slot_capacity": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    },
+    {
+      "csv": "idle-360m-fx1.csv",
+      "distance_to_fixture_center_m": 360,
+      "fx": true,
+      "frames": 220,
+      "duration_seconds": 7.5802151,
+      "metrics": {
+        "frame_ms": {
+          "median": 32.00895,
+          "p95": 47.1147,
+          "min": 23.9608,
+          "max": 55.8591
+        },
+        "game_ms": {
+          "median": 32.16425,
+          "p95": 46.424,
+          "min": 24.0001,
+          "max": 63.5578
+        },
+        "draw_ms": {
+          "median": 0.0004,
+          "p95": 0.0015,
+          "min": 0.0002,
+          "max": 0.0086
+        },
+        "gpu_ms": {
+          "median": 7.0219000000000005,
+          "p95": 13.5246,
+          "min": 5.6287,
+          "max": 15.989
+        },
+        "draw_calls": {
+          "median": 1074.5,
+          "p95": 1095.0,
+          "min": 0.0,
+          "max": 1473.0
+        },
+        "nozzles": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "moving_nozzles": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "systems": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "gpu_slot_capacity": {
+          "median": 0.0,
+          "p95": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    }
+  ],
+  "deltas": [],
+  "valid_for_effect_cost_comparison": false,
+  "invalid_reason": "Army moved away from the fixed initial camera; all FX-on captures have median zero active nozzles. Deltas do not measure hover overhead.",
+  "draw_timing_status": "Unavailable: near-zero RenderThreadTime counter is not a valid Draw timing."
+}

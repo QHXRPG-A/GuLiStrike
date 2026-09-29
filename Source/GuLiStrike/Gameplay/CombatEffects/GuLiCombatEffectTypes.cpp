@@ -40,6 +40,8 @@ bool FGuLiProjectileMotionSettings::IsValid() const
 		&& FMath::IsFinite(MinimumLiftHeight) && MinimumLiftHeight >= 0
 		&& FMath::IsFinite(MaximumLiftHeight) && MaximumLiftHeight >= MinimumLiftHeight && MaximumLiftHeight <= 100000
 		&& FMath::IsFinite(LateralOffset) && LateralOffset >= 0 && LateralOffset <= 100000
+		&& FMath::IsFinite(VerticalCurve) && VerticalCurve >= 0 && VerticalCurve <= 100000
+		&& FMath::IsFinite(LongitudinalCurve) && LongitudinalCurve >= 0 && LongitudinalCurve <= 100000
 		&& FMath::IsFinite(ConvergenceDistance) && ConvergenceDistance > 0
 		&& FMath::IsFinite(TurnRate) && TurnRate > 0 && TurnRate <= 1080
 		&& FMath::IsFinite(SweepRadius) && SweepRadius >= 0 && SweepRadius <= 10000
@@ -53,7 +55,8 @@ bool FGuLiCombatEffectState::IsWellFormed() const
 		|| EndReason > EGuLiCombatEffectEndReason::Blocked) return false;
 	// A terminal wire record only identifies what to remove. It carries no cast payload.
 	if (Phase == EGuLiCombatEffectPhase::Finished)
-		return Kind != EGuLiCombatEffectKind::LinearProjectile || (!Location.ContainsNaN() && FMath::IsFinite(SampleTime));
+		return (Kind != EGuLiCombatEffectKind::LinearProjectile && Kind != EGuLiCombatEffectKind::Projectile)
+			|| (!Location.ContainsNaN() && FMath::IsFinite(SampleTime));
 	if (!Source.IsValid()
 		|| Location.ContainsNaN() || Velocity.ContainsNaN() || LastTargetLocation.ContainsNaN()
 		|| LaunchLocation.ContainsNaN() || LaunchDirection.ContainsNaN()
@@ -158,6 +161,11 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 		}
 		bOutSuccess = !Ar.IsError() && bVector && IsWellFormed(); return bMapped;
 	}
+	if (Phase == EGuLiCombatEffectPhase::Finished && Kind == EGuLiCombatEffectKind::Projectile)
+	{
+		// Preserve the authority impact point for the last historical trail segment.
+		Location.NetSerialize(Ar, Map, bVector); Ar << SampleTime;
+	}
 	if (Phase != EGuLiCombatEffectPhase::Finished)
 	{
 		SerializeEffectTarget(Ar,Source,MatchEpoch); SerializeEffectTarget(Ar,Target,MatchEpoch);
@@ -178,7 +186,8 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 			LastTargetLocation.NetSerialize(Ar,Map,bVector); LaunchDirection.NetSerialize(Ar,Map,bVector);
 			Ar << bFixedPoint;
 			Ar << Motion.Speed << Motion.LiftSeconds << Motion.MinimumLiftHeight << Motion.MaximumLiftHeight
-				<< Motion.LateralOffset << Motion.ConvergenceDistance << Motion.TurnRate << Motion.SweepRadius << Motion.MaximumLifetime;
+				<< Motion.LateralOffset << Motion.VerticalCurve << Motion.LongitudinalCurve
+				<< Motion.ConvergenceDistance << Motion.TurnRate << Motion.SweepRadius << Motion.MaximumLifetime;
 		}
 		else if (Kind == EGuLiCombatEffectKind::SpellField)
 		{
@@ -227,6 +236,16 @@ bool FGuLiCombatShotCue::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOut
 	FVector_NetQuantize Muzzle(MuzzleOffset); Muzzle.NetSerialize(Ar, Map, bVector);
 	if (Ar.IsLoading()) MuzzleOffset = Muzzle;
 	Start.NetSerialize(Ar,Map,bVector); End.NetSerialize(Ar,Map,bVector); Ar << ServerTime;
+	uint8 Mechanical = bMechanicalShot;
+	Ar.SerializeBits(&Mechanical, 1);
+	if (Ar.IsLoading()) bMechanicalShot = Mechanical != 0;
+	if (bMechanicalShot)
+	{
+		MuzzleDirection.NetSerialize(Ar, Map, bVector);
+		Ar << RecoilFromCentimeters << MechanicalPoseTimeSeconds;
+		if (!FMath::IsFinite(MechanicalPoseTimeSeconds) || MechanicalPoseTimeSeconds < 0
+			|| !FMath::IsFinite(RecoilFromCentimeters) || RecoilFromCentimeters < 0 || RecoilFromCentimeters > 100 || MuzzleIndex > 1) Ar.SetError();
+	}
 	bOutSuccess=!Ar.IsError() && bVector && Type<=MAX_uint16 && ShotId.IsValid() && FMath::IsFinite(ServerTime);
 	return true;
 }
@@ -261,7 +280,23 @@ FVector GuLiCombatEffects::AdvanceProjectile(FGuLiCombatEffectState& State, cons
 	const float Side = Random.FRandRange(-State.Motion.LateralOffset, State.Motion.LateralOffset);
 	const FVector Right = FVector::CrossProduct(FVector::UpVector, ToTarget.GetSafeNormal2D()).GetSafeNormal();
 	const float Envelope = FMath::Clamp(static_cast<float>(Distance) / State.Motion.ConvergenceDistance, 0.0f, 1.0f);
-	const FVector Desired = (ToTarget + Right * Side * Envelope * FMath::Sin(NewAge * 3.0f)).GetSafeNormal();
+	FVector Curve = Right * Side * Envelope * FMath::Sin(NewAge * 3.0f);
+	if (State.Motion.VerticalCurve > 0 || State.Motion.LongitudinalCurve > 0)
+	{
+		const float Phase = Random.FRandRange(-PI, PI);
+		const float Frequency = Random.FRandRange(1.7f, 3.8f);
+		const float Vertical = Random.FRandRange(0.35f, 1.0f) * State.Motion.VerticalCurve;
+		const float Longitudinal = Random.FRandRange(-1.0f, 1.0f) * State.Motion.LongitudinalCurve;
+		const float SmoothEnvelope = Envelope * Envelope * (3.0f - 2.0f * Envelope);
+		const float Departure = FMath::Clamp((NewAge - State.Motion.LiftSeconds) / 0.3f, 0.0f, 1.0f);
+		// Offsets vanish with zero slope near impact. Each missile owns its height,
+		// frequency, phase and fore/aft bend; none is driven by client frame randomness.
+		Curve = (Right * Side * FMath::Sin(NewAge * Frequency + Phase)
+			+ FVector::UpVector * Vertical * (0.6f + 0.4f * FMath::Sin(NewAge * Frequency * 0.73f - Phase))
+			+ FVector(State.LaunchDirection).GetSafeNormal2D() * Longitudinal * FMath::Sin(NewAge * Frequency * 0.61f + Phase))
+			* SmoothEnvelope * Departure;
+	}
+	const FVector Desired = (ToTarget + Curve).GetSafeNormal();
 	FVector Direction = FVector(State.Velocity).GetSafeNormal();
 	if (Direction.IsNearlyZero()) Direction = Desired;
 	const double Angle = FMath::Acos(FMath::Clamp(FVector::DotProduct(Direction, Desired), -1.0, 1.0));

@@ -1,0 +1,177 @@
+{
+  "success": true,
+  "tables": [
+    {
+      "asset": "DT_GuLiStrikeSecondaryWeapons_Projectiles",
+      "source_rows": [
+        "WM01_Missile"
+      ],
+      "created": false,
+      "row_names": [
+        "WM01_Missile"
+      ],
+      "row_checks": {
+        "WM01_Missile": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeSpellFields_Fields",
+      "source_rows": [
+        "WM01_MissileExplosion",
+        "WingmanGroundMissile",
+        "Teleport_L1",
+        "Teleport_L2",
+        "Teleport_L3",
+        "Teleport_L4",
+        "StrongholdTransit"
+      ],
+      "created": false,
+      "imported": true,
+      "unchanged": true,
+      "row_names": [
+        "WM01_MissileExplosion",
+        "WingmanGroundMissile",
+        "Teleport_L1",
+        "Teleport_L2",
+        "Teleport_L3",
+        "Teleport_L4",
+        "StrongholdTransit"
+      ],
+      "row_checks": {
+        "WM01_MissileExplosion": true,
+        "WingmanGroundMissile": true,
+        "Teleport_L1": true,
+        "Teleport_L2": true,
+        "Teleport_L3": true,
+        "Teleport_L4": true,
+        "StrongholdTransit": true
+      }
+    },
+    {
+      "asset": "DT_GuLiStrikeCommander_UnitSkills",
+      "source_rows": [
+        "SoldierA_Strafe",
+        "WM01_Strafe",
+        "SoldierA_Test",
+        "WM01_Test",
+        "WM01_MissileLauncher"
+      ],
+      "created": false,
+      "row_names": [
+        "SoldierA_Strafe",
+        "WM01_Strafe",
+        "SoldierA_Test",
+        "WM01_Test",
+        "WM01_MissileLauncher"
+      ],
+      "row_checks": {
+        "SoldierA_Strafe": true,
+        "WM01_Strafe": true,
+        "SoldierA_Test": true,
+        "WM01_Test": true,
+        "WM01_MissileLauncher": true
+      },
+      "imported": true
+    }
+  ],
+  "profiles": [
+    {
+      "asset": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile",
+      "row": "WM01_Missile",
+      "visual": {
+        "smoke_initial_width_centimeters": 63.0,
+        "smoke_maximum_width_centimeters": 99.0,
+        "flame_width_centimeters": 42.0,
+        "flame_length_centimeters": 108.0
+      },
+      "niagara_defaults": [
+        {
+          "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full",
+          "status": "verified",
+          "changed": false,
+          "parameters": {
+            "User.MissileSmokeInitialWidth": 63.0,
+            "User.MissileSmokeMaximumWidth": 99.0,
+            "User.MissileFlameWidth": 42.0,
+            "User.MissileFlameLength": 108.0
+          }
+        },
+        {
+          "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite",
+          "status": "verified",
+          "changed": false,
+          "parameters": {
+            "User.MissileSmokeInitialWidth": 63.0,
+            "User.MissileSmokeMaximumWidth": 99.0,
+            "User.MissileFlameWidth": 42.0,
+            "User.MissileFlameLength": 108.0
+          }
+        },
+        {
+          "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal",
+          "status": "verified",
+          "changed": false,
+          "parameters": {
+            "User.MissileSmokeInitialWidth": 63.0,
+            "User.MissileSmokeMaximumWidth": 99.0,
+            "User.MissileFlameWidth": 42.0,
+            "User.MissileFlameLength": 108.0
+          }
+        },
+        {
+          "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewFull",
+          "status": "verified",
+          "changed": false,
+          "parameters": {
+            "User.MissileSmokeInitialWidth": 63.0,
+            "User.MissileSmokeMaximumWidth": 99.0,
+            "User.MissileFlameWidth": 42.0,
+            "User.MissileFlameLength": 108.0,
+            "User.MissilePreviewSpeedRatio": 2.0
+          }
+        },
+        {
+          "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewLite",
+          "status": "verified",
+          "changed": false,
+          "parameters": {
+            "User.MissileSmokeInitialWidth": 63.0,
+            "User.MissileSmokeMaximumWidth": 99.0,
+            "User.MissileFlameWidth": 42.0,
+            "User.MissileFlameLength": 108.0,
+            "User.MissilePreviewSpeedRatio": 2.0
+          }
+        },
+        {
+          "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_PreviewMinimal",
+          "status": "verified",
+          "changed": false,
+          "parameters": {
+            "User.MissileSmokeInitialWidth": 63.0,
+            "User.MissileSmokeMaximumWidth": 99.0,
+            "User.MissileFlameWidth": 42.0,
+            "User.MissileFlameLength": 108.0,
+            "User.MissilePreviewSpeedRatio": 2.0
+          }
+        }
+      ],
+      "resolved": {
+        "speed": 2400.0,
+        "lift_seconds": 0.25,
+        "minimum_lift_height": 160.0,
+        "maximum_lift_height": 420.0,
+        "lateral_offset": 260.0,
+        "convergence_distance": 700.0,
+        "vertical_curve": 320.0,
+        "longitudinal_curve": 220.0,
+        "turn_rate": 240.0,
+        "sweep_radius": 6.0,
+        "maximum_lifetime": 8.0
+      }
+    }
+  ],
+  "explosion_visual_reference_radius": 800.0,
+  "vfx_registry_unchanged": true,
+  "production_cluster_enabled": false
+}

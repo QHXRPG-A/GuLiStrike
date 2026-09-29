@@ -2,7 +2,7 @@
 
 ## 三棵资产与单位绑定
 ### ST_CommanderMass｜据点推进｜18 状态
-> 扫荡者、战争机器共用此资产；Mass Schema；InitialOnce；每单位独立运行实例。
+> 扫荡者、重防号共用此资产；Mass Schema；InitialOnce；每单位独立运行实例。
 ### ST_CommanderMiner｜采矿返厂｜57 状态
 > 矿车使用；Actor Schema；Persistent；每车独立运行实例。
 ### ST_CommanderBuilder｜建造｜18 状态

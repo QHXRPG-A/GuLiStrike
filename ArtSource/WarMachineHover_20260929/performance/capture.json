@@ -1,0 +1,81 @@
+{
+  "success": true,
+  "error": null,
+  "scope": "Invalid pilot: 500 mixed bodies at start, uncontrolled moving formations, fixed stale camera",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "viewport": [
+    1280,
+    724
+  ],
+  "settings": {
+    "r.ScreenPercentage": 0.0,
+    "r.DynamicRes.OperationMode": 0.0,
+    "r.VSync": 0.0,
+    "t.MaxFPS": 0.0,
+    "sg.ViewDistanceQuality": 3.0,
+    "sg.AntiAliasingQuality": 3.0,
+    "sg.ShadowQuality": 3.0,
+    "sg.GlobalIlluminationQuality": 3.0,
+    "sg.ReflectionQuality": 3.0,
+    "sg.PostProcessQuality": 3.0,
+    "sg.TextureQuality": 3.0,
+    "sg.EffectsQuality": 3.0,
+    "sg.FoliageQuality": 3.0,
+    "sg.ShadingQuality": 3.0
+  },
+  "camera_center": [
+    290.0102815382107,
+    66206.2515861364,
+    -1768.1134228422445
+  ],
+  "body_counts": {
+    "UnitInstances": 0,
+    "UnitInstances_Type_2": 0,
+    "UnitInstances_Type_1_Team_1": 125,
+    "UnitInstances_Type_2_Team_1": 125,
+    "UnitInstances_Type_1_Team_2": 125,
+    "UnitInstances_Type_2_Team_2": 125
+  },
+  "records": [
+    {
+      "csv": "idle-160m-fx0.csv",
+      "distance_to_fixture_center_cm": 16000,
+      "fx": false,
+      "time_seconds": 252.83314117789268
+    },
+    {
+      "csv": "idle-160m-fx1.csv",
+      "distance_to_fixture_center_cm": 16000,
+      "fx": true,
+      "time_seconds": 268.65146178007126
+    },
+    {
+      "csv": "idle-200m-fx0.csv",
+      "distance_to_fixture_center_cm": 20000,
+      "fx": false,
+      "time_seconds": 283.77721958234906
+    },
+    {
+      "csv": "idle-200m-fx1.csv",
+      "distance_to_fixture_center_cm": 20000,
+      "fx": true,
+      "time_seconds": 299.9783083796501
+    },
+    {
+      "csv": "idle-360m-fx0.csv",
+      "distance_to_fixture_center_cm": 36000,
+      "fx": false,
+      "time_seconds": 314.8434877805412
+    },
+    {
+      "csv": "idle-360m-fx1.csv",
+      "distance_to_fixture_center_cm": 36000,
+      "fx": true,
+      "time_seconds": 331.376900780946
+    }
+  ],
+  "requested_frames_per_capture": 240,
+  "warmup_frames": 120,
+  "valid_for_effect_cost_comparison": false,
+  "invalid_reason": "Army moved away from the fixed initial camera; all FX-on captures have median zero active nozzles. Deltas do not measure hover overhead."
+}

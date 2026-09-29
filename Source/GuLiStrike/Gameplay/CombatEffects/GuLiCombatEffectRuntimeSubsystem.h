@@ -82,6 +82,8 @@ public:
 		float DurationSeconds, float StopDistanceCentimeters, float OrbitRadiusCentimeters, float CooldownSeconds);
 	int32 CancelWingmanGunBurst(const FGuLiWingmanHandle& Emitter, bool bClearCooldown = false);
 	FGuid LaunchPointProjectile(const FGuLiCombatAttackRequest& Request);
+	/** Prepares every missile and source lease before publishing any part of a salvo. */
+	bool LaunchPointProjectiles(TConstArrayView<FGuLiCombatAttackRequest> Requests, TArray<FGuid>& OutIds);
 	void BuildActiveSnapshot(TArray<FGuLiCombatEffectState>& OutStates, bool bIncludeGroundProjectiles = true) const;
 	void BuildGroundProjectileSnapshot(TArray<FGuLiCombatEffectState>& OutStates) const;
 	uint32 GetEffectEpoch() const { return Epoch; }
@@ -95,6 +97,7 @@ private:
 	friend struct FGuLiWingmanAttackCombatTestAccess;
 	bool SynchronizeEpoch();
 	bool PrepareContext(const FGuLiCombatEffectContext& Input, FGuLiCombatEffectContext& Output);
+	bool PreparePointProjectile(const FGuLiCombatAttackRequest& Request, FGuLiRuntimeCombatEffect& Instance);
 	bool ResolveFieldConfig(UGuLiSpellFieldDefinition* Definition, const FGuLiCombatEffectContext& Input,
 		FGuLiSpellFieldConfig& OutConfig, FGuLiCombatEffectContext& OutContext);
 	FGuid CreateFieldInternal(UGuLiSpellFieldDefinition* Definition, const FGuLiCombatEffectContext& Context, FVector Location,

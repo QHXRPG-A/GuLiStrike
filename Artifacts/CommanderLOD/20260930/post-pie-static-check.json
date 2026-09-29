@@ -1,0 +1,34 @@
+{
+  "success": true,
+  "scope": "Source/interface review and Python AST only; no native compile or post-fix PIE",
+  "changed_since_runtime_baseline": [
+    "Source\\GuLiStrikeEditor\\Private\\GuLiMissileFixture.cpp",
+    "Scripts\\author_commander_lod_scene.py"
+  ],
+  "runtime_lod_and_missile_sources_unchanged": true,
+  "fixture_fix": {
+    "source": "Source\\GuLiStrikeEditor\\Private\\GuLiMissileFixture.cpp",
+    "sha256": "f7e036bd7b68c7649fea44a10a42cefc612862b7d5a2cb4423078623f2ec8cb4",
+    "radius_source": "UGuLiCommanderDataSubsystem::FindSoldierDefinition(2)->GetMassAvoidanceRadius",
+    "wm01_width_m": 12.5,
+    "expected_spacing_cm": 1270.0,
+    "interfaces_reviewed": [
+      "FindSoldierDefinition(uint16)",
+      "GetMassAvoidanceRadius(float)",
+      "UGuLiUnitTaskSubsystem::Submit(owner,selection,command,message,accepted,rejected)",
+      "FGuLiUnitTaskCommand::IsWellFormed"
+    ],
+    "stop_command_id_and_selection_revision_nonzero": true,
+    "cohort_limit": 25,
+    "selection_scoped_to_fixture_ids": true,
+    "module_dependency": "Existing GuLiStrikeEditor -> GuLiStrike; no Build.cs change",
+    "loaded": false,
+    "native_build": "not_run",
+    "runtime_retest": "not_run"
+  },
+  "python_ast": "passed",
+  "map_saved": true,
+  "map_related_actor_count": 15,
+  "scene_marks_fixture_build_pending": true,
+  "performance": "not_run"
+}

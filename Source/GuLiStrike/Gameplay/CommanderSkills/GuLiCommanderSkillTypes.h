@@ -4,12 +4,14 @@
 #include "Engine/DataAsset.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "Battle/Contracts/GuLiWingmanProtocolTypes.h"
+#include "Gameplay/Presentation/GuLiMechanicalAnimation.h"
 #include "GuLiCommanderSkillTypes.generated.h"
 
 class AGuLiBattlePlayerState;
 class UGuLiCommanderSkillExecutor;
 class UGuLiProjectileEffectDefinition;
 class UGuLiGroundWarningStyle;
+class UWorld;
 
 UENUM(BlueprintType)
 enum class EGuLiActiveSkillScope : uint8 { Unit, Global };
@@ -72,6 +74,8 @@ struct FGuLiActiveSkillExecutionContext
 	UPROPERTY(BlueprintReadOnly) FGuLiTargetHandle Source;
 	UPROPERTY(BlueprintReadOnly) FName SkillId;
 	UPROPERTY(BlueprintReadOnly) FTransform SourceTransform;
+	FGuLiMechanicalAnimationState MechanicalPose;
+	bool bHasMechanicalPose = false;
 	UPROPERTY(BlueprintReadOnly) FVector GroundPoint = FVector::ZeroVector;
 	UPROPERTY(BlueprintReadOnly) FGuid RequestId;
 	UPROPERTY(BlueprintReadOnly) FGuid CastId;
@@ -143,6 +147,7 @@ public:
 	bool Validate(FString& Error) const;
 	const FGuLiActiveSkillDefinition* FindSkill(FName Id) const;
 	const FGuLiActiveSkillDefinition* FindUnitSkill(uint16 UnitTypeId) const;
+	const FGuLiActiveSkillDefinition* FindAvailableUnitSkill(UWorld& World, EGuLiTeam Team, uint16 UnitTypeId) const;
 };
 
 UCLASS(Config=Game, DefaultConfig)
@@ -160,6 +165,7 @@ class GULISTRIKE_API UGuLiCommanderSkillExecutor : public UObject
 	GENERATED_BODY()
 public:
 	virtual bool ValidateDefinition(const FGuLiActiveSkillDefinition& Definition, FString& Error) const;
+	virtual bool IsAvailable(UWorld& World, EGuLiTeam Team, uint16 UnitTypeId, const UDataAsset* Configuration) const { return true; }
 	virtual FGuLiActiveSkillExecutionResult Execute(const FGuLiActiveSkillExecutionContext& Context, const UDataAsset* Configuration) const;
 };
 

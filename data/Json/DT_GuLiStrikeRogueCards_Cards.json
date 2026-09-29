@@ -2,7 +2,7 @@
   {
     "Name": "WM01_FireRate_Lv1",
     "Id": "01.01",
-    "Note": "己方本局所有现有及后续战争机器：增加射速；独立来源逐次乘算。",
+    "Note": "己方本局所有现有及后续重防号：增加射速；独立来源逐次乘算。",
     "Type": 1,
     "TextIds": [
       "Card.WM01.FireRate.Title",
@@ -14,12 +14,16 @@
     "FrontMaterial": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_ModelComic_v9.MI_FireRate_ModelComic_v9",
     "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
     "UpgradeVfxScale": 6.0,
-    "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)"
+    "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+    "RequiredCardIds": [],
+    "ExcludedCardIds": [],
+    "MaxAcquisitions": 0,
+    "BonusCount": 0
   },
   {
     "Name": "WM01_MoveSpeed_Lv1",
     "Id": "02.01",
-    "Note": "己方本局所有现有及后续战争机器：极速机动；独立来源逐次乘算。",
+    "Note": "己方本局所有现有及后续重防号：极速机动；独立来源逐次乘算。",
     "Type": 1,
     "TextIds": [
       "Card.WM01.HighSpeed.Title",
@@ -31,12 +35,16 @@
     "FrontMaterial": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_ModelComic_v9.MI_HighSpeed_ModelComic_v9",
     "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
     "UpgradeVfxScale": 6.0,
-    "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)"
+    "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+    "RequiredCardIds": [],
+    "ExcludedCardIds": [],
+    "MaxAcquisitions": 0,
+    "BonusCount": 0
   },
   {
     "Name": "WM01_MissileDamage_Lv1",
     "Id": "03.01",
-    "Note": "己方本局所有现有及后续战争机器：增加导弹伤害；独立来源逐次乘算。",
+    "Note": "己方本局所有现有及后续重防号：增加导弹伤害；独立来源逐次乘算。",
     "Type": 1,
     "TextIds": [
       "Card.WM01.MissileDamage.Title",
@@ -48,6 +56,56 @@
     "FrontMaterial": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_ModelComic_v9.MI_MissileDamage_ModelComic_v9",
     "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
     "UpgradeVfxScale": 6.0,
-    "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)"
+    "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+    "RequiredCardIds": [
+      "04.01"
+    ],
+    "ExcludedCardIds": [],
+    "MaxAcquisitions": 0,
+    "BonusCount": 0
+  },
+  {
+    "Name": "WM01_MissilePod_Lv1",
+    "Id": "04.01",
+    "Note": "己方本局当前及后续重防号：重防导弹仓。解锁导弹技能与导弹仓，每队一次。",
+    "Type": 1,
+    "TextIds": [
+      "Card.WM01.MissilePod.Title",
+      "Card.WM01.MissilePod.Description"
+    ],
+    "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardMissilePodEffect",
+    "UnitTypeId": 2,
+    "BonusPercent": 0.0,
+    "FrontMaterial": "/Game/GuLiStrike/Cards/Commander/WM01/MissilePod/Materials/MI_MissilePod_ModelComic_v1.MI_MissilePod_ModelComic_v1",
+    "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+    "UpgradeVfxScale": 6.0,
+    "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+    "RequiredCardIds": [],
+    "ExcludedCardIds": [],
+    "MaxAcquisitions": 1,
+    "BonusCount": 0
+  },
+  {
+    "Name": "WM01_RainSalvo_Lv1",
+    "Id": "05.01",
+    "Note": "己方本局当前及后续重防号：雨点攻势。每次Q的同时齐射数量加1，可重复叠加。",
+    "Type": 1,
+    "TextIds": [
+      "Card.WM01.RainSalvo.Title",
+      "Card.WM01.RainSalvo.Description"
+    ],
+    "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardMissileCountEffect",
+    "UnitTypeId": 2,
+    "BonusPercent": 0.0,
+    "FrontMaterial": "/Game/GuLiStrike/Cards/Commander/WM01/RainSalvo/Materials/MI_RainSalvo_ModelComic_v1.MI_RainSalvo_ModelComic_v1",
+    "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+    "UpgradeVfxScale": 6.0,
+    "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+    "RequiredCardIds": [
+      "04.01"
+    ],
+    "ExcludedCardIds": [],
+    "MaxAcquisitions": 0,
+    "BonusCount": 1
   }
 ]

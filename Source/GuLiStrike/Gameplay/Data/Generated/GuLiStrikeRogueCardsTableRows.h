@@ -43,7 +43,7 @@ struct FGuLiStrikeRogueCardsCardsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
 	int32 UnitTypeId = 0;
 
-	/** BonusPercent (float, Necessary) */
+	/** BonusPercent (float, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
 	float BonusPercent = 0.0f;
 
@@ -62,5 +62,21 @@ struct FGuLiStrikeRogueCardsCardsRow : public FTableRowBase
 	/** UpgradeVfxColor (str, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
 	FString UpgradeVfxColor;
+
+	/** RequiredCardIds (str[], Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	TArray<FString> RequiredCardIds;
+
+	/** ExcludedCardIds (str[], Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	TArray<FString> ExcludedCardIds;
+
+	/** MaxAcquisitions (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	int32 MaxAcquisitions = 0;
+
+	/** BonusCount (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	int32 BonusCount = 0;
 
 };

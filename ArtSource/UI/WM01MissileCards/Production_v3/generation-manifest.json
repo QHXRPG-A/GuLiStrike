@@ -1,0 +1,61 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "raw_images_unchanged": true,
+  "records": [
+    {
+      "card": "MissilePod",
+      "kind": "Outpaint",
+      "path": "ArtSource/UI/WM01MissileCards/Production_v3/MissilePod_Outpaint.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "sha256": "2dfa1c4f530a36dfa1b3e8c2f137f74541adc815fcca7717aadfafe0295baf64",
+      "prompt_sha256": "ca70c673485e8477d957fb67055cdd8ea65be3fcd91e31231ab1ad8828307474"
+    },
+    {
+      "card": "MissilePod",
+      "kind": "Layers",
+      "path": "ArtSource/UI/WM01MissileCards/Production_v3/MissilePod_Layers.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "8c34bc6fdc1d34a40bf443e813291bb5c97c8583803c439478f15be4d44d30c2",
+      "prompt_sha256": "599198f817fca46abf0eba266266306e3a1a7ec7f0b90b2a3c1212a334a9d03a"
+    },
+    {
+      "card": "RainSalvo",
+      "kind": "Outpaint",
+      "path": "ArtSource/UI/WM01MissileCards/Production_v3/RainSalvo_Outpaint.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "sha256": "d7520e699b50de808cd1fd043cb5c701b6e7ddac8a04bae414dae5759919c622",
+      "prompt_sha256": "d101c234ca0fa6ee0a6995f75faa7ab0a36c643c5ab7af7a988b86ef0ec918c0"
+    },
+    {
+      "card": "RainSalvo",
+      "kind": "Layers",
+      "path": "ArtSource/UI/WM01MissileCards/Production_v3/RainSalvo_Layers.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "a262318fa7ac7e09302eb42a6d6e81ee5e7a23a8ae17945c2a54527789423de1",
+      "prompt_sha256": "be04d0f604b478671c7023adc295f2e36415e1cbc1f46575df0329be8f6b1578"
+    }
+  ],
+  "user_instructions": {
+    "MissilePod": "three arms together in layer 2",
+    "RainSalvo": "blue bonus missile + opaque green +1 alone in layer 2"
+  },
+  "visual_review": "Layer assignment present; expanded art and six-layer alignment still require UE composition review. Exact 40% margin not verified.",
+  "ue_import": "not_yet_imported",
+  "user_layer_acceptance": "pending"
+}

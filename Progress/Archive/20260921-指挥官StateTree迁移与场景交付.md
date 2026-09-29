@@ -22,7 +22,7 @@ status_note: 用户已批准内部阶段迁移、必要网络接口适配及编�
 
 用户批准为所有指挥官单位接入StateTree，并进一步允许迁移矿车、建造组件与据点推进Subsystem的内部流程控制。保留移动、寻路、避让、资源结算和推进分组预算；网络接口允许必要适配，10Hz任务、5Hz摘要及原同步参数保持。Mass接线范围为生成时加入树数据、调参迁移保留数据和运行句柄。
 
-最终使用3棵共享资产：扫荡者与战争机器绑定ST_CommanderMass，电磁矿车绑定ST_CommanderMiner，建造车绑定ST_CommanderBuilder。Actor由组件执行，Mass采用原生Schema、ExecutionContext与实例存储，每单位独立实例；Processor按原任务节拍批量执行。任务Subsystem保留命令队列、版本、异步寻路批次和摘要，树通过版本化桥接请求调用原能力。采矿、施工和据点推进的阶段选择已进入树。
+最终使用3棵共享资产：扫荡者与重防号绑定ST_CommanderMass，电磁矿车绑定ST_CommanderMiner，建造车绑定ST_CommanderBuilder。Actor由组件执行，Mass采用原生Schema、ExecutionContext与实例存储，每单位独立实例；Processor按原任务节拍批量执行。任务Subsystem保留命令队列、版本、异步寻路批次和摘要，树通过版本化桥接请求调用原能力。采矿、施工和据点推进的阶段选择已进入树。
 
 删除GuLiStrikeSpecialTasks源表、生成行结构、JSON/CSV、manifest条目、专用脚本、Catalog与Executor；旧DataTable在资产引用为空后删除。网络Special、SpecialTaskId及编号兼容保留。Soldiers新增StateTreeAsset，原13列不变。5条旧执行器错误提示仍使用原文本ID，仅修改GameTexts来源介绍并导入；玩家显示文本不变。标准导出仍为18张表。
 

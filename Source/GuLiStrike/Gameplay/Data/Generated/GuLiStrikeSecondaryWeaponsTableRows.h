@@ -79,4 +79,28 @@ struct FGuLiStrikeSecondaryWeaponsProjectilesRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectiles")
 	FString SkillId;
 
+	/** VerticalCurveCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectiles")
+	float VerticalCurveCentimeters = 0.0f;
+
+	/** LongitudinalCurveCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectiles")
+	float LongitudinalCurveCentimeters = 0.0f;
+
+	/** SmokeInitialWidthCentimeters (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectiles")
+	float SmokeInitialWidthCentimeters = 0.0f;
+
+	/** SmokeMaximumWidthCentimeters (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectiles")
+	float SmokeMaximumWidthCentimeters = 0.0f;
+
+	/** FlameWidthCentimeters (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectiles")
+	float FlameWidthCentimeters = 0.0f;
+
+	/** FlameLengthCentimeters (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectiles")
+	float FlameLengthCentimeters = 0.0f;
+
 };

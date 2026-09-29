@@ -1,0 +1,366 @@
+{
+  "frame": 310,
+  "frames": [
+    {
+      "frame": 18,
+      "seconds": 0.3,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\start.png"
+    },
+    {
+      "frame": 60,
+      "seconds": 1.0,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\flight.png"
+    },
+    {
+      "frame": 112,
+      "seconds": 1.8666666666666667,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\long_tail.png"
+    },
+    {
+      "frame": 138,
+      "seconds": 2.3,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\peak_tail.png"
+    },
+    {
+      "frame": 156,
+      "seconds": 2.6,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\impact.png"
+    },
+    {
+      "frame": 174,
+      "seconds": 2.9,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\dissipating.png"
+    },
+    {
+      "frame": 252,
+      "seconds": 4.2,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\late_tail.png"
+    },
+    {
+      "frame": 306,
+      "seconds": 5.1,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\Minimal\\cleared.png"
+    }
+  ],
+  "complete": true,
+  "quality": "Minimal",
+  "ready_wait_frames": 0,
+  "visual_revision": 2,
+  "capture_conditions": {
+    "resolution": [
+      1280,
+      720
+    ],
+    "fov": 42,
+    "manual_exposure_bias": 0,
+    "physical_camera_exposure": false,
+    "camera_location": [
+      100,
+      -3900,
+      2400
+    ],
+    "camera_target": [
+      1000,
+      0,
+      400
+    ],
+    "flight_seconds": 2.4,
+    "tail_seconds": 2.4,
+    "comparison": "Same camera, exposure and four illustrative trajectories as Candidate_v1; no PIE."
+  },
+  "gpu_snapshot": {
+    "captured": true,
+    "seconds": 1.0833333333333333,
+    "active": true,
+    "visible": true,
+    "bounds": "(<Struct 'Vector' (0x000001B160396B80) {x: 1300.000000, y: 0.000000, z: 500.000000}>, <Struct 'Vector' (0x000001B160360330) {x: 1900.000000, y: 1400.000000, z: 1500.000000}>, 2796.42626953125)",
+    "emitters": [
+      {
+        "name": "Body",
+        "count": 4,
+        "slots": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "visible_count": 4,
+        "sizes": [],
+        "positions": [
+          [
+            977.8692016601562,
+            -190.48117065429688,
+            515.7263793945312
+          ],
+          [
+            977.8692016601562,
+            -166.52159118652344,
+            573.8644409179688
+          ],
+          [
+            977.8692016601562,
+            -69.90995788574219,
+            694.609375
+          ],
+          [
+            977.8692016601562,
+            171.42369079589844,
+            857.4935913085938
+          ]
+        ],
+        "colors": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flame",
+        "count": 4,
+        "slots": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "visible_count": 4,
+        "sizes": [
+          [
+            21.0,
+            54.0
+          ],
+          [
+            21.0,
+            54.0
+          ],
+          [
+            21.0,
+            54.0
+          ],
+          [
+            21.0,
+            54.0
+          ]
+        ],
+        "positions": [
+          [
+            863.145263671875,
+            -148.70884704589844,
+            530.6302490234375
+          ],
+          [
+            863.6214599609375,
+            -121.77301788330078,
+            565.2821044921875
+          ],
+          [
+            861.3134155273438,
+            -63.01688003540039,
+            655.9329833984375
+          ],
+          [
+            869.5642700195312,
+            135.92420959472656,
+            811.2500610351562
+          ]
+        ],
+        "colors": [
+          [
+            9.0,
+            3.299999952316284,
+            0.6600000262260437,
+            0.8500000238418579
+          ],
+          [
+            9.0,
+            3.299999952316284,
+            0.6600000262260437,
+            0.8500000238418579
+          ],
+          [
+            9.0,
+            3.299999952316284,
+            0.6600000262260437,
+            0.8500000238418579
+          ],
+          [
+            9.0,
+            3.299999952316284,
+            0.6600000262260437,
+            0.8500000238418579
+          ]
+        ]
+      }
+    ]
+  },
+  "cleared_snapshot": {
+    "captured": true,
+    "seconds": 5.1,
+    "active": true,
+    "visible": true,
+    "bounds": "(<Struct 'Vector' (0x000001B160396B80) {x: 1300.000000, y: 0.000000, z: 500.000000}>, <Struct 'Vector' (0x000001B160360330) {x: 1900.000000, y: 1400.000000, z: 1500.000000}>, 2796.42626953125)",
+    "emitters": [
+      {
+        "name": "Body",
+        "count": 4,
+        "slots": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "visible_count": 0,
+        "sizes": [],
+        "positions": [
+          [
+            2200.0,
+            -262.5,
+            120.0
+          ],
+          [
+            2200.0,
+            -87.5,
+            120.0
+          ],
+          [
+            2200.0,
+            87.5,
+            120.0
+          ],
+          [
+            2200.0,
+            262.5,
+            120.0
+          ]
+        ],
+        "colors": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ]
+        ]
+      },
+      {
+        "name": "Flame",
+        "count": 4,
+        "slots": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "visible_count": 0,
+        "sizes": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "positions": [
+          [
+            2099.983154296875,
+            -268.8851623535156,
+            191.30552673339844
+          ],
+          [
+            2104.51708984375,
+            -73.16726684570312,
+            196.1985626220703
+          ],
+          [
+            2107.432373046875,
+            108.42471313476562,
+            198.24343872070312
+          ],
+          [
+            2110.7001953125,
+            270.9085388183594,
+            204.16326904296875
+          ]
+        ],
+        "colors": [
+          [
+            9.0,
+            3.299999952316284,
+            0.6600000262260437,
+            0.0
+          ],
+          [
+            9.0,
+            3.299999952316284,
+            0.6600000262260437,
+            0.0
+          ],
+          [
+            9.0,
+            3.299999952316284,
+            0.6600000262260437,
+            0.0
+          ],
+          [
+            9.0,
+            3.299999952316284,
+            0.6600000262260437,
+            0.0
+          ]
+        ]
+      }
+    ]
+  },
+  "success": true,
+  "error": null,
+  "scope": "editor art preview; illustrative paths; no PIE or gameplay/performance validation"
+}

@@ -54,7 +54,7 @@ bool FGuLiSkillResolver::ValidateCatalog(const TArray<FGuLiSkillDefinition>& Def
 	{
 		const FString SlotKey = Key(Row.UnitTypeId, Row.SlotId);
 		const FString ConfigKey = SlotKey + TEXT("/") + Row.SkillId.ToString();
-		if (Row.UnitTypeId == 0 || Row.SlotId.IsNone() || !SkillIds.Contains(Row.SkillId) || UniqueConfigs.Contains(ConfigKey)
+		if (Row.UnitTypeId == 0 || Row.ProjectileCount < 1 || Row.SlotId.IsNone() || !SkillIds.Contains(Row.SkillId) || UniqueConfigs.Contains(ConfigKey)
 			|| !ValidAttribute(Row.Damage, 0) || !ValidAttribute(Row.AttackRatePerSecond, 1) || !ValidAttribute(Row.RangeCentimeters, 2))
 		{ OutError = FString::Printf(TEXT("Invalid/duplicate UnitSkills row %s (finite nonnegative; damage<=1e9, rate<=30, range<=1e6)."), *ConfigKey); return false; }
 		const auto* Definition = FindDefinition(Definitions, Row.SkillId);
@@ -142,10 +142,14 @@ bool FGuLiSkillResolver::ResolveSelected(EGuLiTeam Team, const TArray<FGuLiSkill
 		for (const auto& Modifier : Source.Modifiers)
 		{
 			if (!ValidTarget(Modifier.Target, Definitions, Configs, OutError)) return false;
-			if (!FMath::IsFinite(Modifier.Magnitude) || static_cast<uint8>(Modifier.Attribute) > 2
+			if (!FMath::IsFinite(Modifier.Magnitude) || static_cast<uint8>(Modifier.Attribute) > 3
 				|| static_cast<uint8>(Modifier.Operation) > 1
 				|| (Modifier.Operation == EGuLiSkillModifierOperation::AddPercent && Modifier.Magnitude < -1.0f))
 			{ OutError = TEXT("Invalid modifier attribute/operation/magnitude; percentage cannot be below -100%."); return false; }
+			if (Modifier.Attribute == EGuLiSkillAttribute::ProjectileCount
+				? (Modifier.Operation != EGuLiSkillModifierOperation::AddFlat || Modifier.Magnitude != 0)
+				: Modifier.IntegerMagnitude != 0)
+			{ OutError = TEXT("ProjectileCount requires AddFlat and IntegerMagnitude only."); return false; }
 		}
 		for (const auto& Replacement : Source.Replacements)
 		{
@@ -215,6 +219,7 @@ bool FGuLiSkillResolver::ResolveSelected(EGuLiTeam Team, const TArray<FGuLiSkill
 		const auto* Definition = FindDefinition(Definitions, SelectedSkill);
 		check(Config && Definition);
 		double Flat[3] = {0, 0, 0};
+		int64 ProjectileCount = Config->ProjectileCount;
 		double Factor[3] = {1, 1, 1};
 		for (const auto* Source : OrderedSources)
 		{
@@ -222,6 +227,8 @@ bool FGuLiSkillResolver::ResolveSelected(EGuLiTeam Team, const TArray<FGuLiSkill
 			for (const auto& Modifier : Source->Modifiers)
 			{
 				if (!Modifier.Target.MatchesUnitSlot(Default.UnitTypeId, Default.SlotId) || !Modifier.Target.MatchesFinalSkill(*Definition)) continue;
+				if (Modifier.Attribute == EGuLiSkillAttribute::ProjectileCount)
+				{ ProjectileCount += Modifier.IntegerMagnitude; continue; }
 				const int32 Index = static_cast<int32>(Modifier.Attribute);
 				if (Modifier.Operation == EGuLiSkillModifierOperation::AddFlat) Flat[Index] += Modifier.Magnitude;
 				else SourcePercent[Index] += Modifier.Magnitude;
@@ -250,7 +257,10 @@ bool FGuLiSkillResolver::ResolveSelected(EGuLiTeam Team, const TArray<FGuLiSkill
 			if (Override->bOverrideAttackRate) Values[1] = Override->AttackRatePerSecond;
 			if (Override->bOverrideRange) Values[2] = Override->RangeCentimeters;
 		}
+		if (ProjectileCount < 1 || ProjectileCount > MAX_int32)
+		{ OutError = TEXT("ProjectileCount must remain a positive int32; no clamp applied."); return false; }
 		auto& Profile = Result.AddDefaulted_GetRef();
+		Profile.ProjectileCount = static_cast<int32>(ProjectileCount);
 		Profile.Team = Team; Profile.UnitTypeId = Default.UnitTypeId; Profile.SlotId = Default.SlotId;
 		Profile.SkillId = SelectedSkill; Profile.ExecutorId = Definition->ExecutorId; Profile.Tags = Definition->Tags;
 		Profile.bUnlocked = bUnlocked;

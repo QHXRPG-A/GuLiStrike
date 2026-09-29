@@ -1,0 +1,126 @@
+{
+  "samples": [
+    {
+      "distance_m": 100,
+      "fx": false,
+      "medians": {
+        "frame_ms": 38.336,
+        "game_ms": 38.035,
+        "draw_ms": 0.001,
+        "gpu_ms": 5.423,
+        "draw_calls": 877.0,
+        "nozzles": 0.0,
+        "moving_nozzles": 0.0,
+        "systems": 0.0,
+        "gpu_slot_capacity": 0.0,
+        "niagara_gpu_ms": 0.0,
+        "translucency_gpu_ms": 0.055
+      }
+    },
+    {
+      "distance_m": 100,
+      "fx": true,
+      "medians": {
+        "frame_ms": 21.876,
+        "game_ms": 21.976,
+        "draw_ms": 0.001,
+        "gpu_ms": 5.033,
+        "draw_calls": 884.0,
+        "nozzles": 330.0,
+        "moving_nozzles": 0.0,
+        "systems": 1.0,
+        "gpu_slot_capacity": 11264.0,
+        "niagara_gpu_ms": 0.009,
+        "translucency_gpu_ms": 0.055
+      }
+    },
+    {
+      "distance_m": 200,
+      "fx": false,
+      "medians": {
+        "frame_ms": 24.759,
+        "game_ms": 24.893,
+        "draw_ms": 0.001,
+        "gpu_ms": 5.834,
+        "draw_calls": 903.0,
+        "nozzles": 0.0,
+        "moving_nozzles": 0.0,
+        "systems": 0.0,
+        "gpu_slot_capacity": 0.0,
+        "niagara_gpu_ms": 0.0,
+        "translucency_gpu_ms": 0.056
+      }
+    },
+    {
+      "distance_m": 200,
+      "fx": true,
+      "medians": {
+        "frame_ms": 36.793,
+        "game_ms": 36.349,
+        "draw_ms": 0.001,
+        "gpu_ms": 6.329,
+        "draw_calls": 913.0,
+        "nozzles": 182.0,
+        "moving_nozzles": 0.0,
+        "systems": 1.0,
+        "gpu_slot_capacity": 11264.0,
+        "niagara_gpu_ms": 0.01,
+        "translucency_gpu_ms": 0.056
+      }
+    },
+    {
+      "distance_m": 360,
+      "fx": false,
+      "medians": {
+        "frame_ms": 22.115,
+        "game_ms": 21.805,
+        "draw_ms": 0.001,
+        "gpu_ms": 6.587,
+        "draw_calls": 1025.0,
+        "nozzles": 0.0,
+        "moving_nozzles": 0.0,
+        "systems": 0.0,
+        "gpu_slot_capacity": 0.0,
+        "niagara_gpu_ms": 0.0,
+        "translucency_gpu_ms": 0.053
+      }
+    },
+    {
+      "distance_m": 360,
+      "fx": true,
+      "medians": {
+        "frame_ms": 33.206,
+        "game_ms": 32.707,
+        "draw_ms": 0.001,
+        "gpu_ms": 6.956,
+        "draw_calls": 1094.0,
+        "nozzles": 0.0,
+        "moving_nozzles": 0.0,
+        "systems": 0.0,
+        "gpu_slot_capacity": 0.0,
+        "niagara_gpu_ms": 0.0,
+        "translucency_gpu_ms": 0.059
+      }
+    }
+  ],
+  "deltas": [
+    {
+      "distance_m": 100,
+      "effect_load_present": true,
+      "interpretation": "Uncontrolled root displacement: do not infer effect overhead",
+      "median_ms_on_minus_off": null
+    },
+    {
+      "distance_m": 200,
+      "effect_load_present": true,
+      "interpretation": "Uncontrolled root displacement: do not infer effect overhead",
+      "median_ms_on_minus_off": null
+    },
+    {
+      "distance_m": 360,
+      "effect_load_present": false,
+      "interpretation": "Uncontrolled root displacement: do not infer effect overhead",
+      "median_ms_on_minus_off": null
+    }
+  ]
+}

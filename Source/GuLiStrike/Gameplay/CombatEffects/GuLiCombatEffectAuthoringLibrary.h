@@ -39,6 +39,18 @@ public:
 	static bool WireRogueUpgradePoolReader(UNiagaraSystem* System, UNiagaraScript* ParticleUpdateScript, FString& Error);
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool ConfigureRogueUpgradeSystem(UNiagaraSystem* System, FString& Error);
+	/** GPU emitters and fixed bounds for the task-owned WarMachine hover array pool only. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool ConfigureWarMachineHoverSystem(UNiagaraSystem* System, FString& Error);
+	/** GPU body/flame/history renderers for dedicated WM01 cluster systems only. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool ConfigureMissileClusterSystem(UNiagaraSystem* System, FString& Error);
+	/** Read rendered LOD UVs, including automatically reduced LODs unavailable to Python mesh descriptions. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static FString GetMissilePodMeshDiagnostics(UStaticMesh* Mesh);
+	/** Read actual VM and GPU shader diagnostics, beyond the service's readiness-only check. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static FString GetWarMachineHoverCompileDiagnostics(UNiagaraSystem* System);
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static FString GetRogueUpgradeCompileDiagnostics(UNiagaraSystem* System);
 	/** Project explosion refraction meshes already multiply Engine.Owner.Scale. Prevent LocalSpace applying it twice.

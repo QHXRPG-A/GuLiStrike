@@ -4,6 +4,8 @@
 
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "CollisionQueryParams.h"
+#include "Engine/HitResult.h"
 #include "LandscapeProxy.h"
 
 namespace GuLiCommanderLandscapeQuery
@@ -79,6 +81,36 @@ bool UGuLiCommanderLandscapeQuerySubsystem::TryGetLandscapeHeight(
 		}
 	}
 	return false;
+}
+
+bool UGuLiCommanderLandscapeQuerySubsystem::TryTraceLandscape(
+	const FVector& Start, const FVector& End, FVector& OutHitLocation) const
+{
+	if (Start.ContainsNaN() || End.ContainsNaN() || Start.Equals(End))
+	{
+		return false;
+	}
+	EnsureCache();
+	const FCollisionQueryParams Params(SCENE_QUERY_STAT(CommanderCameraGroundDistance), false);
+	double ClosestDistanceSquared = TNumericLimits<double>::Max();
+	bool bFound = false;
+	for (const FCachedLandscape& Entry : CachedLandscapes)
+	{
+		const ALandscapeProxy* Proxy = Entry.Proxy.Get();
+		FHitResult Hit;
+		if (Proxy && Proxy->ActorLineTraceSingle(Hit, Start, End, ECC_Visibility, Params)
+			&& Hit.bBlockingHit && !Hit.ImpactPoint.ContainsNaN())
+		{
+			const double DistanceSquared = FVector::DistSquared(Start, Hit.ImpactPoint);
+			if (DistanceSquared < ClosestDistanceSquared)
+			{
+				ClosestDistanceSquared = DistanceSquared;
+				OutHitLocation = Hit.ImpactPoint;
+				bFound = true;
+			}
+		}
+	}
+	return bFound;
 }
 
 uint32 UGuLiCommanderLandscapeQuerySubsystem::GetCacheRevision() const

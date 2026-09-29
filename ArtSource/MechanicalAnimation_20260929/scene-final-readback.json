@@ -1,0 +1,73 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "pie_active": false,
+  "actors": [
+    {
+      "label": "MassRigid_WarMachine",
+      "class": "Actor",
+      "editor_only": true,
+      "mesh": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "instances": 8,
+      "custom_floats": 23,
+      "cull": [
+        0,
+        0
+      ],
+      "never_cull": true,
+      "allow_cull_volume": false
+    },
+    {
+      "label": "MassRigid_Sweeper",
+      "class": "Actor",
+      "editor_only": true,
+      "mesh": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "instances": 8,
+      "custom_floats": 23,
+      "cull": [
+        0,
+        0
+      ],
+      "never_cull": true,
+      "allow_cull_volume": false
+    },
+    {
+      "label": "MassRigid_Entry",
+      "class": "Note",
+      "editor_only": true,
+      "text": "WPO验收样本：重防号10分区、扫荡者6分区；八列姿态涵盖回正、左右转向、高低目标、5/15度盘倾斜、左右35cm后坐。样本仅编辑器显示，真实PIE继续红蓝混编500单位。新C++需编译后验收。"
+    },
+    {
+      "label": "MassRigid_190m",
+      "class": "Note",
+      "editor_only": true,
+      "text": "190米观察点：对照210米与360米；目标不能因距离消失。"
+    },
+    {
+      "label": "MassRigid_210m",
+      "class": "Note",
+      "editor_only": true,
+      "text": "210米观察点：跨越旧200米阈值，主体/传送替身/寿命内残骸持续显示。"
+    },
+    {
+      "label": "MassRigid_MaxView",
+      "class": "Note",
+      "editor_only": true,
+      "text": "最大指挥视距：当前相机最大臂长36000cm。实机记录实例数量、Draw、GPU ms、Game ms；独立特效/UI可按自身距离预算关闭。"
+    },
+    {
+      "label": "MassRigid_RuntimeChecks",
+      "class": "Note",
+      "editor_only": true,
+      "text": "编译后PIE：移动/停止/原地转向/高低目标/连续射击/移速升级/传送/死亡/新生成与混编槽复用。依次执行Presentation.Get、正值Set拒绝、Reset、批次重建；确认两个阵营本体Cull=0。"
+    },
+    {
+      "label": "MassRigid_CameraDistance",
+      "class": "Note",
+      "editor_only": true,
+      "text": "指挥官距离采样（需编译新C++）：左上FPS下方显示离地高度和画面中心地面距离，单位米、一位小数，10Hz刷新。缩放、平移至不同高度地形，对照读数与FPS；镜头正下方/中心无地形时分别显示无地形。记录190m/210m/最大镜头的读数、实例数及Game/Draw/GPU ms，切换角色后距离栏应消失。"
+    }
+  ],
+  "game_mode_override": "/Script/GuLiStrike.GuLiCommanderGameMode",
+  "hud_class": "/Script/GuLiStrike.GuLiCommanderHUD",
+  "success": true
+}

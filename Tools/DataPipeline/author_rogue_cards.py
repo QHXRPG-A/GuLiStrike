@@ -6,6 +6,7 @@ import json
 import subprocess
 import tempfile
 from pathlib import Path
+from author_rogue_card_text import DESCRIPTION_PATTERNS
 
 ROOT = Path(__file__).resolve().parents[2]
 CLI = r"D:\UE5.7\excelize-cli\bin\xlsx.exe"
@@ -37,17 +38,17 @@ def main():
     ]
     texts = []
     for ident, row_name, art, effect, bonus, title, description in [
-        ("01.01", "WM01_FireRate_Lv1", "FireRate", "FireRate", .2, "增加射速", "战争机器的普攻射速提高 {0}%。"),
-        ("02.01", "WM01_MoveSpeed_Lv1", "HighSpeed", "MoveSpeed", .5, "极速机动", "战争机器的移动速度提高 {0}%。"),
-        ("03.01", "WM01_MissileDamage_Lv1", "MissileDamage", "MissileDamage", .2, "增加导弹伤害", "战争机器的导弹伤害提高 {0}%。"),
+        ("01.01", "WM01_FireRate_Lv1", "FireRate", "FireRate", .2, "增加射速", DESCRIPTION_PATTERNS['FireRate']),
+        ("02.01", "WM01_MoveSpeed_Lv1", "HighSpeed", "MoveSpeed", .5, "极速机动", DESCRIPTION_PATTERNS['HighSpeed']),
+        ("03.01", "WM01_MissileDamage_Lv1", "MissileDamage", "MissileDamage", .2, "增加导弹伤害", DESCRIPTION_PATTERNS['MissileDamage']),
     ]:
         keys = [f"Card.WM01.{art}.Title", f"Card.WM01.{art}.Description"]
         folder = 'MoveSpeed' if art == 'HighSpeed' else art
         material = f"/Game/GuLiStrike/Cards/Commander/WM01/{folder}/Materials/MI_{art}_ModelComic_v9"
-        rows.append([ident, row_name, f"己方本局所有现有及后续战争机器：{title}；独立来源逐次乘算。", 1,
+        rows.append([ident, row_name, f"己方本局所有现有及后续重防号：{title}；独立来源逐次乘算。", 1,
                      json.dumps(keys, ensure_ascii=False), f"/Script/GuLiStrike.GuLiRogueCard{effect}Effect", 2, bonus,
                      material + "." + material.rsplit("/", 1)[-1]])
-        texts.extend([[keys[0], "战争机器肉鸽卡标题", title], [keys[1], "战争机器肉鸽卡说明；{0}来自BonusPercent×100", description]])
+        texts.extend([[keys[0], "重防号肉鸽卡标题", title], [keys[1], "重防号肉鸽卡说明；{0}来自BonusPercent×100", description]])
     write(path, "Cards", rows)
     xlsx("style", path, "--sheet", "Cards", "--range", "A1:I1", "--bold", "--bg", "17365D", "--font-color", "FFFFFF")
     xlsx("style", path, "--sheet", "Cards", "--range", "A2:I3", "--bg", "DCE6F1")
@@ -62,11 +63,11 @@ def main():
         ["Type", "1=指挥官部队；2=Ship；3=地面机甲；4=建筑。本批仅实现1。"],
         ["TextIds", 'JSON字符串数组，固定2项：["标题文本ID","说明文本ID"]；索引0=卡名，1=底部效果说明。'],
         ["ImplementationClass", "完整软类路径，必须继承GuLiRogueCardEffect；服务器调用实际效果。"],
-        ["UnitTypeId", "引用Commander/Soldiers.id；战争机器WM01=2。"],
+        ["UnitTypeId", "引用Commander/Soldiers.id；重防号WM01=2。"],
         ["BonusPercent", "百分比小数。0.2=20%、0.5=50%；显示{0}参数由该值生成，不能重复维护数值。"],
         ["FrontMaterial", "完整软资源路径，引用六层视差卡面材质。"],
         ["叠加", "每次获得创建独立来源，逐次乘算；攻速两次×1.44，移速两次×2.25；同一确认幂等。"],
-        ["范围", "本局己方当前/后续战争机器，换任指挥官保留，新战局清空。"],
+        ["范围", "本局己方当前/后续重防号，换任指挥官保留，新战局清空。"],
         ["文本与翻译", "只维护GuLiStrikeGameTexts.xlsx；导出StringTable稳定键，后续通过UE本地化收集翻译。"],
         ["入口", "指挥官实战F4；左射速/中导弹/右机动；第一次翻面、第二次确认；提交前Esc取消。"]])
     xlsx("col-width", path, "--sheet", "_说明", "--col", "A", "--width", "26")

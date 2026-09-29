@@ -1,0 +1,525 @@
+--- v1/Scripts/build_wm01_missile_cluster_fx.py
++++ v2/Scripts/build_wm01_missile_cluster_fx.py
+@@ -10,7 +10,7 @@
+ import unreal
+ 
+ ROOT = Path('D:/UE5.7/test1')
+-OUT = ROOT / 'Artifacts/WM01MissileCards'
++OUT = ROOT / 'Artifacts/WM01MissileCards/Visual_v2'
+ DEST = '/Game/GuLiStrike/FX/WM01Missiles'
+ SOURCE = '/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool'
+ LIB = unreal.EditorAssetLibrary
+@@ -19,7 +19,10 @@
+ NS = unreal.NiagaraService
+ EM = unreal.NiagaraEmitterService
+ SP = unreal.NiagaraScratchPadService
+-report = {'success': False, 'systems': [], 'materials': []}
++report = {'success': False, 'visual_revision': 2, 'systems': [], 'materials': [],
++          'visual_parameters': {'dimension_multiplier':1.5,'body_length_cm':195,'flame_size_cm':[21,54],
++              'flame_peak_rgb':[9,7.02,3.6],'smoke_lifetime':2.4,'smoke_width_cm':[21,33],
++              'smoke_cold_rgb':[.055,.060,.065],'smoke_alpha':.70,'smoke_fade_power':1.25,'warm_seconds':.08}}
+ 
+ 
+ def require(value, message):
+@@ -66,7 +69,20 @@
+         world = node(mat, unreal.MaterialExpressionWorldPosition)
+         assert EDIT.connect_material_expressions(world, '', mask, 'World')
+     assert EDIT.connect_material_property(mask, '', unreal.MaterialProperty.MP_OPACITY)
+-    assert EDIT.connect_material_property(color, 'RGB', unreal.MaterialProperty.MP_EMISSIVE_COLOR)
++    if trail:
++        assert EDIT.connect_material_property(color, 'RGB', unreal.MaterialProperty.MP_EMISSIVE_COLOR)
++    else:
++        # Peak luminance comes from a small pale-yellow core; the edge stays warm.
++        glow = node(mat, unreal.MaterialExpressionCustom,
++            code='float t=saturate(UV.y); float x=abs(UV.x*2-1)/lerp(.08,1,t); float core=pow(saturate(1-x),3)*smoothstep(.1,.55,t); return lerp(Tint,float3(Tint.r,Tint.r*.78,Tint.r*.4),core);',
++            output_type=unreal.CustomMaterialOutputType.CMOT_FLOAT3)
++        inputs=[]
++        for name in ['UV','Tint']:
++            pin=unreal.CustomInput();pin.set_editor_property('input_name',name);inputs.append(pin)
++        glow.set_editor_property('inputs',inputs)
++        assert EDIT.connect_material_expressions(uv,'',glow,'UV')
++        assert EDIT.connect_material_expressions(color,'RGB',glow,'Tint')
++        assert EDIT.connect_material_property(glow,'',unreal.MaterialProperty.MP_EMISSIVE_COLOR)
+     EDIT.recompile_material(mat)
+     diagnostics = unreal.MaterialNodeService.get_material_diagnostics(path)
+     assert diagnostics.is_compiled_ok, str(diagnostics)
+@@ -129,7 +145,7 @@
+             assert EM.set_renderer_property(path, emitter, 0, 'Alignment', 'CustomAlignment')
+             scratch(path, emitter, 'ParticleUpdate', 'MissileFlame', common+[('Heads','float','User.MissileHeads')],
+                     [('PositionOut','Position','Particles.Position'), ('SizeOut','vec2','Particles.SpriteSize'), ('ColorOut','Color','Particles.Color')],
+-                    'float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; PositionOut=Head-Direction*(Size.y*.4923+18); SizeOut=float2(Size.x,36)*alive; ColorOut=float4(3,1.1,.22,.85*alive);')
++                    'float alive=(Meta.g>.5 && Meta.g<1.5)?Heads:0; PositionOut=Head-Direction*(Size.y*.4923+27); SizeOut=float2(Size.x,54)*alive; ColorOut=float4(9,3.3,.66,.85*alive);')
+         else:
+             assert EM.set_renderer_property(path, emitter, 0, 'Material', trail)
+             assert EM.set_renderer_property(path, emitter, 0, 'Alignment', 'CustomAlignment')
+@@ -140,7 +156,7 @@
+                       ('LastTime','float','Particles.HistoryTime'), ('SeenState','float','Particles.HistoryState'),
+                       ('EmitHistory','float','User.MissileEmitHistory'), ('TrailWeight','float','User.MissileTrailWeight')]
+             scratch(path, emitter, 'ParticleUpdate', 'MissileTrailOrigin', common,
+-                    [('PositionOut','Position','Particles.Position'),('WidthOut','float','Particles.HistoryWidth')], 'PositionOut=Head-Direction*(Size.y*.4923+28); WidthOut=Size.x;')
++                    [('PositionOut','Position','Particles.Position'),('WidthOut','float','Particles.HistoryWidth')], 'PositionOut=Head-Direction*(Size.y*.4923+42); WidthOut=Size.x;')
+             outputs = [('PositionOut','Position','Particles.Position'), ('AlignmentOut','Vector','Particles.SpriteAlignment'), ('SizeOut','vec2','Particles.SpriteSize'),
+                        ('ColorOut','Color','Particles.Color'), ('StartOut','Position','Particles.HistoryStart'), ('EndOut','Position','Particles.HistoryEnd'),
+                        ('SampleOut','Position','Particles.HistorySample'), ('BornOut','float','Particles.HistoryBorn'), ('GenerationOut','float','Particles.HistoryGeneration'),
+@@ -159,7 +175,8 @@
+     assert entry['service_success'] and not entry['errors'], entry
+     assert 'VM ERROR:' not in diagnostics and 'GPU ERROR:' not in diagnostics, diagnostics
+     assert diagnostics.count('GPU finished=1 complete=1') == len(entries), diagnostics
+-    LIB.set_metadata_tag(system, 'GuLi.WM01Missiles.Contract', f'{"v2" if bound else "draft;capacity binding pending native reload"};GPU;{lanes} world-history lanes;1.2s tail;.15s handoff;no collision/lights;generation-isolated')
++    LIB.set_metadata_tag(system, 'GuLi.WM01Missiles.Contract', f'{"v2" if bound else "draft;capacity binding pending native reload"};GPU;{lanes} world-history lanes;2.4s tail;.15s handoff;no collision/lights;generation-isolated')
++    LIB.set_metadata_tag(system, 'GuLi.WM01Missiles.VisualRevision', '2;dimensions x1.5;charcoal smoke;flame peak x3')
+     if preview:
+         system.set_editor_property('fixed_bounds',unreal.Box(unreal.Vector(-600,-1600,-600),unreal.Vector(3000,1600,2000)))
+         LIB.set_metadata_tag(system,'GuLi.PreviewOnly','Illustrative self-running paths; no gameplay reference; smoke/flame art review only')
+--- v1/Scripts/preview_wm01_missile_cluster.py
++++ v2/Scripts/preview_wm01_missile_cluster.py
+@@ -8,20 +8,26 @@
+ import unreal
+ 
+ ROOT=Path('D:/UE5.7/test1')
+-OUT=ROOT/'ArtSource/FX/WM01MissileCluster/Candidate_v1'
++OUT=ROOT/'ArtSource/FX/WM01MissileCluster/Candidate_v2'
+ 
+ def preview(quality='Full'):
+     assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
+     world=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
+     editor=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem)
+     old_camera=editor.get_level_viewport_camera_info()
+-    state={'actors':[],'frame':-12,'frames':[],'complete':False,'quality':quality}
++    state={'actors':[],'frame':-120,'frames':[],'complete':False,'quality':quality,'ready_wait_frames':0}
++    state['visual_revision']=2
++    state['capture_conditions']={'resolution':[1280,720],'fov':42,'manual_exposure_bias':0,
++        'physical_camera_exposure':False,'camera_location':[100,-3900,2400],
++        'camera_target':[1000,0,400],'flight_seconds':2.4,'tail_seconds':2.4,
++        'comparison':'Same camera, exposure and four illustrative trajectories as Candidate_v1; no PIE.'}
+     origin=unreal.Vector(0,0,0)
+     a=unreal.EditorLevelLibrary.spawn_actor_from_class(unreal.NiagaraActor,origin,transient=True)
+     state['actors'].append(a)
+     c=a.niagara_component
+     c.set_auto_activate(False)
+-    c.set_asset(unreal.load_asset('/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Preview'+quality),True)
++    system=unreal.load_asset('/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Preview'+quality)
++    c.set_asset(system,True)
+     c.set_force_solo(True);c.set_cast_shadow(False);c.set_can_render_while_seeking(True);c.set_component_tick_enabled(False)
+     c.set_system_fixed_bounds(unreal.Box(unreal.Vector(-600,-1400,-1000),unreal.Vector(3200,1400,2000)))
+     for name in ['Body','Flame']+(['History'] if quality!='Minimal' else []):
+@@ -54,7 +60,8 @@
+     cap.set_editor_property('primitive_render_mode',unreal.SceneCapturePrimitiveRenderMode.PRM_USE_SHOW_ONLY_LIST)
+     cap.show_only_actor_components(a);cap.show_only_actor_components(ground)
+     folder=OUT/quality;folder.mkdir(parents=True,exist_ok=True)
+-    samples={18:'start',60:'flight',112:'long_tail',156:'impact',174:'dissipating',224:'cleared'}
++    # Preserve the first four v1 comparison moments; extend decay beyond 2.4+2.4 s.
++    samples={18:'start',60:'flight',112:'long_tail',138:'peak_tail',156:'impact',174:'dissipating',252:'late_tail',306:'cleared'}
+     def finish(error=None):
+         unreal.unregister_slate_post_tick_callback(state['handle'])
+         for actor in reversed(state['actors']): unreal.EditorLevelLibrary.destroy_actor(actor)
+@@ -68,14 +75,26 @@
+             # The preview copies generate their illustrative path from System.Age.
+             # Array setters reinitialize active components in an editor world.
+             f=state['frame']
+-            if f==0: c.reinitialize_system();c.activate(True);c.set_rendering_enabled(True);c.set_component_tick_enabled(False)
+-            if f>0: c.advance_simulation(1,1/60)
+-            if f==65:
++            if f==0:
++                # Editor load/override changes can queue a compile after the asset
++                # readback. Keep simulation time at zero until its GPU data is ready.
++                diag=unreal.GuLiCombatEffectAuthoringLibrary.get_war_machine_hover_compile_diagnostics(system)
++                ready='System valid=1 ready=1 gpu=1' in diag and diag.count('GPU finished=1 complete=1')==(2 if quality=='Minimal' else 3)
++                if not ready:
++                    state['ready_wait_frames']+=1
++                    if state['ready_wait_frames']>600: raise RuntimeError('Preview shader readiness timeout: '+diag)
++                    return
++                c.reinitialize_system();c.activate(True);c.set_rendering_enabled(True);c.set_component_tick_enabled(False)
++            if f>0:
++                c.advance_simulation(1,1/60)
++                assert c.is_active(), 'Preview stopped before its persistent particle slots could be read.'
++            if f in (65,306):
+                 cache=unreal.NiagaraSimCacheFunctionLibrary.create_niagara_sim_cache(world)
+                 params=unreal.NiagaraSimCacheCreateParameters()
+                 params.set_editor_property('attribute_capture_mode',unreal.NiagaraSimCacheAttributeCaptureMode.ALL)
+                 captured=unreal.NiagaraSimCacheFunctionLibrary.capture_niagara_sim_cache_immediate(cache,params,c,False)
+-                state['gpu_snapshot']={'captured':bool(captured),'active':c.is_active(),'visible':c.is_visible(),
++                snapshot_key='gpu_snapshot' if f==65 else 'cleared_snapshot'
++                state[snapshot_key]={'captured':bool(captured),'seconds':f/60,'active':c.is_active(),'visible':c.is_visible(),
+                     'bounds':str(unreal.SystemLibrary.get_component_bounds(c)),'emitters':[]}
+                 if captured:
+                     for emitter in cache.get_emitter_names():
+@@ -87,7 +106,7 @@
+                         if str(emitter)=='Body':
+                             scales_gpu=cache.read_vector_attribute('Scale',emitter)
+                             visible=sum(col.a>0 and scale.x>0 for col,scale in zip(colors,scales_gpu))
+-                        if str(emitter)=='History':
++                        if str(emitter)=='History' and f==65:
+                             born=cache.read_float_attribute('HistoryBorn',emitter)
+                             generation=cache.read_float_attribute('HistoryGeneration',emitter)
+                             seen_time=cache.read_float_attribute('HistoryTime',emitter)
+@@ -98,7 +117,7 @@
+                             state['history_samples']=[{'slot':int(slots[j]),'lane':int(lanes_gpu[j]),'born':float(born[j]),
+                                 'generation':float(generation[j]),'state':float(states_gpu[j]),'bucket':int(buckets_gpu[j]),'time':float(seen_time[j]),'sample':list(samples_gpu[j].to_tuple()),
+                                 'color':list(colors[j].to_tuple()),'alpha':float(colors[j].a),'size':list(sizes_gpu[j].to_tuple())} for j in range(len(slots)) if slots[j]==0][:24]
+-                        state['gpu_snapshot']['emitters'].append({'name':str(emitter),'count':len(positions),'slots':list(slots[:8]),
++                        state[snapshot_key]['emitters'].append({'name':str(emitter),'count':len(positions),'slots':list(slots[:8]),
+                             'visible_count':visible,
+                             'sizes':[list(v.to_tuple()) for v in sizes_gpu[:4]],
+                             'positions':[list(v.to_tuple()) for v in positions[:4]],'colors':[list(v.to_tuple()) for v in colors[:4]]})
+@@ -108,7 +127,16 @@
+                 state['frames'].append({'frame':f-1,'seconds':(f-1)/60,'path':str(folder/(name+'.png'))})
+             cap.capture_scene()
+             state['frame']+=1
+-            if f>226: finish()
++            if f>308:
++                live=state['gpu_snapshot'];clear=state['cleared_snapshot']
++                assert live['captured'] and clear['captured'], 'GPU snapshot unavailable; images cannot establish lifecycle.'
++                counts={e['name']:e for e in live['emitters']}
++                assert counts['Body']['count']==4 and counts['Body']['visible_count']==4
++                assert counts['Flame']['count']==4 and counts['Flame']['visible_count']==4
++                if quality!='Minimal':
++                    assert counts['History']['count']==4*({'Full':24,'Lite':8}[quality]) and counts['History']['visible_count']>0
++                assert all(e['visible_count']==0 for e in clear['emitters']), 'Visible particles remain at 5.1 s.'
++                finish()
+         except Exception: finish(traceback.format_exc())
+     state['handle']=unreal.register_slate_post_tick_callback(tick)
+     return state
+--- v1/Scripts/finalize_wm01_missile_cluster_assets.py
++++ v2/Scripts/finalize_wm01_missile_cluster_assets.py
+@@ -36,7 +36,7 @@
+             assert 'VM ERROR:' not in diagnostics and 'GPU ERROR:' not in diagnostics, entry
+             assert diagnostics.count('GPU finished=1 complete=1') == (3 if lanes else 2), entry
+             LIB.set_metadata_tag(system, 'GuLi.WM01Missiles.Contract',
+-                f'v2;GPU;occupied capacity<=64;{lanes} world-history lanes;1.2s tail;.15s handoff;generation-isolated')
++                f'v2;GPU;occupied capacity<=64;{lanes} world-history lanes;2.4s tail;.15s handoff;generation-isolated')
+             if prefix:
+                 system.set_editor_property('fixed_bounds',unreal.Box(unreal.Vector(-600,-1600,-600),unreal.Vector(3000,1600,2000)))
+             assert LIB.save_loaded_asset(system, False)
+@@ -51,6 +51,7 @@
+     report['success'] = True
+ except Exception:
+     report['error'] = traceback.format_exc()
+-output = ROOT/'Artifacts/WM01MissileCards/cluster-finalize.json'
++output = ROOT/'Artifacts/WM01MissileCards/Visual_v2/cluster-finalize.json'
++output.parent.mkdir(parents=True,exist_ok=True)
+ output.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf8')
+ unreal.MCPythonHelper.submit_result(json.dumps({'success':report['success'],'error':report.get('error'),'report':str(output)}))
+--- v1/Scripts/Niagara/GuLiMissileHistory.hlsl
++++ v2/Scripts/Niagara/GuLiMissileHistory.hlsl
+@@ -5,7 +5,9 @@
+ float state=(EmitHistory<.5 && Meta.g>.5) ? 2 : Meta.g;
+ TimeOut=Now; StateOut=state;
+ float lifetime=max(Meta.a,.05);
+-float interval=lifetime/LANES;
++// One existing lane bridges the latest sample to the live exhaust origin.
++// The other lanes span the full lifetime without increasing particle capacity.
++float interval=lifetime/(LANES-1);
+ int bucket=(int)floor(Now/interval);
+ bool reset=abs(Meta.r-SeenGeneration)>.5 || state<.5 || Now<LastTime || Now-LastTime>.20 || distance(Head,SavedSample)>600;
+ if(reset)
+@@ -24,18 +26,22 @@
+     }
+     SampleOut=Head; BucketOut=writeBucket;
+ }
++if(!reset && state>.5 && state<1.5 && (BucketOut+1)%LANES==Lane)
++{
++    StartOut=SampleOut; EndOut=Head; BornOut=Now;
++}
+ float age=max(0,Now-BornOut);
+ float life=saturate(1-age/lifetime);
+ float3 delta=EndOut-StartOut;
+ float segment=length(delta);
+-// Smooth low-frequency world-space drift, bounded to <18 cm over the full lifetime.
++// Smooth low-frequency world-space drift, bounded to <27 cm over 2.4 seconds.
+ // Both endpoints use the same field so adjacent narrow segments remain coherent.
+ float3 midpoint=(StartOut+EndOut)*.5;
+-float3 drift=float3(sin(midpoint.y*.002+Meta.r*.13),cos(midpoint.x*.002+Meta.r*.13),.55)*min(age,1.2)*10;
++float3 drift=float3(sin(midpoint.y*.002+Meta.r*.13),cos(midpoint.x*.002+Meta.r*.13),.55)*min(age,2.4)*7.4;
+ PositionOut=midpoint+drift;
+ AlignmentOut=segment>.01 ? delta/segment : float3(1,0,0);
+-float width=min(22,Width*(1+.55*saturate(age/lifetime)));
++float width=min(33,Width*(1+.55*saturate(age/lifetime)));
+ SizeOut=(life>0 && segment>.01 && !reset) ? float2(width,segment+width*.12) : float2(0,0);
+-// Heat lasts 0.12 s; most of the 1.2 s trail is neutral grey-white, below bloom.
+-float heat=1-smoothstep(0,.12,age);
+-ColorOut=float4(lerp(float3(.58,.62,.66),float3(1.15,.62,.27),heat),.34*life*life*saturate(TrailWeight));
++// A brief warm origin gives way to dense charcoal smoke, never an emissive ribbon.
++float heat=1-smoothstep(0,.08,age);
++ColorOut=float4(lerp(float3(.055,.060,.065),float3(1.15,.62,.27),heat),.70*pow(life,1.25)*saturate(TrailWeight));
+--- v1/Scripts/Niagara/GuLiMissileArtPreview.hlsl
++++ v2/Scripts/Niagara/GuLiMissileArtPreview.hlsl
+@@ -1,12 +1,13 @@
+ // Editor-only illustrative trajectories. The registered combat assets use the
+ // authoritative CPU/client trajectory via arrays; these preview copies do not.
+-float t=fmod(Age,4.3);
++// Leave 0.8 seconds after the 2.4 s flight + 2.4 s tail before reusing slots.
++float t=fmod(Age,5.6);
+ float a=saturate(t/2.4);
+ float s=sin(a*3.14159265),c=cos(a*3.14159265);
+ PositionOut=float3(2200*a,(Slot-1.5)*175+sin(a*6+Slot)*160*s,
+     120+s*(430+Slot*100)+sin(a*8+Slot)*70*s);
+ DirectionOut=normalize(float3(2200,160*(6*cos(a*6+Slot)*s+3.14159265*sin(a*6+Slot)*c),
+     3.14159265*c*(430+Slot*100)+70*(8*cos(a*8+Slot)*s+3.14159265*sin(a*8+Slot)*c)));
+-SizeOut=float2(14,130);
+-MetaOut=Slot<4 ? float4(floor(Age/4.3)*64+Slot+7,t<2.4?1:2,2.4,1.2) : float4(0,0,0,1.2);
++SizeOut=float2(21,195);
++MetaOut=Slot<4 ? float4(floor(Age/5.6)*64+Slot+7,t<2.4?1:2,2.4,2.4) : float4(0,0,0,2.4);
+ TimeOut=Age;
+--- v1/Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.cpp
++++ v2/Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.cpp
+@@ -1,8 +1,6 @@
+ #include "Gameplay/CombatEffects/GuLiMissileClusterPresentation.h"
+-#include "Engine/GameViewportClient.h"
+-#include "Engine/LocalPlayer.h"
++#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
+ #include "Engine/World.h"
+-#include "GameFramework/PlayerController.h"
+ #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
+ #include "HAL/IConsoleManager.h"
+ #include "HAL/PlatformTime.h"
+@@ -12,22 +10,41 @@
+ #include "NiagaraSystem.h"
+ #include "ProfilingDebugging/CpuProfilerTrace.h"
+ #include "ProfilingDebugging/CsvProfiler.h"
+-#include "SceneView.h"
+ 
+ CSV_DEFINE_CATEGORY(GuLiMissileCluster, true);
+ namespace
+ {
+ 	TAutoConsoleVariable<int32> FullTrailBudget(TEXT("gs.MissileCluster.FullTrails"), 512, TEXT("Full trails, including fading slots and quality handoffs."));
+ 	TAutoConsoleVariable<int32> ParticleBudget(TEXT("gs.MissileCluster.Particles"), 65536, TEXT("GPU capacity budget; bodies/flames are the minimum. Lower budgets drain existing history before reclaiming it."));
+-	TAutoConsoleVariable<float> MaximumDistance(TEXT("gs.MissileCluster.Distance"), 20000.f, TEXT("Visual distance in cm; culling includes 1.2 seconds of historical smoke."));
++	TAutoConsoleVariable<float> MaximumDistance(TEXT("gs.MissileCluster.Distance"), 20000.f, TEXT("Visual distance in cm; culling includes 2.4 seconds of historical smoke."));
+ 	TAutoConsoleVariable<float> MinimumScreenFraction(TEXT("gs.MissileCluster.MinScreenFraction"), .001f, TEXT("Cull below this projected history-bound fraction."));
+ 	constexpr float CellSize = 4000.f;
+ 	constexpr int32 Lanes[] = {0, 8, 24};
+ 	constexpr int32 Ids[] = {GuLiVfxIds::WM01MissileClusterMinimal, GuLiVfxIds::WM01MissileClusterLite, GuLiVfxIds::WM01MissileClusterFull};
+-	struct FView { FVector Position; FConvexVolume Frustum; float ProjectionScale = 1; };
++	const FName LODConsumer(TEXT("WM01MissileBatches"));
++	// The legacy Niagara quality array runs in the opposite direction to public LOD0/1/2.
++	int32 ToNiagaraQuality(const EGuLiCommanderLODLevel Level)
++	{
++		switch (Level)
++		{
++		case EGuLiCommanderLODLevel::Full: return 2;
++		case EGuLiCommanderLODLevel::Reduced: return 1;
++		default: return 0;
++		}
++	}
++	EGuLiCommanderLODLevel ToCommanderLevel(const int32 Quality)
++	{
++		switch (Quality)
++		{
++		case 2: return EGuLiCommanderLODLevel::Full;
++		case 1: return EGuLiCommanderLODLevel::Reduced;
++		default: return EGuLiCommanderLODLevel::Minimal;
++		}
++	}
+ }
+ 
+ UWorld* UGuLiMissileClusterPresentation::GetWorld() const { return GetOuter() ? GetOuter()->GetWorld() : nullptr; }
++bool UGuLiMissileClusterPresentation::IsReady() const { return bResourcesReady && CommanderLOD.IsValid(); }
+ 
+ void UGuLiMissileClusterPresentation::ReleaseComponent(TWeakObjectPtr<UNiagaraComponent>& Weak)
+ {
+@@ -38,7 +55,7 @@
+ void UGuLiMissileClusterPresentation::Release(FBatch& Batch)
+ {
+ 	ReleaseComponent(Batch.Component); ReleaseComponent(Batch.Retiring.Component);
+-	Batch.Retiring = {}; Batch.Quality = -1;
++	Batch.Retiring = {}; Batch.Quality = -1; Batch.QualitySince = -1000;
+ }
+ 
+ void UGuLiMissileClusterPresentation::Reset()
+@@ -46,12 +63,14 @@
+ 	for (auto& Batch : Batches) Release(Batch);
+ 	Batches.Reset(); SlotById.Reset(); SystemCount = ParticleCapacity = ActiveMissiles = FullTrails = 0;
+ 	UpdateMilliseconds = 0;
++	if (auto* LOD = CommanderLOD.Get()) LOD->ClearConsumer(LODConsumer);
+ }
+ 
+ void UGuLiMissileClusterPresentation::BeginFrame(double Now, bool bEnabled)
+ {
+ 	if (Now < FrameTime) { Reset(); NextResourceCheck = 0; }
+ 	FrameTime = Now;
++	CommanderLOD = GetWorld() ? GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>() : nullptr;
+ 	bFrameEnabled = bEnabled && GetWorld() && GetWorld()->GetNetMode() != NM_DedicatedServer;
+ 	if (!bFrameEnabled) { Reset(); return; }
+ 	if (!bResourcesReady && Now >= NextResourceCheck)
+@@ -129,8 +148,8 @@
+ void UGuLiMissileClusterPresentation::Upload(FBatch& Batch)
+ {
+ 	auto* Component = Batch.Component.Get(); if (!Component) return;
+-	// Preserve the existing mesh's scale; smoke width remains independent.
+-	const float VisualScale = GuLiVfx::Scale(this, GuLiVfxIds::MissileFlight).X;
++	// WM01 candidate v2: enlarge all dimensions without changing the shared VFX row.
++	const float VisualScale = GuLiVfx::Scale(this, GuLiVfxIds::MissileFlight).X * 1.5f;
+ 	for (int32 I = 0; I < MissilesPerBatch; ++I)
+ 	{
+ 		const auto& Slot = Batch.Slots[I]; Batch.Positions[I] = Slot.Position; Batch.Directions[I] = Slot.Direction;
+@@ -187,19 +206,15 @@
+ 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMissileCluster);
+ 	const double Started = FPlatformTime::Seconds();
+ 	SystemCount = ParticleCapacity = ActiveMissiles = FullTrails = 0;
+-	if (!bFrameEnabled || !IsReady()) return;
+-	TArray<FView> Views;
+-	for (auto It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+-	{
+-		const auto* Controller = It->Get(); const auto* Player = Controller ? Controller->GetLocalPlayer() : nullptr;
+-		FSceneViewProjectionData Projection;
+-		if (!Player || !Player->ViewportClient || !Player->ViewportClient->Viewport
+-			|| !Player->GetProjectionData(Player->ViewportClient->Viewport, Projection)) continue;
+-		auto& View = Views.AddDefaulted_GetRef(); View.Position = Projection.ViewOrigin;
+-		View.ProjectionScale = FMath::Max(float(Projection.ProjectionMatrix.M[0][0]), float(Projection.ProjectionMatrix.M[1][1]));
+-		GetViewFrustumBounds(View.Frustum, Projection.ComputeViewProjectionMatrix(), true);
+-	}
+-	struct FCandidate { int32 Index; double Distance; float Screen; };
++	auto* LOD = CommanderLOD.Get();
++	if (!bFrameEnabled || !IsReady())
++	{
++		UpdateMilliseconds = 0;
++		if (LOD) LOD->ClearConsumer(LODConsumer);
++		return;
++	}
++	FGuLiCommanderLODConsumerStats LODStats;
++	struct FCandidate { int32 Index; FGuLiCommanderLODDecision Decision; };
+ 	TArray<FCandidate> Visible; int32 Used = 0, UsedFull = 0, Minimum = 0;
+ 	for (int32 B = 0; B < Batches.Num(); ++B)
+ 	{
+@@ -221,43 +236,52 @@
+ 			else Batch.RecentBounds.Add({Current, FrameTime});
+ 		}
+ 		Batch.Bounds = Current; for (const auto& Sample : Batch.RecentBounds) Batch.Bounds += Sample.Bounds;
+-		// Includes the body, exhaust offset, <=18 cm drift and <=22 cm smoke width.
+-		if (Batch.Bounds.IsValid) Batch.Bounds = Batch.Bounds.ExpandBy(140);
++		// Includes the enlarged body/exhaust, <=27 cm drift and <=33 cm smoke width.
++		if (Batch.Bounds.IsValid) Batch.Bounds = Batch.Bounds.ExpandBy(210);
+ 		if (Batch.Retiring.Component.IsValid()) Batch.Bounds += Batch.Retiring.Bounds;
+-		if ((!Batch.Occupied && !Batch.Retiring.Component.IsValid()) || !Batch.Bounds.IsValid) { Release(Batch); continue; }
+-		double Closest = TNumericLimits<double>::Max(); float Screen = 0;
+-		for (const auto& View : Views)
+-		{
+-			if (!View.Frustum.IntersectBox(Batch.Bounds.GetCenter(), Batch.Bounds.GetExtent())) continue;
+-			const double Distance = FMath::Sqrt(Batch.Bounds.ComputeSquaredDistanceToPoint(View.Position));
+-			Closest = FMath::Min(Closest, Distance);
+-			Screen = FMath::Max(Screen, float(Batch.Bounds.GetExtent().Size() / FMath::Max(1.0, Distance)) * View.ProjectionScale);
+-		}
+-		if (Closest > FMath::Max(1.f, MaximumDistance.GetValueOnGameThread()) || Screen < FMath::Max(0.f, MinimumScreenFraction.GetValueOnGameThread()))
+-		{ Release(Batch); continue; }
++		if (!Batch.Occupied && !Batch.Retiring.Component.IsValid()) { Release(Batch); continue; }
++		++LODStats.Objects;
++		FGuLiCommanderLODQuery Query;
++		Query.Bounds = Batch.Bounds;
++		if (Batch.Component.IsValid() && Batch.Quality >= 0) Query.CurrentLevel = ToCommanderLevel(Batch.Quality);
++		Query.LastChangeWorldSeconds = Batch.QualitySince;
++		const auto Decision = LOD->Evaluate(Query);
++		if (!Decision.bVisible)
++		{
++			if (Decision.Reason == EGuLiCommanderLODReason::NoLocalView) ++LODStats.NoView;
++			else if (Decision.Reason == EGuLiCommanderLODReason::InvalidBounds) ++LODStats.InvalidBounds;
++			else ++LODStats.FrustumCulled;
++			Release(Batch); continue;
++		}
++		// Missile-only visibility limits: never install these as global unit culling rules.
++		if (Decision.DistanceCentimeters > FMath::Max(1.f, MaximumDistance.GetValueOnGameThread()))
++		{ ++LODStats.DistanceCulled; Release(Batch); continue; }
++		if (Decision.ScreenFraction < FMath::Max(0.f, MinimumScreenFraction.GetValueOnGameThread()))
++		{ ++LODStats.ScreenCulled; Release(Batch); continue; }
++		++LODStats.Visible;
++		++LODStats.Target[static_cast<int32>(Decision.TargetLevel)];
+ 		if (!Batch.Capacity) for (int32 I = 0; I < Batch.Slots.Num(); ++I) if (Batch.Slots[I].bAllocated) Batch.Capacity = I + 1;
+-		Visible.Add({B, Closest, Screen}); Minimum += Batch.Capacity * 2;
++		Visible.Add({B, Decision}); Minimum += Batch.Capacity * 2;
+ 		Used += Batch.Capacity * (2 + (Batch.Component.IsValid() ? Lanes[Batch.Quality] : 0));
+ 		UsedFull += Batch.Quality == 2 ? Batch.Occupied : 0;
+ 		if (Batch.Retiring.Component.IsValid()) { Used += Batch.Retiring.Capacity; UsedFull += Batch.Retiring.FullTrails; }
+ 	}
+-	Visible.Sort([](const FCandidate& A, const FCandidate& B) { return A.Distance < B.Distance; });
++	Visible.Sort([](const FCandidate& A, const FCandidate& B) { return A.Decision.DistanceCentimeters < B.Decision.DistanceCentimeters; });
+ 	// Reserve a minimal replacement per batch so downgrades can preserve history.
+ 	const int32 Limit = FMath::Max(ParticleBudget.GetValueOnGameThread(), Minimum * 2);
+ 	const int32 FullLimit = FMath::Max(0, FullTrailBudget.GetValueOnGameThread());
+ 	for (const auto& Candidate : Visible)
+ 	{
+ 		auto& Batch = Batches[Candidate.Index];
+-		const bool bFullDistance = Candidate.Distance < (Batch.Quality == 2 ? 8800 : 7200) && Candidate.Screen > (Batch.Quality == 2 ? .008f : .012f);
+-		const bool bLiteDistance = Candidate.Distance < (Batch.Quality >= 1 ? 16000 : 14000) && Candidate.Screen > (Batch.Quality >= 1 ? .002f : .003f);
+-		int32 Desired = bFullDistance ? 2 : bLiteDistance ? 1 : 0;
++		const int32 TargetQuality = ToNiagaraQuality(Candidate.Decision.TargetLevel);
++		int32 Desired = TargetQuality;
+ 		if (Used > Limit - Minimum || UsedFull > FullLimit) Desired = 0;
+ 		if (!Batch.Component.IsValid())
+ 		{
+ 			while (Desired > 0 && (Used + Batch.Capacity * Lanes[Desired] > Limit - Minimum || (Desired == 2 && UsedFull + Batch.Occupied > FullLimit))) --Desired;
+ 			if (StartBatch(Batch, Desired)) { Used += Batch.Capacity * Lanes[Desired]; if (Desired == 2) UsedFull += Batch.Occupied; }
+ 		}
+-		else if (Desired != Batch.Quality && !Batch.Retiring.Component.IsValid() && FrameTime - Batch.QualitySince >= .35)
++		else if (Desired != Batch.Quality && !Batch.Retiring.Component.IsValid() && Candidate.Decision.bCanTransition)
+ 		{
+ 			const int32 OldQuality = Batch.Quality;
+ 			while (Desired > OldQuality && (Used + Batch.Capacity * (2 + Lanes[Desired])
+@@ -265,7 +289,7 @@
+ 				|| (Desired == 2 && UsedFull + Batch.Occupied > FullLimit))) --Desired;
+ 			const int32 Extra = Batch.Capacity * (2 + Lanes[Desired]) - (OldQuality == 0 ? Batch.Capacity * 2 : 0);
+ 			const int32 ExtraFull = Desired == 2 ? Batch.Occupied : 0;
+-			// Runtime budget reductions drain existing smoke for <=1.25 s.
++			// Runtime budget reductions drain existing smoke for <=2.45 s.
+ 			if (Desired != OldQuality && (Used + Extra <= Limit - (Desired ? Minimum : 0) || Desired == 0)
+ 				&& (Desired != 2 || UsedFull + ExtraFull <= FullLimit))
+ 			{
+@@ -274,8 +298,14 @@
+ 			}
+ 		}
+ 		Upload(Batch);
++		if (Desired < TargetQuality) ++LODStats.BudgetDowngraded;
+ 		if (Batch.Component.IsValid())
+-		{ ++SystemCount; ParticleCapacity += Batch.Capacity * (2 + Lanes[Batch.Quality]); if (Batch.Quality == 2) FullTrails += Batch.Occupied; }
++		{
++			++LODStats.Applied[static_cast<int32>(ToCommanderLevel(Batch.Quality))];
++			if (Batch.Quality != Desired) ++LODStats.TransitionPending;
++			++SystemCount; ParticleCapacity += Batch.Capacity * (2 + Lanes[Batch.Quality]); if (Batch.Quality == 2) FullTrails += Batch.Occupied;
++		}
++		else ++LODStats.ResourcesUnavailable;
+ 		if (auto* Retiring = Batch.Retiring.Component.Get())
+ 		{
+ 			Retiring->SetVariableFloat(TEXT("User.MissileTime"), float(FrameTime));
+@@ -283,6 +313,7 @@
+ 		}
+ 	}
+ 	UpdateMilliseconds = (FPlatformTime::Seconds() - Started) * 1000;
++	LOD->ReportConsumer(LODConsumer, LODStats);
+ 	CSV_CUSTOM_STAT(GuLiMissileCluster, Systems, SystemCount, ECsvCustomStatOp::Set);
+ 	CSV_CUSTOM_STAT(GuLiMissileCluster, ParticleCapacity, ParticleCapacity, ECsvCustomStatOp::Set);
+ 	CSV_CUSTOM_STAT(GuLiMissileCluster, Missiles, ActiveMissiles, ECsvCustomStatOp::Set);
+--- v1/Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.h
++++ v2/Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.h
+@@ -5,6 +5,7 @@
+ 
+ class UNiagaraComponent;
+ class UNiagaraSystem;
++class UGuLiCommanderLODSubsystem;
+ 
+ /** Cosmetic GPU pools, separate from collision/damage and the wingman flight asset. */
+ UCLASS()
+@@ -16,7 +17,7 @@
+ 	void BeginFrame(double Now, bool bEnabled);
+ 	/** False keeps the legacy visual alive while assets/the component are unavailable. */
+ 	bool Submit(const FGuid& Id, const FVector& Position, const FVector& Direction);
+-	bool IsReady() const { return bResourcesReady; }
++	bool IsReady() const;
+ 	void Finish(const FGuid& Id, const FVector& ImpactPosition, bool bImmediate);
+ 	void EndFrame();
+ 	void Reset();
+@@ -26,7 +27,7 @@
+ 	int32 GetFullTrails() const { return FullTrails; }
+ 	double GetUpdateMilliseconds() const { return UpdateMilliseconds; }
+ 	static constexpr int32 MissilesPerBatch = 64;
+-	static constexpr float TrailLifetime = 1.2f;
++	static constexpr float TrailLifetime = 2.4f;
+ 	static constexpr float HandoffSeconds = 0.15f;
+ 
+ private:
+@@ -67,6 +68,7 @@
+ 	double FrameTime = 0;
+ 	bool bFrameEnabled = false, bResourcesReady = false;
+ 	UPROPERTY(Transient) TArray<TObjectPtr<UNiagaraSystem>> Systems;
++	TWeakObjectPtr<UGuLiCommanderLODSubsystem> CommanderLOD;
+ 	double NextResourceCheck = 0;
+ 	int32 SystemCount = 0, ParticleCapacity = 0, ActiveMissiles = 0, FullTrails = 0;
+ 	double UpdateMilliseconds = 0;

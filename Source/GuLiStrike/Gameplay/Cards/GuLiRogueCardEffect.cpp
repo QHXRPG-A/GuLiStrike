@@ -20,6 +20,48 @@ namespace
 		return Skills->UpsertSource(Commander, Source, Error);
 	}
 }
+bool UGuLiRogueCardEffect::Validate(const FGuLiStrikeRogueCardsCardsRow& R, FString& Error) const
+{
+	if (FMath::IsFinite(R.BonusPercent) && R.BonusPercent>0 && R.BonusCount==0) return true;
+	Error=TEXT("Percentage effect requires positive BonusPercent and zero BonusCount"); return false;
+}
+FText UGuLiRogueCardEffect::FormatDescription(const FGuLiStrikeRogueCardsCardsRow& R, const FText& Pattern) const
+{
+	FNumberFormattingOptions Options; Options.SetMaximumFractionalDigits(2);
+	return FText::Format(Pattern,FText::AsNumber(R.BonusPercent*100.f,&Options));
+}
+bool UGuLiRogueCardMissilePodEffect::Validate(const FGuLiStrikeRogueCardsCardsRow& R, FString& Error) const
+{
+	if (R.BonusPercent==0 && R.BonusCount==0 && R.MaxAcquisitions==1) return true;
+	Error=TEXT("Unlock effect requires zero bonuses and MaxAcquisitions=1"); return false;
+}
+bool UGuLiRogueCardMissilePodEffect::Apply(const AGuLiBattlePlayerState& C, const FGuLiStrikeRogueCardsCardsRow& R, FGuid Id, FString& Error) const
+{
+	auto* Skills=C.GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
+	if (!Skills || !Validate(R,Error)) return false;
+	FGuLiSkillSource Source; Source.SourceInstanceId=Id; Source.DebugLabel=TEXT("RogueCard:")+R.Id;
+	auto& Unlock=Source.Unlocks.AddDefaulted_GetRef();
+	Unlock.Target.UnitTypeIds.Add(static_cast<uint16>(R.UnitTypeId)); Unlock.Target.SlotId=TEXT("MissileLauncher");
+	return Skills->UpsertSource(C,Source,Error);
+}
+bool UGuLiRogueCardMissileCountEffect::Validate(const FGuLiStrikeRogueCardsCardsRow& R, FString& Error) const
+{
+	if (R.BonusCount>0 && R.BonusPercent==0) return true;
+	Error=TEXT("Projectile count effect requires positive BonusCount and zero BonusPercent"); return false;
+}
+FText UGuLiRogueCardMissileCountEffect::FormatDescription(const FGuLiStrikeRogueCardsCardsRow& R, const FText& Pattern) const
+{ return FText::Format(Pattern,FText::AsNumber(R.BonusCount)); }
+bool UGuLiRogueCardMissileCountEffect::Apply(const AGuLiBattlePlayerState& C, const FGuLiStrikeRogueCardsCardsRow& R, FGuid Id, FString& Error) const
+{
+	auto* Skills=C.GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
+	if (!Skills || !Validate(R,Error)) return false;
+	FGuLiSkillSource Source; Source.SourceInstanceId=Id; Source.DebugLabel=TEXT("RogueCard:")+R.Id;
+	auto& Modifier=Source.Modifiers.AddDefaulted_GetRef();
+	Modifier.Target.UnitTypeIds.Add(static_cast<uint16>(R.UnitTypeId)); Modifier.Target.SlotId=TEXT("MissileLauncher");
+	Modifier.Attribute=EGuLiSkillAttribute::ProjectileCount; Modifier.Operation=EGuLiSkillModifierOperation::AddFlat;
+	Modifier.IntegerMagnitude=R.BonusCount;
+	return Skills->UpsertSource(C,Source,Error);
+}
 bool UGuLiRogueCardFireRateEffect::Apply(const AGuLiBattlePlayerState& C, const FGuLiStrikeRogueCardsCardsRow& R, FGuid Id, FString& Error) const
 { return AddSkillSource(C,R,Id,TEXT("BasicAttack"),EGuLiSkillAttribute::AttackRate,Error); }
 bool UGuLiRogueCardMissileDamageEffect::Apply(const AGuLiBattlePlayerState& C, const FGuLiStrikeRogueCardsCardsRow& R, FGuid Id, FString& Error) const

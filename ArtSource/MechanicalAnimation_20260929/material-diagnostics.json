@@ -1,0 +1,58 @@
+{
+  "materials": [
+    {
+      "path": "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid",
+      "ok": true,
+      "errors": []
+    },
+    {
+      "path": "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid",
+      "ok": true,
+      "errors": []
+    },
+    {
+      "path": "/Game/Commander/Units/MechanicalAnimation/M_Sweeper_Cel_Rigid",
+      "ok": true,
+      "errors": []
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/M_UnitWreckRust",
+      "ok": true,
+      "errors": []
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite_Instanced",
+      "ok": true,
+      "errors": []
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody",
+      "ok": true,
+      "errors": []
+    }
+  ],
+  "niagara_api": [
+    "get_editor_property",
+    "get_emitter_properties",
+    "is_editor_property_overridden",
+    "reset_editor_property",
+    "set_editor_property",
+    "set_renderer_property"
+  ],
+  "ns_api": [
+    "add_emitter",
+    "copy_emitter",
+    "duplicate_emitter",
+    "emitter_exists",
+    "enable_emitter",
+    "get_emitter_graph_position",
+    "get_emitter_lifecycle",
+    "list_emitter_templates",
+    "list_emitters",
+    "move_emitter",
+    "remove_emitter",
+    "rename_emitter",
+    "search_emitter_assets",
+    "set_emitter_graph_position"
+  ]
+}

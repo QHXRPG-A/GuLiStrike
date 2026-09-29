@@ -606,6 +606,14 @@ struct GULISTRIKE_API FGuLiQuantizedSoldierPose
 
 	// 256 directions; interpolation and residuals take the shortest angular arc.
 	uint8 FacingYaw = 0u;
+	// Independent mechanical aim: world upper yaw (uint16 turn), gun pitches in 0.01 degrees.
+	uint16 UpperYaw = 0u;
+	int16 LeftGunPitch = 0;
+	int16 RightGunPitch = 0;
+	// Protocol 21: analytic hover wave; transmit a transition only when it changes.
+	uint32 HoverBlendStartMilliseconds = 0;
+	uint8 HoverBlendFromWeight = 0;
+	bool bHoverIdleTarget = false;
 	uint32 ActiveOrderId = 0u;
 	EGuLiSoldierPoseState State = EGuLiSoldierPoseState::Idle;
 	uint8 Flags = 0u;

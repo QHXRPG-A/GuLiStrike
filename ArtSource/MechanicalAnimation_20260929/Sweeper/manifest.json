@@ -1,0 +1,85 @@
+{
+  "unit": "Sweeper",
+  "profile": 2,
+  "source": "D:\\UE5.7\\test1\\ArtSource\\StyleAdjust_20260917\\Models\\Sweeper_NoInk.blend",
+  "source_sha256": "0862aa3ea4e5f35ac8706ab39536347e4046bd15ed867bb1fd101d44394ebdc1",
+  "geometry_unchanged": true,
+  "skeleton_count": 0,
+  "uv_channels": 3,
+  "source_bounds_m": [
+    [
+      -7.552619934082031,
+      -6.528728485107422,
+      0.0
+    ],
+    [
+      7.552619934082031,
+      6.528728485107422,
+      11.409486770629883
+    ]
+  ],
+  "sockets_cm": {
+    "Rigid_GunPitch_01": [
+      2.5008671283721924,
+      0.0,
+      588.1242065429688
+    ],
+    "Rigid_Wheel_FL": [
+      414.3702087402344,
+      545.8268432617188,
+      188.25103759765625
+    ],
+    "Rigid_Wheel_FR": [
+      414.3702087402344,
+      -545.8268432617188,
+      188.25103759765625
+    ],
+    "Rigid_Wheel_RL": [
+      -551.3233642578125,
+      545.8268432617188,
+      204.2459716796875
+    ],
+    "Rigid_Wheel_RR": [
+      -551.3233642578125,
+      -545.8268432617188,
+      204.2459716796875
+    ]
+  },
+  "wheel_radii_cm": [
+    191.93912067197908,
+    191.93912067197908,
+    207.93405760122133,
+    207.93405760122133
+  ],
+  "upper_pivot_cm": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "partitions": {
+    "Body": 0,
+    "Wheel_FL": 6,
+    "Wheel_FR": 7,
+    "Wheel_RL": 8,
+    "Wheel_RR": 9,
+    "Gun_Pitch": 2
+  },
+  "vertex_counts": {
+    "0": 1884,
+    "6": 208,
+    "7": 208,
+    "8": 208,
+    "9": 208,
+    "2": 626
+  },
+  "files": {
+    "blend": "D:\\UE5.7\\test1\\ArtSource\\MechanicalAnimation_20260929\\Sweeper\\Sweeper_RigidEditable.blend",
+    "fbx": "D:\\UE5.7\\test1\\ArtSource\\MechanicalAnimation_20260929\\Sweeper\\SM_Sweeper_Rigid.fbx"
+  },
+  "scale": 0.2,
+  "fbx_readback": {
+    "meshes": 1,
+    "skeletons": 0,
+    "max_bounds_error_m": 4.76837158203125e-07
+  }
+}

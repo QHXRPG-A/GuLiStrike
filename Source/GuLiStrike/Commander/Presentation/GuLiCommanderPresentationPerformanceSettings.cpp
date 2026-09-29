@@ -76,8 +76,7 @@ namespace GuLiCommanderPresentationPerformance
 
 	bool IsValidUnitCullDistance(const int32 Value)
 	{
-		return Value >= 1
-			&& Value <= FGuLiCommanderPresentationPerformanceSettings::MaximumCullDistanceCentimeters;
+		return Value == 0;
 	}
 
 	bool IsValidRingCullDistance(const int32 Value)
@@ -124,15 +123,17 @@ void FGuLiCommanderPresentationPerformanceRegistry::InitializeFromRawConfig(
 	{
 		int32 ParsedValue = 0;
 		const FString& RawValue = ConfigSettings.UnitCullDistanceCentimeters.GetValue();
-		if (ParseStrictInteger(RawValue, ParsedValue) && IsValidUnitCullDistance(ParsedValue))
+		if (ParseStrictInteger(RawValue, ParsedValue) && ParsedValue >= 0
+			&& ParsedValue <= FGuLiCommanderPresentationPerformanceSettings::MaximumCullDistanceCentimeters)
 		{
-			BaselineSettings.UnitCullDistanceCentimeters = ParsedValue;
+			// Migrate legacy positive distances without restoring distance-based hiding.
+			BaselineSettings.UnitCullDistanceCentimeters = 0;
 			ConfigBaselineKeys.Add(UnitCullDistanceKey);
 		}
 		else
 		{
 			OutValidationErrors.Add(FString::Printf(
-				TEXT("UnitCullDistanceCentimeters='%s' is not an integer in [1,%d]"),
+				TEXT("UnitCullDistanceCentimeters='%s' is not an integer in [0,%d]; distance culling stays disabled"),
 				*RawValue,
 				FGuLiCommanderPresentationPerformanceSettings::MaximumCullDistanceCentimeters));
 		}
@@ -257,9 +258,7 @@ FGuLiCommanderPresentationPerformanceRegistry::List(const FString& Prefix) const
 		View.Effective = Value.Effective;
 		View.Source = Value.Source;
 		View.AcceptedValues = (Key == GuLiCommanderPresentationPerformance::UnitCullDistanceKey)
-			? FString::Printf(
-				TEXT("integer [1,%d]"),
-				FGuLiCommanderPresentationPerformanceSettings::MaximumCullDistanceCentimeters)
+			? FString(TEXT("0 only; Mass unit distance culling is disabled"))
 			: (Key == GuLiCommanderPresentationPerformance::RingCullDistanceKey)
 				? FString::Printf(
 					TEXT("integer [0,%d]; 0 disables distance culling"),
@@ -305,7 +304,7 @@ FGuLiCommanderPresentationPerformanceRegistry::Set(const FString& Key, const FSt
 				TEXT("value '%s' is not a valid %s"),
 				*Value,
 				CanonicalKey == UnitCullDistanceKey
-					? TEXT("integer cull distance in [1,10000000]")
+					? TEXT("0; Mass unit distance culling cannot be enabled")
 					: TEXT("integer cull distance in [0,10000000]"));
 			return Result;
 		}

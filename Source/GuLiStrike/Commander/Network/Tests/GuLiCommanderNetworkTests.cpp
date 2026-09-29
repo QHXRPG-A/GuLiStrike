@@ -712,6 +712,9 @@ bool FGuLiCommanderPoseChunkContractTest::RunTest(const FString& Parameters)
 		Pose.VelocityXUnits = MAX_int16; Pose.VelocityYUnits = MIN_int16;
 		Pose.VelocityZUnits = MAX_int16;
 		Pose.ActiveOrderId = MAX_uint32 - Index; Pose.FacingYaw = uint8(Index * 8);
+		Pose.UpperYaw = uint16(Index * 2048); Pose.LeftGunPitch = -1500; Pose.RightGunPitch = 4500;
+		Pose.HoverBlendStartMilliseconds = MAX_uint32 - Index * 100;
+		Pose.HoverBlendFromWeight = uint8(Index * 8); Pose.bHoverIdleTarget = (Index % 2) != 0;
 		Pose.State = EGuLiSoldierPoseState::Moving;
 		Pose.Flags = Index == 0 ? GULI_SOLDIER_POSE_FLAG_TELEPORT : 0;
 	}
@@ -743,6 +746,9 @@ bool FGuLiCommanderPoseChunkContractTest::RunTest(const FString& Parameters)
 			TestTrue(TEXT("Every quantized field survives"), Original && Copy.GetWorldLocationCentimeters() == Original->GetWorldLocationCentimeters()
 				&& Copy.GetVelocityCentimetersPerSecond() == Original->GetVelocityCentimetersPerSecond()
 				&& Copy.FacingYaw == Original->FacingYaw && Copy.ActiveOrderId == Original->ActiveOrderId
+				&& Copy.UpperYaw == Original->UpperYaw && Copy.LeftGunPitch == Original->LeftGunPitch && Copy.RightGunPitch == Original->RightGunPitch
+				&& Copy.HoverBlendStartMilliseconds == Original->HoverBlendStartMilliseconds
+				&& Copy.HoverBlendFromWeight == Original->HoverBlendFromWeight && Copy.bHoverIdleTarget == Original->bHoverIdleTarget
 				&& Copy.State == Original->State && Copy.Flags == Original->Flags);
 		}
 		DecodedCount += Decoded.Samples.Num();

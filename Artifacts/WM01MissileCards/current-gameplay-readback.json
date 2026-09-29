@@ -1,0 +1,80 @@
+{
+  "DT_GuLiStrikeSecondaryUnitSkills_Skills": [
+    {
+      "Name": "WM01_HomingMissile",
+      "Id": 1,
+      "Note": "战争机器Q；每台独立6秒；射程取最终普通攻击x1.6（基线48米）；直径16米圆内独立随机落点，圆心验射程、落点允许越界；爆炸与预警半径2米，伤害与挂点引用武器槽",
+      "TargetMode": "GroundPoint",
+      "CooldownSeconds": 6,
+      "RangeCentimeters": 4800,
+      "RangeSourceSlot": "BasicAttack",
+      "RangeMultiplier": 1.6,
+      "MaximumLevel": 1,
+      "ExecutorClass": "/Script/GuLiStrike.GuLiWarMachineMissileSkillExecutor",
+      "ConfigurationClass": "/Script/GuLiStrike.GuLiPointSkillConfiguration",
+      "Configuration": "/Game/GuLiStrike/Commander/Skills/DA_WM01_MissileQ",
+      "Projectile": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile",
+      "FieldConfigId": "WM01_MissileExplosion",
+      "SourceWeaponSlot": "MissileLauncher",
+      "UseAuthoredTrajectory": true,
+      "GroundWarningStyle": "/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red",
+      "TargetAreaDiameterCentimeters": 1600
+    }
+  ],
+  "DT_GuLiStrikeSpellFields_Fields": [
+    {
+      "Name": "WM01_MissileExplosion",
+      "Id": 1,
+      "Note": "WM01导弹命中后的即时球形法术场；伤害、范围和时序均在本行配置",
+      "FieldType": "Combat",
+      "Damage": 30,
+      "RadiusCentimeters": 200,
+      "Timing": "Instant",
+      "DelaySeconds": 0,
+      "DurationSeconds": 0,
+      "PulseIntervalSeconds": 1,
+      "DissipationSeconds": 3,
+      "Level": 0,
+      "bAllowPlayerVehicles": false,
+      "WindupSeconds": 0,
+      "RecoverySeconds": 0,
+      "BeamHeightCentimeters": 0,
+      "MaxTargetWaitSeconds": 0,
+      "MaxShipHeightCentimeters": 0,
+      "LaneHeightCentimeters": 0,
+      "AscentSeconds": 0,
+      "AccelerationSeconds": 0,
+      "DecelerationSeconds": 0,
+      "ExitFlashSeconds": 0,
+      "SpeedMultiplier": 0,
+      "ExitRadiusCentimeters": 0,
+      "EnergyVfxId": 0,
+      "TrailVfxId": 0,
+      "FlashVfxId": 0
+    }
+  ],
+  "DT_GuLiStrikeVfx_Effects": [
+    {
+      "Name": "WM01MissileClusterFull",
+      "Id": 49,
+      "Note": "重防号独立GPU候选；每批按实际占用分配且最多64枚；24段1.2秒历史烟迹",
+      "ResourcePath": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full",
+      "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)"
+    },
+    {
+      "Name": "WM01MissileClusterLite",
+      "Id": 50,
+      "Note": "重防号独立GPU候选；每批最多64枚；8段1.2秒历史烟迹；0.15秒平滑交接",
+      "ResourcePath": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite",
+      "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)"
+    },
+    {
+      "Name": "WM01MissileClusterMinimal",
+      "Id": 51,
+      "Note": "重防号独立GPU候选；每批最多64枚；仅弹体与短尾焰；保留旧档烟迹自然消散",
+      "ResourcePath": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal",
+      "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)"
+    }
+  ],
+  "F4_Note": "重防号肉鸽卡：就绪指挥官席位按F4，随机显示最多三张合格卡；底部右侧“重选”免费重抽，优先换成未显示的合格牌，无其他牌时提示并保留原牌。Esc关闭后重开保持最新候选。初始无导弹技能/导弹仓；重防导弹仓04.01每队一次。解锁后出现导弹伤害03.01与雨点攻势05.01，后者每次加一枚同时齐射导弹，可叠加。单击翻牌，再单击确认。现有/后续单位同队生效。运行与美术效果待验证。\n重选验证：F4打开后，底部右侧“重选”免费更换当前候选，优先换成未显示的合格牌；选择前或翻面完成后可用，入场/翻面/提交期间禁用。没有其他合格牌时保留原牌并提示。重选不会发奖励，单击翻牌后再次确认才结算；Esc关闭再开保持最新候选。当前5张卡中，初始合格牌只有01.01/02.01/04.01；获得04.01后，合格池扩展为01.01/02.01/03.01/05.01，可观察换牌。本次仅保存配置和核对实体；重选原生代码需编译加载后由玩家验证。"
+}

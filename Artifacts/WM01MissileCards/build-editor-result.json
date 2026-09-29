@@ -1,0 +1,76 @@
+{
+  "completed_at": "2026-09-29T18:40:37.843004+08:00",
+  "authorization": [
+    "User: 编译",
+    "User: 已关闭，继续编译"
+  ],
+  "engine": "D:/UnrealEngine-5.7",
+  "target": "GuLiStrikeEditor Win64 Development",
+  "project": "D:/UE5.7/test1/GuLiStrike.uproject",
+  "arguments": [
+    "-WaitMutex",
+    "-NoHotReloadFromIDE"
+  ],
+  "attempts": [
+    {
+      "log": "build-editor-attempt1.log",
+      "exit_code": 6,
+      "result": "failed",
+      "errors": [
+        "LNK2019/LNK1120: GuLiSkillTargeting::ResolveGround lacked GULISTRIKE_API export",
+        "LNK1104: two UnrealEditor processes held the runtime DLL"
+      ]
+    },
+    {
+      "log": "build-editor-attempt2.log",
+      "exit_code": 0,
+      "result": "succeeded",
+      "total_seconds": 37.3
+    }
+  ],
+  "fix": {
+    "file": "Source/GuLiStrike/Gameplay/Skills/GuLiSkillTargeting.h",
+    "change": "Export shared ResolveGround with GULISTRIKE_API for GuLiStrikeEditor caller",
+    "sha256": "6b0bbc17ff15fc4a80a09ea2951cfe4c0d5881bbe63656768f3ab3e0b34731c7"
+  },
+  "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+  "manifests_checked": 8,
+  "project_plugins_checked": 6,
+  "build_ids_match": true,
+  "warnings": [
+    "StructUtils deprecated",
+    "VibeUE plugin descriptor lacks StructUtils and GameplayTagsEditor dependencies",
+    "Tripo3DUEBridge plugin descriptor lacks Interchange dependency"
+  ],
+  "editor_recovery": {
+    "saved": true,
+    "backup_asset": "/Game/Developers/CompileRecovery/LVL_CommanderMassPrototype_Background_20260929_183717",
+    "original_file": "D:\\UE5.7\\test1\\Content\\Maps\\LVL_CommanderMassPrototype.umap",
+    "original_before": {
+      "size": 127187476,
+      "mtime_ns": 1790660916650989500
+    },
+    "original_after": {
+      "size": 127187476,
+      "mtime_ns": 1790660916650989500
+    },
+    "dirty_content": [],
+    "dirty_maps": [
+      "/Game/Maps/LVL_CommanderMassPrototype"
+    ],
+    "backup_file": "D:\\UE5.7\\test1\\Content\\Developers\\CompileRecovery\\LVL_CommanderMassPrototype_Background_20260929_183717.umap",
+    "backup_size": 127198240,
+    "backup_readback_class": "World",
+    "exit_requested": true
+  },
+  "verification": {
+    "native_build": "passed",
+    "targeted_diff_check": "passed",
+    "editor_new_module_load": "not_run",
+    "PIE": "not_run",
+    "automated_tests": "not_run",
+    "performance": "not_run",
+    "new_tables_model_gpu_asset_import": "not_run"
+  },
+  "editor_restarted": false
+}

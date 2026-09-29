@@ -1,0 +1,39 @@
+{
+  "observed": "User-started LVL_CommanderMassPrototype PIE, Candidate 1 still shows legacy missile flight and no charcoal history",
+  "expected": "WM01 v2 195cm missile, 21x54cm flame and 2.4-second charcoal smoke",
+  "first_bad_transition": "Loaded cluster assets are not ready; readiness gate prevents Submit/StartBatch and preserves legacy FlightVfxId 2",
+  "hypotheses": [
+    {
+      "hypothesis": "Candidate command not applied",
+      "result": "rejected",
+      "evidence": "passive CVar read: Candidate=1, Enabled=1, Visuals=1"
+    },
+    {
+      "hypothesis": "Wrong definition or VFX mapping",
+      "result": "rejected for inspected objects",
+      "evidence": "DA path matches opt-in comparison exactly; VFX IDs 49/50/51 map to three runtime cluster systems"
+    },
+    {
+      "hypothesis": "Only minimal LOD is rendering",
+      "result": "rejected as explanation for legacy components",
+      "evidence": "first passive snapshot found six legacy NS_WM01_MissileFlight components, no cluster components; all three cluster systems ready=0"
+    },
+    {
+      "hypothesis": "On-demand compilation blocked by pre-activation readiness gate",
+      "result": "confirmed pending compilation on cold reload; gameplay regression pending",
+      "evidence": "fx.Niagara.OnDemandCompileEnabled=2; three systems valid=0 ready=0 GPU complete=0 without errors; pool never services pending requests; engine ActivateInternal polls compilation before IsReadyToRun; new native diagnostic read needs_compile=1 on all six cold-loaded systems, then ready=1 after asset compilation"
+    }
+  ],
+  "fix": "In editor builds only, service outstanding Niagara compilation with non-blocking PollForCompilationComplete before testing readiness; keep fallback until ready",
+  "verification_scope": [
+    "cold reload readiness and pending state",
+    "GPU compile completion and capacity contract",
+    "player repeats Candidate 1 and Q in same map after reload"
+  ],
+  "out_of_scope": [
+    "automatic PIE launch or firing",
+    "performance benchmark",
+    "gameplay or production reference changes"
+  ],
+  "known_validation_gap": "Previous asset-readback success only rejected error strings; saved report has ready=0 and GPU complete=0. Preserved original report and strengthened checks. Prior preview screenshots remain separate evidence."
+}

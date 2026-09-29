@@ -7,6 +7,7 @@
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "Commander/Presentation/GuLiCommanderPresentationPerformanceSettings.h"
 #include "Commander/Presentation/GuLiCommanderRefreshCadence.h"
+#include "Gameplay/Presentation/GuLiMechanicalAnimation.h"
 #include "GameFramework/Actor.h"
 #include "MassArchetypeTypes.h"
 #include "MassEntityHandle.h"
@@ -22,8 +23,10 @@ class UMaterialInterface;
 class UMassEntitySubsystem;
 class USceneComponent;
 class UGuLiCommanderRouteLineComponent;
+class UGuLiWarMachineHoverComponent;
 class UStaticMesh;
 struct FGuLiSoldierRosterDelta;
+struct FGuLiCombatShotCue;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiCommanderVisualStatesChanged, const TArray<FGuLiSoldierId>&);
 
@@ -43,6 +46,11 @@ struct FGuLiCommanderBufferedSoldierPose
 	FVector Location = FVector::ZeroVector;
 	FVector Velocity = FVector::ZeroVector;
 	float FacingYawDegrees = 0.0f;
+	float UpperYawDegrees = 0.0f;
+	float GunPitchDegrees[2] = {};
+	uint32 HoverBlendStartMilliseconds = 0;
+	uint8 HoverBlendFromWeight = 0;
+	bool bHoverIdleTarget = false;
 	uint32 ActiveOrderId = 0u;
 	EGuLiSoldierPoseState State = EGuLiSoldierPoseState::Idle;
 	uint16 ChunkIndex = 0u;
@@ -54,6 +62,10 @@ struct FGuLiCommanderBufferedSoldierPose
 // 每个 SoldierId 的客户端缓存，最多保留有限历史样本；AuthoritativeTransform 是样本求值结果，不是服务器实时对象。
 struct FGuLiCommanderPresentedSoldier
 {
+	struct FRecoilCue { float ServerTime = 0; float FromCentimeters = 0; uint8 Side = 0; };
+	FGuLiMechanicalAnimationState MechanicalPose;
+	FGuLiMechanicalAnimationFrame MechanicalFrame, PreviousMechanicalFrame;
+	TArray<FRecoilCue> PendingRecoil;
 	TArray<FGuLiCommanderBufferedSoldierPose> Samples;
 	uint32 DisplacementFrameFloor = 0;
 	FTransform AuthoritativeTransform = FTransform::Identity;
@@ -230,6 +242,8 @@ public:
 	/** Returns the current interpolated/predicted visual transform without exposing authority writes. */
 	// 本地只读查询；有效时写 OutTransform 并返回 true，供 HUD/诊断使用，不开放权威写入。
 	bool TryGetPresentedSoldierTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
+	/** Model/display anchors only; movement, collision and selection retain the logical transform. */
+	bool TryGetPresentedVisualTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
 	/** Same timestamp used by the hit-white overlay; no independent health-delta detector in the HUD. */
 	float GetSoldierHitStartTime(FGuLiSoldierId SoldierId) const;
 	FGuLiCommanderVisualStatesChanged OnVisualStatesChanged;
@@ -314,6 +328,7 @@ public:
 #endif
 
 private:
+	UPROPERTY(Transient) TObjectPtr<UGuLiWarMachineHoverComponent> HoverEffects;
 #if WITH_DEV_AUTOMATION_TESTS
 	friend class FGuLiCommanderUnitTypeBatchRoutingTest;
 	friend class FGuLiCommanderClientMaintenanceTest;
@@ -330,6 +345,13 @@ private:
 	void UpdateHitFlashInstances(const TMap<uint16,TArray<FTransform>>& Transforms,
 		const TMap<uint16,TArray<float>>& StartTimes);
 	void ConfigureUnitInstanceComponent(UInstancedStaticMeshComponent& Component) const;
+	void UpdateMechanicalPresentation(FGuLiSoldierId Id, FGuLiCommanderPresentedSoldier& Soldier,
+		const FTransform& PreviousPose, float DeltaSeconds, bool bReset, bool bAlive);
+	void ObserveMechanicalShot(const FGuLiCombatShotCue& Cue);
+	bool ResolveMechanicalMuzzle(const FGuLiCombatShotCue& Cue, FTransform& Out, float& RenderTime) const;
+	void ApplyMechanicalOverlay(UInstancedStaticMeshComponent& Component,
+		const TArray<FGuLiSoldierId>& Ids, const TArray<float>* HitTimes = nullptr) const;
+	TMap<uint16, TArray<FGuLiSoldierId>> PhasedMechanicalIds, HitMechanicalIds, WreckMechanicalIds;
 	void SetUnitInstanceBatchesVisibility(bool bVisible);
 	uint16 ResolveUnitBatchTypeId(uint16 RequestedUnitTypeId);
 	static uint32 MakeUnitBatchKey(uint16 UnitTypeId, EGuLiTeam Team);

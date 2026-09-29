@@ -1,12 +1,12 @@
 # 2026-09-17 模型三渲二与指定爆炸接入
 
-最新调整见 [扫荡者去线稿、爆炸缩放与关卡亮度](../StyleAdjust_20260917/README.md)：扫荡者现在取消内线和外轮廓，战争机器保留；地面摧毁爆炸为此前的 0.6，僚机摧毁配置不变；指挥官关卡已修正压黑的后处理。下文含描边的扫荡者面数是此前阶段数据。
+最新调整见 [扫荡者去线稿、爆炸缩放与关卡亮度](../StyleAdjust_20260917/README.md)：扫荡者现在取消内线和外轮廓，重防号保留；地面摧毁爆炸为此前的 0.6，僚机摧毁配置不变；指挥官关卡已修正压黑的后处理。下文含描边的扫荡者面数是此前阶段数据。
 
 ## 在 UE 中查看
 
 - 模型预览地图：`/Game/Commander/Units/Tactical/Cel/Review/LVL_CelModels_Review`。
 - 扫荡者：`/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel`。
-- 战争机器：`/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel`。
+- 重防号：`/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel`。
 - Ship：`/Game/GuLiStrike/Ship/Stylized/Meshes/SM_Ship_AnimeHull` 与 `SM_Ship_AnimeContour`。
 - 爆炸：`/Game/GuLiStrike/FX/CombatExplosions` 下的 `NS_GroundDestruction_03`、`NS_WingmanDestruction_05`、`NS_WingmanBombardment_01`。
 
@@ -14,18 +14,18 @@
 
 ## 模型制作与接入
 
-两台单位保留此前手工模型、原有橙红/暖白/蓝灰配色、扫荡者弧形侧甲及战争机器平行 45° 双背舱。本轮加入 2K 内部结构线遮罩、深蓝外轮廓壳和三档明暗。内部线条不显示三角拓扑。主体材质使用固定艺术光向的 Unlit 分档着色，不模拟动态场景灯光；外轮廓关闭投影。
+两台单位保留此前手工模型、原有橙红/暖白/蓝灰配色、扫荡者弧形侧甲及重防号平行 45° 双背舱。本轮加入 2K 内部结构线遮罩、深蓝外轮廓壳和三档明暗。内部线条不显示三角拓扑。主体材质使用固定艺术光向的 Unlit 分档着色，不模拟动态场景灯光；外轮廓关闭投影。
 
 静态/骨骼 FBX、贴图与 Blender 文件位于 `Models`。当前 Blender 交互文件为 `Models/Tactical_Cel_Review.blend`，保留旧场景并新增 `Sweeper_Cel_Review` 和 `WarMachine_Cel_Review`。
 
 | 模型 | LOD0 | LOD1 | LOD2 | LOD3 |
 |---|---:|---:|---:|---:|
 | 扫荡者（含描边） | 10,912 | 2,727 | 900 | 220 |
-| 战争机器（含描边） | 27,303 | 6,826 | 300 | 70 |
+| 重防号（含描边） | 27,303 | 6,826 | 300 | 70 |
 
 屏幕比例阈值为 1 / 0.32 / 0.09 / 0.025；模型有主体与轮廓两个材质槽。LOD0 未达到早期 4,000 / 6,000 面预算，不能据此宣称批量单位性能优化完成。未在本轮实现材质顶点机械动画。
 
-Soldiers 源表和 UE DataTable 已指向新静态模型，Id 1/2、行名及战斗数值保留，显示名为扫荡者/战争机器。WeaponMounts 源表与 DataTable 同步新的枪口和两个背舱出口，并在网格上创建对应挂点。
+Soldiers 源表和 UE DataTable 已指向新静态模型，Id 1/2、行名及战斗数值保留，显示名为扫荡者/重防号。WeaponMounts 源表与 DataTable 同步新的枪口和两个背舱出口，并在网格上创建对应挂点。
 
 Ship 船体 13,314 面、4 套 UV，轮廓 3,088 面；第四套 UV 读取原 4K 内部线稿。FBX 已含原模型 0.5 Build Scale，不再重复缩小。原 Hull 保留碰撞、挂点与尺寸接口。
 

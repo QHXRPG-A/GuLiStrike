@@ -1,0 +1,72 @@
+--- GuLiMissileFixture-before-fix.cpp
++++ GuLiMissileFixture.cpp
+@@ -3,10 +3,12 @@
+ #include "Battle/Framework/GuLiBattlePlayerState.h"
+ #include "Camera/CameraActor.h"
+ #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
++#include "Commander/Orders/GuLiUnitTaskSubsystem.h"
+ #include "Engine/World.h"
+ #include "EngineUtils.h"
+ #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+ #include "Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h"
++#include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
+ #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
+ #include "Gameplay/Skills/GuLiSkillTargeting.h"
+ #include "GameFramework/PlayerController.h"
+@@ -37,8 +39,11 @@
+ 	if (Fixtures.Contains(PC->GetWorld())) return Fail(TEXT("Restart PIE for a fresh population and acquisition baseline before changing cases."));
+ 	auto* Player=PC->GetPlayerState<AGuLiBattlePlayerState>();
+ 	auto* Army=PC->GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
++	const auto* Data=PC->GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
++	const auto* Definition=Data ? Data->FindSoldierDefinition(2) : nullptr;
++	auto* Tasks=PC->GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>();
+ 	const auto* Profile=Player && Army ? Army->FindResolvedSkill(Player->GetTeam(),2,TEXT("MissileLauncher")) : nullptr;
+-	if (!Player || !Player->IsCommander() || !Player->IsBattleReady() || !Profile || Profile->ProjectileCount!=1)
++	if (!Player || !Player->IsCommander() || !Player->IsBattleReady() || !Profile || Profile->ProjectileCount!=1 || !Definition || !Tasks)
+ 		return Fail(TEXT("Start a fresh ready commander match with base projectile count 1."));
+ 	FGuLiSkillSource Source; Source.SourceInstanceId=FGuid::NewGuid(); Source.DebugLabel=TEXT("WM01MissilePerformanceFixture");
+ 	auto& Unlock=Source.Unlocks.AddDefaulted_GetRef(); Unlock.Target.UnitTypeIds.Add(2); Unlock.Target.SlotId=TEXT("MissileLauncher");
+@@ -51,7 +56,16 @@
+ 	FString Error;
+ 	if (!Army->UpsertSource(*Player,Source,Error)) return Fail(Error);
+ 	Army->CommitPendingChanges();
+-	const FString Built=BuildFixture(PC,Count,Center,400.f);
++	// Respect the same resolved avoidance radius as authority spawning. The old
++	// 400 cm grid rejected most WM01s after its diameter became 1250 cm.
++	const float Spacing=FMath::Max(400.f,Definition->GetMassAvoidanceRadius(150.f)*2.f+20.f);
++	// BuildFixture reserves ten spare columns/rows for blocked spawn locations.
++	// Center its first requested rows on the review marker instead of shifting
++	// the entire larger formation behind the fixed observation cameras.
++	const int32 Columns=FMath::CeilToInt(FMath::Sqrt(float(Count)))+10;
++	const int32 Rows=FMath::DivideAndRoundUp(Count,Columns);
++	const FVector LayoutCenter=Center+FVector(0,(Columns-Rows)*Spacing*.5f,0);
++	const FString Built=BuildFixture(PC,Count,LayoutCenter,Spacing);
+ 	TSharedPtr<FJsonObject> Json;
+ 	if (!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Built),Json) || !Json.IsValid() || !Json->HasField(TEXT("units"))) return Fail(TEXT("Fixture creation failed."));
+ 	auto& Fixture=Fixtures.Add(PC->GetWorld()); Fixture.Owner=PC; Fixture.Count=ProjectilesPerSalvo;
+@@ -59,10 +73,23 @@
+ 	{
+ 		FGuLiSoldierId Id; Id.Value=static_cast<uint32>(Value->AsObject()->GetNumberField(TEXT("id"))); Fixture.Units.Add(Id);
+ 	}
++	// Stop through the real task scheduler so automatic advance cannot carry the
++	// prepared population out of the observation area between salvos. Only this
++	// fixture's new units are selected; the player's selection is untouched.
++	FGuLiCommanderSelectionState Selection; Selection.SelectionRevision=1;
++	for (const auto Id:Fixture.Units)
++	{
++		if (Selection.Cohorts.IsEmpty() || Selection.Cohorts.Last().MemberIds.Num()==int32(GULI_CONTROL_COHORT_TARGET_SIZE))
++			Selection.Cohorts.AddDefaulted();
++		Selection.Cohorts.Last().MemberIds.Add(Id);
++	}
++	FGuLiUnitTaskCommand Stop; Stop.CommandId=1; Stop.SelectionRevision=Selection.SelectionRevision; Stop.Disposition=EGuLiTaskDisposition::Stop;
++	int32 Stopped=0, Rejected=0;
++	Tasks->Submit(*Player,Selection,Stop,Error,Stopped,Rejected);
+ 	for (TActorIterator<ACameraActor> It(PC->GetWorld());It;++It)
+ 		if (It->ActorHasTag(TEXT("WM01MissileFixedCamera"))) { PC->SetViewTarget(*It); break; }
+-	return FString::Printf(TEXT("{\"success\":%s,\"fixture_units\":%d,\"projectiles_per_salvo\":%d,\"expected_missiles\":%d,\"other_map_units_unchanged\":true}"),
+-		Fixture.Units.Num()==Count?TEXT("true"):TEXT("false"),Fixture.Units.Num(),ProjectilesPerSalvo,Fixture.Units.Num()*ProjectilesPerSalvo);
++	return FString::Printf(TEXT("{\"success\":%s,\"requested_units\":%d,\"fixture_units\":%d,\"stopped_units\":%d,\"spacing_centimeters\":%.1f,\"projectiles_per_salvo\":%d,\"expected_missiles\":%d,\"other_map_units_unchanged\":true}"),
++		Fixture.Units.Num()==Count && Stopped==Count && Rejected==0?TEXT("true"):TEXT("false"),Count,Fixture.Units.Num(),Stopped,Spacing,ProjectilesPerSalvo,Fixture.Units.Num()*ProjectilesPerSalvo);
+ }
+ 
+ FString UGuLiRogueCardQALibrary::FireMissileFixture(APlayerController* PC)

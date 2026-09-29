@@ -166,7 +166,7 @@ def model(unit):
         if tag.startswith('Wheel'):
             a,b=bounds([o]);wheel_pivots[tag]=list((a+b)*.5)
     wheel_radius=(bounds([next(o for o in parts if o.get('motion')=='Wheel_FL')])[1].z-bounds([next(o for o in parts if o.get('motion')=='Wheel_FL')])[0].z)*.5 if unit=='Sweeper' else 0
-    return parts,dict(unit=unit,display_name='扫荡者' if unit=='Sweeper' else '战争机器',scale=scale,sockets_m=sockets,wheel_pivots_m=wheel_pivots,wheel_radius_m=wheel_radius,palette=PALETTE)
+    return parts,dict(unit=unit,display_name='扫荡者' if unit=='Sweeper' else '重防号',scale=scale,sockets_m=sockets,wheel_pivots_m=wheel_pivots,wheel_radius_m=wheel_radius,palette=PALETTE)
 def preview(parts,unit,view='three_quarter'):
     scene=bpy.context.scene
     for o in list(scene.objects):

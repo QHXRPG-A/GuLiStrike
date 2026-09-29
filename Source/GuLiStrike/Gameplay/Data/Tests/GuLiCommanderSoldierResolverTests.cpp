@@ -175,9 +175,9 @@ bool FGuLiCommanderSoldierImportedBaselineTest::RunTest(const FString& Parameter
 	constexpr TCHAR TablePath[] =
 		TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Soldiers.DT_GuLiStrikeCommander_Soldiers");
 	constexpr TCHAR CrowdMeshPath[] =
-		TEXT("/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel.SM_Sweeper_Cel");
+		TEXT("/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid");
 	constexpr TCHAR WM01CrowdMeshPath[] =
-		TEXT("/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel");
+		TEXT("/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid");
 
 	const UDataTable* DataTable = LoadObject<UDataTable>(nullptr, TablePath);
 	if (!TestNotNull(TEXT("imported Soldier DataTable is available"), DataTable))

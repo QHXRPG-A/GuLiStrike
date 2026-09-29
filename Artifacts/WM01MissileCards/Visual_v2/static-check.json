@@ -1,0 +1,121 @@
+{
+  "success": true,
+  "scope": "Python syntax, scoped diff and source review. Native builds, saved asset diagnostics and art preview readback are recorded separately.",
+  "checks": [
+    {
+      "check": "Scripts/build_wm01_missile_cluster_fx.py Python AST",
+      "passed": true
+    },
+    {
+      "check": "Scripts/preview_wm01_missile_cluster.py Python AST",
+      "passed": true
+    },
+    {
+      "check": "Scripts/finalize_wm01_missile_cluster_assets.py Python AST",
+      "passed": true
+    },
+    {
+      "check": "Scripts/author_wm01_missile_scene.py Python AST",
+      "passed": true
+    },
+    {
+      "check": "scoped git diff --check",
+      "passed": true,
+      "output": ""
+    },
+    {
+      "check": "Scripts/inspect_wm01_missile_cluster.py Python AST",
+      "passed": true
+    },
+    {
+      "check": "Final scoped diff, five Python AST checks and post-integration v2 constants review",
+      "passed": true
+    }
+  ],
+  "v2_review": {
+    "dimensions_multiplier": 1.5,
+    "body_cm": 195,
+    "flame_cm": [
+      21,
+      54
+    ],
+    "flame_peak_r": 9,
+    "smoke_width_cm": [
+      21,
+      33
+    ],
+    "smoke_lifetime_s": 2.4,
+    "retention_s": 2.45,
+    "bounds_history_s": 2.5,
+    "bounds_expansion_cm": 210,
+    "drift_upper_bound_cm": 26.94900784815649,
+    "cold_linear_rgb": [
+      0.055,
+      0.06,
+      0.065
+    ],
+    "warm_transition_s": 0.08,
+    "alpha": 0.7,
+    "fade_exponent": 1.25
+  },
+  "preserved_contracts": {
+    "batch_capacity": 64,
+    "quality_lanes": [
+      24,
+      8,
+      0
+    ],
+    "full_trail_budget": 512,
+    "particle_capacity_budget": 65536,
+    "handoff_s": 0.15,
+    "capacity_contract_version": 2,
+    "network_and_gameplay": "unchanged in v2"
+  },
+  "review_notes": [
+    "TrailLifetime drives metadata, finished-slot retention, retiring component release and historical bounds.",
+    "The retirement and occupied-capacity accounting paths are unchanged; prolonged tails remain counted.",
+    "The 210 cm expansion covers enlarged body/flame origins, 33 cm smoke width and the bounded drift.",
+    "WM01 pool scale changes locally; the shared MissileFlight VFX scale is unchanged.",
+    "One of the existing history lanes now bridges the latest historical sample to the current exhaust origin; 24/8 lanes and 2.4-second decay remain unchanged.",
+    "Concurrent CommanderLOD integration appeared in the shared pool source during this task and was preserved. v2 scale, lifetime, bounds and resource accounting were re-read after integration.",
+    "Build blocker repair only: braces around SetSetting/ResetSetting UE_LOG branches in GuLiCommanderLODCommands.cpp; prior file preserved in the evidence directory."
+  ],
+  "files": [
+    {
+      "path": "Scripts/build_wm01_missile_cluster_fx.py",
+      "sha256": "936bf3e5afcc4180df58c1da9981829f0871359633d771ff753b7fa265a36786"
+    },
+    {
+      "path": "Scripts/preview_wm01_missile_cluster.py",
+      "sha256": "4aaccc825d80f45c3e408071b25791a1a19231fdf2a22eeeb2b1c9c172d77137"
+    },
+    {
+      "path": "Scripts/finalize_wm01_missile_cluster_assets.py",
+      "sha256": "4d208411093538f4a2a6526cc6e5648fb0430de0a7f4c0a6301d0465cc0e1835"
+    },
+    {
+      "path": "Scripts/author_wm01_missile_scene.py",
+      "sha256": "1634fc69255c65d05b41eb5d6cca656487bed506bff988eddf9c8c8ba8f98112"
+    },
+    {
+      "path": "Scripts/Niagara/GuLiMissileHistory.hlsl",
+      "sha256": "ac2e3a9b39cf78ab6a9f4db1ba016c506238d4f09408e828b173ee9cc2294f6a"
+    },
+    {
+      "path": "Scripts/Niagara/GuLiMissileArtPreview.hlsl",
+      "sha256": "89d51d561548b56069c5d05b9f8ed193305128a4781146d26d5e561b319e8d48"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.cpp",
+      "sha256": "83ff8cf20bae464257c96d692e34b6486ff15803525e51801e4aee3dd79f91bc"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.h",
+      "sha256": "a16ccb5814f32b327b3ffc811916814f217e7fd8c12f76ad6ca7c8906c442456"
+    },
+    {
+      "path": "Scripts/inspect_wm01_missile_cluster.py",
+      "sha256": "5c6cc76e5d2117f401cc009f7c76767a6b3ac0735cea8d9b995749de6a796691"
+    }
+  ]
+}

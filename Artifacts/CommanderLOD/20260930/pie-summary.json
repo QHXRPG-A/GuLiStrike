@@ -1,0 +1,271 @@
+{
+  "status": "partial",
+  "date": "2026-09-30",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "authorization": "User explicitly allowed PIE functional acceptance; no performance stress test.",
+  "performance": "not_run",
+  "player_visual_approval": "pending",
+  "new_native_build": "not_run",
+  "runtime_build": "Existing authorized missile v3 Editor build, including unified commander LOD; fixture source repair below is newer and not loaded.",
+  "fixture": {
+    "status": "failed",
+    "requested_units": 100,
+    "spawned_first_session": 36,
+    "spawned_second_session": 37,
+    "per_unit_salvo": 1,
+    "cause": "400 cm grid versus resolved WM01 625 cm avoidance radius; normal automatic advance also moves spawned units out of the fixed camera area.",
+    "observation_adjustment": "Finite probes reframe only PIE cameras around the last 37 team-1 presentation instances; actual fire and Niagara output are recorded. Combat data and trajectories are unchanged.",
+    "repair": "Source now derives spacing from resolved radius, centers the initial rows and submits Stop for fixture units through the task scheduler. Native rebuild and full-population retest remain pending."
+  },
+  "runs": {
+    "lod0-tracked": {
+      "complete": true,
+      "error": null,
+      "fire": {
+        "successful_units": 36,
+        "missiles": 36,
+        "expected_units": 37,
+        "uses_authority_skill_and_cooldown": true
+      },
+      "file": "pie-lod0-tracked.json"
+    },
+    "lod1-tracked": {
+      "complete": true,
+      "error": null,
+      "fire": {
+        "successful_units": 37,
+        "missiles": 37,
+        "expected_units": 37,
+        "uses_authority_skill_and_cooldown": true
+      },
+      "file": "pie-lod1-tracked.json"
+    },
+    "lod2-tracked": {
+      "complete": true,
+      "error": null,
+      "fire": {
+        "successful_units": 37,
+        "missiles": 37,
+        "expected_units": 37,
+        "uses_authority_skill_and_cooldown": true
+      },
+      "file": "pie-lod2-tracked.json"
+    },
+    "budget-zero-full": {
+      "complete": true,
+      "error": null,
+      "fire": {
+        "successful_units": 37,
+        "missiles": 37,
+        "expected_units": 37,
+        "uses_authority_skill_and_cooldown": true
+      },
+      "file": "pie-budget-zero-full.json"
+    },
+    "offscreen-recovery": {
+      "complete": true,
+      "error": null,
+      "fire": {
+        "successful_units": 37,
+        "missiles": 37,
+        "expected_units": 37,
+        "uses_authority_skill_and_cooldown": true
+      },
+      "file": "pie-offscreen-recovery.json"
+    },
+    "quality-handoff": {
+      "complete": true,
+      "error": null,
+      "fire": {
+        "successful_units": 37,
+        "missiles": 37,
+        "expected_units": 37,
+        "uses_authority_skill_and_cooldown": true
+      },
+      "file": "pie-quality-handoff.json"
+    },
+    "gpu-dissipation": {
+      "complete": true,
+      "error": null,
+      "fire": {
+        "successful_units": 33,
+        "missiles": 33,
+        "expected_units": 37,
+        "uses_authority_skill_and_cooldown": true
+      },
+      "file": "pie-gpu-dissipation.json"
+    }
+  },
+  "checks": {
+    "three_tiers": {
+      "status": "passed",
+      "history_segments_per_slot": {
+        "Lite": [
+          8
+        ],
+        "Full": [
+          24
+        ],
+        "Minimal": [
+          0
+        ]
+      }
+    },
+    "budget_degradation": {
+      "status": "passed",
+      "full_trail_budget": 0,
+      "max_reported_full_trails": 0,
+      "observed_assets": [
+        "NS_WM01MissileCluster_Lite"
+      ]
+    },
+    "offscreen_recovery": {
+      "status": "passed",
+      "events": [
+        {
+          "t": 0.39370590075850487,
+          "scheduled": 0.38
+        },
+        {
+          "t": 0.680602602660656,
+          "scheduled": 0.68
+        }
+      ],
+      "before": [
+        {
+          "t": 0.203,
+          "components": 4,
+          "flying_slots": 36
+        },
+        {
+          "t": 0.286,
+          "components": 4,
+          "flying_slots": 36
+        },
+        {
+          "t": 0.375,
+          "components": 4,
+          "flying_slots": 36
+        }
+      ],
+      "away": [
+        {
+          "t": 0.46,
+          "components": 1,
+          "flying_slots": 1
+        },
+        {
+          "t": 0.554,
+          "components": 1,
+          "flying_slots": 1
+        },
+        {
+          "t": 0.645,
+          "components": 1,
+          "flying_slots": 1
+        }
+      ],
+      "returned": [
+        {
+          "t": 0.738,
+          "components": 4,
+          "flying_slots": 36
+        },
+        {
+          "t": 0.821,
+          "components": 4,
+          "flying_slots": 36
+        },
+        {
+          "t": 0.911,
+          "components": 4,
+          "flying_slots": 36
+        },
+        {
+          "t": 1.003,
+          "components": 4,
+          "flying_slots": 36
+        },
+        {
+          "t": 1.092,
+          "components": 4,
+          "flying_slots": 36
+        }
+      ],
+      "note": "One separate batch lies in the opposite view; the 36-slot observed group disappears and returns."
+    },
+    "handoff": {
+      "status": "passed",
+      "retiring_sample_count": 28,
+      "retiring_stops_heads_and_emission": true,
+      "capacity_includes_retiring": true,
+      "final_counters": {
+        "missile_components": 0,
+        "particle_capacity": 0,
+        "full_trails": 0
+      }
+    },
+    "impact_dissipation": {
+      "status": "passed",
+      "gpu_snapshots": [
+        {
+          "t": 0.655,
+          "components": 5,
+          "body_visible": 28,
+          "flame_visible": 28,
+          "history_visible": 116,
+          "history_alpha_sum": 73.63501358032227,
+          "slot_lane_uniqueness": true
+        },
+        {
+          "t": 1.87,
+          "components": 7,
+          "body_visible": 0,
+          "flame_visible": 0,
+          "history_visible": 337,
+          "history_alpha_sum": 130.38940823078156,
+          "slot_lane_uniqueness": true
+        },
+        {
+          "t": 3.114,
+          "components": 6,
+          "body_visible": 0,
+          "flame_visible": 0,
+          "history_visible": 225,
+          "history_alpha_sum": 19.992561399936676,
+          "slot_lane_uniqueness": true
+        },
+        {
+          "t": 4.663,
+          "components": 0,
+          "body_visible": 0,
+          "flame_visible": 0,
+          "history_visible": 0,
+          "history_alpha_sum": 0,
+          "slot_lane_uniqueness": true
+        }
+      ],
+      "lifetime_seconds": 2.4
+    },
+    "cleanup": {
+      "status": "passed",
+      "pie_ended": true,
+      "remaining_pie_missile_components": 0,
+      "settings_restored": true,
+      "production_cluster_enabled": false
+    }
+  },
+  "limitations": [
+    "Observed partial populations do not validate the 100/500 x 1/4/8 matrix.",
+    "No multiplayer/splitscreen World isolation, dedicated server, exhaustive hysteresis boundary, resource-failure injection or full slot-reuse stress validation.",
+    "GPU readback and Python observation overhead exclude these sessions from performance evidence."
+  ],
+  "statistics_file": "pie-lod-statistics.log",
+  "budget_statistics_examples": [
+    "[2026.09.29-16.31.29:588][401]LogTemp: Display: consumer=WM01MissileBatches objects=6 visible=5 target[0/1/2]=3/2/0 applied[0/1/2]=0/5/0 culled[no_view/frustum/invalid/distance/screen]=0/1/0/0/0 budget_limited=3 transition_pending=0 unavailable=0 age_frames=0",
+    "[2026.09.29-16.31.29:939][424]LogTemp: Display: consumer=WM01MissileBatches objects=6 visible=5 target[0/1/2]=3/2/0 applied[0/1/2]=0/5/0 culled[no_view/frustum/invalid/distance/screen]=0/1/0/0/0 budget_limited=3 transition_pending=0 unavailable=0 age_frames=0",
+    "[2026.09.29-16.31.30:288][446]LogTemp: Display: consumer=WM01MissileBatches objects=6 visible=5 target[0/1/2]=3/2/0 applied[0/1/2]=0/5/0 culled[no_view/frustum/invalid/distance/screen]=0/1/0/0/0 budget_limited=3 transition_pending=0 unavailable=0 age_frames=0",
+    "[2026.09.29-16.31.30:636][469]LogTemp: Display: consumer=WM01MissileBatches objects=6 visible=5 target[0/1/2]=4/1/0 applied[0/1/2]=0/5/0 culled[no_view/frustum/invalid/distance/screen]=0/1/0/0/0 budget_limited=4 transition_pending=0 unavailable=0 age_frames=0"
+  ],
+  "fixture_repair_source_sha256": "f7e036bd7b68c7649fea44a10a42cefc612862b7d5a2cb4423078623f2ec8cb4"
+}

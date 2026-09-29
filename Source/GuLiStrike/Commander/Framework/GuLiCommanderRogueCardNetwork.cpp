@@ -11,6 +11,12 @@ void UGuLiCommanderNetSyncComponent::ServerRequestRogueCards_Implementation(FGui
 }
 void UGuLiCommanderNetSyncComponent::ServerConfirmRogueCard_Implementation(FGuid Session, const FString& CardId)
 { GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>()->Confirm(*this,Session,CardId); }
+void UGuLiCommanderNetSyncComponent::ServerRerollRogueCards_Implementation(FGuid Request, FGuid Session)
+{
+	if (!ConsumeCommandRateLimit())
+	{ ClientRogueCardOffer(Request,Session,0,{},TEXT("UI.RogueCards.RerollBusy")); return; }
+	GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>()->RerollOffer(*this,Request,Session);
+}
 void UGuLiCommanderNetSyncComponent::ServerCancelRogueCards_Implementation(FGuid Session)
 { GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>()->Cancel(*this,Session); }
 void UGuLiCommanderNetSyncComponent::ServerRogueCardPresentationClosed_Implementation(FGuid Session)

@@ -37,7 +37,7 @@ status_note: 在用户已开启的PIE中定向诊断和修复，未主动启动�
 | `GuLiFlightNavigationWorldValidator.cpp` | 在CanValidate入口排除不适用的World |
 | `Scripts/GroundMech/README.md`、需求、开发与玩法文档 | 同步修复、授权与验证边界 |
 
-- 原双端PIE修复后：权威生成标记true，两端各16个唯一且一致的ID，全部满血存活，红蓝各4扫荡者/4战争机器。四个正常机体批次各4台，Stencil为1/2且CustomDepth启用。证据`outputs/firereview-20260921/pie-after-navigation-repair.json`。
+- 原双端PIE修复后：权威生成标记true，两端各16个唯一且一致的ID，全部满血存活，红蓝各4扫荡者/4重防号。四个正常机体批次各4台，Stencil为1/2且CustomDepth启用。证据`outputs/firereview-20260921/pie-after-navigation-repair.json`。
 - 地图保存重载后：12项保持false；装饰Actor的类、变换、网格、相对变换与碰撞对比无其他差异；2个静止底座仍参与导航；部署总量16。源码Editor重启后再读回通过，重复修复组件变化数0。证据`scene-after-navigation-repair.json`、`scene-final-readback.json`。
 - Python语法、C++接口和差异空白静态检查通过，不新增测试文件。
 - 沿用用户“允许编译并重启UE，完成场景”和“允许结束当前PIE，完成场景”许可。源码`D:\UnrealEngine-5.7`构建`GuLiStrikeEditor Win64 Development`退出0，用时16.46秒；8份BuildId均为`dd3ee083-a0fd-45c8-814e-67fe5ef95e31`。证据`editor-build-validator.log`、`buildids-validator.json`。

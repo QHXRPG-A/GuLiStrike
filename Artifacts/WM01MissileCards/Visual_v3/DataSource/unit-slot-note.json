@@ -1,0 +1,88 @@
+{
+  "book": "GuLiStrikeSecondaryWeapons.xlsx",
+  "sheet": "UnitSkills",
+  "sha256_before": "222c4e484610ce82f5c6213720a4fe5ac58841a29e0bc6a54c5926e6aba43bf6",
+  "sha256_after": "7438cef194b8319fce21d0d970514b064fb6547fa3d1122bc722e087bc9e3538",
+  "info_before": {
+    "file": "D:\\UE5.7\\test1\\Data\\Excel\\GuLiStrikeSecondaryWeapons.xlsx",
+    "active_sheet": "_Guide",
+    "sheet_count": 7,
+    "sheets": [
+      {
+        "name": "_Guide",
+        "index": 0,
+        "dimension": "A1:B13",
+        "rows": 13,
+        "cols": 2
+      },
+      {
+        "name": "Skills",
+        "index": 1,
+        "dimension": "A1:H6",
+        "rows": 6,
+        "cols": 8
+      },
+      {
+        "name": "UnitSkills",
+        "index": 2,
+        "dimension": "A1:N8",
+        "rows": 8,
+        "cols": 14
+      },
+      {
+        "name": "WeaponMounts",
+        "index": 3,
+        "dimension": "A1:L10",
+        "rows": 10,
+        "cols": 12
+      },
+      {
+        "name": "WingmanWeapons",
+        "index": 4,
+        "dimension": "A1:AD7",
+        "rows": 7,
+        "cols": 30
+      },
+      {
+        "name": "WingmanTargeting",
+        "index": 5,
+        "dimension": "A1:G4",
+        "rows": 4,
+        "cols": 7
+      },
+      {
+        "name": "Projectiles",
+        "index": 6,
+        "dimension": "A1:V4",
+        "rows": 4,
+        "cols": 22
+      }
+    ]
+  },
+  "before": {
+    "id": "5",
+    "name": "WM01_MissileLauncher",
+    "Note": "主动Q导弹；技能CD6秒、普攻射程x1.6；保留本槽伤害升级与挂点，自动攻速列不参与Q冷却",
+    "UnitTypeId": "2",
+    "SlotId": "MissileLauncher",
+    "SkillId": "WM01_HomingMissile",
+    "bDefault": "1",
+    "Damage": "0",
+    "AttackRatePerSecond": "0.3333333333333333",
+    "RangeCentimeters": "3000",
+    "TriggerMode": "Active"
+  },
+  "after": {
+    "id": "5",
+    "name": "WM01_MissileLauncher",
+    "Note": "主动Q导弹；射程与冷却取SecondaryUnitSkills/Skills；保留本槽伤害升级与挂点，自动攻速列不参与Q冷却",
+    "UnitTypeId": "2",
+    "SlotId": "MissileLauncher",
+    "SkillId": "WM01_HomingMissile",
+    "bDefault": "1",
+    "Damage": "0",
+    "AttackRatePerSecond": "0.3333333333333333",
+    "RangeCentimeters": "3000",
+    "TriggerMode": "Active"
+  }
+}

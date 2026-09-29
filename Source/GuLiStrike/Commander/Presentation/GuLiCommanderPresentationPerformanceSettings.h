@@ -18,7 +18,8 @@ enum class EGuLiCommanderPresentationSettingSource : uint8
  */
 struct GULISTRIKE_API FGuLiCommanderPresentationPerformanceSettings
 {
-	static constexpr int32 DefaultUnitCullDistanceCentimeters = 20000;
+	// Mass bodies remain visible at every distance. Zero is the only runtime policy.
+	static constexpr int32 DefaultUnitCullDistanceCentimeters = 0;
 	static constexpr int32 DefaultRingCullDistanceCentimeters = 0;
 	static constexpr int32 MaximumCullDistanceCentimeters = 10000000;
 

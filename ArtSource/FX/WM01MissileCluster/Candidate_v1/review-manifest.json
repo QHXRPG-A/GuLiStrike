@@ -1,0 +1,168 @@
+{
+  "scope": "isolated editor VFX art preview; illustrative GPU paths",
+  "native_build": "GuLiStrikeEditor Win64 Development succeeded; exit 0; source UE5.7",
+  "gameplay_runtime": "not_run; user chose to defer",
+  "performance": "not_run; user chose to defer",
+  "user_visual_approval": "pending",
+  "production_switched": false,
+  "qualities": [
+    {
+      "quality": "Full",
+      "capture": "ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Full\\capture.json",
+      "frames": [
+        {
+          "frame": 18,
+          "seconds": 0.3,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Full\\start.png"
+        },
+        {
+          "frame": 60,
+          "seconds": 1.0,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Full\\flight.png"
+        },
+        {
+          "frame": 112,
+          "seconds": 1.8666666666666667,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Full\\long_tail.png"
+        },
+        {
+          "frame": 156,
+          "seconds": 2.6,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Full\\impact.png"
+        },
+        {
+          "frame": 174,
+          "seconds": 2.9,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Full\\dissipating.png"
+        },
+        {
+          "frame": 224,
+          "seconds": 3.7333333333333334,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Full\\cleared.png"
+        }
+      ],
+      "gpu_emitters": [
+        {
+          "name": "Body",
+          "count": 64,
+          "visible_count": 4
+        },
+        {
+          "name": "Flame",
+          "count": 64,
+          "visible_count": 4
+        },
+        {
+          "name": "History",
+          "count": 1536,
+          "visible_count": 84
+        }
+      ]
+    },
+    {
+      "quality": "Lite",
+      "capture": "ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Lite\\capture.json",
+      "frames": [
+        {
+          "frame": 18,
+          "seconds": 0.3,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Lite\\start.png"
+        },
+        {
+          "frame": 60,
+          "seconds": 1.0,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Lite\\flight.png"
+        },
+        {
+          "frame": 112,
+          "seconds": 1.8666666666666667,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Lite\\long_tail.png"
+        },
+        {
+          "frame": 156,
+          "seconds": 2.6,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Lite\\impact.png"
+        },
+        {
+          "frame": 174,
+          "seconds": 2.9,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Lite\\dissipating.png"
+        },
+        {
+          "frame": 224,
+          "seconds": 3.7333333333333334,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Lite\\cleared.png"
+        }
+      ],
+      "gpu_emitters": [
+        {
+          "name": "Body",
+          "count": 64,
+          "visible_count": 4
+        },
+        {
+          "name": "Flame",
+          "count": 64,
+          "visible_count": 4
+        },
+        {
+          "name": "History",
+          "count": 512,
+          "visible_count": 28
+        }
+      ]
+    },
+    {
+      "quality": "Minimal",
+      "capture": "ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Minimal\\capture.json",
+      "frames": [
+        {
+          "frame": 18,
+          "seconds": 0.3,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Minimal\\start.png"
+        },
+        {
+          "frame": 60,
+          "seconds": 1.0,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Minimal\\flight.png"
+        },
+        {
+          "frame": 112,
+          "seconds": 1.8666666666666667,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Minimal\\long_tail.png"
+        },
+        {
+          "frame": 156,
+          "seconds": 2.6,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Minimal\\impact.png"
+        },
+        {
+          "frame": 174,
+          "seconds": 2.9,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Minimal\\dissipating.png"
+        },
+        {
+          "frame": 224,
+          "seconds": 3.7333333333333334,
+          "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\Minimal\\cleared.png"
+        }
+      ],
+      "gpu_emitters": [
+        {
+          "name": "Body",
+          "count": 64,
+          "visible_count": 4
+        },
+        {
+          "name": "Flame",
+          "count": 64,
+          "visible_count": 4
+        }
+      ]
+    }
+  ],
+  "assistant_review": "Short flame and continuous thin history visible; Full/Lite retain smoke after stopping; Minimal has no history; remaining smoke fades. This is not a playable-candidate approval.",
+  "capacity_bindings": "six systems recompiled and saved; User.MissileContractVersion=2",
+  "mesh_lods": "four rendered LODs have UV2 part 10/11; mixed and nonintegral counts zero",
+  "capture_timing": "PNG frames captured before capacity binding; illustrative art only"
+}

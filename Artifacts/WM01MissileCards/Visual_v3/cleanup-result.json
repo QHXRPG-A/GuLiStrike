@@ -1,0 +1,859 @@
+{
+  "schema": "guli-session-cleanup/v1",
+  "authorization": "用户要求清理本会话产生的临时文件",
+  "started": "2026-09-30T00:29:48.8864611+08:00",
+  "method": "Move exact files to external recovery directory; no deletion, recursion or overwrite",
+  "recoveryRoot": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3",
+  "policyNote": "Recycle/delete command rejected before execution: blocked by policy. Conservative relocation used instead.",
+  "files": [
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\capture.json",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\capture.json",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 25524,
+      "sha256": "31C2D86DEE9EB1A00E9ED3EF4C345B8546137ECFB836C07078D219CC409115C4",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\cleared.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\cleared.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 846093,
+      "sha256": "A64F49C1A633A4EDF145580DB3A5F67AD6021CB173D740B828CE596EC78B4D19",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\dissipating.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\dissipating.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 1173227,
+      "sha256": "8583D83B3B0C2C436DB9A2E8B71FAA0F04D41A5DE48BB6EB30736388ECB9C061",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\flight.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\flight.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 1173227,
+      "sha256": "AF674CE40735BF9506EA465706D72069C6F4C8CCDED26A93949A41029A82A362",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\impact.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\impact.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 1173227,
+      "sha256": "0735AED9067F6BCB71351E1AE1ACF2C2E87135EE2D2D3080A227EA4366560F57",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\late_tail.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\late_tail.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 846093,
+      "sha256": "FAAE4002D170AE89E19CF28D7C9DBB35D671AC59EDB6D1B2296FF3B11A2C1F82",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\long_tail.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\long_tail.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 1173227,
+      "sha256": "7886A9BE9B42B4B02F6FDD53A5237F806B6AAF5BE92201394C6E2DDCE126A459",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\peak_tail.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\peak_tail.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 1173227,
+      "sha256": "696FA7F30555BEE10211C1673A09ECFE4DF4FF0BC30077E836CA938D820E8186",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\start.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Full\\start.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 1167168,
+      "sha256": "9D42EC542ADAF826AF0982FBC3DBA20EB268111E062260D738E9EF14A4268EDD",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\capture.json",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\capture.json",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 17021,
+      "sha256": "2F14B7D9AAEB448CBB53AC7F7B0BDD445D566F7F5487C1B7F25D2A530E230BD8",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\cleared.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\cleared.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 846093,
+      "sha256": "F1EC2BA1C9221C559A607AC80A6E80D8EF992E72A67A84197532126E41008D06",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\dissipating.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\dissipating.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 1173227,
+      "sha256": "05234AF51F759C2AA295C1744DEFB6011C080C11FDF6447D4A51C7126EC70760",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\flight.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\flight.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 1173227,
+      "sha256": "BE13802EFE9ED0E6BE368A37551671F633CF2359E2B1EF85ED7F7F593196F44A",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\impact.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\impact.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 1173227,
+      "sha256": "4C91DC422D1F96D04C6F9AF00C8F425FF5CA027660A6DC2EDEF1DEC0388EC3A8",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\late_tail.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\late_tail.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 846093,
+      "sha256": "AB4C00AE0DF91626F7AB075DD7CDD5418473EA293F74933E2D77639B8ED7D067",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\long_tail.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\long_tail.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 1173227,
+      "sha256": "1F8CC35593A139F2FA6A82CFE1E052A6F35CDD17EF1CB82AB80333BECB1E621D",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\peak_tail.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\peak_tail.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 1173227,
+      "sha256": "923AA3431EDBAC00EF780C5CF6B70CD13347E6653A98FE60BAEFD8D455AD27C3",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\start.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Lite\\start.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 1167168,
+      "sha256": "4A5BE4446740A7C56FFDFB00D8BC93E4DBDFA3186657B3C1423815EB6CD0422F",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\capture.json",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\capture.json",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 9383,
+      "sha256": "6CD04007676BE4665725E3495A52E0CE22D9D40212C6CB51F7CCD14DF32AC11D",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\cleared.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\cleared.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 846093,
+      "sha256": "5AA93F2A9368169E234B71D11851F347BA7C5306F97391B1885368B2EFF29C65",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\dissipating.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\dissipating.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 846093,
+      "sha256": "463EEACF80C508D75B36D457C23A667484470D13EFE4556FDB5184986F4D99C1",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\flight.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\flight.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 846093,
+      "sha256": "67894881DFF4CA63E9FEF4286876CC68722427BC00948EE6E127CB3CCA810314",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\impact.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\impact.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 846093,
+      "sha256": "463EEACF80C508D75B36D457C23A667484470D13EFE4556FDB5184986F4D99C1",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\late_tail.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\late_tail.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 846093,
+      "sha256": "5AA93F2A9368169E234B71D11851F347BA7C5306F97391B1885368B2EFF29C65",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\long_tail.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\long_tail.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 846093,
+      "sha256": "1ACEBB3759D9C2A1582F2BF5B7D2CC61382B0566183094627C51AFA05DCAFA3E",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\peak_tail.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\peak_tail.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 1165596,
+      "sha256": "9ADC46E860AE38FDC26852952FC96A29D945998A0FA24C17EE8B6F154C504359",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\start.png",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\BeforeJoinFix\\Minimal\\start.png",
+      "reason": "被最终预览替代的接头修正前中间图及捕获报告",
+      "bytes": 846093,
+      "sha256": "065309E70A4E1E52241EAACB08F4EB4625923E866F4B75D295B7ED81FAB90A10",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\DataSource\\GuLiStrikeSecondaryUnitSkills-Skills-cells.json",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Artifacts\\WM01MissileCards\\Visual_v3\\DataSource\\GuLiStrikeSecondaryUnitSkills-Skills-cells.json",
+      "reason": "Excelize可重新生成的单元格写入载荷",
+      "bytes": 432,
+      "sha256": "216FD6AFBF1789FE3C3CFA27F39780FC08080EFC866BB4AFAA9A0E8DE6BE77B7",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\DataSource\\GuLiStrikeSecondaryWeapons-Projectiles-cells.json",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Artifacts\\WM01MissileCards\\Visual_v3\\DataSource\\GuLiStrikeSecondaryWeapons-Projectiles-cells.json",
+      "reason": "Excelize可重新生成的单元格写入载荷",
+      "bytes": 1342,
+      "sha256": "13243EF4D3E38C14FAB408AF91FD4A80D9075F7C170E2FD21BD994DC81A8F2A1",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\DataSource\\GuLiStrikeSecondaryWeapons-UnitSkills-cells.json",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Artifacts\\WM01MissileCards\\Visual_v3\\DataSource\\GuLiStrikeSecondaryWeapons-UnitSkills-cells.json",
+      "reason": "Excelize可重新生成的单元格写入载荷",
+      "bytes": 203,
+      "sha256": "8B19995B006E79516FAAF1065FF947CE8CC7859998048E303BED8EBC2B438066",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\DataSource\\GuLiStrikeSpellFields-Fields-cells.json",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Artifacts\\WM01MissileCards\\Visual_v3\\DataSource\\GuLiStrikeSpellFields-Fields-cells.json",
+      "reason": "Excelize可重新生成的单元格写入载荷",
+      "bytes": 73,
+      "sha256": "5C738598B229B2339F789436AED44937B5006C2C2C6E5B71DF057E60FA1E67F1",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\__pycache__\\wm01_missile_visual_config.cpython-311.pyc",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Scripts\\__pycache__\\wm01_missile_visual_config.cpython-311.pyc",
+      "reason": "本会话生成的Python字节码缓存",
+      "bytes": 3744,
+      "sha256": "3AEC2BEA54BB3A3AB5B0DA33CA150F5CFBF5CD2BDF9D36755D2210A6D6427ABB",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Tools\\DataPipeline\\__pycache__\\author_wm01_missile_v3.cpython-313.pyc",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Tools\\DataPipeline\\__pycache__\\author_wm01_missile_v3.cpython-313.pyc",
+      "reason": "本会话生成的Python字节码缓存",
+      "bytes": 7014,
+      "sha256": "543D04F87C0DC2870EBBD83C0AFF1A983977991591CBE70CA9BACF3CEA96D230",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Data\\Json\\DT_GuLiStrikeSecondaryWeapons_Projectiles.csv",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Data\\Json\\DT_GuLiStrikeSecondaryWeapons_Projectiles.csv",
+      "reason": "本会话创建的导入CSV侧车，现有导入器使用JSON自动重建",
+      "bytes": 702,
+      "sha256": "FDBB021530E71A53212C7A6AE9C33D24F97CEFC3F4E9078B7F271DC1F88E8DA4",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Data\\Json\\DT_GuLiStrikeCommander_UnitSkills.csv",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Data\\Json\\DT_GuLiStrikeCommander_UnitSkills.csv",
+      "reason": "本会话创建的导入CSV侧车，现有导入器使用JSON自动重建",
+      "bytes": 783,
+      "sha256": "300AF936CB9CDBCF47948175BD3FA6576079C9E60A3E44715A9B4BE9DB2AE4DF",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Data\\Json\\DT_GuLiStrikeSecondaryUnitSkills_Skills.csv",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Data\\Json\\DT_GuLiStrikeSecondaryUnitSkills_Skills.csv",
+      "reason": "本会话创建的导入CSV侧车，现有导入器使用JSON自动重建",
+      "bytes": 847,
+      "sha256": "BDB47A5670A207D640E559DBE85050348FA7D3325759DB7C06CFE177EEC35DC9",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Data\\Json\\DT_GuLiStrikeSecondaryUnitSkills_UnitSkills.csv",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Data\\Json\\DT_GuLiStrikeSecondaryUnitSkills_UnitSkills.csv",
+      "reason": "本会话创建的导入CSV侧车，现有导入器使用JSON自动重建",
+      "bytes": 310,
+      "sha256": "F63C8D1468FD10C1881A181568E8D55C16445D8706F353941C8CA28A7A66E587",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\editor-reload.log",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Artifacts\\WM01MissileCards\\Visual_v3\\editor-reload.log",
+      "reason": "未被最终交付引用的过程日志，结构化结果保留",
+      "bytes": 2247449,
+      "sha256": "C362FB50C96BED2213E43DE84C0D15A14C5E8C3E8989E9258444B651EFC961C6",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\editor-cold.log",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Artifacts\\WM01MissileCards\\Visual_v3\\editor-cold.log",
+      "reason": "未被最终交付引用的过程日志，结构化结果保留",
+      "bytes": 258464,
+      "sha256": "DB958A12A121A995A57C98A9CCB33865811BAFDF7745799BFF235A9E339A4E60",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\data-export.log",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Artifacts\\WM01MissileCards\\Visual_v3\\data-export.log",
+      "reason": "未被最终交付引用的过程日志，结构化结果保留",
+      "bytes": 2400,
+      "sha256": "9C6A4771D4ACC54A10A685FE9EB6CB5D67417C9F8F136D333B6A4397DD986C61",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\table-import.log",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Artifacts\\WM01MissileCards\\Visual_v3\\table-import.log",
+      "reason": "未被最终交付引用的过程日志，结构化结果保留",
+      "bytes": 2390,
+      "sha256": "AC31A37A2F0ADB75EB0FB2F994182FC7E4038DC0E60A37E2F3221508BC5EA246",
+      "status": "moved_to_recovery",
+      "error": null
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\progress-build.json",
+      "destination": "D:\\UE5.7\\SessionCleanup\\20260930-WM01Missile-v3\\Artifacts\\WM01MissileCards\\Visual_v3\\progress-build.json",
+      "reason": "未被最终交付引用的过程日志，结构化结果保留",
+      "bytes": 243,
+      "sha256": "28863D4C039359D5ADF6C84FD177FFCA32648BF769271D4566D85AD38455895B",
+      "status": "moved_to_recovery",
+      "error": null
+    }
+  ],
+  "protected": [
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v1\\review.html",
+      "sha256Before": "860A092D97D6D0186B8D838A7F67C73008902BD4023A4ADB7D7A81D9301829D0",
+      "sha256After": "860A092D97D6D0186B8D838A7F67C73008902BD4023A4ADB7D7A81D9301829D0",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v2\\review.html",
+      "sha256Before": "02627C401AB0519094006B621AFF7CFB7977AD7B107B77FF42678D4F34895C2F",
+      "sha256After": "02627C401AB0519094006B621AFF7CFB7977AD7B107B77FF42678D4F34895C2F",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\review.html",
+      "sha256Before": "9F75A7054AFE932C632A80CF82EE4AF3C797742673168A934256A57C9B712769",
+      "sha256After": "9F75A7054AFE932C632A80CF82EE4AF3C797742673168A934256A57C9B712769",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\manifest.json",
+      "sha256Before": "FACA95CFD6FCC457AAA5F63B4890057899D1ECBE46A540F98CD15A93F1BED3E9",
+      "sha256After": "FACA95CFD6FCC457AAA5F63B4890057899D1ECBE46A540F98CD15A93F1BED3E9",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\asset-readback.json",
+      "sha256Before": "233925AE797C63CAFA31349B57828749D2D599A0D1D7F28D7128DE7971D46491",
+      "sha256After": "233925AE797C63CAFA31349B57828749D2D599A0D1D7F28D7128DE7971D46491",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\cold-load.json",
+      "sha256Before": "BDD2EDDC566F3D3F5B63F6072E89849FF328871373E71D6B3FE6A57BC8008137",
+      "sha256After": "BDD2EDDC566F3D3F5B63F6072E89849FF328871373E71D6B3FE6A57BC8008137",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\data-import.json",
+      "sha256Before": "3702E77758AD226994FFBED5576E16DB30A7C7A448F1E01CD176D471B85C9954",
+      "sha256After": "3702E77758AD226994FFBED5576E16DB30A7C7A448F1E01CD176D471B85C9954",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\scene-cold-readback.json",
+      "sha256Before": "E6DCDB3B5B32E8F6CEC6E9E945F4A99248EEC8FED63241E6A6BCFBD4A9179ABC",
+      "sha256After": "E6DCDB3B5B32E8F6CEC6E9E945F4A99248EEC8FED63241E6A6BCFBD4A9179ABC",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\build-editor.log",
+      "sha256Before": "81757AB1D6053364D4359596D7CE05CA26F704D63D422B702D66F703D3047E35",
+      "sha256After": "81757AB1D6053364D4359596D7CE05CA26F704D63D422B702D66F703D3047E35",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\source-before.json",
+      "sha256Before": "EFABCE9F66EB6D6C5FF7B6EB23027FF3588796112605DBC5686A3F17A4B1F5C2",
+      "sha256After": "EFABCE9F66EB6D6C5FF7B6EB23027FF3588796112605DBC5686A3F17A4B1F5C2",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\source.diff",
+      "sha256Before": "507DF3D9D57EEDDEF9440B199CF8E45BFEBC2B0CA0E5CF5A93E7640D5C81ED9B",
+      "sha256After": "507DF3D9D57EEDDEF9440B199CF8E45BFEBC2B0CA0E5CF5A93E7640D5C81ED9B",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\static-check.json",
+      "sha256Before": "31BAA9A01212AED5ABD6D4868283D179F14675B4F12A2F41ED0A95FCC4803EDB",
+      "sha256After": "31BAA9A01212AED5ABD6D4868283D179F14675B4F12A2F41ED0A95FCC4803EDB",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\DataSource\\migration.json",
+      "sha256Before": "39DEC9B1441676F3A9C6F27404ED2DB0EA140F196DF630ED635FB235509620DF",
+      "sha256After": "39DEC9B1441676F3A9C6F27404ED2DB0EA140F196DF630ED635FB235509620DF",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\Visual_v3\\DataSource\\unit-slot-note.json",
+      "sha256Before": "498F4575E5E0CF175C83BF97DB23015B0BD92A85102772C10FF03CAD30FCBA44",
+      "sha256After": "498F4575E5E0CF175C83BF97DB23015B0BD92A85102772C10FF03CAD30FCBA44",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Data\\Excel\\GuLiStrikeSecondaryWeapons.xlsx",
+      "sha256Before": "7438CEF194B8319FCE21D0D970514B064FB6547FA3D1122BC722E087BC9E3538",
+      "sha256After": "7438CEF194B8319FCE21D0D970514B064FB6547FA3D1122BC722E087BC9E3538",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Data\\Excel\\GuLiStrikeSecondaryUnitSkills.xlsx",
+      "sha256Before": "3179173B961608355607EA492B6F99CA1380EE77D42E39DD4231C16CE25F5F52",
+      "sha256After": "3179173B961608355607EA492B6F99CA1380EE77D42E39DD4231C16CE25F5F52",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Data\\Excel\\GuLiStrikeSpellFields.xlsx",
+      "sha256Before": "AB2578D838C3BC03BBD3B0B6909A8E0758021D6ADD1891537753134FF844D520",
+      "sha256After": "AB2578D838C3BC03BBD3B0B6909A8E0758021D6ADD1891537753134FF844D520",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiCombatEffectDefinition.h",
+      "sha256Before": "0A75A3E9F3DDF77A170FDCC4DD9E68651B7CE32B098FCF60CF877E33F1018844",
+      "sha256After": "0A75A3E9F3DDF77A170FDCC4DD9E68651B7CE32B098FCF60CF877E33F1018844",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiCombatEffectDefinition.cpp",
+      "sha256Before": "3BE7B073D7A3102337CEAD940077DDEB130046CDF2338168CA4F6319E88EB3AC",
+      "sha256After": "3BE7B073D7A3102337CEAD940077DDEB130046CDF2338168CA4F6319E88EB3AC",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiMissileClusterPresentation.h",
+      "sha256Before": "DB48356E957A4C90E4108AB1A14BA883EBF38E7CDBC5DD5A77AA4EC0F5973FEE",
+      "sha256After": "DB48356E957A4C90E4108AB1A14BA883EBF38E7CDBC5DD5A77AA4EC0F5973FEE",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiMissileClusterPresentation.cpp",
+      "sha256Before": "6B64C6C510E29A161F2C8FBC9D1D0CF9F82D59F06C6E4F4F0266B580CFDBA2ED",
+      "sha256After": "6B64C6C510E29A161F2C8FBC9D1D0CF9F82D59F06C6E4F4F0266B580CFDBA2ED",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiCombatEffectPresentationSubsystem.cpp",
+      "sha256Before": "39EBFF92268A7493447A2EBEDFFE4B05481E6EA82E92745D9A9277E24264E86A",
+      "sha256After": "39EBFF92268A7493447A2EBEDFFE4B05481E6EA82E92745D9A9277E24264E86A",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\wm01_missile_visual_config.py",
+      "sha256Before": "5C2EBF945567E9A1A733DE5F5B5258EB4CFCE385AE1B5463898C00ADF614A90A",
+      "sha256After": "5C2EBF945567E9A1A733DE5F5B5258EB4CFCE385AE1B5463898C00ADF614A90A",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\import_wm01_missile_v3.py",
+      "sha256Before": "9FDB7EFB3EACB197D222A0F327F3A76A1F2DCC3F0AA3690A9269CA8D867245A4",
+      "sha256After": "9FDB7EFB3EACB197D222A0F327F3A76A1F2DCC3F0AA3690A9269CA8D867245A4",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Tools\\DataPipeline\\author_wm01_missile_v3.py",
+      "sha256Before": "ED159D9594C962E3C96AF52105160F9721D3E2AA870B02EC84F63FA057501165",
+      "sha256After": "ED159D9594C962E3C96AF52105160F9721D3E2AA870B02EC84F63FA057501165",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Full\\capture.json",
+      "sha256Before": "49C1F48DF2F1746CEFAD00FFC790A5736B0B14E68E48456E8F29CD09757814E8",
+      "sha256After": "49C1F48DF2F1746CEFAD00FFC790A5736B0B14E68E48456E8F29CD09757814E8",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Full\\cleared.png",
+      "sha256Before": "1A38A06F6075B8C9A07137BFE2E529724B32ECECFF93F9AA36920317E5E7F636",
+      "sha256After": "1A38A06F6075B8C9A07137BFE2E529724B32ECECFF93F9AA36920317E5E7F636",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Full\\dissipating.png",
+      "sha256Before": "0B1BC98928A754C62524A5556FDA0E4B9B69443219B37E143F1BB27F0A658080",
+      "sha256After": "0B1BC98928A754C62524A5556FDA0E4B9B69443219B37E143F1BB27F0A658080",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Full\\flight.png",
+      "sha256Before": "7A124F8CA4E0C7EC78D3D182583F4B89DB602455B74C28E2B35B3DCD47C50A68",
+      "sha256After": "7A124F8CA4E0C7EC78D3D182583F4B89DB602455B74C28E2B35B3DCD47C50A68",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Full\\impact.png",
+      "sha256Before": "AF50170F87BC25A49FCBE2B6FE11B7831440E00DF3C1DFEAB9C6C2DE1112BCB6",
+      "sha256After": "AF50170F87BC25A49FCBE2B6FE11B7831440E00DF3C1DFEAB9C6C2DE1112BCB6",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Full\\late_tail.png",
+      "sha256Before": "4E30BA9A8709FB0D500A9F49D57FD6DD5803719C51274EF721F36770731B75B0",
+      "sha256After": "4E30BA9A8709FB0D500A9F49D57FD6DD5803719C51274EF721F36770731B75B0",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Full\\long_tail.png",
+      "sha256Before": "B8A87C1463B7E51AD9CE6315506FA82AF8D15CD6984491DE4667B86D157F3484",
+      "sha256After": "B8A87C1463B7E51AD9CE6315506FA82AF8D15CD6984491DE4667B86D157F3484",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Full\\peak_tail.png",
+      "sha256Before": "549AD2F5F0A6304DAD8875FE918AA115536DF9C72FF4E65A28ACA420F2CDF38A",
+      "sha256After": "549AD2F5F0A6304DAD8875FE918AA115536DF9C72FF4E65A28ACA420F2CDF38A",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Full\\start.png",
+      "sha256Before": "3BD5D1A542F248FCB0515C896A3CA5B9C93CDE7FEC6A99D728D0FFBEDFDEF981",
+      "sha256After": "3BD5D1A542F248FCB0515C896A3CA5B9C93CDE7FEC6A99D728D0FFBEDFDEF981",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite\\capture.json",
+      "sha256Before": "6FF314E755A4314BA2AF1A99FDB1B8F0B7120FB4738080B5402703AD9BBABEDB",
+      "sha256After": "6FF314E755A4314BA2AF1A99FDB1B8F0B7120FB4738080B5402703AD9BBABEDB",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite\\cleared.png",
+      "sha256Before": "603EC0006660987757E4A6DDA93AC8D62821C7DD0F8DC6C9C08F411BFB37A714",
+      "sha256After": "603EC0006660987757E4A6DDA93AC8D62821C7DD0F8DC6C9C08F411BFB37A714",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite\\dissipating.png",
+      "sha256Before": "615BEFD6DA39F6EA9B17805F4DACF4267E6B7C6D49674139FA0DA7447F63DF76",
+      "sha256After": "615BEFD6DA39F6EA9B17805F4DACF4267E6B7C6D49674139FA0DA7447F63DF76",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite\\flight.png",
+      "sha256Before": "B134FBCE18B9B788AE9DD10F2490BCA4BB9AE129EF8B91E7453BBA4B3CAB8AF4",
+      "sha256After": "B134FBCE18B9B788AE9DD10F2490BCA4BB9AE129EF8B91E7453BBA4B3CAB8AF4",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite\\impact.png",
+      "sha256Before": "D1DC8E38E5131AE53398EB305269063A9B30330B6CE04166751DD2A75E271845",
+      "sha256After": "D1DC8E38E5131AE53398EB305269063A9B30330B6CE04166751DD2A75E271845",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite\\late_tail.png",
+      "sha256Before": "D21E270AEC39B476F443D6777A876FB259752E26A69327424A19D590FD67ABDF",
+      "sha256After": "D21E270AEC39B476F443D6777A876FB259752E26A69327424A19D590FD67ABDF",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite\\long_tail.png",
+      "sha256Before": "4BB8117029E784F5E346B32E80EE291D8FA6AC6FCD67770E0F933E8EADD56C02",
+      "sha256After": "4BB8117029E784F5E346B32E80EE291D8FA6AC6FCD67770E0F933E8EADD56C02",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite\\peak_tail.png",
+      "sha256Before": "229BCD256D169C25DE066B0667319DB7C5B76E058F4CF215DD4909F0F6927026",
+      "sha256After": "229BCD256D169C25DE066B0667319DB7C5B76E058F4CF215DD4909F0F6927026",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite\\start.png",
+      "sha256Before": "930539F360B6E38A6D75F4A2D2835456A7F4A93E771F545C288C51BD5C88F5FA",
+      "sha256After": "930539F360B6E38A6D75F4A2D2835456A7F4A93E771F545C288C51BD5C88F5FA",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Minimal\\capture.json",
+      "sha256Before": "6CD04007676BE4665725E3495A52E0CE22D9D40212C6CB51F7CCD14DF32AC11D",
+      "sha256After": "6CD04007676BE4665725E3495A52E0CE22D9D40212C6CB51F7CCD14DF32AC11D",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Minimal\\cleared.png",
+      "sha256Before": "5AA93F2A9368169E234B71D11851F347BA7C5306F97391B1885368B2EFF29C65",
+      "sha256After": "5AA93F2A9368169E234B71D11851F347BA7C5306F97391B1885368B2EFF29C65",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Minimal\\dissipating.png",
+      "sha256Before": "463EEACF80C508D75B36D457C23A667484470D13EFE4556FDB5184986F4D99C1",
+      "sha256After": "463EEACF80C508D75B36D457C23A667484470D13EFE4556FDB5184986F4D99C1",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Minimal\\flight.png",
+      "sha256Before": "67894881DFF4CA63E9FEF4286876CC68722427BC00948EE6E127CB3CCA810314",
+      "sha256After": "67894881DFF4CA63E9FEF4286876CC68722427BC00948EE6E127CB3CCA810314",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Minimal\\impact.png",
+      "sha256Before": "463EEACF80C508D75B36D457C23A667484470D13EFE4556FDB5184986F4D99C1",
+      "sha256After": "463EEACF80C508D75B36D457C23A667484470D13EFE4556FDB5184986F4D99C1",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Minimal\\late_tail.png",
+      "sha256Before": "5AA93F2A9368169E234B71D11851F347BA7C5306F97391B1885368B2EFF29C65",
+      "sha256After": "5AA93F2A9368169E234B71D11851F347BA7C5306F97391B1885368B2EFF29C65",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Minimal\\long_tail.png",
+      "sha256Before": "1ACEBB3759D9C2A1582F2BF5B7D2CC61382B0566183094627C51AFA05DCAFA3E",
+      "sha256After": "1ACEBB3759D9C2A1582F2BF5B7D2CC61382B0566183094627C51AFA05DCAFA3E",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Minimal\\peak_tail.png",
+      "sha256Before": "9ADC46E860AE38FDC26852952FC96A29D945998A0FA24C17EE8B6F154C504359",
+      "sha256After": "9ADC46E860AE38FDC26852952FC96A29D945998A0FA24C17EE8B6F154C504359",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Minimal\\start.png",
+      "sha256Before": "065309E70A4E1E52241EAACB08F4EB4625923E866F4B75D295B7ED81FAB90A10",
+      "sha256After": "065309E70A4E1E52241EAACB08F4EB4625923E866F4B75D295B7ED81FAB90A10",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite_Far\\capture.json",
+      "sha256Before": "CD13B8B86CAD6D26DC51550CC167190A3F9E01DEA238A7AA1625D560080E41CD",
+      "sha256After": "CD13B8B86CAD6D26DC51550CC167190A3F9E01DEA238A7AA1625D560080E41CD",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite_Far\\cleared.png",
+      "sha256Before": "C096712F6E2A45088ED19F6C269100A85ADDB87B43E3FE8B14FB8B2FB9F71AB6",
+      "sha256After": "C096712F6E2A45088ED19F6C269100A85ADDB87B43E3FE8B14FB8B2FB9F71AB6",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite_Far\\dissipating.png",
+      "sha256Before": "C6C32189D45B275B8ED77E13D978D87A8D89E0C132A56278923DE8F8CD0D7A82",
+      "sha256After": "C6C32189D45B275B8ED77E13D978D87A8D89E0C132A56278923DE8F8CD0D7A82",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite_Far\\flight.png",
+      "sha256Before": "91E683080F76C9FD1A6B5D24987A7E5BEBF2B76FDD086E5D737E96AC0ECF5CC5",
+      "sha256After": "91E683080F76C9FD1A6B5D24987A7E5BEBF2B76FDD086E5D737E96AC0ECF5CC5",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite_Far\\impact.png",
+      "sha256Before": "8817FDAC1B1B7CAE4E2D519938760A06262A3DB5DBC28463C4830BB49ACF312D",
+      "sha256After": "8817FDAC1B1B7CAE4E2D519938760A06262A3DB5DBC28463C4830BB49ACF312D",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite_Far\\late_tail.png",
+      "sha256Before": "0A450524C41ED752216F669EE798EB5090D47B0A3DA8392C7BADA14BE56A981B",
+      "sha256After": "0A450524C41ED752216F669EE798EB5090D47B0A3DA8392C7BADA14BE56A981B",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite_Far\\long_tail.png",
+      "sha256Before": "633D3438F49B1BC213729AB3142070C8F1A939ECE10E48F62C91E3E3DBD7D1BE",
+      "sha256After": "633D3438F49B1BC213729AB3142070C8F1A939ECE10E48F62C91E3E3DBD7D1BE",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite_Far\\peak_tail.png",
+      "sha256Before": "C8F48DC6190166CC2704CD5108510EE32F61ED2351C73488FFBB2901ED327F48",
+      "sha256After": "C8F48DC6190166CC2704CD5108510EE32F61ED2351C73488FFBB2901ED327F48",
+      "unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\FX\\WM01MissileCluster\\Candidate_v3\\Lite_Far\\start.png",
+      "sha256Before": "24AA49162BAAA83EC138B884729548FBD5FC02C29F388C808115399F172C3B2F",
+      "sha256After": "24AA49162BAAA83EC138B884729548FBD5FC02C29F388C808115399F172C3B2F",
+      "unchanged": true
+    }
+  ],
+  "completed": "2026-09-30T00:30:33.4741434+08:00",
+  "verification": {
+    "movedFileCount": 42,
+    "movedBytes": 27117549,
+    "remainingFileCount": 0,
+    "protectedFileCount": 61,
+    "changedProtectedFileCount": 0,
+    "allRecoveryHashesMatch": true,
+    "emptyDirectoriesRetained": true,
+    "previewReferenceChecks": {
+      "v3Frames": 32,
+      "v2ComparisonFrames": 24,
+      "missing": 0,
+      "checkedReferences": 95
+    },
+    "progressDocumentation": {
+      "build": {
+        "exit_code": 0,
+        "result": {
+          "mode": "write",
+          "changed": 3,
+          "paths": [
+            "Progress/_Index/ByArea.md",
+            "Progress/_Index/Archive.md",
+            "Progress/_Index/catalog.jsonl"
+          ]
+        }
+      },
+      "check": {
+        "exit_code": 0,
+        "result": {
+          "errors": [],
+          "warnings": [
+            {
+              "path": "Progress/Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+              "code": "oversize",
+              "message": "88.4KB，建议阈值 80KB"
+            },
+            {
+              "path": "Progress/DevelopmentDocumentation/20260820-DIY飞船.md",
+              "code": "large_task_list",
+              "message": "29 个任务项"
+            },
+            {
+              "path": "Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md",
+              "code": "large_task_list",
+              "message": "46 个任务项"
+            },
+            {
+              "path": "Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md",
+              "code": "oversize",
+              "message": "44.9KB，建议阈值 30KB"
+            },
+            {
+              "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/06-任务风险与结果.md",
+              "code": "large_task_list",
+              "message": "44 个任务项"
+            },
+            {
+              "path": "Progress/DevelopmentDocumentation/20260904-僚机无规则护航盘旋技能重构.md",
+              "code": "oversize",
+              "message": "39.0KB，建议阈值 30KB"
+            },
+            {
+              "path": "Progress/DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md",
+              "code": "oversize",
+              "message": "31.4KB，建议阈值 30KB"
+            },
+            {
+              "path": "Progress/Gameplay/战斗.md",
+              "code": "oversize",
+              "message": "35.9KB，建议阈值 30KB"
+            },
+            {
+              "path": "Progress/Gameplay/飞船.md",
+              "code": "oversize",
+              "message": "61.8KB，建议阈值 30KB"
+            },
+            {
+              "path": "Progress/RequirementDocument/20260826-5v5大战场玩法草案.md",
+              "code": "oversize",
+              "message": "36.1KB，建议阈值 20KB"
+            },
+            {
+              "path": "Progress/RequirementDocument/20260827-Mass双端同步架构草案.md",
+              "code": "oversize",
+              "message": "24.7KB，建议阈值 20KB"
+            },
+            {
+              "path": "Progress/RequirementDocument/20260902-僚机体系与空中三维导航.md",
+              "code": "oversize",
+              "message": "27.9KB，建议阈值 20KB"
+            },
+            {
+              "path": "Progress/RequirementDocument/20260915-客户端性能优化与压测问题记录.md",
+              "code": "oversize",
+              "message": "27.8KB，建议阈值 20KB"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

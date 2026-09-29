@@ -1,0 +1,41 @@
+{
+  "success": true,
+  "sample_count": 8,
+  "roles": [
+    {
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "dedicated": true,
+      "roster": 500,
+      "bodies": 0,
+      "hover_components": 0
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "dedicated": false,
+      "roster": 500,
+      "bodies": 500,
+      "hover_components": 1
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "dedicated": false,
+      "roster": 500,
+      "bodies": 500,
+      "hover_components": 1
+    }
+  ],
+  "comparison": "Client WPO values paired by quantized root position (not a direct authority timestamp assertion)",
+  "matched_warmachines_each_sample": [
+    125,
+    125,
+    125,
+    125,
+    125,
+    125,
+    125,
+    125
+  ],
+  "client_to_client_max_z_cm": 0.71563720703125,
+  "client_to_client_max_pitch_roll_degrees": 0.056072357949940345,
+  "limits": "No packet loss/latency injection or forced death/teleport/reuse in this check."
+}

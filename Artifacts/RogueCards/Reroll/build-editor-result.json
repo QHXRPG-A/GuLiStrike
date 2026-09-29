@@ -1,0 +1,43 @@
+{
+  "recorded_at": "2026-09-29T20:10:00.5595056+08:00",
+  "user_authorization": "用户在重选按钮编译询问后明确发送“编译”",
+  "engine": "D:/UnrealEngine-5.7",
+  "project": "D:/UE5.7/test1/GuLiStrike.uproject",
+  "target": "GuLiStrikeEditor",
+  "platform": "Win64",
+  "configuration": "Development",
+  "arguments": [
+    "-WaitMutex",
+    "-NoHotReloadFromIDE"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "exit_code": 0,
+      "result": "Succeeded",
+      "total_seconds": 57.86,
+      "uba_seconds": 40.22,
+      "action_count": 28,
+      "log": "Artifacts/RogueCards/Reroll/build-editor-attempt1.log",
+      "fixes": []
+    }
+  ],
+  "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+  "build_id_check_passed": true,
+  "manifest_count": 8,
+  "warnings": [
+    "StructUtils plugin deprecated",
+    "VibeUE descriptor missing StructUtils and GameplayTagsEditor dependencies",
+    "Tripo3DUEBridge descriptor missing Interchange dependency"
+  ],
+  "verification": {
+    "native_build": "passed",
+    "module_build_ids": "passed",
+    "editor_reload": "not_run",
+    "pie": "not_run",
+    "automation": "not_run",
+    "performance": "not_run",
+    "player_acceptance": "pending"
+  },
+  "scope": "F4 重选按钮、权威抽牌及网络接口；本次未修改美术资源或重选以外的原生逻辑"
+}

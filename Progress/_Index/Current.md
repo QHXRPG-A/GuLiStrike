@@ -37,9 +37,15 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [提速单位坡面卡住与子弹提前显示修复](../DevelopmentDocumentation/20260928-提速单位坡面卡住与子弹提前显示修复.md) | combat, commander, vfx | — | 在LVL_CommanderMassPrototype通过F4叠加五张机动卡，框选战争机器上坡并观察交战弹道，完成玩家效果验收。 | 2026-09-28 |
+| [指挥官统一三级LOD — 实施与接入约定](../DevelopmentDocumentation/20260929-指挥官统一三级LOD.md) | commander, performance | 8/10 (80%) | 获准构建后加载夹具修正，复验100台完整人数与固定镜头；用户视觉验收、多World及性能实测继续待定。 | 2026-09-30 |
+| [重防号导弹解锁与肉鸽卡牌 — 技术方案](../DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md) | art, combat, commander, performance, ui | 9/12 (75%) | 玩家在LVL_CommanderMassPrototype复查Candidate_v3：96m射程与升级继承、3m爆炸/预警、高速烟迹及冷启动；助手运行/性能暂缓，正式表现待视觉审核。 | 2026-09-30 |
+| [肉鸽卡牌单行文案与高亮 — 实施记录](../DevelopmentDocumentation/20260929-肉鸽卡牌单行文案与高亮.md) | commander, ui | 6/7 (86%) | 在LVL_CommanderMassPrototype重新进入游戏按F4，复验单位、属性、黄色粗体和不同窗口比例的单行显示。 | 2026-09-29 |
+| [F4肉鸽卡牌重选 — 实施记录](../DevelopmentDocumentation/20260929-F4肉鸽卡牌重选.md) | combat, commander, ui | 6/6 (100%) | 重新打开源码版编辑器，在LVL_CommanderMassPrototype按F4验证重选、无其他牌提示和确认流程。 | 2026-09-29 |
+| [重防号悬浮与GPU引擎喷流](../DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md) | commander, performance, presentation | — | 在LVL_CommanderMassPrototype确认新版观感，完成网络生命周期及500全重防号最坏负载验证。 | 2026-09-29 |
+| [Mass无骨骼动画与远距离持续显示](../DevelopmentDocumentation/20260929-Mass无骨骼动画与远距离持续显示.md) | combat, commander, performance, presentation, ui | — | 启动源码版编辑器加载已构建的模块，在现有Mass地图完成实机验收与性能采样。 | 2026-09-29 |
+| [重防号能力卡 — 六层视差与可编辑文案交付](../DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md) | assets, rendering, ui | 7/9 (78%) | 用户在LVL_WarMachineTarotReview核验三张新牌面、极限偏转与既有两次点击流程。 | 2026-09-29 |
+| [提速单位坡面卡住与子弹提前显示修复](../DevelopmentDocumentation/20260928-提速单位坡面卡住与子弹提前显示修复.md) | combat, commander, vfx | — | 在LVL_CommanderMassPrototype通过F4叠加五张机动卡，框选重防号上坡并观察交战弹道，完成玩家效果验收。 | 2026-09-28 |
 | [肉鸽卡牌数据表与实战选牌 — 技术方案](../DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md) | combat, commander, performance, ui, vfx | 10/11 (91%) | 玩家在 LVL_CommanderMassPrototype 按 F4 选牌，核验光粒随机散布、错时上升和密度。 | 2026-09-28 |
-| [战争机器能力卡 — 六层视差与可编辑文案交付](../DevelopmentDocumentation/20260926-战争机器塔罗风视差卡牌复刻验证.md) | assets, rendering, ui | 7/9 (78%) | 用户在LVL_WarMachineTarotReview核验三张新牌面、极限偏转与既有两次点击流程。 | 2026-09-28 |
 | [三棵指挥官StateTree分层重构 — 技术方案与交付](../DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md) | building, commander, resources | 10/11 (91%) | 在 /Game/Maps/LVL_CommanderMassPrototype 按审核步骤确认三棵树的持续阶段、局部恢复和公共打断效果。 | 2026-09-28 |
 | [Mass分帧寻路与避障稳定性](../DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md) | commander, network, performance | 9/11 (82%) | 玩家在LVL_CommanderMassPrototype的MassNavRepair_GiftEdge确认R2效果。 | 2026-09-24 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | building, commander, data, economy, map | 18/20 (90%) | 在已加载屋顶修复的原型地图验证据点出口、赠品清场与矿厂正常入厂；原包围和边界未验证项继续保留。 | 2026-09-24 |
@@ -65,20 +71,20 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。 | 2026-09-29 |
+| [Ship导入与扫荡者重防号风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者重防号风格重制.md) | combat, commander, rendering, ship | 9/12 (75%) | 继续实战轰炸、僚机死亡、机械姿态和完整性能验收。 | 2026-09-29 |
 | [FireReview双阵营靶场与敌方描边 — 技术方案](../DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md) | combat, commander, ground-mech, presentation | 9/9 (100%) | 玩家在/Game/Maps/LVL_GroundMech_FireReview确认两队待命、敌方红色描边及受击销毁效果。 | 2026-09-21 |
 | [统一特效目录与ID引用 — 技术方案](../DevelopmentDocumentation/20260921-统一特效目录与ID引用.md) | combat, vfx | 6/6 (100%) | — | 2026-09-21 |
 | [地面机甲动画蓝图与空中战斗 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲动画蓝图与空中战斗.md) | animation, combat, ground-mech | 8/8 (100%) | 按后续实际使用反馈调整；未覆盖专项和容量条视觉终验见本文边界。 | 2026-09-21 |
 | [地面机甲火箭跳 — 实施与验证](../DevelopmentDocumentation/20260920-地面机甲火箭跳.md) | combat, input, network, ui, vfx | 9/9 (100%) | 容量条单独视觉终验及未覆盖专项保留在验收边界；后续按实际反馈调整。 | 2026-09-21 |
 | [机枪子弹统一受击特效 — 实施与验证](../DevelopmentDocumentation/20260920-机枪子弹统一受击特效.md) | combat, vfx | 8/8 (100%) | — | 2026-09-21 |
 | [星际UI拆解与指挥官界面重构 — 技术方案](../DevelopmentDocumentation/20260920-星际UI拆解与指挥官界面重构.md) | commander, ui | 9/10 (90%) | 补齐运输全阶段界面、重连后头像交互的人工验收；既有血条断言不在本轮修改范围。 | 2026-09-21 |
-| [玩法地图对齐Demo光照](../DevelopmentDocumentation/20260918-玩法地图对齐Demo光照.md) | art, rendering | 6/7 (86%) | 用户查看实际PIE截图确认明暗；战争机器拥挤按独立诊断决定后续实施范围。 | 2026-09-21 |
+| [玩法地图对齐Demo光照](../DevelopmentDocumentation/20260918-玩法地图对齐Demo光照.md) | art, rendering | 6/7 (86%) | 用户查看实际PIE截图确认明暗；重防号拥挤按独立诊断决定后续实施范围。 | 2026-09-21 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | building, combat, commander, economy, navigation, network, ship, ui, vfx, wingman | 10/13 (77%) | 继续其余0.2倍真实运行门禁（Mass、Ship/僚机、建造、空运、护盾占领传送）及用户视觉验收 | 2026-09-21 |
 | [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | art, assets, rendering | 11/11 (100%) | 等待用户审核原Demo_Map整图；按反馈修订，动态录像、GPU性能及编辑器崩溃根因不冒充已验证。 | 2026-09-21 |
 | [Q导弹圆面打击与赠品建筑防卡死 — 技术方案](../DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | building, combat, commander | 8/9 (89%) | 定位原LogUtils错误的实际调用者；复核工程车辆/玩家清场、受阻改选及边界越程等未覆盖行为。 | 2026-09-21 |
 | [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | art, assets, rendering | 11/13 (85%) | 在WORK-20260918-002完成原地图全资源适配与整图终验。 | 2026-09-21 |
 | [GuLiStrike 自然地编资源包 — 制作与验收](../DevelopmentDocumentation/20260917-自然地编资源包.md) | art, assets, rendering | 6/9 (67%) | 用户审核v3工艺及外形参考后，以图集和卡片制作六件Blender代表样板。 | 2026-09-21 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。 | 2026-09-21 |
-| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | combat, commander, rendering, ship | 9/12 (75%) | 继续实战轰炸、僚机死亡、机械姿态和完整性能验收。 | 2026-09-21 |
 | [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | combat, vfx, wingman | 5/7 (71%) | 用户先在 UE 评审视觉；随后补齐稳定 GPU 对照、尺寸精测和真实客户端/专用服务器验收。 | 2026-09-21 |
 | [指挥官相机稳定巡航 — 技术方案](../DevelopmentDocumentation/20260904-指挥官相机稳定巡航.md) | commander, network, ship | 11/12 (92%) | 完成30/60/120 FPS、三臂长、16:9/超宽屏、18.5°坡道、50.5°坑壁、四角与小地图跳转的人工PIE矩阵 | 2026-09-21 |
 | [僚机世界空间近距编队与租约恢复 — 技术方案](../DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md) | network, ship, wingman | 8/10 (80%) | 在优化配置复跑完整 GuLiStrike.Wingman：DebugGame 已执行 79 项，仅既有 H4000 ServerValidator 性能预算失败 | 2026-09-21 |
@@ -91,11 +97,11 @@
 | [指挥官部队操作与特殊任务系统 — 技术方案](../DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md) | building, commander, resources | 7/7 (100%) | — | 2026-09-20 |
 | [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | art, combat, input, network | 8/8 (100%) | — | 2026-09-19 |
 | [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | art, assets, rendering | 7/8 (88%) | 查看整批UE展示；后续按反馈处理外观，性能和武器玩法另行接入。 | 2026-09-19 |
-| [战争机器导弹范围与特效调整](../DevelopmentDocumentation/20260919-战争机器导弹范围与特效调整.md) | combat, commander, data, vfx | — | — | 2026-09-19 |
-| [战争机器模型大小适配](../DevelopmentDocumentation/20260919-战争机器模型大小适配.md) | commander, data, navigation, performance | — | — | 2026-09-19 |
-| [Mass单位体型与最小净距 — 运行时开发](../DevelopmentDocumentation/20260919-Mass单位体型与最小净距.md) | commander, data, navigation, performance | 12/12 (100%) | 已按用户指示撤回算法，转入WORK-20260919-002战争机器模型大小适配。 | 2026-09-19 |
+| [重防号导弹范围与特效调整](../DevelopmentDocumentation/20260919-重防号导弹范围与特效调整.md) | combat, commander, data, vfx | — | — | 2026-09-19 |
+| [重防号模型大小适配](../DevelopmentDocumentation/20260919-重防号模型大小适配.md) | commander, data, navigation, performance | — | — | 2026-09-19 |
+| [Mass单位体型与最小净距 — 运行时开发](../DevelopmentDocumentation/20260919-Mass单位体型与最小净距.md) | commander, data, navigation, performance | 12/12 (100%) | 已按用户指示撤回算法，转入WORK-20260919-002重防号模型大小适配。 | 2026-09-19 |
 | [指挥官单位体型与避障距离配置及接入分析](../DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md) | commander, data, navigation | 5/5 (100%) | 后续先接入体型数据和合法生成，再完成Mass位置约束、工程车双向参与及显示预测限幅。 | 2026-09-18 |
-| [战争机器Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md) | combat, commander, network, ui, vfx | 8/8 (100%) | 单独处理两项既有回归失败；本次功能与崩溃修复已交付。 | 2026-09-17 |
+| [重防号Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-重防号Q导弹与通用地面预警.md) | combat, commander, network, ui, vfx | 8/8 (100%) | 单独处理两项既有回归失败；本次功能与崩溃修复已交付。 | 2026-09-17 |
 | [Ship剩余四组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship剩余四组件贴图与框线制作.md) | art, assets, ship | 6/6 (100%) | 查看实际交付总览；现有舰体bottom_mid_0缺失和六个组件未配兼容槽位留作独立玩法工作。 | 2026-09-17 |
 | [Ship第三批支援组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship第三批支援组件贴图与框线制作.md) | art, assets, ship | 6/6 (100%) | 查看实际交付总览；现有舰体bottom_mid_0缺失和六个组件未配兼容槽位留作独立玩法工作。 | 2026-09-17 |
 | [Ship第二批三组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship第二批三组件贴图与框线制作.md) | art, assets, ship | 6/6 (100%) | 查看实际交付总览；现有舰体bottom_mid_0缺失和六个组件未配兼容槽位留作独立玩法工作。 | 2026-09-17 |
@@ -137,7 +143,7 @@
 | [WM01 程序化六足行走动画 — Blender 到 UE 完整管线教程](../DevelopmentDocumentation/20260826-WM01程序化六足行走动画-Blender到UE管线教程.md) | assets, commander, learning, network | — | — | 2026-09-05 |
 | [Mass 框架启用与源码导读（UE 5.7）](../DevelopmentDocumentation/20260824-Mass框架启用与源码导读.md) | assets, combat, commander, network, wingman | — | — | 2026-09-05 |
 | [飞船世界空间环绕 HUD 与技能准星 — 技术方案](../DevelopmentDocumentation/20260904-飞船世界空间环绕HUD与技能准星.md) | combat, commander, ship, ui, wingman | 8/8 (100%) | — | 2026-09-04 |
-| [指挥官与地面战争机器最小建造系统 — 技术方案](../DevelopmentDocumentation/20260903-指挥官与地面战争机器最小建造系统.md) | building, combat, commander, network, ui | 10/10 (100%) | — | 2026-09-03 |
+| [指挥官与地面机甲最小建造系统 — 技术方案](../DevelopmentDocumentation/20260903-指挥官与地面机甲最小建造系统.md) | building, combat, commander, network, ui | 10/10 (100%) | — | 2026-09-03 |
 | [飞船 GAS 与僚机技能归属 — 开发文档](../DevelopmentDocumentation/20260902-飞船GAS与僚机技能归属.md) | combat, commander, network, ship, wingman | 15/16 (94%) | — | 2026-09-03 |
 | [移动命令自由扩散与静态寻路线 — 技术方案](../DevelopmentDocumentation/20260901-移动命令自由扩散与静态寻路线.md) | combat, commander, network, ship, ui | 17/21 (81%) | — | 2026-09-01 |
 | [小兵扫射与可扩展技能桥接 — 技术方案](../DevelopmentDocumentation/20260901-小兵扫射与指挥官GAS桥接.md) | commander, data-pipeline, network, ship, ui | 10/10 (100%) | — | 2026-09-01 |

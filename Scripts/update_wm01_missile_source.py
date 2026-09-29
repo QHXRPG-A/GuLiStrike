@@ -41,7 +41,7 @@ def main():
         else:
             for row, values in enumerate(rows[3:], 4):
                 if values[columns.index('name')] == 'WM01_HomingMissile':
-                    edits.append({'cell': f'{column(columns.index("Note") + 1)}{row}', 'value': '战争机器Q主动导弹；定点弹道，爆炸由独立法术场结算', 'type': 'string'})
+                    edits.append({'cell': f'{column(columns.index("Note") + 1)}{row}', 'value': '重防号Q主动导弹；定点弹道，爆炸由独立法术场结算', 'type': 'string'})
         data = OUT / f'{sheet}-edits.json'
         data.write_text(json.dumps(edits, ensure_ascii=False), encoding='utf-8')
         subprocess.run([CLI, 'write', str(BOOK), '--sheet', sheet, '--data-file', str(data)], check=True)

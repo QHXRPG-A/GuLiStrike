@@ -37,7 +37,7 @@ def configure_widget():
     W=unreal.WidgetService
     if not B.blueprint_exists(WIDGET):require(B.create_blueprint('WBP_CardText','UserWidget',ROOT+'/UI'),'Create widget')
     for kind,name,parent in [('CanvasPanel','Canvas',''),('ScaleBox','TitleFit','Canvas'),('TextBlock','CardTitle','TitleFit'),
-                             ('ScaleBox','DescriptionFit','Canvas'),('TextBlock','CardDescription','DescriptionFit')]:
+                             ('ScaleBox','DescriptionFit','Canvas'),('RichTextBlock','CardDescription','DescriptionFit')]:
         if not W.widget_exists(WIDGET,name):require(W.add_component(WIDGET,kind,name,parent,True).success,name)
     for name,y,height in [('TitleFit',16,105),('DescriptionFit',135,136)]:
         for key,value in {'Anchor Min X':.5,'Anchor Max X':.5,'Anchor Min Y':0,'Anchor Max Y':0,
@@ -45,15 +45,11 @@ def configure_widget():
             require(W.set_property(WIDGET,name,key,str(value)),name+' '+key)
         require(W.set_property(WIDGET,name,'Stretch','ScaleToFit'),name+' fit')
         require(W.set_property(WIDGET,name,'StretchDirection','DownOnly'),name+' down only')
-    for name,size in [('CardTitle',74),('CardDescription',38)]:
+    for name,size in [('CardTitle',74)]:
         require(W.set_property(WIDGET,name,'Text',''),name+' blank')
         require(W.set_property(WIDGET,name,'Justification','Center'),name+' center')
         require(W.set_property(WIDGET,name,'Visibility','HitTestInvisible'),name+' input')
         require(W.set_font(WIDGET,name,unreal.WidgetFontInfo(size=size,color='(R=0.96,G=0.96,B=0.91,A=1)')),name+' font')
-    # Explicit wrap width avoids ScaleBox/auto-wrap feeding a shrinking width back
-    # into layout on long translations. WrapTextAt still performs word wrapping.
-    require(W.set_property(WIDGET,'CardDescription','AutoWrapText','false'),'Fixed description wrapping')
-    require(W.set_property(WIDGET,'CardDescription','WrapTextAt','910'),'Description width')
     require(W.set_property(WIDGET,'Canvas','Visibility','HitTestInvisible'),'Canvas input')
     require(B.set_property(WIDGET,'bIsFocusable','false'),'No widget keyboard focus')
     function(WIDGET,'SetContent',[('Title','FText'),('Description','FText')])
@@ -61,7 +57,7 @@ def configure_widget():
     variable(WIDGET,'CurrentTextRow','FCardTextRow')
     compile_save(WIDGET)
     g=Graph(WIDGET,'SetContent',True)
-    for comp,arg in [('CardTitle','Title'),('CardDescription','Description')]:
+    for comp,arg in [('CardTitle','Title')]:
         g.method('TextBlock','SetText',g.get(comp),InText=g.arg(arg))
     g.layout()
     g=Graph(WIDGET,'SetFromRow',True)
@@ -82,6 +78,10 @@ def configure_widget():
     g.invoke('SetContent',Title='',Description='')
     g.layout()
     REPORT['widget_compile']=compile_save(WIDGET)
+    # Shared current rules also replace the legacy plain description widget.
+    from card_rich_text import configure_single_line_widget, import_style_source
+    REPORT['single_line_style_source']=import_style_source()
+    REPORT['single_line_widget']=configure_single_line_widget()
 
 
 def configure_component():

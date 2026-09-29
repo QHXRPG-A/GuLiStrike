@@ -239,6 +239,7 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 	if (UStaticMesh* StaticMesh = Cast<UStaticMesh>(LoadedModel))
 	{
 		Resolved.Model = StaticMesh;
+		Resolved.MechanicalAnimation = FGuLiMechanicalAnimationConfig::FromStaticMesh(StaticMesh, Resolved.PresentationScale);
 	}
 	else
 	{

@@ -13,7 +13,7 @@ class UStaticMeshComponent;
 
 /**
  * Ground 角色的最小原生占位 Pawn：使用 CharacterMovement 完成基础行走及 UE 移动复制。
- * 只验证公共战局身份、操控和复活接入；尚无战争机器武器或完整载具规则。
+ * 只验证公共战局身份、操控和复活接入；尚无地面机甲武器或完整载具规则。
  */
 UCLASS()
 class GULISTRIKE_API AGuLiWarMachinePlaceholderPawn : public ACharacter

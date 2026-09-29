@@ -1,0 +1,56 @@
+{
+  "label": "lod0-fresh",
+  "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "scope": "PIE functionality only; diagnostic overhead excluded from any performance claim",
+  "samples": [
+    {
+      "t": 0.013343699276447296,
+      "world_time": 13.574990905821323,
+      "view_location": [
+        -8000.0,
+        66000.0,
+        1400.0
+      ],
+      "view_rotation": [
+        3.6950095250176673e-07,
+        -32.0053825378418,
+        90.0
+      ],
+      "metrics": {
+        "missile_components": 0,
+        "particle_capacity": 0,
+        "full_trails": 0
+      },
+      "systems": []
+    },
+    {
+      "t": 0.096151202917099,
+      "world_time": 13.657798409461975,
+      "view_location": [
+        -8000.0,
+        66000.0,
+        1400.0
+      ],
+      "view_rotation": [
+        3.6950095250176673e-07,
+        -32.0053825378418,
+        90.0
+      ],
+      "metrics": {
+        "missile_components": 0,
+        "particle_capacity": 0,
+        "full_trails": 0
+      },
+      "systems": []
+    }
+  ],
+  "events": [],
+  "complete": false,
+  "fire": {
+    "successful_units": 34,
+    "missiles": 34,
+    "expected_units": 37,
+    "uses_authority_skill_and_cooldown": true
+  },
+  "error": "Traceback (most recent call last):\n  File \"D:/UE5.7/test1/Artifacts/CommanderLOD/20260930/pie_probe.py\", line 83, in tick\n    self.sample(t)\n  File \"D:/UE5.7/test1/Artifacts/CommanderLOD/20260930/pie_probe.py\", line 47, in sample\n    'active': sum(m.g == 1 for m in meta[:slots]),\n                                    ~~~~^^^^^^^^\nTypeError: slice indices must be integers or None or have an __index__ method\n"
+}

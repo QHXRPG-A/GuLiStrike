@@ -1,7 +1,7 @@
 # ST_CommanderMass｜据点推进｜18 状态
 
 ## 资产配置
-### 单位绑定：扫荡者、战争机器
+### 单位绑定：扫荡者、重防号
 > 资产路径：/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass
 ### Schema：GuLiCommanderMassStateTreeSchema
 ### 生命周期：InitialOnce；自动启用

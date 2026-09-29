@@ -1,0 +1,63 @@
+{
+  "time": "2026-09-29T11:46:34.778032+08:00",
+  "authorization": "User: 编译; same GuLiStrikeEditor Win64 Development scope approved after implementation handoff",
+  "target": "GuLiStrikeEditor Win64 Development",
+  "engine": "D:/UnrealEngine-5.7",
+  "arguments": [
+    "-Project=D:/UE5.7/test1/GuLiStrike.uproject",
+    "-WaitMutex",
+    "-NoHotReloadFromIDE"
+  ],
+  "attempts": [
+    {
+      "log": "native-build.log",
+      "exit_code": 6,
+      "reason": "Three TObjectPtr map lookups used auto*; repaired with explicit .Get()"
+    },
+    {
+      "log": "native-build-retry.log",
+      "exit_code": 0,
+      "result": "Succeeded",
+      "execution_seconds": 18.7
+    }
+  ],
+  "build_id_match": true,
+  "modules": [
+    {
+      "path": "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/GuLiFlightNavigation/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/GuLiMapAuthoring/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/Tripo3DUEBridge-UE5.7-Win64/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/UnrealMCP/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/UnrealMCPython/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/VibeUE/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    }
+  ],
+  "editor_was_running": false,
+  "editor_restarted": false,
+  "native_loaded_in_editor": false,
+  "runtime_tests": "not_run"
+}

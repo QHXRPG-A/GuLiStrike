@@ -15,8 +15,6 @@ public:
 	UGuLiRogueCardSettings();
 	UPROPERTY(Config, EditAnywhere, Category="Data") TSoftObjectPtr<UDataTable> Cards;
 	UPROPERTY(Config, EditAnywhere, Category="Data") TSoftObjectPtr<UStringTable> Texts;
-	/** Display order, independent of Excel row order. */
-	UPROPERTY(Config, EditAnywhere, Category="Data") TArray<FString> Candidates;
 	UPROPERTY(Config, EditAnywhere, Category="Presentation") TSoftClassPtr<AActor> DirectorClass;
 	UPROPERTY(Config, EditAnywhere, Category="Presentation") TSoftObjectPtr<UMaterialInterface> CaptureMaterial;
 	UPROPERTY(Config, EditAnywhere, Category="Presentation") TSoftObjectPtr<UMaterialInterface> FrameMaterial;

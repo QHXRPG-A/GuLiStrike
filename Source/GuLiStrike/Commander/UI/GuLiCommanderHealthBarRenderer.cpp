@@ -597,10 +597,9 @@ void AGuLiCommanderHealthBarRenderer::RebuildLocalInstances()
 		float Opacity = bSelected ? 1.0f : UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - ActiveHitStartTimes.FindChecked(Pair.Key));
 		FTransform Transform = Hidden, Soldier;
 		bool bVisible = false;
-		if (Presentation && Opacity > 0 && State.IsAlive() && !State.bPhased && Presentation->TryGetPresentedSoldierTransform(Pair.Key, Soldier))
+		if (Presentation && Opacity > 0 && State.IsAlive() && !State.bPhased && Presentation->TryGetPresentedVisualTransform(Pair.Key, Soldier))
 		{
-			FVector Location = Soldier.GetLocation();
-			Location.Z += SoldierHeightOffsetsCentimeters.FindRef(State.UnitTypeId) * FMath::Abs(Soldier.GetScale3D().Z);
+			const FVector Location = Soldier.TransformPosition(FVector(0, 0, SoldierHeightOffsetsCentimeters.FindRef(State.UnitTypeId)));
 			bVisible = MakeBarTransform(Location, Transform);
 		}
 		WriteInstance(Pair.Value, Transform, CalculateHealthFraction(State.Health, State.MaxHealth), bSelected ? 1.0f : 0.0f, bVisible ? Opacity : 0.0f);

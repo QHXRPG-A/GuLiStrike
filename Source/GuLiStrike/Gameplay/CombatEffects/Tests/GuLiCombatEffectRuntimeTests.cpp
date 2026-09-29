@@ -347,9 +347,9 @@ bool FGuLiSpellFieldTableConfigTest::RunTest(const FString& Parameters)
 		&& FourFGun->AimOffset.Equals(FVector(0, 0, 130), 0.01));
 	const FGuLiWeaponMountConfig* WM01Missiles = Data->FindWeaponMountConfig(2, TEXT("MissileLauncher"));
 	TestTrue(TEXT("WM01 twin missile sockets retain table order"), WM01Missiles && WM01Missiles->Muzzles.Num() == 2
-		&& WM01Missiles->Muzzles[0].Equals(FVector(-729.1603565, 932.1683884, 3122.3321915) * .2, 0.01)
-		&& WM01Missiles->Muzzles[1].Equals(FVector(-729.1603565, -932.1683884, 3122.3321915) * .2, 0.01)
-		&& WM01Missiles->AimOffset.Equals(FVector(0, 0, 320), 0.01));
+		&& WM01Missiles->Muzzles[0].Equals(FVector(-729.1603565, 932.1683884, 3877.2838232) * .2, 0.01)
+		&& WM01Missiles->Muzzles[1].Equals(FVector(-729.1603565, -932.1683884, 3877.2838232) * .2, 0.01)
+		&& WM01Missiles->AimOffset.Equals(FVector(0, 0, 470.99032636), 0.01));
 	auto& Source = F.Add(EGuLiTeam::Red, FVector(-5000, 0, 0));
 	auto& Target = F.Add(EGuLiTeam::Blue, FVector::ZeroVector);
 	auto* Visual = NewObject<UGuLiSpellFieldDefinition>(F.World);
@@ -566,9 +566,10 @@ bool FGuLiCombatEffectNetworkOrderTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("quantized create preserves position"),FVector(Decoded.Location).Equals(Wire.Location,1));
 	Wire.Phase=EGuLiCombatEffectPhase::Finished; Wire.EndReason=EGuLiCombatEffectEndReason::Impact;
 	FNetBitWriter EndWriter(nullptr,0); Wire.NetSerialize(EndWriter,nullptr,bSerialized);
-	TestTrue(TEXT("terminal event has no repeated cast payload and is under 28 bytes"),bSerialized && EndWriter.GetNumBytes()<28);
+	TestTrue(TEXT("terminal carries its impact point without repeated cast payload, under 44 bytes"),bSerialized && EndWriter.GetNumBytes()<44);
 	FNetBitReader EndReader(nullptr,EndWriter.GetData(),EndWriter.GetNumBits()); Decoded.NetSerialize(EndReader,nullptr,bSerialized);
-	TestTrue(TEXT("payload-free terminal remains a well-formed removal"),bSerialized && Decoded.IsWellFormed() && Decoded.Phase==EGuLiCombatEffectPhase::Finished);
+	TestTrue(TEXT("terminal remains a well-formed removal at the authoritative impact point"),bSerialized && Decoded.IsWellFormed()
+		&& Decoded.Phase==EGuLiCombatEffectPhase::Finished && FVector(Decoded.Location).Equals(Wire.Location,1));
 	FGuLiCombatShotCue WireShot; WireShot.MatchEpoch=9; WireShot.ShotId=FGuid(4,3,2,1);
 	WireShot.Source=Wire.Source; WireShot.Target=Wire.Target; WireShot.SlotId=TEXT("BasicAttack"); WireShot.UnitTypeId=2;
 	WireShot.Start=FVector(123,456,789); WireShot.End=FVector(12000,500,800);

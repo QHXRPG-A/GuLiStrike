@@ -50,4 +50,8 @@ namespace GuLiVfxIds
 	inline constexpr int32 BuildingConstructionLaser = 45;
 	inline constexpr int32 BuildingConstructionColumnTail = 46;
 	inline constexpr int32 BuildingConstructionMote = 47;
+	inline constexpr int32 WarMachineHover = 48;
+	inline constexpr int32 WM01MissileClusterFull = 49;
+	inline constexpr int32 WM01MissileClusterLite = 50;
+	inline constexpr int32 WM01MissileClusterMinimal = 51;
 }

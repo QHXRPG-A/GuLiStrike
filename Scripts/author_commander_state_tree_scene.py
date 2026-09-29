@@ -104,7 +104,7 @@ def run():
          '抢位失败排除该位置1秒再取单；路径不可达保留现有位置/导航版本排除规则。停工保留进度。\n'
          '树资产：/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder'),
         ('StateTreeReview_StrongholdAdvance', next_outpost.get_actor_location() + unreal.Vector(0, 0, 500),
-         '扫荡者、战争机器 / ST_CommanderMass\n'
+         '扫荡者、重防号 / ST_CommanderMass\n'
          '双方初始军队使用烘焙集合点；出生授予一次据点推进。R2C4是红方前方的一个可观察据点，实际目标由原拓扑规则选择。\n'
          '观察选目标 → 持续推进 → 持续占领 → 阶段交接。不可达排除重选，无目标按原节拍等待。\n'
          'Shift追加在据点阶段交接；人工接管后不重新授予InitialOnce。手动移动与S使用原入口。\n'

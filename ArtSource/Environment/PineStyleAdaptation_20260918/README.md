@@ -12,7 +12,7 @@
 
 原对照关卡保留：`/Game/GuLiStrike/Environment/ArtReview/PineStyleComparison_20260917/LVL_Pine_Units_Comparison`。
 
-供应商资源来源：`D:/BaiduNetdiskDownload/塞尔达松树林/StylizedPineEnvironment/StylizedPineEnvironment`。项目中的原包路径 `/Game/StylizedPineEnvironment/Assets` 只读使用；所有修改均在上述 ArtReview 新目录。Ship、扫荡者、战争机器、岩石及灯光仍使用原对照场景版本。
+供应商资源来源：`D:/BaiduNetdiskDownload/塞尔达松树林/StylizedPineEnvironment/StylizedPineEnvironment`。项目中的原包路径 `/Game/StylizedPineEnvironment/Assets` 只读使用；所有修改均在上述 ArtReview 新目录。Ship、扫荡者、重防号、岩石及灯光仍使用原对照场景版本。
 
 ## 已制作
 

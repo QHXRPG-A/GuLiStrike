@@ -1,4 +1,4 @@
-# 战争机器悬浮盘连接审核版 v1
+# 重防号悬浮盘连接审核版 v1
 
 此为保留的中间版本。用户追加了支架与节点连接的红框反馈，叉耳版本见 [v2](../WarMachine_LegClevis_v2/README.md)，最新外下倾30°候选见 [v3](../WarMachine_Slope30_v3/README.md)。该反馈不记为 v1 美术通过。
 

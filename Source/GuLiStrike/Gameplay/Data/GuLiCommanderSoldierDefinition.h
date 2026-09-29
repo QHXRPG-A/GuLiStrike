@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Gameplay/Presentation/GuLiMechanicalAnimation.h"
 #include "GuLiCommanderSoldierDefinition.generated.h"
 
 class UStaticMesh;
@@ -43,6 +44,9 @@ struct GULISTRIKE_API FGuLiSoldierDefinition
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")
 	TObjectPtr<UStaticMesh> Model = nullptr;
+
+	/** Static-only mechanical part contract, resolved once with the model and its scale. */
+	FGuLiMechanicalAnimationConfig MechanicalAnimation;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")
 	float Defense = 0.0f;

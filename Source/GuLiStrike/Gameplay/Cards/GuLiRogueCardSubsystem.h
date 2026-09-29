@@ -20,6 +20,7 @@ public:
 	FText GetText(const FString& Key);
 	FText GetCardText(const FString& Id, int32 Index);
 	void RequestOffer(UGuLiCommanderNetSyncComponent& Channel, FGuid Request);
+	void RerollOffer(UGuLiCommanderNetSyncComponent& Channel, FGuid Request, FGuid Session);
 	void Confirm(UGuLiCommanderNetSyncComponent& Channel, FGuid Session, const FString& CardId);
 	void Cancel(UGuLiCommanderNetSyncComponent& Channel, FGuid Session);
 	void PresentationClosed(UGuLiCommanderNetSyncComponent& Channel, FGuid Session);
@@ -29,7 +30,7 @@ public:
 private:
 	struct FOffer
 	{
-		FGuid Request, Session;
+		FGuid Request, Session, RerolledFrom;
 		TWeakObjectPtr<AGuLiBattlePlayerState> Owner;
 		EGuLiTeam Team=EGuLiTeam::Unassigned;
 		TArray<FString> Candidates;
@@ -40,6 +41,7 @@ private:
 		TArray<FGuLiSoldierId> UpgradeTargets;
 	};
 	bool LoadCatalog(FString& Error);
+	bool IsEligible(const FGuLiStrikeRogueCardsCardsRow& Card, EGuLiTeam Team, FString& Error);
 	bool ValidateOwner(UGuLiCommanderNetSyncComponent& Channel, AGuLiBattlePlayerState*& Owner, FString& Error) const;
 	void SynchronizeEpoch();
 	UPROPERTY(Transient) TObjectPtr<UDataTable> Table;

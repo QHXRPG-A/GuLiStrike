@@ -2,13 +2,16 @@
   {
     "id": "FireRate",
     "arguments": {
-      "prompt": "编辑输入图1这张“增加射速”插画，只修复用户指出的一处缺失机械结构。输入图1是无标注原图，是唯一编辑底图；输入图2是用户红框反馈，只用于定位；输入图3是真实新版战争机器模型的UE整机截图，只用于核对四腿布局和机械连接，不能把其渲染风格套入插画。\n在输入图2红框标出的机身右侧远侧位置，补齐缺失的一条支架腿与该腿对应的悬浮盘。参照输入图3对应结构，让支架连续连接到真实的机身侧关节，向外下倾，经销轴叉耳连接到水平的橙红方形末端节点；白色套环与指示灯随节点，末端底座贴合悬浮盘中央圆环上表面，悬浮盘保持水平。按原相机透视处理这条远侧腿的大小与前后遮挡，允许机身遮挡一部分，但可见的连接和悬浮盘必须完整合理，不能穿模、悬空或成为孤立飞盘。只补这条缺失腿，不额外增加其他腿，不为了显示四腿而移动现有机体。\n严格保留输入图1的画幅、主体位置、姿态、镜头、配色、经典美漫画风、现有双联炮与枪口火光、其他已有腿和悬浮盘、残骸、爆炸和背景。仅在补腿必要的局部修改遮挡，其他内容尽量保持原样。保持干净墨线、清晰色块与明暗层次。输出与原图同样的2:3竖版完整插画，不含红框、箭头、标注、文字、数字、卡框、水印或UI。no grain, no dirty texture, no random speckles, no messy background, no harsh glow.",
+      "prompt": "编辑输入图1这张“增加射速”插画，只修复用户指出的一处缺失机械结构。输入图1是无标注原图，是唯一编辑底图；输入图2是用户红框反馈，只用于定位；输入图3是真实新版重防号模型的UE整机截图，只用于核对四腿布局和机械连接，不能把其渲染风格套入插画。\n在输入图2红框标出的机身右侧远侧位置，补齐缺失的一条支架腿与该腿对应的悬浮盘。参照输入图3对应结构，让支架连续连接到真实的机身侧关节，向外下倾，经销轴叉耳连接到水平的橙红方形末端节点；白色套环与指示灯随节点，末端底座贴合悬浮盘中央圆环上表面，悬浮盘保持水平。按原相机透视处理这条远侧腿的大小与前后遮挡，允许机身遮挡一部分，但可见的连接和悬浮盘必须完整合理，不能穿模、悬空或成为孤立飞盘。只补这条缺失腿，不额外增加其他腿，不为了显示四腿而移动现有机体。\n严格保留输入图1的画幅、主体位置、姿态、镜头、配色、经典美漫画风、现有双联炮与枪口火光、其他已有腿和悬浮盘、残骸、爆炸和背景。仅在补腿必要的局部修改遮挡，其他内容尽量保持原样。保持干净墨线、清晰色块与明暗层次。输出与原图同样的2:3竖版完整插画，不含红框、箭头、标注、文字、数字、卡框、水印或UI。no grain, no dirty texture, no random speckles, no messy background, no harsh glow.",
       "referenced_image_paths": [
         "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Inputs/FireRate_v8.png",
         "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Inputs/FireRate_UserFeedback.png",
         "D:/UE5.7/test1/ArtSource/UI/WarMachineTarotCards/ModelComic_v9/Inputs/FullModel_v6_UE.png"
       ],
-      "transparent_background": false
+      "transparent_background": false,
+      "original_prompt_utf8_sha256": "5a6d0fb832807d09b19f5d842aac84732b32f566e86981cb3bd64f86fbd2105a",
+      "normalized_prompt_utf8_sha256": "7c9884de58a5ce048cdbd352380dd87cb5daa7f691407d91e0cb362dd7857f17",
+      "prompt_record_kind": "terminology_normalized_on_2026-09-29; not the original generation payload"
     }
   },
   {

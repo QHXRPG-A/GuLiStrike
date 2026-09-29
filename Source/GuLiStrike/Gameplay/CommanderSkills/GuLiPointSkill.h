@@ -31,6 +31,8 @@ public:
 	virtual bool ValidateDefinition(const FGuLiActiveSkillDefinition& Definition, FString& Error) const override;
 	virtual FGuLiActiveSkillExecutionResult Execute(const FGuLiActiveSkillExecutionContext& Context, const UDataAsset* Configuration) const override;
 protected:
+	bool BuildRequest(const FGuLiActiveSkillExecutionContext& Context, const UDataAsset* Configuration,
+		FGuLiCombatAttackRequest& Request, FString& Error) const;
 	/** A concrete skill resolves its payload; the shared adapter launches and reports success. */
 	virtual bool ConfigurePayload(const FGuLiActiveSkillExecutionContext& Context, const UGuLiPointSkillConfiguration& Configuration,
 		FGuLiCombatAttackRequest& Request, FString& Error) const;

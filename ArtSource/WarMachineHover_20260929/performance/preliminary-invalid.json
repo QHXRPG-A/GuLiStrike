@@ -1,0 +1,29 @@
+{
+  "reason": "The alignment diagnostic had paused preview tick; first two captures retained its FX. Discarded from final comparison and rerun with native off path active.",
+  "records": [
+    {
+      "csv": "idle-160m-fx0.csv",
+      "distance_to_fixture_center_cm": 16000,
+      "fx": false,
+      "time_seconds": 195.669454369694
+    },
+    {
+      "csv": "idle-160m-fx1.csv",
+      "distance_to_fixture_center_cm": 16000,
+      "fx": true,
+      "time_seconds": 210.42421497032046
+    },
+    {
+      "csv": "idle-200m-fx0.csv",
+      "distance_to_fixture_center_cm": 20000,
+      "fx": false,
+      "time_seconds": 225.509731374681
+    },
+    {
+      "csv": "idle-200m-fx1.csv",
+      "distance_to_fixture_center_cm": 20000,
+      "fx": true,
+      "time_seconds": 240.61597207561135
+    }
+  ]
+}

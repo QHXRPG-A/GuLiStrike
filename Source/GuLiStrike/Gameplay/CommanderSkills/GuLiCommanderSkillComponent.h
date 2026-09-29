@@ -40,6 +40,7 @@ protected:
 private:
 	UFUNCTION() void HandlePlayerStateChanged();
 	void RefreshSelectedUnitSkills(const FGuLiCommanderSelectionState& Selection);
+	void HandleWeaponProfilesChanged(uint32 Revision);
 	UFUNCTION(Client, Reliable) void ClientReceiveReply(const FGuLiActiveSkillReply& Reply);
 	AGuLiBattlePlayerState& PlayerState() const;
 	AGuLiCommanderPlayerController* Commander() const;

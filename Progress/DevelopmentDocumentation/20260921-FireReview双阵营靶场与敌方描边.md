@@ -71,7 +71,7 @@ status_note: 用户要求检查当前PIE并解决问题；在该会话修复后�
 
 - 开启3秒`LogNavigationDirtyArea VeryVerbose`后恢复原级别，捕获4组装饰石的12个动态网格产生4296次脏区更新。导航队列持续有更新，`TrySpawnAuthorityPopulation`一直等待。证据`pie-navigation-dirty.log`。
 - 只将本图实例的12个动态网格`CanEverAffectNavigation`设false：两个悬浮石各5个组件、两个旋转石各`RockFlat2`。旋转石的静止`RockLong2`底座保持true。修改属性会重新构造Blueprint组件，脚本每次按名称取回当前组件，避免后续写入失效引用；最终统一重新读回。
-- 在用户已开启的同一会话完成修复后，导航空闲、权威生成标记true；主机与客户端名册均为16个唯一且相同的ID，全部满血存活。Red/Blue各4扫荡者和4战争机器；四类正常机体批次各4台，CustomDepth启用、Stencil为1/2。证据`pie-after-navigation-repair.json`。没有主动操作射击或扩展压力测试。
+- 在用户已开启的同一会话完成修复后，导航空闲、权威生成标记true；主机与客户端名册均为16个唯一且相同的ID，全部满血存活。Red/Blue各4扫荡者和4重防号；四类正常机体批次各4台，CustomDepth启用、Stencil为1/2。证据`pie-after-navigation-repair.json`。没有主动操作射击或扩展压力测试。
 - 沿用用户此前结束PIE、完成场景的授权，在确认没有未保存包后退出该会话。地图应用同一修复、构建并保存导航，重新加载并比较4个装饰Actor的类、变换、网格、相对变换和碰撞，无其他差异；12个排除项和16台部署配置保留。重启后再次读回通过，重复修复组件变化数0。证据`scene-after-navigation-repair.json`、`scene-final-readback.json`、`scene-repair_navigation.json`。
 - 保存地图暴露独立的飞行导航校验器问题：`CanValidateAsset`接收所有World，`ValidateLoadedAsset`却对非必需且无飞行体积的World返回NotValidated，触发UE5.7接口ensure。FireReview不在4张必需地图中，也没有飞行体积；地面导航两份数据检查为Hit，地图并未因该ensure损坏。
 - 将必需地图/启用体积判断移入`GuLiFlightNavigationWorldValidator::CanValidateAsset_Implementation`；无关World不接手，接手后的有效World仍执行原Cook检查并返回Valid/Invalid。必需地图缺失体积仍报错，没有放宽Cook要求。
@@ -92,7 +92,7 @@ status_note: 用户要求检查当前PIE并解决问题；在该会话修复后�
 ## 玩家操作与预期效果
 
 1. 完成部署交付后打开上述地图，普通单人进入，继续控制地面机甲，默认属于红方。
-2. 前往两组靶场，必要时滚轮拉远镜头。每队应为4扫荡者和4战争机器，保持待命且不会自动交火；保留正常友军碰撞退让。
+2. 前往两组靶场，必要时滚轮拉远镜头。每队应为4扫荡者和4重防号，保持待命且不会自动交火；保留正常友军碰撞退让。
 3. 蓝方敌军的可见轮廓为红色，红方友军没有敌方红色描边；遮挡后不新增透墙显示。
 4. 按住左键射击蓝方，观察机枪受击特效、闪白、血量及销毁；死亡后的残骸不保留敌方描边。退出并重新进入可重置目标。
 

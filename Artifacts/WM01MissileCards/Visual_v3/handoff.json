@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "candidate_revision": 3,
+  "editor_candidate": 1,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "preview": "ArtSource/FX/WM01MissileCluster/Candidate_v3/review.html",
+  "source_workbooks_created": 0,
+  "sheets_created": 0,
+  "native_build": "passed",
+  "static_checks": "passed",
+  "data_and_six_systems": "passed",
+  "scene_saved_and_cold_readback": "passed",
+  "assistant_gameplay_validation": "not_run",
+  "performance_measurement": "not_run",
+  "user_visual_acceptance": "pending",
+  "production_cluster_enabled": false,
+  "cold_load_scope": "Fresh editor load; UE deferred GPU compile completed explicitly before readback. Runtime auto-readiness still pending player check.",
+  "visual_limits": "Eight-lane corners and some strip junction contrast remain visible; not volumetric smoke.",
+  "values": {
+    "smoke_width_cm": [
+      63,
+      99
+    ],
+    "flame_size_cm": [
+      42,
+      108
+    ],
+    "missile_speed_cm_s": 2400,
+    "q_base_range_m": 96,
+    "q_attack_range_multiplier": 3.2,
+    "explosion_radius_cm": 300
+  }
+}

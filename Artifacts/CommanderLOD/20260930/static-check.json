@@ -1,0 +1,25 @@
+{
+  "success": true,
+  "scope": "current source/authoring static review only",
+  "checks": {
+    "authoring_python_ast": true,
+    "probe_uses_native_class_path": true,
+    "probe_does_not_use_python_alias_as_result": true,
+    "dimensions_resolved_from_current_table": true,
+    "pool_still_uses_common_lod": true,
+    "no_private_view_sampling": true,
+    "shared_tier_constants_absent": true,
+    "trail_lifetime_unchanged": true,
+    "handoff_unchanged": true,
+    "slot_and_retiring_resource_accounting_retained": true,
+    "cleanup_reports_retained": true
+  },
+  "source_modified_this_turn": [
+    "Scripts/author_commander_lod_scene.py"
+  ],
+  "native_code_modified_this_turn": false,
+  "build_executed_this_turn": false,
+  "pie": "not_run",
+  "performance": "not_run",
+  "script_sha256": "c2ef856ed932b2db08a4f006f378ae7d94e0765e174f8b1754022d0c7f3e8cf0"
+}

@@ -5,6 +5,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "GuLiRogueCardPresentation.generated.h"
 class UBackgroundBlur;
+class UButton;
 class UImage;
 class UTextBlock;
 class USceneCaptureComponent2D;
@@ -26,16 +27,20 @@ public:
 	void Setup(UGuLiRogueCardPresentation* InOwner, UMaterialInstanceDynamic* Material);
 	void SetBackdrop(float Strength);
 	void SetCopy(const FText& Title, const FText& Hint);
+	void SetRerollState(bool bEnabled, const FText& Label);
 	void ResetPresentation();
 protected:
 	virtual TSharedRef<SWidget> RebuildWidget() override;
 	virtual FReply NativeOnMouseButtonDown(const FGeometry&,const FPointerEvent&) override;
 	virtual FReply NativeOnKeyDown(const FGeometry&,const FKeyEvent&) override;
 private:
+	UFUNCTION() void HandleRerollClicked();
 	UPROPERTY(Transient) TObjectPtr<UBackgroundBlur> Blur;
 	UPROPERTY(Transient) TObjectPtr<UImage> Cards;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> TitleLabel;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> HintLabel;
+	UPROPERTY(Transient) TObjectPtr<UButton> RerollButton;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> RerollLabel;
 	TWeakObjectPtr<UGuLiRogueCardPresentation> Presentation;
 };
 
@@ -50,6 +55,8 @@ public:
 	void Open();
 	void Cancel();
 	void Click();
+	void Reroll();
+	bool CanReroll() const;
 	bool IsOpen() const { return bOpen; }
 	void ReceiveOffer(FGuid Request, FGuid Session, uint32 Epoch, const TArray<FString>& Cards, const FString& Error);
 	void ReceiveResult(FGuid Session, bool bSuccess, const FString& Error);
@@ -61,6 +68,7 @@ private:
 	bool CreateStage(const TArray<FString>& Cards);
 	void Close(bool bImmediate=false);
 	void Cleanup();
+	void DestroyStage();
 	void UpdateCaptureSize();
 	UPROPERTY(Transient) TObjectPtr<AActor> Director;
 	UPROPERTY(Transient) TObjectPtr<UUserWidget> LegacyHUD;
@@ -73,10 +81,12 @@ private:
 	uint32 MatchEpoch=0;
 	uint8 PresentationTeam=0;
 	bool bOpen=false, bClosing=false, bSubmitting=false, bTearingDown=false;
+	bool bRerolling=false;
 	bool bCommitted=false, bFinishedNormally=false, bCleaningUp=false;
 	float Fade=0.f;
 	int32 DisplayedPhase=INDEX_NONE;
 	FText ErrorText;
+	FText RerollNotice;
 };
 
 /** Typed Blueprint entry points; no widget is allowed to mutate gameplay values. */

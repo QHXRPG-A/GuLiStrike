@@ -1,0 +1,179 @@
+{
+  "gpu_runtime": "see_runtime_validation_record",
+  "visual_acceptance": "pending",
+  "performance": "see_performance_record",
+  "success": true,
+  "native_build": {
+    "time": "2026-09-29T14:07:14.1195628+08:00",
+    "authorization": "\u73b0\u5728\u7f16\u8bd1\u5e76\u91cd\u8f7d\u7f16\u8f91\u5668; approved GuLiStrikeEditor scope, final GPU asset generation and validation",
+    "target": "GuLiStrikeEditor Win64 Development",
+    "engine": "D:/UnrealEngine-5.7",
+    "attempts": [
+      {
+        "reason": "Private UpdateHasGPUEmitters access; replaced by public PostEditChange",
+        "exit_code": 6,
+        "log": "native-build.log"
+      },
+      {
+        "execution_seconds": 28.54,
+        "exit_code": 0,
+        "log": "native-build-retry.log",
+        "result": "Succeeded"
+      },
+      {
+        "log": "native-build-visual-revision.log",
+        "exit_code": 0,
+        "result": "Succeeded",
+        "execution_seconds": 28.52,
+        "scope": "110 percent nozzle width, stronger blue opacity, active GPU diagnostics, float test tolerance"
+      }
+    ],
+    "build_id_match": true,
+    "modules": [
+      {
+        "path": "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.modules",
+        "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+      },
+      {
+        "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor.modules",
+        "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+      },
+      {
+        "path": "D:/UE5.7/test1/Plugins/GuLiFlightNavigation/Binaries/Win64/UnrealEditor.modules",
+        "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+      },
+      {
+        "path": "D:/UE5.7/test1/Plugins/GuLiMapAuthoring/Binaries/Win64/UnrealEditor.modules",
+        "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+      },
+      {
+        "path": "D:/UE5.7/test1/Plugins/Tripo3DUEBridge-UE5.7-Win64/Binaries/Win64/UnrealEditor.modules",
+        "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+      },
+      {
+        "path": "D:/UE5.7/test1/Plugins/UnrealMCP/Binaries/Win64/UnrealEditor.modules",
+        "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+      },
+      {
+        "path": "D:/UE5.7/test1/Plugins/UnrealMCPython/Binaries/Win64/UnrealEditor.modules",
+        "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+      },
+      {
+        "path": "D:/UE5.7/test1/Plugins/VibeUE/Binaries/Win64/UnrealEditor.modules",
+        "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+      }
+    ],
+    "editor_dirty_packages_before_shutdown": 0,
+    "editor_restarted": true,
+    "editor_pid": 18120,
+    "native_loaded_in_editor": true
+  },
+  "native_gpu_authoring_loaded": true,
+  "materials": {
+    "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid": {
+      "success": true,
+      "compiled": true,
+      "errors": "[]",
+      "rigid_function_calls": 1
+    },
+    "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid": {
+      "success": true,
+      "compiled": true,
+      "errors": "[]",
+      "rigid_function_calls": 1
+    },
+    "/Game/Commander/Units/MechanicalAnimation/M_Sweeper_Cel_Rigid": {
+      "success": true,
+      "compiled": true,
+      "errors": "[]",
+      "rigid_function_calls": 1
+    },
+    "/Game/GuLiStrike/FX/UnitFeedback/M_UnitWreckRust": {
+      "success": true,
+      "compiled": true,
+      "errors": "[]",
+      "rigid_function_calls": 1
+    },
+    "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite_Instanced": {
+      "success": true,
+      "compiled": true,
+      "errors": "[]",
+      "rigid_function_calls": 1
+    },
+    "/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody": {
+      "success": true,
+      "compiled": true,
+      "errors": "[]",
+      "rigid_function_calls": 1
+    },
+    "/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverJet": {
+      "success": true,
+      "compiled": true,
+      "errors": "[]"
+    },
+    "/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverTrail": {
+      "success": true,
+      "compiled": true,
+      "errors": "[]"
+    }
+  },
+  "custom_data_indices": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28
+  ],
+  "mesh_class": "StaticMesh",
+  "nozzles": {
+    "FL": [
+      1466.9862031936646,
+      1631.252098083496,
+      0.0
+    ],
+    "FR": [
+      1466.9862031936646,
+      -1631.252098083496,
+      0.0
+    ],
+    "RL": [
+      -1754.1141033172607,
+      1902.1273136138916,
+      0.0
+    ],
+    "RR": [
+      -1754.1141033172607,
+      -1902.1273136138916,
+      0.0
+    ]
+  },
+  "simulation_targets": {
+    "LaserBolts": "GPUComputeSim",
+    "LaserMuzzles": "GPUComputeSim"
+  },
+  "gpu_asset_ready": true,
+  "native_compile_diagnostics": "System valid=1 ready=1 gpu=1\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n"
+}

@@ -1,0 +1,958 @@
+{
+  "completed_at": "2026-09-30T00:27:20.0782924+08:00",
+  "method": "Windows Recycle Bin, per-file, non-recursive; no emptying Recycle Bin",
+  "recycled_count": 34,
+  "recycled_bytes": 3449836.0,
+  "failed_count": 0,
+  "planned_files_remaining": 0,
+  "preserved_count": 154,
+  "preserved_unchanged_count": 154,
+  "preflight_note": "首次执行在回收前因JSON日期字符串/DateTime比较中止，零文件移动；改为UTC ticks比较并重新校验大小、SHA256、路径与文件占用后执行。",
+  "outcomes": [
+    {
+      "path": "Artifacts/WM01MissileCards/build-editor-attempt1.json",
+      "bytes": 64632,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/WM01MissileCards/build-editor-attempt1.uba",
+      "bytes": 38802,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/WM01MissileCards/build-editor-attempt2.json",
+      "bytes": 36695,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/WM01MissileCards/build-editor-attempt2.uba",
+      "bytes": 6977,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/WM01MissileCards/build-preflight.json",
+      "bytes": 207,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/WM01MissileCards/DataSource/GuLiStrikeGameTexts-Texts-cells.json",
+      "bytes": 2528,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/WM01MissileCards/DataSource/GuLiStrikeRogueCards-Cards-cells.json",
+      "bytes": 5020,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/WM01MissileCards/DataSource/GuLiStrikeSecondaryWeapons-Projectiles-cells.json",
+      "bytes": 925,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/WM01MissileCards/DataSource/GuLiStrikeVfx-Effects-cells.json",
+      "bytes": 2009,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/Reroll/build-editor-attempt1.json",
+      "bytes": 48732,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/Reroll/build-editor-attempt1.uba",
+      "bytes": 12691,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/Reroll/editor-cleanup.json",
+      "bytes": 113,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/Reroll/editor-preflight.json",
+      "bytes": 1154,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/Reroll/text-cells.json",
+      "bytes": 1814,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/SingleLineText/build-editor-attempt1.json",
+      "bytes": 23611,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/SingleLineText/build-editor-attempt1.uba",
+      "bytes": 4530,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/SingleLineText/build-editor-styles.json",
+      "bytes": 36069,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/SingleLineText/build-editor-styles.uba",
+      "bytes": 4033,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/SingleLineText/editor-idle.json",
+      "bytes": 782,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/SingleLineText/editor-launch.json",
+      "bytes": 155,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/SingleLineText/editor-launch2.json",
+      "bytes": 177,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/SingleLineText/editor-launch3.json",
+      "bytes": 169,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/SingleLineText/editor-ready.json",
+      "bytes": 600,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/SingleLineText/style-build-preflight.json",
+      "bytes": 118,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/SingleLineText/widget-before.json",
+      "bytes": 4361,
+      "status": "recycled"
+    },
+    {
+      "path": "Artifacts/RogueCards/SingleLineText/editor-recovery.log",
+      "bytes": 2986544,
+      "status": "recycled"
+    },
+    {
+      "path": "Scripts/Cards/__pycache__/author_rogue_card_entry.cpython-313.pyc",
+      "bytes": 22945,
+      "status": "recycled"
+    },
+    {
+      "path": "Scripts/Cards/__pycache__/card_artwork_config.cpython-311.pyc",
+      "bytes": 19734,
+      "status": "recycled"
+    },
+    {
+      "path": "Scripts/Cards/__pycache__/card_presentation_size.cpython-311.pyc",
+      "bytes": 13566,
+      "status": "recycled"
+    },
+    {
+      "path": "Scripts/Cards/__pycache__/card_reveal_graph.cpython-311.pyc",
+      "bytes": 17245,
+      "status": "recycled"
+    },
+    {
+      "path": "Scripts/Cards/__pycache__/card_rich_text.cpython-311.pyc",
+      "bytes": 17586,
+      "status": "recycled"
+    },
+    {
+      "path": "Scripts/Cards/__pycache__/prepare_rogue_card_reroll.cpython-313.pyc",
+      "bytes": 8467,
+      "status": "recycled"
+    },
+    {
+      "path": "Tools/DataPipeline/__pycache__/author_wm01_missile_cards.cpython-313.pyc",
+      "bytes": 9275,
+      "status": "recycled"
+    },
+    {
+      "path": "Tools/DataPipeline/__pycache__/export_data_from_excel.cpython-313.pyc",
+      "bytes": 57570,
+      "status": "recycled"
+    }
+  ],
+  "preserved_checks": [
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\SingleLineText\\build-editor-attempt1.log",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\SingleLineText\\build-editor-buildids.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\SingleLineText\\build-editor-result.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\SingleLineText\\build-editor-styles-buildids.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\SingleLineText\\build-editor-styles-result.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\SingleLineText\\build-editor-styles.log",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\SingleLineText\\editor-authoring.log",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\SingleLineText\\editor-preflight.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\SingleLineText\\editor-ready2.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\SingleLineText\\static-checks.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\SingleLineText\\style-source.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\SingleLineText\\text-source.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\SingleLineText\\ue-readback.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\Reroll\\build-editor-attempt1.log",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\Reroll\\build-editor-buildids.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\Reroll\\build-editor-result.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\Reroll\\data-readback.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\Reroll\\scene-readback.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\RogueCards\\Reroll\\text-source.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01NameMigration\\applied.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01NameMigration\\audit.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\build-editor-attempt1.log",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\build-editor-attempt2.log",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\build-editor-result.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\build-editor-buildids.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\build-editor-recovery.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Artifacts\\WM01MissileCards\\pipeline-validation.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v3\\README.md",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v3\\RainSalvo.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v3\\Prompts\\RainSalvo.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v3\\generation-requests.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v3\\generation-manifest.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v2\\README.md",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v2\\RainSalvo.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v2\\Prompts\\RainSalvo.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v2\\Prompts\\MissilePod.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v2\\MissilePod.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v2\\generation-requests.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v2\\generation-manifest.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v1\\RainSalvo.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v1\\MissilePod.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v1\\generation-requests.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v1\\generation-manifest.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v1\\Prompts\\RainSalvo.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Review_v1\\Prompts\\MissilePod.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\ue-import.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\RainSalvo_Outpaint.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\RainSalvo_Layers.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\ue-import.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\remaining-requests.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\registration-review.html",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\RainSalvo_Remaining.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\RainSalvo_6_Margin.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\RainSalvo_6.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\RainSalvo_5.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\RainSalvo_4.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\RainSalvo_3.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\RainSalvo_2.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\RainSalvo_1.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v1\\RainSalvo_Layers.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v2\\RainSalvo_Layers.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\Prompts\\RainSalvo_Outpaint.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\Prompts\\RainSalvo_Layers.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\Prompts\\MissilePod_Outpaint.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\Prompts\\MissilePod_Layers.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\RainSalvo_Remaining.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\RainSalvo_6_Margin.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\RainSalvo_6.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\RainSalvo_5.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\RainSalvo_4.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\RainSalvo_3.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\RainSalvo_2.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\RainSalvo_1.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\MissilePod_Remaining.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\MissilePod_6_Margin.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\MissilePod_6.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\MissilePod_5.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\MissilePod_4.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\MissilePod_3.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Prompts\\MissilePod_2.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v2\\Prompts\\RainSalvo_Layers.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\Previews\\RainSalvo-center.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\Previews\\MissilePod-center.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v2\\Prompts\\MissilePod_Layers.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\outpaint-requests.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\MissilePod_Outpaint.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\MissilePod_Layers.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\layer-requests.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\import-script-original.py",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v3\\generation-manifest.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v2\\MissilePod_Layers.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v2\\generation-requests.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v2\\generation-manifest.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v1\\generation-requests.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v1\\generation-manifest.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v1\\Prompts\\MissilePod_Layers.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v1\\MissilePod_Layers.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\MissilePod_3.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v1\\Prompts\\RainSalvo_Layers.txt",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\MissilePod_2.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\generation-requests.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\border-requests.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\generation-manifest.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\art-decisions.md",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\MissilePod_6.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\MissilePod_5.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\MissilePod_4.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\MissilePod_Remaining.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\output-sources.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\MissilePod_6_Margin.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\capture-report.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-center.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-down.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-upper-right.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-upper-left.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-up.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-right.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-registered-center.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-margin-upper-right.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-margin-upper-left.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-margin-lower-right.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-margin-lower-left.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-margin-center.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-lower-right.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-lower-left.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-left.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-down.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\RainSalvo-center.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-upper-right.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-upper-left.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-up.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-right.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-registered-center.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-margin-upper-right.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-margin-upper-left.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-margin-lower-right.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-margin-lower-left.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-margin-center.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-lower-right.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-lower-left.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\WM01MissileCards\\Production_v4\\Previews\\MissilePod-left.png",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Excel\\GuLiStrikeGameTexts.xlsx",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Excel\\GuLiStrikeRogueCardUI.xlsx",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\data\\Excel\\GuLiStrikeRogueCards.xlsx",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Cards\\apply_single_line_card_text.py",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Cards\\card_rich_text.py",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Cards\\prepare_rogue_card_reroll.py",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Tools\\DataPipeline\\author_wm01_missile_cards.py",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Tools\\DataPipeline\\author_rogue_card_text.py",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Tools\\DataPipeline\\author_rogue_card_styles.py",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Cards\\GuLiRogueCardPresentation.cpp",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Data\\Generated\\GuLiStrikeRogueCardUITableRows.h",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Data\\Json\\DT_GuLiStrikeRogueCardUI_TextStyles.json",
+      "exists": true,
+      "hash_unchanged": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Tools\\DataPipeline\\__pycache__\\author_wm01_missile_v3.cpython-313.pyc",
+      "exists": true,
+      "hash_unchanged": true
+    }
+  ],
+  "current_editor_pid": [
+    41844
+  ]
+}

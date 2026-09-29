@@ -1,0 +1,85 @@
+{
+  "success": true,
+  "runtime_verified": false,
+  "runtime_population": 500,
+  "runtime_render_cost_ms": null,
+  "maximum_camera_arm_cm": 36000,
+  "actors": [
+    {
+      "label": "MassRigid_WarMachine",
+      "instances": 8,
+      "custom_floats": 23,
+      "cull_distances": [
+        0,
+        0
+      ],
+      "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Actor_0.InstancedStaticMesh"
+    },
+    {
+      "label": "MassRigid_Sweeper",
+      "instances": 8,
+      "custom_floats": 23,
+      "cull_distances": [
+        0,
+        0
+      ],
+      "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Actor_1.InstancedStaticMesh"
+    },
+    {
+      "label": "MassRigid_Entry",
+      "position_cm": [
+        8000.0,
+        3000.0,
+        0.0
+      ],
+      "text": "WPO验收样本：重防号10分区、扫荡者6分区；八列姿态涵盖回正、左右转向、高低目标、5/15度盘倾斜、左右35cm后坐。样本仅编辑器显示，真实PIE继续红蓝混编500单位。新C++需编译后验收。"
+    },
+    {
+      "label": "MassRigid_190m",
+      "position_cm": [
+        27000.0,
+        8000.0,
+        0.0
+      ],
+      "text": "190米观察点：对照210米与360米；目标不能因距离消失。"
+    },
+    {
+      "label": "MassRigid_210m",
+      "position_cm": [
+        29000.0,
+        8000.0,
+        0.0
+      ],
+      "text": "210米观察点：跨越旧200米阈值，主体/传送替身/寿命内残骸持续显示。"
+    },
+    {
+      "label": "MassRigid_MaxView",
+      "position_cm": [
+        44000.0,
+        8000.0,
+        0.0
+      ],
+      "text": "最大指挥视距：当前相机最大臂长36000cm。实机记录实例数量、Draw、GPU ms、Game ms；独立特效/UI可按自身距离预算关闭。"
+    },
+    {
+      "label": "MassRigid_RuntimeChecks",
+      "position_cm": [
+        8000.0,
+        2000.0,
+        0.0
+      ],
+      "text": "编译后PIE：移动/停止/原地转向/高低目标/连续射击/移速升级/传送/死亡/新生成与混编槽复用。依次执行Presentation.Get、正值Set拒绝、Reset、批次重建；确认两个阵营本体Cull=0。"
+    },
+    {
+      "label": "MassRigid_CameraDistance",
+      "position_cm": [
+        8000.0,
+        1000.0,
+        0.0
+      ],
+      "text": "指挥官距离采样（需编译新C++）：左上FPS下方显示离地高度和画面中心地面距离，单位米、一位小数，10Hz刷新。缩放、平移至不同高度地形，对照读数与FPS；镜头正下方/中心无地形时分别显示无地形。记录190m/210m/最大镜头的读数、实例数及Game/Draw/GPU ms，切换角色后距离栏应消失。"
+    }
+  ],
+  "bake_validation": "<Struct 'GuLiResourceBakeResult' (0x00000177C8AD1BC0) {success: True, message: \"Resource authoring source and baked runtime definition are current.\", issues: , source_hash: \"5d327daef9821399e54956efbe50c629290d042a\", layout_hash: \"61a8ab9f86f2f37336d20e11572540739258fa9e\", territory_count: 81, cluster_count: 240, node_count: 6240, initial_soldier_count: 500, validated_initial_soldier_count: 500}>",
+  "saved_map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype"
+}

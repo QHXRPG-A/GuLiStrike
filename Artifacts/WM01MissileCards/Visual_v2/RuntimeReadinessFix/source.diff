@@ -1,0 +1,63 @@
+--- Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.cpp before
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.cpp after
+@@ -79,6 +79,15 @@
+ 		for (int32 Q = 0; Q < 3; ++Q)
+ 		{
+ 			Systems[Q] = GuLiVfx::Load<UNiagaraSystem>(this, Ids[Q]);
++#if WITH_EDITOR
++			// UE can defer compilation until the first component activation. We gate
++			// component creation on readiness, so service that request here instead
++			// of waiting forever for an activation that cannot happen. Match the
++			// Niagara component's non-blocking compile path; keep legacy visuals
++			// while VM/GPU work is pending, without forcing a recompile every retry.
++			if (Systems[Q] && Systems[Q]->HasOutstandingCompilationRequests(true))
++				Systems[Q]->PollForCompilationComplete();
++#endif
+ 			const FNiagaraVariable Contract(FNiagaraTypeDefinition::GetIntDef(), TEXT("User.MissileContractVersion"));
+ 			bResourcesReady &= Systems[Q] && Systems[Q]->HasAnyGPUEmitters() && Systems[Q]->IsReadyToRun()
+ 				&& Systems[Q]->GetExposedParameters().GetParameterValueOrDefault<int32>(Contract, 0) == 2;
+--- Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectAuthoringLibrary.cpp before
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectAuthoringLibrary.cpp after
+@@ -433,6 +433,8 @@
+ 		return TEXT("Unexpected hover system");
+ 	FString Result = FString::Printf(TEXT("System valid=%d ready=%d gpu=%d\n"),
+ 		System->IsValid(), System->IsReadyToRun(), System->HasAnyGPUEmitters());
++	Result += FString::Printf(TEXT("Editor needs_compile=%d outstanding_including_gpu=%d\n"),
++		System->NeedsRequestCompile(), System->HasOutstandingCompilationRequests(true));
+ 	// Ignore template versions and removed emitters retained by editor undo history.
+ 	TArray<UNiagaraScript*> Scripts { System->GetSystemSpawnScript(), System->GetSystemUpdateScript() };
+ 	for (const auto& Handle : System->GetEmitterHandles())
+--- Scripts/inspect_wm01_missile_cluster.py before
++++ Scripts/inspect_wm01_missile_cluster.py after
+@@ -12,7 +12,7 @@
+ SP = unreal.NiagaraScratchPadService
+ LIB = unreal.EditorAssetLibrary
+ report = {'success':False,'scope':'saved asset readback; no PIE or performance validation',
+-          'systems':[],'materials':[]}
++          'structure_success':False,'resources_ready':False,'systems':[],'materials':[]}
+ 
+ try:
+     assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
+@@ -29,6 +29,11 @@
+                    'diagnostics':unreal.GuLiCombatEffectAuthoringLibrary.get_war_machine_hover_compile_diagnostics(system),
+                    'emitters':[]}
+             report['systems'].append(row)
++            # A deferred/absent GPU shader can report no compile errors. It is
++            # still unusable by the runtime readiness gate, so report it apart
++            # from the persisted graph/parameter validation below.
++            row['runtime_ready'] = ('System valid=1 ready=1 gpu=1' in row['diagnostics']
++                and row['diagnostics'].count('GPU finished=1 complete=1') == (3 if lanes else 2))
+             assert row['visual_revision'].startswith('2;'), row
+             assert 'VM ERROR:' not in row['diagnostics'] and 'GPU ERROR:' not in row['diagnostics']
+             for emitter in ['Body','Flame']+(['History'] if lanes else []):
+@@ -72,6 +77,10 @@
+     definition=unreal.load_asset('/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile')
+     report['production_cluster_enabled']=bool(definition.get_editor_property('use_missile_cluster_rendering'))
+     assert not report['production_cluster_enabled']
++    report['structure_success']=True
++    report['resources_ready']=all(row['runtime_ready'] for row in report['systems'])
++    assert report['resources_ready'], 'Saved structure passed, but Niagara resources are not ready: '+', '.join(
++        row['path'] for row in report['systems'] if not row['runtime_ready'])
+     report['success']=True
+ except Exception:
+     report['error']=traceback.format_exc()

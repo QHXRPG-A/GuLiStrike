@@ -156,6 +156,8 @@ namespace GuLiCommanderMassPrivate
 		FVector Velocity = FVector::ZeroVector;
 		double LastMovementUpdateSimulationSeconds = 0.0;
 		float FacingYawDegrees = 0.0f;
+		FGuLiMechanicalAnimationState MechanicalPose;
+		uint8 NextMechanicalMuzzle = 0;
 		float Health = 100.0f;
 		float MaxHealth = 100.0f;
 		float Defense = 0.0f;
@@ -5234,6 +5236,13 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 				return;
 			}
 			Pose.ActiveOrderId = Soldier.ActiveOrderId;
+			Pose.UpperYaw = FRotator::CompressAxisToShort(Soldier.MechanicalPose.bInitialized
+				? Soldier.MechanicalPose.UpperYawDegrees : Soldier.FacingYawDegrees);
+			Pose.LeftGunPitch = static_cast<int16>(FMath::RoundToInt(Soldier.MechanicalPose.GunPitchDegrees[0] * 100.0f));
+			Pose.RightGunPitch = static_cast<int16>(FMath::RoundToInt(Soldier.MechanicalPose.GunPitchDegrees[1] * 100.0f));
+			Pose.HoverBlendStartMilliseconds = Soldier.MechanicalPose.HoverBlendStartMilliseconds;
+			Pose.HoverBlendFromWeight = Soldier.MechanicalPose.HoverBlendFromWeight;
+			Pose.bHoverIdleTarget = Soldier.MechanicalPose.bHoverIdleTarget;
 			Pose.State = Soldier.IsAlive()
 				? (Soldier.ActiveOrderId != 0u
 					? EGuLiSoldierPoseState::Moving
@@ -5399,6 +5408,51 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 		});
 	}
 	// Do not hold Mass fragment references here: death may change an entity's archetype.
+	// Mechanical aim belongs to a shared data-only animation model, never a skeletal component.
+	const auto* AnimationData = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+	// Evaluate every source/target at the same simulation time before calculating aim.
+	for (auto& Soldier : AuthorityState->Soldiers)
+	{
+		const auto* Definition = AnimationData ? AnimationData->FindSoldierDefinition(Soldier.UnitTypeId) : nullptr;
+		if (Soldier.CanAct() && Definition)
+			GuLiMechanicalAnimation::StepHover(Definition->MechanicalAnimation, Soldier.SoldierId.Value,
+				Soldier.Velocity.Size2D(), GuLiCommanderSimulationTiming::StepSeconds,
+				AuthorityState->SimulationSeconds, Soldier.MechanicalPose);
+	}
+	for (auto& Soldier : AuthorityState->Soldiers)
+	{
+		const auto* Definition = AnimationData ? AnimationData->FindSoldierDefinition(Soldier.UnitTypeId) : nullptr;
+		if (!Soldier.CanAct() || !Definition || !Definition->MechanicalAnimation.IsEnabled()) continue;
+		const auto& Config = Definition->MechanicalAnimation;
+		FVector TargetPosition;
+		const FVector* AimTarget = nullptr;
+		const auto* Weapon = Soldier.Weapons.FindByPredicate([](const auto& W) { return W.SlotId == TEXT("BasicAttack"); });
+		const int32* TargetIndex = Weapon ? AuthorityState->SoldierIndexById.Find(Weapon->Attack.TargetId.Value) : nullptr;
+		if (TargetIndex && AuthorityState->Soldiers[*TargetIndex].IsPresent())
+		{
+			const auto& Target = AuthorityState->Soldiers[*TargetIndex];
+			const FVector* Offset = AnimationData->FindAimOffset(Target.UnitTypeId);
+			const auto* TargetDefinition = AnimationData->FindSoldierDefinition(Target.UnitTypeId);
+			const FVector LocalAim = TargetDefinition ? GuLiMechanicalAnimation::HoverBodyTransform(
+				TargetDefinition->MechanicalAnimation, Target.MechanicalPose).TransformPosition(Offset ? *Offset : FVector::ZeroVector)
+				: (Offset ? *Offset : FVector::ZeroVector);
+			TargetPosition = Target.Location + FRotator(0, Target.FacingYawDegrees, 0).RotateVector(LocalAim);
+			AimTarget = &TargetPosition;
+		}
+		const float Dt = GuLiCommanderSimulationTiming::StepSeconds;
+		if (Config.Model == EGuLiMechanicalModel::WarMachine && AimTarget && Soldier.Velocity.SizeSquared2D() < 1)
+		{
+			Soldier.FacingYawDegrees = FMath::FixedTurn(Soldier.FacingYawDegrees,
+				(*AimTarget - Soldier.Location).Rotation().Yaw, Config.LowerTurnRate * Dt);
+			if (auto* Mass = AuthorityState->MassEntitySubsystem.Get())
+				if (Mass->GetEntityManager().IsEntityValid(Soldier.Entity))
+					Mass->GetMutableEntityManager().GetFragmentDataChecked<FTransformFragment>(Soldier.Entity)
+						.SetTransform(FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location));
+		}
+		GuLiMechanicalAnimation::StepAim(Config, FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location),
+			AimTarget, GetUnitMovementSpeed(Soldier.Team, Soldier.UnitTypeId), Dt, Soldier.MechanicalPose);
+	}
+
 	// All shots were accepted against one alive-state snapshot, permitting simultaneous kills.
 	if (UGuLiCombatEffectRuntimeSubsystem* Effects = GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>())
 	{
@@ -5425,6 +5479,27 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 			Request.ExecutorId = Event.ExecutorId; Request.UnitTypeId = Event.SourceUnitTypeId;
 			Request.SourceTransform = FTransform(FRotator(0, Source.FacingYawDegrees, 0), Source.Location);
 			Request.TargetLocation = Target.Location; Request.ShotOrdinal = Event.ShotOrdinal;
+			if (const auto* Definition = AnimationData ? AnimationData->FindSoldierDefinition(Source.UnitTypeId) : nullptr;
+				Definition && Definition->MechanicalAnimation.IsEnabled() && Event.SourceSlotId == TEXT("BasicAttack"))
+			{
+				Request.MechanicalPose = Source.MechanicalPose;
+				Request.bHasMechanicalPose = true;
+				Request.MechanicalMuzzleIndex = Source.NextMechanicalMuzzle;
+				Request.MechanicalPoseTimeSeconds = static_cast<float>(AuthorityState->SimulationSeconds);
+				const FGuLiSoldierId SourceId = Source.SoldierId;
+				Request.OnShotAccepted = [this, SourceId](uint8 Side, float Now)
+				{
+					if (!AuthorityState) return;
+					const int32* Index = AuthorityState->SoldierIndexById.Find(SourceId.Value);
+					if (!Index) return;
+					auto& Unit = AuthorityState->Soldiers[*Index];
+					const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+					const auto* Def = Data ? Data->FindSoldierDefinition(Unit.UnitTypeId) : nullptr;
+					if (!Def) return;
+					GuLiMechanicalAnimation::AcceptShot(Def->MechanicalAnimation, Unit.MechanicalPose, Side, Now);
+					Unit.NextMechanicalMuzzle = Def->MechanicalAnimation.Model == EGuLiMechanicalModel::WarMachine ? 1-Side : 0;
+				};
+			}
 			if (Event.ExecutorId == TEXT("GroundMachineGun"))
 			{
 				Request.Motion.Speed = Event.ProjectileSpeedCentimetersPerSecond;
@@ -5981,7 +6056,7 @@ void UGuLiBattleAuthoritySubsystem::ExecuteSelectedUnitSkills(AGuLiBattlePlayerS
 			Result.Code = EGuLiActiveSkillResultCode::Ineligible; continue;
 		}
 		auto& Soldier = AuthorityState->Soldiers[*Index];
-		const auto* Definition = Catalog.FindUnitSkill(Soldier.UnitTypeId);
+		const auto* Definition = Catalog.FindAvailableUnitSkill(*GetWorld(),Soldier.Team,Soldier.UnitTypeId);
 		FGuLiUnitSkillCaster Caster;
 		Caster.bEligible = Soldier.Team == PlayerState.GetTeam() && Soldier.CanAct() && Soldier.IsPresent();
 		Caster.bHasGroundPoint = bHasGroundPoint;
@@ -5995,6 +6070,8 @@ void UGuLiBattleAuthoritySubsystem::ExecuteSelectedUnitSkills(AGuLiBattlePlayerS
 		auto& Context = Caster.Context;
 		Context.Commander = &PlayerState; Context.SoldierId = Id; Context.Source = MakeSoldierTargetHandle(Id);
 		Context.SourceTransform = FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location);
+		Context.MechanicalPose = Soldier.MechanicalPose;
+		Context.bHasMechanicalPose = Soldier.MechanicalPose.bInitialized;
 		Context.GroundPoint = GroundPoint; Context.RequestId = RequestId; Context.SkillId = Definition ? Definition->SkillId : NAME_None;
 		Context.Level = Soldier.ActiveSkill.Level;
 		Context.UnitTypeId = Soldier.UnitTypeId;
@@ -6010,7 +6087,7 @@ bool UGuLiBattleAuthoritySubsystem::QueryUnitSkillRuntime(FGuLiSoldierId Soldier
 	const int32* Index = AuthorityState ? AuthorityState->SoldierIndexById.Find(SoldierId.Value) : nullptr;
 	if (!Index) return false;
 	const auto& Soldier = AuthorityState->Soldiers[*Index];
-	const auto* Definition = Catalog.FindUnitSkill(Soldier.UnitTypeId);
+	const auto* Definition = Catalog.FindAvailableUnitSkill(*GetWorld(),Soldier.Team,Soldier.UnitTypeId);
 	if (!Definition) return false;
 	OutRuntime = Soldier.ActiveSkill;
 	OutRuntime.SkillId = Definition->SkillId;

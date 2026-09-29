@@ -125,8 +125,8 @@ bool FGuLiCommanderPresentationPerformanceRegistryTest::RunTest(const FString& P
 
 	const FGuLiCommanderPresentationPerformanceSettings Defaults =
 		FGuLiCommanderPresentationPerformanceSettings::CompiledDefaults();
-	TestEqual(TEXT("Unit meshes hard-cull at 1000 metres by default"),
-		Defaults.UnitCullDistanceCentimeters, 100000);
+	TestEqual(TEXT("Unit meshes never distance-cull by default"),
+		Defaults.UnitCullDistanceCentimeters, 0);
 	TestEqual(TEXT("Rings do not distance-cull by default"),
 		Defaults.RingCullDistanceCentimeters, 0);
 	TestFalse(TEXT("Unit shadows default off"), Defaults.bUnitCastShadow);
@@ -158,7 +158,7 @@ bool FGuLiCommanderPresentationPerformanceRegistryTest::RunTest(const FString& P
 	TestEqual(TEXT("Malformed and out-of-range Config values are diagnosed"),
 		ConfigErrors.Num(), 3);
 	TestEqual(TEXT("Invalid Unit Config falls back without clamping"),
-		Registry.GetBaselineSettings().UnitCullDistanceCentimeters, 100000);
+		Registry.GetBaselineSettings().UnitCullDistanceCentimeters, 0);
 	TestEqual(TEXT("Invalid Ring Config falls back without clamping"),
 		Registry.GetBaselineSettings().RingCullDistanceCentimeters, 0);
 	TestTrue(TEXT("An independently valid Config flag remains effective"),
@@ -174,11 +174,12 @@ bool FGuLiCommanderPresentationPerformanceRegistryTest::RunTest(const FString& P
 		EGuLiCommanderPresentationSettingSource::CppDefault);
 
 	FGuLiCommanderPresentationRawConfigSettings ExplicitDefaultConfig;
-	ExplicitDefaultConfig.UnitCullDistanceCentimeters = FString(TEXT("100000"));
+	ExplicitDefaultConfig.UnitCullDistanceCentimeters = FString(TEXT("20000"));
 	ExplicitDefaultConfig.RingCullDistanceCentimeters = FString(TEXT("0"));
 	ExplicitDefaultConfig.bUnitCastShadow = FString(TEXT("false"));
 	Registry.InitializeFromRawConfig(ExplicitDefaultConfig, ConfigErrors);
 	TestTrue(TEXT("Explicit valid defaults produce no Config errors"), ConfigErrors.IsEmpty());
+	TestEqual(TEXT("Legacy 200 metre setting migrates to disabled"), Registry.GetBaselineSettings().UnitCullDistanceCentimeters, 0);
 	TestEqual(TEXT("An explicitly configured default is still sourced from Config"),
 		Registry.Get(TEXT("unit_cull_distance_cm")).Source,
 		EGuLiCommanderPresentationSettingSource::Config);
@@ -199,13 +200,11 @@ bool FGuLiCommanderPresentationPerformanceRegistryTest::RunTest(const FString& P
 
 	const FGuLiCommanderPresentationSettingResult SetCull =
 		Registry.Set(TEXT("UNIT_CULL_DISTANCE_CM"), TEXT("250000"));
-	TestTrue(TEXT("A valid local cull override is accepted"), SetCull.bSuccess);
+	TestFalse(TEXT("A positive local cull override is rejected"), SetCull.bSuccess);
 	TestEqual(TEXT("The prior effective value is preserved in the result"),
-		SetCull.PreviousEffective, FString(TEXT("100000")));
-	TestEqual(TEXT("The local cull override becomes effective"),
-		SetCull.Effective, FString(TEXT("250000")));
-	TestEqual(TEXT("The override source is explicit"), SetCull.Source,
-		EGuLiCommanderPresentationSettingSource::LocalOverride);
+		SetCull.PreviousEffective, FString(TEXT("0")));
+	TestEqual(TEXT("Rejected override keeps distance culling disabled"),
+		Registry.GetEffectiveSettings().UnitCullDistanceCentimeters, 0);
 
 	TestFalse(TEXT("Missing numeric text is rejected"),
 		Registry.Set(TEXT("unit_cull_distance_cm"), TEXT("")).bSuccess);
@@ -219,7 +218,7 @@ bool FGuLiCommanderPresentationPerformanceRegistryTest::RunTest(const FString& P
 		Registry.Set(TEXT("unit_cull_distance_cm"), TEXT("100cm")).bSuccess);
 	TestFalse(TEXT("Whitespace is rejected rather than silently trimmed"),
 		Registry.Set(TEXT("unit_cull_distance_cm"), TEXT(" 100")).bSuccess);
-	TestFalse(TEXT("Zero is invalid for Unit culling"),
+	TestTrue(TEXT("Zero explicitly disables Unit culling"),
 		Registry.Set(TEXT("unit_cull_distance_cm"), TEXT("0")).bSuccess);
 	TestTrue(TEXT("Zero explicitly disables Ring culling"),
 		Registry.Set(TEXT("ring_cull_distance_cm"), TEXT("0")).bSuccess);
@@ -237,7 +236,7 @@ bool FGuLiCommanderPresentationPerformanceRegistryTest::RunTest(const FString& P
 	TestEqual(TEXT("One-key Reset returns one structured result"), ResetCull.Num(), 1);
 	TestTrue(TEXT("One-key Reset succeeds"), ResetCull[0].bSuccess);
 	TestEqual(TEXT("Reset restores the validated baseline"),
-		ResetCull[0].Effective, FString(TEXT("100000")));
+		ResetCull[0].Effective, FString(TEXT("0")));
 	TestEqual(TEXT("Reset restores the baseline source"), ResetCull[0].Source,
 		EGuLiCommanderPresentationSettingSource::Config);
 	TestEqual(TEXT("Reset all covers all six keys"), Registry.Reset(TEXT("all")).Num(), 6);
@@ -253,10 +252,10 @@ bool FGuLiCommanderPresentationPerformanceRegistryTest::RunTest(const FString& P
 	int32 StartCullDistance = INDEX_NONE;
 	int32 EndCullDistance = INDEX_NONE;
 	ActorCDO->GetUnitInstances()->GetCullDistances(StartCullDistance, EndCullDistance);
-	TestEqual(TEXT("The native Unit ISM starts its hard cull at the default boundary"),
-		StartCullDistance, 100000);
-	TestEqual(TEXT("The native Unit ISM ends its hard cull at the same boundary"),
-		EndCullDistance, 100000);
+	TestEqual(TEXT("The native Unit ISM has no start cull"), StartCullDistance, 0);
+	TestEqual(TEXT("The native Unit ISM has no end cull"), EndCullDistance, 0);
+	TestTrue(TEXT("Native units bypass distance volumes"), ActorCDO->GetUnitInstances()->bNeverDistanceCull != 0
+		&& !ActorCDO->GetUnitInstances()->bAllowCullDistanceVolume);
 	ActorCDO->GetRingInstances()->GetCullDistances(StartCullDistance, EndCullDistance);
 	TestEqual(TEXT("The native Ring ISM has no start cull"), StartCullDistance, 0);
 	TestEqual(TEXT("The native Ring ISM has no end cull"), EndCullDistance, 0);
@@ -364,16 +363,16 @@ bool FGuLiCommanderPresentationConsoleWorldIsolationTest::RunTest(const FString&
 	{
 		TestTrue(TEXT("A valid Set command executes in the first World"), Execute(
 			TEXT("gs.Commander.Presentation.Set"),
-			{TEXT("unit_cull_distance_cm"), TEXT("250000")},
+			{TEXT("unit_cull_distance_cm"), TEXT("0")},
 			FirstWorld));
-		TestEqual(TEXT("The first World receives its local override"),
+		TestEqual(TEXT("The first World keeps distance culling disabled"),
 			FirstActor->GetEffectivePresentationPerformanceSettings()
 				.UnitCullDistanceCentimeters,
-			250000);
+			0);
 		TestEqual(TEXT("The second World does not receive the first World's override"),
 			SecondActor->GetEffectivePresentationPerformanceSettings()
 				.UnitCullDistanceCentimeters,
-			100000);
+			0);
 
 		int32 StartCullDistance = INDEX_NONE;
 		int32 EndCullDistance = INDEX_NONE;
@@ -381,20 +380,20 @@ bool FGuLiCommanderPresentationConsoleWorldIsolationTest::RunTest(const FString&
 			StartCullDistance,
 			EndCullDistance);
 		TestEqual(TEXT("The first World's component applies the override"),
-			StartCullDistance, 250000);
-		TestEqual(TEXT("The hard-cull boundary remains equal"),
-			EndCullDistance, 250000);
+			StartCullDistance, 0);
+		TestEqual(TEXT("The end-cull distance remains disabled"),
+			EndCullDistance, 0);
 
 		TestTrue(TEXT("Reset all executes in the first World"), Execute(
 			TEXT("gs.Commander.Presentation.Reset"), {TEXT("all")}, FirstWorld));
 		TestEqual(TEXT("Reset restores only the first World's baseline"),
 			FirstActor->GetEffectivePresentationPerformanceSettings()
 				.UnitCullDistanceCentimeters,
-			100000);
+			0);
 		TestEqual(TEXT("The second World remains unchanged after the first resets"),
 			SecondActor->GetEffectivePresentationPerformanceSettings()
 				.UnitCullDistanceCentimeters,
-			100000);
+			0);
 	}
 
 	FirstWorld->DestroyWorld(false);

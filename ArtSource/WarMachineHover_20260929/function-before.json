@@ -1,0 +1,147 @@
+{
+  "keys": [
+    "function",
+    "expressions",
+    "connections"
+  ],
+  "nodes": [
+    {
+      "id": "MaterialExpressionFunctionInput_000002B2C97BDF80",
+      "class": "FunctionInput",
+      "class_full": "MaterialExpressionFunctionInput",
+      "pos_x": 0,
+      "pos_y": 0,
+      "properties": {
+        "InputName": "Kind",
+        "InputType": "FunctionInput_Scalar",
+        "PreviewValue": "(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000)",
+        "bUsePreviewValueAsDefault": "False",
+        "SortPriority": "0",
+        "BlendInputRelevance": "General"
+      },
+      "is_function_input": true,
+      "input_name": "Kind",
+      "description": "",
+      "input_type": 0,
+      "input_type_name": "Scalar",
+      "sort_priority": 0,
+      "use_preview_value_as_default": false,
+      "inputs": [
+        "Preview"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionFunctionInput_000002B2C97BE100",
+      "class": "FunctionInput",
+      "class_full": "MaterialExpressionFunctionInput",
+      "pos_x": 0,
+      "pos_y": 0,
+      "properties": {
+        "InputName": "UpperPivot",
+        "InputType": "FunctionInput_Vector3",
+        "PreviewValue": "(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000)",
+        "bUsePreviewValueAsDefault": "False",
+        "SortPriority": "0",
+        "BlendInputRelevance": "General"
+      },
+      "is_function_input": true,
+      "input_name": "UpperPivot",
+      "description": "",
+      "input_type": 2,
+      "input_type_name": "Vector3",
+      "sort_priority": 0,
+      "use_preview_value_as_default": false,
+      "inputs": [
+        "Preview"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionCustom_000002B1A16D80C0",
+      "class": "Custom",
+      "class_full": "MaterialExpressionCustom",
+      "pos_x": 0,
+      "pos_y": 0,
+      "properties": {
+        "Code": "// Embedded in MF_GuLiRigidMechanical by build_mass_rigid_materials.py.\n// UV1 = pivot.xy, UV2 = pivot.z/part; all distances are authored mesh cm.\n// Pose 0..10 matches GuLiMechanicalAnimation::BuildFrame. UE pitch is +X -> +Z.\nstruct RigidMath\n{\n    float3 Pitch(float3 v, float a) { float s,c; sincos(a,s,c); return float3(c*v.x-s*v.z,v.y,s*v.x+c*v.z); }\n    float3 Yaw(float3 v, float a) { float s,c; sincos(a,s,c); return float3(c*v.x-s*v.y,s*v.x+c*v.y,v.z); }\n    float3 Axis(float3 v, float3 axis, float a) { float s,c; sincos(a,s,c); return v*c+cross(axis,v)*s+axis*dot(axis,v)*(1-c); }\n};\nRigidMath r;\nfloat3 p = Position;\nfloat3 n = LocalNormal;\nfloat3 pivot = float3(PivotXY, PivotZPart.x);\nint part = (int)round(PivotZPart.y);\nif (Kind > 0.5 && Kind < 1.5)\n{\n    if (part == 4 || part == 5) p.x -= part == 4 ? V3 : V4;\n    if (part >= 2 && part <= 5)\n    {\n        float pitch = (part == 2 || part == 4) ? V1 : V2;\n        p = pivot + r.Pitch(p-pivot, pitch); n = r.Pitch(n, pitch);\n    }\n    if (part >= 1 && part <= 5)\n    {\n        p = UpperPivot+r.Yaw(p-UpperPivot,V0); n = r.Yaw(n,V0);\n    }\n    if (part >= 6 && part <= 9)\n    {\n        float angle=length(float2(V5,V6));\n        float3 axis=float3(V5,V6,0)/max(angle,0.000001);\n        p=pivot+r.Axis(p-pivot,axis,angle); n=r.Axis(n,axis,angle);\n    }\n}\nelse if (Kind >= 1.5)\n{\n    if (part == 2) { p=pivot+r.Pitch(p-pivot,V1); n=r.Pitch(n,V1); }\n    if (part >= 6 && part <= 9)\n    {\n        float angle=part==6?V7:(part==7?V8:(part==8?V9:V10));\n        p=pivot+r.Axis(p-pivot,float3(0,1,0),angle); n=r.Axis(n,float3(0,1,0),angle);\n    }\n}\nAnimatedNormal=normalize(n);\nreturn p-Position;\n",
+        "OutputType": "CMOT_Float3",
+        "Description": "Custom",
+        "Inputs": "((InputName=\"Kind\",Input=(Expression=\"/Script/Engine.MaterialExpressionFunctionInput'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionFunctionInput_8'\")),(InputName=\"UpperPivot\",Input=(Expression=\"/Script/Engine.MaterialExpressionFunctionInput'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionFunctionInput_9'\")),(InputName=\"Position\",Input=(Expression=\"/Script/Engine.MaterialExpressionPreSkinnedPosition'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionPreSkinnedPosition_4'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(InputName=\"LocalNormal\",Input=(Expression=\"/Script/Engine.MaterialExpressionPreSkinnedNormal'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionPreSkinnedNormal_4'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(InputName=\"PivotXY\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionTextureCoordinate_8'\")),(InputName=\"PivotZPart\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionTextureCoordinate_9'\")),(InputName=\"V0\",Input=(Expression=\"/Script/Engine.MaterialExpressionPreviousFrameSwitch'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionPreviousFrameSwitch_33'\")),(InputName=\"V1\",Input=(Expression=\"/Script/Engine.MaterialExpressionPreviousFrameSwitch'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionPreviousFrameSwitch_34'\")),(InputName=\"V2\",Input=(Expression=\"/Script/Engine.MaterialExpressionPreviousFrameSwitch'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionPreviousFrameSwitch_35'\")),(InputName=\"V3\",Input=(Expression=\"/Script/Engine.MaterialExpressionPreviousFrameSwitch'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionPreviousFrameSwitch_36'\")),(InputName=\"V4\",Input=(Expression=\"/Script/Engine.MaterialExpressionPreviousFrameSwitch'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionPreviousFrameSwitch_37'\")),(InputName=\"V5\",Input=(Expression=\"/Script/Engine.MaterialExpressionPreviousFrameSwitch'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionPreviousFrameSwitch_38'\")),(InputName=\"V6\",Input=(Expression=\"/Script/Engine.MaterialExpressionPreviousFrameSwitch'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionPreviousFrameSwitch_39'\")),(InputName=\"V7\",Input=(Expression=\"/Script/Engine.MaterialExpressionPreviousFrameSwitch'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionPreviousFrameSwitch_40'\")),(InputName=\"V8\",Input=(Expression=\"/Script/Engine.MaterialExpressionPreviousFrameSwitch'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionPreviousFrameSwitch_41'\")),(InputName=\"V9\",Input=(Expression=\"/Script/Engine.MaterialExpressionPreviousFrameSwitch'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionPreviousFrameSwitch_42'\")),(InputName=\"V10\",Input=(Expression=\"/Script/Engine.MaterialExpressionPreviousFrameSwitch'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical:MaterialExpressionPreviousFrameSwitch_43'\")))",
+        "AdditionalOutputs": "((OutputName=\"AnimatedNormal\",OutputType=CMOT_Float3))",
+        "ShowCode": "False",
+        "Desc": "Rigid local offset + rotated local normal"
+      },
+      "inputs": [
+        "Kind",
+        "UpperPivot",
+        "Position",
+        "LocalNormal",
+        "PivotXY",
+        "PivotZPart",
+        "V0",
+        "V1",
+        "V2",
+        "V3",
+        "V4",
+        "V5",
+        "V6",
+        "V7",
+        "V8",
+        "V9",
+        "V10"
+      ],
+      "outputs": [
+        "return",
+        "AnimatedNormal"
+      ]
+    },
+    {
+      "id": "MaterialExpressionFunctionOutput_000002B1A16D8980",
+      "class": "FunctionOutput",
+      "class_full": "MaterialExpressionFunctionOutput",
+      "pos_x": 0,
+      "pos_y": 0,
+      "properties": {
+        "OutputName": "Offset",
+        "SortPriority": "0"
+      },
+      "is_function_output": true,
+      "output_name": "Offset",
+      "description": "",
+      "sort_priority": 0,
+      "inputs": [
+        "Input_0"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionFunctionOutput_000002B1A16D8200",
+      "class": "FunctionOutput",
+      "class_full": "MaterialExpressionFunctionOutput",
+      "pos_x": 0,
+      "pos_y": 0,
+      "properties": {
+        "OutputName": "Normal",
+        "SortPriority": "1"
+      },
+      "is_function_output": true,
+      "output_name": "Normal",
+      "description": "",
+      "sort_priority": 1,
+      "inputs": [
+        "Input_0"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    }
+  ],
+  "props_doc": "X.set_function_expression_property(function_path, expression_id, property_name, property_value) -> bool\r\nSet a property on an expression inside a Material Function's graph.\nMaps to action=\"set_function_expression_property\"\n\nLike SetExpressionProperty but operates on a UMaterialFunction.\r\n\r\nArgs:\r\n    function_path (str): Full asset path to the UMaterialFunction\r\n    expression_id (str): Expression ID\r\n    property_name (str): Property name\r\n    property_value (str): Value as string\r\n\r\nReturns:\r\n    bool: True if successful"
+}

@@ -1,0 +1,88 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "user_requested_layer_assignment": {
+    "MissilePod": "layer2 three arms; layer3 pod and fixture",
+    "RainSalvo": "layer2 blue preview missile, green +1 and own flame; no other subjects"
+  },
+  "cards": [
+    {
+      "card": "MissilePod",
+      "output": "ArtSource\\UI\\WM01MissileCards\\Production_v2\\MissilePod_Layers.png",
+      "resolution": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "a5b085e834fa13eb7516ef4f02f7e22a4f8253cd3a9de980ac18d124b649575c",
+      "raw_output_unchanged": true,
+      "prompt_utf8_sha256": "48784f56a956d80965abb918190aaa59cfefc1bb627f5c65d888bda05bc899bb",
+      "tile_alpha_range": [
+        [
+          0,
+          253
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          200,
+          254
+        ]
+      ]
+    },
+    {
+      "card": "RainSalvo",
+      "output": "ArtSource\\UI\\WM01MissileCards\\Production_v2\\RainSalvo_Layers.png",
+      "resolution": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "58f52394ccf1b92501a04b99cfcf5879acf1a343e572ca6dc96bd0c995bf360e",
+      "raw_output_unchanged": true,
+      "prompt_utf8_sha256": "2ae9d022e1e8b2516fbc9e5c21b013fdf4634ca46abfbd64828a2187541d326a",
+      "tile_alpha_range": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          195,
+          254
+        ]
+      ]
+    }
+  ],
+  "assistant_visual_review": "Requested layer reassignment present. Overscan/alignment, repeated distant missiles and opaque backing still require correction before final import.",
+  "user_layer_review": "not_yet_reviewed",
+  "ue_import": "not_imported"
+}
