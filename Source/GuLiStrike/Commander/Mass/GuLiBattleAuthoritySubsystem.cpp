@@ -92,7 +92,6 @@ namespace GuLiCommanderMassPrivate
 	constexpr float FormationArrivalToleranceCentimeters = 100.0f;
 	constexpr float TravelWeight = 0.70f;
 	constexpr float SlotCorrectionWeight = 0.30f;
-	constexpr float ManualAvoidanceStrength = 0.25f;
 	constexpr int32 MaximumFriendlyYieldUnitsPerMech = 16;
 	constexpr float GroundMechYieldQueryCellSizeCentimeters = 1000.0f;
 	constexpr float GroundMechYieldActivationPaddingCentimeters = 100.0f;
@@ -173,6 +172,7 @@ namespace GuLiCommanderMassPrivate
 		TSharedPtr<FGuLiSharedMoveIntent> MoveIntent;
 		TSharedPtr<FGuLiSharedRouteGoal> RouteGoal;
 		TSharedPtr<FGuLiSharedMoveRoute> SharedRoute;
+		FGuLiDirectMoveCheck DirectDock;
 		int32 RouteCursor = 0;
 		bool bHasDockTarget = false;
 		GuLiMoveLatency::FContext MoveTrace;
@@ -199,6 +199,7 @@ namespace GuLiCommanderMassPrivate
 		TArray<FVector> PersonalPathPoints;
 		int32 PersonalPathPointIndex = 0;
 		int32 PersonalPathRetries = 0;
+		double NextPersonalPathQuerySeconds = 0;
 		bool bHasFinalDestination = false;
 		bool bForceMovementUpdate = false;
 		FVector LastCapturedPoseLocation = FVector::ZeroVector;
@@ -229,6 +230,21 @@ namespace GuLiCommanderMassPrivate
 			return FMath::IsFinite(Health) && Health > 0.0f;
 		}
 	};
+
+	void BeginPersonalPathRecovery(FSoldierRuntime& Soldier)
+	{
+		Soldier.NavigationState = EGuLiSoldierNavigationState::PersonalPathRecovery;
+		Soldier.NoProgressSeconds = 0;
+		Soldier.BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
+		Soldier.LastProgressPathPointIndex = INDEX_NONE;
+		Soldier.PersonalPathPoints.Reset();
+		Soldier.PersonalPathPointIndex = 0;
+		Soldier.PersonalPathRetries = 0;
+		Soldier.NextPersonalPathQuerySeconds = 0;
+		Soldier.ActiveNavigation.Reset();
+		Soldier.DirectDock = {};
+		Soldier.bNavigationBudgetPending = true;
+	}
 
 	void GetNavigationRepairEscape(const FHitResult& Hit, const FVector& BodyCenter, const float Radius,
 		FVector& Normal, double& Depth)
@@ -1281,6 +1297,7 @@ namespace GuLiCommanderMassPrivate
 	{
 		OutPathPoints.Reset();
 		FPathFindingQuery Query(nullptr, NavigationData, Start.Location, Target);
+		Query.SetAllowPartialPaths(false);
 		const FPathFindingResult Result = NavigationSystem.FindPathSync(MoveTemp(Query));
 		if (!Result.IsSuccessful() || !Result.Path.IsValid() || Result.Path->IsPartial())
 		{
@@ -2593,12 +2610,14 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyMovePlans()
 				if (!Valid) { Job.Progress.Failed.Add(M.SoldierId); Job.Debug.FailedSoldierIds.Add(M.SoldierId); Job.FinishedIds.Add(M.SoldierId.Value); continue; }
 				auto& S=*Soldier; S.CommandStartLocation=S.Location; S.ActiveOrderId=Job.SharedBatchOrderId;
 				S.MoveIntent=Intent; S.RouteGoal=Intent->Goal; S.SharedRoute.Reset(); S.ActiveNavigation.Reset();
-				S.bHasDockTarget=false; S.RouteCursor=0;
+				S.bHasDockTarget=false; S.RouteCursor=0; S.DirectDock={};
 				S.FinalDestination=FNavLocation(Intent->Click); S.bHasFinalDestination=true;
 				S.bAutomaticAdvance=Job.bAutomatic; S.bAttackMoveHolding=false;
 				S.NavigationState=EGuLiSoldierNavigationState::Normal; S.NavigationFailure=EGuLiSoldierNavigationFailure::None;
-				S.PersonalPathPoints.Reset(); S.PersonalPathRetries=0; S.ConsecutiveSurfaceFailures=S.TotalSurfaceFailures=0;
+				S.PersonalPathPoints.Reset(); S.PersonalPathPointIndex=0; S.PersonalPathRetries=0; S.NextPersonalPathQuerySeconds=0;
+				S.ConsecutiveSurfaceFailures=S.TotalSurfaceFailures=0;
 				S.NoProgressSeconds=0; S.BestWaypointDistanceCentimeters=TNumericLimits<float>::Max();
+				S.LastProgressPathPointIndex=INDEX_NONE; S.bNavigationBudgetPending=false;
 				S.bForceMovementUpdate=true; S.LastMovementUpdateSimulationSeconds=A.SimulationSeconds;
 				S.CurrentNavigationWaypoint=Intent->Click; S.CommandAcceptedAt=FPlatformTime::Seconds();
 				S.DirectionAppliedAt=S.FirstDisplacementAt=0; S.MoveTrace=Trace; ++S.StateRevision;
@@ -2680,8 +2699,51 @@ void UGuLiBattleAuthoritySubsystem::TickSharedNavigation(int32 Category)
 		auto& Cursor=A.SharedDiscoveryCursor[Category]; Cursor%=A.Soldiers.Num(); auto& S=A.Soldiers[Cursor++]; --A.SharedDiscoveryRemaining[Category];
 		if (!S.MoveIntent || !S.ActiveOrderId || !S.CanAct() || S.bAutomaticAdvance!=(Category==1)
 			|| !Data->IsNodeRefValid(S.LastValidNavLocation.NodeRef)) continue;
-		// All slots retain the click's shared corridor. Final spreading must not create one A* per soldier.
-		if (S.bHasDockTarget && S.MoveIntent->InDockingArea(S.Location)) continue;
+		if (S.bAttackMoveHolding) continue;
+		if (S.NavigationState==EGuLiSoldierNavigationState::PersonalPathRecovery)
+		{
+			if (!S.bHasDockTarget) continue;
+			if (S.ActiveNavigation && S.ActiveNavigation->Data.Get()==Data
+				&& S.ActiveNavigation->Path->IsUpToDate()) continue;
+			S.ActiveNavigation.Reset(); S.PersonalPathPoints.Reset();
+			if (A.SimulationSeconds<S.NextPersonalPathQuerySeconds) continue;
+			if (!Budget.TakePath()) { S.bNavigationBudgetPending=true; continue; }
+			bool bCompletePath;
+			{
+				TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_RecoveryFindPath);
+				FGuLiNavigationWorkBudget::FQueryScope QueryTimer(Budget);
+				bCompletePath=BuildCompletePathQuiet(*System,*Data,S.LastValidNavLocation,S.FinalDestination.Location,
+					S.PersonalPathPoints,&S.ActiveNavigation,A.NavigationGeneration);
+			}
+			++A.PersonalPathQueries; ++S.PersonalPathRetries;
+			S.NextPersonalPathQuerySeconds=A.SimulationSeconds+PersonalRecoveryRetrySeconds;
+			S.bNavigationBudgetPending=false;
+			if (bCompletePath && S.PersonalPathPoints.Num()>=2)
+			{
+				S.PersonalPathPointIndex=1; S.LastProgressPathPointIndex=INDEX_NONE;
+				S.NoProgressSeconds=0; S.BestWaypointDistanceCentimeters=TNumericLimits<float>::Max();
+				S.ConsecutiveSurfaceFailures=0; S.NavigationFailure=EGuLiSoldierNavigationFailure::None;
+				S.bForceMovementUpdate=true;
+			}
+			else
+			{ S.ActiveNavigation.Reset(); S.PersonalPathPoints.Reset(); S.NavigationFailure=EGuLiSoldierNavigationFailure::PersonalPathFailed; }
+			continue;
+		}
+		// Nearby is not the same as reachable: keep the shared corridor until the exact
+		// current foot position has a clear CommanderSoldier ray to its fixed slot.
+		if (S.bHasDockTarget && S.NavigationState==EGuLiSoldierNavigationState::Normal
+			&& S.MoveIntent->InDockingArea(S.Location)
+			&& S.DirectDock.Update(*Data,A.NavigationGeneration,S.LastValidNavLocation,S.FinalDestination,Budget,this))
+		{
+			if (S.DirectDock.bClear) continue;
+			if (S.SharedRoute && S.SharedRoute->State==FGuLiSharedMoveRoute::EState::Ready
+				&& S.SharedRoute->Navigation.Path->IsUpToDate()
+				&& !S.SharedRoute->Navigation.Nodes.IsEmpty()
+				&& S.SharedRoute->Navigation.Nodes.Last()==S.LastValidNavLocation.NodeRef)
+			{ BeginPersonalPathRecovery(S); continue; }
+		}
+		if (S.bHasDockTarget && S.SharedRoute && S.SharedRoute->State==FGuLiSharedMoveRoute::EState::Unavailable)
+		{ BeginPersonalPathRecovery(S); continue; }
 		if (S.SharedRoute && S.SharedRoute->Goal==S.RouteGoal && S.SharedRoute->State==FGuLiSharedMoveRoute::EState::Ready
 			&& S.SharedRoute->Navigation.Data.Get()==Data && S.SharedRoute->Navigation.Path->IsUpToDate()
 			&& S.SharedRoute->PolygonIndex.Contains(S.LastValidNavLocation.NodeRef)) { S.SharedRoute->LastUsed=FPlatformTime::Seconds(); continue; }
@@ -2776,6 +2838,8 @@ void UGuLiBattleAuthoritySubsystem::RefreshSoldierNavigationState(FGuLiSoldierId
 	if (Index && (!Soldier->ActiveOrderId || !Soldier->CanAct()))
 	{
 		auto& S=AuthorityState->Soldiers[*Index]; S.MoveIntent.Reset(); S.RouteGoal.Reset(); S.SharedRoute.Reset();
+		S.DirectDock={}; S.ActiveNavigation.Reset(); S.PersonalPathPoints.Reset();
+		S.NextPersonalPathQuerySeconds=0; S.bNavigationBudgetPending=false;
 	}
 	if (!Soldier || !Soldier->CanAct() || !Soldier->ActiveOrderId || !Soldier->bHasFinalDestination)
 	{
@@ -3215,6 +3279,8 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyNavigationRepairs()
 		Soldier.LastValidNavLocation = Work->Target;
 		Soldier.Velocity = FVector::ZeroVector;
 		Soldier.SharedRoute.Reset(); Soldier.RouteCursor = 0;
+		Soldier.DirectDock = {}; Soldier.ActiveNavigation.Reset(); Soldier.PersonalPathPoints.Reset();
+		Soldier.NextPersonalPathQuerySeconds = 0;
 		Soldier.NavigationFailure = EGuLiSoldierNavigationFailure::None;
 		Soldier.ConsecutiveSurfaceFailures = 0;
 		Soldier.FailureSimulationSeconds = 0;
@@ -3340,15 +3406,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		Soldier.NavigationState = EGuLiSoldierNavigationState::CenterlineRecovery;
 		Soldier.NoProgressSeconds = 0.0f;
 		Soldier.BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
-	};
-	auto EnterPersonalPathRecovery = [](FSoldierRuntime& Soldier)
-	{
-		Soldier.NavigationState = EGuLiSoldierNavigationState::PersonalPathRecovery;
-		Soldier.NoProgressSeconds = 0.0f;
-		Soldier.BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
-		Soldier.PersonalPathPoints.Reset();
-		Soldier.PersonalPathPointIndex = 0;
-		Soldier.PersonalPathRetries = 0;
+		Soldier.DirectDock = {};
 	};
 
 	const float AvoidanceAgentHeightCentimeters = CommanderNavigationData
@@ -3677,27 +3735,78 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			if (const FNavLocation* Dock=Intent.AssignedPoints.Find(S.SoldierId.Value))
 			{
 				S.bHasDockTarget=true; S.FinalDestination=*Dock;
+				S.DirectDock={};
 				S.NoProgressSeconds=0; S.BestWaypointDistanceCentimeters=TNumericLimits<float>::Max();
 			}
-		const float Distance=FVector::Dist2D(S.Location,S.FinalDestination.Location);
-		if (Distance<S.BestWaypointDistanceCentimeters-ProgressDistanceCentimeters)
-		{ S.BestWaypointDistanceCentimeters=Distance; S.NoProgressSeconds=0; }
-		else S.NoProgressSeconds+=MovementUpdateDeltaSeconds[I];
-		const float Tolerance=FMath::Max(20.f,GetUnitMovementSpeed(S.Team,S.UnitTypeId)*MovementUpdateDeltaSeconds[I]);
 		if (S.bHasDockTarget && FVector::DistSquared2D(S.Location,S.FinalDestination.Location)<=FMath::Square(20.f)
 			&& FMath::Abs(S.Location.Z-S.FinalDestination.Location.Z)<=MaximumSurfaceStepZCentimeters)
 		{ SetTerminalNavigationState(S,EGuLiSoldierNavigationState::Arrived,EGuLiSoldierNavigationFailure::None); continue; }
-		FVector Waypoint=S.FinalDestination.Location;
-		if (!(S.bHasDockTarget && Intent.InDockingArea(S.Location))
-			&& S.SharedRoute && S.SharedRoute->Goal==S.RouteGoal && S.SharedRoute->Navigation.Data.Get()==CommanderNavigationData)
+		FVector Waypoint=S.Location;
+		bool bHasWaypoint=false;
+		const bool bPersonal=S.NavigationState==EGuLiSoldierNavigationState::PersonalPathRecovery;
+		const bool bDirectDock=!bPersonal && S.NavigationState==EGuLiSoldierNavigationState::Normal
+			&& S.bHasDockTarget && CommanderNavigationData
+			&& S.DirectDock.Matches(*CommanderNavigationData,AuthorityState->NavigationGeneration,S.LastValidNavLocation,S.FinalDestination)
+			&& S.DirectDock.bClear;
+		if (bPersonal && S.ActiveNavigation && S.ActiveNavigation->Data.Get()==CommanderNavigationData
+			&& S.ActiveNavigation->Path->IsUpToDate() && !S.PersonalPathPoints.IsEmpty())
 		{
-			FVector RouteWaypoint;
-			if (S.SharedRoute->Sample(S.LastValidNavLocation,FMath::Min(50.f,Tolerance),S.RouteCursor,RouteWaypoint)) Waypoint=RouteWaypoint;
+			// Capture each corner before turning; a movement step must not overshoot and cut a cliff.
+			while (S.PersonalPathPointIndex<S.PersonalPathPoints.Num()-1
+				&& FVector::DistSquared2D(S.Location,S.PersonalPathPoints[S.PersonalPathPointIndex])<=FMath::Square(10.f)
+				&& FMath::Abs(S.Location.Z-S.PersonalPathPoints[S.PersonalPathPointIndex].Z)<=MaximumSurfaceStepZCentimeters)
+				++S.PersonalPathPointIndex;
+			Waypoint=S.PersonalPathPoints[S.PersonalPathPointIndex]; bHasWaypoint=true;
+		}
+		else if (bDirectDock) { Waypoint=S.FinalDestination.Location; bHasWaypoint=true; }
+		else if (!bPersonal && S.SharedRoute && S.SharedRoute->Goal==S.RouteGoal
+			&& S.SharedRoute->Navigation.Data.Get()==CommanderNavigationData)
+			bHasWaypoint=S.SharedRoute->Sample(S.LastValidNavLocation,50.f,S.RouteCursor,Waypoint);
+		if (!bHasWaypoint)
+		{
+			// Pending route work is not permission to walk straight through an unverified slope.
+			if (bPersonal && !S.bNavigationBudgetPending
+				&& S.NavigationFailure==EGuLiSoldierNavigationFailure::PersonalPathFailed)
+			{
+				S.NoProgressSeconds+=MovementUpdateDeltaSeconds[I];
+				if (GuLiCommanderNavigationPolicy::ShouldBlockPersonalPathRecovery(
+					S.PersonalPathRetries,S.NoProgressSeconds,2,PersonalRecoveryBlockedSeconds))
+				{ SetTerminalNavigationState(S,EGuLiSoldierNavigationState::Blocked,EGuLiSoldierNavigationFailure::PersonalPathFailed); continue; }
+			}
+			S.Velocity=FVector::ZeroVector; S.CurrentNavigationWaypoint=S.Location;
+			bSuppressMovementForStep[I]=true;
+			continue;
+		}
+		const float Distance=FVector::Dist2D(S.Location,Waypoint);
+		const int32 PointIndex=bPersonal ? S.PersonalPathPointIndex : S.RouteCursor;
+		if (!S.CurrentNavigationWaypoint.Equals(Waypoint,.01) || PointIndex>S.LastProgressPathPointIndex
+			|| Distance<S.BestWaypointDistanceCentimeters-ProgressDistanceCentimeters)
+		{ S.BestWaypointDistanceCentimeters=Distance; S.NoProgressSeconds=0; }
+		else S.NoProgressSeconds+=MovementUpdateDeltaSeconds[I];
+		S.LastProgressPathPointIndex=PointIndex;
+		// Test stagnation even when Detour reports a successful move clamped to zero,
+		// or friendly/environment avoidance has reduced the requested velocity to zero.
+		if (S.NavigationState==EGuLiSoldierNavigationState::Normal
+			&& GuLiCommanderNavigationPolicy::ShouldEnterCenterlineRecovery(
+				S.ConsecutiveSurfaceFailures,S.NoProgressSeconds,SurfaceFailuresBeforeCenterline,CenterlineRecoverySeconds))
+		{
+			EnterCenterlineRecovery(S);
+			if (bDirectDock) { S.Velocity=FVector::ZeroVector; bSuppressMovementForStep[I]=true; continue; }
+		}
+		else if (S.NavigationState==EGuLiSoldierNavigationState::CenterlineRecovery
+			&& GuLiCommanderNavigationPolicy::ShouldEnterPersonalPathRecovery(
+				S.ConsecutiveSurfaceFailures,S.NoProgressSeconds,SurfaceFailuresBeforePersonalPath,CenterlineRecoverySeconds))
+		{
+			BeginPersonalPathRecovery(S); S.Velocity=FVector::ZeroVector; bSuppressMovementForStep[I]=true; continue;
+		}
+		else if (bPersonal && S.NoProgressSeconds>=PersonalRecoveryRetrySeconds)
+		{
+			S.ActiveNavigation.Reset(); S.PersonalPathPoints.Reset(); S.bNavigationBudgetPending=true;
+			S.Velocity=FVector::ZeroVector; bSuppressMovementForStep[I]=true; continue;
 		}
 		S.CurrentNavigationWaypoint=Waypoint;
-		const float StepSpeed=S.bHasDockTarget && Waypoint.Equals(S.FinalDestination.Location,.01)
-			? FMath::Min(GetUnitMovementSpeed(S.Team,S.UnitTypeId),FVector::Dist2D(S.Location,Waypoint)/FMath::Max(.001f,MovementUpdateDeltaSeconds[I]))
-			: GetUnitMovementSpeed(S.Team,S.UnitTypeId);
+		const float StepSpeed=FMath::Min(GetUnitMovementSpeed(S.Team,S.UnitTypeId),
+			Distance/MovementUpdateDeltaSeconds[I]);
 		DesiredVelocities[I]=(Waypoint-S.Location).GetSafeNormal2D()*StepSpeed;
 		bReceivesAvoidance[I]=true; ++AuthorityState->MovementUpdateCalls;
 		AuthorityState->ForcedMovementUpdateCalls+=bForcedMovementUpdate[I]?1u:0u;
@@ -3708,75 +3817,50 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			GuLiMoveLatency::Record(TEXT("direction"),S.MoveTrace,1,*Detail);
 		}
 		auto& Move=EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(S.Entity);
-		Move.Center=Waypoint; Move.Forward=DesiredVelocities[I].GetSafeNormal(); Move.DesiredSpeed=FMassInt16Real(GetUnitMovementSpeed(S.Team,S.UnitTypeId));
+		Move.Center=Waypoint; Move.Forward=DesiredVelocities[I].GetSafeNormal(); Move.DesiredSpeed=FMassInt16Real(StepSpeed);
 		EntityManager.GetFragmentDataChecked<FGuLiMassSlotTargetFragment>(S.Entity).WorldTarget=Waypoint;
 	}
 
-	const bool bPeriodicManualAvoidanceRefresh =
-		AuthorityState->ServerSimTick
-			% GuLiCommanderNavigationPolicy::MovementUpdateIntervalTicks == 0u;
-	const bool bManualAvoidanceStorageChanged =
-		AuthorityState->CachedManualAvoidanceVelocities.Num()
-			< AuthorityState->Soldiers.Num();
-	if (bPeriodicManualAvoidanceRefresh
-		|| AuthorityState->bForceManualAvoidanceRefresh
-		|| bManualAvoidanceStorageChanged)
+	// Freeze every candidate before any authority location is committed. The soft solver
+	// returns absolute velocities, including low-speed friendly pressure on stopped units.
+	AuthorityState->ManualAvoidanceAgents.SetNum(AuthorityState->Soldiers.Num());
+	for (int32 I = 0; I < AuthorityState->Soldiers.Num(); ++I)
 	{
-		const UGuLiDynamicObstacleRegistrySubsystem* ObstacleRegistry =
-			GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
-		check(ObstacleRegistry);
-		const TConstArrayView<FGuLiDynamicObstacle> DynamicObstacles =
-			ObstacleRegistry->GetObstacles();
-		AuthorityState->ManualAvoidanceAgents.SetNum(
-			AuthorityState->Soldiers.Num());
-		bool bAnySoldierReceivesAvoidance = false;
-		float MaximumSoldierRadius = MemberAgentRadiusCentimeters;
-		for (int32 SoldierIndex = 0; SoldierIndex < AuthorityState->Soldiers.Num(); ++SoldierIndex)
+		const FSoldierRuntime& S = AuthorityState->Soldiers[I];
+		if (S.ActiveNavigation && S.ActiveNavigation->Path.IsValid() && !S.ActiveNavigation->Path->IsUpToDate())
+			bSuppressMovementForStep[I] = true;
+		auto& Agent = AuthorityState->ManualAvoidanceAgents[I];
+		Agent = {};
+		Agent.StableSoldierId = S.SoldierId.Value;
+		Agent.Team = static_cast<uint8>(S.Team);
+		Agent.Location = S.Location;
+		Agent.RadiusCentimeters = S.AvoidanceRadiusCentimeters;
+		Agent.MaximumSpeed = GetUnitMovementSpeed(S.Team, S.UnitTypeId);
+		Agent.bParticipates = S.IsPresent() && EntityManager.IsEntityValid(S.Entity);
+		Agent.bReceivesAvoidance = Agent.bParticipates && S.CanAct()
+			&& bReceivesAvoidance[I] && !bSuppressMovementForStep[I] && !S.bAttackMoveHolding;
+		Agent.bCanBePushed = Agent.bParticipates && S.CanAct() && !S.bGroundMechYielding
+			&& (!S.ActiveOrderId || S.bAttackMoveHolding);
+		if (Agent.bReceivesAvoidance)
 		{
-			const FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
-			GuLiCommanderNavigationPolicy::FManualAvoidanceAgent& Agent =
-				AuthorityState->ManualAvoidanceAgents[SoldierIndex];
-			Agent.StableSoldierId = Soldier.SoldierId.Value;
-			Agent.Location = Soldier.Location;
-			Agent.bParticipates = Soldier.IsPresent() && !Soldier.Location.ContainsNaN();
-			Agent.bReceivesAvoidance = Agent.bParticipates
-				&& bReceivesAvoidance[SoldierIndex];
-			Agent.RadiusCentimeters = Soldier.AvoidanceRadiusCentimeters;
-			MaximumSoldierRadius = FMath::Max(MaximumSoldierRadius, Agent.RadiusCentimeters);
-			bAnySoldierReceivesAvoidance |= Agent.bReceivesAvoidance;
+			const FVector PredictiveAcceleration = EntityManager
+				.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(S.Entity).Value;
+			const FVector Target = (DesiredVelocities[I]
+				+ PredictiveAcceleration.GetClampedToMaxSize(Agent.MaximumSpeed * 4.0f) * MovementUpdateDeltaSeconds[I])
+				.GetClampedToMaxSize(Agent.MaximumSpeed);
+			Agent.DesiredVelocity = FMath::VInterpTo(S.Velocity, Target, MovementUpdateDeltaSeconds[I], 8.0f);
 		}
-		float AvoidanceCellSizeCentimeters = MaximumSoldierRadius * 2.0f;
-
-		if (bAnySoldierReceivesAvoidance)
-		{
-			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_ManualAvoidanceRefresh);
-			const float MinimumAvoidanceDistanceCentimeters = FMath::Max(
-				1.0f,
-				MemberAgentRadiusCentimeters * 2.0f);
-			const GuLiCommanderNavigationPolicy::FManualAvoidanceMetrics Metrics =
-				GuLiCommanderNavigationPolicy::BuildManualAvoidanceVelocities(
-					AuthorityState->ManualAvoidanceAgents,
-					AvoidanceCellSizeCentimeters,
-					MinimumAvoidanceDistanceCentimeters,
-					AvoidanceAgentHeightCentimeters,
-					MaximumUnitMovementSpeed,
-					ManualAvoidanceStrength,
-					AuthorityState->ManualAvoidanceSpatialGrid,
-					AuthorityState->CachedManualAvoidanceVelocities);
-			++AuthorityState->ManualAvoidanceRefreshes;
-			AuthorityState->ManualAvoidanceCandidatePairs += Metrics.CandidatePairs;
-			AuthorityState->ManualAvoidanceOverlapPairs += Metrics.OverlapPairs;
-			AuthorityState->MaximumManualAvoidanceBucketOccupancy = FMath::Max(
-				AuthorityState->MaximumManualAvoidanceBucketOccupancy,
-				Metrics.MaximumBucketOccupancy);
-		}
-		else
-		{
-			AuthorityState->ManualAvoidanceSpatialGrid.Reset();
-			AuthorityState->CachedManualAvoidanceVelocities.Init(
-				FVector::ZeroVector,
-				AuthorityState->Soldiers.Num());
-		}
+	}
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_ManualAvoidanceRefresh);
+		const auto Metrics = GuLiCommanderNavigationPolicy::SolveSoftAvoidanceVelocities(
+			AuthorityState->ManualAvoidanceAgents, AvoidanceAgentHeightCentimeters,
+			AuthorityState->ManualAvoidanceSpatialGrid, AuthorityState->CachedManualAvoidanceVelocities);
+		++AuthorityState->ManualAvoidanceRefreshes;
+		AuthorityState->ManualAvoidanceCandidatePairs += Metrics.CandidatePairs;
+		AuthorityState->ManualAvoidanceOverlapPairs += Metrics.OverlapPairs;
+		AuthorityState->MaximumManualAvoidanceBucketOccupancy = FMath::Max(
+			AuthorityState->MaximumManualAvoidanceBucketOccupancy, Metrics.MaximumBucketOccupancy);
 		AuthorityState->bForceManualAvoidanceRefresh = false;
 	}
 
@@ -3823,33 +3907,21 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			&& !bSuppressMovementForStep[SoldierIndex])
 		{
 			const float MovementDeltaSeconds = MovementUpdateDeltaSeconds[SoldierIndex];
-			FVector AvoidanceVelocity = FVector::ZeroVector;
-			if (bReceivesAvoidance[SoldierIndex])
+			FVector TargetVelocity = AuthorityState->CachedManualAvoidanceVelocities[SoldierIndex];
+			if (auto* Registry = World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>())
+				TargetVelocity = ConstrainEnvironmentVelocity(Soldier, *Registry->GetSnapshot(), TargetVelocity,
+					MovementDeltaSeconds, GetUnitMovementSpeed(Soldier.Team, Soldier.UnitTypeId));
+			if (Soldier.MoveIntent)
 			{
-				if (AuthorityState->CachedManualAvoidanceVelocities.IsValidIndex(SoldierIndex))
-				{
-					AvoidanceVelocity +=
-						AuthorityState->CachedManualAvoidanceVelocities[SoldierIndex];
-				}
-				const FGuLiMassAvoidanceOutputFragment& AvoidanceOutput = EntityManager
-					.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(Soldier.Entity);
-				AvoidanceVelocity += AvoidanceOutput.Value.GetClampedToMaxSize(
-					GetUnitMovementSpeed(Soldier.Team,Soldier.UnitTypeId) * 4.0f) * MovementDeltaSeconds;
+				// Avoidance keeps its lateral component, but residual speed cannot carry a
+				// soldier past the corner that must be captured before the next route leg.
+				const FVector ToWaypoint=Soldier.CurrentNavigationWaypoint-Soldier.Location;
+				const FVector Forward=ToWaypoint.GetSafeNormal2D();
+				const double Excess=FVector::DotProduct(TargetVelocity,Forward)-ToWaypoint.Size2D()/MovementDeltaSeconds;
+				if (Excess>0.) TargetVelocity-=Forward*Excess;
 			}
+			Soldier.Velocity = TargetVelocity.IsNearlyZero(1.0f) ? FVector::ZeroVector : TargetVelocity;
 
-			FVector TargetVelocity = (DesiredVelocities[SoldierIndex] + AvoidanceVelocity)
-				.GetClampedToMaxSize(GetUnitMovementSpeed(Soldier.Team,Soldier.UnitTypeId));
-			if (auto* Registry=World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>())
-				TargetVelocity=ConstrainEnvironmentVelocity(Soldier,*Registry->GetSnapshot(),TargetVelocity,MovementDeltaSeconds,GetUnitMovementSpeed(Soldier.Team,Soldier.UnitTypeId));
-			Soldier.Velocity = TargetVelocity.IsNearlyZero(1.0f)
-				? FVector::ZeroVector
-				: FMath::VInterpTo(
-					Soldier.Velocity,
-					TargetVelocity,
-					MovementDeltaSeconds,
-					8.0f);
-
-			if (Soldier.ContactObstacle) Soldier.Velocity=TargetVelocity;
 			if (!Soldier.Velocity.IsNearlyZero(1.0f))
 			{
 				const FVector CandidateLocation = Soldier.LastValidNavLocation.Location
@@ -3923,7 +3995,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 							SurfaceFailuresBeforePersonalPath,
 							CenterlineRecoverySeconds))
 					{
-						EnterPersonalPathRecovery(Soldier);
+						BeginPersonalPathRecovery(Soldier);
 					}
 				}
 			}
@@ -4042,6 +4114,42 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				SetGroundMechYieldStandTarget(Soldier);
 				if (bCandidateClear) if (!Soldier.bNavigationBudgetPending) ++AuthorityState->SurfaceMoveFailures;
 			}
+		}
+		else if (AuthorityState->ManualAvoidanceAgents[SoldierIndex].bCanBePushed
+			&& !AuthorityState->CachedManualAvoidanceVelocities[SoldierIndex].IsNearlyZero(1.0f))
+		{
+			// Passive pressure never creates a move order, clears S, or restores an old destination.
+			const auto Snapshot = World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>()->GetSnapshot();
+			const FVector Target = AuthorityState->CachedManualAvoidanceVelocities[SoldierIndex];
+			const float PassiveMaximumSpeed = GetUnitMovementSpeed(Soldier.Team, Soldier.UnitTypeId) * 0.25f;
+			const FVector Velocity = ConstrainEnvironmentVelocity(Soldier, *Snapshot,
+				FMath::VInterpTo(Soldier.Velocity, Target, FixedDeltaSeconds, 8.0f)
+					.GetClampedToMaxSize(PassiveMaximumSpeed), FixedDeltaSeconds, PassiveMaximumSpeed);
+			FNavLocation SurfaceLocation;
+			++AuthorityState->SurfaceMoveCalls;
+			const bool bMoved = CommanderNavigationData && FindMoveAlongCurrentNavigationSurface(
+				*CommanderNavigationData, Soldier.LastValidNavLocation,
+				Soldier.Location + Velocity * FixedDeltaSeconds, SurfaceLocation,
+				AuthorityState->PlanningBudget, Soldier.bNavigationBudgetPending, this);
+			if (bMoved && Snapshot->IsSegmentClear(Soldier.Location, SurfaceLocation.Location,
+				Soldier.AvoidanceRadiusCentimeters, true)
+				&& GuLiCommanderNavigationPolicy::IsSurfaceMoveResultAcceptable(true,
+					Soldier.LastValidNavLocation.Location, SurfaceLocation.Location,
+					MaximumSurfaceStepZCentimeters, MaximumSurfaceSlopeDegrees))
+			{
+				Soldier.Velocity = (SurfaceLocation.Location - Soldier.Location) / FixedDeltaSeconds;
+				Soldier.Location = SurfaceLocation.Location;
+				Soldier.LastValidNavLocation = SurfaceLocation;
+				Soldier.LastMovementUpdateSimulationSeconds = AuthorityState->SimulationSeconds;
+				if (!Soldier.ActiveOrderId)
+				{
+					Soldier.CurrentNavigationWaypoint = Soldier.Location;
+					auto& Move = EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+					Move.Center = Soldier.Location;
+					Move.DesiredSpeed = FMassInt16Real(0.0f);
+				}
+			}
+			else Soldier.Velocity = FVector::ZeroVector;
 		}
 		else if (!bHasMovingOrder || bSuppressMovementForStep[SoldierIndex])
 		{
@@ -5886,6 +5994,29 @@ bool UGuLiBattleAuthoritySubsystem::GetTaskSoldierInfo(FGuLiSoldierId Id, EGuLiT
 	const int32* Index = AuthorityState ? AuthorityState->SoldierIndexById.Find(Id.Value) : nullptr;
 	if (!Index || !AuthorityState->Soldiers[*Index].IsAlive()) return false;
 	const auto& Soldier = AuthorityState->Soldiers[*Index]; Team = Soldier.Team; UnitTypeId = Soldier.UnitTypeId; Location = Soldier.Location;
+	return true;
+}
+bool UGuLiBattleAuthoritySubsystem::CanSelectionReachMoveTarget(
+	const FGuLiCommanderSelectionState& Selection, const FVector& Target) const
+{
+	using namespace GuLiCommanderMassPrivate;
+	auto& NavigationSystem = *FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	const auto& NavigationData = *GetCommanderNavigationData(NavigationSystem);
+	FNavLocation Destination;
+	if (!ProjectPointToCommanderNavigation(NavigationSystem, NavigationData, Target, FVector(10, 10, 50), Destination))
+		return false;
+
+	TSet<NavNodeRef> CheckedStarts;
+	for (const auto& Cohort : Selection.Cohorts) for (const auto Id : Cohort.MemberIds)
+	{
+		const auto& Soldier = AuthorityState->Soldiers[AuthorityState->SoldierIndexById.FindChecked(Id.Value)];
+		if (!Soldier.CanAct() || CheckedStarts.Contains(Soldier.LastValidNavLocation.NodeRef)) continue;
+		FPathFindingQuery Query(nullptr, NavigationData, Soldier.LastValidNavLocation.Location,
+			Destination.Location, NavigationData.GetDefaultQueryFilter());
+		Query.SetAllowPartialPaths(false);
+		if (!NavigationSystem.TestPathSync(Query, EPathFindingMode::Regular)) return false;
+		CheckedStarts.Add(Soldier.LastValidNavLocation.NodeRef);
+	}
 	return true;
 }
 void UGuLiBattleAuthoritySubsystem::InvalidateTaskSoldierPlans(TConstArrayView<FGuLiSoldierId> Soldiers)

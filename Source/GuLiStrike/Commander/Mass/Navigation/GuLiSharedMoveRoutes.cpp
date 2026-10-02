@@ -3,6 +3,31 @@
 #include "NavMesh/NavMeshPath.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 
+bool FGuLiDirectMoveCheck::Matches(const ANavigationData& NavData, uint32 NavGeneration,
+	const FNavLocation& Position, const FNavLocation& Destination) const
+{
+	return Data.Get() == &NavData && Generation == NavGeneration
+		&& Start.NodeRef == Position.NodeRef && Target.NodeRef == Destination.NodeRef
+		&& Start.Location.Equals(Position.Location, .01) && Target.Location.Equals(Destination.Location, .01);
+}
+
+bool FGuLiDirectMoveCheck::Update(const ANavigationData& NavData, uint32 NavGeneration,
+	const FNavLocation& Position, const FNavLocation& Destination,
+	FGuLiNavigationWorkBudget& Budget, const UObject* Querier)
+{
+	if (Matches(NavData, NavGeneration, Position, Destination)) return true;
+	if (!Budget.TakeProjection()) return false;
+	FGuLiNavigationWorkBudget::FQueryScope Query(Budget);
+	FVector Hit;
+	FNavigationRaycastAdditionalResults Result;
+	const bool bObstructed = NavData.Raycast(Position.Location, Destination.Location, Hit,
+		&Result, NavData.GetDefaultQueryFilter(), Querier);
+	Data = &NavData; Generation = NavGeneration; Start = Position; Target = Destination;
+	// XY visibility alone is insufficient for stacked surfaces or the foot of a cliff.
+	bClear = !bObstructed && Result.bIsRayEndInCorridor;
+	return true;
+}
+
 bool FGuLiSharedMoveRoute::Sample(const FNavLocation& Position, float Tolerance, int32& Cursor, FVector& Out) const
 {
 	if (State != EState::Ready || !Navigation.Path.IsValid() || !Navigation.Path->IsUpToDate()) return false;

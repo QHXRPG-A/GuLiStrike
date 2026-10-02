@@ -199,6 +199,121 @@ namespace GuLiCommanderNavigationPolicy
 		return Metrics;
 	}
 
+	FManualAvoidanceMetrics SolveSoftAvoidanceVelocities(
+		const TConstArrayView<FManualAvoidanceAgent> Agents,
+		const float MaximumHeightDifferenceCentimeters,
+		FManualAvoidanceSpatialGrid& InOutSpatialGrid,
+		TArray<FVector>& OutVelocities)
+	{
+		constexpr float RecoverySeconds = 0.5f;
+		constexpr float PassiveSpeedScale = 0.25f;
+		FManualAvoidanceMetrics Metrics;
+		InOutSpatialGrid.Reset();
+		OutVelocities.Init(FVector::ZeroVector, Agents.Num());
+		if (!FMath::IsFinite(MaximumHeightDifferenceCentimeters) || MaximumHeightDifferenceCentimeters <= 0.0f)
+			return Metrics;
+		auto IsValid = [](const FManualAvoidanceAgent& A)
+		{
+			return A.bParticipates && A.StableSoldierId && !A.Location.ContainsNaN()
+				&& !A.DesiredVelocity.ContainsNaN() && FMath::IsFinite(A.RadiusCentimeters)
+				&& A.RadiusCentimeters > 0.0f && FMath::IsFinite(A.MaximumSpeed) && A.MaximumSpeed >= 0.0f;
+		};
+		float MaximumRadius = 0.0f, MaximumSpeed = 0.0f;
+		for (const auto& A : Agents) if (IsValid(A))
+		{
+			MaximumRadius = FMath::Max(MaximumRadius, A.RadiusCentimeters);
+			MaximumSpeed = FMath::Max(MaximumSpeed, A.MaximumSpeed);
+		}
+		const float CellSize = FMath::Max(300.0f, MaximumRadius * 2.0f);
+		for (int32 I = 0; I < Agents.Num(); ++I) if (IsValid(Agents[I]))
+		{
+			const auto& A = Agents[I];
+			auto& Bucket = InOutSpatialGrid.FindOrAdd(MakeAvoidanceSpatialCell(A.Location, CellSize));
+			Bucket.Add(I);
+			Metrics.MaximumBucketOccupancy = FMath::Max(Metrics.MaximumBucketOccupancy, Bucket.Num());
+			if (A.bReceivesAvoidance) OutVelocities[I] = A.DesiredVelocity.GetClampedToMaxSize(A.MaximumSpeed);
+		}
+		struct FPair { int32 A, B; FVector Normal; float Penetration; };
+		TArray<FPair> Pairs;
+		for (int32 I = 0; I < Agents.Num(); ++I) if (IsValid(Agents[I]))
+		{
+			const auto& A = Agents[I];
+			const auto Cell = MakeAvoidanceSpatialCell(A.Location, CellSize);
+			const int32 Range = FMath::CeilToInt((A.RadiusCentimeters + MaximumRadius
+				+ (A.MaximumSpeed + MaximumSpeed) * RecoverySeconds) / CellSize);
+			for (int32 X = Cell.X - Range; X <= Cell.X + Range; ++X)
+			for (int32 Y = Cell.Y - Range; Y <= Cell.Y + Range; ++Y)
+			{
+				const auto* Bucket = InOutSpatialGrid.Find(FIntPoint(X, Y));
+				if (!Bucket) continue;
+				for (int32 J : *Bucket)
+				{
+					const auto& B = Agents[J];
+					if (A.StableSoldierId >= B.StableSoldierId
+						|| FMath::Abs(A.Location.Z - B.Location.Z) >= MaximumHeightDifferenceCentimeters) continue;
+					++Metrics.CandidatePairs;
+					const FVector Delta = (A.Location - B.Location) * FVector(1, 1, 0);
+					const float Distance = Delta.Size2D();
+					const float Penetration = A.RadiusCentimeters + B.RadiusCentimeters - Distance;
+					if (Penetration < -(A.MaximumSpeed + B.MaximumSpeed) * RecoverySeconds) continue;
+					if (Penetration > 0.0f) ++Metrics.OverlapPairs;
+					Pairs.Add({I, J, Distance > UE_KINDA_SMALL_NUMBER ? Delta / Distance
+						: FVector(-1, 0, 0), Penetration});
+				}
+			}
+		}
+		// Stable pair order makes the solve independent of Mass chunk/array iteration order.
+		Pairs.Sort([&Agents](const FPair& L, const FPair& R)
+		{
+			return Agents[L.A].StableSoldierId != Agents[R.A].StableSoldierId
+				? Agents[L.A].StableSoldierId < Agents[R.A].StableSoldierId
+				: Agents[L.B].StableSoldierId < Agents[R.B].StableSoldierId;
+		});
+		for (int32 Iteration = 0; Iteration < 3; ++Iteration)
+		{
+			for (const FPair& Pair : Pairs)
+			{
+				const auto& A = Agents[Pair.A];
+				const auto& B = Agents[Pair.B];
+				const bool bFriendly = A.Team != 0u && A.Team == B.Team;
+				if (!bFriendly)
+				{
+					// Enemy contact can brake a friendly-induced passive velocity, but must
+					// never create a new passive push away from the enemy.
+					const double AllowedInwardSpeed = FMath::Max(0.0f, -Pair.Penetration / RecoverySeconds);
+					if (!A.bReceivesAvoidance)
+					{
+						const double Inward = FVector::DotProduct(OutVelocities[Pair.A], Pair.Normal);
+						if (Inward < -AllowedInwardSpeed)
+							OutVelocities[Pair.A] -= Pair.Normal * (Inward + AllowedInwardSpeed);
+					}
+					if (!B.bReceivesAvoidance)
+					{
+						const double Inward = FVector::DotProduct(OutVelocities[Pair.B], -Pair.Normal);
+						if (Inward < -AllowedInwardSpeed)
+							OutVelocities[Pair.B] += Pair.Normal * (Inward + AllowedInwardSpeed);
+					}
+				}
+				const double OutwardSpeed = FVector::DotProduct(OutVelocities[Pair.A] - OutVelocities[Pair.B], Pair.Normal);
+				const bool bFriendlyPressure = bFriendly
+					&& (Pair.Penetration > 0.0f || (OutwardSpeed < 0.0
+						&& Pair.Penetration > -0.1f * (A.RadiusCentimeters + B.RadiusCentimeters)));
+				const float WeightA = A.bReceivesAvoidance ? 1.0f
+					: (A.bCanBePushed && bFriendlyPressure ? PassiveSpeedScale : 0.0f);
+				const float WeightB = B.bReceivesAvoidance ? 1.0f
+					: (B.bCanBePushed && bFriendlyPressure ? PassiveSpeedScale : 0.0f);
+				const float Weight = WeightA + WeightB;
+				if (Weight <= 0.0f) continue;
+				const double Correction = FMath::Max(0.0, Pair.Penetration / RecoverySeconds - OutwardSpeed);
+				OutVelocities[Pair.A] = (OutVelocities[Pair.A] + Pair.Normal * Correction * (WeightA / Weight))
+					.GetClampedToMaxSize(A.MaximumSpeed * (A.bReceivesAvoidance ? 1.0f : PassiveSpeedScale));
+				OutVelocities[Pair.B] = (OutVelocities[Pair.B] - Pair.Normal * Correction * (WeightB / Weight))
+					.GetClampedToMaxSize(B.MaximumSpeed * (B.bReceivesAvoidance ? 1.0f : PassiveSpeedScale));
+			}
+		}
+		return Metrics;
+	}
+
 	FName GetRequiredAgentName()
 	{
 		static const FName RequiredAgentName(TEXT("CommanderSoldier"));

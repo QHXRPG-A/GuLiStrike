@@ -1,0 +1,77 @@
+{
+  "scope": "CommanderSoldier editor generation profile and baking",
+  "python_scene_syntax": "passed_both_authoring_scripts",
+  "native_compile": "passed_exit_0_attempt_3",
+  "public_interfaces": "unchanged",
+  "static_review": [
+    "Preset constants and UE5.7 member/setter declarations inspected; no deprecated resolution fields used.",
+    "Existing and newly created Commander NavData configured before cache fingerprinting.",
+    "Old jobs cancelled and forced rebuild overrides missing-agent recovery/cache-hit paths.",
+    "Changed source certificate removed; graph gate remains before certification and saves.",
+    "Generation hash already exports all fixed-array elements and includes ledge filtering.",
+    "Scale020 migration calls the same preset for Commander; Default retains its old preset.",
+    "No runtime module, engine source, movement guard, water-area or search-budget edits.",
+    "Protected drawing reads use IsDrawingEnabled; reflected bool write uses a cached checked property.",
+    "Commander source map explicitly restores established 16384 node budget after UE agent replacement and refreshes the live filter.",
+    "Validation checks the map search budget and live filter; other Commander maps retain their own query settings."
+  ],
+  "quantization_check": [
+    {
+      "cell_size_cm": 19,
+      "cell_height_cm": 2,
+      "walkable_climb_voxels": 10,
+      "required_climb_voxels_at_44_degrees": 10
+    },
+    {
+      "cell_size_cm": 19,
+      "cell_height_cm": 2,
+      "walkable_climb_voxels": 10,
+      "required_climb_voxels_at_44_degrees": 10
+    },
+    {
+      "cell_size_cm": 9.5,
+      "cell_height_cm": 2,
+      "walkable_climb_voxels": 10,
+      "required_climb_voxels_at_44_degrees": 5
+    }
+  ],
+  "files": [
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiCommanderGroundNavigationProfile.h",
+      "sha256": "28b73b696cef5441f86c4c4ade21b48f228f83d2f39a1b9829f6b9bab5cf7acf"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiCommanderGroundNavigationProfile.cpp",
+      "sha256": "68a882f072c41a2b34b809755bb4e6c7ae2c0cb5aa8d8b008227946468b7222d"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiNavigationBakeLibrary.cpp",
+      "sha256": "3bf312dec71800a8d3c3f93903769abc5009a82878b308c3b7a535eb90fc8518"
+    },
+    {
+      "path": "Config/DefaultEngine.ini",
+      "sha256": "3ff7bd48cd9986df3aebf90deceeb4527d946940387c2a67de28c81f07d887d5"
+    },
+    {
+      "path": "Scripts/NavigationConnectivity/prepare_slope_scene.py",
+      "sha256": "ff13cb900fac67d2396a4ec1a078c929329e8e5db7bb2d8faf7407bcef17e43e"
+    },
+    {
+      "path": "Scripts/NavigationConnectivity/README.md",
+      "sha256": "c9feb11c8bd85f8228d900bebc510eab8370113902eb600ef7b9d180e3d380ce"
+    },
+    {
+      "path": "Scripts/NavigationConnectivity/prepare_scene.py",
+      "sha256": "631956d00b833b22e85a20a85178320e19f02d9e90c9d9dd412364620fc66d0f"
+    }
+  ],
+  "pie_started": false,
+  "automated_tests_run": false,
+  "navigation_bake_run": true,
+  "scene_saved_and_entities_confirmed": true,
+  "navigation_bake_certification": "failed_20_regions_19_isolated",
+  "final_parameter_readback": "passed",
+  "current_ground_point_pairs": "Connected_both_directions",
+  "original_hill_probe_status": "StartNotNavigable_stale_Z_current_ground_flat_at_same_XY",
+  "navigation_saved": false
+}

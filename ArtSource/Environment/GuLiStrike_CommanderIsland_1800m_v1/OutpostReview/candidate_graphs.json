@@ -1,0 +1,527 @@
+{
+  "Glow": {
+    "material": {
+      "blend_mode": "BLEND_Opaque",
+      "shading_model": "MSM_DefaultLit",
+      "two_sided": false
+    },
+    "expressions": [
+      {
+        "id": "MaterialExpressionTextureSampleParameter2D_0000020B916F0300",
+        "class": "TextureSampleParameter2D",
+        "class_full": "MaterialExpressionTextureSampleParameter2D",
+        "pos_x": -380,
+        "pos_y": 20,
+        "properties": {
+          "SortPriority": "32",
+          "MipValueMode": "TMVM_None",
+          "SamplerSource": "SSM_FromTextureAsset",
+          "GatherMode": "TGM_None",
+          "AutomaticViewMipBias": "True",
+          "ChannelNames": "()",
+          "ConstCoordinate": "0",
+          "ConstMipValue": "-1",
+          "Texture": "/Script/Engine.Texture2D'/Game/GuLiStrike/Buildings/Textures/Outpost/T_OutpostConcrete_Roughness.T_OutpostConcrete_Roughness'",
+          "SamplerType": "SAMPLERTYPE_LinearGrayscale",
+          "IsDefaultMeshpaintTexture": "False"
+        },
+        "is_parameter": true,
+        "parameter_name": "ConcreteRoughness",
+        "group": "None",
+        "inputs": [
+          "Coordinates",
+          "Apply View MipBias"
+        ],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionTextureSampleParameter2D_0000020B916F6C00",
+        "class": "TextureSampleParameter2D",
+        "class_full": "MaterialExpressionTextureSampleParameter2D",
+        "pos_x": -260,
+        "pos_y": 162,
+        "properties": {
+          "SortPriority": "32",
+          "MipValueMode": "TMVM_None",
+          "SamplerSource": "SSM_FromTextureAsset",
+          "GatherMode": "TGM_None",
+          "AutomaticViewMipBias": "True",
+          "ChannelNames": "()",
+          "ConstCoordinate": "0",
+          "ConstMipValue": "-1",
+          "Texture": "/Script/Engine.Texture2D'/Game/GuLiStrike/Buildings/Textures/Outpost/T_OutpostConcrete_BaseColor.T_OutpostConcrete_BaseColor'",
+          "SamplerType": "SAMPLERTYPE_Color",
+          "IsDefaultMeshpaintTexture": "False"
+        },
+        "is_parameter": true,
+        "parameter_name": "ConcreteBaseColor",
+        "group": "None",
+        "inputs": [
+          "Coordinates",
+          "Apply View MipBias"
+        ],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionTextureSampleParameter2D_0000020B916F7500",
+        "class": "TextureSampleParameter2D",
+        "class_full": "MaterialExpressionTextureSampleParameter2D",
+        "pos_x": -260,
+        "pos_y": 338,
+        "properties": {
+          "SortPriority": "32",
+          "MipValueMode": "TMVM_None",
+          "SamplerSource": "SSM_FromTextureAsset",
+          "GatherMode": "TGM_None",
+          "AutomaticViewMipBias": "True",
+          "ChannelNames": "()",
+          "ConstCoordinate": "0",
+          "ConstMipValue": "-1",
+          "Texture": "/Script/Engine.Texture2D'/Game/GuLiStrike/Buildings/Textures/Outpost/T_OutpostConcrete_Roughness.T_OutpostConcrete_Roughness'",
+          "SamplerType": "SAMPLERTYPE_LinearGrayscale",
+          "IsDefaultMeshpaintTexture": "False"
+        },
+        "is_parameter": true,
+        "parameter_name": "ConcreteRoughness",
+        "group": "None",
+        "inputs": [
+          "Coordinates",
+          "Apply View MipBias"
+        ],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionTextureSampleParameter2D_0000020B916FF000",
+        "class": "TextureSampleParameter2D",
+        "class_full": "MaterialExpressionTextureSampleParameter2D",
+        "pos_x": -260,
+        "pos_y": 514,
+        "properties": {
+          "SortPriority": "32",
+          "MipValueMode": "TMVM_None",
+          "SamplerSource": "SSM_FromTextureAsset",
+          "GatherMode": "TGM_None",
+          "AutomaticViewMipBias": "True",
+          "ChannelNames": "()",
+          "ConstCoordinate": "0",
+          "ConstMipValue": "-1",
+          "Texture": "/Script/Engine.Texture2D'/Game/GuLiStrike/Buildings/Textures/Outpost/T_OutpostConcrete_NormalDX.T_OutpostConcrete_NormalDX'",
+          "SamplerType": "SAMPLERTYPE_Normal",
+          "IsDefaultMeshpaintTexture": "False"
+        },
+        "is_parameter": true,
+        "parameter_name": "ConcreteNormal",
+        "group": "None",
+        "inputs": [
+          "Coordinates",
+          "Apply View MipBias"
+        ],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVectorParameter_0000020CAE7E1380",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -520,
+        "pos_y": 0,
+        "properties": {
+          "DefaultValue": "(R=1.000000,G=1.000000,B=1.000000,A=1.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "GlowColor",
+        "group": "Outpost",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionScalarParameter_0000020CFBBDF3C0",
+        "class": "ScalarParameter",
+        "class_full": "MaterialExpressionScalarParameter",
+        "pos_x": -780,
+        "pos_y": 338,
+        "properties": {
+          "DefaultValue": "5.000000",
+          "ControlType": "Numeric",
+          "SliderMin": "0.000000",
+          "SliderMax": "0.000000",
+          "Enumeration": "None",
+          "EnumerationIndex": "0",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "GlowIntensity",
+        "group": "Outpost",
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionFresnel_0000020AFDF20480",
+        "class": "Fresnel",
+        "class_full": "MaterialExpressionFresnel",
+        "pos_x": -780,
+        "pos_y": 176,
+        "properties": {
+          "Exponent": "2.500000",
+          "BaseReflectFraction": "0.025000"
+        },
+        "inputs": [
+          "ExponentIn",
+          "BaseReflectFractionIn",
+          "Normal"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionMultiply_0000020CFBBD5140",
+        "class": "Multiply",
+        "class_full": "MaterialExpressionMultiply",
+        "pos_x": -520,
+        "pos_y": 176,
+        "properties": {
+          "ConstA": "0.000000",
+          "ConstB": "1.000000"
+        },
+        "inputs": [
+          "A",
+          "B"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionMultiply_0000020CFBBDB7C0",
+        "class": "Multiply",
+        "class_full": "MaterialExpressionMultiply",
+        "pos_x": -260,
+        "pos_y": 0,
+        "properties": {
+          "ConstA": "0.000000",
+          "ConstB": "1.000000"
+        },
+        "inputs": [
+          "A",
+          "B"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "source_id": "MaterialExpressionFresnel_0000020AFDF20480",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionMultiply_0000020CFBBD5140",
+        "target_input": "A"
+      },
+      {
+        "source_id": "MaterialExpressionScalarParameter_0000020CFBBDF3C0",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionMultiply_0000020CFBBD5140",
+        "target_input": "B"
+      },
+      {
+        "source_id": "MaterialExpressionVectorParameter_0000020CAE7E1380",
+        "source_output_index": 0,
+        "source_output_name": "RGB",
+        "target_id": "MaterialExpressionMultiply_0000020CFBBDB7C0",
+        "target_input": "A"
+      },
+      {
+        "source_id": "MaterialExpressionMultiply_0000020CFBBD5140",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionMultiply_0000020CFBBDB7C0",
+        "target_input": "B"
+      }
+    ],
+    "output_connections": [
+      {
+        "property": "BaseColor",
+        "expression_id": "MaterialExpressionTextureSampleParameter2D_0000020B916F6C00",
+        "output_index": 0,
+        "output_name": "RGB"
+      },
+      {
+        "property": "Roughness",
+        "expression_id": "MaterialExpressionTextureSampleParameter2D_0000020B916F7500",
+        "output_index": 1,
+        "output_name": "R"
+      },
+      {
+        "property": "EmissiveColor",
+        "expression_id": "MaterialExpressionMultiply_0000020CFBBDB7C0",
+        "output_index": 0,
+        "output_name": ""
+      },
+      {
+        "property": "Normal",
+        "expression_id": "MaterialExpressionTextureSampleParameter2D_0000020B916FF000",
+        "output_index": 0,
+        "output_name": "RGB"
+      }
+    ]
+  },
+  "Halo": {
+    "material": {
+      "blend_mode": "BLEND_Translucent",
+      "shading_model": "MSM_Unlit",
+      "two_sided": true
+    },
+    "expressions": [
+      {
+        "id": "MaterialExpressionTextureCoordinate_0000020D1ACC6580",
+        "class": "TextureCoordinate",
+        "class_full": "MaterialExpressionTextureCoordinate",
+        "pos_x": -780,
+        "pos_y": 338,
+        "properties": {
+          "CoordinateIndex": "0",
+          "UTiling": "1.000000",
+          "VTiling": "1.000000",
+          "UnMirrorU": "False",
+          "UnMirrorV": "False"
+        },
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionCustom_0000020D06FCBA40",
+        "class": "Custom",
+        "class_full": "MaterialExpressionCustom",
+        "pos_x": -520,
+        "pos_y": 338,
+        "properties": {
+          "Code": "float r=length(UV*2-1); return pow(saturate(1-r),2.4)*smoothstep(.12,.4,r);",
+          "OutputType": "CMOT_Float1",
+          "Description": "Custom",
+          "Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/FX/StrongholdOutpost/Candidate_v1/M_OutpostHalo.M_OutpostHalo:MaterialExpressionTextureCoordinate_0'\")))",
+          "ShowCode": "False",
+          "Desc": "Soft halo with a clear center"
+        },
+        "hlsl_code": "float r=length(UV*2-1); return pow(saturate(1-r),2.4)*smoothstep(.12,.4,r);",
+        "output_type": "CMOT_Float1",
+        "custom_input_names": "UV",
+        "inputs": [
+          "UV"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionScalarParameter_0000020D06FC2440",
+        "class": "ScalarParameter",
+        "class_full": "MaterialExpressionScalarParameter",
+        "pos_x": -520,
+        "pos_y": 500,
+        "properties": {
+          "DefaultValue": "0.220000",
+          "ControlType": "Numeric",
+          "SliderMin": "0.000000",
+          "SliderMax": "0.000000",
+          "Enumeration": "None",
+          "EnumerationIndex": "0",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "HaloOpacity",
+        "group": "Outpost",
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionMultiply_0000020D06FC3200",
+        "class": "Multiply",
+        "class_full": "MaterialExpressionMultiply",
+        "pos_x": -260,
+        "pos_y": 162,
+        "properties": {
+          "ConstA": "0.000000",
+          "ConstB": "1.000000"
+        },
+        "inputs": [
+          "A",
+          "B"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVectorParameter_0000020D02A42D00",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -520,
+        "pos_y": 0,
+        "properties": {
+          "DefaultValue": "(R=1.000000,G=1.000000,B=1.000000,A=1.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "GlowColor",
+        "group": "Outpost",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionScalarParameter_0000020D06FC7440",
+        "class": "ScalarParameter",
+        "class_full": "MaterialExpressionScalarParameter",
+        "pos_x": -520,
+        "pos_y": 176,
+        "properties": {
+          "DefaultValue": "5.000000",
+          "ControlType": "Numeric",
+          "SliderMin": "0.000000",
+          "SliderMax": "0.000000",
+          "Enumeration": "None",
+          "EnumerationIndex": "0",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "GlowIntensity",
+        "group": "Outpost",
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionMultiply_0000020D06FC1400",
+        "class": "Multiply",
+        "class_full": "MaterialExpressionMultiply",
+        "pos_x": -260,
+        "pos_y": 0,
+        "properties": {
+          "ConstA": "0.000000",
+          "ConstB": "1.000000"
+        },
+        "inputs": [
+          "A",
+          "B"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "source_id": "MaterialExpressionTextureCoordinate_0000020D1ACC6580",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionCustom_0000020D06FCBA40",
+        "target_input": "UV"
+      },
+      {
+        "source_id": "MaterialExpressionCustom_0000020D06FCBA40",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionMultiply_0000020D06FC3200",
+        "target_input": "A"
+      },
+      {
+        "source_id": "MaterialExpressionScalarParameter_0000020D06FC2440",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionMultiply_0000020D06FC3200",
+        "target_input": "B"
+      },
+      {
+        "source_id": "MaterialExpressionVectorParameter_0000020D02A42D00",
+        "source_output_index": 0,
+        "source_output_name": "RGB",
+        "target_id": "MaterialExpressionMultiply_0000020D06FC1400",
+        "target_input": "A"
+      },
+      {
+        "source_id": "MaterialExpressionScalarParameter_0000020D06FC7440",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionMultiply_0000020D06FC1400",
+        "target_input": "B"
+      }
+    ],
+    "output_connections": [
+      {
+        "property": "EmissiveColor",
+        "expression_id": "MaterialExpressionMultiply_0000020D06FC1400",
+        "output_index": 0,
+        "output_name": ""
+      },
+      {
+        "property": "Opacity",
+        "expression_id": "MaterialExpressionMultiply_0000020D06FC3200",
+        "output_index": 0,
+        "output_name": ""
+      }
+    ]
+  }
+}

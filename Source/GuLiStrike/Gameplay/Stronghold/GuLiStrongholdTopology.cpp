@@ -11,7 +11,7 @@ void FGuLiStrongholdTopology::Initialize(TConstArrayView<FGuLiTerritoryDefinitio
 	for (int32 A = 0; A < Nodes.Num(); ++A)
 	{
 		Nodes[A].Id = Territories[A].TerritoryId;
-		Nodes[A].Center = Territories[A].Center;
+		Nodes[A].Center = Territories[A].OutpostGroundLocation;
 		for (int32 B = 0; B < Nodes.Num(); ++B)
 		{
 			const int32 X = FMath::Abs(int32(Territories[A].BoardColumn) - int32(Territories[B].BoardColumn));

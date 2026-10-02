@@ -1,0 +1,55 @@
+{
+  "success": true,
+  "scope": "源码静态检查，未编译或运行游戏",
+  "changed_source_files": 6,
+  "checks": [
+    {
+      "item": "预检顺序",
+      "result": "通过",
+      "evidence": "Submit 的既有身份/请求/选择版本校验后执行可达检查；失败返回早于 TickMoveBatches、CreateSharedMoveIntent、AdmitCommand、QueueMoveAdmission。"
+    },
+    {
+      "item": "整组保持原状态",
+      "result": "通过",
+      "evidence": "CanSelectionReachMoveTarget 为 const 查询；任一起始多边形不可达返回 false；拒绝分支不修改任务、队列、PendingMove、ActiveOrderId、速度或终点。"
+    },
+    {
+      "item": "导航与过滤",
+      "result": "通过",
+      "evidence": "指定 CommanderSoldier NavData 与默认过滤器，目标投影范围10/10/50厘米，TestPathSync Regular；同起点多边形仅检查一次，不依赖部队中心。 Querier与共享移动一致为nullptr。"
+    },
+    {
+      "item": "部分路径",
+      "result": "通过",
+      "evidence": "UE5.7 PImplRecastNavMesh.cpp DTStatusToNavQueryResult 将 DT_PARTIAL_RESULT 映射为 Fail，RecastNavMesh::TestPath 只将 Success 视为可达。"
+    },
+    {
+      "item": "回执与绿线",
+      "result": "通过",
+      "evidence": "Submit 的 PathFailed 原因由 ServerOrderedTask 进入现有回执；客户端在既有 CommandId 匹配后将本次 CommandLineState 置 None，不清除旧 ActiveMoveEndpoints。"
+    },
+    {
+      "item": "入口和接口",
+      "result": "通过",
+      "evidence": "战场右键、M 和小地图调用同一 OrderedTask/Submit；旧 Submit 重载保留，现有 QA/Probe 调用接口不变；无新增 Blueprint API、复制字段或协议枚举。"
+    },
+    {
+      "item": "diff --check",
+      "result": "通过",
+      "evidence": "退出码0；Git只提示现有CRLF规则，无空白错误。"
+    },
+    {
+      "item": "拒绝计数与旧调用兼容",
+      "result": "通过",
+      "evidence": "失败只更新拒绝回执的选择人数；旧Submit重载委托同一入口，现有测试/QA调用未改动。"
+    }
+  ],
+  "native_compile_executed": false,
+  "pie_started": false,
+  "automated_tests_added_or_run": false,
+  "runtime_effect_verified": false,
+  "limitations": [
+    "沿用现有导航查询节点预算16384；查询未能证明完整路径时拒绝新指令，不区分断区与搜索预算不足。",
+    "只在接收新指令时预检；已接受指令后的动态导航变化仍按现有运动恢复逻辑处理。"
+  ]
+}

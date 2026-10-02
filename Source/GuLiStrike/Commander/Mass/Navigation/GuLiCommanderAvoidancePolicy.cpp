@@ -3,6 +3,7 @@
 #include "Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h"
 
 #include "Avoidance/MassAvoidanceFragments.h"
+#include "Commander/GuLiCommanderSimulationTiming.h"
 #include "MassMovementFragments.h"
 
 namespace GuLiCommanderAvoidancePolicy
@@ -11,6 +12,8 @@ namespace GuLiCommanderAvoidancePolicy
 	{
 		bool IsCandidateBefore(const FNearestCandidate& Lhs, const FNearestCandidate& Rhs)
 		{
+			if (Lhs.bOverlapping != Rhs.bOverlapping) return Lhs.bOverlapping;
+			if (Lhs.TimeToCollision != Rhs.TimeToCollision) return Lhs.TimeToCollision < Rhs.TimeToCollision;
 			return Lhs.DistanceSquared < Rhs.DistanceSquared
 				|| (Lhs.DistanceSquared == Rhs.DistanceSquared && Lhs.StableKey < Rhs.StableKey);
 		}
@@ -81,22 +84,24 @@ namespace GuLiCommanderAvoidancePolicy
 			|| (DuePhaseMask & PhaseBit) != 0u;
 	}
 
-	FIntPoint MakeSpatialCell(const FVector& Location)
+	FIntPoint MakeSpatialCell(const FVector& Location, const float CellSize)
 	{
-		if (Location.ContainsNaN())
+		if (Location.ContainsNaN() || !FMath::IsFinite(CellSize) || CellSize <= 0.0f)
 		{
 			return FIntPoint::ZeroValue;
 		}
 		return FIntPoint(
-			FMath::FloorToInt(Location.X / SpatialCellSizeCentimeters),
-			FMath::FloorToInt(Location.Y / SpatialCellSizeCentimeters));
+			FMath::FloorToInt(Location.X / CellSize),
+			FMath::FloorToInt(Location.Y / CellSize));
 	}
 
 	int32 BuildSpatialGrid(
 		const TConstArrayView<FAgentSnapshot> Agents,
-		FAvoidanceSpatialGrid& InOutGrid)
+		FAvoidanceSpatialGrid& InOutGrid,
+		const float CellSize)
 	{
 		InOutGrid.Reset();
+		if (!FMath::IsFinite(CellSize) || CellSize <= 0.0f) return 0;
 		int32 MaximumBucketOccupancy = 0;
 		for (int32 AgentIndex = 0; AgentIndex < Agents.Num(); ++AgentIndex)
 		{
@@ -107,7 +112,7 @@ namespace GuLiCommanderAvoidancePolicy
 				continue;
 			}
 			const FVector Extent=Agent.bEnvironment ? FVector(Agent.Radius,Agent.Radius,0) : FVector::ZeroVector;
-			const auto Min=MakeSpatialCell(Agent.Location-Extent),Max=MakeSpatialCell(Agent.Location+Extent);
+			const auto Min=MakeSpatialCell(Agent.Location-Extent,CellSize),Max=MakeSpatialCell(Agent.Location+Extent,CellSize);
 			for (int32 X=Min.X; X<=Max.X; ++X) for (int32 Y=Min.Y; Y<=Max.Y; ++Y)
 			{
 				auto& Bucket=InOutGrid.FindOrAdd({X,Y}); Bucket.Add(AgentIndex);
@@ -123,13 +128,17 @@ namespace GuLiCommanderAvoidancePolicy
 		const FAvoidanceSpatialGrid& Grid,
 		FNearestCandidateList& OutCandidates,
 		const float DetectionDistance,
-		const float MaximumHeightDifference)
+		const float MaximumHeightDifference,
+		const float CellSize,
+		const float TimeHorizon)
 	{
 		FCandidateQueryMetrics Metrics;
 		OutCandidates.Reset();
 		if (!Agents.IsValidIndex(AgentIndex)
 			|| !FMath::IsFinite(DetectionDistance) || DetectionDistance <= 0.0f
-			|| !FMath::IsFinite(MaximumHeightDifference) || MaximumHeightDifference < 0.0f)
+			|| !FMath::IsFinite(MaximumHeightDifference) || MaximumHeightDifference < 0.0f
+			|| !FMath::IsFinite(CellSize) || CellSize <= 0.0f
+			|| !FMath::IsFinite(TimeHorizon) || TimeHorizon <= 0.0f)
 		{
 			return Metrics;
 		}
@@ -139,8 +148,8 @@ namespace GuLiCommanderAvoidancePolicy
 		{
 			return Metrics;
 		}
-		const int32 CellRadius = FMath::CeilToInt(DetectionDistance / SpatialCellSizeCentimeters);
-		const FIntPoint CenterCell = MakeSpatialCell(Agent.Location);
+		const int32 CellRadius = FMath::CeilToInt(DetectionDistance / CellSize);
+		const FIntPoint CenterCell = MakeSpatialCell(Agent.Location, CellSize);
 		const double DistanceCutoffSquared = FMath::Square(static_cast<double>(DetectionDistance));
 		TSet<int32> Seen; FNearestCandidateList Environment;
 		for (int32 CellX = CenterCell.X - CellRadius; CellX <= CenterCell.X + CellRadius; ++CellX)
@@ -178,6 +187,24 @@ namespace GuLiCommanderAvoidancePolicy
 					Candidate.AgentIndex = OtherIndex;
 					Candidate.DistanceSquared = DistanceSquared;
 					Candidate.StableKey = Other.StableKey;
+					Candidate.bOverlapping = CenterDistance < Agent.Radius + Other.Radius;
+					if (Candidate.bOverlapping) Candidate.TimeToCollision = 0.0;
+					else
+					{
+						const FVector P = (Agent.Location - Other.Location) * FVector(1, 1, 0);
+						const FVector AgentVelocity = Agent.DesiredVelocity.IsNearlyZero() ? Agent.Velocity : Agent.DesiredVelocity;
+						const FVector OtherVelocity = Other.DesiredVelocity.IsNearlyZero() ? Other.Velocity : Other.DesiredVelocity;
+						const FVector V = (AgentVelocity - OtherVelocity) * FVector(1, 1, 0);
+						const double A = V.SizeSquared();
+						const double B = FVector::DotProduct(P, V);
+						const double C = P.SizeSquared() - FMath::Square(Agent.Radius + Other.Radius);
+						const double Discriminant = B * B - A * C;
+						if (A > UE_SMALL_NUMBER && B < 0.0 && Discriminant >= 0.0)
+						{
+							const double T = (-B - FMath::Sqrt(Discriminant)) / A;
+							if (T <= TimeHorizon) Candidate.TimeToCollision = T;
+						}
+					}
 
 					auto& List=Other.bEnvironment ? Environment : OutCandidates;
 					const int32 Limit=Other.bEnvironment ? 4 : MaximumNearestCandidates;
@@ -198,7 +225,7 @@ namespace GuLiCommanderAvoidancePolicy
 				}
 			}
 		}
-		// Reserve two of the six CPA collider slots for environmental geometry.
+		// Reserve two of the twelve CPA collider slots for environmental geometry.
 		const int32 Reserved=FMath::Min(2,Environment.Num());
 		for (int32 I=Reserved-1; I>=0; --I) OutCandidates.Insert(Environment[I],0);
 		if (OutCandidates.Num()>MaximumNearestCandidates) OutCandidates.SetNum(MaximumNearestCandidates,EAllowShrinking::No);
@@ -213,9 +240,7 @@ namespace GuLiCommanderAvoidancePolicy
 		Result.PredictiveAvoidanceTime = FMath::Max(
 			AvoidanceParameters.PredictiveAvoidanceTime,
 			UE_KINDA_SMALL_NUMBER);
-		Result.PredictiveAvoidanceRadiusScale = FMath::Max(
-			AvoidanceParameters.PredictiveAvoidanceRadiusScale,
-			0.0f);
+		Result.PredictiveAvoidanceRadiusScale = 1.0f;
 		Result.PredictiveAvoidanceDistance = FMath::Max(
 			AvoidanceParameters.PredictiveAvoidanceDistance,
 			UE_KINDA_SMALL_NUMBER);
@@ -265,7 +290,7 @@ namespace GuLiCommanderAvoidancePolicy
 			AvoidanceParameters.EndOfPathAvoidanceScale,
 			1.0f,
 			NearEndFade);
-		return NearStartScaling * NearEndScaling;
+		return FMath::Max(0.5f, NearStartScaling * NearEndScaling);
 	}
 
 	FVector CalculatePredictiveAvoidance(
@@ -286,9 +311,11 @@ namespace GuLiCommanderAvoidancePolicy
 			return FVector::ZeroVector;
 		}
 
-		FVector DesiredVelocity = Agent.Velocity.GetClampedToMaxSize(Parameters.MaximumSpeed);
+		FVector DesiredVelocity = (Agent.DesiredVelocity.IsNearlyZero() ? Agent.Velocity : Agent.DesiredVelocity)
+			.GetClampedToMaxSize(Parameters.MaximumSpeed);
 		DesiredVelocity.Z = 0.0f;
 		FVector SteeringForce = FVector::ZeroVector;
+		FVector PassingAcceleration = FVector::ZeroVector;
 		const int32 ColliderCount = FMath::Min(Candidates.Num(), MaximumColliders);
 		for (int32 CandidateIndex = 0; CandidateIndex < ColliderCount; ++CandidateIndex)
 		{
@@ -307,7 +334,8 @@ namespace GuLiCommanderAvoidancePolicy
 
 			FVector RelativePosition = Agent.Location - Collider.Location;
 			RelativePosition.Z = 0.0f;
-			FVector ColliderVelocity = Collider.Velocity;
+			FVector ColliderVelocity = Collider.bMoving && !Collider.DesiredVelocity.IsNearlyZero()
+				? Collider.DesiredVelocity : Collider.Velocity;
 			ColliderVelocity.Z = 0.0f;
 			const FVector RelativeVelocity = DesiredVelocity - ColliderVelocity;
 			const double PredictiveRadius = Agent.Radius
@@ -335,8 +363,18 @@ namespace GuLiCommanderAvoidancePolicy
 				: Parameters.StandingObstacleAvoidanceScale;
 			SteeringForce += AvoidanceNormal * Magnitude * TimeScale
 				* Parameters.PredictiveAvoidanceStiffness * StandingScale;
+			// A shared right-hand convention breaks symmetric head-on deadlocks.
+			if (!Collider.bEnvironment && DesiredVelocity.SizeSquared2D() > 1.0
+				&& FVector::DotProduct(DesiredVelocity.GetSafeNormal2D(), ColliderVelocity.GetSafeNormal2D()) < -0.5)
+			{
+				const FVector Right = FVector::CrossProduct(FVector::UpVector, DesiredVelocity.GetSafeNormal2D());
+				PassingAcceleration += Right * (Parameters.MaximumSpeed * 0.25f
+					/ GuLiCommanderSimulationTiming::StepSeconds) * Magnitude * TimeScale;
+			}
 		}
 
+		SteeringForce += PassingAcceleration.GetClampedToMaxSize(Parameters.MaximumSpeed * 0.25f
+			/ GuLiCommanderSimulationTiming::StepSeconds);
 		SteeringForce *= FMath::Max(PathFade, 0.0f);
 		if (SteeringForce.ContainsNaN())
 		{

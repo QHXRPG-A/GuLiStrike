@@ -1,0 +1,5598 @@
+{
+  "name": "GuLiStrike_CommanderIsland_1800m_v1",
+  "seed": 20261001,
+  "physical_size_m": [
+    1800.0,
+    1800.0
+  ],
+  "land_limit_m": [
+    -800,
+    800
+  ],
+  "height_range_m": [
+    -20.0,
+    120.0
+  ],
+  "height_span_m": 140.0,
+  "sea_level_m": 0,
+  "sea_level_normalized": 0.14285714285714285,
+  "height_decode": "world_height_m = sample_u16/65535*140 - 20",
+  "pixel_orientation": "image top is +Y (north); image right is +X (east)",
+  "source_resolution": [
+    4096,
+    4096
+  ],
+  "design_resolution": [
+    1024,
+    1024
+  ],
+  "routes": [
+    {
+      "name": "Central",
+      "width_m": 60.0,
+      "minimum_width_m": 50.0,
+      "points": [
+        [
+          -390,
+          -350,
+          9
+        ],
+        [
+          0,
+          0,
+          18
+        ],
+        [
+          210,
+          240,
+          23
+        ],
+        [
+          390,
+          380,
+          26
+        ]
+      ]
+    },
+    {
+      "name": "West",
+      "width_m": 48.0,
+      "minimum_width_m": 40.0,
+      "points": [
+        [
+          -390,
+          -350,
+          9
+        ],
+        [
+          -560,
+          -170,
+          12
+        ],
+        [
+          -420,
+          180,
+          18
+        ],
+        [
+          -170,
+          440,
+          23
+        ],
+        [
+          170,
+          560,
+          26
+        ],
+        [
+          390,
+          380,
+          26
+        ]
+      ]
+    },
+    {
+      "name": "East",
+      "width_m": 48.0,
+      "minimum_width_m": 40.0,
+      "points": [
+        [
+          -390,
+          -350,
+          9
+        ],
+        [
+          -140,
+          -480,
+          13
+        ],
+        [
+          230,
+          -360,
+          19
+        ],
+        [
+          480,
+          -90,
+          31
+        ],
+        [
+          490,
+          80,
+          40
+        ],
+        [
+          390,
+          380,
+          26
+        ]
+      ]
+    },
+    {
+      "name": "NorthAccess",
+      "width_m": 60,
+      "minimum_width_m": 50,
+      "endpoint_pads": false,
+      "points": [
+        [
+          0,
+          740,
+          9
+        ],
+        [
+          0,
+          560,
+          9
+        ],
+        [
+          390,
+          380,
+          26
+        ]
+      ]
+    },
+    {
+      "name": "SouthAccess",
+      "width_m": 60,
+      "minimum_width_m": 50,
+      "endpoint_pads": false,
+      "points": [
+        [
+          0,
+          -740,
+          9
+        ],
+        [
+          0,
+          -560,
+          9
+        ],
+        [
+          -390,
+          -350,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C4_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -72.4286,
+          -733.8571,
+          9
+        ],
+        [
+          0,
+          -740,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C4_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          72.4286,
+          733.8571,
+          9
+        ],
+        [
+          0,
+          740,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -511.8571,
+          -254.7143,
+          9
+        ],
+        [
+          -560,
+          -170,
+          12
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -274.7143,
+          -511.8571,
+          9
+        ],
+        [
+          -140,
+          -480,
+          13
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C4_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          2.4286,
+          -416.8571,
+          9
+        ],
+        [
+          0,
+          -560,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C4_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          2.4286,
+          416.7143,
+          9
+        ],
+        [
+          0,
+          560,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C4_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          2.4286,
+          259.5714,
+          9
+        ],
+        [
+          2.4286,
+          416.7143,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          274.5714,
+          -511.8571,
+          9
+        ],
+        [
+          230,
+          -360,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C4_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          2.4286,
+          -254.7143,
+          9
+        ],
+        [
+          2.4286,
+          -416.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -254.7143,
+          -254.7143,
+          9
+        ],
+        [
+          -390,
+          -350,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R4C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -511.8571,
+          2.4286,
+          9
+        ],
+        [
+          -560,
+          -170,
+          12
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -264.7143,
+          269.5714,
+          9
+        ],
+        [
+          -420,
+          180,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -249.7143,
+          436.7143,
+          9
+        ],
+        [
+          -264.7143,
+          269.5714,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          259.5714,
+          -254.7143,
+          9
+        ],
+        [
+          282.94543117179416,
+          -318.075003178291,
+          14.0
+        ],
+        [
+          230,
+          -360,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          259.5714,
+          738.8571,
+          9
+        ],
+        [
+          72.4286,
+          733.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          259.5714,
+          596.7143,
+          9
+        ],
+        [
+          259.5714,
+          738.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          259.5714,
+          -739.0,
+          9
+        ],
+        [
+          72.4286,
+          -734.0,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -456.8571,
+          214.5714,
+          9
+        ],
+        [
+          -264.7143,
+          269.5714,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -744.0,
+          -254.7143,
+          9
+        ],
+        [
+          -560,
+          -170,
+          12
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -511.8571,
+          -511.8571,
+          9
+        ],
+        [
+          -390,
+          -350,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -654.0,
+          -659.0,
+          9
+        ],
+        [
+          -511.8571,
+          -511.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -739.0,
+          -511.8571,
+          9
+        ],
+        [
+          -654.0,
+          -659.0,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -501.8571,
+          -744.0,
+          9
+        ],
+        [
+          -654.0,
+          -659.0,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          204.5714,
+          199.5714,
+          9
+        ],
+        [
+          2.4286,
+          259.5714,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R4C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          259.5714,
+          2.4286,
+          9
+        ],
+        [
+          204.5714,
+          199.5714,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R4C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -734.0,
+          2.4286,
+          9
+        ],
+        [
+          -511.8571,
+          2.4286,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -254.7143,
+          -739.0,
+          9
+        ],
+        [
+          -274.7143,
+          -511.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          516.7143,
+          -511.8571,
+          9
+        ],
+        [
+          274.5714,
+          -511.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          713.8571,
+          -606.8571,
+          9
+        ],
+        [
+          516.7143,
+          -511.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          673.8571,
+          -669.0,
+          9
+        ],
+        [
+          713.8571,
+          -606.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          516.7143,
+          -749.0,
+          9
+        ],
+        [
+          673.8571,
+          -669.0,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R4C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -254.7143,
+          2.4286,
+          9
+        ],
+        [
+          -420,
+          180,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -254.7143,
+          743.8571,
+          9
+        ],
+        [
+          0,
+          740,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -734.0,
+          259.5714,
+          9
+        ],
+        [
+          -734.0,
+          2.4286,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -749.0,
+          511.7143,
+          9
+        ],
+        [
+          -734.0,
+          259.5714,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -586.8571,
+          531.7143,
+          9
+        ],
+        [
+          -749.0,
+          511.7143,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -674.0,
+          678.8571,
+          9
+        ],
+        [
+          -586.8571,
+          531.7143,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -516.8571,
+          748.8571,
+          9
+        ],
+        [
+          -674.0,
+          678.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          516.7143,
+          -254.7143,
+          9
+        ],
+        [
+          516.7143,
+          -511.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          723.8571,
+          -209.7143,
+          9
+        ],
+        [
+          516.7143,
+          -254.7143,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R4C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          733.8571,
+          2.4286,
+          9
+        ],
+        [
+          723.8571,
+          -209.7143,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R4C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          516.7143,
+          2.4286,
+          9
+        ],
+        [
+          733.8571,
+          2.4286,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          576.7143,
+          199.5714,
+          9
+        ],
+        [
+          516.7143,
+          2.4286,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          733.8571,
+          259.5714,
+          9
+        ],
+        [
+          576.7143,
+          199.5714,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          516.7143,
+          748.8571,
+          9
+        ],
+        [
+          259.5714,
+          738.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          556.7143,
+          576.7143,
+          9
+        ],
+        [
+          516.7143,
+          748.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          688.8571,
+          688.8571,
+          9
+        ],
+        [
+          556.7143,
+          576.7143,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          748.8571,
+          516.7143,
+          9
+        ],
+        [
+          688.8571,
+          688.8571,
+          9
+        ]
+      ]
+    }
+  ],
+  "pads": [
+    {
+      "name": "Southwest",
+      "center_m": [
+        -390,
+        -350
+      ],
+      "size_m": [
+        160,
+        160
+      ],
+      "height_m": 9.0
+    },
+    {
+      "name": "Northeast",
+      "center_m": [
+        390,
+        380
+      ],
+      "size_m": [
+        160,
+        160
+      ],
+      "height_m": 20
+    },
+    {
+      "name": "NorthDeployment",
+      "center_m": [
+        0,
+        560
+      ],
+      "size_m": [
+        450,
+        230
+      ],
+      "height_m": 9
+    },
+    {
+      "name": "SouthDeployment",
+      "center_m": [
+        0,
+        -560
+      ],
+      "size_m": [
+        450,
+        230
+      ],
+      "height_m": 9
+    },
+    {
+      "name": "NorthBase",
+      "center_m": [
+        0,
+        720
+      ],
+      "size_m": [
+        240,
+        80
+      ],
+      "height_m": 9
+    },
+    {
+      "name": "SouthBase",
+      "center_m": [
+        0,
+        -720
+      ],
+      "size_m": [
+        240,
+        80
+      ],
+      "height_m": 9
+    },
+    {
+      "name": "Outpost_R1C1",
+      "row": 1,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        771.4285714285716
+      ],
+      "center_m": [
+        -674.0,
+        678.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 0,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C2",
+      "row": 1,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        771.4285714285716
+      ],
+      "center_m": [
+        -516.8571,
+        748.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C3",
+      "row": 1,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        771.4285714285716
+      ],
+      "center_m": [
+        -254.7143,
+        743.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C4",
+      "row": 1,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        771.4285714285716
+      ],
+      "center_m": [
+        72.4286,
+        733.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Red",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R1C5",
+      "row": 1,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        771.4285714285716
+      ],
+      "center_m": [
+        259.5714,
+        738.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C6",
+      "row": 1,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        771.4285714285716
+      ],
+      "center_m": [
+        516.7143,
+        748.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C7",
+      "row": 1,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        771.4285714285716
+      ],
+      "center_m": [
+        688.8571,
+        688.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 0,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R2C1",
+      "row": 2,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        514.2857142857143
+      ],
+      "center_m": [
+        -749.0,
+        511.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R2C2",
+      "row": 2,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        514.2857142857143
+      ],
+      "center_m": [
+        -586.8571,
+        531.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R2C3",
+      "row": 2,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        514.2857142857143
+      ],
+      "center_m": [
+        -249.7143,
+        436.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R2C4",
+      "row": 2,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        514.2857142857143
+      ],
+      "center_m": [
+        2.4286,
+        416.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 2
+    },
+    {
+      "name": "Outpost_R2C5",
+      "row": 2,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        514.2857142857143
+      ],
+      "center_m": [
+        259.5714,
+        596.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R2C6",
+      "row": 2,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        514.2857142857143
+      ],
+      "center_m": [
+        556.7143,
+        576.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R2C7",
+      "row": 2,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        514.2857142857143
+      ],
+      "center_m": [
+        748.8571,
+        516.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R3C1",
+      "row": 3,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        257.14285714285717
+      ],
+      "center_m": [
+        -734.0,
+        259.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R3C2",
+      "row": 3,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        257.14285714285717
+      ],
+      "center_m": [
+        -456.8571,
+        214.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R3C3",
+      "row": 3,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        257.14285714285717
+      ],
+      "center_m": [
+        -264.7143,
+        269.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R3C4",
+      "row": 3,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        257.14285714285717
+      ],
+      "center_m": [
+        2.4286,
+        259.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 3
+    },
+    {
+      "name": "Outpost_R3C5",
+      "row": 3,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        257.14285714285717
+      ],
+      "center_m": [
+        204.5714,
+        199.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R3C6",
+      "row": 3,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        257.14285714285717
+      ],
+      "center_m": [
+        576.7143,
+        199.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 7,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R3C7",
+      "row": 3,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        257.14285714285717
+      ],
+      "center_m": [
+        733.8571,
+        259.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R4C1",
+      "row": 4,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        0.0
+      ],
+      "center_m": [
+        -734.0,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R4C2",
+      "row": 4,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        0.0
+      ],
+      "center_m": [
+        -511.8571,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 2
+    },
+    {
+      "name": "Outpost_R4C3",
+      "row": 4,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        0.0
+      ],
+      "center_m": [
+        -254.7143,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 3
+    },
+    {
+      "name": "Outpost_R4C4",
+      "row": 4,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        0.0
+      ],
+      "center_m": [
+        100,
+        110
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 8,
+      "red_cluster_budget": 6
+    },
+    {
+      "name": "Outpost_R4C5",
+      "row": 4,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        0.0
+      ],
+      "center_m": [
+        259.5714,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 3
+    },
+    {
+      "name": "Outpost_R4C6",
+      "row": 4,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        0.0
+      ],
+      "center_m": [
+        516.7143,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 2
+    },
+    {
+      "name": "Outpost_R4C7",
+      "row": 4,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        0.0
+      ],
+      "center_m": [
+        733.8571,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R5C1",
+      "row": 5,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        -257.14285714285717
+      ],
+      "center_m": [
+        -744.0,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R5C2",
+      "row": 5,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        -257.14285714285717
+      ],
+      "center_m": [
+        -511.8571,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 7,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R5C3",
+      "row": 5,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        -257.14285714285717
+      ],
+      "center_m": [
+        -254.7143,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R5C4",
+      "row": 5,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        -257.14285714285717
+      ],
+      "center_m": [
+        2.4286,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 3
+    },
+    {
+      "name": "Outpost_R5C5",
+      "row": 5,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        -257.14285714285717
+      ],
+      "center_m": [
+        259.5714,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R5C6",
+      "row": 5,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        -257.14285714285717
+      ],
+      "center_m": [
+        516.7143,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R5C7",
+      "row": 5,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        -257.14285714285717
+      ],
+      "center_m": [
+        723.8571,
+        -209.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R6C1",
+      "row": 6,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        -514.2857142857143
+      ],
+      "center_m": [
+        -739.0,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R6C2",
+      "row": 6,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        -514.2857142857143
+      ],
+      "center_m": [
+        -511.8571,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R6C3",
+      "row": 6,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        -514.2857142857143
+      ],
+      "center_m": [
+        -274.7143,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R6C4",
+      "row": 6,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        -514.2857142857143
+      ],
+      "center_m": [
+        2.4286,
+        -416.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 2
+    },
+    {
+      "name": "Outpost_R6C5",
+      "row": 6,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        -514.2857142857143
+      ],
+      "center_m": [
+        274.5714,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R6C6",
+      "row": 6,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        -514.2857142857143
+      ],
+      "center_m": [
+        516.7143,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R6C7",
+      "row": 6,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        -514.2857142857143
+      ],
+      "center_m": [
+        713.8571,
+        -606.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C1",
+      "row": 7,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        -771.4285714285716
+      ],
+      "center_m": [
+        -654.0,
+        -659.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 0,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C2",
+      "row": 7,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        -771.4285714285716
+      ],
+      "center_m": [
+        -501.8571,
+        -744.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C3",
+      "row": 7,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        -771.4285714285716
+      ],
+      "center_m": [
+        -254.7143,
+        -739.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C4",
+      "row": 7,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        -771.4285714285716
+      ],
+      "center_m": [
+        -72.4286,
+        -733.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Blue",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R7C5",
+      "row": 7,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        -771.4285714285716
+      ],
+      "center_m": [
+        259.5714,
+        -739.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C6",
+      "row": 7,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        -771.4285714285716
+      ],
+      "center_m": [
+        516.7143,
+        -749.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C7",
+      "row": 7,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        -771.4285714285716
+      ],
+      "center_m": [
+        673.8571,
+        -669.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 0,
+      "red_cluster_budget": 0
+    }
+  ],
+  "river_points": [
+    [
+      660,
+      370,
+      22
+    ],
+    [
+      620,
+      190,
+      16
+    ],
+    [
+      650,
+      -30,
+      8
+    ],
+    [
+      570,
+      -250,
+      3
+    ],
+    [
+      560,
+      -400,
+      -1
+    ],
+    [
+      620,
+      -500,
+      -5
+    ],
+    [
+      730,
+      -540,
+      -8
+    ],
+    [
+      840,
+      -570,
+      -16
+    ]
+  ],
+  "source_files": {
+    "foundation_height": "inputs/foundation_height.png",
+    "mountain_gain": "inputs/mountain_gain.png",
+    "hills_gain": "inputs/hills_gain.png",
+    "plateau_gain": "inputs/plateau_gain.png",
+    "canyon_gain": "inputs/canyon_gain.png",
+    "erosion_allowed": "inputs/erosion_allowed.png",
+    "protection": "inputs/protection.png",
+    "unprotected": "inputs/unprotected.png",
+    "land_outline": "inputs/land_outline.png",
+    "plateau_region": "inputs/plateau_region.png",
+    "mountain_region": "inputs/mountain_region.png",
+    "hills_region": "inputs/hills_region.png",
+    "canyon_region": "inputs/canyon_region.png",
+    "beach_region": "inputs/beach_region.png",
+    "water_region": "inputs/water_region.png",
+    "route_central": "inputs/route_central.png",
+    "route_west": "inputs/route_west.png",
+    "route_east": "inputs/route_east.png",
+    "route_northaccess": "inputs/route_northaccess.png",
+    "route_southaccess": "inputs/route_southaccess.png",
+    "route_outpost_r7c4_link": "inputs/route_outpost_r7c4_link.png",
+    "route_outpost_r1c4_link": "inputs/route_outpost_r1c4_link.png",
+    "route_outpost_r5c2_link": "inputs/route_outpost_r5c2_link.png",
+    "route_outpost_r6c3_link": "inputs/route_outpost_r6c3_link.png",
+    "route_outpost_r6c4_link": "inputs/route_outpost_r6c4_link.png",
+    "route_outpost_r2c4_link": "inputs/route_outpost_r2c4_link.png",
+    "route_outpost_r3c4_link": "inputs/route_outpost_r3c4_link.png",
+    "route_outpost_r6c5_link": "inputs/route_outpost_r6c5_link.png",
+    "route_outpost_r5c4_link": "inputs/route_outpost_r5c4_link.png",
+    "route_outpost_r5c3_link": "inputs/route_outpost_r5c3_link.png",
+    "route_outpost_r4c2_link": "inputs/route_outpost_r4c2_link.png",
+    "route_outpost_r3c3_link": "inputs/route_outpost_r3c3_link.png",
+    "route_outpost_r2c3_link": "inputs/route_outpost_r2c3_link.png",
+    "route_outpost_r5c5_link": "inputs/route_outpost_r5c5_link.png",
+    "route_outpost_r1c5_link": "inputs/route_outpost_r1c5_link.png",
+    "route_outpost_r2c5_link": "inputs/route_outpost_r2c5_link.png",
+    "route_outpost_r7c5_link": "inputs/route_outpost_r7c5_link.png",
+    "route_outpost_r3c2_link": "inputs/route_outpost_r3c2_link.png",
+    "route_outpost_r5c1_link": "inputs/route_outpost_r5c1_link.png",
+    "route_outpost_r6c2_link": "inputs/route_outpost_r6c2_link.png",
+    "route_outpost_r7c1_link": "inputs/route_outpost_r7c1_link.png",
+    "route_outpost_r6c1_link": "inputs/route_outpost_r6c1_link.png",
+    "route_outpost_r7c2_link": "inputs/route_outpost_r7c2_link.png",
+    "route_outpost_r3c5_link": "inputs/route_outpost_r3c5_link.png",
+    "route_outpost_r4c5_link": "inputs/route_outpost_r4c5_link.png",
+    "route_outpost_r4c1_link": "inputs/route_outpost_r4c1_link.png",
+    "route_outpost_r7c3_link": "inputs/route_outpost_r7c3_link.png",
+    "route_outpost_r6c6_link": "inputs/route_outpost_r6c6_link.png",
+    "route_outpost_r6c7_link": "inputs/route_outpost_r6c7_link.png",
+    "route_outpost_r7c7_link": "inputs/route_outpost_r7c7_link.png",
+    "route_outpost_r7c6_link": "inputs/route_outpost_r7c6_link.png",
+    "route_outpost_r4c3_link": "inputs/route_outpost_r4c3_link.png",
+    "route_outpost_r1c3_link": "inputs/route_outpost_r1c3_link.png",
+    "route_outpost_r3c1_link": "inputs/route_outpost_r3c1_link.png",
+    "route_outpost_r2c1_link": "inputs/route_outpost_r2c1_link.png",
+    "route_outpost_r2c2_link": "inputs/route_outpost_r2c2_link.png",
+    "route_outpost_r1c1_link": "inputs/route_outpost_r1c1_link.png",
+    "route_outpost_r1c2_link": "inputs/route_outpost_r1c2_link.png",
+    "route_outpost_r4c4_link": "inputs/route_outpost_r4c4_link.png",
+    "route_outpost_r5c6_link": "inputs/route_outpost_r5c6_link.png",
+    "route_outpost_r5c7_link": "inputs/route_outpost_r5c7_link.png",
+    "route_outpost_r4c7_link": "inputs/route_outpost_r4c7_link.png",
+    "route_outpost_r4c6_link": "inputs/route_outpost_r4c6_link.png",
+    "route_outpost_r3c6_link": "inputs/route_outpost_r3c6_link.png",
+    "route_outpost_r3c7_link": "inputs/route_outpost_r3c7_link.png",
+    "route_outpost_r1c6_link": "inputs/route_outpost_r1c6_link.png",
+    "route_outpost_r2c6_link": "inputs/route_outpost_r2c6_link.png",
+    "route_outpost_r1c7_link": "inputs/route_outpost_r1c7_link.png",
+    "route_outpost_r2c7_link": "inputs/route_outpost_r2c7_link.png"
+  },
+  "graph_parameters": {
+    "mountain_amplitude_m": 24,
+    "hills_amplitude_m": [
+      1.1,
+      4.2
+    ],
+    "plateau_amplitude_m": 3,
+    "canyon_amplitude_m": 2.5,
+    "erosion_duration": 12,
+    "erosion_downcutting": 0.05
+  },
+  "prompt": "自然非对称的战斗海岛，宽阔平原连接低丘、高台和峡谷，外围具有沙滩、浅湾及岩石陡岸；主岛连续，主要路线宽阔平缓，地形轮廓清楚。",
+  "outposts": [
+    {
+      "name": "Outpost_R1C1",
+      "row": 1,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        771.4285714285716
+      ],
+      "center_m": [
+        -674.0,
+        678.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 0,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C2",
+      "row": 1,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        771.4285714285716
+      ],
+      "center_m": [
+        -516.8571,
+        748.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C3",
+      "row": 1,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        771.4285714285716
+      ],
+      "center_m": [
+        -254.7143,
+        743.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C4",
+      "row": 1,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        771.4285714285716
+      ],
+      "center_m": [
+        72.4286,
+        733.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Red",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R1C5",
+      "row": 1,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        771.4285714285716
+      ],
+      "center_m": [
+        259.5714,
+        738.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C6",
+      "row": 1,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        771.4285714285716
+      ],
+      "center_m": [
+        516.7143,
+        748.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C7",
+      "row": 1,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        771.4285714285716
+      ],
+      "center_m": [
+        688.8571,
+        688.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 0,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R2C1",
+      "row": 2,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        514.2857142857143
+      ],
+      "center_m": [
+        -749.0,
+        511.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R2C2",
+      "row": 2,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        514.2857142857143
+      ],
+      "center_m": [
+        -586.8571,
+        531.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R2C3",
+      "row": 2,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        514.2857142857143
+      ],
+      "center_m": [
+        -249.7143,
+        436.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R2C4",
+      "row": 2,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        514.2857142857143
+      ],
+      "center_m": [
+        2.4286,
+        416.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 2
+    },
+    {
+      "name": "Outpost_R2C5",
+      "row": 2,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        514.2857142857143
+      ],
+      "center_m": [
+        259.5714,
+        596.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R2C6",
+      "row": 2,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        514.2857142857143
+      ],
+      "center_m": [
+        556.7143,
+        576.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R2C7",
+      "row": 2,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        514.2857142857143
+      ],
+      "center_m": [
+        748.8571,
+        516.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R3C1",
+      "row": 3,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        257.14285714285717
+      ],
+      "center_m": [
+        -734.0,
+        259.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R3C2",
+      "row": 3,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        257.14285714285717
+      ],
+      "center_m": [
+        -456.8571,
+        214.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R3C3",
+      "row": 3,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        257.14285714285717
+      ],
+      "center_m": [
+        -264.7143,
+        269.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R3C4",
+      "row": 3,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        257.14285714285717
+      ],
+      "center_m": [
+        2.4286,
+        259.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 3
+    },
+    {
+      "name": "Outpost_R3C5",
+      "row": 3,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        257.14285714285717
+      ],
+      "center_m": [
+        204.5714,
+        199.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R3C6",
+      "row": 3,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        257.14285714285717
+      ],
+      "center_m": [
+        576.7143,
+        199.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 7,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R3C7",
+      "row": 3,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        257.14285714285717
+      ],
+      "center_m": [
+        733.8571,
+        259.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R4C1",
+      "row": 4,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        0.0
+      ],
+      "center_m": [
+        -734.0,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R4C2",
+      "row": 4,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        0.0
+      ],
+      "center_m": [
+        -511.8571,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 2
+    },
+    {
+      "name": "Outpost_R4C3",
+      "row": 4,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        0.0
+      ],
+      "center_m": [
+        -254.7143,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 3
+    },
+    {
+      "name": "Outpost_R4C4",
+      "row": 4,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        0.0
+      ],
+      "center_m": [
+        100,
+        110
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 8,
+      "red_cluster_budget": 6
+    },
+    {
+      "name": "Outpost_R4C5",
+      "row": 4,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        0.0
+      ],
+      "center_m": [
+        259.5714,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 3
+    },
+    {
+      "name": "Outpost_R4C6",
+      "row": 4,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        0.0
+      ],
+      "center_m": [
+        516.7143,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 2
+    },
+    {
+      "name": "Outpost_R4C7",
+      "row": 4,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        0.0
+      ],
+      "center_m": [
+        733.8571,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R5C1",
+      "row": 5,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        -257.14285714285717
+      ],
+      "center_m": [
+        -744.0,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R5C2",
+      "row": 5,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        -257.14285714285717
+      ],
+      "center_m": [
+        -511.8571,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 7,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R5C3",
+      "row": 5,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        -257.14285714285717
+      ],
+      "center_m": [
+        -254.7143,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R5C4",
+      "row": 5,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        -257.14285714285717
+      ],
+      "center_m": [
+        2.4286,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 3
+    },
+    {
+      "name": "Outpost_R5C5",
+      "row": 5,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        -257.14285714285717
+      ],
+      "center_m": [
+        259.5714,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R5C6",
+      "row": 5,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        -257.14285714285717
+      ],
+      "center_m": [
+        516.7143,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R5C7",
+      "row": 5,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        -257.14285714285717
+      ],
+      "center_m": [
+        723.8571,
+        -209.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R6C1",
+      "row": 6,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        -514.2857142857143
+      ],
+      "center_m": [
+        -739.0,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R6C2",
+      "row": 6,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        -514.2857142857143
+      ],
+      "center_m": [
+        -511.8571,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R6C3",
+      "row": 6,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        -514.2857142857143
+      ],
+      "center_m": [
+        -274.7143,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R6C4",
+      "row": 6,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        -514.2857142857143
+      ],
+      "center_m": [
+        2.4286,
+        -416.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 2
+    },
+    {
+      "name": "Outpost_R6C5",
+      "row": 6,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        -514.2857142857143
+      ],
+      "center_m": [
+        274.5714,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R6C6",
+      "row": 6,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        -514.2857142857143
+      ],
+      "center_m": [
+        516.7143,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R6C7",
+      "row": 6,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        -514.2857142857143
+      ],
+      "center_m": [
+        713.8571,
+        -606.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C1",
+      "row": 7,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        -771.4285714285716
+      ],
+      "center_m": [
+        -654.0,
+        -659.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 0,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C2",
+      "row": 7,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        -771.4285714285716
+      ],
+      "center_m": [
+        -501.8571,
+        -744.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C3",
+      "row": 7,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        -771.4285714285716
+      ],
+      "center_m": [
+        -254.7143,
+        -739.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C4",
+      "row": 7,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        -771.4285714285716
+      ],
+      "center_m": [
+        -72.4286,
+        -733.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Blue",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R7C5",
+      "row": 7,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        -771.4285714285716
+      ],
+      "center_m": [
+        259.5714,
+        -739.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C6",
+      "row": 7,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        -771.4285714285716
+      ],
+      "center_m": [
+        516.7143,
+        -749.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C7",
+      "row": 7,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        -771.4285714285716
+      ],
+      "center_m": [
+        673.8571,
+        -669.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 0,
+      "red_cluster_budget": 0
+    }
+  ],
+  "board_dimension": 7,
+  "factory_anchors_m": {
+    "Red": [
+      0,
+      740
+    ],
+    "Blue": [
+      0,
+      -740
+    ]
+  },
+  "assembly_anchors_m": {
+    "Red": [
+      0,
+      690
+    ],
+    "Blue": [
+      0,
+      -690
+    ]
+  },
+  "budget_method": "9x9 area overlap resampling; rotational largest-remainder allocation; explicit paired land-capacity transfers including protected coast corners and full cluster footprints, preserving 200/40.",
+  "blue_budgets": [
+    [
+      0,
+      2,
+      2,
+      4,
+      6,
+      4,
+      0
+    ],
+    [
+      2,
+      4,
+      5,
+      6,
+      5,
+      6,
+      4
+    ],
+    [
+      2,
+      2,
+      6,
+      6,
+      6,
+      7,
+      3
+    ],
+    [
+      3,
+      5,
+      6,
+      8,
+      6,
+      5,
+      3
+    ],
+    [
+      3,
+      7,
+      6,
+      6,
+      6,
+      2,
+      2
+    ],
+    [
+      4,
+      6,
+      5,
+      6,
+      5,
+      4,
+      2
+    ],
+    [
+      0,
+      4,
+      6,
+      4,
+      2,
+      2,
+      0
+    ]
+  ],
+  "red_budgets": [
+    [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      2,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      1,
+      3,
+      1,
+      0,
+      0
+    ],
+    [
+      1,
+      2,
+      3,
+      6,
+      3,
+      2,
+      1
+    ],
+    [
+      0,
+      0,
+      1,
+      3,
+      1,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      2,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ]
+  ],
+  "source_revision": "GuLiStrike_CombatIsland_2300m_v1",
+  "terrain_grading_routes": [
+    {
+      "name": "Central",
+      "width_m": 60.0,
+      "minimum_width_m": 50.0,
+      "points": [
+        [
+          -390,
+          -350,
+          9
+        ],
+        [
+          0,
+          0,
+          18
+        ],
+        [
+          210,
+          240,
+          23
+        ],
+        [
+          390,
+          380,
+          26
+        ]
+      ]
+    },
+    {
+      "name": "West",
+      "width_m": 48.0,
+      "minimum_width_m": 40.0,
+      "points": [
+        [
+          -390,
+          -350,
+          9
+        ],
+        [
+          -560,
+          -170,
+          12
+        ],
+        [
+          -420,
+          180,
+          18
+        ],
+        [
+          -170,
+          440,
+          23
+        ],
+        [
+          170,
+          560,
+          26
+        ],
+        [
+          390,
+          380,
+          26
+        ]
+      ]
+    },
+    {
+      "name": "East",
+      "width_m": 48.0,
+      "minimum_width_m": 40.0,
+      "points": [
+        [
+          -390,
+          -350,
+          9
+        ],
+        [
+          -140,
+          -480,
+          13
+        ],
+        [
+          230,
+          -360,
+          19
+        ],
+        [
+          480,
+          -90,
+          31
+        ],
+        [
+          490,
+          80,
+          40
+        ],
+        [
+          390,
+          380,
+          26
+        ]
+      ]
+    },
+    {
+      "name": "NorthAccess",
+      "width_m": 60,
+      "minimum_width_m": 50,
+      "endpoint_pads": false,
+      "points": [
+        [
+          0,
+          740,
+          9
+        ],
+        [
+          0,
+          560,
+          9
+        ],
+        [
+          390,
+          380,
+          26
+        ]
+      ]
+    },
+    {
+      "name": "SouthAccess",
+      "width_m": 60,
+      "minimum_width_m": 50,
+      "endpoint_pads": false,
+      "points": [
+        [
+          0,
+          -740,
+          9
+        ],
+        [
+          0,
+          -560,
+          9
+        ],
+        [
+          -390,
+          -350,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C4_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          72.4286,
+          -734.0,
+          9
+        ],
+        [
+          0,
+          -740,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C4_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          72.4286,
+          733.8571,
+          9
+        ],
+        [
+          0,
+          740,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -511.8571,
+          -254.7143,
+          9
+        ],
+        [
+          -560,
+          -170,
+          12
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -274.7143,
+          -511.8571,
+          9
+        ],
+        [
+          -140,
+          -480,
+          13
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C4_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          2.4286,
+          -416.8571,
+          9
+        ],
+        [
+          0,
+          -560,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C4_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          2.4286,
+          416.7143,
+          9
+        ],
+        [
+          0,
+          560,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C4_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          2.4286,
+          259.5714,
+          9
+        ],
+        [
+          2.4286,
+          416.7143,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          274.5714,
+          -511.8571,
+          9
+        ],
+        [
+          230,
+          -360,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C4_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          2.4286,
+          -254.7143,
+          9
+        ],
+        [
+          2.4286,
+          -416.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -254.7143,
+          -254.7143,
+          9
+        ],
+        [
+          -390,
+          -350,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R4C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -511.8571,
+          2.4286,
+          9
+        ],
+        [
+          -560,
+          -170,
+          12
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -264.7143,
+          269.5714,
+          9
+        ],
+        [
+          -420,
+          180,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -249.7143,
+          436.7143,
+          9
+        ],
+        [
+          -264.7143,
+          269.5714,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          259.5714,
+          -254.7143,
+          9
+        ],
+        [
+          282.94543117179416,
+          -318.075003178291,
+          14.0
+        ],
+        [
+          230,
+          -360,
+          19
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          259.5714,
+          738.8571,
+          9
+        ],
+        [
+          72.4286,
+          733.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          259.5714,
+          596.7143,
+          9
+        ],
+        [
+          259.5714,
+          738.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          259.5714,
+          -739.0,
+          9
+        ],
+        [
+          72.4286,
+          -734.0,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -456.8571,
+          214.5714,
+          9
+        ],
+        [
+          -264.7143,
+          269.5714,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -744.0,
+          -254.7143,
+          9
+        ],
+        [
+          -560,
+          -170,
+          12
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -511.8571,
+          -511.8571,
+          9
+        ],
+        [
+          -390,
+          -350,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -654.0,
+          -659.0,
+          9
+        ],
+        [
+          -511.8571,
+          -511.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -739.0,
+          -511.8571,
+          9
+        ],
+        [
+          -654.0,
+          -659.0,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -501.8571,
+          -744.0,
+          9
+        ],
+        [
+          -654.0,
+          -659.0,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          204.5714,
+          199.5714,
+          9
+        ],
+        [
+          2.4286,
+          259.5714,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R4C5_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          259.5714,
+          2.4286,
+          9
+        ],
+        [
+          204.5714,
+          199.5714,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R4C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -734.0,
+          2.4286,
+          9
+        ],
+        [
+          -511.8571,
+          2.4286,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -254.7143,
+          -739.0,
+          9
+        ],
+        [
+          -274.7143,
+          -511.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          516.7143,
+          -511.8571,
+          9
+        ],
+        [
+          274.5714,
+          -511.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R6C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          713.8571,
+          -606.8571,
+          9
+        ],
+        [
+          516.7143,
+          -511.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          673.8571,
+          -669.0,
+          9
+        ],
+        [
+          713.8571,
+          -606.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R7C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          516.7143,
+          -749.0,
+          9
+        ],
+        [
+          673.8571,
+          -669.0,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R4C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -254.7143,
+          2.4286,
+          9
+        ],
+        [
+          -420,
+          180,
+          18
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C3_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -254.7143,
+          743.8571,
+          9
+        ],
+        [
+          0,
+          740,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -734.0,
+          259.5714,
+          9
+        ],
+        [
+          -734.0,
+          2.4286,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -749.0,
+          511.7143,
+          9
+        ],
+        [
+          -734.0,
+          259.5714,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -586.8571,
+          531.7143,
+          9
+        ],
+        [
+          -749.0,
+          511.7143,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C1_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -674.0,
+          678.8571,
+          9
+        ],
+        [
+          -586.8571,
+          531.7143,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C2_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          -516.8571,
+          748.8571,
+          9
+        ],
+        [
+          -674.0,
+          678.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R4C4_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          2.4286,
+          2.4286,
+          9
+        ],
+        [
+          2.4286,
+          259.5714,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          516.7143,
+          -254.7143,
+          9
+        ],
+        [
+          516.7143,
+          -511.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R5C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          723.8571,
+          -209.7143,
+          9
+        ],
+        [
+          516.7143,
+          -254.7143,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R4C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          733.8571,
+          2.4286,
+          9
+        ],
+        [
+          723.8571,
+          -209.7143,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R4C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          516.7143,
+          2.4286,
+          9
+        ],
+        [
+          733.8571,
+          2.4286,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          576.7143,
+          199.5714,
+          9
+        ],
+        [
+          516.7143,
+          2.4286,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R3C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          733.8571,
+          259.5714,
+          9
+        ],
+        [
+          576.7143,
+          199.5714,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          516.7143,
+          748.8571,
+          9
+        ],
+        [
+          259.5714,
+          738.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C6_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          556.7143,
+          576.7143,
+          9
+        ],
+        [
+          516.7143,
+          748.8571,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R1C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          688.8571,
+          688.8571,
+          9
+        ],
+        [
+          556.7143,
+          576.7143,
+          9
+        ]
+      ]
+    },
+    {
+      "name": "Outpost_R2C7_Link",
+      "width_m": 48,
+      "minimum_width_m": 40,
+      "endpoint_pads": false,
+      "points": [
+        [
+          748.8571,
+          516.7143,
+          9
+        ],
+        [
+          688.8571,
+          688.8571,
+          9
+        ]
+      ]
+    }
+  ],
+  "terrain_grading_pads": [
+    {
+      "name": "Southwest",
+      "center_m": [
+        -390,
+        -350
+      ],
+      "size_m": [
+        160,
+        160
+      ],
+      "height_m": 9.0
+    },
+    {
+      "name": "Northeast",
+      "center_m": [
+        390,
+        380
+      ],
+      "size_m": [
+        160,
+        160
+      ],
+      "height_m": 20
+    },
+    {
+      "name": "NorthDeployment",
+      "center_m": [
+        0,
+        560
+      ],
+      "size_m": [
+        450,
+        230
+      ],
+      "height_m": 9
+    },
+    {
+      "name": "SouthDeployment",
+      "center_m": [
+        0,
+        -560
+      ],
+      "size_m": [
+        450,
+        230
+      ],
+      "height_m": 9
+    },
+    {
+      "name": "NorthBase",
+      "center_m": [
+        0,
+        720
+      ],
+      "size_m": [
+        240,
+        80
+      ],
+      "height_m": 9
+    },
+    {
+      "name": "SouthBase",
+      "center_m": [
+        0,
+        -720
+      ],
+      "size_m": [
+        240,
+        80
+      ],
+      "height_m": 9
+    },
+    {
+      "name": "Outpost_R1C1",
+      "row": 1,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        771.4285714285716
+      ],
+      "center_m": [
+        -674.0,
+        678.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C2",
+      "row": 1,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        771.4285714285716
+      ],
+      "center_m": [
+        -516.8571,
+        748.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C3",
+      "row": 1,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        771.4285714285716
+      ],
+      "center_m": [
+        -254.7143,
+        743.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C4",
+      "row": 1,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        771.4285714285716
+      ],
+      "center_m": [
+        72.4286,
+        733.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Red",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R1C5",
+      "row": 1,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        771.4285714285716
+      ],
+      "center_m": [
+        259.5714,
+        738.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C6",
+      "row": 1,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        771.4285714285716
+      ],
+      "center_m": [
+        516.7143,
+        748.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R1C7",
+      "row": 1,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        771.4285714285716
+      ],
+      "center_m": [
+        688.8571,
+        688.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R2C1",
+      "row": 2,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        514.2857142857143
+      ],
+      "center_m": [
+        -749.0,
+        511.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R2C2",
+      "row": 2,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        514.2857142857143
+      ],
+      "center_m": [
+        -586.8571,
+        531.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R2C3",
+      "row": 2,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        514.2857142857143
+      ],
+      "center_m": [
+        -249.7143,
+        436.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R2C4",
+      "row": 2,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        514.2857142857143
+      ],
+      "center_m": [
+        2.4286,
+        416.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 2
+    },
+    {
+      "name": "Outpost_R2C5",
+      "row": 2,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        514.2857142857143
+      ],
+      "center_m": [
+        259.5714,
+        596.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R2C6",
+      "row": 2,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        514.2857142857143
+      ],
+      "center_m": [
+        556.7143,
+        576.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R2C7",
+      "row": 2,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        514.2857142857143
+      ],
+      "center_m": [
+        748.8571,
+        516.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R3C1",
+      "row": 3,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        257.14285714285717
+      ],
+      "center_m": [
+        -734.0,
+        259.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R3C2",
+      "row": 3,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        257.14285714285717
+      ],
+      "center_m": [
+        -456.8571,
+        214.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R3C3",
+      "row": 3,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        257.14285714285717
+      ],
+      "center_m": [
+        -264.7143,
+        269.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R3C4",
+      "row": 3,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        257.14285714285717
+      ],
+      "center_m": [
+        2.4286,
+        259.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 3
+    },
+    {
+      "name": "Outpost_R3C5",
+      "row": 3,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        257.14285714285717
+      ],
+      "center_m": [
+        204.5714,
+        199.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R3C6",
+      "row": 3,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        257.14285714285717
+      ],
+      "center_m": [
+        576.7143,
+        199.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R3C7",
+      "row": 3,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        257.14285714285717
+      ],
+      "center_m": [
+        733.8571,
+        259.5714
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R4C1",
+      "row": 4,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        0.0
+      ],
+      "center_m": [
+        -734.0,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R4C2",
+      "row": 4,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        0.0
+      ],
+      "center_m": [
+        -511.8571,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 2
+    },
+    {
+      "name": "Outpost_R4C3",
+      "row": 4,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        0.0
+      ],
+      "center_m": [
+        -254.7143,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 3
+    },
+    {
+      "name": "Outpost_R4C4",
+      "row": 4,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        0.0
+      ],
+      "center_m": [
+        100,
+        110
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 8,
+      "red_cluster_budget": 6
+    },
+    {
+      "name": "Outpost_R4C5",
+      "row": 4,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        0.0
+      ],
+      "center_m": [
+        259.5714,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 3
+    },
+    {
+      "name": "Outpost_R4C6",
+      "row": 4,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        0.0
+      ],
+      "center_m": [
+        516.7143,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 2
+    },
+    {
+      "name": "Outpost_R4C7",
+      "row": 4,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        0.0
+      ],
+      "center_m": [
+        733.8571,
+        2.4286
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R5C1",
+      "row": 5,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        -257.14285714285717
+      ],
+      "center_m": [
+        -744.0,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R5C2",
+      "row": 5,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        -257.14285714285717
+      ],
+      "center_m": [
+        -511.8571,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R5C3",
+      "row": 5,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        -257.14285714285717
+      ],
+      "center_m": [
+        -254.7143,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R5C4",
+      "row": 5,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        -257.14285714285717
+      ],
+      "center_m": [
+        2.4286,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 3
+    },
+    {
+      "name": "Outpost_R5C5",
+      "row": 5,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        -257.14285714285717
+      ],
+      "center_m": [
+        259.5714,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 6,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R5C6",
+      "row": 5,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        -257.14285714285717
+      ],
+      "center_m": [
+        516.7143,
+        -254.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R5C7",
+      "row": 5,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        -257.14285714285717
+      ],
+      "center_m": [
+        723.8571,
+        -209.7143
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R6C1",
+      "row": 6,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        -514.2857142857143
+      ],
+      "center_m": [
+        -739.0,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R6C2",
+      "row": 6,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        -514.2857142857143
+      ],
+      "center_m": [
+        -511.8571,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R6C3",
+      "row": 6,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        -514.2857142857143
+      ],
+      "center_m": [
+        -274.7143,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R6C4",
+      "row": 6,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        -514.2857142857143
+      ],
+      "center_m": [
+        2.4286,
+        -416.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 2
+    },
+    {
+      "name": "Outpost_R6C5",
+      "row": 6,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        -514.2857142857143
+      ],
+      "center_m": [
+        274.5714,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R6C6",
+      "row": 6,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        -514.2857142857143
+      ],
+      "center_m": [
+        516.7143,
+        -511.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 4,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R6C7",
+      "row": 6,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        -514.2857142857143
+      ],
+      "center_m": [
+        713.8571,
+        -606.8571
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C1",
+      "row": 7,
+      "column": 1,
+      "logical_center_m": [
+        -771.4285714285716,
+        -771.4285714285716
+      ],
+      "center_m": [
+        -654.0,
+        -659.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C2",
+      "row": 7,
+      "column": 2,
+      "logical_center_m": [
+        -514.2857142857143,
+        -771.4285714285716
+      ],
+      "center_m": [
+        -501.8571,
+        -744.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C3",
+      "row": 7,
+      "column": 3,
+      "logical_center_m": [
+        -257.14285714285717,
+        -771.4285714285716
+      ],
+      "center_m": [
+        -254.7143,
+        -739.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C4",
+      "row": 7,
+      "column": 4,
+      "logical_center_m": [
+        0.0,
+        -771.4285714285716
+      ],
+      "center_m": [
+        72.4286,
+        -734.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Blue",
+      "blue_cluster_budget": 5,
+      "red_cluster_budget": 1
+    },
+    {
+      "name": "Outpost_R7C5",
+      "row": 7,
+      "column": 5,
+      "logical_center_m": [
+        257.14285714285717,
+        -771.4285714285716
+      ],
+      "center_m": [
+        259.5714,
+        -739.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C6",
+      "row": 7,
+      "column": 6,
+      "logical_center_m": [
+        514.2857142857143,
+        -771.4285714285716
+      ],
+      "center_m": [
+        516.7143,
+        -749.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 3,
+      "red_cluster_budget": 0
+    },
+    {
+      "name": "Outpost_R7C7",
+      "row": 7,
+      "column": 7,
+      "logical_center_m": [
+        771.4285714285716,
+        -771.4285714285716
+      ],
+      "center_m": [
+        673.8571,
+        -669.0
+      ],
+      "size_m": [
+        30,
+        30
+      ],
+      "height_m": 9,
+      "initial_owner": "Neutral",
+      "blue_cluster_budget": 2,
+      "red_cluster_budget": 0
+    }
+  ]
+}

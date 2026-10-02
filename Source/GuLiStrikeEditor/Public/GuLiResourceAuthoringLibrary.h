@@ -7,6 +7,7 @@
 #include "GuLiResourceAuthoringLibrary.generated.h"
 
 class UGuLiResourceMapDefinition;
+class UWorld;
 
 USTRUCT(BlueprintType)
 struct GULISTRIKEEDITOR_API FGuLiResourceBakeResult
@@ -54,7 +55,7 @@ class GULISTRIKEEDITOR_API UGuLiResourceAuthoringLibrary final : public UBluepri
 	GENERATED_BODY()
 
 public:
-	/** Idempotently prepares the canonical 9x9 authoring data, then performs a strict bake. */
+	/** Prepares the 7x7 board around explicitly authored ground anchors, then performs a strict bake. */
 	UFUNCTION(BlueprintCallable, Category = "GuLiStrike|Editor|Resources")
 	static FGuLiResourceBakeResult PrepareCanonicalAuthoringAndBake(
 		bool bInitializeDensityWhenEmpty = true,
@@ -86,4 +87,6 @@ public:
 
 	static bool CalculateCurrentSourceHash(FString& OutHash, TArray<FString>& OutIssues);
 	static bool IsCanonicalResourceMap(const UWorld* World);
+	/** Required physical anchors for reservations and sampling; no grid-center substitution. */
+	static bool GetAuthoredOutpostGroundLocations(UWorld& World, TMap<FName, FVector>& OutLocations, FString& OutError);
 };

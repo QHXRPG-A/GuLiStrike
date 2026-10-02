@@ -1,0 +1,1309 @@
+{
+  "passed": true,
+  "stage": "final",
+  "resolution": [
+    4096,
+    4096
+  ],
+  "physical_size_m": [
+    1800.0,
+    1800.0
+  ],
+  "pixel_spacing_m": 0.43956043956043955,
+  "height_range_m": [
+    -20.0,
+    120.0
+  ],
+  "sea_level_m": 0,
+  "height_decode": "sample_u16/65535*140-20",
+  "land_bounds_m": [
+    -799.3406372070312,
+    795.8241577148438,
+    -795.8241577148438,
+    799.3406372070312
+  ],
+  "gentle_land_fraction": 0.8673166069241008,
+  "dry_land_area_km2": 2.3897836493177147,
+  "connectivity": {
+    "method": "full-resolution 4-neighbor run-length components",
+    "component_count": 1,
+    "largest_component_fraction": 1.0
+  },
+  "checks": {
+    "resolution": true,
+    "png_16bit": true,
+    "height_range": true,
+    "sea_floor": true,
+    "land_within_1800m": true,
+    "sixty_percent_gentle_land": true,
+    "route_Central": true,
+    "route_West": true,
+    "route_East": true,
+    "route_NorthAccess": true,
+    "route_SouthAccess": true,
+    "route_Outpost_R7C4_Link": true,
+    "route_Outpost_R1C4_Link": true,
+    "route_Outpost_R5C2_Link": true,
+    "route_Outpost_R6C3_Link": true,
+    "route_Outpost_R6C4_Link": true,
+    "route_Outpost_R2C4_Link": true,
+    "route_Outpost_R3C4_Link": true,
+    "route_Outpost_R6C5_Link": true,
+    "route_Outpost_R5C4_Link": true,
+    "route_Outpost_R5C3_Link": true,
+    "route_Outpost_R4C2_Link": true,
+    "route_Outpost_R3C3_Link": true,
+    "route_Outpost_R2C3_Link": true,
+    "route_Outpost_R5C5_Link": true,
+    "route_Outpost_R1C5_Link": true,
+    "route_Outpost_R2C5_Link": true,
+    "route_Outpost_R7C5_Link": true,
+    "route_Outpost_R3C2_Link": true,
+    "route_Outpost_R5C1_Link": true,
+    "route_Outpost_R6C2_Link": true,
+    "route_Outpost_R7C1_Link": true,
+    "route_Outpost_R6C1_Link": true,
+    "route_Outpost_R7C2_Link": true,
+    "route_Outpost_R3C5_Link": true,
+    "route_Outpost_R4C5_Link": true,
+    "route_Outpost_R4C1_Link": true,
+    "route_Outpost_R7C3_Link": true,
+    "route_Outpost_R6C6_Link": true,
+    "route_Outpost_R6C7_Link": true,
+    "route_Outpost_R7C7_Link": true,
+    "route_Outpost_R7C6_Link": true,
+    "route_Outpost_R4C3_Link": true,
+    "route_Outpost_R1C3_Link": true,
+    "route_Outpost_R3C1_Link": true,
+    "route_Outpost_R2C1_Link": true,
+    "route_Outpost_R2C2_Link": true,
+    "route_Outpost_R1C1_Link": true,
+    "route_Outpost_R1C2_Link": true,
+    "route_Outpost_R5C6_Link": true,
+    "route_Outpost_R5C7_Link": true,
+    "route_Outpost_R4C7_Link": true,
+    "route_Outpost_R4C6_Link": true,
+    "route_Outpost_R3C6_Link": true,
+    "route_Outpost_R3C7_Link": true,
+    "route_Outpost_R1C6_Link": true,
+    "route_Outpost_R2C6_Link": true,
+    "route_Outpost_R1C7_Link": true,
+    "route_Outpost_R2C7_Link": true,
+    "pad_Southwest": true,
+    "pad_Northeast": true,
+    "pad_NorthDeployment": true,
+    "pad_SouthDeployment": true,
+    "pad_NorthBase": true,
+    "pad_SouthBase": true,
+    "pad_Outpost_R1C1": true,
+    "pad_Outpost_R1C2": true,
+    "pad_Outpost_R1C3": true,
+    "pad_Outpost_R1C4": true,
+    "pad_Outpost_R1C5": true,
+    "pad_Outpost_R1C6": true,
+    "pad_Outpost_R1C7": true,
+    "pad_Outpost_R2C1": true,
+    "pad_Outpost_R2C2": true,
+    "pad_Outpost_R2C3": true,
+    "pad_Outpost_R2C4": true,
+    "pad_Outpost_R2C5": true,
+    "pad_Outpost_R2C6": true,
+    "pad_Outpost_R2C7": true,
+    "pad_Outpost_R3C1": true,
+    "pad_Outpost_R3C2": true,
+    "pad_Outpost_R3C3": true,
+    "pad_Outpost_R3C4": true,
+    "pad_Outpost_R3C5": true,
+    "pad_Outpost_R3C6": true,
+    "pad_Outpost_R3C7": true,
+    "pad_Outpost_R4C1": true,
+    "pad_Outpost_R4C2": true,
+    "pad_Outpost_R4C3": true,
+    "pad_Outpost_R4C4": true,
+    "pad_Outpost_R4C5": true,
+    "pad_Outpost_R4C6": true,
+    "pad_Outpost_R4C7": true,
+    "pad_Outpost_R5C1": true,
+    "pad_Outpost_R5C2": true,
+    "pad_Outpost_R5C3": true,
+    "pad_Outpost_R5C4": true,
+    "pad_Outpost_R5C5": true,
+    "pad_Outpost_R5C6": true,
+    "pad_Outpost_R5C7": true,
+    "pad_Outpost_R6C1": true,
+    "pad_Outpost_R6C2": true,
+    "pad_Outpost_R6C3": true,
+    "pad_Outpost_R6C4": true,
+    "pad_Outpost_R6C5": true,
+    "pad_Outpost_R6C6": true,
+    "pad_Outpost_R6C7": true,
+    "pad_Outpost_R7C1": true,
+    "pad_Outpost_R7C2": true,
+    "pad_Outpost_R7C3": true,
+    "pad_Outpost_R7C4": true,
+    "pad_Outpost_R7C5": true,
+    "pad_Outpost_R7C6": true,
+    "pad_Outpost_R7C7": true,
+    "connected_pads": true,
+    "connected_all_outposts_and_bases": true,
+    "unique_49_outposts": true,
+    "anchors_within_canonical_cell": true,
+    "budget_200_blue_40_red": true,
+    "single_main_landmass": true,
+    "gaea_build_success": true
+  },
+  "routes": [
+    {
+      "name": "Central",
+      "verified_width_m": 50.0,
+      "maximum_slope_degrees": 8.676664352416992,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "West",
+      "verified_width_m": 40.0,
+      "maximum_slope_degrees": 11.042180061340332,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "East",
+      "verified_width_m": 40.0,
+      "maximum_slope_degrees": 8.567855834960938,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "NorthAccess",
+      "verified_width_m": 50,
+      "maximum_slope_degrees": 11.142794609069824,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "SouthAccess",
+      "verified_width_m": 50,
+      "maximum_slope_degrees": 3.0600717067718506,
+      "minimum_height_m": 8.965591430664062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C4_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C4_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C2_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C3_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C4_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C4_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C4_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C5_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C4_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C3_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R4C2_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C3_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C3_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C5_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C5_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C5_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C5_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C2_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C1_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C2_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C1_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C1_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C2_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C5_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R4C5_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R4C1_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C3_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C6_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C7_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C7_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C6_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R4C3_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C3_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C1_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C1_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C2_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C1_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C2_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C6_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C7_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R4C7_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R4C6_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C6_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C7_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C6_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C6_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C7_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C7_Link",
+      "verified_width_m": 40,
+      "maximum_slope_degrees": 0.0,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    }
+  ],
+  "pads": [
+    {
+      "name": "Southwest",
+      "size_m": [
+        160,
+        160
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Northeast",
+      "size_m": [
+        160,
+        160
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0006103515625,
+      "passed": true
+    },
+    {
+      "name": "NorthDeployment",
+      "size_m": [
+        450,
+        230
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "SouthDeployment",
+      "size_m": [
+        450,
+        230
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "NorthBase",
+      "size_m": [
+        240,
+        80
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "SouthBase",
+      "size_m": [
+        240,
+        80
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C1",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C2",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C3",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C4",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C5",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C6",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R1C7",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C1",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C2",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C3",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C4",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C5",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C6",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R2C7",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C1",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C2",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C3",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C4",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C5",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C6",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R3C7",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R4C1",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R4C2",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R4C3",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R4C4",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R4C5",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R4C6",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R4C7",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C1",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C2",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C3",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C4",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C5",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C6",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R5C7",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C1",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C2",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C3",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C4",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C5",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C6",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R6C7",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C1",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C2",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C3",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C4",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C5",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C6",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    },
+    {
+      "name": "Outpost_R7C7",
+      "size_m": [
+        30,
+        30
+      ],
+      "maximum_slope_degrees": 0.0,
+      "maximum_height_error_m": 0.0002288818359375,
+      "passed": true
+    }
+  ],
+  "height_sha256": "1d7c0c2322e490239014d7fa08294be1609ab7c3941a3829569a912ce3dcb150",
+  "gaea_build_report": {
+    "$id": "1",
+    "Resolution": 4096,
+    "NodeCount": 39,
+    "Result": "Success",
+    "StartTime": "2026-10-01T17:43:15.015565+08:00",
+    "EndTime": "2026-10-01T17:43:49.4600868+08:00",
+    "Duration": "00:00:34.4445218",
+    "SecondsTaken": {
+      "$id": "2",
+      "$values": [
+        {
+          "$id": "3",
+          "Item1": "01 海岸与地形布局 / 2300m",
+          "Item2": "00:00:00.2080000"
+        },
+        {
+          "$id": "4",
+          "Item1": "02 西北山脊 / Seed 20261001",
+          "Item2": "00:00:08.5150000"
+        },
+        {
+          "$id": "5",
+          "Item1": "西北山地高度与区域遮罩",
+          "Item2": "00:00:00.1810000"
+        },
+        {
+          "$id": "6",
+          "Item1": "山脊区域化 / 最大增高24m",
+          "Item2": "00:00:00.0290000"
+        },
+        {
+          "$id": "7",
+          "Item1": "03 平原与低丘微地形",
+          "Item2": "00:00:00.1780000"
+        },
+        {
+          "$id": "8",
+          "Item1": "低丘细节高度遮罩",
+          "Item2": "00:00:00.1690000"
+        },
+        {
+          "$id": "9",
+          "Item1": "低丘区域化 / 1.1-4.2m",
+          "Item2": "00:00:00.0200000"
+        },
+        {
+          "$id": "10",
+          "Item1": "04 东侧高台表面",
+          "Item2": "00:00:01.7040000"
+        },
+        {
+          "$id": "11",
+          "Item1": "高台细节高度遮罩",
+          "Item2": "00:00:00.1230000"
+        },
+        {
+          "$id": "12",
+          "Item1": "高台区域化 / 3m",
+          "Item2": "00:00:00.0190000"
+        },
+        {
+          "$id": "13",
+          "Item1": "05 东侧峡谷侵蚀纹理",
+          "Item2": "00:00:06.9610000"
+        },
+        {
+          "$id": "14",
+          "Item1": "峡谷下切高度遮罩",
+          "Item2": "00:00:00.1860000"
+        },
+        {
+          "$id": "15",
+          "Item1": "峡谷区域化 / 2.5m",
+          "Item2": "00:00:00.0280000"
+        },
+        {
+          "$id": "16",
+          "Item1": "06 山地合成",
+          "Item2": "00:00:00.0200000"
+        },
+        {
+          "$id": "17",
+          "Item1": "07 丘陵合成",
+          "Item2": "00:00:00.0280000"
+        },
+        {
+          "$id": "18",
+          "Item1": "08 高台合成",
+          "Item2": "00:00:00.0340000"
+        },
+        {
+          "$id": "19",
+          "Item1": "09 峡谷合成",
+          "Item2": "00:00:00.0550000"
+        },
+        {
+          "$id": "20",
+          "Item1": "通路与集结区侵蚀保护",
+          "Item2": "00:00:00.1740000"
+        },
+        {
+          "$id": "21",
+          "Item1": "10 局部侵蚀 / 通路保护",
+          "Item2": "00:00:00.4670000"
+        },
+        {
+          "$id": "22",
+          "Item1": "可变化区域",
+          "Item2": "00:00:00.1920000"
+        },
+        {
+          "$id": "23",
+          "Item1": "稳定通路 / 集结区 / 海岸",
+          "Item2": "00:00:00.1940000"
+        },
+        {
+          "$id": "24",
+          "Item1": "11 非保护区域地形",
+          "Item2": "00:00:00.0240000"
+        },
+        {
+          "$id": "25",
+          "Item1": "12 保留路线与海岸",
+          "Item2": "00:00:00.0330000"
+        },
+        {
+          "$id": "26",
+          "Item1": "13 最终战斗海岛",
+          "Item2": "00:00:00.0370000"
+        },
+        {
+          "$id": "27",
+          "Item1": "14 高度图 / PNG16",
+          "Item2": "00:00:00.0080000"
+        },
+        {
+          "$id": "28",
+          "Item1": "15 地形色彩预览",
+          "Item2": "00:00:00.1750000"
+        },
+        {
+          "$id": "29",
+          "Item1": "16 色彩图 / PNG8",
+          "Item2": "00:00:00.0260000"
+        },
+        {
+          "$id": "30",
+          "Item1": "材质分区 / flat_ground",
+          "Item2": "00:00:00.2530000"
+        },
+        {
+          "$id": "31",
+          "Item1": "分区导出 / flat_ground",
+          "Item2": "00:00:00.0130000"
+        },
+        {
+          "$id": "32",
+          "Item1": "材质分区 / hills",
+          "Item2": "00:00:00.2130000"
+        },
+        {
+          "$id": "33",
+          "Item1": "分区导出 / hills",
+          "Item2": "00:00:00.0160000"
+        },
+        {
+          "$id": "34",
+          "Item1": "材质分区 / plateau",
+          "Item2": "00:00:00.1350000"
+        },
+        {
+          "$id": "35",
+          "Item1": "分区导出 / plateau",
+          "Item2": "00:00:00.0110000"
+        },
+        {
+          "$id": "36",
+          "Item1": "材质分区 / rock",
+          "Item2": "00:00:00.1790000"
+        },
+        {
+          "$id": "37",
+          "Item1": "分区导出 / rock",
+          "Item2": "00:00:00.0110000"
+        },
+        {
+          "$id": "38",
+          "Item1": "材质分区 / beach",
+          "Item2": "00:00:00.2000000"
+        },
+        {
+          "$id": "39",
+          "Item1": "分区导出 / beach",
+          "Item2": "00:00:00.0130000"
+        },
+        {
+          "$id": "40",
+          "Item1": "材质分区 / water",
+          "Item2": "00:00:00.2050000"
+        },
+        {
+          "$id": "41",
+          "Item1": "分区导出 / water",
+          "Item2": "00:00:00.0090000"
+        }
+      ]
+    },
+    "FastestNode": {
+      "$ref": "27"
+    },
+    "SlowestNode": {
+      "$ref": "4"
+    }
+  },
+  "mask_source_refreshed": false,
+  "validation_boundary": "Terrain data only; no Unreal import, navigation bake, or gameplay run.",
+  "compatibility": {
+    "resolution": [
+      4081,
+      4081
+    ],
+    "pixel_spacing_m": 0.4411764705882353,
+    "png": "height_4081.png",
+    "r16": "height_4081.r16",
+    "r16_bytes": 33309122,
+    "normalization_unchanged": true
+  }
+}

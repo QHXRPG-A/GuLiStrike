@@ -82,6 +82,10 @@ namespace GuLiCommanderNavigationPolicy
 		bool bReceivesAvoidance = false;
 		/** Zero keeps the legacy global minimum; static proxies use their actual footprint radius. */
 		float RadiusCentimeters = 0.0f;
+		FVector DesiredVelocity = FVector::ZeroVector;
+		float MaximumSpeed = 0.0f;
+		uint8 Team = 0u;
+		bool bCanBePushed = false;
 	};
 
 	/** Work counters produced by one manual-separation refresh. */
@@ -135,6 +139,13 @@ namespace GuLiCommanderNavigationPolicy
 		float AvoidanceStrength,
 		FManualAvoidanceSpatialGrid& InOutSpatialGrid,
 		TArray<FVector>& OutAvoidanceVelocities);
+
+	/** Simultaneous, bounded velocity corrections; stopped units yield only to friendly pressure. */
+	GULISTRIKE_API FManualAvoidanceMetrics SolveSoftAvoidanceVelocities(
+		TConstArrayView<FManualAvoidanceAgent> Agents,
+		float MaximumHeightDifferenceCentimeters,
+		FManualAvoidanceSpatialGrid& InOutSpatialGrid,
+		TArray<FVector>& OutVelocities);
 
 	/**
 	 * Finds the exact Commander SupportedAgent config. A Default-only list returns

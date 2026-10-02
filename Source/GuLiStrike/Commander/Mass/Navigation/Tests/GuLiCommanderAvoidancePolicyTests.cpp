@@ -254,8 +254,8 @@ namespace GuLiCommanderAvoidancePolicyTests
 		int32 DenseEvaluations = 0;
 		CalculatePredictiveAvoidance(
 			DenseAgents[0], DenseAgents, DenseCandidates, PredictiveA, 1.0f, DenseEvaluations);
-		TestEqual(TEXT("Predictive solving evaluates at most six Colliders"),
-			DenseEvaluations, MaximumColliders);
+		TestEqual(TEXT("Predictive solving evaluates the available Colliders within its budget"),
+			DenseEvaluations, FMath::Min(DenseCandidates.Num(), MaximumColliders));
 		return true;
 	}
 

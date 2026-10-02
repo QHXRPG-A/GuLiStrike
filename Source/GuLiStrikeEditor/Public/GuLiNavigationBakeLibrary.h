@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GuLiNavigationConnectivityLibrary.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "GuLiNavigationBakeLibrary.generated.h"
 
@@ -26,6 +27,7 @@ struct FGuLiNavigationBakeResult
 	UPROPERTY(BlueprintReadOnly) bool bSuccess = false;
 	UPROPERTY(BlueprintReadOnly) FString Message;
 	UPROPERTY(BlueprintReadOnly) TArray<FGuLiNavigationBakeEntry> Entries;
+	UPROPERTY(BlueprintReadOnly) FGuLiNavigationConnectivityResult GroundConnectivity;
 	UPROPERTY(BlueprintReadOnly) int32 GroundRebuilds = 0;
 	UPROPERTY(BlueprintReadOnly) int32 FlightRebuilds = 0;
 	UPROPERTY(BlueprintReadOnly) double SaveSeconds = 0;

@@ -187,7 +187,8 @@ void UGuLiCommanderNetSyncComponent::ServerOrderedTask_Implementation(FGuLiUnitT
 	}
 	int32 Accepted = 0, Rejected = 0; FString Message;
 	TSet<FGuLiTaskUnitId> AcceptedUnits;
-	const bool bAccepted = Tasks->Submit(*GetBattlePlayerState(), SelectionState, Command, Message, Accepted, Rejected, &AcceptedUnits);
+	EGuLiCommandAckResult RejectionReason;
+	const bool bAccepted = Tasks->Submit(*GetBattlePlayerState(), SelectionState, Command, Message, Accepted, Rejected, RejectionReason, &AcceptedUnits);
 	// The same frozen membership used for admission defines the per-member result masks.
 	for (const auto& Cohort : SelectionState.Cohorts)
 	{
@@ -201,7 +202,7 @@ void UGuLiCommanderNetSyncComponent::ServerOrderedTask_Implementation(FGuLiUnitT
 	}
 	for (auto Id : SelectionState.ActorIds)
 		Ack.EngineeringResults.Add({Id, AcceptedUnits.Contains(FGuLiTaskUnitId::Actor(Id)) ? EGuLiTransitOrderResult::Accepted : EGuLiTransitOrderResult::InvalidTarget});
-	Ack.Result = !bAccepted ? EGuLiCommandAckResult::InvalidTarget : Rejected ? EGuLiCommandAckResult::PartiallyAccepted : EGuLiCommandAckResult::Accepted;
+	Ack.Result = !bAccepted ? RejectionReason : Rejected ? EGuLiCommandAckResult::PartiallyAccepted : EGuLiCommandAckResult::Accepted;
 	Ack.ServerSelectionRevision = SelectionState.SelectionRevision;
 	const FString Counts = GuLiGameText::Format(TEXT("UI.OrderedCommands.101"), {FString::Printf(TEXT("%d"), Accepted), FString::Printf(TEXT("%d"), Rejected)});
 	ClientTaskReceipt(Ack, Message.IsEmpty() ? Counts : Counts + TEXT("：") + Message, Generation); NextOrderedSummaryTime = 0;

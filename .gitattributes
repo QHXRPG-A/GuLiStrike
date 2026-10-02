@@ -16,6 +16,9 @@
 *.tga filter=lfs diff=lfs merge=lfs -text
 *.mp4 filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
+*.r16 filter=lfs diff=lfs merge=lfs -text
+# Archived diffs preserve their original context indentation.
+Artifacts/Diagnostics/CommanderIslandSession_20261002/**/*.patch -whitespace
 
 # Normalize text line endings
 *.cpp text

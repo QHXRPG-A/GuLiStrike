@@ -1,0 +1,222 @@
+{
+  "name": "GuLiStrike_CombatIsland_2300m_v1",
+  "seed": 20261001,
+  "physical_size_m": [
+    2300.0,
+    2300.0
+  ],
+  "land_limit_m": [
+    -900,
+    900
+  ],
+  "height_range_m": [
+    -20.0,
+    120.0
+  ],
+  "height_span_m": 140.0,
+  "sea_level_m": 0,
+  "sea_level_normalized": 0.14285714285714285,
+  "height_decode": "world_height_m = sample_u16/65535*140 - 20",
+  "pixel_orientation": "image top is +Y (north); image right is +X (east)",
+  "source_resolution": [
+    4096,
+    4096
+  ],
+  "design_resolution": [
+    1024,
+    1024
+  ],
+  "routes": [
+    {
+      "name": "Central",
+      "width_m": 60.0,
+      "minimum_width_m": 50.0,
+      "points": [
+        [
+          -390,
+          -350,
+          9
+        ],
+        [
+          0,
+          0,
+          18
+        ],
+        [
+          210,
+          240,
+          23
+        ],
+        [
+          390,
+          380,
+          26
+        ]
+      ]
+    },
+    {
+      "name": "West",
+      "width_m": 48.0,
+      "minimum_width_m": 40.0,
+      "points": [
+        [
+          -390,
+          -350,
+          9
+        ],
+        [
+          -560,
+          -170,
+          12
+        ],
+        [
+          -420,
+          180,
+          18
+        ],
+        [
+          -170,
+          440,
+          23
+        ],
+        [
+          170,
+          560,
+          26
+        ],
+        [
+          390,
+          380,
+          26
+        ]
+      ]
+    },
+    {
+      "name": "East",
+      "width_m": 48.0,
+      "minimum_width_m": 40.0,
+      "points": [
+        [
+          -390,
+          -350,
+          9
+        ],
+        [
+          -140,
+          -480,
+          13
+        ],
+        [
+          230,
+          -360,
+          19
+        ],
+        [
+          480,
+          -90,
+          31
+        ],
+        [
+          490,
+          80,
+          40
+        ],
+        [
+          390,
+          380,
+          26
+        ]
+      ]
+    }
+  ],
+  "pads": [
+    {
+      "name": "Southwest",
+      "center_m": [
+        -390,
+        -350
+      ],
+      "size_m": [
+        160,
+        160
+      ],
+      "height_m": 9.0
+    },
+    {
+      "name": "Northeast",
+      "center_m": [
+        390,
+        380
+      ],
+      "size_m": [
+        160,
+        160
+      ],
+      "height_m": 26.0
+    }
+  ],
+  "river_points": [
+    [
+      660,
+      370,
+      22
+    ],
+    [
+      620,
+      190,
+      16
+    ],
+    [
+      650,
+      -30,
+      8
+    ],
+    [
+      570,
+      -250,
+      3
+    ],
+    [
+      560,
+      -400,
+      -1
+    ],
+    [
+      620,
+      -500,
+      -5
+    ]
+  ],
+  "source_files": {
+    "foundation_height": "inputs/foundation_height.png",
+    "mountain_gain": "inputs/mountain_gain.png",
+    "hills_gain": "inputs/hills_gain.png",
+    "plateau_gain": "inputs/plateau_gain.png",
+    "canyon_gain": "inputs/canyon_gain.png",
+    "erosion_allowed": "inputs/erosion_allowed.png",
+    "protection": "inputs/protection.png",
+    "unprotected": "inputs/unprotected.png",
+    "land_outline": "inputs/land_outline.png",
+    "plateau_region": "inputs/plateau_region.png",
+    "mountain_region": "inputs/mountain_region.png",
+    "hills_region": "inputs/hills_region.png",
+    "canyon_region": "inputs/canyon_region.png",
+    "beach_region": "inputs/beach_region.png",
+    "water_region": "inputs/water_region.png",
+    "route_central": "inputs/route_central.png",
+    "route_west": "inputs/route_west.png",
+    "route_east": "inputs/route_east.png"
+  },
+  "graph_parameters": {
+    "mountain_amplitude_m": 24,
+    "hills_amplitude_m": [
+      1.1,
+      4.2
+    ],
+    "plateau_amplitude_m": 3,
+    "canyon_amplitude_m": 2.5,
+    "erosion_duration": 12,
+    "erosion_downcutting": 0.05
+  },
+  "prompt": "自然非对称的战斗海岛，宽阔平原连接低丘、高台和峡谷，外围具有沙滩、浅湾及岩石陡岸；主岛连续，主要路线宽阔平缓，地形轮廓清楚。"
+}

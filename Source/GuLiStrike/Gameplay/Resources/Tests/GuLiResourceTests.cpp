@@ -97,10 +97,12 @@ bool FGuLiResourceBoardContractTest::RunTest(const FString& Parameters)
 	}
 	TestEqual(TEXT("Blue cluster budget totals 200"), BlueTotal, GULI_RESOURCE_BLUE_CLUSTER_COUNT);
 	TestEqual(TEXT("Red cluster budget totals 40"), RedTotal, GULI_RESOURCE_RED_CLUSTER_COUNT);
-	TestEqual(TEXT("R1C5 is the north home center"),
-		GuLiResources::GetTerritoryCenter(1, 5), FVector(0.0, 80000.0, 0.0));
-	TestEqual(TEXT("R9C5 is the south home center"),
-		GuLiResources::GetTerritoryCenter(9, 5), FVector(0.0, -80000.0, 0.0));
+	TestEqual(TEXT("R1C4 is the north home center"),
+		GuLiResources::GetTerritoryCenter(1, GULI_RESOURCE_BOARD_CENTER),
+		FVector(0.0, 3.0 * GULI_RESOURCE_TERRITORY_SIZE_CM, 0.0));
+	TestEqual(TEXT("R7C4 is the south home center"),
+		GuLiResources::GetTerritoryCenter(GULI_RESOURCE_BOARD_DIMENSION, GULI_RESOURCE_BOARD_CENTER),
+		FVector(0.0, -3.0 * GULI_RESOURCE_TERRITORY_SIZE_CM, 0.0));
 	return true;
 }
 
@@ -161,7 +163,7 @@ bool FGuLiResourceBakedAssetContractTest::RunTest(const FString& Parameters)
 		Definition->CalculateLayoutHash(), Definition->CalculateLayoutHash());
 	TestEqual(TEXT("Layout hash matches the stored bake"),
 		Definition->CalculateLayoutHash(), Definition->LayoutHash);
-	TestEqual(TEXT("Canonical bake contains 81 territories"),
+	TestEqual(TEXT("Canonical bake contains 49 territories"),
 		Definition->Territories.Num(), GULI_RESOURCE_TERRITORY_COUNT);
 	TestEqual(TEXT("Canonical bake contains 240 clusters"),
 		Definition->Clusters.Num(), GULI_RESOURCE_CLUSTER_COUNT);

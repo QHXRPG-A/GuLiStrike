@@ -1,0 +1,944 @@
+{
+  "name": "GuLiStrike_CommanderIsland_1800m_v1",
+  "source_project": "C:\\Users\\a\\Documents\\Gaea\\MCP\\Projects\\GuLiStrike_CommanderIsland_1800m_v1\\GuLiStrike_CommanderIsland_1800m_v1.terrain",
+  "source_project_sha256": "9a3b522ab2d2a17ddf7ca191736a850bb9608b5c06f5695f9ecc12d1d6ba6cf5",
+  "source_export_root": "C:\\Users\\a\\Documents\\Gaea\\MCP\\Builds\\GuLiStrike_CommanderIsland_1800m_v1\\final",
+  "source_sha256": {
+    "height_4096.png": "1d7c0c2322e490239014d7fa08294be1609ab7c3941a3829569a912ce3dcb150",
+    "height_4081.png": "0aeb086d708cf1df935c9177989b1d9b2cc61a8bd2b71a494a9b02e573bb14e5",
+    "height_4081.r16": "3890cc5ffbf81dce7412d64764985a615596e1d49477cb263f1d62c231bcec04",
+    "validation.json": "c5bd61c775aeca898050706207c2141a23b4e21c85c25902e1ed0bf50282ffb2",
+    "delivery-checks.json": "955ee3b155e90e42636c48d4c8192ef6bc1db28c1bd900864c647db5a2ca1145",
+    "topdown_preview.png": "cb4b093a3e1b3ce6cbada2b5803def7f3c2e7d46540536baf449a985e8954e15",
+    "routes_preview.png": "59b10c26d720a7e2f61c645ed072a7bfb4565243e335d6b61f936c577076f7ff",
+    "slope_preview.png": "631662ad3857ad4045d75eabb2002dca4a2036e10a505a256fb0374ea3a86561",
+    "mask_flat_ground.png": "85c3875a9483e70ec4597727e1425a9d6aa6f61d222c2e59b1bd218787a2a334",
+    "mask_hills.png": "4a55e4f716f2ca84d6243ab29a624a949ed540b7e3be049c25a8c317ae408e7c",
+    "mask_plateau.png": "ff4086e695e4e58c5311316fc6c3a517657c0331ba46625e2d404f6330e756a5",
+    "mask_rock.png": "fc016320f7b080a28b5d4e733d5b021719a6240d5e2ed72b2b150a47fe563cd0",
+    "mask_beach.png": "0a5301e496a555a7e8f01da746cebdae4d3a6d087470f9b01cbc71ec1557fc33",
+    "mask_water.png": "adf54603634ccffb419c360f71cf6d713c12d124b705a1347a8cc6e5af2499d4"
+  },
+  "ue_map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "ue_asset_root": "/Game/GuLiStrike/Environment/CommanderIsland_1800m_v1",
+  "height_png": "LandscapeInputs/height_4081_ue.png",
+  "height_r16": "LandscapeInputs/height_4081_ue.r16",
+  "packed_weights": "LandscapeInputs/weights_4081_x6.u8",
+  "packed_weights_sha256": "ef1e296ac2be09374806ce2e23134e169e5a8b26ff2ca93a78bcd8b621975a1b",
+  "height_sha256": "fe36d28e227e3cf5bd7c3b75fbe33d99eb1d151f37c7c3306caad845384baddf",
+  "resolution": [
+    4081,
+    4081
+  ],
+  "height_bit_depth": 16,
+  "extent_m": [
+    1800,
+    1800
+  ],
+  "height_range_m": [
+    -20,
+    120
+  ],
+  "sea_level_cm": 0,
+  "actor_location_cm": [
+    -90000,
+    -90000,
+    5000.106813153277
+  ],
+  "actor_scale": [
+    44.11764705882353,
+    44.11764705882353,
+    27.344167238879987
+  ],
+  "sections_per_component": 1,
+  "quads_per_section": 255,
+  "components_xy": [
+    16,
+    16
+  ],
+  "row_conversion": "Gaea top=+Y; UE first row=-Y. Height and all six weights are vertically flipped together.",
+  "height_decode": "world_cm = (u16 - 32768) / 128 * actor_scale.z + actor_location.z",
+  "weight_normalization": "Bilinear resample to 4081, normalize all six together, round to uint8 with residual in largest channel; each vertex sums to 255.",
+  "layers": [
+    {
+      "name": "FlatGround",
+      "source_mask": "GaeaExports/mask_flat_ground.png",
+      "weight_png": "LandscapeInputs/weight_FlatGround_4081.png",
+      "channel": 0,
+      "color_linear": [
+        0.205,
+        0.355,
+        0.092
+      ],
+      "weight_sha256": "1e85beabcb2502aa8c792d789ee93a409c085471b66f09c489ae91c71f8ad258",
+      "weight_min": 0,
+      "weight_max": 255
+    },
+    {
+      "name": "Hills",
+      "source_mask": "GaeaExports/mask_hills.png",
+      "weight_png": "LandscapeInputs/weight_Hills_4081.png",
+      "channel": 1,
+      "color_linear": [
+        0.145,
+        0.285,
+        0.078
+      ],
+      "weight_sha256": "ae1f4c2906d9e4743da9cead3321fca268a24d376a2482d89419ea5ff42ac342",
+      "weight_min": 0,
+      "weight_max": 255
+    },
+    {
+      "name": "Plateau",
+      "source_mask": "GaeaExports/mask_plateau.png",
+      "weight_png": "LandscapeInputs/weight_Plateau_4081.png",
+      "channel": 2,
+      "color_linear": [
+        0.31,
+        0.29,
+        0.13
+      ],
+      "weight_sha256": "27a698a4189d845699829a2320fd6ea49182317654e06140a3ffe52c2c9db893",
+      "weight_min": 0,
+      "weight_max": 255
+    },
+    {
+      "name": "Rock",
+      "source_mask": "GaeaExports/mask_rock.png",
+      "weight_png": "LandscapeInputs/weight_Rock_4081.png",
+      "channel": 3,
+      "color_linear": [
+        0.29,
+        0.31,
+        0.3
+      ],
+      "weight_sha256": "e071e50d2d4d08404c839ffe92fac7fcc694dba3d5abba001d19b4a4a61657b8",
+      "weight_min": 0,
+      "weight_max": 255
+    },
+    {
+      "name": "Beach",
+      "source_mask": "GaeaExports/mask_beach.png",
+      "weight_png": "LandscapeInputs/weight_Beach_4081.png",
+      "channel": 4,
+      "color_linear": [
+        0.67,
+        0.53,
+        0.25
+      ],
+      "weight_sha256": "f2180622c6947f35395d803b1f5547de07e53edd0533252bf30e4ac460cb0673",
+      "weight_min": 0,
+      "weight_max": 255
+    },
+    {
+      "name": "Water",
+      "source_mask": "GaeaExports/mask_water.png",
+      "weight_png": "LandscapeInputs/weight_Water_4081.png",
+      "channel": 5,
+      "color_linear": [
+        0.03,
+        0.12,
+        0.16
+      ],
+      "weight_sha256": "2b190829b1c8cca679ef275266145eb106abd9f0436f1b145ee96d6f21f9bfb4",
+      "weight_min": 0,
+      "weight_max": 255
+    }
+  ],
+  "checkpoints": [
+    {
+      "label": "Southwest_Pad",
+      "vertex": [
+        1156,
+        1247
+      ],
+      "world_xy_cm": [
+        -39000.0,
+        -34985.294117647056
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Northeast_Pad",
+      "vertex": [
+        2924,
+        2901
+      ],
+      "world_xy_cm": [
+        39000.0,
+        37985.29411764706
+      ],
+      "expected_u16": 18724,
+      "expected_height_cm": 1999.9389639124129
+    },
+    {
+      "label": "NorthDeployment_Pad",
+      "vertex": [
+        2040,
+        3309
+      ],
+      "world_xy_cm": [
+        0.0,
+        55985.29411764705
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "SouthDeployment_Pad",
+      "vertex": [
+        2040,
+        771
+      ],
+      "world_xy_cm": [
+        0.0,
+        -55985.294117647056
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "NorthBase_Pad",
+      "vertex": [
+        2040,
+        3672
+      ],
+      "world_xy_cm": [
+        0.0,
+        72000.0
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "SouthBase_Pad",
+      "vertex": [
+        2040,
+        408
+      ],
+      "world_xy_cm": [
+        0.0,
+        -72000.0
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R1C1_Pad",
+      "vertex": [
+        512,
+        3579
+      ],
+      "world_xy_cm": [
+        -67411.76470588235,
+        67897.0588235294
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R1C2_Pad",
+      "vertex": [
+        868,
+        3737
+      ],
+      "world_xy_cm": [
+        -51705.882352941175,
+        74867.64705882352
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R1C3_Pad",
+      "vertex": [
+        1463,
+        3726
+      ],
+      "world_xy_cm": [
+        -25455.882352941175,
+        74382.35294117648
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R1C4_Pad",
+      "vertex": [
+        2204,
+        3703
+      ],
+      "world_xy_cm": [
+        7235.294117647063,
+        73367.64705882352
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R1C5_Pad",
+      "vertex": [
+        2628,
+        3715
+      ],
+      "world_xy_cm": [
+        25941.176470588238,
+        73897.0588235294
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R1C6_Pad",
+      "vertex": [
+        3211,
+        3737
+      ],
+      "world_xy_cm": [
+        51661.76470588235,
+        74867.64705882352
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R1C7_Pad",
+      "vertex": [
+        3601,
+        3601
+      ],
+      "world_xy_cm": [
+        68867.64705882352,
+        68867.64705882352
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R2C1_Pad",
+      "vertex": [
+        342,
+        3200
+      ],
+      "world_xy_cm": [
+        -74911.76470588235,
+        51176.4705882353
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R2C2_Pad",
+      "vertex": [
+        710,
+        3245
+      ],
+      "world_xy_cm": [
+        -58676.470588235294,
+        53161.76470588235
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R2C3_Pad",
+      "vertex": [
+        1474,
+        3030
+      ],
+      "world_xy_cm": [
+        -24970.58823529412,
+        43676.4705882353
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R2C4_Pad",
+      "vertex": [
+        2046,
+        2985
+      ],
+      "world_xy_cm": [
+        264.7058823529369,
+        41691.17647058822
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R2C5_Pad",
+      "vertex": [
+        2628,
+        3393
+      ],
+      "world_xy_cm": [
+        25941.176470588238,
+        59691.17647058822
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R2C6_Pad",
+      "vertex": [
+        3302,
+        3347
+      ],
+      "world_xy_cm": [
+        55676.4705882353,
+        57661.76470588235
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R2C7_Pad",
+      "vertex": [
+        3737,
+        3211
+      ],
+      "world_xy_cm": [
+        74867.64705882352,
+        51661.76470588235
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R3C1_Pad",
+      "vertex": [
+        376,
+        2628
+      ],
+      "world_xy_cm": [
+        -73411.76470588235,
+        25941.176470588238
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R3C2_Pad",
+      "vertex": [
+        1004,
+        2526
+      ],
+      "world_xy_cm": [
+        -45705.882352941175,
+        21441.176470588238
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R3C3_Pad",
+      "vertex": [
+        1440,
+        2651
+      ],
+      "world_xy_cm": [
+        -26470.58823529412,
+        26955.882352941175
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R3C4_Pad",
+      "vertex": [
+        2046,
+        2628
+      ],
+      "world_xy_cm": [
+        264.7058823529369,
+        25941.176470588238
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R3C5_Pad",
+      "vertex": [
+        2504,
+        2492
+      ],
+      "world_xy_cm": [
+        20470.58823529411,
+        19941.176470588238
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R3C6_Pad",
+      "vertex": [
+        3347,
+        2492
+      ],
+      "world_xy_cm": [
+        57661.76470588235,
+        19941.176470588238
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R3C7_Pad",
+      "vertex": [
+        3703,
+        2628
+      ],
+      "world_xy_cm": [
+        73367.64705882352,
+        25941.176470588238
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R4C1_Pad",
+      "vertex": [
+        376,
+        2046
+      ],
+      "world_xy_cm": [
+        -73411.76470588235,
+        264.7058823529369
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R4C2_Pad",
+      "vertex": [
+        880,
+        2046
+      ],
+      "world_xy_cm": [
+        -51176.470588235294,
+        264.7058823529369
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R4C3_Pad",
+      "vertex": [
+        1463,
+        2046
+      ],
+      "world_xy_cm": [
+        -25455.882352941175,
+        264.7058823529369
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R4C4_Pad",
+      "vertex": [
+        2267,
+        2289
+      ],
+      "world_xy_cm": [
+        10014.705882352937,
+        10985.294117647063
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R4C5_Pad",
+      "vertex": [
+        2628,
+        2046
+      ],
+      "world_xy_cm": [
+        25941.176470588238,
+        264.7058823529369
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R4C6_Pad",
+      "vertex": [
+        3211,
+        2046
+      ],
+      "world_xy_cm": [
+        51661.76470588235,
+        264.7058823529369
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R4C7_Pad",
+      "vertex": [
+        3703,
+        2046
+      ],
+      "world_xy_cm": [
+        73367.64705882352,
+        264.7058823529369
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R5C1_Pad",
+      "vertex": [
+        354,
+        1463
+      ],
+      "world_xy_cm": [
+        -74382.35294117648,
+        -25455.882352941175
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R5C2_Pad",
+      "vertex": [
+        880,
+        1463
+      ],
+      "world_xy_cm": [
+        -51176.470588235294,
+        -25455.882352941175
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R5C3_Pad",
+      "vertex": [
+        1463,
+        1463
+      ],
+      "world_xy_cm": [
+        -25455.882352941175,
+        -25455.882352941175
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R5C4_Pad",
+      "vertex": [
+        2046,
+        1463
+      ],
+      "world_xy_cm": [
+        264.7058823529369,
+        -25455.882352941175
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R5C5_Pad",
+      "vertex": [
+        2628,
+        1463
+      ],
+      "world_xy_cm": [
+        25941.176470588238,
+        -25455.882352941175
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R5C6_Pad",
+      "vertex": [
+        3211,
+        1463
+      ],
+      "world_xy_cm": [
+        51661.76470588235,
+        -25455.882352941175
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R5C7_Pad",
+      "vertex": [
+        3681,
+        1565
+      ],
+      "world_xy_cm": [
+        72397.0588235294,
+        -20955.882352941175
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R6C1_Pad",
+      "vertex": [
+        365,
+        880
+      ],
+      "world_xy_cm": [
+        -73897.05882352941,
+        -51176.470588235294
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R6C2_Pad",
+      "vertex": [
+        880,
+        880
+      ],
+      "world_xy_cm": [
+        -51176.470588235294,
+        -51176.470588235294
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R6C3_Pad",
+      "vertex": [
+        1417,
+        880
+      ],
+      "world_xy_cm": [
+        -27485.294117647056,
+        -51176.470588235294
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R6C4_Pad",
+      "vertex": [
+        2046,
+        1095
+      ],
+      "world_xy_cm": [
+        264.7058823529369,
+        -41691.17647058824
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R6C5_Pad",
+      "vertex": [
+        2662,
+        880
+      ],
+      "world_xy_cm": [
+        27441.176470588238,
+        -51176.470588235294
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R6C6_Pad",
+      "vertex": [
+        3211,
+        880
+      ],
+      "world_xy_cm": [
+        51661.76470588235,
+        -51176.470588235294
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R6C7_Pad",
+      "vertex": [
+        3658,
+        664
+      ],
+      "world_xy_cm": [
+        71382.35294117648,
+        -60705.882352941175
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R7C1_Pad",
+      "vertex": [
+        558,
+        546
+      ],
+      "world_xy_cm": [
+        -65382.352941176476,
+        -65911.76470588235
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R7C2_Pad",
+      "vertex": [
+        902,
+        354
+      ],
+      "world_xy_cm": [
+        -50205.882352941175,
+        -74382.35294117648
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R7C3_Pad",
+      "vertex": [
+        1463,
+        365
+      ],
+      "world_xy_cm": [
+        -25455.882352941175,
+        -73897.05882352941
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R7C4_Pad",
+      "vertex": [
+        1876,
+        377
+      ],
+      "world_xy_cm": [
+        -7235.294117647063,
+        -73367.64705882352
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R7C5_Pad",
+      "vertex": [
+        2628,
+        365
+      ],
+      "world_xy_cm": [
+        25941.176470588238,
+        -73897.05882352941
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R7C6_Pad",
+      "vertex": [
+        3211,
+        342
+      ],
+      "world_xy_cm": [
+        51661.76470588235,
+        -74911.76470588235
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Outpost_R7C7_Pad",
+      "vertex": [
+        3567,
+        524
+      ],
+      "world_xy_cm": [
+        67367.64705882352,
+        -66882.35294117648
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Central_Plain",
+      "vertex": [
+        2040,
+        2040
+      ],
+      "world_xy_cm": [
+        0.0,
+        0.0
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "East_Canyon",
+      "vertex": [
+        3128,
+        1836
+      ],
+      "world_xy_cm": [
+        48000.0,
+        -9000.0
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Northwest_Ridge",
+      "vertex": [
+        907,
+        2947
+      ],
+      "world_xy_cm": [
+        -49985.294117647056,
+        40014.70588235294
+      ],
+      "expected_u16": 60658,
+      "expected_height_cm": 10958.144502937363
+    },
+    {
+      "label": "South_Bay",
+      "vertex": [
+        3173,
+        567
+      ],
+      "world_xy_cm": [
+        49985.29411764705,
+        -64985.29411764706
+      ],
+      "expected_u16": 13440,
+      "expected_height_cm": 871.1375600823985
+    },
+    {
+      "label": "Southwest_Seabed",
+      "vertex": [
+        113,
+        113
+      ],
+      "world_xy_cm": [
+        -85014.70588235294,
+        -85014.70588235294
+      ],
+      "expected_u16": 0,
+      "expected_height_cm": -2000.0
+    },
+    {
+      "label": "Highest_Peak",
+      "vertex": [
+        1031,
+        2868
+      ],
+      "world_xy_cm": [
+        -44514.705882352944,
+        36529.41176470589
+      ],
+      "expected_u16": 65535,
+      "expected_height_cm": 12000.0
+    }
+  ],
+  "source_prompt": "自然非对称的战斗海岛，宽阔平原连接低丘、高台和峡谷，外围具有沙滩、浅湾及岩石陡岸；主岛连续，主要路线宽阔平缓，地形轮廓清楚。"
+}

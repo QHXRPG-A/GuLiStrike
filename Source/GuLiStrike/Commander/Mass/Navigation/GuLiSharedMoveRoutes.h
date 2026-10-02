@@ -7,6 +7,20 @@
 class UNavigationSystemV1;
 struct FGuLiSharedRouteGoal;
 
+/** A direct leg is usable only from the checked foot position, on the same navigation generation. */
+struct FGuLiDirectMoveCheck
+{
+	TWeakObjectPtr<const ANavigationData> Data;
+	FNavLocation Start, Target;
+	uint32 Generation = 0;
+	bool bClear = false;
+	bool Matches(const ANavigationData& NavData, uint32 NavGeneration,
+		const FNavLocation& Position, const FNavLocation& Destination) const;
+	bool Update(const ANavigationData& NavData, uint32 NavGeneration,
+		const FNavLocation& Position, const FNavLocation& Destination,
+		FGuLiNavigationWorkBudget& Budget, const UObject* Querier);
+};
+
 /** One native NavMesh corridor, shared across control groups. No soldier connectors or slots. */
 struct FGuLiSharedMoveRoute
 {

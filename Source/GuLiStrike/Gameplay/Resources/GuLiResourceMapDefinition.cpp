@@ -63,7 +63,7 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 		|| Nodes.Num() != GULI_RESOURCE_NODE_COUNT)
 	{
 		return FailResourceDefinition(OutError, FString::Printf(
-			TEXT("Expected 81 territories, 240 clusters and 6240 nodes; got %d/%d/%d."),
+			TEXT("Expected 49 territories, 240 clusters and 6240 nodes; got %d/%d/%d."),
 			Territories.Num(), Clusters.Num(), Nodes.Num()));
 	}
 
@@ -249,6 +249,7 @@ FString UGuLiResourceMapDefinition::CalculateLayoutHash() const
 		HashValue(Hash, Territory.BlueClusterBudget);
 		HashValue(Hash, Territory.RedClusterBudget);
 		HashValue(Hash, Territory.Center);
+		HashValue(Hash, Territory.OutpostGroundLocation);
 		for (const FVector2D& Point : Territory.LocalPolygon) HashValue(Hash, Point);
 	}
 	for (const FGuLiResourceClusterDefinition& Cluster : Clusters)

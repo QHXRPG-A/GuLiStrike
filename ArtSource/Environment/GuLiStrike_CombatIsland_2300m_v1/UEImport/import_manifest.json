@@ -1,0 +1,255 @@
+{
+  "name": "GuLiStrike_CombatIsland_2300m_v1",
+  "source_project": "C:\\Users\\a\\Documents\\Gaea\\MCP\\Projects\\GuLiStrike_CombatIsland_2300m_v1\\GuLiStrike_CombatIsland_2300m_v1.terrain",
+  "source_project_sha256": "408e588e69d499a84ef6e5bf437af2533259205138e7883ece0044fe75371a66",
+  "source_export_root": "C:\\Users\\a\\Documents\\Gaea\\MCP\\Builds\\GuLiStrike_CombatIsland_2300m_v1\\final",
+  "source_sha256": {
+    "height_4096.png": "df70637304b7fb1445786b0e02b1e8213d6e58d1b8c1f2729b1a33eb1795f3b5",
+    "height_4081.png": "10eb77fd3e53afd5ce74ab0697fcf7e9f5141fe176f17dc29f925e2bec81fa38",
+    "height_4081.r16": "0ada035e9ec9c39756761ca572142b6bd63c268ef85c8c288724d62b5c898f7f",
+    "validation.json": "309de9b06890fb18dfa949887ca57b848195d6e80a046e0a33de891291fc8faa",
+    "delivery-checks.json": "81cd9812b83a718bdd4c90cd63fabc1cc7d440d173fd64d7d477a956ee341130",
+    "topdown_preview.png": "4f00e8976626a658f924fbf89ee01158351ff5ef53f89f5301aa8e08a73bc760",
+    "routes_preview.png": "944562b4d7f8fb9a8c11f38ed9bb911b26110473849703f86d527f396f70276d",
+    "slope_preview.png": "06ea46e42f9b4ae089afba333465700c845ec2125dc6106b7edc015a123ea4c2",
+    "mask_flat_ground.png": "6e005e0b16f8f4fbc8b251880c58e6af2db154a6ac7c888faee616a95748c5c8",
+    "mask_hills.png": "74ac9c013d0fc3f10ad9df6a6f4b0c907360eebfc4b9b94da458ff1f6e1faa36",
+    "mask_plateau.png": "d6bda22d1ec1ecc33d78b4a5395ab104db7e0d07d573dc14b0ba2adc6c8107be",
+    "mask_rock.png": "d191079b240b116b83098623c278d27c2ea3eac5557a239f9afc37009cbebdac",
+    "mask_beach.png": "e05ae00a18bd9b148811bb1851b53845e04097e1da419e1be2e40241c3d6636a",
+    "mask_water.png": "1c23ee83ed23f0cfae232a9f08067e3e9711c66a9b31dc829b8af36542ecaf3d"
+  },
+  "ue_map": "/Game/Maps/LVL_CombatIsland_2300m_v1",
+  "ue_asset_root": "/Game/GuLiStrike/Environment/CombatIsland_2300m_v1",
+  "height_png": "LandscapeInputs/height_4081_ue.png",
+  "height_r16": "LandscapeInputs/height_4081_ue.r16",
+  "packed_weights": "LandscapeInputs/weights_4081_x6.u8",
+  "packed_weights_sha256": "e8a62fece68a4046daa370c11adb6f021a935bab9a20888f1cc1fd3f3a5bd60c",
+  "height_sha256": "ff4f1d376214d2e95ca27740f0a3ac9bebfd5b0b81815ba1492092651783988c",
+  "resolution": [
+    4081,
+    4081
+  ],
+  "height_bit_depth": 16,
+  "extent_m": [
+    2300,
+    2300
+  ],
+  "height_range_m": [
+    -20,
+    120
+  ],
+  "sea_level_cm": 0,
+  "actor_location_cm": [
+    -115000,
+    -115000,
+    5000.106813153277
+  ],
+  "actor_scale": [
+    56.372549019607845,
+    56.372549019607845,
+    27.344167238879987
+  ],
+  "sections_per_component": 1,
+  "quads_per_section": 255,
+  "components_xy": [
+    16,
+    16
+  ],
+  "row_conversion": "Gaea top=+Y; UE first row=-Y. Height and all six weights are vertically flipped together.",
+  "height_decode": "world_cm = (u16 - 32768) / 128 * actor_scale.z + actor_location.z",
+  "weight_normalization": "Bilinear resample to 4081, normalize all six together, round to uint8 with residual in largest channel; each vertex sums to 255.",
+  "layers": [
+    {
+      "name": "FlatGround",
+      "source_mask": "GaeaExports/mask_flat_ground.png",
+      "weight_png": "LandscapeInputs/weight_FlatGround_4081.png",
+      "channel": 0,
+      "color_linear": [
+        0.205,
+        0.355,
+        0.092
+      ],
+      "weight_sha256": "40bbf5df707bb2049a96c1d3b777a799ca608e41661a2b6db7cb649192124a29",
+      "weight_min": 0,
+      "weight_max": 251
+    },
+    {
+      "name": "Hills",
+      "source_mask": "GaeaExports/mask_hills.png",
+      "weight_png": "LandscapeInputs/weight_Hills_4081.png",
+      "channel": 1,
+      "color_linear": [
+        0.145,
+        0.285,
+        0.078
+      ],
+      "weight_sha256": "d060490e46d47a776b725eb38e72c4caf1b356605a9aacf1b8dee408d0ca078e",
+      "weight_min": 0,
+      "weight_max": 255
+    },
+    {
+      "name": "Plateau",
+      "source_mask": "GaeaExports/mask_plateau.png",
+      "weight_png": "LandscapeInputs/weight_Plateau_4081.png",
+      "channel": 2,
+      "color_linear": [
+        0.31,
+        0.29,
+        0.13
+      ],
+      "weight_sha256": "8c7b965212a383359a432e7443f405d6719deed4a08bd44536ee87071a30c87c",
+      "weight_min": 0,
+      "weight_max": 255
+    },
+    {
+      "name": "Rock",
+      "source_mask": "GaeaExports/mask_rock.png",
+      "weight_png": "LandscapeInputs/weight_Rock_4081.png",
+      "channel": 3,
+      "color_linear": [
+        0.29,
+        0.31,
+        0.3
+      ],
+      "weight_sha256": "8725cbaf1af9b608a3789de638895bab3084c6b133ac206706551d7a0b235729",
+      "weight_min": 0,
+      "weight_max": 255
+    },
+    {
+      "name": "Beach",
+      "source_mask": "GaeaExports/mask_beach.png",
+      "weight_png": "LandscapeInputs/weight_Beach_4081.png",
+      "channel": 4,
+      "color_linear": [
+        0.67,
+        0.53,
+        0.25
+      ],
+      "weight_sha256": "ac71cdbab35115a4ab49ed2d0b25eeebf920ff87a1e90bcc44ccb70e0c64657b",
+      "weight_min": 0,
+      "weight_max": 255
+    },
+    {
+      "name": "Water",
+      "source_mask": "GaeaExports/mask_water.png",
+      "weight_png": "LandscapeInputs/weight_Water_4081.png",
+      "channel": 5,
+      "color_linear": [
+        0.03,
+        0.12,
+        0.16
+      ],
+      "weight_sha256": "3071d03ab50e40391ef9edd39d966525d55310138611faa9d984631356873c73",
+      "weight_min": 0,
+      "weight_max": 255
+    }
+  ],
+  "checkpoints": [
+    {
+      "label": "Southwest_Pad",
+      "vertex": [
+        1348,
+        1419
+      ],
+      "world_xy_cm": [
+        -39009.80392156863,
+        -35007.35294117646
+      ],
+      "expected_u16": 13575,
+      "expected_height_cm": 899.9771114671553
+    },
+    {
+      "label": "Northeast_Pad",
+      "vertex": [
+        2732,
+        2714
+      ],
+      "world_xy_cm": [
+        39009.803921568644,
+        37995.09803921569
+      ],
+      "expected_u16": 21533,
+      "expected_height_cm": 2600.015259021897
+    },
+    {
+      "label": "Central_Plain",
+      "vertex": [
+        2040,
+        2040
+      ],
+      "world_xy_cm": [
+        0.0,
+        0.0
+      ],
+      "expected_u16": 17788,
+      "expected_height_cm": 1799.9847409781032
+    },
+    {
+      "label": "East_Canyon",
+      "vertex": [
+        2891,
+        1880
+      ],
+      "world_xy_cm": [
+        47973.039215686294,
+        -9019.607843137244
+      ],
+      "expected_u16": 23873,
+      "expected_height_cm": 3099.900816357671
+    },
+    {
+      "label": "Northwest_Ridge",
+      "vertex": [
+        1153,
+        2750
+      ],
+      "world_xy_cm": [
+        -50002.450980392154,
+        40024.509803921566
+      ],
+      "expected_u16": 51693,
+      "expected_height_cm": 9042.984664682994
+    },
+    {
+      "label": "South_Bay",
+      "vertex": [
+        2927,
+        887
+      ],
+      "world_xy_cm": [
+        50002.45098039217,
+        -64997.54901960784
+      ],
+      "expected_u16": 2009,
+      "expected_height_cm": -1570.8247501335165
+    },
+    {
+      "label": "Southwest_Seabed",
+      "vertex": [
+        89,
+        89
+      ],
+      "world_xy_cm": [
+        -109982.84313725491,
+        -109982.84313725491
+      ],
+      "expected_u16": 0,
+      "expected_height_cm": -2000.0
+    },
+    {
+      "label": "Highest_Peak",
+      "vertex": [
+        1316,
+        2780
+      ],
+      "world_xy_cm": [
+        -40813.72549019607,
+        41715.68627450982
+      ],
+      "expected_u16": 65535,
+      "expected_height_cm": 12000.0
+    }
+  ],
+  "source_prompt": "自然非对称的战斗海岛，宽阔平原连接低丘、高台和峡谷，外围具有沙滩、浅湾及岩石陡岸；主岛连续，主要路线宽阔平缓，地形轮廓清楚。"
+}

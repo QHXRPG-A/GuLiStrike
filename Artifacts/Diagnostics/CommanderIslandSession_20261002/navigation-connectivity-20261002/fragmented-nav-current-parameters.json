@@ -1,0 +1,63 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "pie_active": false,
+    "navigation": [
+      {
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+        "properties": {
+          "CellSize": "50.000000",
+          "CellHeight": "5.000000",
+          "AgentMaxStepHeight": "7.000000",
+          "AgentMaxSlope": "44.000000",
+          "AgentRadius": "6.800000",
+          "AgentHeight": "28.799999",
+          "NavMeshResolutionParams": "(CellSize=38.000000,CellHeight=5.000000,AgentMaxStepHeight=7.000000)",
+          "DrawOffset": "10.000000",
+          "bEnableDrawing": "True",
+          "bDrawFilledPolys": "True",
+          "bDrawPolyEdges": "False",
+          "bDrawNavMeshEdges": "True",
+          "MaxSimplificationError": "1.300000",
+          "MinRegionArea": "0.000000",
+          "MergeRegionSize": "400.000000",
+          "RegionPartitioning": "Watershed",
+          "bPerformVoxelFiltering": "True",
+          "bFilterLowSpanSequences": "False",
+          "bFilterLowSpanFromTileCache": "False"
+        },
+        "python_resolution_type": "FixedArray",
+        "python_resolution_repr": "<FixedArray object at 0x000001C77C7B6D30>"
+      },
+      {
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+        "properties": {
+          "CellSize": "50.000000",
+          "CellHeight": "5.000000",
+          "AgentMaxStepHeight": "7.000000",
+          "AgentMaxSlope": "44.000000",
+          "AgentRadius": "150.000000",
+          "AgentHeight": "28.799999",
+          "NavMeshResolutionParams": "(CellSize=38.000000,CellHeight=5.000000,AgentMaxStepHeight=7.000000)",
+          "DrawOffset": "10.000000",
+          "bEnableDrawing": "False",
+          "bDrawFilledPolys": "True",
+          "bDrawPolyEdges": "False",
+          "bDrawNavMeshEdges": "True",
+          "MaxSimplificationError": "1.300000",
+          "MinRegionArea": "0.000000",
+          "MergeRegionSize": "400.000000",
+          "RegionPartitioning": "Watershed",
+          "bPerformVoxelFiltering": "True",
+          "bFilterLowSpanSequences": "False",
+          "bFilterLowSpanFromTileCache": "False"
+        },
+        "python_resolution_type": "FixedArray",
+        "python_resolution_repr": "<FixedArray object at 0x000001C77C7B7270>"
+      }
+    ]
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "saved": true,
+  "entities": [
+    {
+      "label": "QA_UnreachableMove_Entry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_59",
+      "class": "/Script/Engine.Note",
+      "location_cm": [
+        2498.5,
+        -2498.5,
+        1199.9771118164062
+      ],
+      "editor_only": true,
+      "collision": false,
+      "folder": "CommanderIsland/Review/UnreachableMove",
+      "text": "不可达新指令验收：本次原生代码需先编译加载。真实地图仍有导航断区，严格烘焙认证未通过；本场景不改变门禁。\n将本方地面单位移动到 Start 附近，按 S 停止，再对 RejectedGoal 下移动令：预期本次目标线消失、选择和停止状态保留。\n再向 OldGoal 下合法移动令，途中对 RejectedGoal 下令：预期继续走向 OldGoal，旧目标绿线保留；也核对 Shift 不追加无效目标。\n此处为编辑器说明，不会启动 PIE 或自动验收。"
+    },
+    {
+      "label": "QA_UnreachableMove_Start",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_60",
+      "class": "/Script/Engine.Note",
+      "location_cm": [
+        2498.5,
+        -2498.5,
+        1199.9771118164062
+      ],
+      "editor_only": true,
+      "collision": false,
+      "folder": "CommanderIsland/Review/UnreachableMove",
+      "text": "主区域落点（cm）：[2498.5, -2498.5, 899.9771118164062]。先将真实本方单位移到附近。来源是当前源世界 NavMesh 和 Landscape 的读取数据。"
+    },
+    {
+      "label": "QA_UnreachableMove_OldGoal",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_61",
+      "class": "/Script/Engine.Note",
+      "location_cm": [
+        -30343.0,
+        69255.0,
+        1373.44165
+      ],
+      "editor_only": true,
+      "collision": false,
+      "folder": "CommanderIsland/Review/UnreachableMove",
+      "text": "合法旧目标（cm）：[-30343.0, 69255.0, 1073.44165]。当前与 Start 双向可达；先下此令，再点 RejectedGoal，单位应继续原路线。"
+    },
+    {
+      "label": "QA_UnreachableMove_RejectedGoal",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_62",
+      "class": "/Script/Engine.Note",
+      "location_cm": [
+        -8896.75,
+        -959.5,
+        1229.4317016601562
+      ],
+      "editor_only": true,
+      "collision": false,
+      "folder": "CommanderIsland/Review/UnreachableMove",
+      "text": "应拒绝的新目标（cm）：[-8896.75, -959.5, 929.4317016601562]。当前与 Start 双向不连通；下令不能取消原任务、清空队列、改变速度或替换旧目标。"
+    },
+    {
+      "label": "QA_UnreachableMove_Overview",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_18",
+      "class": "/Script/Engine.CameraActor",
+      "location_cm": [
+        6000.0,
+        -14000.0,
+        26000.0
+      ],
+      "editor_only": true,
+      "collision": false,
+      "folder": "CommanderIsland/Review/UnreachableMove"
+    }
+  ],
+  "points_cm": {
+    "start": [
+      2498.5,
+      -2498.5,
+      899.9771118164062
+    ],
+    "old_goal": [
+      -30343.0,
+      69255.0,
+      1073.44165
+    ],
+    "rejected_goal": [
+      -8896.75,
+      -959.5,
+      929.4317016601562
+    ]
+  },
+  "entry": "QA_UnreachableMove_Entry",
+  "observation_camera": "QA_UnreachableMove_Overview",
+  "authoring_only": true,
+  "new_native_code_executed": false,
+  "pie_started": false,
+  "navigation_rebuilt": false,
+  "bake_certification_changed": false
+}

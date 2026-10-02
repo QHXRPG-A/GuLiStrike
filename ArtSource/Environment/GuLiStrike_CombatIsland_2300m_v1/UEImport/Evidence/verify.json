@@ -1,0 +1,227 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "map": "/Game/Maps/LVL_CombatIsland_2300m_v1.LVL_CombatIsland_2300m_v1",
+    "actor_label": "Landscape_CombatIsland_2300m_v1",
+    "resolution": [
+      4081,
+      4081
+    ],
+    "components": 256,
+    "component_size_quads": 255,
+    "location": [
+      -115000.0,
+      -115000.0,
+      5000.106813153277
+    ],
+    "scale": [
+      56.372549019607845,
+      56.372549019607845,
+      27.344167238879987
+    ],
+    "material": "/Game/GuLiStrike/Environment/CombatIsland_2300m_v1/Materials/M_CombatIsland_Zones.M_CombatIsland_Zones",
+    "target_layers": [
+      "FlatGround",
+      "Hills",
+      "Plateau",
+      "Rock",
+      "Beach",
+      "Water"
+    ],
+    "samples": [
+      {
+        "label": "Southwest_Pad",
+        "vertex": [
+          1348,
+          1419
+        ],
+        "world_xy_cm": [
+          -39009.80392156863,
+          -35007.35294117646
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFB8C0) {layer_name: \"FlatGround\", weight: 0.905882}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF1340) {layer_name: \"Hills\", weight: 0.094118}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFD140) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFD940) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF3BC0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF0800) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Northeast_Pad",
+        "vertex": [
+          2732,
+          2714
+        ],
+        "world_xy_cm": [
+          39009.803921568644,
+          37995.09803921569
+        ],
+        "expected_height_cm": 2600.015259021897,
+        "height_sample_cm": 2600.015380859375,
+        "height_vertex_cm": 2600.015380859375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF7060) {layer_name: \"FlatGround\", weight: 0.713726}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFDF80) {layer_name: \"Hills\", weight: 0.286275}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFEDA0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF8600) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF6120) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF8820) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Central_Plain",
+        "vertex": [
+          2040,
+          2040
+        ],
+        "world_xy_cm": [
+          0.0,
+          0.0
+        ],
+        "expected_height_cm": 1799.9847409781032,
+        "height_sample_cm": 1799.9847412109375,
+        "height_vertex_cm": 1799.9847412109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF9F80) {layer_name: \"FlatGround\", weight: 0.270588}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF0C40) {layer_name: \"Hills\", weight: 0.729412}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF5280) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF30A0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF2C80) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF17E0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "East_Canyon",
+        "vertex": [
+          2891,
+          1880
+        ],
+        "world_xy_cm": [
+          47973.039215686294,
+          -9019.607843137244
+        ],
+        "expected_height_cm": 3099.900816357671,
+        "height_sample_cm": 3099.90087890625,
+        "height_vertex_cm": 3099.90087890625,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF7680) {layer_name: \"FlatGround\", weight: 0.756863}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF08E0) {layer_name: \"Hills\", weight: 0.243137}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFDE00) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF2080) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFC000) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF9C00) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Northwest_Ridge",
+        "vertex": [
+          1153,
+          2750
+        ],
+        "world_xy_cm": [
+          -50002.450980392154,
+          40024.509803921566
+        ],
+        "expected_height_cm": 9042.984664682994,
+        "height_sample_cm": 9042.984375,
+        "height_vertex_cm": 9042.984375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF8AA0) {layer_name: \"FlatGround\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFAC60) {layer_name: \"Hills\", weight: 0.129412}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF0680) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFCF80) {layer_name: \"Rock\", weight: 0.870588}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF5C00) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFED60) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "South_Bay",
+        "vertex": [
+          2927,
+          887
+        ],
+        "world_xy_cm": [
+          50002.45098039217,
+          -64997.54901960784
+        ],
+        "expected_height_cm": -1570.8247501335165,
+        "height_sample_cm": -1570.82470703125,
+        "height_vertex_cm": -1570.8248291015625,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF8840) {layer_name: \"FlatGround\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFE6C0) {layer_name: \"Hills\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFCBA0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF62A0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFAE40) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF9060) {layer_name: \"Water\", weight: 1.000000}>"
+        ]
+      },
+      {
+        "label": "Southwest_Seabed",
+        "vertex": [
+          89,
+          89
+        ],
+        "world_xy_cm": [
+          -109982.84313725491,
+          -109982.84313725491
+        ],
+        "expected_height_cm": -2000.0,
+        "height_sample_cm": -2000.0,
+        "height_vertex_cm": -2000.0001220703125,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF9CE0) {layer_name: \"FlatGround\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF54E0) {layer_name: \"Hills\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF5680) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF9340) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF8CE0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFCDA0) {layer_name: \"Water\", weight: 1.000000}>"
+        ]
+      },
+      {
+        "label": "Highest_Peak",
+        "vertex": [
+          1316,
+          2780
+        ],
+        "world_xy_cm": [
+          -40813.72549019607,
+          41715.68627450982
+        ],
+        "expected_height_cm": 12000.0,
+        "height_sample_cm": 12000.0,
+        "height_vertex_cm": 12000.0,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF2440) {layer_name: \"FlatGround\", weight: 0.003922}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFCAA0) {layer_name: \"Hills\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF2480) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BF7A80) {layer_name: \"Rock\", weight: 0.996078}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFAE60) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000020D02BFCD40) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      }
+    ],
+    "height_export": "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CombatIsland_2300m_v1\\UEImport\\Evidence\\height_ue_readback.png",
+    "layer_exports": [
+      "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CombatIsland_2300m_v1\\UEImport\\Evidence\\weight_ue_readback_FlatGround.png",
+      "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CombatIsland_2300m_v1\\UEImport\\Evidence\\weight_ue_readback_Hills.png",
+      "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CombatIsland_2300m_v1\\UEImport\\Evidence\\weight_ue_readback_Plateau.png",
+      "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CombatIsland_2300m_v1\\UEImport\\Evidence\\weight_ue_readback_Rock.png",
+      "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CombatIsland_2300m_v1\\UEImport\\Evidence\\weight_ue_readback_Beach.png",
+      "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CombatIsland_2300m_v1\\UEImport\\Evidence\\weight_ue_readback_Water.png"
+    ],
+    "dirty": {
+      "maps": [
+        "/Game/Maps/LVL_CombatIsland_2300m_v1"
+      ],
+      "assets": []
+    }
+  }
+}

@@ -7,6 +7,7 @@
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Components/HierarchicalInstancedStaticMeshComponent.h"
+#include "Components/BoxComponent.h"
 #include "Components/SceneComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -15,19 +16,6 @@
 #include "NavModifierComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "UObject/ConstructorHelpers.h"
-
-namespace
-{
-	FLinearColor GetTeamColor(const EGuLiTeam Team)
-	{
-		switch (Team)
-		{
-		case EGuLiTeam::Red: return FLinearColor(0.8f, 0.035f, 0.02f, 1.0f);
-		case EGuLiTeam::Blue: return FLinearColor(0.01f, 0.16f, 0.9f, 1.0f);
-		default: return FLinearColor(0.18f, 0.18f, 0.18f, 1.0f);
-		}
-	}
-}
 
 AGuLiOreFieldActor::AGuLiOreFieldActor()
 {
@@ -351,16 +339,14 @@ AGuLiTerritoryOutpostActor::AGuLiTerritoryOutpostActor()
 	bReplicates = true;
 	bAlwaysRelevant = true;
 	SetReplicateMovement(false);
-	LandmarkMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Landmark"));
-	RootComponent = LandmarkMesh;
-	LandmarkMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	LandmarkMesh->SetCollisionObjectType(ECC_WorldStatic);
-	LandmarkMesh->SetCollisionResponseToAllChannels(ECR_Block);
-	LandmarkMesh->SetCanEverAffectNavigation(true);
-	LandmarkMesh->SetRelativeScale3D(FVector(6.0f, 6.0f, 10.0f));
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshFinder(
-		TEXT("/Engine/BasicShapes/Cylinder.Cylinder"));
-	if (MeshFinder.Succeeded()) LandmarkMesh->SetStaticMesh(MeshFinder.Object);
+	GroundCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("GroundCollision"));
+	RootComponent = GroundCollision;
+	GroundCollision->SetBoxExtent(FVector(300.0f, 300.0f, 500.0f));
+	GroundCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GroundCollision->SetCollisionObjectType(ECC_WorldStatic);
+	GroundCollision->SetCollisionResponseToAllChannels(ECR_Block);
+	GroundCollision->SetCanEverAffectNavigation(true);
+	Presentation = CreateDefaultSubobject<UGuLiOutpostPresentationComponent>(TEXT("Presentation"));
 }
 
 void AGuLiTerritoryOutpostActor::GetLifetimeReplicatedProps(
@@ -369,7 +355,7 @@ void AGuLiTerritoryOutpostActor::GetLifetimeReplicatedProps(
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AGuLiTerritoryOutpostActor, TerritoryIndex);
 	DOREPLIFETIME(AGuLiTerritoryOutpostActor, TerritoryId);
-	DOREPLIFETIME(AGuLiTerritoryOutpostActor, TerritoryOwner);
+	DOREPLIFETIME(AGuLiTerritoryOutpostActor, OwnerState);
 }
 
 void AGuLiTerritoryOutpostActor::InitializeOutpost(
@@ -379,8 +365,10 @@ void AGuLiTerritoryOutpostActor::InitializeOutpost(
 {
 	TerritoryIndex = InTerritoryIndex;
 	TerritoryId = InTerritoryId;
-	TerritoryOwner = InOwner;
-	ApplyOwnerColor();
+	OwnerState.Team = InOwner;
+	OwnerState.FloatEpochServerTime = GetWorld()->GetTimeSeconds();
+	OwnerState.ChangedServerTime = OwnerState.FloatEpochServerTime;
+	Presentation->ApplyOwnerState(OwnerState);
 	FindComponentByClass<UGuLiBuildingLifecycleComponent>()->InitializeBuilding(7, InTerritoryIndex, EGuLiBuildingOrigin::Map, true);
 	FindComponentByClass<UGuLiStrongholdCaptureComponent>()->InitializeCapture(InTerritoryIndex, InOwner);
 	FindComponentByClass<UGuLiStrongholdFacilitiesComponent>()->InitializeFacilities();
@@ -394,28 +382,20 @@ void AGuLiTerritoryOutpostActor::SetBuildingTeamAuthority(EGuLiTeam NewTeam)
 
 void AGuLiTerritoryOutpostActor::SetTerritoryOwnerAuthority(const EGuLiTeam InOwner)
 {
-	if (HasAuthority() && TerritoryOwner != InOwner)
+	if (HasAuthority() && OwnerState.Team != InOwner)
 	{
-		TerritoryOwner = InOwner;
+		const double Now = GetWorld()->GetTimeSeconds();
+		if (OwnerState.Team == EGuLiTeam::Unassigned && InOwner != EGuLiTeam::Unassigned)
+			OwnerState.FloatEpochServerTime = Now;
+		OwnerState.Team = InOwner;
+		OwnerState.ChangedServerTime = Now;
 		FindComponentByClass<UGuLiStrongholdFacilitiesComponent>()->HandleOwnerChanged(InOwner);
-		ApplyOwnerColor();
+		Presentation->ApplyOwnerState(OwnerState);
 		ForceNetUpdate();
 	}
 }
 
-void AGuLiTerritoryOutpostActor::OnRep_TerritoryOwner()
+void AGuLiTerritoryOutpostActor::OnRep_OwnerState()
 {
-	ApplyOwnerColor();
-}
-
-void AGuLiTerritoryOutpostActor::ApplyOwnerColor()
-{
-	if (LandmarkMesh)
-	{
-		if (UMaterialInstanceDynamic* Material = LandmarkMesh->CreateAndSetMaterialInstanceDynamic(0))
-		{
-			Material->SetVectorParameterValue(TEXT("Color"), GetTeamColor(TerritoryOwner));
-			Material->SetVectorParameterValue(TEXT("BaseColor"), GetTeamColor(TerritoryOwner));
-		}
-	}
+	Presentation->ApplyOwnerState(OwnerState);
 }

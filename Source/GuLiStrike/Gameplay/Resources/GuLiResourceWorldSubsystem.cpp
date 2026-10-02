@@ -55,7 +55,7 @@ namespace
 	TAutoConsoleVariable<int32> CVarDrawResourceBoard(
 		TEXT("gs.Resources.DrawBoard"),
 		0,
-		TEXT("Draw the canonical 9x9 board, Outpost_RxCy labels and public Territory ownership."),
+		TEXT("Draw the canonical 7x7 board, Outpost_RxCy labels and public Territory ownership."),
 		ECVF_Cheat);
 #endif
 
@@ -215,7 +215,7 @@ void UGuLiResourceWorldSubsystem::Tick(const float DeltaTime)
 				? WorldState->GetTerritoryOwner(static_cast<uint8>(TerritoryIndex)) : Territory.InitialOwner;
 			const FColor Color = Owner == EGuLiTeam::Red ? FColor::Red
 				: (Owner == EGuLiTeam::Blue ? FColor::Blue : FColor::Silver);
-			FVector LabelLocation = ProjectAnchorToGround(Territory.Center);
+			FVector LabelLocation = Territory.OutpostGroundLocation;
 			LabelLocation.Z += 1600.0f;
 			const TCHAR* OwnerText = Owner == EGuLiTeam::Red ? TEXT("Red")
 				: (Owner == EGuLiTeam::Blue ? TEXT("Blue") : TEXT("Neutral"));
@@ -342,7 +342,7 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 	for (int32 Index = 0; Index < MapDefinition->Territories.Num(); ++Index)
 	{
 		const FGuLiTerritoryDefinition& Territory = MapDefinition->Territories[Index];
-		FVector Location = ProjectAnchorToGround(Territory.Center);
+		FVector Location = Territory.OutpostGroundLocation;
 		Location.Z += 500.0f;
 		AGuLiTerritoryOutpostActor* Outpost = World->SpawnActor<AGuLiTerritoryOutpostActor>(
 			AGuLiTerritoryOutpostActor::StaticClass(), FTransform(FRotator::ZeroRotator, Location), Params);
@@ -428,7 +428,7 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 	bAuthorityActorsSpawned = true;
 	NavigationWaitStartSeconds = FPlatformTime::Seconds();
 	UE_LOG(LogGuLiResources, Display,
-		TEXT("Initialized 81 territories, 240 ore clusters, 6240 nodes, 24 HISMs, 2 factories, %d miners and %d builders; waiting for dynamic navigation."),
+		TEXT("Initialized 49 territories, 240 ore clusters, 6240 nodes, 24 HISMs, 2 factories, %d miners and %d builders; waiting for dynamic navigation."),
 		EconomyConfig->InitialMiningVehiclesPerTeam * 2, EconomyConfig->InitialConstructionVehiclesPerTeam * 2);
 	return true;
 }

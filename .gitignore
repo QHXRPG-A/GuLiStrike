@@ -65,8 +65,7 @@ Content/Commander/Units/*FourFRobot_Crowd*.uasset
 
 # Large binary assets (10MB+, kept locally but not versioned)
 Content/Maps/LVL_Main.umap
-# Commander prototype map (521MB; local level, same policy as LVL_Main)
-Content/Maps/LVL_CommanderMassPrototype.umap
+# Commander island maps are versioned through Git LFS after the 1800 m rebuild.
 # Editor recovery snapshots can contain unsaved work; retain locally.
 Content/Developers/CompileRecovery/
 # Map-authoring generated sessions and its 521MB acceptance clone stay local.
@@ -131,6 +130,9 @@ htmlcov/
 *.dmp
 *.utrace
 *.lnk
+# Reproducible packed Landscape import buffers; keep authored PNGs and Gaea exports.
+ArtSource/Environment/GuLiStrike_*Island_*/UEImport/LandscapeInputs/*.r16
+ArtSource/Environment/GuLiStrike_*Island_*/UEImport/LandscapeInputs/*.u8
 # Packaged acceptance builds and binary inspection backups are reproducible local outputs.
 TestResults/**/Cooked*/
 # Isolated validation projects duplicate source/plugins and remain local.

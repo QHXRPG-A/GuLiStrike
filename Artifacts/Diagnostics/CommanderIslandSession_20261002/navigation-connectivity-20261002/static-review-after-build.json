@@ -1,0 +1,38 @@
+{
+  "diff_check_exit_code": 0,
+  "diff_check_output": "warning: in the working copy of 'Config/DefaultGame.ini', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrikeEditor/Private/GuLiNavigationBakeLibrary.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrikeEditor/Public/GuLiNavigationBakeLibrary.h', LF will be replaced by CRLF the next time Git touches it\n",
+  "authoring_script_syntax": "passed",
+  "native_compile_exit_code": 0,
+  "compile_fixes": [
+    "UE5.7 LexFromString header is String/LexFromString.h.",
+    "Added explicit block braces around UE_LOG if/else and loop bodies."
+  ],
+  "files": [
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiNavigationConnectivityLibrary.cpp",
+      "sha256": "4a239337644a842c3739fe77647e53b6b1599fd3777762a5ed5224b87ad56236"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Public/GuLiNavigationConnectivityLibrary.h",
+      "sha256": "7d190bade5bd4ad000f024a16e72135edeab337ae4403c18c2a3b36347d4f385"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Public/GuLiNavigationConnectivitySettings.h",
+      "sha256": "a609794d9df007932d3bbc48314730122cc95322c86a05e3aeae2ce70d2deb67"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiNavigationBakeLibrary.cpp",
+      "sha256": "9daffc0f616a71e2f4259cd0d980dfd394666d6a278b7602333f0b5c1201255e"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Public/GuLiNavigationBakeLibrary.h",
+      "sha256": "5dfbe538940182c3898510bca952d6ab748d66a7fa299bd7bc68c257589605b8"
+    },
+    {
+      "path": "Config/DefaultGame.ini",
+      "sha256": "d5031429e1bc6327dc4da63ea70987a694dfbbe04be5dce4abbdb2f716c5cb50"
+    }
+  ],
+  "pie": "not_run",
+  "algorithm_execution": "not_run"
+}

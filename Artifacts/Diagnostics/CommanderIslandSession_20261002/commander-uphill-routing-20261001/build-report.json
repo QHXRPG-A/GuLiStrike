@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-01",
+  "authorization": "用户明确请求：先编译",
+  "engine": "D:/UnrealEngine-5.7",
+  "target": "GuLiStrikeEditor Win64 Development",
+  "project": "D:/UE5.7/test1/GuLiStrike.uproject",
+  "result": "Succeeded",
+  "exit_code": 0,
+  "execution_seconds": 22.33,
+  "actions": 8,
+  "log": "outputs/commander-uphill-routing-20261001/build-20261001-attempt1.log",
+  "build_id": {
+    "engine": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "project": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "matches": true,
+    "engine_manifest": "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.modules",
+    "project_manifest": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor.modules",
+    "native_plugins_built": []
+  },
+  "dll": {
+    "path": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiStrike.dll",
+    "bytes": 13464064,
+    "last_write_time": "2026-10-01T23:30:15.3103725+08:00"
+  },
+  "source_hashes_after_build": [
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp",
+      "sha256": "6b1f078fa1b6d3f8592dda3a45af664d12ca8dd43ace040083295d5c787faf24"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiSharedMoveRoutes.cpp",
+      "sha256": "33c6495b1d2d82fe04ebe52057577adde1dcd195bb9c6481a5ed758d20c2a04d"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiSharedMoveRoutes.h",
+      "sha256": "b7e71e3b23e7c15b86c630d6a0c40d30735917e9967026a49c44e276e4b80606"
+    }
+  ],
+  "editor_running_after_build": false,
+  "editor_restart": "not_run",
+  "pie": "not_run",
+  "automation_tests": "not_run",
+  "mass_native_follower_migration": "not_implemented",
+  "scene_delivery": "script_prepared_not_saved",
+  "warnings": "Existing StructUtils deprecation and plugin dependency declaration warnings"
+}

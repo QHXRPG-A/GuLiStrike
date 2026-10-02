@@ -21,7 +21,7 @@ namespace GuLiCommanderAvoidancePolicy
 	inline constexpr float DetectionDistanceCentimeters = 1200.0f;
 	inline constexpr float MaximumHeightDifferenceCentimeters = 300.0f;
 	inline constexpr int32 MaximumNearestCandidates = 24;
-	inline constexpr int32 MaximumColliders = 6;
+	inline constexpr int32 MaximumColliders = 12;
 
 	/** The unique phases crossed by one render-frame update, plus their solve sequence numbers. */
 	struct GULISTRIKE_API FPhaseAdvanceResult
@@ -42,14 +42,18 @@ namespace GuLiCommanderAvoidancePolicy
 		bool bParticipates = false;
 		bool bMoving = false;
 		bool bEnvironment = false;
+		FVector DesiredVelocity = FVector::ZeroVector;
+		float MaximumSpeed = 0.0f;
 	};
 
-	/** One exact-range candidate, ordered by distance then stable entity key. */
+	/** One exact-range threat, ordered by overlap, collision time, distance and stable key. */
 	struct GULISTRIKE_API FNearestCandidate
 	{
 		int32 AgentIndex = INDEX_NONE;
 		double DistanceSquared = 0.0;
 		uint64 StableKey = 0u;
+		bool bOverlapping = false;
+		double TimeToCollision = TNumericLimits<double>::Max();
 	};
 
 	/** Query work counters. Bucket visits measure actual local lookup work before exact filtering. */
@@ -63,9 +67,9 @@ namespace GuLiCommanderAvoidancePolicy
 	struct GULISTRIKE_API FPredictiveParameters
 	{
 		float PredictiveAvoidanceTime = 2.5f;
-		float PredictiveAvoidanceRadiusScale = 0.65f;
+		float PredictiveAvoidanceRadiusScale = 1.0f;
 		float PredictiveAvoidanceDistance = 15.0f;
-		float PredictiveAvoidanceStiffness = 140.0f;
+		float PredictiveAvoidanceStiffness = 700.0f;
 		float StandingObstacleAvoidanceScale = 0.65f;
 		float MaximumSpeed = 0.0f;
 		float MaximumAcceleration = 0.0f;
@@ -91,28 +95,32 @@ namespace GuLiCommanderAvoidancePolicy
 		uint32 LastProcessedOrderRevision,
 		bool bMoving);
 
-	GULISTRIKE_API FIntPoint MakeSpatialCell(const FVector& Location);
+	GULISTRIKE_API FIntPoint MakeSpatialCell(const FVector& Location,
+		float CellSize = SpatialCellSizeCentimeters);
 
 	/** Rebuilds the radius-covered environment / center-point soldier grid and returns its largest bucket occupancy. */
 	GULISTRIKE_API int32 BuildSpatialGrid(
 		TConstArrayView<FAgentSnapshot> Agents,
-		FAvoidanceSpatialGrid& InOutGrid);
+		FAvoidanceSpatialGrid& InOutGrid,
+		float CellSize = SpatialCellSizeCentimeters);
 
-	/** Queries 9x9 cells and deterministically retains the nearest 24 exact-range neighbors. */
+	/** Retains 24 local threats, ordered by overlap, collision time, then distance and stable key. */
 	GULISTRIKE_API FCandidateQueryMetrics SelectNearestCandidates(
 		int32 AgentIndex,
 		TConstArrayView<FAgentSnapshot> Agents,
 		const FAvoidanceSpatialGrid& Grid,
 		FNearestCandidateList& OutCandidates,
 		float DetectionDistance = DetectionDistanceCentimeters,
-		float MaximumHeightDifference = MaximumHeightDifferenceCentimeters);
+		float MaximumHeightDifference = MaximumHeightDifferenceCentimeters,
+		float CellSize = SpatialCellSizeCentimeters,
+		float TimeHorizon = 2.5f);
 
 	/** Copies only CPA-related values; separation stiffness and distance are intentionally ignored. */
 	GULISTRIKE_API FPredictiveParameters MakePredictiveParameters(
 		const FMassMovingAvoidanceParameters& AvoidanceParameters,
 		const FMassMovementParameters& MovementParameters);
 
-	/** Epic-compatible start/end action fade expressed as one final avoidance scale. */
+	/** Start/end action fade with a minimum final predictive scale of one half. */
 	GULISTRIKE_API float CalculatePathFade(
 		double CurrentWorldSeconds,
 		double CurrentActionStartSeconds,
@@ -122,7 +130,7 @@ namespace GuLiCommanderAvoidancePolicy
 		float DesiredSpeed,
 		const FMassMovingAvoidanceParameters& AvoidanceParameters);
 
-	/** Computes predictive CPA force for at most six colliders; no instantaneous separation is applied. */
+	/** Computes predictive CPA acceleration; positional separation belongs to neither this nor the soft solver. */
 	GULISTRIKE_API FVector CalculatePredictiveAvoidance(
 		const FAgentSnapshot& Agent,
 		TConstArrayView<FAgentSnapshot> Agents,

@@ -1,0 +1,75 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "navigation": [
+      {
+        "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+        "resolution_count": 3,
+        "resolutions": [
+          {
+            "index": 0,
+            "CellSize": 38.0,
+            "CellHeight": 5.0,
+            "AgentMaxStepHeight": 7.0
+          },
+          {
+            "index": 1,
+            "CellSize": 19.0,
+            "CellHeight": 5.0,
+            "AgentMaxStepHeight": 7.0
+          },
+          {
+            "index": 2,
+            "CellSize": 19.0,
+            "CellHeight": 5.0,
+            "AgentMaxStepHeight": 7.0
+          }
+        ],
+        "ledge_filter_mode": "Recast",
+        "detail_sample_distance": null,
+        "detail_sample_error": null
+      },
+      {
+        "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+        "resolution_count": 3,
+        "resolutions": [
+          {
+            "index": 0,
+            "CellSize": 38.0,
+            "CellHeight": 5.0,
+            "AgentMaxStepHeight": 7.0
+          },
+          {
+            "index": 1,
+            "CellSize": 19.0,
+            "CellHeight": 5.0,
+            "AgentMaxStepHeight": 7.0
+          },
+          {
+            "index": 2,
+            "CellSize": 19.0,
+            "CellHeight": 5.0,
+            "AgentMaxStepHeight": 7.0
+          }
+        ],
+        "ledge_filter_mode": "Recast",
+        "detail_sample_distance": null,
+        "detail_sample_error": null
+      }
+    ],
+    "landscape": [
+      {
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Landscape_0",
+        "collision_mip_level": "0",
+        "simple_collision_mip_level": "0",
+        "scale": [
+          44.11764705882353,
+          44.11764705882353,
+          27.344167238879987
+        ]
+      }
+    ]
+  }
+}

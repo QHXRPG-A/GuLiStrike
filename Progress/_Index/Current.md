@@ -37,6 +37,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [指挥官三档镜头与总览LOD — 实施与交付](../DevelopmentDocumentation/20260930-指挥官三档镜头与总览LOD.md) | commander, performance, ui | 8/9 (89%) | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 | 2026-09-30 |
 | [指挥官统一三级LOD — 实施与接入约定](../DevelopmentDocumentation/20260929-指挥官统一三级LOD.md) | commander, performance | 8/10 (80%) | 获准构建后加载夹具修正，复验100台完整人数与固定镜头；用户视觉验收、多World及性能实测继续待定。 | 2026-09-30 |
 | [重防号导弹解锁与肉鸽卡牌 — 技术方案](../DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md) | art, combat, commander, performance, ui | 9/12 (75%) | 玩家在LVL_CommanderMassPrototype复查Candidate_v3：96m射程与升级继承、3m爆炸/预警、高速烟迹及冷启动；助手运行/性能暂缓，正式表现待视觉审核。 | 2026-09-30 |
 | [肉鸽卡牌单行文案与高亮 — 实施记录](../DevelopmentDocumentation/20260929-肉鸽卡牌单行文案与高亮.md) | commander, ui | 6/7 (86%) | 在LVL_CommanderMassPrototype重新进入游戏按F4，复验单位、属性、黄色粗体和不同窗口比例的单行显示。 | 2026-09-29 |
@@ -71,6 +72,13 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [不可达移动指令拒绝与原状态保留 — 技术方案](../DevelopmentDocumentation/不可达移动指令拒绝与原状态保留.md) | commander, navigation, network | 9/10 (90%) | — | 2026-10-02 |
+| [指挥官坡面导航过滤与精度修正 — 技术方案](../DevelopmentDocumentation/指挥官坡面导航过滤与精度修正.md) | commander, navigation | 10/13 (77%) | — | 2026-10-02 |
+| [导航连通性烘焙校验 — 技术方案](../DevelopmentDocumentation/导航连通性烘焙校验.md) | commander, navigation | 8/8 (100%) | — | 2026-10-02 |
+| [Mass陡坡绕行与停滞恢复](../DevelopmentDocumentation/20261001-Mass陡坡绕行与停滞恢复.md) | commander, navigation | 8/10 (80%) | — | 2026-10-02 |
+| [指挥官海岛与7×7据点改造 — 技术方案](../DevelopmentDocumentation/20261001-指挥官海岛与7x7据点改造.md) | art, assets, commander, resources | 13/14 (93%) | — | 2026-10-02 |
+| [2.3公里战斗海岛UE导入—制作与验证记录](../DevelopmentDocumentation/20261001-战斗海岛UE导入.md) | art, assets | 8/9 (89%) | — | 2026-10-02 |
+| [Mass选择圈同步与软避障修正 — 技术方案](../DevelopmentDocumentation/20260930-Mass选择圈同步与软避障修正.md) | commander, navigation, ui | 8/8 (100%) | — | 2026-09-30 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。 | 2026-09-29 |
 | [Ship导入与扫荡者重防号风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者重防号风格重制.md) | combat, commander, rendering, ship | 9/12 (75%) | 继续实战轰炸、僚机死亡、机械姿态和完整性能验收。 | 2026-09-29 |
 | [FireReview双阵营靶场与敌方描边 — 技术方案](../DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md) | combat, commander, ground-mech, presentation | 9/9 (100%) | 玩家在/Game/Maps/LVL_GroundMech_FireReview确认两队待命、敌方红色描边及受击销毁效果。 | 2026-09-21 |

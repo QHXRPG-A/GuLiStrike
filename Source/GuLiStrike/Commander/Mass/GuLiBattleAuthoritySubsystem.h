@@ -406,6 +406,8 @@ public:
 	/** Supersede only unfinished planning; keep committed routes, velocity and destination reservations. */
 	void InvalidateTaskSoldierPlans(TConstArrayView<FGuLiSoldierId> Soldiers);
 	bool GetTaskSoldierInfo(FGuLiSoldierId Id, EGuLiTeam& Team, uint16& UnitTypeId, FVector& Location) const;
+	/** Read-only move admission: every actionable Mass start must reach the clicked ground target. */
+	bool CanSelectionReachMoveTarget(const FGuLiCommanderSelectionState& Selection, const FVector& Target) const;
 	bool SetExplicitSelection(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers,
 		TConstArrayView<FGuLiControllableActorId> Actors, FGuLiCommanderSelectionState& Selection);
 	const FGuLiAuthorityPerformanceCounters& GetPerformanceCounters() const { return PerformanceCounters; }

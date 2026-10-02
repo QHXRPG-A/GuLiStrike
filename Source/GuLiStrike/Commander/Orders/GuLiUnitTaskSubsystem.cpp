@@ -321,10 +321,28 @@ bool UGuLiUnitTaskSubsystem::SubmitActorCommand(APawn& Pawn, const FGuLiUnitTask
 bool UGuLiUnitTaskSubsystem::Submit(AGuLiBattlePlayerState& Owner, const FGuLiCommanderSelectionState& Selection,
 	const FGuLiUnitTaskCommand& Command, FString& Message, int32& Accepted, int32& Rejected, TSet<FGuLiTaskUnitId>* AcceptedUnits)
 {
+	EGuLiCommandAckResult RejectionReason;
+	return Submit(Owner, Selection, Command, Message, Accepted, Rejected, RejectionReason, AcceptedUnits);
+}
+bool UGuLiUnitTaskSubsystem::Submit(AGuLiBattlePlayerState& Owner, const FGuLiCommanderSelectionState& Selection,
+	const FGuLiUnitTaskCommand& Command, FString& Message, int32& Accepted, int32& Rejected,
+	EGuLiCommandAckResult& RejectionReason, TSet<FGuLiTaskUnitId>* AcceptedUnits)
+{
 	Accepted = Rejected = 0;
+	RejectionReason = EGuLiCommandAckResult::InvalidTarget;
 	if (AcceptedUnits) AcceptedUnits->Reset();
 	if (!Owner.IsCommander() || !Command.IsWellFormed() || Command.SelectionRevision != Selection.SelectionRevision)
 	{ Message = GuLiGameText::Text(TEXT("UI.UnitTaskSubsystem.119")); return false; }
+	// Check the whole move before changing any unit's task, queue or pending replacement.
+	if (Command.Kind == EGuLiUnitTaskKind::Move && Command.Disposition != EGuLiTaskDisposition::Stop
+		&& !Selection.Cohorts.IsEmpty()
+		&& !GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->CanSelectionReachMoveTarget(Selection, Command.Target))
+	{
+		RejectionReason = EGuLiCommandAckResult::PathFailed;
+		Rejected = Selection.ActorIds.Num();
+		for (const auto& Cohort : Selection.Cohorts) Rejected += Cohort.MemberIds.Num();
+		return false;
+	}
 	// Adopt a plan that committed since the last 10 Hz task tick before superseding it.
 	TickMoveBatches();
 	FGuLiUnitTaskCommand AuthorityCommand=Command;

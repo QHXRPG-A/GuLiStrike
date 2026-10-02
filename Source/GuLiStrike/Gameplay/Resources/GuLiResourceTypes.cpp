@@ -6,27 +6,23 @@ namespace
 {
 	constexpr uint8 BlueBudgets[GULI_RESOURCE_BOARD_DIMENSION][GULI_RESOURCE_BOARD_DIMENSION] =
 	{
-		{ 1, 1, 2, 2, 3, 2, 2, 1, 1 },
-		{ 1, 2, 2, 3, 3, 3, 2, 2, 1 },
-		{ 2, 2, 3, 3, 4, 3, 3, 2, 2 },
-		{ 2, 2, 3, 4, 4, 4, 3, 2, 2 },
-		{ 2, 3, 4, 4, 6, 4, 4, 3, 2 },
-		{ 2, 2, 3, 4, 4, 4, 3, 2, 2 },
-		{ 2, 2, 3, 3, 4, 3, 3, 2, 2 },
-		{ 1, 2, 2, 3, 3, 3, 2, 2, 1 },
-		{ 1, 1, 2, 2, 3, 2, 2, 1, 1 }
+		{ 0, 2, 2, 4, 6, 4, 0 },
+		{ 2, 4, 5, 6, 5, 6, 4 },
+		{ 2, 2, 6, 6, 6, 7, 3 },
+		{ 3, 5, 6, 8, 6, 5, 3 },
+		{ 3, 7, 6, 6, 6, 2, 2 },
+		{ 4, 6, 5, 6, 5, 4, 2 },
+		{ 0, 4, 6, 4, 2, 2, 0 }
 	};
 	constexpr uint8 RedBudgets[GULI_RESOURCE_BOARD_DIMENSION][GULI_RESOURCE_BOARD_DIMENSION] =
 	{
-		{ 0, 0, 0, 0, 1, 0, 0, 0, 0 },
-		{ 0, 0, 0, 0, 1, 0, 0, 0, 0 },
-		{ 0, 0, 0, 1, 2, 1, 0, 0, 0 },
-		{ 0, 0, 1, 1, 2, 1, 1, 0, 0 },
-		{ 1, 1, 2, 2, 4, 2, 2, 1, 1 },
-		{ 0, 0, 1, 1, 2, 1, 1, 0, 0 },
-		{ 0, 0, 0, 1, 2, 1, 0, 0, 0 },
-		{ 0, 0, 0, 0, 1, 0, 0, 0, 0 },
-		{ 0, 0, 0, 0, 1, 0, 0, 0, 0 }
+		{ 0, 0, 0, 1, 0, 0, 0 },
+		{ 0, 0, 1, 2, 1, 0, 0 },
+		{ 0, 1, 1, 3, 1, 0, 0 },
+		{ 1, 2, 3, 6, 3, 2, 1 },
+		{ 0, 0, 1, 3, 1, 1, 0 },
+		{ 0, 0, 1, 2, 1, 0, 0 },
+		{ 0, 0, 0, 1, 0, 0, 0 }
 	};
 
 	constexpr int32 SumBudget(const uint8 (&Budget)[GULI_RESOURCE_BOARD_DIMENSION][GULI_RESOURCE_BOARD_DIMENSION])
@@ -64,7 +60,7 @@ bool FGuLiTerritoryDefinition::IsWellFormed(FString* OutError) const
 {
 	if (TerritoryId.IsNone() || BoardRow < 1 || BoardRow > GULI_RESOURCE_BOARD_DIMENSION
 		|| BoardColumn < 1 || BoardColumn > GULI_RESOURCE_BOARD_DIMENSION
-		|| Center.ContainsNaN() || LocalPolygon.Num() != 4)
+		|| Center.ContainsNaN() || OutpostGroundLocation.ContainsNaN() || LocalPolygon.Num() != 4)
 	{
 		return SetError(OutError, TEXT("Territory identity, board coordinate, center, or polygon is invalid."));
 	}
@@ -75,8 +71,13 @@ bool FGuLiTerritoryDefinition::IsWellFormed(FString* OutError) const
 	if (BlueClusterBudget != GuLiResources::GetBlueClusterBudget(BoardRow, BoardColumn)
 		|| RedClusterBudget != GuLiResources::GetRedClusterBudget(BoardRow, BoardColumn))
 	{
-		return SetError(OutError, TEXT("Territory cluster budget differs from the canonical 9x9 budget."));
+		return SetError(OutError, TEXT("Territory cluster budget differs from the canonical 7x7 budget."));
 	}
+	const FVector LocalAnchor = OutpostGroundLocation - Center;
+	if (FMath::Abs(LocalAnchor.X) >= GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM
+		|| FMath::Abs(LocalAnchor.Y) >= GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM
+		|| OutpostGroundLocation.Z <= 0.0)
+		return SetError(OutError, TEXT("Outpost ground must be above sea level and inside its territory."));
 	const FVector2D CanonicalCorners[] = {
 		FVector2D(-GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM, -GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM),
 		FVector2D( GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM, -GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM),
@@ -89,7 +90,7 @@ bool FGuLiTerritoryDefinition::IsWellFormed(FString* OutError) const
 			[Corner](const FVector2D Point) { return Point.Equals(Corner, 0.1); }))
 		{
 			return SetError(OutError,
-				TEXT("Territory polygon must contain the four canonical +/-15000 cm corners."));
+				TEXT("Territory polygon must contain the four canonical territory corners."));
 		}
 	}
 	return true;

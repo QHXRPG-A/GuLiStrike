@@ -4,6 +4,7 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [指挥官三档镜头与总览LOD — 实施与交付](../DevelopmentDocumentation/20260930-指挥官三档镜头与总览LOD.md) | verification | partial | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 | 2026-09-30 |
 | [指挥官统一三级LOD — 实施与接入约定](../DevelopmentDocumentation/20260929-指挥官统一三级LOD.md) | verification | partial | 获准构建后加载夹具修正，复验100台完整人数与固定镜头；用户视觉验收、多World及性能实测继续待定。 | 2026-09-30 |
 | [重防号导弹解锁与肉鸽卡牌 — 技术方案](../DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md) | verification | partial | 玩家在LVL_CommanderMassPrototype复查Candidate_v3：96m射程与升级继承、3m爆炸/预警、高速烟迹及冷启动；助手运行/性能暂缓，正式表现待视觉审核。 | 2026-09-30 |
 | [肉鸽卡牌单行文案与高亮 — 实施记录](../DevelopmentDocumentation/20260929-肉鸽卡牌单行文案与高亮.md) | verification | partial | 在LVL_CommanderMassPrototype重新进入游戏按F4，复验单位、属性、黄色粗体和不同窗口比例的单行显示。 | 2026-09-29 |

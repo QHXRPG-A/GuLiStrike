@@ -1,0 +1,121 @@
+--- before/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h
++++ Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h
+@@ -406,6 +406,8 @@
+ 	/** Supersede only unfinished planning; keep committed routes, velocity and destination reservations. */
+ 	void InvalidateTaskSoldierPlans(TConstArrayView<FGuLiSoldierId> Soldiers);
+ 	bool GetTaskSoldierInfo(FGuLiSoldierId Id, EGuLiTeam& Team, uint16& UnitTypeId, FVector& Location) const;
++	/** Read-only move admission: every actionable Mass start must reach the clicked ground target. */
++	bool CanSelectionReachMoveTarget(const FGuLiCommanderSelectionState& Selection, const FVector& Target) const;
+ 	bool SetExplicitSelection(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers,
+ 		TConstArrayView<FGuLiControllableActorId> Actors, FGuLiCommanderSelectionState& Selection);
+ 	const FGuLiAuthorityPerformanceCounters& GetPerformanceCounters() const { return PerformanceCounters; }
+--- before/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
++++ Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
+@@ -6000,6 +6000,29 @@
+ 	const auto& Soldier = AuthorityState->Soldiers[*Index]; Team = Soldier.Team; UnitTypeId = Soldier.UnitTypeId; Location = Soldier.Location;
+ 	return true;
+ }
++bool UGuLiBattleAuthoritySubsystem::CanSelectionReachMoveTarget(
++	const FGuLiCommanderSelectionState& Selection, const FVector& Target) const
++{
++	using namespace GuLiCommanderMassPrivate;
++	auto& NavigationSystem = *FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
++	const auto& NavigationData = *GetCommanderNavigationData(NavigationSystem);
++	FNavLocation Destination;
++	if (!ProjectPointToCommanderNavigation(NavigationSystem, NavigationData, Target, FVector(10, 10, 50), Destination))
++		return false;
++
++	TSet<NavNodeRef> CheckedStarts;
++	for (const auto& Cohort : Selection.Cohorts) for (const auto Id : Cohort.MemberIds)
++	{
++		const auto& Soldier = AuthorityState->Soldiers[AuthorityState->SoldierIndexById.FindChecked(Id.Value)];
++		if (!Soldier.CanAct() || CheckedStarts.Contains(Soldier.LastValidNavLocation.NodeRef)) continue;
++		FPathFindingQuery Query(nullptr, NavigationData, Soldier.LastValidNavLocation.Location,
++			Destination.Location, NavigationData.GetDefaultQueryFilter());
++		Query.SetAllowPartialPaths(false);
++		if (!NavigationSystem.TestPathSync(Query, EPathFindingMode::Regular)) return false;
++		CheckedStarts.Add(Soldier.LastValidNavLocation.NodeRef);
++	}
++	return true;
++}
+ void UGuLiBattleAuthoritySubsystem::InvalidateTaskSoldierPlans(TConstArrayView<FGuLiSoldierId> Soldiers)
+ {
+ 	using namespace GuLiCommanderMassPrivate;
+--- before/Source/GuLiStrike/Commander/Framework/GuLiCommanderOrderedCommands.cpp
++++ Source/GuLiStrike/Commander/Framework/GuLiCommanderOrderedCommands.cpp
+@@ -187,7 +187,8 @@
+ 	}
+ 	int32 Accepted = 0, Rejected = 0; FString Message;
+ 	TSet<FGuLiTaskUnitId> AcceptedUnits;
+-	const bool bAccepted = Tasks->Submit(*GetBattlePlayerState(), SelectionState, Command, Message, Accepted, Rejected, &AcceptedUnits);
++	EGuLiCommandAckResult RejectionReason;
++	const bool bAccepted = Tasks->Submit(*GetBattlePlayerState(), SelectionState, Command, Message, Accepted, Rejected, RejectionReason, &AcceptedUnits);
+ 	// The same frozen membership used for admission defines the per-member result masks.
+ 	for (const auto& Cohort : SelectionState.Cohorts)
+ 	{
+@@ -201,7 +202,7 @@
+ 	}
+ 	for (auto Id : SelectionState.ActorIds)
+ 		Ack.EngineeringResults.Add({Id, AcceptedUnits.Contains(FGuLiTaskUnitId::Actor(Id)) ? EGuLiTransitOrderResult::Accepted : EGuLiTransitOrderResult::InvalidTarget});
+-	Ack.Result = !bAccepted ? EGuLiCommandAckResult::InvalidTarget : Rejected ? EGuLiCommandAckResult::PartiallyAccepted : EGuLiCommandAckResult::Accepted;
++	Ack.Result = !bAccepted ? RejectionReason : Rejected ? EGuLiCommandAckResult::PartiallyAccepted : EGuLiCommandAckResult::Accepted;
+ 	Ack.ServerSelectionRevision = SelectionState.SelectionRevision;
+ 	const FString Counts = GuLiGameText::Format(TEXT("UI.OrderedCommands.101"), {FString::Printf(TEXT("%d"), Accepted), FString::Printf(TEXT("%d"), Rejected)});
+ 	ClientTaskReceipt(Ack, Message.IsEmpty() ? Counts : Counts + TEXT("：") + Message, Generation); NextOrderedSummaryTime = 0;
+--- before/Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.cpp
++++ Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.cpp
+@@ -1444,7 +1444,8 @@
+ 	{
+ 		return true;
+ 	}
+-	if (Ack.Result == EGuLiCommandAckResult::Cancelled || Ack.Result == EGuLiCommandAckResult::TimedOut)
++	if (Ack.Result == EGuLiCommandAckResult::PathFailed
++		|| Ack.Result == EGuLiCommandAckResult::Cancelled || Ack.Result == EGuLiCommandAckResult::TimedOut)
+ 	{
+ 		CommandLineState = EGuLiCommandLineState::None;
+ 		CommandLineExpireTime = 0.0;
+--- before/Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.h
++++ Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.h
+@@ -29,6 +29,11 @@
+ 	void UnregisterActor(FGuLiControllableActorId Id);
+ 	bool Submit(AGuLiBattlePlayerState& Owner, const FGuLiCommanderSelectionState& Selection,
+ 		const FGuLiUnitTaskCommand& Command, FString& OutMessage, int32& OutAccepted, int32& OutRejected,
++		TSet<FGuLiTaskUnitId>* OutAcceptedUnits = nullptr);
++	/** Same admission contract, with the rejection reason carried into the command receipt. */
++	bool Submit(AGuLiBattlePlayerState& Owner, const FGuLiCommanderSelectionState& Selection,
++		const FGuLiUnitTaskCommand& Command, FString& OutMessage, int32& OutAccepted, int32& OutRejected,
++		EGuLiCommandAckResult& OutRejectionReason,
+ 		TSet<FGuLiTaskUnitId>* OutAcceptedUnits = nullptr);
+ 	/** Compatibility Actor entry; callers retain their existing team/request validation. */
+ 	bool SubmitActorCommand(APawn& Pawn, const FGuLiUnitTaskCommand& Command);
+--- before/Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.cpp
++++ Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.cpp
+@@ -321,10 +321,28 @@
+ bool UGuLiUnitTaskSubsystem::Submit(AGuLiBattlePlayerState& Owner, const FGuLiCommanderSelectionState& Selection,
+ 	const FGuLiUnitTaskCommand& Command, FString& Message, int32& Accepted, int32& Rejected, TSet<FGuLiTaskUnitId>* AcceptedUnits)
+ {
++	EGuLiCommandAckResult RejectionReason;
++	return Submit(Owner, Selection, Command, Message, Accepted, Rejected, RejectionReason, AcceptedUnits);
++}
++bool UGuLiUnitTaskSubsystem::Submit(AGuLiBattlePlayerState& Owner, const FGuLiCommanderSelectionState& Selection,
++	const FGuLiUnitTaskCommand& Command, FString& Message, int32& Accepted, int32& Rejected,
++	EGuLiCommandAckResult& RejectionReason, TSet<FGuLiTaskUnitId>* AcceptedUnits)
++{
+ 	Accepted = Rejected = 0;
++	RejectionReason = EGuLiCommandAckResult::InvalidTarget;
+ 	if (AcceptedUnits) AcceptedUnits->Reset();
+ 	if (!Owner.IsCommander() || !Command.IsWellFormed() || Command.SelectionRevision != Selection.SelectionRevision)
+ 	{ Message = GuLiGameText::Text(TEXT("UI.UnitTaskSubsystem.119")); return false; }
++	// Check the whole move before changing any unit's task, queue or pending replacement.
++	if (Command.Kind == EGuLiUnitTaskKind::Move && Command.Disposition != EGuLiTaskDisposition::Stop
++		&& !Selection.Cohorts.IsEmpty()
++		&& !GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->CanSelectionReachMoveTarget(Selection, Command.Target))
++	{
++		RejectionReason = EGuLiCommandAckResult::PathFailed;
++		Rejected = Selection.ActorIds.Num();
++		for (const auto& Cohort : Selection.Cohorts) Rejected += Cohort.MemberIds.Num();
++		return false;
++	}
+ 	// Adopt a plan that committed since the last 10 Hz task tick before superseding it.
+ 	TickMoveBatches();
+ 	FGuLiUnitTaskCommand AuthorityCommand=Command;

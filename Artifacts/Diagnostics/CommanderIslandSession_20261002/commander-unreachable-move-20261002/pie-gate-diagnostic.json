@@ -1,0 +1,151 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "metadata": {
+      "GuLi.ArtImport.Owner": "GuLiStrike.CommanderIsland.1800m.v1",
+      "GuLi.ArtImport.Source": "C:\\Users\\a\\Documents\\Gaea\\MCP\\Projects\\GuLiStrike_CommanderIsland_1800m_v1\\GuLiStrike_CommanderIsland_1800m_v1.terrain",
+      "GuLi.CommanderIsland.HeightSHA256": "fe36d28e227e3cf5bd7c3b75fbe33d99eb1d151f37c7c3306caad845384baddf",
+      "GuLi.CommanderIsland.SourceRevision": "GuLiStrike_CombatIsland_2300m_v1",
+      "GuLi.CommanderIsland.LayoutVersion": "6",
+      "GuLi.ArtImport.Heightmap": "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CommanderIsland_1800m_v1\\UEImport\\LandscapeInputs\\height_4081_ue.png"
+    },
+    "initial_army": null,
+    "resource": {
+      "success": false,
+      "message": "Could not hash GuLiMapAuthoring output.",
+      "issues": [
+        "Could not hash GuLiMapAuthoring output."
+      ],
+      "source_hash": ""
+    },
+    "navigation": {
+      "success": false,
+      "message": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier: CommanderSoldier: 20 mutually reachable ground regions, 2778 ground polygons, 8066 directed links. Disconnected walkable ground; bake certification is refused.",
+      "entries": [
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Stale",
+          "message": "Source geometry/settings changed, or no versioned bake record exists."
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+          "status": "Stale",
+          "message": "Source geometry/settings changed, or no versioned bake record exists."
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+          "status": "Hit",
+          "message": "Validated saved flight graph."
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Error",
+          "message": "CommanderSoldier: 20 mutually reachable ground regions, 2778 ground polygons, 8066 directed links. Disconnected walkable ground; bake certification is refused."
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Hit",
+          "message": "region=19 main=1 polygons=2704 area_m2=4682414.686 representative_cm=X=2498.500 Y=-2498.500 Z=934.779 bounds_min_cm=X=-78869.000 Y=-78603.000 Z=1.779 bounds_max_cm=X=78603.000 Y=79857.000 Z=5005.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=18 main=0 polygons=5 area_m2=603.953 representative_cm=X=-8896.750 Y=-959.500 Z=939.779 bounds_min_cm=X=-11514.000 Y=-2983.000 Z=935.779 bounds_max_cm=X=-5168.000 Y=2185.000 Z=943.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=17 main=0 polygons=4 area_m2=2426.425 representative_cm=X=-9848.334 Y=-126.667 Z=985.779 bounds_min_cm=X=-12331.000 Y=-2356.000 Z=985.779 bounds_max_cm=X=-7068.000 Y=2185.000 Z=985.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=16 main=0 polygons=2 area_m2=92.308 representative_cm=X=-4579.000 Y=-13561.250 Z=985.779 bounds_min_cm=X=-5130.000 Y=-13832.000 Z=985.779 bounds_max_cm=X=-4161.000 Y=-12882.000 Z=985.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=15 main=0 polygons=5 area_m2=450.528 representative_cm=X=-4300.333 Y=-11026.334 Z=939.112 bounds_min_cm=X=-7581.000 Y=-13832.000 Z=935.779 bounds_max_cm=X=-4161.000 Y=-10659.000 Z=945.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=14 main=0 polygons=1 area_m2=2.022 representative_cm=X=-54370.401 Y=28127.600 Z=255.779 bounds_min_cm=X=-54435.000 Y=28063.000 Z=255.779 bounds_max_cm=X=-54321.000 Y=28177.000 Z=255.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=13 main=0 polygons=1 area_m2=2.383 representative_cm=X=-51250.601 Y=30935.800 Z=239.779 bounds_min_cm=X=-51300.000 Y=30875.000 Z=239.779 bounds_max_cm=X=-51186.000 Y=31008.000 Z=239.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=12 main=0 polygons=1 area_m2=2.383 representative_cm=X=-54370.401 Y=30947.200 Z=273.779 bounds_min_cm=X=-54435.000 Y=30875.000 Z=273.779 bounds_max_cm=X=-54321.000 Y=31008.000 Z=273.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=11 main=0 polygons=13 area_m2=492.873 representative_cm=X=-79743.002 Y=54916.335 Z=127.779 bounds_min_cm=X=-79857.000 Y=51395.000 Z=35.779 bounds_max_cm=X=-79287.000 Y=59850.000 Z=401.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=10 main=0 polygons=3 area_m2=8.484 representative_cm=X=-70262.000 Y=64927.750 Z=1445.779 bounds_min_cm=X=-70319.000 Y=64885.000 Z=1249.779 bounds_max_cm=X=-70053.000 Y=65189.000 Z=1485.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=9 main=0 polygons=2 area_m2=31.515 representative_cm=X=-68499.750 Y=74556.000 Z=413.279 bounds_min_cm=X=-68609.000 Y=74366.000 Z=205.779 bounds_max_cm=X=-68020.000 Y=74841.000 Z=501.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=8 main=0 polygons=3 area_m2=13.140 representative_cm=X=-69734.750 Y=73449.250 Z=438.779 bounds_min_cm=X=-69844.000 Y=73264.000 Z=293.779 bounds_max_cm=X=-69483.000 Y=73606.000 Z=505.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=7 main=0 polygons=3 area_m2=30.035 representative_cm=X=-73430.250 Y=69616.000 Z=411.279 bounds_min_cm=X=-73606.000 Y=69255.000 Z=209.779 bounds_max_cm=X=-73131.000 Y=69844.000 Z=499.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=6 main=0 polygons=6 area_m2=73.788 representative_cm=X=-74788.750 Y=67925.000 Z=390.779 bounds_min_cm=X=-74841.000 Y=67602.000 Z=97.779 bounds_max_cm=X=-74081.000 Y=68609.000 Z=503.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=5 main=0 polygons=4 area_m2=78.987 representative_cm=X=-77140.001 Y=64284.601 Z=380.579 bounds_min_cm=X=-77349.000 Y=63726.000 Z=87.779 bounds_max_cm=X=-76665.000 Y=64847.000 Z=479.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=4 main=0 polygons=6 area_m2=56.749 representative_cm=X=-78147.002 Y=62199.669 Z=436.446 bounds_min_cm=X=-78603.000 Y=61351.000 Z=119.779 bounds_max_cm=X=-78090.000 Y=62358.000 Z=461.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=3 main=0 polygons=7 area_m2=87.434 representative_cm=X=-62826.669 Y=78337.002 Z=443.112 bounds_min_cm=X=-63593.000 Y=77919.000 Z=67.779 bounds_max_cm=X=-62415.000 Y=78603.000 Z=481.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=2 main=0 polygons=2 area_m2=8.772 representative_cm=X=-64821.669 Y=77209.669 Z=411.779 bounds_min_cm=X=-64847.000 Y=77102.000 Z=311.779 bounds_max_cm=X=-64524.000 Y=77349.000 Z=471.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=1 main=0 polygons=2 area_m2=6.498 representative_cm=X=-75993.669 Y=66063.002 Z=416.446 bounds_min_cm=X=-76095.000 Y=65816.000 Z=337.779 bounds_max_cm=X=-75905.000 Y=66101.000 Z=485.779"
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "status": "Disconnected",
+          "message": "region=0 main=0 polygons=4 area_m2=77.507 representative_cm=X=-66842.000 Y=75914.500 Z=380.779 bounds_min_cm=X=-67355.000 Y=75354.000 Z=91.779 bounds_max_cm=X=-66348.000 Y=76095.000 Z=499.779"
+        }
+      ]
+    }
+  }
+}

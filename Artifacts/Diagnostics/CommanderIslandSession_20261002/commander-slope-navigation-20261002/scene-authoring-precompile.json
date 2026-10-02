@@ -1,0 +1,106 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "saved": true,
+    "entities": [
+      {
+        "label": "QA_NavConnectivity_FootA_135",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_56",
+        "position_cm": [
+          -30343.0,
+          69255.0,
+          1897.7790832519531
+        ],
+        "editor_only": true,
+        "collision": false,
+        "text": "坡面导航修正验证：山脚 A / 单位 135 原位置\n目标预设：CommanderSoldier 半径150cm、台阶20cm、坡度44度；格子XY 19/19/9.5cm、Z 2cm。\n编译并重启后执行现有导航 Prepare，再核对山脚和高台连接。\n同山脚区域预期双向 Connected：\ngs.Navigation.CheckPoints -30343.0000000000 69255.0000000000 1897.7790832520 -29962.5099248317 69008.0000000000 1868.7898865801\n山脚至高台检查：\ngs.Navigation.CheckPoints -30343.0000000000 69255.0000000000 1897.7790832520 -37338.4848733983 64139.2323668137 7532.0894547397\n合法缓坡应双向连接；真实陡坡隔离应定位断区并保持烘焙失败。\n完整图：gs.Navigation.CheckConnectivity。所有可行走地面必须属于同一强连通区域。\n本标记不执行烘焙、查询、PIE 或自动化测试。"
+      },
+      {
+        "label": "QA_NavConnectivity_FootB_138",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_57",
+        "position_cm": [
+          -29962.509924831735,
+          69008.0,
+          1868.789886580086
+        ],
+        "editor_only": true,
+        "collision": false,
+        "text": "坡面导航修正验证：山脚 B / 单位 138 原位置\n与山脚 A 的双向连接应保留：\ngs.Navigation.CheckPoints -30343.0000000000 69255.0000000000 1897.7790832520 -29962.5099248317 69008.0000000000 1868.7898865801"
+      },
+      {
+        "label": "QA_NavConnectivity_PlateauA_135",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_58",
+        "position_cm": [
+          -37338.484873398265,
+          64139.232366813674,
+          7532.089454739742
+        ],
+        "editor_only": true,
+        "collision": false,
+        "text": "坡面导航修正验证：高台 A / 单位 135 原目标\n检查新预设下山脚至高台的连通性：\ngs.Navigation.CheckPoints -30343.0000000000 69255.0000000000 1897.7790832520 -37338.4848733983 64139.2323668137 7532.0894547397\n此前旧参数下不连通。新预设效果待重建核对；Disconnected 时读取断区坐标及边界。"
+      }
+    ],
+    "navigation": [
+      {
+        "name": "RecastNavMesh-Default",
+        "drawing": false,
+        "draw_offset_cm": 10.0,
+        "resolutions": [
+          {
+            "CellSize": 38.0,
+            "CellHeight": 5.0,
+            "AgentMaxStepHeight": 7.0
+          },
+          {
+            "CellSize": 19.0,
+            "CellHeight": 5.0,
+            "AgentMaxStepHeight": 7.0
+          },
+          {
+            "CellSize": 19.0,
+            "CellHeight": 5.0,
+            "AgentMaxStepHeight": 7.0
+          }
+        ],
+        "ledge_filter": "<NavigationLedgeSlopeFilterMode.RECAST: 0>",
+        "max_search_nodes": "16384.000000"
+      },
+      {
+        "name": "RecastNavMesh-CommanderSoldier",
+        "drawing": true,
+        "draw_offset_cm": 50.0,
+        "resolutions": [
+          {
+            "CellSize": 38.0,
+            "CellHeight": 5.0,
+            "AgentMaxStepHeight": 7.0
+          },
+          {
+            "CellSize": 19.0,
+            "CellHeight": 5.0,
+            "AgentMaxStepHeight": 7.0
+          },
+          {
+            "CellSize": 19.0,
+            "CellHeight": 5.0,
+            "AgentMaxStepHeight": 7.0
+          }
+        ],
+        "ledge_filter": "<NavigationLedgeSlopeFilterMode.RECAST: 0>",
+        "max_search_nodes": "16384.000000"
+      }
+    ],
+    "commands": {
+      "foot_pair": "gs.Navigation.CheckPoints -30343.0000000000 69255.0000000000 1897.7790832520 -29962.5099248317 69008.0000000000 1868.7898865801",
+      "uphill_pair": "gs.Navigation.CheckPoints -30343.0000000000 69255.0000000000 1897.7790832520 -37338.4848733983 64139.2323668137 7532.0894547397",
+      "whole_graph": "gs.Navigation.CheckConnectivity"
+    },
+    "authoring_only": true,
+    "navigation_bake_executed": false,
+    "point_queries_executed": false,
+    "pie_started": false
+  }
+}

@@ -1,0 +1,2222 @@
+{
+  "$id": "1",
+  "Assets": {
+    "$id": "2",
+    "$values": [
+      {
+        "$id": "3",
+        "Terrain": {
+          "$id": "4",
+          "Id": "5382e2fc-913b-4478-a720-4d276d88bf0c",
+          "Metadata": {
+            "$id": "5",
+            "Name": "GuLiStrike_CommanderIsland_1800m_v1",
+            "Description": "1800m x 1800m; world height = normalized*140-20m; sea level 0m; north +Y; natural asymmetric connected combat island.",
+            "Version": "2.2.9.0",
+            "DateCreated": "2026-10-01 06:11:47Z",
+            "DateLastBuilt": "2026-10-01 06:11:47Z",
+            "DateLastSaved": "2026-10-01 09:43:14Z"
+          },
+          "Nodes": {
+            "$id": "6",
+            "1": {
+              "$id": "25",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/foundation_height.png",
+              "RelativePath": true,
+              "Id": 1,
+              "Name": "01 海岸与地形布局 / 2300m",
+              "Position": {
+                "$id": "28",
+                "X": 25500,
+                "Y": 25380
+              },
+              "Ports": {
+                "$id": "29",
+                "$values": [
+                  {
+                    "$id": "26",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "25"
+                    }
+                  },
+                  {
+                    "$id": "27",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "25"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "30",
+                "$values": []
+              }
+            },
+            "2": {
+              "$id": "31",
+              "$type": "QuadSpinner.Gaea.Nodes.Mountain, Gaea.Nodes",
+              "Seed": 20261001,
+              "Height": 1,
+              "Id": 2,
+              "Name": "02 西北山脊 / Seed 20261001",
+              "Position": {
+                "$id": "34",
+                "X": 25500,
+                "Y": 24600
+              },
+              "Ports": {
+                "$id": "35",
+                "$values": [
+                  {
+                    "$id": "32",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "31"
+                    }
+                  },
+                  {
+                    "$id": "33",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "31"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "36",
+                "$values": []
+              }
+            },
+            "3": {
+              "$id": "37",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/mountain_gain.png",
+              "RelativePath": true,
+              "Id": 3,
+              "Name": "西北山地高度与区域遮罩",
+              "Position": {
+                "$id": "40",
+                "X": 25500,
+                "Y": 24860
+              },
+              "Ports": {
+                "$id": "41",
+                "$values": [
+                  {
+                    "$id": "38",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "37"
+                    }
+                  },
+                  {
+                    "$id": "39",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "37"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "42",
+                "$values": []
+              }
+            },
+            "4": {
+              "$id": "43",
+              "$type": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+              "Mode": "Multiply",
+              "PortCount": 2,
+              "Ratio": 1,
+              "Id": 4,
+              "Name": "山脊区域化 / 最大增高24m",
+              "Position": {
+                "$id": "50",
+                "X": 25870,
+                "Y": 24600
+              },
+              "Ports": {
+                "$id": "51",
+                "$values": [
+                  {
+                    "$id": "44",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "43"
+                    },
+                    "Record": {
+                      "$id": "53",
+                      "From": 2,
+                      "To": 4,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "45",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "43"
+                    }
+                  },
+                  {
+                    "$id": "46",
+                    "Name": "Input2",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "43"
+                    },
+                    "Record": {
+                      "$id": "54",
+                      "From": 3,
+                      "To": 4,
+                      "FromPort": "Out",
+                      "ToPort": "Input2",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "49",
+                    "Name": "Mask",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "43"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "52",
+                "$values": []
+              }
+            },
+            "5": {
+              "$id": "55",
+              "$type": "QuadSpinner.Gaea.Nodes.Perlin, Gaea.Nodes",
+              "Seed": 20261002,
+              "Id": 5,
+              "Name": "03 平原与低丘微地形",
+              "Position": {
+                "$id": "58",
+                "X": 25500,
+                "Y": 25900
+              },
+              "Ports": {
+                "$id": "59",
+                "$values": [
+                  {
+                    "$id": "56",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "55"
+                    }
+                  },
+                  {
+                    "$id": "57",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "55"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "60",
+                "$values": []
+              }
+            },
+            "6": {
+              "$id": "61",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/hills_gain.png",
+              "RelativePath": true,
+              "Id": 6,
+              "Name": "低丘细节高度遮罩",
+              "Position": {
+                "$id": "64",
+                "X": 25500,
+                "Y": 26160
+              },
+              "Ports": {
+                "$id": "65",
+                "$values": [
+                  {
+                    "$id": "62",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "61"
+                    }
+                  },
+                  {
+                    "$id": "63",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "61"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "66",
+                "$values": []
+              }
+            },
+            "7": {
+              "$id": "67",
+              "$type": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+              "Mode": "Multiply",
+              "PortCount": 2,
+              "Ratio": 1,
+              "Id": 7,
+              "Name": "低丘区域化 / 1.1-4.2m",
+              "Position": {
+                "$id": "74",
+                "X": 25870,
+                "Y": 25900
+              },
+              "Ports": {
+                "$id": "75",
+                "$values": [
+                  {
+                    "$id": "68",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "67"
+                    },
+                    "Record": {
+                      "$id": "77",
+                      "From": 5,
+                      "To": 7,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "69",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "67"
+                    }
+                  },
+                  {
+                    "$id": "70",
+                    "Name": "Input2",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "67"
+                    },
+                    "Record": {
+                      "$id": "78",
+                      "From": 6,
+                      "To": 7,
+                      "FromPort": "Out",
+                      "ToPort": "Input2",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "73",
+                    "Name": "Mask",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "67"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "76",
+                "$values": []
+              }
+            },
+            "8": {
+              "$id": "79",
+              "$type": "QuadSpinner.Gaea.Nodes.Plates, Gaea.Nodes",
+              "Seed": 20261003,
+              "Id": 8,
+              "Name": "04 东侧高台表面",
+              "Position": {
+                "$id": "82",
+                "X": 25500,
+                "Y": 26680
+              },
+              "Ports": {
+                "$id": "83",
+                "$values": [
+                  {
+                    "$id": "80",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "79"
+                    }
+                  },
+                  {
+                    "$id": "81",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "79"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "84",
+                "$values": []
+              }
+            },
+            "9": {
+              "$id": "85",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/plateau_gain.png",
+              "RelativePath": true,
+              "Id": 9,
+              "Name": "高台细节高度遮罩",
+              "Position": {
+                "$id": "88",
+                "X": 25500,
+                "Y": 26940
+              },
+              "Ports": {
+                "$id": "89",
+                "$values": [
+                  {
+                    "$id": "86",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "85"
+                    }
+                  },
+                  {
+                    "$id": "87",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "85"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "90",
+                "$values": []
+              }
+            },
+            "10": {
+              "$id": "91",
+              "$type": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+              "Mode": "Multiply",
+              "PortCount": 2,
+              "Ratio": 1,
+              "Id": 10,
+              "Name": "高台区域化 / 3m",
+              "Position": {
+                "$id": "98",
+                "X": 25870,
+                "Y": 26680
+              },
+              "Ports": {
+                "$id": "99",
+                "$values": [
+                  {
+                    "$id": "92",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "91"
+                    },
+                    "Record": {
+                      "$id": "101",
+                      "From": 8,
+                      "To": 10,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "93",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "91"
+                    }
+                  },
+                  {
+                    "$id": "94",
+                    "Name": "Input2",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "91"
+                    },
+                    "Record": {
+                      "$id": "102",
+                      "From": 9,
+                      "To": 10,
+                      "FromPort": "Out",
+                      "ToPort": "Input2",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "97",
+                    "Name": "Mask",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "91"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "100",
+                "$values": []
+              }
+            },
+            "11": {
+              "$id": "103",
+              "$type": "QuadSpinner.Gaea.Nodes.Canyon, Gaea.Nodes",
+              "Seed": 20261004,
+              "Valley": 0.58,
+              "Depth": 0.7,
+              "Id": 11,
+              "Name": "05 东侧峡谷侵蚀纹理",
+              "Position": {
+                "$id": "107",
+                "X": 25500,
+                "Y": 27460
+              },
+              "Ports": {
+                "$id": "108",
+                "$values": [
+                  {
+                    "$id": "104",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "103"
+                    }
+                  },
+                  {
+                    "$id": "105",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "103"
+                    }
+                  },
+                  {
+                    "$id": "106",
+                    "Name": "Depth",
+                    "Type": "Out",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "103"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "109",
+                "$values": []
+              }
+            },
+            "12": {
+              "$id": "110",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/canyon_gain.png",
+              "RelativePath": true,
+              "Id": 12,
+              "Name": "峡谷下切高度遮罩",
+              "Position": {
+                "$id": "113",
+                "X": 25500,
+                "Y": 27720
+              },
+              "Ports": {
+                "$id": "114",
+                "$values": [
+                  {
+                    "$id": "111",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "110"
+                    }
+                  },
+                  {
+                    "$id": "112",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "110"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "115",
+                "$values": []
+              }
+            },
+            "13": {
+              "$id": "116",
+              "$type": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+              "Mode": "Multiply",
+              "PortCount": 2,
+              "Ratio": 1,
+              "Id": 13,
+              "Name": "峡谷区域化 / 2.5m",
+              "Position": {
+                "$id": "123",
+                "X": 25870,
+                "Y": 27460
+              },
+              "Ports": {
+                "$id": "124",
+                "$values": [
+                  {
+                    "$id": "117",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "116"
+                    },
+                    "Record": {
+                      "$id": "126",
+                      "From": 11,
+                      "To": 13,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "118",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "116"
+                    }
+                  },
+                  {
+                    "$id": "119",
+                    "Name": "Input2",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "116"
+                    },
+                    "Record": {
+                      "$id": "127",
+                      "From": 12,
+                      "To": 13,
+                      "FromPort": "Out",
+                      "ToPort": "Input2",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "122",
+                    "Name": "Mask",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "116"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "125",
+                "$values": []
+              }
+            },
+            "14": {
+              "$id": "128",
+              "$type": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+              "Mode": "Add",
+              "PortCount": 2,
+              "Ratio": 1,
+              "Id": 14,
+              "Name": "06 山地合成",
+              "Position": {
+                "$id": "135",
+                "X": 26240,
+                "Y": 25380
+              },
+              "Ports": {
+                "$id": "136",
+                "$values": [
+                  {
+                    "$id": "129",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "128"
+                    },
+                    "Record": {
+                      "$id": "138",
+                      "From": 1,
+                      "To": 14,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "130",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "128"
+                    }
+                  },
+                  {
+                    "$id": "131",
+                    "Name": "Input2",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "128"
+                    },
+                    "Record": {
+                      "$id": "139",
+                      "From": 4,
+                      "To": 14,
+                      "FromPort": "Out",
+                      "ToPort": "Input2",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "134",
+                    "Name": "Mask",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "128"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "137",
+                "$values": []
+              }
+            },
+            "15": {
+              "$id": "140",
+              "$type": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+              "Mode": "Add",
+              "PortCount": 2,
+              "Ratio": 1,
+              "Id": 15,
+              "Name": "07 丘陵合成",
+              "Position": {
+                "$id": "147",
+                "X": 26610,
+                "Y": 25380
+              },
+              "Ports": {
+                "$id": "148",
+                "$values": [
+                  {
+                    "$id": "141",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "140"
+                    },
+                    "Record": {
+                      "$id": "150",
+                      "From": 14,
+                      "To": 15,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "142",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "140"
+                    }
+                  },
+                  {
+                    "$id": "143",
+                    "Name": "Input2",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "140"
+                    },
+                    "Record": {
+                      "$id": "151",
+                      "From": 7,
+                      "To": 15,
+                      "FromPort": "Out",
+                      "ToPort": "Input2",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "146",
+                    "Name": "Mask",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "140"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "149",
+                "$values": []
+              }
+            },
+            "16": {
+              "$id": "152",
+              "$type": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+              "Mode": "Add",
+              "PortCount": 2,
+              "Ratio": 1,
+              "Id": 16,
+              "Name": "08 高台合成",
+              "Position": {
+                "$id": "159",
+                "X": 26980,
+                "Y": 25380
+              },
+              "Ports": {
+                "$id": "160",
+                "$values": [
+                  {
+                    "$id": "153",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "152"
+                    },
+                    "Record": {
+                      "$id": "162",
+                      "From": 15,
+                      "To": 16,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "154",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "152"
+                    }
+                  },
+                  {
+                    "$id": "155",
+                    "Name": "Input2",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "152"
+                    },
+                    "Record": {
+                      "$id": "163",
+                      "From": 10,
+                      "To": 16,
+                      "FromPort": "Out",
+                      "ToPort": "Input2",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "158",
+                    "Name": "Mask",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "152"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "161",
+                "$values": []
+              }
+            },
+            "17": {
+              "$id": "164",
+              "$type": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+              "Mode": "Subtract",
+              "PortCount": 2,
+              "Ratio": 1,
+              "Id": 17,
+              "Name": "09 峡谷合成",
+              "Position": {
+                "$id": "171",
+                "X": 27350,
+                "Y": 25380
+              },
+              "Ports": {
+                "$id": "172",
+                "$values": [
+                  {
+                    "$id": "165",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "164"
+                    },
+                    "Record": {
+                      "$id": "174",
+                      "From": 16,
+                      "To": 17,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "166",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "164"
+                    }
+                  },
+                  {
+                    "$id": "167",
+                    "Name": "Input2",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "164"
+                    },
+                    "Record": {
+                      "$id": "175",
+                      "From": 13,
+                      "To": 17,
+                      "FromPort": "Out",
+                      "ToPort": "Input2",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "170",
+                    "Name": "Mask",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "164"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "173",
+                "$values": []
+              }
+            },
+            "18": {
+              "$id": "176",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/erosion_allowed.png",
+              "RelativePath": true,
+              "Id": 18,
+              "Name": "通路与集结区侵蚀保护",
+              "Position": {
+                "$id": "179",
+                "X": 27350,
+                "Y": 25900
+              },
+              "Ports": {
+                "$id": "180",
+                "$values": [
+                  {
+                    "$id": "177",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "176"
+                    }
+                  },
+                  {
+                    "$id": "178",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "176"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "181",
+                "$values": []
+              }
+            },
+            "19": {
+              "$id": "182",
+              "$type": "QuadSpinner.Gaea.Nodes.Erosion2, Gaea.Nodes",
+              "Version": 2,
+              "Seed": 20261001,
+              "Duration": 12,
+              "Downcutting": 0.05,
+              "Id": 19,
+              "Name": "10 局部侵蚀 / 通路保护",
+              "Position": {
+                "$id": "190",
+                "X": 27720,
+                "Y": 25380
+              },
+              "Ports": {
+                "$id": "191",
+                "$values": [
+                  {
+                    "$id": "183",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "182"
+                    },
+                    "Record": {
+                      "$id": "193",
+                      "From": 17,
+                      "To": 19,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "184",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "182"
+                    }
+                  },
+                  {
+                    "$id": "185",
+                    "Name": "Mask",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "182"
+                    },
+                    "Record": {
+                      "$id": "194",
+                      "From": 18,
+                      "To": 19,
+                      "FromPort": "Out",
+                      "ToPort": "Mask",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "186",
+                    "Name": "Precipitation",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "182"
+                    }
+                  },
+                  {
+                    "$id": "187",
+                    "Name": "Flow",
+                    "Type": "Out",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "182"
+                    }
+                  },
+                  {
+                    "$id": "188",
+                    "Name": "Wear",
+                    "Type": "Out",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "182"
+                    }
+                  },
+                  {
+                    "$id": "189",
+                    "Name": "Deposits",
+                    "Type": "Out",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "182"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "192",
+                "$values": []
+              }
+            },
+            "20": {
+              "$id": "195",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/unprotected.png",
+              "RelativePath": true,
+              "Id": 20,
+              "Name": "可变化区域",
+              "Position": {
+                "$id": "198",
+                "X": 27720,
+                "Y": 26160
+              },
+              "Ports": {
+                "$id": "199",
+                "$values": [
+                  {
+                    "$id": "196",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "195"
+                    }
+                  },
+                  {
+                    "$id": "197",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "195"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "200",
+                "$values": []
+              }
+            },
+            "21": {
+              "$id": "201",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/protection.png",
+              "RelativePath": true,
+              "Id": 21,
+              "Name": "稳定通路 / 集结区 / 海岸",
+              "Position": {
+                "$id": "204",
+                "X": 27720,
+                "Y": 26680
+              },
+              "Ports": {
+                "$id": "205",
+                "$values": [
+                  {
+                    "$id": "202",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "201"
+                    }
+                  },
+                  {
+                    "$id": "203",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "201"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "206",
+                "$values": []
+              }
+            },
+            "22": {
+              "$id": "207",
+              "$type": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+              "Mode": "Multiply",
+              "PortCount": 2,
+              "Ratio": 1,
+              "Id": 22,
+              "Name": "11 非保护区域地形",
+              "Position": {
+                "$id": "214",
+                "X": 28090,
+                "Y": 25380
+              },
+              "Ports": {
+                "$id": "215",
+                "$values": [
+                  {
+                    "$id": "208",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "207"
+                    },
+                    "Record": {
+                      "$id": "217",
+                      "From": 19,
+                      "To": 22,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "209",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "207"
+                    }
+                  },
+                  {
+                    "$id": "210",
+                    "Name": "Input2",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "207"
+                    },
+                    "Record": {
+                      "$id": "218",
+                      "From": 20,
+                      "To": 22,
+                      "FromPort": "Out",
+                      "ToPort": "Input2",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "213",
+                    "Name": "Mask",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "207"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "216",
+                "$values": []
+              }
+            },
+            "23": {
+              "$id": "219",
+              "$type": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+              "Mode": "Multiply",
+              "PortCount": 2,
+              "Ratio": 1,
+              "Id": 23,
+              "Name": "12 保留路线与海岸",
+              "Position": {
+                "$id": "226",
+                "X": 28090,
+                "Y": 26420
+              },
+              "Ports": {
+                "$id": "227",
+                "$values": [
+                  {
+                    "$id": "220",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "219"
+                    },
+                    "Record": {
+                      "$id": "229",
+                      "From": 1,
+                      "To": 23,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "221",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "219"
+                    }
+                  },
+                  {
+                    "$id": "222",
+                    "Name": "Input2",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "219"
+                    },
+                    "Record": {
+                      "$id": "230",
+                      "From": 21,
+                      "To": 23,
+                      "FromPort": "Out",
+                      "ToPort": "Input2",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "225",
+                    "Name": "Mask",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "219"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "228",
+                "$values": []
+              }
+            },
+            "24": {
+              "$id": "231",
+              "$type": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+              "Mode": "Add",
+              "PortCount": 2,
+              "Ratio": 1,
+              "Id": 24,
+              "Name": "13 最终战斗海岛",
+              "Position": {
+                "$id": "238",
+                "X": 28460,
+                "Y": 25380
+              },
+              "Ports": {
+                "$id": "239",
+                "$values": [
+                  {
+                    "$id": "232",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "231"
+                    },
+                    "Record": {
+                      "$id": "241",
+                      "From": 22,
+                      "To": 24,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "233",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "231"
+                    }
+                  },
+                  {
+                    "$id": "234",
+                    "Name": "Input2",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "231"
+                    },
+                    "Record": {
+                      "$id": "242",
+                      "From": 23,
+                      "To": 24,
+                      "FromPort": "Out",
+                      "ToPort": "Input2",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "237",
+                    "Name": "Mask",
+                    "Type": "In",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "231"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "240",
+                "$values": []
+              }
+            },
+            "25": {
+              "$id": "243",
+              "$type": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+              "Format": "PNG16",
+              "Location": "Explicit",
+              "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CommanderIsland_1800m_v1/final/height_4096",
+              "Id": 25,
+              "Name": "14 高度图 / PNG16",
+              "Position": {
+                "$id": "246",
+                "X": 28830,
+                "Y": 25120
+              },
+              "Ports": {
+                "$id": "247",
+                "$values": [
+                  {
+                    "$id": "244",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "243"
+                    },
+                    "Record": {
+                      "$id": "249",
+                      "From": 24,
+                      "To": 25,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "245",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "243"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "248",
+                "$values": []
+              }
+            },
+            "26": {
+              "$id": "250",
+              "$type": "QuadSpinner.Gaea.Nodes.SatMap, Gaea.Nodes",
+              "LibraryItem": 81,
+              "Bias": 0.2584,
+              "Reverse": true,
+              "Id": 26,
+              "Name": "15 地形色彩预览",
+              "Position": {
+                "$id": "253",
+                "X": 28830,
+                "Y": 25640
+              },
+              "Ports": {
+                "$id": "254",
+                "$values": [
+                  {
+                    "$id": "251",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "250"
+                    },
+                    "Record": {
+                      "$id": "256",
+                      "From": 24,
+                      "To": 26,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "252",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "250"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "255",
+                "$values": []
+              }
+            },
+            "27": {
+              "$id": "257",
+              "$type": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+              "Format": "PNG8",
+              "Location": "Explicit",
+              "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CommanderIsland_1800m_v1/final/gaea_color",
+              "Id": 27,
+              "Name": "16 色彩图 / PNG8",
+              "Position": {
+                "$id": "260",
+                "X": 29200,
+                "Y": 25640
+              },
+              "Ports": {
+                "$id": "261",
+                "$values": [
+                  {
+                    "$id": "258",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "257"
+                    },
+                    "Record": {
+                      "$id": "263",
+                      "From": 26,
+                      "To": 27,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "259",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "257"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "262",
+                "$values": []
+              }
+            },
+            "28": {
+              "$id": "264",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/mask_flat_ground.png",
+              "RelativePath": true,
+              "Id": 28,
+              "Name": "材质分区 / flat_ground",
+              "Position": {
+                "$id": "267",
+                "X": 28460,
+                "Y": 26420
+              },
+              "Ports": {
+                "$id": "268",
+                "$values": [
+                  {
+                    "$id": "265",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "264"
+                    }
+                  },
+                  {
+                    "$id": "266",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "264"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "269",
+                "$values": []
+              }
+            },
+            "29": {
+              "$id": "270",
+              "$type": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+              "Format": "PNG16",
+              "Location": "Explicit",
+              "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CommanderIsland_1800m_v1/final/mask_flat_ground",
+              "Id": 29,
+              "Name": "分区导出 / flat_ground",
+              "Position": {
+                "$id": "273",
+                "X": 28830,
+                "Y": 26420
+              },
+              "Ports": {
+                "$id": "274",
+                "$values": [
+                  {
+                    "$id": "271",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "270"
+                    },
+                    "Record": {
+                      "$id": "276",
+                      "From": 28,
+                      "To": 29,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "272",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "270"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "275",
+                "$values": []
+              }
+            },
+            "30": {
+              "$id": "277",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/mask_hills.png",
+              "RelativePath": true,
+              "Id": 30,
+              "Name": "材质分区 / hills",
+              "Position": {
+                "$id": "280",
+                "X": 28460,
+                "Y": 26680
+              },
+              "Ports": {
+                "$id": "281",
+                "$values": [
+                  {
+                    "$id": "278",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "277"
+                    }
+                  },
+                  {
+                    "$id": "279",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "277"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "282",
+                "$values": []
+              }
+            },
+            "31": {
+              "$id": "283",
+              "$type": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+              "Format": "PNG16",
+              "Location": "Explicit",
+              "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CommanderIsland_1800m_v1/final/mask_hills",
+              "Id": 31,
+              "Name": "分区导出 / hills",
+              "Position": {
+                "$id": "286",
+                "X": 28830,
+                "Y": 26680
+              },
+              "Ports": {
+                "$id": "287",
+                "$values": [
+                  {
+                    "$id": "284",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "283"
+                    },
+                    "Record": {
+                      "$id": "289",
+                      "From": 30,
+                      "To": 31,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "285",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "283"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "288",
+                "$values": []
+              }
+            },
+            "32": {
+              "$id": "290",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/mask_plateau.png",
+              "RelativePath": true,
+              "Id": 32,
+              "Name": "材质分区 / plateau",
+              "Position": {
+                "$id": "293",
+                "X": 28460,
+                "Y": 26940
+              },
+              "Ports": {
+                "$id": "294",
+                "$values": [
+                  {
+                    "$id": "291",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "290"
+                    }
+                  },
+                  {
+                    "$id": "292",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "290"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "295",
+                "$values": []
+              }
+            },
+            "33": {
+              "$id": "296",
+              "$type": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+              "Format": "PNG16",
+              "Location": "Explicit",
+              "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CommanderIsland_1800m_v1/final/mask_plateau",
+              "Id": 33,
+              "Name": "分区导出 / plateau",
+              "Position": {
+                "$id": "299",
+                "X": 28830,
+                "Y": 26940
+              },
+              "Ports": {
+                "$id": "300",
+                "$values": [
+                  {
+                    "$id": "297",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "296"
+                    },
+                    "Record": {
+                      "$id": "302",
+                      "From": 32,
+                      "To": 33,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "298",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "296"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "301",
+                "$values": []
+              }
+            },
+            "34": {
+              "$id": "303",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/mask_rock.png",
+              "RelativePath": true,
+              "Id": 34,
+              "Name": "材质分区 / rock",
+              "Position": {
+                "$id": "306",
+                "X": 28460,
+                "Y": 27200
+              },
+              "Ports": {
+                "$id": "307",
+                "$values": [
+                  {
+                    "$id": "304",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "303"
+                    }
+                  },
+                  {
+                    "$id": "305",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "303"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "308",
+                "$values": []
+              }
+            },
+            "35": {
+              "$id": "309",
+              "$type": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+              "Format": "PNG16",
+              "Location": "Explicit",
+              "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CommanderIsland_1800m_v1/final/mask_rock",
+              "Id": 35,
+              "Name": "分区导出 / rock",
+              "Position": {
+                "$id": "312",
+                "X": 28830,
+                "Y": 27200
+              },
+              "Ports": {
+                "$id": "313",
+                "$values": [
+                  {
+                    "$id": "310",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "309"
+                    },
+                    "Record": {
+                      "$id": "315",
+                      "From": 34,
+                      "To": 35,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "311",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "309"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "314",
+                "$values": []
+              }
+            },
+            "36": {
+              "$id": "316",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/mask_beach.png",
+              "RelativePath": true,
+              "Id": 36,
+              "Name": "材质分区 / beach",
+              "Position": {
+                "$id": "319",
+                "X": 28460,
+                "Y": 27460
+              },
+              "Ports": {
+                "$id": "320",
+                "$values": [
+                  {
+                    "$id": "317",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "316"
+                    }
+                  },
+                  {
+                    "$id": "318",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "316"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "321",
+                "$values": []
+              }
+            },
+            "37": {
+              "$id": "322",
+              "$type": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+              "Format": "PNG16",
+              "Location": "Explicit",
+              "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CommanderIsland_1800m_v1/final/mask_beach",
+              "Id": 37,
+              "Name": "分区导出 / beach",
+              "Position": {
+                "$id": "325",
+                "X": 28830,
+                "Y": 27460
+              },
+              "Ports": {
+                "$id": "326",
+                "$values": [
+                  {
+                    "$id": "323",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "322"
+                    },
+                    "Record": {
+                      "$id": "328",
+                      "From": 36,
+                      "To": 37,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "324",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "322"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "327",
+                "$values": []
+              }
+            },
+            "38": {
+              "$id": "329",
+              "$type": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+              "FileName": "inputs/mask_water.png",
+              "RelativePath": true,
+              "Id": 38,
+              "Name": "材质分区 / water",
+              "Position": {
+                "$id": "332",
+                "X": 28460,
+                "Y": 27720
+              },
+              "Ports": {
+                "$id": "333",
+                "$values": [
+                  {
+                    "$id": "330",
+                    "Name": "In",
+                    "Type": "PrimaryIn",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "329"
+                    }
+                  },
+                  {
+                    "$id": "331",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "329"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "334",
+                "$values": []
+              }
+            },
+            "39": {
+              "$id": "335",
+              "$type": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+              "Format": "PNG16",
+              "Location": "Explicit",
+              "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CommanderIsland_1800m_v1/final/mask_water",
+              "Id": 39,
+              "Name": "分区导出 / water",
+              "Position": {
+                "$id": "338",
+                "X": 28830,
+                "Y": 27720
+              },
+              "Ports": {
+                "$id": "339",
+                "$values": [
+                  {
+                    "$id": "336",
+                    "Name": "In",
+                    "Type": "PrimaryIn, Required",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "335"
+                    },
+                    "Record": {
+                      "$id": "341",
+                      "From": 38,
+                      "To": 39,
+                      "FromPort": "Out",
+                      "ToPort": "In",
+                      "IsValid": true
+                    }
+                  },
+                  {
+                    "$id": "337",
+                    "Name": "Out",
+                    "Type": "PrimaryOut",
+                    "IsExporting": true,
+                    "Parent": {
+                      "$ref": "335"
+                    }
+                  }
+                ]
+              },
+              "Modifiers": {
+                "$id": "340",
+                "$values": []
+              }
+            }
+          },
+          "Groups": {
+            "$id": "7"
+          },
+          "Notes": {
+            "$id": "8"
+          },
+          "GraphTabs": {
+            "$id": "9",
+            "$values": [
+              {
+                "$id": "10",
+                "Name": "Graph 1",
+                "Color": "Brass",
+                "ZoomFactor": 1,
+                "ViewportLocation": {
+                  "$id": "11",
+                  "X": 26000,
+                  "Y": 26000
+                }
+              }
+            ]
+          },
+          "Width": 1800,
+          "Height": 140,
+          "Ratio": 0.07777777777777778,
+          "Regions": {
+            "$id": "12",
+            "$values": []
+          }
+        },
+        "Automation": {
+          "$id": "13",
+          "Bindings": {
+            "$id": "14",
+            "$values": []
+          },
+          "Expressions": {
+            "$id": "15"
+          },
+          "Variables": {
+            "$id": "16"
+          }
+        },
+        "BuildDefinition": {
+          "$id": "17",
+          "Type": "Standard",
+          "Destination": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CommanderIsland_1800m_v1/final",
+          "Resolution": 4096,
+          "BakeResolution": 4096,
+          "TileResolution": 1024,
+          "BucketResolution": 2048,
+          "NumberOfTiles": 3,
+          "EdgeBlending": 0.25,
+          "TileZeroIndex": true,
+          "TilePattern": "_y%Y%_x%X%",
+          "OrganizeFiles": "NodeSubFolder",
+          "ColorSpace": "sRGB"
+        },
+        "State": {
+          "$id": "18",
+          "BakeResolution": 4096,
+          "PreviewResolution": 1024,
+          "HDResolution": 4096,
+          "SelectedNode": 24,
+          "NodeBookmarks": {
+            "$id": "19",
+            "$values": []
+          },
+          "Viewport": {
+            "$id": "20",
+            "CameraPosition": {
+              "$id": "21",
+              "$values": []
+            },
+            "Camera": {
+              "$id": "22"
+            },
+            "RenderMode": "Realistic",
+            "AmbientOcclusion": true,
+            "Shadows": true
+          }
+        },
+        "BuildProfiles": {
+          "$id": "23"
+        }
+      }
+    ]
+  },
+  "Id": "6985e926",
+  "Branch": 1,
+  "Metadata": {
+    "$id": "24",
+    "Name": "GuLiStrike_CommanderIsland_1800m_v1",
+    "Description": "",
+    "Version": "2.2.9.0",
+    "Edition": "Community",
+    "Owner": "",
+    "DateCreated": "2026-10-01 06:11:47Z",
+    "DateLastBuilt": "2026-10-01 06:11:47Z",
+    "DateLastSaved": "2026-10-01 09:43:14Z",
+    "ModifiedVersion": "2.3.0.1"
+  }
+}

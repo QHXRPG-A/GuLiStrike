@@ -1,0 +1,580 @@
+{
+  "accepted_by": "user",
+  "message": "把这个会话的文档都标记通过，然后清除这个会话的临时文件，然后传GitHub",
+  "date": "2026-10-02",
+  "work_items": [
+    "WORK-20261001-002",
+    "WORK-20261001-003",
+    "WORK-20261001-004",
+    "WORK-20261002-001",
+    "WORK-20261002-002",
+    "WORK-20261002-003"
+  ],
+  "documents": [
+    "Progress/RequirementDocument/20261001-Mass陡坡绕行与停滞恢复.md",
+    "Progress/RequirementDocument/20261001-战斗海岛UE导入.md",
+    "Progress/RequirementDocument/20261001-指挥官海岛与7x7据点改造.md",
+    "Progress/RequirementDocument/不可达移动指令拒绝与原状态保留.md",
+    "Progress/RequirementDocument/导航连通性烘焙校验.md",
+    "Progress/RequirementDocument/指挥官坡面导航过滤与精度修正.md",
+    "Progress/DevelopmentDocumentation/20261001-Mass陡坡绕行与停滞恢复.md",
+    "Progress/DevelopmentDocumentation/20261001-战斗海岛UE导入.md",
+    "Progress/DevelopmentDocumentation/20261001-指挥官海岛与7x7据点改造.md",
+    "Progress/DevelopmentDocumentation/不可达移动指令拒绝与原状态保留.md",
+    "Progress/DevelopmentDocumentation/导航连通性烘焙校验.md",
+    "Progress/DevelopmentDocumentation/指挥官坡面导航过滤与精度修正.md",
+    "Progress/Archive/20261001-Mass编译后高处部分路径诊断.md",
+    "Progress/Archive/20261001-Mass陡坡绕行原生编译.md",
+    "Progress/Archive/20261001-Mass陡坡绕行源码与静态核对.md",
+    "Progress/Archive/20261001-战斗海岛原生Landscape导入UE.md",
+    "Progress/Archive/20261001-指挥官1800米海岛与49据点交付.md",
+    "Progress/Archive/20261002-不可达新移动指令拒绝源码与场景交付.md",
+    "Progress/Archive/20261002-不可达移动拒绝编译加载与PIE门禁记录.md",
+    "Progress/Archive/20261002-坡面导航编译重建与残留断区.md",
+    "Progress/Archive/20261002-坡面导航预设接入与场景准备.md",
+    "Progress/Archive/20261002-坡面细碎导航断带生成参数分析.md",
+    "Progress/Archive/20261002-导航连通性校验编译与模块加载.md",
+    "Progress/Archive/20261002-导航连通性烘焙校验实现与场景交付.md",
+    "Progress/Archive/20261002-山脚高台导航连通性确认.md",
+    "Progress/Archive/20261002-连通认证暂关与R2C2落地区修复.md"
+  ],
+  "retained_evidence": [
+    {
+      "source": "outputs/commander-pie-unblock-20261002/build-ids.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/build-ids.json",
+      "bytes": 161,
+      "sha256": "40cee9712cad36ddd722a73d263aaf9c4d0b1890d51a41dc9b5e3a92cdc994c2"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/build-result.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/build-result.json",
+      "bytes": 112,
+      "sha256": "2fe36dd0c4eb312a22d801f59b560ea1881ad2c8143d50ff48e58ef065972549"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/build.log",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/build.txt",
+      "bytes": 1334,
+      "sha256": "83a50b1f9b47aaecd6214a2d52537b1d5bfe50a3283a30eb4817f710323b0c65"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/navigation-rebuild-record.txt",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/navigation-rebuild-record.txt",
+      "bytes": 7264,
+      "sha256": "4fc593637aea5deee7733db339d1f806c3583c20e6f8c504b15948c804cd6bf1"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/pad-applied.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/pad-applied.json",
+      "bytes": 7759,
+      "sha256": "dc95fcfff63f80acc2dde0bfe83006f2a91ad7e0792777eb7cd04c82fb86aff6"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/pad-candidate.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/pad-candidate.json",
+      "bytes": 24510,
+      "sha256": "076f24797feb7e7e816e7f0a01b001b4b4e6e5bc6122827d8801b62909963e9c"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/pie-final-request.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/pie-final-request.json",
+      "bytes": 715,
+      "sha256": "f598f60b1b253bb73c931c746b133057e27328b8858680408ebcfd096e1eb5cc"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/pie-final-state.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/pie-final-state.json",
+      "bytes": 436,
+      "sha256": "737907871442f8305272c1f9622b620770995d7580da551caa74a5d585378abf"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/pie-request.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/pie-request.json",
+      "bytes": 543,
+      "sha256": "374c08532c6cbcd6ec657c506f11549d88122df6a1107b7e99a452fe7d9f63ce"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/resource-bake.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/resource-bake.json",
+      "bytes": 569,
+      "sha256": "d7f9f6c2639a2795b4c3c9fa339839b337c5edb43ce9b6a393215f847ebcbfd0"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/runtime-moving-after-invalid.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/runtime-moving-after-invalid.json",
+      "bytes": 85967,
+      "sha256": "8371be97c0f10853d681149cfd009b4842a3738f6fb566b9a814e959ef785133"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/runtime-moving-before-invalid.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/runtime-moving-before-invalid.json",
+      "bytes": 86560,
+      "sha256": "b19aabfcdcde552ee30cf6fa5af50017cf8632e2f362ad8abe6ac2a67f9f28df"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/runtime-stopped-after-invalid.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/runtime-stopped-after-invalid.json",
+      "bytes": 69848,
+      "sha256": "a70e72e4375fa376d5ad79696f5522f547beb54a0f685e5fe00473c90d752b88"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/runtime-stopped-before-invalid.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/runtime-stopped-before-invalid.json",
+      "bytes": 71600,
+      "sha256": "6b4395abaff4822007ab3d2bffe1c8286670d16ac12aec8fee2640c4f440f6aa"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/runtime-validation.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/runtime-validation.json",
+      "bytes": 320,
+      "sha256": "ea6728b2e19f9c87c7b3c0d75893661973521af45edadcfa9f13303c047575ce"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/source-validation.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/source-validation.json",
+      "bytes": 269797,
+      "sha256": "d13518f86a1adec0af74c814e1db4b93d1f65211a2a8f5e5868f47a98dcd5a14"
+    },
+    {
+      "source": "outputs/commander-pie-unblock-20261002/verification-summary.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-pie-unblock-20261002/verification-summary.json",
+      "bytes": 994,
+      "sha256": "05933e3558c3f0306d2fe5519306d0cb8c3f194daa9c2b92c968302f109c1c48"
+    },
+    {
+      "source": "outputs/commander-slope-navigation-20261002/build-id-verification.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-slope-navigation-20261002/build-id-verification.json",
+      "bytes": 248,
+      "sha256": "07a5f541451a152ea4f1a4533915364ef41ef4a9bb9926dc0dd940799a50d202"
+    },
+    {
+      "source": "outputs/commander-slope-navigation-20261002/native-build.log",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-slope-navigation-20261002/native-build.txt",
+      "bytes": 4993,
+      "sha256": "9b907be8d62c3858eb1e8041fed3a48d581eaa37f978412090031c5f59fd324c"
+    },
+    {
+      "source": "outputs/commander-slope-navigation-20261002/navigation-final-readback.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-slope-navigation-20261002/navigation-final-readback.json",
+      "bytes": 27949,
+      "sha256": "417a87f70b09b080f847d71121e3fb0b91e0680a5426a4f19ed4eefd7c27e7ea"
+    },
+    {
+      "source": "outputs/commander-slope-navigation-20261002/navigation-prepare-result.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-slope-navigation-20261002/navigation-prepare-result.json",
+      "bytes": 22657,
+      "sha256": "6d5985085cb61e2a8b33b098021f8a505e49f183be14c7fd1d0ba48dd5798058"
+    },
+    {
+      "source": "outputs/commander-slope-navigation-20261002/navigation-rebuild-report.md",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-slope-navigation-20261002/navigation-rebuild-report.md",
+      "bytes": 4782,
+      "sha256": "40c583b6ea9082e6e4c3fc8028721956b0da821467e45e6992469ca0facec2c0"
+    },
+    {
+      "source": "outputs/commander-slope-navigation-20261002/navigation-rebuild.log",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-slope-navigation-20261002/navigation-rebuild.txt",
+      "bytes": 20124,
+      "sha256": "c79da7189ce39d404ebc247b7053e909c83b79bddb5e3536c5545a7cf907feed"
+    },
+    {
+      "source": "outputs/commander-slope-navigation-20261002/scene-authoring-precompile.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-slope-navigation-20261002/scene-authoring-precompile.json",
+      "bytes": 4633,
+      "sha256": "e6721f3460e1796eb9a5e27492528662b20830b575c8af7961a043084af5d10a"
+    },
+    {
+      "source": "outputs/commander-slope-navigation-20261002/static-review-after-build.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-slope-navigation-20261002/static-review-after-build.json",
+      "bytes": 3426,
+      "sha256": "6b137070182fb648e01b034215608ced06879afc25b35042e61404470b89d162"
+    },
+    {
+      "source": "outputs/commander-slope-navigation-20261002/static-review.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-slope-navigation-20261002/static-review.json",
+      "bytes": 2780,
+      "sha256": "052b83753ed26844aa030c47a501a9e1c678ef724991b5e986382206a9f93ed0"
+    },
+    {
+      "source": "outputs/commander-slope-stuck-20261001/diagnosis.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-slope-stuck-20261001/diagnosis.json",
+      "bytes": 2327,
+      "sha256": "bc3cdf94845c7a18d78279a4adc471b00131959ac1f2c9306a9cf3f48004d800"
+    },
+    {
+      "source": "outputs/commander-unreachable-move-20261002/build-ids.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-unreachable-move-20261002/build-ids.json",
+      "bytes": 302,
+      "sha256": "e06d51df915172a75ecaeebaa73801e45d647ea4b3b067d50801a9ec2bf61d40"
+    },
+    {
+      "source": "outputs/commander-unreachable-move-20261002/build.log",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-unreachable-move-20261002/build.txt",
+      "bytes": 7511,
+      "sha256": "79e9fa929c111930a51094eb0b096412c6d554a4166db4e466f502ad124a1166"
+    },
+    {
+      "source": "outputs/commander-unreachable-move-20261002/fixture-point-data.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-unreachable-move-20261002/fixture-point-data.json",
+      "bytes": 1712,
+      "sha256": "3cd415cc8778730b79b413cbefd149d7389574e58bc4f46092f38e20adc39032"
+    },
+    {
+      "source": "outputs/commander-unreachable-move-20261002/fixture-source-data.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-unreachable-move-20261002/fixture-source-data.json",
+      "bytes": 7188,
+      "sha256": "2a2f46790c41cec59cf84e4df4d052a822ae76b17115415b561f2a51f81bd79b"
+    },
+    {
+      "source": "outputs/commander-unreachable-move-20261002/implementation.patch",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-unreachable-move-20261002/implementation.patch",
+      "bytes": 7837,
+      "sha256": "70484a2f197346ac18c95eba06c8057ebe6c33b3d64d8f4ef9560ab4a906a270"
+    },
+    {
+      "source": "outputs/commander-unreachable-move-20261002/module-load.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-unreachable-move-20261002/module-load.json",
+      "bytes": 303,
+      "sha256": "400bb40ced2971263472013884e3aad519128ae37c9760b28fb95723bc41f27c"
+    },
+    {
+      "source": "outputs/commander-unreachable-move-20261002/pie-gate-diagnostic.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-unreachable-move-20261002/pie-gate-diagnostic.json",
+      "bytes": 10863,
+      "sha256": "a99e4b6a5109e56b9ddfa438f6b57579627ae0df508f501cfa7566935207ca86"
+    },
+    {
+      "source": "outputs/commander-unreachable-move-20261002/pie-initial-state.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-unreachable-move-20261002/pie-initial-state.json",
+      "bytes": 247,
+      "sha256": "7eeca22c8383d9eb16c01e1d2a2d565a8ad7ffa2eeff3dc34768a3c09c291e57"
+    },
+    {
+      "source": "outputs/commander-unreachable-move-20261002/pie-request.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-unreachable-move-20261002/pie-request.json",
+      "bytes": 1714,
+      "sha256": "35869f7cf918db3c2bb2c57a7ef81a4305fea3fe40eaf63c1d09f77c12fa984e"
+    },
+    {
+      "source": "outputs/commander-unreachable-move-20261002/scene-entities.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-unreachable-move-20261002/scene-entities.json",
+      "bytes": 3853,
+      "sha256": "82afd5d469bdcf50fda504b9f6e461f28f3a650c4360407ea04b6a960315dc25"
+    },
+    {
+      "source": "outputs/commander-unreachable-move-20261002/static-review.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-unreachable-move-20261002/static-review.json",
+      "bytes": 2608,
+      "sha256": "09e78174c636ec91eb40c40fe1c66a79bb66db22c252f98c70d022ae2e90585f"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/build-20261001-attempt1.log",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/build-20261001-attempt1.txt",
+      "bytes": 5763,
+      "sha256": "e170378bb21f6d28e66e0ebf8a47de62d910fc01daf1b9979d6012a4437cbbc9"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/build-report.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/build-report.json",
+      "bytes": 1856,
+      "sha256": "6190f61ab5a1e66f50351d19751dcbb6a08af1030e70c9e77a987447a48d67a1"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/connectivity-conclusion.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/connectivity-conclusion.json",
+      "bytes": 1930,
+      "sha256": "7debc9e03caa1b38e2f9767bc7568fd96e6e42d18ffd47be275864f17575c3c4"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/connectivity-foot-plateau-profile.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/connectivity-foot-plateau-profile.json",
+      "bytes": 10379,
+      "sha256": "ec61a0e0848d88b1ba8b3864613d5c88010d1bda144aa6b90765598a6a0d1881"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/connectivity-native-audit.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/connectivity-native-audit.json",
+      "bytes": 13114,
+      "sha256": "b8fdf5718a6d23457bac2764cc8a461e3096197acbb1f200d1aa9c9a3a7d3a4a"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/connectivity-native-properties.txt",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/connectivity-native-properties.txt",
+      "bytes": 2404,
+      "sha256": "29bd41b4092de962d080825459ade68b3c52fc690a720e876f54a7486f585459"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/connectivity-selection-after.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/connectivity-selection-after.json",
+      "bytes": 130115,
+      "sha256": "283d1c4ac287878ccd625d6f20230c8dcdf97c41d761fd84288d8b5879d61156"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/connectivity-selection-before.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/connectivity-selection-before.json",
+      "bytes": 137911,
+      "sha256": "1a1ec7071075f5769162722a372c3082dae9a39948846b85a4d2cbde816e5ac0"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/current-authority-after.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/current-authority-after.json",
+      "bytes": 14482,
+      "sha256": "f0e4cdccb2a4ad2b6eb160104276390d27ed86cdff44747c2b9c2f194ab0577b"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/current-authority-before.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/current-authority-before.json",
+      "bytes": 19134,
+      "sha256": "000e608dc9b228509860ab633fcbf46d291402f272163cf596a8f23b17228aac"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/current-default-nav-comparison.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/current-default-nav-comparison.json",
+      "bytes": 13483,
+      "sha256": "0bef4ecdb9e83b4f7c5ed6eb7813f6354afee06b5d39be34e001962f27d881ec"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/current-nav-after.txt",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/current-nav-after.txt",
+      "bytes": 1794,
+      "sha256": "227cb0e2c0c7468a93c76c0f1c5eca594c8e7c012dca4d1240d2bc2174646e06"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/current-nav-before.txt",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/current-nav-before.txt",
+      "bytes": 6108,
+      "sha256": "183db481a603306aa7024b97d55bb8dcb44a1384b1471382b7d9787e7a27b6f1"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/current-pie-diagnosis.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/current-pie-diagnosis.json",
+      "bytes": 9289,
+      "sha256": "e0e99c270dc43929b82b6d016a0c0442e43458b683ec4732ddb4a5cb581c2a65"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/current-runtime-paths.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/current-runtime-paths.json",
+      "bytes": 40670,
+      "sha256": "dbbd0c9e2f8eab647773a9244d08403f0779725445207a0e2e13e25699772218"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/current-terrain-and-reverse.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/current-terrain-and-reverse.json",
+      "bytes": 3459,
+      "sha256": "63807d844d8b9fd16a8b02a511d023185392b5a067266913e13ae56c1b394e45"
+    },
+    {
+      "source": "outputs/commander-uphill-routing-20261001/static-checks.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/commander-uphill-routing-20261001/static-checks.json",
+      "bytes": 1950,
+      "sha256": "81c620a592a74534354e1d71794e5430fe7258c22ec5a8a328006ff826be3014"
+    },
+    {
+      "source": "outputs/navigation-connectivity-20261002/build-ids.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/navigation-connectivity-20261002/build-ids.json",
+      "bytes": 274,
+      "sha256": "8dfba55afb96309cef8585836f5f679a4f204b3999547c2eb1a34c287096b59b"
+    },
+    {
+      "source": "outputs/navigation-connectivity-20261002/fragmented-nav-current-parameters.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/navigation-connectivity-20261002/fragmented-nav-current-parameters.json",
+      "bytes": 2600,
+      "sha256": "19afe854674bed323c81f4e6c306e2ead967a1b86303109c5ecbd094a07da152"
+    },
+    {
+      "source": "outputs/navigation-connectivity-20261002/fragmented-nav-resolutions.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/navigation-connectivity-20261002/fragmented-nav-resolutions.json",
+      "bytes": 2102,
+      "sha256": "80109a1e264590971b735d5498faa61563c2631d7cb023537f3f53a264a94dfb"
+    },
+    {
+      "source": "outputs/navigation-connectivity-20261002/module-load-readback.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/navigation-connectivity-20261002/module-load-readback.json",
+      "bytes": 1274,
+      "sha256": "d0d4cc07e0c78f9bca515e21fa04a678f8752315088be1f4916ecea11171c052"
+    },
+    {
+      "source": "outputs/navigation-connectivity-20261002/native-build-result.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/navigation-connectivity-20261002/native-build-result.json",
+      "bytes": 216,
+      "sha256": "b8d342b64bb05fd573621cc00635df6c3c406b2b5a281e6454f448657095f30d"
+    },
+    {
+      "source": "outputs/navigation-connectivity-20261002/native-build.log",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/navigation-connectivity-20261002/native-build.txt",
+      "bytes": 4897,
+      "sha256": "00b6c561249bd242127e0d265ed23f8d3ed88e6ed20df81bc4f502e360620124"
+    },
+    {
+      "source": "outputs/navigation-connectivity-20261002/scene-entities.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/navigation-connectivity-20261002/scene-entities.json",
+      "bytes": 3099,
+      "sha256": "f9e181a017e2c773fd018eb23cd2c6adb246bade4bd4b765b0fa209afe1a4e0c"
+    },
+    {
+      "source": "outputs/navigation-connectivity-20261002/source-before.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/navigation-connectivity-20261002/source-before.json",
+      "bytes": 653,
+      "sha256": "1e94f22d0137a26ed471fb2976c6d4c6296c826379212377602db5fdbb00ba20"
+    },
+    {
+      "source": "outputs/navigation-connectivity-20261002/static-review-after-build.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/navigation-connectivity-20261002/static-review-after-build.json",
+      "bytes": 1850,
+      "sha256": "a81860a2df5799526c913fc3c0212de0bd7dc0685bb0b5d48b7a10eabdea2f3c"
+    },
+    {
+      "source": "outputs/navigation-connectivity-20261002/static-review.json",
+      "path": "Artifacts/Diagnostics/CommanderIslandSession_20261002/navigation-connectivity-20261002/static-review.json",
+      "bytes": 4003,
+      "sha256": "71e75a6c3bd5a94786e0319280f31da3dfecb0fa5a2e633801bbf92ae580cf75"
+    }
+  ],
+  "cleanup_targets": [
+    {
+      "path": "outputs/commander-slope-stuck-20261001",
+      "kind": "directory",
+      "files": 10,
+      "bytes": 329954
+    },
+    {
+      "path": "outputs/commander-uphill-routing-20261001",
+      "kind": "directory",
+      "files": 42,
+      "bytes": 2152035
+    },
+    {
+      "path": "outputs/navigation-connectivity-20261002",
+      "kind": "directory",
+      "files": 21,
+      "bytes": 100532
+    },
+    {
+      "path": "outputs/commander-slope-navigation-20261002",
+      "kind": "directory",
+      "files": 30,
+      "bytes": 197911
+    },
+    {
+      "path": "outputs/commander-unreachable-move-20261002",
+      "kind": "directory",
+      "files": 31,
+      "bytes": 826546
+    },
+    {
+      "path": "outputs/commander-pie-unblock-20261002",
+      "kind": "directory",
+      "files": 28,
+      "bytes": 3322643
+    },
+    {
+      "path": "ArtSource/Environment/GuLiStrike_CombatIsland_2300m_v1/UEImport/LandscapeInputs/height_4081_ue.r16",
+      "kind": "file",
+      "files": 1,
+      "bytes": 33309122
+    },
+    {
+      "path": "ArtSource/Environment/GuLiStrike_CombatIsland_2300m_v1/UEImport/LandscapeInputs/weights_4081_x6.u8",
+      "kind": "file",
+      "files": 1,
+      "bytes": 99927366
+    },
+    {
+      "path": "ArtSource/Environment/GuLiStrike_CommanderIsland_1800m_v1/UEImport/LandscapeInputs/height_4081_ue.r16",
+      "kind": "file",
+      "files": 1,
+      "bytes": 33309122
+    },
+    {
+      "path": "ArtSource/Environment/GuLiStrike_CommanderIsland_1800m_v1/UEImport/LandscapeInputs/weights_4081_x6.u8",
+      "kind": "file",
+      "files": 1,
+      "bytes": 99927366
+    },
+    {
+      "path": "ArtSource/Environment/GuLiStrike_CommanderIsland_1800m_v1/Before/LVL_CommanderMassPrototype.umap",
+      "kind": "file",
+      "files": 1,
+      "bytes": 107287418
+    },
+    {
+      "path": "ArtSource/Environment/GuLiStrike_CommanderIsland_1800m_v1/Before/DA_CommanderResourceMap.uasset",
+      "kind": "file",
+      "files": 1,
+      "bytes": 3034144
+    }
+  ],
+  "cleanup_complete": true,
+  "source_project_preserved": "ArtSource/Environment/GuLiStrike_CombatIsland_2300m_v1/Source/Projects/GuLiStrike_CombatIsland_2300m_v1",
+  "known_navigation_regions": 20,
+  "full_map_certification_enabled": false,
+  "cleanup_method": "Windows Recycle Bin",
+  "cleanup_results": [
+    {
+      "path": "outputs/commander-slope-stuck-20261001",
+      "recycled": true,
+      "remaining": []
+    },
+    {
+      "path": "outputs/commander-uphill-routing-20261001",
+      "recycled": true,
+      "remaining": []
+    },
+    {
+      "path": "outputs/navigation-connectivity-20261002",
+      "recycled": true,
+      "remaining": []
+    },
+    {
+      "path": "outputs/commander-slope-navigation-20261002",
+      "recycled": true,
+      "remaining": []
+    },
+    {
+      "path": "outputs/commander-unreachable-move-20261002",
+      "recycled": true,
+      "remaining": []
+    },
+    {
+      "path": "outputs/commander-pie-unblock-20261002",
+      "recycled": true,
+      "remaining": [
+        "outputs/commander-pie-unblock-20261002/editor.log"
+      ],
+      "reason": "Current PIE editor log is operational and retained."
+    },
+    {
+      "path": "ArtSource/Environment/GuLiStrike_CombatIsland_2300m_v1/UEImport/LandscapeInputs/height_4081_ue.r16",
+      "recycled": true,
+      "remaining": []
+    },
+    {
+      "path": "ArtSource/Environment/GuLiStrike_CombatIsland_2300m_v1/UEImport/LandscapeInputs/weights_4081_x6.u8",
+      "recycled": true,
+      "remaining": []
+    },
+    {
+      "path": "ArtSource/Environment/GuLiStrike_CommanderIsland_1800m_v1/UEImport/LandscapeInputs/height_4081_ue.r16",
+      "recycled": true,
+      "remaining": []
+    },
+    {
+      "path": "ArtSource/Environment/GuLiStrike_CommanderIsland_1800m_v1/UEImport/LandscapeInputs/weights_4081_x6.u8",
+      "recycled": true,
+      "remaining": []
+    },
+    {
+      "path": "ArtSource/Environment/GuLiStrike_CommanderIsland_1800m_v1/Before/LVL_CommanderMassPrototype.umap",
+      "recycled": true,
+      "remaining": []
+    },
+    {
+      "path": "ArtSource/Environment/GuLiStrike_CommanderIsland_1800m_v1/Before/DA_CommanderResourceMap.uasset",
+      "recycled": true,
+      "remaining": []
+    }
+  ],
+  "retained_operational_files": [
+    "outputs/commander-pie-unblock-20261002/editor.log"
+  ]
+}

@@ -1,0 +1,1393 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "actor_label": "Landscape_CommanderIsland_1800m_v1",
+    "resolution": [
+      4081,
+      4081
+    ],
+    "components": 256,
+    "component_size_quads": 255,
+    "location": [
+      -90000.0,
+      -90000.0,
+      5000.106813153277
+    ],
+    "scale": [
+      44.11764705882353,
+      44.11764705882353,
+      27.344167238879987
+    ],
+    "material": "/Game/GuLiStrike/Environment/CommanderIsland_1800m_v1/Materials/M_CombatIsland_Zones.M_CombatIsland_Zones",
+    "target_layers": [
+      "FlatGround",
+      "Hills",
+      "Plateau",
+      "Rock",
+      "Beach",
+      "Water"
+    ],
+    "samples": [
+      {
+        "label": "Southwest_Pad",
+        "vertex": [
+          1156,
+          1247
+        ],
+        "world_xy_cm": [
+          -39000.0,
+          -34985.294117647056
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0420) {layer_name: \"FlatGround\", weight: 0.905882}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE380) {layer_name: \"Hills\", weight: 0.094118}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2F80) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE0A0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE000) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC28A0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Northeast_Pad",
+        "vertex": [
+          2924,
+          2901
+        ],
+        "world_xy_cm": [
+          39000.0,
+          37985.29411764706
+        ],
+        "expected_height_cm": 1999.9389639124129,
+        "height_sample_cm": 1999.93896484375,
+        "height_vertex_cm": 1999.9388427734375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC6B00) {layer_name: \"FlatGround\", weight: 0.713726}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCED20) {layer_name: \"Hills\", weight: 0.286275}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1A40) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCD440) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFDE0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2220) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "NorthDeployment_Pad",
+        "vertex": [
+          2040,
+          3309
+        ],
+        "world_xy_cm": [
+          0.0,
+          55985.29411764705
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1E00) {layer_name: \"FlatGround\", weight: 0.768627}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2F00) {layer_name: \"Hills\", weight: 0.231373}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCD9A0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7240) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427AC330) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A2190) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "SouthDeployment_Pad",
+        "vertex": [
+          2040,
+          771
+        ],
+        "world_xy_cm": [
+          0.0,
+          -55985.294117647056
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEC20) {layer_name: \"FlatGround\", weight: 0.956863}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEF20) {layer_name: \"Hills\", weight: 0.043137}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC03C0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7A60) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE040) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF0A0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "NorthBase_Pad",
+        "vertex": [
+          2040,
+          3672
+        ],
+        "world_xy_cm": [
+          0.0,
+          72000.0
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC5520) {layer_name: \"FlatGround\", weight: 0.972549}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2F80) {layer_name: \"Hills\", weight: 0.027451}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE4C0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0420) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF080) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCD5E0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "SouthBase_Pad",
+        "vertex": [
+          2040,
+          408
+        ],
+        "world_xy_cm": [
+          0.0,
+          -72000.0
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3B00) {layer_name: \"FlatGround\", weight: 0.996078}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF000) {layer_name: \"Hills\", weight: 0.003922}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2420) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDFC0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2040) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2900) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R1C1_Pad",
+        "vertex": [
+          512,
+          3579
+        ],
+        "world_xy_cm": [
+          -67411.76470588235,
+          67897.0588235294
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC16A0) {layer_name: \"FlatGround\", weight: 0.996078}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC28E0) {layer_name: \"Hills\", weight: 0.003922}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2A20) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2DA0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2C40) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1A40) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R1C2_Pad",
+        "vertex": [
+          868,
+          3737
+        ],
+        "world_xy_cm": [
+          -51705.882352941175,
+          74867.64705882352
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3680) {layer_name: \"FlatGround\", weight: 0.996078}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDBC0) {layer_name: \"Hills\", weight: 0.003922}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC19C0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFA60) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDC20) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0E20) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R1C3_Pad",
+        "vertex": [
+          1463,
+          3726
+        ],
+        "world_xy_cm": [
+          -25455.882352941175,
+          74382.35294117648
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0200) {layer_name: \"FlatGround\", weight: 0.988235}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC65A0) {layer_name: \"Hills\", weight: 0.011765}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCD5A0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC6860) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEF20) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDF40) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R1C4_Pad",
+        "vertex": [
+          2204,
+          3703
+        ],
+        "world_xy_cm": [
+          7235.294117647063,
+          73367.64705882352
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0F40) {layer_name: \"FlatGround\", weight: 0.984314}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2580) {layer_name: \"Hills\", weight: 0.015686}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2A00) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2C60) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC4E00) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC07A0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R1C5_Pad",
+        "vertex": [
+          2628,
+          3715
+        ],
+        "world_xy_cm": [
+          25941.176470588238,
+          73897.0588235294
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE520) {layer_name: \"FlatGround\", weight: 0.988235}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3480) {layer_name: \"Hills\", weight: 0.011765}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF3A0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFEC0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC30A0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC27C0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R1C6_Pad",
+        "vertex": [
+          3211,
+          3737
+        ],
+        "world_xy_cm": [
+          51661.76470588235,
+          74867.64705882352
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1300) {layer_name: \"FlatGround\", weight: 0.996078}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC5520) {layer_name: \"Hills\", weight: 0.003922}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3020) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC28A0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFAE0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE600) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R1C7_Pad",
+        "vertex": [
+          3601,
+          3601
+        ],
+        "world_xy_cm": [
+          68867.64705882352,
+          68867.64705882352
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0320) {layer_name: \"FlatGround\", weight: 0.996078}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCD5A0) {layer_name: \"Hills\", weight: 0.003922}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE020) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0200) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE2C0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2960) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R2C1_Pad",
+        "vertex": [
+          342,
+          3200
+        ],
+        "world_xy_cm": [
+          -74911.76470588235,
+          51176.4705882353
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1E00) {layer_name: \"FlatGround\", weight: 0.996078}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFA60) {layer_name: \"Hills\", weight: 0.003922}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCED80) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDDA0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7DE0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE100) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R2C2_Pad",
+        "vertex": [
+          710,
+          3245
+        ],
+        "world_xy_cm": [
+          -58676.470588235294,
+          53161.76470588235
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF0A0) {layer_name: \"FlatGround\", weight: 0.945098}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC6E20) {layer_name: \"Hills\", weight: 0.054902}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC29C0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1D20) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE4E0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC30C0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R2C3_Pad",
+        "vertex": [
+          1474,
+          3030
+        ],
+        "world_xy_cm": [
+          -24970.58823529412,
+          43676.4705882353
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE420) {layer_name: \"FlatGround\", weight: 0.694118}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE660) {layer_name: \"Hills\", weight: 0.305882}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7A40) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCED20) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC6E40) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3100) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R2C4_Pad",
+        "vertex": [
+          2046,
+          2985
+        ],
+        "world_xy_cm": [
+          264.7058823529369,
+          41691.17647058822
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3100) {layer_name: \"FlatGround\", weight: 0.545098}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3EC0) {layer_name: \"Hills\", weight: 0.454902}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC24C0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2420) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC08A0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2900) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R2C5_Pad",
+        "vertex": [
+          2628,
+          3393
+        ],
+        "world_xy_cm": [
+          25941.176470588238,
+          59691.17647058822
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF160) {layer_name: \"FlatGround\", weight: 0.854902}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDD80) {layer_name: \"Hills\", weight: 0.145098}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3AE0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFE60) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2C60) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2A00) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R2C6_Pad",
+        "vertex": [
+          3302,
+          3347
+        ],
+        "world_xy_cm": [
+          55676.4705882353,
+          57661.76470588235
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEF40) {layer_name: \"FlatGround\", weight: 0.941176}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE020) {layer_name: \"Hills\", weight: 0.058824}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2EA0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE100) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7DE0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDDA0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R2C7_Pad",
+        "vertex": [
+          3737,
+          3211
+        ],
+        "world_xy_cm": [
+          74867.64705882352,
+          51661.76470588235
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2EA0) {layer_name: \"FlatGround\", weight: 0.992157}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEF40) {layer_name: \"Hills\", weight: 0.007843}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE080) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0A80) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF0C0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC6860) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R3C1_Pad",
+        "vertex": [
+          376,
+          2628
+        ],
+        "world_xy_cm": [
+          -73411.76470588235,
+          25941.176470588238
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE600) {layer_name: \"FlatGround\", weight: 0.984314}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1700) {layer_name: \"Hills\", weight: 0.015686}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2A20) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC6B40) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2B20) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2F60) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R3C2_Pad",
+        "vertex": [
+          1004,
+          2526
+        ],
+        "world_xy_cm": [
+          -45705.882352941175,
+          21441.176470588238
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC10C0) {layer_name: \"FlatGround\", weight: 0.717647}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427AA8C0) {layer_name: \"Hills\", weight: 0.282353}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A4F50) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A8AF0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A7BF0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427ACF00) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R3C3_Pad",
+        "vertex": [
+          1440,
+          2651
+        ],
+        "world_xy_cm": [
+          -26470.58823529412,
+          26955.882352941175
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1CE0) {layer_name: \"FlatGround\", weight: 0.513726}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE420) {layer_name: \"Hills\", weight: 0.486275}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF080) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCD5E0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2040) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2F60) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R3C4_Pad",
+        "vertex": [
+          2046,
+          2628
+        ],
+        "world_xy_cm": [
+          264.7058823529369,
+          25941.176470588238
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC07A0) {layer_name: \"FlatGround\", weight: 0.294118}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0B20) {layer_name: \"Hills\", weight: 0.705882}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC4E00) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1D20) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7B20) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2580) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R3C5_Pad",
+        "vertex": [
+          2504,
+          2492
+        ],
+        "world_xy_cm": [
+          20470.58823529411,
+          19941.176470588238
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEF40) {layer_name: \"FlatGround\", weight: 0.337255}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDF80) {layer_name: \"Hills\", weight: 0.662745}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEC20) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFC60) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3680) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDDA0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R3C6_Pad",
+        "vertex": [
+          3347,
+          2492
+        ],
+        "world_xy_cm": [
+          57661.76470588235,
+          19941.176470588238
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDDA0) {layer_name: \"FlatGround\", weight: 0.800000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7DE0) {layer_name: \"Hills\", weight: 0.200000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEE40) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE2C0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE020) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC29A0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R3C7_Pad",
+        "vertex": [
+          3703,
+          2628
+        ],
+        "world_xy_cm": [
+          73367.64705882352,
+          25941.176470588238
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0380) {layer_name: \"FlatGround\", weight: 0.980392}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3440) {layer_name: \"Hills\", weight: 0.019608}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7480) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC19C0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFDA0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE600) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R4C1_Pad",
+        "vertex": [
+          376,
+          2046
+        ],
+        "world_xy_cm": [
+          -73411.76470588235,
+          264.7058823529369
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEC40) {layer_name: \"FlatGround\", weight: 0.984314}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A3BA0) {layer_name: \"Hills\", weight: 0.015686}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427AF690) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A0FC0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A3630) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A2A00) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R4C2_Pad",
+        "vertex": [
+          880,
+          2046
+        ],
+        "world_xy_cm": [
+          -51176.470588235294,
+          264.7058823529369
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF400) {layer_name: \"FlatGround\", weight: 0.784314}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1CE0) {layer_name: \"Hills\", weight: 0.215686}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDFC0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF080) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0420) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2040) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R4C3_Pad",
+        "vertex": [
+          1463,
+          2046
+        ],
+        "world_xy_cm": [
+          -25455.882352941175,
+          264.7058823529369
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3AE0) {layer_name: \"FlatGround\", weight: 0.470588}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7B20) {layer_name: \"Hills\", weight: 0.529412}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2580) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2020) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2AC0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7800) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R4C4_Pad",
+        "vertex": [
+          2267,
+          2289
+        ],
+        "world_xy_cm": [
+          10014.705882352937,
+          10985.294117647063
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE040) {layer_name: \"FlatGround\", weight: 0.223529}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7760) {layer_name: \"Hills\", weight: 0.776471}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC03C0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE100) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF0E0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDBC0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R4C5_Pad",
+        "vertex": [
+          2628,
+          2046
+        ],
+        "world_xy_cm": [
+          25941.176470588238,
+          264.7058823529369
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF0E0) {layer_name: \"FlatGround\", weight: 0.427451}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0660) {layer_name: \"Hills\", weight: 0.572549}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7760) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE2C0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF440) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0B20) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R4C6_Pad",
+        "vertex": [
+          3211,
+          2046
+        ],
+        "world_xy_cm": [
+          51661.76470588235,
+          264.7058823529369
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2AC0) {layer_name: \"FlatGround\", weight: 0.749020}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC16E0) {layer_name: \"Hills\", weight: 0.250980}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7B20) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2A00) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2680) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCED20) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R4C7_Pad",
+        "vertex": [
+          3703,
+          2046
+        ],
+        "world_xy_cm": [
+          73367.64705882352,
+          264.7058823529369
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDE40) {layer_name: \"FlatGround\", weight: 0.980392}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF660) {layer_name: \"Hills\", weight: 0.019608}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEDA0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2A40) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE460) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFA40) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R5C1_Pad",
+        "vertex": [
+          354,
+          1463
+        ],
+        "world_xy_cm": [
+          -74382.35294117648,
+          -25455.882352941175
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF080) {layer_name: \"FlatGround\", weight: 0.992157}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2F80) {layer_name: \"Hills\", weight: 0.007843}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC6B40) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE600) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFDA0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC19C0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R5C2_Pad",
+        "vertex": [
+          880,
+          1463
+        ],
+        "world_xy_cm": [
+          -51176.470588235294,
+          -25455.882352941175
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2020) {layer_name: \"FlatGround\", weight: 0.905882}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2700) {layer_name: \"Hills\", weight: 0.094118}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1980) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2BC0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC26E0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFDE0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R5C3_Pad",
+        "vertex": [
+          1463,
+          1463
+        ],
+        "world_xy_cm": [
+          -25455.882352941175,
+          -25455.882352941175
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE100) {layer_name: \"FlatGround\", weight: 0.764706}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDF00) {layer_name: \"Hills\", weight: 0.235294}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFA00) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDC20) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC6840) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3340) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R5C4_Pad",
+        "vertex": [
+          2046,
+          1463
+        ],
+        "world_xy_cm": [
+          264.7058823529369,
+          -25455.882352941175
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDC40) {layer_name: \"FlatGround\", weight: 0.674510}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0A80) {layer_name: \"Hills\", weight: 0.325490}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC6860) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2960) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCD440) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7A60) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R5C5_Pad",
+        "vertex": [
+          2628,
+          1463
+        ],
+        "world_xy_cm": [
+          25941.176470588238,
+          -25455.882352941175
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEE80) {layer_name: \"FlatGround\", weight: 0.745098}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3440) {layer_name: \"Hills\", weight: 0.254902}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE4E0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFDA0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE600) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC6B40) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R5C6_Pad",
+        "vertex": [
+          3211,
+          1463
+        ],
+        "world_xy_cm": [
+          51661.76470588235,
+          -25455.882352941175
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF3A0) {layer_name: \"FlatGround\", weight: 0.886275}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFA40) {layer_name: \"Hills\", weight: 0.113725}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFE60) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE0E0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A1E30) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A1F20) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R5C7_Pad",
+        "vertex": [
+          3681,
+          1565
+        ],
+        "world_xy_cm": [
+          72397.0588235294,
+          -20955.882352941175
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2A20) {layer_name: \"FlatGround\", weight: 0.980392}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2860) {layer_name: \"Hills\", weight: 0.019608}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE5C0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0F20) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE580) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2DA0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R6C1_Pad",
+        "vertex": [
+          365,
+          880
+        ],
+        "world_xy_cm": [
+          -73897.05882352941,
+          -51176.470588235294
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0200) {layer_name: \"FlatGround\", weight: 1.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE020) {layer_name: \"Hills\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC29A0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDF80) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF0E0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEC20) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R6C2_Pad",
+        "vertex": [
+          880,
+          880
+        ],
+        "world_xy_cm": [
+          -51176.470588235294,
+          -51176.470588235294
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDF00) {layer_name: \"FlatGround\", weight: 0.980392}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2F00) {layer_name: \"Hills\", weight: 0.019608}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2BA0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7760) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCD9A0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE040) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R6C3_Pad",
+        "vertex": [
+          1417,
+          880
+        ],
+        "world_xy_cm": [
+          -27485.294117647056,
+          -51176.470588235294
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC06C0) {layer_name: \"FlatGround\", weight: 0.956863}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0380) {layer_name: \"Hills\", weight: 0.043137}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFCE0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2680) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2A00) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC07A0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R6C4_Pad",
+        "vertex": [
+          2046,
+          1095
+        ],
+        "world_xy_cm": [
+          264.7058823529369,
+          -41691.17647058824
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2F80) {layer_name: \"FlatGround\", weight: 0.874510}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCD7C0) {layer_name: \"Hills\", weight: 0.125490}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCD5E0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1700) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFEC0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE420) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R6C5_Pad",
+        "vertex": [
+          2662,
+          880
+        ],
+        "world_xy_cm": [
+          27441.176470588238,
+          -51176.470588235294
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC30A0) {layer_name: \"FlatGround\", weight: 0.952941}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2A40) {layer_name: \"Hills\", weight: 0.047059}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE0E0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF960) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC62A0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF000) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R6C6_Pad",
+        "vertex": [
+          3211,
+          880
+        ],
+        "world_xy_cm": [
+          51661.76470588235,
+          -51176.470588235294
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3440) {layer_name: \"FlatGround\", weight: 0.980392}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC16E0) {layer_name: \"Hills\", weight: 0.019608}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEF40) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7480) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC30C0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1E00) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R6C7_Pad",
+        "vertex": [
+          3658,
+          664
+        ],
+        "world_xy_cm": [
+          71382.35294117648,
+          -60705.882352941175
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7760) {layer_name: \"FlatGround\", weight: 1.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2F00) {layer_name: \"Hills\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDF00) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0E20) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE140) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC47A0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R7C1_Pad",
+        "vertex": [
+          558,
+          546
+        ],
+        "world_xy_cm": [
+          -65382.352941176476,
+          -65911.76470588235
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0E20) {layer_name: \"FlatGround\", weight: 1.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2F00) {layer_name: \"Hills\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7760) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1E40) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2860) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0660) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R7C2_Pad",
+        "vertex": [
+          902,
+          354
+        ],
+        "world_xy_cm": [
+          -50205.882352941175,
+          -74382.35294117648
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7480) {layer_name: \"FlatGround\", weight: 1.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC16E0) {layer_name: \"Hills\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3440) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3480) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC29E0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC19C0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R7C3_Pad",
+        "vertex": [
+          1463,
+          365
+        ],
+        "world_xy_cm": [
+          -25455.882352941175,
+          -73897.05882352941
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE600) {layer_name: \"FlatGround\", weight: 1.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC27C0) {layer_name: \"Hills\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A0F90) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A7C50) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A0A50) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A6390) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R7C4_Pad",
+        "vertex": [
+          1876,
+          377
+        ],
+        "world_xy_cm": [
+          -7235.294117647063,
+          -73367.64705882352
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF0A0) {layer_name: \"FlatGround\", weight: 1.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF6E0) {layer_name: \"Hills\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE4E0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3480) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3440) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC42E0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R7C5_Pad",
+        "vertex": [
+          2628,
+          365
+        ],
+        "world_xy_cm": [
+          25941.176470588238,
+          -73897.05882352941
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF060) {layer_name: \"FlatGround\", weight: 1.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC65A0) {layer_name: \"Hills\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE020) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1E40) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7760) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF0E0) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R7C6_Pad",
+        "vertex": [
+          3211,
+          342
+        ],
+        "world_xy_cm": [
+          51661.76470588235,
+          -74911.76470588235
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDF80) {layer_name: \"FlatGround\", weight: 1.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0B20) {layer_name: \"Hills\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0200) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF440) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF6C0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0A80) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Outpost_R7C7_Pad",
+        "vertex": [
+          3567,
+          524
+        ],
+        "world_xy_cm": [
+          67367.64705882352,
+          -66882.35294117648
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1380) {layer_name: \"FlatGround\", weight: 1.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC3AE0) {layer_name: \"Hills\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDE80) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC29C0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2C60) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1D20) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Central_Plain",
+        "vertex": [
+          2040,
+          2040
+        ],
+        "world_xy_cm": [
+          0.0,
+          0.0
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDD80) {layer_name: \"FlatGround\", weight: 0.270588}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC28A0) {layer_name: \"Hills\", weight: 0.729412}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE000) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCFDA0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE0A0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF080) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "East_Canyon",
+        "vertex": [
+          3128,
+          1836
+        ],
+        "world_xy_cm": [
+          48000.0,
+          -9000.0
+        ],
+        "expected_height_cm": 899.9771114671553,
+        "height_sample_cm": 899.9771118164062,
+        "height_vertex_cm": 899.9769287109375,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE520) {layer_name: \"FlatGround\", weight: 0.756863}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEC40) {layer_name: \"Hills\", weight: 0.243137}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE600) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A8880) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A1B90) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x00000240427A4890) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Northwest_Ridge",
+        "vertex": [
+          907,
+          2947
+        ],
+        "world_xy_cm": [
+          -49985.294117647056,
+          40014.70588235294
+        ],
+        "expected_height_cm": 10958.144502937363,
+        "height_sample_cm": 10958.14453125,
+        "height_vertex_cm": 10958.14453125,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF120) {layer_name: \"FlatGround\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2F60) {layer_name: \"Hills\", weight: 0.129412}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF080) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC34A0) {layer_name: \"Rock\", weight: 0.870588}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCF660) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC6B40) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "South_Bay",
+        "vertex": [
+          3173,
+          567
+        ],
+        "world_xy_cm": [
+          49985.29411764705,
+          -64985.29411764706
+        ],
+        "expected_height_cm": 871.1375600823985,
+        "height_sample_cm": 871.1375732421875,
+        "height_vertex_cm": 871.1375732421875,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCED20) {layer_name: \"FlatGround\", weight: 0.992157}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDE80) {layer_name: \"Hills\", weight: 0.007843}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC6E20) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC1380) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7A40) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2920) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      },
+      {
+        "label": "Southwest_Seabed",
+        "vertex": [
+          113,
+          113
+        ],
+        "world_xy_cm": [
+          -85014.70588235294,
+          -85014.70588235294
+        ],
+        "expected_height_cm": -2000.0,
+        "height_sample_cm": -2000.0,
+        "height_vertex_cm": -2000.0001220703125,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDC20) {layer_name: \"FlatGround\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2F00) {layer_name: \"Hills\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0E20) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCDBC0) {layer_name: \"Rock\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEEE0) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC5840) {layer_name: \"Water\", weight: 1.000000}>"
+        ]
+      },
+      {
+        "label": "Highest_Peak",
+        "vertex": [
+          1031,
+          2868
+        ],
+        "world_xy_cm": [
+          -44514.705882352944,
+          36529.41176470589
+        ],
+        "expected_height_cm": 12000.0,
+        "height_sample_cm": 12000.0,
+        "height_vertex_cm": 12000.0,
+        "weights": [
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCE080) {layer_name: \"FlatGround\", weight: 0.035294}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC09E0) {layer_name: \"Hills\", weight: 0.039216}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC7DE0) {layer_name: \"Plateau\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC2860) {layer_name: \"Rock\", weight: 0.925490}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FCEE40) {layer_name: \"Beach\", weight: 0.000000}>",
+          "<Struct 'LandscapeLayerWeightSample' (0x0000024009FC0660) {layer_name: \"Water\", weight: 0.000000}>"
+        ]
+      }
+    ],
+    "height_export": "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CommanderIsland_1800m_v1\\UEImport\\Evidence\\height_ue_readback.png",
+    "layer_exports": [
+      "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CommanderIsland_1800m_v1\\UEImport\\Evidence\\weight_ue_readback_FlatGround.png",
+      "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CommanderIsland_1800m_v1\\UEImport\\Evidence\\weight_ue_readback_Hills.png",
+      "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CommanderIsland_1800m_v1\\UEImport\\Evidence\\weight_ue_readback_Plateau.png",
+      "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CommanderIsland_1800m_v1\\UEImport\\Evidence\\weight_ue_readback_Rock.png",
+      "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CommanderIsland_1800m_v1\\UEImport\\Evidence\\weight_ue_readback_Beach.png",
+      "D:\\UE5.7\\test1\\ArtSource\\Environment\\GuLiStrike_CommanderIsland_1800m_v1\\UEImport\\Evidence\\weight_ue_readback_Water.png"
+    ],
+    "dirty": {
+      "maps": [
+        "/Game/Maps/LVL_CommanderMassPrototype"
+      ],
+      "assets": []
+    }
+  }
+}

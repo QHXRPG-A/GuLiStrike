@@ -1,0 +1,2044 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+  "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+  "physical_size_m": [
+    1800,
+    1800
+  ],
+  "resolution": [
+    4081,
+    4081
+  ],
+  "terrain_layers": [
+    "Beach",
+    "FlatGround",
+    "Hills",
+    "Plateau",
+    "Rock",
+    "Water"
+  ],
+  "territories": [
+    {
+      "key": "Outpost_R1C1",
+      "logical_center_cm": [
+        -77142.859375,
+        77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -67400.0,
+        67885.70999999999,
+        899.9737083105383
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 0,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R1C2",
+      "logical_center_cm": [
+        -51428.5703125,
+        77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -51685.70999999999,
+        74885.70999999999,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 2,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R1C3",
+      "logical_center_cm": [
+        -25714.28515625,
+        77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -25471.43,
+        74385.70999999999,
+        899.9542183941476
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 2,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R1C4",
+      "logical_center_cm": [
+        0.0,
+        77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        7242.860000000001,
+        73385.70999999999,
+        899.963547737013
+      ],
+      "initial_owner": "<GuLiTeam.RED: 1>",
+      "blue_clusters": 4,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R1C5",
+      "logical_center_cm": [
+        25714.28515625,
+        77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        25957.14,
+        73885.70999999999,
+        899.9615299648385
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R1C6",
+      "logical_center_cm": [
+        51428.5703125,
+        77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        51671.43,
+        74885.70999999999,
+        899.9674137750653
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 4,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R1C7",
+      "logical_center_cm": [
+        77142.859375,
+        77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        68885.70999999999,
+        68885.70999999999,
+        899.9395137588972
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 0,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R2C1",
+      "logical_center_cm": [
+        -77142.859375,
+        51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -74900.0,
+        51171.43,
+        899.9702986345173
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 2,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R2C2",
+      "logical_center_cm": [
+        -51428.5703125,
+        51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -58685.70999999999,
+        53171.43,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 4,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R2C3",
+      "logical_center_cm": [
+        -25714.28515625,
+        51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -24971.43,
+        43671.43,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 5,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R2C4",
+      "logical_center_cm": [
+        0.0,
+        51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        242.86000000000058,
+        41671.43,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 2
+    },
+    {
+      "key": "Outpost_R2C5",
+      "logical_center_cm": [
+        25714.28515625,
+        51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        25957.14,
+        59671.43,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 5,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R2C6",
+      "logical_center_cm": [
+        51428.5703125,
+        51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        55671.43,
+        57671.43,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R2C7",
+      "logical_center_cm": [
+        77142.859375,
+        51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        74885.70999999999,
+        51671.43,
+        899.971429760476
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 4,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R3C1",
+      "logical_center_cm": [
+        -77142.859375,
+        25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -73400.0,
+        25957.14,
+        899.9657513132797
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 2,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R3C2",
+      "logical_center_cm": [
+        -51428.5703125,
+        25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -45685.71,
+        21457.14,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 2,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R3C3",
+      "logical_center_cm": [
+        -25714.28515625,
+        25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -26471.429999999997,
+        26957.14,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R3C4",
+      "logical_center_cm": [
+        0.0,
+        25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        242.86000000000058,
+        25957.14,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 3
+    },
+    {
+      "key": "Outpost_R3C5",
+      "logical_center_cm": [
+        25714.28515625,
+        25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        20457.14,
+        19957.14,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R3C6",
+      "logical_center_cm": [
+        51428.5703125,
+        25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        57671.43,
+        19957.14,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 7,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R3C7",
+      "logical_center_cm": [
+        77142.859375,
+        25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        73385.70999999999,
+        25957.14,
+        899.973538804591
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 3,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R4C1",
+      "logical_center_cm": [
+        -77142.859375,
+        0.0,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -73400.0,
+        242.85999999999999,
+        899.9675995795069
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 3,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R4C2",
+      "logical_center_cm": [
+        -51428.5703125,
+        0.0,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -51185.71,
+        242.86000000000058,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 5,
+      "red_clusters": 2
+    },
+    {
+      "key": "Outpost_R4C3",
+      "logical_center_cm": [
+        -25714.28515625,
+        0.0,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -25471.43,
+        242.86000000000058,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 3
+    },
+    {
+      "key": "Outpost_R4C4",
+      "logical_center_cm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        10000.0,
+        11000.0,
+        899.9771118164062
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 8,
+      "red_clusters": 6
+    },
+    {
+      "key": "Outpost_R4C5",
+      "logical_center_cm": [
+        25714.28515625,
+        0.0,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        25957.14,
+        242.86000000000058,
+        899.9771118164062
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 3
+    },
+    {
+      "key": "Outpost_R4C6",
+      "logical_center_cm": [
+        51428.5703125,
+        0.0,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        51671.43,
+        242.86000000000058,
+        899.9771118164062
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 5,
+      "red_clusters": 2
+    },
+    {
+      "key": "Outpost_R4C7",
+      "logical_center_cm": [
+        77142.859375,
+        0.0,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        73385.70999999999,
+        242.85999999999999,
+        899.9737506872289
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 3,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R5C1",
+      "logical_center_cm": [
+        -77142.859375,
+        -25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -74400.0,
+        -25471.43,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 3,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R5C2",
+      "logical_center_cm": [
+        -51428.5703125,
+        -25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -51185.71,
+        -25471.43,
+        899.9755142001914
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 7,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R5C3",
+      "logical_center_cm": [
+        -25714.28515625,
+        -25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -25471.43,
+        -25471.43,
+        899.9769615195937
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R5C4",
+      "logical_center_cm": [
+        0.0,
+        -25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        242.86000000000058,
+        -25471.43,
+        899.9771118164062
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 3
+    },
+    {
+      "key": "Outpost_R5C5",
+      "logical_center_cm": [
+        25714.28515625,
+        -25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        25957.14,
+        -25471.43,
+        899.9771118164062
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R5C6",
+      "logical_center_cm": [
+        51428.5703125,
+        -25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        51671.43,
+        -25471.43,
+        899.976355210204
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 2,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R5C7",
+      "logical_center_cm": [
+        77142.859375,
+        -25714.28515625,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        72385.70999999999,
+        -20971.43,
+        899.97047140021
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 2,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R6C1",
+      "logical_center_cm": [
+        -77142.859375,
+        -51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -73900.0,
+        -51185.71,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 4,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R6C2",
+      "logical_center_cm": [
+        -51428.5703125,
+        -51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -51185.71,
+        -51185.71,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R6C3",
+      "logical_center_cm": [
+        -25714.28515625,
+        -51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -27471.429999999997,
+        -51185.71,
+        899.976886546031
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 5,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R6C4",
+      "logical_center_cm": [
+        0.0,
+        -51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        242.85999999999999,
+        -41685.71,
+        899.976593170456
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 2
+    },
+    {
+      "key": "Outpost_R6C5",
+      "logical_center_cm": [
+        25714.28515625,
+        -51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        27457.14,
+        -51185.71,
+        899.9771118164062
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 5,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R6C6",
+      "logical_center_cm": [
+        51428.5703125,
+        -51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        51671.43,
+        -51185.71,
+        899.9768735069329
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 4,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R6C7",
+      "logical_center_cm": [
+        77142.859375,
+        -51428.5703125,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        71385.70999999999,
+        -60685.70999999999,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 2,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R7C1",
+      "logical_center_cm": [
+        -77142.859375,
+        -77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -65400.0,
+        -65900.0,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 0,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R7C2",
+      "logical_center_cm": [
+        -51428.5703125,
+        -77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -50185.71,
+        -74400.0,
+        899.9633195558808
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 4,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R7C3",
+      "logical_center_cm": [
+        -25714.28515625,
+        -77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -25471.43,
+        -73900.0,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 6,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R7C4",
+      "logical_center_cm": [
+        0.0,
+        -77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        -7242.860000000001,
+        -73385.70999999999,
+        899.9771118164062
+      ],
+      "initial_owner": "<GuLiTeam.BLUE: 2>",
+      "blue_clusters": 4,
+      "red_clusters": 1
+    },
+    {
+      "key": "Outpost_R7C5",
+      "logical_center_cm": [
+        25714.28515625,
+        -77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        25957.14,
+        -73900.0,
+        899.9632771793067
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 2,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R7C6",
+      "logical_center_cm": [
+        51428.5703125,
+        -77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        51671.43,
+        -74900.0,
+        899.977111816406
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 2,
+      "red_clusters": 0
+    },
+    {
+      "key": "Outpost_R7C7",
+      "logical_center_cm": [
+        77142.859375,
+        -77142.859375,
+        0.0
+      ],
+      "outpost_ground_cm": [
+        67385.70999999999,
+        -66900.0,
+        899.9759053676635
+      ],
+      "initial_owner": "<GuLiTeam.UNASSIGNED: 0>",
+      "blue_clusters": 0,
+      "red_clusters": 0
+    }
+  ],
+  "stable_marker_ids_kept": 49,
+  "marker_ids_removed": 32,
+  "density_identity_preserved": true,
+  "layout_version": 6,
+  "resource_clearance": {
+    "marker_id": "5ab140c9-4ef5-6b0d-a2ba-a7b707f5aa79",
+    "regions": 185
+  },
+  "resource": {
+    "blue_clusters": 200,
+    "red_clusters": 40,
+    "nodes": 6240,
+    "source_hash": "b0dfc62804563ae40342acd568cc0aca813850d1",
+    "layout_hash": "ba0b64ea3e0322a320969185239697b5952bb19b",
+    "minimum_cluster_spacing_cm": 5590.169943749474,
+    "maximum_placement_slope_degrees": 14.982349918047012,
+    "maximum_ground_error_cm": 0.060504298166961235
+  },
+  "initial_army": {
+    "slots": 500,
+    "validated_slots": 500
+  },
+  "water_nav_boxes": 77,
+  "editor_navigation_queries": [
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R1C1",
+      "complete": true,
+      "path_points": 50
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R1C2",
+      "complete": true,
+      "path_points": 38
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R1C3",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R1C4",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R1C5",
+      "complete": true,
+      "path_points": 3
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R1C6",
+      "complete": true,
+      "path_points": 3
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R1C7",
+      "complete": true,
+      "path_points": 3
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R2C1",
+      "complete": true,
+      "path_points": 68
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R2C2",
+      "complete": true,
+      "path_points": 58
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R2C3",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R2C4",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R2C5",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R2C6",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R2C7",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R3C1",
+      "complete": true,
+      "path_points": 51
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R3C2",
+      "complete": true,
+      "path_points": 7
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R3C3",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R3C4",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R3C5",
+      "complete": true,
+      "path_points": 5
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R3C6",
+      "complete": true,
+      "path_points": 6
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R3C7",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R4C1",
+      "complete": true,
+      "path_points": 17
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R4C2",
+      "complete": true,
+      "path_points": 5
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R4C3",
+      "complete": true,
+      "path_points": 22
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R4C4",
+      "complete": true,
+      "path_points": 3
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R4C5",
+      "complete": true,
+      "path_points": 5
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R4C6",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R4C7",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R5C1",
+      "complete": true,
+      "path_points": 5
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R5C2",
+      "complete": true,
+      "path_points": 6
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R5C3",
+      "complete": true,
+      "path_points": 9
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R5C4",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R5C5",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R5C6",
+      "complete": true,
+      "path_points": 16
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R5C7",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R6C1",
+      "complete": true,
+      "path_points": 6
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R6C2",
+      "complete": true,
+      "path_points": 13
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R6C3",
+      "complete": true,
+      "path_points": 8
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R6C4",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R6C5",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R6C6",
+      "complete": true,
+      "path_points": 9
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R6C7",
+      "complete": true,
+      "path_points": 8
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R7C1",
+      "complete": true,
+      "path_points": 12
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R7C2",
+      "complete": true,
+      "path_points": 18
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R7C3",
+      "complete": true,
+      "path_points": 5
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R7C4",
+      "complete": true,
+      "path_points": 3
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R7C5",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R7C6",
+      "complete": true,
+      "path_points": 5
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "Outpost_R7C7",
+      "complete": true,
+      "path_points": 11
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "RedBase",
+      "complete": true,
+      "path_points": 3
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "BlueBase",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-Default",
+      "destination": "BlueAssembly",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R1C1",
+      "complete": true,
+      "path_points": 26
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R1C2",
+      "complete": true,
+      "path_points": 28
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R1C3",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R1C4",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R1C5",
+      "complete": true,
+      "path_points": 3
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R1C6",
+      "complete": true,
+      "path_points": 3
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R1C7",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R2C1",
+      "complete": true,
+      "path_points": 32
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R2C2",
+      "complete": true,
+      "path_points": 38
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R2C3",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R2C4",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R2C5",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R2C6",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R2C7",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R3C1",
+      "complete": true,
+      "path_points": 28
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R3C2",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R3C3",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R3C4",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R3C5",
+      "complete": true,
+      "path_points": 3
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R3C6",
+      "complete": true,
+      "path_points": 6
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R3C7",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R4C1",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R4C2",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R4C3",
+      "complete": true,
+      "path_points": 10
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R4C4",
+      "complete": true,
+      "path_points": 3
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R4C5",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R4C6",
+      "complete": true,
+      "path_points": 5
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R4C7",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R5C1",
+      "complete": true,
+      "path_points": 5
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R5C2",
+      "complete": true,
+      "path_points": 6
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R5C3",
+      "complete": true,
+      "path_points": 5
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R5C4",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R5C5",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R5C6",
+      "complete": true,
+      "path_points": 7
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R5C7",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R6C1",
+      "complete": true,
+      "path_points": 7
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R6C2",
+      "complete": true,
+      "path_points": 7
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R6C3",
+      "complete": true,
+      "path_points": 8
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R6C4",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R6C5",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R6C6",
+      "complete": true,
+      "path_points": 8
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R6C7",
+      "complete": true,
+      "path_points": 7
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R7C1",
+      "complete": true,
+      "path_points": 8
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R7C2",
+      "complete": true,
+      "path_points": 9
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R7C3",
+      "complete": true,
+      "path_points": 5
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R7C4",
+      "complete": true,
+      "path_points": 3
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R7C5",
+      "complete": true,
+      "path_points": 4
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R7C6",
+      "complete": true,
+      "path_points": 5
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "Outpost_R7C7",
+      "complete": true,
+      "path_points": 8
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "RedBase",
+      "complete": true,
+      "path_points": 3
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "BlueBase",
+      "complete": true,
+      "path_points": 2
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "destination": "BlueAssembly",
+      "complete": true,
+      "path_points": 2
+    }
+  ],
+  "editor_navigation_query_budgets": [
+    {
+      "agent": "RecastNavMesh-Default",
+      "maximum_search_nodes": 16384.0,
+      "maximum_hierarchical_search_nodes": 16384.0
+    },
+    {
+      "agent": "RecastNavMesh-CommanderSoldier",
+      "maximum_search_nodes": 16384.0,
+      "maximum_hierarchical_search_nodes": 16384.0
+    }
+  ],
+  "saved_navigation_entries": [
+    {
+      "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+      "kind": "Ground",
+      "status": "Hit",
+      "source_hash": "f0dc04bf599e1075",
+      "message": "Validated saved ground tiles."
+    },
+    {
+      "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+      "kind": "Ground",
+      "status": "Hit",
+      "source_hash": "0c544ee77c15029f",
+      "message": "Validated saved ground tiles."
+    },
+    {
+      "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+      "kind": "Flight",
+      "status": "Hit",
+      "source_hash": "3631f55544adae1d",
+      "message": "Validated saved flight graph."
+    }
+  ],
+  "native_outpost": {
+    "presenter_class": "/Script/GuLiStrike.GuLiOutpostPresentationComponent",
+    "fixed_collider_extent_cm": [
+      300.0,
+      300.0,
+      500.0
+    ],
+    "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+  },
+  "presentation": {
+    "mesh": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+    "body": "/Game/GuLiStrike/FX/StrongholdOutpost/M_OutpostGlow.M_OutpostGlow",
+    "halo": "/Game/GuLiStrike/FX/StrongholdOutpost/M_OutpostHalo.M_OutpostHalo",
+    "model_height_cm": 1000.0,
+    "scale": 0.03333333333333333,
+    "curve": [
+      {
+        "seconds": 0,
+        "height_m": 0.0
+      },
+      {
+        "seconds": 1.25,
+        "height_m": 49.99999999999999
+      },
+      {
+        "seconds": 2.5,
+        "height_m": 100.0
+      },
+      {
+        "seconds": 3.75,
+        "height_m": 50.000000000000014
+      },
+      {
+        "seconds": 5,
+        "height_m": 0.0
+      }
+    ],
+    "landing_seconds": 0.5
+  },
+  "notes": [
+    {
+      "label": "StateTreeReview_Entry",
+      "location_cm": [
+        0.0,
+        69000.0,
+        1399.977111816406
+      ],
+      "text": "1.8 km海岛 / 7×7 据点验收入口\n完整地图1800×1800m，主陆地约1600×1600m；49据点，每格257.14m。红方R1C4，蓝方R7C4。\n双方各250 Mass、8矿车、8建造车；保持指挥官正常玩法入口。"
+    },
+    {
+      "label": "StateTreeReview_MiningFactory",
+      "location_cm": [
+        0.0,
+        72600.0,
+        1399.977111816406
+      ],
+      "text": "基地与经济\n工厂(0,±740m)，集合点(0,±690m)。200蓝矿簇、40红矿簇、6240节点。\n检查采矿、返厂卸货、设施和运输都使用地面锚点。"
+    },
+    {
+      "label": "StateTreeReview_Construction",
+      "location_cm": [
+        1800.0,
+        69000.0,
+        1399.977111816406
+      ],
+      "text": "据点占领与浮动\n中立白光贴地。派兵占领R2C4，检查颜色随阵营变化；可见模型周期5s，高度0～100m。\n0/1.25/2.5/3.75/5s应离地0/50/100/50/0m。点击悬浮模型，命令终点仍在地面。"
+    },
+    {
+      "label": "StateTreeReview_StrongholdAdvance",
+      "location_cm": [
+        10000.0,
+        11000.0,
+        1399.9771118164062
+      ],
+      "text": "中央据点R4C4：换主/中立验收\n服务器控制台：gs.Resources.SetTerritoryOwner 4 4 Red，然后Blue；换主只变色，相位连续。\n再执行 gs.Resources.SetTerritoryOwner 4 4 Neutral，检查0.5s平滑落地后停止。"
+    },
+    {
+      "label": "ConstructionReview_Placement",
+      "location_cm": [
+        2200.0,
+        69000.0,
+        1399.9771118164062
+      ],
+      "text": "地面玩法保持\nActor碰撞、占领中心、设施位置、运输端点固定。可见模型只接受点击查询，不阻挡物理或导航。\n三条主路与49据点均连接；海域NavArea_Null。检查施工后局部导航及采空恢复。"
+    },
+    {
+      "label": "ConstructionReview_Progress",
+      "location_cm": [
+        2600.0,
+        69000.0,
+        1399.9771118164062
+      ],
+      "text": "联机晚加入验收\n服务器先占领中央据点，再让新客户端进入本关卡。双方应按服务器时间看到相同浮动高度和阵营。\n专用服务器只运行玩法，不创建可见模型、材质或动画Tick。本轮仅准备场景，未运行PIE/自动化测试。"
+    },
+    {
+      "label": "ConstructionReview_Mining",
+      "location_cm": [
+        1800.0,
+        72600.0,
+        1399.9771118164062
+      ],
+      "text": "地形与出生\n49据点落地区至少30×30m、坡度≤3°；主路≥50m，侧路≥40m，关键坡度≤12°。\n原500单位队形重新贴地，不调整单位尺寸、资源经济或阵营玩法。"
+    },
+    {
+      "label": "MassNav_Entry",
+      "location_cm": [
+        0.0,
+        72500.0,
+        -1266.0462924959868
+      ],
+      "text": "Mass即时移动：保留NavMesh与自动推进。命令接纳后立即行进，共享路线随后接管。整条命令内随机分配不同站位；取选中模型缩放后包围盒XY最长边作为间距，圈距等于此宽度，点距不小于此宽度。10Hz位移、客户端插值；绿线仍指向点击点。测试25/100及混合体型选兵，确认全部批次使用同一间距、站位不重复，并记录实际移动响应。"
+    },
+    {
+      "label": "MassNav_CornerObserve",
+      "location_cm": [
+        11000.0,
+        68500.0,
+        -1270.2972493053533
+      ],
+      "text": "墙角：点击墙后方，路线尚未完成时保持趋近及表面约束；共享路线准备好后沿走廊绕行。禁止穿墙和到达吸附。远处造楼不应清空无关路线。"
+    },
+    {
+      "label": "MassNav_NarrowObserve",
+      "location_cm": [
+        5700.0,
+        67000.0,
+        -1271.6616125539406
+      ],
+      "text": "窄通道：群体共享NavMesh走廊，不执行个人连接校验、槽位匹配或失败拆组。保留局部避障，拥堵时允许重叠和持续等待。"
+    },
+    {
+      "label": "MassNav_CapacityObserve",
+      "location_cm": [
+        16500.0,
+        67000.0,
+        -1271.6617536788547
+      ],
+      "text": "封闭区(16500,67000)：允许长期受阻，不因5/30秒超时结束任务。站位仅查NavMesh覆盖，同一命令不重复分配；点数不足的成员保留移动意图，不争夺已分配位置、不新增个人寻路。S停止后旧绿线不得复活。大人口合法部署入口仍沿用原待办。"
+    },
+    {
+      "label": "MassNav_OreMechObserve",
+      "location_cm": [
+        5625.0,
+        71875.0,
+        -1266.7068780636912
+      ],
+      "text": "矿体与机甲：保留行进避障、绕行侧滞回、最后合法位置与真实速度回写。新增10Hz脚下导航失效恢复，建筑边缘观察点见SurfaceRepair文件夹的GiftEdge/FactoryEdge及Overview相机。复用正常B建造和赠品生成入口；需要先编译加载本次代码。恢复查询共用2ms/64位置/4路径预算，不新增个人寻路；失败继续原意图。墙角与Closed封闭区用于观察不可穿墙、受阻保留任务及S停止后旧线不复活。"
+    },
+    {
+      "label": "MassNavRepair_GiftEdge",
+      "location_cm": [
+        -17900.0,
+        60000.0,
+        -1777.22
+      ],
+      "text": "10Hz导航坐标恢复：本次重复现场赠品中心XY=(-17900,60000)，放置候选可偏移700cm。使用默认军队及正常赠品流程，进入PIE后观察约第20秒穿过这里的单位。建筑恢复碰撞后应重算完整导航范围，实体内部不得遗留可行走小岛。若重建使脚下NavMesh引用失效，每0.1秒检测，查询按世界帧预算推进；安全落点水平最多600cm、高差50cm，扫掠阻挡或无安全落点则继续等待。恢复后应继续原命令、原随机站位，绿线起终点保持。在恢复等待期间改令、S停止、运输或杀死单位，旧结果不得恢复旧任务。此Note不生成建筑、不启动PIE。"
+    },
+    {
+      "label": "MassNavRepair_FactoryEdge",
+      "location_cm": [
+        -1523.5,
+        -40727.17,
+        -1485.49
+      ],
+      "text": "第二现场观察点：原工厂中心XY=(-1400,-40000)，受阻单位XY=(-1523,-40727)，原10cm脚下重投影失败，最近导航面约28cm。使用正常建造/赠品流程观察相同的边缘导航重建。安全恢复必须同时通过NavMesh落点、建筑碰撞扫掠和矿体/机甲阻挡检查；无法安全恢复时保持任务。诊断：gs.GM.Commander.Nav.Soldier <ID>；get_move_response_diagnostics含recovery_detection_hz/steps/queries/repairs和nav_repair_pending。"
+    },
+    {
+      "label": "TeleportGround_Source",
+      "location_cm": [
+        3000.0,
+        72500.0,
+        -1200.0
+      ],
+      "text": "传送落地检查：先编译并加载2026-09-24屋顶修复。使用原型图正常指挥官入口、默认工程车与建筑。按T圈住工程车，收取后把目标放在R1C5兵营附近的空地，使范围包含屋顶；目标中心直接点屋顶应显示无效，范围覆盖屋顶时车辆应改选建筑外可走地面。落地后下达普通移动，确认车辆能离开；取消/超时回源也应使用同样的地面检查。"
+    },
+    {
+      "label": "TeleportGround_Roof",
+      "location_cm": [
+        1400.0,
+        80000.0,
+        -1200.0
+      ],
+      "text": "普通建筑屋顶观察：运行时兵营名义中心XY=(1400,80000)，赠品清场可能偏移槽位。建筑保留实体碰撞，导航只导出NavArea_Null障碍，不生成屋顶可走面；角色禁止踏上与站立。传送和赠品挪人均检查真实支撑表面、该单位导航及同层高度；不得落到屋顶或其他单位上。此Note是观察标记，实际建筑由既有开局/占点赠品流程生成。"
+    },
+    {
+      "label": "TeleportGround_TransitExit",
+      "location_cm": [
+        1400.0,
+        60000.0,
+        -1200.0
+      ],
+      "text": "据点出口观察：沿用真实部队占领R2C5并生成赠品，选工程车右键己方R2C5据点模型运输。出口周边含兵营等建筑时，工程车必须在建筑外可走地面落位；无安全位置保持空中等待，10Hz重试。矿厂坡道与卸货地板仍供正常地面行驶使用；落地后继续观察普通移动及矿车入厂卸货。占点生成赠品挪开车辆时同样不得把车辆放到邻楼顶部。"
+    },
+    {
+      "label": "ConstructionReview_Type1",
+      "location_cm": [
+        -6500.0,
+        76000.0,
+        -1260.0
+      ],
+      "text": "1：防空炮建造验证区。B进入建造模式，再选对应建筑。\nR每次旋转90度；观察基底轮廓、停工呼吸、双紫色光束及完工底部闪光。"
+    },
+    {
+      "label": "ConstructionReview_Type2",
+      "location_cm": [
+        -3800.0,
+        76000.0,
+        -1260.0
+      ],
+      "text": "2：哨戒炮建造验证区。B进入建造模式，再选对应建筑。\nR每次旋转90度；观察基底轮廓、停工呼吸、双紫色光束及完工底部闪光。"
+    },
+    {
+      "label": "ConstructionReview_Type3",
+      "location_cm": [
+        -500.0,
+        76000.0,
+        -1260.0
+      ],
+      "text": "3：前哨建造验证区。B进入建造模式，再选对应建筑。\nR每次旋转90度；观察基底轮廓、停工呼吸、双紫色光束及完工底部闪光。"
+    },
+    {
+      "label": "ConstructionReview_Type4",
+      "location_cm": [
+        3000.0,
+        76000.0,
+        -1260.0
+      ],
+      "text": "4：兵营建造验证区。B进入建造模式，再选对应建筑。\nR每次旋转90度；观察基底轮廓、停工呼吸、双紫色光束及完工底部闪光。"
+    },
+    {
+      "label": "ConstructionReview_Type5",
+      "location_cm": [
+        5700.0,
+        76000.0,
+        -1260.0
+      ],
+      "text": "5：护盾发生器建造验证区。B进入建造模式，再选对应建筑。\nR每次旋转90度；观察基底轮廓、停工呼吸、双紫色光束及完工底部闪光。"
+    },
+    {
+      "label": "ConstructionReview_Type6",
+      "location_cm": [
+        9200.0,
+        76000.0,
+        -1260.0
+      ],
+      "text": "6：矿厂建造验证区。B进入建造模式，再选对应建筑。\nR每次旋转90度；观察基底轮廓、停工呼吸、双紫色光束及完工底部闪光。"
+    },
+    {
+      "label": "StateTreeReview_Control",
+      "location_cm": [
+        -1800.0,
+        72500.0,
+        -1266.0462924959868
+      ],
+      "text": "公共控制与请求回执审核\n选中单位按S：持续停止；运输途中先安全退出，落地后保持停止。\n连续替换移动：新路未接受前沿旧路移动；再次改令后旧寻路回执不能抢回控制。\n通过现有运输/外部控制入口暂停，再释放：回到适当业务阶段，避免重复寻路、重复占位。\nShift追加：按采卸循环、施工完成或据点阶段交接；观察任务只收尾一次。\n父状态优先关系：安全退出 → 持续停止 → 替换移动 → 正常业务。\n新树资产与Xmind仅证明结构；以上效果需要玩家实际操作确认。"
+    },
+    {
+      "label": "RogueCards_F4_Entry",
+      "location_cm": [
+        -3200.0,
+        72500.0,
+        -1200.0
+      ],
+      "text": "重防号肉鸽卡：就绪指挥官席位按F4，随机显示最多三张合格卡；底部右侧“重选”免费重抽，优先换成未显示的合格牌，无其他牌时提示并保留原牌。Esc关闭后重开保持最新候选。初始无导弹技能/导弹仓；重防导弹仓04.01每队一次。解锁后出现导弹伤害03.01与雨点攻势05.01，后者每次加一枚同时齐射导弹，可叠加。单击翻牌，再单击确认。现有/后续单位同队生效。运行与美术效果待验证。\n重选验证：F4打开后，底部右侧“重选”免费更换当前候选，优先换成未显示的合格牌；选择前或翻面完成后可用，入场/翻面/提交期间禁用。没有其他合格牌时保留原牌并提示。重选不会发奖励，单击翻牌后再次确认才结算；Esc关闭再开保持最新候选。当前5张卡中，初始合格牌只有01.01/02.01/04.01；获得04.01后，合格池扩展为01.01/02.01/03.01/05.01，可观察换牌。本次仅保存配置和核对实体；重选原生代码需编译加载后由玩家验证。\n[WM01 导弹候选 20260929]\n初始重防号无 Q、无导弹仓；F4 获 04.01 后本队现有及后续单位解锁。03.01/05.01 依赖 04.01；04.01 每队每局一次。候选与六组集群场景见 WM01Missile_CandidateInstructions，构建/运行/性能/视觉审核状态分别记录。\n[指挥官统一 LOD 20260929]\n公共三级 LOD 和 lod0/lod1/lod2 观察镜头见 CommanderLOD_Instructions。当前编辑器已加载公共LOD原生类；运行范围与结果以开发记录为准。\n夹具间距与驻留修正源码尚未编译加载。旧版Build 100实际仅生成36/37台且会自动前进；不能当作完整人数验收。\n[三档镜头 20260930]\n新版分档与总览操作见 CommanderCamera_Instructions；指挥官档位读取Camera，旧距离分档仅作历史说明。已加载原生Camera行并导入Camera表；玩家可进入指挥官验收。\n[WM01 Q 每圈60发 20260930]\n每圈60发的25台验证区见 WM01Guidance_Instructions；保留本入口的真实F4流程。雨点攻势最多59次，单台上限60发。"
+    },
+    {
+      "label": "Movement_Projectile_HighSpeed_Regression",
+      "location_cm": [
+        -16600.0,
+        14400.0,
+        -1550.0
+      ],
+      "text": "High-speed movement / machine-gun regression. Map: LVL_CommanderMassPrototype. F4: choose the RIGHT MoveSpeed +50% card five times (720 -> 5467.5 cm/s). Select War Machines and move uphill from (-17740,14340,-1598) toward (-1071,5407,1531). Units should climb legal ramps and their models should keep up with the upgraded speed. During combat, bullets should originate at the corresponding firing pose and stay within confirmed collision travel. Existing RogueCards_F4_Entry and CommanderPlayerStart_Red are reused. User visual acceptance pending."
+    },
+    {
+      "label": "MassRigid_Entry",
+      "location_cm": [
+        8000.0,
+        3000.0,
+        0.0
+      ],
+      "text": "WPO验收样本：战争机器10分区、扫荡者6分区；八列姿态涵盖回正、左右转向、高低目标、5/15度盘倾斜、左右35cm后坐。样本仅编辑器显示，真实PIE继续红蓝混编500单位。新C++需编译后验收。"
+    },
+    {
+      "label": "MassRigid_190m",
+      "location_cm": [
+        27000.0,
+        8000.0,
+        0.0
+      ],
+      "text": "190米观察点：对照210米与360米；目标不能因距离消失。"
+    },
+    {
+      "label": "MassRigid_210m",
+      "location_cm": [
+        29000.0,
+        8000.0,
+        0.0
+      ],
+      "text": "210米观察点：跨越旧200米阈值，主体/传送替身/寿命内残骸持续显示。"
+    },
+    {
+      "label": "MassRigid_MaxView",
+      "location_cm": [
+        44000.0,
+        8000.0,
+        0.0
+      ],
+      "text": "最大指挥视距：当前相机最大臂长36000cm。实机记录实例数量、Draw、GPU ms、Game ms；独立特效/UI可按自身距离预算关闭。"
+    },
+    {
+      "label": "MassRigid_RuntimeChecks",
+      "location_cm": [
+        8000.0,
+        2000.0,
+        0.0
+      ],
+      "text": "编译后PIE：移动/停止/原地转向/高低目标/连续射击/移速升级/传送/死亡/新生成与混编槽复用。依次执行Presentation.Get、正值Set拒绝、Reset、批次重建；确认两个阵营本体Cull=0。"
+    },
+    {
+      "label": "MassRigid_CameraDistance",
+      "location_cm": [
+        8000.0,
+        1000.0,
+        0.0
+      ],
+      "text": "指挥官距离采样（需编译新C++）：左上FPS下方显示离地高度和画面中心地面距离，单位米、一位小数，10Hz刷新。缩放、平移至不同高度地形，对照读数与FPS；镜头正下方/中心无地形时分别显示无地形。记录190m/210m/最大镜头的读数、实例数及Game/Draw/GPU ms，切换角色后距离栏应消失。"
+    },
+    {
+      "label": "WarMachineHover_PreviewInstructions",
+      "location_cm": [
+        8000.0,
+        -17000.0,
+        0.0
+      ],
+      "text": "重防号转向预览：原点(8000,-16000,0)，3列共13例，保留前7项，新增左90/右90/180与跨角度边界/连续反向/移动弯道/转向稳定炮管与显隐导弹仓。2026-09-30本次源码已编译加载，请自行进入PIE观察；运行观感尚待玩家验收。示意不触发伤害；实战选原部队WM01，移动/停下攻击，并在解锁导弹仓后按Q，观察出膛与0.12s轨迹衔接。网络、死亡和传送应另走真实玩法验证。gs.Commander.HoverPreview 0关闭全部预览。"
+    },
+    {
+      "label": "WM01Missile_CandidateInstructions",
+      "location_cm": [
+        -8000.0,
+        73500.0,
+        -1200.0
+      ],
+      "text": "重防号 WM01 / UnitTypeId=2 导弹 v3；已按用户授权接入原生默认表现。\nv3：弹体195cm；烟宽63→99cm、尾焰42×108cm，颜色/亮度沿用v2；烟迹2.4秒、消散槽2.45秒。速度2400cm/s；Q随最终普攻射程×2（基础240m），爆炸/预警半径3m；冷却6秒、伤害、齐射及16m落点散布直径保持。\n玩法验收：新局就绪指挥官，选择重防号，初始无 Q 且无背部导弹仓；F4 获 04.01 后现有及后续本队重防号解锁，另一队保持原状；05.01 每次齐射 +1。换任保留，新局重置。\n原生代码按WM01/MissileLauncher表记录默认使用v3；无需候选或资产开关，所有游戏地图生效，重开仍生效。旧表现对照：gs.MissileCluster.Enabled 0；恢复v3：gs.MissileCluster.Enabled 1。\n新增验收：240m内外点击圆心检查施放，射程升级后Q继续按最终普攻×2；检查3m预警边缘与伤害一致。远景8段高速烟迹连续，尾焰与烟衔接，边缘裁剪不切尾，命中后2.4秒自然消散。\n冷启动验收：候选资源准备完成后应自动切到放大弹体、短亮尾焰与2.4秒黑烟，不能持续回退为旧白色尾焰；本轮已修正延迟编译请求未被触发的问题，游戏内结果待玩家复查。\n性能场景：每次新开 PIE 并就绪，执行一组 Build，再执行 gs.MissileFixture.Fire；每次施放遵守真实冷却。Build 仅为性能准备解锁和弹量，不替代 F4 功能验收，不移除其他地图单位。\n镜头：Build 自动固定总览；gs.MissileFixture.Camera near 查看近景；overview 恢复对照镜头。\n指标：gs.MissileFixture.Metrics。新旧必须同机、分辨率、画质、总览镜头；分别记录发射/飞行/命中后 CPU 表现、Niagara GPU、半透明和帧时间。当前未运行或测量。\n[指挥官统一 LOD 20260929]\n公共三级 LOD 和 lod0/lod1/lod2 观察镜头见 CommanderLOD_Instructions。当前编辑器已加载公共LOD原生类；运行范围与结果以开发记录为准。\n夹具间距与驻留修正源码尚未编译加载。旧版Build 100实际仅生成36/37台且会自动前进；不能当作完整人数验收。\n[WM01 v3 原生正式接入 20260930]\n代码按Projectiles表UnitTypeId=2和MissileLauncher选择v3，已移除候选命令、原型地图限制及资产勾选开关；资源未就绪时保留可见回退。功能及性能仍按既有验收记录。"
+    },
+    {
+      "label": "WM01Missile_Case_100x1",
+      "location_cm": [
+        -10500.0,
+        75000.0,
+        -1200.0
+      ],
+      "text": "100 台重防号 × 每台 1 发 = 100 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 100 1\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 gs.MissileCluster.Enabled 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_100x4",
+      "location_cm": [
+        -8000.0,
+        75000.0,
+        -1200.0
+      ],
+      "text": "100 台重防号 × 每台 4 发 = 400 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 100 4\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 gs.MissileCluster.Enabled 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_100x8",
+      "location_cm": [
+        -5500.0,
+        75000.0,
+        -1200.0
+      ],
+      "text": "100 台重防号 × 每台 8 发 = 800 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 100 8\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 gs.MissileCluster.Enabled 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_500x1",
+      "location_cm": [
+        -10500.0,
+        76000.0,
+        -1200.0
+      ],
+      "text": "500 台重防号 × 每台 1 发 = 500 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 500 1\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 gs.MissileCluster.Enabled 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_500x4",
+      "location_cm": [
+        -8000.0,
+        76000.0,
+        -1200.0
+      ],
+      "text": "500 台重防号 × 每台 4 发 = 2000 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 500 4\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 gs.MissileCluster.Enabled 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "WM01Missile_Case_500x8",
+      "location_cm": [
+        -5500.0,
+        76000.0,
+        -1200.0
+      ],
+      "text": "500 台重防号 × 每台 8 发 = 4000 枚。\n每组重新开始 PIE，指挥官就绪后执行：\ngs.MissileFixture.Build 500 8\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 gs.MissileCluster.Enabled 0/1，保持总览镜头和画质相同。"
+    },
+    {
+      "label": "CommanderLOD_Instructions",
+      "location_cm": [
+        -8000.0,
+        76500.0,
+        -1200.0
+      ],
+      "text": "指挥官统一自动三级 LOD；本次只有导弹接入，模型/升级特效/悬浮/血条待后续接入。\n当前编辑器已加载公共LOD原生类；运行范围与结果以开发记录为准。\n夹具间距与驻留修正源码尚未编译加载。旧版Build 100实际仅生成36/37台且会自动前进；不能当作完整人数验收。\n玩法入口仍为 RogueCards_F4_Entry；性能布景仍为现有六组 100/500 × 1/4/8。\n手动验证：新局指挥官就绪，v3默认已启用，执行 gs.MissileFixture.Build 100 1；用 gs.MissileFixture.Camera lod0 / lod1 / lod2 切换三个观察位置，gs.MissileFixture.Fire 发射（遵守冷却）。\n加载修正版夹具后，Build应回报success=true、fixture_units与stopped_units均等于请求人数；当前WM01间距按权威避让直径加20cm计算，为1270cm。人数不符时重新准备场景。\n飞行中 gs.Commander.LOD.Stats WM01MissileBatches 查看目标/实际档位、裁剪、预算和交接等待；gs.MissileFixture.Metrics 查看导弹容量；统计对象是空间批次，不是单枚导弹。\n相机名称表示观察用途，不强制档位；以含历史烟迹的包围盒、当前镜头和预算决定实际结果，多个档位可并存。\nLOD0/1/2 对应 24/8/0 段烟迹；寿命2.4秒、交接0.15秒。烟迹/尾焰尺寸读取当前Projectiles表，LOD不改写视觉数值。\n统一配置：gs.Commander.LOD.List；Get near.enter_distance_cm；Set near.enter_distance_cm 7000；Reset all。以上 Get/Set/Reset 均需完整 gs.Commander.LOD. 前缀，修改只作用当前 World，不写盘。\n恢复原固定对照镜头：gs.MissileFixture.Camera overview。WM01原生默认使用v3，无需候选或资产开关；旧表现对照用 gs.MissileCluster.Enabled 0，恢复用1。\n检查缩放边界往返、预算不足、命中消散、屏外恢复、槽位复用与新局清理。运行和性能验收状态以开发记录为准。\n[三档镜头 20260930]\n新版分档与总览操作见 CommanderCamera_Instructions；指挥官档位读取Camera，旧距离分档仅作历史说明。已加载原生Camera行并导入Camera表；玩家可进入指挥官验收。"
+    },
+    {
+      "label": "CommanderCamera_Instructions",
+      "location_cm": [
+        -1700.0,
+        72500.0,
+        -1200.0
+      ],
+      "text": "指挥官三档镜头与总览 LOD（2026-09-30）\n已加载原生Camera行并导入Camera表；玩家可进入指挥官验收。当前场景保存/实体回读只证明布置，不证明新代码或视觉效果已通过。\n参数唯一入口：Data/Excel/GuLiStrikeCommander.xlsx → Camera → Default；运行时 DT_GuLiStrikeCommander_Camera。\n真实入口：原型图 Play 后进入指挥官，现有 F4 为真实选牌入口；观察 CameraActor 只供编辑器定位，不替代 CameraPawn。\n1. gs.GM.Commander.Camera.Debug 1 显示档位/目标离地/实际离地/俯角/过渡。Height 命令用完整前缀 gs.GM.Commander.Camera.Height 35、300、700 分别观察边界；第一档 25→55度，第二档55度。\n2. 在山坡方向平移，观察镜头平滑跟地；Z/C绕焦点旋转。避障只抬高实际高度，档位按滚轮设定高度。\n边缘平移复验：Height 306和700，方向键/屏幕下边缘将南北两侧部队移到画面中间；观察焦点只受战场安全边界限制，相机和视野可越界，不应被底部HUD前方卡住。在四边与四角分别转向和平移，检查贴边滑动、缩放及总览返回；地形外相机沿用最近地形边缘高度。\n3. 滚轮目标超过700米的当帧立即开始0.6秒平滑过渡，不等实际镜头追上700米；进入后90度俯视，按进入朝向就近对齐0/90/180/270度，最多转45度回正；高度按可用画面算定并锁住；向内一格立即触发返回原焦点/朝向/700米。过渡中反向滚轮可返回；中途不提交世界选取/落点。总览平移和旋转锁定。\n切档复验：Height 650后向外一格应立即进入过渡；先Z/C旋转再总览，地图应沿最短方向小角度回正；接近90/180/270度时不应转回0度，已经正向时只升高和俯视；过渡中不应横滚或临近结束突然扭转。总览连续外滚保持同一高度，内滚返回700米边缘及原朝向。\n4. 总览所有单位/建筑模型及附属效果消失，地形/环境/矿藏保留；单位14px、建筑20px图标随DPI缩放，选中/受击显示血条。友军图标点选/框选、右键下令沿现有规则；建筑和敌方图标可本地观察，不能因此取得控制权。\n5. 4:3、16:9、21:9及调整窗口，检查战场留在HUD外可用矩形内，四边5%留白。远端角标对应两个 FarCorner 标记。当前资产实读为1.8×1.8km，计划的2.8km不作为硬编码。\n6. 总览时新生/死亡/建成/销毁持续更新；退出恢复模型，不补播旧特效。多本地视图分别隐藏。小地图、F5–F8书签及定位直接退出总览，在目标位置回到第二档。\n7. gs.Commander.LOD.Stats WM01MissileBatches 观察导弹目标/预算；指挥官分档来自Camera，旧near/mid距离覆盖仅用于非指挥视图。\n手工结果请按镜头、取景、选择下令、对象生命周期、多视图分别反馈。助手未运行PIE或自动化。"
+    },
+    {
+      "label": "WM01Guidance_Instructions",
+      "location_cm": [
+        -8000.0,
+        73000.0,
+        -1200.0
+      ],
+      "text": "重防号 Q 每个共享引导圈最多60发，整台齐射不拆分；半径8米，保留单弹预警。\n本区保存25个出生位置与A/B/C目标标记；真实Mass单位由玩家主动准备，未替换地图默认部队。\n新开PIE并就绪指挥官，在控制台执行 gs.MissileFixture.Build 25 6；这是弹量/解锁准备，F4卡牌获取另行验证。\n关闭控制台，只框选该25台，6秒内先后指向A/B/C按Q，预期60/60/30发；第四次Q无新圈。只发射的单位进入6秒冷却。\n共享圈固定在各次按键位置，最后一枚结束后消失；移动鼠标不移动旧圈；同点重复Q独立清理。\n必须使用真实选择+Q，不使用 gs.MissileFixture.Fire（旧性能入口逐台独立施放）。\n每个补充配置重新开PIE：gs.MissileFixture.Build 25 7 -> 56/56/56/7；gs.MissileFixture.Build 2 60 -> 60/60。\nF4功能验证另开干净局：04.01解锁，05.01基础1发最多获得59次；到60后不再抽到，旧候选确认也重检。\n源码新增反射字段和准备参数须编译并重开后使用；资源导入状态见 Artifacts/WM01Guidance60/asset-readback.json。\n助手仅保存场景与核对实体/导航位置，未启动PIE、自动发射或进行效果验收。"
+    },
+    {
+      "label": "CommanderLOD_DistanceCull_Instructions",
+      "location_cm": [
+        6500.0,
+        -17000.0,
+        0.0
+      ],
+      "text": "指挥官视觉距离裁剪修复（2026-09-30）\n本轮GuLiStrikeEditor已编译并重开加载；正式Niagara已保存，可由玩家进入指挥官复验。场景数据回读不代表运行效果验收。\n规则：第一档近景、第二档战术不再受旧200m/360m/血条60m独立距离裁剪；第三档总览隐藏世界模型、喷焰、拖尾、战斗特效和世界血条，保留原总览UI。\n真实入口：本图Play进入指挥官，gs.GM.Commander.Camera.Debug 1显示档位。Height命令完整前缀gs.GM.Commander.Camera.Height，先35，再300、700；观察CameraActor仅用于编辑器取景，不替代真实CameraPawn档位。\n样本：WarMachineHover_PlayablePreview位于(8000,-16000,0)cm，保留13个51float样本；本入口旁的Tactical300/700观察镜头指向该区域。\n1. 在第一、第二档观察盘底倒三角始终贴盘；移动起步短尾约1秒渐长到速度对应5–15米，停下0.30秒淡出。用真实WM01部队移动、停下、转弯复验；静态样本不能代替实战。\n2. 300m和700m下令实战攻击，观察枪口焰、弹道、持续场、受击、死亡爆炸和残骸；选中/受伤血条和选择圈不因旧距离消失。解锁导弹仓继续沿RogueCards_F4_Entry真实F4流程，Q导弹沿原技能入口。\n3. 向外滚轮进入第三档，总览隐藏上述世界表现；向内返回第二档恢复持续表现，新开火正常，不补播旧爆炸。镜头可继续按CommanderCamera_Instructions检查边缘和平移。\n4. 有僚机/地面机甲参加战斗时，第二档观察飞行尾迹/火箭跳喷口；本次只改显示规则，非指挥官视图保留原距离后备。\n请反馈档位、镜头高度及具体消失对象；助手未启动PIE、自动化或性能测试。"
+    },
+    {
+      "label": "MachineGunReview_Instructions",
+      "location_cm": [
+        -11200.0,
+        -13000.0,
+        1300.0
+      ],
+      "text": "机枪对照：枪口原版/重防号2倍/扫荡者原尺寸；命中原版/全部机枪2倍；弹道无灯/6盏800cm灯。样本仅编辑器显示且默认停播。新C++加载并运行apply_machine_gun_effects.py后重跑本场景脚本。实战使用本Map原有双方部队，检查出膛、移动照明、命中和停止后的清理；僚机及玩家机枪仅命中放大。"
+    },
+    {
+      "label": "MassSoft_Entry",
+      "location_cm": [
+        0.0,
+        72500.0,
+        -866.0462924959868
+      ],
+      "text": "Mass软避障验收：本次原生代码待单独编译加载。保留原军队红蓝各250名，不自动启动PIE。玩家自行开局后，选本方队伍按S停止自动推进，取25台重防号或混编队伍到西侧观察区。区域中心(-20000,72000)，编辑器定位MassSoft_Overview相机；W/E/S/N标记距中心各40米。"
+    },
+    {
+      "label": "MassSoft_Gather25",
+      "location_cm": [
+        -21000.0,
+        71000.0,
+        -1266.706878063724
+      ],
+      "text": "①选25台重防号，在中心标记集结并连续改令。圈外径12.5米；允许短暂穿入，开阔场景侵入深度超过双方半径和20%不可持续超过1秒，压力解除约1秒恢复分散。"
+    },
+    {
+      "label": "MassSoft_Mixed",
+      "location_cm": [
+        -19000.0,
+        71000.0,
+        -1266.706878063724
+      ],
+      "text": "②混编重防号和普通单位向中心集结；各自圈等于自身Mass半径，不读取模型包围盒。普通默认圈外径3米；模型尺寸、表内额外净距保持原值且额外净距不启用。"
+    },
+    {
+      "label": "MassSoft_Crossing",
+      "location_cm": [
+        -21000.0,
+        73000.0,
+        -1266.706878063724
+      ],
+      "text": "③用Ctrl+1/2保存两组友军。第一组W→E，第二组S→N，连续下令使队伍在中心交叉。观察切向通行与分散，不能靠圈边硬卡或强制位置弹开。"
+    },
+    {
+      "label": "MassSoft_HeadOn",
+      "location_cm": [
+        -19000.0,
+        73000.0,
+        -1266.706878063724
+      ],
+      "text": "④两组友军分别在W、E，互换目的地迎面通行；观察双方相对前进方向一致靠右避让。可各取12/13台重防号；站位均留在中心65米范围内的开阔地。"
+    },
+    {
+      "label": "MassSoft_StoppedPush",
+      "location_cm": [
+        -20000.0,
+        70400.0,
+        -1266.706878063724
+      ],
+      "text": "⑤在中心停一组友军并按S；另一组W→E穿过。停止友军可被慢推（最高自身速度25%），压力消失停在新位置，S停止保留、不恢复旧绿线或自动推进。另测静止敌军不被敌方压力推移。"
+    },
+    {
+      "label": "MassSoft_CircleSize",
+      "location_cm": [
+        -20000.0,
+        77500.0,
+        -1261.0921225054046
+      ],
+      "text": "尺寸参考：Radius12m5与Radius3m为固定12.5米/3米外径参考圈，无碰撞、不参与导航。将对应单位移到圈中心比较外缘（目标误差≤1厘米）。圈和模型应共享显示中心；相位/死亡/外控锁定应沿用排除，导航失败不得穿环境障碍。"
+    },
+    {
+      "label": "MachineGunSpread_Sweeper_Instructions",
+      "location_cm": [
+        -10500.0,
+        -2000.0,
+        1785.0
+      ],
+      "text": "扫荡者 / UnitTypeId=1：机枪总夹角10°，水平和竖直边界均为±5°。轴向距离20m，截面半径174.977cm。这是统一800cm参考高度的静态几何标尺，不代表真实枪口高度或采样轨迹。真实子弹从枪口独立采样后沿直线飞行；伤害、命中和灯光沿实际弹道。"
+    },
+    {
+      "label": "MachineGunSpread_WM01_Instructions",
+      "location_cm": [
+        -7500.0,
+        -2000.0,
+        1785.0
+      ],
+      "text": "重防号 / UnitTypeId=2：机枪总夹角10°，水平和竖直边界均为±5°。轴向距离30m，截面半径262.466cm。这是统一800cm参考高度的静态几何标尺，不代表真实枪口高度或采样轨迹。真实子弹从枪口独立采样后沿直线飞行；伤害、命中和灯光沿实际弹道。"
+    },
+    {
+      "label": "MachineGunSpread_PlayerInstructions",
+      "location_cm": [
+        -11700.0,
+        -2700.0,
+        1185.0
+      ],
+      "text": "机枪10°随机弹道：仅扫荡者和重防号，源表GuLiStrikeSecondaryWeapons.xlsx/UnitSkills，ProjectileSpreadAngleDegrees为总夹角。所有参考物EditorOnly、无碰撞，不参与战斗。玩家手动进入本地图，指挥官就绪后使用原有双方军队，在20m/30m射程内连续交火；分别检查两兵种、双方弹色、密集交火：每发方向有随机差异，随后直线飞行，命中位置和随弹照明跟随实际弹头，停止后无残留，活动灯保持既有6盏全局预算。枪管仍瞄准原方向，僚机、玩家地面机甲及导弹不应用本次散布。参考标尺位于旧机枪对照区旁，按标签MachineGunSpread定位。本轮仅编译、技能表和保存实体回读；未启动PIE、未读图，实战与视觉待玩家验收。"
+    },
+    {
+      "label": "WM01Range_PlayerInstructions",
+      "location_cm": [
+        -8000.0,
+        73200.0,
+        -1357.2943527427205
+      ],
+      "text": "重防号 WM01 / UnitTypeId=2 射程验收：机枪30→120米，Q导弹96→240米。\n新开本图单机PIE，就绪红队指挥官；每个距离场景使用新局，保持测试单位原地。\n源点生成：gs.GM.Skill.Spawn Red 2 -8000.00 72000.00 -1757.29\n机枪界内：gs.GM.Skill.Spawn Blue 2 3000.00 72000.00 -1757.30\n机枪界外：gs.GM.Skill.Spawn Blue 2 5000.00 72000.00 -1757.75\n分别观察该重防号：110米自动开火，130米不以该目标开火；不要把其他单位攻击计入。控制台Spawn输出ID，gs.GM.Skill.Soldier <ID>可查看该兵的目标与射击次数。\nQ：F4获得04.01重防导弹仓，选中源点单台，按Q点击QInside230m地面标记；应发射并飞抵落点。等待其6秒冷却，再按Q点击QOutside250m；应拒绝且不扣冷却。\nQ圆心范围为最终BasicAttack×2；基础随机落点半径8米，最多248米。导弹速度24米/秒，最长飞行20秒；远距允许超过旧8秒继续飞行。\n静态数据及实体已核对；游戏效果待玩家验证，助手未启动PIE。"
+    }
+  ],
+  "editor_pose_count": 49,
+  "editor_poses_hidden_in_game": true,
+  "dirty_maps": [],
+  "dirty_content": [],
+  "pie_run": false,
+  "automated_tests_run": false,
+  "runtime_animation_and_replication": "Awaiting player acceptance"
+}

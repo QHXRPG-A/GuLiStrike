@@ -4,6 +4,26 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-10-02 | [海岛据点导航会话验收与清理上传](../Archive/20261002-海岛据点导航会话验收与清理上传.md) | commander, navigation, resources, art, assets, network | passed | 用户确认本会话全部文档通过，关闭6个工作项并归档验证数据；清理临时输出和可重建导入缓冲，保留海岛工程与游戏资源。 |
+| 2026-10-02 | [连通认证暂关与R2C2落地区修复](../Archive/20261002-连通认证暂关与R2C2落地区修复.md) | commander, navigation, network | passed | 按用户要求暂关全图连通认证，R2C2 移至同格合格平地、资源及导航重建保存；PIE 核对停止任务与37人旧路线保持通过。 |
+| 2026-10-02 | [不可达移动拒绝编译加载与PIE门禁记录](../Archive/20261002-不可达移动拒绝编译加载与PIE门禁记录.md) | commander, navigation, network | passed | 用户授权的 Editor 构建、BuildId 核对和 UE 重启加载通过；普通 PIE 被原地图资源门禁拒绝，运行效果未执行。 |
+| 2026-10-02 | [不可达新移动指令拒绝源码与场景交付](../Archive/20261002-不可达新移动指令拒绝源码与场景交付.md) | commander, navigation, network | passed | 增加新令完整可达预检，拒绝时保留原任务并撤掉本次目标线；静态检查和地图场景保存通过，未编译或运行游戏。 |
+| 2026-10-02 | [坡面导航编译重建与残留断区](../Archive/20261002-坡面导航编译重建与残留断区.md) | commander, navigation | passed | 用户授权后完成源码版Editor构建并重建新坡面预设；参数回读通过，全图20个区域使严格认证失败，19个孤立区域与旧标记高度失效已留档。 |
+| 2026-10-02 | [坡面导航预设接入与场景准备](../Archive/20261002-坡面导航预设接入与场景准备.md) | commander, navigation | passed | 已接入20厘米台阶与坡度过滤预设，更新Prepare/Validate及旧缩放入口，完成静态检查并保存原三处验证标记和Commander导航显示；本次编译与导航重建待授权。 |
+| 2026-10-02 | [坡面细碎导航断带生成参数分析](../Archive/20261002-坡面细碎导航断带生成参数分析.md) | commander, navigation | passed | 只读核对发现导航网格分辨率、7厘米台阶限制和44度坡度许可不匹配；UE5.7已有坡度边缘过滤选项，建议配合网格精度或台阶高度调整。尚未重建或确认截图中每条断带的具体成因。 |
+| 2026-10-02 | [导航连通性校验编译与模块加载](../Archive/20261002-导航连通性校验编译与模块加载.md) | commander, navigation | passed | 用户授权后完成源码版 GuLiStrikeEditor 编译与 BuildId 核对，重新打开指挥官地图并确认新接口、严格地图配置及三个验证点；尚未执行导航验收。 |
+| 2026-10-02 | [导航连通性烘焙校验实现与场景交付](../Archive/20261002-导航连通性烘焙校验实现与场景交付.md) | commander, navigation | passed | 已实现 CommanderSoldier 两点有向可达查询与全图强连通烘焙校验，静态检查通过，真实指挥官地图保存三个验证点；本阶段未编译或运行新代码。 |
+| 2026-10-02 | [山脚高台导航连通性确认](../Archive/20261002-山脚高台导航连通性确认.md) | commander, navigation | passed | 当前四个选中单位到高台及反向查询均为部分路径且原生搜索未耗尽，两端内部各自连通；确认当前CommanderSoldier缺少山脚到该高台的可走连接。 |
+| 2026-10-01 | [Mass编译后高处部分路径诊断](../Archive/20261001-Mass编译后高处部分路径诊断.md) | commander, navigation | passed | 用户编译后自行开启PIE，新高处目标的10次CommanderSoldier查询均仅有部分路径；135停滞约168秒仍Normal，确认部分末端处理有遗漏。 |
+| 2026-10-01 | [Mass陡坡绕行原生编译](../Archive/20261001-Mass陡坡绕行原生编译.md) | commander, navigation | passed | 用户授权后完成GuLiStrikeEditor Win64 Development构建，退出码0，项目与源码版引擎BuildId一致；编辑器加载及玩家效果未验证。 |
+| 2026-10-01 | [Mass陡坡绕行源码与静态核对](../Archive/20261001-Mass陡坡绕行源码与静态核对.md) | commander, navigation | passed | 完成共享移动末段导航验证与受预算约束的停滞重寻路源码；静态核对通过，当前用户PIE和旧模块保持运行。 |
+| 2026-10-01 | [指挥官1800米海岛与49据点交付](../Archive/20261001-指挥官1800米海岛与49据点交付.md) | commander, resources, art, assets | passed | 1800米扩岸海岛与49据点已保存重开；独立Gaea源、原生Editor编译、200蓝簇40红簇6240节点、500出生槽及104编辑器路径核对通过，浮动与联机效果待玩家验收。 |
+| 2026-10-01 | [战斗海岛原生Landscape导入UE](../Archive/20261001-战斗海岛原生Landscape导入UE.md) | art, assets | passed | Gaea海岛已导入独立2300米UE关卡，保存重开及16位高度、六类权重逐像素核对通过，并留存实际UE预览。 |
+| 2026-09-30 | [Mass选择圈与软避障玩家验收通过](../Archive/20260930-Mass选择圈与软避障玩家验收通过.md) | commander, navigation, ui | passed | 用户在本会话明确确认“验收通过”，Mass选择圈同步与软避障工作项完成，需求验证与开发状态同步关闭。 |
+| 2026-09-30 | [Mass选择圈与软避障编译加载](../Archive/20260930-Mass选择圈与软避障编译加载.md) | commander, navigation, ui | partial | 用户单独授权后，源码版GuLiStrikeEditor构建成功、BuildId一致；已恢复原地图并加载新代码，玩家效果仍待验收。 |
+| 2026-09-30 | [Mass选择圈与软避障静态及场景交付](../Archive/20260930-Mass选择圈与软避障静态及场景交付.md) | commander, navigation, ui | partial | 完成选择圈与Mass半径统一及软避障源码，保存原型地图15个验收对象并保留500名原军队；编译与玩家验收尚未执行。 |
+| 2026-09-30 | [指挥官视觉距离裁剪修复编译加载](../Archive/20260930-指挥官视觉距离裁剪修复编译加载.md) | commander, presentation, performance | partial | 用户授权后完成源码版GuLiStrikeEditor构建并重开加载；8份BuildId一致，正式喷焰GPU就绪，原型图入口再次保存回读，实际效果待玩家验证。 |
+| 2026-09-30 | [指挥官前两档视觉距离裁剪统一修复](../Archive/20260930-指挥官前两档视觉距离裁剪统一修复.md) | commander, presentation, performance | partial | 第一、第二档统一放行世界表现，第三档总览抑制；修复源码并应用正式喷焰与Niagara资产，原型图入口保存回读通过，新C++尚未编译加载。 |
 | 2026-09-30 | [指挥官LOD会话临时文件清理](../Archive/20260930-指挥官LOD会话临时文件清理.md) | commander, performance | passed | 按用户要求将本会话10个临时文件共121372字节可恢复地移出工程，12个保留文件哈希一致；源码、资产和验收证据保留。 |
 | 2026-09-30 | [指挥官统一LOD有限PIE与夹具修正](../Archive/20260930-指挥官统一LOD有限PIE与夹具修正.md) | commander, performance | partial | 复用现有v3构建，获准PIE观察通过公共三级LOD的导弹映射、预算、消散及屏外恢复；旧100台夹具仅生成36/37台，修正源码待构建复验。 |
 | 2026-09-30 | [重防号导弹会话临时文件清理](../Archive/20260930-重防号导弹会话临时文件清理.md) | commander, combat, art, performance | passed | 按用户要求将42个本会话临时文件约25.9MiB移出工程至恢复目录；61个关键交付文件哈希不变，最终预览引用完整。 |

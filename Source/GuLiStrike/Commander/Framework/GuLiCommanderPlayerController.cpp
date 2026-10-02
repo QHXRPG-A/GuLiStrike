@@ -875,7 +875,7 @@ bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 		if (GetWorld()->LineTraceSingleByChannel(Hit,RayOrigin,
 			RayOrigin+RayDirection*GuLiCommanderCursorTrace::MaximumGroundTraceDistanceCentimeters,ECC_Visibility,Query))
 			if (const auto* Outpost = Cast<AGuLiTerritoryOutpostActor>(Hit.GetActor()); Outpost && Outpost->GetTerritoryOwner() == BattlePlayer->GetTeam())
-			{ Request.TargetTerritoryId = Outpost->GetTerritoryId(); Request.Target = Hit.ImpactPoint; }
+			{ Request.TargetTerritoryId = Outpost->GetTerritoryId(); Request.Target = Outpost->GetBuildingGroundLocation(); }
 	}
 	if (Request.TargetTerritoryId.IsNone())
 	{
@@ -1405,7 +1405,8 @@ bool AGuLiCommanderPlayerController::ProcessMoveCommandAck(const FGuLiCommandAck
 	{
 		return true;
 	}
-	if (Ack.Result == EGuLiCommandAckResult::Cancelled || Ack.Result == EGuLiCommandAckResult::TimedOut)
+	if (Ack.Result == EGuLiCommandAckResult::PathFailed
+		|| Ack.Result == EGuLiCommandAckResult::Cancelled || Ack.Result == EGuLiCommandAckResult::TimedOut)
 	{
 		CommandLineState = EGuLiCommandLineState::None;
 		CommandLineExpireTime = 0.0;

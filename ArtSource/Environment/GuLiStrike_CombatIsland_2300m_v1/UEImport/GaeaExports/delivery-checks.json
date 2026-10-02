@@ -1,0 +1,308 @@
+{
+  "passed": true,
+  "project_name": "GuLiStrike_CombatIsland_2300m_v1",
+  "node_count": 39,
+  "relative_file_nodes": 14,
+  "source_png_count": 24,
+  "build_result": "Success",
+  "height_bit_depth": 16,
+  "height_decode": "u16/65535*140-20 meters",
+  "sea_level_normalized": 0.14285714285714285,
+  "compatibility_r16_bytes": 33309122,
+  "masks": {
+    "flat_ground": {
+      "resolution": [
+        4096,
+        4096
+      ],
+      "native_source_max_error_u16": 0,
+      "native_source_mean_error_u16": 0.0,
+      "source_final_max_error_u16": 0,
+      "normalized_coverage_km2": 0.912565227214344
+    },
+    "hills": {
+      "resolution": [
+        4096,
+        4096
+      ],
+      "native_source_max_error_u16": 0,
+      "native_source_mean_error_u16": 0.0,
+      "source_final_max_error_u16": 0,
+      "normalized_coverage_km2": 0.6189434516410666
+    },
+    "plateau": {
+      "resolution": [
+        4096,
+        4096
+      ],
+      "native_source_max_error_u16": 0,
+      "native_source_mean_error_u16": 0.0,
+      "source_final_max_error_u16": 0,
+      "normalized_coverage_km2": 0.05076915809832241
+    },
+    "rock": {
+      "resolution": [
+        4096,
+        4096
+      ],
+      "native_source_max_error_u16": 0,
+      "native_source_mean_error_u16": 0.0,
+      "source_final_max_error_u16": 0,
+      "normalized_coverage_km2": 0.13372866691114893
+    },
+    "beach": {
+      "resolution": [
+        4096,
+        4096
+      ],
+      "native_source_max_error_u16": 0,
+      "native_source_mean_error_u16": 0.0,
+      "source_final_max_error_u16": 0,
+      "normalized_coverage_km2": 0.2174332015604626
+    },
+    "water": {
+      "resolution": [
+        4096,
+        4096
+      ],
+      "native_source_max_error_u16": 0,
+      "native_source_mean_error_u16": 0.0,
+      "source_final_max_error_u16": 0,
+      "normalized_coverage_km2": 3.3591441996419866
+    }
+  },
+  "files": {
+    "graph-manifest.json": {
+      "bytes": 30771,
+      "sha256": "f07509f3a536882ccf5d1e8dea93716c5ec6f2e5408041c11176f0947a93b8b0"
+    },
+    "GuLiStrike_CombatIsland_2300m_v1.terrain": {
+      "bytes": 68104,
+      "sha256": "408e588e69d499a84ef6e5bf437af2533259205138e7883ece0044fe75371a66"
+    },
+    "layout.json": {
+      "bytes": 4120,
+      "sha256": "db8a31e8932962d863bd47f8a3fa6a6d3f4f2a3c21e27cfde90fbebf6c277acf"
+    },
+    "README.md": {
+      "bytes": 4907,
+      "sha256": "3467c90c4010c555bf3f0d0f4378ce2c779a7352041f56162e075d5927874471"
+    },
+    "REFERENCES.md": {
+      "bytes": 1981,
+      "sha256": "1c0043e9a6ec291c04b164188c0f80790570a2d877bf95e1ccedda0744403365"
+    },
+    "inputs\\beach_region.png": {
+      "bytes": 1385134,
+      "sha256": "de34114607ce1d082d21b3ff7ec77037d65717cb0386fe37441f40d84169f56d"
+    },
+    "inputs\\canyon_gain.png": {
+      "bytes": 155936,
+      "sha256": "2caba7e48a877845b30d1983b84aabee87eb49db15b6e0bc8559ed728a48ff5c"
+    },
+    "inputs\\canyon_region.png": {
+      "bytes": 570653,
+      "sha256": "ed340671e229adbefa84465f9faf0006ed3133e814f76356d3eba6945e03b9a6"
+    },
+    "inputs\\erosion_allowed.png": {
+      "bytes": 3352802,
+      "sha256": "5f536ef6a46bb0e1a8cb29cd021ce0372743500c5d6bfb39c9645311fa67d304"
+    },
+    "inputs\\foundation_height.png": {
+      "bytes": 3985552,
+      "sha256": "e2ba450cfc7f3cd4e354af5bebd5b03f01671c127bfa732edd598fceb52c5c71"
+    },
+    "inputs\\hills_gain.png": {
+      "bytes": 1096277,
+      "sha256": "3756e809fe2e341138c5fb32908bec787ada4bf1477155f4a041b786c5337323"
+    },
+    "inputs\\hills_region.png": {
+      "bytes": 2599654,
+      "sha256": "31e5bd99a95e7bc7c84aa7c402a706e97817db7912123af9bd56463b1e239cc8"
+    },
+    "inputs\\land_outline.png": {
+      "bytes": 269415,
+      "sha256": "39802df280fe4bfdfeb5c0c0f5ed9aeda5edbc8952b82ef5cb37e476aa86f9a7"
+    },
+    "inputs\\mask_beach.png": {
+      "bytes": 1152484,
+      "sha256": "6358d9122f89416714bcdb2e5dddd5701415aaa672ae1b731e39538822ed7448"
+    },
+    "inputs\\mask_flat_ground.png": {
+      "bytes": 4012282,
+      "sha256": "61797dbceaba0ec8f23cc3f02265746413e4a34043e08c6803ad44a008e41a47"
+    },
+    "inputs\\mask_hills.png": {
+      "bytes": 4395475,
+      "sha256": "1cfa2677a74dc32c9b2bca8effd2cb1a9bb5b9972763070e4ab07a4b372fba9e"
+    },
+    "inputs\\mask_plateau.png": {
+      "bytes": 302876,
+      "sha256": "04e8c7ff78a0a957e77047ff6c5988343f75b3d52552793cb77e46f9e3ed62eb"
+    },
+    "inputs\\mask_rock.png": {
+      "bytes": 666654,
+      "sha256": "0472b61a103bc8fbc4ef33667c42d172a4722a1d3dce62d28f510b93ef70a94e"
+    },
+    "inputs\\mask_water.png": {
+      "bytes": 426803,
+      "sha256": "91b10cdcc27f51cbb77f5ec97a2737020ed97b1ac2fa6a4256901419b6213d5c"
+    },
+    "inputs\\mountain_gain.png": {
+      "bytes": 991447,
+      "sha256": "2dad80d06ae82595ba917c2c04e559d1407c057e8ea6dfee05ebfe3549f097ab"
+    },
+    "inputs\\mountain_region.png": {
+      "bytes": 1710234,
+      "sha256": "dbef6fa4f0ed76a921228cb06034372f03efc2615437a1666c886ce37ab40c8b"
+    },
+    "inputs\\plateau_gain.png": {
+      "bytes": 159013,
+      "sha256": "e0709a97db23ee41545af142cfd8f3b0ee0b63c6dbe377369d2e6b73662ba3de"
+    },
+    "inputs\\plateau_region.png": {
+      "bytes": 494219,
+      "sha256": "afa6a868bcbff761cd1c9129f2cfa130afe9d965e0c23e961933e8f53cd6ef6d"
+    },
+    "inputs\\protection.png": {
+      "bytes": 3759133,
+      "sha256": "a4e3da8ec08428771a86e06339cdd6fd1b6f43266f3267d2502049e3de239b55"
+    },
+    "inputs\\route_central.png": {
+      "bytes": 142464,
+      "sha256": "c0a1c4a264644a4e94361bb6879b3b7eaae7d9ca5693301ea57041bfe63eb657"
+    },
+    "inputs\\route_east.png": {
+      "bytes": 166994,
+      "sha256": "7e850d9b01033f4f0c230d1e07f892b9b2a174ae999180a82259eac22c6df08d"
+    },
+    "inputs\\route_west.png": {
+      "bytes": 185361,
+      "sha256": "30822e593cf661631e35613f1987b864958c9c810213db2d0e8178a17a6364f7"
+    },
+    "inputs\\unprotected.png": {
+      "bytes": 3754873,
+      "sha256": "41f39e04e2c85cbffdc9a26473d0881f5d0abebb1317504fbe6729e2227f8c84"
+    },
+    "inputs\\water_region.png": {
+      "bytes": 247703,
+      "sha256": "f8fc0c99eeb59b53bfc58091210769b2dc76f1fb62319104d1f135c1f9ea5c3a"
+    },
+    "scripts\\analyze_exports.py": {
+      "bytes": 13016,
+      "sha256": "2620b18d80d5e56cbfffa0e2a6d216f1f693fd75897cba230dfadd8b21336704"
+    },
+    "scripts\\gaea_project.mjs": {
+      "bytes": 8878,
+      "sha256": "6e93968e8862e82a4204ce8daa80987ee44d708be52f197f432c2c823af8c788"
+    },
+    "scripts\\prepare_sources.py": {
+      "bytes": 8523,
+      "sha256": "7263d8600fb9f4dce3666d4a0266f550f66a6911b0b31c734349fac227c6bcce"
+    },
+    "scripts\\Rebuild-Gaea.ps1": {
+      "bytes": 1414,
+      "sha256": "20a624934ff31e8d4fdbdd37f5b53b4c15b7d87926c089c8e6434e0d10540b06"
+    },
+    "scripts\\verify_delivery.py": {
+      "bytes": 4667,
+      "sha256": "7f566778900877d4ffb36b3e7654a831a7dbbe9d529e22315f5828373b519a96"
+    },
+    "outputs/final/build.log": {
+      "bytes": 1178756,
+      "sha256": "83662205163d5f4c0ae1eb4ad853297fe13f0690cab7e0fd1e7c2c9965567a72"
+    },
+    "outputs/final/gaea_color.png": {
+      "bytes": 1583444,
+      "sha256": "a18fe014e52d88a797621effcf9eb85f2da2972edfa0e143327d2957b5e69674"
+    },
+    "outputs/final/height_4081.png": {
+      "bytes": 4501878,
+      "sha256": "10eb77fd3e53afd5ce74ab0697fcf7e9f5141fe176f17dc29f925e2bec81fa38"
+    },
+    "outputs/final/height_4081.r16": {
+      "bytes": 33309122,
+      "sha256": "0ada035e9ec9c39756761ca572142b6bd63c268ef85c8c288724d62b5c898f7f"
+    },
+    "outputs/final/height_4096.png": {
+      "bytes": 4794441,
+      "sha256": "df70637304b7fb1445786b0e02b1e8213d6e58d1b8c1f2729b1a33eb1795f3b5"
+    },
+    "outputs/final/mask_beach.png": {
+      "bytes": 1161001,
+      "sha256": "e05ae00a18bd9b148811bb1851b53845e04097e1da419e1be2e40241c3d6636a"
+    },
+    "outputs/final/mask_flat_ground.png": {
+      "bytes": 4017423,
+      "sha256": "6e005e0b16f8f4fbc8b251880c58e6af2db154a6ac7c888faee616a95748c5c8"
+    },
+    "outputs/final/mask_hills.png": {
+      "bytes": 4393863,
+      "sha256": "74ac9c013d0fc3f10ad9df6a6f4b0c907360eebfc4b9b94da458ff1f6e1faa36"
+    },
+    "outputs/final/mask_plateau.png": {
+      "bytes": 302804,
+      "sha256": "d6bda22d1ec1ecc33d78b4a5395ab104db7e0d07d573dc14b0ba2adc6c8107be"
+    },
+    "outputs/final/mask_rock.png": {
+      "bytes": 668237,
+      "sha256": "d191079b240b116b83098623c278d27c2ea3eac5557a239f9afc37009cbebdac"
+    },
+    "outputs/final/mask_water.png": {
+      "bytes": 431597,
+      "sha256": "1c23ee83ed23f0cfae232a9f08067e3e9711c66a9b31dc829b8af36542ecaf3d"
+    },
+    "outputs/final/material_beach.png": {
+      "bytes": 1152484,
+      "sha256": "6358d9122f89416714bcdb2e5dddd5701415aaa672ae1b731e39538822ed7448"
+    },
+    "outputs/final/material_flat_ground.png": {
+      "bytes": 4012282,
+      "sha256": "61797dbceaba0ec8f23cc3f02265746413e4a34043e08c6803ad44a008e41a47"
+    },
+    "outputs/final/material_hills.png": {
+      "bytes": 4395475,
+      "sha256": "1cfa2677a74dc32c9b2bca8effd2cb1a9bb5b9972763070e4ab07a4b372fba9e"
+    },
+    "outputs/final/material_plateau.png": {
+      "bytes": 302876,
+      "sha256": "04e8c7ff78a0a957e77047ff6c5988343f75b3d52552793cb77e46f9e3ed62eb"
+    },
+    "outputs/final/material_rock.png": {
+      "bytes": 666654,
+      "sha256": "0472b61a103bc8fbc4ef33667c42d172a4722a1d3dce62d28f510b93ef70a94e"
+    },
+    "outputs/final/material_water.png": {
+      "bytes": 426803,
+      "sha256": "91b10cdcc27f51cbb77f5ec97a2737020ed97b1ac2fa6a4256901419b6213d5c"
+    },
+    "outputs/final/mcp-build-result.json": {
+      "bytes": 1190290,
+      "sha256": "8638f179ddbd8e093d3253a8fbc37dfbbf970046322c493d114cf13e6c8ce3b8"
+    },
+    "outputs/final/report.json": {
+      "bytes": 5168,
+      "sha256": "248fe035a0b3ce6969c19277d0f92c0b3773c0e9eaab9618160559ac0a257bc7"
+    },
+    "outputs/final/report.txt": {
+      "bytes": 6358,
+      "sha256": "cec3a2f410823568303a96efbe1ed4eae474479a34a27843bf2834a426e95d7d"
+    },
+    "outputs/final/routes_preview.png": {
+      "bytes": 330395,
+      "sha256": "944562b4d7f8fb9a8c11f38ed9bb911b26110473849703f86d527f396f70276d"
+    },
+    "outputs/final/slope_preview.png": {
+      "bytes": 46003,
+      "sha256": "06ea46e42f9b4ae089afba333465700c845ec2125dc6106b7edc015a123ea4c2"
+    },
+    "outputs/final/topdown_preview.png": {
+      "bytes": 302435,
+      "sha256": "4f00e8976626a658f924fbf89ee01158351ff5ef53f89f5301aa8e08a73bc760"
+    },
+    "outputs/final/validation.json": {
+      "bytes": 8141,
+      "sha256": "309de9b06890fb18dfa949887ca57b848195d6e80a046e0a33de891291fc8faa"
+    }
+  }
+}

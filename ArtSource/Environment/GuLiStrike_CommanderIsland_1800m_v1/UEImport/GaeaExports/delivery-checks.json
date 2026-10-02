@@ -1,0 +1,512 @@
+{
+  "passed": true,
+  "project_name": "GuLiStrike_CommanderIsland_1800m_v1",
+  "node_count": 39,
+  "relative_file_nodes": 14,
+  "source_png_count": 75,
+  "build_result": "Success",
+  "height_bit_depth": 16,
+  "height_decode": "u16/65535*140-20 meters",
+  "sea_level_normalized": 0.14285714285714285,
+  "compatibility_r16_bytes": 33309122,
+  "masks": {
+    "flat_ground": {
+      "resolution": [
+        4096,
+        4096
+      ],
+      "native_source_max_error_u16": 0,
+      "native_source_mean_error_u16": 0.0,
+      "source_final_max_error_u16": 0,
+      "normalized_coverage_km2": 1.5281253889974933
+    },
+    "hills": {
+      "resolution": [
+        4096,
+        4096
+      ],
+      "native_source_max_error_u16": 0,
+      "native_source_mean_error_u16": 0.0,
+      "source_final_max_error_u16": 0,
+      "normalized_coverage_km2": 0.5801470609803564
+    },
+    "plateau": {
+      "resolution": [
+        4096,
+        4096
+      ],
+      "native_source_max_error_u16": 0,
+      "native_source_mean_error_u16": 0.0,
+      "source_final_max_error_u16": 0,
+      "normalized_coverage_km2": 0.00048736115559202284
+    },
+    "rock": {
+      "resolution": [
+        4096,
+        4096
+      ],
+      "native_source_max_error_u16": 0,
+      "native_source_mean_error_u16": 0.0,
+      "source_final_max_error_u16": 0,
+      "normalized_coverage_km2": 0.19388530648637323
+    },
+    "beach": {
+      "resolution": [
+        4096,
+        4096
+      ],
+      "native_source_max_error_u16": 0,
+      "native_source_mean_error_u16": 0.0,
+      "source_final_max_error_u16": 0,
+      "normalized_coverage_km2": 0.10885872850924726
+    },
+    "water": {
+      "resolution": [
+        4096,
+        4096
+      ],
+      "native_source_max_error_u16": 0,
+      "native_source_mean_error_u16": 0.0,
+      "source_final_max_error_u16": 0,
+      "normalized_coverage_km2": 0.8300787191693844
+    }
+  },
+  "files": {
+    "graph-manifest.json": {
+      "bytes": 30801,
+      "sha256": "cf7c8421be2e85b55d5a956f191cfed4f39ecaeb6446fd07f431381049ca66f0"
+    },
+    "GuLiStrike_CommanderIsland_1800m_v1.terrain": {
+      "bytes": 68137,
+      "sha256": "9a3b522ab2d2a17ddf7ca191736a850bb9608b5c06f5695f9ecc12d1d6ba6cf5"
+    },
+    "layout.json": {
+      "bytes": 106168,
+      "sha256": "3416faedd56b284109cfe1912d828f6780032f3cdf232b7c6f07ccf723b3d0c9"
+    },
+    "README.md": {
+      "bytes": 3051,
+      "sha256": "10611142d9ef3f4fa35b10fb56af87df5c64737542a8e184717e03988c95bddc"
+    },
+    "REFERENCES.md": {
+      "bytes": 1981,
+      "sha256": "1c0043e9a6ec291c04b164188c0f80790570a2d877bf95e1ccedda0744403365"
+    },
+    "inputs\\beach_region.png": {
+      "bytes": 2003203,
+      "sha256": "cf20217ed220c393a2d02873805099aacb118b51b225aaf5090bbe86187e2f76"
+    },
+    "inputs\\canyon_gain.png": {
+      "bytes": 224116,
+      "sha256": "f489406b422fdd7fbb19ee8c82598d91afbde0221301d11f27b0b0eade27aea6"
+    },
+    "inputs\\canyon_region.png": {
+      "bytes": 1173099,
+      "sha256": "ce93b2cb54ca6a1e1b892aae411a8e82a3cf5ff26bfc9f9f7f722f525d9a409e"
+    },
+    "inputs\\erosion_allowed.png": {
+      "bytes": 3300767,
+      "sha256": "18f930309334015a77448b31854c11485f9d2295955cd051e004e6c03e6ede76"
+    },
+    "inputs\\foundation_height.png": {
+      "bytes": 4419717,
+      "sha256": "8cb360678a33850caccb416296a483ab53a44405873f4d9f281e400b04b60476"
+    },
+    "inputs\\hills_gain.png": {
+      "bytes": 1433446,
+      "sha256": "ff2ee7f959f52715bb91dd1ac656cd2f633ef05cc32e344e023077a6e42c7cf8"
+    },
+    "inputs\\hills_region.png": {
+      "bytes": 3653463,
+      "sha256": "f72a3b53bc3b28e0f34bdacc0bfccbd6971226a1d187b9c2d6c2fc72329e631e"
+    },
+    "inputs\\land_outline.png": {
+      "bytes": 386433,
+      "sha256": "aec5530511cf07ae649ce37c0ec93cb69afc06ee95bd9eb0f3acabf3d4ee7fee"
+    },
+    "inputs\\mask_beach.png": {
+      "bytes": 1144616,
+      "sha256": "1ec11fa9b5814830275a442ce745b2dcab594b68ceca12410500db203e88d9e8"
+    },
+    "inputs\\mask_flat_ground.png": {
+      "bytes": 5305897,
+      "sha256": "77d4e6485fa8635ad0f0b943ed4fbae5d2e25eda6d622cd7d218e1da31845184"
+    },
+    "inputs\\mask_hills.png": {
+      "bytes": 6550103,
+      "sha256": "e02de1f88afda8b46ed9f9addae651cfacdf391eed7d7d9015d374c5f6200de7"
+    },
+    "inputs\\mask_plateau.png": {
+      "bytes": 78164,
+      "sha256": "d83575385e5505547a4e9b82032add826f1d28399f57748e99d0bcbbfd523c32"
+    },
+    "inputs\\mask_rock.png": {
+      "bytes": 1407391,
+      "sha256": "cc7435136174b282539dccb5ee26c15be149be0a49bdd5f1f0cb969690164e27"
+    },
+    "inputs\\mask_water.png": {
+      "bytes": 373843,
+      "sha256": "96d86e8a7d142f0e5a935f0ec68708d12c92c5be77b0b2efcba077e871321ca5"
+    },
+    "inputs\\mountain_gain.png": {
+      "bytes": 1126944,
+      "sha256": "5cab7ebcc8b5e10a5792dea6f731d649f0bebd8155ea59f6803bb810d97e2c9a"
+    },
+    "inputs\\mountain_region.png": {
+      "bytes": 2346746,
+      "sha256": "3b36805dbbc13d5894cde7a3097b9f30fbad308317ae92f5b325904da58a275d"
+    },
+    "inputs\\plateau_gain.png": {
+      "bytes": 172027,
+      "sha256": "bed6cdc44b17fd6c2e452c8095225fa902b9aea6a5c92c0363a6ec1301be54e8"
+    },
+    "inputs\\plateau_region.png": {
+      "bytes": 731329,
+      "sha256": "f24bec1f0f8ce87b97083fa04b4491ef04d61ce7a1f507f796aefa5f43faba53"
+    },
+    "inputs\\protection.png": {
+      "bytes": 4862602,
+      "sha256": "e4657d309ac343bbfcababb29f1e26d5cd496ef641dbdb93e80a3f03fcf1a31c"
+    },
+    "inputs\\route_central.png": {
+      "bytes": 186802,
+      "sha256": "40850d02fc9375e9dc037c72c479c86b50c4404195a5c2de1427bfae0ad7fced"
+    },
+    "inputs\\route_east.png": {
+      "bytes": 222268,
+      "sha256": "8b6947337edc481a9607ed6d66f7a0e11fb936decfa9ac50ff20ffbb65024ba0"
+    },
+    "inputs\\route_northaccess.png": {
+      "bytes": 98917,
+      "sha256": "c0daa0a401311a979b3e7ce36d144243f3ba830556078f3e8ad15564c71f9757"
+    },
+    "inputs\\route_outpost_r1c1_link.png": {
+      "bytes": 65806,
+      "sha256": "7df9f4fb8e6ce0011ca94b54dcdbccefaedc7a69623da6091faf5ed2215a40f5"
+    },
+    "inputs\\route_outpost_r1c2_link.png": {
+      "bytes": 63753,
+      "sha256": "7f1760034df2e98078fe5910188285a3c21d1d5403aa2fc9012b2695e4b0b335"
+    },
+    "inputs\\route_outpost_r1c3_link.png": {
+      "bytes": 62159,
+      "sha256": "fef4a1cef1163bf31bab02d204347ef5d9e72e8df2ad7ce468bac31f473c90f1"
+    },
+    "inputs\\route_outpost_r1c4_link.png": {
+      "bytes": 49312,
+      "sha256": "6ab736e421ee596e5cb6182c2f5175ac5c21839dec35a4ea9f9d74c672d2ee0b"
+    },
+    "inputs\\route_outpost_r1c5_link.png": {
+      "bytes": 57092,
+      "sha256": "af4cef8c5a1270d03a7571cad45f3a0c613a65f4d08e5a2a9af301b366108f61"
+    },
+    "inputs\\route_outpost_r1c6_link.png": {
+      "bytes": 63602,
+      "sha256": "abe4af00ecf785bccae77d8241c63a94ef9419872f52357fe1e4806ead7faa3d"
+    },
+    "inputs\\route_outpost_r1c7_link.png": {
+      "bytes": 66312,
+      "sha256": "870fca755b5e83e1e57264f58681c3406505abbf9fc5b9dc1aeedce64c1ebefe"
+    },
+    "inputs\\route_outpost_r2c1_link.png": {
+      "bytes": 70262,
+      "sha256": "bef5ce705579aa4f829d3db7d1b4e8ae80291df793444bb1d33eab807dea454f"
+    },
+    "inputs\\route_outpost_r2c2_link.png": {
+      "bytes": 58631,
+      "sha256": "897c3fd24beabf8beeef27cdbafc34d1117d9c1a1373e5c51e3ecbf2ad026f48"
+    },
+    "inputs\\route_outpost_r2c3_link.png": {
+      "bytes": 61582,
+      "sha256": "d27cd3a4496422abe45d378199b629bdfe8ac84a2d92fc62fb53530ef553b22e"
+    },
+    "inputs\\route_outpost_r2c4_link.png": {
+      "bytes": 57050,
+      "sha256": "8c7dad1561be216d9371c7bceb61e0b2d7d8a2684d26e9b2d06b8d41e04f3bb8"
+    },
+    "inputs\\route_outpost_r2c5_link.png": {
+      "bytes": 43942,
+      "sha256": "95155e73497676fe5e52733a9c71b5bd92beb878518b868a3d0889b0af6386b9"
+    },
+    "inputs\\route_outpost_r2c6_link.png": {
+      "bytes": 64964,
+      "sha256": "fcf4e9dabe07afd6a54fe85e42abf3d3c7cfa825c787593412d93e91fe08c214"
+    },
+    "inputs\\route_outpost_r2c7_link.png": {
+      "bytes": 66289,
+      "sha256": "7c01f87ebc95675ff7ee1504de61e411d6e5e7da4288b3a695f84df9c7a57592"
+    },
+    "inputs\\route_outpost_r3c1_link.png": {
+      "bytes": 44531,
+      "sha256": "5b2535b38bcb332565323ef5339099dc4f30e90ab3b7ba0b4070fe0548234621"
+    },
+    "inputs\\route_outpost_r3c2_link.png": {
+      "bytes": 65564,
+      "sha256": "64b4e148cc705dce63dbaa0582e346895e9f4687166026a134ee95e639972317"
+    },
+    "inputs\\route_outpost_r3c3_link.png": {
+      "bytes": 65908,
+      "sha256": "78ea01b5789489fafec9aebafdc857197cefdcbbfe745ca52e616639c3a496a6"
+    },
+    "inputs\\route_outpost_r3c4_link.png": {
+      "bytes": 44002,
+      "sha256": "67586b4387f6da957d4e737d51189b41b38e6c232428eb0a9d1fd3f30adf2ded"
+    },
+    "inputs\\route_outpost_r3c5_link.png": {
+      "bytes": 67132,
+      "sha256": "efebe4cb976a2d7cc91f4e83638a0e7c4f0bece9e467ffecbb7e16d16fd5ab9a"
+    },
+    "inputs\\route_outpost_r3c6_link.png": {
+      "bytes": 69070,
+      "sha256": "1b778bee00fb598a08bc79606b6ae51bdce1d26a0ce181b5aafd156d6e07bcac"
+    },
+    "inputs\\route_outpost_r3c7_link.png": {
+      "bytes": 63071,
+      "sha256": "0d6bc383361d82ef80e7e60236a709f82bc34cd3fa3c160acba20372dff16f9d"
+    },
+    "inputs\\route_outpost_r4c1_link.png": {
+      "bytes": 42976,
+      "sha256": "01282b827c22ecee51d83931a764305cc92f809d6ec7bded9ab430ec7aa162b9"
+    },
+    "inputs\\route_outpost_r4c2_link.png": {
+      "bytes": 64958,
+      "sha256": "0d674b238e2c0ec7e822fb1c5c6d235dabba5abb0d4f47cf58c0f3eb4e1f9669"
+    },
+    "inputs\\route_outpost_r4c3_link.png": {
+      "bytes": 75863,
+      "sha256": "49c13f4747d22ebfd0215ed562d5deec62964c71d4b82ce287041722800efa6e"
+    },
+    "inputs\\route_outpost_r4c4_link.png": {
+      "bytes": 44531,
+      "sha256": "b0ede90f24af64601c1e9e084b5fa93a17dd70b39e0cc544bec4d5debfcb0e9a"
+    },
+    "inputs\\route_outpost_r4c5_link.png": {
+      "bytes": 68654,
+      "sha256": "231853b522ae01de147718ef51a905360e5f2ec0ce83919e51c791377ba8ee9d"
+    },
+    "inputs\\route_outpost_r4c6_link.png": {
+      "bytes": 43175,
+      "sha256": "9be0bec12297988201109d5ad28d8e2382d2d53ed1f52d6dc91fb30f69cdb0b2"
+    },
+    "inputs\\route_outpost_r4c7_link.png": {
+      "bytes": 65060,
+      "sha256": "0ac59e52f6458c543975ae4297f7748f09162382119de5db65368b13ca44a6d9"
+    },
+    "inputs\\route_outpost_r5c1_link.png": {
+      "bytes": 67989,
+      "sha256": "679a752832c88e35a14e9d06ec9cced72d67b4c2d44fe1e751293530462aafe6"
+    },
+    "inputs\\route_outpost_r5c2_link.png": {
+      "bytes": 55717,
+      "sha256": "b23ae187bb770007ef803a91b5e7159564ceb16b82e7a254abaff06e907b4568"
+    },
+    "inputs\\route_outpost_r5c3_link.png": {
+      "bytes": 64568,
+      "sha256": "9e3da397199aa2f54894bdbc44488efcc403664b9b16313718bcd77b115a9943"
+    },
+    "inputs\\route_outpost_r5c4_link.png": {
+      "bytes": 44131,
+      "sha256": "f7f77acac798b4b2ec77d2eee9294f50523f151612ca320cc9cc0ba33f57151d"
+    },
+    "inputs\\route_outpost_r5c5_link.png": {
+      "bytes": 60015,
+      "sha256": "366e425f3f3d7d07a7c2ad23d3cc36efbfbbd4ae4931123882f591ba620aa4d2"
+    },
+    "inputs\\route_outpost_r5c6_link.png": {
+      "bytes": 44641,
+      "sha256": "e3d0cc5781591e85d995dd6df0a56d51934b3f3cd67f6c9a51fab91a38f6a828"
+    },
+    "inputs\\route_outpost_r5c7_link.png": {
+      "bytes": 65691,
+      "sha256": "97e3f19385bfb8750a0c4116d382cdf08353420f2f87d2fa30d10f39e99df2dc"
+    },
+    "inputs\\route_outpost_r6c1_link.png": {
+      "bytes": 65493,
+      "sha256": "cb9969606ab26005169a3dca972d191e5181b7db777b0d395d85737eb2da5147"
+    },
+    "inputs\\route_outpost_r6c2_link.png": {
+      "bytes": 69898,
+      "sha256": "ea96fe667811b73af1298d58c2115cb17347bc7fa6c3a4db9a0d36406ad2ff7f"
+    },
+    "inputs\\route_outpost_r6c3_link.png": {
+      "bytes": 57630,
+      "sha256": "6e5c0a2d81c5ca998032b2a7d38ee2db3774093d7b3d0e3b7ca66daeccaf352d"
+    },
+    "inputs\\route_outpost_r6c4_link.png": {
+      "bytes": 56707,
+      "sha256": "f87b12aa13a4a129e565ed1e147744c4c7b2b1eeaead104e58f6f16ad4aa00a5"
+    },
+    "inputs\\route_outpost_r6c5_link.png": {
+      "bytes": 63165,
+      "sha256": "ec6598aba370d3ae9d5b5a804738672f44461a6ba0a06339975e91ddbb36cd96"
+    },
+    "inputs\\route_outpost_r6c6_link.png": {
+      "bytes": 42831,
+      "sha256": "5455012f820050e587a4c47494304daefdec08a9b07414a1403ec22e21a6eae5"
+    },
+    "inputs\\route_outpost_r6c7_link.png": {
+      "bytes": 69865,
+      "sha256": "c67046fe722f4aef85d15d4c646cd87339ee6532c0d03664020cb297aaf78178"
+    },
+    "inputs\\route_outpost_r7c1_link.png": {
+      "bytes": 69833,
+      "sha256": "cc29e1e64508b182b2b0d7d243e6e331d276c81a1e4e3d0f54090819e545c6fc"
+    },
+    "inputs\\route_outpost_r7c2_link.png": {
+      "bytes": 65648,
+      "sha256": "3e40385be57eee75b1e36b73bb55789315696a17409bcc882eed8c36b8f33c27"
+    },
+    "inputs\\route_outpost_r7c3_link.png": {
+      "bytes": 68162,
+      "sha256": "727551f207933f9a333dc8e994415282e0fb3169f4117e9b5b319a880a05bb67"
+    },
+    "inputs\\route_outpost_r7c4_link.png": {
+      "bytes": 49386,
+      "sha256": "3b3af2efb166c486302b3aa05d50bc0c1d9360d5e4ab1f84733a8d41165b650a"
+    },
+    "inputs\\route_outpost_r7c5_link.png": {
+      "bytes": 57039,
+      "sha256": "6d91757b8656716996b7b0a1e56f9e6cc5fbc853abb8a1cd8b88433a4f3749c2"
+    },
+    "inputs\\route_outpost_r7c6_link.png": {
+      "bytes": 65034,
+      "sha256": "6794d19858e9b0a77ddfbbbd2df3a91dadc8396a6cd4dacc13bf2aa19031370d"
+    },
+    "inputs\\route_outpost_r7c7_link.png": {
+      "bytes": 52431,
+      "sha256": "3e53d0aa0fa0f163b311fd1bb2093cd521e88da07bfa76a25aff95dd2d1170a9"
+    },
+    "inputs\\route_southaccess.png": {
+      "bytes": 102431,
+      "sha256": "5c6c1d4a915d0bbc4a1f215b27f3ac4162f5cce16ced9b7551835c2b8a0ec22a"
+    },
+    "inputs\\route_west.png": {
+      "bytes": 247260,
+      "sha256": "8cd961c4b39ad0a98d9346653332219a85b3d006504a5a6edd539703a78ce027"
+    },
+    "inputs\\unprotected.png": {
+      "bytes": 4861071,
+      "sha256": "bca621ed9d1a0d5217e3802a4ee0d2965847f4d3612b9cf6e89e307675a2a398"
+    },
+    "inputs\\water_region.png": {
+      "bytes": 337490,
+      "sha256": "cd29be502809fef8e179d567f5602cbaf41da8c21c1a14e51a077761bd321fd8"
+    },
+    "scripts\\analyze_exports.py": {
+      "bytes": 14044,
+      "sha256": "31bec16e4d2e9a35a4dd1606d5d7aa3e384de364856b80c6883eb1ad9db488bd"
+    },
+    "scripts\\gaea_project.mjs": {
+      "bytes": 9010,
+      "sha256": "daf8c95cdd2f798aacebcf17d91e652bfb5323bb4a86c8aee20a80be64652473"
+    },
+    "scripts\\prepare_sources.py": {
+      "bytes": 87932,
+      "sha256": "85b9ec9abf27e521aa6c1cfcf93cc2e86c16e430ea93b235bc4ed0e822fe1f1d"
+    },
+    "scripts\\Rebuild-Gaea.ps1": {
+      "bytes": 1440,
+      "sha256": "b34e3fa3817abdceaca3bc9a4ed0d4564baf2244eb280d9b42c197445d10f044"
+    },
+    "scripts\\verify_delivery.py": {
+      "bytes": 4900,
+      "sha256": "6f8bc7c0ba3804a14fddc0612ed5de7c16e5150bb1d29782853b328dca448c09"
+    },
+    "outputs/final/build.log": {
+      "bytes": 1381763,
+      "sha256": "29e0a1164f7c204095af046ead8579d3bf25b74592f71633e43a305e9bcdcc6a"
+    },
+    "outputs/final/gaea_color.png": {
+      "bytes": 1896106,
+      "sha256": "64914d00dced21c3757079bf831d08232fd218ec8b482df929d9b18cc499f720"
+    },
+    "outputs/final/height_4081.png": {
+      "bytes": 5099623,
+      "sha256": "0aeb086d708cf1df935c9177989b1d9b2cc61a8bd2b71a494a9b02e573bb14e5"
+    },
+    "outputs/final/height_4081.r16": {
+      "bytes": 33309122,
+      "sha256": "3890cc5ffbf81dce7412d64764985a615596e1d49477cb263f1d62c231bcec04"
+    },
+    "outputs/final/height_4096.png": {
+      "bytes": 5383962,
+      "sha256": "1d7c0c2322e490239014d7fa08294be1609ab7c3941a3829569a912ce3dcb150"
+    },
+    "outputs/final/mask_beach.png": {
+      "bytes": 1146444,
+      "sha256": "0a5301e496a555a7e8f01da746cebdae4d3a6d087470f9b01cbc71ec1557fc33"
+    },
+    "outputs/final/mask_flat_ground.png": {
+      "bytes": 5290063,
+      "sha256": "85c3875a9483e70ec4597727e1425a9d6aa6f61d222c2e59b1bd218787a2a334"
+    },
+    "outputs/final/mask_hills.png": {
+      "bytes": 6511289,
+      "sha256": "4a55e4f716f2ca84d6243ab29a624a949ed540b7e3be049c25a8c317ae408e7c"
+    },
+    "outputs/final/mask_plateau.png": {
+      "bytes": 78330,
+      "sha256": "ff4086e695e4e58c5311316fc6c3a517657c0331ba46625e2d404f6330e756a5"
+    },
+    "outputs/final/mask_rock.png": {
+      "bytes": 1403684,
+      "sha256": "fc016320f7b080a28b5d4e733d5b021719a6240d5e2ed72b2b150a47fe563cd0"
+    },
+    "outputs/final/mask_water.png": {
+      "bytes": 378025,
+      "sha256": "adf54603634ccffb419c360f71cf6d713c12d124b705a1347a8cc6e5af2499d4"
+    },
+    "outputs/final/material_beach.png": {
+      "bytes": 1144616,
+      "sha256": "1ec11fa9b5814830275a442ce745b2dcab594b68ceca12410500db203e88d9e8"
+    },
+    "outputs/final/material_flat_ground.png": {
+      "bytes": 5305897,
+      "sha256": "77d4e6485fa8635ad0f0b943ed4fbae5d2e25eda6d622cd7d218e1da31845184"
+    },
+    "outputs/final/material_hills.png": {
+      "bytes": 6550103,
+      "sha256": "e02de1f88afda8b46ed9f9addae651cfacdf391eed7d7d9015d374c5f6200de7"
+    },
+    "outputs/final/material_plateau.png": {
+      "bytes": 78164,
+      "sha256": "d83575385e5505547a4e9b82032add826f1d28399f57748e99d0bcbbfd523c32"
+    },
+    "outputs/final/material_rock.png": {
+      "bytes": 1407391,
+      "sha256": "cc7435136174b282539dccb5ee26c15be149be0a49bdd5f1f0cb969690164e27"
+    },
+    "outputs/final/material_water.png": {
+      "bytes": 373843,
+      "sha256": "96d86e8a7d142f0e5a935f0ec68708d12c92c5be77b0b2efcba077e871321ca5"
+    },
+    "outputs/final/mcp-build-result.json": {
+      "bytes": 1395454,
+      "sha256": "f8001f1832895ac01ba91757352ab112c7ea0445e7a7d4cee0f348a6afc915db"
+    },
+    "outputs/final/report.json": {
+      "bytes": 5166,
+      "sha256": "3a2d7694384502e9f9e5051dd863406468633cd384058bf2c7577f3257e9a22d"
+    },
+    "outputs/final/report.txt": {
+      "bytes": 6570,
+      "sha256": "ec56e0ea0e83db04b92154341fc04977230387c4d066504c27546b9c8b20297a"
+    },
+    "outputs/final/routes_preview.png": {
+      "bytes": 496644,
+      "sha256": "59b10c26d720a7e2f61c645ed072a7bfb4565243e335d6b61f936c577076f7ff"
+    },
+    "outputs/final/slope_preview.png": {
+      "bytes": 60784,
+      "sha256": "631662ad3857ad4045d75eabb2002dca4a2036e10a505a256fb0374ea3a86561"
+    },
+    "outputs/final/topdown_preview.png": {
+      "bytes": 396046,
+      "sha256": "cb4b093a3e1b3ce6cbada2b5803def7f3c2e7d46540536baf449a985e8954e15"
+    },
+    "outputs/final/validation.json": {
+      "bytes": 32535,
+      "sha256": "c5bd61c775aeca898050706207c2141a23b4e21c85c25902e1ed0bf50282ffb2"
+    }
+  }
+}

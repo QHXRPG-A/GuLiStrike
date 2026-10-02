@@ -1,0 +1,56 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "saved": true,
+  "probe_count": 3,
+  "entities": [
+    {
+      "label": "QA_NavConnectivity_FootA_135",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_56",
+      "class": "/Script/Engine.Note",
+      "position_cm": [
+        -30343.0,
+        69255.0,
+        1897.7790832519531
+      ],
+      "editor_only": true,
+      "collision": false,
+      "text": "导航连通性验证：山脚 A / 原选中单位 135\n新代码编译并重启后，在编辑器 Output Log 执行下列只读命令。\n同山脚区域预期 Connected（正反均可达）：\ngs.Navigation.CheckPoints -30343.0000000000 69255.0000000000 1897.7790832520 -29962.5099248317 69008.0000000000 1868.7898865801\n山脚到高台预期 Disconnected：\ngs.Navigation.CheckPoints -30343.0000000000 69255.0000000000 1897.7790832520 -37338.4848733983 64139.2323668137 7532.0894547397\n完整导航图检查：gs.Navigation.CheckConnectivity\n实际导航 Prepare 有多个可行走分区时必须报错；本标记不执行烘焙或 PIE。"
+    },
+    {
+      "label": "QA_NavConnectivity_FootB_138",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_57",
+      "class": "/Script/Engine.Note",
+      "position_cm": [
+        -29962.509924831735,
+        69008.0,
+        1868.789886580086
+      ],
+      "editor_only": true,
+      "collision": false,
+      "text": "导航连通性验证：山脚 B / 原选中单位 138\n与山脚 A 的两点查询预期 Connected。坐标单位厘米，投影范围 X/Y 10、Z 50。\ngs.Navigation.CheckPoints -30343.0000000000 69255.0000000000 1897.7790832520 -29962.5099248317 69008.0000000000 1868.7898865801"
+    },
+    {
+      "label": "QA_NavConnectivity_PlateauA_135",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_58",
+      "class": "/Script/Engine.Note",
+      "position_cm": [
+        -37338.484873398265,
+        64139.232366813674,
+        7532.089454739742
+      ],
+      "editor_only": true,
+      "collision": false,
+      "text": "导航连通性验证：高台 A / 原单位 135 目标\n此前记录：端点均有导航覆盖，正反路径为部分路径，未耗尽搜索节点。\n新接口预期 Disconnected；地形/导航尚未修复。\ngs.Navigation.CheckPoints -30343.0000000000 69255.0000000000 1897.7790832520 -37338.4848733983 64139.2323668137 7532.0894547397"
+    }
+  ],
+  "commands": {
+    "connected_pair": "gs.Navigation.CheckPoints -30343.0000000000 69255.0000000000 1897.7790832520 -29962.5099248317 69008.0000000000 1868.7898865801",
+    "disconnected_pair": "gs.Navigation.CheckPoints -30343.0000000000 69255.0000000000 1897.7790832520 -37338.4848733983 64139.2323668137 7532.0894547397",
+    "whole_graph": "gs.Navigation.CheckConnectivity"
+  },
+  "authoring_only": true,
+  "new_native_code_executed": false,
+  "pie_started": false,
+  "navigation_bake_executed": false
+}

@@ -1,0 +1,316 @@
+{
+  "passed": true,
+  "stage": "final",
+  "resolution": [
+    4096,
+    4096
+  ],
+  "physical_size_m": [
+    2300.0,
+    2300.0
+  ],
+  "pixel_spacing_m": 0.5616605616605617,
+  "height_range_m": [
+    -20.0,
+    120.0
+  ],
+  "sea_level_m": 0,
+  "height_decode": "sample_u16/65535*140-20",
+  "gentle_land_fraction": 0.8722351704597386,
+  "dry_land_area_km2": 1.9052148398609938,
+  "connectivity": {
+    "method": "full-resolution 4-neighbor run-length components",
+    "component_count": 1,
+    "largest_component_fraction": 1.0
+  },
+  "checks": {
+    "resolution": true,
+    "png_16bit": true,
+    "height_range": true,
+    "sea_floor": true,
+    "land_within_1800m": true,
+    "sixty_percent_gentle_land": true,
+    "route_Central": true,
+    "route_West": true,
+    "route_East": true,
+    "pad_Southwest": true,
+    "pad_Northeast": true,
+    "connected_pads": true,
+    "single_main_landmass": true,
+    "gaea_build_success": true
+  },
+  "routes": [
+    {
+      "name": "Central",
+      "verified_width_m": 50.0,
+      "maximum_slope_degrees": 5.431935787200928,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "West",
+      "verified_width_m": 40.0,
+      "maximum_slope_degrees": 3.6964316368103027,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    },
+    {
+      "name": "East",
+      "verified_width_m": 40.0,
+      "maximum_slope_degrees": 9.832830429077148,
+      "minimum_height_m": 8.999771118164062,
+      "passed": true
+    }
+  ],
+  "pads": [
+    {
+      "name": "Southwest",
+      "size_m": [
+        160,
+        160
+      ],
+      "maximum_slope_degrees": 0.1540922224521637,
+      "maximum_height_error_m": 0.0023651123046875,
+      "passed": true
+    },
+    {
+      "name": "Northeast",
+      "size_m": [
+        160,
+        160
+      ],
+      "maximum_slope_degrees": 0.1540922224521637,
+      "maximum_height_error_m": 0.001983642578125,
+      "passed": true
+    }
+  ],
+  "height_sha256": "df70637304b7fb1445786b0e02b1e8213d6e58d1b8c1f2729b1a33eb1795f3b5",
+  "gaea_build_report": {
+    "$id": "1",
+    "Resolution": 4096,
+    "NodeCount": 39,
+    "Result": "Success",
+    "StartTime": "2026-10-01T14:30:30.2668878+08:00",
+    "EndTime": "2026-10-01T14:31:17.1725059+08:00",
+    "Duration": "00:00:46.9056181",
+    "SecondsTaken": {
+      "$id": "2",
+      "$values": [
+        {
+          "$id": "3",
+          "Item1": "01 海岸与地形布局 / 2300m",
+          "Item2": "00:00:00.2460000"
+        },
+        {
+          "$id": "4",
+          "Item1": "02 西北山脊 / Seed 20261001",
+          "Item2": "00:00:12.9090000"
+        },
+        {
+          "$id": "5",
+          "Item1": "西北山地高度与区域遮罩",
+          "Item2": "00:00:00.1380000"
+        },
+        {
+          "$id": "6",
+          "Item1": "山脊区域化 / 最大增高24m",
+          "Item2": "00:00:00.0180000"
+        },
+        {
+          "$id": "7",
+          "Item1": "03 平原与低丘微地形",
+          "Item2": "00:00:00.4400000"
+        },
+        {
+          "$id": "8",
+          "Item1": "低丘细节高度遮罩",
+          "Item2": "00:00:00.1280000"
+        },
+        {
+          "$id": "9",
+          "Item1": "低丘区域化 / 1.1-4.2m",
+          "Item2": "00:00:00.0180000"
+        },
+        {
+          "$id": "10",
+          "Item1": "04 东侧高台表面",
+          "Item2": "00:00:06.2930000"
+        },
+        {
+          "$id": "11",
+          "Item1": "高台细节高度遮罩",
+          "Item2": "00:00:00.1010000"
+        },
+        {
+          "$id": "12",
+          "Item1": "高台区域化 / 3m",
+          "Item2": "00:00:00.0230000"
+        },
+        {
+          "$id": "13",
+          "Item1": "05 东侧峡谷侵蚀纹理",
+          "Item2": "00:00:14.2720000"
+        },
+        {
+          "$id": "14",
+          "Item1": "峡谷下切高度遮罩",
+          "Item2": "00:00:00.0920000"
+        },
+        {
+          "$id": "15",
+          "Item1": "峡谷区域化 / 2.5m",
+          "Item2": "00:00:00.0170000"
+        },
+        {
+          "$id": "16",
+          "Item1": "06 山地合成",
+          "Item2": "00:00:00.0180000"
+        },
+        {
+          "$id": "17",
+          "Item1": "07 丘陵合成",
+          "Item2": "00:00:00.0170000"
+        },
+        {
+          "$id": "18",
+          "Item1": "08 高台合成",
+          "Item2": "00:00:00.0280000"
+        },
+        {
+          "$id": "19",
+          "Item1": "09 峡谷合成",
+          "Item2": "00:00:00.0510000"
+        },
+        {
+          "$id": "20",
+          "Item1": "通路与集结区侵蚀保护",
+          "Item2": "00:00:00.1490000"
+        },
+        {
+          "$id": "21",
+          "Item1": "10 局部侵蚀 / 通路保护",
+          "Item2": "00:00:00.7100000"
+        },
+        {
+          "$id": "22",
+          "Item1": "可变化区域",
+          "Item2": "00:00:00.1720000"
+        },
+        {
+          "$id": "23",
+          "Item1": "稳定通路 / 集结区 / 海岸",
+          "Item2": "00:00:00.1610000"
+        },
+        {
+          "$id": "24",
+          "Item1": "11 非保护区域地形",
+          "Item2": "00:00:00.1680000"
+        },
+        {
+          "$id": "25",
+          "Item1": "12 保留路线与海岸",
+          "Item2": "00:00:00.0320000"
+        },
+        {
+          "$id": "26",
+          "Item1": "13 最终战斗海岛",
+          "Item2": "00:00:00.0270000"
+        },
+        {
+          "$id": "27",
+          "Item1": "14 高度图 / PNG16",
+          "Item2": "00:00:00.0130000"
+        },
+        {
+          "$id": "28",
+          "Item1": "15 地形色彩预览",
+          "Item2": "00:00:00.7060000"
+        },
+        {
+          "$id": "29",
+          "Item1": "16 色彩图 / PNG8",
+          "Item2": "00:00:00.0190000"
+        },
+        {
+          "$id": "30",
+          "Item1": "材质分区 / flat_ground",
+          "Item2": "00:00:00.1500000"
+        },
+        {
+          "$id": "31",
+          "Item1": "分区导出 / flat_ground",
+          "Item2": "00:00:00.0070000"
+        },
+        {
+          "$id": "32",
+          "Item1": "材质分区 / hills",
+          "Item2": "00:00:00.1610000"
+        },
+        {
+          "$id": "33",
+          "Item1": "分区导出 / hills",
+          "Item2": "00:00:00.0060000"
+        },
+        {
+          "$id": "34",
+          "Item1": "材质分区 / plateau",
+          "Item2": "00:00:00.1020000"
+        },
+        {
+          "$id": "35",
+          "Item1": "分区导出 / plateau",
+          "Item2": "00:00:00.0120000"
+        },
+        {
+          "$id": "36",
+          "Item1": "材质分区 / rock",
+          "Item2": "00:00:00.1250000"
+        },
+        {
+          "$id": "37",
+          "Item1": "分区导出 / rock",
+          "Item2": "00:00:00.0140000"
+        },
+        {
+          "$id": "38",
+          "Item1": "材质分区 / beach",
+          "Item2": "00:00:00.2120000"
+        },
+        {
+          "$id": "39",
+          "Item1": "分区导出 / beach",
+          "Item2": "00:00:00.0080000"
+        },
+        {
+          "$id": "40",
+          "Item1": "材质分区 / water",
+          "Item2": "00:00:00.1210000"
+        },
+        {
+          "$id": "41",
+          "Item1": "分区导出 / water",
+          "Item2": "00:00:00.0070000"
+        }
+      ]
+    },
+    "FastestNode": {
+      "$ref": "33"
+    },
+    "SlowestNode": {
+      "$ref": "13"
+    }
+  },
+  "mask_source_refreshed": false,
+  "validation_boundary": "Terrain data only; no Unreal import, navigation bake, or gameplay run.",
+  "compatibility": {
+    "resolution": [
+      4081,
+      4081
+    ],
+    "pixel_spacing_m": 0.5637254901960784,
+    "png": "height_4081.png",
+    "r16": "height_4081.r16",
+    "r16_bytes": 33309122,
+    "normalization_unchanged": true
+  }
+}

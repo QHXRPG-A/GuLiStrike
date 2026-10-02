@@ -1,0 +1,1366 @@
+{
+  "nodes": {
+    "foundation": 1,
+    "mountain": 2,
+    "mountain_gain": 3,
+    "mountain_local": 4,
+    "perlin": 5,
+    "hills_gain": 6,
+    "hills_local": 7,
+    "plates": 8,
+    "plateau_gain": 9,
+    "plates_local": 10,
+    "canyon": 11,
+    "canyon_gain": 12,
+    "canyon_local": 13,
+    "compose_mountain": 14,
+    "compose_hills": 15,
+    "compose_plateau": 16,
+    "compose_canyon": 17,
+    "erosion_mask": 18,
+    "erosion": 19,
+    "unprotected": 20,
+    "protection": 21,
+    "eroded_unprotected": 22,
+    "foundation_protected": 23,
+    "final_terrain": 24,
+    "height_4096": 25,
+    "satmap": 26,
+    "gaea_color": 27,
+    "class_flat_ground": 28,
+    "mask_flat_ground": 29,
+    "class_hills": 30,
+    "mask_hills": 31,
+    "class_plateau": 32,
+    "mask_plateau": 33,
+    "class_rock": 34,
+    "mask_rock": 35,
+    "class_beach": 36,
+    "mask_beach": 37,
+    "class_water": 38,
+    "mask_water": 39
+  },
+  "exports": [
+    "height_4096",
+    "gaea_color",
+    "mask_flat_ground",
+    "mask_hills",
+    "mask_plateau",
+    "mask_rock",
+    "mask_beach",
+    "mask_water"
+  ],
+  "graph": {
+    "file": "C:\\Users\\a\\Documents\\Gaea\\MCP\\Projects\\GuLiStrike_CombatIsland_2300m_v1\\GuLiStrike_CombatIsland_2300m_v1.terrain",
+    "terrainSize": {
+      "width": 2300,
+      "height": 140
+    },
+    "buildResolution": 4096,
+    "nodeCount": 39,
+    "nodes": [
+      {
+        "id": 1,
+        "name": "01 海岸与地形布局 / 2300m",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 25500,
+          "y": 25380
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/foundation_height.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 2,
+        "name": "02 西北山脊 / Seed 20261001",
+        "type": "Mountain",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Mountain, Gaea.Nodes",
+        "position": {
+          "x": 25500,
+          "y": 24600
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "Seed": 20261001,
+          "Height": 1
+        }
+      },
+      {
+        "id": 3,
+        "name": "西北山地高度与区域遮罩",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 25500,
+          "y": 24860
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/mountain_gain.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 4,
+        "name": "山脊区域化 / 最大增高24m",
+        "type": "Combine",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+        "position": {
+          "x": 25870,
+          "y": 24600
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 2
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          },
+          {
+            "name": "Input2",
+            "type": "In",
+            "connectedFrom": 3
+          },
+          {
+            "name": "Mask",
+            "type": "In"
+          }
+        ],
+        "properties": {
+          "Mode": "Multiply",
+          "PortCount": 2,
+          "Ratio": 1
+        }
+      },
+      {
+        "id": 5,
+        "name": "03 平原与低丘微地形",
+        "type": "Perlin",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Perlin, Gaea.Nodes",
+        "position": {
+          "x": 25500,
+          "y": 25900
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "Seed": 20261002
+        }
+      },
+      {
+        "id": 6,
+        "name": "低丘细节高度遮罩",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 25500,
+          "y": 26160
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/hills_gain.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 7,
+        "name": "低丘区域化 / 1.1-4.2m",
+        "type": "Combine",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+        "position": {
+          "x": 25870,
+          "y": 25900
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 5
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          },
+          {
+            "name": "Input2",
+            "type": "In",
+            "connectedFrom": 6
+          },
+          {
+            "name": "Mask",
+            "type": "In"
+          }
+        ],
+        "properties": {
+          "Mode": "Multiply",
+          "PortCount": 2,
+          "Ratio": 1
+        }
+      },
+      {
+        "id": 8,
+        "name": "04 东侧高台表面",
+        "type": "Plates",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Plates, Gaea.Nodes",
+        "position": {
+          "x": 25500,
+          "y": 26680
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "Seed": 20261003
+        }
+      },
+      {
+        "id": 9,
+        "name": "高台细节高度遮罩",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 25500,
+          "y": 26940
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/plateau_gain.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 10,
+        "name": "高台区域化 / 3m",
+        "type": "Combine",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+        "position": {
+          "x": 25870,
+          "y": 26680
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 8
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          },
+          {
+            "name": "Input2",
+            "type": "In",
+            "connectedFrom": 9
+          },
+          {
+            "name": "Mask",
+            "type": "In"
+          }
+        ],
+        "properties": {
+          "Mode": "Multiply",
+          "PortCount": 2,
+          "Ratio": 1
+        }
+      },
+      {
+        "id": 11,
+        "name": "05 东侧峡谷侵蚀纹理",
+        "type": "Canyon",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Canyon, Gaea.Nodes",
+        "position": {
+          "x": 25500,
+          "y": 27460
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          },
+          {
+            "name": "Depth",
+            "type": "Out"
+          }
+        ],
+        "properties": {
+          "Seed": 20261004,
+          "Valley": 0.58,
+          "Depth": 0.7
+        }
+      },
+      {
+        "id": 12,
+        "name": "峡谷下切高度遮罩",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 25500,
+          "y": 27720
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/canyon_gain.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 13,
+        "name": "峡谷区域化 / 2.5m",
+        "type": "Combine",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+        "position": {
+          "x": 25870,
+          "y": 27460
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 11
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          },
+          {
+            "name": "Input2",
+            "type": "In",
+            "connectedFrom": 12
+          },
+          {
+            "name": "Mask",
+            "type": "In"
+          }
+        ],
+        "properties": {
+          "Mode": "Multiply",
+          "PortCount": 2,
+          "Ratio": 1
+        }
+      },
+      {
+        "id": 14,
+        "name": "06 山地合成",
+        "type": "Combine",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+        "position": {
+          "x": 26240,
+          "y": 25380
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 1
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          },
+          {
+            "name": "Input2",
+            "type": "In",
+            "connectedFrom": 4
+          },
+          {
+            "name": "Mask",
+            "type": "In"
+          }
+        ],
+        "properties": {
+          "Mode": "Add",
+          "PortCount": 2,
+          "Ratio": 1
+        }
+      },
+      {
+        "id": 15,
+        "name": "07 丘陵合成",
+        "type": "Combine",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+        "position": {
+          "x": 26610,
+          "y": 25380
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 14
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          },
+          {
+            "name": "Input2",
+            "type": "In",
+            "connectedFrom": 7
+          },
+          {
+            "name": "Mask",
+            "type": "In"
+          }
+        ],
+        "properties": {
+          "Mode": "Add",
+          "PortCount": 2,
+          "Ratio": 1
+        }
+      },
+      {
+        "id": 16,
+        "name": "08 高台合成",
+        "type": "Combine",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+        "position": {
+          "x": 26980,
+          "y": 25380
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 15
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          },
+          {
+            "name": "Input2",
+            "type": "In",
+            "connectedFrom": 10
+          },
+          {
+            "name": "Mask",
+            "type": "In"
+          }
+        ],
+        "properties": {
+          "Mode": "Add",
+          "PortCount": 2,
+          "Ratio": 1
+        }
+      },
+      {
+        "id": 17,
+        "name": "09 峡谷合成",
+        "type": "Combine",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+        "position": {
+          "x": 27350,
+          "y": 25380
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 16
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          },
+          {
+            "name": "Input2",
+            "type": "In",
+            "connectedFrom": 13
+          },
+          {
+            "name": "Mask",
+            "type": "In"
+          }
+        ],
+        "properties": {
+          "Mode": "Subtract",
+          "PortCount": 2,
+          "Ratio": 1
+        }
+      },
+      {
+        "id": 18,
+        "name": "通路与集结区侵蚀保护",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 27350,
+          "y": 25900
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/erosion_allowed.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 19,
+        "name": "10 局部侵蚀 / 通路保护",
+        "type": "Erosion2",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Erosion2, Gaea.Nodes",
+        "position": {
+          "x": 27720,
+          "y": 25380
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 17
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          },
+          {
+            "name": "Mask",
+            "type": "In",
+            "connectedFrom": 18
+          },
+          {
+            "name": "Precipitation",
+            "type": "In"
+          },
+          {
+            "name": "Flow",
+            "type": "Out"
+          },
+          {
+            "name": "Wear",
+            "type": "Out"
+          },
+          {
+            "name": "Deposits",
+            "type": "Out"
+          }
+        ],
+        "properties": {
+          "Seed": 20261001,
+          "Duration": 12,
+          "Downcutting": 0.05
+        }
+      },
+      {
+        "id": 20,
+        "name": "可变化区域",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 27720,
+          "y": 26160
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/unprotected.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 21,
+        "name": "稳定通路 / 集结区 / 海岸",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 27720,
+          "y": 26680
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/protection.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 22,
+        "name": "11 非保护区域地形",
+        "type": "Combine",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+        "position": {
+          "x": 28090,
+          "y": 25380
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 19
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          },
+          {
+            "name": "Input2",
+            "type": "In",
+            "connectedFrom": 20
+          },
+          {
+            "name": "Mask",
+            "type": "In"
+          }
+        ],
+        "properties": {
+          "Mode": "Multiply",
+          "PortCount": 2,
+          "Ratio": 1
+        }
+      },
+      {
+        "id": 23,
+        "name": "12 保留路线与海岸",
+        "type": "Combine",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+        "position": {
+          "x": 28090,
+          "y": 26420
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 1
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          },
+          {
+            "name": "Input2",
+            "type": "In",
+            "connectedFrom": 21
+          },
+          {
+            "name": "Mask",
+            "type": "In"
+          }
+        ],
+        "properties": {
+          "Mode": "Multiply",
+          "PortCount": 2,
+          "Ratio": 1
+        }
+      },
+      {
+        "id": 24,
+        "name": "13 最终战斗海岛",
+        "type": "Combine",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Combine, Gaea.Nodes",
+        "position": {
+          "x": 28460,
+          "y": 25380
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 22
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          },
+          {
+            "name": "Input2",
+            "type": "In",
+            "connectedFrom": 23
+          },
+          {
+            "name": "Mask",
+            "type": "In"
+          }
+        ],
+        "properties": {
+          "Mode": "Add",
+          "PortCount": 2,
+          "Ratio": 1
+        }
+      },
+      {
+        "id": 25,
+        "name": "14 高度图 / PNG16",
+        "type": "Export",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+        "position": {
+          "x": 28830,
+          "y": 25120
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 24
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "Format": "PNG16",
+          "Location": "Explicit",
+          "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CombatIsland_2300m_v1/final/height_4096"
+        }
+      },
+      {
+        "id": 26,
+        "name": "15 地形色彩预览",
+        "type": "SatMap",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.SatMap, Gaea.Nodes",
+        "position": {
+          "x": 28830,
+          "y": 25640
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 24
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "LibraryItem": 81,
+          "Bias": 0.2584,
+          "Reverse": true
+        }
+      },
+      {
+        "id": 27,
+        "name": "16 色彩图 / PNG8",
+        "type": "Export",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+        "position": {
+          "x": 29200,
+          "y": 25640
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 26
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "Format": "PNG8",
+          "Location": "Explicit",
+          "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CombatIsland_2300m_v1/final/gaea_color"
+        }
+      },
+      {
+        "id": 28,
+        "name": "材质分区 / flat_ground",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 28460,
+          "y": 26420
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/mask_flat_ground.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 29,
+        "name": "分区导出 / flat_ground",
+        "type": "Export",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+        "position": {
+          "x": 28830,
+          "y": 26420
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 28
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "Format": "PNG16",
+          "Location": "Explicit",
+          "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CombatIsland_2300m_v1/final/mask_flat_ground"
+        }
+      },
+      {
+        "id": 30,
+        "name": "材质分区 / hills",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 28460,
+          "y": 26680
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/mask_hills.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 31,
+        "name": "分区导出 / hills",
+        "type": "Export",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+        "position": {
+          "x": 28830,
+          "y": 26680
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 30
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "Format": "PNG16",
+          "Location": "Explicit",
+          "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CombatIsland_2300m_v1/final/mask_hills"
+        }
+      },
+      {
+        "id": 32,
+        "name": "材质分区 / plateau",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 28460,
+          "y": 26940
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/mask_plateau.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 33,
+        "name": "分区导出 / plateau",
+        "type": "Export",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+        "position": {
+          "x": 28830,
+          "y": 26940
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 32
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "Format": "PNG16",
+          "Location": "Explicit",
+          "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CombatIsland_2300m_v1/final/mask_plateau"
+        }
+      },
+      {
+        "id": 34,
+        "name": "材质分区 / rock",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 28460,
+          "y": 27200
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/mask_rock.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 35,
+        "name": "分区导出 / rock",
+        "type": "Export",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+        "position": {
+          "x": 28830,
+          "y": 27200
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 34
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "Format": "PNG16",
+          "Location": "Explicit",
+          "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CombatIsland_2300m_v1/final/mask_rock"
+        }
+      },
+      {
+        "id": 36,
+        "name": "材质分区 / beach",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 28460,
+          "y": 27460
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/mask_beach.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 37,
+        "name": "分区导出 / beach",
+        "type": "Export",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+        "position": {
+          "x": 28830,
+          "y": 27460
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 36
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "Format": "PNG16",
+          "Location": "Explicit",
+          "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CombatIsland_2300m_v1/final/mask_beach"
+        }
+      },
+      {
+        "id": 38,
+        "name": "材质分区 / water",
+        "type": "File",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.File, Gaea.Nodes",
+        "position": {
+          "x": 28460,
+          "y": 27720
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn"
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "FileName": "inputs/mask_water.png",
+          "RelativePath": true
+        }
+      },
+      {
+        "id": 39,
+        "name": "分区导出 / water",
+        "type": "Export",
+        "dotnetType": "QuadSpinner.Gaea.Nodes.Export, Gaea.Nodes",
+        "position": {
+          "x": 28830,
+          "y": 27720
+        },
+        "ports": [
+          {
+            "name": "In",
+            "type": "PrimaryIn, Required",
+            "connectedFrom": 38
+          },
+          {
+            "name": "Out",
+            "type": "PrimaryOut"
+          }
+        ],
+        "properties": {
+          "Format": "PNG16",
+          "Location": "Explicit",
+          "OutputPath": "C:/Users/a/Documents/Gaea/MCP/Builds/GuLiStrike_CombatIsland_2300m_v1/final/mask_water"
+        }
+      }
+    ],
+    "connections": [
+      {
+        "from": 2,
+        "fromPort": "Out",
+        "to": 4,
+        "toPort": "In"
+      },
+      {
+        "from": 3,
+        "fromPort": "Out",
+        "to": 4,
+        "toPort": "Input2"
+      },
+      {
+        "from": 5,
+        "fromPort": "Out",
+        "to": 7,
+        "toPort": "In"
+      },
+      {
+        "from": 6,
+        "fromPort": "Out",
+        "to": 7,
+        "toPort": "Input2"
+      },
+      {
+        "from": 8,
+        "fromPort": "Out",
+        "to": 10,
+        "toPort": "In"
+      },
+      {
+        "from": 9,
+        "fromPort": "Out",
+        "to": 10,
+        "toPort": "Input2"
+      },
+      {
+        "from": 11,
+        "fromPort": "Out",
+        "to": 13,
+        "toPort": "In"
+      },
+      {
+        "from": 12,
+        "fromPort": "Out",
+        "to": 13,
+        "toPort": "Input2"
+      },
+      {
+        "from": 1,
+        "fromPort": "Out",
+        "to": 14,
+        "toPort": "In"
+      },
+      {
+        "from": 4,
+        "fromPort": "Out",
+        "to": 14,
+        "toPort": "Input2"
+      },
+      {
+        "from": 14,
+        "fromPort": "Out",
+        "to": 15,
+        "toPort": "In"
+      },
+      {
+        "from": 7,
+        "fromPort": "Out",
+        "to": 15,
+        "toPort": "Input2"
+      },
+      {
+        "from": 15,
+        "fromPort": "Out",
+        "to": 16,
+        "toPort": "In"
+      },
+      {
+        "from": 10,
+        "fromPort": "Out",
+        "to": 16,
+        "toPort": "Input2"
+      },
+      {
+        "from": 16,
+        "fromPort": "Out",
+        "to": 17,
+        "toPort": "In"
+      },
+      {
+        "from": 13,
+        "fromPort": "Out",
+        "to": 17,
+        "toPort": "Input2"
+      },
+      {
+        "from": 17,
+        "fromPort": "Out",
+        "to": 19,
+        "toPort": "In"
+      },
+      {
+        "from": 18,
+        "fromPort": "Out",
+        "to": 19,
+        "toPort": "Mask"
+      },
+      {
+        "from": 19,
+        "fromPort": "Out",
+        "to": 22,
+        "toPort": "In"
+      },
+      {
+        "from": 20,
+        "fromPort": "Out",
+        "to": 22,
+        "toPort": "Input2"
+      },
+      {
+        "from": 1,
+        "fromPort": "Out",
+        "to": 23,
+        "toPort": "In"
+      },
+      {
+        "from": 21,
+        "fromPort": "Out",
+        "to": 23,
+        "toPort": "Input2"
+      },
+      {
+        "from": 22,
+        "fromPort": "Out",
+        "to": 24,
+        "toPort": "In"
+      },
+      {
+        "from": 23,
+        "fromPort": "Out",
+        "to": 24,
+        "toPort": "Input2"
+      },
+      {
+        "from": 24,
+        "fromPort": "Out",
+        "to": 25,
+        "toPort": "In"
+      },
+      {
+        "from": 24,
+        "fromPort": "Out",
+        "to": 26,
+        "toPort": "In"
+      },
+      {
+        "from": 26,
+        "fromPort": "Out",
+        "to": 27,
+        "toPort": "In"
+      },
+      {
+        "from": 28,
+        "fromPort": "Out",
+        "to": 29,
+        "toPort": "In"
+      },
+      {
+        "from": 30,
+        "fromPort": "Out",
+        "to": 31,
+        "toPort": "In"
+      },
+      {
+        "from": 32,
+        "fromPort": "Out",
+        "to": 33,
+        "toPort": "In"
+      },
+      {
+        "from": 34,
+        "fromPort": "Out",
+        "to": 35,
+        "toPort": "In"
+      },
+      {
+        "from": 36,
+        "fromPort": "Out",
+        "to": 37,
+        "toPort": "In"
+      },
+      {
+        "from": 38,
+        "fromPort": "Out",
+        "to": 39,
+        "toPort": "In"
+      }
+    ]
+  },
+  "lastConfiguredStage": "final"
+}

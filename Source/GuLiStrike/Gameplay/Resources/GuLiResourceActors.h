@@ -10,6 +10,7 @@
 #include "Gameplay/Resources/GuLiResourceTypes.h"
 #include "Gameplay/Resources/GuLiResourceFactoryActor.h"
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
+#include "Gameplay/Stronghold/GuLiOutpostPresentationComponent.h"
 #include "GuLiResourceActors.generated.h"
 
 class AGuLiResourceWorldState;
@@ -100,7 +101,7 @@ private:
 	bool bObstacleEnabled = true;
 };
 
-/** Public whitebox board landmark; owner color is replicated to both teams. */
+/** Replicated ownership and fixed ground anchor; cosmetics are delegated to presentation. */
 UCLASS(NotPlaceable)
 class GULISTRIKE_API AGuLiTerritoryOutpostActor final : public AActor, public IGuLiBuildingOwner
 {
@@ -113,18 +114,20 @@ public:
 	void SetTerritoryOwnerAuthority(EGuLiTeam InOwner);
 	uint8 GetTerritoryIndex() const { return TerritoryIndex; }
 	UFUNCTION(BlueprintPure) FName GetTerritoryId() const { return TerritoryId; }
-	EGuLiTeam GetTerritoryOwner() const { return TerritoryOwner; }
-	virtual EGuLiTeam GetBuildingTeam() const override { return TerritoryOwner; }
+	EGuLiTeam GetTerritoryOwner() const { return OwnerState.Team; }
+	virtual EGuLiTeam GetBuildingTeam() const override { return OwnerState.Team; }
 	virtual void SetBuildingTeamAuthority(EGuLiTeam NewTeam) override;
 	virtual FVector GetBuildingGroundLocation() const override { return GetActorLocation() - FVector(0,0,500); }
 
 private:
 	UFUNCTION()
-	void OnRep_TerritoryOwner();
-	void ApplyOwnerColor();
+	void OnRep_OwnerState();
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> LandmarkMesh;
+	TObjectPtr<UBoxComponent> GroundCollision;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UGuLiOutpostPresentationComponent> Presentation;
 
 	UPROPERTY(Replicated)
 	uint8 TerritoryIndex = 0u;
@@ -132,7 +135,7 @@ private:
 	UPROPERTY(Replicated)
 	FName TerritoryId;
 
-	UPROPERTY(ReplicatedUsing = OnRep_TerritoryOwner)
-	EGuLiTeam TerritoryOwner = EGuLiTeam::Unassigned;
+	UPROPERTY(ReplicatedUsing = OnRep_OwnerState)
+	FGuLiOutpostOwnerState OwnerState;
 };
 

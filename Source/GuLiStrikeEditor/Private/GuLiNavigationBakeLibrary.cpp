@@ -5,6 +5,7 @@
 #include "AssetCompilingManager.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Components/PrimitiveComponent.h"
+#include "Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h"
 #include "Detour/DetourNavMesh.h"
 #include "Engine/Engine.h"
 #include "Engine/Level.h"
@@ -18,6 +19,8 @@
 #include "GuLiFlightNavigationEditorLibrary.h"
 #include "GuLiFlightNavigationVolume.h"
 #include "GuLiNavigationSourceHash.h"
+#include "GuLiNavigationConnectivitySettings.h"
+#include "GuLiCommanderGroundNavigationProfile.h"
 #include "HAL/PlatformTime.h"
 #include "HAL/PlatformProcess.h"
 #include "Misc/EngineVersion.h"
@@ -42,6 +45,7 @@ namespace GuLiNavigationBake
 {
 	constexpr const TCHAR* SourceKey = TEXT("GuLi.GroundNavigation.Source.v1");
 	constexpr const TCHAR* PayloadKey = TEXT("GuLi.GroundNavigation.Payload.v1");
+	constexpr const TCHAR* CommanderMapPackage = TEXT("/Game/Maps/LVL_CommanderMassPrototype");
 	bool bPreparing = false;
 	TSet<TWeakObjectPtr<UWorld>> PendingSaveWorlds;
 	TSet<TWeakObjectPtr<UWorld>> ScaleMigrationWorlds;
@@ -105,6 +109,56 @@ namespace GuLiNavigationBake
 		for (TActorIterator<ARecastNavMesh> It(World); It; ++It) Result.Add(*It);
 		Result.Sort([](const ARecastNavMesh& A, const ARecastNavMesh& B) { return A.GetPathName() < B.GetPathName(); });
 		return Result;
+	}
+
+	bool ConfigureGroundProfiles(UWorld* World, UNavigationSystemV1* System,
+		TSet<ARecastNavMesh*>& ForcedRebuilds, TArray<UPackage*>& Packages, FString& Error)
+	{
+		const FNavDataConfig* Agent = GuLiCommanderNavigationPolicy::FindRequiredAgentConfig(
+			GetDefault<UNavigationSystemV1>()->GetSupportedAgents());
+		if (!Agent) { Error = TEXT("CommanderSoldier SupportedAgent configuration is missing or has the wrong radius."); return false; }
+		if (!GuLiCommanderGroundNavigationProfile::ValidateAgent(*Agent, Error)) return false;
+		const bool bCommanderView = World->GetOutermost()->GetFName() == FName(CommanderMapPackage);
+		for (ARecastNavMesh* Navigation : GroundData(World))
+		{
+			const bool bCommander = Navigation->GetConfig().Name == Agent->Name;
+			bool bChanged = false;
+			if (bCommander && !GuLiCommanderGroundNavigationProfile::Matches(*Navigation, *Agent))
+			{
+				if (!System || System->IsNavigationBuildingLocked(static_cast<uint8>(~ENavigationBuildLock::NoUpdateInEditor)))
+				{ Error = TEXT("Commander profile migration requires an unlocked editor navigation system."); return false; }
+				const float BeforeStep = Navigation->GetConfig().AgentStepHeight;
+				Navigation->CancelBuild();
+				Navigation->Modify();
+				GuLiCommanderGroundNavigationProfile::Apply(*Navigation, *Agent);
+				// A failed bake or a retry must never reuse the old configuration's certificate.
+				Navigation->GetPackage()->GetMetaData().RemoveValue(Navigation, SourceKey);
+				ForcedRebuilds.Add(Navigation);
+				bChanged = true;
+				UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] stage=ConfigureCommanderProfile object=%s step_cm=%.3f->20 cell_xy_cm=19/19/9.5 cell_z_cm=2 slope=44 ledge=UseStepHeightFromAgentMaxSlope"),
+					*Navigation->GetPathName(), BeforeStep);
+			}
+			if (bCommanderView && bCommander && !GuLiCommanderGroundNavigationProfile::MatchesCommanderMapQueryBudget(*Navigation))
+			{
+				Navigation->Modify();
+				GuLiCommanderGroundNavigationProfile::ApplyCommanderMapQueryBudget(*Navigation);
+				bChanged = true;
+				UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] stage=RestoreCommanderMapQueryBudget object=%s nodes=16384"), *Navigation->GetPathName());
+			}
+			if (bCommanderView && !GuLiCommanderGroundNavigationProfile::MatchesPresentation(*Navigation, bCommander))
+			{
+				Navigation->Modify();
+				GuLiCommanderGroundNavigationProfile::ApplyPresentation(*Navigation, bCommander);
+				bChanged = true;
+			}
+			if (bChanged)
+			{
+				Navigation->MarkPackageDirty();
+				Packages.AddUnique(Navigation->GetPackage());
+				PendingSaveWorlds.Add(World);
+			}
+		}
+		return true;
 	}
 
 	bool HasMissingGroundAgent(UWorld* World, const UNavigationSystemV1* System)
@@ -242,6 +296,17 @@ namespace GuLiNavigationBake
 		Entry.Kind = TEXT("Ground");
 		Entry.ObjectPath = Navigation->GetPathName();
 		Entry.Status = TEXT("Stale");
+		if (Navigation->GetConfig().Name == GuLiCommanderNavigationPolicy::GetRequiredAgentName())
+		{
+			const FNavDataConfig* Agent = GuLiCommanderNavigationPolicy::FindRequiredAgentConfig(
+				GetDefault<UNavigationSystemV1>()->GetSupportedAgents());
+			if (!Agent)
+			{ Entry.Message = TEXT("CommanderSoldier SupportedAgent configuration is missing or has the wrong radius."); return false; }
+			if (!GuLiCommanderGroundNavigationProfile::Validate(*Navigation, *Agent, Entry.Message)) return false;
+			if (World->GetOutermost()->GetFName() == FName(CommanderMapPackage)
+				&& !GuLiCommanderGroundNavigationProfile::MatchesCommanderMapQueryBudget(*Navigation))
+			{ Entry.Message = TEXT("Commander map search budget must remain 16384 nodes, including the live default query filter. Run navigation Prepare."); return false; }
+		}
 		Entry.SourceHash = Hex(UGuLiNavigationBakeLibrary::ComputeGroundSourceHash(World, Navigation));
 		FMetaData& Metadata = Navigation->GetPackage()->GetMetaData();
 		bool bValid = Entry.SourceHash == Metadata.GetValue(Navigation, SourceKey);
@@ -297,6 +362,55 @@ namespace GuLiNavigationBake
 		if (Settings->RequiredWorldPackages.Contains(World->GetOutermost()->GetFName()) && FlightVolumes(World).IsEmpty())
 		{ Error = TEXT("This required flight map has no enabled navigation volume."); return false; }
 		return true;
+	}
+
+	bool CheckConnectivity(UWorld* World, FGuLiNavigationBakeResult& Result)
+	{
+		if (!UGuLiNavigationConnectivityLibrary::RequiresConnectedGround(*World)) return true;
+		Result.GroundConnectivity = UGuLiNavigationConnectivityLibrary::AnalyzeWorldConnectivity(World);
+		const auto& Connectivity = Result.GroundConnectivity;
+		FGuLiNavigationBakeEntry& Entry = Result.Entries.AddDefaulted_GetRef();
+		Entry.Kind = TEXT("GroundConnectivity");
+		Entry.ObjectPath = Connectivity.NavigationDataPath.IsEmpty() ? World->GetPathName() : Connectivity.NavigationDataPath;
+		Entry.CheckSeconds = Connectivity.AnalysisSeconds;
+		const bool bConnected = Connectivity.bAnalysisSucceeded && Connectivity.bFullyConnected;
+		Entry.Status = bConnected ? TEXT("Hit") : TEXT("Error");
+		Entry.Message = Connectivity.Message;
+		if (!bConnected)
+		{
+			Result.Message = Entry.ObjectPath + TEXT(": ") + Entry.Message;
+			UE_LOG(LogGuLiNavigationBake, Error, TEXT("[GULI_NAV_CONNECTIVITY] %s"), *Result.Message);
+			for (const FGuLiNavigationConnectedRegion& Region : Connectivity.Regions)
+			{
+				FGuLiNavigationBakeEntry& RegionEntry = Result.Entries.AddDefaulted_GetRef();
+				RegionEntry.Kind = TEXT("GroundConnectivityRegion");
+				RegionEntry.ObjectPath = Connectivity.NavigationDataPath;
+				RegionEntry.Status = Region.bMainRegion ? TEXT("Hit") : TEXT("Disconnected");
+				RegionEntry.Message = FString::Printf(TEXT("region=%d main=%d polygons=%d area_m2=%.3f representative_cm=%s bounds_min_cm=%s bounds_max_cm=%s"),
+					Region.RegionId, Region.bMainRegion, Region.GroundPolygonCount, Region.AreaSquareMeters,
+					*Region.RepresentativeLocation.ToString(), *Region.BoundsMinimum.ToString(), *Region.BoundsMaximum.ToString());
+				UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_CONNECTIVITY_REGION] %s"), *RegionEntry.Message);
+			}
+		}
+		return bConnected;
+	}
+
+	/** Cache validation is separate so Prepare does not repeat the complete graph traversal after saving. */
+	FGuLiNavigationBakeResult CheckSavedNavigation(UWorld* World)
+	{
+		FGuLiNavigationBakeResult Result;
+		Result.bSuccess = true;
+		if (HasMissingGroundAgent(World, FNavigationSystem::GetCurrent<UNavigationSystemV1>(World)))
+			for (TActorIterator<ANavMeshBoundsVolume> It(World); It; ++It)
+			{ Result.bSuccess = false; Result.Message = TEXT("Navigation bounds exist but a required ground agent NavData is missing."); break; }
+		for (ARecastNavMesh* Navigation : GroundData(World))
+			Result.bSuccess &= CheckGround(World, Navigation, Result.Entries.AddDefaulted_GetRef());
+		for (AGuLiFlightNavigationVolume* Volume : FlightVolumes(World))
+			Result.bSuccess &= CheckFlight(Volume, Result.Entries.AddDefaulted_GetRef());
+		if (!Result.bSuccess && Result.Message.IsEmpty())
+			for (const auto& Entry : Result.Entries)
+				if (Entry.Status != TEXT("Hit")) { Result.Message = Entry.ObjectPath + TEXT(": ") + Entry.Message; break; }
+		return Result;
 	}
 
 	void LogResult(const FGuLiNavigationBakeResult& Result, UWorld* World)
@@ -389,18 +503,8 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::ValidateWorldNavigation(UO
 	FGuLiNavigationBakeResult Result;
 	UWorld* World = ResolveWorld(WorldContextObject);
 	if (!CheckWorld(World, Result.Message)) return Result;
-	Result.bSuccess = true;
-	const TArray<ARecastNavMesh*> Ground = GroundData(World);
-	if (HasMissingGroundAgent(World, FNavigationSystem::GetCurrent<UNavigationSystemV1>(World)))
-		for (TActorIterator<ANavMeshBoundsVolume> It(World); It; ++It)
-		{ Result.bSuccess = false; Result.Message = TEXT("Navigation bounds exist but a required ground agent NavData is missing."); break; }
-	for (ARecastNavMesh* Navigation : Ground)
-		Result.bSuccess &= CheckGround(World, Navigation, Result.Entries.AddDefaulted_GetRef());
-	for (AGuLiFlightNavigationVolume* Volume : FlightVolumes(World))
-		Result.bSuccess &= CheckFlight(Volume, Result.Entries.AddDefaulted_GetRef());
-	if (!Result.bSuccess && Result.Message.IsEmpty())
-		for (const auto& Entry : Result.Entries)
-			if (Entry.Status != TEXT("Hit")) { Result.Message = Entry.ObjectPath + TEXT(": ") + Entry.Message; break; }
+	Result = CheckSavedNavigation(World);
+	Result.bSuccess &= CheckConnectivity(World, Result);
 	Result.TotalSeconds = FPlatformTime::Seconds() - Start;
 	return Result;
 }
@@ -425,6 +529,9 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 	UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] stage=AssetCompilation world=%s"), *World->GetPathName());
 	FAssetCompilingManager::Get().FinishAllCompilation();
 	UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+	TSet<ARecastNavMesh*> ForcedGroundRebuilds;
+	TArray<UPackage*> Packages;
+	if (!ConfigureGroundProfiles(World, NavigationSystem, ForcedGroundRebuilds, Packages, Result.Message)) return Finish();
 	bool bRecoveredGroundData = false;
 	if (NavigationSystem)
 	{
@@ -434,18 +541,22 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 			NavigationSystem->Build();
 			bRecoveredGroundData = true;
 			Result.GroundRebuilds = GroundData(World).Num();
+			// Build may create a Commander instance using the Recast class defaults.
+			// Configure it and discard any work queued before the new profile was applied.
+			if (!ConfigureGroundProfiles(World, NavigationSystem, ForcedGroundRebuilds, Packages, Result.Message)) return Finish();
 		}
 		// Process changes made immediately before Play before fingerprinting source collision.
 		NavigationSystem->Tick(0.0f);
 		for (ARecastNavMesh* Navigation : GroundData(World))
 		{
-			if (ScaleMigrationWorlds.Contains(World))
+			if (ForcedGroundRebuilds.Contains(Navigation) || ScaleMigrationWorlds.Contains(World))
 			{
 				// These jobs were queued with the old agent/generator configuration while
 				// loading. They cannot certify the migrated source. CheckGround below will
 				// request a fresh rebuild with the new settings and commit its signature.
 				Navigation->CancelBuild();
-				UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] stage=CancelStaleScaleQueue object=%s"), *Navigation->GetPathName());
+				ForcedGroundRebuilds.Add(Navigation);
+				UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] stage=CancelStaleGroundQueue object=%s"), *Navigation->GetPathName());
 				continue;
 			}
 			UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] stage=SettleGround object=%s asyncGather=%d maxJobs=%d"),
@@ -461,23 +572,17 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 		}
 	}
 	TArray<ARecastNavMesh*> Ground = GroundData(World);
-	if (Ground.IsEmpty() && NavigationSystem && NavigationSystem->IsThereAnywhereToBuildNavigation())
-	{
-		NavigationSystem->Build();
-		Ground = GroundData(World);
-	}
 	if (Ground.IsEmpty())
 		for (TActorIterator<ANavMeshBoundsVolume> It(World); It; ++It)
 		{ Result.Message = TEXT("Cannot create required ground navigation data."); return Finish(); }
 	TArray<ARecastNavMesh*> ChangedGround;
-	TArray<UPackage*> Packages;
 	if (PendingSaveWorlds.Contains(World)) Packages.AddUnique(World->GetPackage());
 	Progress.EnterProgressFrame(1);
 	for (ARecastNavMesh* Navigation : Ground)
 	{
 		UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] stage=CheckGround object=%s"), *Navigation->GetPathName());
 		FGuLiNavigationBakeEntry& Entry = Result.Entries.AddDefaulted_GetRef();
-		if (CheckGround(World, Navigation, Entry))
+		if (CheckGround(World, Navigation, Entry) && !ForcedGroundRebuilds.Contains(Navigation))
 		{
 			if (bRecoveredGroundData) { Entry.Status = TEXT("Rebuilt"); ChangedGround.Add(Navigation); Packages.AddUnique(Navigation->GetPackage()); }
 			continue;
@@ -486,7 +591,7 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 		if (!NavigationSystem || NavigationSystem->IsNavigationBuildingLocked(static_cast<uint8>(~ENavigationBuildLock::NoUpdateInEditor)))
 		{ Result.Message = TEXT("Ground navigation is locked by another operation."); return Finish(); }
 		const double BuildStart = FPlatformTime::Seconds();
-		if (!bRecoveredGroundData)
+		if (!bRecoveredGroundData || ForcedGroundRebuilds.Contains(Navigation))
 		{
 			if (!RebuildGround(Navigation, Result.Message)) return Finish();
 			++Result.GroundRebuilds;
@@ -548,6 +653,8 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 		Packages.AddUnique(Volume->GetPackage());
 	}
 	if (Progress.ShouldCancel()) { Result.Message = TEXT("Navigation preparation cancelled."); return Finish(); }
+	// Run even when every ground cache was a hit. Disconnected tiles never receive a success certificate.
+	if (!CheckConnectivity(World, Result)) return Finish();
 	// Commit metadata only after every bake has succeeded. Metadata and ground tiles share a package.
 	for (ARecastNavMesh* Navigation : ChangedGround)
 	{
@@ -577,7 +684,7 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 		}
 		PendingSaveWorlds.Remove(World);
 	}
-	const FGuLiNavigationBakeResult Validation = ValidateWorldNavigation(World);
+	const FGuLiNavigationBakeResult Validation = CheckSavedNavigation(World);
 	Result.bSuccess = Validation.bSuccess;
 	Result.Message = Validation.bSuccess ? TEXT("All source navigation is ready.") : Validation.Message;
 	if (Result.bSuccess) ScaleMigrationWorlds.Remove(World);
@@ -587,6 +694,8 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 TArray<FName> UGuLiNavigationBakeLibrary::GetPreparationWorldPackages()
 {
 	TArray<FName> Result = GetDefault<UGuLiFlightNavigationCookSettings>()->RequiredWorldPackages;
+	for (const FName Map : GetDefault<UGuLiNavigationConnectivitySettings>()->RequiredWorldPackages)
+		Result.AddUnique(Map);
 	for (const FFilePath& Map : GetDefault<UProjectPackagingSettings>()->MapsToCook)
 		if (!Map.FilePath.IsEmpty()) Result.AddUnique(FName(*Map.FilePath));
 	Result.Sort(FNameLexicalLess());
@@ -600,26 +709,39 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::MigrateObjectScale020(UObj
 	UWorld* World = ResolveWorld(Context);
 	if (!CheckWorld(World, Result.Message)) return Result;
 	const auto& Agents = GetDefault<UNavigationSystemV1>()->GetSupportedAgents();
+	const FNavDataConfig* CommanderAgent = GuLiCommanderNavigationPolicy::FindRequiredAgentConfig(Agents);
+	if (!CommanderAgent) { Result.Message = TEXT("CommanderSoldier SupportedAgent configuration is missing or has the wrong radius."); return Result; }
+	if (!GuLiCommanderGroundNavigationProfile::ValidateAgent(*CommanderAgent, Result.Message)) return Result;
 	for (ARecastNavMesh* Navigation : GroundData(World))
 	{
 		const FNavDataConfig Before = Navigation->GetConfig();
 		const auto* Target = Agents.FindByPredicate([&](const FNavDataConfig& A) { return A.Name == Before.Name; });
 		if (!Target) { Result.Message = TEXT("Unrecognized ground Agent; no guessed scale."); return Result; }
+		Navigation->CancelBuild();
 		Navigation->Modify();
-		Navigation->SetConfig(*Target);
-		for (uint8 Index = 0; Index < static_cast<uint8>(ENavigationDataResolution::MAX); ++Index)
+		const bool bCommander = Target->Name == CommanderAgent->Name;
+		if (bCommander)
+			GuLiCommanderGroundNavigationProfile::Apply(*Navigation, *CommanderAgent);
+		else
 		{
-			const auto Resolution = static_cast<ENavigationDataResolution>(Index);
-			// Horizontal cells and tiles deliberately stay at the authored resolution.
-			Navigation->SetCellHeight(Resolution, 5.0f);
-			Navigation->SetAgentMaxStepHeight(Resolution, Target->AgentStepHeight);
+			Navigation->SetConfig(*Target);
+			for (uint8 Index = 0; Index < static_cast<uint8>(ENavigationDataResolution::MAX); ++Index)
+			{
+				const auto Resolution = static_cast<ENavigationDataResolution>(Index);
+				// Other agents retain their existing scale migration and horizontal resolution.
+				Navigation->SetCellHeight(Resolution, 5.0f);
+				Navigation->SetAgentMaxStepHeight(Resolution, Target->AgentStepHeight);
+			}
 		}
+		Navigation->GetPackage()->GetMetaData().RemoveValue(Navigation, SourceKey);
 		Navigation->MarkPackageDirty();
 		auto& Entry = Result.Entries.AddDefaulted_GetRef();
 		Entry.ObjectPath = Navigation->GetPathName(); Entry.Kind = TEXT("GroundScale020");
 		Entry.Status = TEXT("Configured");
-		Entry.Message = FString::Printf(TEXT("Radius %.3f -> %.3f; height %.3f -> %.3f; cellZ=5; step=%.3f; XY unchanged"),
-			Before.AgentRadius, Target->AgentRadius, Before.AgentHeight, Target->AgentHeight, Target->AgentStepHeight);
+		Entry.Message = bCommander
+			? TEXT("Commander profile applied: radius=150; cellXY=19/19/9.5; cellZ=2; step=20; slope=44; slope-based ledge filter.")
+			: FString::Printf(TEXT("Radius %.3f -> %.3f; height %.3f -> %.3f; cellZ=5; step=%.3f; XY unchanged"),
+				Before.AgentRadius, Target->AgentRadius, Before.AgentHeight, Target->AgentHeight, Target->AgentStepHeight);
 	}
 	for (AGuLiFlightNavigationVolume* Volume : FlightVolumes(World))
 	{

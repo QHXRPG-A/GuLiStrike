@@ -1,4 +1,5 @@
 #include "GuLiInitialArmyAuthoring.h"
+#include "GuLiResourceAuthoringLibrary.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Commander/Framework/GuLiCommanderDeploymentPoint.h"
 #include "Gameplay/Data/GuLiUnitDataSubsystem.h"
@@ -106,6 +107,8 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError)
 					FString::Printf(TEXT("team=%u %s=%d"), static_cast<uint8>(Team), bConstruction ? TEXT("builder") : TEXT("miner"), Index), true });
 		}
 	}
+	TMap<FName, FVector> OutpostLocations;
+	if (!UGuLiResourceAuthoringLibrary::GetAuthoredOutpostGroundLocations(World, OutpostLocations, OutError)) return false;
 	for (int32 Row = 1; Row <= GULI_RESOURCE_BOARD_DIMENSION; ++Row)
 		for (int32 Column = 1; Column <= GULI_RESOURCE_BOARD_DIMENSION; ++Column)
 		{
@@ -119,8 +122,8 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError)
 						Radius = FMath::Max(Radius, static_cast<float>(Candidate.GetLocation().Size2D()
 							+ FVector2D(Gift->CollisionExtent).Size()));
 				}
-			Reservations.Add({ FVector2D(GuLiResources::GetTerritoryCenter(Row, Column)), Radius,
-				GuLiResources::MakeTerritoryId(Row, Column).ToString(), true });
+			const FName Id = GuLiResources::MakeTerritoryId(Row, Column);
+			Reservations.Add({ FVector2D(OutpostLocations.FindChecked(Id)), Radius, Id.ToString(), true });
 		}
 	return true;
 }

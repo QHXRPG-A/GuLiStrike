@@ -1,0 +1,33 @@
+{
+  "captured_at": "2026-10-02T00:04:13.851500+08:00",
+  "conclusion": "Confirmed unreachable between current foot and plateau under CommanderSoldier navigation.",
+  "selected_ids": [
+    135,
+    138,
+    141,
+    142
+  ],
+  "runtime_partial_without_search_exhaustion": 4,
+  "source_world_partial": 4,
+  "reverse_partial_without_search_exhaustion": true,
+  "foot_internal_full": true,
+  "plateau_internal_full": true,
+  "nav_generation": 249,
+  "frame": 85870,
+  "search_node_cap": 16384,
+  "agent_radius_cm": 150,
+  "agent_height_cm": 28.8,
+  "agent_max_slope_deg": 44.0,
+  "local_profile_max_slope_estimate_deg": 46.288007820724026,
+  "preserved_selection_and_last_ack": true,
+  "temporary_actors_removed": true,
+  "scope": "Targeted inspection of user-started PIE. No move commands, nav settings changes, C++ edits, map saves, build, PIE restart or automation tests. Hidden non-colliding diagnostic actors existed within one Python request only.",
+  "first_failed_stage": "Native route query returns partial instead of a complete foot-to-plateau route.",
+  "related_unfixed_code": "Partial shared-route endpoint and stagnation handling can leave units Normal/idle without clear unreachable feedback.",
+  "limits": "Verified effective reachability for current start/goal pairs, not an export or BFS of every NavMesh polygon. Source-world queries are also partial; the exact baked ramp/filter/clearance gap still needs localization before terrain changes. Profile samples are an editor-height estimate and cannot establish every gap cause.",
+  "next_fix_scope": [
+    "Connect the plateau to accessible land with a terrain ramp compatible with the agent and rebuild navigation.",
+    "Handle unreachable partial-path endpoints and retain an observable failure reason.",
+    "After an authorized fix, verify both directions with complete native paths and let the user confirm unit movement."
+  ]
+}

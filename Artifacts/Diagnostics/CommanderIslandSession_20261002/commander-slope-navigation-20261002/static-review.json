@@ -1,0 +1,69 @@
+{
+  "scope": "CommanderSoldier editor generation profile and baking",
+  "python_scene_syntax": "passed_both_authoring_scripts",
+  "native_compile": "not_run_pending_user_authorization",
+  "public_interfaces": "unchanged",
+  "static_review": [
+    "Preset constants and UE5.7 member/setter declarations inspected; no deprecated resolution fields used.",
+    "Existing and newly created Commander NavData configured before cache fingerprinting.",
+    "Old jobs cancelled and forced rebuild overrides missing-agent recovery/cache-hit paths.",
+    "Changed source certificate removed; graph gate remains before certification and saves.",
+    "Generation hash already exports all fixed-array elements and includes ledge filtering.",
+    "Scale020 migration calls the same preset for Commander; Default retains its old preset.",
+    "No runtime module, engine source, movement guard, water-area or search-budget edits."
+  ],
+  "quantization_check": [
+    {
+      "cell_size_cm": 19,
+      "cell_height_cm": 2,
+      "walkable_climb_voxels": 10,
+      "required_climb_voxels_at_44_degrees": 10
+    },
+    {
+      "cell_size_cm": 19,
+      "cell_height_cm": 2,
+      "walkable_climb_voxels": 10,
+      "required_climb_voxels_at_44_degrees": 10
+    },
+    {
+      "cell_size_cm": 9.5,
+      "cell_height_cm": 2,
+      "walkable_climb_voxels": 10,
+      "required_climb_voxels_at_44_degrees": 5
+    }
+  ],
+  "files": [
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiCommanderGroundNavigationProfile.h",
+      "sha256": "74efb1204392a939b3bb34a12e39f354b8c415a318805121411706235430ff80"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiCommanderGroundNavigationProfile.cpp",
+      "sha256": "b39ea07a29a50889394d2857dd2daa95c9ac1e803e4e09774d056d995d737ce7"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiNavigationBakeLibrary.cpp",
+      "sha256": "e276582322d50560a7002f6f7b722c7d3aac343528114b9972e685d2005d58ce"
+    },
+    {
+      "path": "Config/DefaultEngine.ini",
+      "sha256": "3ff7bd48cd9986df3aebf90deceeb4527d946940387c2a67de28c81f07d887d5"
+    },
+    {
+      "path": "Scripts/NavigationConnectivity/prepare_slope_scene.py",
+      "sha256": "ff13cb900fac67d2396a4ec1a078c929329e8e5db7bb2d8faf7407bcef17e43e"
+    },
+    {
+      "path": "Scripts/NavigationConnectivity/README.md",
+      "sha256": "ece80f72b43899fe59e9f081a72910a650592462778285467700a245bb4cacd0"
+    },
+    {
+      "path": "Scripts/NavigationConnectivity/prepare_scene.py",
+      "sha256": "631956d00b833b22e85a20a85178320e19f02d9e90c9d9dd412364620fc66d0f"
+    }
+  ],
+  "pie_started": false,
+  "automated_tests_run": false,
+  "navigation_bake_run": false,
+  "scene_saved_and_entities_confirmed": true
+}

@@ -30,6 +30,11 @@ public:
 	bool Submit(AGuLiBattlePlayerState& Owner, const FGuLiCommanderSelectionState& Selection,
 		const FGuLiUnitTaskCommand& Command, FString& OutMessage, int32& OutAccepted, int32& OutRejected,
 		TSet<FGuLiTaskUnitId>* OutAcceptedUnits = nullptr);
+	/** Same admission contract, with the rejection reason carried into the command receipt. */
+	bool Submit(AGuLiBattlePlayerState& Owner, const FGuLiCommanderSelectionState& Selection,
+		const FGuLiUnitTaskCommand& Command, FString& OutMessage, int32& OutAccepted, int32& OutRejected,
+		EGuLiCommandAckResult& OutRejectionReason,
+		TSet<FGuLiTaskUnitId>* OutAcceptedUnits = nullptr);
 	/** Compatibility Actor entry; callers retain their existing team/request validation. */
 	bool SubmitActorCommand(APawn& Pawn, const FGuLiUnitTaskCommand& Command);
 	bool BuildContextCommand(const FGuLiCommanderSelectionState& Selection, FGuLiUnitTaskCommand& Command) const;

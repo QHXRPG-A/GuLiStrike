@@ -1,0 +1,62 @@
+{
+  "success": true,
+  "ue_map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "resolution": [
+    4081,
+    4081
+  ],
+  "height_bit_depth": 16,
+  "height_pixel_equal": true,
+  "orientation_equal_to_flipped_gaea": true,
+  "height_range_m": [
+    -20.0,
+    120.0
+  ],
+  "extent_m": [
+    1800,
+    1800
+  ],
+  "max_height_sample_error_cm": 0.00018275621778229834,
+  "gentle_land_at_most_15_degrees_percent": 86.93743471696463,
+  "layers": [
+    {
+      "layer": "FlatGround",
+      "pixel_equal": true,
+      "bit_depth": 8
+    },
+    {
+      "layer": "Hills",
+      "pixel_equal": true,
+      "bit_depth": 8
+    },
+    {
+      "layer": "Plateau",
+      "pixel_equal": true,
+      "bit_depth": 8
+    },
+    {
+      "layer": "Rock",
+      "pixel_equal": true,
+      "bit_depth": 8
+    },
+    {
+      "layer": "Beach",
+      "pixel_equal": true,
+      "bit_depth": 8
+    },
+    {
+      "layer": "Water",
+      "pixel_equal": true,
+      "bit_depth": 8
+    }
+  ],
+  "all_weight_sums": 255,
+  "landscape_components": 256,
+  "collision_components": 256,
+  "collision_sample_count": 180,
+  "collision_max_error_cm": 0.03876972198486328,
+  "sea_level_cm": 0,
+  "sea_has_collision": false,
+  "saved_map_reopened": true,
+  "verification_scope": "Saved editor assets, native readback, geometry and editor collision. No PIE/runtime validation; navigation verified separately in saved_scene_entities.json."
+}

@@ -1,0 +1,41 @@
+{
+  "scope": "Read-only diagnosis of user-started PIE; no movement commands, PIE restart, compilation, source edit or automated test.",
+  "map": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "selected_ids": [
+    132,
+    135,
+    138,
+    141
+  ],
+  "persistent_stationary_ids": [
+    135,
+    141
+  ],
+  "reproduction": "User selected four existing soldiers after an uphill movement order. Observed active order 51 without injecting input; saved presented positions and authoritative navigation logs, queried runtime CommanderSoldier paths to retained final slots.",
+  "confirmed": {
+    "max_slope_degrees": 44,
+    "all_selected_runtime_paths_complete": true,
+    "stuck_local_slopes_degrees": {
+      "135": 16.132495223121843,
+      "141": 6.215548972486479
+    },
+    "135_waypoint_equals_final": true,
+    "135_fresh_path_requires_detour": true,
+    "141_shared_portal_waypoint_retained": true,
+    "normal_state_persists_after_long_no_progress": true,
+    "personal_path_queries": 0
+  },
+  "first_bad_transition": "Path execution uses a direct final-slot waypoint for 135 despite a required detour. Unit 141 remains near a shared corridor portal. Commands with MoveIntent are excluded from the existing centerline/personal-path recovery branch.",
+  "confidence": {
+    "135_path_execution_and_missing_recovery": "high",
+    "141_no_recovery": "high",
+    "141_initial_portal_or_avoidance_blocker": "not_fully_isolated"
+  },
+  "source_locations": [
+    "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp:3691",
+    "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp:3866",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiSharedMoveRoutes.cpp:6"
+  ],
+  "proposed_fix_scope": "Retain a valid corridor until direct final-slot navigation is traversable; add budgeted stagnation recovery to the shared MoveIntent flow, reusing its command and slot. Further isolate portal/avoidance interaction for 141.",
+  "fix_validation": "After a user-requested fix and authorized code reload, revisit these uphill goals through the real movement flow. Confirm detour following, progress or explicit blocked result, unchanged 44-degree rule and bounded recovery queries. No such intervention was performed in this diagnosis."
+}

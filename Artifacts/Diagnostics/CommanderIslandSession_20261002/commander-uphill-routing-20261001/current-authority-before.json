@@ -1,0 +1,743 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "world_time": 322.5606207102537,
+    "selected_ids": [
+      126,
+      132,
+      135,
+      136,
+      137,
+      138,
+      141,
+      142,
+      143,
+      146
+    ],
+    "authority": {
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "clock": 16828827.2724532,
+      "frame": 18877,
+      "sim_tick": 3185,
+      "simulation_seconds": 318.50000474601984,
+      "epoch": 1786161546,
+      "nav_generation": 69,
+      "planning_ms": 0.6385035812854767,
+      "positions": 1,
+      "paths": 1,
+      "commit_ms": 0.0003986060619354248,
+      "commit_members": 0,
+      "query_overruns": 43,
+      "slice_overruns": 0,
+      "recovery_pending": 1,
+      "recovery_failures": 1241,
+      "recovery_detection_hz": 10,
+      "recovery_detection_steps": 3185,
+      "recovery_queries": 23645,
+      "recovery_repairs": 1023,
+      "movement_pipeline": "immediate-shared-navmesh",
+      "shared_queries": 1766,
+      "shared_failures": 250,
+      "shared_hits": 1487,
+      "shared_invalidations": 1091,
+      "shared_cache_bytes": 3591032,
+      "shared_query_cpu_ms": 55.308200091531035,
+      "reservations": 0,
+      "endpoint_mismatches": 0,
+      "finished_members_queued": 0,
+      "plans": [
+        {
+          "plan": 434,
+          "command": 0,
+          "execution": 0,
+          "batch": 425,
+          "automatic": true,
+          "stage": 7,
+          "accepted": 24,
+          "invalidated": 0,
+          "routes": 0,
+          "age_ms": 418.521698564291
+        },
+        {
+          "plan": 435,
+          "command": 0,
+          "execution": 0,
+          "batch": 426,
+          "automatic": true,
+          "stage": 7,
+          "accepted": 24,
+          "invalidated": 0,
+          "routes": 0,
+          "age_ms": 418.51839795708656
+        },
+        {
+          "plan": 436,
+          "command": 0,
+          "execution": 0,
+          "batch": 427,
+          "automatic": true,
+          "stage": 7,
+          "accepted": 24,
+          "invalidated": 0,
+          "routes": 0,
+          "age_ms": 418.51630061864853
+        },
+        {
+          "plan": 437,
+          "command": 0,
+          "execution": 0,
+          "batch": 428,
+          "automatic": true,
+          "stage": 7,
+          "accepted": 23,
+          "invalidated": 0,
+          "routes": 0,
+          "age_ms": 418.5137003660202
+        },
+        {
+          "plan": 438,
+          "command": 0,
+          "execution": 0,
+          "batch": 429,
+          "automatic": true,
+          "stage": 7,
+          "accepted": 3,
+          "invalidated": 0,
+          "routes": 0,
+          "age_ms": 312.0138980448246
+        },
+        {
+          "plan": 439,
+          "command": 0,
+          "execution": 0,
+          "batch": 430,
+          "automatic": true,
+          "stage": 7,
+          "accepted": 1,
+          "invalidated": 0,
+          "routes": 0,
+          "age_ms": 311.81319802999496
+        },
+        {
+          "plan": 440,
+          "command": 0,
+          "execution": 0,
+          "batch": 431,
+          "automatic": true,
+          "stage": 7,
+          "accepted": 1,
+          "invalidated": 0,
+          "routes": 0,
+          "age_ms": 311.8009977042675
+        }
+      ]
+    },
+    "units": [
+      {
+        "id": 126,
+        "team": 1,
+        "unit_type": 2,
+        "alive": true,
+        "can_act": true,
+        "order": 0,
+        "revision": 21,
+        "task_version": 14,
+        "automatic": false,
+        "nav_state": 0,
+        "budget_pending": false,
+        "no_progress": 4.099998474121094,
+        "radius": 625,
+        "nav_repair_pending": false,
+        "position": [
+          -20669.024048022075,
+          55891.45421406093,
+          902.7790832519531
+        ],
+        "velocity": [
+          0,
+          0,
+          0
+        ],
+        "legal_position": [
+          -20669.024048022075,
+          55891.45421406093,
+          902.7790832519531
+        ],
+        "command": 20,
+        "accepted_at": 16828633.5704238,
+        "direction_at": 16828633.6965162,
+        "displacement_at": 16828633.6976424,
+        "movement_target": [
+          -38485.45765999014,
+          62065.25879397462,
+          7730.035791984534
+        ],
+        "waypoint": [
+          -20669.024048022075,
+          55891.45421406093,
+          902.7790832519531
+        ],
+        "has_dock": true,
+        "route": 0,
+        "hex_points": 0,
+        "slot_pitch": 0,
+        "slot_members": 0,
+        "slot_assignments": 0
+      },
+      {
+        "id": 132,
+        "team": 1,
+        "unit_type": 2,
+        "alive": true,
+        "can_act": true,
+        "order": 0,
+        "revision": 24,
+        "task_version": 15,
+        "automatic": false,
+        "nav_state": 0,
+        "budget_pending": false,
+        "no_progress": 4.099998474121094,
+        "radius": 625,
+        "nav_repair_pending": false,
+        "position": [
+          -23223.23788976127,
+          55523.584232294445,
+          943.4682792731727
+        ],
+        "velocity": [
+          0,
+          0,
+          0
+        ],
+        "legal_position": [
+          -23223.23788976127,
+          55523.584232294445,
+          943.4682792731727
+        ],
+        "command": 20,
+        "accepted_at": 16828633.5704286,
+        "direction_at": 16828633.6965204,
+        "displacement_at": 16828633.697658,
+        "movement_target": [
+          -36610.51599267267,
+          64299.72775077914,
+          7431.836188360105
+        ],
+        "waypoint": [
+          -23223.23788976127,
+          55523.584232294445,
+          943.4682792731727
+        ],
+        "has_dock": true,
+        "route": 0,
+        "hex_points": 0,
+        "slot_pitch": 0,
+        "slot_members": 0,
+        "slot_assignments": 0
+      },
+      {
+        "id": 135,
+        "team": 1,
+        "unit_type": 2,
+        "alive": true,
+        "can_act": true,
+        "order": 133,
+        "revision": 22,
+        "task_version": 14,
+        "automatic": false,
+        "nav_state": 1,
+        "budget_pending": false,
+        "no_progress": 0,
+        "radius": 625,
+        "nav_repair_pending": false,
+        "position": [
+          -30304.933421135243,
+          69147.83341774509,
+          1904.982413045325
+        ],
+        "velocity": [
+          0,
+          0,
+          0
+        ],
+        "legal_position": [
+          -30304.933421135243,
+          69147.83341774509,
+          1904.982413045325
+        ],
+        "command": 20,
+        "accepted_at": 16828633.5704279,
+        "direction_at": 16828633.6965219,
+        "displacement_at": 16828633.6976652,
+        "movement_target": [
+          -39233.933463579924,
+          65888.35602895603,
+          7511.429752516203
+        ],
+        "waypoint": [
+          -30304.933421135243,
+          69147.83341774509,
+          1904.982413045325
+        ],
+        "has_dock": true,
+        "route": 900,
+        "hex_points": 10,
+        "slot_pitch": 1421.4033203125,
+        "slot_members": 10,
+        "slot_assignments": 10,
+        "start": [
+          -23588.597793734687,
+          48737.76150587871,
+          918.3607283904144
+        ],
+        "end": [
+          -34478.41079697404,
+          60606.81372179965,
+          7712.7551816209225
+        ]
+      },
+      {
+        "id": 136,
+        "team": 1,
+        "unit_type": 2,
+        "alive": true,
+        "can_act": true,
+        "order": 0,
+        "revision": 25,
+        "task_version": 15,
+        "automatic": false,
+        "nav_state": 0,
+        "budget_pending": false,
+        "no_progress": 4.099998474121094,
+        "radius": 625,
+        "nav_repair_pending": false,
+        "position": [
+          -20523.08641515565,
+          52026.034883186134,
+          903.7407276437605
+        ],
+        "velocity": [
+          0,
+          0,
+          0
+        ],
+        "legal_position": [
+          -20523.08641515565,
+          52026.034883186134,
+          903.7407276437605
+        ],
+        "command": 20,
+        "accepted_at": 16828633.5704298,
+        "direction_at": 16828633.6965226,
+        "displacement_at": 16828633.6976675,
+        "movement_target": [
+          -38498.74652732123,
+          64627.14940420481,
+          7591.082270358577
+        ],
+        "waypoint": [
+          -20523.08641515565,
+          52026.034883186134,
+          903.7407276437605
+        ],
+        "has_dock": true,
+        "route": 0,
+        "hex_points": 0,
+        "slot_pitch": 0,
+        "slot_members": 0,
+        "slot_assignments": 0
+      },
+      {
+        "id": 137,
+        "team": 1,
+        "unit_type": 2,
+        "alive": true,
+        "can_act": true,
+        "order": 133,
+        "revision": 22,
+        "task_version": 14,
+        "automatic": false,
+        "nav_state": 1,
+        "budget_pending": false,
+        "no_progress": 0,
+        "radius": 625,
+        "nav_repair_pending": false,
+        "position": [
+          -21654.07239153573,
+          54907.76298620393,
+          905.9107982736368
+        ],
+        "velocity": [
+          -580.980689103901,
+          -3.411456974669535,
+          1.0920689644808972
+        ],
+        "legal_position": [
+          -21654.07239153573,
+          54907.76298620393,
+          905.9107982736368
+        ],
+        "command": 20,
+        "accepted_at": 16828633.5704274,
+        "direction_at": 16828633.6965237,
+        "displacement_at": 16828633.6976695,
+        "movement_target": [
+          -39970.29170926243,
+          62078.357954627514,
+          7732.284910371941
+        ],
+        "waypoint": [
+          -21884.423529411764,
+          54967,
+          917.6320244284236
+        ],
+        "has_dock": true,
+        "route": 901,
+        "hex_points": 10,
+        "slot_pitch": 1421.4033203125,
+        "slot_members": 10,
+        "slot_assignments": 10,
+        "start": [
+          -27487.379994307452,
+          35915.61252153802,
+          905.7340939862643
+        ],
+        "end": [
+          -34478.41079697404,
+          60606.81372179965,
+          7712.7551816209225
+        ]
+      },
+      {
+        "id": 138,
+        "team": 1,
+        "unit_type": 2,
+        "alive": true,
+        "can_act": true,
+        "order": 0,
+        "revision": 24,
+        "task_version": 15,
+        "automatic": false,
+        "nav_state": 0,
+        "budget_pending": false,
+        "no_progress": 4.099998474121094,
+        "radius": 625,
+        "nav_repair_pending": false,
+        "position": [
+          -30228.12591671852,
+          69339.37286099013,
+          1875.8057206970464
+        ],
+        "velocity": [
+          0,
+          0,
+          0
+        ],
+        "legal_position": [
+          -30228.12591671852,
+          69339.37286099013,
+          1875.8057206970464
+        ],
+        "command": 20,
+        "accepted_at": 16828633.570429,
+        "direction_at": 16828633.6965241,
+        "displacement_at": 16828633.6976715,
+        "movement_target": [
+          -39402.29688062466,
+          63449.61941673523,
+          7545.8609767937205
+        ],
+        "waypoint": [
+          -30228.12591671852,
+          69339.37286099013,
+          1875.8057206970464
+        ],
+        "has_dock": true,
+        "route": 0,
+        "hex_points": 0,
+        "slot_pitch": 0,
+        "slot_members": 0,
+        "slot_assignments": 0
+      },
+      {
+        "id": 141,
+        "team": 1,
+        "unit_type": 2,
+        "alive": true,
+        "can_act": true,
+        "order": 133,
+        "revision": 23,
+        "task_version": 14,
+        "automatic": false,
+        "nav_state": 1,
+        "budget_pending": false,
+        "no_progress": 0,
+        "radius": 625,
+        "nav_repair_pending": false,
+        "position": [
+          -29615.76627864776,
+          68951,
+          1813.1682738190189
+        ],
+        "velocity": [
+          503.3956075790832,
+          0,
+          -82.79533019392721
+        ],
+        "legal_position": [
+          -29615.76627864776,
+          68951,
+          1813.1682738190189
+        ],
+        "command": 20,
+        "accepted_at": 16828633.5704282,
+        "direction_at": 16828633.6965253,
+        "displacement_at": 16828633.6976768,
+        "movement_target": [
+          -34478.41079697404,
+          60606.81372179965,
+          7717.331329985426
+        ],
+        "waypoint": [
+          -29573.5,
+          68970,
+          1805.2790832519531
+        ],
+        "has_dock": true,
+        "route": 1388,
+        "hex_points": 10,
+        "slot_pitch": 1421.4033203125,
+        "slot_members": 10,
+        "slot_assignments": 10,
+        "start": [
+          -25532.576865845775,
+          48344.833993854576,
+          977.683519010515
+        ],
+        "end": [
+          -34478.41079697404,
+          60606.81372179965,
+          7712.7551816209225
+        ]
+      },
+      {
+        "id": 142,
+        "team": 1,
+        "unit_type": 2,
+        "alive": true,
+        "can_act": true,
+        "order": 133,
+        "revision": 19,
+        "task_version": 13,
+        "automatic": false,
+        "nav_state": 1,
+        "budget_pending": false,
+        "no_progress": 0,
+        "radius": 625,
+        "nav_repair_pending": false,
+        "position": [
+          -29709.17848611308,
+          69741.2321381174,
+          1843.4698639945204
+        ],
+        "velocity": [
+          299.7772753065593,
+          -16.654293072584608,
+          -30.67896092318588
+        ],
+        "legal_position": [
+          -29709.17848611308,
+          69741.2321381174,
+          1843.4698639945204
+        ],
+        "command": 20,
+        "accepted_at": 16828633.5704295,
+        "direction_at": 16828633.6965258,
+        "displacement_at": 16828633.6976788,
+        "movement_target": [
+          -37744.98576388436,
+          63347.79430847177,
+          7599.808376094281
+        ],
+        "waypoint": [
+          -29687.5,
+          69701.5,
+          1835.2790832519531
+        ],
+        "has_dock": true,
+        "route": 1387,
+        "hex_points": 10,
+        "slot_pitch": 1421.4033203125,
+        "slot_members": 10,
+        "slot_assignments": 10,
+        "start": [
+          -27371.099204396134,
+          46169.87964471299,
+          907.7790832519531
+        ],
+        "end": [
+          -34478.41079697404,
+          60606.81372179965,
+          7712.7551816209225
+        ]
+      },
+      {
+        "id": 143,
+        "team": 1,
+        "unit_type": 2,
+        "alive": true,
+        "can_act": true,
+        "order": 0,
+        "revision": 24,
+        "task_version": 15,
+        "automatic": false,
+        "nav_state": 0,
+        "budget_pending": false,
+        "no_progress": 4.099998474121094,
+        "radius": 625,
+        "nav_repair_pending": false,
+        "position": [
+          -23325.422366564864,
+          53950.55830720209,
+          953.9847653679204
+        ],
+        "velocity": [
+          0,
+          0,
+          0
+        ],
+        "legal_position": [
+          -23325.422366564864,
+          53950.55830720209,
+          953.9847653679204
+        ],
+        "command": 20,
+        "accepted_at": 16828633.5704293,
+        "direction_at": 16828633.6965262,
+        "displacement_at": 16828633.6976807,
+        "movement_target": [
+          -35899.81426077313,
+          63068.75640778597,
+          7472.594263189305
+        ],
+        "waypoint": [
+          -23325.422366564864,
+          53950.55830720209,
+          953.9847653679204
+        ],
+        "has_dock": true,
+        "route": 0,
+        "hex_points": 0,
+        "slot_pitch": 0,
+        "slot_members": 0,
+        "slot_assignments": 0
+      },
+      {
+        "id": 146,
+        "team": 1,
+        "unit_type": 2,
+        "alive": true,
+        "can_act": true,
+        "order": 0,
+        "revision": 22,
+        "task_version": 14,
+        "automatic": false,
+        "nav_state": 0,
+        "budget_pending": false,
+        "no_progress": 4.099998474121094,
+        "radius": 625,
+        "nav_repair_pending": false,
+        "position": [
+          -20216.219629248368,
+          53451.18977220904,
+          903.2080675174576
+        ],
+        "velocity": [
+          0,
+          0,
+          0
+        ],
+        "legal_position": [
+          -20216.219629248368,
+          53451.18977220904,
+          903.2080675174576
+        ],
+        "command": 20,
+        "accepted_at": 16828633.5704299,
+        "direction_at": 16828633.6965269,
+        "displacement_at": 16828633.6976886,
+        "movement_target": [
+          -35189.112528873586,
+          61837.78506479281,
+          7569.553310976319
+        ],
+        "waypoint": [
+          -20216.219629248368,
+          53451.18977220904,
+          903.2080675174576
+        ],
+        "has_dock": true,
+        "route": 0,
+        "hex_points": 0,
+        "slot_pitch": 0,
+        "slot_members": 0,
+        "slot_assignments": 0
+      }
+    ],
+    "selected_routes": [
+      {
+        "handle": 1388,
+        "state": 2,
+        "partial": true,
+        "automatic": false,
+        "polygons": 7,
+        "queued_at": 16828710.6087459,
+        "ready_at": 16828710.6103053
+      },
+      {
+        "handle": 1387,
+        "state": 2,
+        "partial": true,
+        "automatic": false,
+        "polygons": 6,
+        "queued_at": 16828710.5144564,
+        "ready_at": 16828710.5159785
+      },
+      {
+        "handle": 901,
+        "state": 2,
+        "partial": true,
+        "automatic": false,
+        "polygons": 72,
+        "queued_at": 16828633.6161826,
+        "ready_at": 16828633.6704542
+      },
+      {
+        "handle": 900,
+        "state": 2,
+        "partial": true,
+        "automatic": false,
+        "polygons": 57,
+        "queued_at": 16828633.5923607,
+        "ready_at": 16828633.6704486
+      }
+    ],
+    "nearby_units": [],
+    "navmesh": [
+      {
+        "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+        "radius": 6.800000190734863,
+        "height": 28.799999237060547,
+        "max_slope": 44.0
+      },
+      {
+        "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+        "radius": 150.0,
+        "height": 28.799999237060547,
+        "max_slope": 44.0
+      }
+    ]
+  }
+}

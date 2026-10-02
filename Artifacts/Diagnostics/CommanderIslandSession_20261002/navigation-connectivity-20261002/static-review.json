@@ -1,0 +1,70 @@
+{
+  "scope": "Static source and native interface review only. No compile or gameplay execution.",
+  "diff_check_exit_code": 0,
+  "diff_check_output": "warning: in the working copy of 'Config/DefaultGame.ini', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrikeEditor/Private/GuLiNavigationBakeLibrary.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrikeEditor/Public/GuLiNavigationBakeLibrary.h', LF will be replaced by CRLF the next time Git touches it\n",
+  "trailing_whitespace": [],
+  "interface_review": [
+    "UE5.7 GetPolyNeighbors returns true for valid polygons even with zero neighbors.",
+    "dtNavMeshQuery.init accepts zero nodes for filter-only use; isValidPolyRef applies polygon and special-link filters.",
+    "GetPolyCenter/GetPolyVerts/GetPolySurfaceArea and generator IsBuildInProgressCheckDirty signatures checked against engine source.",
+    "NavigationSystem/Navmesh/UnrealEd/GuLiStrike dependencies already declared; no runtime-to-editor dependency.",
+    "UHT headers use generated include last and reflected results; no authored tests added."
+  ],
+  "logic_review": [
+    "Adjacency preserves directed links, excludes rejected polygons, and builds the exact transpose.",
+    "Iterative forward finishing order plus reverse traversal forms strongly connected components; isolated zero-degree polygons are included.",
+    "Only regions with ground polygons participate in the strict one-region decision. No area threshold suppresses small regions.",
+    "Two-point reachability checks both directions over the same graph and bounds the projection delta explicitly.",
+    "Prepare checks connectivity after all bakes and before metadata commit/save, including cache-hit paths.",
+    "Validate checks saved navigation and connectivity; commandlet, PIE authorizer and cook hook consume its success."
+  ],
+  "files": [
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiNavigationConnectivityLibrary.cpp",
+      "sha256": "385d02ef3b039b91cb635ace6bca312a3fd13dbc52e7d62ef8adfab08c3a88c8"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Public/GuLiNavigationConnectivityLibrary.h",
+      "sha256": "7d190bade5bd4ad000f024a16e72135edeab337ae4403c18c2a3b36347d4f385"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Public/GuLiNavigationConnectivitySettings.h",
+      "sha256": "a609794d9df007932d3bbc48314730122cc95322c86a05e3aeae2ce70d2deb67"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiNavigationBakeLibrary.cpp",
+      "sha256": "9daffc0f616a71e2f4259cd0d980dfd394666d6a278b7602333f0b5c1201255e"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Public/GuLiNavigationBakeLibrary.h",
+      "sha256": "5dfbe538940182c3898510bca952d6ab748d66a7fa299bd7bc68c257589605b8"
+    },
+    {
+      "path": "Config/DefaultGame.ini",
+      "sha256": "d5031429e1bc6327dc4da63ea70987a694dfbbe04be5dce4abbdb2f716c5cb50"
+    },
+    {
+      "path": "Scripts/NavigationConnectivity/prepare_scene.py",
+      "sha256": "40f97ad38e9d41fd0c61ed56dbcf07ff8fd877845ee5e759a144e0d80b4f0894"
+    },
+    {
+      "path": "Scripts/NavigationConnectivity/README.md",
+      "sha256": "aeb3a69f56a387c91ff4395cba591b14e3475550d72741f37f3ff8ed90f04994"
+    },
+    {
+      "path": "Progress/RequirementDocument/导航连通性烘焙校验.md",
+      "sha256": "355ecbf911710e196c44290e89caf470485ebaec4e448d93871faac188ab317f"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/导航连通性烘焙校验.md",
+      "sha256": "9eb8e03084b82b8a21733d3ca0a001ce7e7d38c124814b6544f9d670b68fdb28"
+    },
+    {
+      "path": "Progress/Archive/20261002-导航连通性烘焙校验实现与场景交付.md",
+      "sha256": "b7a770dec24a5a07b95894ea2de2580e4a85f22393ab52dc782992377e062c55"
+    }
+  ],
+  "compile": "not_run",
+  "gameplay": "not_run",
+  "authoring_script_syntax": "passed"
+}

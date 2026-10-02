@@ -1,0 +1,70 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "pairs": [
+      {
+        "name": "unreachable",
+        "status": "<GuLiNavigationPointConnectivityStatus.DISCONNECTED: 4>",
+        "query_succeeded": true,
+        "start_to_end": false,
+        "end_to_start": false,
+        "start_region": 19,
+        "end_region": 18,
+        "start_cm": [
+          2498.5,
+          -2498.5,
+          899.9771118164062
+        ],
+        "end_cm": [
+          -8896.75,
+          -959.5,
+          929.4317016601562
+        ],
+        "projected_start_cm": [
+          2498.5,
+          -2498.5,
+          903.3920230323627
+        ],
+        "projected_end_cm": [
+          -8896.75,
+          -959.5,
+          937.2378545927653
+        ]
+      },
+      {
+        "name": "old_goal",
+        "status": "<GuLiNavigationPointConnectivityStatus.CONNECTED: 6>",
+        "query_succeeded": true,
+        "start_to_end": true,
+        "end_to_start": true,
+        "start_region": 19,
+        "end_region": 19,
+        "start_cm": [
+          2498.5,
+          -2498.5,
+          899.9771118164062
+        ],
+        "end_cm": [
+          -30343.0,
+          69255.0,
+          1073.44165
+        ],
+        "projected_start_cm": [
+          2498.5,
+          -2498.5,
+          903.3920230323627
+        ],
+        "projected_end_cm": [
+          -30343.0,
+          69255.0,
+          1073.7790832519531
+        ]
+      }
+    ],
+    "source_world_read_only": true,
+    "new_native_code_executed": false
+  }
+}

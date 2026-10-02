@@ -1,0 +1,37 @@
+{
+  "native_build_executed": false,
+  "runtime_verified": false,
+  "automated_tests_run": false,
+  "files": [
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp",
+      "sha256": "6b1f078fa1b6d3f8592dda3a45af664d12ca8dd43ace040083295d5c787faf24",
+      "delimiters_balanced": true
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiSharedMoveRoutes.h",
+      "sha256": "b7e71e3b23e7c15b86c630d6a0c40d30735917e9967026a49c44e276e4b80606",
+      "delimiters_balanced": true
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiSharedMoveRoutes.cpp",
+      "sha256": "33c6495b1d2d82fe04ebe52057577adde1dcd195bb9c6481a5ed758d20c2a04d",
+      "delimiters_balanced": true
+    }
+  ],
+  "git_diff_check_exit_code": 0,
+  "manual_review": {
+    "native_api": "ANavigationData::Raycast extra results, FNavigationRaycastAdditionalResults::bIsRayEndInCorridor, FPathFindingQuery::SetAllowPartialPaths verified in local UE5.7 source",
+    "query_budget": "Raycasts consume TakeProjection; exceptional complete paths consume TakePath inside existing manual/automatic category budget",
+    "authority": "No RPC, replication, task identity, final slot or click semantics changed",
+    "progress": "Measures current leg and catches zero displacement outside surface failure branch",
+    "path_lifetime": "Captured native path retains invalidation; invalid paths are rebuilt; stop/death/cancellation clear retained paths",
+    "waypoint_capture": "Desired speed and integrated forward approach limited at corners; lateral avoidance retained",
+    "fixture_syntax": "ast.parse succeeded; no fixture run while user PIE is active"
+  },
+  "limitations": [
+    "Source/static review is not native compilation",
+    "Current user-started PIE still runs the previous module",
+    "Fixture needs editor world access after permission to end current PIE"
+  ]
+}

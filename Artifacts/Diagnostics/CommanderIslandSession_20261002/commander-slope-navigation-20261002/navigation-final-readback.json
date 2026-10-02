@@ -1,0 +1,656 @@
+{
+  "success": true,
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "pie": false,
+  "navigation": [
+    {
+      "name": "RecastNavMesh-Default",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+      "agent_config": "(Name=\"Default\",Color=(B=140,G=255,R=0,A=164),DefaultQueryExtent=(X=10.000000,Y=10.000000,Z=250.000000),NavDataClass=\"/Script/NavigationSystem.RecastNavMesh\",AgentRadius=6.800000,AgentHeight=28.799999,AgentStepHeight=7.000000,NavWalkingSearchHeightScale=0.500000,PreferredNavData=\"/Script/NavigationSystem.RecastNavMesh\",bCanCrouch=False,bCanJump=False,bCanWalk=False,bCanSwim=False,bCanFly=False)",
+      "agent_radius_cm": 6.800000190734863,
+      "agent_height_cm": 28.799999237060547,
+      "maximum_slope_degrees": 44.0,
+      "resolutions": [
+        {
+          "CellSize": 38.0,
+          "CellHeight": 5.0,
+          "AgentMaxStepHeight": 7.0
+        },
+        {
+          "CellSize": 19.0,
+          "CellHeight": 5.0,
+          "AgentMaxStepHeight": 7.0
+        },
+        {
+          "CellSize": 19.0,
+          "CellHeight": 5.0,
+          "AgentMaxStepHeight": 7.0
+        }
+      ],
+      "ledge_filter": "<NavigationLedgeSlopeFilterMode.RECAST: 0>",
+      "drawing": false,
+      "draw_offset_cm": 10.0,
+      "max_search_nodes": "16384.000000"
+    },
+    {
+      "name": "RecastNavMesh-CommanderSoldier",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+      "agent_config": "(Name=\"CommanderSoldier\",Color=(B=255,G=180,R=40,A=164),DefaultQueryExtent=(X=150.000000,Y=150.000000,Z=5000.000000),NavDataClass=\"/Script/NavigationSystem.RecastNavMesh\",AgentRadius=150.000000,AgentHeight=28.799999,AgentStepHeight=20.000000,NavWalkingSearchHeightScale=0.500000,PreferredNavData=\"/Script/NavigationSystem.RecastNavMesh\",bCanCrouch=False,bCanJump=False,bCanWalk=False,bCanSwim=False,bCanFly=False)",
+      "agent_radius_cm": 150.0,
+      "agent_height_cm": 28.799999237060547,
+      "maximum_slope_degrees": 44.0,
+      "resolutions": [
+        {
+          "CellSize": 19.0,
+          "CellHeight": 2.0,
+          "AgentMaxStepHeight": 20.0
+        },
+        {
+          "CellSize": 19.0,
+          "CellHeight": 2.0,
+          "AgentMaxStepHeight": 20.0
+        },
+        {
+          "CellSize": 9.5,
+          "CellHeight": 2.0,
+          "AgentMaxStepHeight": 20.0
+        }
+      ],
+      "ledge_filter": "<NavigationLedgeSlopeFilterMode.USE_STEP_HEIGHT_FROM_AGENT_MAX_SLOPE: 2>",
+      "drawing": true,
+      "draw_offset_cm": 50.0,
+      "max_search_nodes": "16384.000000"
+    }
+  ],
+  "water_volumes": [
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_0",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_1",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_2",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_3",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_4",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_5",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_6",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_7",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_8",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_9",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_10",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_11",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_12",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_13",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_14",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_15",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_16",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_17",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_18",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_19",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_20",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_21",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_22",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_23",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_24",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_25",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_26",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_27",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_28",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_29",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_30",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_31",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_32",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_33",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_34",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_35",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_36",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_37",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_38",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_39",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_40",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_41",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_42",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_43",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_44",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_45",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_46",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_47",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_48",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_49",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_50",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_51",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_52",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_53",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_54",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_55",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_56",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_57",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_58",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_59",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_60",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_61",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_62",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_63",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_64",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_65",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_66",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_67",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_68",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_69",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_70",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_71",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_72",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_73",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_74",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_75",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavModifierVolume_76",
+      "area": "/Script/NavigationSystem.NavArea_Null",
+      "resolution": "<NavigationDataResolution.INVALID: 3>"
+    }
+  ],
+  "bounds": [
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NavMeshBoundsVolume_0",
+      "origin_cm": [
+        0.0,
+        0.0,
+        6590.564727783203
+      ],
+      "extent_cm": [
+        90000.0,
+        90000.0,
+        9642.78564453125
+      ]
+    }
+  ],
+  "probes": [
+    {
+      "label": "QA_NavConnectivity_FootA_135",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_56",
+      "position_cm": [
+        -30343.0,
+        69255.0,
+        1897.7790832519531
+      ],
+      "editor_only": true,
+      "collision": false,
+      "tags": [
+        "GuLiNavigationConnectivityQA",
+        "GuLiCommanderSlopeProfileQA"
+      ]
+    },
+    {
+      "label": "QA_NavConnectivity_FootB_138",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_57",
+      "position_cm": [
+        -29962.509924831735,
+        69008.0,
+        1868.789886580086
+      ],
+      "editor_only": true,
+      "collision": false,
+      "tags": [
+        "GuLiNavigationConnectivityQA",
+        "GuLiCommanderSlopeProfileQA"
+      ]
+    },
+    {
+      "label": "QA_NavConnectivity_PlateauA_135",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_58",
+      "position_cm": [
+        -37338.484873398265,
+        64139.232366813674,
+        7532.089454739742
+      ],
+      "editor_only": true,
+      "collision": false,
+      "tags": [
+        "GuLiNavigationConnectivityQA",
+        "GuLiCommanderSlopeProfileQA"
+      ]
+    }
+  ],
+  "point_pairs": [
+    {
+      "from": "QA_NavConnectivity_FootA_135",
+      "to": "QA_NavConnectivity_FootB_138",
+      "current_ground": false,
+      "input_start_cm": [
+        -30343.0,
+        69255.0,
+        1897.7790832519531
+      ],
+      "input_end_cm": [
+        -29962.509924831735,
+        69008.0,
+        1868.789886580086
+      ],
+      "status": "<GuLiNavigationPointConnectivityStatus.START_NOT_NAVIGABLE: 2>",
+      "query_succeeded": false,
+      "start_to_end": false,
+      "end_to_start": false,
+      "start_region": -1,
+      "end_region": -1,
+      "projected_start_cm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "projected_end_cm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "message": "Start is not covered by CommanderSoldier navigation within the requested projection extent.",
+      "query_seconds": 0.0006283000111579895
+    },
+    {
+      "from": "QA_NavConnectivity_FootA_135",
+      "to": "QA_NavConnectivity_PlateauA_135",
+      "current_ground": false,
+      "input_start_cm": [
+        -30343.0,
+        69255.0,
+        1897.7790832519531
+      ],
+      "input_end_cm": [
+        -37338.484873398265,
+        64139.232366813674,
+        7532.089454739742
+      ],
+      "status": "<GuLiNavigationPointConnectivityStatus.START_NOT_NAVIGABLE: 2>",
+      "query_succeeded": false,
+      "start_to_end": false,
+      "end_to_start": false,
+      "start_region": -1,
+      "end_region": -1,
+      "projected_start_cm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "projected_end_cm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "message": "Start is not covered by CommanderSoldier navigation within the requested projection extent.",
+      "query_seconds": 0.0003439001739025116
+    }
+  ],
+  "current_ground_point_pairs": [
+    {
+      "from": "QA_NavConnectivity_FootA_135",
+      "to": "QA_NavConnectivity_FootB_138",
+      "current_ground": true,
+      "input_start_cm": [
+        -30343.0,
+        69255.0,
+        1073.441650390625
+      ],
+      "input_end_cm": [
+        -29962.509924831735,
+        69008.0,
+        1073.441650390625
+      ],
+      "status": "<GuLiNavigationPointConnectivityStatus.CONNECTED: 6>",
+      "query_succeeded": true,
+      "start_to_end": true,
+      "end_to_start": true,
+      "start_region": 19,
+      "end_region": 19,
+      "projected_start_cm": [
+        -30343.0,
+        69255.0,
+        1073.7790832519531
+      ],
+      "projected_end_cm": [
+        -29962.509924831735,
+        69008.0,
+        1073.7790832519531
+      ],
+      "message": "CommanderSoldier regions 19 -> 19: forward=1 reverse=1; full directed graph, no partial-path or A* node-limit result.",
+      "query_seconds": 0.0005411989986896515
+    },
+    {
+      "from": "QA_NavConnectivity_FootA_135",
+      "to": "QA_NavConnectivity_PlateauA_135",
+      "current_ground": true,
+      "input_start_cm": [
+        -30343.0,
+        69255.0,
+        1073.441650390625
+      ],
+      "input_end_cm": [
+        -37338.484873398265,
+        64139.232366813674,
+        1073.441650390625
+      ],
+      "status": "<GuLiNavigationPointConnectivityStatus.CONNECTED: 6>",
+      "query_succeeded": true,
+      "start_to_end": true,
+      "end_to_start": true,
+      "start_region": 19,
+      "end_region": 19,
+      "projected_start_cm": [
+        -30343.0,
+        69255.0,
+        1073.7790832519531
+      ],
+      "projected_end_cm": [
+        -37338.484873398265,
+        64139.232366813674,
+        1073.7790832519531
+      ],
+      "message": "CommanderSoldier regions 19 -> 19: forward=1 reverse=1; full directed graph, no partial-path or A* node-limit result.",
+      "query_seconds": 0.0005719996988773346
+    }
+  ],
+  "dirty_map_packages": [
+    "/Game/Maps/LVL_CommanderMassPrototype"
+  ],
+  "dirty_content_packages": [
+    "/Game/GuLiStrike/Navigation/Baked/LVL_CommanderMassPrototype/DA_FlightNav_LVL_CommanderMassPrototype"
+  ]
+}

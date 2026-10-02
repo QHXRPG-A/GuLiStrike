@@ -1,0 +1,84 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "apis": {
+      "get_info": "X.get_landscape_info(landscape_name_or_label) -> LandscapeInfo_Custom or None\r\nGet detailed information about a landscape.\nMaps to action=\"get_landscape_info\"\r\n\r\nArgs:\r\n    landscape_name_or_label (str): Name or label of the landscape actor\r\n\r\nReturns:\r\n    LandscapeInfo_Custom or None: True if landscape found\r\n\r\n    out_info (LandscapeInfo_Custom): Structure containing landscape details",
+      "new_map": "x.new_level_from_template(asset_path, template_asset_path) -> bool\r\nClose the current Persistent Level (without saving it). Create a new Level base on another level and save it. Load the new created level.\r\n\r\nArgs:\r\n    asset_path (str): Asset Path of where the level will be saved. ie. /Game/MyFolder/MyAsset\r\n    template_asset_path (str): Level to be used as Template. ie. /Game/MyFolder/MyAsset\r\n\r\nReturns:\r\n    bool: True if the operation succeeds.",
+      "screen": "X.take_high_res_screenshot(res_x, res_y, filename, camera=None, mask_enabled=False, capture_hdr=False, comparison_tolerance=ComparisonTolerance.LOW, comparison_notes=\"\", delay=0.000000, force_game_view=True) -> AutomationEditorTask\r\ntake high res screenshot in editor.\r\n\r\nArgs:\r\n    res_x (int32): \r\n    res_y (int32): \r\n    filename (str): \r\n    camera (CameraActor): \r\n    mask_enabled (bool): \r\n    capture_hdr (bool): \r\n    comparison_tolerance (ComparisonTolerance): \r\n    comparison_notes (str): \r\n    delay (float): \r\n    force_game_view (bool): \r\n\r\nReturns:\r\n    AutomationEditorTask:",
+      "connect_output": "X.connect_to_output(material_path, expression_id, output_name, material_property) -> bool\r\nConnect an expression output to a material property (BaseColor, Roughness, etc.).\nMaps to action=\"connect_to_output\"\r\n\r\nArgs:\r\n    material_path (str): Full path to the material\r\n    expression_id (str): Source expression ID\r\n    output_name (str): Output name (empty for first output)\r\n    material_property (str): Property name (BaseColor, Metallic, Roughness, etc.)\r\n\r\nReturns:\r\n    bool: True if successful",
+      "connect_expr": "X.connect_material_expressions(from_expression, from_output_name, to_expression, to_input_name) -> bool\r\nCreate connection between two material expressions\r\n\r\nArgs:\r\n    from_expression (MaterialExpression): Expression to make connection from\r\n    from_output_name (str): Name of output of FromExpression to make connection from. Leave empty to use first output.\r\n    to_expression (MaterialExpression): Expression to make connection to\r\n    to_input_name (str): Name of input of ToExpression to make connection to. Leave empty to use first input.\r\n\r\nReturns:\r\n    bool:",
+      "save_map": "x.save_current_level() -> bool\r\nSaves the specified Level. Must already be saved at lease once to have a valid path.\r\n\r\nReturns:\r\n    bool: True if the operation succeeds.",
+      "landscape_layer_methods": [
+        "delete_unused_layers",
+        "force_layers_full_update",
+        "get_target_layer_names"
+      ],
+      "landscape_info_struct": "<Struct 'LandscapeInfo_Custom' (0x0000020B0EF9FAA0) {actor_name: \"Landscape_1\", actor_label: \"Landscape_2300\", location: {x: -115000.000000, y: -115000.000000, z: 28.186275}, rotation: {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}, scale: {x: 56.372549, y: 56.372549, z: 42.279412}, component_size_quads: 255, subsection_size_quads: 255, num_subsections: 1, num_components: 256, resolution_x: 4081, resolution_y: 4081, material_path: \"/Game/GuLiStrike/Environment/Materials/MI_CommanderGround_Pine.MI_CommanderGround_Pine\", layers: ((LayerName=\"Base_Layer\",LayerInfoPath=\"/Game/Assets/Environments/Scifi_Skies/Materials/Base_Layer_LayerInfo.Base_Layer_LayerInfo\"),(LayerName=\"Layer_02\",LayerInfoPath=\"/Game/Assets/Environments/Scifi_Skies/Materials/Layer_02_LayerInfo.Layer_02_LayerInfo\"),(LayerName=\"Layer_03\",LayerInfoPath=\"/Game/Assets/Environments/Scifi_Skies/Materials/Layer_03_LayerInfo.Layer_03_LayerInfo\"),(LayerName=\"AutoLayer\",LayerInfoPath=\"/Game/StylizedPineEnvironment/Assets/Misc/LandscapeLayerInfo/LL_AutoLayer.LL_AutoLayer\"),(LayerName=\"Grass_WithFoliage\",LayerInfoPath=\"/Game/StylizedPineEnvironment/Assets/Misc/LandscapeLayerInfo/LL_Grass_WithFoliage.LL_Grass_WithFoliage\"),(LayerName=\"Grass\",LayerInfoPath=\"/Game/StylizedPineEnvironment/Assets/Misc/LandscapeLayerInfo/LL_Grass.LL_Grass\"),(LayerName=\"Dirt_Gravel\",LayerInfoPath=\"/Game/StylizedPineEnvironment/Assets/Misc/LandscapeLayerInfo/LL_Dirt_Gravel.LL_Dirt_Gravel\"),(LayerName=\"Dirt_Light\",LayerInfoPath=\"/Game/StylizedPineEnvironment/Assets/Misc/LandscapeLayerInfo/LL_Dirt_Light.LL_Dirt_Light\"),(LayerName=\"Rock\",LayerInfoPath=\"/Game/StylizedPineEnvironment/Assets/Misc/LandscapeLayerInfo/LL_Rock.LL_Rock\"))}>",
+      "struct_props": {
+        "LandscapeMaterialCreateResult": [
+          "asset_path",
+          "assign",
+          "cast",
+          "copy",
+          "error_message",
+          "export_text",
+          "get_editor_property",
+          "import_text",
+          "set_editor_properties",
+          "set_editor_property",
+          "static_struct",
+          "success",
+          "to_tuple"
+        ],
+        "LandscapeLayerBlendInfo": [
+          "assign",
+          "cast",
+          "copy",
+          "export_text",
+          "get_editor_property",
+          "import_text",
+          "layers",
+          "node_id",
+          "set_editor_properties",
+          "set_editor_property",
+          "static_struct",
+          "to_tuple"
+        ],
+        "LandscapeLayerInfoCreateResult": [
+          "asset_path",
+          "assign",
+          "cast",
+          "copy",
+          "error_message",
+          "export_text",
+          "get_editor_property",
+          "import_text",
+          "layer_name",
+          "set_editor_properties",
+          "set_editor_property",
+          "static_struct",
+          "success",
+          "to_tuple"
+        ],
+        "HeightmapImportResult": [
+          "assign",
+          "cast",
+          "copy",
+          "error_message",
+          "export_text",
+          "get_editor_property",
+          "import_text",
+          "resolution",
+          "set_editor_properties",
+          "set_editor_property",
+          "static_struct",
+          "success",
+          "to_tuple"
+        ]
+      }
+    },
+    "template_exists": true
+  }
+}

@@ -8,7 +8,7 @@
 #include "Gameplay/Economy/GuLiEconomyTypes.h"
 #include "GuLiResourceTypes.generated.h"
 
-inline constexpr int32 GULI_RESOURCE_BOARD_DIMENSION = 9;
+inline constexpr int32 GULI_RESOURCE_BOARD_DIMENSION = 7;
 inline constexpr int32 GULI_RESOURCE_BOARD_CENTER = (GULI_RESOURCE_BOARD_DIMENSION + 1) / 2;
 inline constexpr int32 GULI_RESOURCE_TERRITORY_COUNT = GULI_RESOURCE_BOARD_DIMENSION * GULI_RESOURCE_BOARD_DIMENSION;
 inline constexpr int32 GULI_RESOURCE_BLUE_CLUSTER_COUNT = 200;
@@ -17,7 +17,7 @@ inline constexpr int32 GULI_RESOURCE_CLUSTER_COUNT = 240;
 inline constexpr int32 GULI_RESOURCE_NODES_PER_CLUSTER = 26;
 inline constexpr int32 GULI_RESOURCE_NODE_COUNT = 6240;
 inline constexpr int32 GULI_RESOURCE_RAW_PER_CLUSTER = 40;
-inline constexpr int32 GULI_RESOURCE_LAYOUT_VERSION = 5;
+inline constexpr int32 GULI_RESOURCE_LAYOUT_VERSION = 6;
 // Source meshes and the deterministic authored pattern remain in their original units.
 inline constexpr float GULI_RESOURCE_OBJECT_SCALE = 0.2f;
 inline constexpr int32 GULI_RESOURCE_BAKE_SEED = 20260911;
@@ -26,11 +26,9 @@ inline constexpr float GULI_RESOURCE_TERRITORY_SIZE_CM =
 	2.0f * GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM / GULI_RESOURCE_BOARD_DIMENSION;
 inline constexpr float GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM = GULI_RESOURCE_TERRITORY_SIZE_CM * 0.5f;
 inline constexpr float GULI_RESOURCE_TERRITORY_BOUNDARY_MARGIN_CM = 1250.0f;
-inline constexpr float GULI_RESOURCE_FACTORY_ANCHOR_Y_CM =
-	GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM - GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM + 7500.0f;
-inline constexpr float GULI_RESOURCE_ASSEMBLY_ANCHOR_Y_CM =
-	GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM - GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM - 7500.0f;
-// Keep the unchanged 500-unit formation clear of the second row of 200 m outposts.
+inline constexpr float GULI_RESOURCE_FACTORY_ANCHOR_Y_CM = 74000.0f;
+inline constexpr float GULI_RESOURCE_ASSEMBLY_ANCHOR_Y_CM = 69000.0f;
+// Formation origin is inset toward the center; the actual outpost anchor is authored separately.
 inline constexpr float GULI_RESOURCE_INITIAL_ARMY_INSET_CM = 4000.0f;
 inline constexpr float GULI_RESOURCE_CLUSTER_OBSTACLE_RADIUS_CM = 520.0f;
 inline constexpr float GULI_RESOURCE_FACTORY_OBSTACLE_HALF_EXTENT_CM = 500.0f;
@@ -146,10 +144,10 @@ struct GULISTRIKE_API FGuLiTerritoryDefinition
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board")
 	FName TerritoryId;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board", meta = (ClampMin = "1", ClampMax = "9"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board", meta = (ClampMin = "1", ClampMax = "7"))
 	uint8 BoardRow = 1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board", meta = (ClampMin = "1", ClampMax = "9"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board", meta = (ClampMin = "1", ClampMax = "7"))
 	uint8 BoardColumn = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board")
@@ -163,6 +161,10 @@ struct GULISTRIKE_API FGuLiTerritoryDefinition
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board")
 	FVector Center = FVector::ZeroVector;
+
+	/** Actual landed landmark position; Center remains the canonical territory center. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board")
+	FVector OutpostGroundLocation = FVector::ZeroVector;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board")
 	TArray<FVector2D> LocalPolygon;
