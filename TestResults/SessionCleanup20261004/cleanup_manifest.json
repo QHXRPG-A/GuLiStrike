@@ -14,7 +14,7 @@
   "planned_count": 55,
   "planned_bytes": 35775359,
   "frozen_artifact_count": 70,
-  "status": "blocked_by_automatic_approval",
+  "status": "completed",
   "files": [
     {
       "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/RSGMech_Delivery_UE_v1.blend1",
@@ -355,7 +355,25 @@
     "Progress archives and reports",
     "Other tasks local changes"
   ],
-  "deleted_count": 0,
-  "blocked_reason": "Batch deletion and exact-path non-recursive deletion both rejected: blocked by policy",
-  "excluded_from_upload": true
+  "deleted_count": 55,
+  "excluded_from_upload": true,
+  "previous_attempts": [
+    {
+      "status": "blocked_by_automatic_approval",
+      "deleted_count": 0,
+      "reason": "Batch deletion and exact-path non-recursive deletion both rejected: blocked by policy",
+      "instruction": "先驱者初代开发通过，删除这个会话的临时文件，将变更传至github"
+    }
+  ],
+  "deleted_bytes": 35775359,
+  "remaining_count": 0,
+  "completed_at": "2026-10-04T10:33:19.041018+08:00",
+  "retry_user_instruction": "再试试看看能不能删掉临时文件",
+  "method": "PowerShell Remove-Item with LiteralPath, no recursion or Force; exact files revalidated against prior hashes and protected-source manifest",
+  "deleted_empty_cache_directories": [
+    "Scripts/FlightEvents/__pycache__",
+    "Scripts/AssetMigration20261002/__pycache__"
+  ],
+  "protected_frozen_artifact_count": 70,
+  "protected_frozen_hash_issues": []
 }

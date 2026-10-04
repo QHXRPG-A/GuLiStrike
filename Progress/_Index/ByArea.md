@@ -33,6 +33,7 @@
 | [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-04 |
 | [先驱号步态减速与移动点击精度 — 实施记录](../DevelopmentDocumentation/20261003-先驱号步态减速与移动点击精度.md) | development | done | 2026-10-04 |
 | [先驱号 VAT 导入与 Q 召唤接入 — 实施记录](../DevelopmentDocumentation/20261003-先驱号VAT导入与Q召唤接入.md) | development | done | 2026-10-04 |
+| [先驱号会话临时文件重试清理完成](../Archive/20261004-先驱号会话临时文件重试清理完成.md) | archive | recorded | 2026-10-04 |
 | [先驱号初代开发通过与 GitHub 交付](../Archive/20261004-先驱号初代开发通过与GitHub交付.md) | archive | recorded | 2026-10-04 |
 | [先驱号 VAT 导入与 Q 召唤接入](../RequirementDocument/20261003-先驱号VAT导入与Q召唤接入.md) | requirement | approved | 2026-10-03 |
 | [RSG 六足机器人美术统一](../RequirementDocument/20261003-RSG六足机器人美术统一.md) | requirement | approved | 2026-10-03 |
@@ -148,6 +149,7 @@
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
 | [先驱号 VAT 导入与 Q 召唤接入 — 实施记录](../DevelopmentDocumentation/20261003-先驱号VAT导入与Q召唤接入.md) | development | done | 2026-10-04 |
+| [先驱号会话临时文件重试清理完成](../Archive/20261004-先驱号会话临时文件重试清理完成.md) | archive | recorded | 2026-10-04 |
 | [先驱号初代开发通过与 GitHub 交付](../Archive/20261004-先驱号初代开发通过与GitHub交付.md) | archive | recorded | 2026-10-04 |
 | [先驱号 VAT 导入与 Q 召唤接入](../RequirementDocument/20261003-先驱号VAT导入与Q召唤接入.md) | requirement | approved | 2026-10-03 |
 | [RSG 六足机器人美术统一](../RequirementDocument/20261003-RSG六足机器人美术统一.md) | requirement | approved | 2026-10-03 |
@@ -630,6 +632,7 @@
 | [绿色引导线实时连接优化 — 技术方案](../DevelopmentDocumentation/绿色引导线实时连接优化.md) | development | done | 2026-10-04 |
 | [先驱号步态减速与移动点击精度 — 实施记录](../DevelopmentDocumentation/20261003-先驱号步态减速与移动点击精度.md) | development | done | 2026-10-04 |
 | [先驱号 VAT 导入与 Q 召唤接入 — 实施记录](../DevelopmentDocumentation/20261003-先驱号VAT导入与Q召唤接入.md) | development | done | 2026-10-04 |
+| [先驱号会话临时文件重试清理完成](../Archive/20261004-先驱号会话临时文件重试清理完成.md) | archive | recorded | 2026-10-04 |
 | [先驱号初代开发通过与 GitHub 交付](../Archive/20261004-先驱号初代开发通过与GitHub交付.md) | archive | recorded | 2026-10-04 |
 | [绿色引导线玩家验收通过](../Archive/20261004-绿色引导线玩家验收通过.md) | archive | recorded | 2026-10-04 |
 | [原型Map双编辑器文件占用解除](../Archive/20261004-原型Map双编辑器文件占用解除.md) | archive | recorded | 2026-10-04 |
