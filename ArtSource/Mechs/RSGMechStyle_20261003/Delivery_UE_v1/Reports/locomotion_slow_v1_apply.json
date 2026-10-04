@@ -1,0 +1,78 @@
+{
+  "success": true,
+  "version": "locomotion_slow_v1",
+  "asset": "/Game/GuLiStrike/Robots/RSGMech/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+  "rate_multiplier": 0.2,
+  "slowdown_factor": 5.0,
+  "before": {
+    "Idle": {
+      "stride_cm": 0.0,
+      "duration_seconds": 1.6333333253860474
+    },
+    "Forward": {
+      "stride_cm": 154.77285766601562,
+      "duration_seconds": 1.0
+    },
+    "Backward": {
+      "stride_cm": 151.07725524902344,
+      "duration_seconds": 1.0
+    },
+    "Left": {
+      "stride_cm": 152.2537384033203,
+      "duration_seconds": 1.0
+    },
+    "Right": {
+      "stride_cm": 151.4215545654297,
+      "duration_seconds": 1.0
+    },
+    "Death": {
+      "stride_cm": 0.0,
+      "duration_seconds": 2.0
+    },
+    "Landing": {
+      "stride_cm": 0.0,
+      "duration_seconds": 2.5
+    }
+  },
+  "after": {
+    "Idle": {
+      "stride_cm": 0.0,
+      "duration_seconds": 1.6333333253860474
+    },
+    "Forward": {
+      "stride_cm": 773.8642578125,
+      "duration_seconds": 1.0
+    },
+    "Backward": {
+      "stride_cm": 755.38623046875,
+      "duration_seconds": 1.0
+    },
+    "Left": {
+      "stride_cm": 761.2686767578125,
+      "duration_seconds": 1.0
+    },
+    "Right": {
+      "stride_cm": 757.1077880859375,
+      "duration_seconds": 1.0
+    },
+    "Death": {
+      "stride_cm": 0.0,
+      "duration_seconds": 2.0
+    },
+    "Landing": {
+      "stride_cm": 0.0,
+      "duration_seconds": 2.5
+    }
+  },
+  "full_speed_cycles_per_second": {
+    "Backward": 1.9063095697500567,
+    "Forward": 1.860791457238872,
+    "Left": 1.891579207137294,
+    "Right": 1.901974887407378
+  },
+  "movement_speed_cm_per_second": 1440,
+  "game_world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "game_paused": false,
+  "gameplay_interrupted": false,
+  "source_frames_rebaked": false
+}

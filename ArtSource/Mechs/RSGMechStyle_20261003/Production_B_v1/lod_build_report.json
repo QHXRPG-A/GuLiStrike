@@ -1,0 +1,53 @@
+{
+  "LODs": [
+    {
+      "LOD": 0,
+      "body_triangles": 29756,
+      "outline_triangles": 7582,
+      "total_triangles": 37338,
+      "body_sections": 1,
+      "outline_sections": 1,
+      "physical_body_components": 392,
+      "screen_size": 1,
+      "internal_line_strength": 1
+    },
+    {
+      "LOD": 1,
+      "body_triangles": 12919,
+      "outline_triangles": 2986,
+      "total_triangles": 15905,
+      "body_sections": 1,
+      "outline_sections": 1,
+      "physical_body_components": 392,
+      "screen_size": 0.4,
+      "internal_line_strength": 0.85
+    },
+    {
+      "LOD": 2,
+      "body_triangles": 4652,
+      "outline_triangles": 990,
+      "total_triangles": 5642,
+      "body_sections": 1,
+      "outline_sections": 1,
+      "physical_body_components": 392,
+      "screen_size": 0.16,
+      "internal_line_strength": 0.45
+    },
+    {
+      "LOD": 3,
+      "body_triangles": 1944,
+      "outline_triangles": 0,
+      "total_triangles": 1944,
+      "body_sections": 1,
+      "outline_sections": 0,
+      "physical_body_components": 217,
+      "screen_size": 0.06,
+      "internal_line_strength": 0
+    }
+  ],
+  "LOD0_all_source_components_kept": true,
+  "LOD3_policy": "Keep all main armor, weapons, six legs, head, guard, antennae and color blocks; omit only small secondary hardware.",
+  "outer_contour": "inverted hull with backface culling; LOD1/2 copied from exact corresponding body surfaces",
+  "LOD3_closed_convex_part_proxies": true,
+  "B_approval": "pending"
+}

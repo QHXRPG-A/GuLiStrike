@@ -8,6 +8,7 @@
 #include "Engine/DataTable.h"
 #include "Engine/StaticMesh.h"
 #include "GameFramework/Actor.h"
+#include "Gameplay/Presentation/GuLiVATAnimation.h"
 
 namespace GuLiCommanderSoldierResolverPrivate
 {
@@ -173,10 +174,9 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 		TEXT("MovementSpeedCmPerSecond"),
 		bOutEntireDefinitionFromDataTable);
 
-	// War Machine's stable Soldiers Id is 2. Width is already in world meters.
-	// Other units keep the existing radius; neither scale nor the gap column is applied.
+	// Pioneer and War Machine widths are already final world meters.
 	Resolved.MassAvoidanceRadiusCm = 0.0f;
-	if (Resolved.UnitTypeId == 2u)
+	if (Resolved.UnitTypeId == 1u || Resolved.UnitTypeId == 2u)
 	{
 		const float Radius = Row->ModelWidthMeters * 50.0f;
 		if (FMath::IsFinite(Radius) && Radius > 0.0f)
@@ -185,11 +185,11 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 		}
 		else
 		{
-			Resolved.MassAvoidanceRadiusCm = 625.0f;
+			Resolved.MassAvoidanceRadiusCm = Resolved.UnitTypeId == 1u ? 312.5f : 625.0f;
 			bOutEntireDefinitionFromDataTable = false;
-			LogWarningOnce(TEXT("InvalidWarMachineWidth"), FString::Printf(
-				TEXT("Soldier Id %d has invalid ModelWidthMeters %.9g; using War Machine radius 625cm."),
-				Row->Id, Row->ModelWidthMeters));
+			LogWarningOnce(FName(*FString::Printf(TEXT("InvalidModelWidth_%d"), Row->Id)), FString::Printf(
+				TEXT("Soldier Id %d has invalid ModelWidthMeters %.9g; using radius %.9gcm."),
+				Row->Id, Row->ModelWidthMeters, Resolved.MassAvoidanceRadiusCm));
 		}
 	}
 
@@ -227,6 +227,13 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 		return Resolved;
 	}
 	Resolved.PresentationScale = Row->PresentationScale;
+	Resolved.bSummonOnly = Row->bSummonOnly;
+	Resolved.VATDefinition = Cast<UGuLiVATDefinition>(Row->VATDefinition.LoadSynchronous());
+	if (!Row->VATDefinition.IsNull() && (!Resolved.VATDefinition || !Resolved.VATDefinition->IsValidDefinition()))
+	{
+		bOutEntireDefinitionFromDataTable = false;
+		LogWarningOnce(TEXT("InvalidVATDefinition"), TEXT("Authored VAT definition is missing or invalid."));
+	}
 	if (!Row->ActorClass.IsNull())
 	{
 		Resolved.Model = nullptr;

@@ -1,0 +1,38 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": false,
+    "walls": [
+      {
+        "actor": "PioneerQA_Blocker_West",
+        "old": "<ComponentMobility.STATIC: 0>",
+        "new": "<ComponentMobility.MOVABLE: 2>"
+      },
+      {
+        "actor": "PioneerQA_Blocker_East",
+        "old": "<ComponentMobility.STATIC: 0>",
+        "new": "<ComponentMobility.MOVABLE: 2>"
+      },
+      {
+        "actor": "PioneerQA_Blocker_North",
+        "old": "<ComponentMobility.STATIC: 0>",
+        "new": "<ComponentMobility.MOVABLE: 2>"
+      },
+      {
+        "actor": "PioneerQA_Blocker_South",
+        "old": "<ComponentMobility.STATIC: 0>",
+        "new": "<ComponentMobility.MOVABLE: 2>"
+      }
+    ],
+    "bake": {
+      "success": false,
+      "issues": [
+        "Bake rejected R1C4: no packing for 4 blue/1 red symmetric pairs; clear candidates=61/61, search=0 (limit 100000)."
+      ],
+      "message": "Bake rejected R1C4: no packing for 4 blue/1 red symmetric pairs; clear candidates=61/61, search=0 (limit 100000).",
+      "count": 0,
+      "validated_count": 0
+    }
+  }
+}

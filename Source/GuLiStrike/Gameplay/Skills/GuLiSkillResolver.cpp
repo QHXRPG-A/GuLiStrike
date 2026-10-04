@@ -58,6 +58,9 @@ bool FGuLiSkillResolver::ValidateCatalog(const TArray<FGuLiSkillDefinition>& Def
 			|| !ValidAttribute(Row.Damage, 0) || !ValidAttribute(Row.AttackRatePerSecond, 1) || !ValidAttribute(Row.RangeCentimeters, 2))
 		{ OutError = FString::Printf(TEXT("Invalid/duplicate UnitSkills row %s (finite nonnegative; damage<=1e9, rate<=30, range<=1e6)."), *ConfigKey); return false; }
 		const auto* Definition = FindDefinition(Definitions, Row.SkillId);
+		if (!FMath::IsFinite(Row.ProjectileSpreadAngleDegrees)
+			|| Row.ProjectileSpreadAngleDegrees < 0.0f || Row.ProjectileSpreadAngleDegrees > 180.0f)
+		{ OutError = FString::Printf(TEXT("Invalid projectile spread in UnitSkills row %s (full cone angle must be finite and between 0 and 180 degrees)."), *ConfigKey); return false; }
 		if (Definition->ExecutorId == TEXT("GroundMachineGun")
 			&& (!FMath::IsFinite(Row.ProjectileSpeedCentimetersPerSecond) || Row.ProjectileSpeedCentimetersPerSecond <= 0 || Row.ProjectileSpeedCentimetersPerSecond > 1000000
 				|| !FMath::IsFinite(Row.ProjectileLifetimeSeconds) || Row.ProjectileLifetimeSeconds < 0.01f || Row.ProjectileLifetimeSeconds > 120
@@ -268,6 +271,7 @@ bool FGuLiSkillResolver::ResolveSelected(EGuLiTeam Team, const TArray<FGuLiSkill
 		Profile.ProjectileSpeedCentimetersPerSecond = Config->ProjectileSpeedCentimetersPerSecond;
 		Profile.ProjectileLifetimeSeconds = Config->ProjectileLifetimeSeconds;
 		Profile.ProjectileSweepRadiusCentimeters = Config->ProjectileSweepRadiusCentimeters;
+		Profile.ProjectileSpreadAngleDegrees = Config->ProjectileSpreadAngleDegrees;
 		Profile.bEquipped = bUnlocked && (!Selection || !Selection->SkillId.IsNone());
 		Profile.Damage = static_cast<float>(Values[0]); Profile.AttackRatePerSecond = static_cast<float>(Values[1]); Profile.RangeCentimeters = static_cast<float>(Values[2]);
 	}

@@ -1,0 +1,113 @@
+{
+  "source": "data/Excel/GuLiStrikeSecondaryUnitSkills.xlsx",
+  "catalog": "/Game/GuLiStrike/Commander/Skills/DA_CommanderSkills_V1",
+  "skills": [
+    "Teleport",
+    "WM01_HomingMissile",
+    "Pioneer_Summon"
+  ],
+  "unit_skills": {
+    "2": "WM01_HomingMissile",
+    "1": "Pioneer_Summon"
+  },
+  "source_rows": [
+    {
+      "Name": "WM01_HomingMissile",
+      "Id": 1,
+      "Note": "重防号Q；每圈最多60发，整台齐射不拆分，未分配单位留待下一Q；成功单位独立6秒冷却；共享引导圈半径8米，保留单弹3米预警；射程取最终普攻x2，基础240米（2026-10-01由96米x2.5），落点在直径16米内随机。",
+      "TargetMode": "GroundPoint",
+      "CooldownSeconds": 6.0,
+      "RangeCentimeters": 24000.0,
+      "RangeSourceSlot": "BasicAttack",
+      "RangeMultiplier": 2.0,
+      "MaximumLevel": 1,
+      "ExecutorClass": "/Script/GuLiStrike.GuLiWarMachineMissileSkillExecutor",
+      "ConfigurationClass": "/Script/GuLiStrike.GuLiPointSkillConfiguration",
+      "Configuration": "/Game/GuLiStrike/Commander/Skills/DA_WM01_MissileQ",
+      "Projectile": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile",
+      "FieldConfigId": "WM01_MissileExplosion",
+      "SourceWeaponSlot": "MissileLauncher",
+      "UseAuthoredTrajectory": true,
+      "GroundWarningStyle": "/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red",
+      "TargetAreaDiameterCentimeters": 1600.0,
+      "MaxProjectilesPerActivation": 60,
+      "SummonUnitTypeId": 0,
+      "SummonCount": 0,
+      "SummonClearanceCentimeters": 0.0,
+      "SummonOuterRings": 0,
+      "SummonCandidatesPerRing": 0
+    },
+    {
+      "Name": "Pioneer_Summon",
+      "Id": 2,
+      "Note": "Q立即召唤五个扫荡者；每台独立30秒；整批5或0；免费且不计人口",
+      "TargetMode": "Self",
+      "CooldownSeconds": 30.0,
+      "RangeCentimeters": 0.0,
+      "RangeSourceSlot": "",
+      "RangeMultiplier": 1.0,
+      "MaximumLevel": 1,
+      "ExecutorClass": "/Script/GuLiStrike.GuLiSummonSkillExecutor",
+      "ConfigurationClass": "/Script/GuLiStrike.GuLiSummonSkillConfiguration",
+      "Configuration": "/Game/GuLiStrike/Commander/Skills/DA_Pioneer_Summon",
+      "Projectile": "",
+      "FieldConfigId": "",
+      "SourceWeaponSlot": "",
+      "UseAuthoredTrajectory": false,
+      "GroundWarningStyle": "",
+      "TargetAreaDiameterCentimeters": 0.0,
+      "MaxProjectilesPerActivation": 0,
+      "SummonUnitTypeId": 5,
+      "SummonCount": 5,
+      "SummonClearanceCentimeters": 50.0,
+      "SummonOuterRings": 3,
+      "SummonCandidatesPerRing": 36
+    }
+  ],
+  "tables": [
+    {
+      "asset": "DT_GuLiStrikeSecondaryUnitSkills_Skills",
+      "source_rows": [
+        "WM01_HomingMissile",
+        "Pioneer_Summon"
+      ],
+      "created": false,
+      "row_names": [
+        "WM01_HomingMissile",
+        "Pioneer_Summon"
+      ],
+      "row_checks": {
+        "WM01_HomingMissile": true,
+        "Pioneer_Summon": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeSecondaryUnitSkills_UnitSkills",
+      "source_rows": [
+        "DefaultSoldier",
+        "WM01",
+        "ElectromagneticMiner",
+        "ConstructionVehicle",
+        "SweeperSummon"
+      ],
+      "created": false,
+      "row_names": [
+        "DefaultSoldier",
+        "WM01",
+        "ElectromagneticMiner",
+        "ConstructionVehicle",
+        "SweeperSummon"
+      ],
+      "row_checks": {
+        "DefaultSoldier": true,
+        "WM01": true,
+        "ElectromagneticMiner": true,
+        "ConstructionVehicle": true,
+        "SweeperSummon": true
+      },
+      "imported": true
+    }
+  ],
+  "issues": []
+}

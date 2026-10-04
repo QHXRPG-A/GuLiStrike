@@ -48,6 +48,16 @@ struct GULISTRIKE_API FGuLiMechanicalAnimationConfig
 	float HoverIdleEnterSpeed = 5.0f;
 	float HoverIdleExitSpeed = 15.0f;
 	float HoverIdleHoldSeconds = 0.2f;
+	// Presentation-only turn rig. Socket positions use final game centimeters.
+	FVector LegRoots[4] = {}, LegEnds[4] = {}, LegAxes[4] = {};
+	bool bHasTurnRig = false;
+	float VisualYawDamping = 3.0f;
+	float VisualYawSnapDegrees = 0.25f;
+	float TurnFullBankRate = 90.0f;
+	float TurnRateDeadZone = 2.0f;
+	float TurnDiscDegrees = 12.0f, TurnLegDegrees = 8.0f, TurnUpperDegrees = 15.0f;
+	float TurnDiscEnterSeconds = 0.20f, TurnLegEnterSeconds = 0.30f, TurnUpperEnterSeconds = 0.45f;
+	float TurnDiscReturnSeconds = 0.35f, TurnLegReturnSeconds = 0.45f, TurnUpperReturnSeconds = 0.70f;
 	bool IsEnabled() const { return Model != EGuLiMechanicalModel::None; }
 	static FGuLiMechanicalAnimationConfig FromStaticMesh(const UStaticMesh* Mesh, float Scale);
 };
@@ -77,17 +87,47 @@ struct GULISTRIKE_API FGuLiMechanicalAnimationState
 	bool bInitialized = false;
 };
 
-/** GPU contract: 0 hit; 1..14 current pose; 15..28 previous; 29/30 current/previous missile visibility. */
+/** Local rendering state only; never put this in the authority pose or network codec. */
+struct GULISTRIKE_API FGuLiMechanicalVisualState
+{
+	FTransform Root = FTransform::Identity;
+	float UpperYawDegrees = 0;
+	float YawRate = 0;
+	float DiscBankRadians = 0, LegBankRadians = 0, UpperBankRadians = 0;
+	FQuat GunRotation[2] = {FQuat::Identity, FQuat::Identity};
+	double PoseTime = 0;
+	bool bInitialized = false;
+};
+
+/** GPU v4: legacy slots 0..30 stay fixed; new current pose 31..40, previous 41..50. */
 struct GULISTRIKE_API FGuLiMechanicalAnimationFrame
 {
-	static constexpr int32 PoseFloats = 14;
+	static constexpr int32 LegacyPoseFloats = 14;
+	static constexpr int32 PoseFloats = 24;
 	static constexpr int32 CustomDataFloats = 3 + 2 * PoseFloats;
+	static constexpr int32 PoseIndex(int32 Index, bool bPrevious)
+	{
+		return Index < LegacyPoseFloats ? 1 + Index + (bPrevious ? LegacyPoseFloats : 0)
+			: 31 + Index - LegacyPoseFloats + (bPrevious ? PoseFloats - LegacyPoseFloats : 0);
+	}
 	float Values[PoseFloats] = {};
 	float MissilePodVisible = 0.0f;
 };
 
 namespace GuLiMechanicalAnimation
 {
+	/** Uses the monotonic presentation clock, including resets; does not mutate LogicalPose/Aim. */
+	GULISTRIKE_API void StepVisualTurn(const FGuLiMechanicalAnimationConfig& Config,
+		const FGuLiMechanicalAnimationState& Aim, const FTransform& LogicalPose,
+		double PoseTime, bool bReset, FGuLiMechanicalVisualState& Visual);
+	GULISTRIKE_API FGuLiMechanicalAnimationFrame BuildVisualFrame(const FGuLiMechanicalAnimationConfig& Config,
+		const FGuLiMechanicalAnimationState& State, const FGuLiMechanicalVisualState& Visual, float Time);
+	GULISTRIKE_API bool ResolveVisualMuzzle(const FGuLiMechanicalAnimationConfig& Config,
+		const FGuLiMechanicalAnimationState& State, const FGuLiMechanicalVisualState& Visual,
+		FName Slot, int32 Side, FTransform& Out);
+	GULISTRIKE_API bool ResolveVisualNozzle(const FGuLiMechanicalAnimationConfig& Config,
+		const FGuLiMechanicalAnimationState& State, const FGuLiMechanicalVisualState& Visual,
+		int32 Disc, FTransform& Out);
 	GULISTRIKE_API float HoverWeight(const FGuLiMechanicalAnimationConfig& Config,
 		const FGuLiMechanicalAnimationState& State, double SimulationSeconds);
 	GULISTRIKE_API void StepHover(const FGuLiMechanicalAnimationConfig& Config, uint32 StableId,

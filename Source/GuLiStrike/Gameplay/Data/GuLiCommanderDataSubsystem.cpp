@@ -11,6 +11,7 @@
 #include "Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h"
 #include "Gameplay/Skills/GuLiSkillResolver.h"
 #include "GuLiStrike.h"
+#include "UObject/UnrealType.h"
 
 namespace
 {
@@ -50,6 +51,7 @@ void UGuLiCommanderDataSubsystem::Initialize(FSubsystemCollectionBase& Collectio
 	Units = GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>();
 	Fields = GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>();
 	const auto* Settings = GetDefault<UGuLiCommanderDataSettings>();
+	LoadCameraConfig(Settings);
 	LoadSkillCatalog(Settings);
 	if (!Units->IsCatalogValid())
 	{
@@ -57,6 +59,41 @@ void UGuLiCommanderDataSubsystem::Initialize(FSubsystemCollectionBase& Collectio
 		SkillDefinitions.Reset(); UnitSkillConfigs.Reset();
 	}
 	LoadWeaponMountCatalog(Settings);
+}
+
+void UGuLiCommanderDataSubsystem::LoadCameraConfig(const UGuLiCommanderDataSettings* Settings)
+{
+	bCameraConfigValid = false;
+	UDataTable* Table = Settings ? Settings->CameraDataTable.LoadSynchronous() : nullptr;
+	const auto* Row = Table && Table->GetRowStruct() == FGuLiStrikeCommanderCameraRow::StaticStruct()
+		? Table->FindRow<FGuLiStrikeCommanderCameraRow>(TEXT("Default"), TEXT("CommanderCamera"), false) : nullptr;
+	CameraConfigError = TEXT("Missing/invalid Commander Camera table (Camera / 1 / Default).");
+	if (Row && Row->Id == 1 && Table->GetRowMap().Num() == 1)
+	{
+		bool bFinitePositive = true;
+		for (TFieldIterator<FFloatProperty> It(FGuLiStrikeCommanderCameraRow::StaticStruct()); It; ++It)
+		{
+			const float Value = It->GetPropertyValue_InContainer(Row);
+			const FName Field = It->GetFName();
+			const bool bValidRange = Field == TEXT("OverviewYawDegrees") ? Value >= -180 && Value <= 180
+				: Field == TEXT("OverviewPaddingFraction") ? Value >= 0 : Value > 0;
+			bFinitePositive &= FMath::IsFinite(Value) && bValidRange;
+		}
+		if (bFinitePositive && Row->MinimumHeightMeters < Row->TacticalStartHeightMeters
+			&& Row->TacticalStartHeightMeters < Row->TacticalMaximumHeightMeters
+			&& Row->InitialHeightMeters >= Row->MinimumHeightMeters && Row->InitialHeightMeters <= Row->TacticalMaximumHeightMeters
+			&& Row->NearPitchDegrees < Row->TacticalPitchDegrees && Row->TacticalPitchDegrees < 90
+			&& Row->OverviewPitchDegrees == 90 && Row->FieldOfViewDegrees >= 10 && Row->FieldOfViewDegrees <= 120
+			&& Row->ZoomStepMultiplier > 1 && Row->OverviewPaddingFraction < .4f
+			&& Row->MinimumMoveMetersPerSecond <= Row->MaximumMoveMetersPerSecond)
+		{
+			CameraConfig = *Row;
+			CameraConfigError.Reset();
+			bCameraConfigValid = true;
+			return;
+		}
+	}
+	UE_LOG(LogGuLiStrike, Error, TEXT("%s Camera input disabled until a valid table is imported."), *CameraConfigError);
 }
 
 const FGuLiTeleportFieldConfig* UGuLiCommanderDataSubsystem::FindTeleportFieldConfig(const int32 Level) const
@@ -168,6 +205,8 @@ void UGuLiCommanderDataSubsystem::LoadSkillCatalog(const UGuLiCommanderDataSetti
 			Config.ProjectileSpeedCentimetersPerSecond = Row->ProjectileSpeedCentimetersPerSecond;
 			Config.ProjectileLifetimeSeconds = Row->ProjectileLifetimeSeconds;
 			Config.ProjectileSweepRadiusCentimeters = Row->ProjectileSweepRadiusCentimeters;
+			Config.ProjectileSpreadAngleDegrees = Row->ProjectileSpreadAngleDegrees;
+			Config.ProjectileCount = Row->ProjectileCount > 0 ? Row->ProjectileCount : 1;
 		}
 		if (SkillCatalogError.IsEmpty() && Settings)
 		{

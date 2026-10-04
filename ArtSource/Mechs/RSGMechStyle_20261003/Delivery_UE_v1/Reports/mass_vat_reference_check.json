@@ -1,0 +1,62 @@
+{
+  "success": true,
+  "runtime_rendering": "static mesh ISM with GPU vertex deformation; baked bone-transform VAT for Pioneer",
+  "mass_models": [
+    {
+      "unit_type_id": 1,
+      "name": "先驱号",
+      "model": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "class": "StaticMesh"
+    },
+    {
+      "unit_type_id": 2,
+      "name": "重防号",
+      "model": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "class": "StaticMesh"
+    },
+    {
+      "unit_type_id": 5,
+      "name": "扫荡者",
+      "model": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "class": "StaticMesh"
+    }
+  ],
+  "runtime_roots": [
+    "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT",
+    "/Game/GuLiStrike/Robots/RSGMech/VAT/DA_Pioneer_VAT",
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid",
+    "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid"
+  ],
+  "transitive_game_asset_classes": {
+    "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid": "StaticMesh",
+    "/Game/Commander/Units/MechanicalAnimation/M_Sweeper_Cel_Rigid": "Material",
+    "/Game/Commander/Units/Tactical/Cel/Sweeper/Textures/T_Sweeper_BaseColor": "Texture2D",
+    "/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical": "MaterialFunction",
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid": "StaticMesh",
+    "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid": "Material",
+    "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid": "Material",
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_LineMask": "Texture2D",
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_BaseColor": "Texture2D",
+    "/Game/GuLiStrike/Robots/RSGMech/VAT/DA_Pioneer_VAT": "GuLiVATDefinition",
+    "/Game/GuLiStrike/Robots/RSGMech/VAT/M_Pioneer_Wreck": "Material",
+    "/Game/GuLiStrike/Robots/RSGMech/VAT/MF_Pioneer_BoneVAT": "MaterialFunction",
+    "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BoneRotation": "Texture2D",
+    "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BonePosition": "Texture2D",
+    "/Game/GuLiStrike/Robots/RSGMech/VAT/M_Pioneer_Phase": "Material",
+    "/Game/GuLiStrike/Robots/RSGMech/VAT/M_Pioneer_Hit": "Material",
+    "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT": "StaticMesh",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_Contour": "Material",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD3": "MaterialInstanceConstant",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_Toon3": "Material",
+    "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_LineMask": "Texture2D",
+    "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BaseColor": "Texture2D",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD2": "MaterialInstanceConstant",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD1": "MaterialInstanceConstant",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD0": "MaterialInstanceConstant"
+  },
+  "skeletal_dependencies": [],
+  "presentation_skeletal_component_count": 0,
+  "baked_transform_textures_not_live_skeletons": true,
+  "skeletal_delivery_assets": "offline compatibility copies; not referenced by the Mass rendering path",
+  "play_started": false
+}

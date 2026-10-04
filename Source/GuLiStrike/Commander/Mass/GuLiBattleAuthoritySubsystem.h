@@ -396,6 +396,9 @@ public:
 	bool SpawnDebugSoldier(EGuLiTeam Team, uint16 UnitTypeId, const FVector& Location, FGuLiSoldierId& OutId);
 	/** Formal production boundary: reserve the available population before creating any entity. */
 	int32 SpawnSoldierBatch(EGuLiTeam Team, uint16 UnitTypeId, TConstArrayView<FVector> Locations, TArray<FGuLiSoldierId>& OutIds);
+	/** Authority-only, all-or-nothing placement around one caster; bypasses production population only. */
+	bool SummonSoldierBatch(EGuLiTeam Team, FGuLiSoldierId CasterId, uint16 UnitTypeId, int32 Count,
+		float Clearance, int32 OuterRings, int32 CandidatesPerRing, TArray<FGuLiSoldierId>& OutIds, FString& Error);
 	FIntPoint GetTeamPopulation(EGuLiTeam Team) const;
 	int32 GetTeamUnitCap() const;
 	void RegisterAutomaticAdvance(TConstArrayView<FGuLiSoldierId> Soldiers);
@@ -532,6 +535,8 @@ private:
 
 	/** 在固定步边界交替迁移 Even/Odd Archetype，以替换只读共享的移动参数。 */
 	void ApplyPendingMovementSpeed();
+	/** Preserve table ratios when the existing global movement tuning changes. */
+	float GetUnitBaseMovementSpeed(uint16 UnitTypeId) const;
 
 	/** 向运行时调参子系统回报已提交的速度，以及实际完成迁移的实体数量。 */
 	void NotifyMovementSpeedCommitted(int32 AppliedEntityCount) const;

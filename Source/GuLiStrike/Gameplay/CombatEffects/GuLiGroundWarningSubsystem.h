@@ -31,6 +31,8 @@ struct GULISTRIKE_API FGuLiGroundWarningParams
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ground Warning", meta=(Units="cm")) float Radius = 160.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ground Warning") FLinearColor Color = FLinearColor(1.0f, 0.025f, 0.015f, 1.0f);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ground Warning") TObjectPtr<UGuLiGroundWarningStyle> Style;
+	/** Optional pooling boundary: independent casts at the same point keep separate circles. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ground Warning") FGuid PoolGroupId;
 	/** GameState server-world clock, including for local-only previews. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ground Warning") double StartServerSeconds = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ground Warning") double ExpireServerSeconds = 0;

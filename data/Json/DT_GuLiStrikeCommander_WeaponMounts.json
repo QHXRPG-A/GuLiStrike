@@ -1,33 +1,33 @@
 [
   {
-    "Name": "FourFRobot_AimTarget",
+    "Name": "Pioneer_AimTarget",
     "Id": 1,
-    "Note": "扫荡者车身视觉瞄准点",
+    "Note": "先驱号真实游戏包围盒中心",
     "UnitTypeId": 1,
     "SlotId": "",
     "PointRole": "AimTarget",
     "PointIndex": 0,
     "SocketName": "FX_AimTarget",
     "Offset": {
-      "X": 0.0,
+      "X": 24.76776885986328,
       "Y": 0.0,
-      "Z": 650.0
+      "Z": 226.7468723546026
     },
     "bCalibrated": true
   },
   {
-    "Name": "FourFRobot_BasicAttack_Muzzle_0",
+    "Name": "Pioneer_BasicAttack_Muzzle_0",
     "Id": 2,
-    "Note": "扫荡者手工模型机枪口；保留 BasicAttack 0",
+    "Note": "VAT与CPU共享的ShotgunTop_L枪口",
     "UnitTypeId": 1,
     "SlotId": "BasicAttack",
     "PointRole": "Muzzle",
     "PointIndex": 0,
     "SocketName": "FX_Muzzle_Basic_01",
     "Offset": {
-      "X": 757.2613716125488,
-      "Y": 0.0,
-      "Z": 588.1241798400879
+      "X": 279.1171875,
+      "Y": -143.30313110351562,
+      "Z": 241.1873321533203
     },
     "bCalibrated": true
   },
@@ -108,6 +108,54 @@
       "X": 1769.8602676,
       "Y": -1468.7631416,
       "Z": 2335.8587859
+    },
+    "bCalibrated": true
+  },
+  {
+    "Name": "SweeperSummon_FourFRobot_AimTarget",
+    "Id": 8,
+    "Note": "扫荡者车身视觉瞄准点",
+    "UnitTypeId": 5,
+    "SlotId": "",
+    "PointRole": "AimTarget",
+    "PointIndex": 0,
+    "SocketName": "FX_AimTarget",
+    "Offset": {
+      "X": 0.0,
+      "Y": 0.0,
+      "Z": 650.0
+    },
+    "bCalibrated": true
+  },
+  {
+    "Name": "SweeperSummon_FourFRobot_BasicAttack_Muzzle_0",
+    "Id": 9,
+    "Note": "扫荡者手工模型机枪口；保留 BasicAttack 0",
+    "UnitTypeId": 5,
+    "SlotId": "BasicAttack",
+    "PointRole": "Muzzle",
+    "PointIndex": 0,
+    "SocketName": "FX_Muzzle_Basic_01",
+    "Offset": {
+      "X": 757.2613716125488,
+      "Y": 0.0,
+      "Z": 588.1241798400879
+    },
+    "bCalibrated": true
+  },
+  {
+    "Name": "Pioneer_BasicAttack_Muzzle_1",
+    "Id": 10,
+    "Note": "VAT与CPU共享的ShotgunTop_R枪口",
+    "UnitTypeId": 1,
+    "SlotId": "BasicAttack",
+    "PointRole": "Muzzle",
+    "PointIndex": 1,
+    "SocketName": "FX_Muzzle_Basic_02",
+    "Offset": {
+      "X": 279.1171875,
+      "Y": 143.3031463623047,
+      "Z": 241.1873321533203
     },
     "bCalibrated": true
   }

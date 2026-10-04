@@ -67,11 +67,14 @@ bool FGuLiCombatEffectState::IsWellFormed() const
 		return false;
 	}
 	if (Kind == EGuLiCombatEffectKind::Projectile)
-		return Motion.IsValid() && (GroundWarningStyle.IsNull() || (bFixedPoint && Radius > 0 && Radius <= 100000));
+		return Motion.IsValid() && (GroundWarningStyle.IsNull() || (bFixedPoint && Radius > 0 && Radius <= 100000))
+			&& (!GuidanceBatchId.IsValid() || (bFixedPoint && !GroundWarningStyle.IsNull()
+				&& !GuidanceCenter.ContainsNaN() && GuidanceCenter.GetAbsMax() <= 10000000
+				&& FMath::IsFinite(GuidanceRadius) && GuidanceRadius > 0 && GuidanceRadius <= 100000));
 	if (Kind == EGuLiCombatEffectKind::SpellField) return true;
 	if (Kind == EGuLiCombatEffectKind::LinearProjectile)
 		return (Source.Kind == EGuLiTargetKind::Wingman || Source.Kind == EGuLiTargetKind::CommanderSoldier
-			|| Source.Kind == EGuLiTargetKind::GroundActor) && !MuzzleOffset.ContainsNaN()
+			|| Source.Kind == EGuLiTargetKind::GroundActor || Source.Kind == EGuLiTargetKind::Ship) && !MuzzleOffset.ContainsNaN()
 			&& (SourceTeam == EGuLiTeam::Red || SourceTeam == EGuLiTeam::Blue)
 			&& FMath::IsFinite(Motion.Speed) && Motion.Speed > 0 && Motion.Speed <= 1000000
 			&& SampleTime <= EndTime
@@ -129,8 +132,7 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 	bool bMapped=true, bVector=true;
 	if (Kind == EGuLiCombatEffectKind::LinearProjectile)
 	{
-		// Ground rounds additionally carry the latest completed collision time.
-		// Position is reconstructed from the launch payload, without another vector.
+		// Launch-only data; SampleTime is used once when bootstrapping a new peer.
 		if (Phase == EGuLiCombatEffectPhase::Finished)
 		{
 			Location.NetSerialize(Ar, Map, bVector); Ar << SampleTime;
@@ -138,6 +140,9 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 		else
 		{
 			SerializeEffectTarget(Ar, Source, MatchEpoch);
+			SerializeEffectTarget(Ar, Target, MatchEpoch);
+			bool HasPoint = Target.IsValid() || !FVector(LastTargetLocation).IsNearlyZero(); Ar.SerializeBits(&HasPoint,1);
+			if (HasPoint) LastTargetLocation.NetSerialize(Ar,Map,bVector);
 			if (Source.Kind == EGuLiTargetKind::GroundActor)
 			{
 				uint32 Id = static_cast<uint32>(PlayerBulletVfxId);
@@ -147,14 +152,13 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 			}
 			LaunchLocation.NetSerialize(Ar, Map, bVector); LaunchDirection.NetSerialize(Ar, Map, bVector);
 			FVector_NetQuantize Muzzle(MuzzleOffset); Muzzle.NetSerialize(Ar, Map, bVector);
-			Ar << Motion.Speed << StartTime << EndTime;
-			if (Source.Kind == EGuLiTargetKind::CommanderSoldier) Ar << SampleTime;
+			Ar << Motion.Speed << Motion.SweepRadius << StartTime << EndTime;
+			Ar << SampleTime;
 			uint8 Team = static_cast<uint8>(SourceTeam); Ar.SerializeBits(&Team, 2);
 			if (Ar.IsLoading())
 			{
 				SourceTeam = static_cast<EGuLiTeam>(Team); MuzzleOffset = Muzzle;
 				Velocity = FVector(LaunchDirection) * Motion.Speed;
-				if (Source.Kind != EGuLiTargetKind::CommanderSoldier) SampleTime = StartTime;
 				Location = FVector(LaunchLocation) + FVector(Velocity) * (SampleTime - StartTime);
 				ActivationTime = StartTime;
 			}
@@ -181,6 +185,13 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 			{
 				bMapped &= SerializeEffectAsset(Ar, Map, GroundWarningStyle);
 				Ar << Radius;
+			}
+			bool bHasGuidance = GuidanceBatchId.IsValid();
+			Ar.SerializeBits(&bHasGuidance, 1);
+			if (bHasGuidance)
+			{
+				Ar << GuidanceBatchId << GuidanceRadius;
+				GuidanceCenter.NetSerialize(Ar, Map, bVector);
 			}
 			Velocity.NetSerialize(Ar,Map,bVector); LaunchLocation.NetSerialize(Ar,Map,bVector);
 			LastTargetLocation.NetSerialize(Ar,Map,bVector); LaunchDirection.NetSerialize(Ar,Map,bVector);

@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
+#include "Commander/Presentation/GuLiCommanderCameraGeometry.h"
 #include "Gameplay/Data/GuLiGameText.h"
 
 #include "Battle/Framework/GuLiBattleGameState.h"
@@ -60,7 +61,6 @@ namespace GuLiBuildingPlacement
 			Query.AddIgnoredActors(Children);
 		}
 	}
-	constexpr float CommanderTraceDistanceCentimeters = 600000.0f;
 	constexpr float ServerGroundTraceUpCentimeters = 5000.0f;
 	constexpr float ServerGroundTraceDownCentimeters = 5000.0f;
 	constexpr float GroundContactToleranceCentimeters = 20.0f;
@@ -464,13 +464,13 @@ bool UGuLiBuildingPlacementComponent::TraceLocalGround(
 	FRotator ViewRotation;
 	PlayerController->GetPlayerViewPoint(ViewLocation, ViewRotation);
 	OutYawDegrees = PreviewYawDegrees;
-	float TraceDistance = GuLiBuildingPlacement::CommanderTraceDistanceCentimeters;
 	// Both ground players and commanders place at the cursor. Range is measured from
 	// the ground Pawn below, not from its elevated camera along the view ray.
 	if (!PlayerController->DeprojectMousePositionToWorld(RayOrigin, RayDirection))
 	{
 		return false;
 	}
+	const double TraceDistance = GuLiCommanderCameraGeometry::SelectionRayLength(RayOrigin, World);
 
 	FCollisionQueryParams QueryParams(SCENE_QUERY_STAT(GuLiBuildingLocalGround), false);
 	QueryParams.AddIgnoredActor(PlayerController);

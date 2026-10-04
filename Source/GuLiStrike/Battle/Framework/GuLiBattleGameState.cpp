@@ -52,7 +52,7 @@ void AGuLiBattleGameState::BeginPlay()
 		{
 			BoundLogicalMissiles = Missiles;
 			Missiles->OnLaunch.AddUObject(this, &AGuLiBattleGameState::HandleLogicalMissileLaunch);
-			Missiles->OnCorrection.AddUObject(this, &AGuLiBattleGameState::HandleLogicalMissileCorrection);
+
 			Missiles->OnFinished.AddUObject(this, &AGuLiBattleGameState::HandleLogicalMissileTerminal);
 		}
 	}
@@ -532,93 +532,37 @@ void AGuLiBattleGameState::MulticastRevokeWingmanGroup_Implementation(
 	HandlePublicWingmanRevocation(Group);
 }
 
-void AGuLiBattleGameState::MulticastReceiveMissileLaunch_Implementation(
-	const FGuLiMissileVisualLaunchDTO& Event)
+void AGuLiBattleGameState::HandleLogicalMissileLaunch(const FGuLiLogicalMissileState& Missile)
 {
-	ApplyMissileVisualLaunch(Event);
+    if (!HasAuthority() || Missile.MatchEpoch!=MatchEpoch || !GetWorld()) return;
+    FGuLiFlightEvent Event; Event.State = GuLiFlightWire::FromLogicalMissile(Missile);
+    UGuLiCombatEffectReplicationComponent::PublishFlight(GetWorld(),Event);
 }
 
-void AGuLiBattleGameState::MulticastReceiveMissileCorrection_Implementation(
-	const FGuLiMissileVisualCorrectionDTO& Event)
+void AGuLiBattleGameState::HandleLogicalMissileCorrection(const FGuLiLogicalMissileState& Missile)
 {
-	ApplyMissileVisualCorrection(Event);
+    // Compatibility hook for server diagnostics; never emits network corrections.
+    if (HasAuthority()) UGuLiCombatEffectReplicationComponent::UpdateFlight(GetWorld(),GuLiFlightWire::FromLogicalMissile(Missile));
 }
 
-void AGuLiBattleGameState::MulticastReceiveMissileTerminal_Implementation(
-	const FGuLiMissileVisualTerminalDTO& Event)
+void AGuLiBattleGameState::HandleLogicalMissileTerminal(const FGuLiLogicalMissileTerminalEvent& Terminal)
 {
-	ApplyMissileVisualTerminal(Event);
-}
-
-void AGuLiBattleGameState::HandleLogicalMissileLaunch(
-	const FGuLiLogicalMissileState& Missile)
-{
-	if (!HasAuthority() || Missile.MatchEpoch != MatchEpoch || !GetWorld())
-	{
-		return;
-	}
-	FGuLiMissileVisualLaunchDTO Event;
-	Event.MatchEpoch = Missile.MatchEpoch;
-	Event.MissileId = Missile.MissileId;
-	Event.RootEventId = Missile.RootEventId;
-	Event.WeaponBinding = Missile.WeaponBinding;
-	Event.SkillId = Missile.SkillId;
-	Event.ProfileRevision = Missile.ProfileRevision;
-	Event.Emitter = Missile.Emitter;
-	Event.Target = Missile.Target;
-	Event.Position = Missile.Position;
-	Event.Velocity = Missile.Velocity;
-	Event.ServerWorldTimeSeconds = GetWorld()->GetTimeSeconds();
-	if (Event.IsWellFormed())
-	{
-		MulticastReceiveMissileLaunch(Event);
-	}
-}
-
-void AGuLiBattleGameState::HandleLogicalMissileCorrection(
-	const FGuLiLogicalMissileState& Missile)
-{
-	if (!HasAuthority() || Missile.MatchEpoch != MatchEpoch || !GetWorld())
-	{
-		return;
-	}
-	FGuLiMissileVisualCorrectionDTO Event;
-	Event.MatchEpoch = Missile.MatchEpoch;
-	Event.MissileId = Missile.MissileId;
-	Event.SimulationSequence = Missile.SimulationSequence;
-	Event.Position = Missile.Position;
-	Event.Velocity = Missile.Velocity;
-	Event.ServerWorldTimeSeconds = GetWorld()->GetTimeSeconds();
-	if (Event.IsWellFormed())
-	{
-		MulticastReceiveMissileCorrection(Event);
-	}
-}
-
-void AGuLiBattleGameState::HandleLogicalMissileTerminal(
-	const FGuLiLogicalMissileTerminalEvent& Terminal)
-{
-	if (!HasAuthority() || !GetWorld()
-		|| (Terminal.MatchEpoch != MatchEpoch
-			&& Terminal.Reason != EGuLiLogicalMissileTerminalReason::MatchEpochEnded))
-	{
-		return;
-	}
-	FGuLiMissileVisualTerminalDTO Event;
-	Event.MatchEpoch = Terminal.MatchEpoch;
-	Event.MissileId = Terminal.MissileId;
-	Event.RootEventId = Terminal.RootEventId;
-	Event.WeaponBinding = Terminal.WeaponBinding;
-	Event.SkillId = Terminal.SkillId;
-	Event.ProfileRevision = Terminal.ProfileRevision;
-	Event.SimulationSequence = Terminal.SimulationSequence;
-	Event.Reason = Terminal.Reason;
-	Event.Location = Terminal.Location;
-	Event.ServerWorldTimeSeconds = GetWorld()->GetTimeSeconds();
-	if (Event.IsWellFormed())
-	{
-		MulticastReceiveMissileTerminal(Event);
-	}
+    if (!HasAuthority() || !GetWorld()) return;
+    FGuLiFlightEvent Event; auto& State=Event.State;
+    Event.bUseCatalogImpact=true;
+    State.MatchEpoch=Terminal.MatchEpoch; State.EffectId=Terminal.MissileId;
+    State.Sequence=Terminal.SimulationSequence+2; State.Kind=EGuLiCombatEffectKind::Projectile;
+    State.Phase=EGuLiCombatEffectPhase::Finished; State.Location=Terminal.Location;
+    State.SampleTime=GetWorld()->GetTimeSeconds();
+    switch (Terminal.Reason)
+    {
+    case EGuLiLogicalMissileTerminalReason::Impact: State.EndReason=EGuLiCombatEffectEndReason::Impact; break;
+    case EGuLiLogicalMissileTerminalReason::Blocked: State.EndReason=EGuLiCombatEffectEndReason::Blocked; break;
+    case EGuLiLogicalMissileTerminalReason::Expired: State.EndReason=EGuLiCombatEffectEndReason::Expired; break;
+    case EGuLiLogicalMissileTerminalReason::MatchEpochEnded: State.EndReason=EGuLiCombatEffectEndReason::EpochEnded; break;
+    default: State.EndReason=EGuLiCombatEffectEndReason::Cancelled; break;
+    }
+    UGuLiCombatEffectReplicationComponent::PublishFlight(GetWorld(),Event);
 }
 
 void AGuLiBattleGameState::ApplyMissileVisualLaunch(

@@ -217,9 +217,8 @@ try:
     for suffix, lanes in (('Full',24),('Lite',8),('Minimal',0)):
         build_system(('Preview' if preview_only else '')+suffix,lanes,flame,trail,preview_only)
     definition = unreal.load_asset('/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile')
-    report['production_cluster_enabled'] = bool(definition.get_editor_property('use_missile_cluster_rendering'))
-    report['candidate_entry'] = 'LVL_CommanderMassPrototype PIE: gs.MissileCluster.Candidate 1'
-    # The live combat definition is switched only after the playable candidate is approved.
+    report['production_cluster_enabled'] = bool(definition.uses_missile_cluster_rendering())
+    report['entry'] = 'Production WM01 MissileLauncher rendering in all game worlds; no candidate command'
     report['success'] = True
 except Exception:
     report['error'] = traceback.format_exc()

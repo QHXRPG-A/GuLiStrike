@@ -1,0 +1,106 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "sample": [
+      {
+        "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "time": 97.1440415121615,
+        "flights": "active=0 created=38 ended=38 payloadBytes=21432 batches=152 bootstrap=0 queued=0 policy=events_only domains=0/0/0/0",
+        "pool_capacity": 0,
+        "pool_active": 0,
+        "visual_cpu_ms": 0,
+        "received_states": 0,
+        "rejected_states": 0,
+        "roles": [
+          "<GuLiCommanderRole.COMMANDER: 1>",
+          "<GuLiCommanderRole.COMMANDER: 1>",
+          "<GuLiCommanderRole.OBSERVER: 4>",
+          "<GuLiCommanderRole.OBSERVER: 4>"
+        ]
+      },
+      {
+        "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "time": 96.07782260328531,
+        "flights": "active=0 created=0 ended=0 payloadBytes=0 batches=0 bootstrap=0 queued=0 policy=events_only domains=0/0/0/0",
+        "pool_capacity": 512,
+        "pool_active": 0,
+        "visual_cpu_ms": 0.01469999915570952,
+        "received_states": 76,
+        "rejected_states": 0,
+        "roles": [
+          "<GuLiCommanderRole.COMMANDER: 1>"
+        ]
+      },
+      {
+        "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "time": 96.02561000362039,
+        "flights": "active=0 created=0 ended=0 payloadBytes=0 batches=0 bootstrap=0 queued=0 policy=events_only domains=0/0/0/0",
+        "pool_capacity": 512,
+        "pool_active": 0,
+        "visual_cpu_ms": 0.012599999536178075,
+        "received_states": 76,
+        "rejected_states": 0,
+        "roles": [
+          "<GuLiCommanderRole.COMMANDER: 1>"
+        ]
+      },
+      {
+        "world": "/Game/Maps/UEDPIE_3_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "time": 95.27005979791284,
+        "flights": "active=0 created=0 ended=0 payloadBytes=0 batches=0 bootstrap=0 queued=0 policy=events_only domains=0/0/0/0",
+        "pool_capacity": 512,
+        "pool_active": 0,
+        "visual_cpu_ms": 0.011599999197642319,
+        "received_states": 76,
+        "rejected_states": 0,
+        "roles": [
+          "<GuLiCommanderRole.OBSERVER: 4>"
+        ]
+      },
+      {
+        "world": "/Game/Maps/UEDPIE_4_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "time": 95.00058639422059,
+        "flights": "active=0 created=0 ended=0 payloadBytes=0 batches=0 bootstrap=0 queued=0 policy=events_only domains=0/0/0/0",
+        "pool_capacity": 512,
+        "pool_active": 0,
+        "visual_cpu_ms": 0.011199999789823778,
+        "received_states": 76,
+        "rejected_states": 0,
+        "roles": [
+          "<GuLiCommanderRole.OBSERVER: 4>"
+        ]
+      }
+    ],
+    "actors": [
+      {
+        "role": "<GuLiCommanderRole.COMMANDER: 1>",
+        "pawn": "<Object '/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderCameraPawn_0' (0x000001BDF977B800) Class 'GuLiCommanderCameraPawn'>",
+        "health": null
+      },
+      {
+        "role": "<GuLiCommanderRole.COMMANDER: 1>",
+        "pawn": "<Object '/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderCameraPawn_1' (0x000001BDEFFEB800) Class 'GuLiCommanderCameraPawn'>",
+        "health": null
+      },
+      {
+        "role": "<GuLiCommanderRole.OBSERVER: 4>",
+        "pawn": "None",
+        "health": null
+      },
+      {
+        "role": "<GuLiCommanderRole.OBSERVER: 4>",
+        "pawn": "None",
+        "health": null
+      }
+    ],
+    "load_started": false,
+    "player_starts": [
+      {
+        "name": "PlayerStart_0",
+        "location": "<Struct 'Vector' (0x000001BC163D7170) {x: 0.000000, y: 69000.000000, z: 1001.977112}>"
+      }
+    ]
+  }
+}

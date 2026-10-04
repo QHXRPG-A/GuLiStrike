@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectTypes.h"
+#include "Gameplay/CombatEffects/GuLiFlightEvent.h"
 #include "Gameplay/Cards/GuLiRogueUpgradeTypes.h"
 #include "GuLiCombatEffectReplicationComponent.generated.h"
 
@@ -35,33 +36,37 @@ public:
 	/** Authority-originated cosmetics; no damage or health is accepted from clients. */
 	static void PublishWingmanFeedback(UWorld* World, const FGuLiWingmanHandle& Wingman, const FVector& Location, bool bDestroyed, uint16 HealthPermille);
 	static void PublishRogueUpgrade(UWorld* World,const FGuLiRogueUpgradeCue& Cue);
+	static bool PublishFlight(UWorld* World, const FGuLiFlightEvent& Event);
+	/** Authority state refresh for one-time join bootstrap only; never sends an update. */
+	static void UpdateFlight(UWorld* World, const FGuLiCombatEffectState& State);
+	static void AttachFlightMuzzle(UWorld* World, const FGuLiCombatShotCue& Cue);
+	static bool IsFlightActive(UWorld* World, const FGuid& Id);
+	UFUNCTION(BlueprintPure, Category="Network|Flight") FString GetFlightDiagnostics() const;
 
 private:
 	UFUNCTION(NetMulticast, Reliable) void MulticastRogueUpgrade(const FGuLiRogueUpgradeCue& Cue);
 	UFUNCTION() void OnRep_Epoch();
 	UFUNCTION(NetMulticast, Reliable) void MulticastReliableStates(const TArray<FGuLiCombatEffectState>& States);
-	/** Bounded one-Hz live snapshots: new peers rebuild without replaying old one-shots. */
+	/** Non-flight fields are reconstructed once on connection establishment. */
 	UFUNCTION(NetMulticast, Reliable) void MulticastActiveSnapshot(const TArray<FGuLiCombatEffectState>& States);
-	/** Independent five-Hz, self-contained ground projectile refresh; reliable events carry launches and endings. */
-	UFUNCTION(NetMulticast, Unreliable) void MulticastGroundProjectileSnapshot(const TArray<FGuLiCombatEffectState>& States);
-	UFUNCTION(NetMulticast, Unreliable) void MulticastCorrections(const TArray<FGuLiCombatEffectCorrection>& InCorrections);
-	UFUNCTION(NetMulticast, Unreliable) void MulticastShots(const TArray<FGuLiCombatShotCue>& Shots);
+	UFUNCTION(NetMulticast, Reliable) void MulticastFlightBatch(const TArray<uint8>& Payload);
 	UFUNCTION(NetMulticast, Unreliable) void MulticastWingmanFeedback(const TArray<FGuLiWingmanFeedbackCue>& Cues);
 	void HandleState(const FGuLiCombatEffectState& State, bool bReliable);
 	void HandleShots(const TArray<FGuLiCombatShotCue>& Shots);
 	void HandleEpoch(uint32 NewEpoch);
+	bool IsCurrentEpoch(uint32 MatchEpoch) const;
 	void ApplyStates(const TArray<FGuLiCombatEffectState>& States);
+	void FlushFlightStreams();
+	void SendToConnection(class UNetConnection* Connection, UFunction* Function, void* Parameters);
 
 	UPROPERTY(ReplicatedUsing=OnRep_Epoch) uint32 Epoch = 0;
 	TWeakObjectPtr<UGuLiCombatEffectRuntimeSubsystem> Runtime;
 	TArray<FGuLiCombatEffectState> ReliableQueue;
-	TMap<FGuid, FGuLiCombatEffectState> Corrections;
-	TArray<FGuLiCombatShotCue> ShotQueue;
 	TArray<FGuLiWingmanFeedbackCue> WingmanFeedbackQueue;
-	TArray<FGuLiCombatEffectState> SnapshotQueue;
-	int32 SnapshotCursor = 0;
-	float SnapshotAccumulator = 0;
-	TArray<FGuLiCombatEffectState> GroundSnapshot;
-	float GroundSnapshotAccumulator = 0;
-	int32 GroundSnapshotStart = 0;
+	UPROPERTY(Transient) TMap<FGuid, FGuLiFlightEvent> ActiveFlights;
+	UPROPERTY(Transient) TArray<FGuLiFlightEvent> PendingFlights;
+	struct FPeerStream { TWeakObjectPtr<class UActorChannel> Channel; TArray<FGuLiFlightEvent> Queue; int32 Cursor = 0; };
+	TMap<TWeakObjectPtr<class UNetConnection>, FPeerStream> FlightPeers;
+	uint64 CreatedFlights = 0, EndedFlights = 0, SentFlightBytes = 0, SentFlightBatches = 0, BootstrapFlights = 0;
+	double NextFlightDiagnosticTime = 0;
 };

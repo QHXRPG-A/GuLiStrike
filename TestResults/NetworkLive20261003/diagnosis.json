@@ -1,0 +1,149 @@
+{
+  "success": true,
+  "scope": "Same Editor process: dedicated server + two PIE clients, current combat; no synthetic input or population changes",
+  "client_time_zone": "Asia/Shanghai",
+  "network_capture_local_time": "2026-10-03 23:00:13 to 23:00:33",
+  "network_seconds": 20.0128173828125,
+  "cpu_window_seconds": 28.618995799999993,
+  "engine_frames_per_second": 34.73217603253571,
+  "engine_frame_mean_ms": 28.818043863179074,
+  "engine_frame_p95_ms": 34.8461,
+  "roster_range": [
+    518.0,
+    522.0
+  ],
+  "rx_pending_max": 0.0,
+  "rx_all_ready": true,
+  "current_net_speed_Bps": 250000,
+  "max_net_tick_rate": 120,
+  "net_server_max_tick_rate": 30,
+  "socket_Bps_per_client": [
+    71405.2385861112,
+    71407.58708103327
+  ],
+  "inferred_effective_budget_Bps": 72358.70006778273,
+  "budget_clock_hypothesis": "Source-derived 120Hz credit clamp under ~35Hz actual PIE; agreement with measured rate, not separately A/B tested",
+  "state_pose_wait": {
+    "GuLiCommanderPlayerController_0": {
+      "samples": 20,
+      "duration": 19.307000000000002,
+      "fields": {
+        "credit": {
+          "count": 20,
+          "mean": 16.95,
+          "p95": 98.0,
+          "max": 103.0,
+          "unit": "bytes"
+        },
+        "stateQueue": {
+          "count": 20,
+          "mean": 5.2,
+          "p95": 23.0,
+          "max": 38.0,
+          "unit": "items"
+        },
+        "poseQueue": {
+          "count": 20,
+          "mean": 349.05,
+          "p95": 501.0,
+          "max": 517.0,
+          "unit": "items"
+        },
+        "stateAgeMs": {
+          "count": 20,
+          "mean": 711.515,
+          "p95": 1006.9,
+          "max": 1015.3,
+          "unit": "ms"
+        },
+        "poseAgeMs": {
+          "count": 20,
+          "mean": 628.95,
+          "p95": 1291.6,
+          "max": 1702.0,
+          "unit": "ms"
+        },
+        "inflight": {
+          "count": 20,
+          "mean": 0.05,
+          "p95": 0.0,
+          "max": 1.0,
+          "unit": "items"
+        }
+      },
+      "delta_rates": {
+        "stateBytes": 517.7396799088413,
+        "poseBytes": 13638.576682032422,
+        "budgetDeferred": 34.65064484383902,
+        "windowDeferred": 0.0,
+        "poseMerges": 1705.3918267985703
+      }
+    },
+    "GuLiCommanderPlayerController_1": {
+      "samples": 20,
+      "duration": 19.307000000000002,
+      "fields": {
+        "credit": {
+          "count": 20,
+          "mean": 4.75,
+          "p95": 16.0,
+          "max": 16.0,
+          "unit": "bytes"
+        },
+        "stateQueue": {
+          "count": 20,
+          "mean": 5.05,
+          "p95": 23.0,
+          "max": 25.0,
+          "unit": "items"
+        },
+        "poseQueue": {
+          "count": 20,
+          "mean": 354.35,
+          "p95": 506.0,
+          "max": 510.0,
+          "unit": "items"
+        },
+        "stateAgeMs": {
+          "count": 20,
+          "mean": 695.74,
+          "p95": 1006.9,
+          "max": 1046.4,
+          "unit": "ms"
+        },
+        "poseAgeMs": {
+          "count": 20,
+          "mean": 584.095,
+          "p95": 1115.8,
+          "max": 1405.2,
+          "unit": "ms"
+        },
+        "inflight": {
+          "count": 20,
+          "mean": 0.05,
+          "p95": 0.0,
+          "max": 1.0,
+          "unit": "items"
+        }
+      },
+      "delta_rates": {
+        "stateBytes": 499.0417983114932,
+        "poseBytes": 13650.955611954212,
+        "budgetDeferred": 34.70243952970425,
+        "windowDeferred": 0.0,
+        "poseMerges": 1704.3041383954005
+      }
+    }
+  },
+  "cpu_per_encode_ms": 0.0077415723981900456,
+  "cpu_per_decode_ms": 0.004890346820809249,
+  "csv_capture": "Unavailable: STARTFILE alone did not start CSV; CPU evidence uses verified GameThread trace events",
+  "runtime_restored": true,
+  "gameplay_state_changed": false,
+  "code_or_config_changed": false,
+  "limitations": [
+    "No cross-machine weak-network/packet-loss test",
+    "Population changed naturally through current combat",
+    "Queue ages are oldest pending per-ID wait, not packet RTT; maxSampleGap lifetime statistic is not used as this-window latency"
+  ]
+}

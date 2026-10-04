@@ -7,6 +7,7 @@
 #include "Commander/Framework/GuLiCommanderPlayerState.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
+#include "Commander/Presentation/GuLiCommanderCameraGeometry.h"
 #include "Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.h"
 #include "Commander/Presentation/GuLiCommanderMiniMapTransform.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
@@ -335,6 +336,7 @@ void AGuLiCommanderHUD::DrawHUD()
 			}
 		}
 		DrawActiveCommandLine(*CommanderController);
+		DrawOverviewMarkers();
 		if (CommanderController->IsInputKeyDown(EKeys::LeftShift) || CommanderController->IsInputKeyDown(EKeys::RightShift))
 		{
 			if (const auto* Sync = CommanderController->GetCommanderNetSyncComponent())
@@ -494,7 +496,7 @@ void AGuLiCommanderHUD::RefreshCameraGroundDistance(const double Now)
 		}
 		FVector GroundHit;
 		// The active camera's forward ray is the screen centre; trace only cached Landscapes.
-		constexpr double MaximumGroundTraceCentimeters = 1000000.0;
+		const double MaximumGroundTraceCentimeters = GuLiCommanderCameraGeometry::SelectionRayLength(CameraLocation, GetWorld());
 		if (Landscape->TryTraceLandscape(CameraLocation,
 			CameraLocation + CameraRotation.Vector() * MaximumGroundTraceCentimeters, GroundHit))
 		{

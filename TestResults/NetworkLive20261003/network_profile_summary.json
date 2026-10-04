@@ -1,0 +1,591 @@
+{
+  "success": true,
+  "header": {
+    "version": 14,
+    "tag": "",
+    "game": "GuLiStrike",
+    "url": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype"
+  },
+  "duration_seconds": 20.0128173828125,
+  "frame_range": [
+    514.0630493164062,
+    534.0758666992188
+  ],
+  "connections": [
+    {
+      "connection_id": 0,
+      "address": "127.0.0.1:62327",
+      "socket_bytes": 1429020,
+      "socket_bytes_s": 71405.2385861112,
+      "packets_s": 105.73223947055415,
+      "rpcs": [
+        {
+          "name": "MulticastGroundProjectileSnapshot",
+          "events": 797,
+          "events_s": 39.82447772118698,
+          "bytes_s": 38121.800164689375,
+          "socket_percent": 53.38795993058179
+        },
+        {
+          "name": "ClientReceiveEncodedPoseBlock",
+          "events": 808,
+          "events_s": 40.37412546890725,
+          "bytes_s": 13823.9906310043,
+          "socket_percent": 19.35991098794978
+        },
+        {
+          "name": "MulticastReliableStates",
+          "events": 291,
+          "events_s": 14.54068132605447,
+          "bytes_s": 7564.895641831102,
+          "socket_percent": 10.594314635204546
+        },
+        {
+          "name": "MulticastShots",
+          "events": 203,
+          "events_s": 10.143499344292293,
+          "bytes_s": 5918.288401598097,
+          "socket_percent": 8.288311220276832
+        },
+        {
+          "name": "ClientReceiveStateBatch",
+          "events": 78,
+          "events_s": 3.8975022111073834,
+          "bytes_s": 529.1733691176919,
+          "socket_percent": 0.7410847993729969
+        },
+        {
+          "name": "ClientReceivePublicPoseFrame",
+          "events": 200,
+          "events_s": 9.993595413095855,
+          "bytes_s": 39.97438165238342,
+          "socket_percent": 0.055982421519642826
+        },
+        {
+          "name": "MulticastState",
+          "events": 1,
+          "events_s": 0.04996797706547928,
+          "bytes_s": 5.246637591875324,
+          "socket_percent": 0.007347692824453122
+        }
+      ],
+      "properties": [
+        {
+          "name": "GuLiPlacedBuilding.HealthState",
+          "events": 2325,
+          "events_s": 116.17554667723932,
+          "bytes_s": 464.5085607978285,
+          "socket_percent": 0.6505244853116121
+        },
+        {
+          "name": "GuLiPlacedBuilding.TargetHandle",
+          "events": 466,
+          "events_s": 23.285077312513344,
+          "bytes_s": 458.20634969044494,
+          "socket_percent": 0.6416985066689059
+        },
+        {
+          "name": "GuLiPlacedBuilding.State",
+          "events": 2797,
+          "events_s": 139.76043185214553,
+          "bytes_s": 384.21626765073654,
+          "socket_percent": 0.5380785433373921
+        },
+        {
+          "name": "GuLiMiningVehiclePawn.ReplicatedMovement",
+          "events": 139,
+          "events_s": 6.945548812101619,
+          "bytes_s": 115.63214492665223,
+          "socket_percent": 0.16193790149892934
+        },
+        {
+          "name": "GuLiPlacedBuilding.DefinitionId",
+          "events": 466,
+          "events_s": 23.285077312513344,
+          "bytes_s": 93.14030925005338,
+          "socket_percent": 0.1304390421407678
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.Progress",
+          "events": 220,
+          "events_s": 10.992954954405441,
+          "bytes_s": 43.971819817621764,
+          "socket_percent": 0.06158066367160711
+        },
+        {
+          "name": "GuLiResourceWorldState.TransportNetwork",
+          "events": 249,
+          "events_s": 12.44202628930434,
+          "bytes_s": 38.525310317484525,
+          "socket_percent": 0.05395305873955578
+        },
+        {
+          "name": "GuLiCommanderGameState.ReplicatedWorldTimeSecondsDouble",
+          "events": 86,
+          "events_s": 4.297246027631218,
+          "bytes_s": 34.37796822104974,
+          "socket_percent": 0.04814488250689284
+        },
+        {
+          "name": "GuLiResourceWorldState.OreDeltas",
+          "events": 10,
+          "events_s": 0.49967977065479274,
+          "bytes_s": 16.61435237427186,
+          "socket_percent": 0.023267693944101553
+        },
+        {
+          "name": "GuLiPlacedBuilding.RemoteRole",
+          "events": 714,
+          "events_s": 35.677135624752204,
+          "bytes_s": 13.378925859282075,
+          "socket_percent": 0.01873661670235546
+        },
+        {
+          "name": "GuLiPlacedBuilding.Role",
+          "events": 714,
+          "events_s": 35.677135624752204,
+          "bytes_s": 13.378925859282075,
+          "socket_percent": 0.01873661670235546
+        },
+        {
+          "name": "GuLiPlacedBuilding.Team",
+          "events": 934,
+          "events_s": 46.670090579157645,
+          "bytes_s": 11.667522644789411,
+          "socket_percent": 0.01633986928104575
+        },
+        {
+          "name": "GuLiCommanderPlayerState.ResourcePrivateState",
+          "events": 77,
+          "events_s": 3.847534234041904,
+          "bytes_s": 11.242794839732838,
+          "socket_percent": 0.015745056052399547
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.BlueCount",
+          "events": 47,
+          "events_s": 2.348494922077526,
+          "bytes_s": 9.393979688310104,
+          "socket_percent": 0.013155869057116066
+        },
+        {
+          "name": "GuLiPlacedBuilding.BuildingType",
+          "events": 466,
+          "events_s": 23.285077312513344,
+          "bytes_s": 8.731903992192503,
+          "socket_percent": 0.012228660200696982
+        },
+        {
+          "name": "GuLiMiningVehiclePawn.MiningVisual",
+          "events": 24,
+          "events_s": 1.1992314495715026,
+          "bytes_s": 6.458361035713197,
+          "socket_percent": 0.009044659976767296
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.RedCount",
+          "events": 32,
+          "events_s": 1.598975266095337,
+          "bytes_s": 6.395901064381348,
+          "socket_percent": 0.008957187443142854
+        },
+        {
+          "name": "GuLiMiningVehiclePawn.ReplicatedBasedMovement",
+          "events": 26,
+          "events_s": 1.2991674037024612,
+          "bytes_s": 3.872518222574644,
+          "socket_percent": 0.005423297084715399
+        },
+        {
+          "name": "GuLiResourceFactoryActor.HealthState",
+          "events": 12,
+          "events_s": 0.5996157247857513,
+          "bytes_s": 2.3984628991430053,
+          "socket_percent": 0.00335894529117857
+        },
+        {
+          "name": "GuLiPlacedBuilding.bEnabled",
+          "events": 376,
+          "events_s": 18.787959376620208,
+          "bytes_s": 2.348494922077526,
+          "socket_percent": 0.0032889672642790165
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.OwnerState",
+          "events": 8,
+          "events_s": 0.39974381652383423,
+          "bytes_s": 1.6489432431608162,
+          "socket_percent": 0.002309274887685267
+        },
+        {
+          "name": "GuLiPlacedBuilding.CycleSeconds",
+          "events": 8,
+          "events_s": 0.39974381652383423,
+          "bytes_s": 1.598975266095337,
+          "socket_percent": 0.0022392968607857135
+        },
+        {
+          "name": "GuLiResourceWorldState.Territories",
+          "events": 10,
+          "events_s": 0.49967977065479274,
+          "bytes_s": 1.0555735155082497,
+          "socket_percent": 0.0014782858182530686
+        },
+        {
+          "name": "GuLiResourceFactoryActor.DoorState",
+          "events": 5,
+          "events_s": 0.24983988532739637,
+          "bytes_s": 0.6121077190521211,
+          "socket_percent": 0.0008572308295195308
+        },
+        {
+          "name": "GuLiMiningVehiclePawn.HealthState",
+          "events": 2,
+          "events_s": 0.09993595413095856,
+          "bytes_s": 0.39974381652383423,
+          "socket_percent": 0.0005598242151964284
+        },
+        {
+          "name": "GuLiCommanderPlayerState.CompressedPing",
+          "events": 4,
+          "events_s": 0.19987190826191711,
+          "bytes_s": 0.19987190826191711,
+          "socket_percent": 0.0002799121075982142
+        },
+        {
+          "name": "GuLiResourceFactoryActor.Team",
+          "events": 8,
+          "events_s": 0.39974381652383423,
+          "bytes_s": 0.09993595413095856,
+          "socket_percent": 0.0001399560537991071
+        },
+        {
+          "name": "GuLiPlacedBuilding.bProducing",
+          "events": 6,
+          "events_s": 0.29980786239287566,
+          "bytes_s": 0.03747598279910946,
+          "socket_percent": 5.2483520174665154e-05
+        },
+        {
+          "name": "GuLiPlacedBuilding.bHidden",
+          "events": 1,
+          "events_s": 0.04996797706547928,
+          "bytes_s": 0.00624599713318491,
+          "socket_percent": 8.747253362444194e-06
+        }
+      ]
+    },
+    {
+      "connection_id": 1,
+      "address": "127.0.0.1:62328",
+      "socket_bytes": 1429067,
+      "socket_bytes_s": 71407.58708103327,
+      "packets_s": 105.63230351642319,
+      "rpcs": [
+        {
+          "name": "MulticastGroundProjectileSnapshot",
+          "events": 797,
+          "events_s": 39.82447772118698,
+          "bytes_s": 38121.53158681265,
+          "socket_percent": 53.385827956281965
+        },
+        {
+          "name": "ClientReceiveEncodedPoseBlock",
+          "events": 811,
+          "events_s": 40.52402940010369,
+          "bytes_s": 13840.136533593582,
+          "socket_percent": 19.38188517403313
+        },
+        {
+          "name": "MulticastReliableStates",
+          "events": 291,
+          "events_s": 14.54068132605447,
+          "bytes_s": 7564.895641831102,
+          "socket_percent": 10.593966203124136
+        },
+        {
+          "name": "MulticastShots",
+          "events": 203,
+          "events_s": 10.143499344292293,
+          "bytes_s": 5918.288401598097,
+          "socket_percent": 8.28803862939946
+        },
+        {
+          "name": "ClientReceiveStateBatch",
+          "events": 78,
+          "events_s": 3.8975022111073834,
+          "bytes_s": 511.1848973741194,
+          "socket_percent": 0.7158691649866661
+        },
+        {
+          "name": "ClientReceivePublicPoseFrame",
+          "events": 200,
+          "events_s": 9.993595413095855,
+          "bytes_s": 39.97438165238342,
+          "socket_percent": 0.0559805803366812
+        },
+        {
+          "name": "MulticastState",
+          "events": 1,
+          "events_s": 0.04996797706547928,
+          "bytes_s": 5.246637591875324,
+          "socket_percent": 0.007347451169189408
+        }
+      ],
+      "properties": [
+        {
+          "name": "GuLiPlacedBuilding.HealthState",
+          "events": 2348,
+          "events_s": 117.32481014974535,
+          "bytes_s": 469.1056146878526,
+          "socket_percent": 0.6569408572166315
+        },
+        {
+          "name": "GuLiPlacedBuilding.TargetHandle",
+          "events": 469,
+          "events_s": 23.43498124370978,
+          "bytes_s": 461.5042361767666,
+          "socket_percent": 0.6462957999869845
+        },
+        {
+          "name": "GuLiPlacedBuilding.State",
+          "events": 2815,
+          "events_s": 140.65985543932416,
+          "bytes_s": 386.6896825154777,
+          "socket_percent": 0.5415246451006146
+        },
+        {
+          "name": "GuLiMiningVehiclePawn.ReplicatedMovement",
+          "events": 131,
+          "events_s": 6.545804995577785,
+          "bytes_s": 108.68035011741743,
+          "socket_percent": 0.15219720279035204
+        },
+        {
+          "name": "GuLiPlacedBuilding.DefinitionId",
+          "events": 469,
+          "events_s": 23.43498124370978,
+          "bytes_s": 93.73992497483913,
+          "socket_percent": 0.13127446088951744
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.Progress",
+          "events": 201,
+          "events_s": 10.043563390161335,
+          "bytes_s": 40.17425356064534,
+          "socket_percent": 0.05626048323836461
+        },
+        {
+          "name": "GuLiResourceWorldState.TransportNetwork",
+          "events": 249,
+          "events_s": 12.44202628930434,
+          "bytes_s": 38.525310317484525,
+          "socket_percent": 0.053951284299476515
+        },
+        {
+          "name": "GuLiCommanderGameState.ReplicatedWorldTimeSecondsDouble",
+          "events": 84,
+          "events_s": 4.197310073500259,
+          "bytes_s": 33.57848058800207,
+          "socket_percent": 0.047023687482812215
+        },
+        {
+          "name": "GuLiResourceWorldState.OreDeltas",
+          "events": 10,
+          "events_s": 0.49967977065479274,
+          "bytes_s": 16.61435237427186,
+          "socket_percent": 0.023266928702433128
+        },
+        {
+          "name": "GuLiPlacedBuilding.RemoteRole",
+          "events": 725,
+          "events_s": 36.226783372472475,
+          "bytes_s": 13.58504376467718,
+          "socket_percent": 0.019024650348794005
+        },
+        {
+          "name": "GuLiPlacedBuilding.Role",
+          "events": 725,
+          "events_s": 36.226783372472475,
+          "bytes_s": 13.58504376467718,
+          "socket_percent": 0.019024650348794005
+        },
+        {
+          "name": "GuLiPlacedBuilding.Team",
+          "events": 942,
+          "events_s": 47.069834395681475,
+          "bytes_s": 11.767458598920369,
+          "socket_percent": 0.01647928333661053
+        },
+        {
+          "name": "GuLiMiningVehiclePawn.State",
+          "events": 43,
+          "events_s": 2.148623013815609,
+          "bytes_s": 11.661276647656226,
+          "socket_percent": 0.01633058492009122
+        },
+        {
+          "name": "GuLiCommanderPlayerState.ResourcePrivateState",
+          "events": 67,
+          "events_s": 3.3478544633871117,
+          "bytes_s": 10.668163103479825,
+          "socket_percent": 0.014939817377351798
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.BlueCount",
+          "events": 48,
+          "events_s": 2.3984628991430053,
+          "bytes_s": 9.593851596572021,
+          "socket_percent": 0.013435339280803489
+        },
+        {
+          "name": "GuLiPlacedBuilding.BuildingType",
+          "events": 469,
+          "events_s": 23.43498124370978,
+          "bytes_s": 8.788117966391168,
+          "socket_percent": 0.01230698070839226
+        },
+        {
+          "name": "GuLiMiningVehiclePawn.MiningVisual",
+          "events": 24,
+          "events_s": 1.1992314495715026,
+          "bytes_s": 6.458361035713197,
+          "socket_percent": 0.009044362510645058
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.RedCount",
+          "events": 28,
+          "events_s": 1.3991033578334198,
+          "bytes_s": 5.596413431333679,
+          "socket_percent": 0.00783728124713537
+        },
+        {
+          "name": "GuLiMiningVehiclePawn.ReplicatedBasedMovement",
+          "events": 30,
+          "events_s": 1.4990393119643783,
+          "bytes_s": 4.528347921559059,
+          "socket_percent": 0.006341550116264668
+        },
+        {
+          "name": "GuLiPlacedBuilding.bEnabled",
+          "events": 378,
+          "events_s": 18.887895330751167,
+          "bytes_s": 2.360986916343896,
+          "socket_percent": 0.0033063530261352335
+        },
+        {
+          "name": "GuLiResourceFactoryActor.HealthState",
+          "events": 10,
+          "events_s": 0.49967977065479274,
+          "bytes_s": 1.998719082619171,
+          "socket_percent": 0.0027990290168340604
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.OwnerState",
+          "events": 8,
+          "events_s": 0.39974381652383423,
+          "bytes_s": 1.6489432431608162,
+          "socket_percent": 0.0023091989388881
+        },
+        {
+          "name": "GuLiPlacedBuilding.CycleSeconds",
+          "events": 7,
+          "events_s": 0.34977583945835494,
+          "bytes_s": 1.3991033578334198,
+          "socket_percent": 0.0019593203117838423
+        },
+        {
+          "name": "GuLiResourceWorldState.Territories",
+          "events": 10,
+          "events_s": 0.49967977065479274,
+          "bytes_s": 1.0555735155082497,
+          "socket_percent": 0.0014782371995154882
+        },
+        {
+          "name": "GuLiResourceFactoryActor.DoorState",
+          "events": 5,
+          "events_s": 0.24983988532739637,
+          "bytes_s": 0.6121077190521211,
+          "socket_percent": 0.000857202636405431
+        },
+        {
+          "name": "GuLiMiningVehiclePawn.HealthState",
+          "events": 2,
+          "events_s": 0.09993595413095856,
+          "bytes_s": 0.39974381652383423,
+          "socket_percent": 0.000559805803366812
+        },
+        {
+          "name": "GuLiCommanderPlayerState.CompressedPing",
+          "events": 4,
+          "events_s": 0.19987190826191711,
+          "bytes_s": 0.19987190826191711,
+          "socket_percent": 0.000279902901683406
+        },
+        {
+          "name": "GuLiResourceFactoryActor.Team",
+          "events": 8,
+          "events_s": 0.39974381652383423,
+          "bytes_s": 0.09993595413095856,
+          "socket_percent": 0.000139951450841703
+        },
+        {
+          "name": "GuLiMiningVehiclePawn.ReplicatedMovementMode",
+          "events": 1,
+          "events_s": 0.04996797706547928,
+          "bytes_s": 0.04996797706547928,
+          "socket_percent": 6.99757254208515e-05
+        },
+        {
+          "name": "GuLiPlacedBuilding.bProducing",
+          "events": 5,
+          "events_s": 0.24983988532739637,
+          "bytes_s": 0.031229985665924546,
+          "socket_percent": 4.373482838803219e-05
+        },
+        {
+          "name": "GuLiPlacedBuilding.bHidden",
+          "events": 1,
+          "events_s": 0.04996797706547928,
+          "bytes_s": 0.00624599713318491,
+          "socket_percent": 8.746965677606438e-06
+        },
+        {
+          "name": "GuLiMiningVehiclePawn.bCanBeDamaged",
+          "events": 1,
+          "events_s": 0.04996797706547928,
+          "bytes_s": 0.00624599713318491,
+          "socket_percent": 8.746965677606438e-06
+        }
+      ]
+    },
+    {
+      "connection_id": 2,
+      "address": "127.0.0.1:17777",
+      "socket_bytes": 52240,
+      "socket_bytes_s": 2610.3271219006374,
+      "packets_s": 71.1543993412425,
+      "rpcs": [
+        {
+          "name": "ServerAcknowledgePoseBlocks",
+          "events": 402,
+          "events_s": 20.08712678032267,
+          "bytes_s": 1627.0572692061362,
+          "socket_percent": 62.331546707503826
+        },
+        {
+          "name": "ServerAcknowledgeFacts",
+          "events": 156,
+          "events_s": 7.795004422214767,
+          "bytes_s": 94.51442861935405,
+          "socket_percent": 3.620788667687596
+        }
+      ],
+      "properties": []
+    }
+  ],
+  "notes": [
+    "Same process contains dedicated server and two clients; client-to-server addresses can combine both clients.",
+    "Socket bytes include PacketHandler, exclude Ethernet/IP/UDP headers. RPC/property counters are nested payloads; do not add to sockets."
+  ]
+}

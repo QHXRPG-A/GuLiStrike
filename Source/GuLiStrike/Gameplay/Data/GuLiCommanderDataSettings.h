@@ -19,6 +19,9 @@ public:
 	UGuLiCommanderDataSettings();
 
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Data")
+	TSoftObjectPtr<UDataTable> CameraDataTable;
+
+	UPROPERTY(Config, EditAnywhere, Category = "Commander|Data")
 	TSoftObjectPtr<UDataTable> SkillDataTable;
 
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Data")

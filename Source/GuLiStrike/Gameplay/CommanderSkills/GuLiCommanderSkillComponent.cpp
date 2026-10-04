@@ -161,6 +161,16 @@ bool UGuLiCommanderSkillComponent::SetServerGlobalSkillLevel(FName SkillId, int3
 }
 void UGuLiCommanderSkillComponent::ServerRequestSkill_Implementation(const FGuLiActiveSkillRequest& Request)
 { ClientReceiveReply(ExecuteServerRequest(Request)); }
+#if WITH_EDITOR
+bool UGuLiCommanderSkillComponent::CopyServerRequestReceipt(FGuid RequestId, FGuLiActiveSkillRequest& OutRequest) const
+{
+	if (!GetOwner()->HasAuthority()) return false;
+	const auto* Receipt = Receipts.Find(RequestId);
+	if (!Receipt) return false;
+	OutRequest = Receipt->Request;
+	return true;
+}
+#endif
 void UGuLiCommanderSkillComponent::ClientReceiveReply_Implementation(const FGuLiActiveSkillReply& Reply)
 { LastReply = Reply; OnSkillReply.Broadcast(Reply); }
 

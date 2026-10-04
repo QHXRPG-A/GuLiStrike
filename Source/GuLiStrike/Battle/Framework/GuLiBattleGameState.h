@@ -202,16 +202,6 @@ private:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastRevokeWingmanGroup(const FGuLiWingmanGroupHandle& Group);
 
-	/** Reliable launch, unreliable correction, reliable terminal visual-only bridge. */
-	UFUNCTION(NetMulticast, Reliable)
-	void MulticastReceiveMissileLaunch(const FGuLiMissileVisualLaunchDTO& Event);
-
-	UFUNCTION(NetMulticast, Unreliable)
-	void MulticastReceiveMissileCorrection(const FGuLiMissileVisualCorrectionDTO& Event);
-
-	UFUNCTION(NetMulticast, Reliable)
-	void MulticastReceiveMissileTerminal(const FGuLiMissileVisualTerminalDTO& Event);
-
 	void HandleLogicalMissileLaunch(const FGuLiLogicalMissileState& Missile);
 	void HandleLogicalMissileCorrection(const FGuLiLogicalMissileState& Missile);
 	void HandleLogicalMissileTerminal(const FGuLiLogicalMissileTerminalEvent& Event);

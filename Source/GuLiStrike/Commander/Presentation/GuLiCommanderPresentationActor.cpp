@@ -12,6 +12,7 @@
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Commander/Framework/GuLiCommanderGameState.h"
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
+#include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
@@ -54,8 +55,8 @@ namespace GuLiCommanderPresentation
 		Component.SetCullDistance(0.0f);
 		Component.bNeverDistanceCull = true;
 		Component.bAllowCullDistanceVolume = false;
-		if (Component.NumCustomDataFloats != FGuLiMechanicalAnimationFrame::CustomDataFloats)
-			Component.SetNumCustomDataFloats(FGuLiMechanicalAnimationFrame::CustomDataFloats);
+		if (Component.NumCustomDataFloats != GuLiVATAnimation::CustomDataFloatCount)
+			Component.SetNumCustomDataFloats(GuLiVATAnimation::CustomDataFloatCount);
 	}
 
 	void DeferMirrorDestruction(FMassEntityManager& Manager, TArray<FMassEntityHandle>&& Entities)
@@ -292,7 +293,7 @@ RouteLines->SetupAttachment(SceneRoot);
 	RingInstances->SetAffectDistanceFieldLighting(false);
 	RingInstances->SetAffectDynamicIndirectLighting(false);
 	RingInstances->SetVisibleInRayTracing(false);
-	RingInstances->SetCullDistances(0, 0);
+	GuLiCommanderPresentation::DisableUnitDistanceCulling(*RingInstances);
 	RingInstances->NumCustomDataFloats = 4;
 
 	UnitMeshAsset = TSoftObjectPtr<UStaticMesh>(FSoftObjectPath(
@@ -353,7 +354,9 @@ void AGuLiCommanderPresentationActor::BeginPlay()
 			[WeakThis](const FGuLiCombatShotCue& Cue, FTransform& Muzzle, float& RenderTime)
 			{ return WeakThis.IsValid() && WeakThis->ResolveMechanicalMuzzle(Cue, Muzzle, RenderTime); },
 			[WeakThis](const FGuLiCombatShotCue& Cue)
-			{ if (WeakThis.IsValid()) WeakThis->ObserveMechanicalShot(Cue); });
+			{ if (WeakThis.IsValid()) WeakThis->ObserveMechanicalShot(Cue); },
+			[WeakThis](const FGuLiTargetHandle& Source, FName Slot, const FVector& Launch, FVector& Offset)
+			{ return WeakThis.IsValid() && WeakThis->ResolveMechanicalLaunchOffset(Source, Slot, Launch, Offset); });
 	}
 }
 
@@ -751,9 +754,7 @@ void AGuLiCommanderPresentationActor::ApplyPresentationPerformanceSettings()
 		GuLiUnitRenderPolicy::ApplyReflectionExclusions(*Component);
 	}
 
-	RingInstances->SetCullDistances(
-		Effective.RingCullDistanceCentimeters,
-		Effective.RingCullDistanceCentimeters);
+	GuLiCommanderPresentation::DisableUnitDistanceCulling(*RingInstances);
 	RingInstances->SetCastShadow(false);
 	RingInstances->SetAffectDistanceFieldLighting(false);
 	RingInstances->SetAffectDynamicIndirectLighting(false);
@@ -1297,6 +1298,9 @@ float AGuLiCommanderPresentationActor::TestOnly_SelectClockRoundTripMilliseconds
 
 void AGuLiCommanderPresentationActor::ResolveSoftAssets()
 {
+	UnitAvoidanceRadii.Reset();
+	NativeRingRadii = FVector2D::ZeroVector;
+	RingVerticalScale = GuLiVfx::Scale(this, RingMeshVfxId, GuLiVfx::Scale(this, RingMaterialVfxId)).Z;
 	if (UStaticMesh* UnitMesh = UnitMeshAsset.LoadSynchronous())
 	{
 		UnitInstances->SetStaticMesh(UnitMesh);
@@ -1310,6 +1314,9 @@ void AGuLiCommanderPresentationActor::ResolveSoftAssets()
 	if (UStaticMesh* RingMesh = GuLiVfx::Load<UStaticMesh>(this, RingMeshVfxId))
 	{
 		RingInstances->SetStaticMesh(RingMesh);
+		const FBox Bounds = RingMesh->GetBoundingBox();
+		NativeRingRadii = FVector2D(FMath::Max(FMath::Abs(Bounds.Min.X), FMath::Abs(Bounds.Max.X)),
+			FMath::Max(FMath::Abs(Bounds.Min.Y), FMath::Abs(Bounds.Max.Y)));
 	}
 	else
 	{
@@ -1571,6 +1578,10 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 		Sample.GunPitchDegrees[1] = QuantizedPose.RightGunPitch * 0.01f;
 		Sample.HoverBlendStartMilliseconds = QuantizedPose.HoverBlendStartMilliseconds;
 		Sample.HoverBlendFromWeight = QuantizedPose.HoverBlendFromWeight;
+		Sample.VATPlayback.Clip = QuantizedPose.VATClip;
+		Sample.VATPlayback.Phase = QuantizedPose.VATPhase / 65535.0f;
+		Sample.VATPlayback.Rate = QuantizedPose.VATRate / 256.0f;
+		Sample.VATPlayback.bInitialized = true;
 		Sample.bHoverIdleTarget = QuantizedPose.bHoverIdleTarget;
 		Sample.ActiveOrderId = QuantizedPose.ActiveOrderId;
 		Sample.State = QuantizedPose.State;
@@ -1870,7 +1881,7 @@ void AGuLiCommanderPresentationActor::ApplyPrediction(
 	if (!bPredictionTraceActive || !bPredictionTraceDisableDisplacement)
 #endif
 	{
-		InOutTransform.AddToTranslation(AppliedOffset);
+		InOutTransform.AddToTranslation(AppliedOffset * Prediction->CrowdDisplacementScale);
 	}
 	InOutTransform.SetRotation(FRotator(
 		0.0f,
@@ -2098,7 +2109,7 @@ void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
 	for (TPair<FGuLiSoldierId, FGuLiCommanderPresentedSoldier>& Pair : PresentedSoldiers)
 	{
 		Pair.Value.Samples.Reset();
-		Pair.Value.MechanicalPose = {}; Pair.Value.MechanicalFrame = {}; Pair.Value.PreviousMechanicalFrame = {};
+		Pair.Value.MechanicalPose = {}; Pair.Value.MechanicalVisual = {}; Pair.Value.MechanicalFrame = {}; Pair.Value.PreviousMechanicalFrame = {};
 		Pair.Value.PendingRecoil.Reset();
 		Pair.Value.DisplacementFrameFloor = 0;
 		Pair.Value.bHasAuthoritativeTransform = false;
@@ -2390,7 +2401,7 @@ void AGuLiCommanderPresentationActor::EnsureStableInstancePool(AGuLiSoldierState
 				if (BatchId != Existing->BatchUnitTypeId)
 					if (auto* Soldier = PresentedSoldiers.Find(Id))
 					{
-						Soldier->MechanicalPose = {}; Soldier->MechanicalFrame = {}; Soldier->PreviousMechanicalFrame = {};
+						Soldier->MechanicalPose = {}; Soldier->MechanicalVisual = {}; Soldier->MechanicalFrame = {}; Soldier->PreviousMechanicalFrame = {};
 						Soldier->PendingRecoil.Reset(); Soldier->bResetPresentationOnNextPose = true;
 					}
 				Existing->BatchUnitTypeId = BatchId; Existing->BatchTeam = State->Team; Existing->UnitInstanceIndex = NewSlot;
@@ -2492,6 +2503,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	FVector HoverCamera = FVector::ZeroVector; FRotator HoverView;
 	if (const auto* PC = FindLocalController()) PC->GetPlayerViewPoint(HoverCamera, HoverView);
 	if (HoverEffects) HoverEffects->BeginFrame(LocalNowSeconds, HoverCamera);
+	RefreshPredictionCrowding(*Replicator, DeltaSeconds);
 
 	{
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_Interpolation);
@@ -2602,7 +2614,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 				for (int32 Disc = 0; Disc < 4; ++Disc)
 				{
 					FTransform Nozzle;
-					if (!GuLiMechanicalAnimation::ResolveHoverNozzle(Def->MechanicalAnimation, Soldier.MechanicalPose, Soldier.PresentedTransform, Disc, Nozzle)) continue;
+					if (!GuLiMechanicalAnimation::ResolveVisualNozzle(Def->MechanicalAnimation, Soldier.MechanicalPose, Soldier.MechanicalVisual, Disc, Nozzle)) continue;
 					FGuLiHoverNozzleSource Source;
 					Source.UnitId = ReliableState.SoldierId.Value; Source.Disc = uint8(Disc);
 					Source.Position = Nozzle.GetLocation(); Source.Direction = Nozzle.GetUnitAxis(EAxis::X);
@@ -2616,8 +2628,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		{
 			const auto* Batch = FindUnitInstances(InstanceHandle->BatchUnitTypeId);
 			const UStaticMesh* Mesh = Batch ? Batch->GetStaticMesh() : nullptr;
-			const FBox Bounds = Mesh ? Mesh->GetBoundingBox().TransformBy(
-				FTransform(FQuat::Identity, FVector::ZeroVector, FVector(ModelScale))) : FBox(ForceInit);
+			const FBox Bounds = GetUnitModelBoundsCentimeters(InstanceHandle->BatchUnitTypeId);
 			// Match actual model size, not the unscaled source or the whole ISM batch.
 			FTransform VisualPose = Soldier.PresentedTransform;
 			TryGetPresentedVisualTransform(ReliableState.SoldierId, VisualPose);
@@ -2628,12 +2639,12 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 
 		FTransform UnitTransform = Soldier.PresentedTransform;
 		UnitTransform.SetScale3D(FVector::ZeroVector);
-		FTransform RingTransform = BuildRingTransform(Soldier.PresentedTransform);
+		FTransform RingTransform = BuildRingTransform(Soldier.PresentedTransform, GetUnitAvoidanceRadius(ReliableState.UnitTypeId));
 		RingTransform.SetScale3D(FVector::ZeroVector);
 		// A failed team-batch allocation must not leave an enemy stencil on a newly friendly unit.
 		if (bAlive && InstanceHandle->BatchTeam == ReliableState.Team)
 		{
-			FTransform Visible = Soldier.PresentedTransform;
+			FTransform Visible = Soldier.MechanicalVisual.bInitialized ? Soldier.MechanicalVisual.Root : Soldier.PresentedTransform;
 			Visible.SetScale3D(FVector(ModelScale));
 			if (ReliableState.bPhased)
 			{
@@ -2643,7 +2654,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			else
 			{
 				UnitTransform = Visible;
-				RingTransform = BuildRingTransform(Soldier.PresentedTransform);
+				RingTransform = BuildRingTransform(Soldier.PresentedTransform, GetUnitAvoidanceRadius(ReliableState.UnitTypeId));
 				if (UnitFeedback && LocalNowSeconds - Soldier.HitFlashStartTime < UGuLiUnitFeedbackSubsystem::HitDuration
 					&& UnitFeedback->IsWithinCullDistance(Visible.GetLocation()))
 				{
@@ -2657,14 +2668,17 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		{
 			if (UnitFeedback)
 			{
-				auto Wreck = Soldier.PresentedTransform; Wreck.SetScale3D(FVector(ModelScale));
+				auto Wreck = Soldier.MechanicalVisual.bInitialized ? Soldier.MechanicalVisual.Root : Soldier.PresentedTransform; Wreck.SetScale3D(FVector(ModelScale));
 				DesiredWreckTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Wreck);
 				WreckMechanicalIds.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(ReliableState.SoldierId);
 			}
-			RingTransform = BuildRingTransform(Soldier.PresentedTransform);
+			RingTransform = BuildRingTransform(Soldier.PresentedTransform, GetUnitAvoidanceRadius(ReliableState.UnitTypeId));
 		}
 		auto& CachedUnit = (*DesiredUnitTransforms)[InstanceHandle->UnitInstanceIndex];
-		if (!CachedUnit.Equals(UnitTransform, 0.01f)) { CachedUnit = UnitTransform; BatchState->DirtyTransformSlots.Add(InstanceHandle->UnitInstanceIndex); }
+		// Quaternion tolerance 0.01 can suppress over a degree of the damping tail.
+		if (!CachedUnit.Equals(UnitTransform, 0.01f) || (Soldier.MechanicalVisual.bInitialized
+			&& !CachedUnit.GetRotation().Equals(UnitTransform.GetRotation(), 0.00001f)))
+		{ CachedUnit = UnitTransform; BatchState->DirtyTransformSlots.Add(InstanceHandle->UnitInstanceIndex); }
 		auto& CachedRing = CachedRingTransforms[InstanceHandle->RingInstanceIndex];
 		if (!CachedRing.Equals(RingTransform, 0.01f)) { CachedRing = RingTransform; DirtyRingTransformSlots.Add(InstanceHandle->RingInstanceIndex); }
 
@@ -2763,14 +2777,83 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	}
 }
 
+float AGuLiCommanderPresentationActor::GetUnitAvoidanceRadius(const uint16 UnitTypeId) const
+{
+	if (const float* Cached = UnitAvoidanceRadii.Find(UnitTypeId)) return *Cached;
+	const float DefaultRadius = GetDefault<UGuLiBattleAuthoritySubsystem>()->GetExternalUnitRadius();
+	const auto* Data = GetWorld() ? GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>() : nullptr;
+	const auto* Definition = Data ? Data->FindSoldierDefinition(UnitTypeId) : nullptr;
+	if (!Definition) return DefaultRadius;
+	const float Radius = Definition->GetMassAvoidanceRadius(DefaultRadius);
+	UnitAvoidanceRadii.Add(UnitTypeId, Radius);
+	return Radius;
+}
+
+void AGuLiCommanderPresentationActor::RefreshPredictionCrowding(
+	const AGuLiSoldierStateReplicator& Replicator, const float DeltaSeconds)
+{
+	if (PredictedMoves.IsEmpty()) return;
+	struct FBody { FGuLiSoldierId Id; FVector Location; float Radius; };
+	TArray<FBody> Bodies;
+	Bodies.Reserve(PresentedSoldiers.Num());
+	float MaxRadius = 0.0f;
+	// Evaluate one common playback time before applying any client's prediction.
+	const double SampleTime = EstimatedServerTimeSeconds - InterpolationBackTimeSeconds;
+	for (const auto& State : Replicator.GetItems())
+	{
+		if (!State.IsAlive() || State.bPhased) continue;
+		auto* Soldier = PresentedSoldiers.Find(State.SoldierId);
+		if (!Soldier) continue;
+		FTransform Pose;
+		if (!EvaluateAuthoritativeTransform(*Soldier, SampleTime, Pose)) continue;
+		const float Radius = GetUnitAvoidanceRadius(State.UnitTypeId);
+		if (Pose.GetLocation().ContainsNaN() || !FMath::IsFinite(Radius) || Radius <= 0.0f) continue;
+		Bodies.Add({State.SoldierId, Pose.GetLocation(), Radius});
+		MaxRadius = FMath::Max(MaxRadius, Radius);
+	}
+	const float CellSize = FMath::Max(300.0f, MaxRadius * 2.4f);
+	auto CellOf = [CellSize](const FVector& P)
+	{
+		return FIntPoint(FMath::FloorToInt(P.X / CellSize), FMath::FloorToInt(P.Y / CellSize));
+	};
+	TMap<FIntPoint, TArray<int32>> Grid;
+	for (int32 I = 0; I < Bodies.Num(); ++I) Grid.FindOrAdd(CellOf(Bodies[I].Location)).Add(I);
+	TSet<FGuLiSoldierId> Crowded;
+	for (int32 I = 0; I < Bodies.Num(); ++I)
+	{
+		const auto& A = Bodies[I];
+		const auto Cell = CellOf(A.Location);
+		for (int32 X = Cell.X - 1; X <= Cell.X + 1; ++X)
+		for (int32 Y = Cell.Y - 1; Y <= Cell.Y + 1; ++Y)
+		{
+			const auto* Bucket = Grid.Find(FIntPoint(X, Y));
+			if (!Bucket) continue;
+			for (const int32 J : *Bucket)
+			{
+				if (J <= I) continue;
+				const auto& B = Bodies[J];
+				if (FMath::Abs(A.Location.Z - B.Location.Z) <= 300.0f
+					&& FVector::DistSquared2D(A.Location, B.Location) < FMath::Square(1.2f * (A.Radius + B.Radius)))
+				{ Crowded.Add(A.Id); Crowded.Add(B.Id); }
+			}
+		}
+	}
+	for (auto& Pair : PredictedMoves)
+		Pair.Value.CrowdDisplacementScale = FMath::FInterpConstantTo(Pair.Value.CrowdDisplacementScale,
+			Crowded.Contains(Pair.Key) ? 0.0f : 1.0f, FMath::Max(0.0f, DeltaSeconds), 1.0f / 0.15f);
+}
+
 FTransform AGuLiCommanderPresentationActor::BuildRingTransform(
-	const FTransform& SoldierTransform) const
+	const FTransform& SoldierTransform, const float AvoidanceRadius) const
 {
 	FTransform RingTransform = SoldierTransform;
 	FVector RingLocation = RingTransform.GetLocation();
 	RingLocation.Z += GuLiCommanderPresentation::RingHeight;
 	RingTransform.SetLocation(RingLocation);
-	RingTransform.SetScale3D(GuLiVfx::Scale(this, RingMeshVfxId, GuLiVfx::Scale(this, RingMaterialVfxId)));
+	const bool bValid = NativeRingRadii.X > UE_KINDA_SMALL_NUMBER && NativeRingRadii.Y > UE_KINDA_SMALL_NUMBER
+		&& FMath::IsFinite(AvoidanceRadius) && AvoidanceRadius > 0.0f;
+	RingTransform.SetScale3D(bValid ? FVector(AvoidanceRadius / NativeRingRadii.X,
+		AvoidanceRadius / NativeRingRadii.Y, RingVerticalScale) : FVector::ZeroVector);
 	return RingTransform;
 }
 
@@ -2795,12 +2878,16 @@ void AGuLiCommanderPresentationActor::UpdatePhasedInstances(const TMap<uint16,TA
   {
    const auto* Original = FindUnitInstances(Pair.Key); if (!Original) continue;
    Component = NewObject<UInstancedStaticMeshComponent>(this);
+   Component->SetNumCustomDataFloats(GuLiVATAnimation::CustomDataFloatCount);
    GuLiCommanderPresentation::DisableUnitDistanceCulling(*Component);
    Component->SetupAttachment(GetRootComponent()); Component->SetMobility(EComponentMobility::Movable);
    Component->SetCollisionEnabled(ECollisionEnabled::NoCollision); Component->SetCanEverAffectNavigation(false);
    Component->SetCastShadow(false); Component->SetStaticMesh(Original->GetStaticMesh());
    GuLiUnitRenderPolicy::ApplyReflectionExclusions(*Component);
    auto* Material = GuLiVfx::Load<UMaterialInterface>(this, GuLiVfxIds::TeleportBody);
+   if (const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
+    if (const auto* D = Data->FindSoldierDefinition(Pair.Key); D && D->VATDefinition && D->VATDefinition->PhaseMaterial)
+     Material = D->VATDefinition->PhaseMaterial;
    GuLiMechanicalAnimation::ConfigureOverlay(*Component, Material);
    Component->RegisterComponent();
   }
@@ -2840,7 +2927,11 @@ void AGuLiCommanderPresentationActor::UpdateWreckInstances(const TMap<uint16,TAr
 			Component->SetRenderCustomDepth(false);
 			Component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			Component->SetStaticMesh(Original->GetStaticMesh());
-			GuLiMechanicalAnimation::ConfigureOverlay(*Component, Material);
+			UMaterialInterface* UnitMaterial = Material;
+			if (const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
+				if (const auto* D = Data->FindSoldierDefinition(Pair.Key); D && D->VATDefinition && D->VATDefinition->WreckMaterial)
+					UnitMaterial = D->VATDefinition->WreckMaterial;
+			GuLiMechanicalAnimation::ConfigureOverlay(*Component, UnitMaterial);
 			AddInstanceComponent(Component);
 			Component->RegisterComponent();
 		}
@@ -2884,8 +2975,12 @@ void AGuLiCommanderPresentationActor::UpdateHitFlashInstances(
 			// The live body supplies the team stencil; this temporary overlay must not overwrite it.
 			Component->SetRenderCustomDepth(false);
 			Component->SetStaticMesh(Original->GetStaticMesh());
-			Component->SetNumCustomDataFloats(FGuLiMechanicalAnimationFrame::CustomDataFloats);
-			GuLiMechanicalAnimation::ConfigureOverlay(*Component, Material);
+			Component->SetNumCustomDataFloats(GuLiVATAnimation::CustomDataFloatCount);
+			UMaterialInterface* UnitMaterial = Material;
+			if (const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
+				if (const auto* D = Data->FindSoldierDefinition(Pair.Key); D && D->VATDefinition && D->VATDefinition->HitMaterial)
+					UnitMaterial = D->VATDefinition->HitMaterial;
+			GuLiMechanicalAnimation::ConfigureOverlay(*Component, UnitMaterial);
 			AddInstanceComponent(Component);
 			Component->RegisterComponent();
 		}

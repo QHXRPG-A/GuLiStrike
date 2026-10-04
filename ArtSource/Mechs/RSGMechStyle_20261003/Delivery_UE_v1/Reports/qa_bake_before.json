@@ -1,0 +1,738 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "qa_class_loaded": true,
+    "bake": {
+      "before": {
+        "success": false,
+        "message": "GuLiMapAuthoring source changed after the last resource bake; rebake before PIE.",
+        "issues": [
+          "GuLiMapAuthoring source changed after the last resource bake; rebake before PIE."
+        ]
+      }
+    },
+    "walls": [],
+    "layout": {
+      "authored_deployments": true,
+      "slots": [
+        {
+          "team": 1,
+          "unit_type_id": 1,
+          "formation": 0,
+          "slot": 0,
+          "x": 0,
+          "y": 65000,
+          "z": 901.7790832519531,
+          "radius_cm": 312.5,
+          "yaw": 0
+        },
+        {
+          "team": 1,
+          "unit_type_id": 1,
+          "formation": 1,
+          "slot": 0,
+          "x": -2300,
+          "y": 65000,
+          "z": 902.8101841762227,
+          "radius_cm": 312.5,
+          "yaw": 0
+        },
+        {
+          "team": 1,
+          "unit_type_id": 1,
+          "formation": 2,
+          "slot": 0,
+          "x": -2300,
+          "y": 67000,
+          "z": 902.8744151862275,
+          "radius_cm": 312.5,
+          "yaw": 0
+        },
+        {
+          "team": 1,
+          "unit_type_id": 2,
+          "formation": 3,
+          "slot": 0,
+          "x": 0,
+          "y": 63000,
+          "z": 901.7790832519531,
+          "radius_cm": 625,
+          "yaw": 0
+        },
+        {
+          "team": 1,
+          "unit_type_id": 1,
+          "formation": 4,
+          "slot": 0,
+          "x": -11000,
+          "y": 65000,
+          "z": 1073.7790832519531,
+          "radius_cm": 312.5,
+          "yaw": 0
+        },
+        {
+          "team": 2,
+          "unit_type_id": 2,
+          "formation": 5,
+          "slot": 0,
+          "x": 5600,
+          "y": 65000,
+          "z": 901.7790832519531,
+          "radius_cm": 625,
+          "yaw": 0
+        },
+        {
+          "team": 2,
+          "unit_type_id": 2,
+          "formation": 6,
+          "slot": 0,
+          "x": 6500,
+          "y": 68500,
+          "z": 901.7790832519531,
+          "radius_cm": 625,
+          "yaw": 0
+        }
+      ],
+      "reservations": [
+        {
+          "x": 0,
+          "y": 65000,
+          "radius_cm": 312.5,
+          "label": "team=1 formation=0 slot=0 type=1",
+          "blocks_army": false
+        },
+        {
+          "x": -2300,
+          "y": 65000,
+          "radius_cm": 312.5,
+          "label": "team=1 formation=1 slot=0 type=1",
+          "blocks_army": false
+        },
+        {
+          "x": -2300,
+          "y": 67000,
+          "radius_cm": 312.5,
+          "label": "team=1 formation=2 slot=0 type=1",
+          "blocks_army": false
+        },
+        {
+          "x": 0,
+          "y": 63000,
+          "radius_cm": 625,
+          "label": "team=1 formation=3 slot=0 type=2",
+          "blocks_army": false
+        },
+        {
+          "x": -11000,
+          "y": 65000,
+          "radius_cm": 312.5,
+          "label": "team=1 formation=4 slot=0 type=1",
+          "blocks_army": false
+        },
+        {
+          "x": 5600,
+          "y": 65000,
+          "radius_cm": 625,
+          "label": "team=2 formation=5 slot=0 type=2",
+          "blocks_army": false
+        },
+        {
+          "x": 6500,
+          "y": 68500,
+          "radius_cm": 625,
+          "label": "team=2 formation=6 slot=0 type=2",
+          "blocks_army": false
+        },
+        {
+          "x": 0,
+          "y": 74000,
+          "radius_cm": 707.1067504882812,
+          "label": "InitialFactory",
+          "blocks_army": true
+        },
+        {
+          "x": 0,
+          "y": 69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 miner=0",
+          "blocks_army": true
+        },
+        {
+          "x": -1200,
+          "y": 69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 miner=1",
+          "blocks_army": true
+        },
+        {
+          "x": -2400,
+          "y": 69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 miner=2",
+          "blocks_army": true
+        },
+        {
+          "x": -3600,
+          "y": 69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 miner=3",
+          "blocks_army": true
+        },
+        {
+          "x": 0,
+          "y": 70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 miner=4",
+          "blocks_army": true
+        },
+        {
+          "x": -1200,
+          "y": 70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 miner=5",
+          "blocks_army": true
+        },
+        {
+          "x": -2400,
+          "y": 70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 miner=6",
+          "blocks_army": true
+        },
+        {
+          "x": -3600,
+          "y": 70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 miner=7",
+          "blocks_army": true
+        },
+        {
+          "x": 1200,
+          "y": 69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 builder=0",
+          "blocks_army": true
+        },
+        {
+          "x": 2400,
+          "y": 69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 builder=1",
+          "blocks_army": true
+        },
+        {
+          "x": 3600,
+          "y": 69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 builder=2",
+          "blocks_army": true
+        },
+        {
+          "x": 4800,
+          "y": 69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 builder=3",
+          "blocks_army": true
+        },
+        {
+          "x": 1200,
+          "y": 70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 builder=4",
+          "blocks_army": true
+        },
+        {
+          "x": 2400,
+          "y": 70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 builder=5",
+          "blocks_army": true
+        },
+        {
+          "x": 3600,
+          "y": 70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 builder=6",
+          "blocks_army": true
+        },
+        {
+          "x": 4800,
+          "y": 70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=1 builder=7",
+          "blocks_army": true
+        },
+        {
+          "x": 0,
+          "y": -74000,
+          "radius_cm": 707.1067504882812,
+          "label": "InitialFactory",
+          "blocks_army": true
+        },
+        {
+          "x": 0,
+          "y": -69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 miner=0",
+          "blocks_army": true
+        },
+        {
+          "x": 1200,
+          "y": -69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 miner=1",
+          "blocks_army": true
+        },
+        {
+          "x": 2400,
+          "y": -69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 miner=2",
+          "blocks_army": true
+        },
+        {
+          "x": 3600,
+          "y": -69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 miner=3",
+          "blocks_army": true
+        },
+        {
+          "x": 0,
+          "y": -70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 miner=4",
+          "blocks_army": true
+        },
+        {
+          "x": 1200,
+          "y": -70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 miner=5",
+          "blocks_army": true
+        },
+        {
+          "x": 2400,
+          "y": -70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 miner=6",
+          "blocks_army": true
+        },
+        {
+          "x": 3600,
+          "y": -70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 miner=7",
+          "blocks_army": true
+        },
+        {
+          "x": -1200,
+          "y": -69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 builder=0",
+          "blocks_army": true
+        },
+        {
+          "x": -2400,
+          "y": -69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 builder=1",
+          "blocks_army": true
+        },
+        {
+          "x": -3600,
+          "y": -69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 builder=2",
+          "blocks_army": true
+        },
+        {
+          "x": -4800,
+          "y": -69000,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 builder=3",
+          "blocks_army": true
+        },
+        {
+          "x": -1200,
+          "y": -70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 builder=4",
+          "blocks_army": true
+        },
+        {
+          "x": -2400,
+          "y": -70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 builder=5",
+          "blocks_army": true
+        },
+        {
+          "x": -3600,
+          "y": -70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 builder=6",
+          "blocks_army": true
+        },
+        {
+          "x": -4800,
+          "y": -70200,
+          "radius_cm": 254.55844116210938,
+          "label": "team=2 builder=7",
+          "blocks_army": true
+        },
+        {
+          "x": -67400,
+          "y": 67885.70999999999,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R1C1",
+          "blocks_army": true
+        },
+        {
+          "x": -51685.70999999999,
+          "y": 74885.70999999999,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R1C2",
+          "blocks_army": true
+        },
+        {
+          "x": -25471.43,
+          "y": 74385.70999999999,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R1C3",
+          "blocks_army": true
+        },
+        {
+          "x": 7242.860000000001,
+          "y": 73385.70999999999,
+          "radius_cm": 5084.59033203125,
+          "label": "Outpost_R1C4",
+          "blocks_army": true
+        },
+        {
+          "x": 25957.14,
+          "y": 73885.70999999999,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R1C5",
+          "blocks_army": true
+        },
+        {
+          "x": 51671.43,
+          "y": 74885.70999999999,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R1C6",
+          "blocks_army": true
+        },
+        {
+          "x": 68885.70999999999,
+          "y": 68885.70999999999,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R1C7",
+          "blocks_army": true
+        },
+        {
+          "x": -74900,
+          "y": 51171.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R2C1",
+          "blocks_army": true
+        },
+        {
+          "x": -60685.70999999999,
+          "y": 51671.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R2C2",
+          "blocks_army": true
+        },
+        {
+          "x": -24971.43,
+          "y": 43671.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R2C3",
+          "blocks_army": true
+        },
+        {
+          "x": 242.86000000000058,
+          "y": 41671.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R2C4",
+          "blocks_army": true
+        },
+        {
+          "x": 25957.14,
+          "y": 59671.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R2C5",
+          "blocks_army": true
+        },
+        {
+          "x": 55671.43,
+          "y": 57671.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R2C6",
+          "blocks_army": true
+        },
+        {
+          "x": 74885.70999999999,
+          "y": 51671.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R2C7",
+          "blocks_army": true
+        },
+        {
+          "x": -73400,
+          "y": 25957.14,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R3C1",
+          "blocks_army": true
+        },
+        {
+          "x": -45685.71,
+          "y": 21457.14,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R3C2",
+          "blocks_army": true
+        },
+        {
+          "x": -26471.429999999997,
+          "y": 26957.14,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R3C3",
+          "blocks_army": true
+        },
+        {
+          "x": 242.86000000000058,
+          "y": 25957.14,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R3C4",
+          "blocks_army": true
+        },
+        {
+          "x": 20457.14,
+          "y": 19957.14,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R3C5",
+          "blocks_army": true
+        },
+        {
+          "x": 57671.43,
+          "y": 19957.14,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R3C6",
+          "blocks_army": true
+        },
+        {
+          "x": 73385.70999999999,
+          "y": 25957.14,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R3C7",
+          "blocks_army": true
+        },
+        {
+          "x": -73400,
+          "y": 242.85999999999999,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R4C1",
+          "blocks_army": true
+        },
+        {
+          "x": -51185.71,
+          "y": 242.86000000000058,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R4C2",
+          "blocks_army": true
+        },
+        {
+          "x": -25471.43,
+          "y": 242.86000000000058,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R4C3",
+          "blocks_army": true
+        },
+        {
+          "x": 10000,
+          "y": 11000,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R4C4",
+          "blocks_army": true
+        },
+        {
+          "x": 25957.14,
+          "y": 242.86000000000058,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R4C5",
+          "blocks_army": true
+        },
+        {
+          "x": 51671.43,
+          "y": 242.86000000000058,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R4C6",
+          "blocks_army": true
+        },
+        {
+          "x": 73385.70999999999,
+          "y": 242.85999999999999,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R4C7",
+          "blocks_army": true
+        },
+        {
+          "x": -74400,
+          "y": -25471.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R5C1",
+          "blocks_army": true
+        },
+        {
+          "x": -51185.71,
+          "y": -25471.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R5C2",
+          "blocks_army": true
+        },
+        {
+          "x": -25471.43,
+          "y": -25471.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R5C3",
+          "blocks_army": true
+        },
+        {
+          "x": 242.86000000000058,
+          "y": -25471.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R5C4",
+          "blocks_army": true
+        },
+        {
+          "x": 25957.14,
+          "y": -25471.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R5C5",
+          "blocks_army": true
+        },
+        {
+          "x": 51671.43,
+          "y": -25471.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R5C6",
+          "blocks_army": true
+        },
+        {
+          "x": 72385.70999999999,
+          "y": -20971.43,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R5C7",
+          "blocks_army": true
+        },
+        {
+          "x": -73900,
+          "y": -51185.71,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R6C1",
+          "blocks_army": true
+        },
+        {
+          "x": -51185.71,
+          "y": -51185.71,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R6C2",
+          "blocks_army": true
+        },
+        {
+          "x": -27471.429999999997,
+          "y": -51185.71,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R6C3",
+          "blocks_army": true
+        },
+        {
+          "x": 242.85999999999999,
+          "y": -41685.71,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R6C4",
+          "blocks_army": true
+        },
+        {
+          "x": 27457.14,
+          "y": -51185.71,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R6C5",
+          "blocks_army": true
+        },
+        {
+          "x": 51671.43,
+          "y": -51185.71,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R6C6",
+          "blocks_army": true
+        },
+        {
+          "x": 71385.70999999999,
+          "y": -60685.70999999999,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R6C7",
+          "blocks_army": true
+        },
+        {
+          "x": -65400,
+          "y": -65900,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R7C1",
+          "blocks_army": true
+        },
+        {
+          "x": -50185.71,
+          "y": -74400,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R7C2",
+          "blocks_army": true
+        },
+        {
+          "x": -25471.43,
+          "y": -73900,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R7C3",
+          "blocks_army": true
+        },
+        {
+          "x": -7242.860000000001,
+          "y": -73385.70999999999,
+          "radius_cm": 5084.59033203125,
+          "label": "Outpost_R7C4",
+          "blocks_army": true
+        },
+        {
+          "x": 25957.14,
+          "y": -73900,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R7C5",
+          "blocks_army": true
+        },
+        {
+          "x": 51671.43,
+          "y": -74900,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R7C6",
+          "blocks_army": true
+        },
+        {
+          "x": 67385.70999999999,
+          "y": -66900,
+          "radius_cm": 424.2640686035156,
+          "label": "Outpost_R7C7",
+          "blocks_army": true
+        }
+      ]
+    },
+    "flight_nav": [
+      {
+        "actor": "GuLiFlightNavigationVolume_0",
+        "result": "None"
+      }
+    ]
+  }
+}

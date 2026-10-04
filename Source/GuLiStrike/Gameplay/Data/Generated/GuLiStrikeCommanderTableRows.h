@@ -71,6 +71,146 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	TSoftObjectPtr<UObject> StateTreeAsset;
 
+	/** VATDefinition (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	TSoftObjectPtr<UObject> VATDefinition;
+
+	/** bSummonOnly (bool, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	bool bSummonOnly = false;
+
+};
+
+/** DataTable DT_GuLiStrikeCommander_Camera 的行结构（源: GuLiStrikeCommander.xlsx / Camera）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeCommanderCameraRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	FString Note;
+
+	/** MinimumHeightMeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float MinimumHeightMeters = 0.0f;
+
+	/** TacticalStartHeightMeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float TacticalStartHeightMeters = 0.0f;
+
+	/** TacticalMaximumHeightMeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float TacticalMaximumHeightMeters = 0.0f;
+
+	/** InitialHeightMeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float InitialHeightMeters = 0.0f;
+
+	/** NearPitchDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float NearPitchDegrees = 0.0f;
+
+	/** TacticalPitchDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float TacticalPitchDegrees = 0.0f;
+
+	/** OverviewPitchDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float OverviewPitchDegrees = 0.0f;
+
+	/** FieldOfViewDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float FieldOfViewDegrees = 0.0f;
+
+	/** ZoomStepMultiplier (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float ZoomStepMultiplier = 0.0f;
+
+	/** ZoomInterpolationPerSecond (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float ZoomInterpolationPerSecond = 0.0f;
+
+	/** YawDegreesPerSecond (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float YawDegreesPerSecond = 0.0f;
+
+	/** MoveHeightMultiplierPerSecond (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float MoveHeightMultiplierPerSecond = 0.0f;
+
+	/** MinimumMoveMetersPerSecond (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float MinimumMoveMetersPerSecond = 0.0f;
+
+	/** MaximumMoveMetersPerSecond (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float MaximumMoveMetersPerSecond = 0.0f;
+
+	/** RiseHalfLifeSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float RiseHalfLifeSeconds = 0.0f;
+
+	/** DescentHalfLifeSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float DescentHalfLifeSeconds = 0.0f;
+
+	/** MaximumRiseMetersPerSecond (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float MaximumRiseMetersPerSecond = 0.0f;
+
+	/** MaximumDescentMetersPerSecond (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float MaximumDescentMetersPerSecond = 0.0f;
+
+	/** LookAheadSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float LookAheadSeconds = 0.0f;
+
+	/** BoundaryPaddingMeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float BoundaryPaddingMeters = 0.0f;
+
+	/** PivotClearanceMeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float PivotClearanceMeters = 0.0f;
+
+	/** BoomClearanceMeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float BoomClearanceMeters = 0.0f;
+
+	/** CameraClearanceMeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float CameraClearanceMeters = 0.0f;
+
+	/** BoomSampleSpacingMeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float BoomSampleSpacingMeters = 0.0f;
+
+	/** OverviewTransitionSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float OverviewTransitionSeconds = 0.0f;
+
+	/** OverviewPaddingFraction (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float OverviewPaddingFraction = 0.0f;
+
+	/** OverviewUnitIconPixels (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float OverviewUnitIconPixels = 0.0f;
+
+	/** OverviewBuildingIconPixels (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float OverviewBuildingIconPixels = 0.0f;
+
+	/** OverviewYawDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float OverviewYawDegrees = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeCommander_Skills 的行结构（源: GuLiStrikeSecondaryWeapons.xlsx / Skills）。 */
@@ -166,6 +306,14 @@ struct FGuLiStrikeCommanderUnitSkillsRow : public FTableRowBase
 	/** ProjectileSweepRadiusCentimeters (float, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
 	float ProjectileSweepRadiusCentimeters = 0.0f;
+
+	/** ProjectileSpreadAngleDegrees (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	float ProjectileSpreadAngleDegrees = 0.0f;
+
+	/** ProjectileCount (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	int32 ProjectileCount = 0;
 
 };
 

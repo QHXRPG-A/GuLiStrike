@@ -1,0 +1,69 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "world_object": "<Object '/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype' (0x0000018EA9D4B600) Class 'World'>",
+    "levels": [],
+    "projectile": {
+      "class": "/Game/GuLiStrike/Ship/BP_ShipProjectile.BP_ShipProjectile_C",
+      "replicates": true,
+      "components": [
+        {
+          "class": "SphereComponent",
+          "name": "Collision Sphere"
+        },
+        {
+          "class": "StaticMeshComponent",
+          "name": "Mesh"
+        },
+        {
+          "class": "ProjectileMovementComponent",
+          "name": "Projectile Movement"
+        }
+      ]
+    },
+    "actors": [
+      {
+        "name": "PlayerStart_0",
+        "class": "PlayerStart",
+        "location": "<Struct 'Vector' (0x0000018EA7A43EE0) {x: 0.000000, y: 69000.000000, z: 1001.977112}>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_0",
+        "class": "GuLiCommanderDeploymentPoint",
+        "location": "<Struct 'Vector' (0x0000018EA7A58A60) {x: 0.000000, y: 65000.000000, z: 901.779083}>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_1",
+        "class": "GuLiCommanderDeploymentPoint",
+        "location": "<Struct 'Vector' (0x0000018EA7A58290) {x: -2300.000000, y: 65000.000000, z: 902.810184}>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_2",
+        "class": "GuLiCommanderDeploymentPoint",
+        "location": "<Struct 'Vector' (0x0000018EA7A588D0) {x: -2300.000000, y: 67000.000000, z: 902.874415}>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_3",
+        "class": "GuLiCommanderDeploymentPoint",
+        "location": "<Struct 'Vector' (0x0000018EA7A58970) {x: 0.000000, y: 63000.000000, z: 901.779083}>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_4",
+        "class": "GuLiCommanderDeploymentPoint",
+        "location": "<Struct 'Vector' (0x0000018EA7A586F0) {x: -45000.000000, y: 60000.000000, z: 1073.779083}>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_5",
+        "class": "GuLiCommanderDeploymentPoint",
+        "location": "<Struct 'Vector' (0x0000018EA7A58470) {x: 5600.000000, y: 65000.000000, z: 901.779083}>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_6",
+        "class": "GuLiCommanderDeploymentPoint",
+        "location": "<Struct 'Vector' (0x0000018EA7A584C0) {x: 6900.000000, y: 63800.000000, z: 901.779083}>"
+      }
+    ]
+  }
+}

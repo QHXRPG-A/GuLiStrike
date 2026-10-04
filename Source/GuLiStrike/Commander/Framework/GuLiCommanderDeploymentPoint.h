@@ -35,5 +35,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Deployment")
 	bool bAllowAutomaticFire = true;
 
+	/** Authored observation targets may remain idle while automatic fire is still independently allowed. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Deployment")
+	bool bStartIdle = false;
+
 	FVector GetSlotLocation(int32 SlotIndex) const;
 };

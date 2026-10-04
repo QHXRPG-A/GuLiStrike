@@ -36,3 +36,13 @@ ArtSource/UI/WarMachineTarotCards/**/Prompts/*.txt -text
 
 # Large runtime evidence exceeds GitHub's regular blob limit; retain it through LFS.
 Artifacts/Diagnostics/20260928-movement-projectiles/post-build-observation.json filter=lfs diff=lfs merge=lfs -text
+TestResults/NetworkLive20261003/live.utrace filter=lfs diff=lfs merge=lfs -text
+TestResults/NetworkLive20261003/events-project.csv filter=lfs diff=lfs merge=lfs -text
+TestResults/NetworkLive20261003/*.nprof filter=lfs diff=lfs merge=lfs -text
+TestResults/FlightEvents20261004/*.nprof filter=lfs diff=lfs merge=lfs -text
+ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/*_samples.json filter=lfs diff=lfs merge=lfs -text
+# Preserve the original compiler/profiler logs, including whitespace in diagnostic lines.
+ArtSource/Mechs/RSGMechStyle_20261003/**/*.log -whitespace
+TestResults/FlightEvents20261004/*.log -whitespace
+TestResults/NetworkLive20261003/*.log -whitespace
+TestResults/AssetMigration20261002/*.log -whitespace

@@ -17,6 +17,14 @@ public:
 	virtual void Deinitialize() override;
 
 	FGuLiCommanderLODDecision Evaluate(const FGuLiCommanderLODQuery& Query);
+	/** World-effect admission: commander LOD0/1 allow, LOD2 suppresses. Other views use the
+	 * caller's distance limit (<= 0 means unlimited). Any eligible local view wins;
+	 * registered visual components remain hidden per overview view by its own mask. */
+	bool ShouldRenderWorldEffect(const FVector& Location, double NonCommanderMaximumDistance);
+	/** Continuous FX opacity: commander near/tactical views retain full visibility;
+	 * overview contributes none. Other local views fade over the supplied cm range.
+	 * The most visible local view wins; overview retains its per-view component mask. */
+	float GetContinuousEffectDistanceFade(const FVector& Location, double NonCommanderFadeStart, double NonCommanderFadeEnd);
 	const FGuLiCommanderLODSettings& GetSettings() const { return EffectiveSettings; }
 	TArray<FGuLiCommanderLODSettingView> ListSettings(const FString& Prefix = FString()) const;
 	bool SetSetting(const FString& Key, const FString& Value, FString& Error);
@@ -37,6 +45,7 @@ private:
 		FVector Position = FVector::ZeroVector;
 		FConvexVolume Frustum;
 		float ProjectionScale = 1;
+		TOptional<EGuLiCommanderLODLevel> CameraLevel;
 	};
 	void EnsureViews();
 	FGuLiCommanderLODSettings BaselineSettings;

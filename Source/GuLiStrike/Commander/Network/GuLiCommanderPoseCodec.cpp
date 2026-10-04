@@ -10,7 +10,7 @@ namespace GuLiCommanderPoseCodec
 {
 namespace
 {
-constexpr uint16 AllFields = (1u << 12u) - 1u;
+constexpr uint16 AllFields = (1u << 13u) - 1u;
 bool Newer(uint32 A, uint32 B) { return int32(A - B) > 0; }
 
 // Half steps round away from zero, including negative world coordinates and predictions.
@@ -101,7 +101,8 @@ bool IsPoseValid(const FGuLiQuantizedSoldierPose& Pose)
 {
 	return Pose.SoldierId.IsValid() && uint8(Pose.State) <= uint8(EGuLiSoldierPoseState::Destroyed)
 		&& (Pose.Flags & ~GULI_VALID_SOLDIER_POSE_FLAGS) == 0
-		&& FMath::Abs(int32(Pose.LeftGunPitch)) <= 8900 && FMath::Abs(int32(Pose.RightGunPitch)) <= 8900;
+		&& FMath::Abs(int32(Pose.LeftGunPitch)) <= 8900 && FMath::Abs(int32(Pose.RightGunPitch)) <= 8900
+		&& Pose.VATClip < 7;
 }
 
 const FGuLiQuantizedSoldierPose* FindSample(const FHistoryBlock& Block, FGuLiSoldierId Id)
@@ -131,7 +132,9 @@ void WriteRecord(FBitWriter& Writer, const FGuLiQuantizedSoldierPose& Pose,
 		|| Pose.LeftGunPitch != Baseline->Pose.LeftGunPitch || Pose.RightGunPitch != Baseline->Pose.RightGunPitch) Mask |= 1u << 10;
 	if (!Baseline || Pose.HoverBlendStartMilliseconds != Baseline->Pose.HoverBlendStartMilliseconds
 		|| Pose.HoverBlendFromWeight != Baseline->Pose.HoverBlendFromWeight || Pose.bHoverIdleTarget != Baseline->Pose.bHoverIdleTarget) Mask |= 1u << 11;
-	Writer.SerializeBits(&Mask, 12);
+	if (!Baseline || Pose.VATClip != Baseline->Pose.VATClip || Pose.VATPhase != Baseline->Pose.VATPhase
+		|| Pose.VATRate != Baseline->Pose.VATRate) Mask |= 1u << 12;
+	Writer.SerializeBits(&Mask, 13);
 	for (int32 Axis = 0; Axis < 6; ++Axis)
 		if (Mask & (1u << Axis)) WriteSigned(Writer, Current[Axis] - Predicted[Axis]);
 	if (Mask & (1u << 6))
@@ -153,6 +156,11 @@ void WriteRecord(FBitWriter& Writer, const FGuLiQuantizedSoldierPose& Pose,
 		WriteUnsigned(Writer, Pose.HoverBlendStartMilliseconds);
 		uint8 From = Pose.HoverBlendFromWeight, Target = Pose.bHoverIdleTarget ? 1 : 0;
 		Writer.SerializeBits(&From, 8); Writer.SerializeBits(&Target, 1);
+	}
+	if (Mask & (1u << 12))
+	{
+		uint8 Clip = Pose.VATClip; uint16 Phase = Pose.VATPhase, Rate = Pose.VATRate;
+		Writer.SerializeBits(&Clip, 3); Writer.SerializeBits(&Phase, 16); Writer.SerializeBits(&Rate, 16);
 	}
 }
 }
@@ -380,7 +388,7 @@ EDecodeResult FReceiver::Decode(const FGuLiEncodedPoseBlock& Block, FGuLiSoldier
 			Predict(Pose, Chunk.ServerSimTick - Base->SimTick, Values);
 		}
 		Pose.SoldierId = Id;
-		const uint16 Mask = uint16(Reader.ReadBits(12));
+		const uint16 Mask = uint16(Reader.ReadBits(13));
 		if (!BaselineDistance && Mask != AllFields) return EDecodeResult::InvalidPayload;
 		for (int32 Axis = 0; Axis < 6; ++Axis)
 		{
@@ -414,6 +422,12 @@ EDecodeResult FReceiver::Decode(const FGuLiEncodedPoseBlock& Block, FGuLiSoldier
 			Pose.HoverBlendStartMilliseconds = Reader.ReadId();
 			Pose.HoverBlendFromWeight = uint8(Reader.ReadBits(8));
 			Pose.bHoverIdleTarget = Reader.ReadBits(1) != 0;
+		}
+		if (Mask & (1u << 12))
+		{
+			Pose.VATClip = uint8(Reader.ReadBits(3));
+			Pose.VATPhase = uint16(Reader.ReadBits(16));
+			Pose.VATRate = uint16(Reader.ReadBits(16));
 		}
 		if (!Reader.bValid || !IsPoseValid(Pose) || (BaselineDistance && Pose.IsTeleport())) return EDecodeResult::InvalidPayload;
 		Chunk.Samples.Add(Pose);

@@ -23,6 +23,7 @@ private:
 	{
 		FTransform Origin, Previous;
 		FGuLiMechanicalAnimationState State;
+		FGuLiMechanicalVisualState Visual;
 		FGuLiMechanicalAnimationFrame Frame;
 		float Travel = 0, LastShot = -100;
 		int32 LastStage = -1, ShotSide = 0;

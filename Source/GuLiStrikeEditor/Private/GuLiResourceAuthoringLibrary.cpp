@@ -1293,6 +1293,14 @@ bool UGuLiResourceAuthoringLibrary::CalculateCurrentSourceHash(
 		OutIssues = MoveTemp(Result.Issues);
 		return false;
 	}
+	FGuLiInitialArmyAuthoring InitialArmy;
+	FString InitialArmyError;
+	UWorld* World = GuLiResourceAuthoring::GetEditorWorld();
+	if (!World || !InitialArmy.Build(*World, InitialArmyError))
+	{
+		OutIssues.Add(TEXT("Initial army authoring: ") + InitialArmyError);
+		return false;
+	}
 	if (!GuLiResourceAuthoring::HashAuthoringFiles(Files, OutHash))
 	{
 		OutIssues.Add(TEXT("Could not hash GuLiMapAuthoring output."));

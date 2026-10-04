@@ -8,6 +8,13 @@
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Engine/World.h"
 
+#if WITH_EDITOR
+uint32 AGuLiCommanderPlayerController::AllocateEditorQASelectionRequestId()
+{
+	return AllocateSelectionRequestId();
+}
+#endif
+
 bool AGuLiCommanderPlayerController::IsCommanderMenuOpen() const
 {
 	if (IsRogueCardModal()) return true;

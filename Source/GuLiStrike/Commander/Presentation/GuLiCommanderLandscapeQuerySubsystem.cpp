@@ -23,6 +23,7 @@ void UGuLiCommanderLandscapeQuerySubsystem::Deinitialize()
 {
 	CachedLandscapes.Reset();
 	CachedBounds = FBox2D(ForceInit);
+	CachedWorldBounds = FBox(ForceInit);
 	bCacheInitialized = false;
 	LastRefreshWorldSeconds = -1.0;
 	CacheSignature = 0u;
@@ -123,6 +124,7 @@ void UGuLiCommanderLandscapeQuerySubsystem::InvalidateCache()
 {
 	CachedLandscapes.Reset();
 	CachedBounds = FBox2D(ForceInit);
+	CachedWorldBounds = FBox(ForceInit);
 	bCacheInitialized = false;
 	LastRefreshWorldSeconds = -1.0;
 	LastHeightProxyIndex = INDEX_NONE;
@@ -151,6 +153,7 @@ void UGuLiCommanderLandscapeQuerySubsystem::RefreshCache() const
 	const uint32 PreviousSignature = CacheSignature;
 	CachedLandscapes.Reset();
 	CachedBounds = FBox2D(ForceInit);
+	CachedWorldBounds = FBox(ForceInit);
 	CacheSignature = 0u;
 	LastHeightProxyIndex = INDEX_NONE;
 	bCacheInitialized = true;
@@ -182,6 +185,9 @@ void UGuLiCommanderLandscapeQuerySubsystem::RefreshCache() const
 		Entry.Bounds = Bounds;
 		CachedBounds += Bounds.Min;
 		CachedBounds += Bounds.Max;
+		CachedWorldBounds += ComponentBounds;
+		CacheSignature = HashCombineFast(CacheSignature, GetTypeHash(ComponentBounds.Min.Z));
+		CacheSignature = HashCombineFast(CacheSignature, GetTypeHash(ComponentBounds.Max.Z));
 		CacheSignature = HashCombineFast(CacheSignature, GetTypeHash(Entry.Proxy.Get()));
 		CacheSignature = HashCombineFast(CacheSignature, GetTypeHash(Bounds.Min.X));
 		CacheSignature = HashCombineFast(CacheSignature, GetTypeHash(Bounds.Min.Y));
@@ -197,4 +203,11 @@ void UGuLiCommanderLandscapeQuerySubsystem::RefreshCache() const
 			CacheRevision = 1u;
 		}
 	}
+}
+
+bool UGuLiCommanderLandscapeQuerySubsystem::TryGetWorldBounds(FBox& OutBounds) const
+{
+	EnsureCache();
+	OutBounds = CachedWorldBounds;
+	return OutBounds.IsValid != 0;
 }

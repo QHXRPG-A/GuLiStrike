@@ -11,6 +11,8 @@
 #include "Commander/Framework/GuLiCommanderResourceAdapter.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
+#include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
+#include "Commander/Presentation/GuLiCommanderCameraGeometry.h"
 #include "Commander/Presentation/GuLiCommanderHUD.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
@@ -37,10 +39,10 @@
 #include "Commander/Orders/GuLiUnitTaskSettings.h"
 #include "Commander/Behavior/GuLiCommanderBehaviorSchema.h"
 #include "Engine/LocalPlayer.h"
+#include "Camera/PlayerCameraManager.h"
 
 namespace GuLiCommanderCursorTrace
 {
-	constexpr float MaximumGroundTraceDistanceCentimeters = 600000.0f;
 	constexpr int32 MaximumIgnoredNonLandscapeBlockers = 16;
 }
 
@@ -124,7 +126,6 @@ AGuLiCommanderPlayerController::AGuLiCommanderPlayerController(const FObjectInit
 	bEnableClickEvents = false;
 	bEnableMouseOverEvents = false;
 	DefaultMouseCursor = EMouseCursor::Default;
-	HitResultTraceDistance = GuLiCommanderCursorTrace::MaximumGroundTraceDistanceCentimeters;
 
 	// 替换公共默认子对象的具体类型；旧属性继续指向同一个对象，不再额外创建组件。
 	NetSyncComponent = CastChecked<UGuLiCommanderNetSyncComponent>(GetPlayerNetSyncComponent());
@@ -291,6 +292,8 @@ void AGuLiCommanderPlayerController::PlayerTick(const float DeltaTime)
 			bSelectionDragExceededThreshold |= FVector2D::Distance(SelectionDragStart, SelectionDragEnd) >= 6.0f * Scale;
 		}
 	}
+	if (PlayerCameraManager) HitResultTraceDistance = GuLiCommanderCameraGeometry::SelectionRayLength(
+		PlayerCameraManager->GetCameraLocation(), GetWorld());
 	bHasCursorGroundLocation = TraceGroundUnderCursor(CachedCursorGroundLocation);
 	if (GuLiCommanderToolPolicy::ResolveModeForSelectionAvailability(
 		CommanderToolMode,
@@ -299,6 +302,7 @@ void AGuLiCommanderPlayerController::PlayerTick(const float DeltaTime)
 		ActivateSelectionTool();
 	}
 	UpdateCameraInput(DeltaTime);
+	if (const auto* Camera = Cast<AGuLiCommanderCameraPawn>(GetViewTarget()); Camera && Camera->IsCameraTransitioning()) CancelSelectionDrag();
 	UpdateAcceptedCommandVisual();
 }
 
@@ -308,6 +312,14 @@ void AGuLiCommanderPlayerController::ToggleSelectionShape()
 	ActivateSelectionTool();
 	SelectionShape = EGuLiCommanderSelectionShape::Box;
 	OnSelectionShapeChanged.Broadcast(SelectionShape);
+}
+
+void AGuLiCommanderPlayerController::UpdateHiddenComponents(const FVector& ViewLocation, TSet<FPrimitiveComponentId>& HiddenComponents)
+{
+	Super::UpdateHiddenComponents(ViewLocation, HiddenComponents);
+	const auto* Camera = Cast<AGuLiCommanderCameraPawn>(GetViewTarget());
+	if (IsCommanderViewActive() && Camera && Camera->IsOverviewPresentation())
+		if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->GatherHiddenComponents(HiddenComponents);
 }
 
 bool AGuLiCommanderPlayerController::GetSelectionDragRectangle(FVector2D& OutStart, FVector2D& OutEnd) const
@@ -326,6 +338,7 @@ void AGuLiCommanderPlayerController::CancelSelectionDrag()
 
 bool AGuLiCommanderPlayerController::CanIssueCommanderOrders() const
 {
+	if (const auto* Camera = Cast<AGuLiCommanderCameraPawn>(GetViewTarget()); Camera && Camera->IsCameraTransitioning()) return false;
 	if (IsCommanderMenuOpen()) return false;
 	const AGuLiBattlePlayerState* CommanderPlayerState = GetPlayerState<AGuLiBattlePlayerState>();
 	return CommanderPlayerState
@@ -451,6 +464,8 @@ bool AGuLiCommanderPlayerController::CanUseGroundMechFireInput() const
 
 void AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor()
 {
+	if (const auto* Camera = Cast<AGuLiCommanderCameraPawn>(GetViewTarget()); Camera && Camera->IsCameraTransitioning())
+	{ CancelSelectionDrag(); return; }
 	if (TeleportInput && TeleportInput->HandlePrimaryAction()) { CancelSelectionDrag(); return; }
 	if (BuildingPlacementComponent
 		&& BuildingPlacementComponent->HandlePrimaryAction(IsCursorOverCommanderUI()))
@@ -681,6 +696,19 @@ bool AGuLiCommanderPlayerController::BuildPointSelectionRequest(FGuLiSelectionRe
 	}
 	const AGuLiBattlePlayerState* State = GetPlayerState<AGuLiBattlePlayerState>();
 	if (!State || !GetWorld()) return false;
+	if (const auto* Camera = Cast<AGuLiCommanderCameraPawn>(GetViewTarget()); Camera && Camera->IsOverviewPresentation())
+	{
+		auto* HUD = Cast<AGuLiCommanderHUD>(GetHUD());
+		FGuLiCommanderOverviewMarker Marker;
+		if (!HUD || !HUD->PickOverviewIcon(FVector2D(MouseX, MouseY), Marker, true) || Marker.Team != State->GetTeam()) return false;
+		Request.SeedSoldierId = Marker.SoldierId; Request.SeedActorId = Marker.ActorId;
+		// The server still checks the original cursor cone, eligibility and team. IDs are only hints.
+		const float Radius = Marker.Size * .7072f + 2.f * UWidgetLayoutLibrary::GetViewportScale(this);
+		if (DeprojectScreenPositionToWorld(MouseX + Radius, MouseY, OtherOrigin, OtherDirection))
+			Request.PickHalfAngleRadians = FMath::Clamp(float(FMath::Acos(FMath::Clamp(
+				FVector::DotProduct(Direction.GetSafeNormal(), OtherDirection.GetSafeNormal()), -1.0, 1.0))), .0001f, .05f);
+		return Request.SeedSoldierId.IsValid() || Request.SeedActorId.IsValid();
+	}
 	const UGuLiCommanderResourceAdapter* ResourceAdapter =
 		GetWorld()->GetSubsystem<UGuLiCommanderResourceAdapter>();
 	check(ResourceAdapter);
@@ -866,14 +894,25 @@ bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 	FVector RayOrigin, RayDirection;
 	const bool bHasRay = DeprojectMousePositionToWorld(RayOrigin,RayDirection);
 	const auto* BattlePlayer = GetPlayerState<AGuLiBattlePlayerState>();
+	FGuLiCommanderOverviewMarker OverviewTarget;
+	bool bHasOverviewTarget = false;
+	if (bHasRay) if (auto* HUD = Cast<AGuLiCommanderHUD>(GetHUD()))
+	{
+		float X, Y;
+		bHasOverviewTarget = GetMousePosition(X, Y) && HUD->PickOverviewIcon(FVector2D(X, Y), OverviewTarget);
+		if (bHasOverviewTarget) RayDirection = (OverviewTarget.WorldLocation - RayOrigin).GetSafeNormal();
+	}
 	if (bHasRay && BattlePlayer && (!NetSyncComponent->GetSelectionState().ActorIds.IsEmpty()
 		|| NetSyncComponent->HasUnresolvedSelectionIntent()))
 	{
 		// Model picking is separate from the Landscape-only ground trace.
 		FHitResult Hit;
 		FCollisionQueryParams Query(SCENE_QUERY_STAT(CommanderOutpostOrder),true,GetPawn());
-		if (GetWorld()->LineTraceSingleByChannel(Hit,RayOrigin,
-			RayOrigin+RayDirection*GuLiCommanderCursorTrace::MaximumGroundTraceDistanceCentimeters,ECC_Visibility,Query))
+		const auto* IconOutpost = bHasOverviewTarget ? Cast<AGuLiTerritoryOutpostActor>(OverviewTarget.Actor.Get()) : nullptr;
+		if (IconOutpost && IconOutpost->GetTerritoryOwner() == BattlePlayer->GetTeam())
+		{ Request.TargetTerritoryId = IconOutpost->GetTerritoryId(); Request.Target = OverviewTarget.WorldLocation; }
+		else if (GetWorld()->LineTraceSingleByChannel(Hit,RayOrigin,
+			RayOrigin+RayDirection*GuLiCommanderCameraGeometry::SelectionRayLength(RayOrigin, GetWorld()),ECC_Visibility,Query))
 			if (const auto* Outpost = Cast<AGuLiTerritoryOutpostActor>(Hit.GetActor()); Outpost && Outpost->GetTerritoryOwner() == BattlePlayer->GetTeam())
 			{ Request.TargetTerritoryId = Outpost->GetTerritoryId(); Request.Target = Outpost->GetBuildingGroundLocation(); }
 	}
@@ -1052,7 +1091,7 @@ bool AGuLiCommanderPlayerController::TraceGroundUnderCursor(FVector& OutLocation
 	}
 
 	const FVector TraceEnd = RayOrigin
-		+ RayDirection * GuLiCommanderCursorTrace::MaximumGroundTraceDistanceCentimeters;
+		+ RayDirection * GuLiCommanderCameraGeometry::SelectionRayLength(RayOrigin, World);
 	FCollisionQueryParams QueryParams(
 		SCENE_QUERY_STAT(GuLiCommanderCursorGround),
 		true);

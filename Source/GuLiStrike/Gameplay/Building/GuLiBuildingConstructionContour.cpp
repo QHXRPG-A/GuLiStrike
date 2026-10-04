@@ -1,5 +1,7 @@
 #include "Gameplay/Building/GuLiBuildingConstructionVisualComponent.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
+#include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
+#include "Engine/World.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "NiagaraComponent.h"
@@ -247,6 +249,7 @@ void UGuLiBuildingConstructionVisualComponent::UpdateTopEffect()
 		TopEffect = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, System, Lifecycle->GetGroundLocation(),
 			FRotator::ZeroRotator, FVector::OneVector, false, false, ENCPoolMethod::None, false);
 		if (!TopEffect) return;
+		if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(TopEffect);
 		ConfigureEffect(*TopEffect, false);
 	}
 	TopEffect->SetVariableFloat(TEXT("User.ConstructionHeight"), GetConstructionHeight() - Lifecycle->GetGroundLocation().Z);
@@ -262,5 +265,6 @@ void UGuLiBuildingConstructionVisualComponent::PlayCompletionEffect()
 	CompletionEffect = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, System, Lifecycle->GetGroundLocation(),
 		FRotator::ZeroRotator, FVector::OneVector, true, false, ENCPoolMethod::None, false);
 	if (!CompletionEffect) return;
+	if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(CompletionEffect);
 	ConfigureEffect(*CompletionEffect, true); CompletionEffect->Activate(true);
 }

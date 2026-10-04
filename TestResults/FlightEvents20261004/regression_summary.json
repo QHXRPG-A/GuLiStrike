@@ -1,0 +1,96 @@
+{
+  "unique_tests": 17,
+  "passed": 16,
+  "failed": 1,
+  "tests": {
+    "GuLiStrike.CombatEffects.FlightBatchBootstrapAndLifecycle": {
+      "passed": true,
+      "result": "成功",
+      "name": "FlightBatchBootstrapAndLifecycle"
+    },
+    "GuLiStrike.CombatEffects.MathAndIdentity": {
+      "passed": true,
+      "result": "成功",
+      "name": "MathAndIdentity"
+    },
+    "GuLiStrike.CombatEffects.NetworkOrderAndCleanup": {
+      "passed": true,
+      "result": "成功",
+      "name": "NetworkOrderAndCleanup"
+    },
+    "GuLiStrike.CombatEffects.PeriodicRequeryAndCancellation": {
+      "passed": true,
+      "result": "成功",
+      "name": "PeriodicRequeryAndCancellation"
+    },
+    "GuLiStrike.CombatEffects.ProjectileLossImpactAndExpiry": {
+      "passed": true,
+      "result": "成功",
+      "name": "ProjectileLossImpactAndExpiry"
+    },
+    "GuLiStrike.CombatEffects.PublicGameStateInitializesLedger": {
+      "passed": true,
+      "result": "成功",
+      "name": "PublicGameStateInitializesLedger"
+    },
+    "GuLiStrike.CombatEffects.SpellFieldTableConfig": {
+      "passed": false,
+      "result": "失败",
+      "name": "SpellFieldTableConfig"
+    },
+    "GuLiStrike.CombatEffects.SphereLedgerAndRetainedSource": {
+      "passed": true,
+      "result": "成功",
+      "name": "SphereLedgerAndRetainedSource"
+    },
+    "GuLiStrike.Combat.ShipProjectile.AcceptedWingmanSegmentSphereSweep": {
+      "passed": true,
+      "result": "成功",
+      "name": "AcceptedWingmanSegmentSphereSweep"
+    },
+    "GuLiStrike.Combat.ShipProjectile.AuthorityAndRuleRejections": {
+      "passed": true,
+      "result": "成功",
+      "name": "AuthorityAndRuleRejections"
+    },
+    "GuLiStrike.Combat.ShipProjectile.UnifiedTargetAndIdempotentLedger": {
+      "passed": true,
+      "result": "成功",
+      "name": "UnifiedTargetAndIdempotentLedger"
+    },
+    "GuLiStrike.Combat.Missile.Visual.GameStateRpcReliabilityContract": {
+      "passed": true,
+      "result": "成功",
+      "name": "GameStateRpcReliabilityContract"
+    },
+    "GuLiStrike.Combat.Missile.Visual.LaunchCorrectionTerminalSequence": {
+      "passed": true,
+      "result": "成功",
+      "name": "LaunchCorrectionTerminalSequence"
+    },
+    "GuLiStrike.Combat.Missile.AtomicSalvoRejectsWithoutPartialCreation": {
+      "passed": true,
+      "result": "成功",
+      "name": "AtomicSalvoRejectsWithoutPartialCreation"
+    },
+    "GuLiStrike.Combat.Missile.LaunchEpochCannotDamageNextMatch": {
+      "passed": true,
+      "result": "成功",
+      "name": "LaunchEpochCannotDamageNextMatch"
+    },
+    "GuLiStrike.Combat.Missile.LogicalImpactWithoutReplicatedActor": {
+      "passed": true,
+      "result": "成功",
+      "name": "LogicalImpactWithoutReplicatedActor"
+    },
+    "GuLiStrike.Combat.Missile.TargetDeathDoesNotRetarget": {
+      "passed": true,
+      "result": "成功",
+      "name": "TargetDeathDoesNotRetarget"
+    }
+  },
+  "errors": [
+    "[2026.10.03-17.36.45:404][375]LogAutomationController: Error: Expected 'field radius comes from SpellFields' to be 160.000000, but it was 300.000000 and outside tolerance 0.000100. [D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\CombatEffects\\Tests\\GuLiCombatEffectRuntimeTests.cpp(337)]",
+    "[2026.10.03-17.36.45:404][375]LogAutomationController: Error: Expected 'FourFRobot muzzle is loaded from WeaponMounts' to be true. [D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\CombatEffects\\Tests\\GuLiCombatEffectRuntimeTests.cpp(350)]"
+  ]
+}

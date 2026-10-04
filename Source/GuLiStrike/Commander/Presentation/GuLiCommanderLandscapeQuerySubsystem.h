@@ -25,6 +25,7 @@ public:
 
 	/** Returns the union of the live Landscape component bounds in world XY. */
 	bool TryGetBounds(FBox2D& OutBounds) const;
+	bool TryGetWorldBounds(FBox& OutBounds) const;
 
 	/** Returns a strict Landscape height at world XY; never falls back to another actor. */
 	bool TryGetLandscapeHeight(const FVector2D& WorldXY, float& OutHeight) const;
@@ -50,6 +51,7 @@ private:
 
 	mutable TArray<FCachedLandscape> CachedLandscapes;
 	mutable FBox2D CachedBounds = FBox2D(ForceInit);
+	mutable FBox CachedWorldBounds = FBox(ForceInit);
 	mutable double LastRefreshWorldSeconds = -1.0;
 	mutable uint32 CacheSignature = 0u;
 	mutable uint32 CacheRevision = 0u;

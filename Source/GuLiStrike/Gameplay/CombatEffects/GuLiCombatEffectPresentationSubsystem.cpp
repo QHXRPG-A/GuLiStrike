@@ -1,4 +1,6 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiFlightVisualActor.h"
+#include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiMissileClusterPresentation.h"
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
@@ -26,11 +28,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogGuLiCombatEffectVisuals, Log, All);
 static TAutoConsoleVariable<int32> CVarGuLiCombatEffectVisuals(TEXT("gs.CombatEffects.Visuals"), 1,
 	TEXT("Local combat VFX only: 0 disables rendering without changing server combat. Used for scoped A/B acceptance."));
 static TAutoConsoleVariable<int32> CVarGuLiMissileClusterEnabled(TEXT("gs.MissileCluster.Enabled"), 1,
-	TEXT("WM01 visual comparison: 0 uses the existing per-projectile flight effect, 1 uses GPU clusters. Gameplay counts and trajectories do not change."));
-#if WITH_EDITOR
-static TAutoConsoleVariable<int32> CVarGuLiMissileClusterCandidate(TEXT("gs.MissileCluster.Candidate"), 0,
-	TEXT("Opt-in WM01 visual candidate, only in LVL_CommanderMassPrototype PIE. Production asset references remain unchanged."));
-#endif
+	TEXT("Production WM01 GPU rendering, enabled by default. 0 forces the fallback visual for diagnostics; gameplay is unchanged."));
 
 bool UGuLiCombatEffectPresentationSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
@@ -58,6 +56,8 @@ TStatId UGuLiCombatEffectPresentationSubsystem::GetStatId() const { RETURN_QUICK
 void UGuLiCombatEffectPresentationSubsystem::Deinitialize()
 {
 	ResetVisuals(); PoseProviders.Reset(); MuzzleProviders.Reset();
+	for (AGuLiFlightVisualActor* Actor : FlightActors) if (IsValid(Actor)) Actor->Destroy();
+	FlightActors.Reset(); FreeFlightActors.Reset();
 	Catalog = nullptr; CommanderData = nullptr; Super::Deinitialize();
 }
 
@@ -65,12 +65,14 @@ void UGuLiCombatEffectPresentationSubsystem::ResetVisuals()
 {
 	TArray<FGuid> Ids; Visuals.GenerateKeyArray(Ids);
 	for (const FGuid& Id : Ids) RemoveVisual(Id, true);
+	GuidanceMembers.Reset();
+	ShipPoseCache.Reset();
 	ResetLaserPool();
 	ResetRogueUpgradePool();
 	ResetMechanicalMuzzles();
 	if (MissileClusters) MissileClusters->Reset();
-	if (Gunfire) { Gunfire->DeactivateImmediate(); Gunfire->ReleaseToPool(); Gunfire = nullptr; }
-	for (const auto& Item : Retiring) if (IsValid(Item.Component)) { Item.Component->DeactivateImmediate(); Item.Component->ReleaseToPool(); }
+	if (Gunfire) { Gunfire->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Gunfire); Gunfire->ReleaseToPool(); Gunfire = nullptr; }
+	for (const auto& Item : Retiring) if (IsValid(Item.Component)) { Item.Component->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Item.Component); Item.Component->ReleaseToPool(); }
 	Retiring.Reset(); PendingShots.Reset(); ActiveMuzzles.Reset(); SeenShots.Reset(); ShotOrder.Reset(); Tombstones.Reset(); TombstoneOrder.Reset();
 	GunfireBounds = FBox(ForceInit);
 	PreviousGunfireBounds = FBox(ForceInit);
@@ -80,8 +82,10 @@ void UGuLiCombatEffectPresentationSubsystem::ResetVisuals()
 
 void UGuLiCombatEffectPresentationSubsystem::BeginEpoch(uint32 NewEpoch)
 {
-	// Match epochs are monotonic in the existing battle protocol. A late property/RPC cannot roll back a newer epoch.
-	if (NewEpoch == 0 || NewEpoch <= Epoch) return;
+	// The battle derives opaque epochs from the low cycle-counter bits, which can
+	// wrap. Remember retired identities instead of comparing their numeric order.
+	if (NewEpoch == 0 || NewEpoch == Epoch || RetiredEpochs.Contains(NewEpoch)) return;
+	if (Epoch) RetiredEpochs.Add(Epoch);
 	ResetVisuals(); Epoch = NewEpoch; Counters = {};
 }
 
@@ -110,9 +114,10 @@ void UGuLiCombatEffectPresentationSubsystem::UnregisterPoseResolver(EGuLiTargetK
 	if (const auto* Provider = PoseProviders.Find(Kind); Provider && Provider->Owner.Get() == Owner) PoseProviders.Remove(Kind);
 }
 
-void UGuLiCombatEffectPresentationSubsystem::RegisterMuzzleResolver(EGuLiTargetKind Kind, UObject* Owner, FMuzzleResolver Resolver, FShotObserver Observer)
+void UGuLiCombatEffectPresentationSubsystem::RegisterMuzzleResolver(EGuLiTargetKind Kind, UObject* Owner,
+	FMuzzleResolver Resolver, FShotObserver Observer, FLaunchOffsetResolver LaunchOffset)
 {
-	if (Owner && Resolver) MuzzleProviders.Add(Kind, {Owner, MoveTemp(Resolver), MoveTemp(Observer)});
+	if (Owner && Resolver) MuzzleProviders.Add(Kind, {Owner, MoveTemp(Resolver), MoveTemp(Observer), MoveTemp(LaunchOffset)});
 }
 
 void UGuLiCombatEffectPresentationSubsystem::UnregisterMuzzleResolver(EGuLiTargetKind Kind, const UObject* Owner)
@@ -131,7 +136,7 @@ bool UGuLiCombatEffectPresentationSubsystem::TryGetWeaponAim(const FGuLiTargetHa
 
 bool UGuLiCombatEffectPresentationSubsystem::ResolvePose(const FGuLiTargetHandle& Target, FTransform& Transform, int32& UnitTypeId) const
 {
-    if (Target.Kind == EGuLiTargetKind::Ship)
+    if (Target.Kind == EGuLiTargetKind::Ship || Target.Kind == EGuLiTargetKind::GroundActor)
     {
         AActor* Actor = ShipPoseCache.FindRef(Target).Get();
         if (!Actor)
@@ -219,7 +224,10 @@ double UGuLiCombatEffectPresentationSubsystem::ClosestLocalCameraDistanceSquared
 
 bool UGuLiCombatEffectPresentationSubsystem::IsVisibleLocation(FVector Location) const
 {
-	return Catalog && ClosestLocalCameraDistanceSquared(Location)
+	if (!Catalog || Location.ContainsNaN()) return false;
+	if (auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>())
+		return LOD->ShouldRenderWorldEffect(Location, Catalog->MaximumVisualDistance);
+	return ClosestLocalCameraDistanceSquared(Location)
 		<= FMath::Square(static_cast<double>(Catalog->MaximumVisualDistance));
 }
 
@@ -239,6 +247,7 @@ UNiagaraComponent* UGuLiCombatEffectPresentationSubsystem::SpawnPooled(
 		Rotation, ScaleParameterName.IsNone() ? Scale : FVector::OneVector, false, false, ENCPoolMethod::ManualRelease, false);
 	if (Component)
 	{
+		if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(Component);
 		Component->SetCastShadow(false);
 		if (!ScaleParameterName.IsNone()) Component->SetVariableFloat(ScaleParameterName, Scale.X);
 		Component->SetVariableFloat(TEXT("User.Radius"), Radius);
@@ -259,9 +268,11 @@ void UGuLiCombatEffectPresentationSubsystem::RemoveVisual(const FGuid& Id, bool 
 {
 	FGuLiLocalCombatEffect Visual;
 	if (!Visuals.RemoveAndCopyValue(Id, Visual)) return;
+	RemoveGuidanceMember(Visual.State);
 	if (MissileClusters) MissileClusters->Finish(Id, Visual.RenderLocation, bImmediate);
 	if (GroundWarnings) GroundWarnings->RemoveWarning(Id);
 	if (Visual.LaserSlot != INDEX_NONE) FreeLaserSlot(Visual.LaserSlot);
+	ReleaseFlightActor(Visual.FlightActor);
 	float Tail = 0.5f;
 	if (UGuLiProjectileEffectDefinition* Definition = Visual.State.ProjectileDefinition.Get()) Tail = Definition->TrailFadeSeconds;
 	Retire(Visual.Flight, bImmediate ? 0 : Tail);
@@ -273,8 +284,9 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 {
 	if (!GetWorld() || GetWorld()->GetNetMode() == NM_DedicatedServer) return;
 	++Counters.ReceivedStates;
-	if (!State.IsWellFormed() || State.MatchEpoch < Epoch) { ++Counters.RejectedStates; return; }
-	if (State.MatchEpoch > Epoch) BeginEpoch(State.MatchEpoch);
+	if (!State.IsWellFormed()) { ++Counters.RejectedStates; return; }
+	if (State.MatchEpoch != Epoch) BeginEpoch(State.MatchEpoch);
+	if (State.MatchEpoch != Epoch) { ++Counters.RejectedStates; return; }
 	if (Tombstones.Contains(State.EffectId)) { ++Counters.RejectedStates; return; }
 	FGuLiLocalCombatEffect* Existing = Visuals.Find(State.EffectId);
 	// A snapshot batch may arrive before the live multicast in the same network frame.
@@ -291,17 +303,13 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 	{
 		if (State.Kind == EGuLiCombatEffectKind::Projectile && MissileClusters)
 			MissileClusters->Finish(State.EffectId, State.Location, State.EndReason == EGuLiCombatEffectEndReason::EpochEnded);
-		const bool bDeferGroundImpact = State.Kind == EGuLiCombatEffectKind::LinearProjectile
-			&& Existing && Existing->State.Source.Kind == EGuLiTargetKind::CommanderSoldier;
 		if (State.Kind == EGuLiCombatEffectKind::LinearProjectile && Existing)
 		{
 			Existing->State.Location = State.Location; Existing->State.Phase = State.Phase;
 			Existing->State.EndReason = State.EndReason; Existing->State.SampleTime = State.SampleTime;
 			Existing->State.Sequence = State.Sequence;
 			Existing->bActivationPlayed = bFromSnapshot;
-			const float RemainingFlight = bDeferGroundImpact
-				? FMath::Max(0.0f, State.SampleTime + GuLiCombatEffects::GroundProjectileStepSeconds - ServerTime()) : 0.0f;
-			Existing->LaserFadeUntil = GetWorld()->GetTimeSeconds() + RemainingFlight + 0.04f;
+			Existing->LaserFadeUntil = GetWorld()->GetTimeSeconds() + 0.04f;
 		}
 		else RemoveVisual(State.EffectId, State.EndReason == EGuLiCombatEffectEndReason::EpochEnded);
 		Tombstones.Add(State.EffectId, State.Sequence); TombstoneOrder.Add(State.EffectId);
@@ -312,21 +320,23 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 		}
 		// Terminal wire records deliberately omit the source and launch payload. A fresh
 		// hit must work even if its flight was culled, expired locally, or never received.
-		if (!bFromSnapshot && !bDeferGroundImpact) PlayMachineGunImpact(State);
+		if (!bFromSnapshot) PlayMachineGunImpact(State);
 		return;
 	}
 	// Never resurrect an expired projectile/burst or replay one after a long network stall.
 	if ((State.Kind == EGuLiCombatEffectKind::Projectile
 		|| State.Kind == EGuLiCombatEffectKind::LinearProjectile
 		|| State.Kind == EGuLiCombatEffectKind::SustainedHitscan)
-		&& ServerTime() > State.EndTime + 0.25f) return;
+		&& ServerTime() >= State.EndTime) return;
 	GetCatalog();
 	if (!Existing)
 	{
 		FGuLiLocalCombatEffect Visual; Visual.State = State; Visual.RenderLocation = State.Location;
+		// Snapshot flights are already in progress; never pull them back toward a muzzle.
+		Visual.bLaunchVisualOffsetResolved = bFromSnapshot;
 		if (State.Kind == EGuLiCombatEffectKind::LinearProjectile)
 		{
-			if (State.Source.Kind != EGuLiTargetKind::GroundActor && Catalog)
+			if (State.Source.Kind != EGuLiTargetKind::GroundActor && State.Source.Kind != EGuLiTargetKind::Ship && Catalog)
 				Visual.LaserSlot = AllocateLaserSlot(State.Source.Kind == EGuLiTargetKind::CommanderSoldier
 					? Catalog->GroundMachineGunVfxId : Catalog->WingmanLaserVfxId);
 			if (State.Source.Kind == EGuLiTargetKind::Wingman && !bFromSnapshot && ServerTime() - State.StartTime < 0.35f)
@@ -344,8 +354,60 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 			&& State.Phase != EGuLiCombatEffectPhase::Waiting;
 		Visuals.Add(State.EffectId, MoveTemp(Visual));
 	}
-	else Existing->State = State;
+	else
+	{
+		if (Existing->State.GuidanceBatchId != State.GuidanceBatchId) RemoveGuidanceMember(Existing->State);
+		Existing->State = State;
+	}
 	UpdateGroundWarning(State, CVarGuLiCombatEffectVisuals.GetValueOnGameThread() != 0);
+	if (State.Kind == EGuLiCombatEffectKind::Projectile && State.GuidanceBatchId.IsValid())
+	{
+		GuidanceMembers.FindOrAdd(State.GuidanceBatchId).Add(State.EffectId);
+		RefreshGuidanceWarning(State.GuidanceBatchId, CVarGuLiCombatEffectVisuals.GetValueOnGameThread() != 0);
+	}
+}
+
+void UGuLiCombatEffectPresentationSubsystem::RemoveGuidanceMember(const FGuLiCombatEffectState& State)
+{
+	if (auto* Members = GuidanceMembers.Find(State.GuidanceBatchId))
+	{
+		Members->Remove(State.EffectId);
+		if (Members->IsEmpty())
+		{
+			if (GroundWarnings) GroundWarnings->RemoveWarning(State.GuidanceBatchId);
+			GuidanceMembers.Remove(State.GuidanceBatchId);
+		}
+		else RefreshGuidanceWarning(State.GuidanceBatchId, CVarGuLiCombatEffectVisuals.GetValueOnGameThread() != 0);
+	}
+}
+
+void UGuLiCombatEffectPresentationSubsystem::RefreshGuidanceWarning(const FGuid& BatchId, bool bEnabled)
+{
+	if (!GroundWarnings) return;
+	const auto* Members = GuidanceMembers.Find(BatchId);
+	FGuLiGroundWarningParams Params;
+	bool bHasLiveMissile = false;
+	const double Now = ServerTime();
+	if (bEnabled && Members) for (const FGuid& Id : *Members)
+	{
+		const auto* Visual = Visuals.Find(Id);
+		if (!Visual || Visual->State.Phase == EGuLiCombatEffectPhase::Finished || Now >= Visual->State.EndTime) continue;
+		const auto& State = Visual->State;
+		if (!bHasLiveMissile)
+		{
+			Params.Location = State.GuidanceCenter; Params.Radius = State.GuidanceRadius;
+			Params.Style = State.GroundWarningStyle.LoadSynchronous(); Params.PoolGroupId = BatchId;
+			Params.StartServerSeconds = State.StartTime; Params.ExpireServerSeconds = State.EndTime;
+			bHasLiveMissile = true;
+		}
+		else
+		{
+			Params.StartServerSeconds = FMath::Min(Params.StartServerSeconds, double(State.StartTime));
+			Params.ExpireServerSeconds = FMath::Max(Params.ExpireServerSeconds, double(State.EndTime));
+		}
+	}
+	if (bHasLiveMissile) GroundWarnings->UpsertWarning(BatchId, Params);
+	else GroundWarnings->RemoveWarning(BatchId);
 }
 
 void UGuLiCombatEffectPresentationSubsystem::PlayMachineGunImpact(const FGuLiCombatEffectState& State)
@@ -448,7 +510,7 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyShots(const TArray<FGuLiCombat
 	const float Now = ServerTime();
 	for (const auto& Cue : Cues)
 	{
-		if (Cue.MatchEpoch > Epoch) BeginEpoch(Cue.MatchEpoch);
+		if (Cue.MatchEpoch != Epoch) BeginEpoch(Cue.MatchEpoch);
 		++Counters.ReceivedShots;
 		if (Cue.MatchEpoch != Epoch || !Cue.ShotId.IsValid() || Cue.Start.ContainsNaN() || Cue.End.ContainsNaN()
 			|| !FMath::IsFinite(Cue.ServerTime) || Now - Cue.ServerTime > 0.35f || Cue.ServerTime - Now > 0.5f
@@ -543,7 +605,7 @@ void UGuLiCombatEffectPresentationSubsystem::FlushGunfire()
 		}
 		const double CameraDistanceSquared = FMath::Min(
 			ClosestLocalCameraDistanceSquared(Start), ClosestLocalCameraDistanceSquared(End));
-		if (CameraDistanceSquared > FMath::Square(static_cast<double>(Catalog->MaximumVisualDistance)))
+		if (!IsVisibleLocation(Start) && !IsVisibleLocation(End))
 		{ ++Counters.DroppedShots; continue; }
 		FGunfireRow& Row = Rows.AddDefaulted_GetRef();
 		Row.Direction = Delta / Length;
@@ -574,8 +636,7 @@ void UGuLiCombatEffectPresentationSubsystem::FlushGunfire()
 				if (!CurrentDirection.IsNearlyZero()) Muzzle.LastDirection = CurrentDirection;
 			}
 			const double CameraDistanceSquared = ClosestLocalCameraDistanceSquared(Start);
-			if (Muzzle.LastDirection.IsNearlyZero()
-				|| CameraDistanceSquared > FMath::Square(static_cast<double>(Catalog->MaximumVisualDistance))) continue;
+			if (Muzzle.LastDirection.IsNearlyZero() || !IsVisibleLocation(Start)) continue;
 			FGunfireRow& Row = Rows.AddDefaulted_GetRef();
 			Row.Direction = Muzzle.LastDirection;
 			Row.Length = Catalog->MuzzleLength * GunfireBaseScale.X;
@@ -663,7 +724,10 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateField(FGuLiLocalCombatEffect&
 	if (!Visual.bActivationPlayed)
 	{
 		Visual.bActivationPlayed = true;
-		if (!Visual.bSuppressOldBurst && bVisible && Definition->ActivationVariants.IsValidIndex(Visual.State.VariantIndex))
+		auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>();
+		const bool bBurstVisible = Catalog && LOD
+			? LOD->ShouldRenderWorldEffect(Position, Catalog->MaximumVisualDistance) : bVisible;
+		if (!Visual.bSuppressOldBurst && bBurstVisible && Definition->ActivationVariants.IsValidIndex(Visual.State.VariantIndex))
 		{
 			const auto& Variant = Definition->ActivationVariants[Visual.State.VariantIndex];
 			if (Now - Visual.State.ActivationTime < 0.5f)
@@ -709,7 +773,23 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 	for (auto& Pair : Visuals)
 	{
 		auto& Visual = Pair.Value;
-		if (Visual.State.Kind == EGuLiCombatEffectKind::Projectile) UpdateGroundWarning(Visual.State, bEnabled);
+        if (Visual.FlightActor && Visual.State.Phase != EGuLiCombatEffectPhase::Finished)
+        {
+            FVector TargetLocation = Visual.State.LastTargetLocation;
+            FTransform TargetPose; int32 TargetType = 0;
+            const bool HasTarget = !Visual.State.bFixedPoint && ResolvePose(Visual.State.Target,TargetPose,TargetType);
+            if (HasTarget) TargetLocation = TargetPose.GetLocation();
+            Visual.FlightActor->AdvanceFlight(Now,HasTarget ? &TargetLocation : nullptr);
+            Visual.RenderLocation = Visual.FlightActor->GetDisplayLocation(Now);
+            Visual.FlightActor->ShowFlight(bEnabled && IsVisibleLocation(Visual.RenderLocation));
+        }
+
+		if (Visual.State.Kind == EGuLiCombatEffectKind::Projectile)
+		{
+			UpdateGroundWarning(Visual.State, bEnabled);
+			// Expiry also retires guidance membership while visual rendering is disabled.
+			if (Now >= Visual.State.EndTime) { Expired.Add(Pair.Key); continue; }
+		}
 		if (Visual.State.Kind == EGuLiCombatEffectKind::LinearProjectile)
 		{
 			const auto& State = Visual.State;
@@ -727,8 +807,7 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 				else if (Visual.Flight) { Retire(Visual.Flight, 0); Visual.Flight = nullptr; }
 			}
 			if ((Visual.State.Phase == EGuLiCombatEffectPhase::Finished && GetWorld()->GetTimeSeconds() >= Visual.LaserFadeUntil)
-				|| (Visual.State.Phase != EGuLiCombatEffectPhase::Finished && Now >= Visual.State.EndTime
-					+ (State.Source.Kind == EGuLiTargetKind::CommanderSoldier ? GuLiCombatEffects::GroundProjectileStepSeconds + 0.25f : 0.0f))) Expired.Add(Pair.Key);
+				|| (Visual.State.Phase != EGuLiCombatEffectPhase::Finished && Now >= Visual.State.EndTime)) Expired.Add(Pair.Key);
 			continue;
 		}
 		if (!bEnabled)
@@ -752,41 +831,37 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 		}
 		if (Now > Visual.State.EndTime + 0.25f) { Expired.Add(Pair.Key); continue; }
 		UGuLiProjectileEffectDefinition* Definition = Visual.State.ProjectileDefinition.LoadSynchronous();
-		if (!Definition) continue;
-		FGuLiCombatEffectState Prediction = Visual.State;
-		float Remaining = FMath::Clamp(Now - Prediction.SampleTime, 0.0f, 0.3f);
-		float PredictionTime = Prediction.SampleTime;
-		while (Remaining > UE_SMALL_NUMBER)
-		{
-			const float Step = FMath::Min(Remaining, 1.0f / 30.0f); PredictionTime += Step;
-			GuLiCombatEffects::AdvanceProjectile(Prediction, PredictionTime - Prediction.StartTime, Step); Remaining -= Step;
-		}
-		Visual.RenderLocation = FMath::VInterpTo(Visual.RenderLocation, FVector(Prediction.Location), DeltaTime, 25.0f);
-		bool bUseCluster = Definition->bUseMissileClusterRendering;
-#if WITH_EDITOR
-		bUseCluster |= CVarGuLiMissileClusterCandidate.GetValueOnGameThread() != 0 && GetWorld()->IsPlayInEditor()
-			&& GetWorld()->GetMapName().Contains(TEXT("LVL_CommanderMassPrototype"))
-			&& Definition->GetPathName() == TEXT("/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile");
-#endif
+		if (!Definition)
+        {
+            if (Visual.LaserSlot==INDEX_NONE && Catalog) Visual.LaserSlot=AllocateLaserSlot(Catalog->WingmanLaserVfxId);
+            continue;
+        }
+        const FGuLiCombatEffectState Prediction = Visual.FlightActor ? Visual.FlightActor->GetPrediction() : Visual.State;
+        Visual.RenderLocation = Visual.FlightActor ? Visual.FlightActor->GetDisplayLocation(Now) : FVector(Prediction.Location);
+		const bool bUseCluster = Definition->UsesMissileClusterRendering();
+		const FVector DisplayLocation = Visual.RenderLocation + (bUseCluster
+			? EvaluateLaunchVisualOffset(Visual, TEXT("MissileLauncher"), Now) : FVector::ZeroVector);
 		if (bUseCluster && MissileClusters && bClusterEnabled && MissileClusters->IsReady()
-			&& MissileClusters->Submit(Pair.Key, Visual.RenderLocation, Prediction.Velocity, Definition))
+			&& MissileClusters->Submit(Pair.Key, DisplayLocation, Prediction.Velocity, Definition))
 		{
 			if (Visual.Flight) { Retire(Visual.Flight, 0); Visual.Flight = nullptr; }
 			continue;
 		}
-		if (IsVisibleLocation(Visual.RenderLocation))
+		if (IsVisibleLocation(DisplayLocation))
 		{
 			if (!Visual.Flight) Visual.Flight = SpawnPooled(Definition->FlightVfxId,
-				Visual.RenderLocation, 1.0f, 0.0f, FRotator::ZeroRotator, TEXT("User.VisualScale"));
+				DisplayLocation, 1.0f, 0.0f, FRotator::ZeroRotator, TEXT("User.VisualScale"));
 			if (Visual.Flight)
 			{
-				Visual.Flight->SetWorldLocationAndRotation(Visual.RenderLocation, FVector(Prediction.Velocity).Rotation());
+				Visual.Flight->SetWorldLocationAndRotation(DisplayLocation, FVector(Prediction.Velocity).Rotation());
 				Visual.Flight->SetVariableVec3(TEXT("User.Velocity"), Prediction.Velocity);
 			}
 		}
 		else if (Visual.Flight) { Retire(Visual.Flight, Definition->TrailFadeSeconds); Visual.Flight = nullptr; }
 	}
 	for (const FGuid& Id : Expired) RemoveVisual(Id, false);
+	// One aggregation per batch per frame, rather than a scan for every missile.
+	for (const auto& Pair : GuidanceMembers) RefreshGuidanceWarning(Pair.Key, bEnabled);
 	UpdateLaserPool(Now, bEnabled);
 	UpdateRogueUpgradePool(Now, bEnabled);
 	UpdateMechanicalMuzzles(Now, bEnabled);
@@ -797,7 +872,7 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 		UNiagaraComponent* Component = Retiring[Index].Component;
 		if (!IsValid(Component) || Component->IsComplete() || LocalNow >= Retiring[Index].ReleaseTime)
 		{
-			if (IsValid(Component)) { Component->DeactivateImmediate(); Component->ReleaseToPool(); }
+			if (IsValid(Component)) { Component->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Component); Component->ReleaseToPool(); }
 			Retiring.RemoveAtSwap(Index, 1, EAllowShrinking::No);
 		}
 	}
@@ -807,6 +882,8 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 FGuLiCombatEffectVisualCounters UGuLiCombatEffectPresentationSubsystem::GetCounters() const
 {
 	FGuLiCombatEffectVisualCounters Result = Counters;
+	Result.ClientFlightActorCapacity = FlightActors.Num();
+	Result.ClientFlightActorActive = FlightActors.Num()-FreeFlightActors.Num();
 	Result.ComponentCount = IsValid(Gunfire) ? 1 : 0;
 	if (MissileClusters)
 	{

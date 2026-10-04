@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "pie_worlds": 0,
+    "cvars": {
+      "guli.stronghold.TeamUnitCap": 300,
+      "guli.Net.RealTimeBudget": 1,
+      "guli.Net.BudgetDiagnostics": 0,
+      "guli.Net.FlightDiagnostics": 0,
+      "guli.Commander.StateStreamDiagnostics": 0
+    },
+    "max_fps": 0.0,
+    "metadata_start": "Editor gs.Flights.PIE; wait for four clients; execute Scripts/FlightEvents/prepare_sources.py via commander_editor_python (positions Air at safe anchor, commits real Hangar 08, starts 500/30).",
+    "connection_class": "/Script/GuLiStrike.GuLiIpConnection"
+  }
+}

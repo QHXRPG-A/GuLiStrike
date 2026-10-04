@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RSG 六足机器人 · 审核 A-v1</title>
+<style>
+:root{color-scheme:light;--ink:#302925;--muted:#83776f;--paper:#fbf8f2;--coral:#e97868;--edge:#e4dad0}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.65 'Segoe UI','Microsoft YaHei',sans-serif}
+header{padding:28px 4vw 18px;border-bottom:1px solid var(--edge);display:flex;justify-content:space-between;gap:20px;align-items:center}h1{margin:0;font-size:26px;font-weight:650;letter-spacing:.03em}header p{margin:3px 0;color:var(--muted)}.tag{border:1px solid #db977f;background:#fff1e8;padding:6px 13px;border-radius:30px;white-space:nowrap;font-size:13px;color:#8c463b}
+main{max-width:1550px;margin:auto;padding:26px 4vw 50px;display:grid;grid-template-columns:minmax(480px,1fr) 320px;gap:32px}.tabs,.modes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}button{font:inherit;padding:7px 16px;border:1px solid var(--edge);border-radius:8px;background:#fffaf5;color:var(--ink);cursor:pointer}button.active{background:var(--ink);color:#fff;border-color:var(--ink)}button:hover{border-color:var(--coral)}
+.viewer{position:relative;aspect-ratio:1;background:#f7f2e8;border:1px solid var(--edge);border-radius:12px;overflow:hidden}.viewer img{display:block;width:100%;height:100%;object-fit:contain}.viewer #gray{position:absolute;inset:0;opacity:0;pointer-events:none}.caption{display:flex;gap:12px;justify-content:space-between;color:var(--muted);font-size:12px;margin:8px 0 18px}.caption a,a{color:#a5493e;text-decoration:none}.caption a:hover,a:hover{text-decoration:underline}.slider{display:flex;align-items:center;gap:14px;margin:12px 0;font-size:13px;color:var(--muted)}input{flex:1;accent-color:var(--coral)}
+aside section{padding:0 0 21px;margin-bottom:19px;border-bottom:1px solid var(--edge)}h2{font-size:16px;margin:0 0 10px}p{margin:8px 0}.small{font-size:12px;color:var(--muted)}.swatch{display:flex;gap:12px;align-items:center;margin:9px 0}.chip{height:27px;width:27px;border-radius:7px;border:1px solid #00000015;flex:none}.swatch strong{font-weight:600}.swatch span{font-size:12px;color:var(--muted)}.measures{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0}.measure{padding:9px;background:#f0e9df;border-radius:8px;text-align:center}.measure b{display:block;font-size:18px}.measure span{font-size:11px;color:var(--muted)}table{border-collapse:collapse;width:100%;font-size:12px}td,th{border-bottom:1px solid var(--edge);padding:5px 3px;text-align:left;font-weight:400}th{color:var(--muted)}.list{padding:0 0 0 17px;font-size:13px}.note{background:#f4ece2;padding:13px;border-radius:9px;font-size:13px}.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.thumb{background:#f7f2e8;border:1px solid var(--edge);border-radius:8px;overflow:hidden;padding:0;cursor:pointer}.thumb img{display:block;width:100%}.thumb span{display:block;font-size:12px;padding:5px}.thumb.active{outline:2px solid var(--coral);background:#f7f2e8;color:var(--ink)}
+@media(max-width:960px){main{grid-template-columns:1fr;padding:20px}header{padding:20px}aside{display:grid;grid-template-columns:1fr 1fr;gap:20px}.viewer{max-height:80vh}.tag{font-size:11px}h1{font-size:21px}}@media(max-width:600px){aside{display:block}header{display:block}.tag{display:inline-block;margin-top:12px}main{padding:15px}.thumbs{gap:4px}}
+</style>
+<header><div><h1>RSG 六足机器人</h1><p>参考审核 A-v1 · 暖白 / 珊瑚红 · 工业科幻三渲二</p></div><div class="tag">待审核 A · 2026.10.03</div></header>
+<main><div>
+<nav class="tabs" aria-label="视图"><button class="active" data-view="Hero">三分之四</button><button data-view="Front">正面</button><button data-view="Left">左侧</button><button data-view="Back">背面</button></nav>
+<div class="viewer"><img id="style" src="References_A_v1/RSG_A_v1_Hero_SourceStyle.png" alt="A-v1 三分之四配色参考"><img id="gray" src="Baseline/RSG_Source_Hero_2048.png" alt="同机位源灰模"></div>
+<div class="caption"><span id="viewCaption">三分之四 · 2048 × 2048 · 原始参考姿态</span><a id="full" href="References_A_v1/RSG_A_v1_Hero_SourceStyle.png" target="_blank">查看 2K 原图 ↗</a></div>
+<div class="modes"><button id="showStyle" class="active">配色参考</button><button id="showGray">源灰模</button></div>
+<label class="slider">灰模叠加<input id="mix" type="range" min="0" max="100" value="0"><span id="percent">0%</span></label>
+<div class="thumbs">
+<button class="thumb active" data-view="Hero"><img src="References_A_v1/RSG_A_v1_Hero_SourceStyle.png" alt="三分之四缩略图"><span>效果图</span></button>
+<button class="thumb" data-view="Front"><img src="References_A_v1/RSG_A_v1_Front_SourceStyle.png" alt="正面缩略图"><span>正面</span></button>
+<button class="thumb" data-view="Left"><img src="References_A_v1/RSG_A_v1_Left_SourceStyle.png" alt="左侧缩略图"><span>左侧</span></button>
+<button class="thumb" data-view="Back"><img src="References_A_v1/RSG_A_v1_Back_SourceStyle.png" alt="背面缩略图"><span>背面</span></button>
+</div>
+</div><aside>
+<section><h2>本轮审核内容</h2><p>完整六足、双侧上 / 下炮组、圆弧前甲、环形后护架、双天线与原关节位置。</p><div class="note">请审核 A-v1 的造型、配色、结构线与三档光影。通过后，按这四张主图进入 Blender 重制。</div><p class="small">当前为源模型上的参考材质研究。Blender 成品 B 与正式 UE 导入均未开始。</p></section>
+<section><h2>配色与功能分区</h2>
+<div class="swatch"><i class="chip" style="background:#F1E7D5"></i><div><strong>暖白 · 主装甲</strong><br><span>#F1E7D5</span></div></div>
+<div class="swatch"><i class="chip" style="background:#E97868"></i><div><strong>珊瑚红 · 膝甲 / 足护板 / 顶部</strong><br><span>#E97868</span></div></div>
+<div class="swatch"><i class="chip" style="background:#48413E"></i><div><strong>深暖灰 · 骨架 / 炮管</strong><br><span>#48413E</span></div></div>
+<div class="swatch"><i class="chip" style="background:#756A60"></i><div><strong>暖灰 · 轴承 / 金属结构</strong><br><span>#756A60</span></div></div>
+<div class="swatch"><i class="chip" style="background:#F4B65C"></i><div><strong>琥珀 · 少量功能指示</strong><br><span>#F4B65C</span></div></div>
+<div class="swatch"><i class="chip" style="background:#241F20"></i><div><strong>暖黑 · 结构线 / 外轮廓</strong><br><span>#241F20</span></div></div></section>
+<section><h2>源尺度与活动件</h2><div class="measures"><div class="measure"><b>10.86</b><span>宽 / 米</span></div><div class="measure"><b>8.86</b><span>前后 / 米</span></div><div class="measure"><b>7.89</b><span>高含天线 / 米</span></div></div>
+<ul class="list"><li>前 / 中 / 后三对腿，髋膝踝与连杆保留</li><li>上部与双侧上 / 下炮组按源轴心运动</li><li>44 根源骨骼，7 动画：待机、四向行走、落地、死亡</li><li>正 / 左 / 背均为正交投影，同姿态、同尺度、同配色</li></ul>
+<p class="small">动画兼容性与接地效果将在实际 B 成品上验证。</p></section>
+<section><h2>后续减面预算</h2><table><thead><tr><th>LOD</th><th>本体</th><th>描边</th><th>合计</th></tr></thead><tbody><tr><td>0</td><td>32,000</td><td>8,000</td><td>40,000</td></tr><tr><td>1</td><td>14,000</td><td>3,000</td><td>17,000</td></tr><tr><td>2</td><td>5,000</td><td>1,000</td><td>6,000</td></tr><tr><td>3</td><td>2,000</td><td>0</td><td>2,000</td></tr></tbody></table><p class="small">三角面。源 LOD0 本体为 68,124；目标 LOD 尚未制作。主要曲面、剪影和运动可见内部件保留。</p></section>
+<p class="small">版本锁定与源数据：<a href="References_A_v1/reference_manifest.json" target="_blank">A-v1 清单</a> · <a href="README.md" target="_blank">制作说明 / 活动件</a></p>
+</aside></main>
+<script>
+const names={Hero:'三分之四',Front:'正面',Left:'左侧',Back:'背面'};let current='Hero';
+const style=document.getElementById('style'),gray=document.getElementById('gray'),mix=document.getElementById('mix');
+function setView(v){current=v;style.src=`References_A_v1/RSG_A_v1_${v}_SourceStyle.png`;gray.src=`Baseline/RSG_Source_${v}_2048.png`;style.alt=`A-v1 ${names[v]}配色参考`;document.getElementById('full').href=style.src;document.getElementById('viewCaption').textContent=`${names[v]} · 2048 × 2048 · ${v==='Hero'?'原始参考姿态':'正交 / 原始参考姿态'}`;document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===v));}
+function setMix(value){mix.value=value;gray.style.opacity=value/100;document.getElementById('percent').textContent=value+'%';document.getElementById('showStyle').classList.toggle('active',value==0);document.getElementById('showGray').classList.toggle('active',value==100);}
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));mix.addEventListener('input',()=>setMix(mix.value));document.getElementById('showStyle').addEventListener('click',()=>setMix(0));document.getElementById('showGray').addEventListener('click',()=>setMix(100));
+</script></html>

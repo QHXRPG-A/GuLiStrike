@@ -1,0 +1,52 @@
+Using bundled DotNet SDK version: 8.0.412 win-x64
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" GuLiStrikeEditor Win64 Development -Project=D:\UE5.7\test1\GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE
+Log file: D:\UnrealEngine-5.7\Engine\Programs\UnrealBuildTool\Log.txt
+Using 'git status' to determine working set for adaptive non-unity build (D:\UnrealEngine-5.7).
+Using 'git status' to determine working set for adaptive non-unity build (D:\UE5.7\test1).
+Waiting for 'git status' command to complete
+Invalidating makefile for GuLiStrikeEditor (working set of source files changed)
+[Tripo3DUEBridge] Found zlib version: 1.3
+Project 'GuLiStrikeEditor' depends on plugin 'StructUtils' which was deprecated in 5.5 and will soon be removed. Please update your dependencies.
+Warning: Plugin 'VibeUE' does not list plugin 'StructUtils' as a dependency, but module 'VibeUE' depends on module 'StructUtils'.
+Warning: Plugin 'VibeUE' does not list plugin 'GameplayTagsEditor' as a dependency, but module 'VibeUE' depends on module 'GameplayTagsEditor'.
+Warning: Plugin 'Tripo3DUEBridge' does not list plugin 'Interchange' as a dependency, but module 'Tripo3DUEBridge' depends on module 'InterchangePipelines'.
+UHT compiled-in object format Default
+Parsing headers for GuLiStrikeEditor
+  Running Internal UnrealHeaderTool D:\UE5.7\test1\GuLiStrike.uproject D:\UE5.7\test1\Intermediate\Build\Win64\GuLiStrikeEditor\Development\GuLiStrikeEditor.uhtmanifest -WarningsAsErrors
+UHT processed GuLiStrikeEditor in 0.9337542 seconds (3 files written)
+Building GuLiStrikeEditor...
+Using Visual Studio 2022 14.44.35215 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207) and Windows 10.0.22621.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[Adaptive Build] Excluded from GuLiStrike unity file: GuLiLogicalMissileSubsystem.cpp, GuLiLogicalMissileTests.cpp, GuLiBattleGameState.cpp, GuLiWingmanPublicRelayTests.cpp, GuLiIpConnection.cpp, GuLiCommanderDeploymentPoint.cpp, GuLiCommanderPlayerController.cpp, GuLiCommanderResourceAdapter.cpp, GuLiCommanderUICommands.cpp, GuLiCommanderToolModeTests.cpp, GuLiBattleAuthoritySubsystem.cpp, GuLiCommanderPredictiveAvoidanceProcessor.cpp, GuLiCommanderSelectionQuery.cpp, GuLiSoldierCombat.cpp, GuLiCommanderSelectionQueryTests.cpp, GuLiSoldierCombatTests.cpp, GuLiCommanderPoseCodec.cpp, GuLiCommanderTypes.cpp, GuLiCommanderNetworkTests.cpp, GuLiUnitTaskOperations.cpp, GuLiUnitTaskSubsystem.cpp, GuLiCommanderCameraGeometry.cpp, GuLiCommanderCameraPawn.cpp, GuLiCommanderHUD.cpp, GuLiCommanderLandscapeQuerySubsystem.cpp, GuLiCommanderLODCommands.cpp, GuLiCommanderLODPolicy.cpp, GuLiCommanderLODSubsystem.cpp, GuLiCommanderMechanicalPresentation.cpp, GuLiCommanderOverviewSubsystem.cpp, GuLiCommanderPresentationActor.cpp, GuLiCommanderPresentationCommands.cpp, GuLiCommanderPresentationPerformanceSettings.cpp, GuLiCommanderRouteLineComponent.cpp, GuLiCommanderCameraPolicyTests.cpp, GuLiCommanderMoveEndpointHUDTests.cpp, GuLiCommanderPresentationPerformanceTests.cpp, GuLiCommanderConsoleLayout.cpp, GuLiCommanderConsoleView.cpp, GuLiCommanderHealthBarRenderer.cpp, GuLiCommanderHUDWidget.cpp, GuLiCommanderOverviewOverlay.cpp, GuLiCommanderTaskPanel.cpp, GuLiStrikeProjectile.cpp, GuLiBuildingConstructionContour.cpp, GuLiBuildingPlacementComponent.cpp, GuLiRogueCardSubsystem.cpp, GuLiClientFlightPresentation.cpp, GuLiCombatEffectAuthoringLibrary.cpp, GuLiCombatEffectDefinition.cpp, GuLiCombatEffectLaserPresentation.cpp, GuLiCombatEffectPresentationSubsystem.cpp, GuLiCombatEffectReplicationComponent.cpp, GuLiCombatEffectRuntimeSubsystem.cpp, GuLiCombatEffectTypes.cpp, GuLiFlightAcceptanceSubsystem.cpp, GuLiFlightEvent.cpp, GuLiFlightEventAdapters.cpp, GuLiFlightReplication.cpp, GuLiFlightVisualActor.cpp, GuLiGroundWarningSubsystem.cpp, GuLiMechanicalMuzzlePresentation.cpp, GuLiMissileClusterPresentation.cpp, GuLiProjectilePoolSubsystem.cpp, GuLiRogueUpgradePresentation.cpp, GuLiUnitFeedbackSubsystem.cpp, GuLiCommanderSkillComponent.cpp, GuLiCommanderSkillTypes.cpp, GuLiPointSkill.cpp, GuLiSummonSkill.cpp, GuLiUnitSkillExecution.cpp, GuLiWarMachineMissileSkill.cpp, GuLiCommanderDataSettings.cpp, GuLiCommanderDataSubsystem.cpp, GuLiCommanderSoldierDefinition.cpp, GuLiCommanderSoldierResolver.cpp, GuLiScale020InterpolationTests.cpp, GuLiScale020Tests.cpp, GuLiGroundMechWeaponComponent.cpp, GuLiMechanicalAnimation.cpp, GuLiMechanicalTurnPresentation.cpp, GuLiVATAnimation.cpp, GuLiWarMachineHoverComponent.cpp, GuLiWarMachineHoverPreviewComponent.cpp, GuLiMechanicalAnimationTests.cpp, GuLiStrikeWeaponPart.cpp, GuLiSkillResolver.cpp, GuLiSkillTypes.cpp, GuLiTeleportInputComponent.cpp, GuLiWingmanPawn.cpp
+[Adaptive Build] Excluded from GuLiStrikeEditor unity file: GuLiComponentSkillQALibrary.cpp, GuLiInitialArmyAuthoring.cpp, GuLiMissileFixture.cpp, GuLiPioneerQALibrary.cpp, GuLiResourceAuthoringLibrary.cpp, GuLiRogueCardQALibrary.cpp
+[Adaptive Build] Excluded from Navmesh unity file: DetourCrowd.cpp
+[Adaptive Build] Excluded from LevelEditor unity file: SLevelViewport.cpp
+Determining max actions to execute in parallel (24 physical cores, 32 logical cores)
+  Executing up to 24 processes, one per physical core
+  Requested 1.5 GB memory per action, 17.18 GB available: limiting max parallel actions to 11
+Using Unreal Build Accelerator local executor to run 8 action(s)
+  Storage capacity 40Gb
+---- Starting trace: 261004_012332 ----
+UbaSessionServer - Disable remote execution (remote sessions will finish current processes)
+[1/8] Compile [x64] GuLiComponentSkillQALibrary.cpp
+D:\UE5.7\test1\Source\GuLiStrikeEditor\Private\GuLiComponentSkillQALibrary.cpp(47,18): error C3861: “FindFPropertyChecked”: 找不到标识符
+		auto* Property=FindFPropertyChecked<FArrayProperty>(Mode->GetClass(),TEXT("InitialRolePriority"));
+		               ^
+D:\UE5.7\test1\Source\GuLiStrikeEditor\Private\GuLiComponentSkillQALibrary.cpp(47,17): error C3535: 无法推导“auto *”的类型(依据“<error type>”)
+		auto* Property=FindFPropertyChecked<FArrayProperty>(Mode->GetClass(),TEXT("InitialRolePriority"));
+		              ^
+D:\UE5.7\test1\Source\GuLiStrikeEditor\Private\GuLiComponentSkillQALibrary.cpp(48,17): error C2530: “Priority”: 必须初始化引用
+		auto& Priority=*Property->ContainerPtrToValuePtr<TArray<EGuLiCommanderRole>>(Mode);
+		              ^
+D:\UE5.7\test1\Source\GuLiStrikeEditor\Private\GuLiComponentSkillQALibrary.cpp(49,72): error C3536: “Priority”: 初始化之前无法使用
+		if (!FlightLoginCount) { FlightGameMode=Mode; FlightOriginalPriority=Priority; }
+		                                                                     ^
+[2/8] Compile [x64] GuLiFlightAcceptanceSubsystem.cpp
+[3/8] Link [x64] UnrealEditor-GuLiStrike.lib
+  正在创建库 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.lib 和对象 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.exp
+[4/8] Link [x64] UnrealEditor-GuLiStrike.dll
+[5/8] Compile [x64] Module.GuLiStrikeEditor.cpp
+Trace written to file D:/UnrealEngine-5.7/Engine/Programs/UnrealBuildTool/Log.uba with size 5.6kb
+Total time in Unreal Build Accelerator local executor: 10.79 seconds
+
+Result: Failed (OtherCompilationError)
+Total execution time: 21.24 seconds

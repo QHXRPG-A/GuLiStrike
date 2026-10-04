@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
+class UWorld;
 
 /** Pure authoritative selection rules, shared by the runtime resolver and native tests. */
 namespace GuLiCommanderSelectionQuery
@@ -25,7 +26,7 @@ namespace GuLiCommanderSelectionQuery
 		const FGuLiSelectionRequest& Request,
 		EGuLiTeam Team,
 		TConstArrayView<FCandidate> Population,
-		TArray<FGuLiSoldierId>& OutIds);
+		TArray<FGuLiSoldierId>& OutIds, const UWorld* World = nullptr);
 
 	/** Deduplicated, ID-sorted membership. Add preserves old members when the protocol cap is reached. */
 	GULISTRIKE_API void CombineMembership(

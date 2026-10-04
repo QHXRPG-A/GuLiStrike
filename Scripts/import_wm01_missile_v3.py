@@ -1,4 +1,4 @@
-"""Apply v3 through the existing importer/catalog author; no PIE or visual-reference switch."""
+"""Apply v3 through the existing importer/catalog author; verify production routing from the table."""
 import ast
 import json
 import traceback
@@ -12,6 +12,7 @@ report = {'success': False, 'tables': [], 'profiles': []}
 try:
     assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
     definition = unreal.load_asset('/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile')
+    assert definition.uses_missile_cluster_rendering(), 'WM01 must use production GPU rendering'
     field = definition.get_editor_property('impact_field')
     reference = float(field.get_editor_property('visual_reference_radius'))
     visual_table = unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeVfx_Effects')
@@ -37,9 +38,11 @@ try:
     scope['author']()
     assert float(field.get_editor_property('visual_reference_radius')) == reference
     assert unreal.DataTableFunctionLibrary.export_data_table_to_json_string(visual_table) == visual_before
-    assert not definition.get_editor_property('use_missile_cluster_rendering')
+    production_after = bool(definition.uses_missile_cluster_rendering())
+    assert production_after, 'Data import must preserve WM01 production rendering'
     report.update(success=True, explosion_visual_reference_radius=reference,
-                  vfx_registry_unchanged=True, production_cluster_enabled=False)
+                  vfx_registry_unchanged=True, production_cluster_enabled=production_after,
+                  production_routing_verified=True)
 except Exception:
     report['error'] = traceback.format_exc()
 (OUT/'data-import.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')

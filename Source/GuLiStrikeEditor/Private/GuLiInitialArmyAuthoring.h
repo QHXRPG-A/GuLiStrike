@@ -19,6 +19,7 @@ struct FGuLiInitialArmyAuthoring
 {
 	TArray<FGuLiCommanderInitialSpawnSlot> Slots;
 	TArray<FGuLiSpawnReservation> Reservations;
+	bool bUsesAuthoredDeployments = false;
 	bool Build(UWorld& World, FString& OutError);
 	bool IsOreClear(const FVector2D& Center) const;
 	bool Validate(UWorld& World, const UGuLiResourceMapDefinition& Definition,

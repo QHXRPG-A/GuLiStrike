@@ -1,0 +1,98 @@
+{
+  "success": true,
+  "assets": [
+    "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BaseColor.T_Pioneer_BaseColor",
+    "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_LineMask.T_Pioneer_LineMask",
+    "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BonePosition.T_Pioneer_BonePosition",
+    "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BoneRotation.T_Pioneer_BoneRotation",
+    "/Game/GuLiStrike/Robots/RSGMech/VAT/MF_Pioneer_BoneVAT.MF_Pioneer_BoneVAT",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_Toon3.M_Pioneer_Toon3",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_SK_Toon3.M_Pioneer_SK_Toon3",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_Contour.M_Pioneer_Contour",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_SK_Contour.M_Pioneer_SK_Contour",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD0.MI_Pioneer_LOD0",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD1.MI_Pioneer_LOD1",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD2.MI_Pioneer_LOD2",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD3.MI_Pioneer_LOD3",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_SK_LOD0.MI_Pioneer_SK_LOD0",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_SK_LOD1.MI_Pioneer_SK_LOD1",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_SK_LOD2.MI_Pioneer_SK_LOD2",
+    "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_SK_LOD3.MI_Pioneer_SK_LOD3",
+    "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+    "/Game/GuLiStrike/Robots/RSGMech/Skeleton/SKEL_Pioneer.SKEL_Pioneer",
+    "/Game/GuLiStrike/Robots/RSGMech/Meshes/SK_Pioneer.SK_Pioneer",
+    "/Game/GuLiStrike/Robots/RSGMech/Physics/PHYS_Pioneer.PHYS_Pioneer",
+    "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_Idle_01.A_FPS_Mech_Idle_01",
+    "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_WalkForward_01.A_FPS_Mech_WalkForward_01",
+    "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_WalkBackward_01.A_FPS_Mech_WalkBackward_01",
+    "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_Walk_L_01.A_FPS_Mech_Walk_L_01",
+    "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_Walk_R_01.A_FPS_Mech_Walk_R_01",
+    "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_Death_01.A_FPS_Mech_Death_01",
+    "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_Landing_01.A_FPS_Mech_Landing_01"
+  ],
+  "static_mesh": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+  "skeletal_mesh": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SK_Pioneer.SK_Pioneer",
+  "skeleton": "/Game/GuLiStrike/Robots/RSGMech/Skeleton/SKEL_Pioneer.SKEL_Pioneer",
+  "physics": "/Game/GuLiStrike/Robots/RSGMech/Physics/PHYS_Pioneer.PHYS_Pioneer",
+  "bones": 44,
+  "invalid_rigid_vertices": 0,
+  "width_cm": 625.0,
+  "lod_screen_sizes": [
+    1.0,
+    0.4000000059604645,
+    0.1599999964237213,
+    0.05999999865889549
+  ],
+  "animations": [
+    {
+      "asset": "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_Idle_01",
+      "duration_seconds": 1.6333333253860474
+    },
+    {
+      "asset": "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_WalkForward_01",
+      "duration_seconds": 1.0
+    },
+    {
+      "asset": "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_WalkBackward_01",
+      "duration_seconds": 1.0
+    },
+    {
+      "asset": "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_Walk_L_01",
+      "duration_seconds": 1.0
+    },
+    {
+      "asset": "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_Walk_R_01",
+      "duration_seconds": 1.0
+    },
+    {
+      "asset": "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_Death_01",
+      "duration_seconds": 2.0
+    },
+    {
+      "asset": "/Game/GuLiStrike/Robots/RSGMech/Animations/A_FPS_Mech_Landing_01",
+      "duration_seconds": 2.5
+    }
+  ],
+  "textures": [
+    {
+      "name": "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BaseColor.T_Pioneer_BaseColor",
+      "srgb": true,
+      "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>"
+    },
+    {
+      "name": "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_LineMask.T_Pioneer_LineMask",
+      "srgb": false,
+      "compression": "<TextureCompressionSettings.TC_MASKS: 2>"
+    },
+    {
+      "name": "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BonePosition.T_Pioneer_BonePosition",
+      "srgb": false,
+      "compression": "<TextureCompressionSettings.TC_HDR_F32: 16>"
+    },
+    {
+      "name": "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BoneRotation.T_Pioneer_BoneRotation",
+      "srgb": false,
+      "compression": "<TextureCompressionSettings.TC_HDR_F32: 16>"
+    }
+  ]
+}

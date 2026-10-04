@@ -81,8 +81,7 @@ namespace GuLiCommanderPresentationPerformance
 
 	bool IsValidRingCullDistance(const int32 Value)
 	{
-		return Value >= 0
-			&& Value <= FGuLiCommanderPresentationPerformanceSettings::MaximumCullDistanceCentimeters;
+		return Value == 0;
 	}
 }
 
@@ -143,9 +142,11 @@ void FGuLiCommanderPresentationPerformanceRegistry::InitializeFromRawConfig(
 	{
 		int32 ParsedValue = 0;
 		const FString& RawValue = ConfigSettings.RingCullDistanceCentimeters.GetValue();
-		if (ParseStrictInteger(RawValue, ParsedValue) && IsValidRingCullDistance(ParsedValue))
+		if (ParseStrictInteger(RawValue, ParsedValue) && ParsedValue >= 0
+			&& ParsedValue <= FGuLiCommanderPresentationPerformanceSettings::MaximumCullDistanceCentimeters)
 		{
-			BaselineSettings.RingCullDistanceCentimeters = ParsedValue;
+			// Legacy ring ranges migrate to the same camera-tier policy as unit bodies.
+			BaselineSettings.RingCullDistanceCentimeters = 0;
 			ConfigBaselineKeys.Add(RingCullDistanceKey);
 		}
 		else
@@ -260,9 +261,7 @@ FGuLiCommanderPresentationPerformanceRegistry::List(const FString& Prefix) const
 		View.AcceptedValues = (Key == GuLiCommanderPresentationPerformance::UnitCullDistanceKey)
 			? FString(TEXT("0 only; Mass unit distance culling is disabled"))
 			: (Key == GuLiCommanderPresentationPerformance::RingCullDistanceKey)
-				? FString::Printf(
-					TEXT("integer [0,%d]; 0 disables distance culling"),
-					FGuLiCommanderPresentationPerformanceSettings::MaximumCullDistanceCentimeters)
+				? FString(TEXT("0 only; commander ring distance culling is disabled"))
 				: TEXT("true|false|1|0");
 	}
 	return Result;
@@ -305,7 +304,7 @@ FGuLiCommanderPresentationPerformanceRegistry::Set(const FString& Key, const FSt
 				*Value,
 				CanonicalKey == UnitCullDistanceKey
 					? TEXT("0; Mass unit distance culling cannot be enabled")
-					: TEXT("integer cull distance in [0,10000000]"));
+					: TEXT("0; commander ring distance culling cannot be enabled"));
 			return Result;
 		}
 

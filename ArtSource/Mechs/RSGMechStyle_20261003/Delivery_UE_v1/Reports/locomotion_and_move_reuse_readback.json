@@ -1,0 +1,71 @@
+{
+  "success": true,
+  "asset_saved": true,
+  "clips": [
+    {
+      "name": "Idle",
+      "stride_cm": 0.0,
+      "duration_seconds": 1.6333333253860474,
+      "first_frame": 0,
+      "frame_count": 50
+    },
+    {
+      "name": "Forward",
+      "stride_cm": 773.8642578125,
+      "duration_seconds": 1.0,
+      "first_frame": 50,
+      "frame_count": 31
+    },
+    {
+      "name": "Backward",
+      "stride_cm": 755.38623046875,
+      "duration_seconds": 1.0,
+      "first_frame": 81,
+      "frame_count": 31
+    },
+    {
+      "name": "Left",
+      "stride_cm": 761.2686767578125,
+      "duration_seconds": 1.0,
+      "first_frame": 112,
+      "frame_count": 31
+    },
+    {
+      "name": "Right",
+      "stride_cm": 757.1077880859375,
+      "duration_seconds": 1.0,
+      "first_frame": 143,
+      "frame_count": 31
+    },
+    {
+      "name": "Death",
+      "stride_cm": 0.0,
+      "duration_seconds": 2.0,
+      "first_frame": 174,
+      "frame_count": 61
+    },
+    {
+      "name": "Landing",
+      "stride_cm": 0.0,
+      "duration_seconds": 2.5,
+      "first_frame": 235,
+      "frame_count": 76
+    }
+  ],
+  "locomotion_rate_multiplier": 0.2,
+  "move_reuse_cm": 100,
+  "PIE_worlds": [
+    "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype"
+  ],
+  "paused": [
+    false,
+    false,
+    false
+  ],
+  "PIE_restarted": false,
+  "native_code_changed": false,
+  "gpu_sample_report": "locomotion_slow_v1_live_samples.json",
+  "full_runtime_readback_reloaded": false
+}

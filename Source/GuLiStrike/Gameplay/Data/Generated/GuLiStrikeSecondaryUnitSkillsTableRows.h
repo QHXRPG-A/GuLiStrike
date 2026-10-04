@@ -87,6 +87,30 @@ struct FGuLiStrikeSecondaryUnitSkillsSkillsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	float TargetAreaDiameterCentimeters = 0.0f;
 
+	/** MaxProjectilesPerActivation (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 MaxProjectilesPerActivation = 0;
+
+	/** SummonUnitTypeId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 SummonUnitTypeId = 0;
+
+	/** SummonCount (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 SummonCount = 0;
+
+	/** SummonClearanceCentimeters (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float SummonClearanceCentimeters = 0.0f;
+
+	/** SummonOuterRings (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 SummonOuterRings = 0;
+
+	/** SummonCandidatesPerRing (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 SummonCandidatesPerRing = 0;
+
 };
 
 /** DataTable DT_GuLiStrikeSecondaryUnitSkills_UnitSkills 的行结构（源: GuLiStrikeSecondaryUnitSkills.xlsx / UnitSkills）。 */

@@ -1,0 +1,44 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "native_entries": {
+      "GuLiIpConnection": false,
+      "GuLiFlightAcceptanceSubsystem": true,
+      "GuLiFlightVisualActor": true,
+      "GuLiComponentSkillQALibrary": true
+    },
+    "start_pie_doc": "X.start_pie(mode, clients) -> bool\r\nStart PIE\r\n\r\nArgs:\r\n    mode (int32): \r\n    clients (int32): \r\n\r\nReturns:\r\n    bool:",
+    "ship_blueprint": {
+      "class": "/Game/GuLiStrike/Ship/BP_ShipProjectile.BP_ShipProjectile_C",
+      "replicates": false,
+      "replicate_movement": false
+    },
+    "markers": [
+      {
+        "name": "GuLiCommanderDeploymentPoint_0",
+        "tags": [
+          "FlightEventsQAOrigin",
+          "FlightEventsQA_Count500",
+          "FlightEventsQA_Duration30",
+          "FlightEventsQA_Commander_Ground_Ship_Wingman"
+        ],
+        "location": "<Struct 'Vector' (0x00000242264D1910) {x: 0.000000, y: 65000.000000, z: 901.779083}>"
+      }
+    ],
+    "derived_projectiles": [
+      {
+        "asset": "/Game/GuLiStrike/Ship/BP_ShipProjectile",
+        "replicates": false,
+        "movement": false
+      }
+    ],
+    "game_mode": {
+      "class": "/Script/GuLiStrike.GuLiCommanderGameMode",
+      "role_classes": "{Commander: \"/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiCommanderCameraPawn'\", Ground: \"/Script/Engine.BlueprintGeneratedClass'/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C'\", Air: \"/Script/Engine.BlueprintGeneratedClass'/Game/GuLiStrike/Ship/BP_CombatAvatarFly01.BP_CombatAvatarFly01_C'\"}",
+      "priority": "[Commander, Ground, Air]"
+    }
+  }
+}

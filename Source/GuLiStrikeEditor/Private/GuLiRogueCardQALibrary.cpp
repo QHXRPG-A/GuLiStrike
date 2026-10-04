@@ -108,7 +108,7 @@ FString UGuLiRogueCardQALibrary::FrameTimings(APlayerController* Controller)
 		Local->ViewportClient->IsStatEnabled(TEXT("Unit"))?TEXT("true"):TEXT("false"));
 }
 
-FString UGuLiRogueCardQALibrary::BuildFixture(APlayerController* PC,int32 Count,FVector Center,float Spacing)
+FString UGuLiRogueCardQALibrary::BuildFixture(APlayerController* PC,int32 Count,FVector Center,float Spacing,bool bCompactLayout)
 {
 	if (!PC || !PC->HasAuthority() || !PC->GetWorld()->IsPlayInEditor() || Count<1 || Count>1000
 		|| Center.ContainsNaN() || !FMath::IsFinite(Spacing) || Spacing<200.f) return TEXT("{}");
@@ -121,7 +121,7 @@ FString UGuLiRogueCardQALibrary::BuildFixture(APlayerController* PC,int32 Count,
 	const FName OverrideTag(TEXT("RogueUpgradeFixture"));
 	Cap->Set(FMath::Max(PreviousCap,10000),ECVF_SetByCode,OverrideTag);
 	FString Result; auto W=TJsonWriterFactory<>::Create(&Result); W->WriteObjectStart(); W->WriteArrayStart(TEXT("units"));
-	int32 Created=0; const int32 Side=FMath::CeilToInt(FMath::Sqrt(float(Count)))+10;
+	int32 Created=0; const int32 Side=FMath::CeilToInt(FMath::Sqrt(float(Count)))+(bCompactLayout?0:10);
 	for (int32 I=0;I<Side*Side && Created<Count;++I)
 	{
 		FGuLiSoldierId Id;

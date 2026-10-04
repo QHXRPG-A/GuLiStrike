@@ -95,6 +95,8 @@ public:
 	/** Tests the real cached Slate geometry of all four HUD islands in pixels. */
 	bool IsScreenPositionBlocked(const FVector2D& ScreenPixelPosition) const;
 	bool HasValidBlockingGeometry() const;
+	FBox2D GetBattlefieldViewRect(const FVector2D& ViewportSize, FVector2D ViewOrigin = FVector2D::ZeroVector) const;
+	const UGuLiCommanderUITheme* GetConsoleTheme() const { return ConsoleTheme; }
 
 	UGuLiCommanderMiniMapWidget* GetMiniMapWidget() const { return MiniMapWidget; }
 	void CycleInspectionType();

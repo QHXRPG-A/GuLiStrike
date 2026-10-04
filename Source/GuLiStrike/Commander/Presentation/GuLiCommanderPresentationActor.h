@@ -8,6 +8,7 @@
 #include "Commander/Presentation/GuLiCommanderPresentationPerformanceSettings.h"
 #include "Commander/Presentation/GuLiCommanderRefreshCadence.h"
 #include "Gameplay/Presentation/GuLiMechanicalAnimation.h"
+#include "Gameplay/Presentation/GuLiVATAnimation.h"
 #include "GameFramework/Actor.h"
 #include "MassArchetypeTypes.h"
 #include "MassEntityHandle.h"
@@ -27,6 +28,7 @@ class UGuLiWarMachineHoverComponent;
 class UStaticMesh;
 struct FGuLiSoldierRosterDelta;
 struct FGuLiCombatShotCue;
+struct FGuLiTargetHandle;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiCommanderVisualStatesChanged, const TArray<FGuLiSoldierId>&);
 
@@ -51,6 +53,7 @@ struct FGuLiCommanderBufferedSoldierPose
 	uint32 HoverBlendStartMilliseconds = 0;
 	uint8 HoverBlendFromWeight = 0;
 	bool bHoverIdleTarget = false;
+	FGuLiVATPlayback VATPlayback;
 	uint32 ActiveOrderId = 0u;
 	EGuLiSoldierPoseState State = EGuLiSoldierPoseState::Idle;
 	uint16 ChunkIndex = 0u;
@@ -64,6 +67,8 @@ struct FGuLiCommanderPresentedSoldier
 {
 	struct FRecoilCue { float ServerTime = 0; float FromCentimeters = 0; uint8 Side = 0; };
 	FGuLiMechanicalAnimationState MechanicalPose;
+	FGuLiVATPlayback VATPlayback, PreviousVATPlayback;
+	FGuLiMechanicalVisualState MechanicalVisual;
 	FGuLiMechanicalAnimationFrame MechanicalFrame, PreviousMechanicalFrame;
 	TArray<FRecoilCue> PendingRecoil;
 	TArray<FGuLiCommanderBufferedSoldierPose> Samples;
@@ -131,6 +136,7 @@ struct FGuLiCommanderPredictedMove
 	double ResolveStartTimeSeconds = 0.0;
 	FVector Direction = FVector::ZeroVector;
 	float MaximumDistance = 0.0f;
+	float CrowdDisplacementScale = 1.0f;
 	float TargetYawDegrees = 0.0f;
 	FVector LastAppliedOffset = FVector::ZeroVector;
 	float LastAppliedYawOffsetDegrees = 0.0f;
@@ -244,6 +250,8 @@ public:
 	bool TryGetPresentedSoldierTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
 	/** Model/display anchors only; movement, collision and selection retain the logical transform. */
 	bool TryGetPresentedVisualTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
+	/** Current display-model bounds center in world centimeters, including prediction and hover. */
+	bool TryGetPresentedSoldierModelCenter(FGuLiSoldierId SoldierId, FVector& OutCenter) const;
 	/** Same timestamp used by the hit-white overlay; no independent health-delta detector in the HUD. */
 	float GetSoldierHitStartTime(FGuLiSoldierId SoldierId) const;
 	FGuLiCommanderVisualStatesChanged OnVisualStatesChanged;
@@ -349,6 +357,8 @@ private:
 		const FTransform& PreviousPose, float DeltaSeconds, bool bReset, bool bAlive);
 	void ObserveMechanicalShot(const FGuLiCombatShotCue& Cue);
 	bool ResolveMechanicalMuzzle(const FGuLiCombatShotCue& Cue, FTransform& Out, float& RenderTime) const;
+	bool ResolveMechanicalLaunchOffset(const FGuLiTargetHandle& Source, FName Slot,
+		const FVector& LaunchLocation, FVector& OutOffset) const;
 	void ApplyMechanicalOverlay(UInstancedStaticMeshComponent& Component,
 		const TArray<FGuLiSoldierId>& Ids, const TArray<float>* HitTimes = nullptr) const;
 	TMap<uint16, TArray<FGuLiSoldierId>> PhasedMechanicalIds, HitMechanicalIds, WreckMechanicalIds;
@@ -395,7 +405,9 @@ private:
 	void ApplyReliableStateChanges(const AGuLiSoldierStateReplicator& Replicator, double Now);
 	void HideInstancePool();
 	void RebuildLocalInstances(float DeltaSeconds);
-	FTransform BuildRingTransform(const FTransform& SoldierTransform) const;
+	float GetUnitAvoidanceRadius(uint16 UnitTypeId) const;
+	void RefreshPredictionCrowding(const AGuLiSoldierStateReplicator& Replicator, float DeltaSeconds);
+	FTransform BuildRingTransform(const FTransform& SoldierTransform, float AvoidanceRadius) const;
 	static bool IsAckResultAccepted(EGuLiCommandAckResult Result);
 
 #if !UE_BUILD_SHIPPING
@@ -542,6 +554,9 @@ private:
 	TSet<uint16> LoggedMissingUnitBatchTypes;
 	TMap<FGuLiSoldierId, FGuLiCommanderPresentedSoldier> PresentedSoldiers;
 	TMap<FGuLiSoldierId, FGuLiCommanderPredictedMove> PredictedMoves;
+	mutable TMap<uint16, float> UnitAvoidanceRadii;
+	FVector2D NativeRingRadii = FVector2D::ZeroVector;
+	float RingVerticalScale = 0.004f;
 	TMap<FGuLiSoldierId, double> WreckExpireTimes;
 	TArray<FTransform> CachedRingTransforms;
 	TArray<FLinearColor> CachedRingColors;

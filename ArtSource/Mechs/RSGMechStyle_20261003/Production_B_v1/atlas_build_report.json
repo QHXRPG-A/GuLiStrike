@@ -1,0 +1,70 @@
+{
+  "atlas_resolution_px": [
+    2048,
+    2048
+  ],
+  "body_material_sections": 1,
+  "base_color": "Textures/T_RSGMech_BaseColor.png",
+  "line_mask": "Textures/T_RSGMech_LineMask.png",
+  "mask_channels": {
+    "R": "structural_lines",
+    "G": "functional_lamp_mask",
+    "B": "reserved"
+  },
+  "baked_lighting": false,
+  "structural_edge_count": 6552,
+  "coplanar_tessellation_edges_drawn": false,
+  "tone_factors": [
+    0.42,
+    0.74,
+    1
+  ],
+  "tone_thresholds": [
+    0,
+    0.12,
+    0.55
+  ],
+  "smooth_angle_degrees": 42,
+  "normals_method": "area weighted angle-limited, same 42-degree rule as A-v3",
+  "crease_threshold_degrees": 80,
+  "line_mask_baked_at_4K_then_filtered_to_2K": true,
+  "freestyle_used_in_production_render": false,
+  "textures_packed_in_blend": true,
+  "user_marked_head_front_panel_uv": "contiguous front projection reserved in right atlas strip",
+  "user_marked_head_front_panel_triangles": 140,
+  "palette_swatch_uv": {
+    "WarmWhite": [
+      0.825,
+      0.05
+    ],
+    "Coral": [
+      0.865,
+      0.05
+    ],
+    "Chassis": [
+      0.9049999999999999,
+      0.05
+    ],
+    "Steel": [
+      0.945,
+      0.05
+    ],
+    "Amber": [
+      0.825,
+      0.15000000000000002
+    ],
+    "Ink": [
+      0.865,
+      0.15000000000000002
+    ],
+    "SkyBlue": [
+      0.9049999999999999,
+      0.15000000000000002
+    ],
+    "PaleYellow": [
+      0.945,
+      0.15000000000000002
+    ]
+  },
+  "lower_LOD_base_color_UV": "UV_PaletteBase; structural mask remains on UV0_Atlas2K"
+}

@@ -13,6 +13,7 @@ enum class EGuLiCommanderLODLevel : uint8
 enum class EGuLiCommanderLODReason : uint8
 {
 	DistanceAndScreen,
+	CameraTier,
 	MinimumResidence,
 	InvalidBounds,
 	NoLocalView,
@@ -51,6 +52,8 @@ struct GULISTRIKE_API FGuLiCommanderLODDecision
 	double DistanceCentimeters = TNumericLimits<double>::Max();
 	float ScreenFraction = 0;
 	bool bVisible = false;
+	bool bCommanderView = false;
+	bool bOverviewOnly = false;
 	// Also applies to resource-driven changes. Initial allocation/reentry is immediate.
 	bool bCanTransition = false;
 };

@@ -1,0 +1,223 @@
+{
+  "version": "A-v1",
+  "published_utc": "2026-10-03T01:42:58.339989+00:00",
+  "source_asset": "/Game/Assets/RSG_UnderWater_Pack/FPS/Models/Mech/SK_FPS_Mech.SK_FPS_Mech",
+  "planned_formal_destination": "/Game/GuLiStrike/Robots/RSGMech",
+  "scope": "reference_design_and_source_baseline_only",
+  "artifacts": [
+    {
+      "path": "References_A_v1/RSG_A_v1_Hero_SourceStyle.png",
+      "role": "three_quarter_effect_reference",
+      "bytes": 3254315,
+      "sha256": "b927ccc5b80b725cba784ae1144731f056cf2796c2438bfb3f0a0ba8737ce4ed",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "Baseline/RSG_Source_Hero_2048.png",
+      "role": "source_gray_hero",
+      "bytes": 2578501,
+      "sha256": "9bd964b8f5b02d6710b15edafb642b56b48bcc7ae417177177b79d6b81f532b5",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "References_A_v1/RSG_A_v1_Front_SourceStyle.png",
+      "role": "orthographic_front",
+      "bytes": 2971089,
+      "sha256": "2871656288b86f8cbce9d857d6865ddf551bb06d76fc2a24b7f7efe598d044cf",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "Baseline/RSG_Source_Front_2048.png",
+      "role": "source_gray_front",
+      "bytes": 2293156,
+      "sha256": "d4f2b24b13feadd25ce4612e86afcc0c26de19417a3ec19e1cd3928b3b31bcc9",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "References_A_v1/RSG_A_v1_Left_SourceStyle.png",
+      "role": "orthographic_left",
+      "bytes": 2889521,
+      "sha256": "047820480073de5bfcc0233b4b79693668090231899053211b56a206034363a0",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "Baseline/RSG_Source_Left_2048.png",
+      "role": "source_gray_left",
+      "bytes": 2344328,
+      "sha256": "0e87e5330d715bee77c5c5395362bd993800151d850b2cd3a3e175832331ddef",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "References_A_v1/RSG_A_v1_Back_SourceStyle.png",
+      "role": "orthographic_back",
+      "bytes": 2918509,
+      "sha256": "9cb9af7aee16939d36e955218394c74aedeae72a7293d23f6827d2e5b9c0ec8f",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "Baseline/RSG_Source_Back_2048.png",
+      "role": "source_gray_back",
+      "bytes": 2369484,
+      "sha256": "ab87f84fbc003b3d2db5dbcd80845473a1107d90069df3ac9036a3aaf81bf8b4",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "Source/SK_FPS_Mech_Source_LOD0.fbx",
+      "role": "original_source_reference_export",
+      "bytes": 1558544,
+      "sha256": "66f4f165caa0c08770338106e59d24329d8f400c556bac1c8ab643f3771de680"
+    },
+    {
+      "path": "Source/source_manifest.json",
+      "role": "source_44_bones_reference_transforms_and_7_animations",
+      "bytes": 55093,
+      "sha256": "d34f068cb27cc1fac166fb8e78ee3b45cc129853c29ac998cbe3a6ad2f0c63a4"
+    },
+    {
+      "path": "References_A_v1/RSG_A_v1_ReferenceMaterialStudy.blend",
+      "role": "reference_material_study_not_production_model",
+      "bytes": 2157888,
+      "sha256": "c1f94ff655aef6789992f791ba3bb0f3c4f3dbc0458b0eb48b9f848dc562f6c8"
+    },
+    {
+      "path": "References_A_v1/reference_setup.json",
+      "role": "camera_palette_and_presentation_setup",
+      "bytes": 41307,
+      "sha256": "2999362745c20471839173c333c3e5c4c0692b340159d9d1b2bc39c7b72432a1"
+    },
+    {
+      "path": "References_A_v1/imagegen_Hero_prompt.txt",
+      "role": "builtin_imagegen_draft_prompt",
+      "bytes": 2154,
+      "sha256": "8af842c1024c2e500ab5d7181ff4a82d7d154b2e03e5110fdd668ef2acbe11cc"
+    },
+    {
+      "path": "review_A_v1.html",
+      "role": "interactive_reference_review",
+      "bytes": 9332,
+      "sha256": "051f4b4f90ceed1e87a7bfb7b40f6a755693be9d077ba3e5fb06c0f4b168e9ce"
+    },
+    {
+      "path": "README.md",
+      "role": "color_moving_parts_scope_and_approval_notes",
+      "bytes": 6725,
+      "sha256": "aee9a8904f1edc0bc16ecbffe9dbcf80384fab2d92935eb43de06e505edd1000"
+    }
+  ],
+  "palette_srgb": {
+    "WarmWhite": "#F1E7D5",
+    "Coral": "#E97868",
+    "Chassis": "#48413E",
+    "Steel": "#756A60",
+    "Amber": "#F4B65C",
+    "Ink": "#241F20"
+  },
+  "geometry_integrity": {
+    "source_body_triangles": 68124,
+    "source_vertices": 57588,
+    "ue_bones": 44,
+    "source_animations": 7,
+    "fbx_blender_bones": 43,
+    "fbx_blender_armature_root_object": "DeformationSystem",
+    "dimensions_m": [
+      10.857728958129883,
+      8.860779762268066,
+      7.891218185424805
+    ],
+    "dimension_residual_m": [
+      -5.340576176848799e-07,
+      9.5367431640625e-07,
+      -7.017834287026403e-07
+    ],
+    "same_pose_and_geometry_for_all_reference_views": true,
+    "same_orthographic_scale_m": 13.246429443359375,
+    "paired_color_components": 184
+  },
+  "image_generation": {
+    "mode": "builtin_imagegen",
+    "selected_for_review": false,
+    "draft": "References_A_v1/RSG_A_v1_Hero_ImagegenDraft.png",
+    "draft_resolution_px": [
+      1254,
+      1254
+    ],
+    "reason": "Native output below 2048px and extra continuous highlights; retained only as draft.",
+    "review_images_method": "source-based Blender reference material renders"
+  },
+  "technical_reference_integrity": "passed",
+  "approvals": {
+    "A": {
+      "status": "pending",
+      "user_decision": null,
+      "version": "A-v1"
+    },
+    "B": {
+      "status": "not_started",
+      "user_decision": null,
+      "version": null
+    }
+  },
+  "production_modeling": "not_started",
+  "production_export_readback": "not_started",
+  "formal_ue_import": "not_started",
+  "ue_packages_written": false,
+  "lod_target_triangles": [
+    {
+      "lod": 0,
+      "body": 32000,
+      "outline": 8000,
+      "total": 40000,
+      "screen_size": 1.0
+    },
+    {
+      "lod": 1,
+      "body": 14000,
+      "outline": 3000,
+      "total": 17000,
+      "screen_size": 0.4
+    },
+    {
+      "lod": 2,
+      "body": 5000,
+      "outline": 1000,
+      "total": 6000,
+      "screen_size": 0.16
+    },
+    {
+      "lod": 3,
+      "body": 2000,
+      "outline": 0,
+      "total": 2000,
+      "screen_size": 0.06
+    }
+  ],
+  "actual_new_lod_triangles": null,
+  "new_material_sections": null,
+  "new_texture_budget": null,
+  "animation_compatibility_on_remade_mesh": "not_run",
+  "combat_framerate_measurement": "not_run"
+}

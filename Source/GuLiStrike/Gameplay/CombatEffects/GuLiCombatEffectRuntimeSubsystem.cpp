@@ -8,6 +8,7 @@
 #include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
 #include "Gameplay/Wingman/Combat/GuLiWingmanAttackProfile.h"
 #include "HAL/PlatformTime.h"
+#include "Math/RandomStream.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Stats/Stats.h"
 #include "Subsystems/SubsystemCollection.h"
@@ -19,6 +20,22 @@ namespace
 	constexpr float StepSeconds = 1.0f / 30.0f;
 	constexpr float CellSize = 2000.0f;
 	FIntPoint Cell(const FVector& Point) { return FIntPoint(static_cast<int32>(FMath::FloorToInt(Point.X / CellSize)), static_cast<int32>(FMath::FloorToInt(Point.Y / CellSize))); }
+
+	FVector GroundMachineGunDirection(const FVector& AimDirection, const FGuLiCombatAttackRequest& Request, const uint8 MuzzleIndex)
+	{
+		if (Request.ProjectileSpreadAngleDegrees == 0.0f) return AimDirection;
+		const uint32 Seed = HashCombine(HashCombine(GetTypeHash(Request.Context.ShotId), Request.Context.MatchEpoch),
+			static_cast<uint32>(MuzzleIndex));
+		FRandomStream Random(static_cast<int32>(Seed));
+		const double HalfAngle = FMath::DegreesToRadians(static_cast<double>(Request.ProjectileSpreadAngleDegrees) * 0.5);
+		// Uniform azimuth and cos(theta) give uniform solid-angle density inside the cone.
+		const double CosTheta = FMath::Lerp(1.0, FMath::Cos(HalfAngle), static_cast<double>(Random.FRand()));
+		const double SinTheta = FMath::Sqrt(FMath::Max(0.0, 1.0 - CosTheta * CosTheta));
+		const double Azimuth = 2.0 * UE_DOUBLE_PI * static_cast<double>(Random.FRand());
+		FVector AxisX, AxisY;
+		AimDirection.FindBestAxisVectors(AxisX, AxisY);
+		return (AimDirection * CosTheta + (AxisX * FMath::Cos(Azimuth) + AxisY * FMath::Sin(Azimuth)) * SinTheta).GetSafeNormal();
+	}
 }
 
 bool UGuLiCombatEffectRuntimeSubsystem::ShouldCreateSubsystem(UObject* Outer) const
@@ -79,7 +96,7 @@ bool UGuLiCombatEffectRuntimeSubsystem::PrepareContext(const FGuLiCombatEffectCo
 	if (!SynchronizeEpoch() || !Input.Source.IsValid() || !FMath::IsFinite(Input.Damage) || Input.Damage <= 0
 		|| (Input.MatchEpoch != 0 && Input.MatchEpoch != Epoch)) return false;
 	FGuLiCombatTargetSnapshot Source;
-	if (!Ledger->TryGetTargetSnapshot(Input.Source, Source) || !Source.bAlive) return false;
+	if (!Ledger->TryGetSourceSnapshot(Input.Source, Source) || !Source.bAlive) return false;
 	if (Input.WeaponBinding.IsWellFormed() && (Input.WeaponBinding.MatchEpoch != Epoch || Input.WeaponBinding.Team != Source.Team)) return false;
 	Output = Input; Output.MatchEpoch = Epoch;
 	if (!Output.ShotId.IsValid()) Output.ShotId = FGuid::NewGuid();
@@ -197,7 +214,9 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiComba
 	TArray<FGuLiCombatShotCue>& OutCues)
 {
 	if (!ProjectilePool || Request.Context.Source.Kind != EGuLiTargetKind::CommanderSoldier
-		|| Request.Context.Emitter.IsValid() || Request.SourceTransform.ContainsNaN()) return;
+		|| Request.Context.Emitter.IsValid() || Request.SourceTransform.ContainsNaN()
+		|| !FMath::IsFinite(Request.ProjectileSpreadAngleDegrees)
+		|| Request.ProjectileSpreadAngleDegrees < 0.0f || Request.ProjectileSpreadAngleDegrees > 180.0f) return;
 	FGuLiCombatTargetSnapshot Target;
 	if (!Ledger->TryGetTargetSnapshot(Request.Context.Target, Target) || !Target.bAlive) return;
 	const FGuLiWeaponMountConfig* Mount = CommanderData && CommanderData->IsWeaponMountCatalogValid()
@@ -206,7 +225,8 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiComba
 	const auto* Definition = CommanderData->FindSoldierDefinition(Request.UnitTypeId);
 	const auto* Mechanical = Definition && Definition->MechanicalAnimation.IsEnabled() && Request.bHasMechanicalPose
 		? &Definition->MechanicalAnimation : nullptr;
-	const uint8 MuzzleIndex = Mechanical ? Request.MechanicalMuzzleIndex
+	const auto* VAT = Definition && Request.bHasVATPose ? Definition->VATDefinition.Get() : nullptr;
+	const uint8 MuzzleIndex = Mechanical || VAT ? Request.MechanicalMuzzleIndex
 		: static_cast<uint8>(Request.ShotOrdinal % Mount->Muzzles.Num());
 	if (!Mount->Muzzles.IsValidIndex(MuzzleIndex)) return;
 	FGuLiPooledProjectileLaunch Launch;
@@ -215,6 +235,14 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiComba
 	Launch.Direction = (Target.Location - Launch.Position).GetSafeNormal();
 	const float ShotTime = GetWorld()->GetTimeSeconds();
 	FTransform MechanicalMuzzle;
+	if (VAT)
+	{
+		if (!GuLiVATAnimation::ResolveMuzzle(*VAT, Request.VATPlayback, Request.MechanicalPose,
+			Request.SourceTransform, MuzzleIndex, MechanicalMuzzle)) return;
+		Launch.Position = MechanicalMuzzle.GetLocation();
+		Launch.MuzzleOffset = Request.SourceTransform.InverseTransformPosition(Launch.Position);
+		Launch.Direction = MechanicalMuzzle.GetUnitAxis(EAxis::X);
+	}
 	if (Mechanical)
 	{
 		if (!GuLiMechanicalAnimation::ResolveMuzzle(*Mechanical, Request.MechanicalPose, Request.SourceTransform,
@@ -224,6 +252,9 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiComba
 		Launch.Direction = Mechanical->Model == EGuLiMechanicalModel::WarMachine
 			? MechanicalMuzzle.GetUnitAxis(EAxis::X) : (Target.Location - Launch.Position).GetSafeNormal();
 	}
+	const FVector AimDirection = Launch.Direction.GetSafeNormal();
+	if (AimDirection.ContainsNaN() || AimDirection.IsNearlyZero()) return;
+	Launch.Direction = GroundMachineGunDirection(AimDirection, Request, MuzzleIndex);
 	Launch.Speed = Request.Motion.Speed; Launch.Lifetime = Request.Motion.MaximumLifetime;
 	// Acquisition range only gates firing. Once launched, the frozen lifetime governs straight flight.
 	Launch.MaximumDistance = Launch.Speed * Launch.Lifetime;
@@ -236,10 +267,11 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiComba
 	Cue.MuzzleIndex = MuzzleIndex; Cue.MuzzleOffset = Launch.MuzzleOffset;
 	Cue.Start = Launch.Position; Cue.End = Target.Location; Cue.ServerTime = Launch.ServerTime;
 	Cue.bMuzzleOnly = true;
-	Cue.bMechanicalShot = Mechanical && Mechanical->Model == EGuLiMechanicalModel::WarMachine;
-	Cue.MuzzleDirection = Launch.Direction;
+	Cue.bMechanicalShot = VAT || (Mechanical && Mechanical->Model == EGuLiMechanicalModel::WarMachine);
+	// Mechanical aim and recoil retain the barrel axis; only the actual projectile is scattered.
+	Cue.MuzzleDirection = AimDirection;
 	Cue.MechanicalPoseTimeSeconds = Request.MechanicalPoseTimeSeconds;
-	if (Cue.bMechanicalShot) Cue.RecoilFromCentimeters = GuLiMechanicalAnimation::RecoilAt(*Mechanical, Request.MechanicalPose, MuzzleIndex, ShotTime);
+	if (Mechanical && Cue.bMechanicalShot) Cue.RecoilFromCentimeters = GuLiMechanicalAnimation::RecoilAt(*Mechanical, Request.MechanicalPose, MuzzleIndex, ShotTime);
 	if (Request.OnShotAccepted) Request.OnShotAccepted(MuzzleIndex, Launch.ServerTime);
 }
 
@@ -279,6 +311,7 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::LaunchProjectile(UGuLiProjectileEffectD
 	Instance.FrozenDelay = FieldConfig.Delay; Instance.VariantCount = Field->ActivationVariants.Num();
 	auto& State = Instance.State;
 	State.MatchEpoch = Epoch; State.EffectId = FGuid::NewGuid(); State.Source = Prepared.Source; State.Target = Prepared.Target;
+	if (Prepared.Emitter.IsValid()) State.Source=GuLiCombatTargets::MakeWingmanTargetHandle(Prepared.Emitter);
 	State.ProjectileDefinition = Definition; State.FieldDefinition = Field; State.Motion = AuthoredMotion;
 	State.Location = LaunchTransform.GetLocation(); State.LaunchLocation = State.Location;
 	State.LaunchDirection = LaunchTransform.GetUnitAxis(EAxis::X); State.Velocity = FVector(State.LaunchDirection) * State.Motion.Speed;
@@ -468,6 +501,9 @@ bool UGuLiCombatEffectRuntimeSubsystem::PreparePointProjectile(
     if (!SynchronizeEpoch() || !Definition || !Definition->IsValidDefinition() || !Request.FrozenField.IsValid()
         || !Request.Motion.IsValid() || Request.SourceTransform.ContainsNaN() || Request.TargetLocation.ContainsNaN() || Request.MuzzleOffset.ContainsNaN()
         || (Request.GroundWarningStyle && !Request.GroundWarningStyle->IsValidStyle())
+        || (Request.GuidanceBatchId.IsValid() && (!Request.GroundWarningStyle
+            || Request.GuidanceCenter.ContainsNaN() || Request.GuidanceCenter.GetAbsMax() > 10000000
+            || !FMath::IsFinite(Request.GuidanceRadius) || Request.GuidanceRadius <= 0 || Request.GuidanceRadius > 100000))
         || !PrepareContext(Request.Context, Prepared)) return {};
     UGuLiSpellFieldDefinition* Field = Definition->ImpactField.LoadSynchronous();
     if (!Field || !Field->IsValidDefinition()) return {};
@@ -482,11 +518,15 @@ bool UGuLiCombatEffectRuntimeSubsystem::PreparePointProjectile(
     Instance.FrozenRadius = Request.FrozenField.Radius; Instance.VariantCount = Field->ActivationVariants.Num();
     auto& State = Instance.State;
     State.MatchEpoch = Epoch; State.EffectId = Prepared.ShotId; State.Source = Prepared.Source; State.Target = Prepared.Target;
+    if (Prepared.Emitter.IsValid()) State.Source=GuLiCombatTargets::MakeWingmanTargetHandle(Prepared.Emitter);
     State.ProjectileDefinition = Definition; State.FieldDefinition = Field; State.Motion = Request.Motion;
     State.bFixedPoint = true;
     if (!Request.bUseAuthoredPointTrajectory)
     { State.Motion.LiftSeconds = 0; State.Motion.LateralOffset = 0; State.Motion.VerticalCurve = 0; State.Motion.LongitudinalCurve = 0; }
     State.GroundWarningStyle = Request.GroundWarningStyle;
+    State.GuidanceBatchId = Request.GuidanceBatchId;
+    State.GuidanceCenter = Request.GuidanceCenter;
+    State.GuidanceRadius = Request.GuidanceRadius;
     State.Radius = Request.FrozenField.Radius;
     State.Location = Request.SourceTransform.TransformPosition(Request.MuzzleOffset); State.LaunchLocation = State.Location;
     State.LastTargetLocation = Request.TargetLocation;

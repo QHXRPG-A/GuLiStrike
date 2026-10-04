@@ -1,0 +1,64 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "game": false,
+    "deployments": [],
+    "starts": [
+      {
+        "name": "PlayerStart_0",
+        "pos": [
+          0.0,
+          69000.0,
+          1001.9771118164062
+        ]
+      }
+    ],
+    "navigation": [
+      {
+        "name": "NavMeshBoundsVolume_0",
+        "class": "NavMeshBoundsVolume",
+        "pos": [
+          0.0,
+          0.0,
+          6590.564727783203
+        ],
+        "scale": [
+          900.0,
+          900.0,
+          96.4278564453125
+        ]
+      },
+      {
+        "name": "RecastNavMesh-Default",
+        "class": "RecastNavMesh",
+        "pos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "RecastNavMesh-CommanderSoldier",
+        "class": "RecastNavMesh",
+        "pos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ],
+    "settings": []
+  }
+}

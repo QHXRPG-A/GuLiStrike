@@ -164,7 +164,8 @@ def main():
     effect = ASSETS.load_asset(effect_path) if ASSETS.does_asset_exist(effect_path) else TOOLS.create_asset(
         'FXT_WingmanFlight', DEST, unreal.NiagaraEffectType, unreal.NiagaraEffectTypeFactoryNew())
     settings = unreal.NiagaraSystemScalabilitySettings()
-    settings.set_editor_property('cull_by_distance', True)
+    # Camera-tier admission is owned by the runtime shared LOD policy.
+    settings.set_editor_property('cull_by_distance', False)
     settings.set_editor_property('max_distance', 36000.0)
     array = effect.get_editor_property('system_scalability_settings')
     array.set_editor_property('settings', [settings])

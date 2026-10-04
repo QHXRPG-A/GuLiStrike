@@ -28,7 +28,8 @@ def run():
         # give the runtime WPO derivative its own identity instead of overwriting it.
         mesh=unreal.load_asset(path) if LIB.does_asset_exist(path) else LIB.duplicate_asset(source_path,path)
         assert isinstance(mesh,unreal.StaticMesh)
-        mesh=unreal.load_asset(source_path)
+        # Reimport must preserve the current rigid derivative's materials/sockets/settings.
+        # The historical Cel asset can be older than later hover and missile work.
         component=unreal.new_object(unreal.StaticMeshComponent);component.set_static_mesh(mesh)
         sockets=[]
         for n in component.get_all_socket_names():
@@ -39,9 +40,10 @@ def run():
         collision=setup.get_editor_property('agg_geom');trace=setup.get_editor_property('collision_trace_flag')
         before=list((mesh.get_bounds().box_extent*2).to_tuple())
         screens=list(SUB.get_lod_screen_sizes(mesh));triangles=[mesh.get_num_triangles(i) for i in range(SUB.get_lod_count(mesh))]
+        reductions=[SUB.get_lod_reduction_settings(mesh,i) for i in range(SUB.get_lod_count(mesh))]
         task=unreal.AssetImportTask()
         for k,v in dict(filename=spec['files']['fbx'],destination_path=folder,destination_name=name,
-            automated=True,async_=False,replace_existing=True,replace_existing_settings=True,save=False).items():task.set_editor_property(k,v)
+            automated=True,async_=False,replace_existing=True,replace_existing_settings=False,save=False).items():task.set_editor_property(k,v)
         ui=options(False);ui.set_editor_property('reset_to_fbx_on_material_conflict',False)
         data=ui.get_editor_property('static_mesh_import_data');data.set_editor_property('reorder_material_to_fbx_order',False)
         data.set_editor_property('generate_lightmap_u_vs',False)
@@ -61,10 +63,14 @@ def run():
             s.set_editor_property('relative_rotation',unreal.Rotator())
             radius=spec['wheel_radii_cm'][['FL','FR','RL','RR'].index(n.removeprefix('Rigid_Wheel_'))] if n.startswith('Rigid_Wheel_') else 1
             s.set_editor_property('relative_scale',unreal.Vector(radius,1,1))
-        reductions=[]
-        for i,t in enumerate(triangles):
-            reductions.append(unreal.EditorScriptingMeshReductionSettings(percent_triangles=t/triangles[0],screen_size=screens[i]))
-        SUB.set_lods(mesh,unreal.EditorScriptingMeshReductionOptions(auto_compute_lod_screen_size=False,reduction_settings=reductions))
+        assert SUB.get_lod_count(mesh)==len(reductions)
+        for i,reduction in enumerate(reductions):
+            # The former ~300/70-triangle far LODs erase every support arm.
+            # Retain enough geometry for all rigid joints; screen thresholds stay unchanged.
+            if spec.get('rigid_version')==4 and i in (2,3):
+                reduction.set_editor_property('percent_triangles',max(reduction.percent_triangles,.04 if i==2 else .02))
+                reduction.set_editor_property('base_lod_model',0)
+            SUB.set_lod_reduction_settings(mesh,i,reduction)
         for i in range(SUB.get_lod_count(mesh)):
             build=SUB.get_lod_build_settings(mesh,i)
             for k,v in dict(use_full_precision_u_vs=True,generate_lightmap_u_vs=False,recompute_normals=False,recompute_tangents=False,build_scale3d=unreal.Vector(1,1,1)).items():build.set_editor_property(k,v)
@@ -87,6 +93,11 @@ def run():
                 LIB.set_metadata_tag(mesh,'GuLi.Animation','RigidWPO.v2; four disc-bottom nozzles; no skeleton')
         if spec.get('missile_pod_parts'):
             LIB.set_metadata_tag(mesh,'GuLi.Animation','RigidWPO.v3; 31 floats; missile pods part10/11; four disc-bottom nozzles; no skeleton')
+        for joint in spec.get('leg_joints_cm',[]):
+            socket=mesh.find_socket('Rigid_LegRoot_'+joint['label'])
+            socket.set_editor_property('relative_rotation',unreal.MathLibrary.make_rot_from_x(unreal.Vector(*joint['axis'])))
+        if spec.get('rigid_version')==4:
+            LIB.set_metadata_tag(mesh,'GuLi.Animation','RigidWPO.v4; 51 floats; legs part12..19; missile pods10/11; no skeleton')
         LIB.set_metadata_tag(mesh,'GuLi.ModelProduction.SourceFile',str(Path(spec['files']['fbx']).relative_to(ROOT)))
         assert SUB.get_num_uv_channels(mesh,0)==3
         assert LIB.save_loaded_asset(mesh,False)
@@ -102,5 +113,5 @@ try:
 except: REPORT['error']=traceback.format_exc()
 finally:
     unreal.SystemLibrary.execute_console_command(WORLD,VAR+' '+str(OLD))
-    (OUT/'ue-import.json').write_text(json.dumps(REPORT,indent=2),encoding='utf-8')
+    (ROOT/'ArtSource/WarMachineTurn_20260930/ue-import.json').write_text(json.dumps(REPORT,indent=2),encoding='utf-8')
     unreal.MCPythonHelper.submit_result(json.dumps(REPORT))

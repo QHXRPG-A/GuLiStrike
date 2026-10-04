@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Battle/Combat/GuLiShipProjectileLedgerBridge.h"
+#include "Gameplay/CombatEffects/GuLiFlightEvent.h"
 #include "GameFramework/Actor.h"
 #include "GuLiStrikeProjectile.generated.h"
 
@@ -12,7 +13,7 @@ class UStaticMeshComponent;
 class UProjectileMovementComponent;
 
 /**
- *  服务器模拟与命中结算的弹丸；客户端消费移动复制与服务器销毁。
+ *  服务器模拟与命中结算的弹丸；客户端使用独立池对象消费创建/结束事件。
  *  Ship 武器命中统一 TargetHandle/Ledger，未注册的旧 NPC 仍沿用既有命中行为。
  */
 UCLASS(abstract)
@@ -43,12 +44,16 @@ public:
 	 * component. Legacy character projectiles remain valid when this is absent.
 	 */
 	bool ConfigureServerDamageLedger(const AActor& SourceActor, float Damage);
+	const UStaticMeshComponent* GetFlightMesh() const { return Mesh; }
+	FGuid GetFlightId() const { return DamageLedgerContext.ShotId; }
 
 	/** Handles collisions */
 	virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
+	virtual void LifeSpanExpired() override;
 	
 	/** Handles collisions that stop this projectile from moving */
 	UFUNCTION()
@@ -61,5 +66,10 @@ private:
 	/** Previous authoritative transform sample for Actor-less Mass target sweeps. */
 	FVector PreviousServerSweepLocation = FVector::ZeroVector;
 	bool bHasPreviousServerSweepLocation = false;
+	void PublishServerLaunch();
+	void FinishFlight(EGuLiCombatEffectEndReason Reason, const FVector& Location);
+	FGuLiFlightEvent Flight;
+	bool bFlightPublished = false;
+	bool bFlightEnded = false;
 
 };

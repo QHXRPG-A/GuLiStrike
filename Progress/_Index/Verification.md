@@ -4,12 +4,14 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | verification | partial | 补齐同负载旧版差值、原生60/120Hz和未覆盖的视觉与重连矩阵。 | 2026-10-04 |
+| [机枪枪口命中与弹道照明](../DevelopmentDocumentation/20260930-机枪枪口命中与弹道照明.md) | verification | partial | 玩家在LVL_CommanderMassPrototype验证两种地面兵种照明、全部机枪命中及密集交火清理。 | 2026-09-30 |
 | [指挥官三档镜头与总览LOD — 实施与交付](../DevelopmentDocumentation/20260930-指挥官三档镜头与总览LOD.md) | verification | partial | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 | 2026-09-30 |
-| [指挥官统一三级LOD — 实施与接入约定](../DevelopmentDocumentation/20260929-指挥官统一三级LOD.md) | verification | partial | 获准构建后加载夹具修正，复验100台完整人数与固定镜头；用户视觉验收、多World及性能实测继续待定。 | 2026-09-30 |
-| [重防号导弹解锁与肉鸽卡牌 — 技术方案](../DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md) | verification | partial | 玩家在LVL_CommanderMassPrototype复查Candidate_v3：96m射程与升级继承、3m爆炸/预警、高速烟迹及冷启动；助手运行/性能暂缓，正式表现待视觉审核。 | 2026-09-30 |
+| [指挥官统一三级LOD — 实施与接入约定](../DevelopmentDocumentation/20260929-指挥官统一三级LOD.md) | verification | partial | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 原100台完整人数、多World和性能验证仍独立待定。 | 2026-09-30 |
+| [重防号导弹解锁与肉鸽卡牌 — 技术方案](../DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md) | verification | partial | 玩家直接进入LVL_CommanderMassPrototype复查v3射程、爆炸/预警和烟迹；无需候选命令，完整运行与性能实测仍待反馈。 | 2026-09-30 |
+| [重防号悬浮与GPU引擎喷流](../DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md) | verification | partial | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 | 2026-09-30 |
 | [肉鸽卡牌单行文案与高亮 — 实施记录](../DevelopmentDocumentation/20260929-肉鸽卡牌单行文案与高亮.md) | verification | partial | 在LVL_CommanderMassPrototype重新进入游戏按F4，复验单位、属性、黄色粗体和不同窗口比例的单行显示。 | 2026-09-29 |
 | [F4肉鸽卡牌重选 — 实施记录](../DevelopmentDocumentation/20260929-F4肉鸽卡牌重选.md) | verification | partial | 重新打开源码版编辑器，在LVL_CommanderMassPrototype按F4验证重选、无其他牌提示和确认流程。 | 2026-09-29 |
-| [重防号悬浮与GPU引擎喷流](../DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md) | verification | partial | 在LVL_CommanderMassPrototype确认新版观感，完成网络生命周期及500全重防号最坏负载验证。 | 2026-09-29 |
 | [Mass无骨骼动画与远距离持续显示](../DevelopmentDocumentation/20260929-Mass无骨骼动画与远距离持续显示.md) | verification | partial | 启动源码版编辑器加载已构建的模块，在现有Mass地图完成实机验收与性能采样。 | 2026-09-29 |
 | [重防号能力卡 — 六层视差与可编辑文案交付](../DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md) | verification | partial | 用户在LVL_WarMachineTarotReview核验三张新牌面、极限偏转与既有两次点击流程。 | 2026-09-29 |
 | [Ship导入与扫荡者重防号风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者重防号风格重制.md) | done | partial | 继续实战轰炸、僚机死亡、机械姿态和完整性能验收。 | 2026-09-29 |

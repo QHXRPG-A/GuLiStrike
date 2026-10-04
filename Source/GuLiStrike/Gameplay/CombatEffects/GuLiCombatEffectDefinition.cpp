@@ -19,6 +19,14 @@ bool FGuLiProjectileVisualSettings::IsValid() const
 		&& FMath::IsFinite(FlameLengthCentimeters) && FlameLengthCentimeters > 0;
 }
 
+bool UGuLiProjectileEffectDefinition::UsesMissileClusterRendering() const
+{
+	if (MotionProfileRow.IsNull()) return false;
+	const auto* Row = MotionProfileRow.GetRow<FGuLiStrikeSecondaryWeaponsProjectilesRow>(TEXT("Projectile presentation routing"));
+	return Row && Row->UnitTypeId == 2 && Row->SlotId == TEXT("MissileLauncher")
+		&& Row->ProjectileAsset.ToSoftObjectPath() == FSoftObjectPath(this);
+}
+
 bool UGuLiProjectileEffectDefinition::ResolveVisualSettings(FGuLiProjectileVisualSettings& OutVisual) const
 {
 	OutVisual = {};

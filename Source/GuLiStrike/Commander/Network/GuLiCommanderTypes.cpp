@@ -137,7 +137,8 @@ bool FGuLiSelectionRequest::IsWellFormed() const
 	{
 		return true;
 	}
-	if (!IsFiniteVector(RayOrigin) || FVector(RayOrigin).GetAbsMax() > 2000000.0)
+	// Numeric sanity only; the shared battlefield ray calculation owns gameplay range validation.
+	if (!IsFiniteVector(RayOrigin) || RayOrigin.GetAbsMax() > 1.0e9)
 	{
 		return false;
 	}

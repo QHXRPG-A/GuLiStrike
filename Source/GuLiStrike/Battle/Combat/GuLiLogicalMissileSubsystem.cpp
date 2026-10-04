@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Battle/Combat/GuLiLogicalMissileSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
 
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
@@ -125,6 +126,11 @@ void UGuLiLogicalMissileSubsystem::CreateMissileUnchecked(
 	Missile.MatchEpoch = Request.MatchEpoch;
 	Missile.MissileId = Request.MissileId;
 	Missile.ShotId = Request.ShotId;
+    Missile.LaunchTime=GetWorld()->GetTimeSeconds();
+    Missile.LaunchPosition=Request.LaunchPosition; Missile.LaunchDirection=Request.LaunchDirection;
+    FGuLiCombatTargetSnapshot Target;
+    if (DamageLedger->TryGetTargetSnapshot(Request.Target,Target)) Missile.LastTargetLocation=Target.Location;
+
 	Missile.RootEventId = Request.RootEventId;
 	Missile.WeaponBinding = Request.WeaponBinding;
 	Missile.SkillId = Request.SkillId;
@@ -265,6 +271,7 @@ bool UGuLiLogicalMissileSubsystem::StepMissile(
 		return false;
 	}
 	const FVector ToTarget = TargetSnapshot.Location - Missile.Position;
+	Missile.LastTargetLocation = TargetSnapshot.Location;
 	if (ToTarget.IsNearlyZero())
 	{
 		OutTerminal.Reason = EGuLiLogicalMissileTerminalReason::Invalid;
@@ -332,7 +339,7 @@ bool UGuLiLogicalMissileSubsystem::StepMissile(
 	if (Missile.CorrectionAccumulator >= CorrectionPeriodSeconds)
 	{
 		Missile.CorrectionAccumulator = FMath::Fmod(Missile.CorrectionAccumulator, CorrectionPeriodSeconds);
-		OnCorrection.Broadcast(Missile);
+		UGuLiCombatEffectReplicationComponent::UpdateFlight(GetWorld(),GuLiFlightWire::FromLogicalMissile(Missile));
 	}
 	return true;
 }

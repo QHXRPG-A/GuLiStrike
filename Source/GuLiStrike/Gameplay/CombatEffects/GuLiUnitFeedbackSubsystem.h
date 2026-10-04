@@ -32,6 +32,7 @@ public:
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") FName GroundExplosionScaleParameter = TEXT("User.Scale");
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") FName WingmanExplosionScaleParameter;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="1")) int32 MaximumConcurrentExplosions = 64;
+	/** Non-commander fallback only; commander feedback is hidden only in overview. */
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0")) float CullDistance = 36000.0f;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0", Units="s")) float HealthBarHoldSeconds = 3.0f;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0.01", Units="s")) float HealthBarFadeSeconds = 0.5f;
@@ -99,6 +100,7 @@ public:
 private:
 	UFUNCTION() void HandleExplosionFinished(UNiagaraComponent* Component);
 	void FinishLoading();
+	bool ShouldRenderExplosion(const FVector& Location) const;
 	void QueueDestruction(const FVector& Location, float UnitSize, bool bWingman);
 	void SpawnExplosion(const FVector& Location, float UnitSize, bool bWingman);
 	AGuLiUnitWreck* AllocateWreck(const FVector& Location);

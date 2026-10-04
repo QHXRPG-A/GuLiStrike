@@ -6,6 +6,7 @@
 
 UGuLiCommanderDataSettings::UGuLiCommanderDataSettings()
 {
+	CameraDataTable = TSoftObjectPtr<UDataTable>(FSoftObjectPath(TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Camera.DT_GuLiStrikeCommander_Camera")));
 	SkillDataTable = TSoftObjectPtr<UDataTable>(FSoftObjectPath(TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Skills.DT_GuLiStrikeCommander_Skills")));
 	UnitSkillDataTable = TSoftObjectPtr<UDataTable>(FSoftObjectPath(TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_UnitSkills.DT_GuLiStrikeCommander_UnitSkills")));
 	WeaponMountDataTable = TSoftObjectPtr<UDataTable>(FSoftObjectPath(TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_WeaponMounts.DT_GuLiStrikeCommander_WeaponMounts")));

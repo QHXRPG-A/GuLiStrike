@@ -2,18 +2,20 @@
   {
     "Name": "SoldierA_Strafe",
     "Id": 1,
-    "Note": "A默认普攻",
+    "Note": "先驱号左右主枪同时发射；每枪1发/秒，每发10伤害，总锥角2度",
     "UnitTypeId": 1,
     "SlotId": "BasicAttack",
     "SkillId": "Strafe",
     "bDefault": true,
     "Damage": 10.0,
     "AttackRatePerSecond": 1.0,
-    "RangeCentimeters": 2000.0,
+    "RangeCentimeters": 6000.0,
     "TriggerMode": "Automatic",
     "ProjectileSpeedCentimetersPerSecond": 2400.0,
     "ProjectileLifetimeSeconds": 5.0,
-    "ProjectileSweepRadiusCentimeters": 3.0
+    "ProjectileSweepRadiusCentimeters": 3.0,
+    "ProjectileSpreadAngleDegrees": 2.0,
+    "ProjectileCount": 2
   },
   {
     "Name": "WM01_Strafe",
@@ -25,11 +27,13 @@
     "bDefault": true,
     "Damage": 7.5,
     "AttackRatePerSecond": 2.0,
-    "RangeCentimeters": 3000.0,
+    "RangeCentimeters": 12000.0,
     "TriggerMode": "Automatic",
     "ProjectileSpeedCentimetersPerSecond": 2400.0,
     "ProjectileLifetimeSeconds": 5.0,
-    "ProjectileSweepRadiusCentimeters": 3.0
+    "ProjectileSweepRadiusCentimeters": 3.0,
+    "ProjectileSpreadAngleDegrees": 2.0,
+    "ProjectileCount": 1
   },
   {
     "Name": "SoldierA_Test",
@@ -45,7 +49,9 @@
     "TriggerMode": "Automatic",
     "ProjectileSpeedCentimetersPerSecond": 0.0,
     "ProjectileLifetimeSeconds": 0.0,
-    "ProjectileSweepRadiusCentimeters": 0.0
+    "ProjectileSweepRadiusCentimeters": 0.0,
+    "ProjectileSpreadAngleDegrees": 0.0,
+    "ProjectileCount": 1
   },
   {
     "Name": "WM01_Test",
@@ -61,7 +67,9 @@
     "TriggerMode": "Automatic",
     "ProjectileSpeedCentimetersPerSecond": 0.0,
     "ProjectileLifetimeSeconds": 0.0,
-    "ProjectileSweepRadiusCentimeters": 0.0
+    "ProjectileSweepRadiusCentimeters": 0.0,
+    "ProjectileSpreadAngleDegrees": 0.0,
+    "ProjectileCount": 1
   },
   {
     "Name": "WM01_MissileLauncher",
@@ -77,6 +85,26 @@
     "TriggerMode": "Active",
     "ProjectileSpeedCentimetersPerSecond": 0.0,
     "ProjectileLifetimeSeconds": 0.0,
-    "ProjectileSweepRadiusCentimeters": 0.0
+    "ProjectileSweepRadiusCentimeters": 0.0,
+    "ProjectileSpreadAngleDegrees": 0.0,
+    "ProjectileCount": 1
+  },
+  {
+    "Name": "SweeperSummon_Strafe",
+    "Id": 6,
+    "Note": "召唤扫荡者原单枪数值",
+    "UnitTypeId": 5,
+    "SlotId": "BasicAttack",
+    "SkillId": "Strafe",
+    "bDefault": true,
+    "Damage": 10.0,
+    "AttackRatePerSecond": 1.0,
+    "RangeCentimeters": 2000.0,
+    "TriggerMode": "Automatic",
+    "ProjectileSpeedCentimetersPerSecond": 2400.0,
+    "ProjectileLifetimeSeconds": 5.0,
+    "ProjectileSweepRadiusCentimeters": 3.0,
+    "ProjectileSpreadAngleDegrees": 2.0,
+    "ProjectileCount": 1
   }
 ]

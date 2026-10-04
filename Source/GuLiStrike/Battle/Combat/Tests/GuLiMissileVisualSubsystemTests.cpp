@@ -4,6 +4,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Battle/Framework/GuLiBattleGameState.h"
+#include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
@@ -147,18 +148,13 @@ bool FGuLiMissileVisualRpcContractTest::RunTest(const FString& Parameters)
 		TEXT("MulticastReceiveMissileCorrection"));
 	const UFunction* Terminal = AGuLiBattleGameState::StaticClass()->FindFunctionByName(
 		TEXT("MulticastReceiveMissileTerminal"));
-	TestNotNull(TEXT("Launch multicast exists"), Launch);
-	TestNotNull(TEXT("Correction multicast exists"), Correction);
-	TestNotNull(TEXT("Terminal multicast exists"), Terminal);
-	if (!Launch || !Correction || !Terminal) return false;
-	TestTrue(TEXT("Launch is a reliable multicast"),
-		Launch->HasAnyFunctionFlags(FUNC_NetMulticast | FUNC_NetReliable)
-		&& Launch->HasAllFunctionFlags(FUNC_NetMulticast | FUNC_NetReliable));
-	TestTrue(TEXT("Correction is an unreliable multicast"),
-		Correction->HasAnyFunctionFlags(FUNC_NetMulticast)
-		&& !Correction->HasAnyFunctionFlags(FUNC_NetReliable));
-	TestTrue(TEXT("Terminal is a reliable multicast"),
-		Terminal->HasAllFunctionFlags(FUNC_NetMulticast | FUNC_NetReliable));
+	TestNull(TEXT("separate missile launch RPC retired"), Launch);
+	TestNull(TEXT("periodic missile correction RPC retired"), Correction);
+	TestNull(TEXT("separate missile terminal RPC retired"), Terminal);
+	const UFunction* Batch = UGuLiCombatEffectReplicationComponent::StaticClass()->FindFunctionByName(TEXT("MulticastFlightBatch"));
+	if (!TestNotNull(TEXT("unified flight batch exists"), Batch)) return false;
+	TestTrue(TEXT("launch and terminal share one reliable ordered multicast"),
+		Batch->HasAllFunctionFlags(FUNC_NetMulticast | FUNC_NetReliable));
 	return true;
 }
 #endif

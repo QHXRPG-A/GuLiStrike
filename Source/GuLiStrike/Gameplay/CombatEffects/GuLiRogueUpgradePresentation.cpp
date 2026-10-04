@@ -1,8 +1,9 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+#include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
+#include "Engine/World.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "GameFramework/PlayerController.h"
-#include "Engine/World.h"
 #include "EngineUtils.h"
 #include "HAL/IConsoleManager.h"
 #include "HAL/PlatformTime.h"
@@ -21,7 +22,7 @@ namespace
 	TAutoConsoleVariable<float> UpgradeEnemyB(TEXT("gs.RogueCards.EnemyUpgradeB"),0.f,TEXT("Enemy upgrade linear blue channel."));
 	void ReleaseUpgradeComponent(FGuLiRogueUpgradeBlock& Block)
 	{
-		if (IsValid(Block.Component)) { Block.Component->DeactivateImmediate(); Block.Component->ReleaseToPool(); }
+		if (IsValid(Block.Component)) { Block.Component->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Block.Component); Block.Component->ReleaseToPool(); }
 		Block.Component=nullptr;
 	}
 }
@@ -139,6 +140,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateRogueUpgradePool(float Now,bo
 			B.Component=UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(),B.System,FVector::ZeroVector,
 				FRotator::ZeroRotator,FVector::OneVector,false,false,ENCPoolMethod::ManualRelease,false);
 			if (!B.Component) continue;
+			if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(B.Component);
 			B.Component->SetCastShadow(false); bActivate=true;
 		}
 		using Arrays=UNiagaraDataInterfaceArrayFunctionLibrary;

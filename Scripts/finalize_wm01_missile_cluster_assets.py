@@ -47,7 +47,7 @@ try:
     assert lods and lods[0]['left_vertices'] > 0 and lods[0]['right_vertices'] > 0, report['mesh_lods']
     assert all(l['uv_channels'] >= 3 and l['mixed_pod_triangles'] == 0 and l['nonintegral_parts'] == 0 for l in lods), report['mesh_lods']
     definition = unreal.load_asset('/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile')
-    report['production_cluster_enabled'] = bool(definition.get_editor_property('use_missile_cluster_rendering'))
+    report['production_cluster_enabled'] = bool(definition.uses_missile_cluster_rendering())
     report['success'] = True
 except Exception:
     report['error'] = traceback.format_exc()

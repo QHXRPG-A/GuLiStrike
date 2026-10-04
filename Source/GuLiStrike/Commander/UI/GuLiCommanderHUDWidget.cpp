@@ -912,3 +912,22 @@ bool UGuLiCommanderHUDWidget::HasValidBlockingGeometry() const
 		&& IsWidgetGeometryReady(FindRuntimeWidget(TEXT("SB_DockDesign")))
 		&& IsWidgetGeometryReady(FindRuntimeWidget(TEXT("SB_ShortcutsDesign")));
 }
+
+FBox2D UGuLiCommanderHUDWidget::GetBattlefieldViewRect(const FVector2D& ViewportSize, FVector2D ViewOrigin) const
+{
+	FBox2D Rect(FVector2D::ZeroVector, ViewportSize);
+	for (const TCHAR* Name : {TEXT("SB_TopStatus"), TEXT("SB_MapDesign"), TEXT("SB_DockDesign"), TEXT("SB_ShortcutsDesign")})
+	{
+		const UWidget* Widget = FindRuntimeWidget(Name);
+		if (!IsWidgetGeometryReady(Widget)) continue;
+		const FGeometry& Geometry = Widget->GetCachedGeometry();
+		FVector2D Minimum, Maximum, Unused;
+		USlateBlueprintLibrary::LocalToViewport(this, Geometry, FVector2D::ZeroVector, Minimum, Unused);
+		USlateBlueprintLibrary::LocalToViewport(this, Geometry, Geometry.GetLocalSize(), Maximum, Unused);
+		Minimum -= ViewOrigin; Maximum -= ViewOrigin;
+		if (Maximum.X <= 0 || Minimum.X >= ViewportSize.X) continue;
+		if (FCString::Strcmp(Name, TEXT("SB_TopStatus")) == 0) Rect.Min.Y = FMath::Max(Rect.Min.Y, Maximum.Y);
+		else Rect.Max.Y = FMath::Min(Rect.Max.Y, Minimum.Y);
+	}
+	return Rect;
+}

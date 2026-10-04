@@ -18,6 +18,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FName SourceWeaponSlot;
 	/** Diameter of the server-sampled ground impact area; zero retains a point target. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(ClampMin="0", Units="cm")) float TargetAreaDiameterCentimeters = 0;
+	/** Shared projectile capacity of one selection activation; zero leaves other skills unlimited. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(ClampMin="0")) int32 MaxProjectilesPerActivation = 0;
 	/** Other callers retain the existing straight point-projectile behavior by default. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) bool bUseAuthoredTrajectory = false;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) TObjectPtr<UGuLiGroundWarningStyle> GroundWarningStyle;

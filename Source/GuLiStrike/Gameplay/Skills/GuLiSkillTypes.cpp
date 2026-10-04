@@ -10,6 +10,7 @@ bool FGuLiResolvedSkillProfile::HasSameConfiguration(const FGuLiResolvedSkillPro
 		&& ProjectileSpeedCentimetersPerSecond == Other.ProjectileSpeedCentimetersPerSecond
 		&& ProjectileLifetimeSeconds == Other.ProjectileLifetimeSeconds
 		&& ProjectileSweepRadiusCentimeters == Other.ProjectileSweepRadiusCentimeters
+		&& ProjectileSpreadAngleDegrees == Other.ProjectileSpreadAngleDegrees
 		&& bUnlocked == Other.bUnlocked && bEquipped == Other.bEquipped && TriggerMode == Other.TriggerMode;
 }
 

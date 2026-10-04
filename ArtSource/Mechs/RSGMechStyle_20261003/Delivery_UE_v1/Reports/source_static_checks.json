@@ -1,0 +1,38 @@
+{
+  "success": true,
+  "method": "source/data review; Python AST; frozen Blender hash",
+  "python_files": [
+    "Scripts\\Pioneer\\capture_art_preview.py",
+    "Scripts\\Pioneer\\deploy_runtime_assets.py",
+    "Scripts\\Pioneer\\finalize_art_assets.py",
+    "Scripts\\Pioneer\\import_art_assets.py",
+    "Scripts\\Pioneer\\prepare_acceptance_scene.py",
+    "Scripts\\Pioneer\\update_source_tables.py",
+    "ArtSource\\Mechs\\RSGMechStyle_20261003\\DeliveryScripts\\export_pioneer_vat.py",
+    "ArtSource\\Mechs\\RSGMechStyle_20261003\\DeliveryScripts\\readback_pioneer_fbx.py",
+    "Scripts\\author_secondary_unit_skill_assets.py"
+  ],
+  "soldier_ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "pioneer": {
+    "unit": 1,
+    "speed_cm_s": 1440,
+    "width_cm": 625,
+    "range_cm": 6000,
+    "projectiles": 2,
+    "cone_degrees": 2
+  },
+  "summon": {
+    "unit": 5,
+    "count": 5,
+    "cooldown_s": 30
+  },
+  "native_compile_executed": false,
+  "play_executed": false,
+  "automation_tests_executed": false
+}

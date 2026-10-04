@@ -45,8 +45,18 @@ FGuLiMechanicalAnimationConfig FGuLiMechanicalAnimationConfig::FromStaticMesh(co
 			if (const auto* Socket = Mesh->FindSocket(FName(*FString::Printf(TEXT("FX_Missile_%02d"), Side + 1))))
 				C.MissileMuzzles[Side] = SocketTransform(*Socket, Scale);
 		C.bHasHoverNozzles = true;
+		C.bHasTurnRig = true;
 		for (int32 Index = 0; Index < 4; ++Index)
 		{
+			const auto* LegRoot = Mesh->FindSocket(FName(*FString::Printf(TEXT("Rigid_LegRoot_%s"), WheelNames[Index])));
+			const auto* LegEnd = Mesh->FindSocket(FName(*FString::Printf(TEXT("Rigid_LegEnd_%s"), WheelNames[Index])));
+			if (LegRoot && LegEnd)
+			{
+				C.LegRoots[Index] = LegRoot->RelativeLocation * Scale;
+				C.LegEnds[Index] = LegEnd->RelativeLocation * Scale;
+				C.LegAxes[Index] = LegRoot->RelativeRotation.Vector();
+			}
+			else C.bHasTurnRig = false;
 			const auto* Disc = Mesh->FindSocket(FName(*FString::Printf(TEXT("Rigid_Disc_%s"), WheelNames[Index])));
 			const auto* Nozzle = Mesh->FindSocket(FName(*FString::Printf(TEXT("FX_Hover_%s"), WheelNames[Index])));
 			if (!Disc || !Nozzle || Nozzle->RelativeScale.X <= 0) { C.bHasHoverNozzles = false; continue; }
@@ -94,6 +104,19 @@ FGuLiMechanicalAnimationConfig FGuLiMechanicalAnimationConfig::FromStaticMesh(co
 		C.HoverIdleEnterSpeed = ReadSetting(Section, TEXT("HoverIdleEnterSpeed"), C.HoverIdleEnterSpeed, 0, 100);
 		C.HoverIdleExitSpeed = ReadSetting(Section, TEXT("HoverIdleExitSpeed"), C.HoverIdleExitSpeed, C.HoverIdleEnterSpeed, 200);
 		C.HoverIdleHoldSeconds = ReadSetting(Section, TEXT("HoverIdleHoldSeconds"), C.HoverIdleHoldSeconds, 0, 2);
+		C.VisualYawDamping = ReadSetting(Section, TEXT("VisualYawDamping"), C.VisualYawDamping, .1f, 30);
+		C.VisualYawSnapDegrees = ReadSetting(Section, TEXT("VisualYawSnapDegrees"), C.VisualYawSnapDegrees, .001f, 1);
+		C.TurnFullBankRate = ReadSetting(Section, TEXT("TurnFullBankRate"), C.TurnFullBankRate, 5, 720);
+		C.TurnRateDeadZone = ReadSetting(Section, TEXT("TurnRateDeadZone"), C.TurnRateDeadZone, 0, C.TurnFullBankRate*.5f);
+		C.TurnDiscDegrees = ReadSetting(Section, TEXT("TurnDiscDegrees"), C.TurnDiscDegrees, 0, 15);
+		C.TurnLegDegrees = ReadSetting(Section, TEXT("TurnLegDegrees"), C.TurnLegDegrees, 0, 8);
+		C.TurnUpperDegrees = ReadSetting(Section, TEXT("TurnUpperDegrees"), C.TurnUpperDegrees, 0, 15);
+		C.TurnDiscEnterSeconds = ReadSetting(Section, TEXT("TurnDiscEnterSeconds"), C.TurnDiscEnterSeconds, .01f, 5);
+		C.TurnLegEnterSeconds = ReadSetting(Section, TEXT("TurnLegEnterSeconds"), C.TurnLegEnterSeconds, .01f, 5);
+		C.TurnUpperEnterSeconds = ReadSetting(Section, TEXT("TurnUpperEnterSeconds"), C.TurnUpperEnterSeconds, .01f, 5);
+		C.TurnDiscReturnSeconds = ReadSetting(Section, TEXT("TurnDiscReturnSeconds"), C.TurnDiscReturnSeconds, .01f, 5);
+		C.TurnLegReturnSeconds = ReadSetting(Section, TEXT("TurnLegReturnSeconds"), C.TurnLegReturnSeconds, .01f, 5);
+		C.TurnUpperReturnSeconds = ReadSetting(Section, TEXT("TurnUpperReturnSeconds"), C.TurnUpperReturnSeconds, .01f, 5);
 	}
 	return C;
 }
@@ -170,6 +193,16 @@ void GuLiMechanicalAnimation::ConfigureOverlay(UInstancedStaticMeshComponent& Co
 		auto* Instance = UMaterialInstanceDynamic::Create(Material, &Component);
 		Instance->SetScalarParameterValue(TEXT("RigidKind"), Config.Model == EGuLiMechanicalModel::WarMachine ? 1.0f : 2.0f);
 		Instance->SetVectorParameterValue(TEXT("RigidUpperPivot"), FLinearColor(Config.UpperPivot.X, Config.UpperPivot.Y, Config.UpperPivot.Z, 0));
+		for (int32 I = 0; I < 4; ++I)
+		{
+			const auto Set = [Instance, I](const TCHAR* Name, const FVector& V)
+			{
+				Instance->SetVectorParameterValue(FName(*FString::Printf(TEXT("%s%d"), Name, I)), FLinearColor(V.X, V.Y, V.Z, 0));
+			};
+			Set(TEXT("RigidLegRoot"), Config.LegRoots[I]);
+			Set(TEXT("RigidLegEnd"), Config.LegEnds[I]);
+			Set(TEXT("RigidLegAxis"), Config.LegAxes[I]);
+		}
 		Material = Instance;
 	}
 	for (int32 Slot = 0; Slot < Component.GetNumMaterials(); ++Slot) Component.SetMaterial(Slot, Material);
@@ -312,16 +345,22 @@ FGuLiMechanicalAnimationFrame GuLiMechanicalAnimation::BuildFrame(const FGuLiMec
 bool GuLiMechanicalAnimation::WriteInstance(UInstancedStaticMeshComponent& Component, int32 Index,
 	const FGuLiMechanicalAnimationFrame& Current, const FGuLiMechanicalAnimationFrame& Previous, float HitTime)
 {
-	if (Component.NumCustomDataFloats != FGuLiMechanicalAnimationFrame::CustomDataFloats || !Component.IsValidInstance(Index)) return false;
+	if (Component.NumCustomDataFloats < FGuLiMechanicalAnimationFrame::CustomDataFloats || !Component.IsValidInstance(Index)) return false;
 	bool bChanged = false;
-	float Data[FGuLiMechanicalAnimationFrame::CustomDataFloats];
 	const int32 Start = Index * Component.NumCustomDataFloats;
+	TArray<float, TInlineAllocator<59>> Data;
+	Data.Append(Component.PerInstanceSMCustomData.GetData() + Start, Component.NumCustomDataFloats);
+	Data[0] = HitTime;
+	Data[29] = Current.MissilePodVisible;
+	Data[30] = Previous.MissilePodVisible;
+	for (int32 I = 0; I < FGuLiMechanicalAnimationFrame::PoseFloats; ++I)
+	{
+		Data[FGuLiMechanicalAnimationFrame::PoseIndex(I, false)] = Current.Values[I];
+		Data[FGuLiMechanicalAnimationFrame::PoseIndex(I, true)] = Previous.Values[I];
+	}
 	for (int32 Slot = 0; Slot < Component.NumCustomDataFloats; ++Slot)
 	{
-		const float Value = Slot == 29 ? Current.MissilePodVisible : Slot == 30 ? Previous.MissilePodVisible
-			: Slot == 0 ? HitTime : Slot <= FGuLiMechanicalAnimationFrame::PoseFloats
-			? Current.Values[Slot-1] : Previous.Values[Slot-1-FGuLiMechanicalAnimationFrame::PoseFloats];
-		Data[Slot] = Value;
+		const float Value = Data[Slot];
 		if (!FMath::IsNearlyEqual(Component.PerInstanceSMCustomData[Start+Slot], Value, 0.00001f))
 		{
 			bChanged = true;

@@ -1,13 +1,13 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Mass/GuLiCommanderSelectionQuery.h"
+#include "Commander/Presentation/GuLiCommanderCameraGeometry.h"
 #include "Commander/Orders/GuLiUnitTaskSettings.h"
 
 namespace GuLiCommanderSelectionQuery
 {
 	namespace Private
 	{
-		constexpr double MaximumRayDistanceCentimeters = 600000.0;
 		// Only synthetic/test candidates without a model use these scaled fallback dimensions.
 		constexpr double PickBodyHalfHeightCentimeters = 100.0;
 		constexpr double PickBodyHorizontalRadiusCentimeters = 150.0;
@@ -21,7 +21,7 @@ namespace GuLiCommanderSelectionQuery
 				&& !Candidate.Velocity.ContainsNaN();
 		}
 
-		bool IsInsidePickRay(const FGuLiSelectionRequest& Request, const FCandidate& Candidate)
+		bool IsInsidePickRay(const FGuLiSelectionRequest& Request, const FCandidate& Candidate, double MaximumRayDistanceCentimeters)
 		{
 			const FVector Direction = FVector(Request.RayDirection).GetSafeNormal();
 			// A bounded sphere encloses that body so a stationary model's top/side is not
@@ -46,7 +46,7 @@ namespace GuLiCommanderSelectionQuery
 			return (Offset - Direction * AlongRay).SizeSquared() <= FMath::Square(Radius);
 		}
 
-		bool IsInsideBox(const FGuLiSelectionRequest& Request, const FVector& FootLocation)
+		bool IsInsideBox(const FGuLiSelectionRequest& Request, const FVector& FootLocation, double MaximumRayDistanceCentimeters)
 		{
 			const FVector Rays[] = {
 				Request.BoxTopLeftRay, Request.BoxTopRightRay,
@@ -79,8 +79,9 @@ namespace GuLiCommanderSelectionQuery
 		const FGuLiSelectionRequest& Request,
 		const EGuLiTeam Team,
 		const TConstArrayView<FCandidate> Population,
-		TArray<FGuLiSoldierId>& OutIds)
+		TArray<FGuLiSoldierId>& OutIds, const UWorld* World)
 	{
+		const double RayLength = GuLiCommanderCameraGeometry::SelectionRayLength(Request.RayOrigin, World);
 		OutIds.Reset();
 		if (!GuLiCommanderProtocol::IsPlayableTeam(Team) || !Request.IsWellFormed())
 		{
@@ -108,7 +109,7 @@ namespace GuLiCommanderSelectionQuery
 					break;
 				}
 			}
-			if (!Seed || !Private::IsEligible(*Seed, Team) || !Private::IsInsidePickRay(Request, *Seed))
+			if (!Seed || !Private::IsEligible(*Seed, Team) || !Private::IsInsidePickRay(Request, *Seed, RayLength))
 			{
 				return false;
 			}
@@ -131,10 +132,10 @@ namespace GuLiCommanderSelectionQuery
 				continue;
 			}
 			const bool bHit = Request.Kind == EGuLiSelectionKind::SameType
-				? Candidate.UnitTypeId == Seed->UnitTypeId && Private::IsInsideBox(Request, Candidate.Location)
+				? Candidate.UnitTypeId == Seed->UnitTypeId && Private::IsInsideBox(Request, Candidate.Location, RayLength)
 					&& FVector::DistSquared2D(Candidate.Location, Center) <= FMath::Square(GetDefault<UGuLiUnitTaskSettings>()->SameTypeRadiusCentimeters)
 				: (Request.Kind == EGuLiSelectionKind::Box
-					? Private::IsInsideBox(Request, Candidate.Location)
+					? Private::IsInsideBox(Request, Candidate.Location, RayLength)
 					: FVector::DistSquared2D(Candidate.Location, Center) <= RadiusSquared);
 			if (bHit)
 			{

@@ -43,11 +43,11 @@ try:
         a.camera_component.set_editor_property('aspect_ratio',16/9)
     entry=actor(unreal.Note,'WM01Missile_CandidateInstructions',(-8000,73500,-1200))
     entry.set_editor_property('text',
-        '重防号 WM01 / UnitTypeId=2 导弹候选 v3；加载本轮原生视觉字段及三张表后使用。\n'
-        'v3：弹体195cm；烟宽63→99cm、尾焰42×108cm，颜色/亮度沿用v2；烟迹2.4秒、消散槽2.45秒。速度2400cm/s；Q随最终普攻射程×3.2（基础96m），爆炸/预警半径3m；冷却6秒、伤害、齐射及16m落点散布直径保持。\n'
+        '重防号 WM01 / UnitTypeId=2 导弹 v3；已获用户授权设为正式默认表现。\n'
+        'v3：弹体195cm；烟宽63→99cm、尾焰42×108cm，颜色/亮度沿用v2；烟迹2.4秒、消散槽2.45秒。速度2400cm/s；Q随最终普攻射程×2（基础240m），爆炸/预警半径3m；冷却6秒、伤害、齐射及16m落点散布直径保持。\n'
         '玩法验收：新局就绪指挥官，选择重防号，初始无 Q 且无背部导弹仓；F4 获 04.01 后现有及后续本队重防号解锁，另一队保持原状；05.01 每次齐射 +1。换任保留，新局重置。\n'
-        '候选开关：gs.MissileCluster.Candidate 1；旧表现对照：gs.MissileCluster.Candidate 0。正式 DA 开关保持关闭，待用户可播放候选审核。\n'
-        '新增验收：96m内外点击圆心检查施放，射程升级后Q继续按最终普攻×3.2；检查3m预警边缘与伤害一致。远景8段高速烟迹连续，尾焰与烟衔接，边缘裁剪不切尾，命中后2.4秒自然消散。\n'
+        '原生代码按WM01/MissileLauncher表记录默认使用v3，无需候选开关或资产勾选；所有游戏地图生效，重开编辑器仍生效。旧表现对照：gs.MissileCluster.Enabled 0；恢复 v3：gs.MissileCluster.Enabled 1。\n'
+        '新增验收：240m内外点击圆心检查施放，射程升级后Q继续按最终普攻×2；检查3m预警边缘与伤害一致。远景8段高速烟迹连续，尾焰与烟衔接，边缘裁剪不切尾，命中后2.4秒自然消散。\n'
         '冷启动验收：候选资源准备完成后应自动切到放大弹体、短亮尾焰与2.4秒黑烟，不能持续回退为旧白色尾焰；本轮已修正延迟编译请求未被触发的问题，游戏内结果待玩家复查。\n'
         '性能场景：每次新开 PIE 并就绪，执行一组 Build，再执行 gs.MissileFixture.Fire；每次施放遵守真实冷却。Build 仅为性能准备解锁和弹量，不替代 F4 功能验收，不移除其他地图单位。\n'
         '镜头：Build 自动固定总览；gs.MissileFixture.Camera near 查看近景；overview 恢复对照镜头。\n'
@@ -58,7 +58,7 @@ try:
             label=f'WM01Missile_Case_{count}x{salvo}'
             a=actor(unreal.Note,label,(-10500+col*2500,75000+row*1000,-1200),[f'WM01MissileCase_{count}_{salvo}'])
             command=f'gs.MissileFixture.Build {count} {salvo}'
-            a.set_editor_property('text',f'{count} 台重防号 × 每台 {salvo} 发 = {count*salvo} 枚。\n每组重新开始 PIE，指挥官就绪后执行：\n{command}\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 Candidate 0/1，保持总览镜头和画质相同。')
+            a.set_editor_property('text',f'{count} 台重防号 × 每台 {salvo} 发 = {count*salvo} 枚。\n每组重新开始 PIE，指挥官就绪后执行：\n{command}\ngs.MissileFixture.Fire\ngs.MissileFixture.Metrics\n新旧对照仅切 gs.MissileCluster.Enabled 0/1，保持总览镜头和画质相同。')
             cases.append({'actor':label,'units':count,'salvo':salvo,'missiles':count*salvo,'command':command})
     f4=next(a for a in ED.get_all_level_actors() if a.get_actor_label()=='RogueCards_F4_Entry')
     text=str(f4.get_editor_property('text'))
@@ -82,7 +82,7 @@ try:
     report['native_capacity_helper_loaded']=hasattr(unreal.GuLiCombatEffectAuthoringLibrary,'get_missile_pod_mesh_diagnostics')
     report['cluster_assets']=[unreal.load_asset('/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_'+q).get_path_name() for q in ['Full','Lite','Minimal']]
     report['projectile']=unreal.load_asset('/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile').get_path_name()
-    report['production_cluster_enabled']=bool(unreal.load_asset(report['projectile']).get_editor_property('use_missile_cluster_rendering'))
+    report['production_cluster_enabled']=bool(unreal.load_asset(report['projectile']).uses_missile_cluster_rendering())
     report['success']=True
 except Exception:
     report['error']=traceback.format_exc()

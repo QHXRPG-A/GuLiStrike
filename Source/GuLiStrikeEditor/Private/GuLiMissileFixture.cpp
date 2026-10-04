@@ -33,8 +33,12 @@ namespace
 
 FString UGuLiRogueCardQALibrary::BuildMissileFixture(APlayerController* PC,int32 Count,int32 ProjectilesPerSalvo,FVector Center)
 {
-	if (!Allowed(PC) || (Count!=100 && Count!=500) || (ProjectilesPerSalvo!=1 && ProjectilesPerSalvo!=4 && ProjectilesPerSalvo!=8)
-		|| Center.ContainsNaN()) return Fail(TEXT("Use an authoritative local PIE commander in the designated map; cases are 100/500 x 1/4/8."));
+	const bool bGuidanceCase = (Count==25 && (ProjectilesPerSalvo==6 || ProjectilesPerSalvo==7))
+		|| (Count==2 && ProjectilesPerSalvo==60);
+	const bool bPerformanceCase = (Count==100 || Count==500)
+		&& (ProjectilesPerSalvo==1 || ProjectilesPerSalvo==4 || ProjectilesPerSalvo==8);
+	if (!Allowed(PC) || (!bGuidanceCase && !bPerformanceCase) || Center.ContainsNaN())
+		return Fail(TEXT("Use a local authoritative PIE commander: guidance 25x6/25x7/2x60, performance 100/500 x 1/4/8."));
 	for (auto It=Fixtures.CreateIterator();It;++It) if (!It.Key().IsValid()) It.RemoveCurrent();
 	if (Fixtures.Contains(PC->GetWorld())) return Fail(TEXT("Restart PIE for a fresh population and acquisition baseline before changing cases."));
 	auto* Player=PC->GetPlayerState<AGuLiBattlePlayerState>();
@@ -64,8 +68,8 @@ FString UGuLiRogueCardQALibrary::BuildMissileFixture(APlayerController* PC,int32
 	// the entire larger formation behind the fixed observation cameras.
 	const int32 Columns=FMath::CeilToInt(FMath::Sqrt(float(Count)))+10;
 	const int32 Rows=FMath::DivideAndRoundUp(Count,Columns);
-	const FVector LayoutCenter=Center+FVector(0,(Columns-Rows)*Spacing*.5f,0);
-	const FString Built=BuildFixture(PC,Count,LayoutCenter,Spacing);
+	const FVector LayoutCenter=bGuidanceCase ? Center : Center+FVector(0,(Columns-Rows)*Spacing*.5f,0);
+	const FString Built=BuildFixture(PC,Count,LayoutCenter,Spacing,bGuidanceCase);
 	TSharedPtr<FJsonObject> Json;
 	if (!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Built),Json) || !Json.IsValid() || !Json->HasField(TEXT("units"))) return Fail(TEXT("Fixture creation failed."));
 	auto& Fixture=Fixtures.Add(PC->GetWorld()); Fixture.Owner=PC; Fixture.Count=ProjectilesPerSalvo;
@@ -131,12 +135,14 @@ FString UGuLiRogueCardQALibrary::MissileMetrics(APlayerController* PC)
 
 namespace
 {
-	FAutoConsoleCommandWithWorldAndArgs BuildMissileCase(TEXT("gs.MissileFixture.Build"),TEXT("PIE only: 100|500 1|4|8. Start a fresh match per population; fixes the scene camera."),
+	FAutoConsoleCommandWithWorldAndArgs BuildMissileCase(TEXT("gs.MissileFixture.Build"),TEXT("PIE only: guidance 25 6 / 25 7 / 2 60; performance 100|500 1|4|8. Fresh match required. Guidance acceptance uses selection + Q, not Fixture.Fire."),
 		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args,UWorld* World)
 		{
 			if (!World || Args.Num()!=2) return;
 			FVector Center(0,70000,200);
-			for (TActorIterator<AActor> It(World);It;++It) if (It->ActorHasTag(TEXT("WM01MissileFixtureCenter"))) { Center=It->GetActorLocation(); break; }
+			const bool bGuidanceCase=FCString::Atoi(*Args[0])==25 || FCString::Atoi(*Args[0])==2;
+			const FName CenterTag=bGuidanceCase?FName(TEXT("WM01GuidanceFixtureCenter")):FName(TEXT("WM01MissileFixtureCenter"));
+			for (TActorIterator<AActor> It(World);It;++It) if (It->ActorHasTag(CenterTag)) { Center=It->GetActorLocation(); break; }
 			UE_LOG(LogTemp,Display,TEXT("%s"),*UGuLiRogueCardQALibrary::BuildMissileFixture(World->GetFirstPlayerController(),FCString::Atoi(*Args[0]),FCString::Atoi(*Args[1]),Center));
 		}));
 	FAutoConsoleCommandWithWorld FireMissileCase(TEXT("gs.MissileFixture.Fire"),TEXT("Fire the prepared real units through authority skill execution; normal cooldown applies."),

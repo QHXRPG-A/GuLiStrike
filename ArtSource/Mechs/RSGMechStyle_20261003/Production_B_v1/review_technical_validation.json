@@ -1,0 +1,174 @@
+{
+  "Blender": "5.2.2 LTS",
+  "actual_production_file": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\RSGMechStyle_20261003\\Production_B_v1\\RSGMech_Production_B_v1.blend",
+  "rig_bones": 44,
+  "exact_source_names_and_parents": true,
+  "actions": [
+    "A_FPS_Mech_Death_01",
+    "A_FPS_Mech_Idle_01",
+    "A_FPS_Mech_Landing_01",
+    "A_FPS_Mech_WalkBackward_01",
+    "A_FPS_Mech_WalkForward_01",
+    "A_FPS_Mech_Walk_L_01",
+    "A_FPS_Mech_Walk_R_01"
+  ],
+  "LODs": [
+    {
+      "LOD": 0,
+      "meshes": [
+        {
+          "object": "RSGMech_LOD0_Body",
+          "triangles": 29756,
+          "sections": 1,
+          "UV_channels": 1
+        },
+        {
+          "object": "RSGMech_LOD0_Contour",
+          "triangles": 7582,
+          "sections": 1,
+          "UV_channels": 0
+        }
+      ],
+      "total": 37338
+    },
+    {
+      "LOD": 1,
+      "meshes": [
+        {
+          "object": "RSGMech_LOD1_Body",
+          "triangles": 12919,
+          "sections": 1,
+          "UV_channels": 2
+        },
+        {
+          "object": "RSGMech_LOD1_Contour",
+          "triangles": 2986,
+          "sections": 1,
+          "UV_channels": 0
+        }
+      ],
+      "total": 15905
+    },
+    {
+      "LOD": 2,
+      "meshes": [
+        {
+          "object": "RSGMech_LOD2_Body",
+          "triangles": 4652,
+          "sections": 1,
+          "UV_channels": 2
+        },
+        {
+          "object": "RSGMech_LOD2_Contour",
+          "triangles": 990,
+          "sections": 1,
+          "UV_channels": 0
+        }
+      ],
+      "total": 5642
+    },
+    {
+      "LOD": 3,
+      "meshes": [
+        {
+          "object": "RSGMech_LOD3_Body",
+          "triangles": 1944,
+          "sections": 1,
+          "UV_channels": 2
+        }
+      ],
+      "total": 1944
+    }
+  ],
+  "movies": [
+    {
+      "file": "A_FPS_Mech_Death_01.mp4",
+      "decoded_size": [
+        1080,
+        1080
+      ],
+      "decoded_frames": 61,
+      "file_bytes": 674664
+    },
+    {
+      "file": "A_FPS_Mech_Idle_01.mp4",
+      "decoded_size": [
+        1080,
+        1080
+      ],
+      "decoded_frames": 50,
+      "file_bytes": 392999
+    },
+    {
+      "file": "A_FPS_Mech_Landing_01.mp4",
+      "decoded_size": [
+        1080,
+        1080
+      ],
+      "decoded_frames": 76,
+      "file_bytes": 1144603
+    },
+    {
+      "file": "A_FPS_Mech_WalkBackward_01.mp4",
+      "decoded_size": [
+        1080,
+        1080
+      ],
+      "decoded_frames": 31,
+      "file_bytes": 386083
+    },
+    {
+      "file": "A_FPS_Mech_WalkForward_01.mp4",
+      "decoded_size": [
+        1080,
+        1080
+      ],
+      "decoded_frames": 31,
+      "file_bytes": 388273
+    },
+    {
+      "file": "A_FPS_Mech_Walk_L_01.mp4",
+      "decoded_size": [
+        1080,
+        1080
+      ],
+      "decoded_frames": 31,
+      "file_bytes": 391309
+    },
+    {
+      "file": "A_FPS_Mech_Walk_R_01.mp4",
+      "decoded_size": [
+        1080,
+        1080
+      ],
+      "decoded_frames": 31,
+      "file_bytes": 381642
+    }
+  ],
+  "textures": [
+    {
+      "file": "T_RSGMech_BaseColor.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "file_bytes": 1047980,
+      "packed": true,
+      "colorspace": "sRGB"
+    },
+    {
+      "file": "T_RSGMech_LineMask.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "file_bytes": 845333,
+      "packed": true,
+      "colorspace": "Non-Color"
+    }
+  ],
+  "textures_rgba8_uncompressed_base_levels_MiB": 32,
+  "textures_rgba8_uncompressed_with_full_mips_MiB": 42.666666666666664,
+  "UE_GPU_compression_and_runtime_fps": "deferred to B-approved UE delivery",
+  "B_approval": "pending"
+}

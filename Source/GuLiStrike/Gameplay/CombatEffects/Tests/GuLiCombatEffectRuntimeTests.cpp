@@ -2,6 +2,8 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiFlightEvent.h"
+#include "Gameplay/CombatEffects/GuLiFlightVisualActor.h"
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 #include "Components/DecalComponent.h"
 #include "GameFramework/WorldSettings.h"
@@ -331,7 +333,7 @@ bool FGuLiSpellFieldTableConfigTest::RunTest(const FString& Parameters)
 	TestNotNull(TEXT("Ship bombardment lives alongside WM fields"), Global->FindCombatField(TEXT("WingmanGroundMissile")));
 	if (!TestNotNull(TEXT("WM01 table field"), Field)) return false;
 	TestEqual(TEXT("field base damage comes from SpellFields"), Field->Damage, 30.0f);
-	TestEqual(TEXT("field radius comes from SpellFields"), Field->Radius, 160.0f);
+	TestEqual(TEXT("current WM01 field radius comes from SpellFields"), Field->Radius, 300.0f);
 	TestEqual(TEXT("field timing comes from SpellFields"), Field->Timing, EGuLiSpellFieldTiming::Instant);
 	const FGuLiSkillDefinition* Skill = Data->FindSkillDefinition(TEXT("WM01_HomingMissile"));
 	TestTrue(TEXT("missile skill links the field row"), Skill && Skill->EffectConfigId == Field->ConfigId);
@@ -341,8 +343,8 @@ bool FGuLiSpellFieldTableConfigTest::RunTest(const FString& Parameters)
 	});
 	TestTrue(TEXT("field damage is injected into the resolved weapon base without a duplicate authored value"),
 		Weapon && Weapon->Damage == Field->Damage);
-	const FGuLiWeaponMountConfig* FourFGun = Data->FindWeaponMountConfig(1, TEXT("BasicAttack"));
-	TestTrue(TEXT("FourFRobot muzzle is loaded from WeaponMounts"), FourFGun && FourFGun->Muzzles.Num() == 1
+	const FGuLiWeaponMountConfig* FourFGun = Data->FindWeaponMountConfig(5, TEXT("BasicAttack"));
+	TestTrue(TEXT("summon Sweeper ID 5 muzzle is loaded from WeaponMounts"), FourFGun && FourFGun->Muzzles.Num() == 1
 		&& FourFGun->Muzzles[0].Equals(FVector(757.2613716, 0, 588.1241798) * .2, 0.01)
 		&& FourFGun->AimOffset.Equals(FVector(0, 0, 130), 0.01));
 	const FGuLiWeaponMountConfig* WM01Missiles = Data->FindWeaponMountConfig(2, TEXT("MissileLauncher"));
@@ -605,6 +607,59 @@ bool FGuLiCombatEffectNetworkOrderTest::RunTest(const FString& Parameters)
 	Visuals->BeginEpoch(10); State.EffectId = FGuid::NewGuid(); Visuals->ApplyState(State);
 	TestEqual(TEXT("old epoch cannot repopulate the new match"), Visuals->GetActiveVisualCount(), 0);
 	TestEqual(TEXT("epoch leaves no Niagara components"), Visuals->GetCounters().ComponentCount, 0);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiFlightBatchLifecycleTest, "GuLiStrike.CombatEffects.FlightBatchBootstrapAndLifecycle",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FGuLiFlightBatchLifecycleTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiCombatEffectTests;
+	FGuLiFlightEvent Event;
+	auto& State=Event.State;
+	State.MatchEpoch=MAX_uint32; State.EffectId=FGuid::NewGuid(); State.Sequence=1;
+	State.Kind=EGuLiCombatEffectKind::LinearProjectile;
+	State.Source=GuLiCombatTargets::MakeCommanderSoldierTargetHandle(State.MatchEpoch,1);
+	State.SourceTeam=EGuLiTeam::Red; State.Motion.Speed=100; State.Motion.SweepRadius=1;
+	State.LaunchDirection=FVector::ForwardVector; State.Velocity=FVector(100,0,0); State.EndTime=8;
+	TArray<FGuLiFlightEvent> Inputs; Inputs.Init(Event,32);
+	for (auto& Input : Inputs) Input.State.EffectId=FGuid::NewGuid();
+	TArray<uint8> Payload; TArray<FGuLiFlightEvent> Decoded;
+	const int32 Count=GuLiFlightWire::EncodeBatch(Inputs,Payload);
+	TestTrue(TEXT("batch is bounded by count and actual encoded size"),Count>0 && Count<=16 && Payload.Num()<=1000);
+	TestTrue(TEXT("accepted batch decodes complete identities"),GuLiFlightWire::DecodeBatch(Payload,Decoded)
+		&& Decoded.Num()==Count && Decoded[0].State.EffectId==Inputs[0].State.EffectId);
+	Payload.Pop();
+	TestFalse(TEXT("truncated reliable batch cannot be applied"),GuLiFlightWire::DecodeBatch(Payload,Decoded));
+	FFixture F; if (!F.Initialize(*this)) return false;
+	auto* Visuals=F.World->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>();
+	if (!TestNotNull(TEXT("local presentation exists"),Visuals)) return false;
+	Visuals->ApplyFlightEvent(Event); Visuals->ApplyFlightEvent(Event);
+	TestEqual(TEXT("duplicate launch acquires only one pool entry"),Visuals->GetCounters().ClientFlightActorActive,1);
+	const int32 Capacity=Visuals->GetCounters().ClientFlightActorCapacity;
+	Event.State.Phase=EGuLiCombatEffectPhase::Finished; Event.State.Sequence=2;
+	Visuals->ApplyFlightEvent(Event); Visuals->ApplyFlightEvent(Event);
+	Event.State.Phase=EGuLiCombatEffectPhase::Active; Event.State.Sequence=3;
+	Visuals->ApplyFlightEvent(Event);
+	TestTrue(TEXT("terminal tombstone prevents delayed launch resurrection"),
+		Visuals->GetEffectStates().Num()==1 && Visuals->GetEffectStates()[0].Phase==EGuLiCombatEffectPhase::Finished);
+	Event.State.EffectId=FGuid::NewGuid(); Event.State.MatchEpoch=7;
+	Event.State.Source=GuLiCombatTargets::MakeCommanderSoldierTargetHandle(7,1);
+	Visuals->BeginEpoch(7);
+	TestEqual(TEXT("epoch reset returns retained terminal trail to pool"),Visuals->GetCounters().ClientFlightActorActive,0);
+	Visuals->ApplyFlightEvent(Event);
+	TestEqual(TEXT("wrapped opaque epoch accepts new match"),Visuals->GetCounters().ClientFlightActorActive,1);
+	Event.State.MatchEpoch=MAX_uint32; Visuals->ApplyFlightEvent(Event);
+	TestEqual(TEXT("retired epoch cannot replace current match"),Visuals->GetEffectStates()[0].MatchEpoch,7u);
+	TestEqual(TEXT("pool reused across epoch reset"),Visuals->GetCounters().ClientFlightActorCapacity,Capacity);
+	Event.State.MatchEpoch=7; Event.State.StartTime=3; Event.State.SampleTime=3;
+	Event.State.Location=Event.State.LaunchLocation=FVector(300,0,0); Event.bBootstrap=true;
+	auto* Actor=F.World->SpawnActor<AGuLiFlightVisualActor>();
+	Actor->ActivateFlight(Event); Actor->AdvanceFlight(5,nullptr);
+	TestTrue(TEXT("late bootstrap advances from current point with remaining lifetime"),Actor->GetDisplayLocation(5).Equals(FVector(500,0,0),1));
+	TestFalse(TEXT("client pooled Actor never replicates"),Actor->GetIsReplicated());
+	TestFalse(TEXT("client pooled Actor never replicates movement"),Actor->IsReplicatingMovement());
+	Actor->Destroy();
 	return true;
 }
 #endif

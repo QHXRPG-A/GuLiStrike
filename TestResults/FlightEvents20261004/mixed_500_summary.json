@@ -1,0 +1,243 @@
+{
+  "duration": 29.953819274902344,
+  "wall_duration": 30.03100000000086,
+  "frames": 547,
+  "hz": 18.214511671272497,
+  "connections": [
+    {
+      "address": "127.0.0.1:58253",
+      "socket_bytes_s": 45436.9437002099,
+      "rpcs": {
+        "ClientReceiveAttackCandidateResult": {
+          "count": 1270,
+          "bytes": 572727.5,
+          "max_parameter_bytes": 447.375
+        },
+        "ClientReceiveEncodedPoseBlock": {
+          "count": 160,
+          "bytes": 7430.0,
+          "max_parameter_bytes": 61.0
+        },
+        "ClientReceivePublicPoseFrame": {
+          "count": 300,
+          "bytes": 1500.0,
+          "max_parameter_bytes": 1.625
+        },
+        "ClientMoveResponsePacked": {
+          "count": 228,
+          "bytes": 3733.5,
+          "max_parameter_bytes": 15.125
+        },
+        "MulticastReliableStates": {
+          "count": 25,
+          "bytes": 4136.0,
+          "max_parameter_bytes": 387.5
+        },
+        "MulticastFlightBatch": {
+          "count": 694,
+          "bytes": 582593.25,
+          "max_parameter_bytes": 995.5
+        },
+        "ClientReceiveStateBatch": {
+          "count": 6,
+          "bytes": 401.25,
+          "max_parameter_bytes": 93.0
+        }
+      },
+      "replicated_projectile_actors": []
+    },
+    {
+      "address": "127.0.0.1:58251",
+      "socket_bytes_s": 43292.776393511434,
+      "rpcs": {
+        "ClientReceiveEncodedPoseBlock": {
+          "count": 160,
+          "bytes": 7270.0,
+          "max_parameter_bytes": 61.0
+        },
+        "ClientReceivePublicPoseFrame": {
+          "count": 300,
+          "bytes": 603705.0,
+          "max_parameter_bytes": 2009.625
+        },
+        "MulticastReliableStates": {
+          "count": 25,
+          "bytes": 4136.0,
+          "max_parameter_bytes": 387.5
+        },
+        "MulticastFlightBatch": {
+          "count": 694,
+          "bytes": 582593.25,
+          "max_parameter_bytes": 995.5
+        },
+        "ClientReceiveStateBatch": {
+          "count": 6,
+          "bytes": 395.25,
+          "max_parameter_bytes": 93.0
+        }
+      },
+      "replicated_projectile_actors": []
+    },
+    {
+      "address": "127.0.0.1:58252",
+      "socket_bytes_s": 43428.81914527546,
+      "rpcs": {
+        "ClientReceiveEncodedPoseBlock": {
+          "count": 160,
+          "bytes": 7430.0,
+          "max_parameter_bytes": 61.0
+        },
+        "ClientReceivePublicPoseFrame": {
+          "count": 300,
+          "bytes": 604005.0,
+          "max_parameter_bytes": 2009.625
+        },
+        "ClientMoveResponsePacked": {
+          "count": 228,
+          "bytes": 2793.0,
+          "max_parameter_bytes": 11.0
+        },
+        "MulticastReliableStates": {
+          "count": 25,
+          "bytes": 4136.0,
+          "max_parameter_bytes": 387.5
+        },
+        "MulticastFlightBatch": {
+          "count": 694,
+          "bytes": 582593.25,
+          "max_parameter_bytes": 995.5
+        },
+        "ClientReceiveStateBatch": {
+          "count": 6,
+          "bytes": 401.25,
+          "max_parameter_bytes": 93.0
+        }
+      },
+      "replicated_projectile_actors": []
+    },
+    {
+      "address": "127.0.0.1:58254",
+      "socket_bytes_s": 43264.332608357334,
+      "rpcs": {
+        "ClientReceiveEncodedPoseBlock": {
+          "count": 160,
+          "bytes": 7430.0,
+          "max_parameter_bytes": 61.0
+        },
+        "ClientReceivePublicPoseFrame": {
+          "count": 300,
+          "bytes": 604005.0,
+          "max_parameter_bytes": 2009.625
+        },
+        "MulticastReliableStates": {
+          "count": 25,
+          "bytes": 4136.0,
+          "max_parameter_bytes": 387.5
+        },
+        "MulticastFlightBatch": {
+          "count": 694,
+          "bytes": 582593.25,
+          "max_parameter_bytes": 995.5
+        },
+        "ClientReceiveStateBatch": {
+          "count": 6,
+          "bytes": 456.25,
+          "max_parameter_bytes": 93.0
+        }
+      },
+      "replicated_projectile_actors": []
+    },
+    {
+      "address": "127.0.0.1:17777",
+      "socket_bytes_s": 23197.576029384833,
+      "rpcs": {
+        "ServerAcknowledgePoseBlocks": {
+          "count": 1204,
+          "bytes": 96707.0,
+          "max_parameter_bytes": 76.75
+        },
+        "ServerMovePacked": {
+          "count": 1094,
+          "bytes": 80545.75,
+          "max_parameter_bytes": 94.5
+        },
+        "ServerUpdateCamera": {
+          "count": 1094,
+          "bytes": 16410.0,
+          "max_parameter_bytes": 13.75
+        },
+        "ServerSubmitPoseFrame": {
+          "count": 253,
+          "bytes": 460830.75,
+          "max_parameter_bytes": 1818.5
+        },
+        "ServerAcknowledgeFacts": {
+          "count": 24,
+          "bytes": 309.0,
+          "max_parameter_bytes": 9.875
+        }
+      },
+      "replicated_projectile_actors": []
+    }
+  ],
+  "pools": [
+    {
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "min_active": 0,
+      "max_active": 0,
+      "capacity": 0,
+      "cpu_p50_ms": 0.0,
+      "cpu_p95_ms": 0,
+      "rejected": 0,
+      "received_delta": 0
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "min_active": 254,
+      "max_active": 508,
+      "capacity": 768,
+      "cpu_p50_ms": 0.9264000000257511,
+      "cpu_p95_ms": 1.4842000000498956,
+      "rejected": 0,
+      "received_delta": 6149
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "min_active": 254,
+      "max_active": 508,
+      "capacity": 768,
+      "cpu_p50_ms": 0.8755999997447361,
+      "cpu_p95_ms": 1.333399999566609,
+      "rejected": 0,
+      "received_delta": 6149
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_3_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "min_active": 254,
+      "max_active": 508,
+      "capacity": 768,
+      "cpu_p50_ms": 0.8567500008211937,
+      "cpu_p95_ms": 1.2908999997307546,
+      "rejected": 0,
+      "received_delta": 6149
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_4_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "min_active": 254,
+      "max_active": 508,
+      "capacity": 768,
+      "cpu_p50_ms": 0.8557499995731632,
+      "cpu_p95_ms": 1.2248000002728077,
+      "rejected": 0,
+      "received_delta": 6149
+    }
+  ],
+  "server_active_minmax": [
+    375,
+    508
+  ],
+  "server_first_last": [
+    "active=508 created=889 ended=381 payloadBytes=739584 batches=884 bootstrap=0 queued=0 policy=events_only domains=127/125/125/131",
+    "active=500 created=3890 ended=3390 payloadBytes=3048096 batches=3660 bootstrap=0 queued=0 policy=events_only domains=125/125/125/125"
+  ]
+}

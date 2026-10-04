@@ -1,0 +1,140 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "lods": [
+      {
+        "lod": 0,
+        "triangles": 37338,
+        "uv_channels": 3,
+        "flags": {
+          "1": 46572,
+          "0": 49788,
+          "2": 7827,
+          "3": 7827
+        },
+        "invalid_bone_uv": 0,
+        "sections": 2
+      },
+      {
+        "lod": 1,
+        "triangles": 15905,
+        "uv_channels": 3,
+        "flags": {
+          "1": 21222,
+          "0": 19029,
+          "2": 3732,
+          "3": 3732
+        },
+        "invalid_bone_uv": 0,
+        "sections": 2
+      },
+      {
+        "lod": 2,
+        "triangles": 5642,
+        "uv_channels": 3,
+        "flags": {
+          "1": 8262,
+          "0": 6684,
+          "2": 990,
+          "3": 990
+        },
+        "invalid_bone_uv": 0,
+        "sections": 2
+      },
+      {
+        "lod": 3,
+        "triangles": 1944,
+        "uv_channels": 3,
+        "flags": {
+          "1": 2280,
+          "0": 2820,
+          "2": 366,
+          "3": 366
+        },
+        "invalid_bone_uv": 0,
+        "sections": 1
+      }
+    ],
+    "materials": [
+      {
+        "material": "M_Pioneer_Toon3",
+        "diagnostics": "<Struct 'MaterialDiagnostics' (0x000002103B7AC780) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: (\"/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BonePosition.T_Pioneer_BonePosition\",\"/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BoneRotation.T_Pioneer_BoneRotation\",\"/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BaseColor.T_Pioneer_BaseColor\",\"/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_LineMask.T_Pioneer_LineMask\"), expression_count: 35, texture_sample_count: 2, texture_object_parameter_count: 0, function_call_count: 1, scalar_parameter_count: 2, vector_parameter_count: 0}>",
+        "fields": [
+          "assign",
+          "cast",
+          "compile_errors",
+          "copy",
+          "export_text",
+          "expression_count",
+          "function_call_count",
+          "get_editor_property",
+          "import_text",
+          "is_compiled_ok",
+          "referenced_texture_paths",
+          "scalar_parameter_count",
+          "set_editor_properties",
+          "set_editor_property",
+          "static_struct",
+          "success",
+          "texture_object_parameter_count",
+          "texture_sample_count",
+          "to_tuple",
+          "vector_parameter_count"
+        ]
+      },
+      {
+        "material": "M_Pioneer_Contour",
+        "diagnostics": "<Struct 'MaterialDiagnostics' (0x00000210252CEC40) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: (\"/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BonePosition.T_Pioneer_BonePosition\",\"/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BoneRotation.T_Pioneer_BoneRotation\"), expression_count: 28, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 1, scalar_parameter_count: 0, vector_parameter_count: 0}>",
+        "fields": [
+          "assign",
+          "cast",
+          "compile_errors",
+          "copy",
+          "export_text",
+          "expression_count",
+          "function_call_count",
+          "get_editor_property",
+          "import_text",
+          "is_compiled_ok",
+          "referenced_texture_paths",
+          "scalar_parameter_count",
+          "set_editor_properties",
+          "set_editor_property",
+          "static_struct",
+          "success",
+          "texture_object_parameter_count",
+          "texture_sample_count",
+          "to_tuple",
+          "vector_parameter_count"
+        ]
+      },
+      {
+        "material": "M_Pioneer_SK_Toon3",
+        "diagnostics": "<Struct 'MaterialDiagnostics' (0x0000020E98FF4200) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: (\"/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BaseColor.T_Pioneer_BaseColor\",\"/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_LineMask.T_Pioneer_LineMask\"), expression_count: 9, texture_sample_count: 2, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 2, vector_parameter_count: 0}>",
+        "fields": [
+          "assign",
+          "cast",
+          "compile_errors",
+          "copy",
+          "export_text",
+          "expression_count",
+          "function_call_count",
+          "get_editor_property",
+          "import_text",
+          "is_compiled_ok",
+          "referenced_texture_paths",
+          "scalar_parameter_count",
+          "set_editor_properties",
+          "set_editor_property",
+          "static_struct",
+          "success",
+          "texture_object_parameter_count",
+          "texture_sample_count",
+          "to_tuple",
+          "vector_parameter_count"
+        ]
+      }
+    ]
+  }
+}

@@ -31,6 +31,8 @@ public:
 	UFUNCTION(BlueprintPure, Category="Mech|Weapon") float GetFireRate() const { return ActiveUpgrade.FireRate; }
 	UFUNCTION(BlueprintPure, Category="Mech|Weapon") float GetShotDamage() const { return ActiveUpgrade.Damage; }
 	UFUNCTION(BlueprintPure, Category="Mech|Weapon") bool IsWeaponReady() const { return bConfigured; }
+	/** Local presentation only; called from the unified accepted launch event. */
+	void PlayFlightShot(FGuid ShotId, float ShotTime);
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mech|Weapon") bool bWeaponEnabled = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mech|Weapon") TObjectPtr<UDataTable> UpgradeTable;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mech|Weapon") TObjectPtr<UDataTable> SkillTable;
@@ -49,7 +51,6 @@ private:
 #endif
 	UFUNCTION(Server, Reliable) void ServerSetFireHeld(bool bHeld, FVector_NetQuantize Point);
 	UFUNCTION(Server, Unreliable) void ServerUpdateAim(FVector_NetQuantize Point);
-	UFUNCTION(NetMulticast, Reliable) void MulticastShot(FGuid ShotId, float ServerTime);
 	UFUNCTION() void OnRep_Upgrade();
 	bool LoadConfiguration(const FString& Id);
 	bool CanControl(bool bLocal) const;
@@ -63,6 +64,8 @@ private:
 	void RegisterSource();
 	void AlignGun();
 	void TryFire();
+	/** Source compatibility for existing native diagnostics; this is no longer an RPC. */
+	void MulticastShot_Implementation(FGuid Id, float Time) { PlayFlightShot(Id,Time); }
 	USkeletalMeshComponent* Gun() const;
 	UPROPERTY() FGuLiStrikeMechUpgradesRow ActiveUpgrade;
 	UPROPERTY() FGuLiStrikeMechSkillsRow ActiveSkill;

@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Framework/GuLiCommanderResourceAdapter.h"
+#include "Commander/Presentation/GuLiCommanderCameraGeometry.h"
 #include "Commander/Orders/GuLiUnitTaskSettings.h"
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
@@ -23,7 +24,6 @@
 
 namespace
 {
-	constexpr double MaximumSelectionRayDistance = 600000.0;
 
 	void EngineeringPickSphere(const APawn& Pawn, const IGuLiEngineeringVehicle& Vehicle,
 		const FVector& RayOrigin, const float HalfAngle, FVector& Center, float& Radius)
@@ -34,8 +34,9 @@ namespace
 			+ FVector::Distance(Center, RayOrigin) * FMath::Tan(HalfAngle);
 	}
 
-	bool IsPointInsideSelectionBox(const FGuLiSelectionRequest& Request, const FVector& Location)
+	bool IsPointInsideSelectionBox(const FGuLiSelectionRequest& Request, const FVector& Location, const UWorld* World)
 	{
+		const double MaximumSelectionRayDistance = GuLiCommanderCameraGeometry::SelectionRayLength(Request.RayOrigin, World);
 		const FVector Rays[] = {
 			Request.BoxTopLeftRay, Request.BoxTopRightRay,
 			Request.BoxBottomRightRay, Request.BoxBottomLeftRay
@@ -145,12 +146,12 @@ bool UGuLiCommanderResourceAdapter::ResolveActorSelection(
 				if (Seed && SeedVehicle) EngineeringPickSphere(*Seed, *SeedVehicle, Request.RayOrigin, Request.PickHalfAngleRadians, PickCenter, PickRadius);
 				bHit = SeedVehicle && SeedVehicle->GetTeam() == Team && SeedVehicle->GetUnitTypeId() == Vehicle.GetUnitTypeId()
 					&& RayPassesSphere(Request.RayOrigin, Request.RayDirection, PickCenter, PickRadius + 500, Along)
-					&& IsPointInsideSelectionBox(Request, Pawn.GetActorLocation())
+					&& IsPointInsideSelectionBox(Request, Pawn.GetActorLocation(), GetWorld())
 					&& FVector::DistSquared2D(Pawn.GetActorLocation(), Request.Center) <= FMath::Square(GetDefault<UGuLiUnitTaskSettings>()->SameTypeRadiusCentimeters);
 			}
 			else if (Request.Kind == EGuLiSelectionKind::Box)
 			{
-				bHit = IsPointInsideSelectionBox(Request, Pawn.GetActorLocation());
+				bHit = IsPointInsideSelectionBox(Request, Pawn.GetActorLocation(), GetWorld());
 			}
 			else
 			{
@@ -441,12 +442,12 @@ bool UGuLiCommanderResourceAdapter::RayPassesSphere(
 	const FVector& Direction,
 	const FVector& Center,
 	const float Radius,
-	double& OutAlongRay)
+	double& OutAlongRay) const
 {
 	const FVector UnitDirection = Direction.GetSafeNormal();
 	if (UnitDirection.IsNearlyZero() || Origin.ContainsNaN() || Center.ContainsNaN()) return false;
 	const FVector Offset = Center - Origin;
 	OutAlongRay = FVector::DotProduct(Offset, UnitDirection);
-	return OutAlongRay > 0.0 && OutAlongRay <= MaximumSelectionRayDistance
+	return OutAlongRay > 0.0 && OutAlongRay <= GuLiCommanderCameraGeometry::SelectionRayLength(Origin, GetWorld())
 		&& (Offset - UnitDirection * OutAlongRay).SizeSquared() <= FMath::Square(Radius);
 }

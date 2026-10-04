@@ -137,6 +137,10 @@ struct GULISTRIKE_API FGuLiLogicalMissileState
 	float AgeSeconds = 0.0f;
 	float Damage = 0.0f;
 	float CorrectionAccumulator = 0.0f;
+	float LaunchTime = 0;
+	FVector LaunchPosition = FVector::ZeroVector;
+	FVector LaunchDirection = FVector::ForwardVector;
+	FVector LastTargetLocation = FVector::ZeroVector;
 };
 
 USTRUCT(BlueprintType)

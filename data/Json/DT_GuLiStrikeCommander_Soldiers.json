@@ -2,18 +2,20 @@
   {
     "Name": "DefaultSoldier",
     "Id": 1,
-    "Note": "扫射调试兵种A；数值非平衡定案",
-    "MovementSpeedCmPerSecond": 720.0,
+    "Note": "B-v1先驱号；6.25米；刚性骨骼纹理VAT；默认双枪与Q召唤",
+    "MovementSpeedCmPerSecond": 1440.0,
     "MaxHealth": 100.0,
-    "ModelAsset": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+    "ModelAsset": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
     "Defense": 0.0,
     "ActorClass": "",
     "PresentationClass": "",
-    "PresentationScale": 0.2,
-    "DisplayName": "扫荡者",
-    "ModelWidthMeters": 3.1,
+    "PresentationScale": 1.0,
+    "DisplayName": "先驱号",
+    "ModelWidthMeters": 6.25,
     "MinAvoidanceDistanceMeters": 0.5,
-    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass"
+    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+    "VATDefinition": "/Game/GuLiStrike/Robots/RSGMech/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+    "bSummonOnly": false
   },
   {
     "Name": "WM01",
@@ -29,7 +31,9 @@
     "DisplayName": "重防号",
     "ModelWidthMeters": 12.5,
     "MinAvoidanceDistanceMeters": 2.5,
-    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass"
+    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+    "VATDefinition": "",
+    "bSummonOnly": false
   },
   {
     "Name": "ElectromagneticMiner",
@@ -45,7 +49,9 @@
     "DisplayName": "电磁矿车",
     "ModelWidthMeters": 3.6,
     "MinAvoidanceDistanceMeters": 1.0,
-    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner"
+    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
+    "VATDefinition": "",
+    "bSummonOnly": false
   },
   {
     "Name": "ConstructionVehicle",
@@ -61,6 +67,26 @@
     "DisplayName": "建造车",
     "ModelWidthMeters": 3.6,
     "MinAvoidanceDistanceMeters": 1.0,
-    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder"
+    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder",
+    "VATDefinition": "",
+    "bSummonOnly": false
+  },
+  {
+    "Name": "SweeperSummon",
+    "Id": 5,
+    "Note": "先驱号Q专用召唤兵；永久可控、可累积、不计生产人口",
+    "MovementSpeedCmPerSecond": 720.0,
+    "MaxHealth": 100.0,
+    "ModelAsset": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+    "Defense": 0.0,
+    "ActorClass": "",
+    "PresentationClass": "",
+    "PresentationScale": 0.2,
+    "DisplayName": "扫荡者",
+    "ModelWidthMeters": 3.1,
+    "MinAvoidanceDistanceMeters": 0.5,
+    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+    "VATDefinition": "",
+    "bSummonOnly": true
   }
 ]

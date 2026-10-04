@@ -24,6 +24,18 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeCommanderSoldiersRow",
       "row_key_column": "name"
     },
+    "DT_GuLiStrikeCommander_Camera": {
+      "excel": "GuLiStrikeCommander.xlsx",
+      "sheet": "Camera",
+      "sources": [
+        {
+          "excel": "GuLiStrikeCommander.xlsx",
+          "sheet": "Camera"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderCameraRow",
+      "row_key_column": "name"
+    },
     "DT_GuLiStrikeGameTexts_Texts": {
       "excel": "GuLiStrikeGameTexts.xlsx",
       "sheet": "Texts",
@@ -34,6 +46,18 @@
         }
       ],
       "struct": "/Script/GuLiStrike.GuLiStrikeGameTextsTextsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeLOD_LOD": {
+      "excel": "GuLiStrikeLOD.xlsx",
+      "sheet": "LOD",
+      "sources": [
+        {
+          "excel": "GuLiStrikeLOD.xlsx",
+          "sheet": "LOD"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeLODLODRow",
       "row_key_column": "name"
     },
     "DT_GuLiStrikeMech_Upgrades": {

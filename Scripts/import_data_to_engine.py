@@ -58,6 +58,7 @@ CONFIG_WIRED_TABLES = {
     "DT_GuLiStrikeShip_WingmanWeapons",
     "DT_GuLiStrikeShip_WingmanTargeting",
     "DT_GuLiStrikeCommander_Soldiers",
+    "DT_GuLiStrikeCommander_Camera",
     "DT_GuLiStrikeCommander_Skills",
     "DT_GuLiStrikeCommander_UnitSkills",
     "DT_GuLiStrikeSpellFields_Fields",

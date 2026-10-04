@@ -1,4 +1,5 @@
 #include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
+#include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Gameplay/GroundMech/GuLiGroundMechWeaponAnimInstance.h"
@@ -388,10 +389,16 @@ void UGuLiGroundMechWeaponComponent::TryFire()
 	++ShotsFired;
 	const double Interval = 1. / ActiveUpgrade.FireRate;
 	NextShotTime = NextShotTime > 0 && Now - NextShotTime <= 1./30. + 1.e-6 ? NextShotTime + Interval : Now + Interval;
-	MulticastShot(Launch.Context.ShotId, Now);
+	FGuLiCombatShotCue Cue;
+	Cue.MatchEpoch = SourceEpoch; Cue.ShotId = Launch.Context.ShotId; Cue.Source = SourceHandle;
+	Cue.Start = Launch.Position; Cue.End = AimPoint; Cue.ServerTime = Now;
+	Cue.MuzzleDirection = Launch.Direction; Cue.bMuzzleOnly = true;
+	Cue.SlotId = TEXT("BasicAttack");
+	UGuLiCombatEffectReplicationComponent::AttachFlightMuzzle(GetWorld(),Cue);
+	if (GetNetMode()==NM_DedicatedServer) PlayFlightShot(Cue.ShotId,Cue.ServerTime);
 }
 
-void UGuLiGroundMechWeaponComponent::MulticastShot_Implementation(FGuid ShotId, float ShotTime)
+void UGuLiGroundMechWeaponComponent::PlayFlightShot(FGuid ShotId, float ShotTime)
 {
 	if (!bConfigured || SeenShots.Contains(ShotId)) return;
 	if (SeenShots.Num() >= 256) SeenShots.Reset();

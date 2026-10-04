@@ -41,6 +41,12 @@ def author():
                     config.set_editor_property(field, asset)
                 for field, key in [('field_config_id','FieldConfigId'),('source_weapon_slot','SourceWeaponSlot'),('use_authored_trajectory','UseAuthoredTrajectory'),('target_area_diameter_centimeters','TargetAreaDiameterCentimeters')]:
                     config.set_editor_property(field, row[key])
+                config.set_editor_property('max_projectiles_per_activation', row.get('MaxProjectilesPerActivation', 0))
+            elif isinstance(config, unreal.GuLiSummonSkillConfiguration):
+                for field,key in [('unit_type_id','SummonUnitTypeId'),('count','SummonCount'),
+                    ('clearance_centimeters','SummonClearanceCentimeters'),('outer_rings','SummonOuterRings'),
+                    ('candidates_per_ring','SummonCandidatesPerRing')]:
+                    config.set_editor_property(field,row[key])
             changed_configs.append(config)
         definition = unreal.GuLiActiveSkillDefinition()
         for key, value in dict(skill_id=row['Name'], scope=unreal.GuLiActiveSkillScope.UNIT,

@@ -22,7 +22,8 @@ enum class EGuLiActiveSkillCommand : uint8 { Activate, Continue, Cancel };
 UENUM(BlueprintType)
 enum class EGuLiActiveSkillResultCode : uint8
 {
-	Succeeded, NoSkill, Ineligible, Cooldown, OutOfRange, InvalidGround, InvalidRequest, StaleSelection, ExecutionFailed
+	Succeeded, NoSkill, Ineligible, Cooldown, OutOfRange, InvalidGround, InvalidRequest, StaleSelection, ExecutionFailed,
+	GuidanceCapacityDeferred
 };
 
 USTRUCT(BlueprintType)
@@ -82,6 +83,9 @@ struct FGuLiActiveSkillExecutionContext
 	UPROPERTY(BlueprintReadOnly) int32 Level = 1;
 	UPROPERTY(BlueprintReadOnly) int32 UnitTypeId = 0;
 	UPROPERTY() uint32 ShotOrdinal = 0;
+	/** Authority-only batch admission; -1 means this caster has no guidance allocation. */
+	UPROPERTY() int32 RemainingGuidanceCapacity = INDEX_NONE;
+	UPROPERTY() FGuid GuidanceBatchId;
 	UPROPERTY(BlueprintReadOnly) EGuLiActiveSkillScope Scope = EGuLiActiveSkillScope::Unit;
 	UPROPERTY(BlueprintReadOnly) EGuLiActiveSkillCommand Command = EGuLiActiveSkillCommand::Activate;
 };
@@ -91,6 +95,8 @@ struct FGuLiActiveSkillExecutionResult
 {
 	GENERATED_BODY()
 	UPROPERTY(BlueprintReadOnly) bool bSucceeded = false;
+	UPROPERTY(BlueprintReadOnly) bool bDeferredByGuidanceCapacity = false;
+	UPROPERTY(BlueprintReadOnly) int32 LaunchedProjectileCount = 0;
 	UPROPERTY(BlueprintReadOnly) FGuid CastId;
 	UPROPERTY(BlueprintReadOnly) FGuid EffectId;
 	UPROPERTY(BlueprintReadOnly) FString Error;

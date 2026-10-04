@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Gameplay/Presentation/GuLiMechanicalAnimation.h"
+#include "Gameplay/Presentation/GuLiVATAnimation.h"
 #include "GuLiCombatEffectTypes.generated.h"
 
 class UGuLiProjectileEffectDefinition;
@@ -112,6 +113,10 @@ struct GULISTRIKE_API FGuLiCombatEffectState
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiProjectileEffectDefinition> ProjectileDefinition;
 	/** Optional generic ground cue, frozen at launch and reconstructed by rendering clients. */
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiGroundWarningStyle> GroundWarningStyle;
+	/** Optional shared guidance cue; distinct from each projectile's impact warning. */
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FGuid GuidanceBatchId;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantize GuidanceCenter = FVector::ZeroVector;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") float GuidanceRadius = 0.0f;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiSpellFieldDefinition> FieldDefinition;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantize Location = FVector::ZeroVector;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantize Velocity = FVector::ZeroVector;
@@ -199,6 +204,8 @@ struct GULISTRIKE_API FGuLiCombatAttackRequest
 	FVector TargetLocation = FVector::ZeroVector;
 	uint64 ShotOrdinal = 0;
 	FGuLiMechanicalAnimationState MechanicalPose;
+	FGuLiVATPlayback VATPlayback;
+	bool bHasVATPose = false;
 	uint8 MechanicalMuzzleIndex = 0;
 	bool bHasMechanicalPose = false;
 	float MechanicalPoseTimeSeconds = 0.0f;
@@ -209,7 +216,12 @@ struct GULISTRIKE_API FGuLiCombatAttackRequest
 	FGuLiSpellFieldConfig FrozenField;
 	FGuLiProjectileMotionSettings Motion;
 	bool bUseAuthoredPointTrajectory = false;
+	/** Authority-only ground machine-gun full cone angle, frozen for this shot. */
+	float ProjectileSpreadAngleDegrees = 0.0f;
 	UGuLiGroundWarningStyle* GroundWarningStyle = nullptr;
+	FGuid GuidanceBatchId;
+	FVector GuidanceCenter = FVector::ZeroVector;
+	float GuidanceRadius = 0.0f;
 	float MaximumTravelDistance = 30000.0f;
 };
 
@@ -230,8 +242,7 @@ struct GULISTRIKE_API FGuLiCombatEffectCounters
 
 namespace GuLiCombatEffects
 {
-	// Ground collision and its presentation buffer share one cadence. Render only
-	// the part of a straight trajectory whose collision sweep has completed.
+	// Server swept collision cadence; clients advance flight independently.
 	inline constexpr float GroundProjectileStepSeconds = 0.2f;
 	GULISTRIKE_API FVector LiftPosition(const FGuLiCombatEffectState& State, float Age);
 	/** Pure, fixed-step, seed-stable flight. Caller owns target refresh and authoritative swept collision. */

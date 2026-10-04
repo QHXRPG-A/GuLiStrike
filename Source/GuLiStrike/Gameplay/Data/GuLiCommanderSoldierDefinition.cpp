@@ -1,5 +1,6 @@
 #include "Gameplay/Data/GuLiCommanderSoldierDefinition.h"
 #include "Engine/StaticMesh.h"
+#include "Gameplay/Presentation/GuLiVATAnimation.h"
 
 FTransform FGuLiSoldierDefinition::MakeModelTransform(const FTransform& LogicalPose) const
 {
@@ -11,7 +12,8 @@ FTransform FGuLiSoldierDefinition::MakeModelTransform(const FTransform& LogicalP
 
 FBox FGuLiSoldierDefinition::GetModelBoundsCentimeters() const
 {
-	return Model ? Model->GetBoundingBox().TransformBy(
+	const FBox Bounds = VATDefinition ? VATDefinition->GameplayBounds : Model ? Model->GetBoundingBox() : FBox(ForceInit);
+	return Bounds.IsValid ? Bounds.TransformBy(
 		FTransform(FQuat::Identity, FVector::ZeroVector, FVector(PresentationScale))) : FBox(ForceInit);
 }
 

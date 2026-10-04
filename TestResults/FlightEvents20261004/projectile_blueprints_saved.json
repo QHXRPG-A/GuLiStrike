@@ -1,0 +1,25 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "saved": true,
+    "derived_blueprints": [
+      {
+        "asset": "/Game/GuLiStrike/Ship/BP_ShipProjectile.BP_ShipProjectile",
+        "class": "/Game/GuLiStrike/Ship/BP_ShipProjectile.BP_ShipProjectile_C",
+        "before": {
+          "replicates": true,
+          "replicate_movement": true
+        },
+        "after": {
+          "replicates": false,
+          "replicate_movement": false
+        }
+      }
+    ],
+    "native_compiled": false,
+    "blueprint_compiled": false,
+    "runtime_check": false
+  }
+}

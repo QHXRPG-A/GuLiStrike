@@ -120,6 +120,9 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 	Agents.Reserve(512);
 	TMap<FMassEntityHandle, int32> AgentIndexByEntity;
 	FAvoidanceSpatialGrid SpatialGrid;
+	float GridCellSize = SpatialCellSizeCentimeters;
+	float MaximumAgentRadius = 0.0f;
+	float MaximumAgentSpeed = 0.0f;
 	int32 MaximumBucketOccupancy = 0;
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_PredictiveAvoidanceBuildGrid);
@@ -152,6 +155,9 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 				Entry.Agent.bParticipates = Health.IsEmpty() || (!Health[It].bDead && !Health[It].bPhased);
 				Entry.Agent.bMoving = MoveTargets.IsEmpty()
 					|| MoveTargets[It].GetCurrentAction() == EMassMovementAction::Move;
+				Entry.Agent.DesiredVelocity = !MoveTargets.IsEmpty() && Entry.Agent.bMoving
+					? MoveTargets[It].Forward * MoveTargets[It].DesiredSpeed.Get() : FVector::ZeroVector;
+				Entry.Agent.MaximumSpeed = FMath::Max(Entry.Agent.Velocity.Size2D(), Entry.Agent.DesiredVelocity.Size2D());
 				AgentIndexByEntity.Add(Entry.Entity, Agents.Num() - 1);
 			}
 		});
@@ -173,8 +179,14 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 		for (const FProcessorAgent& Entry : Agents)
 		{
 			PolicyAgents.Add(Entry.Agent);
+			if (Entry.Agent.bParticipates && !Entry.Agent.bEnvironment)
+			{
+				MaximumAgentRadius = FMath::Max(MaximumAgentRadius, Entry.Agent.Radius);
+				MaximumAgentSpeed = FMath::Max(MaximumAgentSpeed, Entry.Agent.MaximumSpeed);
+			}
 		}
-		MaximumBucketOccupancy = BuildSpatialGrid(PolicyAgents, SpatialGrid);
+		GridCellSize = FMath::Max(SpatialCellSizeCentimeters, MaximumAgentRadius * 2.0f);
+		MaximumBucketOccupancy = BuildSpatialGrid(PolicyAgents, SpatialGrid, GridCellSize);
 	}
 
 	if (Agents.IsEmpty())
@@ -220,6 +232,9 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 					&& MoveTargets[It].GetCurrentAction() == EMassMovementAction::Move;
 				Entry.Agent.bMoving = Entry.bShouldReceive;
 				Entry.Parameters = MakePredictiveParameters(AvoidanceParameters, MovementParameters);
+				// Initial population may share parameters with smaller units; use the actual fragment radius.
+				Entry.Parameters.PredictiveAvoidanceDistance = Entry.Agent.Radius * 0.35f;
+				Entry.Agent.MaximumSpeed = FMath::Max(Entry.Agent.MaximumSpeed, Entry.Parameters.MaximumSpeed);
 				Entry.PathFade = CalculatePathFade(
 					CurrentWorldSeconds,
 					MoveTargets[It].GetCurrentActionStartTime(),
@@ -236,6 +251,8 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 	for (const FProcessorAgent& Entry : Agents)
 	{
 		PolicyAgents.Add(Entry.Agent);
+		if (Entry.Agent.bParticipates && !Entry.Agent.bEnvironment)
+			MaximumAgentSpeed = FMath::Max(MaximumAgentSpeed, Entry.Agent.MaximumSpeed);
 	}
 
 	{
@@ -263,7 +280,11 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 				AgentIndex,
 				PolicyAgents,
 				SpatialGrid,
-				Entry.Candidates);
+				Entry.Candidates,
+				FMath::Max(DetectionDistanceCentimeters, Entry.Agent.Radius + MaximumAgentRadius
+					+ (Entry.Agent.MaximumSpeed + MaximumAgentSpeed) * Entry.Parameters.PredictiveAvoidanceTime
+					+ Entry.Parameters.PredictiveAvoidanceDistance),
+				MaximumHeightDifferenceCentimeters, GridCellSize, Entry.Parameters.PredictiveAvoidanceTime);
 			Entry.CandidateCount = Metrics.ExactCandidates;
 			Entry.bSolved = true;
 		}

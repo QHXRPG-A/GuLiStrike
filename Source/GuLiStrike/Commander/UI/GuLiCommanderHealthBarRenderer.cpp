@@ -8,6 +8,7 @@
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Commander/Presentation/GuLiCommanderCameraPawn.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
@@ -33,7 +34,6 @@ namespace GuLiCommanderHealthBars
 	constexpr int32 SelectedCustomDataIndex = 1;
 	constexpr int32 VisibleCustomDataIndex = 2;
 	constexpr int32 CustomDataFloatCount = 3;
-	constexpr float MaximumDrawDistanceCentimeters = 6000.0f;
 	constexpr float FallbackSoldierHeightCentimeters = 44.0f;
 	constexpr float HeightPaddingCentimeters = 4.0f;
 	constexpr float DesiredWidthPixels = 84.0f;
@@ -70,10 +70,11 @@ AGuLiCommanderHealthBarRenderer::AGuLiCommanderHealthBarRenderer()
 	HealthBarInstances->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	HealthBarInstances->SetCanEverAffectNavigation(false);
 	HealthBarInstances->SetIsReplicated(false);
-	// Visibility is governed below by planar distance to the RTS camera focus.
-	// A component end-cull distance is measured from the elevated camera eye and
-	// would incorrectly cull every bar at the default 800 m spring-arm length.
+	// Commander near/tactical views retain bars; overview uses its HUD markers.
 	HealthBarInstances->SetCullDistances(0, 0);
+	HealthBarInstances->SetCullDistance(0.0f);
+	HealthBarInstances->bNeverDistanceCull = true;
+	HealthBarInstances->bAllowCullDistanceVolume = false;
 	HealthBarInstances->SetCastShadow(false);
 	HealthBarInstances->SetAffectDistanceFieldLighting(false);
 	HealthBarInstances->SetAffectDynamicIndirectLighting(false);
@@ -571,10 +572,10 @@ void AGuLiCommanderHealthBarRenderer::RebuildLocalInstances()
 	if (Width <= 0 || Height <= 0) { HideAllInstances(); return; }
 	const APlayerCameraManager* Camera = Controller->PlayerCameraManager.Get();
 	const FVector CameraLocation = Camera->GetCameraLocation();
-	const FVector FocusLocation = Controller->GetPawn() ? Controller->GetPawn()->GetActorLocation() : CameraLocation;
-	const auto* Commander = Cast<AGuLiCommanderPlayerController>(Controller);
-	const bool bCommanderView = Commander && Commander->IsCommanderViewActive();
-	const float MaxDistance = bCommanderView ? GuLiCommanderHealthBars::MaximumDrawDistanceCentimeters : GetDefault<UGuLiUnitFeedbackSettings>()->CullDistance;
+	const auto* CommanderCamera = Cast<AGuLiCommanderCameraPawn>(Controller->GetViewTarget());
+	const bool bCommanderView = CommanderCamera && CommanderCamera->HasCameraConfig();
+	if (bCommanderView && CommanderCamera->IsOverviewPresentation()) { HideAllInstances(); return; }
+	const float MaxDistance = bCommanderView ? 0.0f : GetDefault<UGuLiUnitFeedbackSettings>()->CullDistance;
 	const float Now = GetWorld()->GetTimeSeconds();
 	const FRotationMatrix Basis(Camera->GetCameraRotation());
 	const FQuat Rotation = FRotationMatrix::MakeFromXY(Basis.GetUnitAxis(EAxis::Y), Basis.GetUnitAxis(EAxis::Z)).ToQuat();
@@ -582,8 +583,7 @@ void AGuLiCommanderHealthBarRenderer::RebuildLocalInstances()
 	auto MakeBarTransform = [&](const FVector& Location, FTransform& Out)
 	{
 		const float Distance = FVector::Distance(CameraLocation, Location);
-		const float CullDistance = bCommanderView ? FVector::Dist2D(FocusLocation, Location) : Distance;
-		if (MaxDistance > 0 && CullDistance > MaxDistance) return false;
+		if (MaxDistance > 0 && Distance > MaxDistance) return false;
 		const FVector2D Size = CalculateWorldSizeCentimeters(Distance, Camera->GetFOVAngle(), Width, Height);
 		if (Size.X <= UE_SMALL_NUMBER || Size.Y <= UE_SMALL_NUMBER) return false;
 		Out = FTransform(Rotation, Location, HealthBarBaseScale * FVector(Size.X / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, Size.Y / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, 1));

@@ -1,0 +1,272 @@
+{
+  "date": "2026-10-03",
+  "authority": "用户明确要求“这次你帮我验收”",
+  "scope": "本地权威 PIE 核心功能验收；不代替万人容量、多客户端或性能验收",
+  "status": "passed",
+  "art_baseline_sha256": "3b330e2d2e84bb464b904aa2bb77e2043e79489c226c8d39815c8fe11f19a887",
+  "cases": [
+    {
+      "name": "身份、体型、属性",
+      "status": "passed",
+      "detail": {
+        "width_cm": 625.0,
+        "avoidance_radius_cm": 312.5,
+        "health": 100,
+        "defense": 0
+      },
+      "evidence": [
+        "qa_v2_single_readback.json",
+        "ue_runtime_readback.json"
+      ]
+    },
+    {
+      "name": "单台真实 Q 与初生待机",
+      "status": "passed",
+      "detail": {
+        "new_sweepers": [
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "population": 5,
+        "reserved": 0
+      },
+      "evidence": [
+        "qa_v2_before_q.json",
+        "qa_v2_single_readback.json"
+      ]
+    },
+    {
+      "name": "冷却拒绝与超过 30 秒后累积",
+      "status": "passed",
+      "detail": {
+        "first_cast_ready_at": 39.498417887836695,
+        "first_cast_snapshot_time": 9.788087487220764,
+        "recast_snapshot_time": 44.748659800738096,
+        "recast_added": 5
+      },
+      "evidence": [
+        "qa_v2_cooldown_readback.json",
+        "qa_v2_before_accumulation.json",
+        "qa_v2_accumulation_readback.json"
+      ]
+    },
+    {
+      "name": "混选两台各五个与独立冷却",
+      "status": "passed",
+      "detail": {
+        "mixed_total": 15,
+        "mixed_ineligible_unit": 8,
+        "independent_caster": 2,
+        "other_caster_ready": true
+      },
+      "evidence": [
+        "qa_v2_multi_readback.json",
+        "qa_v2_independent_readback.json"
+      ]
+    },
+    {
+      "name": "相同内容请求重发返回缓存且无重复召唤",
+      "status": "passed",
+      "detail": {
+        "summoned_before": 5,
+        "summoned_after": 5,
+        "reply_units_unchanged": true
+      },
+      "evidence": [
+        "qa_v5_before_exact_duplicate.json",
+        "qa_v5_exact_duplicate.json"
+      ]
+    },
+    {
+      "name": "保存墙体阻挡整批失败且不扣冷却",
+      "status": "passed",
+      "detail": {
+        "blocked_count": 0,
+        "blocked_cooldown_seconds": 0,
+        "unblocked_count": 5,
+        "error": "No space for the complete summon batch; cooldown is unchanged."
+      },
+      "evidence": [
+        "qa_v4_blocked_readback.json",
+        "qa_v4_unblocked_readback.json"
+      ]
+    },
+    {
+      "name": "最终碰撞修复后的双台 Q 回归",
+      "status": "passed",
+      "detail": {
+        "added": 10,
+        "total_sweepers": 15,
+        "initial_idle": true,
+        "population": 76
+      },
+      "evidence": [
+        "qa_v4_before_multi.json",
+        "qa_v4_multi_readback.json"
+      ]
+    },
+    {
+      "name": "人口排除、永久累积、施法者死亡后继续控制",
+      "status": "passed",
+      "detail": {
+        "summons": 35,
+        "production_population": 101,
+        "alive_non_summon_population": 101,
+        "controlled_after_parent_death": 9
+      },
+      "evidence": [
+        "qa_v2_overview_readback.json",
+        "qa_v2_after_death.json",
+        "qa_v2_final.json"
+      ]
+    },
+    {
+      "name": "实际移动速度 1440 / 720 / 720",
+      "status": "passed",
+      "detail": {
+        "pioneer_max_cm_s": 1440.0000000000177,
+        "pioneer_median_cm_s": 1160.6352626596133,
+        "pioneer_moving_samples": 79,
+        "heavy_max_cm_s": 720.0000000000224,
+        "sweeper_max_cm_s": 720.0000000000008
+      },
+      "evidence": [
+        "qa_v2_pioneer_speed_projected_samples.json",
+        "qa_v2_wait_cooldown_samples.json",
+        "qa_v2_move_speed_samples.json",
+        "qa_v2_sweeper_control_samples.json"
+      ]
+    },
+    {
+      "name": "双枪同步、独立弹丸、伤害、1 Hz、2° 总散布与枪口起点",
+      "status": "passed",
+      "detail": {
+        "sample_rounds": 5,
+        "unique_shot_ids": 10,
+        "max_spread_deviation_degrees": 0.9459724307942667,
+        "round_intervals_seconds": [
+          0.9951419830322266,
+          1.001429557800293,
+          1.004225730895996,
+          1.0075435638427734
+        ],
+        "muzzle_projectile_start_max_error_cm": 0.0,
+        "target_health_before": 300.5,
+        "target_health_after": 240.5
+      },
+      "evidence": [
+        "qa_v2_before_q.json",
+        "qa_v2_shooting_early.json"
+      ]
+    },
+    {
+      "name": "60 米射程与扫荡者继承 20 米单枪",
+      "status": "passed",
+      "detail": {
+        "in_range_target_cm": 5600,
+        "out_of_range_target_cm": 7003.5705179572515,
+        "out_target_health_before_sweeper_approach": 300.5,
+        "sweeper_range_cm": 2000,
+        "sweeper_projectile_count": 1
+      },
+      "evidence": [
+        "qa_v2_before_q.json",
+        "qa_v2_wait_readback.json",
+        "qa_v2_overview_readback.json"
+      ]
+    },
+    {
+      "name": "Mass 静态 ISM VAT、待机/四向/死亡",
+      "status": "passed",
+      "detail": {
+        "skeletal_components": 0,
+        "custom_slots": 59,
+        "observed_frame_samples_by_clip": {
+          "Idle": 4944,
+          "Forward": 34177,
+          "Backward": 597,
+          "Left": 2132,
+          "Right": 1348,
+          "Death": 2
+        },
+        "wreck_vat_frames": [
+          190.314697265625
+        ]
+      },
+      "evidence": [
+        "qa_v2_single_readback.json",
+        "qa_v2_move_speed_samples.json",
+        "qa_v2_pioneer_speed_projected_samples.json",
+        "qa_v2_wait_cooldown_samples.json",
+        "qa_v2_sweeper_control_samples.json",
+        "qa_v2_final.json",
+        "qa_v4_death_isolation.json"
+      ]
+    },
+    {
+      "name": "正式资源、最新编译、场景保存与启动烘焙",
+      "status": "passed",
+      "detail": {
+        "editor": {
+          "success": true,
+          "PIE_stopped": true,
+          "bake_valid": true,
+          "editor_map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "unsaved_packages": 0,
+          "saved_blockers": [
+            "PioneerQA_Blocker_West",
+            "PioneerQA_Blocker_East",
+            "PioneerQA_Blocker_North",
+            "PioneerQA_Blocker_South"
+          ],
+          "editor_pid": 52796,
+          "latest_build_log": "qa_exact_dedup_build.log"
+        },
+        "initial_count": 7,
+        "saved_blockers": 4,
+        "build_exit_code": 0
+      },
+      "evidence": [
+        "ue_runtime_readback.json",
+        "qa_exact_dedup_build.log",
+        "qa_editor_final_state.json",
+        "qa_final_saved_scene.json",
+        "qa_bake_result.json"
+      ]
+    }
+  ],
+  "not_run": [
+    "10000 实体容量满载边界",
+    "提交中途故障注入与回滚运行测试",
+    "独立服务端与多客户端协议 23 联机",
+    "帧率/GPU 性能基准与打包"
+  ],
+  "historical_failure_evidence": [
+    "qa_launch_failure.log",
+    "qa_first_run_failure_evidence.json",
+    "qa_v3_collision_failure_evidence.json",
+    "qa_v2_duplicate_q.json"
+  ],
+  "duplicate_test_correction": "旧重发工具遗漏原请求的地面命中上下文，实际测试了同 ID 不同内容拒绝；最新工具复制只读服务器回执完整重发。",
+  "build_ids": [
+    {
+      "path": "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/GuLiMapAuthoring/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/GuLiFlightNavigation/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    }
+  ]
+}

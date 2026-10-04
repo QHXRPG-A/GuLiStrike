@@ -1,0 +1,37 @@
+{
+  "scope": "arithmetic review of implemented refill formula; no UE runtime test",
+  "rates": [
+    {
+      "hz": 20,
+      "seconds": 30,
+      "recovered_bits": 60000000,
+      "expected_bits": 60000000,
+      "relative_error_percent": 0.0
+    },
+    {
+      "hz": 35,
+      "seconds": 30,
+      "recovered_bits": 59999999,
+      "expected_bits": 60000000,
+      "relative_error_percent": 1.6666666666666667e-06
+    },
+    {
+      "hz": 60,
+      "seconds": 30,
+      "recovered_bits": 60000000,
+      "expected_bits": 60000000,
+      "relative_error_percent": 0.0
+    },
+    {
+      "hz": 120,
+      "seconds": 30,
+      "recovered_bits": 60000000,
+      "expected_bits": 60000000,
+      "relative_error_percent": 0.0
+    }
+  ],
+  "hitch_500ms_refill_bits": 200000,
+  "maximum_idle_credit_bits": 200000,
+  "unsigned_wrap_delta_bytes": 20,
+  "native_compile": "not_run"
+}

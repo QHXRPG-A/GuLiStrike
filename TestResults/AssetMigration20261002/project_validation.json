@@ -1,0 +1,104 @@
+{
+  "passed": true,
+  "packs": [
+    {
+      "root": "SSF_Buildings",
+      "target": "/Game/Assets/SSF_Buildings",
+      "package_count": 175,
+      "classes": {
+        "Skeleton": 8,
+        "AnimSequence": 26,
+        "Texture2D": 86,
+        "Material": 26,
+        "MaterialInstanceConstant": 6,
+        "PhysicsAsset": 8,
+        "SkeletalMesh": 8,
+        "StaticMesh": 3,
+        "Blueprint": 1,
+        "MapBuildDataRegistry": 1,
+        "World": 1,
+        "TextureCube": 1
+      },
+      "inventory_matches": true,
+      "load_failures": [],
+      "missing_game_dependencies": {},
+      "old_path_dependencies": {},
+      "blueprint_packages": [
+        "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Blueprints/TB1_MoveDrone"
+      ],
+      "passed": true
+    },
+    {
+      "root": "ControlRig",
+      "target": "/Game/Assets/ControlRig",
+      "package_count": 183,
+      "classes": {
+        "Skeleton": 4,
+        "SkeletalMesh": 7,
+        "Material": 13,
+        "LevelSequence": 2,
+        "ControlRigBlueprint": 7,
+        "AnimBlueprint": 4,
+        "AnimSequence": 41,
+        "BlendSpace1D": 2,
+        "MaterialFunction": 3,
+        "CurveLinearColor": 1,
+        "CurveLinearColorAtlas": 1,
+        "MaterialInstanceConstant": 8,
+        "SkeletalMeshLODSettings": 1,
+        "PhysicsAsset": 2,
+        "IKRigDefinition": 1,
+        "IKRetargeter": 1,
+        "PoseAsset": 28,
+        "Texture2D": 57
+      },
+      "inventory_matches": true,
+      "load_failures": [],
+      "missing_game_dependencies": {},
+      "old_path_dependencies": {},
+      "blueprint_packages": [
+        "/Game/Assets/ControlRig/Characters/BungeeMan/CR_BungeeMan",
+        "/Game/Assets/ControlRig/Characters/Mannequins/Animations/ABP_Manny",
+        "/Game/Assets/ControlRig/Characters/Mannequins/Animations/ABP_Quinn",
+        "/Game/Assets/ControlRig/Characters/Mannequins/Rigs/ABP_Manny_PostProcess",
+        "/Game/Assets/ControlRig/Characters/Mannequins/Rigs/ABP_Quinn_PostProcess",
+        "/Game/Assets/ControlRig/Characters/Mannequins/Rigs/CR_Mannequin_BasicBiped",
+        "/Game/Assets/ControlRig/Characters/Mannequins/Rigs/CR_Mannequin_BasicFootIK",
+        "/Game/Assets/ControlRig/Characters/Mannequins/Rigs/CR_Mannequin_Body",
+        "/Game/Assets/ControlRig/Characters/Mannequins/Rigs/CR_Mannequin_Procedural",
+        "/Game/Assets/ControlRig/Characters/Mech/Rigs/CR_Mech",
+        "/Game/Assets/ControlRig/Props/CardBox/CR_Cardbox"
+      ],
+      "passed": true
+    },
+    {
+      "root": "RSG_UnderWater_Pack",
+      "target": "/Game/Assets/RSG_UnderWater_Pack",
+      "package_count": 36,
+      "classes": {
+        "AnimSequence": 7,
+        "Blueprint": 1,
+        "Material": 2,
+        "MaterialInstanceConstant": 5,
+        "Skeleton": 1,
+        "PhysicsAsset": 1,
+        "SkeletalMesh": 1,
+        "World": 1,
+        "Texture2D": 17
+      },
+      "inventory_matches": true,
+      "load_failures": [],
+      "missing_game_dependencies": {},
+      "old_path_dependencies": {},
+      "blueprint_packages": [
+        "/Game/Assets/RSG_UnderWater_Pack/FPS/Blueprints/Mech/BP_FPS_Mech"
+      ],
+      "passed": true
+    }
+  ],
+  "phase": "complete",
+  "editor_world_before": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "editor_world_after": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "world_unchanged": true,
+  "total_packages": 394
+}

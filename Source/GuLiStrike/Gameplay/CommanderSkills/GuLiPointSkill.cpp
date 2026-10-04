@@ -15,6 +15,7 @@ bool UGuLiPointSkillExecutor::ValidateDefinition(const FGuLiActiveSkillDefinitio
 		|| !Config || !Config->Projectile || !Config->Projectile->IsValidDefinition()
 		|| !UGuLiSpellFieldDataSubsystem::ResolveAuthoredConfig(Config->FieldConfigId, Field) || Config->LaunchOffset.ContainsNaN()
 		|| !FMath::IsFinite(Config->TargetAreaDiameterCentimeters) || Config->TargetAreaDiameterCentimeters < 0
+		|| Config->MaxProjectilesPerActivation < 0
 		|| (Config->GroundWarningStyle && !Config->GroundWarningStyle->IsValidStyle()))
 	{ Error = TEXT("Point projectile executor requires a unit, ground target, projectile and existing field row."); return false; }
 	return true;

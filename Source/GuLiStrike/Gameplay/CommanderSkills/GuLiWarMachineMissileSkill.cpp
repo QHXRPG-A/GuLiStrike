@@ -11,8 +11,10 @@ bool UGuLiWarMachineMissileSkillExecutor::ValidateDefinition(const FGuLiActiveSk
 {
 	if (!Super::ValidateDefinition(Definition, Error)) return false;
 	const auto* Config = CastChecked<UGuLiPointSkillConfiguration>(Definition.Configuration);
-	if (!Config->SourceWeaponSlot.IsNone() && Config->bUseAuthoredTrajectory) return true;
-	Error = TEXT("WM01 missile requires a source weapon slot and authored trajectory.");
+	if (Config->SourceWeaponSlot == TEXT("MissileLauncher") && Config->bUseAuthoredTrajectory
+		&& Config->MaxProjectilesPerActivation > 0 && Config->TargetAreaDiameterCentimeters > 0
+		&& Config->GroundWarningStyle) return true;
+	Error = TEXT("WM01 missile requires MissileLauncher, authored trajectory, positive guidance capacity/area and warning style.");
 	return false;
 }
 
@@ -36,6 +38,12 @@ FGuLiActiveSkillExecutionResult UGuLiWarMachineMissileSkillExecutor::Execute(
 	auto* Runtime=World ? World->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>() : nullptr;
 	if (!Weapon || !Weapon->bUnlocked || !Weapon->bEquipped || Weapon->ProjectileCount<1 || !Runtime)
 	{ Result.Error=TEXT("Missile launcher is unavailable."); return Result; }
+	if (Context.UnitTypeId != 2 || Config->MaxProjectilesPerActivation <= 0
+		|| Weapon->ProjectileCount > Config->MaxProjectilesPerActivation
+		|| Context.RemainingGuidanceCapacity < 0 || !Context.GuidanceBatchId.IsValid())
+	{ Result.Error=TEXT("Missile salvo exceeds its configured capacity or has no authoritative guidance batch."); return Result; }
+	if (Weapon->ProjectileCount > Context.RemainingGuidanceCapacity)
+	{ Result.bDeferredByGuidanceCapacity = true; return Result; }
 	TArray<FGuLiCombatAttackRequest> Requests;
 	Requests.Reserve(Weapon->ProjectileCount);
 	for (int32 Index=0; Index<Weapon->ProjectileCount; ++Index)
@@ -46,7 +54,11 @@ FGuLiActiveSkillExecutionResult UGuLiWarMachineMissileSkillExecutor::Execute(
 	}
 	TArray<FGuid> Effects;
 	Result.bSucceeded=Runtime->LaunchPointProjectiles(Requests,Effects);
-	if (Result.bSucceeded) Result.EffectId=Effects[0];
+	if (Result.bSucceeded)
+	{
+		Result.EffectId=Effects[0];
+		Result.LaunchedProjectileCount=Effects.Num();
+	}
 	else Result.Error=TEXT("Missile salvo preflight rejected the cast.");
 	return Result;
 }
@@ -81,5 +93,8 @@ bool UGuLiWarMachineMissileSkillExecutor::ConfigurePayload(const FGuLiActiveSkil
 	Request.Context.EffectConfigId = Skill->EffectConfigId;
 	Request.Context.Damage = Weapon->Damage;
 	Request.FrozenField = *Field;
+	Request.GuidanceBatchId = Context.GuidanceBatchId;
+	Request.GuidanceCenter = Context.GroundPoint;
+	Request.GuidanceRadius = Config.TargetAreaDiameterCentimeters * 0.5f;
 	return true;
 }

@@ -72,7 +72,7 @@ bool FGuLiWarMachineHoverContractTest::RunTest(const FString& Parameters)
 	const auto* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid"));
 	const auto C = FGuLiMechanicalAnimationConfig::FromStaticMesh(Mesh, .2f);
 	if (!TestTrue(TEXT("Four static disc-bottom sockets are present"), C.bHasHoverNozzles)) return false;
-	TestEqual(TEXT("Current and previous GPU pose contract has 29 floats"), FGuLiMechanicalAnimationFrame::CustomDataFloats, 29);
+	TestEqual(TEXT("Current and previous GPU pose contract has 51 floats"), FGuLiMechanicalAnimationFrame::CustomDataFloats, 51);
 	FGuLiMechanicalAnimationState S;
 	StepHover(C, 17, 0, .1f, 10.1, S);
 	TestFalse(TEXT("Short stop does not enter Idle"), S.bHoverIdleTarget);

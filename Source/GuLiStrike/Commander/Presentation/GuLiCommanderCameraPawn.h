@@ -4,11 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h"
 #include "GuLiCommanderCameraPawn.generated.h"
 
 class UCameraComponent;
 class USceneComponent;
 class USpringArmComponent;
+
+UENUM(BlueprintType)
+enum class EGuLiCommanderCameraTier : uint8 { Near, Tactical, Overview };
+DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiCommanderCameraTierChanged, EGuLiCommanderCameraTier);
 
 /** Non-shipping camera solver snapshot exposed to the GM console command. */
 struct FGuLiCommanderCameraDebugSnapshot
@@ -49,6 +54,21 @@ public:
 	AGuLiCommanderCameraPawn();
 
 	virtual void Tick(float DeltaSeconds) override;
+	UFUNCTION(BlueprintPure, Category = "Commander|Camera")
+	EGuLiCommanderCameraTier GetCameraTier() const { return CameraTier; }
+	UFUNCTION(BlueprintPure, Category = "Commander|Camera")
+	bool IsCameraTransitioning() const { return bTransitioning; }
+	bool IsOverviewPresentation() const { return CameraTier == EGuLiCommanderCameraTier::Overview; }
+	UFUNCTION(BlueprintPure, Category = "Commander|Camera")
+	float GetTargetHeightMeters() const { return bOverviewTarget ? OverviewTargetHeightMeters : TargetHeightMeters; }
+	UFUNCTION(BlueprintPure, Category = "Commander|Camera")
+	float GetActualHeightMeters() const { return ActualHeightMeters; }
+	UFUNCTION(BlueprintPure, Category = "Commander|Camera")
+	float GetPitchDegrees() const { return -SpringPitchDegrees; }
+	void SetRequestedHeightMeters(float HeightMeters);
+	bool HasCameraConfig() const { return bConfigLoaded; }
+	const FGuLiStrikeCommanderCameraRow& GetCameraConfig() const { return Config; }
+	FGuLiCommanderCameraTierChanged OnCameraTierChanged;
 
 	/** X moves along camera-planar forward and Y along camera-planar right. */
 	UFUNCTION(BlueprintCallable, Category = "Commander|Camera")
@@ -78,15 +98,45 @@ public:
 #endif
 
 private:
-	bool FindLandscapeHeight(const FVector& AtLocation, float& OutGroundZ) const;
+	bool LoadConfig();
+	float PitchForHeight(float HeightMeters) const;
+	void SetTier(EGuLiCommanderCameraTier Tier);
+	bool SolveNormalPose(FVector Focus, float Yaw, float HeightMeters, float DeltaSeconds,
+		bool bImmediate, FVector& OutPivot, float& OutArm, float PreviousTerrainZ = 0);
+	bool SolveOverviewPose(FVector& OutLocation, FRotator& OutRotation) const;
+	void StartOverviewTransition(bool bEnter);
+	void TickOverview(float DeltaSeconds);
+	void ApplyCameraPose(const FVector& Location, const FRotator& Rotation);
+	FVector CurrentCameraLocation() const;
+	FRotator CurrentCameraRotation() const;
+	FBox2D GetUsableViewRect(FVector2D& OutSize) const;
+	FGuLiStrikeCommanderCameraRow Config;
+	bool bConfigLoaded = false;
+	bool bConfigErrorLogged = false;
+	EGuLiCommanderCameraTier CameraTier = EGuLiCommanderCameraTier::Near;
+	float TargetHeightMeters = 0;
+	float SmoothedHeightMeters = 0;
+	float ActualHeightMeters = 0;
+	float OverviewTargetHeightMeters = 0;
+	float SpringPitchDegrees = -55;
+	bool bTransitioning = false;
+	bool bOverviewTarget = false;
+	float TransitionElapsed = 0;
+	FVector TransitionFromLocation = FVector::ZeroVector;
+	FRotator TransitionFromRotation = FRotator::ZeroRotator;
+	FVector TransitionToLocation = FVector::ZeroVector;
+	FRotator TransitionToRotation = FRotator::ZeroRotator;
+	FVector ReturnFocus = FVector::ZeroVector;
+	float ReturnYaw = 0;
+	FVector ReturnPivot = FVector::ZeroVector;
+	float ReturnArm = 0;
+	FBox2D LastUsableViewRect = FBox2D(ForceInit);
+	FVector2D LastViewSize = FVector2D::ZeroVector;
+	uint32 LastLandscapeRevision = 0;
+	bool FindCameraGroundHeight(const FVector& AtLocation, float& OutGroundZ) const;
 	void InitializeSolver();
 	void SimulateCameraStep(float StepSeconds, const FVector2D& MovementSeconds, float YawSeconds);
-	bool ConstrainStateToLandscape(
-		FVector& InOutPivot,
-		float YawDegrees,
-		float RequestedArmLength,
-		float& OutArmLength,
-		bool& OutClamped) const;
+	bool ConstrainFocusToBattlefield(FVector& InOutFocus) const;
 	bool CalculateRequiredPivotHeight(
 		const FVector2D& PivotXY,
 		float YawDegrees,
@@ -99,10 +149,6 @@ private:
 		float ArmLength,
 		const FVector2D& PlanarVelocity,
 		float HardRequiredPivotZ) const;
-	bool CalculateFootprintOffsets(
-		float YawDegrees,
-		float ArmLength,
-		FBox2D& OutOffsets) const;
 	FVector CalculateCameraOffset(float YawDegrees, float ArmLength) const;
 	void RefreshDebugSnapshot(bool bFootprintClamped, bool bTerrainValid);
 #if !UE_BUILD_SHIPPING
@@ -123,8 +169,6 @@ private:
 	float PendingZoomInput = 0.0f;
 	float DesiredArmLength = 16000.0f;
 	float HeldCruisePivotZ = 0.0f;
-	float HeightReanchorRemainingSeconds = 0.0f;
-	bool bHeightReanchorActive = false;
 	bool bSolverInitialized = false;
 #if !UE_BUILD_SHIPPING
 	bool bCameraDebugEnabled = false;

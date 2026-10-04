@@ -3,6 +3,7 @@
 #include "Gameplay/Cards/GuLiRogueCardEffect.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
+#include "Gameplay/CommanderSkills/GuLiPointSkill.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
@@ -121,12 +122,19 @@ FText UGuLiRogueCardSubsystem::GetCardText(const FString& Id, int32 Index)
 bool UGuLiRogueCardSubsystem::IsEligible(const FGuLiStrikeRogueCardsCardsRow& Card, EGuLiTeam Team, FString& Error)
 {
 	TMap<FString,int32> Counts;
+	int64 PendingMissileBonus = 0;
 	if (const auto* Existing=Acquisitions.Find(static_cast<uint32>(Team))) Counts=*Existing;
 	// A source already accepted earlier in this fixed step reserves its acquisition
 	// until EndFixedStep. Concurrent commanders cannot bypass once-only/exclusion rules.
 	for (const auto& Pair : Offers)
 		if (Pair.Value.Team==Team && Pair.Value.bApplied && !Pair.Value.bFinished)
+		{
 			++Counts.FindOrAdd(Pair.Value.Selected);
+			const auto* PendingCard=FindCard(Pair.Value.Selected);
+			if (PendingCard && PendingCard->UnitTypeId==2
+				&& PendingCard->ImplementationClass.Get()==UGuLiRogueCardMissileCountEffect::StaticClass())
+				PendingMissileBonus+=PendingCard->BonusCount;
+		}
 	const int32 Count=Counts.FindRef(Card.Id);
 	if (Count==MAX_int32 || (Card.MaxAcquisitions>0 && Count>=Card.MaxAcquisitions))
 	{ Error=GetText(TEXT("UI.RogueCards.AcquisitionLimit")).ToString(); return false; }
@@ -140,6 +148,19 @@ bool UGuLiRogueCardSubsystem::IsEligible(const FGuLiStrikeRogueCardsCardsRow& Ca
 			if (Card.ExcludedCardIds.Contains(Pair.Key) || (Other && Other->ExcludedCardIds.Contains(Card.Id)))
 			{ Error=GetText(TEXT("UI.RogueCards.Excluded")).ToString(); return false; }
 		}
+	if (Card.UnitTypeId==2 && Card.ImplementationClass.Get()==UGuLiRogueCardMissileCountEffect::StaticClass())
+	{
+		const auto* Army=GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
+		const auto* Weapon=Army ? Army->FindResolvedSkill(Team,2,TEXT("MissileLauncher")) : nullptr;
+		const auto* Skills=GetDefault<UGuLiCommanderSkillSettings>()->Catalog.LoadSynchronous();
+		const auto* Definition=Skills ? Skills->FindUnitSkill(2) : nullptr;
+		const auto* Config=Definition ? Cast<UGuLiPointSkillConfiguration>(Definition->Configuration) : nullptr;
+		// Acquisition limits handle ordinary cards; the resolved count also covers
+		// other integer sources and the player-invoked guidance preparation cases.
+		if (!Weapon || !Config || Config->MaxProjectilesPerActivation<1
+			|| int64(Weapon->ProjectileCount)+PendingMissileBonus+Card.BonusCount>Config->MaxProjectilesPerActivation)
+		{ Error=GetText(TEXT("UI.RogueCards.AcquisitionLimit")).ToString(); return false; }
+	}
 	Error.Reset(); return true;
 }
 bool UGuLiRogueCardSubsystem::ValidateOwner(UGuLiCommanderNetSyncComponent& Channel, AGuLiBattlePlayerState*& Owner, FString& Error) const

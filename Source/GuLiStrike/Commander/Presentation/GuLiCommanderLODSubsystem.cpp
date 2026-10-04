@@ -1,4 +1,5 @@
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
+#include "Commander/Presentation/GuLiCommanderCameraPawn.h"
 
 #include "CoreGlobals.h"
 #include "Engine/GameViewportClient.h"
@@ -114,6 +115,8 @@ void UGuLiCommanderLODSubsystem::EnsureViews()
 		auto& View = Views.AddDefaulted_GetRef();
 		View.Position = Projection.ViewOrigin;
 		View.ProjectionScale = Scale;
+		if (const auto* Camera = Cast<AGuLiCommanderCameraPawn>(Controller->GetViewTarget()); Camera && Camera->HasCameraConfig())
+			View.CameraLevel = static_cast<EGuLiCommanderLODLevel>(Camera->GetCameraTier());
 		GetViewFrustumBounds(View.Frustum, Projection.ComputeViewProjectionMatrix(), true);
 	}
 	ViewUpdateMilliseconds = (FPlatformTime::Seconds() - Started) * 1000.;
@@ -134,6 +137,7 @@ FGuLiCommanderLODDecision UGuLiCommanderLODSubsystem::Evaluate(const FGuLiComman
 	}
 	if (Views.IsEmpty()) return Result;
 	Result.Reason = EGuLiCommanderLODReason::OutsideFrustum;
+	bool bAnyNonOverview = false;
 	for (const auto& View : Views)
 	{
 		if (!View.Frustum.IntersectBox(Query.Bounds.GetCenter(), Query.Bounds.GetExtent())) continue;
@@ -143,19 +147,66 @@ FGuLiCommanderLODDecision UGuLiCommanderLODSubsystem::Evaluate(const FGuLiComman
 		Result.bVisible = true;
 		Result.DistanceCentimeters = FMath::Min(Result.DistanceCentimeters, Distance);
 		Result.ScreenFraction = FMath::Max(Result.ScreenFraction, Screen);
+		Result.bCommanderView |= View.CameraLevel.IsSet();
+		bAnyNonOverview |= !View.CameraLevel.IsSet() || View.CameraLevel.GetValue() != EGuLiCommanderLODLevel::Minimal;
 		// Classify each view separately: never pair one view's distance with another view's screen size.
-		const auto Level = EffectiveSettings.Classify(Distance, Screen, Query.CurrentLevel);
+		const auto Level = View.CameraLevel.IsSet() ? View.CameraLevel.GetValue()
+			: EffectiveSettings.Classify(Distance, Screen, Query.CurrentLevel);
 		if (static_cast<uint8>(Level) < static_cast<uint8>(Result.TargetLevel)) Result.TargetLevel = Level;
 	}
 	if (Result.bVisible)
 	{
+		Result.bOverviewOnly = Result.bCommanderView && !bAnyNonOverview;
 		const double Now = GetWorld()->GetTimeSeconds();
 		Result.bCanTransition = !Query.CurrentLevel.IsSet() || !FMath::IsFinite(Query.LastChangeWorldSeconds)
 			|| Now < Query.LastChangeWorldSeconds || Now - Query.LastChangeWorldSeconds >= EffectiveSettings.MinimumResidenceSeconds;
 		Result.Reason = !Result.bCanTransition && Result.TargetLevel != Query.CurrentLevel.GetValue()
-			? EGuLiCommanderLODReason::MinimumResidence : EGuLiCommanderLODReason::DistanceAndScreen;
+			? EGuLiCommanderLODReason::MinimumResidence : Result.bCommanderView
+				? EGuLiCommanderLODReason::CameraTier : EGuLiCommanderLODReason::DistanceAndScreen;
 	}
 	return Result;
+}
+
+bool UGuLiCommanderLODSubsystem::ShouldRenderWorldEffect(const FVector& Location, const double NonCommanderMaximumDistance)
+{
+	EnsureViews();
+	++QueryCount;
+	if (Location.ContainsNaN() || !FMath::IsFinite(NonCommanderMaximumDistance)) return false;
+	for (const auto& View : Views)
+	{
+		if (View.CameraLevel.IsSet())
+		{
+			// Tactical cameras sit above the legacy VFX range. Only overview suppresses world effects.
+			if (View.CameraLevel.GetValue() != EGuLiCommanderLODLevel::Minimal) return true;
+			continue;
+		}
+		if (NonCommanderMaximumDistance <= 0
+			|| FVector::DistSquared(View.Position, Location) <= FMath::Square(NonCommanderMaximumDistance)) return true;
+	}
+	return false;
+}
+
+float UGuLiCommanderLODSubsystem::GetContinuousEffectDistanceFade(const FVector& Location,
+	const double NonCommanderFadeStart, const double NonCommanderFadeEnd)
+{
+	EnsureViews();
+	++QueryCount;
+	if (Location.ContainsNaN() || !FMath::IsFinite(NonCommanderFadeStart) || !FMath::IsFinite(NonCommanderFadeEnd)
+		|| NonCommanderFadeStart < 0 || NonCommanderFadeEnd <= NonCommanderFadeStart) return 0;
+	float Fade = 0;
+	for (const auto& View : Views)
+	{
+		if (View.CameraLevel.IsSet())
+		{
+			if (View.CameraLevel.GetValue() != EGuLiCommanderLODLevel::Minimal) return 1;
+			continue;
+		}
+		const double Distance = FVector::Distance(View.Position, Location);
+		const float ViewFade = float(FMath::Clamp((NonCommanderFadeEnd - Distance)
+			/ (NonCommanderFadeEnd - NonCommanderFadeStart), 0.0, 1.0));
+		Fade = FMath::Max(Fade, ViewFade);
+	}
+	return Fade;
 }
 
 TArray<FGuLiCommanderLODSettingView> UGuLiCommanderLODSubsystem::ListSettings(const FString& Prefix) const

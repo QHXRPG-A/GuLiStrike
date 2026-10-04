@@ -10,7 +10,8 @@ namespace
 {
 	bool SameCircle(const FGuLiGroundWarningParams& A, const FGuLiGroundWarningParams& B)
 	{
-		return A.Location == B.Location && A.Radius == B.Radius && A.Color == B.Color && A.Style == B.Style;
+		return A.Location == B.Location && A.Radius == B.Radius && A.Color == B.Color && A.Style == B.Style
+			&& A.PoolGroupId == B.PoolGroupId;
 	}
 }
 

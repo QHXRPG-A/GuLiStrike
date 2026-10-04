@@ -39,12 +39,14 @@ namespace
 
 bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError)
 {
-	Slots.Reset(); Reservations.Reset(); OutError.Reset();
+	Slots.Reset(); Reservations.Reset(); OutError.Reset(); bUsesAuthoredDeployments = false;
+	TArray<AGuLiCommanderDeploymentPoint*> Deployments;
 	for (TActorIterator<AGuLiCommanderDeploymentPoint> It(&World); It; ++It)
 	{
-		OutError = TEXT("Canonical 500-unit resource authoring requires default deployment; remove the overriding deployment point.");
-		return false;
+		Deployments.Add(*It);
 	}
+	Deployments.Sort([](const AGuLiCommanderDeploymentPoint& A, const AGuLiCommanderDeploymentPoint& B)
+	{ return A.GetFName().LexicalLess(B.GetFName()); });
 	UDataTable* Table = GetDefault<UGuLiUnitDataSettings>()->SoldierDataTable.LoadSynchronous();
 	if (!Table || Table->GetRowStruct() != FGuLiStrikeCommanderSoldiersRow::StaticStruct())
 	{
@@ -63,6 +65,7 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError)
 			OutError = FString::Printf(TEXT("Initial army: invalid/duplicate Soldiers row %s."), *Name.ToString()); return false;
 		}
 		Seen.Add(Definition.UnitTypeId);
+		if (Definition.bSummonOnly) continue;
 		if (Definition.UsesMass()) Mass.Add(Definition);
 		else
 		{
@@ -79,8 +82,37 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError)
 	{
 		OutError = TEXT("Initial army assembly anchors have no supporting ground."); return false;
 	}
-	if (!GetDefault<UGuLiBattleAuthoritySubsystem>()->BuildInitialArmySpawnLayout(Mass, Red, Blue, Slots, OutError,
-		GULI_RESOURCE_INITIAL_ARMY_INSET_CM)) return false;
+	if (Deployments.IsEmpty())
+	{
+		if (!GetDefault<UGuLiBattleAuthoritySubsystem>()->BuildInitialArmySpawnLayout(Mass, Red, Blue, Slots, OutError,
+			GULI_RESOURCE_INITIAL_ARMY_INSET_CM)) return false;
+	}
+	else
+	{
+		bUsesAuthoredDeployments = true;
+		for (int32 Formation = 0; Formation < Deployments.Num(); ++Formation)
+		{
+			const auto* Point = Deployments[Formation];
+			const auto* Definition = Mass.FindByPredicate([Point](const auto& D) { return D.UnitTypeId == Point->UnitTypeId; });
+			const int64 Count = int64(Point->Rows) * Point->Columns;
+			if (!Definition || !GuLiCommanderProtocol::IsPlayableTeam(Point->Team) || Point->Rows < 1 || Point->Columns < 1
+				|| Count > 10000 || Slots.Num() + Count > 10000 || !FMath::IsFinite(Point->SpacingCentimeters)
+				|| Point->SpacingCentimeters <= 0 || Point->GetActorLocation().ContainsNaN())
+			{
+				OutError = TEXT("Invalid initial Mass deployment: ") + Point->GetName(); return false;
+			}
+			const float Radius = Definition->GetMassAvoidanceRadius(150.0f);
+			const float SpacingScale = FMath::Max(1.0f, (Radius * 2.0f + 20.0f) / FMath::Max(1.0f, Point->SpacingCentimeters));
+			for (int32 Index = 0; Index < Count; ++Index)
+			{
+				auto& Slot = Slots.AddDefaulted_GetRef();
+				Slot.Team = Point->Team; Slot.UnitTypeId = Definition->UnitTypeId;
+				Slot.FormationIndex = Formation; Slot.SlotIndex = Index;
+				Slot.Location = Point->GetActorLocation() + (Point->GetSlotLocation(Index) - Point->GetActorLocation()) * SpacingScale;
+				Slot.FacingYawDegrees = Point->GetActorRotation().Yaw; Slot.RadiusCentimeters = Radius;
+			}
+		}
+	}
 	for (const auto& Slot : Slots)
 		Reservations.Add({ FVector2D(Slot.Location), Slot.RadiusCentimeters,
 			SlotName(Slot), false });
@@ -205,12 +237,13 @@ bool FGuLiInitialArmyAuthoring::Validate(UWorld& World, const UGuLiResourceMapDe
 		}
 		Projected.Add(Nav.Location); ++OutValidSlots;
 	}
-	return OutValidSlots == GuLiCommanderInitialSpawn::Population;
+	return OutValidSlots == (bUsesAuthoredDeployments ? Slots.Num() : GuLiCommanderInitialSpawn::Population);
 }
 
 FString FGuLiInitialArmyAuthoring::ToJson() const
 {
 	auto Root = MakeShared<FJsonObject>();
+	Root->SetBoolField(TEXT("authored_deployments"), bUsesAuthoredDeployments);
 	TArray<TSharedPtr<FJsonValue>> Rows;
 	for (const auto& Slot : Slots)
 	{

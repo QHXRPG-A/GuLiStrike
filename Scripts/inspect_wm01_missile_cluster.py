@@ -89,8 +89,8 @@ try:
     report['vfx_rows']=[r for r in rows if str(r.get('Id')) in ['2','49','50','51']]
     assert len(report['vfx_rows'])==4, report['vfx_rows']
     definition=unreal.load_asset('/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile')
-    report['production_cluster_enabled']=bool(definition.get_editor_property('use_missile_cluster_rendering'))
-    assert not report['production_cluster_enabled']
+    report['production_cluster_enabled']=bool(definition.uses_missile_cluster_rendering())
+    assert report['production_cluster_enabled'], 'WM01 must use production GPU rendering'
     catalog=unreal.load_asset('/Game/GuLiStrike/Commander/Skills/DA_CommanderSkills_V1')
     skill=next(s for s in catalog.skills if str(s.skill_id)=='WM01_HomingMissile')
     report['active_skill']={k:str(skill.get_editor_property(k)) for k in ['skill_id','range_source_slot','range_multiplier','range_centimeters','cooldown_seconds','configuration']}

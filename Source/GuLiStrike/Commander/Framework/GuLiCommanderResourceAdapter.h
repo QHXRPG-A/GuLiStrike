@@ -67,10 +67,10 @@ private:
 	void SynchronizeTeamPrivateState() const;
 	AGuLiMiningVehiclePawn* FindMiningVehicle(FGuLiControllableActorId Id) const;
 	APawn* FindEngineeringVehicle(FGuLiControllableActorId Id) const;
-	static bool RayPassesSphere(
+	bool RayPassesSphere(
 		const FVector& Origin,
 		const FVector& Direction,
 		const FVector& Center,
 		float Radius,
-		double& OutAlongRay);
+		double& OutAlongRay) const;
 };

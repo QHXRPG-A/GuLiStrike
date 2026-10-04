@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())) / "Scripts/Vfx"))
 from vfx_registry import vfx_id, resource as vfx_resource, scale as vfx_scale, require_id, visual_variant
+from ground_machine_gun_lighting import configure as configure_ground_lights
 
 ROOT = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
 DEST = '/Game/GuLiStrike/FX/WingmanWeapons'
@@ -105,6 +106,8 @@ def build_system():
                 'Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0.0;')
         update = SP.create_scratch_module(SYSTEM, emitter, 'ParticleUpdate', 'ReadLaserPool')
         require(prop(update, 'success'), 'Create pool reader')
+        if not muzzle:
+            require(EM.add_renderer(SYSTEM, emitter, 'Light'), 'Add capped ground tracer light renderer')
         result = unreal.GuLiCombatEffectAuthoringLibrary.wire_laser_pool_reader(
             unreal.load_asset(SYSTEM), unreal.load_object(None, str(prop(update, 'script_path'))), muzzle)
         require(result is not None, 'Wire laser array reader')
@@ -112,6 +115,7 @@ def build_system():
         require(EM.set_renderer_property(SYSTEM, emitter, 0, 'Material', MATERIAL), 'Assign laser material')
         require(EM.set_renderer_property(SYSTEM, emitter, 0, 'Alignment', 'CustomAlignment'), 'Set axial sprite alignment')
         report['emitters'].append({'name': emitter, 'modules': [str(x) for x in EM.list_modules(SYSTEM, emitter)]})
+    report['ground_lighting'] = configure_ground_lights(SYSTEM)
     system = unreal.load_asset(SYSTEM)
     system.set_editor_property('max_pool_size', 64)
     system.set_editor_property('pool_prime_size', 0)
@@ -124,6 +128,9 @@ def build_system():
     catalog = require(unreal.load_asset(CATALOG), 'Load combat effect catalog')
     catalog.set_editor_property('wingman_laser_vfx_id', vfx_id('MachineGunTracer'))
     catalog.set_editor_property('ground_machine_gun_vfx_id', vfx_id('GroundMachineGunTracer'))
+    catalog.set_editor_property('maximum_tracer_lights_per_frame', 6)
+    catalog.set_editor_property('tracer_light_radius', 800.0)
+    catalog.set_editor_property('tracer_light_brightness', 25.0)
     for key, value in [('laser_length', 600.0), ('laser_core_width', 10.0), ('laser_intensity', 24.0), ('laser_muzzle_seconds', 0.05)]:
         catalog.set_editor_property(key, value)
     catalog.set_editor_property('friendly_laser_tint', unreal.LinearColor(0.05, 1.0, 0.12, 1.0))

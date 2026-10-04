@@ -337,6 +337,30 @@ def validate_rogue_card_text_styles(tables):
             raise SheetError(f'卡牌{card["Id"]}的{key}引用未知或未闭合富文本样式: {sorted(missing)}')
 
 
+def validate_missile_guidance_capacity(tables):
+    """Keep the existing integer upgrade source within the whole-salvo guidance limit."""
+    skills = tables.get('DT_GuLiStrikeSecondaryUnitSkills_Skills', {}).get('rows', [])
+    cards = tables.get('DT_GuLiStrikeRogueCards_Cards', {}).get('rows', [])
+    for row in skills:
+        limit = row.get('MaxProjectilesPerActivation', 0)
+        where = f"GuLiStrikeSecondaryUnitSkills.xlsx / Skills {row['Name']}"
+        if not 0 <= limit <= 2147483647:
+            raise SheetError(f'{where}: MaxProjectilesPerActivation必须为非负int32，0表示不限')
+        if row['ExecutorClass'].rsplit('.', 1)[-1] != 'GuLiWarMachineMissileSkillExecutor':
+            continue
+        if limit < 1 or row.get('SourceWeaponSlot') != 'MissileLauncher' \
+                or row.get('TargetAreaDiameterCentimeters', 0) <= 0 or not row.get('GroundWarningStyle'):
+            raise SheetError(f'{where}: 重防号导弹必须配置正数容量、MissileLauncher及共享预警范围/样式')
+        maximum_salvo = 1  # Existing WM01 baseline; integer sources add to it.
+        for card in cards:
+            if card['UnitTypeId'] == 2 and card['ImplementationClass'].endswith('.GuLiRogueCardMissileCountEffect'):
+                if card['MaxAcquisitions'] < 1:
+                    raise SheetError(f"GuLiStrikeRogueCards.xlsx / Cards {card['Id']}: 弹量卡必须有限次，避免整台齐射超过引导容量")
+                maximum_salvo += card['MaxAcquisitions'] * card['BonusCount']
+        if maximum_salvo > limit:
+            raise SheetError(f'{where}: 基础1发与弹量卡累计上限{maximum_salvo}超过引导容量{limit}')
+
+
 def validate_rogue_cards(tables):
     entry = tables.get("DT_GuLiStrikeRogueCards_Cards")
     if entry is None:
@@ -676,6 +700,25 @@ def main():
                     if stem == SECONDARY_WORKBOOK else (stem, ws.title)
                 if is_mech:
                     identity_sheet = {"升级表": "Upgrades", "技能表": "Skills"}[ws.title]
+                if stem == "GuLiStrikeCommander" and ws.title == "Camera":
+                    identity_sheet = "Camera"
+                    if len(rows) != 1 or rows[0]['Name'] != 'Default' or rows[0]['Id'] != 1:
+                        raise SheetError('Camera必须有唯一的 1 / Default 配置行')
+                    camera = rows[0]
+                    if not (0 < camera['MinimumHeightMeters'] < camera['TacticalStartHeightMeters']
+                            < camera['TacticalMaximumHeightMeters']
+                            and camera['MinimumHeightMeters'] <= camera['InitialHeightMeters'] <= camera['TacticalMaximumHeightMeters']):
+                        raise SheetError('镜头高度必须满足 0 < 最低 < 战术起点 < 战术上限，初始高度在范围内')
+                    if not (0 < camera['NearPitchDegrees'] < camera['TacticalPitchDegrees'] < 90
+                            and camera['OverviewPitchDegrees'] == 90 and 10 <= camera['FieldOfViewDegrees'] <= 120
+                            and -180 <= camera.get('OverviewYawDegrees', float('nan')) <= 180
+                            and camera['ZoomStepMultiplier'] > 1 and 0 <= camera['OverviewPaddingFraction'] < 0.4):
+                        raise SheetError('镜头角度、FOV、缩放倍率或总览留边无效')
+                    for key, value in camera.items():
+                        if key not in ('Name', 'Id', 'Note', 'OverviewPaddingFraction', 'OverviewYawDegrees') and (not isinstance(value, (float, int)) or not math.isfinite(value) or value <= 0):
+                            raise SheetError(f'镜头参数 {key} 必须是有限正数')
+                    if camera['MinimumMoveMetersPerSecond'] > camera['MaximumMoveMetersPerSecond']:
+                        raise SheetError('镜头最小移动速度不得大于最大移动速度')
                 table = f"DT_{identity_stem}_{identity_sheet}"
                 source = {"excel": wb_path.name, "sheet": ws.title}
                 if table in tables:
@@ -705,6 +748,7 @@ def main():
             validate_commander_state_trees(tables)
             validate_game_text_references(tables)
             validate_rogue_cards(tables)
+            validate_missile_guidance_capacity(tables)
             validate_rogue_card_text_styles(tables)
             validate_vfx_references(tables)
             validate_projectile_visual_profiles(tables)

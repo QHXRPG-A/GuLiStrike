@@ -28,7 +28,7 @@ try:
             h,reason=sub.add_new_subobject(unreal.AddNewSubobjectParams(parent_handle=handles[0],new_class=unreal.InstancedStaticMeshComponent))
             c=lib.get_object(lib.get_data(h));assert c,str(reason)
         c.set_static_mesh(unreal.load_asset('/Game/Commander/Units/Tactical/Cel/'+u+'/Meshes/SM_'+u+'_Rigid'))
-        c.set_editor_property('num_custom_data_floats',29);c.clear_instances()
+        c.set_editor_property('num_custom_data_floats',51);c.clear_instances()
         c.set_cull_distances(0,0);c.set_cull_distance(0)
         c.set_editor_property('never_distance_cull',True);c.set_editor_property('allow_cull_distance_volume',False)
         c.set_cast_shadow(False);c.set_collision_enabled(unreal.CollisionEnabled.NO_COLLISION)
@@ -43,9 +43,9 @@ try:
                   max(recoil,0) if u=='WarMachine' else 0,max(-recoil,0) if u=='WarMachine' else 0,
                   0,math.radians(tilt) if u=='WarMachine' else 0,0,0,0,0,600 if u=='WarMachine' else 0,0,0]
             if u=='Sweeper':pose[7:11]=[i*.7,i*.7,i*.7,i*.7]
-            for j,v in enumerate([-1000]+pose+pose):c.set_custom_data_value(idx,j,v,j==28)
-        report['actors'].append({'label':a.get_actor_label(),'instances':c.get_instance_count(),'custom_floats':29,'cull_distances':list(c.get_cull_distances()),'component':c.get_path_name()})
-    notes=[('MassRigid_Entry',(8000,3000,0),'WPO验收样本：重防号10分区、扫荡者6分区；八列姿态涵盖回正、左右转向、高低目标、5/15度盘倾斜、左右35cm后坐。样本仅编辑器显示，真实PIE继续红蓝混编500单位。新C++需编译后验收。'),
+            for j,v in enumerate([-1000]+pose+pose+[1,1]+[0]*20):c.set_custom_data_value(idx,j,v,j==50)
+        report['actors'].append({'label':a.get_actor_label(),'instances':c.get_instance_count(),'custom_floats':51,'cull_distances':list(c.get_cull_distances()),'component':c.get_path_name()})
+    notes=[('MassRigid_Entry',(8000,3000,0),'WPO验收样本：重防号20分区、扫荡者6分区；八列姿态涵盖回正、左右转向、高低目标、5/15度盘倾斜、左右35cm后坐。样本仅编辑器显示，真实PIE继续红蓝混编500单位。新C++需编译后验收。'),
       ('MassRigid_190m',(27000,8000,0),'190米观察点：对照210米与360米；目标不能因距离消失。'),
       ('MassRigid_210m',(29000,8000,0),'210米观察点：跨越旧200米阈值，主体/传送替身/寿命内残骸持续显示。'),
       ('MassRigid_MaxView',(44000,8000,0),'最大指挥视距：当前相机最大臂长36000cm。实机记录实例数量、Draw、GPU ms、Game ms；独立特效/UI可按自身距离预算关闭。'),

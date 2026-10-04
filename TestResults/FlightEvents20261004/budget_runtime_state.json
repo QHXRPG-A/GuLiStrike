@@ -1,0 +1,57 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "run_done": false,
+    "sample": [
+      {
+        "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "time": 83.83570358157158,
+        "flights": "active=0 created=40 ended=40 payloadBytes=11288 batches=88 bootstrap=0 queued=0 policy=events_only",
+        "pool_capacity": 0,
+        "pool_active": 0,
+        "visual_cpu_ms": 0,
+        "received_states": 0,
+        "rejected_states": 0,
+        "roles": [
+          "<GuLiCommanderRole.COMMANDER: 1>",
+          "<GuLiCommanderRole.COMMANDER: 1>"
+        ]
+      },
+      {
+        "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "time": 82.66182477027178,
+        "flights": "active=0 created=0 ended=0 payloadBytes=0 batches=0 bootstrap=0 queued=0 policy=events_only",
+        "pool_capacity": 512,
+        "pool_active": 0,
+        "visual_cpu_ms": 0.013199998647905886,
+        "received_states": 80,
+        "rejected_states": 0,
+        "roles": [
+          "<GuLiCommanderRole.COMMANDER: 1>"
+        ]
+      },
+      {
+        "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "time": 82.6075893715024,
+        "flights": "active=0 created=0 ended=0 payloadBytes=0 batches=0 bootstrap=0 queued=0 policy=events_only",
+        "pool_capacity": 512,
+        "pool_active": 0,
+        "visual_cpu_ms": 0.0106999996205559,
+        "received_states": 80,
+        "rejected_states": 0,
+        "roles": [
+          "<GuLiCommanderRole.COMMANDER: 1>"
+        ]
+      }
+    ],
+    "fixture_keys": [
+      "units",
+      "created",
+      "restored_unit_cap"
+    ],
+    "cap": 1,
+    "snapshot": "{\r\n\t\"controller\": \"/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0\",\r\n\t\"local\": false,\r\n\t\"ready\": true,\r\n\t\"team\": 1,\r\n\t\"commander\": true,\r\n\t\"f4_debug_count\": 0,\r\n\t\"open\": false,\r\n\t\"closing\": false,\r\n\t\"committed\": false,\r\n\t\"submitting\": false,\r\n\t\"session\": \"00000000000000000000000000000000\",\r\n\t\"fade\": 0,\r\n\t\"phase\": -1,\r\n\t\"selected\": -1,\r\n\t\"overlay\": false,\r\n\t\"blur\": 0,\r\n\t\"capture\": false,\r\n\t\"director\": false,\r\n\t\"target\": false,\r\n\t\"ticking\": false\r\n}"
+  }
+}

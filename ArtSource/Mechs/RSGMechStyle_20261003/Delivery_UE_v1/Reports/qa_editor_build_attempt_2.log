@@ -1,0 +1,126 @@
+Log started at 10/03/2026 20:52:09 (2026-10-03T12:52:09Z)
+Resolved project argument D:/UE5.7/test1/GuLiStrike.uproject to D:\UE5.7\test1\GuLiStrike.uproject
+No config file at D:\UnrealEngine-5.7\Engine\Restricted\NotForLicensees\Programs\UnrealBuildTool\BuildConfiguration.xml
+No config file at C:\ProgramData\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+No config file at C:\Users\a\AppData\Local\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+No config file at C:\Users\a\Documents\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+Configuration will be read from:
+  D:\UnrealEngine-5.7\Engine\Saved\UnrealBuildTool\BuildConfiguration.xml
+  C:\Users\a\AppData\Roaming\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): D:\UnrealEngine-5.7\Engine\Saved\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): C:\Users\a\AppData\Roaming\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): D:\UE5.7\test1\Saved\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): D:\UnrealEngine-5.7\Engine\Intermediate\Build\UnrealBuildTool.Env.BuildConfiguration.xml
+Setting temp directory to 'C:\Users\a\AppData\Local\Temp\UnrealBuildTool\1cda995f'
+    Registering build platform: UnrealBuildTool.AndroidPlatformFactory
+Unable to find valid SDK(s) for Android:
+  Found Sdk Version, MinRequired=r27c, MaxRequired=r28c.
+  Found AutoSdk Version, Required=r27c.
+        Registering build platform: Android - buildable: False
+    Registering build platform: UnrealBuildTool.IOSPlatformFactory
+Unable to find valid SDK(s) for IOS:
+  Found Sdk Version, MinRequired=1100.0.0.0, MaxRequired=8999.0.
+  Found AutoSdk Version, Required=15.2.
+        Registering build platform: IOS - buildable: False
+    Registering build platform: UnrealBuildTool.LinuxPlatformFactory
+Unable to find valid SDK(s) for Linux:
+  Found Sdk Version, Required=v26_clang-20.1.8-rockylinux8.
+  Found AutoSdk Version, Required=v26_clang-20.1.8-rockylinux8.
+        Registering build platform: Linux - buildable: False
+Unable to find valid SDK(s) for LinuxArm64:
+  Found Sdk Version, Required=v26_clang-20.1.8-rockylinux8.
+  Found AutoSdk Version, Required=v26_clang-20.1.8-rockylinux8.
+        Registering build platform: LinuxArm64 - buildable: False
+    Registering build platform: UnrealBuildTool.MacPlatformFactory
+Unable to find valid SDK(s) for Mac:
+  Found Sdk Version, MinRequired=1100.0.0.0, MaxRequired=8999.0.
+  Found AutoSdk Version, Required=15.2.
+        Registering build platform: Mac - buildable: False
+    Registering build platform: UnrealBuildTool.TVOSPlatformFactory
+Unable to find valid SDK(s) for TVOS:
+  Found Sdk Version, MinRequired=1100.0.0.0, MaxRequired=8999.0.
+  Found AutoSdk Version, Required=15.2.
+        Registering build platform: TVOS - buildable: False
+    Registering build platform: UnrealBuildTool.WindowsPlatformFactory
+Found Windows 10 SDK root at C:\Program Files (x86)\Windows Kits\10 (1)
+Found Windows 10 SDK root at C:\Program Files (x86)\Windows Kits\10 (2)
+Found Windows 10 SDK version 10.0.22621.0 at C:\Program Files (x86)\Windows Kits\10
+Found Universal CRT version 10.0.22621.0 at C:\Program Files (x86)\Windows Kits\10
+Found Windows 10 SDK version 10.0.26100.0 at C:\Program Files (x86)\Windows Kits\10
+Found Universal CRT version 10.0.26100.0 at C:\Program Files (x86)\Windows Kits\10
+Win64 Installed SDK(s): MinVersion_Sdk=10.0.19041.0, MaxVersion_Sdk=10.9.99999.0, CurrentVersion_Sdk=10.0.22621.0, Version_AutoSdk=10.0.22621.0, CurrentVersion_AutoSdk=
+        Registering build platform: Win64 - buildable: True
+    Registering build platform: UnrealBuildTool.VisionOSPlatformFactory
+        Registering build platform: VisionOS - buildable: False
+Command line: D:\UnrealEngine-5.7\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll GuLiStrikeEditor Win64 Development -Project=D:/UE5.7/test1/GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE
+Log file: D:\UnrealEngine-5.7\Engine\Programs\UnrealBuildTool\Log.txt
+Deleting old log file: D:\UnrealEngine-5.7\Engine\Programs\UnrealBuildTool\Log-backup-2026.09.03-02.51.49.txt
+
+Using 'git status' to determine working set for adaptive non-unity build (D:\UnrealEngine-5.7).
+Using 'git status' to determine working set for adaptive non-unity build (D:\UE5.7\test1).
+Waiting for 'git status' command to complete
+UnrealHeaderTool needs to run because SavedTimestamp is older than HeaderFileTimestamp (D:\UE5.7\test1\Source\GuLiStrike\Commander\Framework\GuLiCommanderPlayerController.h) for module GuLiStrike
+Parsing headers for GuLiStrikeEditor
+  Running Internal UnrealHeaderTool D:\UE5.7\test1\GuLiStrike.uproject D:\UE5.7\test1\Intermediate\Build\Win64\GuLiStrikeEditor\Development\GuLiStrikeEditor.uhtmanifest -WarningsAsErrors
+Reading engine version from file: D:\UnrealEngine-5.7\Engine\Source\Runtime\Launch\Resources\Version.h
+Got engine version 5.7.4
+Step - Exports
+       Exporter Stats skipped
+       Exporter Json skipped
+       Running exporter CodeGen
+UHT processed GuLiStrikeEditor in 0.9834671 seconds (2 files written)
+Deleting outdated item: D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\UnrealEditor-GuLiStrike.lib
+Deleting outdated item: D:\UE5.7\test1\Binaries\Win64\UnrealEditor-GuLiStrike.pdb
+Deleting outdated item: D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrikeEditor\UnrealEditor-GuLiStrikeEditor.lib
+Building GuLiStrikeEditor...
+Using Visual Studio 2022 14.44.35215 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207) and Windows 10.0.22621.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[Adaptive Build] Excluded from GuLiStrike unity file: GuLiCommanderPlayerController.cpp, GuLiCommanderResourceAdapter.cpp, GuLiCommanderUICommands.cpp, GuLiCommanderToolModeTests.cpp, GuLiBattleAuthoritySubsystem.cpp, GuLiCommanderPredictiveAvoidanceProcessor.cpp, GuLiCommanderSelectionQuery.cpp, GuLiSoldierCombat.cpp, GuLiCommanderSelectionQueryTests.cpp, GuLiSoldierCombatTests.cpp, GuLiCommanderPoseCodec.cpp, GuLiCommanderTypes.cpp, GuLiCommanderNetworkTests.cpp, GuLiCommanderCameraGeometry.cpp, GuLiCommanderCameraPawn.cpp, GuLiCommanderHUD.cpp, GuLiCommanderLandscapeQuerySubsystem.cpp, GuLiCommanderLODCommands.cpp, GuLiCommanderLODPolicy.cpp, GuLiCommanderLODSubsystem.cpp, GuLiCommanderMechanicalPresentation.cpp, GuLiCommanderOverviewSubsystem.cpp, GuLiCommanderPresentationActor.cpp, GuLiCommanderPresentationCommands.cpp, GuLiCommanderPresentationPerformanceSettings.cpp, GuLiCommanderCameraPolicyTests.cpp, GuLiCommanderMoveEndpointHUDTests.cpp, GuLiCommanderPresentationPerformanceTests.cpp, GuLiCommanderConsoleLayout.cpp, GuLiCommanderConsoleView.cpp, GuLiCommanderHealthBarRenderer.cpp, GuLiCommanderHUDWidget.cpp, GuLiCommanderOverviewOverlay.cpp, GuLiCommanderTaskPanel.cpp, GuLiBuildingConstructionContour.cpp, GuLiBuildingPlacementComponent.cpp, GuLiRogueCardSubsystem.cpp, GuLiCombatEffectAuthoringLibrary.cpp, GuLiCombatEffectDefinition.cpp, GuLiCombatEffectLaserPresentation.cpp, GuLiCombatEffectPresentationSubsystem.cpp, GuLiCombatEffectRuntimeSubsystem.cpp, GuLiCombatEffectTypes.cpp, GuLiGroundWarningSubsystem.cpp, GuLiMechanicalMuzzlePresentation.cpp, GuLiMissileClusterPresentation.cpp, GuLiRogueUpgradePresentation.cpp, GuLiUnitFeedbackSubsystem.cpp, GuLiCommanderSkillTypes.cpp, GuLiPointSkill.cpp, GuLiSummonSkill.cpp, GuLiUnitSkillExecution.cpp, GuLiWarMachineMissileSkill.cpp, GuLiCommanderDataSettings.cpp, GuLiCommanderDataSubsystem.cpp, GuLiCommanderSoldierDefinition.cpp, GuLiCommanderSoldierResolver.cpp, GuLiScale020InterpolationTests.cpp, GuLiScale020Tests.cpp, GuLiMechanicalAnimation.cpp, GuLiMechanicalTurnPresentation.cpp, GuLiVATAnimation.cpp, GuLiWarMachineHoverComponent.cpp, GuLiWarMachineHoverPreviewComponent.cpp, GuLiMechanicalAnimationTests.cpp, GuLiSkillResolver.cpp, GuLiSkillTypes.cpp, GuLiTeleportInputComponent.cpp, GuLiWingmanPawn.cpp
+[Adaptive Build] Excluded from GuLiStrikeEditor unity file: GuLiInitialArmyAuthoring.cpp, GuLiMissileFixture.cpp, GuLiPioneerQALibrary.cpp, GuLiResourceAuthoringLibrary.cpp, GuLiRogueCardQALibrary.cpp
+[Adaptive Build] Excluded from Navmesh unity file: DetourCrowd.cpp
+[Adaptive Build] Excluded from LevelEditor unity file: SLevelViewport.cpp
+Determining max actions to execute in parallel (24 physical cores, 32 logical cores)
+  Executing up to 24 processes, one per physical core
+  Requested 1.5 GB memory per action, 13.05 GB available: limiting max parallel actions to 8
+Using Unreal Build Accelerator local executor to run 25 action(s)
+  Storage capacity 40Gb
+  RootDir C:\ProgramData\Epic\UnrealBuildAccelerator
+Deleting old log file: D:\UnrealEngine-5.7\Engine\Programs\UnrealBuildTool\Log-backup-2026.10.01-15.30.15.uba
+---- Starting trace: 261003_205213 ----
+UbaServer - Listening on 0.0.0.0:1345
+Cache bucket 994921010 used. Action: Compile [x64] GuLiBuildingPlacementComponent.cpp ()
+Cache bucket 416513229 used. Action: Link [x64] UnrealEditor-GuLiStrike.lib ()
+All processes queued
+[1/25] Compile [x64] GuLiCommanderTaskPanel.cpp
+[2/25] Compile [x64] GuLiCommanderToolModeTests.cpp
+[3/25] Compile [x64] GuLiCommanderHealthBarRenderer.cpp
+[4/25] Compile [x64] GuLiCommanderHUD.cpp
+[5/25] Compile [x64] GuLiBuildingPlacementComponent.cpp
+[6/25] Compile [x64] GuLiCommanderHUDWidget.cpp
+[7/25] Compile [x64] GuLiCommanderOverviewOverlay.cpp
+[8/25] Compile [x64] GuLiCommanderConsoleView.cpp
+[9/25] Compile [x64] GuLiCommanderPlayerController.cpp
+[10/25] Compile [x64] GuLiCommanderUICommands.cpp
+[11/25] Compile [x64] Module.GuLiStrike.13.cpp
+[12/25] Compile [x64] GuLiTeleportInputComponent.cpp
+[13/25] Compile [x64] GuLiPioneerQALibrary.cpp
+[14/25] Link [x64] UnrealEditor-GuLiStrikeEditor.lib
+  正在创建库 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrikeEditor/UnrealEditor-GuLiStrikeEditor.lib 和对象 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrikeEditor/UnrealEditor-GuLiStrikeEditor.exp
+[15/25] Compile [x64] Module.GuLiStrike.5.cpp
+[16/25] Compile [x64] Module.GuLiStrike.23.cpp
+[17/25] Compile [x64] Module.GuLiStrike.25.cpp
+[18/25] Compile [x64] Module.GuLiStrike.26.cpp
+[19/25] Compile [x64] Module.GuLiStrike.28.cpp
+[20/25] Compile [x64] Module.GuLiStrike.22.cpp
+[21/25] Compile [x64] Module.GuLiStrike.29.cpp
+[22/25] Link [x64] UnrealEditor-GuLiStrike.lib
+  正在创建库 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.lib 和对象 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.exp
+[23/25] Link [x64] UnrealEditor-GuLiStrikeEditor.dll
+[24/25] Link [x64] UnrealEditor-GuLiStrike.dll
+[25/25] WriteMetadata GuLiStrikeEditor.target [NoUba]
+
+Trace written to file D:/UnrealEngine-5.7/Engine/Programs/UnrealBuildTool/Log.uba with size 10.6kb
+Total time in Unreal Build Accelerator local executor: 24.93 seconds
+WriteFileIfChanged() wrote 0 changed files of 1 requested writes.
+
+Result: Succeeded
+Total execution time: 28.58 seconds

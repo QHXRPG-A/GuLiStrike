@@ -13,6 +13,55 @@
 #include "Gameplay/Ship/Build/GuLiShipBuildComponent.h"
 #include "Gameplay/Ship/GuLiStrikeShip.h"
 #include "Gameplay/Ship/GuLiShipMovementComponent.h"
+#include "Battle/Framework/GuLiBattleGameMode.h"
+#include "UObject/UnrealType.h"
+#include "HAL/IConsoleManager.h"
+
+namespace
+{
+	FDelegateHandle FlightLoginHandle;
+	FDelegateHandle FlightEndHandle;
+	int32 FlightLoginCount = 0;
+	TArray<EGuLiCommanderRole> FlightOriginalPriority;
+	TWeakObjectPtr<AGuLiBattleGameMode> FlightGameMode;
+
+	void ClearFlightLogin()
+	{
+		if (auto* Mode=FlightGameMode.Get())
+			if (auto* Property=FindFProperty<FArrayProperty>(Mode->GetClass(),TEXT("InitialRolePriority")))
+				*Property->ContainerPtrToValuePtr<TArray<EGuLiCommanderRole>>(Mode)=FlightOriginalPriority;
+		FGameModeEvents::OnGameModePostLoginEvent().Remove(FlightLoginHandle);
+		FEditorDelegates::EndPIE.Remove(FlightEndHandle);
+		FlightLoginHandle.Reset(); FlightEndHandle.Reset(); FlightGameMode.Reset(); FlightOriginalPriority.Reset();
+	}
+}
+
+bool UGuLiComponentSkillQALibrary::StartMixedFlightPIE()
+{
+	if (!GEditor || GEditor->IsPlaySessionInProgress()) return false;
+	ClearFlightLogin(); FlightLoginCount=0;
+	FlightLoginHandle=FGameModeEvents::OnGameModePostLoginEvent().AddLambda([](AGameModeBase* Base,APlayerController*)
+	{
+		auto* Mode=Cast<AGuLiBattleGameMode>(Base);
+		if (!Mode || !Mode->GetWorld()->IsPlayInEditor()) return;
+		auto* Property=FindFProperty<FArrayProperty>(Mode->GetClass(),TEXT("InitialRolePriority"));
+		if (!Property) { ClearFlightLogin(); return; }
+		auto& Priority=*Property->ContainerPtrToValuePtr<TArray<EGuLiCommanderRole>>(Mode);
+		if (!FlightLoginCount) { FlightGameMode=Mode; FlightOriginalPriority=Priority; }
+		++FlightLoginCount;
+		if (FlightLoginCount==1) Priority={EGuLiCommanderRole::Ground};
+		else if (FlightLoginCount==2) Priority={EGuLiCommanderRole::Air};
+		else if (FlightLoginCount==3) Priority={EGuLiCommanderRole::Commander};
+		else ClearFlightLogin();
+	});
+	FlightEndHandle=FEditorDelegates::EndPIE.AddLambda([](bool){ ClearFlightLogin(); });
+	if (!StartPIE(2,4)) { ClearFlightLogin(); return false; }
+	return true;
+}
+
+static FAutoConsoleCommand StartFlightPIECommand(TEXT("gs.Flights.PIE"),
+	TEXT("Explicit editor acceptance: four real Commander/Ground/Air/Commander seats. Requires saved separate PlayerStarts."),
+	FConsoleCommandDelegate::CreateLambda([]{ UGuLiComponentSkillQALibrary::StartMixedFlightPIE(); }));
 
 void UGuLiComponentSkillQALibrary::SetGMPanelOpen(APlayerController* Controller, bool bOpen)
 {

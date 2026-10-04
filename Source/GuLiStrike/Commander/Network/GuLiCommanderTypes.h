@@ -241,7 +241,8 @@ struct GULISTRIKE_API FGuLiSelectionRequest
 	FGuLiControllableActorId SeedActorId;
 
 	UPROPERTY(EditAnywhere, Category = "Commander|Network")
-	FVector_NetQuantize RayOrigin = FVector::ZeroVector;
+	// Overview framing can exceed NetQuantize's 20-bit centimeter envelope (especially ultrawide).
+	FVector RayOrigin = FVector::ZeroVector;
 
 	UPROPERTY(EditAnywhere, Category = "Commander|Network")
 	FVector_NetQuantizeNormal RayDirection = FVector::ForwardVector;
@@ -614,6 +615,10 @@ struct GULISTRIKE_API FGuLiQuantizedSoldierPose
 	uint32 HoverBlendStartMilliseconds = 0;
 	uint8 HoverBlendFromWeight = 0;
 	bool bHoverIdleTarget = false;
+	// Protocol 23: rigid bone VAT clip, normalized phase and cycles/s in 1/256 units.
+	uint8 VATClip = 0;
+	uint16 VATPhase = 0;
+	uint16 VATRate = 0;
 	uint32 ActiveOrderId = 0u;
 	EGuLiSoldierPoseState State = EGuLiSoldierPoseState::Idle;
 	uint8 Flags = 0u;

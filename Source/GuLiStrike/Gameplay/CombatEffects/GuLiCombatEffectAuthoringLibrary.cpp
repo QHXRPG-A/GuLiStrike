@@ -5,6 +5,7 @@
 #include "NiagaraEmitter.h"
 #include "NiagaraMeshRendererProperties.h"
 #include "NiagaraSpriteRendererProperties.h"
+#include "NiagaraLightRendererProperties.h"
 #include "Engine/StaticMesh.h"
 #include "StaticMeshResources.h"
 #include "StaticMeshCompiler.h"
@@ -16,6 +17,7 @@
 #include "NiagaraGraph.h"
 #include "NiagaraDataInterface.h"
 #include "NiagaraDataInterfaceArrayFloat.h"
+#include "NiagaraDataInterfaceArrayInt.h"
 #include "NiagaraDataChannel.h"
 #include "NiagaraDataChannel_Global.h"
 #include "NiagaraNodeInput.h"
@@ -268,12 +270,49 @@ bool UGuLiCombatEffectAuthoringLibrary::WireLaserPoolReader(UNiagaraSystem* Syst
 	FModuleGraph Module;
 	if (!Module.Initialize(ParticleUpdateScript)) { Error = TEXT("Laser scratch graph is invalid"); return false; }
 	struct FBinding { UClass* Class; FName User; FName Attribute; };
-	const TArray<FBinding> Bindings = {
+	TArray<FBinding> Bindings = {
 		{UNiagaraDataInterfaceArrayPosition::StaticClass(), bMuzzle ? TEXT("User.MuzzlePositions") : TEXT("User.LaserPositions"), TEXT("Particles.Position")},
 		{UNiagaraDataInterfaceArrayFloat3::StaticClass(), TEXT("User.LaserDirections"), TEXT("Particles.SpriteAlignment")},
 		{UNiagaraDataInterfaceArrayFloat2::StaticClass(), bMuzzle ? TEXT("User.MuzzleSizes") : TEXT("User.LaserSizes"), TEXT("Particles.SpriteSize")},
 		{UNiagaraDataInterfaceArrayColor::StaticClass(), bMuzzle ? TEXT("User.MuzzleColors") : TEXT("User.LaserColors"), TEXT("Particles.Color")}
 	};
+	// Hover and missile batches also use this reader. Only the laser bolt emitter receives lights.
+	if (System->GetOutermost()->GetName() == Path && !bMuzzle)
+	{
+		Bindings.Append({
+			{UNiagaraDataInterfaceArrayPosition::StaticClass(), TEXT("User.LaserLightPositions"), TEXT("Particles.LaserLightPosition")},
+			{UNiagaraDataInterfaceArrayColor::StaticClass(), TEXT("User.LaserLightColors"), TEXT("Particles.LaserLightColor")},
+			{UNiagaraDataInterfaceArrayFloat::StaticClass(), TEXT("User.LaserLightRadii"), TEXT("Particles.LightRadius")},
+			{UNiagaraDataInterfaceArrayBool::StaticClass(), TEXT("User.LaserLightEnabled"), TEXT("Particles.LightEnabled")}
+		});
+		bool bBoundLight = false;
+		for (const FNiagaraEmitterHandle& Handle : System->GetEmitterHandles())
+		{
+			if (Handle.GetName() != TEXT("LaserBolts")) continue;
+			const FVersionedNiagaraEmitterData* Data = Handle.GetEmitterData();
+			if (!Data) continue;
+			const FVersionedNiagaraEmitterBase Emitter(Handle.GetEmitterBase(), Handle.GetInstance().Version);
+			for (UNiagaraRendererProperties* Renderer : Data->GetRenderers())
+			{
+				auto* Light = Cast<UNiagaraLightRendererProperties>(Renderer);
+				if (!Light) continue;
+				Light->Modify();
+				Light->PositionBinding.SetValue(TEXT("Particles.LaserLightPosition"), Emitter, Light->SourceMode);
+				Light->ColorBinding.SetValue(TEXT("Particles.LaserLightColor"), Emitter, Light->SourceMode);
+				Light->RadiusBinding.SetValue(TEXT("Particles.LightRadius"), Emitter, Light->SourceMode);
+				Light->LightRenderingEnabledBinding.SetValue(TEXT("Particles.LightEnabled"), Emitter, Light->SourceMode);
+				Light->bUseInverseSquaredFalloff = false;
+				Light->bAlphaScalesBrightness = true;
+				Light->bAffectsTranslucency = false;
+				Light->bAllowMegaLights = false;
+				Light->bMegaLightsCastShadows = false;
+				Light->RadiusScale = 1.0f; Light->DefaultExponent = 2.0f;
+				Light->SpecularScale = 0.2f; Light->DiffuseScale = 1.0f;
+				bBoundLight = true;
+			}
+		}
+		if (!bBoundLight) { Error = TEXT("Add the LaserBolts light renderer before wiring its pool reader"); return false; }
+	}
 	System->Modify();
 	for (const FBinding& Binding : Bindings)
 	{

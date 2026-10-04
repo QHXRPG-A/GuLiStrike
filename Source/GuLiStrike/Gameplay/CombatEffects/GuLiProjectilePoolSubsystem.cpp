@@ -116,6 +116,10 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::Launch(const FGuLiPooled
 	State.EffectId = R.Context.ShotId; State.MatchEpoch = Epoch; State.Sequence = 1;
 	State.Source = (bGround || bPlayer) ? R.Context.Source : GuLiCombatTargets::MakeWingmanTargetHandle(R.Context.Emitter);
 	State.PlayerBulletVfxId = R.PlayerBulletVfxId;
+	State.Target = R.Context.Target;
+	FGuLiCombatTargetSnapshot Target;
+	if (Ledger->TryGetTargetSnapshot(State.Target,Target)) State.LastTargetLocation=Target.Location;
+	State.Motion.SweepRadius = R.SweepRadius;
 	State.SourceTeam = Source.Team;
 	State.LaunchLocation = State.Location = R.Position; State.LaunchDirection = R.Direction.GetSafeNormal();
 	State.Motion.Speed = R.Speed; State.Velocity = FVector(State.LaunchDirection) * R.Speed;

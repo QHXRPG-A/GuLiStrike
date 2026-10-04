@@ -2,9 +2,9 @@
   {
     "Name": "DefaultSoldier",
     "Id": 1,
-    "Note": "扫荡者；空技能表示当前无主动Q",
+    "Note": "先驱号默认解锁Q召唤",
     "UnitTypeId": 1,
-    "SkillId": ""
+    "SkillId": "Pioneer_Summon"
   },
   {
     "Name": "WM01",
@@ -25,6 +25,13 @@
     "Id": 4,
     "Note": "建造车；空技能表示当前无主动Q",
     "UnitTypeId": 4,
+    "SkillId": ""
+  },
+  {
+    "Name": "SweeperSummon",
+    "Id": 5,
+    "Note": "召唤扫荡者无主动Q",
+    "UnitTypeId": 5,
     "SkillId": ""
   }
 ]

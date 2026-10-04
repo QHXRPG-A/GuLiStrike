@@ -29,11 +29,19 @@ FGuLiCombatExecutorRegistry::FGuLiCombatExecutorRegistry()
 	FExecutor EmitAttack = [](const FGuLiCombatSample& Source,
 		const FGuLiCombatSample& Target, TArray<FGuLiCombatDamageEvent>& Events)
 	{
-		Events.Add({Source.SoldierId, Target.SoldierId, Source.Profile->SkillId, Source.Profile->Damage,
-			Source.Profile->UnitTypeId, Source.Profile->SlotId, Source.Profile->Revision,
-			Source.Profile->ExecutorId, Source.Attack ? Source.Attack->ShotsFired + 1 : 0,
-			Source.Profile->ProjectileSpeedCentimetersPerSecond, Source.Profile->ProjectileLifetimeSeconds,
-			Source.Profile->ProjectileSweepRadiusCentimeters});
+		const int32 Count = Source.Profile->ExecutorId == TEXT("GroundMachineGun")
+			? FMath::Clamp(Source.Profile->ProjectileCount, 1, 64) : 1;
+		for (int32 Index = 0; Index < Count; ++Index)
+		{
+			const uint64 Ordinal = Source.Attack ? (Count == 1 ? Source.Attack->ShotsFired + 1
+				: Source.Attack->ShotsFired * 64 + uint64(Index) + 1) : 0;
+			auto& Event = Events.Add_GetRef({Source.SoldierId, Target.SoldierId, Source.Profile->SkillId, Source.Profile->Damage,
+				Source.Profile->UnitTypeId, Source.Profile->SlotId, Source.Profile->Revision,
+				Source.Profile->ExecutorId, Ordinal,
+				Source.Profile->ProjectileSpeedCentimetersPerSecond, Source.Profile->ProjectileLifetimeSeconds,
+				Source.Profile->ProjectileSweepRadiusCentimeters, Source.Profile->ProjectileSpreadAngleDegrees});
+			Event.MuzzleIndex = Count > 1 ? Index % 2 : INDEX_NONE;
+		}
 	};
 	RegisterExecutor(TEXT("DirectSingleTarget"), EmitAttack);
 	RegisterExecutor(TEXT("GroundMachineGun"), EmitAttack);

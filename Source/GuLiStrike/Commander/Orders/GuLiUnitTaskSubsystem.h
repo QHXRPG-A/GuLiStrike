@@ -25,7 +25,8 @@ public:
 	void PumpMoveAdmissions(FGuLiNavigationWorkBudget& Budget);
 	void ConsumeMoveProgress();
 	void RegisterActor(APawn& Pawn);
-	void RegisterSoldiers(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers, int32 SourceTerritory = INDEX_NONE);
+	void RegisterSoldiers(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers,
+		int32 SourceTerritory = INDEX_NONE, bool bStartIdle = false);
 	void UnregisterActor(FGuLiControllableActorId Id);
 	bool Submit(AGuLiBattlePlayerState& Owner, const FGuLiCommanderSelectionState& Selection,
 		const FGuLiUnitTaskCommand& Command, FString& OutMessage, int32& OutAccepted, int32& OutRejected,

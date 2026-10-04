@@ -1,0 +1,2714 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "mat_slots": [
+      {
+        "slot": "M_RSGMech_Toon3_LOD0",
+        "material": "<Object '/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_SK_LOD0.MI_Pioneer_SK_LOD0' (0x0000020ED2E80800) Class 'MaterialInstanceConstant'>"
+      },
+      {
+        "slot": "M_RSGMech_OuterContour",
+        "material": "<Object '/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_SK_Contour.M_Pioneer_SK_Contour' (0x0000020ED2E7B600) Class 'Material'>"
+      },
+      {
+        "slot": "M_RSGMech_Toon3_LOD1",
+        "material": "<Object '/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_SK_Contour.M_Pioneer_SK_Contour' (0x0000020ED2E7B600) Class 'Material'>"
+      },
+      {
+        "slot": "M_RSGMech_Toon3_LOD2",
+        "material": "<Object '/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_SK_Contour.M_Pioneer_SK_Contour' (0x0000020ED2E7B600) Class 'Material'>"
+      },
+      {
+        "slot": "M_RSGMech_Toon3_LOD3",
+        "material": "<Object '/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_SK_Contour.M_Pioneer_SK_Contour' (0x0000020ED2E7B600) Class 'Material'>"
+      }
+    ],
+    "docs": {
+      "get_lod_build_settings": "X.get_lod_build_settings(skeletal_mesh, lod_index) -> SkeletalMeshBuildSettings\r\nCopy the build options with the specified LOD build settings.\r\n\r\nArgs:\r\n    skeletal_mesh (SkeletalMesh): Mesh to process.\r\n    lod_index (int32): The LOD we get the reduction settings.\r\n\r\nReturns:\r\n    SkeletalMeshBuildSettings: \r\n\r\n    out_build_options (SkeletalMeshBuildSettings): The build settings where we copy the build options.",
+      "get_lod_count": "X.get_lod_count(skeletal_mesh) -> int32\r\nRetrieve the number of LOD contain in the specified skeletal mesh.\r\n\r\nArgs:\r\n    skeletal_mesh (SkeletalMesh): \r\n\r\nReturns:\r\n    int32: The LOD number.",
+      "get_lod_material_slot": "x.get_lod_material_slot(skeletal_mesh, lod_index, section_index) -> int32\r\nGets the material slot used for a specific LOD section.\r\n\r\nArgs:\r\n    skeletal_mesh (SkeletalMesh): SkeletalMesh to get the material index from.\r\n    lod_index (int32): Index of the StaticMesh LOD.\r\n    section_index (int32): Index of the StaticMesh Section.\r\n\r\nReturns:\r\n    int32: MaterialSlotIndex   Index of the material slot used by the section or INDEX_NONE in case of error.",
+      "import_lod": "X.import_lod(base_mesh, lod_index, source_filename) -> int32\r\nImport or re-import a LOD into the specified base mesh. If the LOD do not exist it will import it and add it to the base static mesh. If the LOD already exist it will re-import the specified LOD.\r\n\r\nArgs:\r\n    base_mesh (SkeletalMesh): \r\n    lod_index (int32): \r\n    source_filename (str): \r\n\r\nReturns:\r\n    int32: The index of the LOD that was imported or re-imported. Will return INDEX_NONE if anything goes bad.",
+      "regenerate_lod": "X.regenerate_lod(skeletal_mesh, new_lod_count=0, regenerate_even_if_imported=False, generate_base_lod=False) -> bool\r\nRegenerate LODs of the mesh\r\n\r\nArgs:\r\n    skeletal_mesh (SkeletalMesh): The mesh that will regenerate LOD\r\n    new_lod_count (int32): Set valid value (>0) if you want to change LOD count. Otherwise, it will use the current LOD and regenerate\r\n    regenerate_even_if_imported (bool): If this is true, it only regenerate even if this LOD was imported before If false, it will regenerate for only previously auto generated ones\r\n    generate_base_lod (bool): If this is true and there is some reduction data, the base LOD will be reduce according to the settings\r\n\r\nReturns:\r\n    bool: true if succeed. If mesh reduction is not available this will return false.",
+      "reimport_all_custom_lods": "X.reimport_all_custom_lods(skeletal_mesh) -> bool\r\nRe-import the specified skeletal mesh and all the custom LODs.\r\n\r\nArgs:\r\n    skeletal_mesh (SkeletalMesh): \r\n\r\nReturns:\r\n    bool: true if re-import works, false otherwise see log for explanation.",
+      "remove_lods": "X.remove_lods(base_mesh, to_remove_lo_ds) -> bool\r\nRemove all the specified LODs. This function will remove all the valid LODs in the list.\nValid LOD is any LOD greater then 0 that exist in the skeletalmesh. We cannot remove the base LOD 0.\r\n\r\nArgs:\r\n    base_mesh (SkeletalMesh): \r\n    to_remove_lo_ds (Array[int32]): The LODs we need to remove\r\n\r\nReturns:\r\n    bool: true if the successfully remove all the LODs. False otherwise, but evedn if it return false it will have removed all valid LODs.",
+      "set_lod_build_settings": "X.set_lod_build_settings(skeletal_mesh, lod_index, build_options) -> None\r\nSet the LOD build options for the specified LOD index.\r\n\r\nArgs:\r\n    skeletal_mesh (SkeletalMesh): Mesh to process.\r\n    lod_index (int32): The LOD we will apply the build settings.\r\n    build_options (SkeletalMeshBuildSettings): The build settings we want to apply to the LOD.",
+      "strip_lod_geometry": "X.strip_lod_geometry(skeletal_mesh, lod_index, texture_mask, threshold) -> bool\r\nThis function will strip all triangle in the specified LOD that don't have any UV area pointing on a black pixel in the TextureMask.\nWe use the UVChannel 0 to find the pixels in the texture.\r\n\r\nArgs:\r\n    skeletal_mesh (SkeletalMesh): \r\n    lod_index (int32): \r\n    texture_mask (Texture2D): \r\n    threshold (float): \r\n\r\nReturns:\r\n    bool:"
+    },
+    "apis": {
+      "sk": [
+        "get_bounds",
+        "get_imported_bounds",
+        "get_min_lod_for_quality_levels",
+        "lod_settings",
+        "negative_bounds_extension",
+        "positive_bounds_extension",
+        "regenerate_lod",
+        "set_min_lod_for_quality_levels"
+      ],
+      "SKEL_Pioneer": [],
+      "PHYS_Pioneer": []
+    },
+    "graph": {
+      "/Game/GuLiStrike/FX/UnitFeedback/M_UnitWreckRust": {
+        "material": {
+          "blend_mode": "BLEND_Opaque",
+          "shading_model": "MSM_DefaultLit",
+          "two_sided": false
+        },
+        "expressions": [
+          {
+            "id": "MaterialExpressionPreSkinnedPosition_0000020F94FCE000",
+            "class": "PreSkinnedPosition",
+            "class_full": "MaterialExpressionPreSkinnedPosition",
+            "pos_x": -2080,
+            "pos_y": 690,
+            "properties": {},
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVertexInterpolator_0000021034756540",
+            "class": "VertexInterpolator",
+            "class_full": "MaterialExpressionVertexInterpolator",
+            "pos_x": -1820,
+            "pos_y": 690,
+            "properties": {},
+            "inputs": [
+              "VS"
+            ],
+            "outputs": [
+              "PS"
+            ]
+          },
+          {
+            "id": "MaterialExpressionMultiply_0000020E94F4D480",
+            "class": "Multiply",
+            "class_full": "MaterialExpressionMultiply",
+            "pos_x": -1560,
+            "pos_y": 690,
+            "properties": {
+              "ConstA": "0.000000",
+              "ConstB": "1.000000"
+            },
+            "inputs": [
+              "A",
+              "B"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionScalarParameter_0000021029C71400",
+            "class": "ScalarParameter",
+            "class_full": "MaterialExpressionScalarParameter",
+            "pos_x": -1820,
+            "pos_y": 852,
+            "properties": {
+              "DefaultValue": "0.006000",
+              "ControlType": "Numeric",
+              "SliderMin": "0.000000",
+              "SliderMax": "0.000000",
+              "Enumeration": "None",
+              "EnumerationIndex": "0",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RustPatternScale",
+            "group": "None",
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_0000020E94F4D700",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -1300,
+            "pos_y": 690,
+            "properties": {
+              "Code": "\nstruct RustNoise {\n    float hash(float3 p) {\n        p = frac(p * 0.1031);\n        p += dot(p, p.yzx + 33.33);\n        return frac((p.x + p.y) * p.z);\n    }\n    float value(float3 p) {\n        float3 i = floor(p), f = frac(p);\n        f = f*f*(3.0-2.0*f);\n        return lerp(lerp(lerp(hash(i), hash(i+float3(1,0,0)), f.x),\n                         lerp(hash(i+float3(0,1,0)), hash(i+float3(1,1,0)), f.x), f.y),\n                    lerp(lerp(hash(i+float3(0,0,1)), hash(i+float3(1,0,1)), f.x),\n                         lerp(hash(i+float3(0,1,1)), hash(i+float3(1,1,1)), f.x), f.y), f.z);\n    }\n};\nRustNoise N;\nfloat broad = N.value(P * 0.65);\nfloat chips = N.value(P * 3.7 + 7.3);\nfloat grain = N.value(P * 22.0 + 19.1);\nfloat rust = smoothstep(0.25, 0.64, broad * 0.68 + chips * 0.32);\nfloat soot = smoothstep(0.45, 0.70, N.value(P * 0.28 + 31.7));\nreturn float3(rust, saturate(chips * 0.75 + grain * 0.25), soot);\n",
+              "OutputType": "CMOT_Float3",
+              "Description": "Local-space iron oxide, pits and soot; no moving world projection",
+              "Inputs": "((InputName=\"P\",Input=(Expression=\"/Script/Engine.MaterialExpressionMultiply'/Game/GuLiStrike/FX/UnitFeedback/M_UnitWreckRust.M_UnitWreckRust:MaterialExpressionMultiply_1'\")))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "\nstruct RustNoise {\n    float hash(float3 p) {\n        p = frac(p * 0.1031);\n        p += dot(p, p.yzx + 33.33);\n        return frac((p.x + p.y) * p.z);\n    }\n    float value(float3 p) {\n        float3 i = floor(p), f = frac(p);\n        f = f*f*(3.0-2.0*f);\n        return lerp(lerp(lerp(hash(i), hash(i+float3(1,0,0)), f.x),\n                         lerp(hash(i+float3(0,1,0)), hash(i+float3(1,1,0)), f.x), f.y),\n                    lerp(lerp(hash(i+float3(0,0,1)), hash(i+float3(1,0,1)), f.x),\n                         lerp(hash(i+float3(0,1,1)), hash(i+float3(1,1,1)), f.x), f.y), f.z);\n    }\n};\nRustNoise N;\nfloat broad = N.value(P * 0.65);\nfloat chips = N.value(P * 3.7 + 7.3);\nfloat grain = N.value(P * 22.0 + 19.1);\nfloat rust = smoothstep(0.25, 0.64, broad * 0.68 + chips * 0.32);\nfloat soot = smoothstep(0.45, 0.70, N.value(P * 0.28 + 31.7));\nreturn float3(rust, saturate(chips * 0.75 + grain * 0.25), soot);\n",
+            "output_type": "CMOT_Float3",
+            "custom_input_names": "P",
+            "inputs": [
+              "P"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionComponentMask_0000020EC66CBB00",
+            "class": "ComponentMask",
+            "class_full": "MaterialExpressionComponentMask",
+            "pos_x": -780,
+            "pos_y": 500,
+            "properties": {
+              "R": "True",
+              "G": "False",
+              "B": "False",
+              "A": "False"
+            },
+            "inputs": [
+              "Input"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionComponentMask_0000020EC66C3300",
+            "class": "ComponentMask",
+            "class_full": "MaterialExpressionComponentMask",
+            "pos_x": -1040,
+            "pos_y": 690,
+            "properties": {
+              "R": "False",
+              "G": "True",
+              "B": "False",
+              "A": "False"
+            },
+            "inputs": [
+              "Input"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionComponentMask_0000020EC66C7E00",
+            "class": "ComponentMask",
+            "class_full": "MaterialExpressionComponentMask",
+            "pos_x": -520,
+            "pos_y": 500,
+            "properties": {
+              "R": "False",
+              "G": "False",
+              "B": "True",
+              "A": "False"
+            },
+            "inputs": [
+              "Input"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A9600",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": -1040,
+            "pos_y": 338,
+            "properties": {
+              "DefaultValue": "(R=0.030000,G=0.018000,B=0.011000,A=1.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "DeepOxide",
+            "group": "None",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57ABE80",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": -1040,
+            "pos_y": 514,
+            "properties": {
+              "DefaultValue": "(R=0.095000,G=0.043000,B=0.021000,A=1.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "FlakedRust",
+            "group": "None",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionLinearInterpolate_0000020EA57AD500",
+            "class": "LinearInterpolate",
+            "class_full": "MaterialExpressionLinearInterpolate",
+            "pos_x": -780,
+            "pos_y": 338,
+            "properties": {
+              "ConstA": "0.000000",
+              "ConstB": "1.000000",
+              "ConstAlpha": "0.500000"
+            },
+            "inputs": [
+              "A",
+              "B",
+              "Alpha"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A3600",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": -780,
+            "pos_y": 162,
+            "properties": {
+              "DefaultValue": "(R=0.034000,G=0.035000,B=0.032000,A=1.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "ExposedSteel",
+            "group": "None",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionLinearInterpolate_0000020EA57A4E00",
+            "class": "LinearInterpolate",
+            "class_full": "MaterialExpressionLinearInterpolate",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {
+              "ConstA": "0.000000",
+              "ConstB": "1.000000",
+              "ConstAlpha": "0.500000"
+            },
+            "inputs": [
+              "A",
+              "B",
+              "Alpha"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A9480",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": -520,
+            "pos_y": 324,
+            "properties": {
+              "DefaultValue": "(R=0.008000,G=0.009000,B=0.010000,A=1.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "Charcoal",
+            "group": "None",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionLinearInterpolate_0000020EA57A0000",
+            "class": "LinearInterpolate",
+            "class_full": "MaterialExpressionLinearInterpolate",
+            "pos_x": -260,
+            "pos_y": 162,
+            "properties": {
+              "ConstA": "0.000000",
+              "ConstB": "1.000000",
+              "ConstAlpha": "0.500000"
+            },
+            "inputs": [
+              "A",
+              "B",
+              "Alpha"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionScalarParameter_0000021029C70F00",
+            "class": "ScalarParameter",
+            "class_full": "MaterialExpressionScalarParameter",
+            "pos_x": -520,
+            "pos_y": 986,
+            "properties": {
+              "DefaultValue": "0.750000",
+              "ControlType": "Numeric",
+              "SliderMin": "0.000000",
+              "SliderMax": "0.000000",
+              "Enumeration": "None",
+              "EnumerationIndex": "0",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "SteelRoughness",
+            "group": "None",
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionScalarParameter_0000020E947E1CC0",
+            "class": "ScalarParameter",
+            "class_full": "MaterialExpressionScalarParameter",
+            "pos_x": -520,
+            "pos_y": 1148,
+            "properties": {
+              "DefaultValue": "0.940000",
+              "ControlType": "Numeric",
+              "SliderMin": "0.000000",
+              "SliderMax": "0.000000",
+              "Enumeration": "None",
+              "EnumerationIndex": "0",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RustRoughness",
+            "group": "None",
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionLinearInterpolate_0000020EA57A4080",
+            "class": "LinearInterpolate",
+            "class_full": "MaterialExpressionLinearInterpolate",
+            "pos_x": -260,
+            "pos_y": 486,
+            "properties": {
+              "ConstA": "0.000000",
+              "ConstB": "1.000000",
+              "ConstAlpha": "0.500000"
+            },
+            "inputs": [
+              "A",
+              "B",
+              "Alpha"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionScalarParameter_0000021035B412C0",
+            "class": "ScalarParameter",
+            "class_full": "MaterialExpressionScalarParameter",
+            "pos_x": -780,
+            "pos_y": 662,
+            "properties": {
+              "DefaultValue": "0.800000",
+              "ControlType": "Numeric",
+              "SliderMin": "0.000000",
+              "SliderMax": "0.000000",
+              "Enumeration": "None",
+              "EnumerationIndex": "0",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "SteelMetallic",
+            "group": "None",
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionScalarParameter_0000021035B46400",
+            "class": "ScalarParameter",
+            "class_full": "MaterialExpressionScalarParameter",
+            "pos_x": -780,
+            "pos_y": 824,
+            "properties": {
+              "DefaultValue": "0.020000",
+              "ControlType": "Numeric",
+              "SliderMin": "0.000000",
+              "SliderMax": "0.000000",
+              "Enumeration": "None",
+              "EnumerationIndex": "0",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "OxideMetallic",
+            "group": "None",
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionLinearInterpolate_0000020EA57A8A00",
+            "class": "LinearInterpolate",
+            "class_full": "MaterialExpressionLinearInterpolate",
+            "pos_x": -520,
+            "pos_y": 662,
+            "properties": {
+              "ConstA": "0.000000",
+              "ConstB": "1.000000",
+              "ConstAlpha": "0.500000"
+            },
+            "inputs": [
+              "A",
+              "B",
+              "Alpha"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionScalarParameter_000002102452DC00",
+            "class": "ScalarParameter",
+            "class_full": "MaterialExpressionScalarParameter",
+            "pos_x": -520,
+            "pos_y": 824,
+            "properties": {
+              "DefaultValue": "0.000000",
+              "ControlType": "Numeric",
+              "SliderMin": "0.000000",
+              "SliderMax": "0.000000",
+              "Enumeration": "None",
+              "EnumerationIndex": "0",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "SootMetallic",
+            "group": "None",
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionLinearInterpolate_0000020EA57AB700",
+            "class": "LinearInterpolate",
+            "class_full": "MaterialExpressionLinearInterpolate",
+            "pos_x": -260,
+            "pos_y": 324,
+            "properties": {
+              "ConstA": "0.000000",
+              "ConstB": "1.000000",
+              "ConstAlpha": "0.500000"
+            },
+            "inputs": [
+              "A",
+              "B",
+              "Alpha"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionScalarParameter_0000021029C71680",
+            "class": "ScalarParameter",
+            "class_full": "MaterialExpressionScalarParameter",
+            "pos_x": -260,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "0.000000",
+              "ControlType": "Numeric",
+              "SliderMin": "0.000000",
+              "SliderMax": "0.000000",
+              "Enumeration": "None",
+              "EnumerationIndex": "0",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "WreckEmissive",
+            "group": "None",
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "class": "MaterialFunctionCall",
+            "class_full": "MaterialExpressionMaterialFunctionCall",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical'"
+            },
+            "function_path": "/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+            "inputs": [
+              "LegAxis1 (V3)",
+              "UpperPivot (V3)",
+              "LegRoot0 (V3)",
+              "LegEnd0 (V3)",
+              "LegAxis0 (V3)",
+              "LegRoot1 (V3)",
+              "LegEnd1 (V3)",
+              "Kind (S)",
+              "LegRoot2 (V3)",
+              "LegEnd2 (V3)",
+              "LegAxis2 (V3)",
+              "LegRoot3 (V3)",
+              "LegEnd3 (V3)",
+              "LegAxis3 (V3)"
+            ],
+            "outputs": [
+              "Offset",
+              "Normal"
+            ]
+          },
+          {
+            "id": "MaterialExpressionScalarParameter_0000021035B49880",
+            "class": "ScalarParameter",
+            "class_full": "MaterialExpressionScalarParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "0.000000",
+              "ControlType": "Numeric",
+              "SliderMin": "0.000000",
+              "SliderMax": "0.000000",
+              "Enumeration": "None",
+              "EnumerationIndex": "0",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidKind",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57ABA00",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidUpperPivot",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVertexInterpolator_0000021034758340",
+            "class": "VertexInterpolator",
+            "class_full": "MaterialExpressionVertexInterpolator",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {},
+            "inputs": [
+              "VS"
+            ],
+            "outputs": [
+              "PS"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57AB580",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegRoot0",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A8E80",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegEnd0",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A1980",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegAxis0",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A0180",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegRoot1",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A4980",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegEnd1",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A9900",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegAxis1",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A2E80",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegRoot2",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A4F80",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegEnd2",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57ADE00",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegAxis2",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A7080",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegRoot3",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57AD800",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegEnd3",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57AFA80",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegAxis3",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "source_id": "MaterialExpressionPreSkinnedPosition_0000020F94FCE000",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionVertexInterpolator_0000021034756540",
+            "target_input": "VS"
+          },
+          {
+            "source_id": "MaterialExpressionVertexInterpolator_0000021034756540",
+            "source_output_index": 0,
+            "source_output_name": "PS",
+            "target_id": "MaterialExpressionMultiply_0000020E94F4D480",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_0000021029C71400",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMultiply_0000020E94F4D480",
+            "target_input": "B"
+          },
+          {
+            "source_id": "MaterialExpressionMultiply_0000020E94F4D480",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_0000020E94F4D700",
+            "target_input": "P"
+          },
+          {
+            "source_id": "MaterialExpressionCustom_0000020E94F4D700",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionComponentMask_0000020EC66CBB00",
+            "target_input": "Input"
+          },
+          {
+            "source_id": "MaterialExpressionCustom_0000020E94F4D700",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionComponentMask_0000020EC66C3300",
+            "target_input": "Input"
+          },
+          {
+            "source_id": "MaterialExpressionCustom_0000020E94F4D700",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionComponentMask_0000020EC66C7E00",
+            "target_input": "Input"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A9600",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57AD500",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57ABE80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57AD500",
+            "target_input": "B"
+          },
+          {
+            "source_id": "MaterialExpressionComponentMask_0000020EC66C3300",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57AD500",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A3600",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57A4E00",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionLinearInterpolate_0000020EA57AD500",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57A4E00",
+            "target_input": "B"
+          },
+          {
+            "source_id": "MaterialExpressionComponentMask_0000020EC66CBB00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57A4E00",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionLinearInterpolate_0000020EA57A4E00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57A0000",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A9480",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57A0000",
+            "target_input": "B"
+          },
+          {
+            "source_id": "MaterialExpressionComponentMask_0000020EC66C7E00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57A0000",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_0000021029C70F00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57A4080",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_0000020E947E1CC0",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57A4080",
+            "target_input": "B"
+          },
+          {
+            "source_id": "MaterialExpressionComponentMask_0000020EC66CBB00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57A4080",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_0000021035B412C0",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57A8A00",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_0000021035B46400",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57A8A00",
+            "target_input": "B"
+          },
+          {
+            "source_id": "MaterialExpressionComponentMask_0000020EC66CBB00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57A8A00",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionLinearInterpolate_0000020EA57A8A00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57AB700",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_000002102452DC00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57AB700",
+            "target_input": "B"
+          },
+          {
+            "source_id": "MaterialExpressionComponentMask_0000020EC66C7E00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionLinearInterpolate_0000020EA57AB700",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A9900",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "LegAxis1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57ABA00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "UpperPivot (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57AB580",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "LegRoot0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A8E80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "LegEnd0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A1980",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "LegAxis0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A0180",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "LegRoot1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A4980",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "LegEnd1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_0000021035B49880",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "Kind (S)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A2E80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "LegRoot2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A4F80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "LegEnd2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57ADE00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "LegAxis2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A7080",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "LegRoot3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57AD800",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "LegEnd3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57AFA80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "target_input": "LegAxis3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "source_output_index": 1,
+            "source_output_name": "Normal",
+            "target_id": "MaterialExpressionVertexInterpolator_0000021034758340",
+            "target_input": "VS"
+          }
+        ],
+        "output_connections": [
+          {
+            "property": "BaseColor",
+            "expression_id": "MaterialExpressionLinearInterpolate_0000020EA57A0000",
+            "output_index": 0,
+            "output_name": ""
+          },
+          {
+            "property": "Metallic",
+            "expression_id": "MaterialExpressionLinearInterpolate_0000020EA57AB700",
+            "output_index": 0,
+            "output_name": ""
+          },
+          {
+            "property": "Roughness",
+            "expression_id": "MaterialExpressionLinearInterpolate_0000020EA57A4080",
+            "output_index": 0,
+            "output_name": ""
+          },
+          {
+            "property": "EmissiveColor",
+            "expression_id": "MaterialExpressionScalarParameter_0000021029C71680",
+            "output_index": 0,
+            "output_name": ""
+          },
+          {
+            "property": "Normal",
+            "expression_id": "MaterialExpressionVertexInterpolator_0000021034758340",
+            "output_index": 0,
+            "output_name": "PS"
+          },
+          {
+            "property": "WorldPositionOffset",
+            "expression_id": "MaterialExpressionMaterialFunctionCall_0000020E94F4D340",
+            "output_index": 0,
+            "output_name": "Offset"
+          }
+        ]
+      },
+      "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite_Instanced": {
+        "material": {
+          "blend_mode": "BLEND_Additive",
+          "shading_model": "MSM_Unlit",
+          "two_sided": false
+        },
+        "expressions": [
+          {
+            "id": "MaterialExpressionTime_0000020F94FC9AE0",
+            "class": "Time",
+            "class_full": "MaterialExpressionTime",
+            "pos_x": -1560,
+            "pos_y": 162,
+            "properties": {
+              "bIgnorePause": "False",
+              "bOverride_Period": "False",
+              "Period": "0.000000"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionPerInstanceCustomData_000002103764C080",
+            "class": "PerInstanceCustomData",
+            "class_full": "MaterialExpressionPerInstanceCustomData",
+            "pos_x": -1560,
+            "pos_y": 324,
+            "properties": {
+              "ConstDefaultValue": "-1000.000000",
+              "DataIndex": "0"
+            },
+            "inputs": [
+              "DefaultValue"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionSubtract_0000020E94F4E880",
+            "class": "Subtract",
+            "class_full": "MaterialExpressionSubtract",
+            "pos_x": -1300,
+            "pos_y": 162,
+            "properties": {
+              "ConstA": "1.000000",
+              "ConstB": "1.000000"
+            },
+            "inputs": [
+              "A",
+              "B"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionMultiply_0000020FF0CBE600",
+            "class": "Multiply",
+            "class_full": "MaterialExpressionMultiply",
+            "pos_x": -1040,
+            "pos_y": 162,
+            "properties": {
+              "ConstA": "0.000000",
+              "ConstB": "2.000000"
+            },
+            "inputs": [
+              "A",
+              "B"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionOneMinus_0000020EC66CBA00",
+            "class": "OneMinus",
+            "class_full": "MaterialExpressionOneMinus",
+            "pos_x": -780,
+            "pos_y": 162,
+            "properties": {},
+            "inputs": [
+              "Input"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionSaturate_0000020EC66C9000",
+            "class": "Saturate",
+            "class_full": "MaterialExpressionSaturate",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {},
+            "inputs": [
+              "Input"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionConstant3Vector_0000020F94FCA800",
+            "class": "Constant3Vector",
+            "class_full": "MaterialExpressionConstant3Vector",
+            "pos_x": -520,
+            "pos_y": 0,
+            "properties": {
+              "Constant": "(R=2.000000,G=2.000000,B=2.000000,A=1.000000)"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0",
+              "Output_1",
+              "Output_2",
+              "Output_3"
+            ]
+          },
+          {
+            "id": "MaterialExpressionMultiply_000002101E161180",
+            "class": "Multiply",
+            "class_full": "MaterialExpressionMultiply",
+            "pos_x": -260,
+            "pos_y": 0,
+            "properties": {
+              "ConstA": "0.000000",
+              "ConstB": "1.000000"
+            },
+            "inputs": [
+              "A",
+              "B"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "class": "MaterialFunctionCall",
+            "class_full": "MaterialExpressionMaterialFunctionCall",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical'"
+            },
+            "function_path": "/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+            "inputs": [
+              "LegAxis1 (V3)",
+              "UpperPivot (V3)",
+              "LegRoot0 (V3)",
+              "LegEnd0 (V3)",
+              "LegAxis0 (V3)",
+              "LegRoot1 (V3)",
+              "LegEnd1 (V3)",
+              "Kind (S)",
+              "LegRoot2 (V3)",
+              "LegEnd2 (V3)",
+              "LegAxis2 (V3)",
+              "LegRoot3 (V3)",
+              "LegEnd3 (V3)",
+              "LegAxis3 (V3)"
+            ],
+            "outputs": [
+              "Offset",
+              "Normal"
+            ]
+          },
+          {
+            "id": "MaterialExpressionScalarParameter_000002103764D480",
+            "class": "ScalarParameter",
+            "class_full": "MaterialExpressionScalarParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "0.000000",
+              "ControlType": "Numeric",
+              "SliderMin": "0.000000",
+              "SliderMax": "0.000000",
+              "Enumeration": "None",
+              "EnumerationIndex": "0",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidKind",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A7380",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidUpperPivot",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVertexInterpolator_0000020E94F4E9C0",
+            "class": "VertexInterpolator",
+            "class_full": "MaterialExpressionVertexInterpolator",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {},
+            "inputs": [
+              "VS"
+            ],
+            "outputs": [
+              "PS"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A5400",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegRoot0",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57AF600",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegEnd0",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A4500",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegAxis0",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A0480",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegRoot1",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A9000",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegEnd1",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57AEE80",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegAxis1",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A5880",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegRoot2",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A0D80",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegEnd2",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A3480",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegAxis2",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A7E00",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegRoot3",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57AA800",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegEnd3",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57AC900",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegAxis3",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "source_id": "MaterialExpressionTime_0000020F94FC9AE0",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionSubtract_0000020E94F4E880",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionPerInstanceCustomData_000002103764C080",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionSubtract_0000020E94F4E880",
+            "target_input": "B"
+          },
+          {
+            "source_id": "MaterialExpressionSubtract_0000020E94F4E880",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMultiply_0000020FF0CBE600",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionMultiply_0000020FF0CBE600",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionOneMinus_0000020EC66CBA00",
+            "target_input": "Input"
+          },
+          {
+            "source_id": "MaterialExpressionOneMinus_0000020EC66CBA00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionSaturate_0000020EC66C9000",
+            "target_input": "Input"
+          },
+          {
+            "source_id": "MaterialExpressionConstant3Vector_0000020F94FCA800",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMultiply_000002101E161180",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionSaturate_0000020EC66C9000",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMultiply_000002101E161180",
+            "target_input": "B"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57AEE80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "LegAxis1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A7380",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "UpperPivot (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A5400",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "LegRoot0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57AF600",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "LegEnd0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A4500",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "LegAxis0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A0480",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "LegRoot1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A9000",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "LegEnd1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_000002103764D480",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "Kind (S)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A5880",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "LegRoot2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A0D80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "LegEnd2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A3480",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "LegAxis2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A7E00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "LegRoot3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57AA800",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "LegEnd3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57AC900",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "target_input": "LegAxis3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "source_output_index": 1,
+            "source_output_name": "Normal",
+            "target_id": "MaterialExpressionVertexInterpolator_0000020E94F4E9C0",
+            "target_input": "VS"
+          }
+        ],
+        "output_connections": [
+          {
+            "property": "EmissiveColor",
+            "expression_id": "MaterialExpressionMultiply_000002101E161180",
+            "output_index": 0,
+            "output_name": ""
+          },
+          {
+            "property": "WorldPositionOffset",
+            "expression_id": "MaterialExpressionMaterialFunctionCall_0000020FF0CBE9C0",
+            "output_index": 0,
+            "output_name": "Offset"
+          }
+        ]
+      },
+      "/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody": {
+        "material": {
+          "blend_mode": "BLEND_Translucent",
+          "shading_model": "MSM_Unlit",
+          "two_sided": false
+        },
+        "expressions": [
+          {
+            "id": "MaterialExpressionCustom_00000210347512C0",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -260,
+            "pos_y": 162,
+            "properties": {
+              "Code": "return .24+.28*pow(1-abs(dot(N,V)),3);",
+              "OutputType": "CMOT_Float1",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"N\"),(InputName=\"V\"))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "return .24+.28*pow(1-abs(dot(N,V)),3);",
+            "output_type": "CMOT_Float1",
+            "custom_input_names": "N,V",
+            "inputs": [
+              "N",
+              "V"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCameraVectorWS_0000020F94FC8A40",
+            "class": "CameraVectorWS",
+            "class_full": "MaterialExpressionCameraVectorWS",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {},
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionPixelNormalWS_0000020F94FCDBA0",
+            "class": "PixelNormalWS",
+            "class_full": "MaterialExpressionPixelNormalWS",
+            "pos_x": -520,
+            "pos_y": 0,
+            "properties": {},
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCameraVectorWS_0000020F94FCFCE0",
+            "class": "CameraVectorWS",
+            "class_full": "MaterialExpressionCameraVectorWS",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {},
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_0000020EA57AFD80",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -260,
+            "pos_y": 162,
+            "properties": {
+              "Code": "return .24+.28*pow(1-abs(dot(N,V)),3);",
+              "OutputType": "CMOT_Float1",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"N\",Input=(Expression=\"/Script/Engine.MaterialExpressionVertexInterpolator'/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody:MaterialExpressionVertexInterpolator_0'\")),(InputName=\"V\",Input=(Expression=\"/Script/Engine.MaterialExpressionCameraVectorWS'/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody:MaterialExpressionCameraVectorWS_0'\")))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "return .24+.28*pow(1-abs(dot(N,V)),3);",
+            "output_type": "CMOT_Float1",
+            "custom_input_names": "N,V",
+            "inputs": [
+              "N",
+              "V"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_0000020EA57A0600",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -260,
+            "pos_y": 0,
+            "properties": {
+              "Code": "float f=pow(1-abs(dot(N,V)),3); return float3(.01,.4,.95)*(1.4+f*3);",
+              "OutputType": "CMOT_Float3",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"N\",Input=(Expression=\"/Script/Engine.MaterialExpressionVertexInterpolator'/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody:MaterialExpressionVertexInterpolator_0'\")),(InputName=\"V\",Input=(Expression=\"/Script/Engine.MaterialExpressionCameraVectorWS'/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody:MaterialExpressionCameraVectorWS_0'\")))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float f=pow(1-abs(dot(N,V)),3); return float3(.01,.4,.95)*(1.4+f*3);",
+            "output_type": "CMOT_Float3",
+            "custom_input_names": "N,V",
+            "inputs": [
+              "N",
+              "V"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "class": "MaterialFunctionCall",
+            "class_full": "MaterialExpressionMaterialFunctionCall",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical'"
+            },
+            "function_path": "/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+            "inputs": [
+              "LegAxis1 (V3)",
+              "UpperPivot (V3)",
+              "LegRoot0 (V3)",
+              "LegEnd0 (V3)",
+              "LegAxis0 (V3)",
+              "LegRoot1 (V3)",
+              "LegEnd1 (V3)",
+              "Kind (S)",
+              "LegRoot2 (V3)",
+              "LegEnd2 (V3)",
+              "LegAxis2 (V3)",
+              "LegRoot3 (V3)",
+              "LegEnd3 (V3)",
+              "LegAxis3 (V3)"
+            ],
+            "outputs": [
+              "Offset",
+              "Normal"
+            ]
+          },
+          {
+            "id": "MaterialExpressionScalarParameter_0000021034751F40",
+            "class": "ScalarParameter",
+            "class_full": "MaterialExpressionScalarParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "0.000000",
+              "ControlType": "Numeric",
+              "SliderMin": "0.000000",
+              "SliderMax": "0.000000",
+              "Enumeration": "None",
+              "EnumerationIndex": "0",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidKind",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57AF000",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidUpperPivot",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVertexInterpolator_00000210347549C0",
+            "class": "VertexInterpolator",
+            "class_full": "MaterialExpressionVertexInterpolator",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {},
+            "inputs": [
+              "VS"
+            ],
+            "outputs": [
+              "PS"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EA57A5580",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegRoot0",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EDB33EA00",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegEnd0",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_000002102366EB80",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegAxis0",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_000002102366B580",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegRoot1",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020D2E9BF900",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegEnd1",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020D2E9BFC00",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegAxis1",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020D2E9BFD80",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegRoot2",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020D2E9BFA80",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegEnd2",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EC0E6C180",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegAxis2",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EDB339300",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegRoot3",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EDB336F00",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegEnd3",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionVectorParameter_0000020EDB333F00",
+            "class": "VectorParameter",
+            "class_full": "MaterialExpressionVectorParameter",
+            "pos_x": 0,
+            "pos_y": 0,
+            "properties": {
+              "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+              "bUseCustomPrimitiveData": "False",
+              "PrimitiveDataIndex": "0",
+              "ChannelNames": "()",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "RigidLegAxis3",
+            "group": "Rigid Animation",
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "source_id": "MaterialExpressionVertexInterpolator_00000210347549C0",
+            "source_output_index": 0,
+            "source_output_name": "PS",
+            "target_id": "MaterialExpressionCustom_0000020EA57AFD80",
+            "target_input": "N"
+          },
+          {
+            "source_id": "MaterialExpressionCameraVectorWS_0000020F94FCFCE0",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_0000020EA57AFD80",
+            "target_input": "V"
+          },
+          {
+            "source_id": "MaterialExpressionVertexInterpolator_00000210347549C0",
+            "source_output_index": 0,
+            "source_output_name": "PS",
+            "target_id": "MaterialExpressionCustom_0000020EA57A0600",
+            "target_input": "N"
+          },
+          {
+            "source_id": "MaterialExpressionCameraVectorWS_0000020F94FCFCE0",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_0000020EA57A0600",
+            "target_input": "V"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020D2E9BFC00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "LegAxis1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57AF000",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "UpperPivot (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EA57A5580",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "LegRoot0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EDB33EA00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "LegEnd0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_000002102366EB80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "LegAxis0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_000002102366B580",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "LegRoot1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020D2E9BF900",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "LegEnd1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_0000021034751F40",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "Kind (S)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020D2E9BFD80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "LegRoot2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020D2E9BFA80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "LegEnd2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EC0E6C180",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "LegAxis2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EDB339300",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "LegRoot3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EDB336F00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "LegEnd3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000020EDB333F00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "target_input": "LegAxis3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "source_output_index": 1,
+            "source_output_name": "Normal",
+            "target_id": "MaterialExpressionVertexInterpolator_00000210347549C0",
+            "target_input": "VS"
+          }
+        ],
+        "output_connections": [
+          {
+            "property": "EmissiveColor",
+            "expression_id": "MaterialExpressionCustom_0000020EA57A0600",
+            "output_index": 0,
+            "output_name": ""
+          },
+          {
+            "property": "Opacity",
+            "expression_id": "MaterialExpressionCustom_0000020EA57AFD80",
+            "output_index": 0,
+            "output_name": ""
+          },
+          {
+            "property": "WorldPositionOffset",
+            "expression_id": "MaterialExpressionMaterialFunctionCall_0000021034755F00",
+            "output_index": 0,
+            "output_name": "Offset"
+          }
+        ]
+      }
+    }
+  }
+}

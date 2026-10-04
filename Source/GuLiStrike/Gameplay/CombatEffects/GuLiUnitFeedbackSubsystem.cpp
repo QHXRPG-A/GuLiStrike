@@ -1,4 +1,6 @@
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
+#include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/CombatEffects/GuLiUnitWreck.h"
 
@@ -32,6 +34,7 @@ void UGuLiUnitFeedbackSubsystem::Initialize(FSubsystemCollectionBase& Collection
 	Super::Initialize(Collection);
 	Collection.InitializeDependency<UGuLiCommanderDataSubsystem>();
 	Collection.InitializeDependency<UGuLiVfxRegistrySubsystem>();
+	Collection.InitializeDependency<UGuLiCommanderLODSubsystem>();
 	if (const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
 	{
 		for (const FGuLiSoldierDefinition& Definition : Data->GetSoldierDefinitions())
@@ -74,6 +77,8 @@ bool UGuLiUnitFeedbackSubsystem::IsWithinCullDistance(const FVector& Location) c
 {
 	if (!GetWorld() || Location.ContainsNaN()) return false;
 	const float Distance = GetDefault<UGuLiUnitFeedbackSettings>()->CullDistance;
+	if (auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>())
+		return LOD->ShouldRenderWorldEffect(Location, Distance);
 	if (Distance <= 0) return true;
 	for (auto It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
@@ -213,9 +218,14 @@ AGuLiUnitWreck* UGuLiUnitFeedbackSubsystem::SpawnActorWreck(AActor* Source, FVec
 	return Wreck;
 }
 
+bool UGuLiUnitFeedbackSubsystem::ShouldRenderExplosion(const FVector& Location) const
+{
+	return IsWithinCullDistance(Location);
+}
+
 void UGuLiUnitFeedbackSubsystem::QueueDestruction(const FVector& Location, float UnitSize, bool bWingman)
 {
-	if (!IsWithinCullDistance(Location) || !FMath::IsFinite(UnitSize)) return;
+	if (!ShouldRenderExplosion(Location) || !FMath::IsFinite(UnitSize)) return;
 	const auto& Variants = bWingman ? LoadedWingmanExplosions : LoadedExplosions;
 	if (Variants.IsEmpty())
 	{
@@ -273,7 +283,7 @@ void UGuLiUnitFeedbackSubsystem::ApplyWingmanFeedback(const FGuLiWingmanHandle& 
 void UGuLiUnitFeedbackSubsystem::SpawnExplosion(const FVector& Location, float UnitSize, bool bWingman)
 {
 	const auto& Variants = bWingman ? LoadedWingmanExplosions : LoadedExplosions;
-	if (Variants.IsEmpty() || !IsWithinCullDistance(Location)
+	if (Variants.IsEmpty() || !ShouldRenderExplosion(Location)
 		|| ActiveExplosions.Num() >= FMath::Max(1, GetDefault<UGuLiUnitFeedbackSettings>()->MaximumConcurrentExplosions)) return;
 	const int32 VfxId = Variants[CosmeticRandom.RandRange(0, Variants.Num() - 1)];
 	UNiagaraSystem* System = GuLiVfx::Load<UNiagaraSystem>(this, VfxId, false);
@@ -288,6 +298,7 @@ void UGuLiUnitFeedbackSubsystem::SpawnExplosion(const FVector& Location, float U
 		false, false, ENCPoolMethod::ManualRelease, true);
 	if (!Component) return;
 	if (!ScaleParameter.IsNone()) Component->SetVariableFloat(ScaleParameter, Scale.X);
+	if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(Component);
 	Component->SetCastShadow(false);
 	auto& Active = ActiveExplosions.AddDefaulted_GetRef();
 	Active.Component = Component;
@@ -345,7 +356,7 @@ void UGuLiUnitFeedbackSubsystem::Tick(float DeltaTime)
 			if (IsValid(Active.Component))
 			{
 				Active.Component->OnSystemFinished.RemoveDynamic(this, &ThisClass::HandleExplosionFinished);
-				Active.Component->DeactivateImmediate(); Active.Component->ReleaseToPool();
+				Active.Component->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Active.Component); Active.Component->ReleaseToPool();
 			}
 			ActiveExplosions.RemoveAtSwap(Index);
 		}
@@ -364,7 +375,7 @@ void UGuLiUnitFeedbackSubsystem::Deinitialize()
 		if (IsValid(Active.Component))
 		{
 			Active.Component->OnSystemFinished.RemoveDynamic(this, &ThisClass::HandleExplosionFinished);
-			Active.Component->DeactivateImmediate(); Active.Component->ReleaseToPool();
+			Active.Component->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Active.Component); Active.Component->ReleaseToPool();
 		}
 	ActiveHits.Reset(); ActiveExplosions.Reset(); LoadedExplosions.Reset(); PendingExplosions.Reset();
 	LoadedWingmanExplosions.Reset();

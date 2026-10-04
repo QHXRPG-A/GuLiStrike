@@ -13,7 +13,7 @@ BODY=spawn(unreal.Actor)
 handles=SUB.k2_gather_subobject_data_for_instance(BODY)
 h,why=SUB.add_new_subobject(unreal.AddNewSubobjectParams(parent_handle=handles[0],new_class=unreal.InstancedStaticMeshComponent))
 ISM=LIB.get_object(LIB.get_data(h));assert ISM,str(why)
-ISM.set_editor_property('num_custom_data_floats',29);ISM.set_cast_shadow(False);ISM.set_cull_distances(0,0)
+ISM.set_editor_property('num_custom_data_floats',51);ISM.set_cast_shadow(False);ISM.set_cull_distances(0,0)
 BG=spawn(unreal.StaticMeshActor);BG.static_mesh_component.set_static_mesh(unreal.load_asset('/Engine/BasicShapes/Plane'))
 BG.static_mesh_component.set_material(0,unreal.load_asset('/Game/Commander/Review/M_TacticalReview_Backdrop'))
 BG.static_mesh_component.set_cast_shadow(False);BG.set_actor_scale3d(unreal.Vector(120,120,120))
@@ -48,7 +48,7 @@ def tick(dt):
             ISM.clear_instances();ISM.set_static_mesh(unreal.load_asset('/Game/Commander/Units/Tactical/Cel/'+unit+'/Meshes/SM_'+unit+'_Rigid'))
             ISM.set_editor_property('forced_lod_model',1)
             i=ISM.add_instance(unreal.Transform(scale=unreal.Vector(.2,.2,.2)),False)
-            for j,v in enumerate([-1000]+pose+pose):ISM.set_custom_data_value(i,j,v,j==28)
+            for j,v in enumerate([-1000]+pose+pose+[1,1]+[0]*20):ISM.set_custom_data_value(i,j,v,j==50)
             factor=1 if unit=='WarMachine' else .4
             pos=ORIGIN+unreal.Vector(1550,-1800,1250)*factor;aim=ORIGIN+unreal.Vector(0,0,360)*factor
             CA.set_actor_location(pos,False,False);CA.set_actor_rotation(unreal.MathLibrary.find_look_at_rotation(pos,aim),False);CAP.set_editor_property('fov_angle',43.)

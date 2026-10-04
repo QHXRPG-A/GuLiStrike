@@ -121,7 +121,8 @@ void UGuLiUnitTaskSubsystem::RegisterActor(APawn& Pawn)
 		State.ActorTree = Tree;
 	}
 }
-void UGuLiUnitTaskSubsystem::RegisterSoldiers(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers, int32 SourceTerritory)
+void UGuLiUnitTaskSubsystem::RegisterSoldiers(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers,
+	int32 SourceTerritory, bool bStartIdle)
 {
 	auto* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
 	for (auto Soldier : Soldiers)
@@ -130,7 +131,9 @@ void UGuLiUnitTaskSubsystem::RegisterSoldiers(EGuLiTeam Team, TConstArrayView<FG
 		if (auto* Existing = States.Find(Id)) { if (Existing->Context.SourceTerritory == INDEX_NONE) Existing->Context.SourceTerritory = SourceTerritory; continue; }
 		FGuLiUnitTaskState State; State.Context.Unit = Id; State.Context.SourceTerritory = SourceTerritory;
 		if (!Authority->GetTaskSoldierInfo(Soldier, State.Context.Team, State.Context.UnitTypeId, State.Context.Location) || State.Context.Team != Team) continue;
-		InitializeBehavior(State); States.Add(Id, MoveTemp(State));
+		InitializeBehavior(State);
+		if (bStartIdle) { State.ConsumeInitialBehaviors(); State.bStopped = true; }
+		States.Add(Id, MoveTemp(State));
 	}
 }
 void UGuLiUnitTaskSubsystem::UnregisterActor(FGuLiControllableActorId Id)

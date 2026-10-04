@@ -1,0 +1,105 @@
+Id,Name,Group
+1196447025,GPU1,GPU
+1196447026,GPU2,GPU
+1448235845,VerseSampling,Verse
+65536,GPU0-Graphics0,GPU
+65538,GPU0-Copy0,GPU
+65537,GPU0-Compute0,GPU
+2,GameThread,
+62,RHIThread,Render
+63,RenderThread 0,Render
+64,RTHeartBeat 0,Render
+4,BackgroundThreadPool #0,BackgroundThreadPool
+5,BackgroundThreadPool #1,BackgroundThreadPool
+41,IOThreadPool #0,IOThreadPool
+42,IOThreadPool #1,IOThreadPool
+43,IOThreadPool #2,IOThreadPool
+44,IOThreadPool #3,IOThreadPool
+49,DDC IO ThreadPool #0,DDC IO ThreadPool
+50,DDC IO ThreadPool #1,DDC IO ThreadPool
+51,DDC IO ThreadPool #2,DDC IO ThreadPool
+52,DDC IO ThreadPool #3,DDC IO ThreadPool
+6,Foreground Worker #0,Foreground Workers
+7,Foreground Worker #1,Foreground Workers
+70,Foreground Worker (Standby #0),Foreground Workers
+87,Foreground Worker (Standby #1),Foreground Workers
+8,Background Worker #0,Background Workers
+9,Background Worker #1,Background Workers
+10,Background Worker #2,Background Workers
+11,Background Worker #3,Background Workers
+12,Background Worker #4,Background Workers
+13,Background Worker #5,Background Workers
+14,Background Worker #6,Background Workers
+15,Background Worker #7,Background Workers
+16,Background Worker #9,Background Workers
+20,Background Worker #13,Background Workers
+25,Background Worker #17,Background Workers
+28,Background Worker #20,Background Workers
+29,Background Worker #21,Background Workers
+30,Background Worker #22,Background Workers
+31,Background Worker #23,Background Workers
+32,Background Worker #24,Background Workers
+34,Background Worker #26,Background Workers
+55,Background Worker #27,Background Workers
+86,Background Worker (Standby #0),Background Workers
+88,Background Worker (Standby #1),Background Workers
+89,Background Worker (Standby #2),Background Workers
+79,AudioMixerNullCallbackThread,
+92,AudioMixerNullCallbackThread,
+94,AudioMixerNullCallbackThread,
+45,WindowsRawInputThread,
+46,RHIInterruptThread,
+47,RHISubmissionThread,
+80,AudioMixerRenderThread(1),
+93,AudioMixerRenderThread(2),
+96,AudioMixerRenderThread(3),
+48,FMonitoredProcess 0,
+58,IoDispatcher,
+59,FMonitoredProcess 1,
+65,FUdpMessageProcessor.Sender,
+66,FUdpMessageBeacon,
+67,UdpMessageMulticastReceiver,
+68,UdpMessageUnicastReceiver,
+77,FUdpMessageProcessor,
+37,FMediaTicker,
+38,HttpManagerThread,
+39,OnlineAsyncTaskThreadNull DefaultInstance(1),
+40,OutputDeviceRedirector,
+54,ShaderCompilingThread,
+56,HttpConnectionPool,
+61,FMessageBus.DefaultBus.Router,
+69,FTcpMessageTransport,
+71,AsyncTaskThread_1,
+72,AsyncTaskThread_2,
+73,AsyncTaskThread_3,
+75,MCPServerThread,
+76,MegascansPlugin1,
+78,UnrealMCPServerThread,
+82,FAndroidDeviceDetectionRunnable,
+83,AsyncTaskThread_4,
+84,FTcpListener,
+85,StallDetectorThread,
+90,OnlineAsyncTaskThreadNull DefaultInstance(2),
+91,OnlineAsyncTaskThreadNull Context_1(3),
+98,ScreenSaverInhibitor,
+99,OnlineAsyncTaskThreadNull Context_2(4),
+100,OnlineAsyncTaskThreadNull Context_3(5),
+17,Background Worker #8,
+18,Background Worker #10,
+19,Background Worker #11,
+21,Background Worker #12,
+22,Background Worker #14,
+23,Background Worker #15,
+24,Background Worker #16,
+26,Background Worker #18,
+27,Background Worker #19,
+33,Background Worker #25,
+35,FAsyncWriter_GuLiStrike,
+36,FAssetDataDiscovery,
+53,FileSystemCacheStoreMaintainer,
+57,FAssetDataGatherer,
+74,FContentBrowserFileDataDiscovery,
+3,Trace,
+81,UnnamedThread,
+95,UnnamedThread,
+97,UnnamedThread,

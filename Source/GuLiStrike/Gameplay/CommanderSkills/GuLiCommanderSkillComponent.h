@@ -33,6 +33,10 @@ public:
 	/** Shared server-local entry also used by the existing two-point tactical UI. */
 	FGuLiActiveSkillReply ExecuteServerRequest(const FGuLiActiveSkillRequest& Request);
 	UFUNCTION(Server, Reliable) void ServerRequestSkill(const FGuLiActiveSkillRequest& Request);
+#if WITH_EDITOR
+	/** Read-only acceptance support: replay the complete receipt, including Q's ground trace. */
+	bool CopyServerRequestReceipt(FGuid RequestId, FGuLiActiveSkillRequest& OutRequest) const;
+#endif
 	UPROPERTY(BlueprintAssignable, Category="Commander|Skills") FGuLiActiveSkillReplyEvent OnSkillReply;
 protected:
 	virtual void BeginPlay() override;

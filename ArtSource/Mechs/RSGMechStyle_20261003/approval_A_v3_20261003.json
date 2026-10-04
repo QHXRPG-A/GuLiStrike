@@ -1,0 +1,56 @@
+{
+  "stage": "A",
+  "version": "A-v3",
+  "status": "approved",
+  "decision_date": "2026-10-03",
+  "recorded_at": "2026-10-03T10:40:08.342496+08:00",
+  "user_message": "审核通过，blender已开，开始制作，根据原模型一比一还原参考图中的形象，美术风格三渲二、三档明暗、结构线",
+  "manifest": "References_A_v3/reference_manifest.json",
+  "manifest_sha256": "c58409105e160da2b9096b0ee01c5550a22f8aaefbec30c2f660b07a9718754e",
+  "approved_images": [
+    {
+      "path": "References_A_v3/RSG_A_v3_Hero_SourceStyle.png",
+      "role": "three_quarter_effect_reference",
+      "bytes": 3264834,
+      "sha256": "35e62c7bf579df4f353644e812022ccb22fccd44114def99b95ebcb1d5a1c66d",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "References_A_v3/RSG_A_v3_Front_SourceStyle.png",
+      "role": "orthographic_front",
+      "bytes": 2974234,
+      "sha256": "bff302e9a600e6c6d4aad7aa0a6aa71185cbca4e935747809b542c5b177b723e",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "References_A_v3/RSG_A_v3_Left_SourceStyle.png",
+      "role": "orthographic_left",
+      "bytes": 2896501,
+      "sha256": "ad1deb16c55ea591046a3914b5b1246d05fc8ae9d18c48219d14b605edc91976",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "References_A_v3/RSG_A_v3_Back_SourceStyle.png",
+      "role": "orthographic_back",
+      "bytes": 2928100,
+      "sha256": "c869005e04ac6b6dd49777ccb25567ddeeb0f979eb58ae475e79990e2ddcc832",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    }
+  ],
+  "production_version": "B-v1",
+  "B_approval": "pending",
+  "formal_ue_import_authorized": false,
+  "interpretation": "A-v3 passed; begin Blender production from original source with approved shape and palette."
+}

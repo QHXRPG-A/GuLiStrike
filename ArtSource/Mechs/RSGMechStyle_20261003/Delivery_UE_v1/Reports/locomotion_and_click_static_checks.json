@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "python_ast": [
+    "Scripts/Pioneer/slow_locomotion.py",
+    "Scripts/Pioneer/deploy_runtime_assets.py",
+    "Scripts/Pioneer/readback_runtime_assets.py",
+    "Scripts/apply_commander_move_reuse_distance.py"
+  ],
+  "commander_split": {
+    "path": "Progress/Gameplay/指挥官.md",
+    "children": 5,
+    "expected_sha256": "40337c11d07276b2168175a01ac63c295226a8b9d69b0f2ec3cb515d91690ca8",
+    "reconstructed_sha256": "40337c11d07276b2168175a01ac63c295226a8b9d69b0f2ec3cb515d91690ca8",
+    "errors": []
+  },
+  "delivery_local_links_checked": 32,
+  "missing_links": [],
+  "locomotion_rate_multiplier": 0.2,
+  "move_reuse_cm": 100,
+  "native_code_changed": false
+}

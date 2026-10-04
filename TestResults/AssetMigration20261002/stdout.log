@@ -1,0 +1,192 @@
+[2026.10.02-15.44.26:048][  0]LogInit: Display: Running engine for game: AssetMigration
+[2026.10.02-15.44.26:048][  0]LogCore: Display: Requested channels: 'cpu,gpu,frame,log,bookmark,screenshot,region'
+[2026.10.02-15.44.26:048][  0]LogTrace: Display: Control listening on port 38137
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : platform="Windows"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : config="Development"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : buildversion="UE5-CL-0"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : engineversion="5.7.4-0+UE5"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : enginereleaseversion="5.7.4"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : os="Windows 11 (26H2) [10.0.26300.9457] "
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : cpu="GenuineIntel|Intel(R) Core(TM) i9-14900KF"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : pgoenabled="0"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : pgoprofilingenabled="0"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : ltoenabled="0"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : asan="0"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : mergedmodules="0"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : commandline="" D:\UE5.7\tmp\guli_asset_migration_20261002_n37xr_m1\AssetMigration.uproject -run=pythonscript -script=D:\UE5.7\test1\Scripts\AssetMigration20261002\migrate_in_unreal.py -unattended -NullRHI -NoSound -nosplash -NoSourceControl -abslog=D:\UE5.7\test1\TestResults\AssetMigration20261002\unreal.log""
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : loginid="0781115f42f406fa2c101691d7cea477"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : llm="0"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : systemresolution.resx="1280"
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : systemresolution.resy="720"
+[2026.10.02-15.44.26:048][  0]LogAudio: Display: Audio Device Manager not initializing due to all audio being disabled. If this is not intentional, please check command line arguments for "-nosound".
+[2026.10.02-15.44.26:048][  0]LogConfig: Display: Loading VulkanPC ini files took 0.03 seconds
+[2026.10.02-15.44.26:048][  0]LogConfig: Display: Loading Mac ini files took 0.04 seconds
+[2026.10.02-15.44.26:048][  0]LogConfig: Display: Loading Android ini files took 0.04 seconds
+[2026.10.02-15.44.26:048][  0]LogConfig: Display: Loading IOS ini files took 0.04 seconds
+[2026.10.02-15.44.26:048][  0]LogConfig: Display: Loading Unix ini files took 0.04 seconds
+[2026.10.02-15.44.26:048][  0]LogConfig: Display: Loading Windows ini files took 0.05 seconds
+[2026.10.02-15.44.26:048][  0]LogConfig: Display: Loading TVOS ini files took 0.05 seconds
+[2026.10.02-15.44.26:048][  0]LogConfig: Display: Loading VisionOS ini files took 0.05 seconds
+[2026.10.02-15.44.26:048][  0]LogConfig: Display: Loading LinuxArm64 ini files took 0.05 seconds
+[2026.10.02-15.44.26:048][  0]LogConfig: Display: Loading Linux ini files took 0.05 seconds
+[2026.10.02-15.44.26:048][  0]RenderDocPlugin: Display: RenderDoc plugin will not be loaded. Use '-AttachRenderDoc' on the cmd line or enable 'renderdoc.AutoAttach' in the plugin settings.
+[2026.10.02-15.44.26:048][  0]LogHAL: Display: Platform has ~ 32 GB [34163732480 / 34359738368 / 32], which maps to Largest [LargestMinGB=32, LargerMinGB=12, DefaultMinGB=8, SmallerMinGB=6, SmallestMinGB=0)
+[2026.10.02-15.44.26:048][  0]LogCsvProfiler: Display: Metadata set : extradevelopmentmemorymb="0"
+[2026.10.02-15.44.26:397][  0]LogObj: Display: Attempting to load config data for Default__SlateThemeManager before the Class has been constructed/registered/linked (likely during module loading or early startup). This will result in the load silently failing and should be fixed.
+[2026.10.02-15.44.26:474][  0]LogCsvProfiler: Display: Metadata set : verbatimrhiname="Null"
+[2026.10.02-15.44.26:474][  0]LogCsvProfiler: Display: Metadata set : rhiname="Null"
+[2026.10.02-15.44.26:474][  0]LogCsvProfiler: Display: Metadata set : rhifeaturelevel="SM6"
+[2026.10.02-15.44.26:474][  0]LogCsvProfiler: Display: Metadata set : shaderplatform="PCD3D_SM6"
+[2026.10.02-15.44.26:480][  0]LogTextureFormatASTC: Display: ASTCEnc version 5.0.1 library loaded
+[2026.10.02-15.44.26:480][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatASTC
+[2026.10.02-15.44.26:480][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatDXT
+[2026.10.02-15.44.26:480][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatETC2
+[2026.10.02-15.44.26:480][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatIntelISPCTexComp
+[2026.10.02-15.44.26:480][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatUncompressed
+[2026.10.02-15.44.26:480][  0]LogTextureFormatOodle: Display: Oodle Texture TFO init; latest sdk version = 2.9.14
+[2026.10.02-15.44.26:480][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.14.dll
+[2026.10.02-15.44.26:480][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.5.dll
+[2026.10.02-15.44.26:480][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatOodle
+[2026.10.02-15.44.26:503][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android'
+[2026.10.02-15.44.26:503][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ASTC'
+[2026.10.02-15.44.26:503][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_DXT'
+[2026.10.02-15.44.26:503][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ETC2'
+[2026.10.02-15.44.26:503][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_OpenXR'
+[2026.10.02-15.44.26:503][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'AndroidClient'
+[2026.10.02-15.44.26:503][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ASTCClient'
+[2026.10.02-15.44.26:503][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_DXTClient'
+[2026.10.02-15.44.26:503][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ETC2Client'
+[2026.10.02-15.44.26:503][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_OpenXRClient'
+[2026.10.02-15.44.26:503][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_Multi'
+[2026.10.02-15.44.26:503][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_MultiClient'
+[2026.10.02-15.44.26:519][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Linux'
+[2026.10.02-15.44.26:519][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxEditor'
+[2026.10.02-15.44.26:519][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxServer'
+[2026.10.02-15.44.26:519][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxClient'
+[2026.10.02-15.44.26:528][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxArm64'
+[2026.10.02-15.44.26:528][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxArm64Server'
+[2026.10.02-15.44.26:528][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxArm64Client'
+[2026.10.02-15.44.26:544][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Windows'
+[2026.10.02-15.44.26:544][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsEditor'
+[2026.10.02-15.44.26:544][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsServer'
+[2026.10.02-15.44.26:544][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsClient'
+[2026.10.02-15.44.26:544][  0]LogTargetPlatformManager: Display: Building Assets For WindowsEditor
+[2026.10.02-15.44.26:547][  0]LogAudioDebug: Display: Lib vorbis DLL was dynamically loaded.
+[2026.10.02-15.44.26:576][  0]LogDerivedDataCache: Display: Memory: Max Cache Size: -1 MB
+[2026.10.02-15.44.26:576][  0]LogZenServiceInstance: Display: Launching zen utility 'D:/UnrealEngine-5.7/Engine/Binaries/Win64/zen.exe service status'.
+[2026.10.02-15.44.27:086][  0]LogZenServiceInstance: Display: Launching zen utility 'D:/UnrealEngine-5.7/Engine/Binaries/Win64/zen.exe service status'.
+[2026.10.02-15.44.27:594][  0]LogZenServiceInstance: Display: Read zen version cache file from 'D:/UnrealEngine-5.7/Engine/Saved/Zen/zen.version', version: '5.7.6-202510061608-windows-x64-release-9a1ebb9'
+[2026.10.02-15.44.27:594][  0]LogZenServiceInstance: Display: Read zen version cache file from 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install/zen.version', version: '5.7.6-202510061608-windows-x64-release-9a1ebb9'
+[2026.10.02-15.44.27:594][  0]LogZenServiceInstance: Display: Installed service at 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install/zenserver.exe' is up to date
+[2026.10.02-15.44.27:798][  0]LogZenServiceInstance: Display: Unreal Zen Storage Server HTTP service at http://[::1]:8558 status: OK!.
+[2026.10.02-15.44.27:799][  0]LogDerivedDataCache: Display: ZenLocal: Using ZenServer HTTP service at [::1] with namespace ue.ddc status: OK!.
+[2026.10.02-15.44.27:804][  0]LogDerivedDataCache: Display: ../../../Engine/DerivedDataCache: Performance: Latency=0.01ms. RandomReadSpeed=1925.62MBs, RandomWriteSpeed=233.47MBs. Assigned SpeedClass 'Local'
+[2026.10.02-15.44.27:806][  0]LogUbaHorde: Display: UBA/Horde Configuration [Uba.Provider.Horde]: Not Enabled
+[2026.10.02-15.44.27:806][  0]LogShaderCompilers: Display: No distributed shader compiler controller found
+[2026.10.02-15.44.27:806][  0]LogShaderCompilers: Display: Using 29 local workers for shader compilation
+[2026.10.02-15.44.27:812][  0]LogShaderCompilers: Display: Compiling shader autogen file: ../../../../UE5.7/tmp/guli_asset_migration_20261002_n37xr_m1/Intermediate/ShaderAutogen/PCD3D_SM6/AutogenShaderHeaders.ush
+[2026.10.02-15.44.27:813][  0]LogShaderCompilers: Display: Failed to delete old shader autogen file: ../../../../UE5.7/tmp/guli_asset_migration_20261002_n37xr_m1/Intermediate/ShaderAutogen/PCD3D_SM6/AutogenShaderHeaders.ush
+[2026.10.02-15.44.27:813][  0]LogShaderCompilers: Display: Shader autogen file written: ../../../../UE5.7/tmp/guli_asset_migration_20261002_n37xr_m1/Intermediate/ShaderAutogen/PCD3D_SM6/AutogenShaderHeaders.ush
+[2026.10.02-15.44.28:096][  0]LogEditorDomain: Display: EditorDomain is Disabled
+[2026.10.02-15.44.28:287][  0]LogDeviceProfileManager: Display: Deviceprofile LinuxArm64Editor not found.
+[2026.10.02-15.44.28:287][  0]LogDeviceProfileManager: Display: Deviceprofile LinuxArm64 not found.
+[2026.10.02-15.44.28:315][  0]LogCsvProfiler: Display: Metadata set : deviceprofile="WindowsEditor"
+[2026.10.02-15.44.28:317][  0]LogStreaming: Display: FlushAsyncLoading(1): 1 QueuedPackages, 0 AsyncPackages
+[2026.10.02-15.44.28:326][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.10.02-15.44.28:326][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness because of a recursive sync load
+[2026.10.02-15.44.28:326][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.10.02-15.44.28:326][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.10.02-15.44.28:326][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec because of a recursive sync load
+[2026.10.02-15.44.28:326][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.10.02-15.44.28:327][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/WorldGridMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.10.02-15.44.28:328][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/WorldGridMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.10.02-15.44.28:328][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.10.02-15.44.28:329][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultPostProcessMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.10.02-15.44.28:330][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultLightFunctionMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultPostProcessMaterial because of a recursive sync load
+[2026.10.02-15.44.28:330][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultPostProcessMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.10.02-15.44.28:330][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultDeferredDecalMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultLightFunctionMaterial because of a recursive sync load
+[2026.10.02-15.44.28:330][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.10.02-15.44.28:330][  0]LogStreaming: Display: Package /Engine/EngineMaterials/WorldGridMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultDeferredDecalMaterial because of a recursive sync load
+[2026.10.02-15.44.28:330][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/WorldGridMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.10.02-15.44.28:330][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/EngineMaterials/WorldGridMaterial because of a recursive sync load
+[2026.10.02-15.44.28:330][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/WorldGridMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.10.02-15.44.28:331][  0]LogTextureEncodingSettings: Display: Texture Encode Speed: Final (cook).
+[2026.10.02-15.44.28:331][  0]LogTextureEncodingSettings: Display: Oodle Texture Encode Speed settings: Fast: RDO Off Lambda=0, Effort=Normal Final: RDO Off Lambda=0, Effort=Normal
+[2026.10.02-15.44.28:331][  0]LogTextureEncodingSettings: Display: Shared linear texture encoding: Disabled
+[2026.10.02-15.44.28:343][  0]LogMeshReduction: Display: Using QuadricMeshReduction for automatic static mesh reduction
+[2026.10.02-15.44.28:343][  0]LogMeshReduction: Display: Using SkeletalMeshReduction for automatic skeletal mesh reduction
+[2026.10.02-15.44.28:343][  0]LogMeshReduction: Display: Using ProxyLODMeshReduction for automatic mesh merging
+[2026.10.02-15.44.28:343][  0]LogMeshReduction: Display: No distributed automatic mesh merging module available
+[2026.10.02-15.44.28:473][  0]LogShaderCompilers: Display: Compiling shader autogen file: ../../../../UE5.7/tmp/guli_asset_migration_20261002_n37xr_m1/Intermediate/ShaderAutogen/PCD3D_SM5/AutogenShaderHeaders.ush
+[2026.10.02-15.44.28:474][  0]LogShaderCompilers: Display: Failed to delete old shader autogen file: ../../../../UE5.7/tmp/guli_asset_migration_20261002_n37xr_m1/Intermediate/ShaderAutogen/PCD3D_SM5/AutogenShaderHeaders.ush
+[2026.10.02-15.44.28:474][  0]LogShaderCompilers: Display: Shader autogen file written: ../../../../UE5.7/tmp/guli_asset_migration_20261002_n37xr_m1/Intermediate/ShaderAutogen/PCD3D_SM5/AutogenShaderHeaders.ush
+[2026.10.02-15.44.28:474][  0]LogVirtualization: Display: VirtualizationSystem name found in ini file: None
+[2026.10.02-15.44.28:474][  0]LogVirtualization: Display: FNullVirtualizationSystem mounted, virtualization will be disabled
+[2026.10.02-15.44.28:528][  0]LogWorldPartition: Display: FWorldPartitionClassDescRegistry::Initialize started...
+[2026.10.02-15.44.28:529][  0]LogWorldPartition: Display: FWorldPartitionClassDescRegistry::Initialize took 1.639 ms
+[2026.10.02-15.44.28:699][  0]LogMetaSound: Display: MetaSound Page Target Initialized to 'Default'
+[2026.10.02-15.44.28:699][  0]LogAudio: Display: Registering Engine Module Parameter Interfaces...
+[2026.10.02-15.44.29:272][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2026.10.02-15.44.29:272][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2026.10.02-15.44.29:579][  0]LogAssetRegistry: Display: No AssetDiscovery cache present at ../../../../UE5.7/tmp/guli_asset_migration_20261002_n37xr_m1/Intermediate/CachedAssetRegistryDiscovery.bin. AssetRegistry discovery of files will be uncached.
+[2026.10.02-15.44.29:586][  0]LogAssetRegistry: Display: AssetDataGatherer spent 0.000s loading caches ../../../../UE5.7/tmp/guli_asset_migration_20261002_n37xr_m1/Intermediate/CachedAssetRegistry_*.bin.
+[2026.10.02-15.44.29:869][  0]LogCsvProfiler: Display: Metadata set : largeworldcoordinates="1"
+[2026.10.02-15.44.29:896][  0]LogPython: Display: No pip-enabled plugins with python dependencies found, skipping
+[2026.10.02-15.44.30:198][  0]LogPython: Display: 正在运行启动脚本D:/UnrealEngine-5.7/Engine/Plugins/Animation/IKRig/Content/Python/init_unreal.py…… started...
+[2026.10.02-15.44.30:210][  0]LogPython: Display: 正在运行启动脚本D:/UnrealEngine-5.7/Engine/Plugins/Animation/IKRig/Content/Python/init_unreal.py…… took 12.771 ms
+[2026.10.02-15.44.30:210][  0]LogPython: Display: 正在运行启动脚本D:/UnrealEngine-5.7/Engine/Plugins/Animation/ControlRig/Content/Python/init_unreal.py…… started...
+[2026.10.02-15.44.30:227][  0]LogPython: Display: 正在运行启动脚本D:/UnrealEngine-5.7/Engine/Plugins/Animation/ControlRig/Content/Python/init_unreal.py…… took 17.091 ms (total: 29.862 ms)
+[2026.10.02-15.44.30:228][  0]LogPythonScriptCommandlet: Display: Running Python script: D:\UE5.7\test1\Scripts\AssetMigration20261002\migrate_in_unreal.py
+[2026.10.02-15.44.30:956][  0]LogAssetRegistry: Display: Starting OnFilesLoaded.Broadcast
+[2026.10.02-15.44.30:958][  0]LogAssetRegistry: Display: Completed OnFilesLoaded.Broadcast: -0.958s
+[2026.10.02-15.44.30:961][  0]LogUObjectGlobals: Warning: 寻找对象“Object /Game/SSF_Buildings/Buildings/AirBase/Materials/M_TB1_Harvester.M_TB1_Harvester”失败
+[2026.10.02-15.44.30:979][  0]LogUObjectGlobals: Warning: 寻找对象“Object /Game/SSF_Buildings/Buildings/AirBase/Materials/Mobile_materials/M_TB1_Harvester_mobile.M_TB1_Harvester_mobile”失败
+[2026.10.02-15.44.30:997][  0]LogUObjectGlobals: Warning: 寻找对象“Object /Game/SSF_Buildings/Buildings/CloningCenter/Materials/M_TB1_CommandCenter.M_TB1_CommandCenter”失败
+[2026.10.02-15.44.31:017][  0]LogUObjectGlobals: Warning: 寻找对象“Object /Game/SSF_Buildings/Buildings/CloningCenter/Materials/Mobile_materials/M_TB1_CommandCenter_mobile.M_TB1_CommandCenter_mobile”失败
+[2026.10.02-15.44.37:295][  0]LogAssetRegistry: Display: Asset registry cache written as 74.0 MiB to ../../../../UE5.7/tmp/guli_asset_migration_20261002_n37xr_m1/Intermediate/CachedAssetRegistry_*.bin
+[2026.10.02-15.44.43:814][  0]LogRigVMDeveloper: Display: /Game/ControlRig/Characters/BungeeMan/CR_BungeeMan: The Error 'Node ArrayRemove_2_1_数组移除 is not linked to execution.' has been surpressed to allow the content to load. Please fix the content since it may become a requirement in future versions.
+[2026.10.02-15.44.43:814][  0]LogRigVMDeveloper: Display: /Game/ControlRig/Characters/BungeeMan/CR_BungeeMan: The Error 'Node ArrayRemove_1_1_1_数组移除 is not linked to execution.' has been surpressed to allow the content to load. Please fix the content since it may become a requirement in future versions.
+[2026.10.02-15.44.58:981][  0]LogStreaming: Warning: LoadPackage: SkipPackage: /Game/Characters/Heroes/Mannequin/Meshes/SKM_Manny (0xDC6109CA4B285866) - The package to load does not exist on disk or in the loader
+[2026.10.02-15.44.58:982][  0]LogUObjectGlobals: Warning: 寻找对象“Object /Game/Characters/Heroes/Mannequin/Meshes/SKM_Manny.SKM_Manny”失败
+[2026.10.02-15.44.59:350][  0]LogSkinnedAsset: Display: 正在等待蒙皮资产就绪0/1（SKM_Manny）……
+[2026.10.02-15.44.59:841][  0]LogStreaming: Warning: LoadPackage: SkipPackage: /Game/Characters/Heroes/Mannequin/Meshes/SKM_Quinn (0x4CF8F2D2EB1BCE5B) - The package to load does not exist on disk or in the loader
+[2026.10.02-15.44.59:842][  0]LogUObjectGlobals: Warning: 寻找对象“Object /Game/Characters/Heroes/Mannequin/Meshes/SKM_Quinn.SKM_Quinn”失败
+[2026.10.02-15.44.59:933][  0]LogSkinnedAsset: Display: 正在等待蒙皮资产就绪0/1（SKM_Quinn）……
+[2026.10.02-15.45.06:618][  0]LogSkinnedAsset: Display: 正在等待蒙皮资产就绪0/1（SKM_Mech）……
+[2026.10.02-15.45.25:946][  0]LogUObjectGlobals: Warning: 寻找对象“Object /Game/RSG_UnderWater_Pack/FPS/Materials/Master/MI_ISO_Seaweed_Movable.MI_ISO_Seaweed_Movable”失败
+[2026.10.02-15.45.26:006][  0]LogAnimationCompression: Display: Building compressed animation data for AnimSequence /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_Death_01.A_FPS_Mech_Death_01 (Required Memory Estimate: 8.10 MB)
+[2026.10.02-15.45.26:011][  0]LogAnimationCompression: Display: Building compressed animation data for AnimSequence /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_Idle_01.A_FPS_Mech_Idle_01 (Required Memory Estimate: 6.64 MB)
+[2026.10.02-15.45.26:013][  0]LogAnimationCompression: Display: Building compressed animation data for AnimSequence /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_Landing_01.A_FPS_Mech_Landing_01 (Required Memory Estimate: 10.08 MB)
+[2026.10.02-15.45.26:016][  0]LogAnimationCompression: Display: Building compressed animation data for AnimSequence /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_WalkBackward_01.A_FPS_Mech_WalkBackward_01 (Required Memory Estimate: 4.13 MB)
+[2026.10.02-15.45.26:019][  0]LogAnimationCompression: Display: Building compressed animation data for AnimSequence /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_WalkForward_01.A_FPS_Mech_WalkForward_01 (Required Memory Estimate: 4.13 MB)
+[2026.10.02-15.45.26:026][  0]LogAnimationCompression: Display: Building compressed animation data for AnimSequence /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_Walk_L_01.A_FPS_Mech_Walk_L_01 (Required Memory Estimate: 4.13 MB)
+[2026.10.02-15.45.26:033][  0]LogAnimationCompression: Display: Storing compressed animation data for /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_WalkBackward_01.A_FPS_Mech_WalkBackward_01, at AnimationSequence/3712f65a222c3f7c870619551bc50e20fd3c08e8
+[2026.10.02-15.45.26:037][  0]LogAnimationCompression: Display: Storing compressed animation data for /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_Idle_01.A_FPS_Mech_Idle_01, at AnimationSequence/2842ac110185519dad75f6d1b22b9d8c38bb82a9
+[2026.10.02-15.45.26:037][  0]LogAnimationCompression: Display: Building compressed animation data for AnimSequence /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_Walk_R_01.A_FPS_Mech_Walk_R_01 (Required Memory Estimate: 4.13 MB)
+[2026.10.02-15.45.26:040][  0]LogAnimationCompression: Display: Storing compressed animation data for /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_Death_01.A_FPS_Mech_Death_01, at AnimationSequence/5503d60639aa718de93432322ec87bb40e154940
+[2026.10.02-15.45.26:042][  0]LogAnimationCompression: Display: Storing compressed animation data for /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_Walk_L_01.A_FPS_Mech_Walk_L_01, at AnimationSequence/9003e1b11c33120c0adb8dadce89df516ef774a3
+[2026.10.02-15.45.26:043][  0]LogAnimationCompression: Display: Storing compressed animation data for /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_WalkForward_01.A_FPS_Mech_WalkForward_01, at AnimationSequence/456130341a497f820302966375308a85936018c3
+[2026.10.02-15.45.26:048][  0]LogAnimationCompression: Display: Storing compressed animation data for /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_Landing_01.A_FPS_Mech_Landing_01, at AnimationSequence/f8f8dcb87626c8d21f1ff6b4e3ee99542e14b9fa
+[2026.10.02-15.45.26:051][  0]LogAnimationCompression: Display: Storing compressed animation data for /Game/RSG_UnderWater_Pack/FPS/Animations/Mech/A_FPS_Mech_Walk_R_01.A_FPS_Mech_Walk_R_01, at AnimationSequence/42cd3e9084bba4843900a76e0fd7cb8f885bbff8
+[2026.10.02-15.45.28:301][  0]LogSkinnedAsset: Display: 正在等待蒙皮资产就绪0/1（SK_FPS_Mech）……
+[2026.10.02-15.45.37:769][  0]LogPythonScriptCommandlet: Display: Python script executed successfully
+[2026.10.02-15.45.37:769][  0]LogInit: Display: 
+[2026.10.02-15.45.37:769][  0]LogInit: Display: Warning/Error Summary (Unique only)
+[2026.10.02-15.45.37:771][  0]LogInit: Display: -----------------------------------
+[2026.10.02-15.45.37:771][  0]LogInit: Display: LogUObjectGlobals: Warning: 寻找对象“Object /Game/SSF_Buildings/Buildings/AirBase/Materials/M_TB1_Harvester.M_TB1_Harvester”失败
+[2026.10.02-15.45.37:771][  0]LogInit: Display: LogUObjectGlobals: Warning: 寻找对象“Object /Game/SSF_Buildings/Buildings/AirBase/Materials/Mobile_materials/M_TB1_Harvester_mobile.M_TB1_Harvester_mobile”失败
+[2026.10.02-15.45.37:772][  0]LogInit: Display: LogUObjectGlobals: Warning: 寻找对象“Object /Game/SSF_Buildings/Buildings/CloningCenter/Materials/M_TB1_CommandCenter.M_TB1_CommandCenter”失败
+[2026.10.02-15.45.37:773][  0]LogInit: Display: LogUObjectGlobals: Warning: 寻找对象“Object /Game/SSF_Buildings/Buildings/CloningCenter/Materials/Mobile_materials/M_TB1_CommandCenter_mobile.M_TB1_CommandCenter_mobile”失败
+[2026.10.02-15.45.37:773][  0]LogInit: Display: LogStreaming: Warning: LoadPackage: SkipPackage: /Game/Characters/Heroes/Mannequin/Meshes/SKM_Manny (0xDC6109CA4B285866) - The package to load does not exist on disk or in the loader
+[2026.10.02-15.45.37:774][  0]LogInit: Display: LogUObjectGlobals: Warning: 寻找对象“Object /Game/Characters/Heroes/Mannequin/Meshes/SKM_Manny.SKM_Manny”失败
+[2026.10.02-15.45.37:774][  0]LogInit: Display: LogStreaming: Warning: LoadPackage: SkipPackage: /Game/Characters/Heroes/Mannequin/Meshes/SKM_Quinn (0x4CF8F2D2EB1BCE5B) - The package to load does not exist on disk or in the loader
+[2026.10.02-15.45.37:775][  0]LogInit: Display: LogUObjectGlobals: Warning: 寻找对象“Object /Game/Characters/Heroes/Mannequin/Meshes/SKM_Quinn.SKM_Quinn”失败
+[2026.10.02-15.45.37:775][  0]LogInit: Display: LogUObjectGlobals: Warning: 寻找对象“Object /Game/RSG_UnderWater_Pack/FPS/Materials/Master/MI_ISO_Seaweed_Movable.MI_ISO_Seaweed_Movable”失败
+[2026.10.02-15.45.37:775][  0]LogInit: Display: 
+[2026.10.02-15.45.37:775][  0]LogInit: Display: Success - 0 error(s), 9 warning(s)
+[2026.10.02-15.45.37:776][  0]LogInit: Display: 
+
+Execution of commandlet took:  1m 7s (67.57 seconds)
+[2026.10.02-15.45.37:846][  0]LogPython: Display: Object '/ControlRig/Python/RigHierarchy/add_controls_for_selected_PY.ControlOutputFormat' was externally referenced when shutting down Python. Forcibly releasing its Python resources!
+[2026.10.02-15.45.39:100][  0]LogShaderCompilers: Display: Shaders left to compile 0
+[2026.10.02-15.45.39:148][  0]LogSourceControl: Display: Uncontrolled Changelist persistency file saved ../../../../UE5.7/tmp/guli_asset_migration_20261002_n37xr_m1/Saved/SourceControl/UncontrolledChangelists.json

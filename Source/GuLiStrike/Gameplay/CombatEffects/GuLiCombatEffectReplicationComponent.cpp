@@ -9,6 +9,7 @@
 #include "Engine/NetDriver.h"
 #include "Engine/NetConnection.h"
 #include "Engine/ActorChannel.h"
+#include "Battle/Framework/GuLiBattleGameState.h"
 
 void UGuLiCombatEffectReplicationComponent::PublishRogueUpgrade(UWorld* World,const FGuLiRogueUpgradeCue& Cue)
 {
@@ -32,10 +33,7 @@ void UGuLiCombatEffectReplicationComponent::MulticastRogueUpgrade_Implementation
 
 bool UGuLiCombatEffectReplicationComponent::CallRemoteFunction(UFunction* Function, void* Parameters, FOutParmRec* OutParms, FFrame* Stack)
 {
-	const bool bFreshCue = Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastShots)
-		|| Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastCorrections)
-		|| Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastGroundProjectileSnapshot)
-		|| Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastWingmanFeedback);
+	const bool bFreshCue = Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastWingmanFeedback);
 	UNetDriver* Driver=GetWorld() ? GetWorld()->GetNetDriver() : nullptr;
 	if (!bFreshCue || !GetOwner()->HasAuthority() || !Driver)
 		return Super::CallRemoteFunction(Function,Parameters,OutParms,Stack);
@@ -93,8 +91,7 @@ void UGuLiCombatEffectReplicationComponent::EndPlay(const EEndPlayReason::Type R
 {
 	WingmanFeedbackQueue.Reset();
 	if (Runtime.IsValid()) { Runtime->OnState.RemoveAll(this); Runtime->OnShots.RemoveAll(this); Runtime->OnEpoch.RemoveAll(this); }
-	Runtime.Reset(); ReliableQueue.Reset(); Corrections.Reset(); ShotQueue.Reset(); SnapshotQueue.Reset();
-	GroundSnapshot.Reset(); GroundSnapshotAccumulator = 0; GroundSnapshotStart = 0;
+	Runtime.Reset(); ReliableQueue.Reset(); ActiveFlights.Reset(); PendingFlights.Reset(); FlightPeers.Reset();
 	Super::EndPlay(Reason);
 }
 
@@ -104,13 +101,18 @@ void UGuLiCombatEffectReplicationComponent::GetLifetimeReplicatedProps(TArray<FL
 	DOREPLIFETIME(UGuLiCombatEffectReplicationComponent, Epoch);
 }
 
+bool UGuLiCombatEffectReplicationComponent::IsCurrentEpoch(uint32 MatchEpoch) const
+{
+	const auto* Battle = GetWorld() ? GetWorld()->GetGameState<AGuLiBattleGameState>() : nullptr;
+	return MatchEpoch != 0 && Battle && MatchEpoch == Battle->GetMatchEpoch();
+}
+
 void UGuLiCombatEffectReplicationComponent::HandleEpoch(uint32 NewEpoch)
 {
-	if (!GetOwner()->HasAuthority() || NewEpoch == 0 || NewEpoch == Epoch) return;
+	if (!GetOwner()->HasAuthority() || NewEpoch == Epoch || !IsCurrentEpoch(NewEpoch)) return;
 	Epoch = NewEpoch;
 	WingmanFeedbackQueue.Reset();
-	ReliableQueue.Reset(); Corrections.Reset(); ShotQueue.Reset(); SnapshotQueue.Reset(); SnapshotCursor = 0; SnapshotAccumulator = 0;
-	GroundSnapshot.Reset(); GroundSnapshotAccumulator = 0; GroundSnapshotStart = 0;
+	ReliableQueue.Reset(); ActiveFlights.Reset(); PendingFlights.Reset(); FlightPeers.Reset();
 	OnRep_Epoch(); GetOwner()->ForceNetUpdate();
 }
 
@@ -121,122 +123,61 @@ void UGuLiCombatEffectReplicationComponent::OnRep_Epoch()
 
 void UGuLiCombatEffectReplicationComponent::HandleState(const FGuLiCombatEffectState& State, bool bReliable)
 {
-	if (!GetOwner()->HasAuthority()) return;
-	HandleEpoch(State.MatchEpoch);
-	if (bReliable)
-	{
-		// Instant fields enter their harmless visual tail in the creation tick.
-		// One complete latest non-terminal record preserves that burst without
-		// transmitting its entire creation payload twice. Never coalesce the end.
-		FGuLiCombatEffectState* Pending = State.Phase != EGuLiCombatEffectPhase::Finished
-			&& State.Kind != EGuLiCombatEffectKind::LinearProjectile
-			? ReliableQueue.FindByPredicate([&](const auto& Item) { return Item.EffectId==State.EffectId && Item.Phase!=EGuLiCombatEffectPhase::Finished; }) : nullptr;
-		if (Pending) *Pending=State; else ReliableQueue.Add(State);
-		if (State.Phase == EGuLiCombatEffectPhase::Finished) Corrections.Remove(State.EffectId);
-	}
-	else if (State.Kind != EGuLiCombatEffectKind::LinearProjectile)
-		Corrections.Add(State.EffectId, State);
-	// Ground linear confirmations reach remote peers in the existing 5 Hz batches.
-	// The listen view consumes them here without a second correction RPC stream.
-	// Listen presentation consumes immediately; multicast application below runs on remote clients only.
-	if (auto* Visuals = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>()) Visuals->ApplyState(State);
+    if (!GetOwner()->HasAuthority() || !IsCurrentEpoch(State.MatchEpoch)) return;
+    HandleEpoch(State.MatchEpoch);
+    if (GuLiFlightWire::IsFlight(State.Kind))
+    {
+        if (!bReliable) { UpdateFlight(GetWorld(), State); return; }
+        FGuLiFlightEvent Event; Event.State = State;
+        PublishFlight(GetWorld(), Event);
+        return;
+    }
+    if (bReliable) ReliableQueue.Add(State);
+    if (auto* Visuals = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>()) Visuals->ApplyState(State);
 }
 
 void UGuLiCombatEffectReplicationComponent::HandleShots(const TArray<FGuLiCombatShotCue>& Shots)
 {
-	if (!GetOwner()->HasAuthority()) return;
-	ShotQueue.Append(Shots);
-	if (auto* Visuals = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>()) Visuals->ApplyShots(Shots);
+    if (!GetOwner()->HasAuthority()) return;
+    for (const auto& Cue : Shots)
+    {
+        if (ActiveFlights.Contains(Cue.ShotId)) { AttachFlightMuzzle(GetWorld(), Cue); continue; }
+        // Legacy instantaneous traces are also a single launch/end pair. They do
+        // not create a second damage event or a client damage callback.
+        if (Cue.bMuzzleOnly) continue;
+        FGuLiFlightEvent Event; auto& State = Event.State;
+        State.MatchEpoch = Cue.MatchEpoch; State.EffectId = Cue.ShotId; State.Sequence = 1;
+        State.Kind = EGuLiCombatEffectKind::LinearProjectile; State.Source = Cue.Source;
+        State.SourceTeam = EGuLiTeam::Red;
+        FGuLiCombatTargetSnapshot Source;
+        if (auto* Ledger = GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>(); Ledger && Ledger->TryGetSourceSnapshot(Cue.Source, Source)) State.SourceTeam = Source.Team;
+        State.Location = State.LaunchLocation = Cue.Start; State.LastTargetLocation = Cue.End;
+        State.LaunchDirection = (FVector(Cue.End)-FVector(Cue.Start)).GetSafeNormal();
+        if (FVector(State.LaunchDirection).IsNearlyZero()) State.LaunchDirection = FVector::ForwardVector;
+        State.StartTime = State.SampleTime = State.ActivationTime = Cue.ServerTime;
+        State.EndTime = Cue.ServerTime + .05f;
+        State.Motion.Speed = FMath::Clamp(float(FVector::Distance(Cue.Start,Cue.End))/.05f, 1.f, 1000000.f);
+        State.Velocity = FVector(State.LaunchDirection)*State.Motion.Speed;
+        Event.Muzzle = Cue; Event.bHasMuzzle = true;
+        PublishFlight(GetWorld(), Event);
+        State.Sequence = 2; State.Phase = EGuLiCombatEffectPhase::Finished;
+        State.EndReason = EGuLiCombatEffectEndReason::Impact; State.Location = Cue.End;
+        Event.bHasMuzzle = false;
+        PublishFlight(GetWorld(), Event);
+    }
 }
 
 void UGuLiCombatEffectReplicationComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* TickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, TickFunction);
-	if (!GetOwner()->HasAuthority()) return;
-	for (int32 Index = 0; Index < WingmanFeedbackQueue.Num(); Index += 16)
-	{
-		const TArray<FGuLiWingmanFeedbackCue> Batch(WingmanFeedbackQueue.GetData() + Index, FMath::Min(16, WingmanFeedbackQueue.Num() - Index));
-		MulticastWingmanFeedback(Batch);
-	}
-	WingmanFeedbackQueue.Reset();
-	// Unreliable multicast RPCs are queued until the owning actor's next net update.
-	// Request a timely actor update, but keep the payload below the connection
-	// budget too: ForceNetUpdate cannot cure bandwidth saturation.
-	if (!ReliableQueue.IsEmpty() || !Corrections.IsEmpty() || !ShotQueue.IsEmpty()
-		|| SnapshotCursor < SnapshotQueue.Num()) GetOwner()->ForceNetUpdate();
-	// Short-lived gunfire gets the first part of the bounded cosmetic budget.
-	for (int32 Index = 0; Index < ShotQueue.Num(); Index += 16)
-	{
-		const TArray<FGuLiCombatShotCue> Batch(ShotQueue.GetData() + Index, FMath::Min(16, ShotQueue.Num() - Index));
-		MulticastShots(Batch);
-	}
-	ShotQueue.Reset();
-	// Bounded batches avoid an RPC per particle, per muzzle component, or per correction.
-	for (int32 Index = 0; Index < ReliableQueue.Num(); Index += 16)
-	{
-		const TArray<FGuLiCombatEffectState> Batch(ReliableQueue.GetData() + Index, FMath::Min(16, ReliableQueue.Num() - Index));
-		MulticastReliableStates(Batch);
-	}
-	ReliableQueue.Reset();
-	TArray<FGuLiCombatEffectState> CorrectionBatch; Corrections.GenerateValueArray(CorrectionBatch); Corrections.Reset();
-	for (int32 Index = 0; Index < CorrectionBatch.Num(); Index += 16)
-	{
-		TArray<FGuLiCombatEffectCorrection> Batch;
-		for (int32 Offset=0; Offset<FMath::Min(16,CorrectionBatch.Num()-Index); ++Offset)
-		{
-			const auto& State=CorrectionBatch[Index+Offset];
-			auto& Correction=Batch.AddDefaulted_GetRef();
-			Correction.MatchEpoch=State.MatchEpoch; Correction.EffectId=State.EffectId; Correction.Sequence=State.Sequence;
-			Correction.Location=State.Location; Correction.Velocity=State.Velocity;
-			Correction.LastTargetLocation=State.LastTargetLocation; Correction.SampleTime=State.SampleTime;
-		}
-		MulticastCorrections(Batch);
-	}
-	// Reconstruct straight ground bullets only up to the confirmed collision time.
-	// Rotate the first batch so a saturated connection cannot always starve the same tail.
-	GroundSnapshotAccumulator += DeltaTime;
-	if (Runtime.IsValid() && GroundSnapshotAccumulator >= GuLiCombatEffects::GroundProjectileStepSeconds)
-	{
-		GroundSnapshotAccumulator = FMath::Fmod(GroundSnapshotAccumulator, GuLiCombatEffects::GroundProjectileStepSeconds);
-		Runtime->BuildGroundProjectileSnapshot(GroundSnapshot);
-		const int32 Total = GroundSnapshot.Num();
-		if (Total > 0)
-		{
-			GroundSnapshotStart %= Total;
-			for (int32 Index = 0; Index < Total; Index += 16)
-			{
-				TArray<FGuLiCombatEffectState> Batch;
-				const int32 Count = FMath::Min(16, Total - Index);
-				Batch.Reserve(Count);
-				for (int32 Offset = 0; Offset < Count; ++Offset)
-					Batch.Add(GroundSnapshot[(GroundSnapshotStart + Index + Offset) % Total]);
-				MulticastGroundProjectileSnapshot(Batch);
-			}
-			GroundSnapshotStart = (GroundSnapshotStart + 16) % Total;
-		}
-	}
-	// A single FastArray property exceeded UE's 64-KiB actor bunch limit in the real 500-unit fixture.
-	// Stream reliable live snapshots in bounded RPCs, at most two 16-item batches per network tick.
-	// Existing peers deduplicate by sequence; late peers suppress historical activation bursts.
-	SnapshotAccumulator += DeltaTime;
-	if (Runtime.IsValid() && SnapshotAccumulator >= 1.0f && SnapshotCursor >= SnapshotQueue.Num())
-	{
-		SnapshotAccumulator = 0; SnapshotCursor = 0;
-		Runtime->BuildActiveSnapshot(SnapshotQueue, false);
-		SnapshotQueue.RemoveAll([](const auto& State) { return State.Phase == EGuLiCombatEffectPhase::Dissipating; });
-	}
-	for (int32 BatchIndex=0; BatchIndex<2 && SnapshotCursor<SnapshotQueue.Num(); ++BatchIndex)
-	{
-		const int32 Count=FMath::Min(16,SnapshotQueue.Num()-SnapshotCursor);
-		TArray<FGuLiCombatEffectState> Batch;
-		for (int32 Index=0; Index<Count; ++Index)
-		{
-			FGuLiCombatEffectState Fresh;
-			if (Runtime.IsValid() && Runtime->QueryEffect(SnapshotQueue[SnapshotCursor++].EffectId,Fresh)
-				&& Fresh.Phase != EGuLiCombatEffectPhase::Dissipating) Batch.Add(Fresh);
-		}
-		if (!Batch.IsEmpty()) MulticastActiveSnapshot(Batch);
-	}
+    Super::TickComponent(DeltaTime, TickType, TickFunction);
+    if (!GetOwner()->HasAuthority()) return;
+    for (int32 Index=0; Index<WingmanFeedbackQueue.Num(); Index+=16)
+        MulticastWingmanFeedback(TArray<FGuLiWingmanFeedbackCue>(WingmanFeedbackQueue.GetData()+Index,FMath::Min(16,WingmanFeedbackQueue.Num()-Index)));
+    WingmanFeedbackQueue.Reset();
+    for (int32 Index=0; Index<ReliableQueue.Num(); Index+=16)
+        MulticastReliableStates(TArray<FGuLiCombatEffectState>(ReliableQueue.GetData()+Index,FMath::Min(16,ReliableQueue.Num()-Index)));
+    ReliableQueue.Reset();
+    FlushFlightStreams();
 }
 
 void UGuLiCombatEffectReplicationComponent::PublishWingmanFeedback(UWorld* World,
@@ -285,22 +226,4 @@ void UGuLiCombatEffectReplicationComponent::ApplyStates(const TArray<FGuLiCombat
 	if (auto* Visuals = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>()) for (const auto& State : States) Visuals->ApplyState(State);
 }
 
-void UGuLiCombatEffectReplicationComponent::MulticastGroundProjectileSnapshot_Implementation(const TArray<FGuLiCombatEffectState>& States)
-{
-	if (GetOwner()->HasAuthority()) return;
-	if (auto* Visuals = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>())
-		for (const auto& State : States) Visuals->ApplyState(State, true);
-}
-
 void UGuLiCombatEffectReplicationComponent::MulticastReliableStates_Implementation(const TArray<FGuLiCombatEffectState>& States) { ApplyStates(States); }
-void UGuLiCombatEffectReplicationComponent::MulticastCorrections_Implementation(const TArray<FGuLiCombatEffectCorrection>& InCorrections)
-{
-	if (GetOwner()->HasAuthority()) return;
-	if (auto* Visuals=GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>())
-		for (const auto& Correction:InCorrections) Visuals->ApplyCorrection(Correction);
-}
-void UGuLiCombatEffectReplicationComponent::MulticastShots_Implementation(const TArray<FGuLiCombatShotCue>& Shots)
-{
-	if (GetOwner()->HasAuthority()) return;
-	if (auto* Visuals = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>()) Visuals->ApplyShots(Shots);
-}

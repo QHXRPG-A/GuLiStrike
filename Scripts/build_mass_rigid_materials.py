@@ -27,7 +27,11 @@ def world_vector(owner,source,out=''):
 def make_function():
     fn=unreal.load_asset(FN_PATH)
     version=LIB.get_metadata_tag(fn,'GuLi.RigidWPO') if fn else ''
-    if version=='v3':return fn
+    if version=='v4':
+        custom=next(n for n in unreal.ObjectIterator(unreal.MaterialExpressionCustom) if n.get_outer()==fn)
+        custom.set_editor_property('code',(ROOT/'Scripts/Materials/GuLiRigidMechanical.hlsl').read_text())
+        EDIT.update_material_function(fn);assert LIB.save_loaded_asset(fn,False)
+        return fn
     if version=='v1':
         # Preserve input/output GUIDs: rebuilding these would disconnect every material caller.
         expressions=[n for n in unreal.ObjectIterator(unreal.MaterialExpression) if n.get_outer()==fn]
@@ -57,8 +61,28 @@ def make_function():
         previous=node(fn,unreal.MaterialExpressionPerInstanceCustomData,data_index=30,const_default_value=1)
         switch=node(fn,unreal.MaterialExpressionPreviousFrameSwitch)
         link(current,switch,'Current Frame');link(previous,switch,'Previous Frame');link(switch,custom,'PodVisible')
+        version='v3'
+    if version=='v3':
+        expressions=[n for n in unreal.ObjectIterator(unreal.MaterialExpression) if n.get_outer()==fn]
+        custom=next(n for n in expressions if isinstance(n,unreal.MaterialExpressionCustom))
+        pins=list(custom.get_editor_property('inputs'))
+        sources={}
+        for i in range(14,24):
+            current=node(fn,unreal.MaterialExpressionPerInstanceCustomData,data_index=31+i-14,const_default_value=0)
+            previous=node(fn,unreal.MaterialExpressionPerInstanceCustomData,data_index=41+i-14,const_default_value=0)
+            switch=node(fn,unreal.MaterialExpressionPreviousFrameSwitch)
+            link(current,switch,'Current Frame');link(previous,switch,'Previous Frame');sources['V'+str(i)]=switch
+        for i in range(4):
+            for kind in ['Root','End','Axis']:
+                name='Leg'+kind+str(i)
+                sources[name]=node(fn,unreal.MaterialExpressionFunctionInput,input_name=name,
+                    input_type=unreal.FunctionInputType.FUNCTION_INPUT_VECTOR3,use_preview_value_as_default=True)
+        for name in sources:
+            pin=unreal.CustomInput();pin.set_editor_property('input_name',name);pins.append(pin)
+        custom.set_editor_property('inputs',pins)
+        for name,src in sources.items():link(src,custom,name)
         custom.set_editor_property('code',(ROOT/'Scripts/Materials/GuLiRigidMechanical.hlsl').read_text())
-        EDIT.update_material_function(fn);LIB.set_metadata_tag(fn,'GuLi.RigidWPO','v3');assert LIB.save_loaded_asset(fn,False)
+        EDIT.update_material_function(fn);LIB.set_metadata_tag(fn,'GuLi.RigidWPO','v4');assert LIB.save_loaded_asset(fn,False)
         return fn
     if fn:
         # UE 5.7 removes from its expression array while iterating it. Repeat
@@ -72,9 +96,14 @@ def make_function():
         'LocalNormal':node(fn,unreal.MaterialExpressionPreSkinnedNormal),
         'PivotXY':node(fn,unreal.MaterialExpressionTextureCoordinate,coordinate_index=1),
         'PivotZPart':node(fn,unreal.MaterialExpressionTextureCoordinate,coordinate_index=2)}
-    for i in range(14):
-        current=node(fn,unreal.MaterialExpressionPerInstanceCustomData,data_index=1+i,const_default_value=0)
-        previous=node(fn,unreal.MaterialExpressionPerInstanceCustomData,data_index=15+i,const_default_value=0)
+    for i in range(4):
+        for kind in ['Root','End','Axis']:
+            name='Leg'+kind+str(i)
+            inputs[name]=node(fn,unreal.MaterialExpressionFunctionInput,input_name=name,
+                input_type=unreal.FunctionInputType.FUNCTION_INPUT_VECTOR3,use_preview_value_as_default=True)
+    for i in range(24):
+        current=node(fn,unreal.MaterialExpressionPerInstanceCustomData,data_index=1+i if i<14 else 31+i-14,const_default_value=0)
+        previous=node(fn,unreal.MaterialExpressionPerInstanceCustomData,data_index=15+i if i<14 else 41+i-14,const_default_value=0)
         switch=node(fn,unreal.MaterialExpressionPreviousFrameSwitch)
         link(current,switch,'Current Frame');link(previous,switch,'Previous Frame');inputs['V'+str(i)]=switch
     current=node(fn,unreal.MaterialExpressionPerInstanceCustomData,data_index=29,const_default_value=1)
@@ -94,15 +123,36 @@ def make_function():
         transformed=world_vector(fn,custom,out)
         output=node(fn,unreal.MaterialExpressionFunctionOutput,output_name=name,sort_priority=priority)
         link(transformed,output,'')
-    EDIT.update_material_function(fn);LIB.set_metadata_tag(fn,'GuLi.RigidWPO','v3');assert LIB.save_loaded_asset(fn,False)
+    EDIT.update_material_function(fn);LIB.set_metadata_tag(fn,'GuLi.RigidWPO','v4');assert LIB.save_loaded_asset(fn,False)
     return fn
+
+def attach_legs(mat,fn,profile):
+    # UE pads primitive/instance render bounds from this world-space WPO limit.
+    # Do not enlarge mesh bounds: authority movement also queries those bounds.
+    # WM01's default-scale conservative displacement envelope is <1766 cm.
+    # Shared overlays can render WM01; the Sweeper-only base keeps its old limit.
+    mat.set_editor_property('max_world_position_offset_displacement',2000 if profile in (0,1) else 0)
+    expressions=[n for n in unreal.ObjectIterator(unreal.MaterialExpression) if n.get_outer()==mat]
+    call=next(n for n in expressions if isinstance(n,unreal.MaterialExpressionMaterialFunctionCall)
+              and n.get_editor_property('material_function')==fn)
+    assert call.set_material_function(fn)
+    joints=json.loads((OUT/'WarMachine/manifest.json').read_text(encoding='utf-8')).get('leg_joints_cm',[]) if profile==1 else []
+    for i in range(4):
+        for kind,key in [('Root','root_cm'),('End','end_cm'),('Axis','axis')]:
+            name='RigidLeg'+kind+str(i)
+            param=next((n for n in expressions if isinstance(n,unreal.MaterialExpressionVectorParameter)
+                        and str(n.get_editor_property('parameter_name'))==name),None)
+            if not param:param=node(mat,unreal.MaterialExpressionVectorParameter,parameter_name=name,group='Rigid Animation')
+            value=joints[i][key] if joints else [0,0,0]
+            param.set_editor_property('default_value',unreal.LinearColor(*value,0))
+            link(param,call,'Leg'+kind+str(i),'RGB')
 
 def attach(mat,fn,profile=0,upper=(0,0,0)):
     version=LIB.get_metadata_tag(mat,'GuLi.RigidWPO')
-    if version=='v3':return
-    if version in ('v1','v2'):
+    if version in ('v1','v2','v3','v4'):
+        attach_legs(mat,fn,profile)
         EDIT.recompile_material(mat)
-        LIB.set_metadata_tag(mat,'GuLi.RigidWPO','v3');assert LIB.save_loaded_asset(mat,False)
+        LIB.set_metadata_tag(mat,'GuLi.RigidWPO','v4');assert LIB.save_loaded_asset(mat,False)
         return
     graph=json.loads(unreal.MaterialNodeService.export_material_graph(mat.get_path_name()))
     call=node(mat,unreal.MaterialExpressionMaterialFunctionCall);assert call.set_material_function(fn)
@@ -130,8 +180,9 @@ def attach(mat,fn,profile=0,upper=(0,0,0)):
         assert EDIT.connect_material_property(normal,'',unreal.MaterialProperty.MP_NORMAL)
     mat.set_editor_property('used_with_instanced_static_meshes',True)
     mat.set_editor_property('max_world_position_offset_displacement',0)
+    attach_legs(mat,fn,profile)
     EDIT.recompile_material(mat)
-    LIB.set_metadata_tag(mat,'GuLi.RigidWPO','v3');assert LIB.save_loaded_asset(mat,False)
+    LIB.set_metadata_tag(mat,'GuLi.RigidWPO','v4');assert LIB.save_loaded_asset(mat,False)
 
 try:
     assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
@@ -152,5 +203,5 @@ try:
         mat=unreal.load_asset(path);assert mat;attach(mat,fn);REPORT['materials'].append(path)
     REPORT['success']=True
 except:REPORT['error']=traceback.format_exc()
-(ROOT/'ArtSource/WarMachineHover_20260929/ue-materials.json').write_text(json.dumps(REPORT,indent=2),encoding='utf-8')
+(ROOT/'ArtSource/WarMachineTurn_20260930/ue-materials.json').write_text(json.dumps(REPORT,indent=2),encoding='utf-8')
 unreal.MCPythonHelper.submit_result(json.dumps(REPORT))

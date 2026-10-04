@@ -1,0 +1,60 @@
+{
+  "samples": 1608,
+  "max_error_percent": 0.0025073968206208315,
+  "debt_mismatches": 0,
+  "hitches": [
+    {
+      "connection": "GuLiIpConnection_2",
+      "elapsed": 1.124736,
+      "refill": 0.1,
+      "expected_bits": 200000.0,
+      "credit_bits": 200000,
+      "error_percent": 0.0,
+      "debt_error": 0
+    },
+    {
+      "connection": "GuLiIpConnection_3",
+      "elapsed": 1.124736,
+      "refill": 0.1,
+      "expected_bits": 200000.0,
+      "credit_bits": 200000,
+      "error_percent": 0.0,
+      "debt_error": 0
+    },
+    {
+      "connection": "GuLiIpConnection_0",
+      "elapsed": 1.124736,
+      "refill": 0.1,
+      "expected_bits": 200000.0,
+      "credit_bits": 200000,
+      "error_percent": 0.0,
+      "debt_error": 0
+    },
+    {
+      "connection": "GuLiIpConnection_1",
+      "elapsed": 1.124736,
+      "refill": 0.1,
+      "expected_bits": 200000.0,
+      "credit_bits": 200000,
+      "error_percent": 0.0,
+      "debt_error": 0
+    }
+  ],
+  "cadences": {
+    "budget_cadence20": {
+      "seconds": 12.0,
+      "fps": 19.833333333333332,
+      "frame_p95_ms": 57.75120109319687
+    },
+    "budget_cadence60": {
+      "seconds": 12.0,
+      "fps": 35.916666666666664,
+      "frame_p95_ms": 37.341199815273285
+    },
+    "budget_cadence120": {
+      "seconds": 12.014999999999418,
+      "fps": 36.03828547648947,
+      "frame_p95_ms": 37.58550062775612
+    }
+  }
+}

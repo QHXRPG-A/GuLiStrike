@@ -1,0 +1,481 @@
+{
+  "revision": "Delivery_UE_v1",
+  "approved_version": "B-v1",
+  "source_sha256": "3b330e2d2e84bb464b904aa2bb77e2043e79489c226c8d39815c8fe11f19a887",
+  "frames_per_second": 30,
+  "bone_count": 44,
+  "texture_width": 44,
+  "texture_height": 311,
+  "texture_format": "RGBA32F",
+  "vertex_bone_uv_channel": 2,
+  "color_uv_channel": 1,
+  "line_uv_channel": 0,
+  "source_to_runtime_scale": 0.5746239551972885,
+  "authored_presentation_scale": 1.0,
+  "runtime_width_cm": 625.0,
+  "coordinate_system": "UE centimeters, +X forward, +Y right, +Z up",
+  "bones": [
+    {
+      "name": "DeformationSystem",
+      "parent_index": -1,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "Root_M",
+      "parent_index": 0,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "BackLeg1_R",
+      "parent_index": 1,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "BackLeg2_R",
+      "parent_index": 2,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "BackLeg3_R",
+      "parent_index": 3,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "BackLeg4_R",
+      "parent_index": 4,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "BackLeg5_R",
+      "parent_index": 5,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "BackLegEnd_R",
+      "parent_index": 6,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "MiddleLeg1_R",
+      "parent_index": 1,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "MiddleLeg2_R",
+      "parent_index": 8,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "MiddleLeg3_R",
+      "parent_index": 9,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "MiddleLeg4_R",
+      "parent_index": 10,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "MiddleLeg5_R",
+      "parent_index": 11,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "MiddleLegEnd_R",
+      "parent_index": 12,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "FrontLeg1_R",
+      "parent_index": 1,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "FrontLeg2_R",
+      "parent_index": 14,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "FrontLeg3_R",
+      "parent_index": 15,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "FrontLeg4_R",
+      "parent_index": 16,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "FrontLeg5_R",
+      "parent_index": 17,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "FrontLegEnd_R",
+      "parent_index": 18,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "Top_M",
+      "parent_index": 1,
+      "upper_aim": true,
+      "gun_pitch": 0
+    },
+    {
+      "name": "TopEnd_M",
+      "parent_index": 20,
+      "upper_aim": true,
+      "gun_pitch": 0
+    },
+    {
+      "name": "ShotgunTop_R",
+      "parent_index": 20,
+      "upper_aim": true,
+      "gun_pitch": 2
+    },
+    {
+      "name": "ShotgunBot_R",
+      "parent_index": 20,
+      "upper_aim": true,
+      "gun_pitch": 0
+    },
+    {
+      "name": "ShotgunTop_L",
+      "parent_index": 20,
+      "upper_aim": true,
+      "gun_pitch": 1
+    },
+    {
+      "name": "ShotgunBot_L",
+      "parent_index": 20,
+      "upper_aim": true,
+      "gun_pitch": 0
+    },
+    {
+      "name": "BackLeg1_L",
+      "parent_index": 1,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "BackLeg2_L",
+      "parent_index": 26,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "BackLeg3_L",
+      "parent_index": 27,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "BackLeg4_L",
+      "parent_index": 28,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "BackLeg5_L",
+      "parent_index": 29,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "BackLegEnd_L",
+      "parent_index": 30,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "MiddleLeg1_L",
+      "parent_index": 1,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "MiddleLeg2_L",
+      "parent_index": 32,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "MiddleLeg3_L",
+      "parent_index": 33,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "MiddleLeg4_L",
+      "parent_index": 34,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "MiddleLeg5_L",
+      "parent_index": 35,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "MiddleLegEnd_L",
+      "parent_index": 36,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "FrontLeg1_L",
+      "parent_index": 1,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "FrontLeg2_L",
+      "parent_index": 38,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "FrontLeg3_L",
+      "parent_index": 39,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "FrontLeg4_L",
+      "parent_index": 40,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "FrontLeg5_L",
+      "parent_index": 41,
+      "upper_aim": false,
+      "gun_pitch": 0
+    },
+    {
+      "name": "FrontLegEnd_L",
+      "parent_index": 42,
+      "upper_aim": false,
+      "gun_pitch": 0
+    }
+  ],
+  "clips": [
+    {
+      "name": "Idle",
+      "source_action": "A_FPS_Mech_Idle_01",
+      "first_frame": 0,
+      "frame_count": 50,
+      "duration_seconds": 1.6333333333333333,
+      "loop": true,
+      "stride_cm": 0.0
+    },
+    {
+      "name": "Forward",
+      "source_action": "A_FPS_Mech_WalkForward_01",
+      "first_frame": 50,
+      "frame_count": 31,
+      "duration_seconds": 1.0,
+      "loop": true,
+      "stride_cm": 154.77285194396973,
+      "stride_measurement": "twice mean six-foot axial stance excursion, source alternating tripod cycle"
+    },
+    {
+      "name": "Backward",
+      "source_action": "A_FPS_Mech_WalkBackward_01",
+      "first_frame": 81,
+      "frame_count": 31,
+      "duration_seconds": 1.0,
+      "loop": true,
+      "stride_cm": 151.0772501627604,
+      "stride_measurement": "twice mean six-foot axial stance excursion, source alternating tripod cycle"
+    },
+    {
+      "name": "Left",
+      "source_action": "A_FPS_Mech_Walk_L_01",
+      "first_frame": 112,
+      "frame_count": 31,
+      "duration_seconds": 1.0,
+      "loop": true,
+      "stride_cm": 152.2537384033203,
+      "stride_measurement": "twice mean six-foot axial stance excursion, source alternating tripod cycle"
+    },
+    {
+      "name": "Right",
+      "source_action": "A_FPS_Mech_Walk_R_01",
+      "first_frame": 143,
+      "frame_count": 31,
+      "duration_seconds": 1.0,
+      "loop": true,
+      "stride_cm": 151.42155965169272,
+      "stride_measurement": "twice mean six-foot axial stance excursion, source alternating tripod cycle"
+    },
+    {
+      "name": "Death",
+      "source_action": "A_FPS_Mech_Death_01",
+      "first_frame": 174,
+      "frame_count": 61,
+      "duration_seconds": 2.0,
+      "loop": false,
+      "stride_cm": 0.0
+    },
+    {
+      "name": "Landing",
+      "source_action": "A_FPS_Mech_Landing_01",
+      "first_frame": 235,
+      "frame_count": 76,
+      "duration_seconds": 2.5,
+      "loop": false,
+      "stride_cm": 0.0
+    }
+  ],
+  "muzzles": [
+    {
+      "bone_index": 24,
+      "bone_name": "ShotgunTop_L",
+      "reference_position_cm": [
+        279.1171875,
+        -143.30313110351562,
+        241.1873321533203
+      ],
+      "reference_direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "pitch_pivot_cm": [
+        109.08460235595703,
+        -118.6705551147461,
+        233.9600830078125
+      ]
+    },
+    {
+      "bone_index": 22,
+      "bone_name": "ShotgunTop_R",
+      "reference_position_cm": [
+        279.1171875,
+        143.3031463623047,
+        241.1873321533203
+      ],
+      "reference_direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "pitch_pivot_cm": [
+        109.08458709716797,
+        118.67057037353516,
+        233.9600830078125
+      ]
+    }
+  ],
+  "upper_pivot_cm": [
+    28.98333740234375,
+    1.8061685977954767e-06,
+    189.48114013671875
+  ],
+  "gameplay_bounds_cm": {
+    "min": [
+      -230.5449981689453,
+      -312.5,
+      -2.970485729747452e-05
+    ],
+    "max": [
+      280.0805358886719,
+      312.5,
+      453.4937744140625
+    ]
+  },
+  "runtime_render_bounds_cm": {
+    "min": [
+      -394.4281921386719,
+      -366.8701171875,
+      -47.733253479003906
+    ],
+    "max": [
+      391.7879943847656,
+      438.798583984375,
+      519.3212890625
+    ]
+  },
+  "landing_showcase_bounds_cm": {
+    "min": [
+      -277.9316711425781,
+      -317.814453125,
+      -9.885457038879395
+    ],
+    "max": [
+      303.25628662109375,
+      318.5024719238281,
+      3408.236328125
+    ]
+  },
+  "lods": [
+    {
+      "lod": 0,
+      "body_triangles": 29756,
+      "outline_triangles": 7582,
+      "material_sections": 2,
+      "vertices": 20290,
+      "single_bone_weights": true,
+      "uv_channels": 3
+    },
+    {
+      "lod": 1,
+      "body_triangles": 12919,
+      "outline_triangles": 2986,
+      "material_sections": 2,
+      "vertices": 9301,
+      "single_bone_weights": true,
+      "uv_channels": 3
+    },
+    {
+      "lod": 2,
+      "body_triangles": 4652,
+      "outline_triangles": 990,
+      "material_sections": 2,
+      "vertices": 3684,
+      "single_bone_weights": true,
+      "uv_channels": 3
+    },
+    {
+      "lod": 3,
+      "body_triangles": 1944,
+      "outline_triangles": 0,
+      "material_sections": 1,
+      "vertices": 1407,
+      "single_bone_weights": true,
+      "uv_channels": 3
+    }
+  ],
+  "screen_sizes": [
+    1.0,
+    0.4,
+    0.16,
+    0.06
+  ],
+  "rigid_skinning_max_error_cm": 0.0004942057721161391,
+  "maximum_scale_error": 1.430511474609375e-06,
+  "stride_policy": "phase = measured planar travel / source six-foot stride; alternating tripod stance excursion measured per clip",
+  "source_ground_contact_bias_preserved": true
+}

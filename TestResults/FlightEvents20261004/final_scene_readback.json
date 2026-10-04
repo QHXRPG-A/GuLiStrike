@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "saved": true,
+    "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "piestopped": true,
+    "starts": [
+      {
+        "actor": "PlayerStart_0",
+        "position": "<Struct 'Vector' (0x000001D32BA10880) {x: 0.000000, y: 69000.000000, z: 10000.000000}>"
+      },
+      {
+        "actor": "PlayerStart_1",
+        "position": "<Struct 'Vector' (0x000001D32BA10880) {x: 6000.000000, y: 69000.000000, z: 10000.000000}>"
+      },
+      {
+        "actor": "PlayerStart_2",
+        "position": "<Struct 'Vector' (0x000001D32BA10880) {x: -6000.000000, y: 69000.000000, z: 10000.000000}>"
+      },
+      {
+        "actor": "PlayerStart_3",
+        "position": "<Struct 'Vector' (0x000001D32BA10880) {x: 0.000000, y: 75000.000000, z: 10000.000000}>"
+      }
+    ],
+    "metadata_start": "Editor gs.Flights.PIE; wait for four clients; execute Scripts/FlightEvents/prepare_sources.py via commander_editor_python (positions Air at safe anchor, commits real Hangar 08, starts 500/30).",
+    "wall": [
+      "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_35"
+    ],
+    "blueprint_replicates": false
+  }
+}

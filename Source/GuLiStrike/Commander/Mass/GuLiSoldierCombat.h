@@ -48,6 +48,9 @@ struct GULISTRIKE_API FGuLiCombatDamageEvent
 	float ProjectileSpeedCentimetersPerSecond = 0.0f;
 	float ProjectileLifetimeSeconds = 0.0f;
 	float ProjectileSweepRadiusCentimeters = 0.0f;
+	float ProjectileSpreadAngleDegrees = 0.0f;
+	/** INDEX_NONE keeps legacy alternating mounts; a multi-projectile round names each muzzle. */
+	int32 MuzzleIndex = INDEX_NONE;
 };
 
 /** Extend with another executor or hit behavior without adding skill switches to Mass. */

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
+#include "Commander/UI/GuLiCommanderOverviewMarker.h"
 #include "GameFramework/HUD.h"
 #include "GuLiCommanderHUD.generated.h"
 
@@ -54,8 +55,14 @@ public:
 
 	/** Prevents world selection/move commands from leaking through the tactical HUD. */
 	bool IsScreenPositionOverCommanderUI(const FVector2D& ScreenPosition) const;
+	bool PickOverviewIcon(const FVector2D& ScreenPosition, FGuLiCommanderOverviewMarker& Out, bool bInspect = false);
 
 private:
+	void BuildOverviewMarkers();
+	void DrawOverviewMarkers();
+	TArray<FGuLiCommanderOverviewMarker> OverviewMarkers;
+	TWeakObjectPtr<AActor> InspectedOverviewActor;
+	FGuLiSoldierId InspectedOverviewSoldier;
 	bool bRogueCardHidden=false;
 	void CreateRuntimeHUD();
 	void DestroyRuntimeHUD();

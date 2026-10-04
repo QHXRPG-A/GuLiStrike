@@ -1,0 +1,84 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "worlds": [
+      {
+        "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "time": 279.670536827296,
+        "paused": false,
+        "controllers": [
+          {
+            "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+            "class": "GuLiCommanderPlayerController",
+            "local": false,
+            "authority": true
+          },
+          {
+            "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_1",
+            "class": "GuLiCommanderPlayerController",
+            "local": false,
+            "authority": true
+          }
+        ]
+      },
+      {
+        "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "time": 278.37102411314845,
+        "paused": false,
+        "controllers": [
+          {
+            "path": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+            "class": "GuLiCommanderPlayerController",
+            "local": true,
+            "authority": false
+          }
+        ]
+      },
+      {
+        "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "time": 278.31115671247244,
+        "paused": false,
+        "controllers": [
+          {
+            "path": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+            "class": "GuLiCommanderPlayerController",
+            "local": true,
+            "authority": false
+          }
+        ]
+      }
+    ],
+    "qa_methods": [
+      "acquire_editor_element_handle",
+      "action",
+      "call_method",
+      "cast",
+      "get_class",
+      "get_default_object",
+      "get_editor_property",
+      "get_fname",
+      "get_full_name",
+      "get_name",
+      "get_outer",
+      "get_outermost",
+      "get_package",
+      "get_path_name",
+      "get_typed_outer",
+      "get_world",
+      "is_editor_property_overridden",
+      "is_package_external",
+      "modify",
+      "observe",
+      "rename",
+      "replay_last_q",
+      "reset_editor_property",
+      "select",
+      "set_editor_properties",
+      "set_editor_property",
+      "snapshot",
+      "static_class"
+    ]
+  }
+}

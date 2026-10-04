@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": false,
+    "blocked_before": [
+      -11000.0,
+      65000.0,
+      1073.7790832519531
+    ],
+    "blocked_after": [
+      -11000.0,
+      55000.0,
+      903.6290134022307
+    ],
+    "bake": {
+      "success": false,
+      "message": "Bake rejected R2C4: no packing for 6 blue/2 red symmetric pairs; clear candidates=130/130, search=0 (limit 100000).",
+      "issues": [
+        "Bake rejected R2C4: no packing for 6 blue/2 red symmetric pairs; clear candidates=130/130, search=0 (limit 100000)."
+      ],
+      "count": 0,
+      "validated_count": 0
+    }
+  }
+}

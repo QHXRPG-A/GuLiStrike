@@ -86,8 +86,9 @@ try:
         code='Slot=ExecIndex(); Life=1000000000.0; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;'
         if is_tail:
             outputs += [('Lane','int','Particles.HoverLane'),('Anchor','Position','Particles.HoverAnchor'),('Down','Vector','Particles.HoverDown'),
-                ('Born','float','Particles.HoverBorn'),('Width','float','Particles.HoverWidth'),('Generation','float','Particles.HoverGeneration'),('Bucket','int','Particles.HoverBucket')]
-            code += 'Slot=ExecIndex() / 10; Lane=ExecIndex() % 10; Anchor=float3(0,0,0); Down=float3(0,0,-1); Born=-100000; Width=0; Generation=-1; Bucket=-1;'
+                ('Born','float','Particles.HoverBorn'),('Width','float','Particles.HoverWidth'),('Generation','float','Particles.HoverGeneration'),('Bucket','int','Particles.HoverBucket'),
+                ('ViewFade','float','Particles.HoverViewFade')]
+            code += 'Slot=ExecIndex() / 10; Lane=ExecIndex() % 10; Anchor=float3(0,0,0); Down=float3(0,0,-1); Born=-100000; Width=0; Generation=-1; Bucket=-1; ViewFade=0;'
         scratch(SYSTEM,emitter,'ParticleSpawn','InitializeHoverLane',[],outputs,code)
         reader=SP.create_scratch_module(SYSTEM,emitter,'ParticleUpdate','ReadHoverNozzle')
         assert prop(reader,'success')
@@ -99,10 +100,10 @@ try:
                 ('NozzleSize','vec2','Particles.SpriteSize'),('Meta','Color','Particles.Color'),('Lane','int','Particles.HoverLane'),
                 ('Now','float','User.HoverTime'),('Camera','Position','User.HoverCamera'),('SavedAnchor','Position','Particles.HoverAnchor'),
                 ('SavedDirection','Vector','Particles.HoverDown'),('Born','float','Particles.HoverBorn'),('SavedWidth','float','Particles.HoverWidth'),
-                ('SeenGeneration','float','Particles.HoverGeneration'),('SeenBucket','int','Particles.HoverBucket')]
+                ('SeenGeneration','float','Particles.HoverGeneration'),('SeenBucket','int','Particles.HoverBucket'),('SavedViewFade','float','Particles.HoverViewFade')]
             outputs=[('PositionOut','Position','Particles.Position'),('SizeOut','vec2','Particles.SpriteSize'),('ColorOut','Color','Particles.Color'),
                 ('AnchorOut','Position','Particles.HoverAnchor'),('DirectionOut','Vector','Particles.HoverDown'),('BornOut','float','Particles.HoverBorn'),
-                ('WidthOut','float','Particles.HoverWidth'),('GenerationOut','float','Particles.HoverGeneration'),('BucketOut','int','Particles.HoverBucket')]
+                ('WidthOut','float','Particles.HoverWidth'),('GenerationOut','float','Particles.HoverGeneration'),('BucketOut','int','Particles.HoverBucket'),('ViewFadeOut','float','Particles.HoverViewFade')]
             scratch(SYSTEM,emitter,'ParticleUpdate','AdvanceHoverTrailGPU',inputs,outputs,(ROOT/'Scripts/Niagara/GuLiHoverTrail.hlsl').read_text())
         assert EM.set_renderer_property(SYSTEM,emitter,0,'Material',mat)
         assert EM.set_renderer_property(SYSTEM,emitter,0,'Alignment',alignment)

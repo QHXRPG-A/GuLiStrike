@@ -1,0 +1,361 @@
+{
+  "date": "2026-10-04",
+  "user_instruction": "先驱者初代开发通过，删除这个会话的临时文件，将变更传至github",
+  "workspace": "D:/UE5.7/test1",
+  "allowed_roots": [
+    "ArtSource/Mechs/RSGMechStyle_20261003",
+    "Scripts/Pioneer",
+    "Scripts/FlightEvents",
+    "Scripts/AssetMigration20261002",
+    "TestResults/FlightEvents20261004",
+    "TestResults/NetworkLive20261003",
+    "TestResults/AssetMigration20261002"
+  ],
+  "planned_count": 55,
+  "planned_bytes": 35775359,
+  "frozen_artifact_count": 70,
+  "status": "blocked_by_automatic_approval",
+  "files": [
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/RSGMech_Delivery_UE_v1.blend1",
+      "bytes": 10769800,
+      "sha256": "efad74a7009544a225f2266ec259961c61d9f56e882cb1d20bb257f7c8ff1893",
+      "reason": "Blender auto backup; primary source retained"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/RSGMech_Atlas_Shading.blend1",
+      "bytes": 6159357,
+      "sha256": "a8ccbc477591c626914b720c85b5b5e7cc2c75677cff2eb295279d1a1952c39e",
+      "reason": "Blender auto backup; primary source retained"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/RSGMech_Editable_Geometry.blend1",
+      "bytes": 3430574,
+      "sha256": "a1c258a0e03433120fadf119c863e129e4f44540c6798f81f6041d4f2306e041",
+      "reason": "Blender auto backup; primary source retained"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/RSGMech_LODs_Shading.blend1",
+      "bytes": 6990308,
+      "sha256": "720db68997fe405cab0ec5f5c6004078a922ff6292e4449181f9a8a5a1a32190",
+      "reason": "Blender auto backup; primary source retained"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/RSGMech_Production_B_v1.blend1",
+      "bytes": 8335725,
+      "sha256": "dc0e273a0135b9488d22465d789b611879a959c5e9b4d85c8f920e8012283dae",
+      "reason": "Blender auto backup; primary source retained"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/cells_GuLiStrikeCommander_Soldiers.json",
+      "bytes": 357,
+      "sha256": "eee38cdb2dffd52d7ccf54d1e93dafe1fe6c82ee719046d7f9445fb8cb10cc91",
+      "reason": "Temporary Excel CLI input payload"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/cells_GuLiStrikeGameTexts_Texts.json",
+      "bytes": 489,
+      "sha256": "75dc846874d221e65999941f3417b5a6dd9a2fd10a5b3e8b5771c6e4660c46ef",
+      "reason": "Temporary Excel CLI input payload"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/cells_GuLiStrikeSecondaryUnitSkills_Skills.json",
+      "bytes": 2537,
+      "sha256": "dc16176a83a687bcf40de1f47573e1e7a8d94567e3ad07368b26710c0e8c5817",
+      "reason": "Temporary Excel CLI input payload"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/cells_GuLiStrikeSecondaryUnitSkills_UnitSkills.json",
+      "bytes": 495,
+      "sha256": "7d9474c029e644f9d0a4794e407a815249c4c4d47350be2897f4712f46694591",
+      "reason": "Temporary Excel CLI input payload"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/cells_GuLiStrikeSecondaryWeapons_UnitSkills.json",
+      "bytes": 2111,
+      "sha256": "03e516f168abf92d42d3e30df02aa16f0dcd9a31455dfd08da905c86bedeb0ea",
+      "reason": "Temporary Excel CLI input payload"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/cells_GuLiStrikeSecondaryWeapons_WeaponMounts.json",
+      "bytes": 73,
+      "sha256": "d797e6e091662b07aa16d20ef49726d891c5c1de23f4d4d06110a17f392bb98b",
+      "reason": "Temporary Excel CLI input payload"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/locomotion_slow_v1_apply_call.json",
+      "bytes": 2157,
+      "sha256": "b77e069edce897db74dc9bb0f98d2f4fabe64167853e43339f1a1d08f12609a6",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/move_reuse_1m_apply_call.json",
+      "bytes": 512,
+      "sha256": "65e685ad2df76ce863804f57fd010cda2231d87aa0d14240e52a238de109d87d",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/qa_final_saved_scene_call.json",
+      "bytes": 8015,
+      "sha256": "ca4f2b217bf155a700891eaf81895a2f7b0eb2d7e2d0eb7bb50712ba78503ca4",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/qa_final_scene_save_call.json",
+      "bytes": 7483,
+      "sha256": "d97a63b28774931e7ffd19cce943bca1fbae70e606d4015fece709fd64f52ae6",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/qa_scene_save_call.json",
+      "bytes": 7483,
+      "sha256": "d97a63b28774931e7ffd19cce943bca1fbae70e606d4015fece709fd64f52ae6",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/qa_v3_wall_runtime_call.json",
+      "bytes": 2670,
+      "sha256": "9a963fd289f0c259c7e97db236a0d8acb890803c03fb585bd7ef467852f44f38",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "Scripts/FlightEvents/__pycache__/bounce_probe.cpython-313.pyc",
+      "bytes": 4082,
+      "sha256": "3290d81fee9ce1933b50abc30f567b6fe12302dd44d29cf00517a3a5fc640ae0",
+      "reason": "Regenerable Python bytecode"
+    },
+    {
+      "path": "Scripts/FlightEvents/__pycache__/inspect_actor_domains.cpython-313.pyc",
+      "bytes": 2695,
+      "sha256": "4123393c056693c0223bf50713d837d5d84c9f2c5c2757877cd7e8760644b88b",
+      "reason": "Regenerable Python bytecode"
+    },
+    {
+      "path": "Scripts/FlightEvents/__pycache__/observe_runtime.cpython-313.pyc",
+      "bytes": 6521,
+      "sha256": "0fa31ee57c07c16aeed4f9877ad9f5e1c525b9b6ac53caabbe76c95dde34a2e3",
+      "reason": "Regenerable Python bytecode"
+    },
+    {
+      "path": "Scripts/FlightEvents/__pycache__/prepare_sources.cpython-313.pyc",
+      "bytes": 5064,
+      "sha256": "ed17192cd624f77f124a3608065d76129ff3799ddb3ed93fdbf1284c597e9b1c",
+      "reason": "Regenerable Python bytecode"
+    },
+    {
+      "path": "Scripts/FlightEvents/__pycache__/source_death_probe.cpython-313.pyc",
+      "bytes": 3397,
+      "sha256": "524618f4cd3f3451f8e4455571f92ef255d50a9747e5d60461b7e4ea3174777a",
+      "reason": "Regenerable Python bytecode"
+    },
+    {
+      "path": "Scripts/AssetMigration20261002/__pycache__/stage_packs.cpython-313.pyc",
+      "bytes": 15259,
+      "sha256": "abdd0978765e499f0ffd48906705c1bfe7e6da2bf292f1e12635807ac58ea4bd",
+      "reason": "Regenerable Python bytecode"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/bounce_load_started.json",
+      "bytes": 156,
+      "sha256": "8ae737f1845ec69c9f5ff943fd3d1e169c836688f0f8b34969919b8f0969c4db",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/bounce_observer_loaded.json",
+      "bytes": 150,
+      "sha256": "6a2687382d8ef2dfbf3deff2e4c270030cba5a9626882d4bec23cb52578dc996",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/bounce_pie_requested.json",
+      "bytes": 157,
+      "sha256": "fcfffd8100f8adddbab2df0f968694438d5abfca8775d4007b74e4d8b354d8fd",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/bounce_probe_started.json",
+      "bytes": 144,
+      "sha256": "8985bbcc686bbe6cab59a77e7afd78c79f92ed58ae1d2dc0b65f17e9a6fcfa48",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/bounce_valid_probe_started.json",
+      "bytes": 144,
+      "sha256": "8985bbcc686bbe6cab59a77e7afd78c79f92ed58ae1d2dc0b65f17e9a6fcfa48",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/budget120_started.json",
+      "bytes": 256,
+      "sha256": "e8af59b64abbe4144861ac795cf1d33141ddcc3db8a37c966948acd531e4874c",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/budget20_started.json",
+      "bytes": 227,
+      "sha256": "b590654db2355d8ac2f7800c24341745f35188e3b15c37d42281089019d4e151",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/budget60_started.json",
+      "bytes": 255,
+      "sha256": "faf80fe33627bcca38a379f6d91ee375de7225ab734efedb0f16d0fea49774b2",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/budget_on_started.json",
+      "bytes": 234,
+      "sha256": "15c3c881a60575b68ab0c83326df74e17a7f550b0a57703a9c63c9c49ab11324",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/final_observer_loaded.json",
+      "bytes": 150,
+      "sha256": "6a2687382d8ef2dfbf3deff2e4c270030cba5a9626882d4bec23cb52578dc996",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/final_smoke_requested.json",
+      "bytes": 156,
+      "sha256": "5e82e7b3193a02ff8583522664603f7d306b3bd884468abd067a7543fa453718",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/flight_rpc_test_requested.json",
+      "bytes": 159,
+      "sha256": "c717b5320e1a3e0d0d0fb3997c66408a49691f56b5c5cfe3ff713fa5b8ee365e",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/ground_actual_fire_started.json",
+      "bytes": 3091,
+      "sha256": "88f7cc83bb9d63ac6bfc22c16af825334f1ab1b71fada41a2880b8f0007ac062",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/ground_authority_fire_requested.json",
+      "bytes": 350,
+      "sha256": "794725b81d790f851f127d5e02d85c206c801f6d8fe42ab852a2e51641324577",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/missile_lifecycle_tests_requested.json",
+      "bytes": 158,
+      "sha256": "7833c5cda69ca8cc97fdca3370f19c95573be815f70b44499d020b9051140c6c",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/mixed_500_started.json",
+      "bytes": 4518,
+      "sha256": "4633c6dbda39248c0cd826c41fd32dd45939b82220e8adca07c1c59f4283a778",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/mixed_four_seats_started.json",
+      "bytes": 144,
+      "sha256": "f0da5f6446d1fa06fcbfef49b5e69ddee8a4eebc028733e3a85ec620f0bb3e12",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/mixed_observer_loaded.json",
+      "bytes": 150,
+      "sha256": "6a2687382d8ef2dfbf3deff2e4c270030cba5a9626882d4bec23cb52578dc996",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/mixed_retry_started.json",
+      "bytes": 144,
+      "sha256": "f0da5f6446d1fa06fcbfef49b5e69ddee8a4eebc028733e3a85ec620f0bb3e12",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/observer_loaded.json",
+      "bytes": 150,
+      "sha256": "6a2687382d8ef2dfbf3deff2e4c270030cba5a9626882d4bec23cb52578dc996",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/quit_for_regression_build.json",
+      "bytes": 145,
+      "sha256": "ee342829712dc5b8b145b4231df01d8a7e46a7534806949097f6a7592efa8c4a",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/quit_for_table_assertions_build.json",
+      "bytes": 145,
+      "sha256": "ee342829712dc5b8b145b4231df01d8a7e46a7534806949097f6a7592efa8c4a",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/regression_requested.json",
+      "bytes": 281,
+      "sha256": "9fb9ec866ba71ea9b9f087dae226f7bb0cff9ba3cc5b6ecc54e85ba146eb58dc",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/reload_exit_request.json",
+      "bytes": 175,
+      "sha256": "a79bcd59e4fe2322c705820ec391496624af47cc20882dab5fa72ee980f0ce9a",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/reuse_completed_latejoin_requested.json",
+      "bytes": 2962,
+      "sha256": "f34e594c7c45e75d133d4747b5b373c1d3d3024c05d3a0934f10938bd423cd08",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/saved_entry_started.json",
+      "bytes": 167,
+      "sha256": "4003dc3305a2df9789b9fc88096cb07419235eed4e1a84a1e2dca60c3be24247",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/ship_ledger_tests_requested.json",
+      "bytes": 156,
+      "sha256": "170ddbc21cbd3746444a13ac64527874ed1eb18996284ec58ebd01e5edc3dac4",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/source_death_corrected_probe_started.json",
+      "bytes": 144,
+      "sha256": "8985bbcc686bbe6cab59a77e7afd78c79f92ed58ae1d2dc0b65f17e9a6fcfa48",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/source_death_started.json",
+      "bytes": 144,
+      "sha256": "8985bbcc686bbe6cab59a77e7afd78c79f92ed58ae1d2dc0b65f17e9a6fcfa48",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/FlightEvents20261004/table_regression_requested.json",
+      "bytes": 174,
+      "sha256": "e1f8741bc927d70cad07addc845db1cb30a415a12c5bf4960c9237e2ddec33e4",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/NetworkLive20261003/capture_end_call.json",
+      "bytes": 2048,
+      "sha256": "d8034ef0bfcbd24cef9a79070988d6f8717986f6e7941db0a77fbfeffa38ec16",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    },
+    {
+      "path": "TestResults/NetworkLive20261003/capture_start_call.json",
+      "bytes": 761,
+      "sha256": "dbbbde577c24ed0d82f2dfdfb8bf95dc6f64bee6b7f71d6cd92cba26eb9c9469",
+      "reason": "Unreferenced transient MCP request/receipt; result evidence retained"
+    }
+  ],
+  "retained": [
+    "Approved references, Blender primary sources and editable stages",
+    "Original source exports and animation delivery",
+    "70 frozen B-v1 artifacts",
+    "UE formal assets, art and technical evidence, raw profiling evidence",
+    "Progress archives and reports",
+    "Other tasks local changes"
+  ],
+  "deleted_count": 0,
+  "blocked_reason": "Batch deletion and exact-path non-recursive deletion both rejected: blocked by policy",
+  "excluded_from_upload": true
+}

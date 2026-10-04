@@ -1,902 +1,568 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
-
-#include "Camera/CameraComponent.h"
+#include "Commander/Presentation/GuLiCommanderCameraGeometry.h"
 #include "Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.h"
+#include "Commander/Presentation/GuLiCommanderHUD.h"
+#include "Commander/UI/GuLiCommanderHUDWidget.h"
+#include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
+#include "Camera/CameraComponent.h"
 #include "Components/SceneComponent.h"
-#include "DrawDebugHelpers.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/PlayerController.h"
 #include "Engine/Engine.h"
+#include "Engine/LocalPlayer.h"
+#include "Engine/GameViewportClient.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
-#include "GameFramework/PlayerController.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
+#include "SceneView.h"
 #include "HAL/IConsoleManager.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogGuLiCommanderCamera, Log, All);
 
-namespace GuLiCommanderCamera
+namespace
 {
-	constexpr float DefaultArmLength = 16000.0f;
-	constexpr float MinimumArmLength = 4000.0f;
-	constexpr float EmergencyMinimumArmLength = 200.0f;
-	constexpr float MaximumArmLength = 36000.0f;
-	constexpr float PivotHeightAboveGround = 30.0f;
-	constexpr float BoomHeightAboveGround = 40.0f;
-	constexpr float CameraHeightAboveGround = 100.0f;
-	constexpr float BoundaryPadding = 1000.0f;
-	constexpr float BoomSampleSpacing = 2000.0f;
-	constexpr float CruiseHeightBuffer = 200.0f;
-	constexpr float CruiseHeightDeadZone = 60.0f;
-	constexpr float CruiseRiseHalfLife = 0.20f;
-	constexpr float MaximumCruiseRiseSpeed = 6000.0f;
-	constexpr float ReanchorHalfLife = 0.35f;
-	constexpr float MaximumReanchorDescentSpeed = 3000.0f;
-	constexpr float ReanchorCompletionTolerance = 10.0f;
-	constexpr float MinimumReanchorDuration = 0.75f;
-	constexpr float EmergencyLiftTolerance = 0.2f;
-	constexpr float HeightLookAheadSeconds = 0.75f;
-	constexpr int32 HeightLookAheadSamples = 3;
-	constexpr float MaximumSubstepSeconds = 1.0f / 60.0f;
-	constexpr int32 MaximumSubsteps = 8;
-	constexpr int32 BinarySearchIterations = 8;
-	constexpr int32 ArmFitIterations = 12;
-	constexpr float YawDegreesPerInput = 70.0f;
-	constexpr float ZoomStepMultiplier = 1.18f;
-	constexpr float ZoomInterpolationSpeed = 8.0f;
-	constexpr float CameraPitchDegrees = -55.0f;
-
-	float InterpolateYaw(const float From, const float To, const float Alpha)
-	{
-		return FRotator::NormalizeAxis(From + FRotator::NormalizeAxis(To - From) * Alpha);
-	}
-
-	float InterpolateWithHalfLife(
-		const float Current,
-		const float Target,
-		const float DeltaSeconds,
-		const float HalfLife,
-		const float MaximumSpeed)
-	{
-		if (DeltaSeconds <= UE_SMALL_NUMBER || HalfLife <= UE_SMALL_NUMBER)
-		{
-			return Current;
-		}
-
-		const float Alpha = 1.0f - FMath::Pow(0.5f, DeltaSeconds / HalfLife);
-		const float InterpolatedDelta = (Target - Current) * Alpha;
-		const float MaximumDelta = FMath::Max(0.0f, MaximumSpeed) * DeltaSeconds;
-		return Current + FMath::Clamp(InterpolatedDelta, -MaximumDelta, MaximumDelta);
-	}
+    float FollowHeight(float Current, float Target, float Dt, float HalfLife, float Speed)
+    {
+        const float Delta = (Target - Current) * (1.f - FMath::Pow(.5f, Dt / HalfLife));
+        return Current + FMath::Clamp(Delta, -Speed * Dt, Speed * Dt);
+    }
 }
 
 AGuLiCommanderCameraPawn::AGuLiCommanderCameraPawn()
 {
-	PrimaryActorTick.bCanEverTick = true;
-	PrimaryActorTick.bStartWithTickEnabled = true;
-	bReplicates = true;
-	bOnlyRelevantToOwner = true;
-	SetReplicateMovement(false);
-
-	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
-	SetRootComponent(SceneRoot);
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CommanderSpringArm"));
-	SpringArm->SetupAttachment(SceneRoot);
-	SpringArm->TargetArmLength = GuLiCommanderCamera::DefaultArmLength;
-	SpringArm->SetRelativeRotation(FRotator(GuLiCommanderCamera::CameraPitchDegrees, 0.0f, 0.0f));
-	// Terrain clearance is solved explicitly. Collision tests would retract on props and soldiers.
-	SpringArm->bDoCollisionTest = false;
-	SpringArm->bUsePawnControlRotation = false;
-	SpringArm->bEnableCameraLag = false;
-
-	PerspectiveCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PerspectiveCamera"));
-	PerspectiveCamera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
-	PerspectiveCamera->ProjectionMode = ECameraProjectionMode::Perspective;
-	PerspectiveCamera->FieldOfView = 45.0f;
-	PerspectiveCamera->bUsePawnControlRotation = false;
-	DesiredArmLength = GuLiCommanderCamera::DefaultArmLength;
+    PrimaryActorTick.bCanEverTick = true;
+    bReplicates = true;
+    bOnlyRelevantToOwner = true;
+    SetReplicateMovement(false);
+    SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
+    SetRootComponent(SceneRoot);
+    SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CommanderSpringArm"));
+    SpringArm->SetupAttachment(SceneRoot);
+    SpringArm->bDoCollisionTest = false;
+    SpringArm->bUsePawnControlRotation = false;
+    SpringArm->bEnableCameraLag = false;
+    PerspectiveCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PerspectiveCamera"));
+    PerspectiveCamera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
+    PerspectiveCamera->ProjectionMode = ECameraProjectionMode::Perspective;
+    PerspectiveCamera->bUsePawnControlRotation = false;
 }
 
-void AGuLiCommanderCameraPawn::Tick(const float DeltaSeconds)
+bool AGuLiCommanderCameraPawn::LoadConfig()
 {
-	Super::Tick(DeltaSeconds);
-	if (!IsLocallyControlled())
-	{
-		return;
-	}
-	if (!bSolverInitialized)
-	{
-		InitializeSolver();
-	}
+    if (bConfigLoaded) return true;
+    const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+    const auto* Row = Data ? Data->GetCameraConfig() : nullptr;
+    if (!Row)
+    {
+        if (!bConfigErrorLogged)
+        {
+            UE_LOG(LogGuLiCommanderCamera, Error, TEXT("Commander camera requires imported Camera / Default."));
+            bConfigErrorLogged = true;
+        }
+        return false;
+    }
+    Config = *Row;
+    TargetHeightMeters = SmoothedHeightMeters = Config.InitialHeightMeters;
+    PerspectiveCamera->FieldOfView = Config.FieldOfViewDegrees;
+    bConfigLoaded = true;
+    return true;
+}
 
-	if (FMath::Abs(PendingZoomInput) > KINDA_SMALL_NUMBER)
-	{
-		const float RequestedDesiredArmLength = FMath::Clamp(
-			DesiredArmLength * FMath::Pow(GuLiCommanderCamera::ZoomStepMultiplier, PendingZoomInput),
-			GuLiCommanderCamera::MinimumArmLength,
-			GuLiCommanderCamera::MaximumArmLength);
-		if (!FMath::IsNearlyEqual(RequestedDesiredArmLength, DesiredArmLength))
-		{
-			DesiredArmLength = RequestedDesiredArmLength;
-			bHeightReanchorActive = true;
-			HeightReanchorRemainingSeconds = GuLiCommanderCamera::MinimumReanchorDuration;
-		}
-	}
+float AGuLiCommanderCameraPawn::PitchForHeight(float H) const
+{
+    const float T = FMath::Clamp((H - Config.MinimumHeightMeters) /
+        (Config.TacticalStartHeightMeters - Config.MinimumHeightMeters), 0.f, 1.f);
+    return -FMath::Lerp(Config.NearPitchDegrees, Config.TacticalPitchDegrees, T * T * (3 - 2 * T));
+}
 
-	const float SafeDeltaSeconds = FMath::Max(0.0f, DeltaSeconds);
-	const float SimulatedSeconds = FMath::Min(
-		SafeDeltaSeconds,
-		GuLiCommanderCamera::MaximumSubstepSeconds * static_cast<float>(GuLiCommanderCamera::MaximumSubsteps));
-#if !UE_BUILD_SHIPPING
-	LastRequestedPlanarDistance = 0.0f;
-	LastAppliedPlanarDistance = 0.0f;
-	LastEmergencyLiftAmount = 0.0f;
-	bEmergencyLiftThisFrame = false;
-#endif
-	if (SimulatedSeconds > UE_SMALL_NUMBER)
-	{
-		const int32 SubstepCount = FMath::Clamp(
-			FMath::CeilToInt(SimulatedSeconds / GuLiCommanderCamera::MaximumSubstepSeconds),
-			1,
-			GuLiCommanderCamera::MaximumSubsteps);
-		const float InputScale = SafeDeltaSeconds > UE_SMALL_NUMBER ? SimulatedSeconds / SafeDeltaSeconds : 0.0f;
-		const FVector2D SimulatedMovement = PendingPlanarMovement * InputScale;
-		const float SimulatedYaw = PendingYawInput * InputScale;
-		const float StepSeconds = SimulatedSeconds / static_cast<float>(SubstepCount);
-		for (int32 StepIndex = 0; StepIndex < SubstepCount; ++StepIndex)
-		{
-			SimulateCameraStep(
-				StepSeconds,
-				SimulatedMovement / static_cast<float>(SubstepCount),
-				SimulatedYaw / static_cast<float>(SubstepCount));
-		}
-	}
-
-	PendingPlanarMovement = FVector2D::ZeroVector;
-	PendingYawInput = 0.0f;
-	PendingZoomInput = 0.0f;
-#if !UE_BUILD_SHIPPING
-	if (bCameraDebugEnabled)
-	{
-		DrawCameraDebug();
-	}
-#endif
+void AGuLiCommanderCameraPawn::SetTier(EGuLiCommanderCameraTier Tier)
+{
+    if (CameraTier == Tier) return;
+    CameraTier = Tier;
+    OnCameraTierChanged.Broadcast(Tier);
 }
 
 void AGuLiCommanderCameraPawn::InitializeSolver()
 {
-	FRotator Rotation = GetActorRotation();
-	Rotation.Pitch = 0.0f;
-	Rotation.Roll = 0.0f;
-	Rotation.Yaw = FRotator::NormalizeAxis(Rotation.Yaw);
-	FVector Pivot = GetActorLocation();
-	float EffectiveArmLength = FMath::Clamp(
-		SpringArm ? SpringArm->TargetArmLength : DesiredArmLength,
-		GuLiCommanderCamera::EmergencyMinimumArmLength,
-		GuLiCommanderCamera::MaximumArmLength);
-	bool bFootprintClamped = false;
-	const bool bLandscapeValid = ConstrainStateToLandscape(
-		Pivot, Rotation.Yaw, EffectiveArmLength, EffectiveArmLength, bFootprintClamped);
-	float RequiredPivotZ = Pivot.Z;
-	const bool bTerrainValid = bLandscapeValid && CalculateRequiredPivotHeight(
-		FVector2D(Pivot.X, Pivot.Y), Rotation.Yaw, EffectiveArmLength, RequiredPivotZ);
-	if (bTerrainValid)
-	{
-		Pivot.Z = RequiredPivotZ + GuLiCommanderCamera::CruiseHeightBuffer;
-	}
-	HeldCruisePivotZ = Pivot.Z;
-	HeightReanchorRemainingSeconds = 0.0f;
-	bHeightReanchorActive = false;
-	SetActorLocationAndRotation(Pivot, Rotation, false, nullptr, ETeleportType::TeleportPhysics);
-	SpringArm->TargetArmLength = EffectiveArmLength;
-	bSolverInitialized = true;
+    if (!LoadConfig()) return;
+    SpringPitchDegrees = PitchForHeight(SmoothedHeightMeters);
+    FVector Pivot;
+    float Arm;
+    if (!SolveNormalPose(GetActorLocation(), GetActorRotation().Yaw, SmoothedHeightMeters, 0, true, Pivot, Arm)) return;
+    SetActorLocationAndRotation(Pivot, FRotator(0, GetActorRotation().Yaw, 0));
+    SpringArm->SetRelativeRotation(FRotator(SpringPitchDegrees, 0, 0));
+    SpringArm->TargetArmLength = Arm;
+    HeldCruisePivotZ = Pivot.Z;
+    bSolverInitialized = true;
+    SetTier(SmoothedHeightMeters < Config.TacticalStartHeightMeters ? EGuLiCommanderCameraTier::Near : EGuLiCommanderCameraTier::Tactical);
+}
+
+void AGuLiCommanderCameraPawn::Tick(float DeltaSeconds)
+{
+    Super::Tick(DeltaSeconds);
+    if (!IsLocallyControlled()) return;
+    if (!bSolverInitialized) InitializeSolver();
+    if (!bSolverInitialized)
+    {
+        PendingPlanarMovement = FVector2D::ZeroVector; PendingYawInput = PendingZoomInput = 0;
+        return;
+    }
+    if (FMath::Abs(PendingZoomInput) > UE_SMALL_NUMBER)
+    {
+        if (bTransitioning)
+        {
+            if ((PendingZoomInput < 0 && bOverviewTarget) || (PendingZoomInput > 0 && !bOverviewTarget))
+                StartOverviewTransition(!bOverviewTarget);
+        }
+        else if (bOverviewTarget)
+        {
+            if (PendingZoomInput < 0) StartOverviewTransition(false);
+        }
+        else
+        {
+            const float RequestedHeight = TargetHeightMeters * FMath::Pow(Config.ZoomStepMultiplier, PendingZoomInput);
+            // Cross the logical boundary immediately; terrain/zoom interpolation must never delay the tier change.
+            if (PendingZoomInput > 0 && RequestedHeight > Config.TacticalMaximumHeightMeters)
+                StartOverviewTransition(true);
+            else
+                TargetHeightMeters = FMath::Clamp(RequestedHeight, Config.MinimumHeightMeters, Config.TacticalMaximumHeightMeters);
+        }
+    }
+    const float Simulated = FMath::Clamp(DeltaSeconds, 0.f, 8.f / 60.f);
+    if (bTransitioning || bOverviewTarget) TickOverview(FMath::Max(DeltaSeconds, 0.f));
+    else if (Simulated > UE_SMALL_NUMBER)
+    {
+        const int32 Steps = FMath::Clamp(FMath::CeilToInt(Simulated * 60.f), 1, 8);
+        const float InputScale = DeltaSeconds > UE_SMALL_NUMBER ? Simulated / DeltaSeconds : 0.f;
+        for (int32 I = 0; I < Steps; ++I)
+            SimulateCameraStep(Simulated / Steps, PendingPlanarMovement * (InputScale / Steps), PendingYawInput * InputScale / Steps);
+    }
+    PendingPlanarMovement = FVector2D::ZeroVector; PendingYawInput = PendingZoomInput = 0;
+    float Ground;
+    if (FindCameraGroundHeight(CurrentCameraLocation(), Ground))
+        ActualHeightMeters = (CurrentCameraLocation().Z - Ground) / 100.f;
+    RefreshDebugSnapshot(false, true);
 #if !UE_BUILD_SHIPPING
-	LastRequestedPlanarDistance = 0.0f;
-	LastAppliedPlanarDistance = 0.0f;
-	LastHardRequiredPivotZ = bTerrainValid ? RequiredPivotZ : Pivot.Z;
-	LastCruiseTargetPivotZ = Pivot.Z;
-	LastEmergencyLiftAmount = 0.0f;
-	bLastRequestedPoseValid = bTerrainValid;
-	bEmergencyLiftActive = false;
-	bEmergencyLiftThisFrame = false;
-	if (bCameraDebugEnabled)
-	{
-		RefreshDebugSnapshot(bFootprintClamped, bTerrainValid);
-	}
+    if (bCameraDebugEnabled) DrawCameraDebug();
 #endif
 }
 
-void AGuLiCommanderCameraPawn::SimulateCameraStep(
-	const float StepSeconds,
-	const FVector2D& MovementSeconds,
-	const float YawSeconds)
+void AGuLiCommanderCameraPawn::SimulateCameraStep(float Dt, const FVector2D& MovementSeconds, float YawSeconds)
 {
-	const FVector CurrentPivot = GetActorLocation();
-	const float CurrentYaw = FRotator::NormalizeAxis(GetActorRotation().Yaw);
-	const float CurrentArmLength = SpringArm->TargetArmLength;
-	const float RequestedYaw = FRotator::NormalizeAxis(
-		CurrentYaw + YawSeconds * GuLiCommanderCamera::YawDegreesPerInput);
-	const float RequestedArmLength = FMath::FInterpTo(
-		CurrentArmLength, DesiredArmLength, StepSeconds, GuLiCommanderCamera::ZoomInterpolationSpeed);
+    const float PreviousHeight = SmoothedHeightMeters;
+    const float PreviousPitch = SpringPitchDegrees;
+    const float PreviousTerrainZ = CurrentCameraLocation().Z - PreviousHeight * 100;
+    SmoothedHeightMeters = FMath::FInterpTo(SmoothedHeightMeters, TargetHeightMeters, Dt, Config.ZoomInterpolationPerSecond);
+    if (FMath::Abs(SmoothedHeightMeters - TargetHeightMeters) < .01f) SmoothedHeightMeters = TargetHeightMeters;
+    SpringPitchDegrees = PitchForHeight(SmoothedHeightMeters);
+    const float Yaw = FRotator::NormalizeAxis(GetActorRotation().Yaw + YawSeconds * Config.YawDegreesPerSecond);
+    const FRotationMatrix Basis(FRotator(0, Yaw, 0));
+    const float Speed = FMath::Clamp(SmoothedHeightMeters * Config.MoveHeightMultiplierPerSecond,
+        Config.MinimumMoveMetersPerSecond, Config.MaximumMoveMetersPerSecond) * 100;
+    const FVector Requested = GetActorLocation() + (Basis.GetUnitAxis(EAxis::X) * MovementSeconds.X +
+        Basis.GetUnitAxis(EAxis::Y) * MovementSeconds.Y) * Speed;
+    FVector Pivot; float Arm;
+    if (!SolveNormalPose(Requested, Yaw, SmoothedHeightMeters, Dt, false, Pivot, Arm, PreviousTerrainZ))
+    {
+        SmoothedHeightMeters = PreviousHeight; SpringPitchDegrees = PreviousPitch;
+        return;
+    }
+    SetActorLocationAndRotation(Pivot, FRotator(0, Yaw, 0));
+    SpringArm->SetRelativeRotation(FRotator(SpringPitchDegrees, 0, 0));
+    SpringArm->TargetArmLength = Arm;
+    DesiredArmLength = Arm;
+    HeldCruisePivotZ = Pivot.Z;
+    SetTier(TargetHeightMeters < Config.TacticalStartHeightMeters ? EGuLiCommanderCameraTier::Near : EGuLiCommanderCameraTier::Tactical);
+}
 
-	FVector RequestedPivot = CurrentPivot;
-	const FRotator PlanarRotation(0.0f, RequestedYaw, 0.0f);
-	const FVector Forward = PlanarRotation.RotateVector(FVector::ForwardVector);
-	const FVector Right = PlanarRotation.RotateVector(FVector::RightVector);
-	const float CameraHeight = CurrentArmLength * FMath::Abs(
-		FMath::Sin(FMath::DegreesToRadians(GuLiCommanderCamera::CameraPitchDegrees)));
-	const float MoveSpeed = FMath::Clamp(CameraHeight * 1.4f, 1200.0f, 9200.0f);
-	RequestedPivot += (Forward * MovementSeconds.X + Right * MovementSeconds.Y) * MoveSpeed;
-
-	FVector CandidatePivot = RequestedPivot;
-	float CandidateArmLength = RequestedArmLength;
-	bool bFootprintClamped = false;
-	bool bCandidateValid = ConstrainStateToLandscape(
-		CandidatePivot, RequestedYaw, RequestedArmLength, CandidateArmLength, bFootprintClamped);
-	float CandidateRequiredZ = CurrentPivot.Z;
-	bCandidateValid = bCandidateValid && CalculateRequiredPivotHeight(
-		FVector2D(CandidatePivot.X, CandidatePivot.Y),
-		RequestedYaw,
-		CandidateArmLength,
-		CandidateRequiredZ);
-
-	const bool bRequestedPoseValid = bCandidateValid;
-	float ChosenYaw = RequestedYaw;
-	if (!bCandidateValid)
-	{
-		// Invalid Landscape coverage still fails closed. Valid rising terrain never scales planar input.
-		float LowerAlpha = 0.0f;
-		float UpperAlpha = 1.0f;
-		FVector BestPivot = CurrentPivot;
-		float BestYaw = CurrentYaw;
-		float BestArmLength = CurrentArmLength;
-		float BestRequiredZ = CurrentPivot.Z;
-		bool bFoundSafeTransition = CalculateRequiredPivotHeight(
-			FVector2D(CurrentPivot.X, CurrentPivot.Y),
-			CurrentYaw,
-			CurrentArmLength,
-			BestRequiredZ);
-
-		for (int32 SearchIndex = 0; SearchIndex < GuLiCommanderCamera::BinarySearchIterations; ++SearchIndex)
-		{
-			const float Alpha = (LowerAlpha + UpperAlpha) * 0.5f;
-			FVector TestPivot = FMath::Lerp(CurrentPivot, RequestedPivot, Alpha);
-			const float TestYaw = GuLiCommanderCamera::InterpolateYaw(CurrentYaw, RequestedYaw, Alpha);
-			float TestArmLength = FMath::Lerp(CurrentArmLength, RequestedArmLength, Alpha);
-			bool bTestClamped = false;
-			float TestRequiredZ = CurrentPivot.Z;
-			const bool bTestValid = ConstrainStateToLandscape(
-				TestPivot, TestYaw, TestArmLength, TestArmLength, bTestClamped)
-				&& CalculateRequiredPivotHeight(
-					FVector2D(TestPivot.X, TestPivot.Y), TestYaw, TestArmLength, TestRequiredZ);
-			if (bTestValid)
-			{
-				LowerAlpha = Alpha;
-				BestPivot = TestPivot;
-				BestYaw = TestYaw;
-				BestArmLength = TestArmLength;
-				BestRequiredZ = TestRequiredZ;
-				bFoundSafeTransition = true;
-				bFootprintClamped |= bTestClamped;
-			}
-			else
-			{
-				UpperAlpha = Alpha;
-			}
-		}
-
-		if (bFoundSafeTransition)
-		{
-			CandidatePivot = BestPivot;
-			ChosenYaw = BestYaw;
-			CandidateArmLength = BestArmLength;
-			CandidateRequiredZ = BestRequiredZ;
-			bCandidateValid = true;
-		}
-		else
-		{
-			CandidatePivot = CurrentPivot;
-			ChosenYaw = CurrentYaw;
-			CandidateArmLength = CurrentArmLength;
-			bCandidateValid = CalculateRequiredPivotHeight(
-				FVector2D(CurrentPivot.X, CurrentPivot.Y),
-				CurrentYaw,
-				CurrentArmLength,
-				CandidateRequiredZ);
-		}
-	}
-
-	if (bCandidateValid)
-	{
-		const FVector2D RequestedPlanarDelta(
-			RequestedPivot.X - CurrentPivot.X,
-			RequestedPivot.Y - CurrentPivot.Y);
-		const FVector2D AppliedPlanarDelta(
-			CandidatePivot.X - CurrentPivot.X,
-			CandidatePivot.Y - CurrentPivot.Y);
-		const FVector2D AppliedPlanarVelocity = StepSeconds > UE_SMALL_NUMBER
-			? AppliedPlanarDelta / StepSeconds
-			: FVector2D::ZeroVector;
-		const float PredictedRequiredZ = CalculatePredictedRequiredPivotHeight(
-			CandidatePivot,
-			ChosenYaw,
-			CandidateArmLength,
-			AppliedPlanarVelocity,
-			CandidateRequiredZ);
-		const float CruiseTargetZ = PredictedRequiredZ + GuLiCommanderCamera::CruiseHeightBuffer;
-
-		float ProposedHeldZ = HeldCruisePivotZ;
-		if (bHeightReanchorActive)
-		{
-			HeightReanchorRemainingSeconds = FMath::Max(
-				0.0f,
-				HeightReanchorRemainingSeconds - StepSeconds);
-			if (CruiseTargetZ > ProposedHeldZ)
-			{
-				ProposedHeldZ = GuLiCommanderCamera::InterpolateWithHalfLife(
-					ProposedHeldZ,
-					CruiseTargetZ,
-					StepSeconds,
-					GuLiCommanderCamera::CruiseRiseHalfLife,
-					GuLiCommanderCamera::MaximumCruiseRiseSpeed);
-			}
-			else
-			{
-				ProposedHeldZ = GuLiCommanderCamera::InterpolateWithHalfLife(
-					ProposedHeldZ,
-					CruiseTargetZ,
-					StepSeconds,
-					GuLiCommanderCamera::ReanchorHalfLife,
-					GuLiCommanderCamera::MaximumReanchorDescentSpeed);
-			}
-		}
-		else if (CruiseTargetZ > ProposedHeldZ + GuLiCommanderCamera::CruiseHeightDeadZone)
-		{
-			ProposedHeldZ = GuLiCommanderCamera::InterpolateWithHalfLife(
-				ProposedHeldZ,
-				CruiseTargetZ,
-				StepSeconds,
-				GuLiCommanderCamera::CruiseRiseHalfLife,
-				GuLiCommanderCamera::MaximumCruiseRiseSpeed);
-		}
-
-		const float EmergencyLiftAmount = FMath::Max(0.0f, CandidateRequiredZ - ProposedHeldZ);
-		const bool bEmergencyLift = EmergencyLiftAmount > GuLiCommanderCamera::EmergencyLiftTolerance;
-		HeldCruisePivotZ = FMath::Max(ProposedHeldZ, CandidateRequiredZ);
-		if (bHeightReanchorActive
-			&& HeightReanchorRemainingSeconds <= UE_SMALL_NUMBER
-			&& FMath::Abs(HeldCruisePivotZ - CruiseTargetZ)
-				<= GuLiCommanderCamera::ReanchorCompletionTolerance)
-		{
-			HeldCruisePivotZ = FMath::Max(CruiseTargetZ, CandidateRequiredZ);
-			HeightReanchorRemainingSeconds = 0.0f;
-			bHeightReanchorActive = false;
-		}
-		CandidatePivot.Z = HeldCruisePivotZ;
-
+bool AGuLiCommanderCameraPawn::SolveNormalPose(FVector Focus, float Yaw, float HeightMeters,
+    float Dt, bool bImmediate, FVector& OutPivot, float& OutArm, float PreviousTerrainZ)
+{
+    const float SinPitch = FMath::Abs(FMath::Sin(FMath::DegreesToRadians(SpringPitchDegrees)));
+    if (SinPitch <= UE_SMALL_NUMBER || !ConstrainFocusToBattlefield(Focus)) return false;
+    float Arm = HeightMeters * 100 / SinPitch;
+    float FocusGround = 0, CameraGround = 0;
+    // Changing pitch moves the lens across the terrain; solve its vertical height, not boom length.
+    for (int32 I = 0; I < 12; ++I)
+    {
+        if (!FindCameraGroundHeight(Focus, FocusGround) ||
+            !FindCameraGroundHeight(Focus + CalculateCameraOffset(Yaw, Arm), CameraGround)) return false;
+        const float Desired = FMath::Max(1.f, (CameraGround + HeightMeters * 100 -
+            FocusGround - Config.PivotClearanceMeters * 100) / SinPitch);
+        if (FMath::Abs(Desired - Arm) < 1.f) break;
+        Arm = FMath::Lerp(Arm, Desired, .5f);
+    }
+    if (!FindCameraGroundHeight(Focus + CalculateCameraOffset(Yaw, Arm), CameraGround)) return false;
+    float HardZ;
+    if (!CalculateRequiredPivotHeight(FVector2D(Focus), Yaw, Arm, HardZ)) return false;
+    float TargetZ = CameraGround + HeightMeters * 100 - CalculateCameraOffset(Yaw, Arm).Z;
+    TargetZ = FMath::Max(TargetZ, HardZ);
+    if (!bImmediate && Dt > UE_SMALL_NUMBER)
+    {
+        const FVector2D Velocity = FVector2D(Focus - GetActorLocation()) / Dt;
+        TargetZ = FMath::Max(TargetZ, CalculatePredictedRequiredPivotHeight(Focus, Yaw, Arm, Velocity, HardZ));
+    }
+    // Smooth terrain elevation at the lens, independently from scroll zoom and changing boom/pitch.
+    const float OffsetZ = CalculateCameraOffset(Yaw, Arm).Z;
+    const float TerrainTarget = TargetZ + OffsetZ - HeightMeters * 100;
+    const bool bRising = TerrainTarget > PreviousTerrainZ;
+    const float SmoothZ = bImmediate ? TargetZ : FollowHeight(PreviousTerrainZ, TerrainTarget, Dt,
+        bRising ? Config.RiseHalfLifeSeconds : Config.DescentHalfLifeSeconds,
+        100 * (bRising ? Config.MaximumRiseMetersPerSecond : Config.MaximumDescentMetersPerSecond)) + HeightMeters * 100 - OffsetZ;
+    Focus.Z = FMath::Max(SmoothZ, HardZ);
+    OutPivot = Focus; OutArm = Arm;
 #if !UE_BUILD_SHIPPING
-		LastRequestedPlanarDistance += RequestedPlanarDelta.Size();
-		LastAppliedPlanarDistance += AppliedPlanarDelta.Size();
-		LastHardRequiredPivotZ = CandidateRequiredZ;
-		LastCruiseTargetPivotZ = CruiseTargetZ;
-		LastEmergencyLiftAmount += EmergencyLiftAmount;
-		bLastRequestedPoseValid = bRequestedPoseValid;
-		bEmergencyLiftThisFrame |= bEmergencyLift;
-		if (bEmergencyLift && !bEmergencyLiftActive)
-		{
-			++EmergencyLiftCount;
-		}
-		bEmergencyLiftActive = bEmergencyLift;
+    LastRequestedPlanarDistance = FVector2D(Focus - GetActorLocation()).Size();
+    LastAppliedPlanarDistance = LastRequestedPlanarDistance;
+    LastHardRequiredPivotZ = HardZ; LastCruiseTargetPivotZ = TargetZ;
+    LastEmergencyLiftAmount = FMath::Max(0.f, HardZ - SmoothZ);
+    bEmergencyLiftThisFrame = LastEmergencyLiftAmount > .2f;
+    if (bEmergencyLiftThisFrame && !bEmergencyLiftActive) ++EmergencyLiftCount;
+    bEmergencyLiftActive = bEmergencyLiftThisFrame; bLastRequestedPoseValid = true;
 #endif
-	}
-	else
-	{
-		CandidatePivot = CurrentPivot;
-		ChosenYaw = CurrentYaw;
-		CandidateArmLength = CurrentArmLength;
-#if !UE_BUILD_SHIPPING
-		LastRequestedPlanarDistance += FVector2D(
-			RequestedPivot.X - CurrentPivot.X,
-			RequestedPivot.Y - CurrentPivot.Y).Size();
-		LastHardRequiredPivotZ = CurrentPivot.Z;
-		LastCruiseTargetPivotZ = HeldCruisePivotZ;
-		bLastRequestedPoseValid = false;
-		bEmergencyLiftActive = false;
-#endif
-	}
-
-	SetActorLocationAndRotation(
-		CandidatePivot,
-		FRotator(0.0f, ChosenYaw, 0.0f),
-		false,
-		nullptr,
-		ETeleportType::None);
-	SpringArm->TargetArmLength = CandidateArmLength;
-#if !UE_BUILD_SHIPPING
-	if (bCameraDebugEnabled)
-	{
-		RefreshDebugSnapshot(bFootprintClamped, bCandidateValid);
-	}
-#endif
+    return true;
 }
 
-bool AGuLiCommanderCameraPawn::ConstrainStateToLandscape(
-	FVector& InOutPivot,
-	const float YawDegrees,
-	const float RequestedArmLength,
-	float& OutArmLength,
-	bool& OutClamped) const
+bool AGuLiCommanderCameraPawn::ConstrainFocusToBattlefield(FVector& Pivot) const
 {
-	OutClamped = false;
-	const UWorld* World = GetWorld();
-	const UGuLiCommanderLandscapeQuerySubsystem* LandscapeQuery = World
-		? World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()
-		: nullptr;
-	FBox2D LandscapeBounds(ForceInit);
-	if (const UGuLiResourceWorldSubsystem* Resources = World
-		? World->GetSubsystem<UGuLiResourceWorldSubsystem>() : nullptr;
-		Resources && Resources->IsResourceWorldActive() && Resources->GetMapDefinition())
-	{
-		LandscapeBounds = Resources->GetPlayableBounds();
-	}
-	else if (!LandscapeQuery || !LandscapeQuery->TryGetBounds(LandscapeBounds))
-	{
-		return false;
-	}
-	const FBox2D InnerBounds(
-		LandscapeBounds.Min + FVector2D(GuLiCommanderCamera::BoundaryPadding),
-		LandscapeBounds.Max - FVector2D(GuLiCommanderCamera::BoundaryPadding));
-	if (!InnerBounds.bIsValid || InnerBounds.GetSize().GetMin() <= 1.0)
-	{
-		return false;
-	}
-
-	const auto TryFootprint = [this, YawDegrees, &InnerBounds](const float ArmLength, FBox2D& OutOffsets)
-	{
-		return CalculateFootprintOffsets(YawDegrees, ArmLength, OutOffsets)
-			&& OutOffsets.GetSize().X <= InnerBounds.GetSize().X
-			&& OutOffsets.GetSize().Y <= InnerBounds.GetSize().Y;
-	};
-	OutArmLength = FMath::Clamp(
-		RequestedArmLength,
-		GuLiCommanderCamera::EmergencyMinimumArmLength,
-		GuLiCommanderCamera::MaximumArmLength);
-	FBox2D FootprintOffsets(ForceInit);
-	if (!TryFootprint(OutArmLength, FootprintOffsets))
-	{
-		float LowerArm = GuLiCommanderCamera::EmergencyMinimumArmLength;
-		float UpperArm = OutArmLength;
-		if (!TryFootprint(LowerArm, FootprintOffsets))
-		{
-			return false;
-		}
-		for (int32 Index = 0; Index < GuLiCommanderCamera::ArmFitIterations; ++Index)
-		{
-			const float TestArm = (LowerArm + UpperArm) * 0.5f;
-			FBox2D TestOffsets(ForceInit);
-			if (TryFootprint(TestArm, TestOffsets))
-			{
-				LowerArm = TestArm;
-				FootprintOffsets = TestOffsets;
-			}
-			else
-			{
-				UpperArm = TestArm;
-			}
-		}
-		OutArmLength = LowerArm;
-		OutClamped = true;
-	}
-
-	const FVector2D AllowedMinimum = InnerBounds.Min - FootprintOffsets.Min;
-	const FVector2D AllowedMaximum = InnerBounds.Max - FootprintOffsets.Max;
-	if (AllowedMinimum.X > AllowedMaximum.X || AllowedMinimum.Y > AllowedMaximum.Y)
-	{
-		return false;
-	}
-	const FVector2D OriginalPivot(InOutPivot.X, InOutPivot.Y);
-	const FVector2D ClampedPivot(
-		FMath::Clamp(OriginalPivot.X, AllowedMinimum.X, AllowedMaximum.X),
-		FMath::Clamp(OriginalPivot.Y, AllowedMinimum.Y, AllowedMaximum.Y));
-	InOutPivot.X = ClampedPivot.X;
-	InOutPivot.Y = ClampedPivot.Y;
-	OutClamped |= !OriginalPivot.Equals(ClampedPivot, 0.01);
-	return true;
+    FBox Bounds;
+    if (!GuLiCommanderCameraGeometry::GetBattleBounds(GetWorld(), Bounds)) return false;
+    const double Padding = Config.BoundaryPaddingMeters * 100;
+    FBox2D Inner(FVector2D(Bounds.Min) + FVector2D(Padding), FVector2D(Bounds.Max) - FVector2D(Padding));
+    if (Inner.GetSize().GetMin() <= 1) return false;
+    // Bound the observation focus, not the lens or projected screen corners. Otherwise the
+    // backward boom consumes the map margin and traps edge units behind the bottom HUD.
+    Pivot.X = FMath::Clamp(Pivot.X, Inner.Min.X, Inner.Max.X);
+    Pivot.Y = FMath::Clamp(Pivot.Y, Inner.Min.Y, Inner.Max.Y);
+    return true;
 }
 
-bool AGuLiCommanderCameraPawn::CalculateRequiredPivotHeight(
-	const FVector2D& PivotXY,
-	const float YawDegrees,
-	const float ArmLength,
-	float& OutRequiredPivotZ,
-	float* OutPivotGroundZ) const
+bool AGuLiCommanderCameraPawn::CalculateRequiredPivotHeight(const FVector2D& XY, float Yaw,
+    float Arm, float& OutZ, float* OutGround) const
 {
-	float PivotGroundZ = 0.0f;
-	if (!FindLandscapeHeight(FVector(PivotXY.X, PivotXY.Y, 0.0), PivotGroundZ))
-	{
-		return false;
-	}
-	if (OutPivotGroundZ)
-	{
-		*OutPivotGroundZ = PivotGroundZ;
-	}
-	OutRequiredPivotZ = PivotGroundZ + GuLiCommanderCamera::PivotHeightAboveGround;
-	const FVector CameraOffset = CalculateCameraOffset(YawDegrees, ArmLength);
-	const int32 SegmentCount = FMath::Max(
-		1, FMath::CeilToInt(ArmLength / GuLiCommanderCamera::BoomSampleSpacing));
-	for (int32 SegmentIndex = 1; SegmentIndex <= SegmentCount; ++SegmentIndex)
-	{
-		const float Alpha = static_cast<float>(SegmentIndex) / static_cast<float>(SegmentCount);
-		const FVector RelativeSample = CameraOffset * Alpha;
-		float SampleGroundZ = 0.0f;
-		if (!FindLandscapeHeight(
-			FVector(PivotXY.X + RelativeSample.X, PivotXY.Y + RelativeSample.Y, 0.0),
-			SampleGroundZ))
-		{
-			return false;
-		}
-		const float RequiredClearance = SegmentIndex == SegmentCount
-			? GuLiCommanderCamera::CameraHeightAboveGround
-			: GuLiCommanderCamera::BoomHeightAboveGround;
-		OutRequiredPivotZ = FMath::Max(
-			OutRequiredPivotZ,
-			SampleGroundZ + RequiredClearance - RelativeSample.Z);
-	}
-	return FMath::IsFinite(OutRequiredPivotZ);
+    float Ground;
+    if (!FindCameraGroundHeight(FVector(XY, 0), Ground)) return false;
+    if (OutGround) *OutGround = Ground;
+    OutZ = Ground + Config.PivotClearanceMeters * 100;
+    const FVector Offset = CalculateCameraOffset(Yaw, Arm);
+    const int32 Segments = FMath::Max(1, FMath::CeilToInt(Arm / (Config.BoomSampleSpacingMeters * 100)));
+    for (int32 I = 1; I <= Segments; ++I)
+    {
+        const FVector Sample = Offset * (double(I) / Segments);
+        if (!FindCameraGroundHeight(FVector(XY, 0) + Sample, Ground)) return false;
+        const float Clearance = I == Segments ? FMath::Max(Config.MinimumHeightMeters, Config.CameraClearanceMeters)
+            : Config.BoomClearanceMeters;
+        OutZ = FMath::Max(OutZ, float(Ground + Clearance * 100 - Sample.Z));
+    }
+    return FMath::IsFinite(OutZ);
 }
 
-float AGuLiCommanderCameraPawn::CalculatePredictedRequiredPivotHeight(
-	const FVector& PivotLocation,
-	const float YawDegrees,
-	const float ArmLength,
-	const FVector2D& PlanarVelocity,
-	const float HardRequiredPivotZ) const
+float AGuLiCommanderCameraPawn::CalculatePredictedRequiredPivotHeight(const FVector& Pivot, float Yaw,
+    float Arm, const FVector2D& Velocity, float HardZ) const
 {
-	float PredictedRequiredPivotZ = HardRequiredPivotZ;
-	if (PlanarVelocity.IsNearlyZero() || !FMath::IsFinite(HardRequiredPivotZ))
-	{
-		return PredictedRequiredPivotZ;
-	}
-
-	for (int32 SampleIndex = 1; SampleIndex <= GuLiCommanderCamera::HeightLookAheadSamples; ++SampleIndex)
-	{
-		const float Alpha = static_cast<float>(SampleIndex)
-			/ static_cast<float>(GuLiCommanderCamera::HeightLookAheadSamples);
-		const float LookAheadSeconds = GuLiCommanderCamera::HeightLookAheadSeconds * Alpha;
-		FVector ForecastPivot = PivotLocation;
-		ForecastPivot.X += PlanarVelocity.X * LookAheadSeconds;
-		ForecastPivot.Y += PlanarVelocity.Y * LookAheadSeconds;
-		float ForecastArmLength = ArmLength;
-		bool bForecastClamped = false;
-		if (!ConstrainStateToLandscape(
-			ForecastPivot,
-			YawDegrees,
-			ArmLength,
-			ForecastArmLength,
-			bForecastClamped))
-		{
-			continue;
-		}
-
-		float ForecastGroundZ = 0.0f;
-		if (FindLandscapeHeight(ForecastPivot, ForecastGroundZ))
-		{
-			PredictedRequiredPivotZ = FMath::Max(
-				PredictedRequiredPivotZ,
-				ForecastGroundZ + GuLiCommanderCamera::PivotHeightAboveGround);
-		}
-	}
-	return PredictedRequiredPivotZ;
+    if (Velocity.IsNearlyZero()) return HardZ;
+    const FVector Offset = CalculateCameraOffset(Yaw, Arm);
+    for (int32 I = 1; I <= 3; ++I)
+    {
+        const FVector Ahead = Pivot + FVector(Velocity * (Config.LookAheadSeconds * I / 3), 0);
+        float Ground;
+        if (FindCameraGroundHeight(Ahead, Ground))
+            HardZ = FMath::Max(HardZ, Ground + Config.PivotClearanceMeters * 100);
+        if (FindCameraGroundHeight(Ahead + Offset, Ground))
+            HardZ = FMath::Max(HardZ, float(Ground + Config.MinimumHeightMeters * 100 - Offset.Z));
+    }
+    return HardZ;
 }
 
-bool AGuLiCommanderCameraPawn::CalculateFootprintOffsets(
-	const float YawDegrees,
-	const float ArmLength,
-	FBox2D& OutOffsets) const
+FVector AGuLiCommanderCameraPawn::CalculateCameraOffset(float Yaw, float Arm) const
 {
-	OutOffsets = FBox2D(ForceInit);
-	if (!FMath::IsFinite(YawDegrees) || !FMath::IsFinite(ArmLength) || ArmLength <= 0.0f)
-	{
-		return false;
-	}
-	double AspectRatio = 16.0 / 9.0;
-	if (const APlayerController* PlayerController = Cast<APlayerController>(GetController()))
-	{
-		int32 ViewportWidth = 0;
-		int32 ViewportHeight = 0;
-		PlayerController->GetViewportSize(ViewportWidth, ViewportHeight);
-		if (ViewportWidth > 0 && ViewportHeight > 0)
-		{
-			AspectRatio = static_cast<double>(ViewportWidth) / static_cast<double>(ViewportHeight);
-		}
-	}
-	AspectRatio = FMath::Clamp(AspectRatio, 0.25, 8.0);
-	const double HorizontalHalfFov = FMath::DegreesToRadians(
-		PerspectiveCamera ? PerspectiveCamera->FieldOfView * 0.5 : 22.5);
-	const double HorizontalTangent = FMath::Tan(HorizontalHalfFov);
-	const double VerticalTangent = HorizontalTangent / AspectRatio;
-	const FRotationMatrix Rotation(FRotator(GuLiCommanderCamera::CameraPitchDegrees, YawDegrees, 0.0f));
-	const FVector Forward = Rotation.GetScaledAxis(EAxis::X);
-	const FVector Right = Rotation.GetScaledAxis(EAxis::Y);
-	const FVector Up = Rotation.GetScaledAxis(EAxis::Z);
-	const FVector CameraOffset = -Forward * ArmLength;
-	const double FocusPlaneZ = -static_cast<double>(GuLiCommanderCamera::PivotHeightAboveGround);
-	OutOffsets += FVector2D::ZeroVector;
-	OutOffsets += FVector2D(CameraOffset.X, CameraOffset.Y);
-	for (int32 HorizontalSign = -1; HorizontalSign <= 1; HorizontalSign += 2)
-	{
-		for (int32 VerticalSign = -1; VerticalSign <= 1; VerticalSign += 2)
-		{
-			const FVector RayDirection = (
-				Forward
-				+ Right * (HorizontalTangent * static_cast<double>(HorizontalSign))
-				+ Up * (VerticalTangent * static_cast<double>(VerticalSign))).GetSafeNormal();
-			if (RayDirection.Z >= -UE_SMALL_NUMBER)
-			{
-				return false;
-			}
-			const double Distance = (FocusPlaneZ - CameraOffset.Z) / RayDirection.Z;
-			if (Distance <= 0.0 || !FMath::IsFinite(Distance))
-			{
-				return false;
-			}
-			const FVector GroundPoint = CameraOffset + RayDirection * Distance;
-			if (GroundPoint.ContainsNaN())
-			{
-				return false;
-			}
-			OutOffsets += FVector2D(GroundPoint.X, GroundPoint.Y);
-		}
-	}
-	return OutOffsets.bIsValid;
+    return -FRotator(SpringPitchDegrees, Yaw, 0).Vector() * Arm;
 }
-
-FVector AGuLiCommanderCameraPawn::CalculateCameraOffset(
-	const float YawDegrees,
-	const float ArmLength) const
+FVector AGuLiCommanderCameraPawn::CurrentCameraLocation() const
 {
-	return -FRotator(GuLiCommanderCamera::CameraPitchDegrees, YawDegrees, 0.0f).Vector() * ArmLength;
+    return GetActorLocation() + CalculateCameraOffset(GetActorRotation().Yaw, SpringArm->TargetArmLength);
 }
-
-void AGuLiCommanderCameraPawn::AddPlanarMovement(const FVector2D Movement)
+FRotator AGuLiCommanderCameraPawn::CurrentCameraRotation() const
 {
-	if (!Movement.ContainsNaN())
-	{
-		PendingPlanarMovement += Movement;
-	}
+    return FRotator(SpringPitchDegrees, GetActorRotation().Yaw, 0);
 }
-
-void AGuLiCommanderCameraPawn::AddYawInput(const float YawInput)
+bool AGuLiCommanderCameraPawn::FindCameraGroundHeight(const FVector& At, float& Z) const
 {
-	if (FMath::IsFinite(YawInput))
-	{
-		PendingYawInput += YawInput;
-	}
+    const auto* Query = GetWorld()->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>();
+    if (!Query || At.ContainsNaN()) return false;
+    const FVector2D XY(At);
+    if (Query->TryGetLandscapeHeight(XY, Z)) return true;
+    FBox2D Bounds;
+    if (!Query->TryGetBounds(Bounds)) return false;
+    // Camera-only continuation beyond the terrain edge lets the lens/boom follow an edge
+    // focus. Interior holes still fail; gameplay traces keep using the strict Landscape query.
+    constexpr double EdgeInsetCm = 1.0;
+    if (Bounds.GetSize().GetMin() <= 2 * EdgeInsetCm) return false;
+    const FBox2D Interior(Bounds.Min + FVector2D(EdgeInsetCm), Bounds.Max - FVector2D(EdgeInsetCm));
+    if (Interior.IsInsideOrOn(XY)) return false;
+    const FVector2D Edge(
+        FMath::Clamp(XY.X, Interior.Min.X, Interior.Max.X),
+        FMath::Clamp(XY.Y, Interior.Min.Y, Interior.Max.Y));
+    return Query->TryGetLandscapeHeight(Edge, Z);
 }
 
-void AGuLiCommanderCameraPawn::AddZoomInput(const float ZoomInput)
+FBox2D AGuLiCommanderCameraPawn::GetUsableViewRect(FVector2D& Size) const
 {
-	if (FMath::IsFinite(ZoomInput))
-	{
-		PendingZoomInput += ZoomInput;
-	}
+    const auto* PC = Cast<APlayerController>(GetController());
+    int32 W = 0, H = 0;
+    if (PC) PC->GetViewportSize(W, H);
+    Size = FVector2D(W, H);
+    FVector2D Origin = FVector2D::ZeroVector;
+    if (const ULocalPlayer* LP = PC ? PC->GetLocalPlayer() : nullptr; LP && LP->ViewportClient && LP->ViewportClient->Viewport)
+    {
+        FSceneViewProjectionData Projection;
+        if (LP->GetProjectionData(LP->ViewportClient->Viewport, Projection))
+        { Origin = FVector2D(Projection.GetConstrainedViewRect().Min); Size = FVector2D(Projection.GetConstrainedViewRect().Size()); }
+    }
+    if (const auto* HUD = PC ? Cast<AGuLiCommanderHUD>(PC->GetHUD()) : nullptr)
+        if (const auto* Widget = HUD->GetRuntimeHUDWidget()) return Widget->GetBattlefieldViewRect(Size, Origin);
+    return FBox2D(FVector2D::ZeroVector, Size);
 }
 
-void AGuLiCommanderCameraPawn::JumpToWorldLocation(FVector WorldLocation)
+bool AGuLiCommanderCameraPawn::SolveOverviewPose(FVector& Location, FRotator& Rotation) const
 {
-	if (!IsLocallyControlled() || WorldLocation.ContainsNaN())
-	{
-		return;
-	}
-	if (!bSolverInitialized)
-	{
-		InitializeSolver();
-	}
-	const float Yaw = FRotator::NormalizeAxis(GetActorRotation().Yaw);
-	float EffectiveArmLength = SpringArm->TargetArmLength;
-	bool bFootprintClamped = false;
-	const bool bLandscapeValid = ConstrainStateToLandscape(
-		WorldLocation, Yaw, EffectiveArmLength, EffectiveArmLength, bFootprintClamped);
-	float RequiredPivotZ = GetActorLocation().Z;
-	const bool bTerrainValid = bLandscapeValid && CalculateRequiredPivotHeight(
-		FVector2D(WorldLocation.X, WorldLocation.Y), Yaw, EffectiveArmLength, RequiredPivotZ);
-	if (!bTerrainValid)
-	{
-		return;
-	}
-	WorldLocation.Z = RequiredPivotZ + GuLiCommanderCamera::CruiseHeightBuffer;
-	PendingPlanarMovement = FVector2D::ZeroVector;
-	PendingYawInput = 0.0f;
-	PendingZoomInput = 0.0f;
-	HeldCruisePivotZ = WorldLocation.Z;
-	HeightReanchorRemainingSeconds = 0.0f;
-	bHeightReanchorActive = false;
-	SpringArm->TargetArmLength = EffectiveArmLength;
-	SetActorLocation(WorldLocation, false, nullptr, ETeleportType::TeleportPhysics);
-#if !UE_BUILD_SHIPPING
-	LastRequestedPlanarDistance = 0.0f;
-	LastAppliedPlanarDistance = 0.0f;
-	LastHardRequiredPivotZ = RequiredPivotZ;
-	LastCruiseTargetPivotZ = WorldLocation.Z;
-	LastEmergencyLiftAmount = 0.0f;
-	bLastRequestedPoseValid = true;
-	bEmergencyLiftActive = false;
-	bEmergencyLiftThisFrame = false;
-	if (bCameraDebugEnabled)
-	{
-		RefreshDebugSnapshot(bFootprintClamped, true);
-	}
-#endif
+    FBox Bounds;
+    if (!GuLiCommanderCameraGeometry::GetBattleBounds(GetWorld(), Bounds)) return false;
+    FVector2D Size;
+    FBox2D Rect = GetUsableViewRect(Size);
+    if (Size.GetMin() <= 1 || Rect.GetSize().GetMin() <= 1) return false;
+    const FVector2D Pad = Rect.GetSize() * Config.OverviewPaddingFraction;
+    Rect.Min += Pad; Rect.Max -= Pad;
+    double TX = FMath::Tan(FMath::DegreesToRadians(Config.FieldOfViewDegrees * .5));
+    double TY = TX * Size.Y / Size.X;
+    const auto* PC = Cast<APlayerController>(GetController());
+    if (const ULocalPlayer* LP = PC ? PC->GetLocalPlayer() : nullptr)
+    {
+        FSceneViewProjectionData Projection;
+        if (LP->ViewportClient && LP->ViewportClient->Viewport &&
+            LP->GetProjectionData(LP->ViewportClient->Viewport, Projection) &&
+            Projection.ProjectionMatrix.M[0][0] > 0 && Projection.ProjectionMatrix.M[1][1] > 0)
+        {
+            TX = 1. / Projection.ProjectionMatrix.M[0][0];
+            TY = 1. / Projection.ProjectionMatrix.M[1][1];
+        }
+    }
+    // Align to the nearest map axis, never force the player back to one compass heading.
+    // ReturnYaw stays fixed across reversals and reframing, so the chosen quarter-turn cannot drift.
+    const float RelativeYaw = FRotator::NormalizeAxis(ReturnYaw - Config.OverviewYawDegrees);
+    const float OverviewYaw = FRotator::NormalizeAxis(Config.OverviewYawDegrees +
+        90.f * FMath::RoundToInt(RelativeYaw / 90.f));
+    const FRotator OverviewRotation(-Config.OverviewPitchDegrees, OverviewYaw, 0);
+    const FRotationMatrix Basis(OverviewRotation);
+    const FVector Right = Basis.GetUnitAxis(EAxis::Y), Up = Basis.GetUnitAxis(EAxis::Z);
+    const FVector Center = Bounds.GetCenter();
+    const FVector2D NdcCenter(2 * Rect.GetCenter().X / Size.X - 1, 1 - 2 * Rect.GetCenter().Y / Size.Y);
+    const auto PositionAt = [&](double Height)
+    {
+        FVector P = Center - Right * (NdcCenter.X * Height * TX) - Up * (NdcCenter.Y * Height * TY);
+        P.Z = Center.Z + Height;
+        return P;
+    };
+    const auto Fits = [&](double Height)
+    {
+        const FVector P = PositionAt(Height);
+        for (int32 I = 0; I < 8; ++I)
+        {
+            const FVector Corner(I & 1 ? Bounds.Max.X : Bounds.Min.X, I & 2 ? Bounds.Max.Y : Bounds.Min.Y,
+                I & 4 ? Bounds.Max.Z : Bounds.Min.Z);
+            const FVector Delta = Corner - P;
+            const double Depth = -Delta.Z;
+            if (Depth <= 1) return false;
+            const FVector2D Pixel((1 + FVector::DotProduct(Delta, Right) / (Depth * TX)) * Size.X * .5,
+                (1 - FVector::DotProduct(Delta, Up) / (Depth * TY)) * Size.Y * .5);
+            if (!Rect.IsInsideOrOn(Pixel)) return false;
+        }
+        return true;
+    };
+    double Low = FMath::Max(double(Config.TacticalMaximumHeightMeters * 100 + 100), Bounds.GetExtent().Z + 100);
+    double High = Low;
+    for (int32 I = 0; I < 32 && !Fits(High); ++I) High *= 2;
+    if (!Fits(High) || !FMath::IsFinite(High)) return false;
+    for (int32 I = 0; I < 32; ++I)
+    {
+        const double Mid = (Low + High) * .5;
+        if (Fits(Mid)) High = Mid; else Low = Mid;
+    }
+    Location = PositionAt(High);
+    Rotation = OverviewRotation;
+    return !Location.ContainsNaN();
 }
 
-bool AGuLiCommanderCameraPawn::FindLandscapeHeight(
-	const FVector& AtLocation,
-	float& OutGroundZ) const
+void AGuLiCommanderCameraPawn::StartOverviewTransition(bool bEnter)
 {
-	const UWorld* World = GetWorld();
-	const UGuLiCommanderLandscapeQuerySubsystem* LandscapeQuery = World
-		? World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()
-		: nullptr;
-	return LandscapeQuery
-		&& LandscapeQuery->TryGetLandscapeHeight(FVector2D(AtLocation.X, AtLocation.Y), OutGroundZ);
+    const FVector From = CurrentCameraLocation();
+    const FRotator FromRotation = CurrentCameraRotation();
+    if (bEnter && !IsOverviewPresentation())
+    {
+        ReturnFocus = GetActorLocation(); ReturnYaw = GetActorRotation().Yaw;
+    }
+    FVector Destination; FRotator DestinationRotation;
+    if (bEnter)
+    {
+        if (!SolveOverviewPose(Destination, DestinationRotation)) return;
+        float Ground = 0;
+        if (FindCameraGroundHeight(Destination, Ground)) OverviewTargetHeightMeters = (Destination.Z - Ground) / 100;
+    }
+    else
+    {
+        const float PreviousPitch = SpringPitchDegrees;
+        SpringPitchDegrees = -Config.TacticalPitchDegrees;
+        const bool bSolved = SolveNormalPose(ReturnFocus, ReturnYaw, Config.TacticalMaximumHeightMeters, 0, true, ReturnPivot, ReturnArm);
+        Destination = ReturnPivot + CalculateCameraOffset(ReturnYaw, ReturnArm);
+        SpringPitchDegrees = PreviousPitch;
+        if (!bSolved) return;
+        DestinationRotation = FRotator(-Config.TacticalPitchDegrees, ReturnYaw, 0);
+    }
+    TransitionFromLocation = From; TransitionFromRotation = FromRotation;
+    TransitionToLocation = Destination; TransitionToRotation = DestinationRotation;
+    TransitionElapsed = 0; bTransitioning = true; bOverviewTarget = bEnter;
+    // Overview is one fixed zoom slot. The inward edge always lands at the tactical ceiling.
+    TargetHeightMeters = Config.TacticalMaximumHeightMeters;
+    SetTier(EGuLiCommanderCameraTier::Overview);
+    ApplyCameraPose(From, FromRotation);
+    LastUsableViewRect = GetUsableViewRect(LastViewSize);
+    LastLandscapeRevision = GetWorld()->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()->GetCacheRevision();
 }
 
-void AGuLiCommanderCameraPawn::RefreshDebugSnapshot(
-	const bool bFootprintClamped,
-	const bool bTerrainValid)
+void AGuLiCommanderCameraPawn::ApplyCameraPose(const FVector& Location, const FRotator& Rotation)
+{
+    SetActorLocationAndRotation(Location, FRotator(0, Rotation.Yaw, 0));
+    SpringPitchDegrees = Rotation.Pitch;
+    SpringArm->TargetArmLength = 0;
+    SpringArm->SetRelativeRotation(FRotator(SpringPitchDegrees, 0, 0));
+}
+
+void AGuLiCommanderCameraPawn::TickOverview(float Dt)
+{
+    FVector2D Size;
+    const FBox2D Rect = GetUsableViewRect(Size);
+    const uint32 Revision = GetWorld()->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()->GetCacheRevision();
+    if (bOverviewTarget && (!Size.Equals(LastViewSize) || !Rect.Min.Equals(LastUsableViewRect.Min) ||
+        !Rect.Max.Equals(LastUsableViewRect.Max) || Revision != LastLandscapeRevision))
+        StartOverviewTransition(true);
+    if (!bTransitioning) return;
+    TransitionElapsed += Dt;
+    const float T = FMath::Clamp(TransitionElapsed / Config.OverviewTransitionSeconds, 0.f, 1.f);
+    const float Ease = T * T * (3 - 2 * T);
+    FVector Position = FMath::Lerp(TransitionFromLocation, TransitionToLocation, Ease);
+    // Interpolate the rig's two axes directly. Quaternion-to-Euler conversion at -90 pitch
+    // can exchange yaw and roll, but this rig has no roll and must keep its heading continuous.
+    const FRotator Rotation(
+        FMath::Lerp(TransitionFromRotation.Pitch, TransitionToRotation.Pitch, Ease),
+        TransitionFromRotation.Yaw +
+            FMath::FindDeltaAngleDegrees(TransitionFromRotation.Yaw, TransitionToRotation.Yaw) * Ease,
+        0);
+    float Ground;
+    if (FindCameraGroundHeight(Position, Ground))
+        Position.Z = FMath::Max(Position.Z, double(Ground + Config.MinimumHeightMeters * 100));
+    ApplyCameraPose(Position, Rotation);
+    if (T >= 1)
+    {
+        bTransitioning = false;
+        // Commit the exact destination orientation, including the nearest aligned overview heading.
+        ApplyCameraPose(TransitionToLocation, TransitionToRotation);
+        if (!bOverviewTarget)
+        {
+            SetActorLocationAndRotation(ReturnPivot, FRotator(0, ReturnYaw, 0));
+            SpringPitchDegrees = -Config.TacticalPitchDegrees;
+            SpringArm->SetRelativeRotation(FRotator(SpringPitchDegrees, 0, 0));
+            SpringArm->TargetArmLength = ReturnArm;
+            TargetHeightMeters = SmoothedHeightMeters = Config.TacticalMaximumHeightMeters;
+            SetTier(EGuLiCommanderCameraTier::Tactical);
+        }
+    }
+}
+
+void AGuLiCommanderCameraPawn::AddPlanarMovement(FVector2D Movement)
+{
+    if (!IsOverviewPresentation() && !Movement.ContainsNaN()) PendingPlanarMovement += Movement;
+}
+void AGuLiCommanderCameraPawn::AddYawInput(float Value)
+{
+    if (!IsOverviewPresentation() && FMath::IsFinite(Value)) PendingYawInput += Value;
+}
+void AGuLiCommanderCameraPawn::AddZoomInput(float Value)
+{
+    if (FMath::IsFinite(Value)) PendingZoomInput += Value;
+}
+void AGuLiCommanderCameraPawn::SetRequestedHeightMeters(float HeightMeters)
+{
+    if (!IsLocallyControlled() || !FMath::IsFinite(HeightMeters)) return;
+    if (!bSolverInitialized) InitializeSolver();
+    if (!bSolverInitialized) return;
+    if (IsOverviewPresentation()) JumpToWorldLocation(ReturnFocus);
+    if (IsOverviewPresentation()) return;
+    TargetHeightMeters = FMath::Clamp(HeightMeters, Config.MinimumHeightMeters, Config.TacticalMaximumHeightMeters);
+}
+void AGuLiCommanderCameraPawn::JumpToWorldLocation(FVector Location)
+{
+    if (!IsLocallyControlled() || Location.ContainsNaN()) return;
+    if (!bSolverInitialized) InitializeSolver();
+    if (!bSolverInitialized) return;
+    const bool bWasOverview = IsOverviewPresentation();
+    const float Yaw = bWasOverview ? ReturnYaw : GetActorRotation().Yaw;
+    const float H = bWasOverview ? Config.TacticalMaximumHeightMeters : TargetHeightMeters;
+    const float PreviousPitch = SpringPitchDegrees;
+    SpringPitchDegrees = PitchForHeight(H);
+    FVector Pivot; float Arm;
+    if (!SolveNormalPose(Location, Yaw, H, 0, true, Pivot, Arm)) { SpringPitchDegrees = PreviousPitch; return; }
+    bOverviewTarget = bTransitioning = false;
+    SetActorLocationAndRotation(Pivot, FRotator(0, Yaw, 0));
+    SpringArm->SetRelativeRotation(FRotator(SpringPitchDegrees, 0, 0)); SpringArm->TargetArmLength = Arm;
+    TargetHeightMeters = SmoothedHeightMeters = H;
+    PendingPlanarMovement = FVector2D::ZeroVector; PendingYawInput = PendingZoomInput = 0;
+    SetTier(H < Config.TacticalStartHeightMeters ? EGuLiCommanderCameraTier::Near : EGuLiCommanderCameraTier::Tactical);
+}
+
+void AGuLiCommanderCameraPawn::RefreshDebugSnapshot(bool bClamped, bool bTerrainValid)
 {
 #if !UE_BUILD_SHIPPING
-	DebugSnapshot = FGuLiCommanderCameraDebugSnapshot();
-	DebugSnapshot.PivotLocation = GetActorLocation();
-	DebugSnapshot.DesiredArmLength = DesiredArmLength;
-	DebugSnapshot.EffectiveArmLength = SpringArm ? SpringArm->TargetArmLength : 0.0f;
-	DebugSnapshot.RequestedPlanarDistance = LastRequestedPlanarDistance;
-	DebugSnapshot.AppliedPlanarDistance = LastAppliedPlanarDistance;
-	DebugSnapshot.AppliedPlanarRatio = LastRequestedPlanarDistance > UE_SMALL_NUMBER
-		? LastAppliedPlanarDistance / LastRequestedPlanarDistance
-		: 1.0f;
-	DebugSnapshot.HardRequiredPivotZ = LastHardRequiredPivotZ;
-	DebugSnapshot.CruiseTargetPivotZ = LastCruiseTargetPivotZ;
-	DebugSnapshot.HeldCruisePivotZ = HeldCruisePivotZ;
-	DebugSnapshot.EmergencyLiftAmount = LastEmergencyLiftAmount;
-	DebugSnapshot.EmergencyLiftCount = EmergencyLiftCount;
-	DebugSnapshot.bFootprintClamped = bFootprintClamped;
-	DebugSnapshot.bTerrainValid = bTerrainValid;
-	DebugSnapshot.bRequestedPoseValid = bLastRequestedPoseValid;
-	DebugSnapshot.bHeightReanchoring = bHeightReanchorActive;
-	DebugSnapshot.bEmergencyLift = bEmergencyLiftThisFrame;
-	const UWorld* World = GetWorld();
-	const UGuLiCommanderLandscapeQuerySubsystem* LandscapeQuery = World
-		? World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()
-		: nullptr;
-	DebugSnapshot.bLandscapeValid = LandscapeQuery
-		&& LandscapeQuery->TryGetBounds(DebugSnapshot.LandscapeBounds);
-	if (!LandscapeQuery)
-	{
-		return;
-	}
-	const float Yaw = GetActorRotation().Yaw;
-	const FVector CameraOffset = CalculateCameraOffset(Yaw, DebugSnapshot.EffectiveArmLength);
-	DebugSnapshot.CameraLocation = DebugSnapshot.PivotLocation + CameraOffset;
-	float GroundZ = 0.0f;
-	if (LandscapeQuery->TryGetLandscapeHeight(
-		FVector2D(DebugSnapshot.PivotLocation.X, DebugSnapshot.PivotLocation.Y), GroundZ))
-	{
-		DebugSnapshot.GroundHeight = GroundZ;
-		DebugSnapshot.PivotClearance = DebugSnapshot.PivotLocation.Z - GroundZ;
-	}
-	DebugSnapshot.MinimumBoomClearance = TNumericLimits<float>::Max();
-	const int32 SegmentCount = FMath::Max(
-		1, FMath::CeilToInt(DebugSnapshot.EffectiveArmLength / GuLiCommanderCamera::BoomSampleSpacing));
-	for (int32 SegmentIndex = 1; SegmentIndex <= SegmentCount; ++SegmentIndex)
-	{
-		const float Alpha = static_cast<float>(SegmentIndex) / static_cast<float>(SegmentCount);
-		const FVector Sample = DebugSnapshot.PivotLocation + CameraOffset * Alpha;
-		if (!LandscapeQuery->TryGetLandscapeHeight(FVector2D(Sample.X, Sample.Y), GroundZ))
-		{
-			continue;
-		}
-		const float Clearance = Sample.Z - GroundZ;
-		if (SegmentIndex == SegmentCount)
-		{
-			DebugSnapshot.CameraClearance = Clearance;
-		}
-		else
-		{
-			DebugSnapshot.MinimumBoomClearance = FMath::Min(DebugSnapshot.MinimumBoomClearance, Clearance);
-		}
-	}
-	if (DebugSnapshot.MinimumBoomClearance == TNumericLimits<float>::Max())
-	{
-		DebugSnapshot.MinimumBoomClearance = DebugSnapshot.CameraClearance;
-	}
+    DebugSnapshot = {};
+    DebugSnapshot.PivotLocation = GetActorLocation(); DebugSnapshot.CameraLocation = CurrentCameraLocation();
+    DebugSnapshot.DesiredArmLength = DesiredArmLength; DebugSnapshot.EffectiveArmLength = SpringArm->TargetArmLength;
+    DebugSnapshot.CameraClearance = ActualHeightMeters * 100; DebugSnapshot.bTerrainValid = bTerrainValid;
+    DebugSnapshot.bFootprintClamped = bClamped; DebugSnapshot.bRequestedPoseValid = bLastRequestedPoseValid;
+    DebugSnapshot.HardRequiredPivotZ = LastHardRequiredPivotZ; DebugSnapshot.CruiseTargetPivotZ = LastCruiseTargetPivotZ;
+    DebugSnapshot.HeldCruisePivotZ = GetActorLocation().Z; DebugSnapshot.EmergencyLiftCount = EmergencyLiftCount;
+    DebugSnapshot.EmergencyLiftAmount = LastEmergencyLiftAmount; DebugSnapshot.bEmergencyLift = bEmergencyLiftThisFrame;
+    DebugSnapshot.RequestedPlanarDistance = LastRequestedPlanarDistance; DebugSnapshot.AppliedPlanarDistance = LastAppliedPlanarDistance;
+    DebugSnapshot.AppliedPlanarRatio = LastRequestedPlanarDistance > UE_SMALL_NUMBER ? LastAppliedPlanarDistance / LastRequestedPlanarDistance : 1;
+    const auto* Landscape = GetWorld()->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>();
+    DebugSnapshot.bLandscapeValid = Landscape && Landscape->TryGetBounds(DebugSnapshot.LandscapeBounds);
+    float Ground;
+    if (FindCameraGroundHeight(GetActorLocation(), Ground)) { DebugSnapshot.GroundHeight = Ground; DebugSnapshot.PivotClearance = GetActorLocation().Z - Ground; }
 #endif
 }
-
 #if !UE_BUILD_SHIPPING
 void AGuLiCommanderCameraPawn::DrawCameraDebug() const
 {
-	const FString Text = FString::Printf(
-		TEXT("CommanderCamera valid=%d terrain=%d request=%d clamped=%d\n")
-		TEXT("bounds=[%.0f %.0f]-[%.0f %.0f]\n")
-		TEXT("move applied/requested=%.1f/%.1f ratio=%.3f\n")
-		TEXT("height hard=%.0f cruise=%.0f held=%.0f reanchor=%d emergency=%d lift=%.0f count=%u\n")
-		TEXT("pivot=(%.0f %.0f %.0f) ground=%.0f clear=%.0f\n")
-		TEXT("camera=(%.0f %.0f %.0f) boomMin=%.0f cameraClear=%.0f arm=%.0f/%.0f"),
-		DebugSnapshot.bLandscapeValid ? 1 : 0,
-		DebugSnapshot.bTerrainValid ? 1 : 0,
-		DebugSnapshot.bRequestedPoseValid ? 1 : 0,
-		DebugSnapshot.bFootprintClamped ? 1 : 0,
-		DebugSnapshot.LandscapeBounds.Min.X,
-		DebugSnapshot.LandscapeBounds.Min.Y,
-		DebugSnapshot.LandscapeBounds.Max.X,
-		DebugSnapshot.LandscapeBounds.Max.Y,
-		DebugSnapshot.AppliedPlanarDistance,
-		DebugSnapshot.RequestedPlanarDistance,
-		DebugSnapshot.AppliedPlanarRatio,
-		DebugSnapshot.HardRequiredPivotZ,
-		DebugSnapshot.CruiseTargetPivotZ,
-		DebugSnapshot.HeldCruisePivotZ,
-		DebugSnapshot.bHeightReanchoring ? 1 : 0,
-		DebugSnapshot.bEmergencyLift ? 1 : 0,
-		DebugSnapshot.EmergencyLiftAmount,
-		DebugSnapshot.EmergencyLiftCount,
-		DebugSnapshot.PivotLocation.X,
-		DebugSnapshot.PivotLocation.Y,
-		DebugSnapshot.PivotLocation.Z,
-		DebugSnapshot.GroundHeight,
-		DebugSnapshot.PivotClearance,
-		DebugSnapshot.CameraLocation.X,
-		DebugSnapshot.CameraLocation.Y,
-		DebugSnapshot.CameraLocation.Z,
-		DebugSnapshot.MinimumBoomClearance,
-		DebugSnapshot.CameraClearance,
-		DebugSnapshot.EffectiveArmLength,
-		DebugSnapshot.DesiredArmLength);
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-static_cast<int32>(GetUniqueID()), 0.0f, FColor::Cyan, Text);
-	}
-	if (UWorld* World = GetWorld(); DebugSnapshot.LandscapeBounds.bIsValid)
-	{
-		const FVector2D Min = DebugSnapshot.LandscapeBounds.Min;
-		const FVector2D Max = DebugSnapshot.LandscapeBounds.Max;
-		const float Z = DebugSnapshot.PivotLocation.Z;
-		DrawDebugLine(World, FVector(Min.X, Min.Y, Z), FVector(Max.X, Min.Y, Z), FColor::Cyan, false, 0.0f, 0, 20.0f);
-		DrawDebugLine(World, FVector(Max.X, Min.Y, Z), FVector(Max.X, Max.Y, Z), FColor::Cyan, false, 0.0f, 0, 20.0f);
-		DrawDebugLine(World, FVector(Max.X, Max.Y, Z), FVector(Min.X, Max.Y, Z), FColor::Cyan, false, 0.0f, 0, 20.0f);
-		DrawDebugLine(World, FVector(Min.X, Max.Y, Z), FVector(Min.X, Min.Y, Z), FColor::Cyan, false, 0.0f, 0, 20.0f);
-		DrawDebugLine(World, DebugSnapshot.PivotLocation, DebugSnapshot.CameraLocation, FColor::Yellow, false, 0.0f, 0, 12.0f);
-	}
+    if (GEngine) GEngine->AddOnScreenDebugMessage(-int32(GetUniqueID()), 0, FColor::Cyan, FString::Printf(
+        TEXT("CommanderCamera tier=%d target=%.1fm actual=%.1fm pitch=%.1f transition=%d source=Camera/Default"),
+        int32(CameraTier), GetTargetHeightMeters(), ActualHeightMeters, -SpringPitchDegrees, bTransitioning));
 }
-
-namespace GuLiCommanderCameraDebugCommand
+namespace
 {
-	void ToggleDebug(const TArray<FString>& Args, UWorld* World)
-	{
-		if (!World || Args.Num() != 1 || (Args[0] != TEXT("0") && Args[0] != TEXT("1")))
-		{
-			UE_LOG(LogGuLiCommanderCamera, Warning, TEXT("Usage: gs.GM.Commander.Camera.Debug <0|1>"));
-			return;
-		}
-		const bool bEnabled = Args[0] == TEXT("1");
-		int32 UpdatedCount = 0;
-		for (TActorIterator<AGuLiCommanderCameraPawn> It(World); It; ++It)
-		{
-			if (It->IsLocallyControlled())
-			{
-				It->SetCameraDebugEnabled(bEnabled);
-				++UpdatedCount;
-			}
-		}
-		UE_LOG(LogGuLiCommanderCamera, Display, TEXT("Commander camera debug %s for %d local camera(s)."),
-			bEnabled ? TEXT("enabled") : TEXT("disabled"), UpdatedCount);
-	}
-
-	FAutoConsoleCommandWithWorldAndArgs CameraDebugCommand(
-		TEXT("gs.GM.Commander.Camera.Debug"),
-		TEXT("Toggle commander camera bounds and terrain-clearance debug: <0|1>."),
-		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&ToggleDebug));
+    FAutoConsoleCommandWithWorldAndArgs CameraHeightCommand(TEXT("gs.GM.Commander.Camera.Height"),
+        TEXT("Request an exact camera height in meters for manual boundary observation; overview still uses the wheel."),
+        FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
+        {
+            float Height = 0;
+            if (!World || Args.Num() != 1 || !LexTryParseString(Height, *Args[0]) || !FMath::IsFinite(Height)) return;
+            for (TActorIterator<AGuLiCommanderCameraPawn> It(World); It; ++It)
+                if (It->IsLocallyControlled()) It->SetRequestedHeightMeters(Height);
+        }));
+    FAutoConsoleCommandWithWorldAndArgs CameraDebugCommand(TEXT("gs.GM.Commander.Camera.Debug"),
+        TEXT("Commander camera state from Excel: <0|1>."),
+        FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
+        {
+            if (!World || Args.Num() != 1) return;
+            for (TActorIterator<AGuLiCommanderCameraPawn> It(World); It; ++It)
+                if (It->IsLocallyControlled()) It->SetCameraDebugEnabled(Args[0] == TEXT("1"));
+        }));
 }
 #endif

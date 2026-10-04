@@ -1,0 +1,322 @@
+{
+  "version": "A-v3",
+  "published_utc": "2026-10-03T02:33:18.345351+00:00",
+  "source_asset": "/Game/Assets/RSG_UnderWater_Pack/FPS/Models/Mech/SK_FPS_Mech.SK_FPS_Mech",
+  "planned_formal_destination": "/Game/GuLiStrike/Robots/RSGMech",
+  "scope": "reference_design_and_source_baseline_only",
+  "artifacts": [
+    {
+      "path": "References_A_v3/RSG_A_v3_Hero_SourceStyle.png",
+      "role": "three_quarter_effect_reference",
+      "bytes": 3264834,
+      "sha256": "35e62c7bf579df4f353644e812022ccb22fccd44114def99b95ebcb1d5a1c66d",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "References_A_v3/RSG_A_v3_Front_SourceStyle.png",
+      "role": "orthographic_front",
+      "bytes": 2974234,
+      "sha256": "bff302e9a600e6c6d4aad7aa0a6aa71185cbca4e935747809b542c5b177b723e",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "References_A_v3/RSG_A_v3_Left_SourceStyle.png",
+      "role": "orthographic_left",
+      "bytes": 2896501,
+      "sha256": "ad1deb16c55ea591046a3914b5b1246d05fc8ae9d18c48219d14b605edc91976",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "References_A_v3/RSG_A_v3_Back_SourceStyle.png",
+      "role": "orthographic_back",
+      "bytes": 2928100,
+      "sha256": "c869005e04ac6b6dd49777ccb25567ddeeb0f979eb58ae475e79990e2ddcc832",
+      "resolution_px": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "References_A_v3/RSG_A_v3_ReferenceMaterialStudy.blend",
+      "role": "reference_material_study_not_production_model",
+      "bytes": 2159857,
+      "sha256": "5be5d45c17b030d79fb1b7a7117fefd5cbedb0c38299594f49d163d1a47bbe94"
+    },
+    {
+      "path": "References_A_v3/reference_setup.json",
+      "role": "palette_revision_same_cameras_and_source_geometry",
+      "bytes": 44055,
+      "sha256": "6fc0e64744998c0fc570a8a59e8d3022071d414198b08aec0e6b1d3d5244cd91"
+    },
+    {
+      "path": "Scripts/render_style_reference_a_v3.py",
+      "role": "reproducible_palette_reference_render",
+      "bytes": 4292,
+      "sha256": "f2cf4d6594b3c36b8de2adf91f583fa870192dd62a3eadd7060279e2e68efe05"
+    },
+    {
+      "path": "Scripts/finalize_reference_a_v3.py",
+      "role": "reproducible_reference_integrity_check",
+      "bytes": 5531,
+      "sha256": "81915bc318f5624a820047af373ec370d0ab31a8e9567e23354b572695d18887"
+    },
+    {
+      "path": "README_A_v3.md",
+      "role": "current_review_notes",
+      "bytes": 3246,
+      "sha256": "1c0bf5721e2852288cd804cad6b0ceeac5d1855065604e00f8a5e1875f29a763"
+    },
+    {
+      "path": "References_A_v3/imagegen_color_prompt.txt",
+      "role": "builtin_imagegen_color_draft_prompt",
+      "bytes": 1234,
+      "sha256": "da98c499b923d30f1c8b0b8078604103559a0cb9e1b15a9f79255c2d763f92dc"
+    },
+    {
+      "path": "References_A_v3/RSG_A_v3_ImagegenColorDraft.png",
+      "role": "draft_not_selected_for_A",
+      "bytes": 1292909,
+      "sha256": "f16d0db0bb5c25effd3b0477bd7e72e82d024129bea3f2f901d1de9939e06ab5",
+      "resolution_px": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "References_A_v2/reference_manifest.json",
+      "role": "previous_frozen_version",
+      "bytes": 8742,
+      "sha256": "d4ae8ff6a908ec950d5965e67540509015eedd9df3056b00648df711b3295412"
+    },
+    {
+      "path": "References_A_v1/reference_manifest.json",
+      "role": "first_frozen_version",
+      "bytes": 6601,
+      "sha256": "b474e9e0c03f3694568ab0b57cd3c5ea82bb13cefe1bbda3fd19575a6f209e88"
+    },
+    {
+      "path": "Source/source_manifest.json",
+      "role": "authoritative_original_source",
+      "bytes": 55093,
+      "sha256": "d34f068cb27cc1fac166fb8e78ee3b45cc129853c29ac998cbe3a6ad2f0c63a4"
+    }
+  ],
+  "palette_srgb": {
+    "WarmWhite": "#F1E7D5",
+    "Coral": "#E97868",
+    "Chassis": "#48413E",
+    "Steel": "#756A60",
+    "Amber": "#F4B65C",
+    "Ink": "#241F20",
+    "SkyBlue": "#87CEEB",
+    "PaleYellow": "#F4E4A1"
+  },
+  "geometry_integrity": {
+    "source_body_triangles": 68124,
+    "source_vertices": 57588,
+    "ue_bones": 44,
+    "source_animations": 7,
+    "fbx_blender_bones": 43,
+    "fbx_blender_armature_root_object": "DeformationSystem",
+    "dimensions_m": [
+      10.857728958129883,
+      8.860779762268066,
+      7.891218185424805
+    ],
+    "dimension_residual_m": [
+      -5.340576176848799e-07,
+      9.5367431640625e-07,
+      -7.017834287026403e-07
+    ],
+    "same_pose_and_geometry_for_all_reference_views": true,
+    "same_orthographic_scale_m": 13.246429443359375,
+    "paired_color_components": 184
+  },
+  "image_generation": {
+    "mode": "builtin_imagegen",
+    "operation": "reference_image_palette_edit",
+    "selected_for_review": false,
+    "draft": "References_A_v3/RSG_A_v3_ImagegenColorDraft.png",
+    "draft_resolution_px": [
+      1254,
+      1254
+    ],
+    "reason": "Native draft is below 2K; review uses four consistent source-based 2K views.",
+    "prompt": "References_A_v3/imagegen_color_prompt.txt",
+    "input": "References_A_v2/RSG_A_v2_Hero_SourceStyle.png",
+    "review_images_method": "source-based Blender reference material renders"
+  },
+  "technical_reference_integrity": "passed",
+  "approvals": {
+    "A": {
+      "status": "pending",
+      "user_decision": null,
+      "version": "A-v3"
+    },
+    "B": {
+      "status": "not_started",
+      "user_decision": null,
+      "version": null
+    }
+  },
+  "production_modeling": "not_started",
+  "production_export_readback": "not_started",
+  "formal_ue_import": "not_started",
+  "ue_packages_written": false,
+  "lod_target_triangles": [
+    {
+      "lod": 0,
+      "body": 32000,
+      "outline": 8000,
+      "total": 40000,
+      "screen_size": 1.0
+    },
+    {
+      "lod": 1,
+      "body": 14000,
+      "outline": 3000,
+      "total": 17000,
+      "screen_size": 0.4
+    },
+    {
+      "lod": 2,
+      "body": 5000,
+      "outline": 1000,
+      "total": 6000,
+      "screen_size": 0.16
+    },
+    {
+      "lod": 3,
+      "body": 2000,
+      "outline": 0,
+      "total": 2000,
+      "screen_size": 0.06
+    }
+  ],
+  "actual_new_lod_triangles": null,
+  "new_material_sections": null,
+  "new_texture_budget": null,
+  "animation_compatibility_on_remade_mesh": "not_run",
+  "combat_framerate_measurement": "not_run",
+  "previous_version": "A-v2",
+  "user_revision_request": "背后的环也换成天蓝色，头部的圆球换成浅黄色",
+  "palette_revision": [
+    {
+      "component": 77,
+      "bone": "Top_M",
+      "region": "rear_circular_guard",
+      "from": "WarmWhite",
+      "to": "SkyBlue",
+      "srgb": "#87CEEB",
+      "polygon_count": 612
+    },
+    {
+      "component": 28551,
+      "bone": "Top_M",
+      "region": "front_round_head_dome",
+      "from": "WarmWhite",
+      "to": "PaleYellow",
+      "srgb": "#F4E4A1",
+      "polygon_count": 1696
+    }
+  ],
+  "source_geometry_digest_before": {
+    "SK_FPS_Mech.001": "825e11478bbdbf6996637987901d9ea31c23629aa5ffc56b534a80a357951e52"
+  },
+  "source_geometry_digest_after": {
+    "SK_FPS_Mech.001": "825e11478bbdbf6996637987901d9ea31c23629aa5ffc56b534a80a357951e52"
+  },
+  "all_A_v1_artifact_hashes_intact": true,
+  "same_cameras_and_pose_as_A_v1": true,
+  "retained_A_v2_blue_parts": [
+    {
+      "component": 33239,
+      "bone": "FrontLeg3_L",
+      "region": "shin_service_insert",
+      "from": "Coral",
+      "to": "SkyBlue",
+      "srgb": "#87CEEB",
+      "polygon_count": 302
+    },
+    {
+      "component": 33317,
+      "bone": "MiddleLeg3_L",
+      "region": "shin_service_insert",
+      "from": "Coral",
+      "to": "SkyBlue",
+      "srgb": "#87CEEB",
+      "polygon_count": 302
+    },
+    {
+      "component": 33395,
+      "bone": "BackLeg3_L",
+      "region": "shin_service_insert",
+      "from": "Coral",
+      "to": "SkyBlue",
+      "srgb": "#87CEEB",
+      "polygon_count": 302
+    },
+    {
+      "component": 26514,
+      "bone": "FrontLeg3_R",
+      "region": "shin_service_insert",
+      "from": "Coral",
+      "to": "SkyBlue",
+      "srgb": "#87CEEB",
+      "polygon_count": 302
+    },
+    {
+      "component": 33551,
+      "bone": "MiddleLeg3_R",
+      "region": "shin_service_insert",
+      "from": "Coral",
+      "to": "SkyBlue",
+      "srgb": "#87CEEB",
+      "polygon_count": 302
+    },
+    {
+      "component": 33629,
+      "bone": "BackLeg3_R",
+      "region": "shin_service_insert",
+      "from": "Coral",
+      "to": "SkyBlue",
+      "srgb": "#87CEEB",
+      "polygon_count": 302
+    },
+    {
+      "component": 47842,
+      "bone": "ShotgunTop_L",
+      "region": "upper_weapon_outboard_cover",
+      "from": "Coral",
+      "to": "SkyBlue",
+      "srgb": "#87CEEB",
+      "polygon_count": 364
+    },
+    {
+      "component": 53119,
+      "bone": "ShotgunTop_R",
+      "region": "upper_weapon_outboard_cover",
+      "from": "Coral",
+      "to": "SkyBlue",
+      "srgb": "#87CEEB",
+      "polygon_count": 364
+    }
+  ],
+  "all_A_v2_artifact_hashes_intact": true,
+  "same_cameras_and_pose_as_A_v2": true,
+  "visual_review": {
+    "all_four_images_inspected": true,
+    "rear_guard_sky_blue": true,
+    "head_dome_pale_yellow": true,
+    "user_approval_inferred": false
+  }
+}

@@ -33,6 +33,8 @@
 #include "Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.h"
 #include "Development/GuLiWingmanQAEvidence.h"
 #include "Engine/World.h"
+#include "Engine/OverlapResult.h"
+#include "Components/PrimitiveComponent.h"
 #include "Engine/HitResult.h"
 #include "EngineUtils.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
@@ -42,6 +44,8 @@
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
 #include "Gameplay/CommanderSkills/GuLiCommanderSkillDefinition.h"
 #include "Gameplay/CommanderSkills/GuLiUnitSkillExecution.h"
+#include "Gameplay/CommanderSkills/GuLiWarMachineMissileSkill.h"
+#include "Gameplay/Presentation/GuLiVATAnimation.h"
 #include "Gameplay/Tuning/GuLiRuntimeTuningSubsystem.h"
 #include "GameFramework/Controller.h"
 #include "HAL/PlatformTime.h"
@@ -156,6 +160,7 @@ namespace GuLiCommanderMassPrivate
 		double LastMovementUpdateSimulationSeconds = 0.0;
 		float FacingYawDegrees = 0.0f;
 		FGuLiMechanicalAnimationState MechanicalPose;
+		FGuLiVATPlayback VATPlayback;
 		uint8 NextMechanicalMuzzle = 0;
 		float Health = 100.0f;
 		float MaxHealth = 100.0f;
@@ -1237,7 +1242,9 @@ namespace GuLiCommanderMassPrivate
 		AvoidanceParameters.SeparationRadiusScale = 0.95f;
 		AvoidanceParameters.ObstacleSeparationDistance = AgentRadiusCentimeters * 0.35f;
 		AvoidanceParameters.PredictiveAvoidanceDistance = AgentRadiusCentimeters * 0.35f;
-		AvoidanceParameters.ObstaclePredictiveAvoidanceStiffness = 140.0f;
+		AvoidanceParameters.ObstaclePredictiveAvoidanceStiffness = 700.0f;
+		AvoidanceParameters.PredictiveAvoidanceRadiusScale = 1.0f;
+		AvoidanceParameters.PredictiveAvoidanceTime = 2.5f;
 
 		FMassArchetypeSharedFragmentValues SharedValues;
 		SharedValues.Add(EntityManager.GetOrCreateConstSharedFragment(
@@ -2035,6 +2042,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 	{
 		EGuLiTeam Team = EGuLiTeam::Unassigned;
 		bool bAllowAutomaticFire = true;
+		bool bStartIdle = false;
 		int32 SlotIndex = 0;
 		float FacingYawDegrees = 0.0f;
 		const FGuLiSoldierDefinition* Definition = nullptr;
@@ -2053,7 +2061,8 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 		return A.GetFName().LexicalLess(B.GetFName());
 	});
 	if (Deployments.IsEmpty()) InitialSoldierCount = TotalSoldierCount;
-	const TArray<FGuLiSoldierDefinition>& Definitions = SoldierData->GetSoldierDefinitions();
+	TArray<FGuLiSoldierDefinition> Definitions = SoldierData->GetSoldierDefinitions();
+	Definitions.RemoveAll([](const auto& D) { return D.bSummonOnly; });
 	TArray<FValidatedSpawnSlot> ValidatedSpawnSlots;
 	ValidatedSpawnSlots.Reserve(InitialSoldierCount);
 	bool bSpawnValidationSucceeded = true;
@@ -2061,7 +2070,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 	for (AGuLiCommanderDeploymentPoint* Deployment : Deployments)
 	{
 		const FGuLiSoldierDefinition* Definition = SoldierData->FindSoldierDefinition(Deployment->UnitTypeId);
-		if (!Definition)
+		if (!Definition || Definition->bSummonOnly)
 		{
 			bSpawnValidationSucceeded = false;
 			SpawnValidationFailure = FString::Printf(TEXT("deployment=%s unknown unit type=%d"),
@@ -2091,6 +2100,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 			FValidatedSpawnSlot& Slot = ValidatedSpawnSlots.AddDefaulted_GetRef();
 			Slot.Team = Deployment->Team;
 			Slot.bAllowAutomaticFire = Deployment->bAllowAutomaticFire;
+			Slot.bStartIdle = Deployment->bStartIdle;
 			Slot.SlotIndex = SlotIndex;
 			Slot.FacingYawDegrees = Deployment->GetActorRotation().Yaw;
 			Slot.Definition = Definition;
@@ -2341,13 +2351,28 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 		}
 	}
 	AuthorityState->bPopulationSpawned = true;
+	// Initial batch creation uses a common archetype; commit each unit's table speed and radius before it moves.
+	FString InitialMovementError;
+	if (!RefreshRogueMovementEntities(MAX_uint32, 1.f, InitialMovementError))
+	{
+		UE_LOG(LogGuLiCommanderMass, Error, TEXT("Cannot initialize per-unit movement: %s"), *InitialMovementError);
+		EntityManager.BatchDestroyEntities(EntityHandles);
+		AuthorityState->Soldiers.Reset(); AuthorityState->SoldierIndexById.Reset();
+		AuthorityState->SpatialGrid.Reset(); AuthorityState->bPopulationSpawned = false;
+		return false;
+	}
 	if (auto* Tasks = GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>())
 	{
 		for (const auto Team : { EGuLiTeam::Red, EGuLiTeam::Blue })
 		{
-			TArray<FGuLiSoldierId> Ids;
-			for (const auto& Soldier : AuthorityState->Soldiers) if (Soldier.Team == Team) Ids.Add(Soldier.SoldierId);
-			Tasks->RegisterSoldiers(Team, Ids);
+			for (const bool bStartIdle : { false, true })
+			{
+				TArray<FGuLiSoldierId> Ids;
+				for (int32 Index = 0; Index < AuthorityState->Soldiers.Num(); ++Index)
+					if (AuthorityState->Soldiers[Index].Team == Team && ValidatedSpawnSlots[Index].bStartIdle == bStartIdle)
+						Ids.Add(AuthorityState->Soldiers[Index].SoldierId);
+				Tasks->RegisterSoldiers(Team, Ids, INDEX_NONE, bStartIdle);
+			}
 		}
 	}
 	RegisterCombatLedgerTargets();
@@ -4257,7 +4282,7 @@ bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
 					FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location));
 	}
 	TArray<FGuLiSoldierId> HitIds;
-	if (!GuLiCommanderSelectionQuery::ResolveCandidates(Request, PlayerState.GetTeam(), Population, HitIds))
+	if (!GuLiCommanderSelectionQuery::ResolveCandidates(Request, PlayerState.GetTeam(), Population, HitIds, GetWorld()))
 	{
 		OutAck.Result = EGuLiCommandAckResult::InvalidTarget;
 		return false;
@@ -4674,10 +4699,20 @@ int32 UGuLiBattleAuthoritySubsystem::ApplyRuntimeTuning(
 }
 
 // 通过 Even/Odd Archetype 迁移替换 const-shared 参数，迁移后重新取 Fragment，避免持有旧引用。
+float UGuLiBattleAuthoritySubsystem::GetUnitBaseMovementSpeed(uint16 UnitTypeId) const
+{
+	const auto* Data = GetWorld() ? GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>() : nullptr;
+	const auto* Unit = Data ? Data->FindSoldierDefinition(UnitTypeId) : nullptr;
+	if (!Unit) return MovementSpeedCentimetersPerSecond;
+	const float DefaultSpeed = Data->GetDefaultSoldierDefinition().MovementSpeedCmPerSecond;
+	return DefaultSpeed > 0 ? Unit->MovementSpeedCmPerSecond * MovementSpeedCentimetersPerSecond / DefaultSpeed
+		: MovementSpeedCentimetersPerSecond;
+}
+
 float UGuLiBattleAuthoritySubsystem::GetUnitMovementSpeed(EGuLiTeam Team, uint16 UnitTypeId) const
 {
 	const float* Multiplier=RogueMovementMultipliers.Find((static_cast<uint32>(Team)<<16)|UnitTypeId);
-	return MovementSpeedCentimetersPerSecond*(Multiplier ? *Multiplier : 1.f);
+	return GetUnitBaseMovementSpeed(UnitTypeId)*(Multiplier ? *Multiplier : 1.f);
 }
 
 bool UGuLiBattleAuthoritySubsystem::RefreshRogueMovementEntities(uint32 Key, float Multiplier, FString& Error)
@@ -4696,7 +4731,9 @@ bool UGuLiBattleAuthoritySubsystem::RefreshRogueMovementEntities(uint32 Key, flo
 		if (Key!=MAX_uint32 && Key!=((static_cast<uint32>(S.Team)<<16)|S.UnitTypeId)) continue;
 		if (!Manager.IsEntityValid(S.Entity)) continue;
 		auto& Change=Changes.AddDefaulted_GetRef(); Change.Index=I;
-		Change.Speed=Key==MAX_uint32 ? GetUnitMovementSpeed(S.Team,S.UnitTypeId) : MovementSpeedCentimetersPerSecond*Multiplier;
+		Change.Speed=Key==MAX_uint32 ? GetUnitMovementSpeed(S.Team,S.UnitTypeId) : GetUnitBaseMovementSpeed(S.UnitTypeId)*Multiplier;
+		if (!FMath::IsFinite(Change.Speed) || Change.Speed <= 0 || Change.Speed > MAX_int16)
+		{ Error=TEXT("Per-unit movement speed exceeds the Mass numeric limit"); return false; }
 		Change.Shared=MakeAuthoritySharedFragmentValues(Manager,Change.Speed,S.AvoidanceRadiusCentimeters);
 		Change.Archetype=Manager.GetOrCreateSuitableArchetype(S.bMovementEvenArchetype ? AuthorityState->RuntimeTuningOddBaseArchetype : AuthorityState->RuntimeTuningEvenBaseArchetype,
 			Change.Shared.GetSharedFragmentBitSet(),Change.Shared.GetConstSharedFragmentBitSet());
@@ -4725,7 +4762,7 @@ bool UGuLiBattleAuthoritySubsystem::ApplyRogueMovementSource(EGuLiTeam Team, uin
 	if (Sources && Sources->Contains(SourceId)) return true;
 	const float* Current=RogueMovementMultipliers.Find(Key);
 	const float Next=(Current ? *Current : 1.f)*(1.f+Bonus);
-	const float Speed=MovementSpeedCentimetersPerSecond*Next;
+	const float Speed=GetUnitBaseMovementSpeed(UnitTypeId)*Next;
 	if (!FMath::IsFinite(Speed) || Speed>MAX_int16)
 	{ Error=TEXT("Movement speed exceeds the Mass numeric limit"); return false; }
 	if (!RefreshRogueMovementEntities(Key,Next,Error)) return false;
@@ -5351,6 +5388,9 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 			Pose.HoverBlendStartMilliseconds = Soldier.MechanicalPose.HoverBlendStartMilliseconds;
 			Pose.HoverBlendFromWeight = Soldier.MechanicalPose.HoverBlendFromWeight;
 			Pose.bHoverIdleTarget = Soldier.MechanicalPose.bHoverIdleTarget;
+			Pose.VATClip = Soldier.VATPlayback.Clip;
+			Pose.VATPhase = uint16(FMath::RoundToInt(FMath::Clamp(Soldier.VATPlayback.Phase, 0.0f, 1.0f) * 65535));
+			Pose.VATRate = uint16(FMath::RoundToInt(FMath::Clamp(Soldier.VATPlayback.Rate, 0.0f, 255.0f) * 256));
 			Pose.State = Soldier.IsAlive()
 				? (Soldier.ActiveOrderId != 0u
 					? EGuLiSoldierPoseState::Moving
@@ -5522,6 +5562,9 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 	for (auto& Soldier : AuthorityState->Soldiers)
 	{
 		const auto* Definition = AnimationData ? AnimationData->FindSoldierDefinition(Soldier.UnitTypeId) : nullptr;
+		if (Definition && Definition->VATDefinition)
+			GuLiVATAnimation::Step(*Definition->VATDefinition, Soldier.Velocity, Soldier.FacingYawDegrees,
+				Soldier.IsAlive(), GuLiCommanderSimulationTiming::StepSeconds, Soldier.VATPlayback);
 		if (Soldier.CanAct() && Definition)
 			GuLiMechanicalAnimation::StepHover(Definition->MechanicalAnimation, Soldier.SoldierId.Value,
 				Soldier.Velocity.Size2D(), GuLiCommanderSimulationTiming::StepSeconds,
@@ -5530,7 +5573,7 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 	for (auto& Soldier : AuthorityState->Soldiers)
 	{
 		const auto* Definition = AnimationData ? AnimationData->FindSoldierDefinition(Soldier.UnitTypeId) : nullptr;
-		if (!Soldier.CanAct() || !Definition || !Definition->MechanicalAnimation.IsEnabled()) continue;
+		if (!Soldier.CanAct() || !Definition || (!Definition->VATDefinition && !Definition->MechanicalAnimation.IsEnabled())) continue;
 		const auto& Config = Definition->MechanicalAnimation;
 		FVector TargetPosition;
 		const FVector* AimTarget = nullptr;
@@ -5557,7 +5600,10 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 					Mass->GetMutableEntityManager().GetFragmentDataChecked<FTransformFragment>(Soldier.Entity)
 						.SetTransform(FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location));
 		}
-		GuLiMechanicalAnimation::StepAim(Config, FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location),
+		if (Definition->VATDefinition)
+			GuLiVATAnimation::StepAim(*Definition->VATDefinition, Soldier.VATPlayback,
+				FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location), AimTarget, Dt, Soldier.MechanicalPose);
+		else GuLiMechanicalAnimation::StepAim(Config, FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location),
 			AimTarget, GetUnitMovementSpeed(Soldier.Team, Soldier.UnitTypeId), Dt, Soldier.MechanicalPose);
 	}
 
@@ -5588,11 +5634,13 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 			Request.SourceTransform = FTransform(FRotator(0, Source.FacingYawDegrees, 0), Source.Location);
 			Request.TargetLocation = Target.Location; Request.ShotOrdinal = Event.ShotOrdinal;
 			if (const auto* Definition = AnimationData ? AnimationData->FindSoldierDefinition(Source.UnitTypeId) : nullptr;
-				Definition && Definition->MechanicalAnimation.IsEnabled() && Event.SourceSlotId == TEXT("BasicAttack"))
+				Definition && (Definition->VATDefinition || Definition->MechanicalAnimation.IsEnabled()) && Event.SourceSlotId == TEXT("BasicAttack"))
 			{
 				Request.MechanicalPose = Source.MechanicalPose;
 				Request.bHasMechanicalPose = true;
-				Request.MechanicalMuzzleIndex = Source.NextMechanicalMuzzle;
+				Request.MechanicalMuzzleIndex = Event.MuzzleIndex >= 0 ? uint8(Event.MuzzleIndex) : Source.NextMechanicalMuzzle;
+				Request.VATPlayback = Source.VATPlayback;
+				Request.bHasVATPose = Definition->VATDefinition != nullptr;
 				Request.MechanicalPoseTimeSeconds = static_cast<float>(AuthorityState->SimulationSeconds);
 				const FGuLiSoldierId SourceId = Source.SoldierId;
 				Request.OnShotAccepted = [this, SourceId](uint8 Side, float Now)
@@ -5613,6 +5661,7 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 				Request.Motion.Speed = Event.ProjectileSpeedCentimetersPerSecond;
 				Request.Motion.MaximumLifetime = Event.ProjectileLifetimeSeconds;
 				Request.Motion.SweepRadius = Event.ProjectileSweepRadiusCentimeters;
+				Request.ProjectileSpreadAngleDegrees = Event.ProjectileSpreadAngleDegrees;
 			}
 		}
 		Effects->ExecuteAttackBatch(Requests);
@@ -5828,6 +5877,24 @@ bool UGuLiBattleAuthoritySubsystem::RegisterCombatExecutor(const FName ExecutorI
 	return Skills->RegisterExecutor(ExecutorId);
 }
 
+namespace
+{
+	bool HasBlockingSoldierSpawnOverlap(UWorld& World, const FVector& FootLocation, float Radius)
+	{
+		TArray<FOverlapResult> Overlaps;
+		World.OverlapMultiByObjectType(Overlaps, FootLocation + FVector(0, 0, Radius + 20),
+			FQuat::Identity, FCollisionObjectQueryParams::AllObjects, FCollisionShape::MakeSphere(Radius),
+			FCollisionQueryParams(SCENE_QUERY_STAT(GuLiSoldierSpawnClearance), false));
+		// Object overlap also reports initial penetrations. Resolve the required Pawn response explicitly
+		// so an already-overlapping mesh cannot be admitted as a non-blocking channel-query touch.
+		return Overlaps.ContainsByPredicate([](const FOverlapResult& Overlap)
+		{
+			const auto* Component = Overlap.GetComponent();
+			return Component && Component->GetCollisionResponseToChannel(ECC_Pawn) == ECR_Block;
+		});
+	}
+}
+
 bool UGuLiBattleAuthoritySubsystem::SpawnReservedSoldier(const EGuLiTeam Team, const uint16 UnitTypeId,
 	const FVector& Location, FGuLiSoldierId& OutId)
 {
@@ -5850,8 +5917,7 @@ bool UGuLiBattleAuthoritySubsystem::SpawnReservedSoldier(const EGuLiTeam Team, c
 		|| FVector::DistSquared2D(Location, Projected.Location) > FMath::Square(MemberAgentRadiusCentimeters)) return false;
 	if (AuthorityState->Soldiers.ContainsByPredicate([&](const FSoldierRuntime& Existing)
 		{ return Existing.IsPresent() && FVector::DistSquared2D(Existing.Location, Projected.Location) < FMath::Square(SpawnRadius + Existing.AvoidanceRadiusCentimeters); })) return false;
-	if (World->OverlapBlockingTestByChannel(Projected.Location + FVector(0,0,SpawnRadius + 20),
-		FQuat::Identity, ECC_Pawn, FCollisionShape::MakeSphere(SpawnRadius))) return false;
+	if (HasBlockingSoldierSpawnOverlap(*World, Projected.Location, SpawnRadius)) return false;
 	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
 	FMassArchetypeSharedFragmentValues SharedValues = MakeAuthoritySharedFragmentValues(
 		EntityManager, GetUnitMovementSpeed(Team,UnitTypeId), SpawnRadius);
@@ -5912,8 +5978,13 @@ int32 UGuLiBattleAuthoritySubsystem::GetTeamUnitCap() const
 FIntPoint UGuLiBattleAuthoritySubsystem::GetTeamPopulation(EGuLiTeam Team) const
 {
 	FIntPoint Result(0, Team == EGuLiTeam::Red ? ReservedRedPopulation : ReservedBluePopulation);
+	const auto* Data = GetWorld() ? GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>() : nullptr;
 	if (AuthorityState) for (const auto& Soldier : AuthorityState->Soldiers)
-		if (Soldier.Team == Team && Soldier.IsAlive()) ++Result.X;
+		if (Soldier.Team == Team && Soldier.IsAlive())
+		{
+			const auto* Definition = Data ? Data->FindSoldierDefinition(Soldier.UnitTypeId) : nullptr;
+			if (!Definition || !Definition->bSummonOnly) ++Result.X;
+		}
 	return Result;
 }
 int32 UGuLiBattleAuthoritySubsystem::SpawnSoldierBatch(EGuLiTeam Team, uint16 UnitTypeId,
@@ -5921,6 +5992,9 @@ int32 UGuLiBattleAuthoritySubsystem::SpawnSoldierBatch(EGuLiTeam Team, uint16 Un
 {
 	OutIds.Reset();
 	if (!IsAuthorityWorld() || !GuLiCommanderProtocol::IsPlayableTeam(Team) || !AuthorityState || !AuthorityState->bPopulationSpawned) return 0;
+	const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+	const auto* Definition = Data ? Data->FindSoldierDefinition(UnitTypeId) : nullptr;
+	if (!Definition || Definition->bSummonOnly) return 0;
 	const FIntPoint Population = GetTeamPopulation(Team);
 	const int32 Count = FMath::Min(Locations.Num(), FMath::Max(0, GetTeamUnitCap() - Population.X - Population.Y));
 	int32& Reserved = Team == EGuLiTeam::Red ? ReservedRedPopulation : ReservedBluePopulation;
@@ -5933,6 +6007,105 @@ int32 UGuLiBattleAuthoritySubsystem::SpawnSoldierBatch(EGuLiTeam Team, uint16 Un
 	}
 	if (auto* Tasks = GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()) Tasks->RegisterSoldiers(Team, OutIds);
 	return OutIds.Num();
+}
+bool UGuLiBattleAuthoritySubsystem::SummonSoldierBatch(EGuLiTeam Team, FGuLiSoldierId CasterId,
+	uint16 UnitTypeId, int32 Count, float Clearance, int32 OuterRings, int32 CandidatesPerRing,
+	TArray<FGuLiSoldierId>& OutIds, FString& Error)
+{
+	using namespace GuLiCommanderMassPrivate;
+	OutIds.Reset();
+	if (!IsInGameThread() || !IsAuthorityWorld() || !AuthorityState || !AuthorityState->bPopulationSpawned
+		|| !GuLiCommanderProtocol::IsPlayableTeam(Team) || Count < 1 || Count > 32
+		|| !FMath::IsFinite(Clearance) || Clearance < 0 || OuterRings < 1 || OuterRings > 3
+		|| CandidatesPerRing < 1 || CandidatesPerRing > 36)
+	{ Error = TEXT("Invalid summon context."); return false; }
+	const int32* CasterIndex = AuthorityState->SoldierIndexById.Find(CasterId.Value);
+	if (!CasterIndex || !AuthorityState->Soldiers[*CasterIndex].CanAct()
+		|| AuthorityState->Soldiers[*CasterIndex].Team != Team)
+	{ Error = TEXT("Caster is unavailable."); return false; }
+	if (AuthorityState->Soldiers.Num() + Count > 10000)
+	{ Error = TEXT("Global entity capacity cannot admit the complete summon batch."); return false; }
+	UWorld* World = GetWorld();
+	const auto* Data = World->GetSubsystem<UGuLiCommanderDataSubsystem>();
+	const auto* Unit = Data ? Data->FindSoldierDefinition(UnitTypeId) : nullptr;
+	const auto* CasterDefinition = Data ? Data->FindSoldierDefinition(AuthorityState->Soldiers[*CasterIndex].UnitTypeId) : nullptr;
+	if (!Unit || !Unit->UsesMass() || !Unit->bSummonOnly || !CasterDefinition)
+	{ Error = TEXT("Summon-only Mass definition is required."); return false; }
+	// Everything needed from the caster is copied before any Soldiers.Add may reallocate it.
+	const auto CasterLocation = AuthorityState->Soldiers[*CasterIndex].Location;
+	const float CasterYaw = AuthorityState->Soldiers[*CasterIndex].FacingYawDegrees;
+	const FTransform CasterTransform(FRotator(0, CasterYaw, 0), CasterLocation);
+	const FBox Bounds = CasterDefinition->GetModelBoundsCentimeters();
+	if (!Bounds.IsValid) { Error = TEXT("Caster gameplay bounds are unavailable."); return false; }
+	const float Radius = Unit->GetMassAvoidanceRadius(MemberAgentRadiusCentimeters);
+	const FVector Center(Bounds.GetCenter().X, Bounds.GetCenter().Y, 0);
+	const FVector Extent(Bounds.GetExtent().X + Radius + Clearance, Bounds.GetExtent().Y + Radius + Clearance, 0);
+	auto* Navigation = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+	auto* NavData = Navigation ? GetCommanderNavigationData(*Navigation) : nullptr;
+	if (!NavData || !AuthorityState->MassEntitySubsystem.IsValid())
+	{ Error = TEXT("Commander navigation is unavailable."); return false; }
+	TArray<FVector> Locations;
+	Locations.Reserve(Count);
+	auto PerimeterPoint = [&](int32 Index, int32 Candidates, int32 Ring)
+	{
+		const FVector E = Extent + FVector(1,1,0) * (Ring * (2 * Radius + Clearance));
+		float Along = float(Index) / Candidates * 4 * (E.X + E.Y);
+		FVector Local;
+		if (Along < 2 * E.X) Local = FVector(-E.X + Along, -E.Y, 0);
+		else if ((Along -= 2 * E.X) < 2 * E.Y) Local = FVector(E.X, -E.Y + Along, 0);
+		else if ((Along -= 2 * E.Y) < 2 * E.X) Local = FVector(E.X - Along, E.Y, 0);
+		else { Along -= 2 * E.X; Local = FVector(-E.X, E.Y - Along, 0); }
+		return CasterTransform.TransformPosition(Center + Local);
+	};
+	auto Admit = [&](const FVector& Desired)
+	{
+		FNavLocation Projected;
+		if (!ProjectPointToCommanderNavigation(*Navigation, *NavData, Desired,
+			FVector(MemberAgentRadiusCentimeters, MemberAgentRadiusCentimeters, 5000), Projected)
+			|| FVector::DistSquared2D(Desired, Projected.Location) > FMath::Square(MemberAgentRadiusCentimeters)) return false;
+		const auto Local = CasterTransform.InverseTransformPosition(Projected.Location) - Center;
+		if (FMath::Abs(Local.X) + .01 < Extent.X && FMath::Abs(Local.Y) + .01 < Extent.Y) return false;
+		for (const auto& Existing : AuthorityState->Soldiers)
+			if (Existing.IsPresent() && FVector::DistSquared2D(Existing.Location, Projected.Location)
+				< FMath::Square(Radius + Existing.AvoidanceRadiusCentimeters + Clearance)) return false;
+		for (const auto& Accepted : Locations)
+			if (FVector::DistSquared2D(Accepted, Projected.Location) < FMath::Square(2 * Radius + Clearance)) return false;
+		if (HasBlockingSoldierSpawnOverlap(*World, Projected.Location, Radius)) return false;
+		Locations.Add(Projected.Location);
+		return true;
+	};
+	for (int32 Index = 0; Index < Count; ++Index) Admit(PerimeterPoint(Index, Count, 0));
+	for (int32 Ring = 1; Ring <= OuterRings && Locations.Num() < Count; ++Ring)
+		for (int32 Index = 0; Index < CandidatesPerRing && Locations.Num() < Count; ++Index)
+			Admit(PerimeterPoint(Index, CandidatesPerRing, Ring));
+	if (Locations.Num() != Count)
+	{ Error = TEXT("No space for the complete summon batch; cooldown is unchanged."); return false; }
+	const int32 FirstAdded = AuthorityState->Soldiers.Num();
+	for (const auto& Location : Locations)
+	{
+		FGuLiSoldierId Id;
+		if (!SpawnReservedSoldier(Team, UnitTypeId, Location, Id))
+		{
+			auto& Manager = AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
+			auto& Ledger = *World->GetSubsystem<UGuLiDamageLedgerSubsystem>();
+			while (AuthorityState->Soldiers.Num() > FirstAdded)
+			{
+				const auto& Added = AuthorityState->Soldiers.Last();
+				const auto Handle = MakeSoldierTargetHandle(Added.SoldierId);
+				Ledger.UnregisterTarget(Handle, this); RegisteredCombatLedgerTargets.Remove(Handle);
+				AuthorityState->SoldierIndexById.Remove(Added.SoldierId.Value);
+				Manager.DestroyEntity(Added.Entity);
+				AuthorityState->Soldiers.Pop(EAllowShrinking::No);
+			}
+			OutIds.Reset();
+			Error = TEXT("Summon commit failed; the complete batch was rolled back.");
+			return false;
+		}
+		OutIds.Add(Id);
+	}
+	if (auto* Tasks = World->GetSubsystem<UGuLiUnitTaskSubsystem>()) Tasks->RegisterSoldiers(Team, OutIds, INDEX_NONE, true);
+	AuthorityState->bForceManualAvoidanceRefresh = true;
+	return true;
 }
 bool UGuLiBattleAuthoritySubsystem::SpawnDebugSoldier(EGuLiTeam Team, uint16 UnitTypeId,
 	const FVector& Location, FGuLiSoldierId& OutId)
@@ -6176,6 +6349,10 @@ void UGuLiBattleAuthoritySubsystem::ExecuteSelectedUnitSkills(AGuLiBattlePlayerS
 	if (!IsAuthorityWorld() || !AuthorityState || !PlayerState.IsCommander() || !RequestId.IsValid()) return;
 	TSet<uint32> Visited;
 	const double Now = AuthorityState->SimulationSeconds;
+	// One dispatch owns one circle. Keep this separate from RequestId: editor
+	// callers can use a shared root event for several independent dispatches.
+	const FGuid GuidanceBatchId = FGuid::NewGuid();
+	int32 RemainingGuidanceCapacity = INDEX_NONE;
 	for (const auto& Cohort : Selection.Cohorts) for (auto Id : Cohort.MemberIds)
 	{
 		if (Visited.Contains(Id.Value)) continue;
@@ -6207,9 +6384,27 @@ void UGuLiBattleAuthoritySubsystem::ExecuteSelectedUnitSkills(AGuLiBattlePlayerS
 		Context.Level = Soldier.ActiveSkill.Level;
 		Context.UnitTypeId = Soldier.UnitTypeId;
 		Context.ShotOrdinal = Soldier.ActiveSkill.SuccessfulCasts;
-		OutResults.Add(GuLiUnitSkillExecution::Execute(Definition, Caster, Soldier.ActiveSkill, Now, GetWorld()->GetTimeSeconds(),
+		const auto* PointConfig = Definition ? Cast<UGuLiPointSkillConfiguration>(Definition->Configuration) : nullptr;
+		const bool bGuidedMissiles = Soldier.UnitTypeId == 2 && PointConfig
+			&& PointConfig->SourceWeaponSlot == TEXT("MissileLauncher")
+			&& Definition->ExecutorClass->IsChildOf(UGuLiWarMachineMissileSkillExecutor::StaticClass());
+		if (bGuidedMissiles)
+		{
+			if (RemainingGuidanceCapacity == INDEX_NONE)
+				RemainingGuidanceCapacity = PointConfig->MaxProjectilesPerActivation;
+			Context.RemainingGuidanceCapacity = RemainingGuidanceCapacity;
+			Context.GuidanceBatchId = GuidanceBatchId;
+		}
+		FGuLiActiveSkillRuntime Runtime = Soldier.ActiveSkill;
+		auto Result = GuLiUnitSkillExecution::Execute(Definition, Caster, Runtime, Now, GetWorld()->GetTimeSeconds(),
 			[Definition](const FGuLiActiveSkillExecutionContext& Cast, const UDataAsset* Configuration)
-			{ return Definition->ExecutorClass->GetDefaultObject<UGuLiCommanderSkillExecutor>()->Execute(Cast, Configuration); }));
+			{ return Definition->ExecutorClass->GetDefaultObject<UGuLiCommanderSkillExecutor>()->Execute(Cast, Configuration); });
+		if (bGuidedMissiles && Result.Execution.bSucceeded)
+			RemainingGuidanceCapacity -= Result.Execution.LaunchedProjectileCount;
+		// Executors may append soldiers. Reacquire the caster; never use Soldier/Index after Execute.
+		if (const int32* CurrentIndex = AuthorityState->SoldierIndexById.Find(Id.Value))
+			AuthorityState->Soldiers[*CurrentIndex].ActiveSkill = Runtime;
+		OutResults.Add(MoveTemp(Result));
 	}
 }
 

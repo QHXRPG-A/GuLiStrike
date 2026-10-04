@@ -83,7 +83,7 @@ def main():
             '指挥官统一自动三级 LOD；本次只有导弹接入，模型/升级特效/悬浮/血条待后续接入。\n'
             + native_status +
             '玩法入口仍为 RogueCards_F4_Entry；性能布景仍为现有六组 100/500 × 1/4/8。\n'
-            '手动验证：新局指挥官就绪，先 gs.MissileCluster.Candidate 1，再 gs.MissileFixture.Build 100 1；'
+            '手动验证：新局指挥官就绪，v3为正式默认表现，执行 gs.MissileFixture.Build 100 1；'
             '用 gs.MissileFixture.Camera lod0 / lod1 / lod2 切换三个观察位置，gs.MissileFixture.Fire 发射（遵守冷却）。\n'
             '加载修正版夹具后，Build应回报success=true、fixture_units与stopped_units均等于请求人数；当前WM01间距按权威避让直径加20cm计算，为1270cm。人数不符时重新准备场景。\n'
             '飞行中 gs.Commander.LOD.Stats WM01MissileBatches 查看目标/实际档位、裁剪、预算和交接等待；'
@@ -92,7 +92,7 @@ def main():
             'LOD0/1/2 对应 24/8/0 段烟迹；寿命2.4秒、交接0.15秒。烟迹/尾焰尺寸读取当前Projectiles表，LOD不改写视觉数值。\n'
             '统一配置：gs.Commander.LOD.List；Get near.enter_distance_cm；Set near.enter_distance_cm 7000；Reset all。'
             '以上 Get/Set/Reset 均需完整 gs.Commander.LOD. 前缀，修改只作用当前 World，不写盘。\n'
-            '恢复原固定对照镜头：gs.MissileFixture.Camera overview。正式 DA 引用保持候选审核前状态。\n'
+            '恢复原固定对照镜头：gs.MissileFixture.Camera overview。WM01原生默认使用v3，无需候选或资产开关；旧表现对照用 gs.MissileCluster.Enabled 0，恢复用 1。\n'
             '检查缩放边界往返、预算不足、命中消散、屏外恢复、槽位复用与新局清理。运行和性能验收状态以开发记录为准。')
 
         marker = '\n[指挥官统一 LOD 20260929]'
@@ -121,7 +121,7 @@ def main():
         assert 'gs.Commander.LOD.Stats' in str(note.get_editor_property('text'))
         projectile = unreal.load_asset('/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile')
         report['projectile'] = projectile.get_path_name()
-        report['production_cluster_enabled'] = bool(projectile.get_editor_property('use_missile_cluster_rendering'))
+        report['production_cluster_enabled'] = bool(projectile.uses_missile_cluster_rendering())
         report['systems'] = [unreal.load_asset('/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_' + q).get_path_name()
                              for q in ('Full', 'Lite', 'Minimal')]
         report['native_lod_class_loaded'] = native_ready

@@ -1,0 +1,30 @@
+{
+  "duration": 29.994705200195312,
+  "connections": {
+    "127.0.0.1:52837": {
+      "socket_Bps": 38862.75901762854,
+      "rpc_Bps": {
+        "ClientReceiveEncodedPoseBlock": 26841.970762051613,
+        "ClientReceiveStateBatch": 3164.2709727109427,
+        "ClientReceivePublicPoseFrame": 40.00706097928864,
+        "MulticastState": 7.001235671375512
+      }
+    },
+    "127.0.0.1:52838": {
+      "socket_Bps": 37351.72566365829,
+      "rpc_Bps": {
+        "ClientReceiveEncodedPoseBlock": 26856.435815036937,
+        "ClientReceiveStateBatch": 2026.5993479277197,
+        "ClientReceivePublicPoseFrame": 40.00706097928864,
+        "MulticastState": 7.001235671375512
+      }
+    },
+    "127.0.0.1:17777": {
+      "socket_Bps": 2418.960263677722,
+      "rpc_Bps": {
+        "ServerAcknowledgeFacts": 37.99837312595353,
+        "ServerAcknowledgePoseBlocks": 1594.9481643743072
+      }
+    }
+  }
+}

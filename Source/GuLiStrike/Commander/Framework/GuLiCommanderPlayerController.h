@@ -108,10 +108,11 @@ public:
 	virtual void FlushPressedKeys() override;
 	virtual void SetupInputComponent() override;
 	virtual void PlayerTick(float DeltaTime) override;
+	virtual void UpdateHiddenComponents(const FVector& ViewLocation, TSet<FPrimitiveComponentId>& HiddenComponents) override;
 
 	// 本端输入资格查询：PlayerState 为已同步的指挥官才返回 true；本地控制上下文由调用方保证，服务器仍会重验。
 	UFUNCTION(BlueprintPure, Category = "Commander")
-	bool CanIssueCommanderOrders() const;
+	GULISTRIKE_API bool CanIssueCommanderOrders() const;
 
 	/** 本地指挥视图资格；只依赖角色，网络未就绪时仍可移动相机，但不能发命令。 */
 	bool IsCommanderViewActive() const;
@@ -127,13 +128,13 @@ public:
 
 	void ActivateSelectionTool();
 	void FocusSelectedUnits();
-	void InvokeHUDCommand(FName Action);
+	GULISTRIKE_API void InvokeHUDCommand(FName Action);
 	void RecallControlGroupFromUI(int32 Slot, bool bControl, bool bShift, bool bAlt);
-	bool IssueMapMove(const FVector& Point, bool bAppend);
+	GULISTRIKE_API bool IssueMapMove(const FVector& Point, bool bAppend);
 	bool IsCommanderMenuOpen() const;
 	bool IsRogueCardModal() const { return bRogueCardModal; }
 	void SetRogueCardModal(bool bActive);
-	void StopSelectedUnits();
+	GULISTRIKE_API void StopSelectedUnits();
 	FVector GetSelectedUnitCenter() const { return FindConfirmedSelectionCenter(); }
 	void ToggleSelectionShape();
 	EGuLiCommanderSelectionShape GetSelectionShape() const { return SelectionShape; }
@@ -159,7 +160,7 @@ public:
 
 #if WITH_EDITOR
 	/** Local PIE QA must share normal input's sequence instead of poisoning its high-water mark. */
-	uint32 AllocateEditorQASelectionRequestId() { return AllocateSelectionRequestId(); }
+	GULISTRIKE_API uint32 AllocateEditorQASelectionRequestId();
 #endif
 
 protected:

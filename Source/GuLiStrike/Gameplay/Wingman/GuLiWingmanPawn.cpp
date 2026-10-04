@@ -2,6 +2,9 @@
 
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
+#include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
+#include "Engine/World.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/Presentation/GuLiTeamOutlineComponent.h"
@@ -470,7 +473,10 @@ FTransform AGuLiWingmanPawn::GetPresentationTransform() const
 
 void AGuLiWingmanPawn::UpdateFlightTrail(const float Opacity, const bool bResetTrail)
 {
-	const float SafeOpacity = FMath::IsFinite(Opacity) ? FMath::Clamp(Opacity, 0.0f, 1.0f) : 0.0f;
+	float SafeOpacity = FMath::IsFinite(Opacity) ? FMath::Clamp(Opacity, 0.0f, 1.0f) : 0.0f;
+	if (GetWorld())
+		if (auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>())
+			if (!LOD->ShouldRenderWorldEffect(GetActorLocation(), FlightTrailCullDistance)) SafeOpacity = 0.0f;
 	if (GetNetMode() == NM_DedicatedServer || !GetWorld() || !GetWorld()->IsGameWorld()
 		|| !Runtime.Dynamics.bAlive || IsHidden() || SafeOpacity <= 0.0f
 		|| !VisualMesh || !VisualMesh->GetStaticMesh() || FlightTrailVfxId <= 0 || bFlightTrailLoadFailed)
@@ -499,8 +505,8 @@ void AGuLiWingmanPawn::UpdateFlightTrail(const float Opacity, const bool bResetT
 		FlightTrail->SetRelativeRotation(FRotator(0.0f, 180.0f, 0.0f));
 		FlightTrail->SetCanEverAffectNavigation(false);
 		FlightTrail->SetCastShadow(false);
-		FlightTrail->SetCullDistance(FlightTrailCullDistance);
 		FlightTrail->RegisterComponent();
+		if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(FlightTrail);
 	}
 
 	const FVector Location = PresentationRoot->GetComponentLocation();
@@ -522,7 +528,7 @@ void AGuLiWingmanPawn::UpdateFlightTrail(const float Opacity, const bool bResetT
 		FVector2D(0.0f, 3600.0f), FVector2D(0.65f, 1.3f), Speed));
 	FlightTrail->SetVariableVec3(TEXT("User.Forward"), PresentationRoot->GetForwardVector());
 	FlightTrail->SetVariableVec3(TEXT("User.Right"), PresentationRoot->GetRightVector());
-	// Niagara owns distance-cull resume. Do not reactivate a culled system every frame.
+	// Start once after the view policy admits this trail; do not restart every frame.
 	if (!bFlightTrailRunning)
 	{
 		FlightTrail->Activate(true);

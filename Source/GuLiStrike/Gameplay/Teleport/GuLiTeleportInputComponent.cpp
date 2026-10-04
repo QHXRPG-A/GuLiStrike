@@ -102,7 +102,7 @@ bool UGuLiTeleportInputComponent::HandlePrimaryAction()
 {
 	if (!bArmed) { return false; }
 	auto* PC = GetCommander();
-	if (!PC || PC->IsCursorOverCommanderUI() || IsHUDHovered()) { return true; }
+	if (!PC || !PC->CanIssueCommanderOrders() || PC->IsCursorOverCommanderUI() || IsHUDHovered()) { return true; }
 	FVector Point; if (!PC->TraceGroundUnderCursor(Point)) { Feedback = GuLiGameText::Text(TEXT("UI.TeleportInputComponent.168")); return true; }
 	const auto State = QueryState();
 	if (!CurrentCastId.IsValid() && !bSourcePending)

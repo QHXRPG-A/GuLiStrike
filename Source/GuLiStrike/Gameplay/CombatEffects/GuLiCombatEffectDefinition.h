@@ -76,10 +76,11 @@ public:
 	/** Native/test fallback used only when MotionProfileRow is empty. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") FGuLiProjectileMotionSettings Motion;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") TSoftObjectPtr<UGuLiSpellFieldDefinition> ImpactField;
-	/** Contains the missile mesh/bright core and flame/ribbon emitters; no replicated visual Actor. */
+	/** Per-projectile visual, also used while the production WM01 GPU resources are unavailable. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") int32 FlightVfxId = 0;
-	/** Shared spatial GPU batches. Enable only on the dedicated WM01 projectile asset. */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") bool bUseMissileClusterRendering = false;
+	/** WM01's MissileLauncher profile always uses production GPU batches, in every game world. */
+	UFUNCTION(BlueprintPure, Category="Visual")
+	bool UsesMissileClusterRendering() const;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual", meta=(ClampMin="0", Units="s")) float TrailFadeSeconds = 0.5f;
 	/** Resolves the authoritative table profile; invalid authored rows never fall back. */
 	UFUNCTION(BlueprintPure, Category="Projectile")
@@ -138,12 +139,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire", meta=(ClampMin="0.1", ClampMax="0.9")) float MuzzleStrobeDutyCycle = 0.45f;
 	/** Particle lights are sampled and capped; never create one dynamic light per visible shot or active unit. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire|Lighting", meta=(ClampMin="0", ClampMax="32")) int32 MaximumMuzzleLightsPerFrame = 12;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire|Lighting", meta=(ClampMin="0", ClampMax="16")) int32 MaximumTracerLightsPerFrame = 6;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire|Lighting", meta=(ClampMin="0", ClampMax="6")) int32 MaximumTracerLightsPerFrame = 6;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire|Lighting", meta=(ClampMin="0", Units="cm")) float MuzzleLightRadius = 520.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire|Lighting", meta=(ClampMin="0")) float MuzzleLightBrightness = 35.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire|Lighting", meta=(ClampMin="0", Units="cm")) float TracerLightRadius = 360.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire|Lighting", meta=(ClampMin="0", Units="cm")) float TracerLightRadius = 800.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire|Lighting", meta=(ClampMin="0")) float TracerLightBrightness = 25.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") FLinearColor GunfireTint = FLinearColor(1.0f, 0.72f, 0.32f);
+	/** Fallback range for non-commander views. Commander near/tactical visibility uses camera tiers. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Scalability", meta=(ClampMin="100")) float MaximumVisualDistance = 20000.0f;
 	const FGuLiWeaponEffectMount* FindMount(int32 UnitTypeId, FName SlotId) const;
 };
@@ -156,4 +158,6 @@ public:
 	UPROPERTY(Config, EditAnywhere, Category="Combat Effects") TSoftObjectPtr<UGuLiCombatEffectCatalog> Catalog;
 	UPROPERTY(Config, EditAnywhere, Category="Projectile Pool", meta=(ClampMin="1")) int32 ProjectilePoolInitialCapacity = 1024;
 	UPROPERTY(Config, EditAnywhere, Category="Projectile Pool", meta=(ClampMin="1")) int32 ProjectilePoolGrowthSize = 1024;
+	UPROPERTY(Config, EditAnywhere, Category="Client Flight Pool", meta=(ClampMin="1")) int32 ClientFlightPoolInitialCapacity = 512;
+	UPROPERTY(Config, EditAnywhere, Category="Client Flight Pool", meta=(ClampMin="1")) int32 ClientFlightPoolGrowthSize = 256;
 };

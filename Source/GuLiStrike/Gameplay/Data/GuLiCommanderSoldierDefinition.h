@@ -9,6 +9,7 @@
 class UStaticMesh;
 class UStateTree;
 class AActor;
+class UGuLiVATDefinition;
 
 /**
  * Validated runtime values for one Commander Soldier type.
@@ -44,6 +45,12 @@ struct GULISTRIKE_API FGuLiSoldierDefinition
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")
 	TObjectPtr<UStaticMesh> Model = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")
+	TObjectPtr<UGuLiVATDefinition> VATDefinition = nullptr;
+	/** Participates in ordinary control/combat, but cannot be produced or charged to population. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")
+	bool bSummonOnly = false;
 
 	/** Static-only mechanical part contract, resolved once with the model and its scale. */
 	FGuLiMechanicalAnimationConfig MechanicalAnimation;

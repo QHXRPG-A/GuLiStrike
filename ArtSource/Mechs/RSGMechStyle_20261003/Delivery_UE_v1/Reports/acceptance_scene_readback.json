@@ -1,0 +1,267 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "initial_mass_count": 7,
+  "population_red": 5,
+  "population_blue": 2,
+  "preparation_only": false,
+  "new_gameplay_ready": true,
+  "existing_default_army_replaced_by_authored_fixture": true,
+  "play_started": false,
+  "deployments": [
+    {
+      "name": "GuLiCommanderDeploymentPoint_0",
+      "label": "PioneerQA_Single",
+      "team": "<GuLiTeam.RED: 1>",
+      "unit_type_id": 1,
+      "position": [
+        0.0,
+        65000.0,
+        901.7790832519531
+      ],
+      "rows": 1,
+      "columns": 1,
+      "spacing_cm": 1800.0,
+      "automatic_fire": true
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_1",
+      "label": "PioneerQA_Multi_A",
+      "team": "<GuLiTeam.RED: 1>",
+      "unit_type_id": 1,
+      "position": [
+        -2300.0,
+        65000.0,
+        902.8101841762227
+      ],
+      "rows": 1,
+      "columns": 1,
+      "spacing_cm": 1800.0,
+      "automatic_fire": true
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_2",
+      "label": "PioneerQA_Multi_B",
+      "team": "<GuLiTeam.RED: 1>",
+      "unit_type_id": 1,
+      "position": [
+        -2300.0,
+        67000.0,
+        902.8744151862275
+      ],
+      "rows": 1,
+      "columns": 1,
+      "spacing_cm": 1800.0,
+      "automatic_fire": true
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_3",
+      "label": "PioneerQA_SizeReference_WM01",
+      "team": "<GuLiTeam.RED: 1>",
+      "unit_type_id": 2,
+      "position": [
+        0.0,
+        63000.0,
+        901.7790832519531
+      ],
+      "rows": 1,
+      "columns": 1,
+      "spacing_cm": 1800.0,
+      "automatic_fire": false
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_4",
+      "label": "PioneerQA_Blocked",
+      "team": "<GuLiTeam.RED: 1>",
+      "unit_type_id": 1,
+      "position": [
+        -11000.0,
+        65000.0,
+        1073.7790832519531
+      ],
+      "rows": 1,
+      "columns": 1,
+      "spacing_cm": 1800.0,
+      "automatic_fire": true
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_5",
+      "label": "PioneerQA_Target_InRange",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": 2,
+      "position": [
+        5600.0,
+        65000.0,
+        901.7790832519531
+      ],
+      "rows": 1,
+      "columns": 1,
+      "spacing_cm": 1800.0,
+      "automatic_fire": false
+    },
+    {
+      "name": "GuLiCommanderDeploymentPoint_6",
+      "label": "PioneerQA_Target_OutOfRange",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": 2,
+      "position": [
+        6500.0,
+        68500.0,
+        901.7790832519531
+      ],
+      "rows": 1,
+      "columns": 1,
+      "spacing_cm": 1800.0,
+      "automatic_fire": false
+    }
+  ],
+  "blockers": [
+    {
+      "label": "PioneerQA_Blocker_West",
+      "position": [
+        -12400.0,
+        65000.0,
+        1473.7790832519531
+      ],
+      "scale": [
+        20.0,
+        48.0,
+        12.0
+      ],
+      "collision_profile": "BlockAll",
+      "affects_navigation": false,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "label": "PioneerQA_Blocker_East",
+      "position": [
+        -9600.0,
+        65000.0,
+        1473.7790832519531
+      ],
+      "scale": [
+        20.0,
+        48.0,
+        12.0
+      ],
+      "collision_profile": "BlockAll",
+      "affects_navigation": false,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "label": "PioneerQA_Blocker_North",
+      "position": [
+        -11000.0,
+        66400.0,
+        1473.7790832519531
+      ],
+      "scale": [
+        8.0,
+        20.0,
+        12.0
+      ],
+      "collision_profile": "BlockAll",
+      "affects_navigation": false,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "label": "PioneerQA_Blocker_South",
+      "position": [
+        -11000.0,
+        63600.0,
+        1473.7790832519531
+      ],
+      "scale": [
+        8.0,
+        20.0,
+        12.0
+      ],
+      "collision_profile": "BlockAll",
+      "affects_navigation": false,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    }
+  ],
+  "text_notes": [
+    {
+      "label": "PioneerQA_Notes_Single",
+      "text": "PIONEER: 60m / TWO GUNS / Q: 5 SWEEPERS / 30s",
+      "position": [
+        0.0,
+        66500.0,
+        1021.7790832519531
+      ]
+    },
+    {
+      "label": "PioneerQA_Notes_Multi",
+      "text": "SELECT BOTH PIONEERS: Q = 10 SWEEPERS",
+      "position": [
+        -2300.0,
+        68500.0,
+        1022.8744151862275
+      ]
+    },
+    {
+      "label": "PioneerQA_Notes_Blocked",
+      "text": "BLOCKED Q: ZERO SPAWNS / NO COOLDOWN",
+      "position": [
+        -11000.0,
+        67700.0,
+        1193.7790832519531
+      ]
+    },
+    {
+      "label": "PioneerQA_Notes_Targets",
+      "text": "PASSIVE TARGETS: 56m IN / 65m+ OUT",
+      "position": [
+        5800.0,
+        70000.0,
+        1021.7790832519531
+      ]
+    }
+  ],
+  "player_starts": [
+    {
+      "name": "PlayerStart_0",
+      "position": [
+        0.0,
+        69000.0,
+        1001.9771118164062
+      ]
+    }
+  ],
+  "navigation": {
+    "actor": "RecastNavMesh-CommanderSoldier",
+    "radius_cm": 150.0
+  },
+  "vat_asset": "/Game/GuLiStrike/Robots/RSGMech/VAT/DA_Pioneer_VAT",
+  "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+  "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+  "operations": "See ../ACCEPTANCE.md; select Commander and manually start a game.",
+  "unit_configuration": {
+    "1": {
+      "DisplayName": "先驱号",
+      "ModelAsset": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "VATDefinition": "/Game/GuLiStrike/Robots/RSGMech/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+      "MovementSpeedCmPerSecond": 1440,
+      "ModelWidthMeters": 6.25,
+      "bSummonOnly": false
+    },
+    "2": {
+      "DisplayName": "重防号",
+      "ModelAsset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "VATDefinition": "None",
+      "MovementSpeedCmPerSecond": 720,
+      "ModelWidthMeters": 12.5,
+      "bSummonOnly": false
+    },
+    "5": {
+      "DisplayName": "扫荡者",
+      "ModelAsset": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "VATDefinition": "None",
+      "MovementSpeedCmPerSecond": 720,
+      "ModelWidthMeters": 3.1,
+      "bSummonOnly": true
+    }
+  },
+  "pioneer_avoidance_radius_cm": 312.5
+}

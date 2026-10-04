@@ -39,6 +39,8 @@ struct GULISTRIKE_API FGuLiUnitSkillConfig
 	UPROPERTY() float ProjectileSpeedCentimetersPerSecond = 0.0f;
 	UPROPERTY() float ProjectileLifetimeSeconds = 0.0f;
 	UPROPERTY() float ProjectileSweepRadiusCentimeters = 0.0f;
+	/** Full cone angle in degrees; zero preserves the authored aim direction. */
+	UPROPERTY() float ProjectileSpreadAngleDegrees = 0.0f;
 };
 
 /** Final authority configuration; per-soldier target/cooldown/health never live here. */
@@ -63,6 +65,7 @@ struct GULISTRIKE_API FGuLiResolvedSkillProfile
 	UPROPERTY() float ProjectileSpeedCentimetersPerSecond = 0.0f;
 	UPROPERTY() float ProjectileLifetimeSeconds = 0.0f;
 	UPROPERTY() float ProjectileSweepRadiusCentimeters = 0.0f;
+	UPROPERTY() float ProjectileSpreadAngleDegrees = 0.0f;
 	bool HasSameConfiguration(const FGuLiResolvedSkillProfile& Other) const;
 };
 

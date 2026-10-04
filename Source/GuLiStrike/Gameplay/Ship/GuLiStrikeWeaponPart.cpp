@@ -45,9 +45,8 @@ void UGuLiStrikeWeaponPart::Fire_Implementation(AActor* Instigator)
 		Ship,
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn))
 	{
-		// 不迁移到 GA：沿用现有 WeaponPart -> replicated Actor projectile 链，
-		// 只附加稳定 Source TargetHandle、一次性事件 ID 与 Damage Ledger 数值。
-		Projectile->ConfigureServerDamageLedger(*Ship, Damage);
+		// Server physical collision remains; clients reconstruct from the shared launch/end stream.
+		if (!Projectile->ConfigureServerDamageLedger(*Ship, Damage)) { Projectile->Destroy(); return; }
 		Projectile->FinishSpawning(MuzzleTransform);
 	}
 }

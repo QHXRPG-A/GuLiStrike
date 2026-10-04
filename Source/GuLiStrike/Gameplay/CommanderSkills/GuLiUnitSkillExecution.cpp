@@ -21,7 +21,9 @@ FGuLiActiveSkillUnitResult GuLiUnitSkillExecution::Execute(const FGuLiActiveSkil
 		{ Result.Code = EGuLiActiveSkillResultCode::OutOfRange; return Result; }
 	}
 	Result.Execution = ExecuteEffect(Caster.Context, Definition->Configuration);
-	Result.Code = Result.Execution.bSucceeded ? EGuLiActiveSkillResultCode::Succeeded : EGuLiActiveSkillResultCode::ExecutionFailed;
+	Result.Code = Result.Execution.bSucceeded ? EGuLiActiveSkillResultCode::Succeeded
+		: Result.Execution.bDeferredByGuidanceCapacity ? EGuLiActiveSkillResultCode::GuidanceCapacityDeferred
+		: EGuLiActiveSkillResultCode::ExecutionFailed;
 	if (Result.Execution.bSucceeded)
 	{
 		Runtime.SkillId = Definition->SkillId;

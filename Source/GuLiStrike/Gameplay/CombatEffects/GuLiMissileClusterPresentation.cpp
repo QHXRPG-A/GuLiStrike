@@ -1,5 +1,6 @@
 #include "Gameplay/CombatEffects/GuLiMissileClusterPresentation.h"
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
+#include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
 #include "Engine/World.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "HAL/IConsoleManager.h"
@@ -16,9 +17,9 @@ namespace
 {
 	TAutoConsoleVariable<int32> FullTrailBudget(TEXT("gs.MissileCluster.FullTrails"), 512, TEXT("Full trails, including fading slots and quality handoffs."));
 	TAutoConsoleVariable<int32> ParticleBudget(TEXT("gs.MissileCluster.Particles"), 65536, TEXT("GPU capacity budget; bodies/flames are the minimum. Lower budgets drain existing history before reclaiming it."));
-	TAutoConsoleVariable<float> MaximumDistance(TEXT("gs.MissileCluster.Distance"), 20000.f, TEXT("Visual distance in cm; culling includes 2.4 seconds of historical smoke."));
+	TAutoConsoleVariable<float> MaximumDistance(TEXT("gs.MissileCluster.Distance"), 20000.f, TEXT("Non-commander view distance in cm; commander near/tactical views use camera tiers. Includes 2.4 seconds of historical smoke."));
 	TAutoConsoleVariable<float> MinimumScreenFraction(TEXT("gs.MissileCluster.MinScreenFraction"), .001f, TEXT("Cull below this projected history-bound fraction."));
-	constexpr float CellSize = 4000.f;
+	constexpr float MissileClusterCellSize = 4000.f;
 	constexpr int32 Lanes[] = {0, 8, 24};
 	constexpr int32 Ids[] = {GuLiVfxIds::WM01MissileClusterMinimal, GuLiVfxIds::WM01MissileClusterLite, GuLiVfxIds::WM01MissileClusterFull};
 	const FName LODConsumer(TEXT("WM01MissileBatches"));
@@ -48,7 +49,7 @@ bool UGuLiMissileClusterPresentation::IsReady() const { return bResourcesReady &
 
 void UGuLiMissileClusterPresentation::ReleaseComponent(TWeakObjectPtr<UNiagaraComponent>& Weak)
 {
-	if (auto* Component = Weak.Get()) { Component->DeactivateImmediate(); Component->ReleaseToPool(); }
+	if (auto* Component = Weak.Get()) { Component->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Component); Component->ReleaseToPool(); }
 	Weak.Reset();
 }
 
@@ -108,7 +109,7 @@ int32 UGuLiMissileClusterPresentation::Acquire(const FGuid& Id, const FVector& P
 	const UGuLiProjectileEffectDefinition* Definition, const FGuLiProjectileVisualSettings& Visual)
 {
 	if (const auto* Found = SlotById.Find(Id)) return *Found;
-	const FIntVector Cell(FMath::FloorToInt(Position.X / CellSize), FMath::FloorToInt(Position.Y / CellSize), FMath::FloorToInt(Position.Z / CellSize));
+	const FIntVector Cell(FMath::FloorToInt(Position.X / MissileClusterCellSize), FMath::FloorToInt(Position.Y / MissileClusterCellSize), FMath::FloorToInt(Position.Z / MissileClusterCellSize));
 	int32 BatchIndex = INDEX_NONE, SlotIndex = INDEX_NONE, EmptyBatch = INDEX_NONE;
 	for (int32 B = 0; B < Batches.Num(); ++B)
 	{
@@ -210,6 +211,7 @@ bool UGuLiMissileClusterPresentation::StartBatch(FBatch& Batch, int32 Quality)
 		FRotator::ZeroRotator, FVector::OneVector, false, false, ENCPoolMethod::ManualRelease, false);
 	auto* Component = Batch.Component.Get();
 	if (!Component) { Batch.RetryAt = FrameTime + 1; return false; }
+	if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(Component);
 	Batch.Quality = Quality; Batch.QualitySince = FrameTime;
 	Component->SetCastShadow(false);
 	Component->SetVariableInt(TEXT("User.MissileSlotCount"), Batch.Capacity);
@@ -290,9 +292,10 @@ void UGuLiMissileClusterPresentation::EndFrame()
 			Release(Batch); continue;
 		}
 		// Missile-only visibility limits: never install these as global unit culling rules.
-		if (Decision.DistanceCentimeters > FMath::Max(1.f, MaximumDistance.GetValueOnGameThread()))
+		if (Decision.bOverviewOnly) { Release(Batch); continue; }
+		if (!Decision.bCommanderView && Decision.DistanceCentimeters > FMath::Max(1.f, MaximumDistance.GetValueOnGameThread()))
 		{ ++LODStats.DistanceCulled; Release(Batch); continue; }
-		if (Decision.ScreenFraction < FMath::Max(0.f, MinimumScreenFraction.GetValueOnGameThread()))
+		if (!Decision.bCommanderView && Decision.ScreenFraction < FMath::Max(0.f, MinimumScreenFraction.GetValueOnGameThread()))
 		{ ++LODStats.ScreenCulled; Release(Batch); continue; }
 		++LODStats.Visible;
 		++LODStats.Target[static_cast<int32>(Decision.TargetLevel)];

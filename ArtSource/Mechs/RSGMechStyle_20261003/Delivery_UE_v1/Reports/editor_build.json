@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "engine": "D:/UnrealEngine-5.7",
+  "target": "GuLiStrikeEditor Win64 Development",
+  "user_authorization": "编译与重载",
+  "build_attempts": [
+    {
+      "exit_code": 1,
+      "reason": "VAT source GetMipData requires non-const texture pointer",
+      "log": "editor_build_attempt_1.log"
+    },
+    {
+      "exit_code": 0,
+      "result": "Succeeded",
+      "log": "editor_build_attempt_2.log",
+      "execution_seconds": 5.53
+    }
+  ],
+  "build_ids": {
+    "engine": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "project": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "GuLiFlightNavigation": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "GuLiMapAuthoring": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+  },
+  "module_files": {
+    "engine": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.modules",
+    "project": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor.modules",
+    "GuLiFlightNavigation": "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Binaries\\Win64\\UnrealEditor.modules",
+    "GuLiMapAuthoring": "D:\\UE5.7\\test1\\Plugins\\GuLiMapAuthoring\\Binaries\\Win64\\UnrealEditor.modules"
+  },
+  "project_modules": {
+    "GuLiStrike": "UnrealEditor-GuLiStrike.dll",
+    "GuLiStrikeEditor": "UnrealEditor-GuLiStrikeEditor.dll"
+  },
+  "pie_started": false,
+  "performance_tests_run": false
+}

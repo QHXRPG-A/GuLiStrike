@@ -34,7 +34,9 @@ public:
 	int32 GetActiveSystems() const;
 	static constexpr int32 NozzlesPerBatch = 1024;
 	static constexpr int32 TrailSamplesPerNozzle = 10;
+	// Active GPU history is measured by distance; retired slots fade for 0.30 s.
 	static constexpr float TrailLifetime = 0.30f;
+	static constexpr float MaxTrailLength = 1500.0f;
 
 private:
 	struct FSlot

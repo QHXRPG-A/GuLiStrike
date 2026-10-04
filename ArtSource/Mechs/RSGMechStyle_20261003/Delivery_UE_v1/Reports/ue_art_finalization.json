@@ -1,0 +1,44 @@
+{
+  "success": true,
+  "overlays": [
+    "/Game/GuLiStrike/Robots/RSGMech/VAT/M_Pioneer_Hit",
+    "/Game/GuLiStrike/Robots/RSGMech/VAT/M_Pioneer_Wreck",
+    "/Game/GuLiStrike/Robots/RSGMech/VAT/M_Pioneer_Phase"
+  ],
+  "skeletal_lods": [
+    {
+      "screen_size": 1.0,
+      "materials": [
+        "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_SK_LOD0.MI_Pioneer_SK_LOD0",
+        "/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_SK_Contour.M_Pioneer_SK_Contour"
+      ]
+    },
+    {
+      "screen_size": 0.4000000059604645,
+      "materials": [
+        "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_SK_LOD1.MI_Pioneer_SK_LOD1",
+        "/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_SK_Contour.M_Pioneer_SK_Contour"
+      ]
+    },
+    {
+      "screen_size": 0.1599999964237213,
+      "materials": [
+        "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_SK_LOD2.MI_Pioneer_SK_LOD2",
+        "/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_SK_Contour.M_Pioneer_SK_Contour"
+      ]
+    },
+    {
+      "screen_size": 0.05999999865889549,
+      "materials": [
+        "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_SK_LOD3.MI_Pioneer_SK_LOD3"
+      ]
+    }
+  ],
+  "reference_pose": {
+    "bones": 44,
+    "copied_skeleton_reference_unchanged": true,
+    "maximum_mesh_local_position_delta_cm": 0.01103695317850009,
+    "maximum_mesh_local_angle_delta_degrees": 0.05854170362192285,
+    "note": "Mesh FBX numerical round-trip differences; original-compatible skeleton reference is unchanged."
+  }
+}

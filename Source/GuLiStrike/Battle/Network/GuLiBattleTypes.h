@@ -7,7 +7,9 @@
 
 /** 战局连接的公共协议版本；不等于 MatchEpoch、快照版本或每连接同步代次。 */
 // v21 adds semantic hover transitions; clients evaluate stable-ID waves on simulation time.
-inline constexpr uint16 GULI_BATTLE_PROTOCOL_VERSION = 21u;
+// v22: Commander selection RayOrigin uses full coordinates for automatic overview framing.
+// v24: bounded launch/terminal flight stream and real-time connection credit.
+inline constexpr uint16 GULI_BATTLE_PROTOCOL_VERSION = 24u;
 
 /** 历史指挥官协议常量保留别名，现有士兵 RPC/序列化仍使用原名称与数值。 */
 inline constexpr uint16 GULI_COMMANDER_PROTOCOL_VERSION = GULI_BATTLE_PROTOCOL_VERSION;

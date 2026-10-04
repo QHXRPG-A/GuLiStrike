@@ -7,6 +7,7 @@
 #include "Gameplay/Skills/GuLiSkillTypes.h"
 #include "Gameplay/Teleport/GuLiTeleportTypes.h"
 #include "Subsystems/WorldSubsystem.h"
+#include "Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h"
 #include "GuLiCommanderDataSubsystem.generated.h"
 
 /**
@@ -23,6 +24,8 @@ class GULISTRIKE_API UGuLiCommanderDataSubsystem final : public UWorldSubsystem
 public:
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	const FGuLiStrikeCommanderCameraRow* GetCameraConfig() const { return bCameraConfigValid ? &CameraConfig : nullptr; }
+	const FString& GetCameraConfigError() const { return CameraConfigError; }
 	const TArray<FGuLiSoldierDefinition>& GetSoldierDefinitions() const;
 	const FGuLiSoldierDefinition* FindSoldierDefinition(uint16 UnitTypeId) const;
 	const TArray<FGuLiSkillDefinition>& GetSkillDefinitions() const { return SkillDefinitions; }
@@ -48,6 +51,10 @@ public:
 	bool IsDefaultSoldierDefinitionFromDataTable() const;
 
 private:
+	void LoadCameraConfig(const class UGuLiCommanderDataSettings* Settings);
+	FGuLiStrikeCommanderCameraRow CameraConfig;
+	FString CameraConfigError;
+	bool bCameraConfigValid = false;
 	UPROPERTY(Transient) TObjectPtr<class UGuLiUnitDataSubsystem> Units;
 	UPROPERTY(Transient) TObjectPtr<class UGuLiSpellFieldDataSubsystem> Fields;
 

@@ -1,4 +1,6 @@
 #include "Gameplay/Presentation/GuLiWarMachineHoverComponent.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
+#include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
 
 #include "Engine/World.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
@@ -19,7 +21,7 @@ namespace
 		TEXT("Log hover Niagara system/nozzle/trail counts once per second for performance capture."));
 	void Release(TWeakObjectPtr<UNiagaraComponent>& Component)
 	{
-		if (auto* C = Component.Get()) { C->DeactivateImmediate(); C->ReleaseToPool(); }
+		if (auto* C = Component.Get()) { C->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(C); C->ReleaseToPool(); }
 		Component.Reset();
 	}
 }
@@ -57,6 +59,8 @@ int32 UGuLiWarMachineHoverComponent::Acquire(uint64 Key)
 
 float UGuLiWarMachineHoverComponent::FadeAt(const FVector& Position) const
 {
+	if (auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>())
+		return LOD->GetContinuousEffectDistanceFade(Position, 18000.0, 20000.0);
 	return FMath::Clamp((20000.0f - float(FVector::Distance(CameraPosition, Position))) / 2000.0f, 0.0f, 1.0f);
 }
 
@@ -102,7 +106,9 @@ void UGuLiWarMachineHoverComponent::Submit(const FGuLiHoverNozzleSource& Source)
 	B.Colors[I] = FLinearColor(.04f, .28f, 1.0f, Fade * .90f);
 	B.TrailPositions[I] = Source.Position + Down * (Length * .65f);
 	B.TrailSizes[I] = FVector2D(Width, Source.bReset ? 0 : Source.HorizontalSpeed);
-	B.TrailColors[I] = FLinearColor(float(Slot.Generation), 1, 0, 0);
+	// Carry the shared view policy to GPU history, so tactical tails are not
+	// independently clipped by the old 200 m camera-distance limit.
+	B.TrailColors[I] = FLinearColor(float(Slot.Generation), 1, Fade, 0);
 	B.Bounds += FBox(Source.Position - FVector(Width), Source.Position + FVector(Width));
 	B.Bounds += Source.Position + Down * Length;
 	++ActiveNozzles;
@@ -152,6 +158,7 @@ void UGuLiWarMachineHoverComponent::EndFrame()
 			B.Component = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), System, FVector::ZeroVector,
 				FRotator::ZeroRotator, FVector::OneVector, false, false, ENCPoolMethod::ManualRelease, false);
 			if (!B.Component.IsValid()) continue;
+			if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(B.Component.Get());
 			B.Component->SetCastShadow(false); bActivate = true;
 		}
 		using Arrays = UNiagaraDataInterfaceArrayFunctionLibrary;
@@ -165,7 +172,9 @@ void UGuLiWarMachineHoverComponent::EndFrame()
 		Arrays::SetNiagaraArrayPosition(Component, TEXT("User.MuzzlePositions"), B.TrailPositions);
 		Arrays::SetNiagaraArrayVector2D(Component, TEXT("User.MuzzleSizes"), B.TrailSizes);
 		Arrays::SetNiagaraArrayColor(Component, TEXT("User.MuzzleColors"), B.TrailColors);
-		Component->SetSystemFixedBounds(B.Bounds.ExpandBy(80 * TrailLifetime + 50));
+		// The reference jet keeps up to fifteen metres of world-space history. The
+		// camera can still see that tail after the current nozzle leaves its view.
+		Component->SetSystemFixedBounds(B.Bounds.ExpandBy(MaxTrailLength + 100.0f));
 		if (bActivate) Component->Activate(true);
 	}
 	CSV_CUSTOM_STAT(GuLiHover, Nozzles, ActiveNozzles, ECsvCustomStatOp::Set);

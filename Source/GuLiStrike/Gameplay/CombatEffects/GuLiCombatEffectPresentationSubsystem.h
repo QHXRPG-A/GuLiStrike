@@ -4,6 +4,7 @@
 #include "Subsystems/WorldSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
 #include "Gameplay/Cards/GuLiRogueUpgradeTypes.h"
+#include "Gameplay/CombatEffects/GuLiFlightEvent.h"
 #include "GuLiCombatEffectPresentationSubsystem.generated.h"
 
 class UNiagaraComponent;
@@ -16,7 +17,10 @@ struct FGuLiLocalCombatEffect
 	UPROPERTY() TObjectPtr<UNiagaraComponent> Flight;
 	UPROPERTY() TObjectPtr<UNiagaraComponent> Waiting;
 	UPROPERTY() TObjectPtr<UNiagaraComponent> ActiveLoop;
+	UPROPERTY() TObjectPtr<class AGuLiFlightVisualActor> FlightActor;
 	FVector RenderLocation = FVector::ZeroVector;
+	FVector LaunchVisualOffset = FVector::ZeroVector;
+	bool bLaunchVisualOffsetResolved = false;
 	int32 NextGunShotOrdinal = 0;
 	int32 LaserSlot = INDEX_NONE;
 	float LaserMuzzleUntil = 0;
@@ -49,7 +53,11 @@ struct GULISTRIKE_API FGuLiCombatEffectVisualCounters
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 LaserActive = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 LaserCapacity = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 LaserVisible = 0;
+	/** Ground projectile light slots uploaded this frame, capped across all render blocks. */
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 GroundMachineGunLights = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") double LastUpdateMilliseconds = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 ClientFlightActorCapacity = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 ClientFlightActorActive = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 UpgradeActive = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 UpgradeVisible = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 UpgradeComponents = 0;
@@ -104,6 +112,11 @@ struct FGuLiLaserRenderBlock
 	TArray<FVector> Positions, Directions, MuzzlePositions;
 	TArray<FVector2D> Sizes, MuzzleSizes;
 	TArray<FLinearColor> Colors, MuzzleColors;
+	TArray<FVector> LightPositions;
+	TArray<FLinearColor> LightColors;
+	TArray<float> LightRadii;
+	TArray<bool> LightEnabled;
+	int32 LightCount = 0;
 	FBox Bounds = FBox(ForceInit);
 	bool bVisible = false;
 };
@@ -123,6 +136,7 @@ public:
 
 	void BeginEpoch(uint32 NewEpoch);
 	void ApplyState(const FGuLiCombatEffectState& State, bool bFromSnapshot = false);
+	void ApplyFlightEvent(const FGuLiFlightEvent& Event);
 	void ApplyCorrection(const FGuLiCombatEffectCorrection& Correction);
 	void ApplyShots(const TArray<FGuLiCombatShotCue>& Cues);
 	void ApplyRogueUpgrade(const FGuLiRogueUpgradeCue& Cue);
@@ -131,7 +145,9 @@ public:
 	void UnregisterPoseResolver(EGuLiTargetKind Kind, const UObject* Owner);
 	using FMuzzleResolver = TFunction<bool(const FGuLiCombatShotCue&, FTransform&, float&)>;
 	using FShotObserver = TFunction<void(const FGuLiCombatShotCue&)>;
-	void RegisterMuzzleResolver(EGuLiTargetKind Kind, UObject* Owner, FMuzzleResolver Resolver, FShotObserver Observer = {});
+	using FLaunchOffsetResolver = TFunction<bool(const FGuLiTargetHandle&, FName, const FVector&, FVector&)>;
+	void RegisterMuzzleResolver(EGuLiTargetKind Kind, UObject* Owner, FMuzzleResolver Resolver,
+		FShotObserver Observer = {}, FLaunchOffsetResolver LaunchOffset = {});
 	void UnregisterMuzzleResolver(EGuLiTargetKind Kind, const UObject* Owner);
 	/** Existing accepted shot cues supply cosmetic aim; no authority or network state is added. */
 	bool TryGetWeaponAim(const FGuLiTargetHandle& Source, FName SlotId, FVector& Target) const;
@@ -143,7 +159,7 @@ public:
 private:
 	friend class UGuLiRogueCardQALibrary;
 	struct FPoseProvider { TWeakObjectPtr<UObject> Owner; FPoseResolver Resolve; };
-	struct FMuzzleProvider { TWeakObjectPtr<UObject> Owner; FMuzzleResolver Resolve; FShotObserver Observe; };
+	struct FMuzzleProvider { TWeakObjectPtr<UObject> Owner; FMuzzleResolver Resolve; FShotObserver Observe; FLaunchOffsetResolver LaunchOffset; };
 	struct FActiveMuzzleKey
 	{
 		FGuLiTargetHandle Source;
@@ -177,6 +193,7 @@ private:
 	void ResetRogueUpgradePool();
 	void UpdateMechanicalMuzzles(float Now, bool bEnabled);
 	void ResetMechanicalMuzzles();
+	FVector EvaluateLaunchVisualOffset(FGuLiLocalCombatEffect& Visual, FName Slot, float RenderTime);
 	bool ResolvePose(const FGuLiTargetHandle& Target, FTransform& Transform, int32& UnitTypeId) const;
 	bool ResolveMuzzleTransform(const FGuLiCombatShotCue& Cue, FTransform& Transform, float& RenderTime) const;
 	bool ResolveMuzzlePosition(const FGuLiCombatShotCue& Cue, FVector& Position) const;
@@ -186,7 +203,11 @@ private:
 	bool IsVisibleLocation(FVector Location) const;
 	void UpdateField(FGuLiLocalCombatEffect& Visual, float Now);
 	void UpdateGroundWarning(const FGuLiCombatEffectState& State, bool bEnabled);
+	void RemoveGuidanceMember(const FGuLiCombatEffectState& State);
+	void RefreshGuidanceWarning(const FGuid& BatchId, bool bEnabled);
 	void ResetVisuals();
+	AGuLiFlightVisualActor* AcquireFlightActor(const FGuLiFlightEvent& Event);
+	void ReleaseFlightActor(AGuLiFlightVisualActor* Actor);
 
 	UPROPERTY(Transient) TObjectPtr<UGuLiCombatEffectCatalog> Catalog;
 	UPROPERTY(Transient) TObjectPtr<class UGuLiCommanderDataSubsystem> CommanderData;
@@ -194,6 +215,8 @@ private:
 	UPROPERTY(Transient) TObjectPtr<class UGuLiMissileClusterPresentation> MissileClusters;
 	UPROPERTY(Transient) TObjectPtr<UNiagaraComponent> Gunfire;
 	UPROPERTY(Transient) TMap<FGuid, FGuLiLocalCombatEffect> Visuals;
+	UPROPERTY(Transient) TArray<TObjectPtr<AGuLiFlightVisualActor>> FlightActors;
+	UPROPERTY(Transient) TArray<TObjectPtr<AGuLiFlightVisualActor>> FreeFlightActors;
 	UPROPERTY(Transient) TArray<FGuLiRetiringCombatEffect> Retiring;
 	UPROPERTY(Transient) TArray<FGuLiMechanicalMuzzleVisual> MechanicalMuzzles;
 	UPROPERTY(Transient) TObjectPtr<UNiagaraSystem> LoadedMechanicalMuzzleSystem;
@@ -208,6 +231,8 @@ private:
 	TMap<EGuLiTargetKind, FMuzzleProvider> MuzzleProviders;
 	mutable TMap<FGuLiTargetHandle, TWeakObjectPtr<AActor>> ShipPoseCache;
 	TMap<FGuid, uint32> Tombstones;
+	/** IDs only; projectile Visuals own the frozen launch payload and lifetime. */
+	TMap<FGuid, TSet<FGuid>> GuidanceMembers;
 	TArray<FGuid> TombstoneOrder;
 	TSet<FGuid> SeenShots;
 	TArray<FGuid> ShotOrder;
@@ -219,5 +244,6 @@ private:
 	float GunfireBoundsResetTime = 0;
 	float NextMuzzleRefreshTime = 0;
 	uint32 Epoch = 0;
+	TSet<uint32> RetiredEpochs;
 	bool bChannelWarning = false;
 };

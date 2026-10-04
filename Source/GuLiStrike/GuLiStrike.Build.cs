@@ -33,6 +33,7 @@ public class GuLiStrike : ModuleRules
 			"GuLiFlightNavigationRuntime", "RenderCore", "RHI",
 			// Commander 网络合同使用 FastArray 与自定义 NetSerialize。
 			"NetCore",
+			"OnlineSubsystemUtils",
 			// Non-shipping skill network QA writes structured JSON evidence.
 			"Json",
 			// Landscape：相机避障命中过滤需要 ALandscapeProxy 类型判断

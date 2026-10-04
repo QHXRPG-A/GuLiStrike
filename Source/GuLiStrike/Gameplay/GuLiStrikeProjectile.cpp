@@ -2,6 +2,7 @@
 
 
 #include "GuLiStrikeProjectile.h"
+#include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GameFramework/Pawn.h"
@@ -12,10 +13,9 @@ AGuLiStrikeProjectile::AGuLiStrikeProjectile()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickGroup = TG_PostPhysics;
-	bReplicates = true;
-	SetReplicateMovement(true);
-	// 当前公里级战场和最远 1.6km 飞船相机超出默认相关距离；弹丸仍按距离相关，不永久常显。
-	SetNetCullDistanceSquared(FMath::Square(200000.0f));
+	bReplicates = false;
+	SetReplicateMovement(false);
+	// Only authority owns this physical object. Clients receive bounded flight events.
 
 	// this actor will be destroyed automatically once InitialLifeSpan expires
 	InitialLifeSpan = 2.0f;
@@ -65,15 +65,15 @@ void AGuLiStrikeProjectile::BeginPlay()
 {
 	if (HasAuthority())
 	{
-		// 旧蓝图若保存过复制开关，也以本弹丸的服务器网络合同为准。
-		SetReplicates(true);
-		SetReplicateMovement(true);
+		// Override replication switches saved in derived Blueprints.
+		SetReplicates(false);
+		SetReplicateMovement(false);
 		CollisionSphere->IgnoreActorWhenMoving(GetOwner(), true);
 		CollisionSphere->IgnoreActorWhenMoving(GetInstigator(), true);
 	}
 	else
 	{
-		// 客户端只显示服务器复制的轨迹/销毁；不独立碰撞、反弹、结算或寿命销毁。
+		// A legacy accidental client spawn has no damage or physical movement.
 		CollisionSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		ProjectileMovement->PrimaryComponentTick.bStartWithTickEnabled = false;
 		ProjectileMovement->SetComponentTickEnabled(false);
@@ -82,6 +82,9 @@ void AGuLiStrikeProjectile::BeginPlay()
 	Super::BeginPlay();
 	if (HasAuthority())
 	{
+		SetReplicates(false); SetReplicateMovement(false);
+		Mesh->SetHiddenInGame(true); Mesh->SetVisibility(false);
+		PublishServerLaunch();
 		PreviousServerSweepLocation = GetActorLocation();
 		bHasPreviousServerSweepLocation = !PreviousServerSweepLocation.ContainsNaN();
 	}
@@ -103,6 +106,12 @@ void AGuLiStrikeProjectile::Tick(const float DeltaSeconds)
 	}
 
 	const FVector CurrentLocation = GetActorLocation();
+    if (bFlightPublished && !bFlightEnded)
+    {
+        Flight.State.Location=CurrentLocation; Flight.State.Velocity=ProjectileMovement->Velocity;
+        Flight.State.SampleTime=GetWorld()->GetTimeSeconds(); ++Flight.State.Sequence;
+        UGuLiCombatEffectReplicationComponent::UpdateFlight(GetWorld(),Flight.State);
+    }
 	if (!bHasPreviousServerSweepLocation || CurrentLocation.ContainsNaN())
 	{
 		PreviousServerSweepLocation = CurrentLocation;
@@ -123,6 +132,7 @@ void AGuLiStrikeProjectile::Tick(const float DeltaSeconds)
 	if (LedgerImpact.HasResolvedTarget())
 	{
 		SetActorLocation(LedgerImpact.HitLocation, false, nullptr, ETeleportType::TeleportPhysics);
+		FinishFlight(EGuLiCombatEffectEndReason::Impact,LedgerImpact.HitLocation);
 		Destroy();
 	}
 }
@@ -130,8 +140,7 @@ void AGuLiStrikeProjectile::Tick(const float DeltaSeconds)
 void AGuLiStrikeProjectile::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (!HasAuthority()) { return; }
-	// 放在 Super 前守门，避免客户端 ReceiveHit 蓝图也触发真实效果。
-	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+	// Ledger and terminal run before Blueprint ReceiveHit can destroy the actor.
 
 	// Ship 自身的既有 Actor 弹丸只在服务器把命中接到统一 TargetHandle/Ledger。
 	// 同一弹丸永远复用 DamageEventId，因此引擎重复命中回调不会重复扣血。
@@ -144,6 +153,9 @@ void AGuLiStrikeProjectile::NotifyHit(class UPrimitiveComponent* MyComp, AActor*
 		{
 			// 命中已注册战斗目标后，无论伤害被接纳（敌方）还是规则拒绝
 			//（友军/死亡/旧 Epoch），这枚物理弹都不能继续反弹命中别处。
+			Flight.ImpactNormal=HitNormal;
+			FinishFlight(EGuLiCombatEffectEndReason::Impact,HitLocation);
+			Super::NotifyHit(MyComp,Other,OtherComp,bSelfMoved,HitLocation,HitNormal,NormalImpulse,Hit);
 			Destroy();
 			return;
 		}
@@ -156,12 +168,60 @@ void AGuLiStrikeProjectile::NotifyHit(class UPrimitiveComponent* MyComp, AActor*
 		NPC->ProjectileImpact(FVector::ZeroVector);
 
 		// destroy this projectile
+		Flight.ImpactNormal=HitNormal;
+		FinishFlight(EGuLiCombatEffectEndReason::Impact,HitLocation);
 		Destroy();
 	}
+	Super::NotifyHit(MyComp,Other,OtherComp,bSelfMoved,HitLocation,HitNormal,NormalImpulse,Hit);
 }
 
 void AGuLiStrikeProjectile::OnProjectileStop(const FHitResult& ImpactResult)
 {
-	// 服务器结束弹丸寿命，Actor 销毁随后复制到相关客户端。
-	if (HasAuthority()) { Destroy(); }
+	// A server stop ends the independent local flight at the authoritative point.
+	if (HasAuthority()) { FinishFlight(EGuLiCombatEffectEndReason::Blocked,ImpactResult.Location); Destroy(); }
+}
+
+void AGuLiStrikeProjectile::PublishServerLaunch()
+{
+    if (bFlightPublished || !HasAuthority() || !DamageLedgerContext.IsWellFormed() || !GetWorld()) return;
+    auto& State=Flight.State;
+    State.MatchEpoch=DamageLedgerContext.MatchEpoch; State.EffectId=DamageLedgerContext.ShotId;
+    State.Sequence=1; State.Kind=EGuLiCombatEffectKind::LinearProjectile; State.Source=DamageLedgerContext.Source;
+    State.Location=State.LaunchLocation=GetActorLocation();
+    FVector Velocity=ProjectileMovement->Velocity;
+    if (Velocity.IsNearlyZero()) Velocity=GetActorForwardVector()*FMath::Max(1.f,ProjectileMovement->InitialSpeed);
+    State.Velocity=Velocity; State.LaunchDirection=Velocity.GetSafeNormal(); State.Motion.Speed=Velocity.Size();
+    State.Motion.SweepRadius=CollisionSphere->GetScaledSphereRadius();
+    State.StartTime=State.SampleTime=State.ActivationTime=GetWorld()->GetTimeSeconds();
+    State.EndTime=State.StartTime+FMath::Clamp(GetLifeSpan()>0 ? GetLifeSpan() : InitialLifeSpan,.01f,120.f);
+    FGuLiCombatTargetSnapshot Source;
+    if (auto* Ledger=GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>(); Ledger && Ledger->TryGetTargetSnapshot(State.Source,Source)) State.SourceTeam=Source.Team;
+    Flight.ShipVisualClass=GetClass(); Flight.VisualScale=GetActorScale3D(); Flight.Gravity=GetWorld()->GetGravityZ()*ProjectileMovement->ProjectileGravityScale;
+    Flight.bBounce=ProjectileMovement->bShouldBounce; Flight.Bounciness=ProjectileMovement->Bounciness;
+    Flight.Friction=ProjectileMovement->Friction; Flight.StopSpeed=ProjectileMovement->BounceVelocityStopSimulatingThreshold;
+    Flight.MaximumSpeed=ProjectileMovement->MaxSpeed;
+    bFlightPublished=UGuLiCombatEffectReplicationComponent::PublishFlight(GetWorld(),Flight);
+}
+
+void AGuLiStrikeProjectile::FinishFlight(EGuLiCombatEffectEndReason Reason,const FVector& Location)
+{
+    if (!HasAuthority() || bFlightEnded) return;
+    PublishServerLaunch();
+    bFlightEnded=true;
+    if (!bFlightPublished) return;
+    Flight.State.Phase=EGuLiCombatEffectPhase::Finished; Flight.State.EndReason=Reason;
+    Flight.State.Location=Location; Flight.State.SampleTime=GetWorld()->GetTimeSeconds(); ++Flight.State.Sequence;
+    UGuLiCombatEffectReplicationComponent::PublishFlight(GetWorld(),Flight);
+}
+
+void AGuLiStrikeProjectile::LifeSpanExpired()
+{
+    FinishFlight(EGuLiCombatEffectEndReason::Expired,GetActorLocation());
+    Super::LifeSpanExpired();
+}
+
+void AGuLiStrikeProjectile::EndPlay(const EEndPlayReason::Type Reason)
+{
+    FinishFlight(Reason==EEndPlayReason::Destroyed ? EGuLiCombatEffectEndReason::Cancelled : EGuLiCombatEffectEndReason::EpochEnded,GetActorLocation());
+    Super::EndPlay(Reason);
 }

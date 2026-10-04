@@ -35,7 +35,8 @@ def bounds(points):
 
 def war_part(name, y=0):
     name = re.sub(r'\.\d+$', '', name.replace('ReviewPart::', ''))
-    if name.startswith(('WM missile pod ', 'WM missile tube ', 'WM launch tube ', 'WM rounded missile ')):
+    if name.startswith(('WM missile pod ', 'WM missile tube ', 'WM launch tube ', 'WM rounded missile ',
+                        'WM launcher ', 'WM rim upper wrap')):
         return 10 if y >= 0 else 11
     if name.startswith('WM hover '):
         suffix = re.search(r'_(F|R)_(L|R)$', name)

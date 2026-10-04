@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "pid": 11520,
+    "log_directory": "../../../../UE5.7/test1/Saved/Logs/",
+    "project_file": "../../../../UE5.7/test1/GuLiStrike.uproject",
+    "worlds": [
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype"
+    ],
+    "before_cvars": {
+      "guli.Commander.StateStreamDiagnostics": 0,
+      "t.MaxFPS": 0.0,
+      "t.IdleWhenNotForeground": 0,
+      "r.VSync": 0
+    },
+    "trace_methods": [
+      "get_all_channels",
+      "get_enabled_channels",
+      "is_channel_enabled",
+      "start_trace_send_to",
+      "start_trace_to_file",
+      "toggle_channel",
+      "trace_bookmark",
+      "trace_mark_region_end",
+      "trace_mark_region_start",
+      "trace_screenshot"
+    ]
+  }
+}

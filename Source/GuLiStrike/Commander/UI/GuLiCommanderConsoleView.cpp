@@ -179,6 +179,8 @@ void UGuLiCommanderHUDWidget::RefreshConsoleContext()
 		else if(Action==TEXT("Skill"))
 		{
 			Tip=GuLiGameText::Text(TEXT("UI.ConsoleView.053"));
+			if (Presentation.Members.ContainsByPredicate([](const auto& Row) { return Row.Type == 1; }))
+				Tip += GuLiGameText::Text(TEXT("UI.CommanderSkills.PioneerSummon"));
 			Tip+=GuLiGameText::Format(TEXT("UI.ConsoleView.036"), {FString::Printf(TEXT("%d"), SkillUnits), FString::Printf(TEXT("%d"), SkillReady)});
 			if(SkillUnits>0 && SkillReady==0) Tip+=GuLiGameText::Format(TEXT("UI.ConsoleView.037"), {FString::Printf(TEXT("%.1f"), NextReady)});
 		}
@@ -262,10 +264,12 @@ void UGuLiCommanderHUDWidget::RefreshConsoleTasks()
 		if(Reply.RequestId.IsValid() && Reply.RequestId!=LastSkillReceipt)
 		{
 			LastSkillReceipt=Reply.RequestId; SkillFeedbackUntil=GetWorld()->GetRealTimeSeconds()+8;
-			int32 Accepted=0; FString Reasons;
+			int32 Accepted=0, Missiles=0, Deferred=0; FString Reasons;
 			for(const auto& Unit:Reply.Units)
 			{
 				Accepted+=Unit.Code==EGuLiActiveSkillResultCode::Succeeded?1:0;
+				Missiles+=Unit.Execution.LaunchedProjectileCount;
+				Deferred+=Unit.Code==EGuLiActiveSkillResultCode::GuidanceCapacityDeferred?1:0;
 				const TCHAR* Reason=Unit.Code==EGuLiActiveSkillResultCode::Cooldown?GuLiGameText::Text(TEXT("UI.ConsoleView.076")):
 					Unit.Code==EGuLiActiveSkillResultCode::OutOfRange?GuLiGameText::Text(TEXT("UI.ConsoleView.077")):
 					Unit.Code==EGuLiActiveSkillResultCode::InvalidGround?GuLiGameText::Text(TEXT("UI.ConsoleView.078")):
@@ -275,6 +279,9 @@ void UGuLiCommanderHUDWidget::RefreshConsoleTasks()
 				if(*Reason && !Reasons.Contains(Reason)) Reasons+=FString(Reason)+TEXT(" ");
 			}
 			SkillFeedback=GuLiGameText::Format(TEXT("UI.ConsoleView.043"), {FString::Printf(TEXT("%d"), Accepted), FString::Printf(TEXT("%d"), Reply.Units.Num()), FString(*Reasons), FString(*Reply.Error)});
+			if (Missiles>0 || Deferred>0)
+				SkillFeedback+=GuLiGameText::Format(TEXT("UI.CommanderSkills.GuidanceBatch"),
+					{FString::FromInt(Missiles),FString::FromInt(Deferred)});
 		}
 	}
 	if(GetWorld()->GetRealTimeSeconds()<SkillFeedbackUntil) Status+=TEXT(" · ")+SkillFeedback;

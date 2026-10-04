@@ -1,0 +1,273 @@
+Log started at 10/03/2026 20:14:49 (2026-10-03T12:14:49Z)
+Resolved project argument D:\UE5.7\test1\GuLiStrike.uproject to D:\UE5.7\test1\GuLiStrike.uproject
+No config file at D:\UnrealEngine-5.7\Engine\Restricted\NotForLicensees\Programs\UnrealBuildTool\BuildConfiguration.xml
+No config file at C:\ProgramData\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+No config file at C:\Users\a\AppData\Local\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+No config file at C:\Users\a\Documents\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+Configuration will be read from:
+  D:\UnrealEngine-5.7\Engine\Saved\UnrealBuildTool\BuildConfiguration.xml
+  C:\Users\a\AppData\Roaming\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): D:\UnrealEngine-5.7\Engine\Saved\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): C:\Users\a\AppData\Roaming\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): D:\UE5.7\test1\Saved\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): D:\UnrealEngine-5.7\Engine\Intermediate\Build\UnrealBuildTool.Env.BuildConfiguration.xml
+Setting temp directory to 'C:\Users\a\AppData\Local\Temp\UnrealBuildTool\1cda995f'
+    Registering build platform: UnrealBuildTool.AndroidPlatformFactory
+Unable to find valid SDK(s) for Android:
+  Found Sdk Version, MinRequired=r27c, MaxRequired=r28c.
+  Found AutoSdk Version, Required=r27c.
+        Registering build platform: Android - buildable: False
+    Registering build platform: UnrealBuildTool.IOSPlatformFactory
+Unable to find valid SDK(s) for IOS:
+  Found Sdk Version, MinRequired=1100.0.0.0, MaxRequired=8999.0.
+  Found AutoSdk Version, Required=15.2.
+        Registering build platform: IOS - buildable: False
+    Registering build platform: UnrealBuildTool.LinuxPlatformFactory
+Unable to find valid SDK(s) for Linux:
+  Found Sdk Version, Required=v26_clang-20.1.8-rockylinux8.
+  Found AutoSdk Version, Required=v26_clang-20.1.8-rockylinux8.
+        Registering build platform: Linux - buildable: False
+Unable to find valid SDK(s) for LinuxArm64:
+  Found Sdk Version, Required=v26_clang-20.1.8-rockylinux8.
+  Found AutoSdk Version, Required=v26_clang-20.1.8-rockylinux8.
+        Registering build platform: LinuxArm64 - buildable: False
+    Registering build platform: UnrealBuildTool.MacPlatformFactory
+Unable to find valid SDK(s) for Mac:
+  Found Sdk Version, MinRequired=1100.0.0.0, MaxRequired=8999.0.
+  Found AutoSdk Version, Required=15.2.
+        Registering build platform: Mac - buildable: False
+    Registering build platform: UnrealBuildTool.TVOSPlatformFactory
+Unable to find valid SDK(s) for TVOS:
+  Found Sdk Version, MinRequired=1100.0.0.0, MaxRequired=8999.0.
+  Found AutoSdk Version, Required=15.2.
+        Registering build platform: TVOS - buildable: False
+    Registering build platform: UnrealBuildTool.WindowsPlatformFactory
+Found Windows 10 SDK root at C:\Program Files (x86)\Windows Kits\10 (1)
+Found Windows 10 SDK root at C:\Program Files (x86)\Windows Kits\10 (2)
+Found Windows 10 SDK version 10.0.22621.0 at C:\Program Files (x86)\Windows Kits\10
+Found Universal CRT version 10.0.22621.0 at C:\Program Files (x86)\Windows Kits\10
+Found Windows 10 SDK version 10.0.26100.0 at C:\Program Files (x86)\Windows Kits\10
+Found Universal CRT version 10.0.26100.0 at C:\Program Files (x86)\Windows Kits\10
+Win64 Installed SDK(s): MinVersion_Sdk=10.0.19041.0, MaxVersion_Sdk=10.9.99999.0, CurrentVersion_Sdk=10.0.22621.0, Version_AutoSdk=10.0.22621.0, CurrentVersion_AutoSdk=
+        Registering build platform: Win64 - buildable: True
+    Registering build platform: UnrealBuildTool.VisionOSPlatformFactory
+        Registering build platform: VisionOS - buildable: False
+Command line: D:\UnrealEngine-5.7\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll GuLiStrikeEditor Win64 Development -Project=D:\UE5.7\test1\GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE
+Log file: D:\UnrealEngine-5.7\Engine\Programs\UnrealBuildTool\Log.txt
+Deleting old log file: D:\UnrealEngine-5.7\Engine\Programs\UnrealBuildTool\Log-backup-2026.09.03-02.51.49.txt
+
+Using 'git status' to determine working set for adaptive non-unity build (D:\UnrealEngine-5.7).
+Using 'git status' to determine working set for adaptive non-unity build (D:\UE5.7\test1).
+Invalidating makefile for GuLiStrikeEditor (source file added)
+Found VisualStudio2022 installation: C:\Program Files\Microsoft Visual Studio\2022\Professional (Product=Microsoft.VisualStudio.Product.Professional, Version=17.14.36414.22)
+Found Visual Studio toolchain: C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.38.33130 (Family=14.38.33130, FamilyRank=1, Version=14.38.33145, HostArchitecture=x64, ReleaseChannel=Latest, Architecture=x64, Error=False, Redist=C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Redist\MSVC\14.38.33130)
+Found Visual Studio toolchain: C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207 (Family=14.44.35207, FamilyRank=0, Version=14.44.35215, HostArchitecture=x64, ReleaseChannel=Latest, Architecture=x64, Error=False, Redist=C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Redist\MSVC\14.44.35112)
+Building UnrealEditor - GuLiStrikeEditor - Win64 - Development
+Project 'GuLiStrikeEditor' depends on plugin 'StructUtils' which was deprecated in 5.5 and will soon be removed. Please update your dependencies.
+Warning: Plugin 'VibeUE' does not list plugin 'StructUtils' as a dependency, but module 'VibeUE' depends on module 'StructUtils'.
+Warning: Plugin 'VibeUE' does not list plugin 'GameplayTagsEditor' as a dependency, but module 'VibeUE' depends on module 'GameplayTagsEditor'.
+Warning: Plugin 'Tripo3DUEBridge' does not list plugin 'Interchange' as a dependency, but module 'Tripo3DUEBridge' depends on module 'InterchangePipelines'.
+Compiler: C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\cl.exe
+Linker: C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\link.exe
+Library Manager: C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\link.exe
+Resource Compiler: C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\rc.exe
+Using EngineIncludeOrderVersion.Unreal5_7 for target GuLiStrikeEditor.Target.cs
+UHT compiled-in object format Default
+UnrealHeaderTool needs to run because there are a different number of UObject source files in module GuLiStrike
+Parsing headers for GuLiStrikeEditor
+  Running Internal UnrealHeaderTool D:\UE5.7\test1\GuLiStrike.uproject D:\UE5.7\test1\Intermediate\Build\Win64\GuLiStrikeEditor\Development\GuLiStrikeEditor.uhtmanifest -WarningsAsErrors
+Reading engine version from file: D:\UnrealEngine-5.7\Engine\Source\Runtime\Launch\Resources\Version.h
+Got engine version 5.7.4
+Step - Exports
+       Exporter Stats skipped
+       Exporter Json skipped
+       Running exporter CodeGen
+UHT processed GuLiStrikeEditor in 6.9094714 seconds (14 files written)
+Found 5 shared PCH headers (listed in order of preference):
+	UnrealEd
+	Engine
+	Slate
+	CoreUObject
+	Core
+VerseVMBytecodeGenerator.Generate, generating CPP headers in: 'D:\UnrealEngine-5.7\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject\VerseVMBytecode'
+	Writing out generated header file. Changed:False Path:'D:\UnrealEngine-5.7\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject\VerseVMBytecode\VVMBytecodeOps.gen.h'
+	Writing out generated header file. Changed:False Path:'D:\UnrealEngine-5.7\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject\VerseVMBytecode\VVMBytecodesAndCaptures.gen.h'
+	Writing out generated header file. Changed:False Path:'D:\UnrealEngine-5.7\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject\VerseVMBytecode\VVMMakeCapturesFuncs.gen.h'
+	Writing out generated header file. Changed:False Path:'D:\UnrealEngine-5.7\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject\VerseVMBytecode\VVMCaptureSwitch.gen.h'
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.26.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.26.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.20.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.20.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.14.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.14.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.18.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.18.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.24.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.24.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.29.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.29.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.13.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.13.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.23.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.23.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.27.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.27.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.33.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.33.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.31.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.31.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.30.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.30.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.16.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.16.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.22.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.22.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.25.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.25.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.17.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.17.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.32.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.32.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.19.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.19.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.21.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.21.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.28.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\Module.GuLiStrike.28.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\LiveCodingInfo.json: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\LiveCodingInfo.json.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\UnrealEditor-GuLiStrike.lib.rsp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\UnrealEditor-GuLiStrike.lib.rsp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\UnrealEditor-GuLiStrike.dll.rsp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\UnrealEditor-GuLiStrike.dll.rsp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrikeEditor\Module.GuLiStrikeEditor.cpp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrikeEditor\Module.GuLiStrikeEditor.cpp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrikeEditor\LiveCodingInfo.json: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrikeEditor\LiveCodingInfo.json.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrikeEditor\UnrealEditor-GuLiStrikeEditor.dll.rsp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrikeEditor\UnrealEditor-GuLiStrikeEditor.dll.rsp.old.
+Updating D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrikeEditor\UnrealEditor-GuLiStrikeEditor.lib.rsp: contents have changed. Saving previous version to D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrikeEditor\UnrealEditor-GuLiStrikeEditor.lib.rsp.old.
+Deleting outdated item: D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\UnrealEditor-GuLiStrike.lib
+Deleting outdated item: D:\UE5.7\test1\Binaries\Win64\UnrealEditor-GuLiStrike.pdb
+Deleting outdated item: D:\UE5.7\test1\Binaries\Win64\UnrealEditor-GuLiStrikeEditor.pdb
+Deleting outdated item: D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrikeEditor\UnrealEditor-GuLiStrikeEditor.lib
+Building GuLiStrikeEditor...
+Using Visual Studio 2022 14.44.35215 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207) and Windows 10.0.22621.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[Adaptive Build] Excluded from GuLiStrike unity file: GuLiCommanderPlayerController.cpp, GuLiCommanderResourceAdapter.cpp, GuLiCommanderUICommands.cpp, GuLiCommanderToolModeTests.cpp, GuLiBattleAuthoritySubsystem.cpp, GuLiCommanderPredictiveAvoidanceProcessor.cpp, GuLiCommanderSelectionQuery.cpp, GuLiSoldierCombat.cpp, GuLiCommanderSelectionQueryTests.cpp, GuLiSoldierCombatTests.cpp, GuLiCommanderPoseCodec.cpp, GuLiCommanderTypes.cpp, GuLiCommanderNetworkTests.cpp, GuLiCommanderCameraGeometry.cpp, GuLiCommanderCameraPawn.cpp, GuLiCommanderHUD.cpp, GuLiCommanderLandscapeQuerySubsystem.cpp, GuLiCommanderLODCommands.cpp, GuLiCommanderLODPolicy.cpp, GuLiCommanderLODSubsystem.cpp, GuLiCommanderMechanicalPresentation.cpp, GuLiCommanderOverviewSubsystem.cpp, GuLiCommanderPresentationActor.cpp, GuLiCommanderPresentationCommands.cpp, GuLiCommanderPresentationPerformanceSettings.cpp, GuLiCommanderCameraPolicyTests.cpp, GuLiCommanderMoveEndpointHUDTests.cpp, GuLiCommanderPresentationPerformanceTests.cpp, GuLiCommanderConsoleLayout.cpp, GuLiCommanderConsoleView.cpp, GuLiCommanderHealthBarRenderer.cpp, GuLiCommanderHUDWidget.cpp, GuLiCommanderOverviewOverlay.cpp, GuLiCommanderTaskPanel.cpp, GuLiBuildingConstructionContour.cpp, GuLiBuildingPlacementComponent.cpp, GuLiRogueCardSubsystem.cpp, GuLiCombatEffectAuthoringLibrary.cpp, GuLiCombatEffectDefinition.cpp, GuLiCombatEffectLaserPresentation.cpp, GuLiCombatEffectPresentationSubsystem.cpp, GuLiCombatEffectRuntimeSubsystem.cpp, GuLiCombatEffectTypes.cpp, GuLiGroundWarningSubsystem.cpp, GuLiMechanicalMuzzlePresentation.cpp, GuLiMissileClusterPresentation.cpp, GuLiRogueUpgradePresentation.cpp, GuLiUnitFeedbackSubsystem.cpp, GuLiCommanderSkillTypes.cpp, GuLiPointSkill.cpp, GuLiSummonSkill.cpp, GuLiUnitSkillExecution.cpp, GuLiWarMachineMissileSkill.cpp, GuLiCommanderDataSettings.cpp, GuLiCommanderDataSubsystem.cpp, GuLiCommanderSoldierDefinition.cpp, GuLiCommanderSoldierResolver.cpp, GuLiScale020InterpolationTests.cpp, GuLiScale020Tests.cpp, GuLiMechanicalAnimation.cpp, GuLiMechanicalTurnPresentation.cpp, GuLiVATAnimation.cpp, GuLiWarMachineHoverComponent.cpp, GuLiWarMachineHoverPreviewComponent.cpp, GuLiMechanicalAnimationTests.cpp, GuLiSkillResolver.cpp, GuLiSkillTypes.cpp, GuLiTeleportInputComponent.cpp, GuLiWingmanPawn.cpp
+[Adaptive Build] Excluded from GuLiStrikeEditor unity file: GuLiMissileFixture.cpp, GuLiRogueCardQALibrary.cpp
+[Adaptive Build] Excluded from Navmesh unity file: DetourCrowd.cpp
+[Adaptive Build] Excluded from LevelEditor unity file: SLevelViewport.cpp
+Determining max actions to execute in parallel (24 physical cores, 32 logical cores)
+  Executing up to 24 processes, one per physical core
+  Requested 1.5 GB memory per action, 13.05 GB available: limiting max parallel actions to 8
+Using Unreal Build Accelerator local executor to run 100 action(s)
+  Storage capacity 40Gb
+  RootDir C:\ProgramData\Epic\UnrealBuildAccelerator
+Deleting old log file: D:\UnrealEngine-5.7\Engine\Programs\UnrealBuildTool\Log-backup-2026.10.01-09.15.32.uba
+---- Starting trace: 261003_201508 ----
+UbaServer - Listening on 0.0.0.0:1345
+Cache bucket 994921010 used. Action: Compile [x64] GuLiBattleAuthoritySubsystem.cpp ()
+Cache bucket 416513229 used. Action: Link [x64] UnrealEditor-GuLiStrike.lib ()
+All processes queued
+[1/100] Compile [x64] GuLiCombatEffectDefinition.cpp
+[2/100] Compile [x64] GuLiCommanderCameraGeometry.cpp
+[3/100] Compile [x64] GuLiCombatEffectRuntimeSubsystem.cpp
+[4/100] Compile [x64] GuLiCommanderCameraPolicyTests.cpp
+[5/100] Compile [x64] GuLiBuildingConstructionContour.cpp
+[6/100] Compile [x64] GuLiCombatEffectTypes.cpp
+[7/100] Compile [x64] GuLiCommanderDataSettings.cpp
+[8/100] Compile [x64] GuLiCombatEffectLaserPresentation.cpp
+[9/100] Compile [x64] GuLiCombatEffectPresentationSubsystem.cpp
+[10/100] Compile [x64] GuLiCommanderDataSubsystem.cpp
+[11/100] Compile [x64] GuLiCommanderCameraPawn.cpp
+[12/100] Compile [x64] GuLiBuildingPlacementComponent.cpp
+[13/100] Compile [x64] GuLiCommanderLODSubsystem.cpp
+[14/100] Compile [x64] GuLiCommanderConsoleLayout.cpp
+[15/100] Compile [x64] GuLiCommanderMoveEndpointHUDTests.cpp
+[16/100] Compile [x64] GuLiCommanderConsoleView.cpp
+[17/100] Compile [x64] GuLiCommanderHUD.cpp
+[18/100] Compile [x64] GuLiCommanderMechanicalPresentation.cpp
+[19/100] Compile [x64] GuLiCommanderHealthBarRenderer.cpp
+[20/100] Compile [x64] GuLiCommanderNetworkTests.cpp
+[21/100] Compile [x64] GuLiCommanderHUDWidget.cpp
+[22/100] Compile [x64] GuLiCommanderPoseCodec.cpp
+[23/100] Compile [x64] GuLiBattleAuthoritySubsystem.cpp
+[24/100] Compile [x64] GuLiCommanderPredictiveAvoidanceProcessor.cpp
+[25/100] Compile [x64] GuLiCommanderOverviewSubsystem.cpp
+[26/100] Compile [x64] GuLiCommanderOverviewOverlay.cpp
+[27/100] Compile [x64] GuLiCommanderPresentationCommands.cpp
+[28/100] Compile [x64] GuLiCommanderSoldierDefinition.cpp
+[29/100] Compile [x64] GuLiCommanderPresentationPerformanceTests.cpp
+[30/100] Compile [x64] GuLiCommanderSelectionQuery.cpp
+[31/100] Compile [x64] GuLiCommanderSelectionQueryTests.cpp
+[32/100] Compile [x64] GuLiCommanderSoldierResolver.cpp
+[33/100] Compile [x64] GuLiCommanderSkillTypes.cpp
+[34/100] Compile [x64] GuLiCommanderToolModeTests.cpp
+[35/100] Compile [x64] GuLiMechanicalAnimation.cpp
+[36/100] Compile [x64] GuLiCommanderResourceAdapter.cpp
+[37/100] Compile [x64] GuLiCommanderPlayerController.cpp
+[38/100] Compile [x64] GuLiCommanderTypes.cpp
+[39/100] Compile [x64] GuLiCommanderTaskPanel.cpp
+[40/100] Compile [x64] GuLiCommanderUICommands.cpp
+[41/100] Compile [x64] GuLiMissileClusterPresentation.cpp
+[42/100] Compile [x64] GuLiPointSkill.cpp
+[43/100] Compile [x64] GuLiCommanderPresentationActor.cpp
+[44/100] Compile [x64] GuLiSkillTypes.cpp
+[45/100] Compile [x64] GuLiMechanicalMuzzlePresentation.cpp
+[46/100] Compile [x64] GuLiSkillResolver.cpp
+[47/100] Compile [x64] GuLiScale020InterpolationTests.cpp
+[48/100] Compile [x64] GuLiRogueUpgradePresentation.cpp
+[49/100] Compile [x64] GuLiRogueCardSubsystem.cpp
+[50/100] Compile [x64] GuLiScale020Tests.cpp
+[51/100] Compile [x64] GuLiSoldierCombat.cpp
+ Compile [x64] GuLiVATAnimation.cpp: Exited with error code 2 . The build will fail.
+ Compile [x64] GuLiVATAnimation.cpp: WorkingDirectory D:\UnrealEngine-5.7\Engine\Source
+ Compile [x64] GuLiVATAnimation.cpp: C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\cl.exe @"D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/GuLiVATAnimation.cpp.obj.rsp" 
+[52/100] Compile [x64] GuLiVATAnimation.cpp
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Presentation\GuLiVATAnimation.cpp(33,24): error C2663: “FTextureSource::GetMipData”: 没有重载函数具有对 “this” 指针的有效转换
+		if (!Texture->Source.GetMipData(Raw,0) || Raw.Num() != int64(BoneDeltas.Num()) * 4 * sizeof(float))
+		                     ^
+D:\UnrealEngine-5.7\Engine\Source\Runtime\Engine\Classes\Engine\Texture.h(290,14): note: 可能是“bool FTextureSource::GetMipData(TArray<uint8,FDefaultAllocator64> &,int32,IImageWrapperModule *)”
+	inline bool GetMipData(TArray64<uint8>& OutMipData, int32 MipIndex, class IImageWrapperModule* ImageWrapperModule = nullptr)
+	            ^
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Presentation\GuLiVATAnimation.cpp(33,24): note: “bool FTextureSource::GetMipData(TArray<uint8,FDefaultAllocator64> &,int32,IImageWrapperModule *)”: 不能将“this”指针从“const FTextureSource”转换为“FTextureSource &”
+		if (!Texture->Source.GetMipData(Raw,0) || Raw.Num() != int64(BoneDeltas.Num()) * 4 * sizeof(float))
+		                     ^
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Presentation\GuLiVATAnimation.cpp(33,15): note: 转换丢失限定符
+		if (!Texture->Source.GetMipData(Raw,0) || Raw.Num() != int64(BoneDeltas.Num()) * 4 * sizeof(float))
+		            ^
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Presentation\GuLiVATAnimation.cpp(33,24): note: 尝试匹配参数列表“(TArray<uint8,FDefaultAllocator64>, int)”时
+		if (!Texture->Source.GetMipData(Raw,0) || Raw.Num() != int64(BoneDeltas.Num()) * 4 * sizeof(float))
+		                     ^
+[53/100] Compile [x64] GuLiSoldierCombatTests.cpp
+[54/100] Compile [x64] GuLiSummonSkill.cpp
+[55/100] Compile [x64] GuLiUnitSkillExecution.cpp
+[56/100] Compile [x64] GuLiWarMachineMissileSkill.cpp
+[57/100] Compile [x64] GuLiTeleportInputComponent.cpp
+[58/100] Compile [x64] GuLiWingmanPawn.cpp
+[59/100] Compile [x64] Module.GuLiStrike.11.cpp
+[60/100] Compile [x64] Module.GuLiStrike.1.cpp
+[61/100] Compile [x64] GuLiUnitFeedbackSubsystem.cpp
+[62/100] Compile [x64] Module.GuLiStrike.10.cpp
+[63/100] Compile [x64] Module.GuLiStrike.14.cpp
+[64/100] Compile [x64] Module.GuLiStrike.12.cpp
+[65/100] Compile [x64] Module.GuLiStrike.13.cpp
+[66/100] Compile [x64] Module.GuLiStrike.15.cpp
+[67/100] Compile [x64] Module.GuLiStrike.18.cpp
+[68/100] Compile [x64] Module.GuLiStrike.2.cpp
+[69/100] Compile [x64] Module.GuLiStrike.16.cpp
+[70/100] Compile [x64] Module.GuLiStrike.17.cpp
+[71/100] Compile [x64] Module.GuLiStrike.21.cpp
+[72/100] Compile [x64] Module.GuLiStrike.19.cpp
+[73/100] Compile [x64] Module.GuLiStrike.23.cpp
+[74/100] Compile [x64] Module.GuLiStrike.24.cpp
+[75/100] Compile [x64] Module.GuLiStrike.20.cpp
+[76/100] Compile [x64] Module.GuLiStrike.25.cpp
+[77/100] Compile [x64] Module.GuLiStrike.3.cpp
+[78/100] Compile [x64] Module.GuLiStrike.26.cpp
+[79/100] Compile [x64] Module.GuLiStrike.27.cpp
+[80/100] Compile [x64] Module.GuLiStrike.28.cpp
+[81/100] Compile [x64] Module.GuLiStrike.22.cpp
+[82/100] Compile [x64] Module.GuLiStrike.30.cpp
+[83/100] Compile [x64] Module.GuLiStrike.4.cpp
+[84/100] Compile [x64] Module.GuLiStrike.33.cpp
+[85/100] Compile [x64] Module.GuLiStrike.5.cpp
+[86/100] Compile [x64] Module.GuLiStrike.6.cpp
+[87/100] Compile [x64] Module.GuLiStrike.7.cpp
+[88/100] Compile [x64] Module.GuLiStrike.9.cpp
+[89/100] Compile [x64] Module.GuLiStrike.29.cpp
+[90/100] Compile [x64] Module.GuLiStrike.31.cpp
+[91/100] Compile [x64] Module.GuLiStrike.32.cpp
+[92/100] Compile [x64] Module.GuLiStrike.8.cpp
+[93/100] Compile [x64] GuLiMissileFixture.cpp
+[94/100] Compile [x64] GuLiRogueCardQALibrary.cpp
+[95/100] Compile [x64] Module.GuLiStrikeEditor.cpp
+[96/100] Link [x64] UnrealEditor-GuLiStrikeEditor.lib
+  正在创建库 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrikeEditor/UnrealEditor-GuLiStrikeEditor.lib 和对象 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrikeEditor/UnrealEditor-GuLiStrikeEditor.exp
+
+Trace written to file D:/UnrealEngine-5.7/Engine/Programs/UnrealBuildTool/Log.uba with size 33.6kb
+Total time in Unreal Build Accelerator local executor: 71.59 seconds
+CompilationResultException: OtherCompilationError
+   at UnrealBuildTool.ActionGraph.ExecuteActionsAsync(BuildConfiguration BuildConfiguration, List`1 ActionsToExecute, List`1 TargetDescriptors, ILogger Logger, IActionArtifactCache actionArtifactCache) in D:\UnrealEngine-5.7\Engine\Source\Programs\UnrealBuildTool\System\ActionGraph.cs:line 466
+   at UnrealBuildTool.BuildMode.BuildAsync(TargetMakefile[] Makefiles, List`1 TargetDescriptors, BuildConfiguration BuildConfiguration, BuildOptions Options, FileReference WriteOutdatedActionsFile, ILogger Logger, String ActionTypeFilter) in D:\UnrealEngine-5.7\Engine\Source\Programs\UnrealBuildTool\Modes\BuildMode.cs:line 833
+   at UnrealBuildTool.BuildMode.BuildAsync(List`1 TargetDescriptors, BuildConfiguration BuildConfiguration, ISourceFileWorkingSet WorkingSet, BuildOptions Options, FileReference WriteOutdatedActionsFile, ILogger Logger, Boolean bSkipPreBuildTargets, String ActionTypeFilter) in D:\UnrealEngine-5.7\Engine\Source\Programs\UnrealBuildTool\Modes\BuildMode.cs:line 417
+   at UnrealBuildTool.BuildMode.ExecuteAsync(CommandLineArguments Arguments, ILogger Logger) in D:\UnrealEngine-5.7\Engine\Source\Programs\UnrealBuildTool\Modes\BuildMode.cs:line 253
+   at UnrealBuildTool.UnrealBuildTool.Main(String[] ArgumentsArray) in D:\UnrealEngine-5.7\Engine\Source\Programs\UnrealBuildTool\UnrealBuildTool.cs:line 653
+WriteFileIfChanged() wrote 29 changed files of 9020 requested writes.
+
+Result: Failed (OtherCompilationError)
+Total execution time: 90.90 seconds

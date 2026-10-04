@@ -14,6 +14,8 @@ class GULISTRIKEEDITOR_API UGuLiComponentSkillQALibrary : public UBlueprintFunct
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Skills") static bool StartPIE(int32 Mode, int32 Clients);
+	/** Explicit flight acceptance: Commander, Ground, Air, Commander through real slot allocation. */
+	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Skills") static bool StartMixedFlightPIE();
 	/** Existing input-lifecycle boundary, used by the ground-player PIE acceptance capture. */
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Input") static void SetGMPanelOpen(APlayerController* Controller, bool bOpen);
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Input") static void FlushPlayerInput(APlayerController* Controller);
