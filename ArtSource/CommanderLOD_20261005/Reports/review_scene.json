@@ -1,0 +1,797 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "saved": true,
+  "tag": "CommanderLODReview20261005",
+  "groups": [
+    {
+      "name": "DefaultSoldier",
+      "id": 1,
+      "lod": 0,
+      "actors": [
+        "CommanderLOD_DefaultSoldier_LOD0"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_0.UnitInstances"
+      ],
+      "origin": [
+        48000.0,
+        -72000.0,
+        600.0
+      ],
+      "scale": 1.0,
+      "references": [
+        {
+          "actor": "CommanderLOD_DefaultSoldier_LOD0",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_0.UnitInstances",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/DefaultSoldier/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "DefaultSoldier",
+      "id": 1,
+      "lod": 1,
+      "actors": [
+        "CommanderLOD_DefaultSoldier_LOD1"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_1.UnitInstances"
+      ],
+      "origin": [
+        54000.0,
+        -72000.0,
+        600.0
+      ],
+      "scale": 1.0,
+      "references": [
+        {
+          "actor": "CommanderLOD_DefaultSoldier_LOD1",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_1.UnitInstances",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/DefaultSoldier/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "DefaultSoldier",
+      "id": 1,
+      "lod": 2,
+      "actors": [
+        "CommanderLOD_DefaultSoldier_LOD2"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_2.UnitInstances"
+      ],
+      "origin": [
+        60000.0,
+        -72000.0,
+        600.0
+      ],
+      "scale": 1.0,
+      "references": [
+        {
+          "actor": "CommanderLOD_DefaultSoldier_LOD2",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_2.UnitInstances",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/DefaultSoldier/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "WM01",
+      "id": 2,
+      "lod": 0,
+      "actors": [
+        "CommanderLOD_WM01_LOD0"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_3.UnitInstances"
+      ],
+      "origin": [
+        48000.0,
+        -64500.0,
+        600.0
+      ],
+      "scale": 0.2,
+      "references": [
+        {
+          "actor": "CommanderLOD_WM01_LOD0",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_3.UnitInstances",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/WM01/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "WM01",
+      "id": 2,
+      "lod": 1,
+      "actors": [
+        "CommanderLOD_WM01_LOD1"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_4.UnitInstances"
+      ],
+      "origin": [
+        54000.0,
+        -64500.0,
+        600.0
+      ],
+      "scale": 0.2,
+      "references": [
+        {
+          "actor": "CommanderLOD_WM01_LOD1",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_4.UnitInstances",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/WM01/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "WM01",
+      "id": 2,
+      "lod": 2,
+      "actors": [
+        "CommanderLOD_WM01_LOD2"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_5.UnitInstances"
+      ],
+      "origin": [
+        60000.0,
+        -64500.0,
+        600.0
+      ],
+      "scale": 0.2,
+      "references": [
+        {
+          "actor": "CommanderLOD_WM01_LOD2",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_5.UnitInstances",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/WM01/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "ElectromagneticMiner",
+      "id": 3,
+      "lod": 0,
+      "actors": [
+        "CommanderLOD_ElectromagneticMiner_LOD0_SkeletalMeshComponent0_0",
+        "CommanderLOD_ElectromagneticMiner_LOD0_Cockpit_Freight_Spoiler_1",
+        "CommanderLOD_ElectromagneticMiner_LOD0_Top_Turret_2x_Lvl1_2",
+        "CommanderLOD_ElectromagneticMiner_LOD0_Weapon_Rocket_Mount_Lvl2_3",
+        "CommanderLOD_ElectromagneticMiner_LOD0_Weapon_Rocket_Mount_Lvl3_4",
+        "CommanderLOD_ElectromagneticMiner_LOD0_Collector_L_5",
+        "CommanderLOD_ElectromagneticMiner_LOD0_Collector_R_6",
+        "CommanderLOD_ElectromagneticMiner_LOD0_Side_Winglet_Spike_Lvl3_7"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.SkeletalMeshActor_0.SkeletalMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_49.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_50.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_51.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_52.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_53.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_54.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_55.StaticMeshComponent0"
+      ],
+      "origin": [
+        48000.0,
+        -57000.0,
+        600.0
+      ],
+      "scale": 0.6084579714416871,
+      "references": [
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD0_SkeletalMeshComponent0_0",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.SkeletalMeshActor_0.SkeletalMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD0_Cockpit_Freight_Spoiler_1",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_49.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD0_Top_Turret_2x_Lvl1_2",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_50.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD0_Weapon_Rocket_Mount_Lvl2_3",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_51.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD0_Weapon_Rocket_Mount_Lvl3_4",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_52.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD0_Collector_L_5",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_53.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD0_Collector_R_6",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_54.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD0_Side_Winglet_Spike_Lvl3_7",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_55.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "ElectromagneticMiner",
+      "id": 3,
+      "lod": 1,
+      "actors": [
+        "CommanderLOD_ElectromagneticMiner_LOD1_SkeletalMeshComponent0_0",
+        "CommanderLOD_ElectromagneticMiner_LOD1_Cockpit_Freight_Spoiler_1",
+        "CommanderLOD_ElectromagneticMiner_LOD1_Top_Turret_2x_Lvl1_2",
+        "CommanderLOD_ElectromagneticMiner_LOD1_Weapon_Rocket_Mount_Lvl2_3",
+        "CommanderLOD_ElectromagneticMiner_LOD1_Weapon_Rocket_Mount_Lvl3_4",
+        "CommanderLOD_ElectromagneticMiner_LOD1_Collector_L_5",
+        "CommanderLOD_ElectromagneticMiner_LOD1_Collector_R_6",
+        "CommanderLOD_ElectromagneticMiner_LOD1_Side_Winglet_Spike_Lvl3_7"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.SkeletalMeshActor_1.SkeletalMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_56.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_57.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_58.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_59.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_60.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_61.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_62.StaticMeshComponent0"
+      ],
+      "origin": [
+        54000.0,
+        -57000.0,
+        600.0
+      ],
+      "scale": 0.6084579714416871,
+      "references": [
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD1_SkeletalMeshComponent0_0",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.SkeletalMeshActor_1.SkeletalMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD1_Cockpit_Freight_Spoiler_1",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_56.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD1_Top_Turret_2x_Lvl1_2",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_57.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD1_Weapon_Rocket_Mount_Lvl2_3",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_58.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD1_Weapon_Rocket_Mount_Lvl3_4",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_59.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD1_Collector_L_5",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_60.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD1_Collector_R_6",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_61.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD1_Side_Winglet_Spike_Lvl3_7",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_62.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "ElectromagneticMiner",
+      "id": 3,
+      "lod": 2,
+      "actors": [
+        "CommanderLOD_ElectromagneticMiner_LOD2_SkeletalMeshComponent0_0",
+        "CommanderLOD_ElectromagneticMiner_LOD2_Cockpit_Freight_Spoiler_1",
+        "CommanderLOD_ElectromagneticMiner_LOD2_Top_Turret_2x_Lvl1_2",
+        "CommanderLOD_ElectromagneticMiner_LOD2_Weapon_Rocket_Mount_Lvl2_3",
+        "CommanderLOD_ElectromagneticMiner_LOD2_Weapon_Rocket_Mount_Lvl3_4",
+        "CommanderLOD_ElectromagneticMiner_LOD2_Collector_L_5",
+        "CommanderLOD_ElectromagneticMiner_LOD2_Collector_R_6",
+        "CommanderLOD_ElectromagneticMiner_LOD2_Side_Winglet_Spike_Lvl3_7"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.SkeletalMeshActor_2.SkeletalMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_63.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_64.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_65.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_66.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_67.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_68.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_69.StaticMeshComponent0"
+      ],
+      "origin": [
+        60000.0,
+        -57000.0,
+        600.0
+      ],
+      "scale": 0.6084579714416871,
+      "references": [
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD2_SkeletalMeshComponent0_0",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.SkeletalMeshActor_2.SkeletalMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD2_Cockpit_Freight_Spoiler_1",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_63.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD2_Top_Turret_2x_Lvl1_2",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_64.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD2_Weapon_Rocket_Mount_Lvl2_3",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_65.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD2_Weapon_Rocket_Mount_Lvl3_4",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_66.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD2_Collector_L_5",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_67.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD2_Collector_R_6",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_68.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ElectromagneticMiner_LOD2_Side_Winglet_Spike_Lvl3_7",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_69.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "ConstructionVehicle",
+      "id": 4,
+      "lod": 0,
+      "actors": [
+        "CommanderLOD_ConstructionVehicle_LOD0_SkeletalMeshComponent0_0",
+        "CommanderLOD_ConstructionVehicle_LOD0_Cockpit_Freight_Spoiler_1",
+        "CommanderLOD_ConstructionVehicle_LOD0_Top_Turret_2x_Lvl1_2",
+        "CommanderLOD_ConstructionVehicle_LOD0_Weapon_Rocket_Mount_Lvl2_3",
+        "CommanderLOD_ConstructionVehicle_LOD0_Weapon_Rocket_Mount_Lvl3_4",
+        "CommanderLOD_ConstructionVehicle_LOD0_Collector_L_5",
+        "CommanderLOD_ConstructionVehicle_LOD0_Collector_R_6",
+        "CommanderLOD_ConstructionVehicle_LOD0_Side_Winglet_Spike_Lvl3_7"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.SkeletalMeshActor_3.SkeletalMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_70.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_71.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_72.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_73.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_74.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_75.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_76.StaticMeshComponent0"
+      ],
+      "origin": [
+        48000.0,
+        -49500.0,
+        600.0
+      ],
+      "scale": 0.6084579714416871,
+      "references": [
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD0_SkeletalMeshComponent0_0",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.SkeletalMeshActor_3.SkeletalMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD0_Cockpit_Freight_Spoiler_1",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_70.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD0_Top_Turret_2x_Lvl1_2",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_71.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD0_Weapon_Rocket_Mount_Lvl2_3",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_72.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD0_Weapon_Rocket_Mount_Lvl3_4",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_73.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD0_Collector_L_5",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_74.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD0_Collector_R_6",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_75.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD0_Side_Winglet_Spike_Lvl3_7",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_76.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "ConstructionVehicle",
+      "id": 4,
+      "lod": 1,
+      "actors": [
+        "CommanderLOD_ConstructionVehicle_LOD1_SkeletalMeshComponent0_0",
+        "CommanderLOD_ConstructionVehicle_LOD1_Cockpit_Freight_Spoiler_1",
+        "CommanderLOD_ConstructionVehicle_LOD1_Top_Turret_2x_Lvl1_2",
+        "CommanderLOD_ConstructionVehicle_LOD1_Weapon_Rocket_Mount_Lvl2_3",
+        "CommanderLOD_ConstructionVehicle_LOD1_Weapon_Rocket_Mount_Lvl3_4",
+        "CommanderLOD_ConstructionVehicle_LOD1_Collector_L_5",
+        "CommanderLOD_ConstructionVehicle_LOD1_Collector_R_6",
+        "CommanderLOD_ConstructionVehicle_LOD1_Side_Winglet_Spike_Lvl3_7"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.SkeletalMeshActor_4.SkeletalMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_77.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_78.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_79.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_80.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_81.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_82.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_83.StaticMeshComponent0"
+      ],
+      "origin": [
+        54000.0,
+        -49500.0,
+        600.0
+      ],
+      "scale": 0.6084579714416871,
+      "references": [
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD1_SkeletalMeshComponent0_0",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.SkeletalMeshActor_4.SkeletalMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD1_Cockpit_Freight_Spoiler_1",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_77.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD1_Top_Turret_2x_Lvl1_2",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_78.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD1_Weapon_Rocket_Mount_Lvl2_3",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_79.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD1_Weapon_Rocket_Mount_Lvl3_4",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_80.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD1_Collector_L_5",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_81.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD1_Collector_R_6",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_82.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD1_Side_Winglet_Spike_Lvl3_7",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_83.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "ConstructionVehicle",
+      "id": 4,
+      "lod": 2,
+      "actors": [
+        "CommanderLOD_ConstructionVehicle_LOD2_SkeletalMeshComponent0_0",
+        "CommanderLOD_ConstructionVehicle_LOD2_Cockpit_Freight_Spoiler_1",
+        "CommanderLOD_ConstructionVehicle_LOD2_Top_Turret_2x_Lvl1_2",
+        "CommanderLOD_ConstructionVehicle_LOD2_Weapon_Rocket_Mount_Lvl2_3",
+        "CommanderLOD_ConstructionVehicle_LOD2_Weapon_Rocket_Mount_Lvl3_4",
+        "CommanderLOD_ConstructionVehicle_LOD2_Collector_L_5",
+        "CommanderLOD_ConstructionVehicle_LOD2_Collector_R_6",
+        "CommanderLOD_ConstructionVehicle_LOD2_Side_Winglet_Spike_Lvl3_7"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.SkeletalMeshActor_5.SkeletalMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_133.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_134.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_135.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_136.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_137.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_138.StaticMeshComponent0",
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_139.StaticMeshComponent0"
+      ],
+      "origin": [
+        60000.0,
+        -49500.0,
+        600.0
+      ],
+      "scale": 0.6084579714416871,
+      "references": [
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD2_SkeletalMeshComponent0_0",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.SkeletalMeshActor_5.SkeletalMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD2_Cockpit_Freight_Spoiler_1",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_133.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD2_Top_Turret_2x_Lvl1_2",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_134.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD2_Weapon_Rocket_Mount_Lvl2_3",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_135.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD2_Weapon_Rocket_Mount_Lvl3_4",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_136.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD2_Collector_L_5",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_137.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD2_Collector_R_6",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_138.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "editor_only": true
+        },
+        {
+          "actor": "CommanderLOD_ConstructionVehicle_LOD2_Side_Winglet_Spike_Lvl3_7",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_139.StaticMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "SweeperSummon",
+      "id": 5,
+      "lod": 0,
+      "actors": [
+        "CommanderLOD_SweeperSummon_LOD0"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_6.UnitInstances"
+      ],
+      "origin": [
+        48000.0,
+        -42000.0,
+        600.0
+      ],
+      "scale": 0.2,
+      "references": [
+        {
+          "actor": "CommanderLOD_SweeperSummon_LOD0",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_6.UnitInstances",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/SweeperSummon/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "SweeperSummon",
+      "id": 5,
+      "lod": 1,
+      "actors": [
+        "CommanderLOD_SweeperSummon_LOD1"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_7.UnitInstances"
+      ],
+      "origin": [
+        54000.0,
+        -42000.0,
+        600.0
+      ],
+      "scale": 0.2,
+      "references": [
+        {
+          "actor": "CommanderLOD_SweeperSummon_LOD1",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_7.UnitInstances",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/SweeperSummon/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "SweeperSummon",
+      "id": 5,
+      "lod": 2,
+      "actors": [
+        "CommanderLOD_SweeperSummon_LOD2"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_8.UnitInstances"
+      ],
+      "origin": [
+        60000.0,
+        -42000.0,
+        600.0
+      ],
+      "scale": 0.2,
+      "references": [
+        {
+          "actor": "CommanderLOD_SweeperSummon_LOD2",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_8.UnitInstances",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/SweeperSummon/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "BiZhiMao",
+      "id": 6,
+      "lod": 0,
+      "actors": [
+        "CommanderLOD_BiZhiMao_LOD0"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_9.UnitInstances"
+      ],
+      "origin": [
+        48000.0,
+        -34500.0,
+        600.0
+      ],
+      "scale": 2.0,
+      "references": [
+        {
+          "actor": "CommanderLOD_BiZhiMao_LOD0",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_9.UnitInstances",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "BiZhiMao",
+      "id": 6,
+      "lod": 1,
+      "actors": [
+        "CommanderLOD_BiZhiMao_LOD1"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_10.UnitInstances"
+      ],
+      "origin": [
+        54000.0,
+        -34500.0,
+        600.0
+      ],
+      "scale": 2.0,
+      "references": [
+        {
+          "actor": "CommanderLOD_BiZhiMao_LOD1",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_10.UnitInstances",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+          "editor_only": true
+        }
+      ]
+    },
+    {
+      "name": "BiZhiMao",
+      "id": 6,
+      "lod": 2,
+      "actors": [
+        "CommanderLOD_BiZhiMao_LOD2"
+      ],
+      "components": [
+        "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_11.UnitInstances"
+      ],
+      "origin": [
+        60000.0,
+        -34500.0,
+        600.0
+      ],
+      "scale": 2.0,
+      "references": [
+        {
+          "actor": "CommanderLOD_BiZhiMao_LOD2",
+          "component": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_11.UnitInstances",
+          "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+          "editor_only": true
+        }
+      ]
+    }
+  ],
+  "native_compile": "not_run",
+  "gameplay": "not_run",
+  "approval": "pending"
+}

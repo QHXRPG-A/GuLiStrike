@@ -1,0 +1,49 @@
+{
+  "success": true,
+  "saved": [
+    "/Game/GuLiStrike/FX/UnitFeedback/FXT_UnitDestruction",
+    "/Game/GuLiStrike/FX/WingmanFlight/FXT_WingmanFlight",
+    "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_RocketJet"
+  ],
+  "effect_types": {
+    "/Game/GuLiStrike/FX/UnitFeedback/FXT_UnitDestruction": {
+      "before": [
+        true
+      ],
+      "after": [
+        false
+      ]
+    },
+    "/Game/GuLiStrike/FX/WingmanFlight/FXT_WingmanFlight": {
+      "before": [
+        true
+      ],
+      "after": [
+        false
+      ]
+    }
+  },
+  "rocket_jet": {
+    "source": "/Game/Assets/VFX/WeaponBulletVFX/NS/VFX_FireGun_Loop",
+    "target": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_RocketJet",
+    "emitters_changed": [
+      "NE_spread_spark",
+      "NE_flash_point_light",
+      "NE_gun_nozzle_fire",
+      "NE_spread_spark001",
+      "NE_spread_spark003"
+    ],
+    "compile": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "source_distance_culling": {
+      "NE_spread_spark": "true",
+      "NE_flash_point_light": "true",
+      "NE_gun_nozzle_fire": "true",
+      "NE_spread_spark001": "true",
+      "NE_spread_spark003": "true"
+    }
+  }
+}

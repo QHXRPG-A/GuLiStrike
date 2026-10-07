@@ -1,0 +1,2244 @@
+{
+  "version": "SSF_StyleAudit_A_v6",
+  "source_version": "SSF_Reference_A_v6",
+  "source_blend_sha256": "41e09ac09dea85464c8a72b493542c7644c5e0c5ebf34571bdb4a784319f206c",
+  "source_file_unchanged": true,
+  "actual_materials_checked": 90,
+  "three_discrete_bands_connected": true,
+  "tone_factors": [
+    0.4,
+    0.72,
+    1.0
+  ],
+  "tone_thresholds": [
+    0.12,
+    0.55
+  ],
+  "shared_ink": "#1A182F",
+  "material_checks": [
+    {
+      "asset": "AirBase",
+      "role": "Primary",
+      "material": "A3_AirBase_Primary_LineMask_AirBase_LineMask",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "AirBase",
+      "role": "Equipment",
+      "material": "A3_AirBase_Equipment_LineMask_AirBase_LineMask",
+      "palette_hex": "#274E61",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8312206259983874e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "AirBase",
+      "role": "Frame",
+      "material": "A3_AirBase_Frame_LineMask_AirBase_LineMask",
+      "palette_hex": "#1A182F",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.862645159639298e-10,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "AirBase",
+      "role": "Orange",
+      "material": "A3_AirBase_Orange_LineMask_AirBase_LineMask",
+      "palette_hex": "#FEE4D9",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8610229518832853e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "AirBase",
+      "role": "Berry",
+      "material": "A3_AirBase_Berry_LineMask_AirBase_LineMask",
+      "palette_hex": "#FEE4D9",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8610229518832853e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "AirBase",
+      "role": "Pink",
+      "material": "A3_AirBase_Pink_LineMask_AirBase_LineMask",
+      "palette_hex": "#274E61",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8312206259983874e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "AirBase",
+      "role": "Platform",
+      "material": "A3_AirBase_Platform_LineMask_AirBase_LineMask",
+      "palette_hex": "#274E61",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8312206259983874e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "AirBase",
+      "role": "PlatformTop",
+      "material": "A3_AirBase_PlatformTop_LineMask_AirBase_LineMask",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "AirBase",
+      "role": "Ink",
+      "material": "A3_AirBase_Ink_LineMask_AirBase_LineMask",
+      "palette_hex": "#1A182F",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.862645159639298e-10,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Primary",
+      "material": "A3_CloningCenter_Primary_LineMask_CloningCenter_LineMask",
+      "palette_hex": "#EABCBA",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Equipment",
+      "material": "A3_CloningCenter_Equipment_LineMask_CloningCenter_LineMask",
+      "palette_hex": "#835061",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.980232227667301e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Frame",
+      "material": "A3_CloningCenter_Frame_LineMask_CloningCenter_LineMask",
+      "palette_hex": "#45184D",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 3.2782554587607038e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Orange",
+      "material": "A3_CloningCenter_Orange_LineMask_CloningCenter_LineMask",
+      "palette_hex": "#FEE4D9",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8610229518832853e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Berry",
+      "material": "A3_CloningCenter_Berry_LineMask_CloningCenter_LineMask",
+      "palette_hex": "#FEE4D9",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8610229518832853e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Pink",
+      "material": "A3_CloningCenter_Pink_LineMask_CloningCenter_LineMask",
+      "palette_hex": "#835061",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.980232227667301e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Platform",
+      "material": "A3_CloningCenter_Platform_LineMask_CloningCenter_LineMask",
+      "palette_hex": "#274E61",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8312206259983874e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "PlatformTop",
+      "material": "A3_CloningCenter_PlatformTop_LineMask_CloningCenter_LineMask",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Ink",
+      "material": "A3_CloningCenter_Ink_LineMask_CloningCenter_LineMask",
+      "palette_hex": "#1A182F",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.862645159639298e-10,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Primary",
+      "material": "A3_CommandCenter_Primary_LineMask_CommandCenter_LineMask",
+      "palette_hex": "#A34053",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.6689300552652497e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Equipment",
+      "material": "A3_CommandCenter_Equipment_LineMask_CommandCenter_LineMask",
+      "palette_hex": "#E3B6B1",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.1457672083613488e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Frame",
+      "material": "A3_CommandCenter_Frame_LineMask_CommandCenter_LineMask",
+      "palette_hex": "#662249",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 3.8743019070697216e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Orange",
+      "material": "A3_CommandCenter_Orange_LineMask_CommandCenter_LineMask",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Berry",
+      "material": "A3_CommandCenter_Berry_LineMask_CommandCenter_LineMask",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Pink",
+      "material": "A3_CommandCenter_Pink_LineMask_CommandCenter_LineMask",
+      "palette_hex": "#E3B6B1",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.1457672083613488e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Platform",
+      "material": "A3_CommandCenter_Platform_LineMask_CommandCenter_LineMask",
+      "palette_hex": "#274E61",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8312206259983874e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "PlatformTop",
+      "material": "A3_CommandCenter_PlatformTop_LineMask_CommandCenter_LineMask",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Ink",
+      "material": "A3_CommandCenter_Ink_LineMask_CommandCenter_LineMask",
+      "palette_hex": "#1A182F",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.862645159639298e-10,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Floor",
+      "role": "Primary",
+      "material": "A3_Floor_Primary",
+      "palette_hex": "#FEE4D9",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8610229518832853e-08,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Floor",
+      "role": "Equipment",
+      "material": "A3_Floor_Equipment",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Floor",
+      "role": "Frame",
+      "material": "A3_Floor_Frame",
+      "palette_hex": "#032E30",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1175870888446848e-09,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Floor",
+      "role": "Orange",
+      "material": "A3_Floor_Orange",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Floor",
+      "role": "Berry",
+      "material": "A3_Floor_Berry",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Floor",
+      "role": "Pink",
+      "material": "A3_Floor_Pink",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Floor",
+      "role": "Platform",
+      "material": "A3_Floor_Platform",
+      "palette_hex": "#274E61",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8312206259983874e-09,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Floor",
+      "role": "PlatformTop",
+      "material": "A3_Floor_PlatformTop",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Floor",
+      "role": "Ink",
+      "material": "A3_Floor_Ink",
+      "palette_hex": "#1A182F",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.862645159639298e-10,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Lamp",
+      "role": "Primary",
+      "material": "A3_Lamp_Primary_LineMask_Lamp_LineMask",
+      "palette_hex": "#FEE4D9",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8610229518832853e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Lamp",
+      "role": "Equipment",
+      "material": "A3_Lamp_Equipment_LineMask_Lamp_LineMask",
+      "palette_hex": "#0A6F73",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 6.85453414861481e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Lamp",
+      "role": "Frame",
+      "material": "A3_Lamp_Frame_LineMask_Lamp_LineMask",
+      "palette_hex": "#032E30",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1175870888446848e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Lamp",
+      "role": "Orange",
+      "material": "A3_Lamp_Orange_LineMask_Lamp_LineMask",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Lamp",
+      "role": "Berry",
+      "material": "A3_Lamp_Berry_LineMask_Lamp_LineMask",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Lamp",
+      "role": "Pink",
+      "material": "A3_Lamp_Pink_LineMask_Lamp_LineMask",
+      "palette_hex": "#0A6F73",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 6.85453414861481e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Lamp",
+      "role": "Platform",
+      "material": "A3_Lamp_Platform_LineMask_Lamp_LineMask",
+      "palette_hex": "#274E61",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8312206259983874e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Lamp",
+      "role": "PlatformTop",
+      "material": "A3_Lamp_PlatformTop_LineMask_Lamp_LineMask",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Lamp",
+      "role": "Ink",
+      "material": "A3_Lamp_Ink_LineMask_Lamp_LineMask",
+      "palette_hex": "#1A182F",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.862645159639298e-10,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Light",
+      "role": "Primary",
+      "material": "A3_Light_Primary",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Light",
+      "role": "Equipment",
+      "material": "A3_Light_Equipment",
+      "palette_hex": "#0A6F73",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 6.85453414861481e-09,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Light",
+      "role": "Frame",
+      "material": "A3_Light_Frame",
+      "palette_hex": "#032E30",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1175870888446848e-09,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Light",
+      "role": "Orange",
+      "material": "A3_Light_Orange",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Light",
+      "role": "Berry",
+      "material": "A3_Light_Berry",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Light",
+      "role": "Pink",
+      "material": "A3_Light_Pink",
+      "palette_hex": "#0A6F73",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 6.85453414861481e-09,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Light",
+      "role": "Platform",
+      "material": "A3_Light_Platform",
+      "palette_hex": "#274E61",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8312206259983874e-09,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Light",
+      "role": "PlatformTop",
+      "material": "A3_Light_PlatformTop",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Light",
+      "role": "Ink",
+      "material": "A3_Light_Ink",
+      "palette_hex": "#1A182F",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.862645159639298e-10,
+      "independent_mask_nodes": []
+    },
+    {
+      "asset": "Drone",
+      "role": "Primary",
+      "material": "A3_Drone_Primary_LineMask_Drone_LineMask",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Drone",
+      "role": "Equipment",
+      "material": "A3_Drone_Equipment_LineMask_Drone_LineMask",
+      "palette_hex": "#2A104B",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Drone",
+      "role": "Frame",
+      "material": "A3_Drone_Frame_LineMask_Drone_LineMask",
+      "palette_hex": "#1A182F",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.862645159639298e-10,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Drone",
+      "role": "Orange",
+      "material": "A3_Drone_Orange_LineMask_Drone_LineMask",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Drone",
+      "role": "Berry",
+      "material": "A3_Drone_Berry_LineMask_Drone_LineMask",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Drone",
+      "role": "Pink",
+      "material": "A3_Drone_Pink_LineMask_Drone_LineMask",
+      "palette_hex": "#2A104B",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Drone",
+      "role": "Platform",
+      "material": "A3_Drone_Platform_LineMask_Drone_LineMask",
+      "palette_hex": "#274E61",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8312206259983874e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Drone",
+      "role": "PlatformTop",
+      "material": "A3_Drone_PlatformTop_LineMask_Drone_LineMask",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Drone",
+      "role": "Ink",
+      "material": "A3_Drone_Ink_LineMask_Drone_LineMask",
+      "palette_hex": "#1A182F",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.862645159639298e-10,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Primary",
+      "material": "A3_MilitaryFactory_Primary_LineMask_MilitaryFactory_LineMask",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Equipment",
+      "material": "A3_MilitaryFactory_Equipment_LineMask_MilitaryFactory_LineMask",
+      "palette_hex": "#9972CA",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.7881393421514957e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Frame",
+      "material": "A3_MilitaryFactory_Frame_LineMask_MilitaryFactory_LineMask",
+      "palette_hex": "#756FB5",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.0265579214751028e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Orange",
+      "material": "A3_MilitaryFactory_Orange_LineMask_MilitaryFactory_LineMask",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Berry",
+      "material": "A3_MilitaryFactory_Berry_LineMask_MilitaryFactory_LineMask",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Pink",
+      "material": "A3_MilitaryFactory_Pink_LineMask_MilitaryFactory_LineMask",
+      "palette_hex": "#9972CA",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.7881393421514957e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Platform",
+      "material": "A3_MilitaryFactory_Platform_LineMask_MilitaryFactory_LineMask",
+      "palette_hex": "#274E61",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8312206259983874e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "PlatformTop",
+      "material": "A3_MilitaryFactory_PlatformTop_LineMask_MilitaryFactory_LineMask",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Ink",
+      "material": "A3_MilitaryFactory_Ink_LineMask_MilitaryFactory_LineMask",
+      "palette_hex": "#1A182F",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.862645159639298e-10,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Reactor",
+      "role": "Primary",
+      "material": "A3_Reactor_Primary_LineMask_Reactor_LineMask",
+      "palette_hex": "#0D9099",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 5.364418048658948e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Reactor",
+      "role": "Equipment",
+      "material": "A3_Reactor_Equipment_LineMask_Reactor_LineMask",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Reactor",
+      "role": "Frame",
+      "material": "A3_Reactor_Frame_LineMask_Reactor_LineMask",
+      "palette_hex": "#032E30",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1175870888446848e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Reactor",
+      "role": "Orange",
+      "material": "A3_Reactor_Orange_LineMask_Reactor_LineMask",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Reactor",
+      "role": "Berry",
+      "material": "A3_Reactor_Berry_LineMask_Reactor_LineMask",
+      "palette_hex": "#EE9D58",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.430511473166085e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Reactor",
+      "role": "Pink",
+      "material": "A3_Reactor_Pink_LineMask_Reactor_LineMask",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Reactor",
+      "role": "Platform",
+      "material": "A3_Reactor_Platform_LineMask_Reactor_LineMask",
+      "palette_hex": "#274E61",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8312206259983874e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Reactor",
+      "role": "PlatformTop",
+      "material": "A3_Reactor_PlatformTop_LineMask_Reactor_LineMask",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "Reactor",
+      "role": "Ink",
+      "material": "A3_Reactor_Ink_LineMask_Reactor_LineMask",
+      "palette_hex": "#1A182F",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.862645159639298e-10,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Primary",
+      "material": "A3_StrategyCenter_Primary_LineMask_StrategyCenter_LineMask",
+      "palette_hex": "#AA6EB9",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 9.536743172944284e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Equipment",
+      "material": "A3_StrategyCenter_Equipment_LineMask_StrategyCenter_LineMask",
+      "palette_hex": "#E3B6B1",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.1457672083613488e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Frame",
+      "material": "A3_StrategyCenter_Frame_LineMask_StrategyCenter_LineMask",
+      "palette_hex": "#8A67B6",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Orange",
+      "material": "A3_StrategyCenter_Orange_LineMask_StrategyCenter_LineMask",
+      "palette_hex": "#0D9099",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 5.364418048658948e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Berry",
+      "material": "A3_StrategyCenter_Berry_LineMask_StrategyCenter_LineMask",
+      "palette_hex": "#0D9099",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 5.364418048658948e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Pink",
+      "material": "A3_StrategyCenter_Pink_LineMask_StrategyCenter_LineMask",
+      "palette_hex": "#E3B6B1",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.1457672083613488e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Platform",
+      "material": "A3_StrategyCenter_Platform_LineMask_StrategyCenter_LineMask",
+      "palette_hex": "#274E61",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 2.8312206259983874e-09,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "PlatformTop",
+      "material": "A3_StrategyCenter_PlatformTop_LineMask_StrategyCenter_LineMask",
+      "palette_hex": "#6AA4BE",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.1920928966180355e-08,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Ink",
+      "material": "A3_StrategyCenter_Ink_LineMask_StrategyCenter_LineMask",
+      "palette_hex": "#1A182F",
+      "normal_dot_ramp_connected": true,
+      "ramp_interpolation": "CONSTANT",
+      "thresholds": [
+        0.0,
+        0.11999999731779099,
+        0.550000011920929
+      ],
+      "factors": [
+        0.4,
+        0.72,
+        1.0
+      ],
+      "factors_max_error": 1.862645159639298e-10,
+      "independent_mask_nodes": [
+        "Independent_Reference_LineMask"
+      ]
+    }
+  ],
+  "scene_line_checks": [
+    {
+      "asset": "AirBase",
+      "render_engine": "BLENDER_EEVEE",
+      "freestyle_enabled": true,
+      "line_sets": [
+        {
+          "name": "StructuralLines",
+          "enabled": true,
+          "thickness_px": 1.4500000476837158,
+          "silhouette": false,
+          "external_contour": false,
+          "crease": true,
+          "material_boundary": true
+        },
+        {
+          "name": "OuterContour",
+          "enabled": true,
+          "thickness_px": 2.5999999046325684,
+          "silhouette": true,
+          "external_contour": true,
+          "crease": false,
+          "material_boundary": false
+        }
+      ]
+    },
+    {
+      "asset": "CloningCenter",
+      "render_engine": "BLENDER_EEVEE",
+      "freestyle_enabled": true,
+      "line_sets": [
+        {
+          "name": "StructuralLines",
+          "enabled": true,
+          "thickness_px": 1.4500000476837158,
+          "silhouette": false,
+          "external_contour": false,
+          "crease": true,
+          "material_boundary": true
+        },
+        {
+          "name": "OuterContour",
+          "enabled": true,
+          "thickness_px": 2.5999999046325684,
+          "silhouette": true,
+          "external_contour": true,
+          "crease": false,
+          "material_boundary": false
+        }
+      ]
+    },
+    {
+      "asset": "CommandCenter",
+      "render_engine": "BLENDER_EEVEE",
+      "freestyle_enabled": true,
+      "line_sets": [
+        {
+          "name": "StructuralLines",
+          "enabled": true,
+          "thickness_px": 1.4500000476837158,
+          "silhouette": false,
+          "external_contour": false,
+          "crease": true,
+          "material_boundary": true
+        },
+        {
+          "name": "OuterContour",
+          "enabled": true,
+          "thickness_px": 2.5999999046325684,
+          "silhouette": true,
+          "external_contour": true,
+          "crease": false,
+          "material_boundary": false
+        }
+      ]
+    },
+    {
+      "asset": "Floor",
+      "render_engine": "BLENDER_EEVEE",
+      "freestyle_enabled": true,
+      "line_sets": [
+        {
+          "name": "StructuralLines",
+          "enabled": true,
+          "thickness_px": 1.4500000476837158,
+          "silhouette": false,
+          "external_contour": false,
+          "crease": true,
+          "material_boundary": true
+        },
+        {
+          "name": "OuterContour",
+          "enabled": true,
+          "thickness_px": 2.5999999046325684,
+          "silhouette": true,
+          "external_contour": true,
+          "crease": false,
+          "material_boundary": false
+        }
+      ]
+    },
+    {
+      "asset": "Lamp",
+      "render_engine": "BLENDER_EEVEE",
+      "freestyle_enabled": true,
+      "line_sets": [
+        {
+          "name": "StructuralLines",
+          "enabled": true,
+          "thickness_px": 1.4500000476837158,
+          "silhouette": false,
+          "external_contour": false,
+          "crease": true,
+          "material_boundary": true
+        },
+        {
+          "name": "OuterContour",
+          "enabled": true,
+          "thickness_px": 2.5999999046325684,
+          "silhouette": true,
+          "external_contour": true,
+          "crease": false,
+          "material_boundary": false
+        }
+      ]
+    },
+    {
+      "asset": "Light",
+      "render_engine": "BLENDER_EEVEE",
+      "freestyle_enabled": true,
+      "line_sets": [
+        {
+          "name": "StructuralLines",
+          "enabled": true,
+          "thickness_px": 1.4500000476837158,
+          "silhouette": false,
+          "external_contour": false,
+          "crease": true,
+          "material_boundary": true
+        },
+        {
+          "name": "OuterContour",
+          "enabled": true,
+          "thickness_px": 2.5999999046325684,
+          "silhouette": true,
+          "external_contour": true,
+          "crease": false,
+          "material_boundary": false
+        }
+      ]
+    },
+    {
+      "asset": "Drone",
+      "render_engine": "BLENDER_EEVEE",
+      "freestyle_enabled": true,
+      "line_sets": [
+        {
+          "name": "StructuralLines",
+          "enabled": true,
+          "thickness_px": 1.4500000476837158,
+          "silhouette": false,
+          "external_contour": false,
+          "crease": true,
+          "material_boundary": true
+        },
+        {
+          "name": "OuterContour",
+          "enabled": true,
+          "thickness_px": 2.5999999046325684,
+          "silhouette": true,
+          "external_contour": true,
+          "crease": false,
+          "material_boundary": false
+        }
+      ]
+    },
+    {
+      "asset": "MilitaryFactory",
+      "render_engine": "BLENDER_EEVEE",
+      "freestyle_enabled": true,
+      "line_sets": [
+        {
+          "name": "StructuralLines",
+          "enabled": true,
+          "thickness_px": 1.4500000476837158,
+          "silhouette": false,
+          "external_contour": false,
+          "crease": true,
+          "material_boundary": true
+        },
+        {
+          "name": "OuterContour",
+          "enabled": true,
+          "thickness_px": 2.5999999046325684,
+          "silhouette": true,
+          "external_contour": true,
+          "crease": false,
+          "material_boundary": false
+        }
+      ]
+    },
+    {
+      "asset": "Reactor",
+      "render_engine": "BLENDER_EEVEE",
+      "freestyle_enabled": true,
+      "line_sets": [
+        {
+          "name": "StructuralLines",
+          "enabled": true,
+          "thickness_px": 1.4500000476837158,
+          "silhouette": false,
+          "external_contour": false,
+          "crease": true,
+          "material_boundary": true
+        },
+        {
+          "name": "OuterContour",
+          "enabled": true,
+          "thickness_px": 2.5999999046325684,
+          "silhouette": true,
+          "external_contour": true,
+          "crease": false,
+          "material_boundary": false
+        }
+      ]
+    },
+    {
+      "asset": "StrategyCenter",
+      "render_engine": "BLENDER_EEVEE",
+      "freestyle_enabled": true,
+      "line_sets": [
+        {
+          "name": "StructuralLines",
+          "enabled": true,
+          "thickness_px": 1.4500000476837158,
+          "silhouette": false,
+          "external_contour": false,
+          "crease": true,
+          "material_boundary": true
+        },
+        {
+          "name": "OuterContour",
+          "enabled": true,
+          "thickness_px": 2.5999999046325684,
+          "silhouette": true,
+          "external_contour": true,
+          "crease": false,
+          "material_boundary": false
+        }
+      ]
+    }
+  ],
+  "demonstration_asset": "MilitaryFactory",
+  "camera": {
+    "camera_location_m": [
+      26.88821029663086,
+      -34.708316802978516,
+      26.632299423217773
+    ],
+    "rotation_rad": [
+      1.1169817447662354,
+      -1.1208559413944386e-08,
+      0.6556957364082336
+    ],
+    "ortho_scale_m": 22.02190589904785,
+    "file": "Renders/MilitaryFactory_Hero.png"
+  },
+  "render_modes": [
+    "Current",
+    "ToneOnly",
+    "LineOnly",
+    "BandIDs",
+    "FlatColor"
+  ],
+  "reference_only": true,
+  "production_outline_shell_created": false,
+  "formal_UE_material_created": false,
+  "source_geometry_or_palette_modified": false,
+  "A": "pending",
+  "B": "not_started"
+}

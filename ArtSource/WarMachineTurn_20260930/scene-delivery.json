@@ -1,0 +1,39 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "native_preview_run": false,
+  "visual_acceptance": "pending",
+  "performance": "not_sampled",
+  "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Actor_2",
+  "actor_location_cm": [
+    8000.0,
+    -16000.0,
+    0.0
+  ],
+  "samples": [
+    "Idle",
+    "Idle + alternating recoil",
+    "Turn in place",
+    "720 cm/s",
+    "1440 cm/s",
+    "Start / stop",
+    "Phase / teleport / death / reuse",
+    "Left 90",
+    "Right 90",
+    "180 and +/-179 wrap",
+    "Rapid reversal",
+    "Moving curve",
+    "Stable guns + unlocked pods"
+  ],
+  "instances": 13,
+  "custom_floats": 51,
+  "cull": [
+    0,
+    0
+  ],
+  "runtime_driver": "UGuLiWarMachineHoverPreviewComponent (pending native compile)",
+  "tag": [
+    "WarMachineHoverPreview20260929"
+  ],
+  "observation_camera": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_12"
+}

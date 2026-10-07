@@ -1,0 +1,94 @@
+{
+  "success": true,
+  "name": "WM01",
+  "id": 2,
+  "approval_B": "approved",
+  "approved_content_sha256": "761bc5edd06b08c598771943b46ebcbd7bc8285b42d345e234fea0907d02783d",
+  "formal_root": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1",
+  "state": "formal_switched_verified",
+  "switched": true,
+  "assets": [
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/WM01/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "formal": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "class_name": "StaticMesh",
+      "dependencies": [
+        "/Script/NavigationSystem",
+        "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid",
+        "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid"
+      ]
+    },
+    {
+      "source": "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid",
+      "formal": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid",
+      "class_name": "Material",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical"
+      ]
+    },
+    {
+      "source": "/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+      "formal": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+      "class_name": "MaterialFunction",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid",
+      "formal": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid",
+      "class_name": "Material",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical",
+        "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_BaseColor",
+        "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_LineMask"
+      ]
+    },
+    {
+      "source": "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_BaseColor.T_WarMachine_BaseColor",
+      "formal": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_BaseColor.T_WarMachine_BaseColor",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_LineMask.T_WarMachine_LineMask",
+      "formal": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_LineMask.T_WarMachine_LineMask",
+      "class_name": "Texture2D",
+      "dependencies": []
+    }
+  ],
+  "models": [
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/WM01/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "formal": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "lod_count": 3,
+      "triangles": [
+        38843,
+        9711,
+        776
+      ],
+      "sections": [
+        2,
+        2,
+        2
+      ],
+      "material_slots": [
+        "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid",
+        "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid"
+      ],
+      "screen_sizes": [
+        1.0,
+        0.3199999928474426,
+        0.02500000037252903
+      ],
+      "uv_channels": [
+        3,
+        3,
+        3
+      ],
+      "lod0_geometry_operation": "Native duplication; no geometric, UV, normal or socket authoring operation."
+    }
+  ],
+  "animation": null,
+  "model_asset": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+  "vat_definition": "",
+  "runtime_fields_available": false
+}

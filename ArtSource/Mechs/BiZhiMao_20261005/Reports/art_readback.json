@@ -1,0 +1,151 @@
+{
+  "passed": true,
+  "fbx": [
+    {
+      "lod": 0,
+      "triangles": 70117,
+      "uv_channels": 7,
+      "vertices": 40842,
+      "max_weight_sum_error": 1.1920928955078125e-07,
+      "max_influences": 4,
+      "dimensions_cm": [
+        1322.78369140625,
+        921.9329223632812,
+        692.325635433197
+      ],
+      "color_attribute": "GuLi_PaletteSRGB"
+    },
+    {
+      "lod": 1,
+      "triangles": 65002,
+      "uv_channels": 7,
+      "vertices": 38075,
+      "max_weight_sum_error": 1.1920928955078125e-07,
+      "max_influences": 4,
+      "dimensions_cm": [
+        1322.9804077148438,
+        921.9329223632812,
+        692.7029006481171
+      ],
+      "color_attribute": "GuLi_PaletteSRGB"
+    },
+    {
+      "lod": 2,
+      "triangles": 51870,
+      "uv_channels": 7,
+      "vertices": 30913,
+      "max_weight_sum_error": 1.1920928955078125e-07,
+      "max_influences": 4,
+      "dimensions_cm": [
+        1323.4722290039062,
+        921.9329223632812,
+        691.2288109362125
+      ],
+      "color_attribute": "GuLi_PaletteSRGB"
+    },
+    {
+      "lod": 3,
+      "triangles": 38395,
+      "uv_channels": 7,
+      "vertices": 23308,
+      "max_weight_sum_error": 1.1920928955078125e-07,
+      "max_influences": 4,
+      "dimensions_cm": [
+        1321.907958984375,
+        921.9329223632812,
+        688.3512260317802
+      ],
+      "color_attribute": "GuLi_PaletteSRGB"
+    }
+  ],
+  "texture": {
+    "BonePosition": {
+      "pixels": 118256,
+      "width": 152,
+      "height": 778,
+      "max_cpu_source_difference": 0.0,
+      "sha256": "8a20887994f42a2e5cdeac09f182f1c9c78b502cd6dd41a5958071286cfef42d"
+    },
+    "BoneRotation": {
+      "pixels": 118256,
+      "width": 152,
+      "height": 778,
+      "max_cpu_source_difference": 0.0,
+      "sha256": "ac238ec56a1b9d2bcb2bdbaf28dd86243a7a851861a3bab68fc98168023afb9c"
+    },
+    "BoneAffine": {
+      "pixels": 354768,
+      "width": 456,
+      "height": 778,
+      "max_cpu_source_difference": 0.0,
+      "sha256": "906d83a871c03587f45dafb7e1ca7f95d783d20dd13d5ed99a0d6553d9d0b7e4"
+    }
+  },
+  "native_bind_mapping": {
+    "base": {
+      "mapped_blender_cm": [
+        0.0,
+        7.206317901611328,
+        192.89585876464844
+      ],
+      "native_cm": [
+        6.299962933553616e-07,
+        7.206317901611328,
+        192.89585876464844
+      ],
+      "position_error_cm": 6.29996290345941e-07
+    },
+    "turret_base": {
+      "mapped_blender_cm": [
+        0.0,
+        0.5654944777488708,
+        251.7650146484375
+      ],
+      "native_cm": [
+        4.9437062443757895e-08,
+        0.5654945373535156,
+        251.7650146484375
+      ],
+      "position_error_cm": 7.743860037045909e-08
+    },
+    "main_gun": {
+      "mapped_blender_cm": [
+        2.294405747479359e-14,
+        -17.352554321289062,
+        326.4154968261719
+      ],
+      "native_cm": [
+        -1.517006694484735e-06,
+        -17.3525333404541,
+        326.4154968261719
+      ],
+      "position_error_cm": 2.1035606598689245e-05
+    },
+    "foot_fr_01_l": {
+      "mapped_blender_cm": [
+        289.801025390625,
+        483.17047119140625,
+        17.849950790405273
+      ],
+      "native_cm": [
+        289.80096435546875,
+        483.17047119140625,
+        17.85000228881836
+      ],
+      "position_error_cm": 7.98584801309903e-05
+    },
+    "foot_bk_01_r": {
+      "mapped_blender_cm": [
+        -351.1359558105469,
+        -401.10601806640625,
+        17.850830078125
+      ],
+      "native_cm": [
+        -351.135986328125,
+        -401.1059265136719,
+        17.850831985473633
+      ],
+      "position_error_cm": 9.652390235046382e-05
+    }
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "version": "B-v2",
+  "verification": "partial",
+  "bone_count": 152,
+  "source_bone_names_hierarchy_match": true,
+  "root_rest_at_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rig_identity_object_scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "lods": [
+    {
+      "lod": 0,
+      "vertices": 33644,
+      "triangles": 57323,
+      "bounds_m": [
+        [
+          -4.6096649169921875,
+          -8.136292457580566,
+          -0.0005880392272956669
+        ],
+        [
+          4.609664440155029,
+          5.082787036895752,
+          6.888712406158447
+        ]
+      ],
+      "unweighted_vertices": 0,
+      "max_weight_sum_error": 1.3604767445940524e-07,
+      "nonfinite_vertex_count": 0,
+      "nonfinite_corner_normal_count": 0,
+      "degenerate_triangles": 0,
+      "duplicate_index_faces": 0,
+      "duplicate_same_winding_faces": 0,
+      "opposed_index_coincident_faces": 0,
+      "review_portable_geometry_normals_weights_hash_identical": true,
+      "geometry_skin_normal_sha256": "91309df5f0be434e86580f2e1cc2636a375496c0bf4bb21a8c6046872f49c88c",
+      "body_material_sections": 1,
+      "vertex_group_names_complete": true
+    },
+    {
+      "lod": 1,
+      "vertices": 32764,
+      "triangles": 55594,
+      "bounds_m": [
+        [
+          -4.6096649169921875,
+          -8.136292457580566,
+          -0.0005880392272956669
+        ],
+        [
+          4.609664440155029,
+          5.082787036895752,
+          6.888712406158447
+        ]
+      ],
+      "unweighted_vertices": 0,
+      "max_weight_sum_error": 1.3604767445940524e-07,
+      "nonfinite_vertex_count": 0,
+      "nonfinite_corner_normal_count": 0,
+      "degenerate_triangles": 0,
+      "duplicate_index_faces": 0,
+      "duplicate_same_winding_faces": 0,
+      "opposed_index_coincident_faces": 0,
+      "review_portable_geometry_normals_weights_hash_identical": true,
+      "geometry_skin_normal_sha256": "2505dbf5d26de72d343b18d50261ea896c6c54a93ce70d8a1d092cf2af7e9485",
+      "body_material_sections": 1,
+      "vertex_group_names_complete": true
+    },
+    {
+      "lod": 2,
+      "vertices": 27892,
+      "triangles": 46326,
+      "bounds_m": [
+        [
+          -4.6096649169921875,
+          -8.136292457580566,
+          -0.0005827870918437839
+        ],
+        [
+          4.609664440155029,
+          5.082787036895752,
+          6.888712406158447
+        ]
+      ],
+      "unweighted_vertices": 0,
+      "max_weight_sum_error": 1.3604767445940524e-07,
+      "nonfinite_vertex_count": 0,
+      "nonfinite_corner_normal_count": 0,
+      "degenerate_triangles": 0,
+      "duplicate_index_faces": 0,
+      "duplicate_same_winding_faces": 0,
+      "opposed_index_coincident_faces": 0,
+      "review_portable_geometry_normals_weights_hash_identical": true,
+      "geometry_skin_normal_sha256": "af4bdb5eb5f4b48fe3eba8309ea36cbc904064237377055de153beb733d8c6f5",
+      "body_material_sections": 1,
+      "vertex_group_names_complete": true
+    },
+    {
+      "lod": 3,
+      "vertices": 23308,
+      "triangles": 38428,
+      "bounds_m": [
+        [
+          -4.6096649169921875,
+          -8.136292457580566,
+          0.005199898034334183
+        ],
+        [
+          4.609664440155029,
+          5.082787036895752,
+          6.888712406158447
+        ]
+      ],
+      "unweighted_vertices": 0,
+      "max_weight_sum_error": 1.3604767445940524e-07,
+      "nonfinite_vertex_count": 0,
+      "nonfinite_corner_normal_count": 0,
+      "degenerate_triangles": 0,
+      "duplicate_index_faces": 0,
+      "duplicate_same_winding_faces": 0,
+      "opposed_index_coincident_faces": 0,
+      "review_portable_geometry_normals_weights_hash_identical": true,
+      "geometry_skin_normal_sha256": "57490b9efb5c4cb7e691c483ff9b557c876ee7e160440fb743f459a42c7c8fcb",
+      "body_material_sections": 1,
+      "vertex_group_names_complete": true
+    }
+  ],
+  "authoring_parts": 761,
+  "editable_mirror_modifiers": 86,
+  "editable_screw_modifiers": 2,
+  "source_dims_m": [
+    9.2264084815979,
+    13.23331356048584,
+    6.892551568802446
+  ],
+  "body_dims_m": [
+    9.219329357147217,
+    13.219079494476318,
+    6.889300445385743
+  ],
+  "sampled_nearest_source_surface_distance_m": {
+    "samples": 8411,
+    "median": 5.333283752406714e-07,
+    "p95": 0.0043867784552276134,
+    "max": 0.04483063146471977,
+    "scope": "sampled LOD0 vertex-to-source-surface distance only; does not certify all assembly intersections"
+  },
+  "textures": [
+    {
+      "file": "ControlRigMech_BaseColor_2K.png",
+      "file_bytes": 163211,
+      "resolution": [
+        2048,
+        2048
+      ],
+      "uncompressed_RGBA8_bytes": 16777216
+    },
+    {
+      "file": "ControlRigMech_FunctionalMask_2K.png",
+      "file_bytes": 154659,
+      "resolution": [
+        2048,
+        2048
+      ],
+      "uncompressed_RGBA8_bytes": 16777216
+    },
+    {
+      "file": "ControlRigMech_InternalLineMask_2K.png",
+      "file_bytes": 445983,
+      "resolution": [
+        2048,
+        2048
+      ],
+      "uncompressed_RGBA8_bytes": 16777216
+    },
+    {
+      "file": "ControlRigMech_ORM_2K.png",
+      "file_bytes": 153628,
+      "resolution": [
+        2048,
+        2048
+      ],
+      "uncompressed_RGBA8_bytes": 16777216
+    }
+  ],
+  "total_texture_RGBA8_bytes": 67108864,
+  "UE_export_readback": "pending B approval",
+  "UE_formal_import": "not run",
+  "commander_UE_cameras": "not run",
+  "runtime_fps_measurement": "not run"
+}

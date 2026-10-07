@@ -11,6 +11,14 @@ class UStateTree;
 class AActor;
 class UGuLiVATDefinition;
 
+/** Body orientation is independent from locomotion and turret orientation. */
+UENUM(BlueprintType)
+enum class EGuLiSoldierFacingPolicy : uint8
+{
+	FaceVelocity = 0,
+	FixedSpawnYaw = 1
+};
+
 /**
  * Validated runtime values for one Commander Soldier type.
  *
@@ -51,6 +59,12 @@ struct GULISTRIKE_API FGuLiSoldierDefinition
 	/** Participates in ordinary control/combat, but cannot be produced or charged to population. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")
 	bool bSummonOnly = false;
+
+	/** Only a completed construction reservation may create this ordinary-population unit. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")
+	bool bConstructionOnly = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")
+	EGuLiSoldierFacingPolicy FacingPolicy = EGuLiSoldierFacingPolicy::FaceVelocity;
 
 	/** Static-only mechanical part contract, resolved once with the model and its scale. */
 	FGuLiMechanicalAnimationConfig MechanicalAnimation;

@@ -1,0 +1,80 @@
+{
+  "success": true,
+  "deleted_files_absent": 3140,
+  "preserved_unique_evidence_files": 995,
+  "preserved_manifests": [
+    {
+      "manifest": "References_A_v1/reference_manifest.json",
+      "files": 5,
+      "preserved": true,
+      "approved_source_recovery": []
+    },
+    {
+      "manifest": "References_A_v2/reference_manifest.json",
+      "files": 5,
+      "preserved": true,
+      "approved_source_recovery": []
+    },
+    {
+      "manifest": "References_A_v3/reference_manifest.json",
+      "files": 5,
+      "preserved": true,
+      "approved_source_recovery": []
+    },
+    {
+      "manifest": "References_A_v4/reference_manifest.json",
+      "files": 20,
+      "preserved": true,
+      "approved_source_recovery": []
+    },
+    {
+      "manifest": "References_A_v5/reference_manifest.json",
+      "files": 21,
+      "preserved": true,
+      "approved_source_recovery": []
+    },
+    {
+      "manifest": "References_A_v6/reference_manifest.json",
+      "files": 24,
+      "preserved": true,
+      "approved_source_recovery": []
+    },
+    {
+      "manifest": "References_A_v7/reference_manifest.json",
+      "files": 77,
+      "preserved": true,
+      "approved_source_recovery": []
+    },
+    {
+      "manifest": "Production_B_v1/production_manifest.json",
+      "files": 496,
+      "preserved": true,
+      "approved_source_recovery": [
+        {
+          "current_file": "Production_B_v1/SSF_Production_B_v1.blend",
+          "current_sha256": "32556ccbfad8af7bf9eaf36388d0cc51378d3f4872cd64bb5625ea6c851fd07d",
+          "frozen_sha256": "6f386c2e4782ce6ab6e81ae0f2380a6345fa05cdc6fc3dcf9d260c13ed3a806e",
+          "matching_approved_copy": "Production_B_v1/FrozenSource/SSF_Production_B_v1_Approved.blend",
+          "current_file_preserved": true
+        }
+      ]
+    },
+    {
+      "manifest": "TeamPalette_B_v2_20261007/delivery_manifest.json",
+      "files": 147,
+      "preserved": true,
+      "approved_source_recovery": []
+    },
+    {
+      "manifest": "UE_Delivery_Team_v2/delivery_manifest.json",
+      "files": 196,
+      "preserved": true,
+      "approved_source_recovery": []
+    }
+  ],
+  "preserved_animation_movies": 22,
+  "approved_B_v2_source_unchanged": true,
+  "UE_binary_packages_read_or_hashed": false,
+  "UE_assets_edited_or_deleted": false,
+  "gameplay_integrated": false
+}

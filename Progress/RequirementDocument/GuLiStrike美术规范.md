@@ -15,13 +15,13 @@ categories:
 status: approved
 verification: passed
 created: '2026-09-17'
-updated: '2026-09-18'
+updated: '2026-10-07'
 summary: 统一动漫机械造型、默认线稿与三渲二、参考图和Blender成品双审核，以及灯光和动漫爆炸标准。
 next_action: 后续美术制作先读本规范，按资产版本记录参考审核、Blender审核及UE验证。
 relations:
   development: DEV-20260917-001
-status_note: v1.2，登记用户已审核通过的松树林v1无线稿植被方向及原地图原位适配授权；不把阶段批准升级为整图终验。
-art_revision: '1.2'
+status_note: v1.3，指挥官六种兵种模型总共三档LOD，保留既有资产例外与已审近景；新成品版本审核后切换正式资源。
+art_revision: '1.3'
 ---
 
 # GuLiStrike 美术规范
@@ -83,7 +83,12 @@ Ship 是用户明确指定的风格锚点，参考[内部线稿烘焙版](../../
 
 此前[工业 V3 实例](../../.agents/skills/guli-model-production/references/project-examples.md)中已认可的平整面、规则曲面、装配和对称性继续适用。其旧 PBR 制作方法与配色只是实例，不能覆盖本规范的新模型默认三渲二和线稿规则。
 
+**SSF截至2026-10-06的历史设计与交付事实：** 六座建筑按用户2026-10-05要求各用不同色系，从所附色卡选择并组合；附图指定仅军工厂和战略中心深色调浅，A_v6以附图A_v3为基准完成四项提亮，其他色值保留。当前[参考A_v7](../../ArtSource/Buildings/SSFStyle_20261005/Review_A_v7.md)回应“线稿和三档明暗好像没加？”：A_v6实际有两者但可见性偏弱，A_v7沿用全部A_v6配色与三档RGB，仅强化参考线稿、调整色阶分区阈值，固定光向、法线、几何和机位保持。原描线`#1A182F`、因子`0.40/0.72/1.0`及平台`#274E61`不改，无人机不随军工厂改色。[本轮风格记录](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v7/style_revision.json)、[实际分区与对照](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v7/style_visibility_validation.json)及[保存后RGB回读](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v7/palette_preservation_validation.json)分别核对视觉可见性与数值保持。A_v1至A_v6保留历史，A_v7依据用户“开始制作，严格一比一按照参考图和原模型制作”已放行，见[A决定](../../ArtSource/Buildings/SSFStyle_20261005/approval_A.json)。当前[实际Blender成品B_v1](../../ArtSource/Buildings/SSFStyle_20261005/Review_B_v1.md)保留原结构/骨架/22动作并交付三档LOD；用户2026-10-06明确将当前可见B_v1导入作为正式资源存储，见[B存储放行](../../ArtSource/Buildings/SSFStyle_20261005/approval_B_import_20261006.json)；105正式副本已保存到`/Game/GuLiStrike/Buildings/SSFStylized`，三档LOD、22动画、引用重载和实际UE画面检查完成，见[交付](../../ArtSource/Buildings/SSFStyle_20261005/UE_Delivery_v1/README.md)。暂不接入游戏，24项本体差额和部分真实壳比参考细的既有差异随本版本保留，原预算及全局规范未上调；[具体需求](20261005-SSF建筑美术统一与三档LOD.md)和[验收记录](../DevelopmentDocumentation/20261005-SSF建筑美术统一与三档LOD.md)维护三档LOD预算与22动画要求，此资产参考修正不改变全局v1.3或其他资产的已审配色。
+
 参考文件的来源、版本与 SHA256 见[统一清单](../../ArtSource/ArtDirection/reference_manifest.json)。用户临时目录中的爆炸和重防号细化图片已原样归档到项目，后续制作不依赖临时目录。
+
+
+**SSF当前队色与验收（2026-10-07）：** 用户最新指定蓝色方全部六座建筑沿用附图1空军基地的橙/蓝灰/奶油白，红色方沿用附图2指挥中心的莓红/浅粉/橙，并先放Blender审核；此要求替代六座各用不同色系的后续制作方向。[实际B_v2](../../ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Review_B_v2.md)已按用户“导入至ue作为正式资源”获得本版本存储放行并完成Blue/Red正式入库，保留B_v1的几何、骨架、22原Action、线稿、三档明暗和三档LOD；平台、灯具和无人机不改色。B_v1正式资源继续保留；B_v2新增48资源，复用已验证的骨架、物理资产与21建筑动画，独立重载和实际UE画面检查完成，见[本次交付](../../ArtSource/Buildings/SSFStyle_20261005/UE_Delivery_Team_v2/README.md)。用户在正式交付后明确“审核通过”，[最终决定](../../ArtSource/Buildings/SSFStyle_20261005/Acceptance_B_v2_20261007/README.md)已登记到当前B_v2。暂不接入游戏，原预算上限和已披露差额保持。这是本批资产验收，不修改全局v1.3或其他资产已审配色。
 
 ## 4. 造型、材质与线稿
 
@@ -123,6 +128,18 @@ Ship 是用户明确指定的风格锚点，参考[内部线稿烘焙版](../../
 自然资源包的范围、十倍尺度、轻微风摆及A/B审核见[正式需求](20260917-自然地编资源包.md)与[制作记录](../DevelopmentDocumentation/20260917-自然地编资源包.md)。此例外只适用于该包植被；其需求确认不代表新设计A或成品B已经通过。
 
 松树林专属方向见[已审实际v1](../../ArtSource/Environment/PineStyleAdaptation_20260918/Review_v1.html)与[原地图重构需求](20260918-松树林原地图全资源风格重构.md)。本次是已存在UE资源的授权原位适配，允许按已审材质与草簇比例扩展，不要求将原包重新建模复刻；原地图布局、地形、手工摆放和实例缩放保持。批准不扩展为其他植被的全局无线稿规则，也不等于整张Demo_Map终验。
+
+### 4.4 指挥官模型 LOD
+
+指挥官 Soldiers 六种单位的模型**总共三档：LOD0 近景、LOD1 中景、LOD2 远景**。范围为先驱号 ID1、重防号 WM01／ID2、电磁矿车 ID3、建造车 ID4、扫荡者 ID5、彼之矛 ID6；玩家 Ground 席位不纳入本规则。镜头的三档距离策略、模型 LOD 和三档明暗分别维护，不能互相推导档数。
+
+- 保留已审 LOD0 的几何、尺寸、UV、挂点及材质。预算按资产已有约束记录，超预算保留差额；不会为了统一档数再次压缩近景。
+- 保留所选中远景的既有屏幕尺寸。新补齐档位使用 Crowd 默认 `1.0 / 0.056 / 0.028`，继续使用既有距离、屏幕占比和滞回显示策略。
+- 矿车、建造车整车中远景目标为 6,000／1,500 三角面，包含重复挂载组件，保留活动机构。面数不能代替运行帧率验收。
+- 顶点动画按三档同步网格、顶点索引、纹理、采样参数和材质。彼之矛运行资源无骨骼；其他兵种保留各自既有动画路径，扫荡者无线稿等例外继续有效。
+- 新的实际候选 B 审核通过后，按完整模型、材质和动画资源组更新正式引用。候选、冻结源和历史回读分别登记，历史源不能成为当前默认制作入口。
+
+本次明确指令与交付范围见[指挥官三档 LOD 迁移](20261005-指挥官三档LOD纠正与资源迁移.md)。
 
 ## 5. 灯光、场景与游戏距离
 
@@ -188,3 +205,5 @@ Ship 是用户明确指定的风格锚点，参考[内部线稿烘焙版](../../
 交付检查关注实际结果：参考还原、默认线稿/三渲二或明确例外、实际游戏镜头可读性、源与UE一致性；爆炸还须连续播放及起爆/峰值/转烟/消散证据。技术、性能与用户视觉审核分开记录。
 
 本规范 v1.0 的建立和技能接入见[开发与台账](../DevelopmentDocumentation/GuLiStrike美术规范.md)。
+
+2026-10-05具体版本放行：`CommanderLOD_3Tier_v1`的六种单位B已通过，正式资源迁移至`/Game/GuLiStrike/Commander/Units/<Soldiers.Name>/LOD_3Tier_v1`。[放行与正式切换记录](../Archive/20261005-指挥官三档LOD审核放行与正式资源切换.md)不改变本节三档规则，也不将超预算或实战性能记为通过。

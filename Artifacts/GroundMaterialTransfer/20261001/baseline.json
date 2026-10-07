@@ -1,0 +1,1407 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "source_map": "/Game/Maps/LVL_GroundMech_Demo",
+  "material_before": null,
+  "layers": [
+    {
+      "name": "Base_Layer",
+      "info": "/Game/Assets/Environments/Scifi_Skies/Materials/Base_Layer_LayerInfo.Base_Layer_LayerInfo",
+      "weight_png": "D:\\UE5.7\\test1\\Artifacts\\GroundMaterialTransfer\\20261001\\before\\weight-Base_Layer.png"
+    },
+    {
+      "name": "Layer_02",
+      "info": "/Game/Assets/Environments/Scifi_Skies/Materials/Layer_02_LayerInfo.Layer_02_LayerInfo",
+      "weight_png": "D:\\UE5.7\\test1\\Artifacts\\GroundMaterialTransfer\\20261001\\before\\weight-Layer_02.png"
+    },
+    {
+      "name": "Layer_03",
+      "info": "/Game/Assets/Environments/Scifi_Skies/Materials/Layer_03_LayerInfo.Layer_03_LayerInfo",
+      "weight_png": "D:\\UE5.7\\test1\\Artifacts\\GroundMaterialTransfer\\20261001\\before\\weight-Layer_03.png"
+    }
+  ],
+  "scene": {
+    "actors": [
+      {
+        "name": "AbstractNavData-Default",
+        "class": "AbstractNavData",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Actor_0",
+        "class": "Actor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=8000.000000,Y=8000.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Actor_1",
+        "class": "Actor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=8000.000000,Y=5000.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Actor_2",
+        "class": "Actor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=8000.000000,Y=-16000.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Actor_3",
+        "class": "Actor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=165000.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Actor_7",
+        "class": "Actor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=8000.000000,Y=-26000.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Brush_0",
+        "class": "Brush",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_0",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=0.309975,Y=0.635543,Z=-0.309975,W=0.635543),Translation=(X=-12000.000000,Y=85000.000000,Z=28000.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_1",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=0.369714,Y=0.343537,Z=-0.149374,W=0.850283),Translation=(X=-23000.000000,Y=65000.000000,Z=6000.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_10",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=-0.000000,Y=0.461749,Z=0.000000,W=0.887011),Translation=(X=-24206.226146,Y=69500.000000,Z=28231.267898),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_11",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=-0.000000,Y=0.461749,Z=0.000000,W=0.887011),Translation=(X=-52214.527675,Y=69500.000000,Z=68295.060503),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_12",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=-0.248302,Y=0.248302,Z=0.662077,W=0.662077),Translation=(X=12400.000000,Y=-28500.000000,Z=16000.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_13",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=-0.000000,Y=0.461749,Z=0.000000,W=0.887011),Translation=(X=-13006.226146,Y=-16000.000000,Z=30120.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_14",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=-0.000000,Y=0.461749,Z=0.000000,W=0.887011),Translation=(X=-41014.527675,Y=-16000.000000,Z=70120.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_15",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=-0.290442,Y=0.290442,Z=0.644704,W=0.644704),Translation=(X=-8500.000000,Y=-16500.000000,Z=8800.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_16",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=0.351063,Y=0.351063,Z=-0.613804,W=0.613804),Translation=(X=-20000.000000,Y=82000.000000,Z=15233.293122),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_2",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=0.326506,Y=0.326506,Z=-0.627211,W=0.627211),Translation=(X=0.000000,Y=81677.222982,Z=11340.347084),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_3",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=-0.155651,Y=-0.844006,Z=0.375776,W=-0.349599),Translation=(X=6500.000000,Y=85000.000000,Z=6000.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_4",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=-0.333654,Y=0.333654,Z=0.623438,W=0.623438),Translation=(X=-8000.000000,Y=62000.000000,Z=7200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_5",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=-0.190377,Y=0.243830,Z=0.585226,W=0.749543),Translation=(X=-12000.000000,Y=64200.000000,Z=1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_6",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=-0.194937,Y=0.194937,Z=0.679706,W=0.679706),Translation=(X=-8000.000000,Y=66000.000000,Z=1400.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_7",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=-0.174717,Y=0.174717,Z=0.685182,W=0.685182),Translation=(X=-8000.000000,Y=59000.000000,Z=4900.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_8",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=-0.158261,Y=0.158261,Z=0.689169,W=0.689169),Translation=(X=-8000.000000,Y=53500.000000,Z=6900.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "CameraActor_9",
+        "class": "CameraActor",
+        "transform": "(Rotation=(X=-0.000000,Y=0.216440,Z=0.000000,W=0.976296),Translation=(X=-10705.774222,Y=69500.000000,Z=1730.650538),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "ChaosDebugDrawActor",
+        "class": "Actor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "DefaultPhysicsVolume_0",
+        "class": "DefaultPhysicsVolume",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "DirectionalLight_0",
+        "class": "DirectionalLight",
+        "transform": "(Rotation=(X=0.364972,Y=0.277816,Z=-0.115075,W=0.881120),Translation=(X=-28353.978540,Y=-57816.224554,Z=21261.767134),Scale3D=(X=2.500000,Y=2.500000,Z=2.500000))"
+      },
+      {
+        "name": "ExponentialHeightFog_0",
+        "class": "ExponentialHeightFog",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=-45742.304688),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GameplayDebuggerPlayerManager_0",
+        "class": "GameplayDebuggerPlayerManager",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiFlightNavigationVolume_0",
+        "class": "GuLiFlightNavigationVolume",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=13875.000000),Scale3D=(X=1673.000000,Y=1673.000000,Z=368.750000))"
+      },
+      {
+        "name": "GuLiMapDensityMap_0",
+        "class": "GuLiMapDensityMap",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_0",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=-80000.000000,Z=-1758.779635),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_1",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-80000.000000,Y=-80000.000000,Z=-1694.699856),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_10",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=60000.000000,Y=80000.000000,Z=-1705.269694),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_11",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-80000.000000,Y=60000.000000,Z=-1683.469372),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_12",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-60000.000000,Y=60000.000000,Z=-1694.699785),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_13",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=60000.000000,Z=-1778.598063),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_14",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=60000.000000,Y=60000.000000,Z=-1694.699785),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_15",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=80000.000000,Y=60000.000000,Z=-1683.469372),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_16",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-60000.000000,Y=0.000000,Z=-1833.430572),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_17",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=60000.000000,Y=0.000000,Z=-1833.430572),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_18",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-80000.000000,Y=-60000.000000,Z=-1683.469372),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_19",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-60000.000000,Y=-60000.000000,Z=-1694.699785),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_2",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-60000.000000,Y=80000.000000,Z=-1705.269694),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_20",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=-60000.000000,Z=-1778.598063),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_21",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=60000.000000,Y=-60000.000000,Z=-1694.699785),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_22",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=80000.000000,Y=-60000.000000,Z=-1683.469372),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_23",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-60000.000000,Y=-80000.000000,Z=-1705.269694),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_24",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=60000.000000,Y=-80000.000000,Z=-1705.269694),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_25",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=80000.000000,Z=-1758.779942),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_26",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=20000.000000,Y=80000.000000,Z=-1758.779942),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_27",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=60000.000000,Z=-1778.598537),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_28",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=20000.000000,Y=60000.000000,Z=-1778.598537),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_29",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-80000.000000,Y=20000.000000,Z=-1657.044881),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_3",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-80000.000000,Y=0.000000,Z=-1651.430448),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_30",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-60000.000000,Y=20000.000000,Z=-1802.711579),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_31",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=20000.000000,Z=-2052.092907),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_32",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=20000.000000,Z=147.753023),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_33",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=20000.000000,Y=20000.000000,Z=-2052.092907),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_34",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=60000.000000,Y=20000.000000,Z=-1802.711579),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_35",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=80000.000000,Y=20000.000000,Z=-1657.044881),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_36",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=0.000000,Z=147.748749),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_37",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=20000.000000,Y=0.000000,Z=147.748749),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_38",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-80000.000000,Y=-20000.000000,Z=-1657.044881),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_39",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-60000.000000,Y=-20000.000000,Z=-1802.711579),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_4",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=1831.997741),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_40",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=-20000.000000,Z=-2052.092907),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_41",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=-20000.000000,Z=147.753023),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_42",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=20000.000000,Y=-20000.000000,Z=-2052.092907),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_43",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=60000.000000,Y=-20000.000000,Z=-1802.711579),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_44",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=80000.000000,Y=-20000.000000,Z=-1657.044881),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_45",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=-60000.000000,Z=-1778.598537),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_46",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=20000.000000,Y=-60000.000000,Z=-1778.598537),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_47",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=-80000.000000,Z=-1758.779942),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_48",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=20000.000000,Y=-80000.000000,Z=-1758.779942),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_49",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-40000.000000,Y=80000.000000,Z=-1717.160949),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_5",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=80000.000000,Y=0.000000,Z=-1651.430448),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_50",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=40000.000000,Y=80000.000000,Z=-1717.160949),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_51",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-40000.000000,Y=60000.000000,Z=-1713.858248),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_52",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=40000.000000,Y=60000.000000,Z=-1713.858248),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_53",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-80000.000000,Y=40000.000000,Z=-1669.596858),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_54",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-60000.000000,Y=40000.000000,Z=-1711.216012),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_55",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-40000.000000,Y=40000.000000,Z=-1867.121640),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_56",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=40000.000000,Z=-1960.601025),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_57",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=40000.000000,Z=-1991.646561),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_58",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=20000.000000,Y=40000.000000,Z=-1960.601025),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_59",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=40000.000000,Y=40000.000000,Z=-1867.121640),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_6",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=80000.000000,Y=80000.000000,Z=-1694.699856),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_60",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=60000.000000,Y=40000.000000,Z=-1711.216012),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_61",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=80000.000000,Y=40000.000000,Z=-1669.596858),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_62",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-40000.000000,Y=20000.000000,Z=-1958.616164),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_63",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=40000.000000,Y=20000.000000,Z=-1958.616164),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_64",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-40000.000000,Y=0.000000,Z=-1989.334406),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_65",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=40000.000000,Y=0.000000,Z=-1989.334406),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_66",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-40000.000000,Y=-20000.000000,Z=-1958.616164),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_67",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=40000.000000,Y=-20000.000000,Z=-1958.616164),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_68",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-80000.000000,Y=-40000.000000,Z=-1669.596858),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_69",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-60000.000000,Y=-40000.000000,Z=-1711.216012),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_7",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-80000.000000,Y=80000.000000,Z=-1694.699856),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_70",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-40000.000000,Y=-40000.000000,Z=-1867.121640),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_71",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=-40000.000000,Z=-1960.601025),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_72",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=-40000.000000,Z=-1991.646561),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_73",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=20000.000000,Y=-40000.000000,Z=-1960.601025),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_74",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=40000.000000,Y=-40000.000000,Z=-1867.121640),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_75",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=60000.000000,Y=-40000.000000,Z=-1711.216012),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_76",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=80000.000000,Y=-40000.000000,Z=-1669.596858),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_77",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-40000.000000,Y=-60000.000000,Z=-1713.858248),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_78",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=40000.000000,Y=-60000.000000,Z=-1713.858248),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_79",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-40000.000000,Y=-80000.000000,Z=-1717.160949),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_8",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=80000.000000,Y=-80000.000000,Z=-1694.699856),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_80",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=40000.000000,Y=-80000.000000,Z=-1717.160949),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "GuLiMapMarker_9",
+        "class": "GuLiMapMarker",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=80000.000000,Z=-1758.779635),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "InstancedFoliageActor_0",
+        "class": "InstancedFoliageActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+        "foliage": []
+      },
+      {
+        "name": "Landscape_1",
+        "class": "Landscape",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-115000.000000,Y=-115000.000000,Z=28.186275),Scale3D=(X=56.372549,Y=56.372549,Z=42.279412))"
+      },
+      {
+        "name": "MassVisualizer_0",
+        "class": "MassVisualizer",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "MassVisualizer_1",
+        "class": "MassVisualizer",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "NavMeshBoundsVolume_0",
+        "class": "NavMeshBoundsVolume",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=6590.564728),Scale3D=(X=900.000000,Y=900.000000,Z=96.427856))"
+      },
+      {
+        "name": "NiagaraActor_0",
+        "class": "NiagaraActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-10000.000000,Y=-12000.000000,Z=1467.170000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "NiagaraActor_1",
+        "class": "NiagaraActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8200.000000,Y=-12000.000000,Z=1467.170000),Scale3D=(X=2.000000,Y=2.000000,Z=2.000000))"
+      },
+      {
+        "name": "NiagaraActor_2",
+        "class": "NiagaraActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-6400.000000,Y=-12000.000000,Z=1117.620000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "NiagaraActor_3",
+        "class": "NiagaraActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-10000.000000,Y=-9800.000000,Z=1100.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "NiagaraActor_4",
+        "class": "NiagaraActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8200.000000,Y=-9800.000000,Z=1100.000000),Scale3D=(X=2.000000,Y=2.000000,Z=2.000000))"
+      },
+      {
+        "name": "NiagaraActor_5",
+        "class": "NiagaraActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-10000.000000,Y=-7600.000000,Z=1000.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "NiagaraActor_6",
+        "class": "NiagaraActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-7500.000000,Y=-7600.000000,Z=1000.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_0",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=72500.000000,Z=-1266.046292),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_1",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=86100.000000,Z=-1251.184786),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_10",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=16500.000000,Y=67000.000000,Z=-1271.661754),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_11",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=5625.000000,Y=71875.000000,Z=-1266.706878),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_12",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-17900.000000,Y=60000.000000,Z=-1777.220000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_13",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-1523.500000,Y=-40727.170000,Z=-1485.490000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_14",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=3000.000000,Y=72500.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_15",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=1400.000000,Y=80000.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_16",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=1400.000000,Y=60000.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_17",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-6500.000000,Y=76000.000000,Z=-1260.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_18",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-3800.000000,Y=76000.000000,Z=-1260.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_19",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-500.000000,Y=76000.000000,Z=-1260.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_2",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=1800.000000,Y=72500.000000,Z=-1266.046292),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_20",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=3000.000000,Y=76000.000000,Z=-1260.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_21",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=5700.000000,Y=76000.000000,Z=-1260.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_22",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=9200.000000,Y=76000.000000,Z=-1260.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_23",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-1800.000000,Y=72500.000000,Z=-1266.046292),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_24",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-3200.000000,Y=72500.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_25",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-16600.000000,Y=14400.000000,Z=-1550.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_26",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=8000.000000,Y=3000.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_27",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=27000.000000,Y=8000.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_28",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=29000.000000,Y=8000.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_29",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=44000.000000,Y=8000.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_3",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=60000.000000,Z=-1278.598537),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_30",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=8000.000000,Y=2000.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_31",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=8000.000000,Y=1000.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_32",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=8000.000000,Y=-17000.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_33",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8000.000000,Y=73500.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_34",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-10500.000000,Y=75000.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_35",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8000.000000,Y=75000.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_36",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-5500.000000,Y=75000.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_37",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-10500.000000,Y=76000.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_38",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8000.000000,Y=76000.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_39",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-5500.000000,Y=76000.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_4",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=4000.000000,Y=80000.000000,Z=500.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_40",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8000.000000,Y=76500.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_41",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-1700.000000,Y=72500.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_42",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8000.000000,Y=73000.000000,Z=-1200.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_43",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=6500.000000,Y=-17000.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_44",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-11200.000000,Y=-13000.000000,Z=1300.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_45",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=72500.000000,Z=-866.046292),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_46",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-21000.000000,Y=71000.000000,Z=-1266.706878),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_47",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-19000.000000,Y=71000.000000,Z=-1266.706878),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_48",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-21000.000000,Y=73000.000000,Z=-1266.706878),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_49",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-19000.000000,Y=73000.000000,Z=-1266.706878),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_5",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=4000.000000,Y=80900.000000,Z=500.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_50",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=70400.000000,Z=-1266.706878),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_51",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=77500.000000,Z=-1261.092123),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_52",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-10500.000000,Y=-2000.000000,Z=1785.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_53",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-7500.000000,Y=-2000.000000,Z=1785.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_54",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-11700.000000,Y=-2700.000000,Z=1185.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_6",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=5000.000000,Y=80000.000000,Z=500.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_7",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=72500.000000,Z=-1266.046292),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_8",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=11000.000000,Y=68500.000000,Z=-1270.297249),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "Note_9",
+        "class": "Note",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=5700.000000,Y=67000.000000,Z=-1271.661613),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "PlayerStart_0",
+        "class": "PlayerStart",
+        "transform": "(Rotation=(X=-0.000000,Y=0.000000,Z=-0.707107,W=0.707107),Translation=(X=0.000000,Y=72500.000000,Z=233.914375),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "PostProcessVolume_2",
+        "class": "PostProcessVolume",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-108658.571429,Y=-12858.095238,Z=9800.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "RecastNavMesh-CommanderSoldier",
+        "class": "RecastNavMesh",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "RecastNavMesh-Default",
+        "class": "RecastNavMesh",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "SkyAtmosphere_0",
+        "class": "SkyAtmosphere",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "SkyLight_1",
+        "class": "SkyLight",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=47278.356771,Y=33654.809896,Z=70144.519531),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "SmartObjectSubsystemRenderingActor_0",
+        "class": "SmartObjectSubsystemRenderingActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "StaticMeshActor_0",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=11200.000000,Y=70500.000000,Z=-1168.157470),Scale3D=(X=26.000000,Y=2.000000,Z=14.000000))"
+      },
+      {
+        "name": "StaticMeshActor_1",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-54380.000000,Y=28116.666667,Z=-777.577667),Scale3D=(X=4.270000,Y=4.495000,Z=20.642500))"
+      },
+      {
+        "name": "StaticMeshActor_10",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=18000.000000,Y=67000.000000,Z=-1171.661754),Scale3D=(X=2.000000,Y=32.000000,Z=14.000000))"
+      },
+      {
+        "name": "StaticMeshActor_11",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8500.000000,Y=-10000.000000,Z=960.000000),Scale3D=(X=90.000000,Y=80.000000,Z=0.500000))"
+      },
+      {
+        "name": "StaticMeshActor_12",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=72000.000000,Z=-1758.706878),Scale3D=(X=1.562500,Y=1.562500,Z=0.004000))"
+      },
+      {
+        "name": "StaticMeshActor_13",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-24000.000000,Y=72000.000000,Z=-1758.046615),Scale3D=(X=1.562500,Y=1.562500,Z=0.004000))"
+      },
+      {
+        "name": "StaticMeshActor_14",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-16000.000000,Y=72000.000000,Z=-1758.706878),Scale3D=(X=1.562500,Y=1.562500,Z=0.004000))"
+      },
+      {
+        "name": "StaticMeshActor_15",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=68000.000000,Z=-1762.671057),Scale3D=(X=1.562500,Y=1.562500,Z=0.004000))"
+      },
+      {
+        "name": "StaticMeshActor_16",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=76000.000000,Z=-1754.743410),Scale3D=(X=1.562500,Y=1.562500,Z=0.004000))"
+      },
+      {
+        "name": "StaticMeshActor_17",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-20000.000000,Y=77500.000000,Z=-1753.092123),Scale3D=(X=13.020833,Y=13.020834,Z=0.004000))"
+      },
+      {
+        "name": "StaticMeshActor_18",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-21200.000000,Y=77500.000000,Z=-1753.092123),Scale3D=(X=3.125000,Y=3.125000,Z=0.004000))"
+      },
+      {
+        "name": "StaticMeshActor_19",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8500.000000,Y=-400.000000,Z=960.000000),Scale3D=(X=80.000000,Y=55.000000,Z=0.500000))"
+      },
+      {
+        "name": "StaticMeshActor_2",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-54380.000000,Y=30941.666667,Z=-759.696251),Scale3D=(X=4.270000,Y=4.495000,Z=20.642500))"
+      },
+      {
+        "name": "StaticMeshActor_20",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=-0.000000,Z=0.707107,W=0.707107),Translation=(X=-10500.000000,Y=-1000.000000,Z=1785.000000),Scale3D=(X=20.000000,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_21",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=-0.000000,Z=0.737277,W=0.675590),Translation=(X=-10587.488664,Y=-1000.000000,Z=1785.000000),Scale3D=(X=20.076397,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_22",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=-0.000000,Z=0.675590,W=0.737277),Translation=(X=-10412.511336,Y=-1000.000000,Z=1785.000000),Scale3D=(X=20.076397,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_23",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=-0.030844,Y=0.030844,Z=0.706434,W=0.706434),Translation=(X=-10500.000000,Y=-1000.000000,Z=1697.511336),Scale3D=(X=20.076397,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_24",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.030844,Y=-0.030844,Z=0.706434,W=0.706434),Translation=(X=-10500.000000,Y=-1000.000000,Z=1872.488664),Scale3D=(X=20.076397,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_25",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-10500.000000,Y=0.000000,Z=1785.000000),Scale3D=(X=3.499547,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_26",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.707107,Y=-0.000000,Z=0.707107,W=0.000000),Translation=(X=-10500.000000,Y=0.000000,Z=1785.000000),Scale3D=(X=3.499547,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_27",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=-0.000000,Z=0.707107,W=0.707107),Translation=(X=-7500.000000,Y=-500.000000,Z=1785.000000),Scale3D=(X=30.000000,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_28",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=-0.000000,Z=0.737277,W=0.675590),Translation=(X=-7631.232995,Y=-500.000000,Z=1785.000000),Scale3D=(X=30.114595,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_29",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=-0.000000,Z=0.675590,W=0.737277),Translation=(X=-7368.767005,Y=-500.000000,Z=1785.000000),Scale3D=(X=30.114595,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_3",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-51240.000000,Y=30941.666667,Z=-793.551689),Scale3D=(X=4.270000,Y=4.495000,Z=20.642500))"
+      },
+      {
+        "name": "StaticMeshActor_30",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=-0.030844,Y=0.030844,Z=0.706434,W=0.706434),Translation=(X=-7500.000000,Y=-500.000000,Z=1653.767005),Scale3D=(X=30.114595,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_31",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.030844,Y=-0.030844,Z=0.706434,W=0.706434),Translation=(X=-7500.000000,Y=-500.000000,Z=1916.232995),Scale3D=(X=30.114595,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_32",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-7500.000000,Y=1000.000000,Z=1785.000000),Scale3D=(X=5.249320,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_33",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.707107,Y=-0.000000,Z=0.707107,W=0.000000),Translation=(X=-7500.000000,Y=1000.000000,Z=1785.000000),Scale3D=(X=5.249320,Y=0.040000,Z=0.040000))"
+      },
+      {
+        "name": "StaticMeshActor_4",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=12600.000000,Y=71500.000000,Z=-1167.252668),Scale3D=(X=2.000000,Y=22.000000,Z=14.000000))"
+      },
+      {
+        "name": "StaticMeshActor_5",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=5200.000000,Y=69000.000000,Z=-1169.679674),Scale3D=(X=2.000000,Y=24.000000,Z=14.000000))"
+      },
+      {
+        "name": "StaticMeshActor_6",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=6200.000000,Y=69000.000000,Z=-1169.679674),Scale3D=(X=2.000000,Y=24.000000,Z=14.000000))"
+      },
+      {
+        "name": "StaticMeshActor_7",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=16500.000000,Y=68500.000000,Z=-1170.297668),Scale3D=(X=30.000000,Y=2.000000,Z=14.000000))"
+      },
+      {
+        "name": "StaticMeshActor_8",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=16500.000000,Y=65500.000000,Z=-1173.313550),Scale3D=(X=30.000000,Y=2.000000,Z=14.000000))"
+      },
+      {
+        "name": "StaticMeshActor_9",
+        "class": "StaticMeshActor",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=15000.000000,Y=67000.000000,Z=-1171.661754),Scale3D=(X=2.000000,Y=32.000000,Z=14.000000))"
+      },
+      {
+        "name": "TargetPoint_0",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8000.000000,Y=72000.000000,Z=-1300.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_1",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-3200.000000,Y=69500.000000,Z=-1769.349462),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_10",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-10540.000000,Y=70730.000000,Z=-1764.459475),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_11",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-9270.000000,Y=70730.000000,Z=-1764.457561),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_12",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8000.000000,Y=70730.000000,Z=-1764.456585),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_13",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-6730.000000,Y=70730.000000,Z=-1764.456585),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_14",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-5460.000000,Y=70730.000000,Z=-1764.458009),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_15",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-10540.000000,Y=72000.000000,Z=-1757.634957),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_16",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-9270.000000,Y=72000.000000,Z=-1757.526649),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_17",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8000.000000,Y=72000.000000,Z=-1757.294353),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_18",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-6730.000000,Y=72000.000000,Z=-1757.307121),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_19",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-5460.000000,Y=72000.000000,Z=-1757.657880),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_2",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-89000.000000,Y=-89000.000000,Z=-1694.699755),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_20",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-10540.000000,Y=73270.000000,Z=-1759.541101),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_21",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-9270.000000,Y=73270.000000,Z=-1759.432792),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_22",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8000.000000,Y=73270.000000,Z=-1759.412481),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_23",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-6730.000000,Y=73270.000000,Z=-1759.412481),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_24",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-5460.000000,Y=73270.000000,Z=-1759.564024),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_25",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-10540.000000,Y=74540.000000,Z=-1761.529225),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_26",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-9270.000000,Y=74540.000000,Z=-1761.529225),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_27",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8000.000000,Y=74540.000000,Z=-1761.529225),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_28",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-6730.000000,Y=74540.000000,Z=-1761.529225),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_29",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-5460.000000,Y=74540.000000,Z=-1761.529225),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_3",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=89000.000000,Y=89000.000000,Z=-1694.699755),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_30",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-10300.000000,Y=75500.000000,Z=-1760.270050),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_31",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8000.000000,Y=77800.000000,Z=-1753.633761),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_32",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-5700.000000,Y=75500.000000,Z=-1760.271740),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_4",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=1831.997741),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_5",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-10540.000000,Y=69460.000000,Z=-1766.390886),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_6",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-9270.000000,Y=69460.000000,Z=-1766.390886),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_7",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-8000.000000,Y=69460.000000,Z=-1766.390886),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_8",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-6730.000000,Y=69460.000000,Z=-1766.390886),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TargetPoint_9",
+        "class": "TargetPoint",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=-5460.000000,Y=69460.000000,Z=-1766.390886),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TextRenderActor_0",
+        "class": "TextRenderActor",
+        "transform": "(Rotation=(X=-0.707107,Y=-0.000000,Z=0.000000,W=0.707107),Translation=(X=-10300.000000,Y=75500.000000,Z=-1725.270050),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TextRenderActor_1",
+        "class": "TextRenderActor",
+        "transform": "(Rotation=(X=-0.707107,Y=-0.000000,Z=0.000000,W=0.707107),Translation=(X=-8000.000000,Y=77800.000000,Z=-1718.633761),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "TextRenderActor_2",
+        "class": "TextRenderActor",
+        "transform": "(Rotation=(X=-0.707107,Y=-0.000000,Z=0.000000,W=0.707107),Translation=(X=-5700.000000,Y=75500.000000,Z=-1725.271740),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      },
+      {
+        "name": "WorldSettings",
+        "class": "WorldSettings",
+        "transform": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+      }
+    ],
+    "landscape_bounds": {
+      "origin": [
+        0.0,
+        0.0,
+        2090.6288296568628
+      ],
+      "extent": [
+        115000.0,
+        115000.0,
+        4142.721737132353
+      ]
+    },
+    "landscape_collision": {
+      "collision_mip_level": "0",
+      "simple_collision_mip_level": "0",
+      "navigation_geometry_gathering_mode": "<NavDataGatheringMode.DEFAULT: 0>",
+      "cast_shadow": "True",
+      "cast_shadow_as_two_sided": "False"
+    }
+  },
+  "dirty_before": {
+    "maps": [
+      "/Game/Maps/LVL_CommanderMassPrototype"
+    ],
+    "content": []
+  },
+  "dirty_after_backup": {
+    "maps": [],
+    "content": []
+  },
+  "source_metadata": [
+    {
+      "path": "D:\\UE5.7\\test1\\Content\\Maps\\LVL_GroundMech_Demo.umap",
+      "size": 5559206,
+      "mtime_ns": 1789820104563964700
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Content\\StylizedPineEnvironment\\Assets\\Materials\\Landscape\\MI_Landscape.uasset",
+      "size": 12248,
+      "mtime_ns": 1789666349434592200
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Content\\StylizedPineEnvironment\\Assets\\Materials\\Landscape\\M_Landscape.uasset",
+      "size": 45250,
+      "mtime_ns": 1789666349249639900
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Content\\StylizedPineEnvironment\\Assets\\Misc\\LandscapeLayerInfo\\LL_AutoLayer.uasset",
+      "size": 1455,
+      "mtime_ns": 1652594575068103900
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Content\\StylizedPineEnvironment\\Assets\\Misc\\LandscapeLayerInfo\\LL_Grass_WithFoliage.uasset",
+      "size": 1503,
+      "mtime_ns": 1652594575070080700
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Content\\StylizedPineEnvironment\\Assets\\Misc\\LandscapeLayerInfo\\LL_Grass.uasset",
+      "size": 1431,
+      "mtime_ns": 1652594575070080700
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Content\\StylizedPineEnvironment\\Assets\\Misc\\LandscapeLayerInfo\\LL_Dirt_Gravel.uasset",
+      "size": 1467,
+      "mtime_ns": 1652594575069101200
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Content\\StylizedPineEnvironment\\Assets\\Misc\\LandscapeLayerInfo\\LL_Dirt_Light.uasset",
+      "size": 1461,
+      "mtime_ns": 1652594575069101200
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Content\\StylizedPineEnvironment\\Assets\\Misc\\LandscapeLayerInfo\\LL_Rock.uasset",
+      "size": 1425,
+      "mtime_ns": 1652594575070080700
+    }
+  ],
+  "viewport": "(ViewportType=\"perspective\",Location=(X=-94362.112427,Y=-3662.987872,Z=1588.881079),Rotation=(Pitch=-29.890245,Yaw=-36.367100,Roll=0.000000),FOV=50.000000,NearClipPlane=10.000000,FarClipPlane=0.000000,bIsRealtime=True,bIsGameView=False,bAllowCinematicControl=True,bExposureFixed=True,ExposureEV100=0.000000,CameraSpeedSetting=4,Layout=\"OnePane\",ViewportIndex=0)",
+  "view_mode": "lit",
+  "viewport_camera": {
+    "location": [
+      -94362.1124269538,
+      -3662.9878724960677,
+      1588.8810791590902
+    ],
+    "rotation": [
+      0.0,
+      -29.89024543762207,
+      -36.36709976196289
+    ]
+  },
+  "target_map_backups": [
+    "D:\\UE5.7\\test1\\Artifacts\\GroundMaterialTransfer\\20261001\\before\\LVL_CommanderMassPrototype.disk_before.umap",
+    "D:\\UE5.7\\test1\\Artifacts\\GroundMaterialTransfer\\20261001\\before\\LVL_CommanderMassPrototype.live_before.umap"
+  ]
+}

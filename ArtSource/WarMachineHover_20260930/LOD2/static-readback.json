@@ -1,0 +1,63 @@
+{
+  "success": true,
+  "timestamp": "2026-09-30T18:27:28.575804",
+  "scope": "Commander unit, weapon and world-effect presentation; camera tiers Near/Full, Tactical/Reduced and Overview/Minimal.",
+  "static_review": {
+    "native_files": 13,
+    "files": 22,
+    "python_ast": "passed",
+    "git_diff_check": "passed",
+    "stale_ShouldRenderCombatBurst_references_in_source": 0,
+    "native_build": "not_run_new_lod_native_pending",
+    "runtime_pie": "not_run",
+    "automation": "not_run"
+  },
+  "asset_audit": {
+    "registered_systems": 22,
+    "emitter_states": 110,
+    "enabled_emitter_distance_gates": 0,
+    "renderers": 117,
+    "enabled_renderer_distance_gates": 0,
+    "system_scalability_overrides": 0,
+    "effect_types": 2,
+    "enabled_effect_type_distance_gates": 0
+  },
+  "policy": {
+    "Near_Full_0": "Visible; bypass legacy camera distance gates",
+    "Tactical_Reduced_1": "Visible; bypass legacy camera distance gates",
+    "Overview_Minimal_2": "Suppress world visuals through admission and per-view overview masks",
+    "non_commander": "Preserve existing per-consumer distance fallback"
+  },
+  "coverage": [
+    "WM01 hover CPU fade and GPU tail history",
+    "Gunfire tracer / laser / persistent muzzle",
+    "Combat fields and activation bursts / missile fallback",
+    "Unit hit flashes, death explosions and wrecks",
+    "World health bars",
+    "Selection rings and registered primitive draw distances",
+    "Wingman flight trails",
+    "WM01 missile cluster existing commander bypass",
+    "Two Niagara EffectTypes and five RocketJet emitter flags"
+  ],
+  "unchanged_non_visual_ranges": [
+    "Attack/skill range",
+    "Projectile spatial grid",
+    "Navigation/ground traces",
+    "Network relevance",
+    "Editor foliage brush defaults",
+    "Frustum visibility and particle budgets"
+  ],
+  "saved_scene": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "new_review_entities": 3,
+    "fixture_instances": 13,
+    "custom_floats": 51
+  },
+  "caveat": "Existing native build predates these visibility changes. Saved assets and static checks do not confirm runtime tier visibility or performance.",
+  "progress_check": {
+    "errors": 0,
+    "warnings": 14,
+    "warnings_scope": "Existing oversize/task-list warnings; no new warning from this delivery."
+  },
+  "source_hashes_still_match": true
+}

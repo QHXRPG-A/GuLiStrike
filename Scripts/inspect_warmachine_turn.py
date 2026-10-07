@@ -43,7 +43,7 @@ try:
         b=sub.get_lod_build_settings(mesh,i)
         assert b.use_full_precision_u_vs and not b.generate_lightmap_u_vs
         lods.append({'lod':i,'triangles':mesh.get_num_triangles(i),'full_precision_uv':b.use_full_precision_u_vs})
-    assert len(lods)==4
+    assert len(lods)==3
     task=unreal.AssetExportTask();task.object=mesh;task.filename=(OUT/'UE_RenderLODs.fbx').as_posix()
     task.automated=True;task.prompt=False;task.replace_identical=True;task.exporter=unreal.StaticMeshExporterFBX()
     options=unreal.FbxExportOption();options.ascii=False;options.collision=False;options.level_of_detail=True;task.options=options

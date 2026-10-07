@@ -1,0 +1,160 @@
+{
+  "id": 6,
+  "name": "BiZhiMao",
+  "display_name": "彼之矛",
+  "presentation_scale": 2.0,
+  "actor_class": "",
+  "presentation_class": "",
+  "vat_definition": "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT",
+  "components": [],
+  "meshes": [
+    {
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "lod_count": 4,
+      "selected_indices": [
+        0,
+        1,
+        3
+      ],
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 70117,
+          "sections": 2,
+          "vertices": 205141,
+          "uv_channels": 6
+        },
+        {
+          "index": 1,
+          "triangles": 65006,
+          "sections": 2,
+          "vertices": 191454,
+          "uv_channels": 6
+        },
+        {
+          "index": 2,
+          "triangles": 51896,
+          "sections": 2,
+          "vertices": 153198,
+          "uv_channels": 6
+        },
+        {
+          "index": 3,
+          "triangles": 38428,
+          "sections": 1,
+          "vertices": 114263,
+          "uv_channels": 6
+        }
+      ],
+      "screen_sizes": [
+        1.0,
+        0.4000000059604645,
+        0.1599999964237213,
+        0.05999999865889549
+      ],
+      "materials": [
+        {
+          "index": 0,
+          "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD0.MI_BiZhiMao_LOD0",
+          "slot": "Body_LOD0"
+        },
+        {
+          "index": 1,
+          "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/M_BiZhiMao_Outline.M_BiZhiMao_Outline",
+          "slot": "Outline"
+        },
+        {
+          "index": 2,
+          "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD1.MI_BiZhiMao_LOD1",
+          "slot": "Body_LOD1"
+        },
+        {
+          "index": 3,
+          "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD2.MI_BiZhiMao_LOD2",
+          "slot": "Body_LOD2"
+        },
+        {
+          "index": 4,
+          "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD3.MI_BiZhiMao_LOD3",
+          "slot": "Body_LOD3"
+        }
+      ],
+      "sockets": [],
+      "fbx": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\BiZhiMao\\Sources\\SM_BiZhiMao_VAT_RenderLODs.fbx",
+      "fbx_sha256": "c16dfc2f54b05f00e6ebc29b62073b2027e401ef3cd88e70e7ce484581ca3149"
+    }
+  ],
+  "construction_mesh": {
+    "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+    "lod_count": 4,
+    "selected_indices": [
+      0,
+      1,
+      3
+    ],
+    "lods": [
+      {
+        "index": 0,
+        "triangles": 70117,
+        "sections": 2,
+        "vertices": 205141,
+        "uv_channels": 6
+      },
+      {
+        "index": 1,
+        "triangles": 65006,
+        "sections": 2,
+        "vertices": 191454,
+        "uv_channels": 6
+      },
+      {
+        "index": 2,
+        "triangles": 51896,
+        "sections": 2,
+        "vertices": 153198,
+        "uv_channels": 6
+      },
+      {
+        "index": 3,
+        "triangles": 38428,
+        "sections": 1,
+        "vertices": 114263,
+        "uv_channels": 6
+      }
+    ],
+    "screen_sizes": [
+      1.0,
+      0.4000000059604645,
+      0.1599999964237213,
+      0.05999999865889549
+    ],
+    "materials": [
+      {
+        "index": 0,
+        "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD0.MI_BiZhiMao_LOD0",
+        "slot": "Body_LOD0"
+      },
+      {
+        "index": 1,
+        "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/M_BiZhiMao_Outline.M_BiZhiMao_Outline",
+        "slot": "Outline"
+      },
+      {
+        "index": 2,
+        "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD1.MI_BiZhiMao_LOD1",
+        "slot": "Body_LOD1"
+      },
+      {
+        "index": 3,
+        "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD2.MI_BiZhiMao_LOD2",
+        "slot": "Body_LOD2"
+      },
+      {
+        "index": 4,
+        "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD3.MI_BiZhiMao_LOD3",
+        "slot": "Body_LOD3"
+      }
+    ],
+    "sockets": []
+  }
+}

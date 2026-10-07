@@ -1,0 +1,401 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "pie": false,
+  "summary": "<Struct 'NiagaraSystemSummary' (0x000002272EE25FA0) {system_path: \"/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool\", system_name: \"NS_WarMachineHoverPool\", emitter_count: 2, emitter_names: (\"LaserBolts\",\"LaserMuzzles\"), user_parameter_count: 9, user_parameter_names: (\"User.HoverCamera\",\"User.HoverTime\",\"User.LaserColors\",\"User.LaserDirections\",\"User.LaserPositions\",\"User.LaserSizes\",\"User.MuzzleColors\",\"User.MuzzlePositions\",\"User.MuzzleSizes\"), has_gpu_emitters: True}>",
+  "emitters": {
+    "LaserBolts": {
+      "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x00000225C52DC080) {emitter_name: \"LaserBolts\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+      "renderers": "<Struct 'NiagaraRendererDetailedInfo' (0x00000225C52DB180) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverJet.M_WarMachineHoverJet\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+      "modules": [
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000226E1CA99C0) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000226E1CA1F40) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000226E1CAA730) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000226E1CABDB0) {module_name: \"InitializeHoverLane\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.NiagaraScratchPadContainer_0.InitializeHoverLane\", module_index: 3, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000226E1CAA0F0) {module_name: \"ReadHoverNozzle\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.NiagaraScratchPadContainer_0.ReadHoverNozzle\", module_index: 4, is_enabled: True, inputs: }>"
+      ],
+      "hlsl": {
+        "InitializeHoverLane": "Slot=ExecIndex(); Life=1000000000.0; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;"
+      }
+    },
+    "LaserMuzzles": {
+      "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x00000225C52D5000) {emitter_name: \"LaserMuzzles\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+      "renderers": "<Struct 'NiagaraRendererDetailedInfo' (0x00000225C52D4880) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverTrail.M_WarMachineHoverTrail\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"Unaligned\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+      "modules": [
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000226E1CA1DB0) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000226E1CA19A0) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000226E1CA1900) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000226E1CAB220) {module_name: \"InitializeHoverLane\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.NiagaraScratchPadContainer_0.InitializeHoverLane\", module_index: 3, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000226E1CA18B0) {module_name: \"ReadHoverNozzle\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.NiagaraScratchPadContainer_0.ReadHoverNozzle\", module_index: 4, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000226E1CA1090) {module_name: \"AdvanceHoverTrailGPU\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.NiagaraScratchPadContainer_0.AdvanceHoverTrailGPU\", module_index: 5, is_enabled: True, inputs: }>"
+      ],
+      "hlsl": {
+        "InitializeHoverLane": "Slot=ExecIndex(); Life=1000000000.0; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;Slot=ExecIndex() / 10; Lane=ExecIndex() % 10; Anchor=float3(0,0,0); Down=float3(0,0,-1); Born=-100000; Width=0; Generation=-1; Bucket=-1;",
+        "AdvanceHoverTrailGPU": "// GPU-only persistent lane. Ten lanes per nozzle, .03 s apart, .30 s lifetime.\n// The DI reader supplies current nozzle Position/Direction, Size=(width,speed), Meta=(generation,active,0,0).\n// SavedAnchor is a Position (simulation space); direction/age/width are particle state.\nAnchorOut=SavedAnchor; DirectionOut=SavedDirection; BornOut=Born; WidthOut=SavedWidth;\nGenerationOut=SeenGeneration; BucketOut=SeenBucket;\nint bucket=(int)floor(Now/0.03);\nbool reset=abs(Meta.r-SeenGeneration)>0.5;\nif(reset) { GenerationOut=Meta.r; BucketOut=bucket; }\nif(!reset && Meta.g>0.5 && NozzleSize.y>5.0 && bucket%10==Lane && bucket>SeenBucket)\n{\n    AnchorOut=NozzlePosition; DirectionOut=NozzleDirection; BornOut=Now;\n    WidthOut=NozzleSize.x; BucketOut=bucket;\n}\nfloat age=max(0.0,Now-BornOut);\nPositionOut=AnchorOut+DirectionOut*(80.0*age);\nfloat fade=saturate((20000.0-distance(Camera,PositionOut))/2000.0);\nfloat life=saturate(1.0-age/0.30);\nSizeOut=life*fade>0.0 ? float2(WidthOut,WidthOut*.55)*(1.0+min(age,.30)) : float2(0,0);\nColorOut=float4(.04,.28,.95,.45*life*life*fade);\n"
+      }
+    }
+  },
+  "materials": {
+    "M_WarMachineHoverJet": {
+      "material": {
+        "blend_mode": "BLEND_Translucent",
+        "shading_model": "MSM_Unlit",
+        "two_sided": true
+      },
+      "expressions": [
+        {
+          "id": "MaterialExpressionTextureCoordinate_00000225DCAA0700",
+          "class": "TextureCoordinate",
+          "class_full": "MaterialExpressionTextureCoordinate",
+          "pos_x": -780,
+          "pos_y": 0,
+          "properties": {
+            "CoordinateIndex": "0",
+            "UTiling": "1.000000",
+            "VTiling": "1.000000",
+            "UnMirrorU": "False",
+            "UnMirrorV": "False"
+          },
+          "inputs": [],
+          "outputs": [
+            "Output_0"
+          ]
+        },
+        {
+          "id": "MaterialExpressionParticleColor_0000022746E87700",
+          "class": "ParticleColor",
+          "class_full": "MaterialExpressionParticleColor",
+          "pos_x": -780,
+          "pos_y": 162,
+          "properties": {},
+          "inputs": [],
+          "outputs": [
+            "RGB",
+            "R",
+            "G",
+            "B",
+            "A",
+            "RGBA"
+          ]
+        },
+        {
+          "id": "MaterialExpressionCustom_00000227557FE4C0",
+          "class": "Custom",
+          "class_full": "MaterialExpressionCustom",
+          "pos_x": -260,
+          "pos_y": 0,
+          "properties": {
+            "Code": "float core=pow(saturate(1-abs(UV.x*2-1)*2.8),2); return lerp(Tint,float3(.55,.85,1.0),core*.7)*1.5;",
+            "OutputType": "CMOT_Float3",
+            "Description": "Custom",
+            "Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverJet.M_WarMachineHoverJet:MaterialExpressionTextureCoordinate_1'\")),(InputName=\"Tint\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverJet.M_WarMachineHoverJet:MaterialExpressionParticleColor_1'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)))",
+            "ShowCode": "False"
+          },
+          "hlsl_code": "float core=pow(saturate(1-abs(UV.x*2-1)*2.8),2); return lerp(Tint,float3(.55,.85,1.0),core*.7)*1.5;",
+          "output_type": "CMOT_Float3",
+          "custom_input_names": "UV,Tint",
+          "inputs": [
+            "UV",
+            "Tint"
+          ],
+          "outputs": [
+            "Output_0"
+          ]
+        },
+        {
+          "id": "MaterialExpressionCustom_00000227557FBCC0",
+          "class": "Custom",
+          "class_full": "MaterialExpressionCustom",
+          "pos_x": -520,
+          "pos_y": 162,
+          "properties": {
+            "Code": "float t=saturate(1-UV.y); float width=lerp(1.0,.14,t); float x=abs(UV.x*2-1)/width; return pow(saturate(1-x*x),.65)*smoothstep(0,.06,t)*pow(saturate(1-t),.5)*Alpha;",
+            "OutputType": "CMOT_Float1",
+            "Description": "Custom",
+            "Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverJet.M_WarMachineHoverJet:MaterialExpressionTextureCoordinate_1'\")),(InputName=\"Alpha\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverJet.M_WarMachineHoverJet:MaterialExpressionParticleColor_1'\",OutputIndex=4,Mask=1,MaskA=1)))",
+            "ShowCode": "False"
+          },
+          "hlsl_code": "float t=saturate(1-UV.y); float width=lerp(1.0,.14,t); float x=abs(UV.x*2-1)/width; return pow(saturate(1-x*x),.65)*smoothstep(0,.06,t)*pow(saturate(1-t),.5)*Alpha;",
+          "output_type": "CMOT_Float1",
+          "custom_input_names": "UV,Alpha",
+          "inputs": [
+            "UV",
+            "Alpha"
+          ],
+          "outputs": [
+            "Output_0"
+          ]
+        },
+        {
+          "id": "MaterialExpressionDepthFade_00000226E1F93200",
+          "class": "DepthFade",
+          "class_full": "MaterialExpressionDepthFade",
+          "pos_x": -260,
+          "pos_y": 162,
+          "properties": {
+            "OpacityDefault": "1.000000",
+            "FadeDistanceDefault": "25.000000"
+          },
+          "inputs": [
+            "Opacity",
+            "FadeDistance"
+          ],
+          "outputs": [
+            "Output_0"
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "source_id": "MaterialExpressionTextureCoordinate_00000225DCAA0700",
+          "source_output_index": 0,
+          "source_output_name": "",
+          "target_id": "MaterialExpressionCustom_00000227557FE4C0",
+          "target_input": "UV"
+        },
+        {
+          "source_id": "MaterialExpressionParticleColor_0000022746E87700",
+          "source_output_index": 0,
+          "source_output_name": "RGB",
+          "target_id": "MaterialExpressionCustom_00000227557FE4C0",
+          "target_input": "Tint"
+        },
+        {
+          "source_id": "MaterialExpressionTextureCoordinate_00000225DCAA0700",
+          "source_output_index": 0,
+          "source_output_name": "",
+          "target_id": "MaterialExpressionCustom_00000227557FBCC0",
+          "target_input": "UV"
+        },
+        {
+          "source_id": "MaterialExpressionParticleColor_0000022746E87700",
+          "source_output_index": 4,
+          "source_output_name": "A",
+          "target_id": "MaterialExpressionCustom_00000227557FBCC0",
+          "target_input": "Alpha"
+        },
+        {
+          "source_id": "MaterialExpressionCustom_00000227557FBCC0",
+          "source_output_index": 0,
+          "source_output_name": "",
+          "target_id": "MaterialExpressionDepthFade_00000226E1F93200",
+          "target_input": "Opacity"
+        }
+      ],
+      "output_connections": [
+        {
+          "property": "EmissiveColor",
+          "expression_id": "MaterialExpressionCustom_00000227557FE4C0",
+          "output_index": 0,
+          "output_name": ""
+        },
+        {
+          "property": "Opacity",
+          "expression_id": "MaterialExpressionDepthFade_00000226E1F93200",
+          "output_index": 0,
+          "output_name": ""
+        }
+      ]
+    },
+    "M_WarMachineHoverTrail": {
+      "material": {
+        "blend_mode": "BLEND_Translucent",
+        "shading_model": "MSM_Unlit",
+        "two_sided": true
+      },
+      "expressions": [
+        {
+          "id": "MaterialExpressionTextureCoordinate_00000225DCAAF5E0",
+          "class": "TextureCoordinate",
+          "class_full": "MaterialExpressionTextureCoordinate",
+          "pos_x": -780,
+          "pos_y": 0,
+          "properties": {
+            "CoordinateIndex": "0",
+            "UTiling": "1.000000",
+            "VTiling": "1.000000",
+            "UnMirrorU": "False",
+            "UnMirrorV": "False"
+          },
+          "inputs": [],
+          "outputs": [
+            "Output_0"
+          ]
+        },
+        {
+          "id": "MaterialExpressionParticleColor_00000225DCAAF6C0",
+          "class": "ParticleColor",
+          "class_full": "MaterialExpressionParticleColor",
+          "pos_x": -780,
+          "pos_y": 162,
+          "properties": {},
+          "inputs": [],
+          "outputs": [
+            "RGB",
+            "R",
+            "G",
+            "B",
+            "A",
+            "RGBA"
+          ]
+        },
+        {
+          "id": "MaterialExpressionCustom_00000226E1F93700",
+          "class": "Custom",
+          "class_full": "MaterialExpressionCustom",
+          "pos_x": -260,
+          "pos_y": 0,
+          "properties": {
+            "Code": "float core=pow(saturate(1-abs(UV.x*2-1)*2.8),2); return lerp(Tint,float3(.55,.85,1.0),core*.7)*1.5;",
+            "OutputType": "CMOT_Float3",
+            "Description": "Custom",
+            "Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverTrail.M_WarMachineHoverTrail:MaterialExpressionTextureCoordinate_0'\")),(InputName=\"Tint\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverTrail.M_WarMachineHoverTrail:MaterialExpressionParticleColor_0'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)))",
+            "ShowCode": "False"
+          },
+          "hlsl_code": "float core=pow(saturate(1-abs(UV.x*2-1)*2.8),2); return lerp(Tint,float3(.55,.85,1.0),core*.7)*1.5;",
+          "output_type": "CMOT_Float3",
+          "custom_input_names": "UV,Tint",
+          "inputs": [
+            "UV",
+            "Tint"
+          ],
+          "outputs": [
+            "Output_0"
+          ]
+        },
+        {
+          "id": "MaterialExpressionCustom_00000226E1F93980",
+          "class": "Custom",
+          "class_full": "MaterialExpressionCustom",
+          "pos_x": -520,
+          "pos_y": 162,
+          "properties": {
+            "Code": "float2 p=(UV-.5)*2; return pow(saturate(1-dot(p,p)),2)*Alpha;",
+            "OutputType": "CMOT_Float1",
+            "Description": "Custom",
+            "Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverTrail.M_WarMachineHoverTrail:MaterialExpressionTextureCoordinate_0'\")),(InputName=\"Alpha\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverTrail.M_WarMachineHoverTrail:MaterialExpressionParticleColor_0'\",OutputIndex=4,Mask=1,MaskA=1)))",
+            "ShowCode": "False"
+          },
+          "hlsl_code": "float2 p=(UV-.5)*2; return pow(saturate(1-dot(p,p)),2)*Alpha;",
+          "output_type": "CMOT_Float1",
+          "custom_input_names": "UV,Alpha",
+          "inputs": [
+            "UV",
+            "Alpha"
+          ],
+          "outputs": [
+            "Output_0"
+          ]
+        },
+        {
+          "id": "MaterialExpressionDepthFade_00000226E1F93AC0",
+          "class": "DepthFade",
+          "class_full": "MaterialExpressionDepthFade",
+          "pos_x": -260,
+          "pos_y": 162,
+          "properties": {
+            "OpacityDefault": "1.000000",
+            "FadeDistanceDefault": "25.000000"
+          },
+          "inputs": [
+            "Opacity",
+            "FadeDistance"
+          ],
+          "outputs": [
+            "Output_0"
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "source_id": "MaterialExpressionTextureCoordinate_00000225DCAAF5E0",
+          "source_output_index": 0,
+          "source_output_name": "",
+          "target_id": "MaterialExpressionCustom_00000226E1F93700",
+          "target_input": "UV"
+        },
+        {
+          "source_id": "MaterialExpressionParticleColor_00000225DCAAF6C0",
+          "source_output_index": 0,
+          "source_output_name": "RGB",
+          "target_id": "MaterialExpressionCustom_00000226E1F93700",
+          "target_input": "Tint"
+        },
+        {
+          "source_id": "MaterialExpressionTextureCoordinate_00000225DCAAF5E0",
+          "source_output_index": 0,
+          "source_output_name": "",
+          "target_id": "MaterialExpressionCustom_00000226E1F93980",
+          "target_input": "UV"
+        },
+        {
+          "source_id": "MaterialExpressionParticleColor_00000225DCAAF6C0",
+          "source_output_index": 4,
+          "source_output_name": "A",
+          "target_id": "MaterialExpressionCustom_00000226E1F93980",
+          "target_input": "Alpha"
+        },
+        {
+          "source_id": "MaterialExpressionCustom_00000226E1F93980",
+          "source_output_index": 0,
+          "source_output_name": "",
+          "target_id": "MaterialExpressionDepthFade_00000226E1F93AC0",
+          "target_input": "Opacity"
+        }
+      ],
+      "output_connections": [
+        {
+          "property": "EmissiveColor",
+          "expression_id": "MaterialExpressionCustom_00000226E1F93700",
+          "output_index": 0,
+          "output_name": ""
+        },
+        {
+          "property": "Opacity",
+          "expression_id": "MaterialExpressionDepthFade_00000226E1F93AC0",
+          "output_index": 0,
+          "output_name": ""
+        }
+      ]
+    }
+  },
+  "actors": [
+    {
+      "name": "WarMachineHover_PlayablePreview",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Actor_2"
+    },
+    {
+      "name": "WarMachineHover_PreviewInstructions",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_32"
+    }
+  ],
+  "api": {
+    "advance_simulation": "x.advance_simulation(tick_count, tick_delta_seconds) -> None\r\nAdvances this system's simulation by the specified number of ticks and delta time.\r\n\r\nArgs:\r\n    tick_count (int32): \r\n    tick_delta_seconds (float):",
+    "set_force_solo": "x.set_force_solo(force_solo) -> None\r\nSet Force Solo\r\n\r\nArgs:\r\n    force_solo (bool):",
+    "set_system_fixed_bounds": "x.set_system_fixed_bounds(local_bounds) -> None\r\nSets the fixed bounds for the system instance, this overrides all other bounds.\nThe box is expected to be in local space not world space.\nA default uninitialized box will clear the fixed bounds and revert back to system fixed / dynamic bounds.\r\n\r\nArgs:\r\n    local_bounds (Box):"
+  },
+  "array_api": [
+    "set_niagara_array_bool",
+    "set_niagara_array_bool_value",
+    "set_niagara_array_color",
+    "set_niagara_array_color_value",
+    "set_niagara_array_float",
+    "set_niagara_array_float_value",
+    "set_niagara_array_int32",
+    "set_niagara_array_int32_value",
+    "set_niagara_array_matrix",
+    "set_niagara_array_matrix_value",
+    "set_niagara_array_position",
+    "set_niagara_array_position_value",
+    "set_niagara_array_quat",
+    "set_niagara_array_quat_value",
+    "set_niagara_array_u_int8",
+    "set_niagara_array_u_int8_value",
+    "set_niagara_array_vector",
+    "set_niagara_array_vector2d",
+    "set_niagara_array_vector2d_value",
+    "set_niagara_array_vector4",
+    "set_niagara_array_vector4_value",
+    "set_niagara_array_vector_value"
+  ],
+  "compile": "System valid=0 ready=0 gpu=1\nEditor needs_compile=1 outstanding_including_gpu=1\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=0\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=0\n"
+}

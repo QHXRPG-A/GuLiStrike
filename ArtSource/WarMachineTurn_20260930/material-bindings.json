@@ -1,0 +1,692 @@
+[
+  {
+    "material": "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid",
+    "calls": [
+      {
+        "node": {
+          "id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+          "class": "MaterialFunctionCall",
+          "class_full": "MaterialExpressionMaterialFunctionCall",
+          "pos_x": 0,
+          "pos_y": 0,
+          "properties": {
+            "MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical'"
+          },
+          "function_path": "/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+          "inputs": [
+            "LegAxis1 (V3)",
+            "UpperPivot (V3)",
+            "LegRoot0 (V3)",
+            "LegEnd0 (V3)",
+            "LegAxis0 (V3)",
+            "LegRoot1 (V3)",
+            "LegEnd1 (V3)",
+            "Kind (S)",
+            "LegRoot2 (V3)",
+            "LegEnd2 (V3)",
+            "LegAxis2 (V3)",
+            "LegRoot3 (V3)",
+            "LegEnd3 (V3)",
+            "LegAxis3 (V3)"
+          ],
+          "outputs": [
+            "Offset",
+            "Normal"
+          ]
+        },
+        "inputs": [
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC8791F80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "LegAxis1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024D4CFD0480",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "UpperPivot (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC879E580",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "LegRoot0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC8798D00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "LegEnd0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC879C180",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "LegAxis0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC879F600",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "LegRoot1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC8799F00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "LegEnd1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_0000024E9350C1C0",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "Kind (S)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC879EB80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "LegRoot2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC8791C80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "LegEnd2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC8799600",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "LegAxis2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC879EE80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "LegRoot3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC879AC80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "LegEnd3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC8799180",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C080",
+            "target_input": "LegAxis3 (V3)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "material": "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid",
+    "calls": [
+      {
+        "node": {
+          "id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+          "class": "MaterialFunctionCall",
+          "class_full": "MaterialExpressionMaterialFunctionCall",
+          "pos_x": 0,
+          "pos_y": 0,
+          "properties": {
+            "MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical'"
+          },
+          "function_path": "/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+          "inputs": [
+            "LegAxis1 (V3)",
+            "UpperPivot (V3)",
+            "LegRoot0 (V3)",
+            "LegEnd0 (V3)",
+            "LegAxis0 (V3)",
+            "LegRoot1 (V3)",
+            "LegEnd1 (V3)",
+            "Kind (S)",
+            "LegRoot2 (V3)",
+            "LegEnd2 (V3)",
+            "LegAxis2 (V3)",
+            "LegRoot3 (V3)",
+            "LegEnd3 (V3)",
+            "LegAxis3 (V3)"
+          ],
+          "outputs": [
+            "Offset",
+            "Normal"
+          ]
+        },
+        "inputs": [
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EDAF17380",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "LegAxis1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024D4CFD0F00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "UpperPivot (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024E82554200",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "LegRoot0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EF47DF600",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "LegEnd0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EDAF19F00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "LegAxis0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC8799D80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "LegRoot1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EEBF43900",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "LegEnd1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_0000024E9350C940",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "Kind (S)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC4EC7C80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "LegRoot2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EEBF45700",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "LegEnd2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EDAF1DC80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "LegAxis2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EDDFE8580",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "LegRoot3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EEBF41800",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "LegEnd3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EDAF17080",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024E9350C6C0",
+            "target_input": "LegAxis3 (V3)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "material": "/Game/GuLiStrike/FX/UnitFeedback/M_UnitWreckRust",
+    "calls": [
+      {
+        "node": {
+          "id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+          "class": "MaterialFunctionCall",
+          "class_full": "MaterialExpressionMaterialFunctionCall",
+          "pos_x": 0,
+          "pos_y": 0,
+          "properties": {
+            "MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical'"
+          },
+          "function_path": "/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+          "inputs": [
+            "LegAxis1 (V3)",
+            "UpperPivot (V3)",
+            "LegRoot0 (V3)",
+            "LegEnd0 (V3)",
+            "LegAxis0 (V3)",
+            "LegRoot1 (V3)",
+            "LegEnd1 (V3)",
+            "Kind (S)",
+            "LegRoot2 (V3)",
+            "LegEnd2 (V3)",
+            "LegAxis2 (V3)",
+            "LegRoot3 (V3)",
+            "LegEnd3 (V3)",
+            "LegAxis3 (V3)"
+          ],
+          "outputs": [
+            "Offset",
+            "Normal"
+          ]
+        },
+        "inputs": [
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC879A980",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "LegAxis1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EF47D8A00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "UpperPivot (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EF47DA200",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "LegRoot0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024E82553C00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "LegEnd0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE0F6BA00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "LegAxis0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EB87CB580",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "LegRoot1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE0F6A500",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "LegEnd1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_0000024EB1F9B680",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "Kind (S)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE4F64980",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "LegRoot2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC4EC0480",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "LegEnd2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE0F6BD00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "LegAxis2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC4EC5E80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "LegRoot3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE0F6DE00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "LegEnd3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EDDFE8280",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EB1F9AB40",
+            "target_input": "LegAxis3 (V3)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "material": "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite_Instanced",
+    "calls": [
+      {
+        "node": {
+          "id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+          "class": "MaterialFunctionCall",
+          "class_full": "MaterialExpressionMaterialFunctionCall",
+          "pos_x": 0,
+          "pos_y": 0,
+          "properties": {
+            "MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical'"
+          },
+          "function_path": "/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+          "inputs": [
+            "LegAxis1 (V3)",
+            "UpperPivot (V3)",
+            "LegRoot0 (V3)",
+            "LegEnd0 (V3)",
+            "LegAxis0 (V3)",
+            "LegRoot1 (V3)",
+            "LegEnd1 (V3)",
+            "Kind (S)",
+            "LegRoot2 (V3)",
+            "LegEnd2 (V3)",
+            "LegAxis2 (V3)",
+            "LegRoot3 (V3)",
+            "LegEnd3 (V3)",
+            "LegAxis3 (V3)"
+          ],
+          "outputs": [
+            "Offset",
+            "Normal"
+          ]
+        },
+        "inputs": [
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE4F67080",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "LegAxis1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EEBF45B80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "UpperPivot (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EEBF41080",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "LegRoot0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE4F65400",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "LegEnd0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EEBF4FD80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "LegAxis0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE4F69780",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "LegRoot1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EEBF4B400",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "LegEnd1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_0000024EDA767D00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "Kind (S)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EEBF48D00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "LegRoot2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE4F67B00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "LegEnd2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EEBF45280",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "LegAxis2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE4F62580",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "LegRoot3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EEBF4B580",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "LegEnd3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE4F67800",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA76DC00",
+            "target_input": "LegAxis3 (V3)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "material": "/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody",
+    "calls": [
+      {
+        "node": {
+          "id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+          "class": "MaterialFunctionCall",
+          "class_full": "MaterialExpressionMaterialFunctionCall",
+          "pos_x": 0,
+          "pos_y": 0,
+          "properties": {
+            "MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical'"
+          },
+          "function_path": "/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+          "inputs": [
+            "LegAxis1 (V3)",
+            "UpperPivot (V3)",
+            "LegRoot0 (V3)",
+            "LegEnd0 (V3)",
+            "LegAxis0 (V3)",
+            "LegRoot1 (V3)",
+            "LegEnd1 (V3)",
+            "Kind (S)",
+            "LegRoot2 (V3)",
+            "LegEnd2 (V3)",
+            "LegAxis2 (V3)",
+            "LegRoot3 (V3)",
+            "LegEnd3 (V3)",
+            "LegAxis3 (V3)"
+          ],
+          "outputs": [
+            "Offset",
+            "Normal"
+          ]
+        },
+        "inputs": [
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE0F6CC00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "LegAxis1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC4773600",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "UpperPivot (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC4771200",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "LegRoot0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE0F6B700",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "LegEnd0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC4771E00",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "LegAxis0 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE0F6AF80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "LegRoot1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC4770780",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "LegEnd1 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_0000024EDA76BE00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "Kind (S)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC4770600",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "LegRoot2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE0F69300",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "LegEnd2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC4773900",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "LegAxis2 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE0F6C780",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "LegRoot3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EC4772B80",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "LegEnd3 (V3)"
+          },
+          {
+            "source_id": "MaterialExpressionVectorParameter_0000024EE0F69600",
+            "source_output_index": 0,
+            "source_output_name": "RGB",
+            "target_id": "MaterialExpressionMaterialFunctionCall_0000024EDA767440",
+            "target_input": "LegAxis3 (V3)"
+          }
+        ]
+      }
+    ]
+  }
+]

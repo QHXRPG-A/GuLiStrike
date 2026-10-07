@@ -1,0 +1,1261 @@
+{
+  "success": true,
+  "systems": [
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight.NS_WM01_MissileFlight",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C9CA0) {setting_path: \"Constants.Core.EmitterState.MaxDistance\", display_name: \"Constants.Core.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C04D0) {setting_path: \"Constants.Core.EmitterState.MinDistance\", display_name: \"Constants.Core.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C3100) {setting_path: \"Constants.Exhaust.EmitterState.MaxDistance\", display_name: \"Constants.Exhaust.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C2ED0) {setting_path: \"Constants.Exhaust.EmitterState.MinDistance\", display_name: \"Constants.Exhaust.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C7380) {setting_path: \"Constants.Trail.EmitterState.MaxDistance\", display_name: \"Constants.Trail.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C4130) {setting_path: \"Constants.Trail.EmitterState.MinDistance\", display_name: \"Constants.Trail.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CCC50) {setting_path: \"Constants.Core.EmitterState.MaxDistance\", display_name: \"Constants.Core.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Core\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C5A90) {setting_path: \"Constants.Core.EmitterState.MinDistance\", display_name: \"Constants.Core.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Core\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C3CD0) {setting_path: \"Constants.Exhaust.EmitterState.MaxDistance\", display_name: \"Constants.Exhaust.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Exhaust\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C79A0) {setting_path: \"Constants.Exhaust.EmitterState.MinDistance\", display_name: \"Constants.Exhaust.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Exhaust\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C0AF0) {setting_path: \"Constants.Trail.EmitterState.MaxDistance\", display_name: \"Constants.Trail.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Trail\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CDBA0) {setting_path: \"Constants.Trail.EmitterState.MinDistance\", display_name: \"Constants.Trail.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Trail\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "Core",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Exhaust",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Trail",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_CommanderGunfireBatch.NS_CommanderGunfireBatch",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C7230) {setting_path: \"Constants.Muzzle.EmitterState.MaxDistance\", display_name: \"Constants.Muzzle.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C82D0) {setting_path: \"Constants.Muzzle.EmitterState.MinDistance\", display_name: \"Constants.Muzzle.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CB210) {setting_path: \"Constants.Tracer.EmitterState.MaxDistance\", display_name: \"Constants.Tracer.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C0150) {setting_path: \"Constants.Tracer.EmitterState.MinDistance\", display_name: \"Constants.Tracer.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C5400) {setting_path: \"Constants.Tracer.EmitterState.MaxDistance\", display_name: \"Constants.Tracer.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Tracer\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C5A20) {setting_path: \"Constants.Tracer.EmitterState.MinDistance\", display_name: \"Constants.Tracer.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Tracer\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C72A0) {setting_path: \"Constants.Muzzle.EmitterState.MaxDistance\", display_name: \"Constants.Muzzle.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Muzzle\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C0B60) {setting_path: \"Constants.Muzzle.EmitterState.MinDistance\", display_name: \"Constants.Muzzle.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Muzzle\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "Tracer",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Muzzle",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool.NS_WingmanLaserPool",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C9300) {setting_path: \"Constants.LaserBolts.EmitterState.MaxDistance\", display_name: \"Constants.LaserBolts.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C9DF0) {setting_path: \"Constants.LaserBolts.EmitterState.MinDistance\", display_name: \"Constants.LaserBolts.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CD510) {setting_path: \"Constants.LaserMuzzles.EmitterState.MaxDistance\", display_name: \"Constants.LaserMuzzles.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C0D90) {setting_path: \"Constants.LaserMuzzles.EmitterState.MinDistance\", display_name: \"Constants.LaserMuzzles.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C0FC0) {setting_path: \"Constants.LaserBolts.EmitterState.MaxDistance\", display_name: \"Constants.LaserBolts.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"LaserBolts\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CF110) {setting_path: \"Constants.LaserBolts.EmitterState.MinDistance\", display_name: \"Constants.LaserBolts.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"LaserBolts\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C69E0) {setting_path: \"Constants.LaserMuzzles.EmitterState.MaxDistance\", display_name: \"Constants.LaserMuzzles.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"LaserMuzzles\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CE850) {setting_path: \"Constants.LaserMuzzles.EmitterState.MinDistance\", display_name: \"Constants.LaserMuzzles.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"LaserMuzzles\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "LaserBolts",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "LaserMuzzles",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Flash_1.NS_Flash_1",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CDF90) {setting_path: \"Constants.Debris.EmitterState.MaxDistance\", display_name: \"Constants.Debris.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C8C00) {setting_path: \"Constants.Debris.EmitterState.MinDistance\", display_name: \"Constants.Debris.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C0AF0) {setting_path: \"Constants.Flash.EmitterState.MaxDistance\", display_name: \"Constants.Flash.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CA8E0) {setting_path: \"Constants.Flash.EmitterState.MinDistance\", display_name: \"Constants.Flash.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CA640) {setting_path: \"Constants.Glow.EmitterState.MaxDistance\", display_name: \"Constants.Glow.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CC390) {setting_path: \"Constants.Glow.EmitterState.MinDistance\", display_name: \"Constants.Glow.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C2A70) {setting_path: \"Constants.RibbonCore.EmitterState.MaxDistance\", display_name: \"Constants.RibbonCore.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C5160) {setting_path: \"Constants.RibbonCore.EmitterState.MinDistance\", display_name: \"Constants.RibbonCore.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CC550) {setting_path: \"Constants.RIbbonTrailFollower.EmitterState.MaxDistance\", display_name: \"Constants.RIbbonTrailFollower.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C78C0) {setting_path: \"Constants.RIbbonTrailFollower.EmitterState.MinDistance\", display_name: \"Constants.RIbbonTrailFollower.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C2A70) {setting_path: \"Constants.Sparks.EmitterState.MaxDistance\", display_name: \"Constants.Sparks.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CE9A0) {setting_path: \"Constants.Sparks.EmitterState.MinDistance\", display_name: \"Constants.Sparks.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C4FA0) {setting_path: \"Constants.Glow.EmitterState.MaxDistance\", display_name: \"Constants.Glow.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Glow\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C1570) {setting_path: \"Constants.Glow.EmitterState.MinDistance\", display_name: \"Constants.Glow.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Glow\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CB2F0) {setting_path: \"Constants.Flash.EmitterState.MaxDistance\", display_name: \"Constants.Flash.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Flash\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CF420) {setting_path: \"Constants.Flash.EmitterState.MinDistance\", display_name: \"Constants.Flash.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Flash\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CB0C0) {setting_path: \"Constants.RibbonCore.EmitterState.MaxDistance\", display_name: \"Constants.RibbonCore.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"RibbonCore\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C5B00) {setting_path: \"Constants.RibbonCore.EmitterState.MinDistance\", display_name: \"Constants.RibbonCore.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"RibbonCore\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C1CE0) {setting_path: \"Constants.RibbonCore.AddVelocityFromPoint.Velocity Falloff Distance\", display_name: \"Constants.RibbonCore.AddVelocityFromPoint.Velocity Falloff Distance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"100.000000\", emitter_name: \"RibbonCore\", script_stage: \"ParticleSpawn\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C2840) {setting_path: \"Constants.RibbonCore.GenerateLocationEvent.Float to Send as Float 3 (DistanceTraveled)\", display_name: \"Constants.RibbonCore.GenerateLocationEvent.Float to Send as Float 3 (DistanceTraveled)\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"RibbonCore\", script_stage: \"ParticleSpawn\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C2B50) {setting_path: \"Constants.RibbonCore.GenerateLocationEvent.Float to Send as Float 3 (DistanceTraveled)\", display_name: \"Constants.RibbonCore.GenerateLocationEvent.Float to Send as Float 3 (DistanceTraveled)\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"RibbonCore\", script_stage: \"ParticleUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CFCE0) {setting_path: \"Constants.RIbbonTrailFollower.EmitterState.MaxDistance\", display_name: \"Constants.RIbbonTrailFollower.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"RIbbonTrailFollower\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C3640) {setting_path: \"Constants.RIbbonTrailFollower.EmitterState.MinDistance\", display_name: \"Constants.RIbbonTrailFollower.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"RIbbonTrailFollower\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C5860) {setting_path: \"Constants.Sparks.EmitterState.MaxDistance\", display_name: \"Constants.Sparks.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Sparks\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C5080) {setting_path: \"Constants.Sparks.EmitterState.MinDistance\", display_name: \"Constants.Sparks.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Sparks\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CC6A0) {setting_path: \"Constants.Sparks.AddVelocityFromPoint.Velocity Falloff Distance\", display_name: \"Constants.Sparks.AddVelocityFromPoint.Velocity Falloff Distance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"100.000000\", emitter_name: \"Sparks\", script_stage: \"ParticleSpawn\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C08C0) {setting_path: \"Constants.Sparks.Collision.Maximum Penetration Correction Distance\", display_name: \"Constants.Sparks.Collision.Maximum Penetration Correction Distance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.500000\", emitter_name: \"Sparks\", script_stage: \"ParticleSpawn\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C9ED0) {setting_path: \"Constants.Sparks.Collision.Maximum Penetration Correction Distance\", display_name: \"Constants.Sparks.Collision.Maximum Penetration Correction Distance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.500000\", emitter_name: \"Sparks\", script_stage: \"ParticleUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CBBB0) {setting_path: \"Constants.Debris.EmitterState.MaxDistance\", display_name: \"Constants.Debris.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Debris\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C1F10) {setting_path: \"Constants.Debris.EmitterState.MinDistance\", display_name: \"Constants.Debris.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Debris\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C02A0) {setting_path: \"Constants.Debris.AddVelocityFromPoint.Velocity Falloff Distance\", display_name: \"Constants.Debris.AddVelocityFromPoint.Velocity Falloff Distance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"100.000000\", emitter_name: \"Debris\", script_stage: \"ParticleSpawn\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C7310) {setting_path: \"Constants.Debris.Collision.Maximum Penetration Correction Distance\", display_name: \"Constants.Debris.Collision.Maximum Penetration Correction Distance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.500000\", emitter_name: \"Debris\", script_stage: \"ParticleSpawn\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C1AB0) {setting_path: \"Constants.Debris.Collision.Maximum Penetration Correction Distance\", display_name: \"Constants.Debris.Collision.Maximum Penetration Correction Distance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.500000\", emitter_name: \"Debris\", script_stage: \"ParticleUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "Glow",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Flash",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "RibbonCore",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "RIbbonTrailFollower",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Sparks",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Debris",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_Explosion_2A.NS_WM01_Explosion_2A",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C02A0) {setting_path: \"Constants.Distortion.EmitterState.MaxDistance\", display_name: \"Constants.Distortion.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CB0C0) {setting_path: \"Constants.Distortion.EmitterState.MinDistance\", display_name: \"Constants.Distortion.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CA1E0) {setting_path: \"Constants.Explosion_Flipbook.EmitterState.MaxDistance\", display_name: \"Constants.Explosion_Flipbook.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CAF70) {setting_path: \"Constants.Explosion_Flipbook.EmitterState.MinDistance\", display_name: \"Constants.Explosion_Flipbook.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C16C0) {setting_path: \"Constants.OmnidirectionalBurst.EmitterState.MaxDistance\", display_name: \"Constants.OmnidirectionalBurst.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C6040) {setting_path: \"Constants.OmnidirectionalBurst.EmitterState.MinDistance\", display_name: \"Constants.OmnidirectionalBurst.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C33A0) {setting_path: \"Constants.Explosion_Flipbook.EmitterState.MaxDistance\", display_name: \"Constants.Explosion_Flipbook.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Explosion_Flipbook\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C2920) {setting_path: \"Constants.Explosion_Flipbook.EmitterState.MinDistance\", display_name: \"Constants.Explosion_Flipbook.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Explosion_Flipbook\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C81F0) {setting_path: \"Constants.Distortion.EmitterState.MaxDistance\", display_name: \"Constants.Distortion.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Distortion\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C17A0) {setting_path: \"Constants.Distortion.EmitterState.MinDistance\", display_name: \"Constants.Distortion.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Distortion\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C7FC0) {setting_path: \"Constants.OmnidirectionalBurst.EmitterState.MaxDistance\", display_name: \"Constants.OmnidirectionalBurst.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"OmnidirectionalBurst\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C97D0) {setting_path: \"Constants.OmnidirectionalBurst.EmitterState.MinDistance\", display_name: \"Constants.OmnidirectionalBurst.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"OmnidirectionalBurst\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CE690) {setting_path: \"Constants.OmnidirectionalBurst.Collision.Maximum Penetration Correction Distance\", display_name: \"Constants.OmnidirectionalBurst.Collision.Maximum Penetration Correction Distance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.500000\", emitter_name: \"OmnidirectionalBurst\", script_stage: \"ParticleSpawn\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C6C10) {setting_path: \"Constants.OmnidirectionalBurst.Collision.Maximum Penetration Correction Distance\", display_name: \"Constants.OmnidirectionalBurst.Collision.Maximum Penetration Correction Distance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.500000\", emitter_name: \"OmnidirectionalBurst\", script_stage: \"ParticleUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "Explosion_Flipbook",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Distortion",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "OmnidirectionalBurst",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanBombardment_01.NS_WingmanBombardment_01",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBEC0) {setting_path: \"Constants.NE_Bullet_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_Bullet_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC0F0) {setting_path: \"Constants.NE_Bullet_01.EmitterState.MinDistance\", display_name: \"Constants.NE_Bullet_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC860) {setting_path: \"Constants.NE_Bullet_02.EmitterState.MaxDistance\", display_name: \"Constants.NE_Bullet_02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DCA90) {setting_path: \"Constants.NE_Bullet_02.EmitterState.MinDistance\", display_name: \"Constants.NE_Bullet_02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC6A0) {setting_path: \"Constants.NE_Cloud_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC0F0) {setting_path: \"Constants.NE_Cloud_01.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC2B0) {setting_path: \"Constants.NE_Cloud_02.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC4E0) {setting_path: \"Constants.NE_Cloud_02.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC2B0) {setting_path: \"Constants.NE_Cloud_03.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_03.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC6A0) {setting_path: \"Constants.NE_Cloud_03.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_03.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC400) {setting_path: \"Constants.NE_Cloud_04.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_04.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC7F0) {setting_path: \"Constants.NE_Cloud_04.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_04.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC780) {setting_path: \"Constants.NE_CloudOut_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_CloudOut_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC010) {setting_path: \"Constants.NE_CloudOut_01.EmitterState.MinDistance\", display_name: \"Constants.NE_CloudOut_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC160) {setting_path: \"Constants.NE_Core01.EmitterState.MaxDistance\", display_name: \"Constants.NE_Core01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBEC0) {setting_path: \"Constants.NE_Core01.EmitterState.MinDistance\", display_name: \"Constants.NE_Core01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DCA90) {setting_path: \"Constants.NE_Core02.EmitterState.MaxDistance\", display_name: \"Constants.NE_Core02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC400) {setting_path: \"Constants.NE_Core02.EmitterState.MinDistance\", display_name: \"Constants.NE_Core02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBE50) {setting_path: \"Constants.NE_Dust_Trail.EmitterState.MaxDistance\", display_name: \"Constants.NE_Dust_Trail.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC2B0) {setting_path: \"Constants.NE_Dust_Trail.EmitterState.MinDistance\", display_name: \"Constants.NE_Dust_Trail.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DCB70) {setting_path: \"Constants.NE_DustOut_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_DustOut_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC5C0) {setting_path: \"Constants.NE_DustOut_01.EmitterState.MinDistance\", display_name: \"Constants.NE_DustOut_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC1D0) {setting_path: \"Constants.NE_Glow_Base.EmitterState.MaxDistance\", display_name: \"Constants.NE_Glow_Base.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBF30) {setting_path: \"Constants.NE_Glow_Base.EmitterState.MinDistance\", display_name: \"Constants.NE_Glow_Base.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC400) {setting_path: \"Constants.NE_Glow_End.EmitterState.MaxDistance\", display_name: \"Constants.NE_Glow_End.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBFA0) {setting_path: \"Constants.NE_Glow_End.EmitterState.MinDistance\", display_name: \"Constants.NE_Glow_End.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC4E0) {setting_path: \"Constants.NE_GlowOut.EmitterState.MaxDistance\", display_name: \"Constants.NE_GlowOut.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC320) {setting_path: \"Constants.NE_GlowOut.EmitterState.MinDistance\", display_name: \"Constants.NE_GlowOut.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC550) {setting_path: \"Constants.NE_Ground_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_Ground_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBDE0) {setting_path: \"Constants.NE_Ground_01.EmitterState.MinDistance\", display_name: \"Constants.NE_Ground_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC9B0) {setting_path: \"Constants.NE_Ground_02.EmitterState.MaxDistance\", display_name: \"Constants.NE_Ground_02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC240) {setting_path: \"Constants.NE_Ground_02.EmitterState.MinDistance\", display_name: \"Constants.NE_Ground_02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DCB70) {setting_path: \"Constants.NE_Rock.EmitterState.MaxDistance\", display_name: \"Constants.NE_Rock.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBFA0) {setting_path: \"Constants.NE_Rock.EmitterState.MinDistance\", display_name: \"Constants.NE_Rock.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC780) {setting_path: \"Constants.NE_Rock001.EmitterState.MaxDistance\", display_name: \"Constants.NE_Rock001.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBEC0) {setting_path: \"Constants.NE_Rock001.EmitterState.MinDistance\", display_name: \"Constants.NE_Rock001.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC080) {setting_path: \"Constants.NE_Cloud_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Cloud_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBD00) {setting_path: \"Constants.NE_Cloud_01.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Cloud_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC5C0) {setting_path: \"Constants.NE_Cloud_02.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Cloud_02\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC780) {setting_path: \"Constants.NE_Cloud_02.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Cloud_02\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBFA0) {setting_path: \"Constants.NE_Cloud_03.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_03.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Cloud_03\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC860) {setting_path: \"Constants.NE_Cloud_03.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_03.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Cloud_03\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBD70) {setting_path: \"Constants.NE_Cloud_04.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_04.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Cloud_04\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DCA20) {setting_path: \"Constants.NE_Cloud_04.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_04.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Cloud_04\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC470) {setting_path: \"Constants.NE_Core01.EmitterState.MaxDistance\", display_name: \"Constants.NE_Core01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Core01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBD70) {setting_path: \"Constants.NE_Core01.EmitterState.MinDistance\", display_name: \"Constants.NE_Core01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Core01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC5C0) {setting_path: \"Constants.NE_Core02.EmitterState.MaxDistance\", display_name: \"Constants.NE_Core02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Core02\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC860) {setting_path: \"Constants.NE_Core02.EmitterState.MinDistance\", display_name: \"Constants.NE_Core02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Core02\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBE50) {setting_path: \"Constants.NE_CloudOut_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_CloudOut_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_CloudOut_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBDE0) {setting_path: \"Constants.NE_CloudOut_01.EmitterState.MinDistance\", display_name: \"Constants.NE_CloudOut_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_CloudOut_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC630) {setting_path: \"Constants.NE_GlowOut.EmitterState.MaxDistance\", display_name: \"Constants.NE_GlowOut.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_GlowOut\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DCA20) {setting_path: \"Constants.NE_GlowOut.EmitterState.MinDistance\", display_name: \"Constants.NE_GlowOut.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_GlowOut\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC240) {setting_path: \"Constants.NE_Glow_Base.EmitterState.MaxDistance\", display_name: \"Constants.NE_Glow_Base.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Glow_Base\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC390) {setting_path: \"Constants.NE_Glow_Base.EmitterState.MinDistance\", display_name: \"Constants.NE_Glow_Base.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Glow_Base\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBD70) {setting_path: \"Constants.NE_Bullet_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_Bullet_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Bullet_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC160) {setting_path: \"Constants.NE_Bullet_01.EmitterState.MinDistance\", display_name: \"Constants.NE_Bullet_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Bullet_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC4E0) {setting_path: \"Constants.NE_Bullet_02.EmitterState.MaxDistance\", display_name: \"Constants.NE_Bullet_02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Bullet_02\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC860) {setting_path: \"Constants.NE_Bullet_02.EmitterState.MinDistance\", display_name: \"Constants.NE_Bullet_02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Bullet_02\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC390) {setting_path: \"Constants.NE_DustOut_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_DustOut_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_DustOut_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DCA90) {setting_path: \"Constants.NE_DustOut_01.EmitterState.MinDistance\", display_name: \"Constants.NE_DustOut_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_DustOut_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC780) {setting_path: \"Constants.NE_Rock001.EmitterState.MaxDistance\", display_name: \"Constants.NE_Rock001.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Rock001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBE50) {setting_path: \"Constants.NE_Rock001.EmitterState.MinDistance\", display_name: \"Constants.NE_Rock001.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Rock001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBEC0) {setting_path: \"Constants.NE_Rock.EmitterState.MaxDistance\", display_name: \"Constants.NE_Rock.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Rock\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBF30) {setting_path: \"Constants.NE_Rock.EmitterState.MinDistance\", display_name: \"Constants.NE_Rock.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Rock\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC160) {setting_path: \"Constants.NE_Dust_Trail.EmitterState.MaxDistance\", display_name: \"Constants.NE_Dust_Trail.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Dust_Trail\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC860) {setting_path: \"Constants.NE_Dust_Trail.EmitterState.MinDistance\", display_name: \"Constants.NE_Dust_Trail.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Dust_Trail\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC550) {setting_path: \"Constants.NE_Glow_End.EmitterState.MaxDistance\", display_name: \"Constants.NE_Glow_End.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Glow_End\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DCBE0) {setting_path: \"Constants.NE_Glow_End.EmitterState.MinDistance\", display_name: \"Constants.NE_Glow_End.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Glow_End\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DBDE0) {setting_path: \"Constants.NE_Ground_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_Ground_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Ground_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC6A0) {setting_path: \"Constants.NE_Ground_01.EmitterState.MinDistance\", display_name: \"Constants.NE_Ground_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Ground_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC5C0) {setting_path: \"Constants.NE_Ground_02.EmitterState.MaxDistance\", display_name: \"Constants.NE_Ground_02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Ground_02\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DCBE0) {setting_path: \"Constants.NE_Ground_02.EmitterState.MinDistance\", display_name: \"Constants.NE_Ground_02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Ground_02\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "NE_Cloud_01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Cloud_02",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Cloud_03",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Cloud_04",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Core01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Core02",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_CloudOut_01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_GlowOut",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Glow_Base",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Bullet_01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Bullet_02",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_DustOut_01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Rock001",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Rock",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Dust_Trail",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Glow_End",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Ground_01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Ground_02",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet.NS_GroundMech_Bullet",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DC470) {setting_path: \"Constants.NE_forward_simple_bullet.EmitterState.MaxDistance\", display_name: \"Constants.NE_forward_simple_bullet.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DB8A0) {setting_path: \"Constants.NE_forward_simple_bullet.EmitterState.MaxDistance\", display_name: \"Constants.NE_forward_simple_bullet.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"NE_forward_simple_bullet\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "NE_forward_simple_bullet",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Muzzle.NS_GroundMech_Muzzle",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5D2B50) {setting_path: \"Constants.NE_gun_nozzle_fire.EmitterState.MaxDistance\", display_name: \"Constants.NE_gun_nozzle_fire.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"1000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5D33A0) {setting_path: \"Constants.NE_gun_nozzle_fire.EmitterState.MinDistance\", display_name: \"Constants.NE_gun_nozzle_fire.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5D50F0) {setting_path: \"Constants.NE_spread_spark.EmitterState.MaxDistance\", display_name: \"Constants.NE_spread_spark.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"2000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5D5860) {setting_path: \"Constants.NE_spread_spark.EmitterState.MinDistance\", display_name: \"Constants.NE_spread_spark.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5D67B0) {setting_path: \"Constants.NE_spread_spark.EmitterState.MaxDistance\", display_name: \"Constants.NE_spread_spark.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"2000.000000\", emitter_name: \"NE_spread_spark\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5D6D60) {setting_path: \"Constants.NE_spread_spark.EmitterState.MinDistance\", display_name: \"Constants.NE_spread_spark.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_spread_spark\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5D9FB0) {setting_path: \"Constants.NE_gun_nozzle_fire.EmitterState.MaxDistance\", display_name: \"Constants.NE_gun_nozzle_fire.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"1000.000000\", emitter_name: \"NE_gun_nozzle_fire\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5DA480) {setting_path: \"Constants.NE_gun_nozzle_fire.EmitterState.MinDistance\", display_name: \"Constants.NE_gun_nozzle_fire.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_gun_nozzle_fire\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "NE_spread_spark",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "Self"
+        },
+        {
+          "emitter": "NE_gun_nozzle_fire",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "Self"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/VFX/WeaponBulletVFX/NS/VFX_FireGun_Loop.VFX_FireGun_Loop",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C0380) {setting_path: \"Constants.NE_flash_point_light.EmitterState.MaxDistance\", display_name: \"Constants.NE_flash_point_light.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"2000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C4590) {setting_path: \"Constants.NE_flash_point_light.EmitterState.MinDistance\", display_name: \"Constants.NE_flash_point_light.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C6660) {setting_path: \"Constants.NE_gun_nozzle_fire.EmitterState.MaxDistance\", display_name: \"Constants.NE_gun_nozzle_fire.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"1000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CFF80) {setting_path: \"Constants.NE_gun_nozzle_fire.EmitterState.MinDistance\", display_name: \"Constants.NE_gun_nozzle_fire.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C3790) {setting_path: \"Constants.NE_spread_spark.EmitterState.MaxDistance\", display_name: \"Constants.NE_spread_spark.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"2000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CFF10) {setting_path: \"Constants.NE_spread_spark.EmitterState.MinDistance\", display_name: \"Constants.NE_spread_spark.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C5FD0) {setting_path: \"Constants.NE_spread_spark001.EmitterState.MaxDistance\", display_name: \"Constants.NE_spread_spark001.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"2000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C46E0) {setting_path: \"Constants.NE_spread_spark001.EmitterState.MinDistance\", display_name: \"Constants.NE_spread_spark001.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C5320) {setting_path: \"Constants.NE_spread_spark003.EmitterState.MaxDistance\", display_name: \"Constants.NE_spread_spark003.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"2000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C8D50) {setting_path: \"Constants.NE_spread_spark003.EmitterState.MinDistance\", display_name: \"Constants.NE_spread_spark003.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CE230) {setting_path: \"Constants.NE_spread_spark.EmitterState.MaxDistance\", display_name: \"Constants.NE_spread_spark.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"2000.000000\", emitter_name: \"NE_spread_spark\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C6270) {setting_path: \"Constants.NE_spread_spark.EmitterState.MinDistance\", display_name: \"Constants.NE_spread_spark.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_spread_spark\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CFCE0) {setting_path: \"Constants.NE_flash_point_light.EmitterState.MaxDistance\", display_name: \"Constants.NE_flash_point_light.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"2000.000000\", emitter_name: \"NE_flash_point_light\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C08C0) {setting_path: \"Constants.NE_flash_point_light.EmitterState.MinDistance\", display_name: \"Constants.NE_flash_point_light.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_flash_point_light\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CDC10) {setting_path: \"Constants.NE_gun_nozzle_fire.EmitterState.MaxDistance\", display_name: \"Constants.NE_gun_nozzle_fire.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"1000.000000\", emitter_name: \"NE_gun_nozzle_fire\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C09A0) {setting_path: \"Constants.NE_gun_nozzle_fire.EmitterState.MinDistance\", display_name: \"Constants.NE_gun_nozzle_fire.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_gun_nozzle_fire\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CD580) {setting_path: \"Constants.NE_spread_spark001.EmitterState.MaxDistance\", display_name: \"Constants.NE_spread_spark001.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"2000.000000\", emitter_name: \"NE_spread_spark001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C6040) {setting_path: \"Constants.NE_spread_spark001.EmitterState.MinDistance\", display_name: \"Constants.NE_spread_spark001.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_spread_spark001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C7230) {setting_path: \"Constants.NE_spread_spark003.EmitterState.MaxDistance\", display_name: \"Constants.NE_spread_spark003.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"2000.000000\", emitter_name: \"NE_spread_spark003\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CA870) {setting_path: \"Constants.NE_spread_spark003.EmitterState.MinDistance\", display_name: \"Constants.NE_spread_spark003.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_spread_spark003\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "NE_spread_spark",
+          "module": "EmitterState",
+          "distance_culling": "true",
+          "scalability_mode": "Self"
+        },
+        {
+          "emitter": "NE_forward_simple_bullet001",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_flash_point_light",
+          "module": "EmitterState",
+          "distance_culling": "true",
+          "scalability_mode": "Self"
+        },
+        {
+          "emitter": "NE_gun_nozzle_fire",
+          "module": "EmitterState",
+          "distance_culling": "true",
+          "scalability_mode": "Self"
+        },
+        {
+          "emitter": "NE_spread_spark001",
+          "module": "EmitterState",
+          "distance_culling": "true",
+          "scalability_mode": "Self"
+        },
+        {
+          "emitter": "NE_spread_spark002",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_spread_spark003",
+          "module": "EmitterState",
+          "distance_culling": "true",
+          "scalability_mode": "Self"
+        },
+        {
+          "emitter": "NE_forward_simple_bullet",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_forward_simple_bullet002",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_forward_simple_bullet003",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CC1D0) {setting_path: \"Constants.TransitRibbon.EmitterState.MaxDistance\", display_name: \"Constants.TransitRibbon.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CD660) {setting_path: \"Constants.TransitRibbon.EmitterState.MinDistance\", display_name: \"Constants.TransitRibbon.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CF6C0) {setting_path: \"Constants.TransitRibbon.EmitterState.MaxDistance\", display_name: \"Constants.TransitRibbon.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"TransitRibbon\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C9760) {setting_path: \"Constants.TransitRibbon.EmitterState.MinDistance\", display_name: \"Constants.TransitRibbon.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"TransitRibbon\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "TransitRibbon",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C7230) {setting_path: \"Constants.TransitFlash.EmitterState.MaxDistance\", display_name: \"Constants.TransitFlash.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C4B40) {setting_path: \"Constants.TransitFlash.EmitterState.MinDistance\", display_name: \"Constants.TransitFlash.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C9ED0) {setting_path: \"Constants.TransitFlash.EmitterState.MaxDistance\", display_name: \"Constants.TransitFlash.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"TransitFlash\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CF260) {setting_path: \"Constants.TransitFlash.EmitterState.MinDistance\", display_name: \"Constants.TransitFlash.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"TransitFlash\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "TransitFlash",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+      "effect_type": "/Game/GuLiStrike/FX/WingmanFlight/FXT_WingmanFlight.FXT_WingmanFlight",
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C2A00) {setting_path: \"Constants.LeftEngineFlame.EmitterState.MaxDistance\", display_name: \"Constants.LeftEngineFlame.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CB8A0) {setting_path: \"Constants.LeftEngineFlame.EmitterState.MinDistance\", display_name: \"Constants.LeftEngineFlame.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CDBA0) {setting_path: \"Constants.LeftFlightRibbon.EmitterState.MaxDistance\", display_name: \"Constants.LeftFlightRibbon.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CAE90) {setting_path: \"Constants.LeftFlightRibbon.EmitterState.MinDistance\", display_name: \"Constants.LeftFlightRibbon.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CE850) {setting_path: \"Constants.RightEngineFlame.EmitterState.MaxDistance\", display_name: \"Constants.RightEngineFlame.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C2A70) {setting_path: \"Constants.RightEngineFlame.EmitterState.MinDistance\", display_name: \"Constants.RightEngineFlame.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CF3B0) {setting_path: \"Constants.RightFlightRibbon.EmitterState.MaxDistance\", display_name: \"Constants.RightFlightRibbon.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CBC90) {setting_path: \"Constants.RightFlightRibbon.EmitterState.MinDistance\", display_name: \"Constants.RightFlightRibbon.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C0700) {setting_path: \"Constants.LeftEngineFlame.EmitterState.MaxDistance\", display_name: \"Constants.LeftEngineFlame.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"LeftEngineFlame\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C71C0) {setting_path: \"Constants.LeftEngineFlame.EmitterState.MinDistance\", display_name: \"Constants.LeftEngineFlame.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"LeftEngineFlame\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C60B0) {setting_path: \"Constants.RightEngineFlame.EmitterState.MaxDistance\", display_name: \"Constants.RightEngineFlame.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"RightEngineFlame\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CB1A0) {setting_path: \"Constants.RightEngineFlame.EmitterState.MinDistance\", display_name: \"Constants.RightEngineFlame.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"RightEngineFlame\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C9290) {setting_path: \"Constants.LeftFlightRibbon.EmitterState.MaxDistance\", display_name: \"Constants.LeftFlightRibbon.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"LeftFlightRibbon\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C7310) {setting_path: \"Constants.LeftFlightRibbon.EmitterState.MinDistance\", display_name: \"Constants.LeftFlightRibbon.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"LeftFlightRibbon\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CE620) {setting_path: \"Constants.RightFlightRibbon.EmitterState.MaxDistance\", display_name: \"Constants.RightFlightRibbon.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"RightFlightRibbon\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C4360) {setting_path: \"Constants.RightFlightRibbon.EmitterState.MinDistance\", display_name: \"Constants.RightFlightRibbon.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"RightFlightRibbon\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "LeftEngineFlame",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "RightEngineFlame",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "LeftFlightRibbon",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "RightFlightRibbon",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03.NS_GroundDestruction_03",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17E000) {setting_path: \"Constants.NE_Cloud_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17FAB0) {setting_path: \"Constants.NE_Cloud_01.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC178F10) {setting_path: \"Constants.NE_Cloud_01B.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_01B.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17EA10) {setting_path: \"Constants.NE_Cloud_01B.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_01B.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC177E00) {setting_path: \"Constants.NE_Cloud_02.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17D820) {setting_path: \"Constants.NE_Cloud_02.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17B440) {setting_path: \"Constants.NE_CloudLine01.EmitterState.MaxDistance\", display_name: \"Constants.NE_CloudLine01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC178730) {setting_path: \"Constants.NE_CloudLine01.EmitterState.MinDistance\", display_name: \"Constants.NE_CloudLine01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17ED90) {setting_path: \"Constants.NE_CloudLine02.EmitterState.MaxDistance\", display_name: \"Constants.NE_CloudLine02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC179CA0) {setting_path: \"Constants.NE_CloudLine02.EmitterState.MinDistance\", display_name: \"Constants.NE_CloudLine02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17F030) {setting_path: \"Constants.NE_Dust_Trail.EmitterState.MaxDistance\", display_name: \"Constants.NE_Dust_Trail.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17C8D0) {setting_path: \"Constants.NE_Dust_Trail.EmitterState.MinDistance\", display_name: \"Constants.NE_Dust_Trail.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC178F80) {setting_path: \"Constants.NE_GroundShockwave.EmitterState.MaxDistance\", display_name: \"Constants.NE_GroundShockwave.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17C240) {setting_path: \"Constants.NE_GroundShockwave.EmitterState.MinDistance\", display_name: \"Constants.NE_GroundShockwave.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17E380) {setting_path: \"Constants.NE_Impact.EmitterState.MaxDistance\", display_name: \"Constants.NE_Impact.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC179E60) {setting_path: \"Constants.NE_Impact.EmitterState.MinDistance\", display_name: \"Constants.NE_Impact.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC176820) {setting_path: \"Constants.NE_Rock.EmitterState.MaxDistance\", display_name: \"Constants.NE_Rock.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC1709A0) {setting_path: \"Constants.NE_Rock.EmitterState.MinDistance\", display_name: \"Constants.NE_Rock.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC179680) {setting_path: \"Constants.NE_Rock001.EmitterState.MaxDistance\", display_name: \"Constants.NE_Rock001.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC172B50) {setting_path: \"Constants.NE_Rock001.EmitterState.MinDistance\", display_name: \"Constants.NE_Rock001.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17D7B0) {setting_path: \"Constants.NE_Cloud_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Cloud_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC179530) {setting_path: \"Constants.NE_Cloud_01.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Cloud_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17E310) {setting_path: \"Constants.NE_Impact.EmitterState.MaxDistance\", display_name: \"Constants.NE_Impact.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Impact\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17EE00) {setting_path: \"Constants.NE_Impact.EmitterState.MinDistance\", display_name: \"Constants.NE_Impact.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Impact\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17B830) {setting_path: \"Constants.NE_Cloud_02.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Cloud_02\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC179B50) {setting_path: \"Constants.NE_Cloud_02.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Cloud_02\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC1780A0) {setting_path: \"Constants.NE_Rock001.EmitterState.MaxDistance\", display_name: \"Constants.NE_Rock001.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Rock001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17A480) {setting_path: \"Constants.NE_Rock001.EmitterState.MinDistance\", display_name: \"Constants.NE_Rock001.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Rock001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC178E30) {setting_path: \"Constants.NE_Rock.EmitterState.MaxDistance\", display_name: \"Constants.NE_Rock.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Rock\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17CA20) {setting_path: \"Constants.NE_Rock.EmitterState.MinDistance\", display_name: \"Constants.NE_Rock.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Rock\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17E5B0) {setting_path: \"Constants.NE_Dust_Trail.EmitterState.MaxDistance\", display_name: \"Constants.NE_Dust_Trail.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Dust_Trail\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17C390) {setting_path: \"Constants.NE_Dust_Trail.EmitterState.MinDistance\", display_name: \"Constants.NE_Dust_Trail.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Dust_Trail\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC179990) {setting_path: \"Constants.NE_CloudLine01.EmitterState.MaxDistance\", display_name: \"Constants.NE_CloudLine01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_CloudLine01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17A5D0) {setting_path: \"Constants.NE_CloudLine01.EmitterState.MinDistance\", display_name: \"Constants.NE_CloudLine01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_CloudLine01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17CB00) {setting_path: \"Constants.NE_Cloud_01B.EmitterState.MaxDistance\", display_name: \"Constants.NE_Cloud_01B.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Cloud_01B\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17F030) {setting_path: \"Constants.NE_Cloud_01B.EmitterState.MinDistance\", display_name: \"Constants.NE_Cloud_01B.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Cloud_01B\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17E8C0) {setting_path: \"Constants.NE_CloudLine02.EmitterState.MaxDistance\", display_name: \"Constants.NE_CloudLine02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_CloudLine02\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17EA10) {setting_path: \"Constants.NE_CloudLine02.EmitterState.MinDistance\", display_name: \"Constants.NE_CloudLine02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_CloudLine02\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC1789D0) {setting_path: \"Constants.NE_GroundShockwave.EmitterState.MaxDistance\", display_name: \"Constants.NE_GroundShockwave.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"NE_GroundShockwave\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC17B3D0) {setting_path: \"Constants.NE_GroundShockwave.EmitterState.MinDistance\", display_name: \"Constants.NE_GroundShockwave.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_GroundShockwave\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "NE_Cloud_01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Impact",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Cloud_02",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Rock001",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Rock",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Dust_Trail",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_CloudLine01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Cloud_01B",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_CloudLine02",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_GroundShockwave",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanDestruction_05.NS_WingmanDestruction_05",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1260) {setting_path: \"Constants.NE_AirShockwave.EmitterState.MaxDistance\", display_name: \"Constants.NE_AirShockwave.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1730) {setting_path: \"Constants.NE_AirShockwave.EmitterState.MinDistance\", display_name: \"Constants.NE_AirShockwave.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1C00) {setting_path: \"Constants.NE_Bullet_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_Bullet_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1810) {setting_path: \"Constants.NE_Bullet_01.EmitterState.MinDistance\", display_name: \"Constants.NE_Bullet_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C13B0) {setting_path: \"Constants.NE_Dust_Trail.EmitterState.MaxDistance\", display_name: \"Constants.NE_Dust_Trail.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1030) {setting_path: \"Constants.NE_Dust_Trail.EmitterState.MinDistance\", display_name: \"Constants.NE_Dust_Trail.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1AB0) {setting_path: \"Constants.NE_DustOut_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_DustOut_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1EA0) {setting_path: \"Constants.NE_DustOut_01.EmitterState.MinDistance\", display_name: \"Constants.NE_DustOut_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1730) {setting_path: \"Constants.NE_GlowOut.EmitterState.MaxDistance\", display_name: \"Constants.NE_GlowOut.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C18F0) {setting_path: \"Constants.NE_GlowOut.EmitterState.MinDistance\", display_name: \"Constants.NE_GlowOut.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C0FC0) {setting_path: \"Constants.NE_Impact.EmitterState.MaxDistance\", display_name: \"Constants.NE_Impact.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C16C0) {setting_path: \"Constants.NE_Impact.EmitterState.MinDistance\", display_name: \"Constants.NE_Impact.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1110) {setting_path: \"Constants.NE_Rock.EmitterState.MaxDistance\", display_name: \"Constants.NE_Rock.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C15E0) {setting_path: \"Constants.NE_Rock.EmitterState.MinDistance\", display_name: \"Constants.NE_Rock.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1880) {setting_path: \"Constants.NE_Rock001.EmitterState.MaxDistance\", display_name: \"Constants.NE_Rock001.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C18F0) {setting_path: \"Constants.NE_Rock001.EmitterState.MinDistance\", display_name: \"Constants.NE_Rock001.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1F10) {setting_path: \"Constants.NS_Cloud_02.EmitterState.MaxDistance\", display_name: \"Constants.NS_Cloud_02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1A40) {setting_path: \"Constants.NS_Cloud_02.EmitterState.MinDistance\", display_name: \"Constants.NS_Cloud_02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C12D0) {setting_path: \"Constants.NS_Cloud_02.EmitterState.MaxDistance\", display_name: \"Constants.NS_Cloud_02.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NS_Cloud_02\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C16C0) {setting_path: \"Constants.NS_Cloud_02.EmitterState.MinDistance\", display_name: \"Constants.NS_Cloud_02.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NS_Cloud_02\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C11F0) {setting_path: \"Constants.NE_Impact.EmitterState.MaxDistance\", display_name: \"Constants.NE_Impact.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Impact\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1180) {setting_path: \"Constants.NE_Impact.EmitterState.MinDistance\", display_name: \"Constants.NE_Impact.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Impact\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1C00) {setting_path: \"Constants.NE_GlowOut.EmitterState.MaxDistance\", display_name: \"Constants.NE_GlowOut.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_GlowOut\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1B20) {setting_path: \"Constants.NE_GlowOut.EmitterState.MinDistance\", display_name: \"Constants.NE_GlowOut.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_GlowOut\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1810) {setting_path: \"Constants.NE_Bullet_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_Bullet_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Bullet_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C19D0) {setting_path: \"Constants.NE_Bullet_01.EmitterState.MinDistance\", display_name: \"Constants.NE_Bullet_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Bullet_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C0FC0) {setting_path: \"Constants.NE_DustOut_01.EmitterState.MaxDistance\", display_name: \"Constants.NE_DustOut_01.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_DustOut_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1C70) {setting_path: \"Constants.NE_DustOut_01.EmitterState.MinDistance\", display_name: \"Constants.NE_DustOut_01.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_DustOut_01\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1B20) {setting_path: \"Constants.NE_Rock001.EmitterState.MaxDistance\", display_name: \"Constants.NE_Rock001.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Rock001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1DC0) {setting_path: \"Constants.NE_Rock001.EmitterState.MinDistance\", display_name: \"Constants.NE_Rock001.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Rock001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1570) {setting_path: \"Constants.NE_Rock.EmitterState.MaxDistance\", display_name: \"Constants.NE_Rock.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Rock\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1CE0) {setting_path: \"Constants.NE_Rock.EmitterState.MinDistance\", display_name: \"Constants.NE_Rock.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Rock\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1110) {setting_path: \"Constants.NE_Dust_Trail.EmitterState.MaxDistance\", display_name: \"Constants.NE_Dust_Trail.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"180000.000000\", emitter_name: \"NE_Dust_Trail\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C18F0) {setting_path: \"Constants.NE_Dust_Trail.EmitterState.MinDistance\", display_name: \"Constants.NE_Dust_Trail.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_Dust_Trail\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1420) {setting_path: \"Constants.NE_AirShockwave.EmitterState.MaxDistance\", display_name: \"Constants.NE_AirShockwave.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"NE_AirShockwave\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C13B0) {setting_path: \"Constants.NE_AirShockwave.EmitterState.MinDistance\", display_name: \"Constants.NE_AirShockwave.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"NE_AirShockwave\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "NS_Cloud_02",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Impact",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_GlowOut",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Bullet_01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_DustOut_01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Rock001",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Rock",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_Dust_Trail",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "NE_AirShockwave",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C0E00) {setting_path: \"Constants.Beam.EmitterState.MaxDistance\", display_name: \"Constants.Beam.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C0E70) {setting_path: \"Constants.Beam.EmitterState.MinDistance\", display_name: \"Constants.Beam.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C0700) {setting_path: \"Constants.Spark.EmitterState.MaxDistance\", display_name: \"Constants.Spark.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C0770) {setting_path: \"Constants.Spark.EmitterState.MinDistance\", display_name: \"Constants.Spark.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C2A00) {setting_path: \"Constants.Beam.EmitterState.MaxDistance\", display_name: \"Constants.Beam.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Beam\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C2A70) {setting_path: \"Constants.Beam.EmitterState.MinDistance\", display_name: \"Constants.Beam.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Beam\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C0FC0) {setting_path: \"Constants.Beam001.EmitterState.MaxDistance\", display_name: \"Constants.Beam001.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Beam001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C1EA0) {setting_path: \"Constants.Beam001.EmitterState.MinDistance\", display_name: \"Constants.Beam001.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Beam001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C0620) {setting_path: \"Constants.Spark.EmitterState.MaxDistance\", display_name: \"Constants.Spark.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Spark\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C0690) {setting_path: \"Constants.Spark.EmitterState.MinDistance\", display_name: \"Constants.Spark.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Spark\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C18F0) {setting_path: \"Constants.Spark.Collision.Maximum Penetration Correction Distance\", display_name: \"Constants.Spark.Collision.Maximum Penetration Correction Distance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.500000\", emitter_name: \"Spark\", script_stage: \"ParticleSpawn\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C0000) {setting_path: \"Constants.Spark.Collision.Maximum Penetration Correction Distance\", display_name: \"Constants.Spark.Collision.Maximum Penetration Correction Distance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.500000\", emitter_name: \"Spark\", script_stage: \"ParticleUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C08C0) {setting_path: \"Constants.Spark001.EmitterState.MaxDistance\", display_name: \"Constants.Spark001.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Spark001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC5C0930) {setting_path: \"Constants.Spark001.EmitterState.MinDistance\", display_name: \"Constants.Spark001.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Spark001\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "Beam",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Beam001",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Spark",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Spark001",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionComplete.NS_ConstructionComplete",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [],
+      "emitter_states": [
+        {
+          "emitter": "mesh01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "mesh02",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "UP01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "mesh03",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "mesh04",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "mesh05",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "mesh06",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "mesh07",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "mesh08",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "mesh09",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "star01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "circle01",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "star02",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "star03",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "star05",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Decal",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "light02",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionTopLoop.NS_ConstructionTopLoop",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CAE90) {setting_path: \"Constants.EdgeSparks.EmitterState.MaxDistance\", display_name: \"Constants.EdgeSparks.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CB4B0) {setting_path: \"Constants.EdgeSparks.EmitterState.MinDistance\", display_name: \"Constants.EdgeSparks.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CE380) {setting_path: \"Constants.FloatingMotes.EmitterState.MaxDistance\", display_name: \"Constants.FloatingMotes.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C9370) {setting_path: \"Constants.FloatingMotes.EmitterState.MinDistance\", display_name: \"Constants.FloatingMotes.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C7AF0) {setting_path: \"Constants.TailColumns.EmitterState.MaxDistance\", display_name: \"Constants.TailColumns.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CEE70) {setting_path: \"Constants.TailColumns.EmitterState.MinDistance\", display_name: \"Constants.TailColumns.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C8650) {setting_path: \"Constants.TailColumns.EmitterState.MaxDistance\", display_name: \"Constants.TailColumns.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"TailColumns\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C7150) {setting_path: \"Constants.TailColumns.EmitterState.MinDistance\", display_name: \"Constants.TailColumns.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"TailColumns\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C0BD0) {setting_path: \"Constants.FloatingMotes.EmitterState.MaxDistance\", display_name: \"Constants.FloatingMotes.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"FloatingMotes\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CE230) {setting_path: \"Constants.FloatingMotes.EmitterState.MinDistance\", display_name: \"Constants.FloatingMotes.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"FloatingMotes\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C9B50) {setting_path: \"Constants.EdgeSparks.EmitterState.MaxDistance\", display_name: \"Constants.EdgeSparks.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"EdgeSparks\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C7930) {setting_path: \"Constants.EdgeSparks.EmitterState.MinDistance\", display_name: \"Constants.EdgeSparks.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"EdgeSparks\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "TailColumns",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "FloatingMotes",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "EdgeSparks",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CB670) {setting_path: \"Constants.Beam.EmitterState.MaxDistance\", display_name: \"Constants.Beam.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CF180) {setting_path: \"Constants.Beam.EmitterState.MinDistance\", display_name: \"Constants.Beam.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C6F90) {setting_path: \"Constants.Spark.EmitterState.MaxDistance\", display_name: \"Constants.Spark.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CC7F0) {setting_path: \"Constants.Spark.EmitterState.MinDistance\", display_name: \"Constants.Spark.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CD6D0) {setting_path: \"Constants.Beam.EmitterState.MaxDistance\", display_name: \"Constants.Beam.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Beam\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C6BA0) {setting_path: \"Constants.Beam.EmitterState.MinDistance\", display_name: \"Constants.Beam.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Beam\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CE0E0) {setting_path: \"Constants.Beam001.EmitterState.MaxDistance\", display_name: \"Constants.Beam001.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Beam001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C8AB0) {setting_path: \"Constants.Beam001.EmitterState.MinDistance\", display_name: \"Constants.Beam001.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Beam001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C32C0) {setting_path: \"Constants.Spark.EmitterState.MaxDistance\", display_name: \"Constants.Spark.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Spark\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C8C70) {setting_path: \"Constants.Spark.EmitterState.MinDistance\", display_name: \"Constants.Spark.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Spark\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C6040) {setting_path: \"Constants.Spark.Collision.Maximum Penetration Correction Distance\", display_name: \"Constants.Spark.Collision.Maximum Penetration Correction Distance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.500000\", emitter_name: \"Spark\", script_stage: \"ParticleSpawn\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C0AF0) {setting_path: \"Constants.Spark.Collision.Maximum Penetration Correction Distance\", display_name: \"Constants.Spark.Collision.Maximum Penetration Correction Distance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.500000\", emitter_name: \"Spark\", script_stage: \"ParticleUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CC4E0) {setting_path: \"Constants.Spark001.EmitterState.MaxDistance\", display_name: \"Constants.Spark001.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Spark001\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C20D0) {setting_path: \"Constants.Spark001.EmitterState.MinDistance\", display_name: \"Constants.Spark001.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Spark001\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "Beam",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Beam001",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Spark",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Spark001",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C75B0) {setting_path: \"Constants.LaserBolts.EmitterState.MaxDistance\", display_name: \"Constants.LaserBolts.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C26F0) {setting_path: \"Constants.LaserBolts.EmitterState.MinDistance\", display_name: \"Constants.LaserBolts.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CD510) {setting_path: \"Constants.LaserMuzzles.EmitterState.MaxDistance\", display_name: \"Constants.LaserMuzzles.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C6F90) {setting_path: \"Constants.LaserMuzzles.EmitterState.MinDistance\", display_name: \"Constants.LaserMuzzles.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C8500) {setting_path: \"Constants.LaserBolts.EmitterState.MaxDistance\", display_name: \"Constants.LaserBolts.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"LaserBolts\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C0930) {setting_path: \"Constants.LaserBolts.EmitterState.MinDistance\", display_name: \"Constants.LaserBolts.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"LaserBolts\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C4FA0) {setting_path: \"Constants.LaserMuzzles.EmitterState.MaxDistance\", display_name: \"Constants.LaserMuzzles.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"LaserMuzzles\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C4D70) {setting_path: \"Constants.LaserMuzzles.EmitterState.MinDistance\", display_name: \"Constants.LaserMuzzles.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"LaserMuzzles\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "LaserBolts",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "LaserMuzzles",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C4360) {setting_path: \"Constants.Body.EmitterState.MaxDistance\", display_name: \"Constants.Body.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C4830) {setting_path: \"Constants.Body.EmitterState.MinDistance\", display_name: \"Constants.Body.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CCFD0) {setting_path: \"Constants.Flame.EmitterState.MaxDistance\", display_name: \"Constants.Flame.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C4910) {setting_path: \"Constants.Flame.EmitterState.MinDistance\", display_name: \"Constants.Flame.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CCBE0) {setting_path: \"Constants.History.EmitterState.MaxDistance\", display_name: \"Constants.History.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C0310) {setting_path: \"Constants.History.EmitterState.MinDistance\", display_name: \"Constants.History.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C0E00) {setting_path: \"Constants.Body.EmitterState.MaxDistance\", display_name: \"Constants.Body.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Body\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C7850) {setting_path: \"Constants.Body.EmitterState.MinDistance\", display_name: \"Constants.Body.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Body\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C6A50) {setting_path: \"Constants.Flame.EmitterState.MaxDistance\", display_name: \"Constants.Flame.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Flame\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C1FF0) {setting_path: \"Constants.Flame.EmitterState.MinDistance\", display_name: \"Constants.Flame.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Flame\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CF030) {setting_path: \"Constants.History.EmitterState.MaxDistance\", display_name: \"Constants.History.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"History\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CD9E0) {setting_path: \"Constants.History.EmitterState.MinDistance\", display_name: \"Constants.History.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"History\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "Body",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Flame",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "History",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C8A40) {setting_path: \"Constants.Body.EmitterState.MaxDistance\", display_name: \"Constants.Body.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C1180) {setting_path: \"Constants.Body.EmitterState.MinDistance\", display_name: \"Constants.Body.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C35D0) {setting_path: \"Constants.Flame.EmitterState.MaxDistance\", display_name: \"Constants.Flame.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C4C90) {setting_path: \"Constants.Flame.EmitterState.MinDistance\", display_name: \"Constants.Flame.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C1C70) {setting_path: \"Constants.History.EmitterState.MaxDistance\", display_name: \"Constants.History.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CA090) {setting_path: \"Constants.History.EmitterState.MinDistance\", display_name: \"Constants.History.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CE850) {setting_path: \"Constants.Body.EmitterState.MaxDistance\", display_name: \"Constants.Body.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Body\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C2BC0) {setting_path: \"Constants.Body.EmitterState.MinDistance\", display_name: \"Constants.Body.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Body\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CB9F0) {setting_path: \"Constants.Flame.EmitterState.MaxDistance\", display_name: \"Constants.Flame.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Flame\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CA9C0) {setting_path: \"Constants.Flame.EmitterState.MinDistance\", display_name: \"Constants.Flame.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Flame\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C1650) {setting_path: \"Constants.History.EmitterState.MaxDistance\", display_name: \"Constants.History.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"History\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4CEA80) {setting_path: \"Constants.History.EmitterState.MinDistance\", display_name: \"Constants.History.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"History\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "Body",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Flame",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "History",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal",
+      "effect_type": null,
+      "override_scalability_settings": false,
+      "overrides": [],
+      "distance_parameters": [
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C6820) {setting_path: \"Constants.Body.EmitterState.MaxDistance\", display_name: \"Constants.Body.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C5FD0) {setting_path: \"Constants.Body.EmitterState.MinDistance\", display_name: \"Constants.Body.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C7FC0) {setting_path: \"Constants.Flame.EmitterState.MaxDistance\", display_name: \"Constants.Flame.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C6740) {setting_path: \"Constants.Flame.EmitterState.MinDistance\", display_name: \"Constants.Flame.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"SYSTEM\", script_stage: \"SystemUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C63C0) {setting_path: \"Constants.Body.EmitterState.MaxDistance\", display_name: \"Constants.Body.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Body\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C11F0) {setting_path: \"Constants.Body.EmitterState.MinDistance\", display_name: \"Constants.Body.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Body\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C5DA0) {setting_path: \"Constants.Flame.EmitterState.MaxDistance\", display_name: \"Constants.Flame.EmitterState.MaxDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"5000.000000\", emitter_name: \"Flame\", script_stage: \"EmitterUpdate\"}>",
+        "<Struct 'NiagaraEditableSetting' (0x0000024AAC4C41A0) {setting_path: \"Constants.Flame.EmitterState.MinDistance\", display_name: \"Constants.Flame.EmitterState.MinDistance\", category: \"RapidIteration\", value_type: \"Float\", current_value: \"0.000000\", emitter_name: \"Flame\", script_stage: \"EmitterUpdate\"}>"
+      ],
+      "emitter_states": [
+        {
+          "emitter": "Body",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        },
+        {
+          "emitter": "Flame",
+          "module": "EmitterState",
+          "distance_culling": "false",
+          "scalability_mode": "System"
+        }
+      ]
+    }
+  ],
+  "effect_types": {
+    "/Game/GuLiStrike/FX/WingmanFlight/FXT_WingmanFlight.FXT_WingmanFlight": [
+      {
+        "cull_by_distance": true,
+        "max_distance_cm": 180000.0,
+        "full_settings": "<Struct 'NiagaraSystemScalabilitySettings' (0x0000024AAC2F3800) {}>"
+      }
+    ],
+    "/Game/GuLiStrike/FX/UnitFeedback/FXT_UnitDestruction.FXT_UnitDestruction": [
+      {
+        "cull_by_distance": true,
+        "max_distance_cm": 180000.0,
+        "full_settings": "<Struct 'NiagaraSystemScalabilitySettings' (0x0000024AAC2F2E60) {}>"
+      }
+    ]
+  },
+  "renderer_distance_gates": [],
+  "errors": [],
+  "registry_rows": 51,
+  "renderer_objects_inspected": 117
+}

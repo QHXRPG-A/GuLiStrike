@@ -61,7 +61,7 @@ void UGuLiBuildingConstructionVisualComponent::RefreshState()
 		bObservedUnderConstruction = false;
 		bCompletionPlayed = false;
 	}
-	if (!Settings->bEnabled || State.Phase == EGuLiBuildingPhase::Destroyed)
+	if (!Settings->bEnabled || State.Phase == EGuLiBuildingPhase::Destroyed || State.Phase == EGuLiBuildingPhase::ConvertedToUnit)
 	{
 		ClearPresentation();
 		return;

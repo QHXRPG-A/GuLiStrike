@@ -2,6 +2,7 @@
 
 #include "Gameplay/Building/GuLiPlacedBuilding.h"
 #include "Gameplay/Building/GuLiBuildingProductionComponent.h"
+#include "Gameplay/Building/GuLiConstructedUnitComponent.h"
 #include "Gameplay/Building/GuLiBuildingShieldComponent.h"
 #include "Gameplay/Building/GuLiBuildingConstructionVisualComponent.h"
 
@@ -23,6 +24,7 @@ AGuLiPlacedBuilding::AGuLiPlacedBuilding()
 	Lifecycle = CreateDefaultSubobject<UGuLiBuildingLifecycleComponent>(TEXT("Lifecycle"));
 	CreateDefaultSubobject<UGuLiBuildingConstructionVisualComponent>(TEXT("ConstructionVisual"));
 	CreateDefaultSubobject<UGuLiBuildingProductionComponent>(TEXT("Production"));
+	CreateDefaultSubobject<UGuLiConstructedUnitComponent>(TEXT("ConstructedUnit"));
 	CreateDefaultSubobject<UGuLiBuildingShieldComponent>(TEXT("ShieldSupply"));
 	CreateDefaultSubobject<UGuLiActorDamageReceiverComponent>(TEXT("DamageReceiver"))->bDestroyOwnerOnDeath = false;
 	bReplicates = true;

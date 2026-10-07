@@ -1,0 +1,691 @@
+{
+  "success": true,
+  "formal_assets_changed": false,
+  "approval": "pending",
+  "native_compile": "not_run",
+  "units": [
+    {
+      "id": 1,
+      "name": "DefaultSoldier",
+      "meshes": [
+        {
+          "source": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/DefaultSoldier/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+          "lod_count": 3,
+          "triangles": [
+            37338,
+            15905,
+            1944
+          ],
+          "sections": [
+            2,
+            2,
+            1
+          ],
+          "screen_sizes": [
+            1.0,
+            0.4000000059604645,
+            0.05999999865889549
+          ],
+          "uv_channels": [
+            3,
+            3,
+            3
+          ],
+          "materials": [
+            "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD0.MI_Pioneer_LOD0",
+            "/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_Contour.M_Pioneer_Contour",
+            "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD1.MI_Pioneer_LOD1",
+            "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD2.MI_Pioneer_LOD2",
+            "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD3.MI_Pioneer_LOD3"
+          ],
+          "sockets": [],
+          "instances_per_unit": 1
+        }
+      ],
+      "triangles": [
+        37338,
+        15905,
+        1944
+      ]
+    },
+    {
+      "id": 2,
+      "name": "WM01",
+      "meshes": [
+        {
+          "source": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/WM01/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+          "lod_count": 3,
+          "triangles": [
+            38843,
+            9711,
+            776
+          ],
+          "sections": [
+            2,
+            2,
+            2
+          ],
+          "screen_sizes": [
+            1.0,
+            0.3199999928474426,
+            0.02500000037252903
+          ],
+          "uv_channels": [
+            3,
+            3,
+            3
+          ],
+          "materials": [
+            "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid",
+            "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid"
+          ],
+          "sockets": [
+            "FX_AimTarget",
+            "FX_Muzzle_Basic_01",
+            "FX_Missile_01",
+            "FX_Missile_02",
+            "FX_Muzzle_Basic_02",
+            "Rigid_UpperYaw",
+            "Rigid_GunPitch_01",
+            "Rigid_GunPitch_02",
+            "Rigid_Disc_FL",
+            "Rigid_Disc_FR",
+            "Rigid_Disc_RL",
+            "Rigid_Disc_RR",
+            "FX_Hover_FL",
+            "FX_Hover_FR",
+            "FX_Hover_RL",
+            "FX_Hover_RR",
+            "Rigid_LegRoot_FL",
+            "Rigid_LegEnd_FL",
+            "Rigid_LegRoot_FR",
+            "Rigid_LegEnd_FR",
+            "Rigid_LegRoot_RL",
+            "Rigid_LegEnd_RL",
+            "Rigid_LegRoot_RR",
+            "Rigid_LegEnd_RR"
+          ],
+          "mechanical_part_readback": {
+            "error": "Unexpected mesh"
+          },
+          "instances_per_unit": 1
+        }
+      ],
+      "triangles": [
+        38843,
+        9711,
+        776
+      ]
+    },
+    {
+      "id": 3,
+      "name": "ElectromagneticMiner",
+      "meshes": [
+        {
+          "source": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "lod_count": 3,
+          "triangles": [
+            5660,
+            2264,
+            509
+          ],
+          "sections": [
+            2,
+            2,
+            2
+          ],
+          "screen_sizes": [
+            1.0,
+            0.0560000017285347,
+            0.02800000086426735
+          ],
+          "uv_channels": [
+            2,
+            0,
+            0
+          ],
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "sockets": [],
+          "instances_per_unit": 2
+        },
+        {
+          "source": "/Game/MC_Vehicle_Constructor/Meshes/Cockpits/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "lod_count": 3,
+          "triangles": [
+            514,
+            206,
+            64
+          ],
+          "sections": [
+            1,
+            1,
+            1
+          ],
+          "screen_sizes": [
+            1.0,
+            0.0560000017285347,
+            0.02800000086426735
+          ],
+          "uv_channels": [
+            2,
+            0,
+            0
+          ],
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "sockets": [
+            "Mount_Side_L",
+            "Mount_Side_R",
+            "Mount_Back",
+            "Mount_Weapon_Top",
+            "Mount_Nose"
+          ],
+          "instances_per_unit": 1
+        },
+        {
+          "source": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Side_Wings/Side_Winglets/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "lod_count": 3,
+          "triangles": [
+            42,
+            42,
+            42
+          ],
+          "sections": [
+            1,
+            1,
+            1
+          ],
+          "screen_sizes": [
+            1.0,
+            0.0560000017285347,
+            0.02800000086426735
+          ],
+          "uv_channels": [
+            2,
+            0,
+            0
+          ],
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "sockets": [],
+          "instances_per_unit": 1
+        },
+        {
+          "source": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Weapons/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "lod_count": 3,
+          "triangles": [
+            240,
+            95,
+            64
+          ],
+          "sections": [
+            1,
+            1,
+            1
+          ],
+          "screen_sizes": [
+            1.0,
+            0.0560000017285347,
+            0.02800000086426735
+          ],
+          "uv_channels": [
+            2,
+            0,
+            0
+          ],
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "sockets": [
+            "Mount_Rocket_1",
+            "Mount_Rocket_2",
+            "Mount_Rocket_3"
+          ],
+          "instances_per_unit": 2
+        },
+        {
+          "source": "/Game/MC_Vehicle_Constructor/Meshes/Top/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "lod_count": 3,
+          "triangles": [
+            160,
+            64,
+            64
+          ],
+          "sections": [
+            1,
+            1,
+            1
+          ],
+          "screen_sizes": [
+            1.0,
+            0.0560000017285347,
+            0.02800000086426735
+          ],
+          "uv_channels": [
+            2,
+            0,
+            0
+          ],
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "sockets": [
+            "Mount_Weapon_L",
+            "Mount_Weapon_R"
+          ],
+          "instances_per_unit": 1
+        },
+        {
+          "source": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+          "lod_count": 3,
+          "triangles": [
+            2160,
+            863,
+            194
+          ],
+          "triangle_source": "FBX render export",
+          "skeleton": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Lvl1_Skeleton.Chassis_Transporter_Lvl1_Skeleton",
+          "physics_asset": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Cockpit_Lvl2_PhysicsAsset.Chassis_Transporter_Cockpit_Lvl2_PhysicsAsset",
+          "bone_count": 12,
+          "screen_sizes": [
+            1.0,
+            0.0560000017285347,
+            0.02800000086426735
+          ],
+          "instances_per_unit": 1
+        }
+      ],
+      "triangles": [
+        14676,
+        5893,
+        1510
+      ]
+    },
+    {
+      "id": 4,
+      "name": "ConstructionVehicle",
+      "meshes": [
+        {
+          "source": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "lod_count": 3,
+          "triangles": [
+            5660,
+            2264,
+            509
+          ],
+          "sections": [
+            2,
+            2,
+            2
+          ],
+          "screen_sizes": [
+            1.0,
+            0.0560000017285347,
+            0.02800000086426735
+          ],
+          "uv_channels": [
+            2,
+            0,
+            0
+          ],
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "sockets": [],
+          "instances_per_unit": 2
+        },
+        {
+          "source": "/Game/MC_Vehicle_Constructor/Meshes/Cockpits/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "lod_count": 3,
+          "triangles": [
+            514,
+            206,
+            64
+          ],
+          "sections": [
+            1,
+            1,
+            1
+          ],
+          "screen_sizes": [
+            1.0,
+            0.0560000017285347,
+            0.02800000086426735
+          ],
+          "uv_channels": [
+            2,
+            0,
+            0
+          ],
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "sockets": [
+            "Mount_Side_L",
+            "Mount_Side_R",
+            "Mount_Back",
+            "Mount_Weapon_Top",
+            "Mount_Nose"
+          ],
+          "instances_per_unit": 1
+        },
+        {
+          "source": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Side_Wings/Side_Winglets/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "lod_count": 3,
+          "triangles": [
+            42,
+            42,
+            42
+          ],
+          "sections": [
+            1,
+            1,
+            1
+          ],
+          "screen_sizes": [
+            1.0,
+            0.0560000017285347,
+            0.02800000086426735
+          ],
+          "uv_channels": [
+            2,
+            0,
+            0
+          ],
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "sockets": [],
+          "instances_per_unit": 1
+        },
+        {
+          "source": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Weapons/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "lod_count": 3,
+          "triangles": [
+            240,
+            95,
+            64
+          ],
+          "sections": [
+            1,
+            1,
+            1
+          ],
+          "screen_sizes": [
+            1.0,
+            0.0560000017285347,
+            0.02800000086426735
+          ],
+          "uv_channels": [
+            2,
+            0,
+            0
+          ],
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "sockets": [
+            "Mount_Rocket_1",
+            "Mount_Rocket_2",
+            "Mount_Rocket_3"
+          ],
+          "instances_per_unit": 2
+        },
+        {
+          "source": "/Game/MC_Vehicle_Constructor/Meshes/Top/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "lod_count": 3,
+          "triangles": [
+            160,
+            64,
+            64
+          ],
+          "sections": [
+            1,
+            1,
+            1
+          ],
+          "screen_sizes": [
+            1.0,
+            0.0560000017285347,
+            0.02800000086426735
+          ],
+          "uv_channels": [
+            2,
+            0,
+            0
+          ],
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "sockets": [
+            "Mount_Weapon_L",
+            "Mount_Weapon_R"
+          ],
+          "instances_per_unit": 1
+        },
+        {
+          "source": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+          "lod_count": 3,
+          "triangles": [
+            2160,
+            863,
+            194
+          ],
+          "triangle_source": "FBX render export",
+          "skeleton": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Lvl1_Skeleton.Chassis_Transporter_Lvl1_Skeleton",
+          "physics_asset": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Cockpit_Lvl2_PhysicsAsset.Chassis_Transporter_Cockpit_Lvl2_PhysicsAsset",
+          "bone_count": 12,
+          "screen_sizes": [
+            1.0,
+            0.0560000017285347,
+            0.02800000086426735
+          ],
+          "instances_per_unit": 1
+        }
+      ],
+      "triangles": [
+        14676,
+        5893,
+        1510
+      ]
+    },
+    {
+      "id": 5,
+      "name": "SweeperSummon",
+      "meshes": [
+        {
+          "source": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/SweeperSummon/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+          "lod_count": 3,
+          "triangles": [
+            5456,
+            1363,
+            220
+          ],
+          "sections": [
+            1,
+            1,
+            1
+          ],
+          "screen_sizes": [
+            1.0,
+            0.3199999928474426,
+            0.02500000037252903
+          ],
+          "uv_channels": [
+            3,
+            3,
+            3
+          ],
+          "materials": [
+            "/Game/Commander/Units/MechanicalAnimation/M_Sweeper_Cel_Rigid.M_Sweeper_Cel_Rigid"
+          ],
+          "sockets": [
+            "FX_AimTarget",
+            "FX_Muzzle_Basic_01",
+            "Rigid_GunPitch_01",
+            "Rigid_Wheel_FL",
+            "Rigid_Wheel_FR",
+            "Rigid_Wheel_RL",
+            "Rigid_Wheel_RR"
+          ],
+          "instances_per_unit": 1
+        }
+      ],
+      "triangles": [
+        5456,
+        1363,
+        220
+      ]
+    },
+    {
+      "id": 6,
+      "name": "BiZhiMao",
+      "meshes": [
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+          "lod_count": 3,
+          "triangles": [
+            70117,
+            16913,
+            6125
+          ],
+          "sections": [
+            2,
+            2,
+            1
+          ],
+          "screen_sizes": [
+            1.0,
+            0.4000000059604645,
+            0.05999999865889549
+          ]
+        },
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+          "lod_count": 3,
+          "triangles": [
+            70117,
+            16913,
+            6125
+          ],
+          "sections": [
+            2,
+            2,
+            1
+          ],
+          "screen_sizes": [
+            1.0,
+            0.4000000059604645,
+            0.05999999865889549
+          ]
+        }
+      ],
+      "triangles": [
+        70117,
+        16913,
+        6125
+      ],
+      "textures": [
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD0.T_BiZhiMao_VertexPosition_LOD0",
+          "width": 4096,
+          "height": 1620,
+          "samples": 32
+        },
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD0.T_BiZhiMao_VertexRotation_LOD0",
+          "width": 4096,
+          "height": 1620,
+          "samples": 32
+        },
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD1.T_BiZhiMao_VertexPosition_LOD1",
+          "width": 4096,
+          "height": 366,
+          "samples": 24
+        },
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD1.T_BiZhiMao_VertexRotation_LOD1",
+          "width": 4096,
+          "height": 366,
+          "samples": 24
+        },
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD2.T_BiZhiMao_VertexPosition_LOD2",
+          "width": 4096,
+          "height": 84,
+          "samples": 8
+        },
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD2.T_BiZhiMao_VertexRotation_LOD2",
+          "width": 4096,
+          "height": 84,
+          "samples": 8
+        }
+      ],
+      "shader_code_sha256": "70c36fcaba279bdbe986b633eea2cb9de620e375e9fe0d24b573383f36f8d057",
+      "shader_pins": [
+        "Position",
+        "LocalNormal",
+        "VertexIndex",
+        "AimWeights",
+        "LODIndex",
+        "Position0",
+        "Rotation0",
+        "Count0",
+        "Rows0",
+        "Height0",
+        "Samples0",
+        "Position1",
+        "Rotation1",
+        "Count1",
+        "Rows1",
+        "Height1",
+        "Samples1",
+        "Position2",
+        "Rotation2",
+        "Count2",
+        "Rows2",
+        "Height2",
+        "Samples2",
+        "TextureWidth",
+        "CanonicalSamples",
+        "UpperPivot",
+        "PitchPivot",
+        "PitchAxis",
+        "LinkageAnchorA0",
+        "LinkageAnchorB0",
+        "LinkageAnchorA1",
+        "LinkageAnchorB1",
+        "Frame",
+        "UpperYaw",
+        "GunPitch",
+        "OtherFrame",
+        "DirectionBlend"
+      ],
+      "runtime_bones": 0,
+      "animation_gpu_bytes": 101744640
+    }
+  ]
+}

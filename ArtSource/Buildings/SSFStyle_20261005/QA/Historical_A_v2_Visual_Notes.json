@@ -1,0 +1,26 @@
+{
+  "version": "SSF_Reference_A_v2",
+  "coverage": "partial",
+  "date": "2026-10-05",
+  "evidence": [
+    {
+      "file": "QA/Buildings_AllViews_QA.png",
+      "version": "A_v1",
+      "coverage": "24 source-constrained building views inspected before light visibility revision",
+      "sha256": "e178e0d69ff4ff22f56952914a245a03a3e035194532fd5f9fada9c03f92ec6b"
+    },
+    {
+      "file": "QA/Accessories_AllViews_QA.png",
+      "version": "A_v1",
+      "coverage": "16 source-constrained accessory views inspected before light visibility revision",
+      "sha256": "74825028c5e685f7d970128b166a3dec5c25d924d542343ec12dbfa32d68f7d7"
+    },
+    {
+      "file": "References_A_v2/Images/Light_Front.png",
+      "version": "A_v2",
+      "coverage": "Light front after mask correction inspected",
+      "sha256": "1139eb29ba60a261b43339477a3f41b8c045f6ab2be5d3fd169f9d4ade5f3d5d"
+    }
+  ],
+  "note": "Historical assistant inspection coverage is partial for A_v2; not a separate full A_v2 audit or user approval. Common palette received revision feedback; current full inspection is A_v3/visual_qa.json."
+}

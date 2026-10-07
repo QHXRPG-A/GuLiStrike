@@ -1,0 +1,350 @@
+{
+  "current_version": "SSF_TeamPalette_B_v2",
+  "date": "2026-10-07",
+  "scope": "Six SSF buildings and props only",
+  "user_palette_steering": "蓝色方所有建筑改成图1配色，红色方把所有建筑改成图二配色，先放Blender给我审核",
+  "history": [
+    {
+      "version": "SSF_Reference_A_v1",
+      "A": "unapproved_historical",
+      "notes": "Shared cream/teal direction superseded by requested distinct schemes"
+    },
+    {
+      "version": "SSF_Reference_A_v2",
+      "A": "修改后再审",
+      "notes": "Shared cream/teal direction superseded; source geometry and light-mask/package fixes retained"
+    },
+    {
+      "version": "SSF_Reference_A_v3",
+      "manifest_sha256": "a27f9160ee75bb82e7a8d3f8556e326be43537adfa426111e4df9ac0578dc6cd",
+      "A": "修改后再审",
+      "B": "未开始",
+      "notes": "用户要求全部深色提亮；保留六套色系、源几何、绑定、配色区域和同机位。不是A通过。",
+      "latest_baseline_selection": "用户最新附件明确选定本版为修改基准；仅两座深色提亮，其他保持，不记为新修订版A通过。"
+    },
+    {
+      "version": "SSF_Reference_A_v4",
+      "manifest_sha256": "6d3af05f70ea2aa2d6ff860c0b1d7b4af5547cd3ea5d23e3ac17bbbcd4e0d81b",
+      "A": "修改后再审",
+      "B": "未开始",
+      "user_revision": "深色的颜色再浅一些，不要有太深的颜色",
+      "notes": "用户最新要求只提亮原深色，原浅色不动；撤销本版对中间色及全局三档暗部的统一抬亮。不是A通过。"
+    },
+    {
+      "version": "SSF_Reference_A_v5",
+      "manifest_sha256": "f3a3d853bef64c1b4fba8132dd3e403a75b201d86401b513deb19769c11f48b9",
+      "A": "修改后再审",
+      "B": "未开始",
+      "user_revision": "深色调浅，浅色别动",
+      "notes": "仅原深色提亮，原浅色、中间色及三档因子恢复并保持；完整参考及实际材质回读已交付，具体版本未通过。 用户后续选定附图A_v3，并限定军工厂和战略中心深色修订；本版全面深色提亮范围不继续采用。"
+    },
+    {
+      "version": "SSF_Reference_A_v6",
+      "manifest_sha256": "cd3cde73b94a6b2b034a306064be1e726a25075ba5910721b16d3dfad129341f",
+      "A": "修改后再审",
+      "B": "未开始",
+      "user_revision": "以你刚刚调的这一版为准，军工厂和战略中心的深色需要调浅，其他别动",
+      "source_version": "SSF_Reference_A_v3",
+      "modified_assets": [
+        "MilitaryFactory",
+        "StrategyCenter"
+      ],
+      "notes": "实际附图与A_v3总览像素一致；仅四项深色角色提亮，两座浅色、其他八个资产和原线稿/三档明暗保持。84文件哈希核对一致，尚无具体A/B通过决定。 后续用户指出线稿/三档可见性不足；实际接入已核对，按原定风格要求修正为A_v7，配色沿用本版。"
+    },
+    {
+      "version": "SSF_Reference_A_v7",
+      "manifest_sha256": "d1d3dcabdac432395edd1554da297de47e555a94c9e6ff77893043a7487c0173",
+      "A": "approved",
+      "B": "未开始",
+      "user_feedback": "线稿和三档明暗好像没加？",
+      "source_version": "SSF_Reference_A_v6",
+      "palette_HEX_changed": false,
+      "notes": "依据原定线稿/三渲二要求修正可见性；40项HEX与90材质基础/三档RGB保持，阈值与线条粗细调整，137跟踪文件核对一致。反馈不代表用户批准本修订版或具体参数。",
+      "user_quote": "开始制作，严格一比一按照参考图和原模型制作",
+      "approval_record": "approval_A.json"
+    },
+    {
+      "version": "SSF_Production_B_v1",
+      "B": "pending_user_decision",
+      "manifest_sha256": "47fa0b49979828e331ca702d526f18d65b63ff639bd72404390288f6894adf29",
+      "body_budget_exceptions": "24_pending",
+      "reference_version": "SSF_Reference_A_v7",
+      "UE_formal_import_performed": false
+    },
+    {
+      "stage": "B_and_formal_UE_storage_release",
+      "status": "released_for_formal_UE_storage",
+      "version": "SSF_Production_B_v1",
+      "date": "2026-10-06",
+      "user_quote": "传ue，作为住正式资源存GuLiStrike中，暂不接入游戏中",
+      "source_blend_sha256": "6f386c2e4782ce6ab6e81ae0f2380a6345fa05cdc6fc3dcf9d260c13ed3a806e",
+      "manifest_sha256": "47fa0b49979828e331ca702d526f18d65b63ff639bd72404390288f6894adf29",
+      "target_root": "/Game/GuLiStrike/Buildings/SSFStylized",
+      "scope": "Current visible B_v1 including its disclosed geometry/style differences; store formal asset copies only",
+      "body_budget_exceptions": "24 differences accompany this version-specific storage release; original caps unchanged, no gameplay/performance acceptance inferred",
+      "gameplay_integration_authorized": false,
+      "original_source_package_preserved": true
+    },
+    {
+      "version": "SSF_TeamPalette_B_v2",
+      "date": "2026-10-07",
+      "status": "pending_user_decision",
+      "candidate_blend_sha256": "5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6",
+      "user_quote": "蓝色方所有建筑改成图1配色，红色方把所有建筑改成图二配色，先放Blender给我审核",
+      "reference_selection": "TeamPalette_B_v2_20261007/user_reference_instruction.json",
+      "review": "TeamPalette_B_v2_20261007/Review_B_v2.md",
+      "UE_formal_import_performed": false,
+      "formal_UE_import_authorized": false,
+      "gameplay_integrated": false
+    },
+    {
+      "version": "SSF_TeamPalette_B_v2",
+      "status": "released_for_formal_UE_storage",
+      "date": "2026-10-07",
+      "source_blend_sha256": "5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6",
+      "user_quote": "导入至ue作为正式资源",
+      "authorization_record": "approval_B_v2_import_20261007.json",
+      "target_roots": {
+        "Blue": "/Game/GuLiStrike/Buildings/SSFStylized/Blue",
+        "Red": "/Game/GuLiStrike/Buildings/SSFStylized/Red"
+      },
+      "UE_formal_import_performed": true,
+      "new_assets": 48,
+      "formal_delivery": "UE_Delivery_Team_v2/formal_delivery.json",
+      "gameplay_integration_authorized": false,
+      "original_B_v1_preserved": true
+    },
+    {
+      "version": "SSF_TeamPalette_B_v2",
+      "date": "2026-10-07",
+      "status": "approved",
+      "stage": "final_actual_asset_review",
+      "user_quote": "审核通过",
+      "message_context": "用户在蓝红两队正式UE B_v2导入完成、实际UE预览和交付记录展示之后明确通过审核。",
+      "source_blend": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\TeamPalette_B_v2_20261007\\SSF_TeamPalette_B_v2.blend",
+      "source_blend_sha256": "5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6",
+      "target_roots": {
+        "Blue": "/Game/GuLiStrike/Buildings/SSFStylized/Blue",
+        "Red": "/Game/GuLiStrike/Buildings/SSFStylized/Red"
+      },
+      "accepted_new_resource_count": 48,
+      "accepted_building_variants": 12,
+      "LOD_count_per_mesh": 3,
+      "scope": "当前实际B_v2蓝红各六座建筑及对应材质贴图，包含当前可见版本已披露的几何与描边差异。",
+      "approved_UE_preview": "UE_Delivery_Team_v2/Sheets/Blue_Red_UE_Overview.png",
+      "approved_UE_preview_sha256": "69b68a011a4c506f817eef4336cbc5709d966d55102e09cc3ccc13d02adae9f8",
+      "formal_delivery": "UE_Delivery_Team_v2/formal_delivery.json",
+      "formal_delivery_sha256": "b4d750a85ad64d9bd22e357d30d1398fdac3e5a2420533c7a4b707bfbbd8dd20",
+      "frozen_delivery_checks": [
+        {
+          "manifest": "TeamPalette_B_v2_20261007/delivery_manifest.json",
+          "manifest_sha256": "6bdc3ae994f2a6efb936968e4b650da45a57278578970286e5813f58a7b5845d",
+          "verified_file_count": 147,
+          "unchanged": true
+        },
+        {
+          "manifest": "UE_Delivery_Team_v2/delivery_manifest.json",
+          "manifest_sha256": "b6485b51c5eeaf0d4684e441b18b037aa3f49aea5598747a1309e24b3b3a198a",
+          "verified_file_count": 196,
+          "unchanged": true
+        }
+      ],
+      "earlier_import_authorization": "approval_B_v2_import_20261007.json",
+      "original_budget_caps_changed": false,
+      "global_art_revision": "1.3",
+      "performance_validation": "not_run",
+      "gameplay_integration_authorized": false,
+      "gameplay_integrated": false,
+      "UE_reimport_performed_this_turn": false,
+      "source_or_UE_assets_edited_this_turn": false,
+      "record": "Acceptance_B_v2_20261007/approval.json"
+    }
+  ],
+  "implementation_authorized": true,
+  "production_modeling_authorized_after_specific_A": true,
+  "formal_UE_import_authorized_after_specific_B": true,
+  "production_modeling_started": true,
+  "UE_formal_import_performed": true,
+  "steering_history": [
+    {
+      "date": "2026-10-05",
+      "user_quote": "这些建筑色系是不是太单一了，希望每个建筑都是不同的色系，在参考色系中去选然后组合",
+      "result": "SSF_Reference_A_v3"
+    },
+    {
+      "date": "2026-10-05",
+      "user_quote": "深色的颜色再浅一些，不要有太深的颜色",
+      "result": "SSF_Reference_A_v4"
+    },
+    {
+      "date": "2026-10-05",
+      "user_quote": "深色调浅，浅色别动",
+      "result": "SSF_Reference_A_v5"
+    },
+    {
+      "date": "2026-10-05",
+      "user_quote": "以你刚刚调的这一版为准，军工厂和战略中心的深色需要调浅，其他别动",
+      "selected_baseline": "SSF_Reference_A_v3",
+      "selected_attachment_sha256": "c12f4ddf20e1a275b947d617420120e93e800f913f3820cd943ed1f9aa8513f2",
+      "attachment_pixels_equal_A_v3_overview": true,
+      "result": "SSF_Reference_A_v6"
+    },
+    {
+      "date": "2026-10-05",
+      "user_quote": "线稿和三档明暗好像没加？",
+      "kind": "style_visibility_feedback",
+      "result": "SSF_Reference_A_v7",
+      "interpretation": "实际核对与既定风格修正，色值不改；具体版本仍待审核A。"
+    },
+    {
+      "date": "2026-10-07",
+      "user_quote": "蓝色方所有建筑改成图1配色，红色方把所有建筑改成图二配色，先放Blender给我审核",
+      "result": "SSF_TeamPalette_B_v2",
+      "meaning": "Authorized two-team recolor and actual Blender review; not candidate B approval or UE update."
+    }
+  ],
+  "selected_baseline": "SSF_Reference_A_v3",
+  "baseline_selection": {
+    "date": "2026-10-05",
+    "selected_baseline": "SSF_Reference_A_v3",
+    "user_quote": "以你刚刚调的这一版为准，军工厂和战略中心的深色需要调浅，其他别动",
+    "selected_attachment_file": "Inputs/SelectedBaseline_A_v3_20261005.png",
+    "attachment_sha256": "c12f4ddf20e1a275b947d617420120e93e800f913f3820cd943ed1f9aa8513f2",
+    "attachment_size": [
+      3000,
+      2850
+    ],
+    "attachment_pixels_equal_A_v3_overview": true,
+    "only_modified_assets": [
+      "MilitaryFactory",
+      "StrategyCenter"
+    ],
+    "all_other_assets_and_props_preserved": true,
+    "user_A_for_new_revision": "pending",
+    "meaning": "选定修改基准并限定两座修订；不代表A_v6审核通过。"
+  },
+  "user_style_feedback": "线稿和三档明暗好像没加？",
+  "A": {
+    "stage": "A",
+    "status": "approved",
+    "approved_version": "SSF_Reference_A_v7",
+    "manifest_sha256": "d1d3dcabdac432395edd1554da297de47e555a94c9e6ff77893043a7487c0173",
+    "user_quote": "开始制作，严格一比一按照参考图和原模型制作",
+    "date": "2026-10-05",
+    "scope": "Six buildings and four props; Blender production authorized; B and formal UE import remain gated",
+    "verified_tracked_files": 77
+  },
+  "B": {
+    "version": "SSF_TeamPalette_B_v2",
+    "status": "approved",
+    "date": "2026-10-07",
+    "source_blend_sha256": "5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6",
+    "user_quote": "导入至ue作为正式资源",
+    "authorization_record": "approval_B_v2_import_20261007.json",
+    "target_roots": {
+      "Blue": "/Game/GuLiStrike/Buildings/SSFStylized/Blue",
+      "Red": "/Game/GuLiStrike/Buildings/SSFStylized/Red"
+    },
+    "UE_formal_import_performed": true,
+    "new_assets": 48,
+    "formal_delivery": "UE_Delivery_Team_v2/formal_delivery.json",
+    "gameplay_integration_authorized": false,
+    "original_B_v1_preserved": true,
+    "approval_date": "2026-10-07",
+    "approval_user_quote": "审核通过",
+    "approval_record": "Acceptance_B_v2_20261007/approval.json",
+    "accepted_scope": "当前实际B_v2蓝红各六座建筑及对应材质贴图，包含当前可见版本已披露的几何与描边差异。"
+  },
+  "ue_formal_import_performed": true,
+  "budget_exception_decision": {
+    "status": "original_caps_preserved_with_current_version_acceptance",
+    "count": 24,
+    "record": "Production_B_v1/budget_exception_record.json",
+    "version_specific_storage_release": "current B_v1 retained with disclosed differences; original caps unchanged",
+    "current_B_v2_asset_review": "approved",
+    "current_B_v2_approval_record": "Acceptance_B_v2_20261007/approval.json",
+    "meaning": "当前两队建筑作为已披露差异的实际成品审核通过，原上限继续保留；原B_v1差额记录及其他配套资产历史不重写。"
+  },
+  "formal_UE_import_authorized": true,
+  "gameplay_integration_authorized": false,
+  "formal_UE_delivery": "UE_Delivery_Team_v2/formal_delivery.json",
+  "gameplay_integrated": false,
+  "B_v1_release": {
+    "status": "released_for_formal_UE_storage",
+    "version": "SSF_Production_B_v1",
+    "source_blend_sha256": "6f386c2e4782ce6ab6e81ae0f2380a6345fa05cdc6fc3dcf9d260c13ed3a806e",
+    "manifest_sha256": "47fa0b49979828e331ca702d526f18d65b63ff639bd72404390288f6894adf29",
+    "user_approval": "传ue，作为住正式资源存GuLiStrike中，暂不接入游戏中",
+    "date": "2026-10-06",
+    "authorization_record": "approval_B_import_20261006.json"
+  },
+  "team_palette_B_v2": {
+    "version": "SSF_TeamPalette_B_v2",
+    "status": "approved",
+    "date": "2026-10-07",
+    "source_blend_sha256": "5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6",
+    "user_quote": "导入至ue作为正式资源",
+    "authorization_record": "approval_B_v2_import_20261007.json",
+    "target_roots": {
+      "Blue": "/Game/GuLiStrike/Buildings/SSFStylized/Blue",
+      "Red": "/Game/GuLiStrike/Buildings/SSFStylized/Red"
+    },
+    "UE_formal_import_performed": true,
+    "new_assets": 48,
+    "formal_delivery": "UE_Delivery_Team_v2/formal_delivery.json",
+    "gameplay_integration_authorized": false,
+    "original_B_v1_preserved": true,
+    "approval_date": "2026-10-07",
+    "approval_user_quote": "审核通过",
+    "approval_record": "Acceptance_B_v2_20261007/approval.json",
+    "accepted_scope": "当前实际B_v2蓝红各六座建筑及对应材质贴图，包含当前可见版本已披露的几何与描边差异。"
+  },
+  "formal_UE_current_version": "SSF_TeamPalette_B_v2 with preserved B_v1 shared dependencies",
+  "current_candidate_UE_import_performed": true,
+  "final_UE_review": {
+    "version": "SSF_TeamPalette_B_v2",
+    "date": "2026-10-07",
+    "status": "approved",
+    "stage": "final_actual_asset_review",
+    "user_quote": "审核通过",
+    "message_context": "用户在蓝红两队正式UE B_v2导入完成、实际UE预览和交付记录展示之后明确通过审核。",
+    "source_blend": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\TeamPalette_B_v2_20261007\\SSF_TeamPalette_B_v2.blend",
+    "source_blend_sha256": "5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6",
+    "target_roots": {
+      "Blue": "/Game/GuLiStrike/Buildings/SSFStylized/Blue",
+      "Red": "/Game/GuLiStrike/Buildings/SSFStylized/Red"
+    },
+    "accepted_new_resource_count": 48,
+    "accepted_building_variants": 12,
+    "LOD_count_per_mesh": 3,
+    "scope": "当前实际B_v2蓝红各六座建筑及对应材质贴图，包含当前可见版本已披露的几何与描边差异。",
+    "approved_UE_preview": "UE_Delivery_Team_v2/Sheets/Blue_Red_UE_Overview.png",
+    "approved_UE_preview_sha256": "69b68a011a4c506f817eef4336cbc5709d966d55102e09cc3ccc13d02adae9f8",
+    "formal_delivery": "UE_Delivery_Team_v2/formal_delivery.json",
+    "formal_delivery_sha256": "b4d750a85ad64d9bd22e357d30d1398fdac3e5a2420533c7a4b707bfbbd8dd20",
+    "frozen_delivery_checks": [
+      {
+        "manifest": "TeamPalette_B_v2_20261007/delivery_manifest.json",
+        "manifest_sha256": "6bdc3ae994f2a6efb936968e4b650da45a57278578970286e5813f58a7b5845d",
+        "verified_file_count": 147,
+        "unchanged": true
+      },
+      {
+        "manifest": "UE_Delivery_Team_v2/delivery_manifest.json",
+        "manifest_sha256": "b6485b51c5eeaf0d4684e441b18b037aa3f49aea5598747a1309e24b3b3a198a",
+        "verified_file_count": 196,
+        "unchanged": true
+      }
+    ],
+    "earlier_import_authorization": "approval_B_v2_import_20261007.json",
+    "original_budget_caps_changed": false,
+    "global_art_revision": "1.3",
+    "performance_validation": "not_run",
+    "gameplay_integration_authorized": false,
+    "gameplay_integrated": false,
+    "UE_reimport_performed_this_turn": false,
+    "source_or_UE_assets_edited_this_turn": false,
+    "record": "Acceptance_B_v2_20261007/approval.json"
+  },
+  "current_asset_review_status": "approved"
+}

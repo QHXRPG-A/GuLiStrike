@@ -1,0 +1,101 @@
+{
+  "success": true,
+  "path": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid",
+  "before": {
+    "triangles": [
+      38843,
+      9711,
+      299,
+      69
+    ],
+    "screens": [
+      1.0,
+      0.3199999928474426,
+      0.09000000357627869,
+      0.02500000037252903
+    ],
+    "materials": [
+      "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid",
+      "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid"
+    ],
+    "sockets": [
+      "FX_AimTarget",
+      "FX_Muzzle_Basic_01",
+      "FX_Missile_01",
+      "FX_Missile_02",
+      "FX_Muzzle_Basic_02",
+      "Rigid_UpperYaw",
+      "Rigid_GunPitch_01",
+      "Rigid_GunPitch_02",
+      "Rigid_Disc_FL",
+      "Rigid_Disc_FR",
+      "Rigid_Disc_RL",
+      "Rigid_Disc_RR",
+      "FX_Hover_FL",
+      "FX_Hover_FR",
+      "FX_Hover_RL",
+      "FX_Hover_RR"
+    ]
+  },
+  "after": {
+    "triangles": [
+      38843,
+      9711,
+      299,
+      69
+    ],
+    "screens": [
+      1.0,
+      0.3199999928474426,
+      0.09000000357627869,
+      0.02500000037252903
+    ],
+    "materials": [
+      "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid",
+      "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid"
+    ],
+    "uv_channels": [
+      3,
+      0,
+      0,
+      0
+    ]
+  },
+  "render_lods": {
+    "lods": [
+      {
+        "lod": 0,
+        "uv_channels": 3,
+        "left_vertices": 5021,
+        "right_vertices": 5035,
+        "mixed_pod_triangles": 0,
+        "nonintegral_parts": 0
+      },
+      {
+        "lod": 1,
+        "uv_channels": 3,
+        "left_vertices": 983,
+        "right_vertices": 947,
+        "mixed_pod_triangles": 0,
+        "nonintegral_parts": 0
+      },
+      {
+        "lod": 2,
+        "uv_channels": 3,
+        "left_vertices": 48,
+        "right_vertices": 48,
+        "mixed_pod_triangles": 0,
+        "nonintegral_parts": 0
+      },
+      {
+        "lod": 3,
+        "uv_channels": 3,
+        "left_vertices": 40,
+        "right_vertices": 40,
+        "mixed_pod_triangles": 0,
+        "nonintegral_parts": 0
+      }
+    ]
+  },
+  "source_uv_api_note": "Generated LODs have no source MeshDescription; the render buffer readback is authoritative."
+}

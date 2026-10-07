@@ -1,0 +1,164 @@
+{
+  "success": true,
+  "runtime_verified": false,
+  "actors": [
+    {
+      "label": "MachineGunReview_Ground",
+      "class": "StaticMeshActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_11"
+    },
+    {
+      "label": "MachineGunReview_MuzzleBefore",
+      "class": "NiagaraActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NiagaraActor_0",
+      "scale": 1.0,
+      "asset": "/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Flash_1.NS_Flash_1"
+    },
+    {
+      "label": "MachineGunReview_MuzzleWM01After",
+      "class": "NiagaraActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NiagaraActor_1",
+      "scale": 2.0,
+      "asset": "/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Flash_1.NS_Flash_1"
+    },
+    {
+      "label": "MachineGunReview_MuzzleSweeperAfter",
+      "class": "NiagaraActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NiagaraActor_2",
+      "scale": 1.0,
+      "asset": "/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Flash_1.NS_Flash_1"
+    },
+    {
+      "label": "MachineGunReview_ImpactBefore",
+      "class": "NiagaraActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NiagaraActor_3",
+      "scale": 1.0,
+      "asset": "/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Flash_1.NS_Flash_1"
+    },
+    {
+      "label": "MachineGunReview_ImpactAfter",
+      "class": "NiagaraActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NiagaraActor_4",
+      "scale": 2.0,
+      "asset": "/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Flash_1.NS_Flash_1"
+    },
+    {
+      "label": "MachineGunReview_TracerBefore",
+      "class": "NiagaraActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NiagaraActor_5",
+      "light_arrays_bound": true,
+      "requested_light_count": 0
+    },
+    {
+      "label": "MachineGunReview_TracerAfter",
+      "class": "NiagaraActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NiagaraActor_6",
+      "light_arrays_bound": true,
+      "requested_light_count": 6
+    },
+    {
+      "label": "MachineGunReview_Camera",
+      "class": "CameraActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_15"
+    },
+    {
+      "label": "MachineGunReview_Instructions",
+      "class": "Note",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_44"
+    }
+  ],
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "lighting_arrays_ready": true,
+  "readback": [
+    {
+      "label": "MachineGunReview_Ground",
+      "position": [
+        -8500.0,
+        -10000.0,
+        960.0
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "MachineGunReview_MuzzleBefore",
+      "position": [
+        -10000.0,
+        -12000.0,
+        1467.17
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "MachineGunReview_MuzzleWM01After",
+      "position": [
+        -8200.0,
+        -12000.0,
+        1467.17
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "MachineGunReview_MuzzleSweeperAfter",
+      "position": [
+        -6400.0,
+        -12000.0,
+        1117.62
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "MachineGunReview_ImpactBefore",
+      "position": [
+        -10000.0,
+        -9800.0,
+        1100.0
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "MachineGunReview_ImpactAfter",
+      "position": [
+        -8200.0,
+        -9800.0,
+        1100.0
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "MachineGunReview_TracerBefore",
+      "position": [
+        -10000.0,
+        -7600.0,
+        1000.0
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "MachineGunReview_TracerAfter",
+      "position": [
+        -7500.0,
+        -7600.0,
+        1000.0
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "MachineGunReview_Camera",
+      "position": [
+        -8500.0,
+        -16500.0,
+        8800.0
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "MachineGunReview_Instructions",
+      "position": [
+        -11200.0,
+        -13000.0,
+        1300.0
+      ],
+      "editor_only": true
+    }
+  ]
+}

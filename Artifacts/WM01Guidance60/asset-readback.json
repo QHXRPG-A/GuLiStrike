@@ -1,0 +1,55 @@
+{
+  "success": true,
+  "native_schema_ready": true,
+  "runtime_validation": "not_run",
+  "assets": [
+    {
+      "path": "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards.DT_GuLiStrikeRogueCards_Cards",
+      "rows": 5,
+      "readback": {
+        "WM01_FireRate_Lv1": {
+          "MaxAcquisitions": 0,
+          "BonusCount": 0
+        },
+        "WM01_MoveSpeed_Lv1": {
+          "MaxAcquisitions": 0,
+          "BonusCount": 0
+        },
+        "WM01_MissileDamage_Lv1": {
+          "MaxAcquisitions": 0,
+          "BonusCount": 0
+        },
+        "WM01_MissilePod_Lv1": {
+          "MaxAcquisitions": 1,
+          "BonusCount": 0
+        },
+        "WM01_RainSalvo_Lv1": {
+          "MaxAcquisitions": 59,
+          "BonusCount": 1
+        }
+      }
+    },
+    {
+      "path": "/Game/GuLiStrike/Data/DT_GuLiStrikeGameTexts_Texts.DT_GuLiStrikeGameTexts_Texts",
+      "rows": 226,
+      "readback": "matched"
+    },
+    {
+      "path": "/Game/GuLiStrike/Data/DT_GuLiStrikeSecondaryUnitSkills_Skills.DT_GuLiStrikeSecondaryUnitSkills_Skills",
+      "rows": 1,
+      "readback": {
+        "WM01_HomingMissile": {
+          "MaxProjectilesPerActivation": 60
+        }
+      }
+    }
+  ],
+  "feedback_text": " · 本次发射{0}发导弹，{1}台留待下次Q",
+  "catalog_issues": [],
+  "configuration": {
+    "path": "/Game/GuLiStrike/Commander/Skills/DA_WM01_MissileQ.DA_WM01_MissileQ",
+    "capacity": 60,
+    "diameter": 1600.0,
+    "warning_style": "/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red.DA_GroundWarning_Red"
+  }
+}

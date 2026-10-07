@@ -1,0 +1,348 @@
+{
+  "success": true,
+  "delivery_asset_count": 18,
+  "production_assets": 16,
+  "preview_assets": 2,
+  "assets": [
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Animations/Mech_Deploy",
+      "class": "AnimSequence",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Script/MovieScene",
+        "/Script/AnimationModifiers",
+        "/Engine/Animation/DefaultAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultRecorderBoneCompression",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Script/ControlRig",
+        "/Script/AnimationData",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Animations/Mech_Idle",
+      "class": "AnimSequence",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Script/MovieScene",
+        "/Script/AnimationModifiers",
+        "/Engine/Animation/DefaultAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultRecorderBoneCompression",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Script/ControlRig",
+        "/Script/AnimationData",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Animations/Mech_Walk",
+      "class": "AnimSequence",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Script/MovieScene",
+        "/Script/AnimationModifiers",
+        "/Engine/Animation/DefaultAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultRecorderBoneCompression",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Script/ControlRig",
+        "/Script/AnimationData",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD0",
+      "class": "MaterialInstanceConstant",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_Toon3_SparseLines"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD1",
+      "class": "MaterialInstanceConstant",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_Toon3_SparseLines"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD2",
+      "class": "MaterialInstanceConstant",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_Toon3_SparseLines"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD3",
+      "class": "MaterialInstanceConstant",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_Toon3_SparseLines"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_BaseOutline",
+      "class": "Material",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": []
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_Toon3_SparseLines",
+      "class": "Material",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_InternalLineMask_2K"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech",
+      "class": "SkeletalMesh",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD0",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD1",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD2",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD3",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_BaseOutline",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Rigs/CR_ControlRigMech"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4",
+      "class": "World",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Script/NavigationSystem",
+        "/Engine/BasicShapes/Cube",
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Engine/EditorResources/LightIcons/S_LightError",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/M_ControlRigMech_PreviewBackground"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/M_ControlRigMech_PreviewBackground",
+      "class": "Material",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": []
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Rigs/CR_ControlRigMech",
+      "class": "ControlRigBlueprint",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Script/CoreUObject",
+        "/Script/Engine",
+        "/Script/AnimationCore",
+        "/Script/ControlRig",
+        "/ControlRig/Controls/DefaultGizmoLibraryNormalized",
+        "/Script/ControlRigDeveloper",
+        "/Script/RigVM",
+        "/Script/RigVMDeveloper",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech",
+      "class": "Skeleton",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_BaseColor_2K",
+      "class": "Texture2D",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [],
+      "runtime_reported_dimensions_at_query": [
+        2048,
+        2048
+      ],
+      "source_dimensions": [
+        2048,
+        2048
+      ],
+      "source_import_files": [
+        "D:/UE5.7/test1/ArtSource/Mechs/ControlRigMechStyle_20261004/Production_B_v4/Textures/ControlRigMech_BaseColor_2K.png"
+      ],
+      "srgb": true,
+      "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>"
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_FunctionalMask_2K",
+      "class": "Texture2D",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [],
+      "runtime_reported_dimensions_at_query": [
+        2048,
+        2048
+      ],
+      "source_dimensions": [
+        2048,
+        2048
+      ],
+      "source_import_files": [
+        "D:/UE5.7/test1/ArtSource/Mechs/ControlRigMechStyle_20261004/Production_B_v4/Textures/ControlRigMech_FunctionalMask_2K.png"
+      ],
+      "srgb": false,
+      "compression": "<TextureCompressionSettings.TC_MASKS: 2>"
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_InternalLineMask_2K",
+      "class": "Texture2D",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [],
+      "runtime_reported_dimensions_at_query": [
+        2048,
+        2048
+      ],
+      "source_dimensions": [
+        2048,
+        2048
+      ],
+      "source_import_files": [
+        "D:/UE5.7/test1/ArtSource/Mechs/ControlRigMechStyle_20261004/Production_B_v4/Textures/ControlRigMech_InternalLineMask_2K.png"
+      ],
+      "srgb": false,
+      "compression": "<TextureCompressionSettings.TC_MASKS: 2>"
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_ORM_2K",
+      "class": "Texture2D",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [],
+      "runtime_reported_dimensions_at_query": [
+        2048,
+        2048
+      ],
+      "source_dimensions": [
+        2048,
+        2048
+      ],
+      "source_import_files": [
+        "D:/UE5.7/test1/ArtSource/Mechs/ControlRigMechStyle_20261004/Production_B_v4/Textures/ControlRigMech_ORM_2K.png"
+      ],
+      "srgb": false,
+      "compression": "<TextureCompressionSettings.TC_MASKS: 2>"
+    }
+  ],
+  "current_world": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4",
+  "review_actor_labels": [
+    "CRM_B_v4",
+    "CRM_Floor",
+    "CRM_Key",
+    "CRM_Ambient",
+    "CRM_Exposure",
+    "CRM_ReviewCamera",
+    "CRM_Backdrop"
+  ],
+  "actor_scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "animations": [
+    {
+      "name": "Mech_Deploy",
+      "source_duration_s": 5.0,
+      "delivered_duration_s": 5.0,
+      "native_motion_extra": {
+        "source_float_curve_count": 0,
+        "delivered_float_curve_count": 0,
+        "source_notify_count": 0,
+        "delivered_notify_count": 0,
+        "source_additive_type": "None",
+        "delivered_additive_type": "None"
+      },
+      "additional_data": {
+        "notifies": {
+          "available": false,
+          "reason": "AnimSequence: Property 'Notifies' for attribute 'notifies' on 'AnimSequence' is protected and cannot be read"
+        },
+        "meta_data": {
+          "source_count": 0,
+          "delivered_count": 0
+        },
+        "asset_user_data": {
+          "source_count": 0,
+          "delivered_count": 1
+        },
+        "sync_markers": {
+          "available": false,
+          "reason": "AnimSequence: Failed to find property 'sync_markers' for attribute 'sync_markers' on 'AnimSequence'"
+        }
+      }
+    },
+    {
+      "name": "Mech_Idle",
+      "source_duration_s": 8.666666984558105,
+      "delivered_duration_s": 8.666666984558105,
+      "native_motion_extra": {
+        "source_float_curve_count": 0,
+        "delivered_float_curve_count": 0,
+        "source_notify_count": 0,
+        "delivered_notify_count": 0,
+        "source_additive_type": "None",
+        "delivered_additive_type": "None"
+      },
+      "additional_data": {
+        "notifies": {
+          "available": false,
+          "reason": "AnimSequence: Property 'Notifies' for attribute 'notifies' on 'AnimSequence' is protected and cannot be read"
+        },
+        "meta_data": {
+          "source_count": 0,
+          "delivered_count": 0
+        },
+        "asset_user_data": {
+          "source_count": 0,
+          "delivered_count": 1
+        },
+        "sync_markers": {
+          "available": false,
+          "reason": "AnimSequence: Failed to find property 'sync_markers' for attribute 'sync_markers' on 'AnimSequence'"
+        }
+      }
+    },
+    {
+      "name": "Mech_Walk",
+      "source_duration_s": 5.0,
+      "delivered_duration_s": 5.0,
+      "native_motion_extra": {
+        "source_float_curve_count": 0,
+        "delivered_float_curve_count": 0,
+        "source_notify_count": 0,
+        "delivered_notify_count": 0,
+        "source_additive_type": "None",
+        "delivered_additive_type": "None"
+      },
+      "additional_data": {
+        "notifies": {
+          "available": false,
+          "reason": "AnimSequence: Property 'Notifies' for attribute 'notifies' on 'AnimSequence' is protected and cannot be read"
+        },
+        "meta_data": {
+          "source_count": 0,
+          "delivered_count": 0
+        },
+        "asset_user_data": {
+          "source_count": 0,
+          "delivered_count": 1
+        },
+        "sync_markers": {
+          "available": false,
+          "reason": "AnimSequence: Failed to find property 'sync_markers' for attribute 'sync_markers' on 'AnimSequence'"
+        }
+      }
+    }
+  ],
+  "source_pack_preserved": true,
+  "PIE": "not_run",
+  "FPS": "not_measured"
+}

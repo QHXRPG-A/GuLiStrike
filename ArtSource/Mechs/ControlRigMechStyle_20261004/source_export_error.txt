@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "D:/UE5.7/test1/ArtSource/Mechs/ControlRigMechStyle_20261004/Scripts/export_source_ue.py", line 160, in <module>
+    main()
+  File "D:/UE5.7/test1/ArtSource/Mechs/ControlRigMechStyle_20261004/Scripts/export_source_ue.py", line 108, in main
+    model = anim.get_data_model()
+            ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'AnimSequence' object has no attribute 'get_data_model'

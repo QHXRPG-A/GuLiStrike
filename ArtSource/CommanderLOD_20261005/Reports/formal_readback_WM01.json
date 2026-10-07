@@ -1,0 +1,86 @@
+{
+  "success": true,
+  "name": "WM01",
+  "id": 2,
+  "formal_root": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1",
+  "models": [
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/WM01/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "formal": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "lod_count": 3,
+      "triangles": [
+        38843,
+        9711,
+        776
+      ],
+      "sections": [
+        2,
+        2,
+        2
+      ],
+      "screen_sizes": [
+        1.0,
+        0.3199999928474426,
+        0.02500000037252903
+      ],
+      "geometry": [
+        {
+          "lod": 0,
+          "corners": 116529,
+          "uv_channels": 3,
+          "sha256": "b6923eb6112d313f9aef1f453d219c503bae817e09755f99b3d135eb4d3abc6e",
+          "candidate_equal": true
+        },
+        {
+          "lod": 1,
+          "corners": 116529,
+          "uv_channels": 3,
+          "sha256": "b6923eb6112d313f9aef1f453d219c503bae817e09755f99b3d135eb4d3abc6e",
+          "candidate_equal": true
+        },
+        {
+          "lod": 2,
+          "corners": 116529,
+          "uv_channels": 3,
+          "sha256": "b6923eb6112d313f9aef1f453d219c503bae817e09755f99b3d135eb4d3abc6e",
+          "candidate_equal": true
+        }
+      ],
+      "normals_and_colors": "Native duplication; no normal/color authoring or regeneration operation performed.",
+      "sockets": [
+        "FX_AimTarget",
+        "FX_Muzzle_Basic_01",
+        "FX_Missile_01",
+        "FX_Missile_02",
+        "FX_Muzzle_Basic_02",
+        "Rigid_UpperYaw",
+        "Rigid_GunPitch_01",
+        "Rigid_GunPitch_02",
+        "Rigid_Disc_FL",
+        "Rigid_Disc_FR",
+        "Rigid_Disc_RL",
+        "Rigid_Disc_RR",
+        "FX_Hover_FL",
+        "FX_Hover_FR",
+        "FX_Hover_RL",
+        "FX_Hover_RR",
+        "Rigid_LegRoot_FL",
+        "Rigid_LegEnd_FL",
+        "Rigid_LegRoot_FR",
+        "Rigid_LegEnd_FR",
+        "Rigid_LegRoot_RL",
+        "Rigid_LegEnd_RL",
+        "Rigid_LegRoot_RR",
+        "Rigid_LegEnd_RR"
+      ]
+    }
+  ],
+  "asset_count": 6,
+  "animation": null,
+  "closure": "No candidate package dependencies",
+  "approval_B": "approved",
+  "content_sha256": "761bc5edd06b08c598771943b46ebcbd7bc8285b42d345e234fea0907d02783d",
+  "native_compile": "passed",
+  "pie": "not_run",
+  "fps": "not_run"
+}

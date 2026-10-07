@@ -1,0 +1,17 @@
+{
+  "editor_map": "<Object '/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype' (0x00000189A029E000) Class 'World'>",
+  "pie_active": false,
+  "play_methods": [
+    "editor_play_simulate",
+    "editor_request_begin_play",
+    "editor_request_end_play",
+    "is_in_play_in_editor"
+  ],
+  "qa_library": true,
+  "qa_methods": [
+    "build_missile_fixture",
+    "fire_missile_fixture",
+    "missile_metrics"
+  ],
+  "editor_play_api": "X.editor_play_simulate() -> None\r\nEditor Play Simulate\r\ndeprecated: The Editor Scripting Utilities Plugin is deprecated - Use the function in Level Editor Subsystem"
+}

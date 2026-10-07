@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "checked_utc": "2026-09-30T09:13:59.846225+00:00",
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "pie": false,
+  "runtime_tests": "not_run",
+  "preview_class": "/Script/GuLiStrike.GuLiWarMachineHoverPreviewComponent",
+  "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Actor_2",
+  "instances": 13,
+  "custom_floats": 51,
+  "mesh": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+  "camera": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_12",
+  "note": "重防号转向预览：原点(8000,-16000,0)，3列共13例，保留前7项，新增左90/右90/180与跨角度边界/连续反向/移动弯道/转向稳定炮管与显隐导弹仓。2026-09-30本次源码已编译加载，请自行进入PIE观察；运行观感尚待玩家验收。示意不触发伤害；实战选原部队WM01，移动/停下攻击，并在解锁导弹仓后按Q，观察出膛与0.12s轨迹衔接。网络、死亡和传送应另走真实玩法验证。gs.Commander.HoverPreview 0关闭全部预览。",
+  "dirty_maps": [],
+  "note_updated_and_saved": true
+}

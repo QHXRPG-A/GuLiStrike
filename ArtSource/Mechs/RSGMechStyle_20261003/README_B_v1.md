@@ -1,6 +1,6 @@
 # RSG 六足机器人 — Blender B-v1 实际成品待审核
 
-已按通过的 A-v3 在 Blender 完成减面、可编辑分件、镜像、44 骨骼刚性绑定、四档 LOD、三档明暗与结构线。头球红框中的中央凹嵌面板已改天蓝，外围浅黄保留；误改的球后方面板已恢复暖白。
+指挥官模型统一为 LOD0 近景、LOD1 中景、LOD2 远景；当前规范与候选见[本次迁移](../../../Progress/RequirementDocument/20261005-指挥官三档LOD纠正与资源迁移.md)。本轮保留已审近景，新的实际版本 B 待审核，正式资源待放行后切换。
 
 ![实际 Blender B-v1](D:/UE5.7/test1/ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/ReviewImages/RSG_B_v1_Hero.png)
 
@@ -20,25 +20,6 @@
 - [落地](D:/UE5.7/test1/ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/AnimationPreviews/A_FPS_Mech_Landing_01.mp4)
 - [死亡](D:/UE5.7/test1/ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/AnimationPreviews/A_FPS_Mech_Death_01.mp4)
 
-## 四档预算与远景造型
-
-| LOD | 本体 | 描边 | 合计 | 区段 | 屏幕阈值 |
-|---|---:|---:|---:|---|---:|
-| 0 | 29,756 | 7,582 | 37,338 | 1+1 | 1.00 |
-| 1 | 12,919 | 2,986 | 15,905 | 1+1 | 0.40 |
-| 2 | 4,652 | 990 | 5,642 | 1+1 | 0.16 |
-| 3 | 1,944 | 0 | 1,944 | 1+0 | 0.06 |
-
-各档本体只有一个材质区段，LOD0–2 另一个描边区段。LOD0/1/2 保留 392 个源组件；LOD3 保留 217 个主要分件，省略小硬件，保留六足、上下炮组、头球、背环与天线。LOD2/3 用封闭分件简化避免薄甲尖片；LOD1/2 描边严格复制对应本体表面并成对选择。
-
-LOD1 内线强度 0.85；LOD2 头球/背环内线强度 0.45，新简化表面省略细线，保留主要色块和实际描边；LOD3 内线和描边均为 0。以下是 Blender 屏幕占比近似图，实际项目三档指挥官镜头仍在 B 放行后于 UE 验证。
-
-| LOD | 放大检查 | 相对屏幕占比 |
-|---|---|---|
-| 0 | [查看形体](D:/UE5.7/test1/ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/LODPreviews/RSG_B_v1_LOD0_Inspection.png) | [查看远景](D:/UE5.7/test1/ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/LODPreviews/RSG_B_v1_LOD0_Screen.png) |
-| 1 | [查看形体](D:/UE5.7/test1/ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/LODPreviews/RSG_B_v1_LOD1_Inspection.png) | [查看远景](D:/UE5.7/test1/ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/LODPreviews/RSG_B_v1_LOD1_Screen.png) |
-| 2 | [查看形体](D:/UE5.7/test1/ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/LODPreviews/RSG_B_v1_LOD2_Inspection.png) | [查看远景](D:/UE5.7/test1/ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/LODPreviews/RSG_B_v1_LOD2_Screen.png) |
-| 3 | [查看形体](D:/UE5.7/test1/ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/LODPreviews/RSG_B_v1_LOD3_Inspection.png) | [查看远景](D:/UE5.7/test1/ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/LODPreviews/RSG_B_v1_LOD3_Screen.png) |
 
 ## 制作与绑定记录
 
@@ -50,7 +31,6 @@ LOD1 内线强度 0.85；LOD2 头球/背环内线强度 0.45，新简化表面�
 
 ## 材质、贴图与版本
 
-固定已审艺术光向，三档亮度乘数 0.42 / 0.74 / 1.0，阈值 0 / 0.12 / 0.55。2K BaseColor 为平色，未烘焙照明；独立 2K LineMask 的 R 为内部结构线、G 为琥珀功能灯遮罩。描边为独立壳材质；成品渲染不使用 Freestyle。LOD1–3 第二 UV 通道用于稳定取配色色块，内线仍从 UV0 独立读取，避免减面时串色。
 
 [BaseColor 2K](D:/UE5.7/test1/ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/Textures/T_RSGMech_BaseColor.png) · [独立线稿/灯遮罩 2K](D:/UE5.7/test1/ArtSource/Mechs/RSGMechStyle_20261003/Production_B_v1/Textures/T_RSGMech_LineMask.png)
 
@@ -63,3 +43,6 @@ LOD1 内线强度 0.85；LOD2 头球/背环内线强度 0.45，新简化表面�
 当前 B-v1 为实际成品待审核，没有登记用户 B 通过。通过后按原计划先导出回读，再新建 /Game/GuLiStrike/Robots/RSGMech 正式副本，原资源包保留，完成物理资产、七动画副本、等效 UE 着色与三档指挥官镜头验证。
 
 依据用户原计划以及 [模型制作技能](D:/UE5.7/test1/.agents/skills/guli-model-production/SKILL.md) 与 [美术规范](D:/UE5.7/test1/Progress/RequirementDocument/GuLiStrike美术规范.md) 中的“用户审核 B → UE 导入”，本次交付停在 B，不提前写入正式 UE 资源。
+
+> 2026-10-05 LOD 勘误：按用户明确指令更正以上相关段落和预算说明；其他历史内容保留。修改范围及原文校验见[勘误清单](../../CommanderLOD_20261005/Reports/document_erratum.json)。冻结模型及原始机器回读不作为当前制作入口。
+

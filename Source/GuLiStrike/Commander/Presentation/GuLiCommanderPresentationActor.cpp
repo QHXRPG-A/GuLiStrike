@@ -945,7 +945,10 @@ void AGuLiCommanderPresentationActor::BeginPredictedMove(
 				: EffectiveMoveSpeedCmPerSecond;
 			Prediction.MaximumDistance = FMath::Min(Distance, GuLiRuntimeTuning::CalculatePredictionDistance(
 				UnitMoveSpeed, PredictionDurationSeconds, MaximumPredictionDistanceCentimeters));
-			Prediction.TargetYawDegrees = Prediction.Direction.Rotation().Yaw;
+			const auto* Definition = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>()
+				->FindSoldierDefinition(ReliableState->UnitTypeId);
+			Prediction.TargetYawDegrees = Definition && Definition->FacingPolicy == EGuLiSoldierFacingPolicy::FixedSpawnYaw
+				? Presented->PresentedTransform.Rotator().Yaw : Prediction.Direction.Rotation().Yaw;
 		}
 	}
 }

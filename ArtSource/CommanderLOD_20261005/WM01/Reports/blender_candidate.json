@@ -1,0 +1,78 @@
+{
+  "name": "WM01",
+  "id": 2,
+  "display_name": "重防号",
+  "blend": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\WM01\\WM01_3Tier.blend",
+  "triangles": [
+    38843,
+    9687,
+    776
+  ],
+  "meshes": [
+    {
+      "source": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 38843,
+          "mesh_names": [
+            "SM_WarMachine_Rigid_LOD0"
+          ],
+          "uv_channels": [
+            3
+          ],
+          "materials": [
+            2
+          ]
+        },
+        {
+          "index": 1,
+          "triangles": 9687,
+          "mesh_names": [
+            "SM_WarMachine_Rigid_LOD1"
+          ],
+          "uv_channels": [
+            3
+          ],
+          "materials": [
+            2
+          ]
+        },
+        {
+          "index": 2,
+          "triangles": 776,
+          "mesh_names": [
+            "SM_WarMachine_Rigid_LOD2"
+          ],
+          "uv_channels": [
+            3
+          ],
+          "materials": [
+            2
+          ]
+        }
+      ],
+      "lod0_signature": "b04e47255d577c33f2d86c87d3deb9e1f4e53d032e1bc91789ca69c1d79c94ad",
+      "source_lod0_signature": "b04e47255d577c33f2d86c87d3deb9e1f4e53d032e1bc91789ca69c1d79c94ad",
+      "lod0_preserved": true,
+      "native_triangles": [
+        38843,
+        9711,
+        776
+      ],
+      "fbx_triangles": [
+        38843,
+        9687,
+        776
+      ],
+      "export_triangle_delta": [
+        0,
+        24,
+        0
+      ],
+      "armatures": 0
+    }
+  ],
+  "lod0_preserved": true,
+  "approval": "pending"
+}

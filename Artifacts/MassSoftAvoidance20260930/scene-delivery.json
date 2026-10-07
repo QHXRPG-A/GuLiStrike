@@ -1,0 +1,383 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "runtime_verified": false,
+  "native_build_executed": false,
+  "gameplay_started": false,
+  "saved": true,
+  "actors": [
+    {
+      "label": "MassSoft_Entry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_45",
+      "class": "Note",
+      "location": [
+        0.0,
+        72500.0,
+        -866.0462924959868
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "Mass软避障验收：本次原生代码待单独编译加载。保留原军队红蓝各250名，不自动启动PIE。玩家自行开局后，选本方队伍按S停止自动推进，取25台重防号或混编队伍到西侧观察区。区域中心(-20000,72000)，编辑器定位MassSoft_Overview相机；W/E/S/N标记距中心各40米。"
+    },
+    {
+      "label": "MassSoft_Gather25",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_46",
+      "class": "Note",
+      "location": [
+        -21000.0,
+        71000.0,
+        -1266.706878063724
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "①选25台重防号，在中心标记集结并连续改令。圈外径12.5米；允许短暂穿入，开阔场景侵入深度超过双方半径和20%不可持续超过1秒，压力解除约1秒恢复分散。"
+    },
+    {
+      "label": "MassSoft_Mixed",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_47",
+      "class": "Note",
+      "location": [
+        -19000.0,
+        71000.0,
+        -1266.706878063724
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "②混编重防号和普通单位向中心集结；各自圈等于自身Mass半径，不读取模型包围盒。普通默认圈外径3米；模型尺寸、表内额外净距保持原值且额外净距不启用。"
+    },
+    {
+      "label": "MassSoft_Crossing",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_48",
+      "class": "Note",
+      "location": [
+        -21000.0,
+        73000.0,
+        -1266.706878063724
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "③用Ctrl+1/2保存两组友军。第一组W→E，第二组S→N，连续下令使队伍在中心交叉。观察切向通行与分散，不能靠圈边硬卡或强制位置弹开。"
+    },
+    {
+      "label": "MassSoft_HeadOn",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_49",
+      "class": "Note",
+      "location": [
+        -19000.0,
+        73000.0,
+        -1266.706878063724
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "④两组友军分别在W、E，互换目的地迎面通行；观察双方相对前进方向一致靠右避让。可各取12/13台重防号；站位均留在中心65米范围内的开阔地。"
+    },
+    {
+      "label": "MassSoft_StoppedPush",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_50",
+      "class": "Note",
+      "location": [
+        -20000.0,
+        70400.0,
+        -1266.706878063724
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "⑤在中心停一组友军并按S；另一组W→E穿过。停止友军可被慢推（最高自身速度25%），压力消失停在新位置，S停止保留、不恢复旧绿线或自动推进。另测静止敌军不被敌方压力推移。"
+    },
+    {
+      "label": "MassSoft_CircleSize",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_51",
+      "class": "Note",
+      "location": [
+        -20000.0,
+        77500.0,
+        -1261.0921225054046
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "尺寸参考：Radius12m5与Radius3m为固定12.5米/3米外径参考圈，无碰撞、不参与导航。将对应单位移到圈中心比较外缘（目标误差≤1厘米）。圈和模型应共享显示中心；相位/死亡/外控锁定应沿用排除，导航失败不得穿环境障碍。"
+    },
+    {
+      "label": "MassSoft_C",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_12",
+      "class": "StaticMeshActor",
+      "location": [
+        -20000.0,
+        72000.0,
+        -1758.706878063724
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.5625,
+        1.5625001241763532,
+        0.004
+      ],
+      "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "outer_diameter_cm": [
+        150.0,
+        150.0
+      ]
+    },
+    {
+      "label": "MassSoft_W",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_13",
+      "class": "StaticMeshActor",
+      "location": [
+        -24000.0,
+        72000.0,
+        -1758.0466150671894
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.5625,
+        1.5625001241763532,
+        0.004
+      ],
+      "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "outer_diameter_cm": [
+        150.0,
+        150.0
+      ]
+    },
+    {
+      "label": "MassSoft_E",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_14",
+      "class": "StaticMeshActor",
+      "location": [
+        -16000.0,
+        72000.0,
+        -1758.7068780637203
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.5625,
+        1.5625001241763532,
+        0.004
+      ],
+      "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "outer_diameter_cm": [
+        150.0,
+        150.0
+      ]
+    },
+    {
+      "label": "MassSoft_S",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_15",
+      "class": "StaticMeshActor",
+      "location": [
+        -20000.0,
+        68000.0,
+        -1762.671056773521
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.5625,
+        1.5625001241763532,
+        0.004
+      ],
+      "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "outer_diameter_cm": [
+        150.0,
+        150.0
+      ]
+    },
+    {
+      "label": "MassSoft_N",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_16",
+      "class": "StaticMeshActor",
+      "location": [
+        -20000.0,
+        76000.0,
+        -1754.7434100186877
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.5625,
+        1.5625001241763532,
+        0.004
+      ],
+      "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "outer_diameter_cm": [
+        150.0,
+        150.0
+      ]
+    },
+    {
+      "label": "MassSoft_Radius12m5",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_17",
+      "class": "StaticMeshActor",
+      "location": [
+        -20000.0,
+        77500.0,
+        -1753.0921225054046
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        13.020833333333334,
+        13.020834368136276,
+        0.004
+      ],
+      "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "outer_diameter_cm": [
+        1250.0,
+        1250.0
+      ]
+    },
+    {
+      "label": "MassSoft_Radius3m",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_18",
+      "class": "StaticMeshActor",
+      "location": [
+        -21200.0,
+        77500.0,
+        -1753.092122505401
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        3.125,
+        3.1250002483527064,
+        0.004
+      ],
+      "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "outer_diameter_cm": [
+        300.0,
+        300.0
+      ]
+    },
+    {
+      "label": "MassSoft_Overview",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_16",
+      "class": "CameraActor",
+      "location": [
+        -20000.0,
+        82000.0,
+        15233.293121936276
+      ],
+      "rotation": [
+        -6.009172466292512e-07,
+        -59.534454345703125,
+        -90.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "center": [
+    -20000.0,
+    72000.0,
+    -1766.706878063724
+  ],
+  "clear_radius_cm": 6753.668262988078,
+  "native_ring_radii_cm": [
+    48.0,
+    47.999996185302734
+  ],
+  "population": {
+    "red": 250,
+    "blue": 250,
+    "deployment_overrides": 0
+  },
+  "army_layout_preserved": true,
+  "unrelated_actors_preserved": 214,
+  "resource_layout_hash": "61a8ab9f86f2f37336d20e11572540739258fa9e",
+  "resource_validation": {
+    "success": "True",
+    "message": "Resource authoring source and baked runtime definition are current.",
+    "initial_soldier_count": "500",
+    "validated_initial_soldier_count": "500"
+  }
+}

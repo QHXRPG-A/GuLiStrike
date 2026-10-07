@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "packages_reloaded": true,
+  "note": "Three explicit production packages were reloaded; the first immediate check observed asynchronous shader compilation.",
+  "diagnostics": "System valid=1 ready=1 gpu=1\nEditor needs_compile=0 outstanding_including_gpu=0\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n",
+  "parameters": {
+    "HoverMinTrailLength": 500.0,
+    "HoverMaxTrailLength": 1500.0,
+    "HoverTrailGrowTime": 1.0
+  },
+  "metadata": "v2 attached core; speed720=500cm speed1440=1500cm; grow 1s on each start; clear cyan GPU distance history; formal application authorized 20260930"
+}

@@ -1,0 +1,39 @@
+{
+  "A_v6": {
+    "pixels": {
+      "bright": 571063,
+      "middle": 184320,
+      "shadow": 5360
+    },
+    "percent": {
+      "bright": 75.07,
+      "middle": 24.23,
+      "shadow": 0.7
+    },
+    "source_file": "StyleAudit_A_v6/Renders/MilitaryFactory_BandIDs.png",
+    "sha256": "9699dbaed02a09c065ffbf58f11898276d2b78e32daa5f20a73871469a6b3f75"
+  },
+  "A_v7": {
+    "pixels": {
+      "bright": 358289,
+      "middle": 286451,
+      "shadow": 100019
+    },
+    "percent": {
+      "bright": 48.11,
+      "middle": 38.46,
+      "shadow": 13.43
+    },
+    "source_file": "StyleAudit_A_v6/Preview_Candidate_v1/Renders/MilitaryFactory_BandIDs.png",
+    "sha256": "77441131213ac2271a8d42134de534db183783c0873b611e425d8dc047f94711"
+  },
+  "version": "SSF_StyleVisibility_A_v7",
+  "success": true,
+  "asset": "MilitaryFactory",
+  "view": "Hero",
+  "method": "Native connected ColorRamp diagnostic IDs; saturated core pixels only, antialiasing/logo excluded.",
+  "ratios_are_specific_to_this_camera": true,
+  "A_v7_palette_unchanged": true,
+  "preview_and_full_render_mean_RGB_difference_below_0_1": true,
+  "interpretation": "A_v6 has connected linework and all three bands, but visible shadow coverage is only 0.70%; A_v7 adjusts thresholds and line widths while preserving palette values."
+}

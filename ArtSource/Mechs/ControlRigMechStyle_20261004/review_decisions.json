@@ -1,0 +1,103 @@
+{
+  "work_id": "WORK-20261004-002",
+  "art_revision": "1.2",
+  "A": {
+    "status": "approved",
+    "submitted_version": "A-v2",
+    "manifest_path": "References_A_v2/reference_manifest.json",
+    "manifest_sha256": "ea47e95d2e5ee1f8d2bfe3ccd1fd9b249873e99fe31d93f9c9935b72af1ed9ac",
+    "user_decision": "通过",
+    "user_message_evidence": "审核通过，blender已开，根据参考图和源模型一比一制作",
+    "decision_date": "2026-10-04"
+  },
+  "B": {
+    "status": "approved_for_UE_import",
+    "submitted_version": "B-v4",
+    "manifest_path": "Production_B_v4/production_manifest.json",
+    "manifest_sha256": "802ade7bbd94e336ec8d6b2fb7fa8dbe36efc7a27a20cb7ba37df34fc144da16",
+    "blender_sha256": "bf566b78fb3fd03c516016ed0e32bc7ee8412929c303283985340d5d5b5d853b",
+    "user_decision": "导入放行",
+    "user_message_evidence": "导入至ue",
+    "budget_result": "over_budget_delta_unchanged",
+    "line_direction": "sparse internal lines; base outline preserved",
+    "decision_date": "2026-10-04",
+    "approval_record": "Approvals\\Approval_B_v4_Import_20261004.json"
+  },
+  "formal_UE": {
+    "status": "imported_and_saved",
+    "target": "/Game/GuLiStrike/Mechs/ControlRigMech",
+    "delivery_version": "UE-v1",
+    "source_B_version": "B-v4",
+    "verification": "partial; art import/readback/render passed, budget unmet and FPS not measured",
+    "delivery_path": "UE_Delivery_v1/README.md",
+    "preview_report": "UE_Delivery_v1/ue_preview_readback_report.json",
+    "production_asset_count": 16,
+    "preview_asset_count": 2,
+    "source_pack_preserved": true
+  },
+  "A_history": [
+    {
+      "status": "revision_requested",
+      "submitted_version": "A-v1",
+      "manifest_path": "References_A_v1/reference_manifest.json",
+      "manifest_sha256": "93324b32cb12fb9273bdb3d7ad5c60ce59798655f30bb657f53cca7f18db4fb4",
+      "user_decision": "修改后再审（配色）",
+      "user_message_evidence": "改成这种配色",
+      "decision_date": "2026-10-04",
+      "attachment_evidence": "References_A_v2/Inputs/UserPalette_20261004.jpg"
+    }
+  ],
+  "asset_palette_revision": {
+    "version": "A-v2",
+    "date": "2026-10-04",
+    "user_message_evidence": "改成这种配色",
+    "palette_srgb": {
+      "DeepTealGray": "#2C3735",
+      "RustRed": "#8E3A2A",
+      "MutedTeal": "#557B78",
+      "SandBeige": "#D5C09C"
+    },
+    "global_art_revision_changed": false
+  },
+  "B_history": [
+    {
+      "status": "withdrawn_by_assistant_visual_QA",
+      "submitted_version": "B-v1",
+      "manifest_path": "Production_B_v1/production_manifest.json",
+      "manifest_sha256": "00fa36bd0bc046db39011d5fbbeeaf7d8442d95989c0ace028ed80bdee462853",
+      "blender_sha256": "29f7d82e24e8a29caae4ec69bb5a4c04d3595b1c5a63b214eed9ca270ab21253",
+      "user_decision": null,
+      "user_message_evidence": null,
+      "budget_result": "over_budget_delta_submitted",
+      "portable_line_fidelity": "partial",
+      "reason": "远档全局压面破坏装配，视频图序列被错误编码为首帧重复；用户未审核本版"
+    },
+    {
+      "status": "revision_requested",
+      "submitted_version": "B-v2",
+      "manifest_path": "Production_B_v2/production_manifest.json",
+      "manifest_sha256": "79018077be8ed6c1ce1d1679594fcb8b01040dd85918d169251f1629818d6fa9",
+      "blender_sha256": "8e94a4547875ba54b731770b77297a229fbe36e53112a634624bb6502dee88ef",
+      "user_decision": "实际模型线稿修订",
+      "user_message_evidence": [
+        "所以线稿没搞？",
+        "三渲二，线稿，三档明暗"
+      ],
+      "budget_result": "over_budget_delta_submitted",
+      "portable_line_fidelity": "partial",
+      "decision_date": "2026-10-04"
+    },
+    {
+      "status": "revision_requested",
+      "submitted_version": "B-v3",
+      "manifest_path": "Production_B_v3/production_manifest.json",
+      "manifest_sha256": "7b9196d4c356751e7eeef763a4a4e3c57966161e132ea7324aef648eebe0e2bf",
+      "blender_sha256": "6ceea9e11e49203cd00e8cdfbd24f75de99c6ff2af6ba5239a641d3b08b037c1",
+      "user_decision": "降低内部线稿含量，保留基础轮廓",
+      "user_message_evidence": "线稿含量低一些，保留基础轮廓",
+      "budget_result": "over_budget_delta_submitted",
+      "line_fidelity": "actual_model_shader_and_outline_submitted; UE equivalent pending",
+      "decision_date": "2026-10-04"
+    }
+  ]
+}

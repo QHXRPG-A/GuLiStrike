@@ -1,0 +1,134 @@
+{
+  "success": true,
+  "pie_started": false,
+  "images_read": false,
+  "player_acceptance": "pending",
+  "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_UnitSkills",
+  "new_native_property_loaded": true,
+  "import": {
+    "tables": [
+      {
+        "asset": "DT_GuLiStrikeCommander_UnitSkills",
+        "source_rows": [
+          "SoldierA_Strafe",
+          "WM01_Strafe",
+          "SoldierA_Test",
+          "WM01_Test",
+          "WM01_MissileLauncher"
+        ],
+        "created": false,
+        "row_names": [
+          "SoldierA_Strafe",
+          "WM01_Strafe",
+          "SoldierA_Test",
+          "WM01_Test",
+          "WM01_MissileLauncher"
+        ],
+        "row_checks": {
+          "SoldierA_Strafe": true,
+          "WM01_Strafe": true,
+          "SoldierA_Test": true,
+          "WM01_Test": true,
+          "WM01_MissileLauncher": true
+        },
+        "imported": true
+      }
+    ],
+    "config_wired": [
+      "DT_GuLiStrikeCommander_UnitSkills"
+    ],
+    "unwired": [],
+    "errors": [],
+    "part_ids": {},
+    "orphan_tables": []
+  },
+  "rows": [
+    {
+      "Name": "SoldierA_Strafe",
+      "Id": 1,
+      "Note": "A默认普攻",
+      "UnitTypeId": 1,
+      "SlotId": "BasicAttack",
+      "SkillId": "Strafe",
+      "bDefault": true,
+      "Damage": 10,
+      "AttackRatePerSecond": 1,
+      "RangeCentimeters": 2000,
+      "TriggerMode": "Automatic",
+      "ProjectileSpeedCentimetersPerSecond": 2400,
+      "ProjectileLifetimeSeconds": 5,
+      "ProjectileSweepRadiusCentimeters": 3,
+      "ProjectileSpreadAngleDegrees": 10
+    },
+    {
+      "Name": "WM01_Strafe",
+      "Id": 2,
+      "Note": "WM01 默认普攻",
+      "UnitTypeId": 2,
+      "SlotId": "BasicAttack",
+      "SkillId": "Strafe",
+      "bDefault": true,
+      "Damage": 7.5,
+      "AttackRatePerSecond": 2,
+      "RangeCentimeters": 3000,
+      "TriggerMode": "Automatic",
+      "ProjectileSpeedCentimetersPerSecond": 2400,
+      "ProjectileLifetimeSeconds": 5,
+      "ProjectileSweepRadiusCentimeters": 3,
+      "ProjectileSpreadAngleDegrees": 10
+    },
+    {
+      "Name": "SoldierA_Test",
+      "Id": 3,
+      "Note": "A替换验证",
+      "UnitTypeId": 1,
+      "SlotId": "BasicAttack",
+      "SkillId": "StrafeTest",
+      "bDefault": false,
+      "Damage": 25,
+      "AttackRatePerSecond": 1,
+      "RangeCentimeters": 2400,
+      "TriggerMode": "Automatic",
+      "ProjectileSpeedCentimetersPerSecond": 0,
+      "ProjectileLifetimeSeconds": 0,
+      "ProjectileSweepRadiusCentimeters": 0,
+      "ProjectileSpreadAngleDegrees": 0
+    },
+    {
+      "Name": "WM01_Test",
+      "Id": 4,
+      "Note": "WM01 替换验证",
+      "UnitTypeId": 2,
+      "SlotId": "BasicAttack",
+      "SkillId": "StrafeTest",
+      "bDefault": false,
+      "Damage": 15,
+      "AttackRatePerSecond": 2,
+      "RangeCentimeters": 3600,
+      "TriggerMode": "Automatic",
+      "ProjectileSpeedCentimetersPerSecond": 0,
+      "ProjectileLifetimeSeconds": 0,
+      "ProjectileSweepRadiusCentimeters": 0,
+      "ProjectileSpreadAngleDegrees": 0
+    },
+    {
+      "Name": "WM01_MissileLauncher",
+      "Id": 5,
+      "Note": "主动Q导弹；射程与冷却取SecondaryUnitSkills/Skills；保留本槽伤害升级与挂点，自动攻速列不参与Q冷却",
+      "UnitTypeId": 2,
+      "SlotId": "MissileLauncher",
+      "SkillId": "WM01_HomingMissile",
+      "bDefault": true,
+      "Damage": 0,
+      "AttackRatePerSecond": 0.333333,
+      "RangeCentimeters": 3000,
+      "TriggerMode": "Active",
+      "ProjectileSpeedCentimetersPerSecond": 0,
+      "ProjectileLifetimeSeconds": 0,
+      "ProjectileSweepRadiusCentimeters": 0,
+      "ProjectileSpreadAngleDegrees": 0
+    }
+  ],
+  "row_struct": "/Script/GuLiStrike.GuLiStrikeCommanderUnitSkillsRow",
+  "saved": true
+}

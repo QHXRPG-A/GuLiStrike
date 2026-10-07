@@ -1,0 +1,48 @@
+{
+  "success": true,
+  "assistant_visual_review_completed": true,
+  "date": "2026-10-06",
+  "version": "SSF_Production_B_v1 / UE_Delivery_v1",
+  "target": "/Game/GuLiStrike/Buildings/SSFStylized",
+  "review_type": "assistant inspection of actual UE renders after independent resource reload",
+  "user_decision_scope": "Current visible B_v1 released for formal resource storage; gameplay integration deferred",
+  "source_comparison": "Production_B_v1/Overview_Buildings_B_v1.png and existing frozen B_v1 visual review; frozen sources untouched",
+  "inspected_evidence": {
+    "all_assets_and_manual_LODs": [
+      "Preview/UE_LOD_Contact_1.png",
+      "Preview/UE_LOD_Contact_2.png",
+      "Preview/UE_Props_3LOD_Contact.png"
+    ],
+    "automatic_LOD_distances": "Preview/UE_Distance_LOD_Contact.png",
+    "enlarged_far_assets": [
+      "Preview/MilitaryFactory_LOD2.png",
+      "Preview/StrategyCenter_LOD2.png",
+      "Preview/Drone_LOD2.png"
+    ],
+    "final_manual_LOD_evidence_verified": true,
+    "final_Reactor_full_foot_framing_verified": true,
+    "capture_count": 54,
+    "dimensions_per_native_capture": [2048, 2048]
+  },
+  "observations": [
+    "Six distinct B_v1 color schemes are present. Factory/Strategy lightened purple roles are retained; unchanged schemes, platform blue-grey and the original Drone colors are preserved.",
+    "The actual material displays fixed-direction band shading, panel line masks and near/mid outline hulls. There is no black default-material fallback after the HLSL identifier repair.",
+    "Far LOD removes fine panel lines and outline shells while retaining recognizable major color regions and source structural silhouettes.",
+    "The 300m/700m/1500m crops are explicitly labelled as crops. Actual automatic LOD selection follows asset screen size; Reactor and Strategy already use LOD2 at 300m.",
+    "Platform assembly, Drone fins and all six building assemblies remain present. Original Light remains a single-sided two-triangle translucent light patch; Lamp retains its necessary source geometry."
+  ],
+  "preview_corrections": [
+    "Renamed the reserved HLSL identifier line to inkMask in the owned UE body master; no approved palette or frozen Blender geometry changed.",
+    "Refreshed screenshots with an offscreen-rendering worker so the viewport redraws when hidden. Each manual skeletal capture must report the requested LOD.",
+    "Expanded only the isolated Reactor hero camera framing to include its full foot. No formal asset or map changed."
+  ],
+  "remaining_differences": [
+    "Current B_v1 retains 24 previously disclosed body triangle-cap differences. Original caps are unchanged.",
+    "Budget-limited outline hull coverage and locally reprojected panel lines remain weaker/different than A_v7 Freestyle; current UE delivery retains the visible B_v1 implementation."
+  ],
+  "limits": [
+    "This assistant image review does not create a new user art decision, silently change budgets or establish combat performance.",
+    "The 54 renders are isolated resource views in an unsaved Entry world. No gameplay map or actual battlefield composition was integrated.",
+    "Animation checks are separately recorded in ue_validation.json: 198 component pose samples cover 22 clips at three LODs and are not an every-frame visual gameplay review."
+  ]
+}

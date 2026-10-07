@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "scope": "source review and Python AST only; no gameplay or performance test",
+  "source_hashes": {
+    "Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiCombatEffectDefinition.h": "a296a496ea7cecc721e3f9d5a3553bba3a5be19210665729d2e9713b5ef42ddc",
+    "Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiCombatEffectDefinition.cpp": "3b226d25632bb7e8fdba0876af4371e376af7d9ef982522b0ea9a5d2201849f9",
+    "Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiCombatEffectPresentationSubsystem.cpp": "327ada82acadf1d467c1341c0ba6ffaec6c0bd1cf450af08df38e9d33ac2921c",
+    "Source\\GuLiStrike\\Gameplay\\CombatEffects\\GuLiMissileClusterPresentation.cpp": "18cd34368dba7a8ca24a6b83718ed4f8c5f87c32d4ab191092241056d2fd4bca",
+    "Scripts\\import_wm01_missile_v3.py": "469d9936b417c264064d3520ff7f69ab95fec30512017ff75128ec9d56f4c127",
+    "Scripts\\inspect_wm01_missile_cluster.py": "2a56897c1f8ed1403bf7b08bc0557b6c30bf8f022236fe87b54cd931e8823c77",
+    "Scripts\\build_wm01_missile_cluster_fx.py": "4cb77cec8e41190980848c91ec094138907d0159a3fe121dfa92ad62d2c30fb1",
+    "Scripts\\finalize_wm01_missile_cluster_assets.py": "39e41a11031c0df114612ff4a5839fa448f9f7babe5f8cf48965c6f57ba88e22",
+    "Scripts\\author_wm01_missile_scene.py": "2d8db3115f235382c1dc535b97c1f76f452ff882f045499b14c3a6463c5c0896",
+    "Scripts\\author_commander_lod_scene.py": "c1740d64b61f0685435611f6c53488b00f9ab20e29307fd6e82c8dbd2d9a583f",
+    "Scripts\\finalize_wm01_missile_production.py": "0c3779fd5680d8f4b5c4c441efdec17bdb60213ad99d5377330dcf39c0d78b9a"
+  },
+  "python_ast_count": 7,
+  "diff_check_exit": 0,
+  "routing": "Projectiles UnitTypeId=2, SlotId=MissileLauncher, projectile asset identity",
+  "removed": [
+    "candidate CVar",
+    "editor/map gate",
+    "asset opt-in boolean"
+  ],
+  "unchanged": [
+    "authority and replication",
+    "Excel gameplay and visual values",
+    "resource readiness fallback",
+    "manual diagnostics via Enabled 0/1"
+  ],
+  "build_repair": "MissileClusterCellSize remains 4000cm; avoids anonymous namespace collision in unity builds"
+}

@@ -1,0 +1,76 @@
+{
+  "success": true,
+  "name": "DefaultSoldier",
+  "id": 1,
+  "formal_root": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1",
+  "models": [
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/DefaultSoldier/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "lod_count": 3,
+      "triangles": [
+        37338,
+        15905,
+        1944
+      ],
+      "sections": [
+        2,
+        2,
+        1
+      ],
+      "screen_sizes": [
+        1.0,
+        0.4000000059604645,
+        0.05999999865889549
+      ],
+      "geometry": [
+        {
+          "lod": 0,
+          "corners": 112014,
+          "uv_channels": 3,
+          "sha256": "9e9c16fc160949570c9bf116634a24e667eae173cd263b4f955f192199d263db",
+          "candidate_equal": true
+        },
+        {
+          "lod": 1,
+          "corners": 47715,
+          "uv_channels": 3,
+          "sha256": "406a06f38f7dcb702f66d35b1ecee9f01b4bbe5a2debc664113c67a8c434e07e",
+          "candidate_equal": true
+        },
+        {
+          "lod": 2,
+          "corners": 5832,
+          "uv_channels": 3,
+          "sha256": "4b57e4651efce4a58a0c72a94952b30b12a5dc4c8b9bbf8c19f73cc8aaac63b2",
+          "candidate_equal": true
+        }
+      ],
+      "normals_and_colors": "Native duplication; no normal/color authoring or regeneration operation performed.",
+      "sockets": []
+    }
+  ],
+  "asset_count": 15,
+  "animation": {
+    "asset": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+    "vertex_animation": false,
+    "bones": 44,
+    "clips": [
+      "Idle",
+      "Forward",
+      "Backward",
+      "Left",
+      "Right",
+      "Death",
+      "Landing"
+    ],
+    "vertex_lods": 0,
+    "texture_validation_errors": []
+  },
+  "closure": "No candidate package dependencies",
+  "approval_B": "approved",
+  "content_sha256": "761bc5edd06b08c598771943b46ebcbd7bc8285b42d345e234fea0907d02783d",
+  "native_compile": "passed",
+  "pie": "not_run",
+  "fps": "not_run"
+}

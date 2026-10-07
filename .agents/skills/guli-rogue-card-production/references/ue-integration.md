@@ -74,6 +74,12 @@
 
 AutoWrapText=false、WrapTextAt=0；沿用DescriptionFit的ScaleToFit/DownOnly，完整显示一行而不裁断或省略关键增益。说明HitTestInvisible且无Tooltip，不新增输入或焦点归属。`Scripts/Cards/card_rich_text.py`为可复用制作入口；`apply_single_line_card_text.py`在匹配原生构建已加载、UE空闲时定向导入文本、迁移控件并保存回读真实F4入口。不得在游玩期间执行，不因文案修改重跑卡图、材质或整套选牌图表。
 
+接入时把文本数据、UMG控件和赋值代码视为同一交付范围：
+
+- 核对当前加载模块的`SetLiveCardText`、正式`WBP_CardText.CardDescription`实际类型和蓝图`SetContent`目标一致；此前只更新原生RichTextBlock赋值、遗漏旧TextBlock控件时，整行说明变空白。
+- 核对公共文本→StringTable→FText格式化→RichTextBlock链路，`Unit`/`Gain`标签与样式行名精确匹配；把黄色和粗体值回溯到Excel。Slate样式导出可能是结构文本，按实际格式解码字段，不把解析失败当成样式缺失。
+- 保存后读取五条当前说明、样式和控件配置，再分别记录构建/加载、资源回读与玩家效果。没有实际看到的F4结果保持待验；重选会重建牌面，玩家还需检查重选后及不同窗口比例的完整显示。检查导弹伤害/雨点攻势时沿正常规则先获取导弹仓，不为展示修改资格或数值。
+
 ## 显式重选
 
 原生 `GuLiRogueCardOverlay` 在底部右侧创建重选按钮；Phase 1（选择）/3（翻面完成待确认）可用，动画、提交和等待重选时禁用。按钮独立命中，禁用时也阻止向卡牌穿透。UI只请求 `ServerRerollRogueCards`；服务器复核拥有者、队伍、局次和候选资格，优先换入未显示的合格牌，无其他牌则保留当前选择并提示。重选不改变获取记录，不发奖励；替换Session阻止旧确认，重复请求返回同一结果。
@@ -97,6 +103,8 @@ AutoWrapText=false、WrapTextAt=0；沿用DescriptionFit的ScaleToFit/DownOnly�
 | 看得见但点不了 | 检查覆盖控件LMB入口、焦点和命中索引；HUD文本不应拦截。避免以静态材质正常推断输入已通 |
 | Alt+Tab还倾斜 | 已有最小原生焦点接口；保留应用焦点与鼠标离开回正。不要退回仅靠不可靠的纯蓝图窗口失焦检测 |
 | 图层边缘出现矩形/空洞 | 按分层参考核对外扩、共同UV、背景补全、固定窗口；不是继续加Bloom |
+| 标题正常但整行说明空白 | 先查已加载原生赋值类型、CardDescription实际控件类型及SetContent连接，再查StringTable文本键、格式化结果和可见性；不能只重填Excel或凭编译成功收口 |
+| 文字有了但关键词不黄/中文不粗 | 查RichTextBlock实际样式表、Unit/Gain标签、源Excel→派生表映射、中文回退字体及描边；不要在控件里另写一套颜色/字号 |
 
 原生入口：`Source/GuLiStrike/Gameplay/Cards/GuLiRogueCardPresentation.*`、`GuLiRogueCardSettings.*`；输入在现有Commander PlayerController/NetSync范围内查找。
 

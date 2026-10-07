@@ -1,0 +1,72 @@
+{
+  "version": "B-v4",
+  "source_blender_sha256": "bf566b78fb3fd03c516016ed0e32bc7ee8412929c303283985340d5d5b5d853b",
+  "passed": true,
+  "decoded_checkpoints": 9,
+  "scope": "Three delivered MP4s: frame count and dimensions plus start/middle/end fidelity. Does not claim every decoded frame was compared.",
+  "checkpoints": [
+    {
+      "clip": "Deploy",
+      "label": "Start",
+      "frame": 1,
+      "rgb_mae_0_255": 0.6334771513938904,
+      "foreground_rgb_mae_0_255": 2.6829564571380615
+    },
+    {
+      "clip": "Deploy",
+      "label": "Middle",
+      "frame": 39,
+      "rgb_mae_0_255": 0.6731337308883667,
+      "foreground_rgb_mae_0_255": 2.520961284637451
+    },
+    {
+      "clip": "Deploy",
+      "label": "End",
+      "frame": 76,
+      "rgb_mae_0_255": 0.6667415499687195,
+      "foreground_rgb_mae_0_255": 2.3344662189483643
+    },
+    {
+      "clip": "Idle",
+      "label": "Start",
+      "frame": 1,
+      "rgb_mae_0_255": 0.6607086062431335,
+      "foreground_rgb_mae_0_255": 2.282290458679199
+    },
+    {
+      "clip": "Idle",
+      "label": "Middle",
+      "frame": 66,
+      "rgb_mae_0_255": 0.6369671821594238,
+      "foreground_rgb_mae_0_255": 2.1683309078216553
+    },
+    {
+      "clip": "Idle",
+      "label": "End",
+      "frame": 131,
+      "rgb_mae_0_255": 0.6601307988166809,
+      "foreground_rgb_mae_0_255": 2.248466968536377
+    },
+    {
+      "clip": "Walk",
+      "label": "Start",
+      "frame": 1,
+      "rgb_mae_0_255": 0.6683138012886047,
+      "foreground_rgb_mae_0_255": 2.344740152359009
+    },
+    {
+      "clip": "Walk",
+      "label": "Middle",
+      "frame": 39,
+      "rgb_mae_0_255": 0.6345577239990234,
+      "foreground_rgb_mae_0_255": 2.18626070022583
+    },
+    {
+      "clip": "Walk",
+      "label": "End",
+      "frame": 76,
+      "rgb_mae_0_255": 0.6859045624732971,
+      "foreground_rgb_mae_0_255": 2.508584499359131
+    }
+  ]
+}

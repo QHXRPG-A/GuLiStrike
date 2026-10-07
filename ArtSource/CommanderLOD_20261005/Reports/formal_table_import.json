@@ -1,0 +1,284 @@
+{
+  "success": true,
+  "pipeline": {
+    "tables": [
+      {
+        "asset": "DT_GuLiStrikeBuildings_Buildings",
+        "source_rows": [
+          "MissileTurret",
+          "SentryTurret",
+          "ManualOutpost",
+          "BasicBarracks",
+          "ShieldGenerator",
+          "ResourceFactory",
+          "TerritoryStronghold",
+          "BiZhiMaoConstruction"
+        ],
+        "created": false,
+        "row_names": [
+          "MissileTurret",
+          "SentryTurret",
+          "ManualOutpost",
+          "BasicBarracks",
+          "ShieldGenerator",
+          "ResourceFactory",
+          "TerritoryStronghold",
+          "BiZhiMaoConstruction"
+        ],
+        "row_checks": {
+          "MissileTurret": true,
+          "SentryTurret": true,
+          "ManualOutpost": true,
+          "BasicBarracks": true,
+          "ShieldGenerator": true,
+          "ResourceFactory": true,
+          "TerritoryStronghold": true,
+          "BiZhiMaoConstruction": true
+        },
+        "imported": true
+      },
+      {
+        "asset": "DT_GuLiStrikeCommander_Soldiers",
+        "source_rows": [
+          "DefaultSoldier",
+          "WM01",
+          "ElectromagneticMiner",
+          "ConstructionVehicle",
+          "SweeperSummon",
+          "BiZhiMao"
+        ],
+        "created": false,
+        "row_names": [
+          "DefaultSoldier",
+          "WM01",
+          "ElectromagneticMiner",
+          "ConstructionVehicle",
+          "SweeperSummon",
+          "BiZhiMao"
+        ],
+        "row_checks": {
+          "DefaultSoldier": true,
+          "WM01": true,
+          "ElectromagneticMiner": true,
+          "ConstructionVehicle": true,
+          "SweeperSummon": true,
+          "BiZhiMao": true
+        },
+        "imported": true
+      }
+    ],
+    "config_wired": [
+      "DT_GuLiStrikeBuildings_Buildings",
+      "DT_GuLiStrikeCommander_Soldiers"
+    ],
+    "unwired": [],
+    "errors": [],
+    "construction_shapes": {
+      "success": true,
+      "entries": [
+        {
+          "definition": 1,
+          "success": true,
+          "rebuilt": false,
+          "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_1.DA_ConstructionShape_1",
+          "contours": 2,
+          "bounds": "IsValid=true, Min=(X=-251.946 Y=-272.859 Z=-0.720), Max=(X=251.946 Y=274.839 Z=667.928)"
+        },
+        {
+          "definition": 2,
+          "success": true,
+          "rebuilt": false,
+          "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_2.DA_ConstructionShape_2",
+          "contours": 1,
+          "bounds": "IsValid=true, Min=(X=-193.579 Y=-386.678 Z=0.000), Max=(X=193.579 Y=386.678 Z=335.038)"
+        },
+        {
+          "definition": 3,
+          "success": true,
+          "rebuilt": false,
+          "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_3.DA_ConstructionShape_3",
+          "contours": 6,
+          "bounds": "IsValid=true, Min=(X=-710.309 Y=-661.981 Z=0.000), Max=(X=710.309 Y=661.981 Z=6000.000)"
+        },
+        {
+          "definition": 4,
+          "success": true,
+          "rebuilt": false,
+          "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_4.DA_ConstructionShape_4",
+          "contours": 1,
+          "bounds": "IsValid=true, Min=(X=-400.000 Y=-300.000 Z=0.000), Max=(X=400.000 Y=300.000 Z=400.000)"
+        },
+        {
+          "definition": 5,
+          "success": true,
+          "rebuilt": false,
+          "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_5.DA_ConstructionShape_5",
+          "contours": 1,
+          "bounds": "IsValid=true, Min=(X=-305.087 Y=-345.288 Z=0.000), Max=(X=305.087 Y=345.288 Z=1000.000)"
+        },
+        {
+          "definition": 6,
+          "success": true,
+          "rebuilt": false,
+          "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_6.DA_ConstructionShape_6",
+          "contours": 1,
+          "bounds": "IsValid=true, Min=(X=-479.255 Y=-601.572 Z=-0.184), Max=(X=479.821 Y=601.575 Z=440.206)"
+        },
+        {
+          "definition": 7,
+          "success": true,
+          "rebuilt": false,
+          "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_7.DA_ConstructionShape_7",
+          "contours": 1,
+          "bounds": "IsValid=true, Min=(X=-300.000 Y=-300.000 Z=0.000), Max=(X=300.000 Y=300.000 Z=1000.000)"
+        },
+        {
+          "definition": 8,
+          "success": true,
+          "rebuilt": true,
+          "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_8.DA_ConstructionShape_8",
+          "contours": 26,
+          "bounds": "IsValid=true, Min=(X=-1016.557 Y=-921.933 Z=-3.598), Max=(X=1629.010 Y=921.933 Z=1381.053)"
+        }
+      ]
+    },
+    "part_ids": {},
+    "orphan_tables": []
+  },
+  "rows": [
+    {
+      "Name": "DefaultSoldier",
+      "Id": 1,
+      "Note": "B-v1先驱号；6.25米；刚性骨骼纹理VAT；默认双枪与Q召唤",
+      "MovementSpeedCmPerSecond": 1440,
+      "MaxHealth": 100,
+      "ModelAsset": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 1,
+      "DisplayName": "先驱号",
+      "ModelWidthMeters": 6.25,
+      "MinAvoidanceDistanceMeters": 0.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+      "VATDefinition": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+      "bSummonOnly": false,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "WM01",
+      "Id": 2,
+      "Note": "WM01 第二兵种；首版沿用调试数值，尚未平衡",
+      "MovementSpeedCmPerSecond": 720,
+      "MaxHealth": 300.5,
+      "ModelAsset": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 0.2,
+      "DisplayName": "重防号",
+      "ModelWidthMeters": 12.5,
+      "MinAvoidanceDistanceMeters": 2.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+      "VATDefinition": "None",
+      "bSummonOnly": false,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "ElectromagneticMiner",
+      "Id": 3,
+      "Note": "指挥官可控制矿车；Scale020后车长3.6米，900cm/s；采矿业务由矿车Manager调度",
+      "MovementSpeedCmPerSecond": 900,
+      "MaxHealth": 1000,
+      "ModelAsset": "None",
+      "Defense": 0,
+      "ActorClass": "/Script/GuLiStrike.GuLiMiningVehiclePawn",
+      "PresentationClass": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/BP_ElectromagneticMiner_3Tier.BP_ElectromagneticMiner_3Tier_C",
+      "PresentationScale": 0.608458,
+      "DisplayName": "电磁矿车",
+      "ModelWidthMeters": 3.6,
+      "MinAvoidanceDistanceMeters": 1,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
+      "VATDefinition": "None",
+      "bSummonOnly": false,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "ConstructionVehicle",
+      "Id": 4,
+      "Note": "开局每队一辆；独立建造车，施工与采矿分工",
+      "MovementSpeedCmPerSecond": 900,
+      "MaxHealth": 1000,
+      "ModelAsset": "None",
+      "Defense": 0,
+      "ActorClass": "/Script/GuLiStrike.GuLiConstructionVehiclePawn",
+      "PresentationClass": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier_C",
+      "PresentationScale": 0.608458,
+      "DisplayName": "建造车",
+      "ModelWidthMeters": 3.6,
+      "MinAvoidanceDistanceMeters": 1,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder",
+      "VATDefinition": "None",
+      "bSummonOnly": false,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "SweeperSummon",
+      "Id": 5,
+      "Note": "先驱号Q专用召唤兵；永久可控、可累积、不计生产人口",
+      "MovementSpeedCmPerSecond": 720,
+      "MaxHealth": 100,
+      "ModelAsset": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 0.2,
+      "DisplayName": "扫荡者",
+      "ModelWidthMeters": 3.1,
+      "MinAvoidanceDistanceMeters": 0.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+      "VATDefinition": "None",
+      "bSummonOnly": true,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "BiZhiMao",
+      "Id": 6,
+      "Note": "工程车施工生成；底座锁定出生朝向；首轮不攻击；已审ControlRig B_v4放大2倍",
+      "MovementSpeedCmPerSecond": 144,
+      "MaxHealth": 1000,
+      "ModelAsset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 2,
+      "DisplayName": "彼之矛",
+      "ModelWidthMeters": 18.4386,
+      "MinAvoidanceDistanceMeters": 0.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+      "VATDefinition": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT",
+      "bSummonOnly": false,
+      "bConstructionOnly": true,
+      "FacingPolicy": 1,
+      "MassAvoidanceRadiusMeters": 16.2975
+    }
+  ],
+  "groups": [
+    "DefaultSoldier",
+    "WM01",
+    "ElectromagneticMiner",
+    "ConstructionVehicle",
+    "SweeperSummon",
+    "BiZhiMao"
+  ]
+}

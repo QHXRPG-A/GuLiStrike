@@ -43,6 +43,18 @@ Note、BonusPercent、BonusCount 为 Optional，后两项依效果类校验；�
 
 新增同类等级通常复用实现类和可兼容牌面，添加如01.02及新行名/数值；不自动把玩家重复取得01.01升级为01.02。
 
+## 牌面文本设计
+
+标题独立一行，用卡名表达主题；效果说明最多一行，让玩家读到作用对象、增益属性和幅度。日常改说明不顺带改已确认卡名，也不把长规则挪进标题。
+
+- 数值效果优先“单位＋属性＋增量”，例如“重防号 普攻射速+20%”“重防号 导弹齐射数量+1”；解锁效果优先“单位＋解锁＋能力”，例如“重防号 解锁导弹技能”。省去“的”“提高”“每次释放时额外”等不影响含义的冗词，不添加句末解释段。
+- 精简不能丢掉作用对象、把“普攻射速”泛化成所有技能射速，或把整数“+1”写成“+1%”。若某个触发条件决定实际效果，保留必要短语；不为凑一行改变玩法含义。
+- “可重复叠加”“每局仅可获取一次”和卡牌依赖/互斥等获取规则留在内部数据与Note，不放牌面或Tooltip，让玩家在玩法中探索。关键直接效果仍要明确。
+- `Unit`包住单位名，`Gain`包住完整属性及其增益数值；两种样式为黄色`#FFD84A`加粗。连接词如“解锁”使用暖白Default，标题保持原样式；不把整句统一染黄或只高亮数字。
+- 在现有字号、卡框安全区域内居中显示。关闭自动换行与固定宽度折行，超宽仅向下等比缩放；先改写冗长措辞，不能通过裁断、省略号、隐藏单位/属性或极小字号完成单行目标。不同窗口比例需按真实显示检查，不能只数汉字长度。
+
+这些是本项目当前牌面规范；数值和样式的唯一来源仍是以下Excel，不把示例或制作脚本当成后续改值入口。
+
 ## 公共文本与本地化
 
 源表 `data/Excel/GuLiStrikeGameTexts.xlsx / Texts` 的三列是 **文本id／介绍／内容**，类型均str，同样前三行元数据。`TextIds` 引用第一列，不是数字行号、Excel地址、卡牌id或“介绍”。例：
@@ -64,19 +76,19 @@ Note、BonusPercent、BonusCount 为 Optional，后两项依效果类校验；�
 
 导出文本DataTable后，还要重建 `/Game/GuLiStrike/Data/ST_GuLiStrikeGameTexts`，Namespace `GuLiStrike.GameTexts`，Key取行的TextId。运行时 `FText::FromStringTable` → `FText::Format` → `WBP_CardText` 的 `CardTitle`/`CardDescription`。不要用FString替换本地化身份，不烘焙中文字，不把旧评审用DT_CardText/CSV变成实战文案第二源。
 
-2026-09-29用户确定效果说明最多一行。单位、增益属性及数值采用黄色 `#FFD84A` 加粗；`Unit`/`Gain` 样式相同，连接词用默认暖白。不在玩家牌面或悬浮提示添加“可重复叠加”“每局仅可获取一次”等机制说明；内部Note和玩法数据继续保留真实规则。`Tools/DataPipeline/author_rogue_card_text.py` 只修改五条已有说明，逐行回读并核对卡表未变；初始化/迁移脚本共用其模板，运行时仍以Excel为唯一数据源。
+上述五条是2026-09-29用户确定的模板。`Tools/DataPipeline/author_rogue_card_text.py`只用于该次已批准文案迁移，逐行回读并核对卡表未变；初始化/迁移脚本共用其模板，运行时仍以Excel为唯一数据源。日常编辑保留文本键、参数及富文本标签，不再次运行迁移脚本把新文案覆盖回旧模板。
 
-说明控件改为RichTextBlock后必须同步原生赋值类型和蓝图SetContent，并使用共享样式表；不要先把富文本标签导入旧TextBlock。关闭AutoWrapText且将WrapTextAt设为0，现有ScaleBox仅向下等比缩放。构建、加载和UE接入的当前完成状态以[单行文案实施记录](D:/UE5.7/test1/Progress/DevelopmentDocumentation/20260929-肉鸽卡牌单行文案与高亮.md)为准。
+说明控件改为RichTextBlock后必须同步原生赋值类型和蓝图SetContent，并使用共享样式表；不要先把富文本标签导入旧TextBlock。关闭AutoWrapText且将WrapTextAt设为0，现有ScaleBox仅向下等比缩放。此前原生代码已改为RichTextBlock而正式控件仍为TextBlock，导致整行说明空白；检查当前加载模块和实际控件，不能凭源代码或构建成功判断接入完成。构建、加载和UE接入的状态以[单行文案实施记录](D:/UE5.7/test1/Progress/DevelopmentDocumentation/20260929-肉鸽卡牌单行文案与高亮.md)为准。
 
 ### 高亮样式的Excel唯一来源
 
-`data/Excel/GuLiStrikeRogueCardUI.xlsx / TextStyles`遵循标准前三行元数据。`id/name/Note`为标准列，`name`对应富文本标签或Default。其他列为`FontAsset`、`FontSize`、`Typeface`、`ColorSRGB`、`OutlineSize`、`OutlineColorSRGB`。颜色使用`#RRGGBB`；当前Unit/Gain为`#FFD84A`、Bold、38号、1像素同色描边；Default为暖白Regular、无描边。标题不使用这张说明样式表。
+`data/Excel/GuLiStrikeRogueCardUI.xlsx / TextStyles`遵循标准前三行元数据。`id/name/Note`为标准列，`name`对应富文本标签或Default。其他列为`FontAsset`、`FontSize`、`Typeface`、`ColorSRGB`、`OutlineSize`、`OutlineColorSRGB`。颜色使用`#RRGGBB`；当前Unit/Gain为`#FFD84A`、Bold、38号、1像素同色描边；Default为暖白Regular、无描边。中文回退字形可能没有独立粗体字面，需检查中文与数字的实际字重；本批同色描边用于补足字重，也必须在Excel维护。标题不使用这张说明样式表。
 
 正常管线为Excel → 项目导出器 → `DT_GuLiStrikeRogueCardUI_TextStyles.json`及生成行类型 → 同名UE数据表 → 自动转换为UMG的`DT_CardTextStyles`。转换脚本只做字段映射和sRGB转线性，不写死设计数值。导出器校验颜色、字号/描边范围、字体引用、说明单行及样式标签引用/闭合。表结构变化才需要原生编译。
 
 日常修改文案/样式后先运行项目导出器，再在空闲编辑器执行`Scripts/Cards/apply_single_line_card_text.py`，同步公共文本、StringTable、样式源表和UMG派生表，保存并逐项回读。该脚本读取当次导出，不以首次迁移记录为数据源。`author_rogue_card_styles.py`仅初始化已有三种样式，新工作簿存在时拒绝覆盖；`author_rogue_card_text.py`仅用于本次已批准文案迁移，不当作日常导出入口。
 
-对已加载的文本/样式表使用`fill_data_table_from_json_string`原地更新；不要通过CSVImportFactory替换被引用的DataTable对象，已确认会在结束PIE后因残留强引用触发断言。
+对本流程已加载的文本/样式表使用`fill_data_table_from_json_string`原地更新并检查返回值；本次CSVImportFactory替换被引用的DataTable对象曾在结束PIE后触发残留强引用断言，改为保留原对象后导入成功。该记录限定于已验证的卡牌文本/样式流程，不推断所有DataTable或其他导入入口的行为。
 
 新增语言走UE本地化收集与翻译资产；保持Key、占位符、顺序稳定。没有要求时不生成翻译或增加语言列。
 
@@ -85,9 +97,9 @@ Note、BonusPercent、BonusCount 为 Optional，后两项依效果类校验；�
 1. 用 `xlsx info/read` 确认表和元数据，再使用 `write --data-file` 批量原地编辑。不要重跑初始化脚本覆盖已有行。`Tools/DataPipeline/author_rogue_cards.py`仅初次建表；已存在时会拒绝。`extend_rogue_upgrade_fields.py`是已有字段迁移器，使用前检查其范围。
 2. 执行 `python Tools/DataPipeline/export_data_from_excel.py`。这是项目导出器，不臆造单表命令行开关；它校验跨表文本/单位引用、两项数组、效果数值契约、完整软引用和HDR格式。依赖校验包含未知ID、重复/自引用、依赖环、同时依赖与互斥、依赖闭包内的双向互斥冲突；错误应定位工作表、数据行及卡ID。迁移既有卡表使用幂等的 `author_wm01_missile_cards.py`，不以初始化脚本重建表。
 3. 生成物为 `data/Json/DT_GuLiStrikeRogueCards_Cards.json`、文本JSON、manifest及 `Source/GuLiStrike/Gameplay/Data/Generated/*TableRows.h`。**不手改生成物**。查看导出报告；只加行通常不改变反射结构，结构变化则按本轮授权编译加载再导入。
-4. UE空闲、所需原生类已加载后，定向导入卡牌和公共文本表，并重建StringTable。已存在的 `Scripts/Cards/author_rogue_card_entry.py` 中 `tables()` 就是该步骤；不要为改表执行整个部署脚本，它还迁移资产、重写图表和保存地图。
+4. UE空闲、所需原生类已加载后，按改动范围选入口。仅文案/高亮走`Scripts/Cards/apply_single_line_card_text.py`，同步公共文本、StringTable和样式，保留已引用对象；该脚本核对已加载模块的构建依据，不能跳过校验或为改表自动编译。卡牌玩法字段另用审阅过的定向导入，不为文字改动整套重跑部署脚本。
 
-可在 `Scripts/ue_exec.py` 运行的范围明确入口：
+`Scripts/Cards/author_rogue_card_entry.py`的`tables()`是卡牌与公共文本的历史联合入口，仍调用通用工厂；只有核对当前表的引用/占用且需要该范围时才使用。它不负责说明样式表，不能代替上述文案入口。历史调用形式如下，不作为单行文本/样式更新命令：
 
 ```python
 import runpy
@@ -100,9 +112,9 @@ report = entry['tables']()
 print(report)
 ```
 
-通用导入器是 `Scripts/import_data_to_engine.py`，通过 `GULI_TABLE_FILTER` 限定两张表；内部走CSVImportFactory。沿用该接口，避免已知会挂起的 `fill_data_table_from_json_string`、`fill_data_table_from_csv_string` 路径。单独运行 `Scripts/import_game_texts.py` 不等于已经刷新卡牌用StringTable。
+通用导入器`Scripts/import_data_to_engine.py`通过`GULI_TABLE_FILTER`限定表，内部走CSVImportFactory；先审阅其具体替换行为，不能套用到当前已被UI引用的文本/样式表。早期有关fill路径挂起的经验不覆盖此次已成功的原地更新流程；出现卡住或失败时记录对应入口及对象状态，不盲目在两种导入方式间反复切换。单独运行`Scripts/import_game_texts.py`不等于已经刷新卡牌用StringTable。
 
-5. 保存并重新读取三类资产：卡牌DataTable、文本DataTable、StringTable。比较ID字符串、TextIds顺序和引用、效果类继承关系、UMaterialInterface及NiagaraSystem类型、数值。记录源表→导出→导入的结果，不只看命令退出码。
+5. 保存并回读本次涉及的资产。卡牌改动核对ID、TextIds顺序、效果类、材质/VFX引用和数值；文本改动核对文本DataTable、StringTable、样式源表、UMG派生表及控件绑定。按当前Excel逐字段比较标签、占位符、字体、颜色、字重和折行配置，不只看命令退出码。实际F4显示、重选后刷新与窗口比例由获授权的运行/玩家验收单独确认。
 
 ## 效果类与权威规则
 

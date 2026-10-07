@@ -99,6 +99,7 @@ struct FGuLiCommanderPresentedSoldier
 	uint64 TeleportSnapCount = 0u;
 	bool bHasAuthoritativeTransform = false;
 	bool bHasPresentedTransform = false;
+	bool bConstructionVisualHandled = false;
 	bool bLifeStateInitialized = false;
 	bool bRenderClockInitialized = false;
 	// Explicit displacement only; ordinary pose corrections never bypass continuity.

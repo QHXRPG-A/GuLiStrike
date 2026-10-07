@@ -1,0 +1,7565 @@
+{
+  "version": "SSF_Reference_A_v4",
+  "date": "2026-10-05",
+  "art_revision": "1.3",
+  "stage": "A_reference_submission",
+  "approvals": {
+    "A": "pending",
+    "B": "not_started"
+  },
+  "assets": [
+    {
+      "key": "AirBase",
+      "label": "空军基地",
+      "theme": {
+        "name": "暖橙航空",
+        "Primary": "#EE9D58",
+        "Equipment": "#69A6C3",
+        "Accent": "#FEE4D9",
+        "Frame": "#9590C6"
+      },
+      "retain": "圆形库体、侧置控制塔、通信天线、分瓣门与基座。",
+      "reduction_intent": "优化冗余分段与隐藏叠面；保留规则圆周、门体和破坏可见内构。",
+      "source_triangles": 5390,
+      "source_bones": 78,
+      "source_animation_count": 4,
+      "dimensions_m": [
+        17.525365829467773,
+        19.95427703857422,
+        11.801692008972168
+      ],
+      "bone_root_representation": "UE Root is represented by the FBX armature object; reconstruct/verify at production export",
+      "sheet": {
+        "file": "References_A_v4/Sheets/AirBase_Sheet_A_v4.png",
+        "bytes": 5176256,
+        "sha256": "64c79f9ffe39d0bf3e1a902803f9b5ffbae303d89ac9e4da5def5b88cc557259",
+        "asset": "AirBase",
+        "role": "review_sheet",
+        "pixels": [
+          4200,
+          4640
+        ],
+        "mode": "RGB"
+      },
+      "lod_budgets_after_A": [
+        [
+          4300,
+          700
+        ],
+        [
+          2300,
+          400
+        ],
+        [
+          1050,
+          0
+        ]
+      ],
+      "reference_scene": {
+        "key": "AirBase",
+        "theme": {
+          "name": "暖橙航空",
+          "Primary": "#EE9D58",
+          "Equipment": "#69A6C3",
+          "Accent": "#FEE4D9",
+          "Frame": "#9590C6"
+        },
+        "material_palette": {
+          "Primary": "#EE9D58",
+          "Equipment": "#69A6C3",
+          "Frame": "#9590C6",
+          "Orange": "#FEE4D9",
+          "Berry": "#FEE4D9",
+          "Pink": "#69A6C3",
+          "Platform": "#69A6C3",
+          "PlatformTop": "#6DA6BF",
+          "Ink": "#5F8A9E"
+        },
+        "dimensions_m": [
+          17.525365829467773,
+          19.95427703857422,
+          11.801692008972168
+        ],
+        "geometry_sha256_before": "7c227f2a060f5db9aa356e29d4ba823be9be21aa96ae7442ca45d5419b07fe3f",
+        "geometry_sha256_after": "7c227f2a060f5db9aa356e29d4ba823be9be21aa96ae7442ca45d5419b07fe3f",
+        "source_geometry_unchanged": true,
+        "parts": [
+          {
+            "part_id": 0,
+            "dominant_bone": "polymsh30",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 1,
+            "dominant_bone": "polymsh30",
+            "role": "Frame"
+          },
+          {
+            "part_id": 2,
+            "dominant_bone": "polymsh30",
+            "role": "Frame"
+          },
+          {
+            "part_id": 3,
+            "dominant_bone": "polymsh046",
+            "role": "Primary"
+          },
+          {
+            "part_id": 4,
+            "dominant_bone": "polymsh045",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 5,
+            "dominant_bone": "polymsh050",
+            "role": "Primary"
+          },
+          {
+            "part_id": 6,
+            "dominant_bone": "polymsh049",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 7,
+            "dominant_bone": "polymsh19",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 8,
+            "dominant_bone": "polymsh052",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 9,
+            "dominant_bone": "cube48",
+            "role": "Orange"
+          },
+          {
+            "part_id": 10,
+            "dominant_bone": "Object004",
+            "role": "Frame"
+          },
+          {
+            "part_id": 11,
+            "dominant_bone": "Object003",
+            "role": "Frame"
+          },
+          {
+            "part_id": 12,
+            "dominant_bone": "Object002",
+            "role": "Frame"
+          },
+          {
+            "part_id": 13,
+            "dominant_bone": "Object001",
+            "role": "Frame"
+          },
+          {
+            "part_id": 14,
+            "dominant_bone": "cube16",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 15,
+            "dominant_bone": "cube16",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 16,
+            "dominant_bone": "cube16",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 17,
+            "dominant_bone": "cube16",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 18,
+            "dominant_bone": "cube16",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 19,
+            "dominant_bone": "cube16",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 20,
+            "dominant_bone": "cube16",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 21,
+            "dominant_bone": "cube16",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 22,
+            "dominant_bone": "polymsh22",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 23,
+            "dominant_bone": "polymsh22",
+            "role": "Frame"
+          },
+          {
+            "part_id": 24,
+            "dominant_bone": "polymsh22",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 25,
+            "dominant_bone": "polymsh22",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 26,
+            "dominant_bone": "polymsh22",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 27,
+            "dominant_bone": "polymsh22",
+            "role": "Frame"
+          },
+          {
+            "part_id": 28,
+            "dominant_bone": "polymsh22",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 29,
+            "dominant_bone": "polymsh22",
+            "role": "Frame"
+          },
+          {
+            "part_id": 30,
+            "dominant_bone": "polymsh22",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 31,
+            "dominant_bone": "polymsh22",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 32,
+            "dominant_bone": "polymsh22",
+            "role": "Frame"
+          },
+          {
+            "part_id": 33,
+            "dominant_bone": "polymsh22",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 34,
+            "dominant_bone": "polymsh22",
+            "role": "Frame"
+          },
+          {
+            "part_id": 35,
+            "dominant_bone": "polymsh22",
+            "role": "Frame"
+          },
+          {
+            "part_id": 36,
+            "dominant_bone": "polymsh23",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 37,
+            "dominant_bone": "polymsh23",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 38,
+            "dominant_bone": "polymsh23",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 39,
+            "dominant_bone": "polymsh23",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 40,
+            "dominant_bone": "polymsh26",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 41,
+            "dominant_bone": "polymsh27",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 42,
+            "dominant_bone": "polymsh29",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 43,
+            "dominant_bone": "cube124",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 44,
+            "dominant_bone": "polymsh045",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 45,
+            "dominant_bone": "polymsh045",
+            "role": "Orange"
+          },
+          {
+            "part_id": 46,
+            "dominant_bone": "cube122",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 47,
+            "dominant_bone": "cube130",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 48,
+            "dominant_bone": "polymsh049",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 49,
+            "dominant_bone": "polymsh049",
+            "role": "Orange"
+          },
+          {
+            "part_id": 50,
+            "dominant_bone": "cube129",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 51,
+            "dominant_bone": "polymsh17",
+            "role": "Primary"
+          },
+          {
+            "part_id": 52,
+            "dominant_bone": "cube7",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 53,
+            "dominant_bone": "polymsh19",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 54,
+            "dominant_bone": "polymsh19",
+            "role": "Orange"
+          },
+          {
+            "part_id": 55,
+            "dominant_bone": "cube6",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 56,
+            "dominant_bone": "polymsh051",
+            "role": "Primary"
+          },
+          {
+            "part_id": 57,
+            "dominant_bone": "cube132",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 58,
+            "dominant_bone": "polymsh052",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 59,
+            "dominant_bone": "polymsh052",
+            "role": "Orange"
+          },
+          {
+            "part_id": 60,
+            "dominant_bone": "cube131",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 61,
+            "dominant_bone": "polymsh38",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 62,
+            "dominant_bone": "polymsh38",
+            "role": "Frame"
+          },
+          {
+            "part_id": 63,
+            "dominant_bone": "polymsh38",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 64,
+            "dominant_bone": "polymsh38",
+            "role": "Frame"
+          },
+          {
+            "part_id": 65,
+            "dominant_bone": "polymsh38",
+            "role": "Frame"
+          },
+          {
+            "part_id": 66,
+            "dominant_bone": "cube30",
+            "role": "Primary"
+          },
+          {
+            "part_id": 67,
+            "dominant_bone": "cube30",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 68,
+            "dominant_bone": "cube30",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 69,
+            "dominant_bone": "cube30",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 70,
+            "dominant_bone": "cube30",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 71,
+            "dominant_bone": "cube30",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 72,
+            "dominant_bone": "cube30",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 73,
+            "dominant_bone": "cube30",
+            "role": "Frame"
+          },
+          {
+            "part_id": 74,
+            "dominant_bone": "cube31",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 75,
+            "dominant_bone": "cube74",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 76,
+            "dominant_bone": "cube74",
+            "role": "Frame"
+          },
+          {
+            "part_id": 77,
+            "dominant_bone": "cube74",
+            "role": "Frame"
+          },
+          {
+            "part_id": 78,
+            "dominant_bone": "cube74",
+            "role": "Frame"
+          },
+          {
+            "part_id": 79,
+            "dominant_bone": "cube85",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 80,
+            "dominant_bone": "cube81",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 81,
+            "dominant_bone": "cube100",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 82,
+            "dominant_bone": "Cube102",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 83,
+            "dominant_bone": "Cube103",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 84,
+            "dominant_bone": "Object004",
+            "role": "Frame"
+          },
+          {
+            "part_id": 85,
+            "dominant_bone": "Object003",
+            "role": "Frame"
+          },
+          {
+            "part_id": 86,
+            "dominant_bone": "Object002",
+            "role": "Frame"
+          },
+          {
+            "part_id": 87,
+            "dominant_bone": "cube113",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 88,
+            "dominant_bone": "Cube114",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 89,
+            "dominant_bone": "Cube115",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 90,
+            "dominant_bone": "Object001",
+            "role": "Frame"
+          },
+          {
+            "part_id": 91,
+            "dominant_bone": "polymsh42",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 92,
+            "dominant_bone": "polymsh42",
+            "role": "Frame"
+          },
+          {
+            "part_id": 93,
+            "dominant_bone": "polymsh42",
+            "role": "Frame"
+          },
+          {
+            "part_id": 94,
+            "dominant_bone": "polymsh42",
+            "role": "Frame"
+          },
+          {
+            "part_id": 95,
+            "dominant_bone": "polymsh42",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 96,
+            "dominant_bone": "polymsh41",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 97,
+            "dominant_bone": "polymsh41",
+            "role": "Frame"
+          },
+          {
+            "part_id": 98,
+            "dominant_bone": "polymsh41",
+            "role": "Frame"
+          },
+          {
+            "part_id": 99,
+            "dominant_bone": "polymsh41",
+            "role": "Frame"
+          },
+          {
+            "part_id": 100,
+            "dominant_bone": "polymsh41",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 101,
+            "dominant_bone": "polymsh39",
+            "role": "Primary"
+          },
+          {
+            "part_id": 102,
+            "dominant_bone": "polymsh39",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 103,
+            "dominant_bone": "polymsh39",
+            "role": "Frame"
+          },
+          {
+            "part_id": 104,
+            "dominant_bone": "polymsh39",
+            "role": "Frame"
+          },
+          {
+            "part_id": 105,
+            "dominant_bone": "polymsh39",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 106,
+            "dominant_bone": "polymsh39",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 107,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 108,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 109,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 110,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 111,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 112,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 113,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 114,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 115,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 116,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 117,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 118,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 119,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 120,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 121,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 122,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 123,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 124,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 125,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 126,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 127,
+            "dominant_bone": "cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 128,
+            "dominant_bone": "polymsh_detached2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 129,
+            "dominant_bone": "Cube112",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 130,
+            "dominant_bone": "cube110",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 131,
+            "dominant_bone": "Cube109",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 132,
+            "dominant_bone": "cube107",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 133,
+            "dominant_bone": "polymsh40",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 134,
+            "dominant_bone": "polymsh40",
+            "role": "Frame"
+          },
+          {
+            "part_id": 135,
+            "dominant_bone": "polymsh40",
+            "role": "Frame"
+          },
+          {
+            "part_id": 136,
+            "dominant_bone": "polymsh40",
+            "role": "Frame"
+          },
+          {
+            "part_id": 137,
+            "dominant_bone": "polymsh40",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 138,
+            "dominant_bone": "Cube111",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 139,
+            "dominant_bone": "Cube108",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 140,
+            "dominant_bone": "polymsh22",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 141,
+            "dominant_bone": "cube22",
+            "role": "Primary"
+          },
+          {
+            "part_id": 142,
+            "dominant_bone": "cube16",
+            "role": "Primary"
+          },
+          {
+            "part_id": 143,
+            "dominant_bone": "cube45",
+            "role": "Primary"
+          },
+          {
+            "part_id": 144,
+            "dominant_bone": "Anten0",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 145,
+            "dominant_bone": "polymsh23",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 146,
+            "dominant_bone": "polymsh43",
+            "role": "Primary"
+          },
+          {
+            "part_id": 147,
+            "dominant_bone": "cube30",
+            "role": "Frame"
+          },
+          {
+            "part_id": 148,
+            "dominant_bone": "cube30",
+            "role": "Frame"
+          },
+          {
+            "part_id": 149,
+            "dominant_bone": "cube30",
+            "role": "Frame"
+          },
+          {
+            "part_id": 150,
+            "dominant_bone": "cube30",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 151,
+            "dominant_bone": "cube31",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 152,
+            "dominant_bone": "cube31",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 153,
+            "dominant_bone": "cube48",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 154,
+            "dominant_bone": "polymsh39",
+            "role": "Frame"
+          },
+          {
+            "part_id": 155,
+            "dominant_bone": "polymsh39",
+            "role": "Frame"
+          },
+          {
+            "part_id": 156,
+            "dominant_bone": "cube16",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 157,
+            "dominant_bone": "cube16",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 158,
+            "dominant_bone": "polymsh44",
+            "role": "Primary"
+          },
+          {
+            "part_id": 159,
+            "dominant_bone": "cube30",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 160,
+            "dominant_bone": "cube30",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 161,
+            "dominant_bone": "cube30",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 162,
+            "dominant_bone": "polymsh_detached4",
+            "role": "Frame"
+          },
+          {
+            "part_id": 163,
+            "dominant_bone": "polymsh_detached5",
+            "role": "Frame"
+          },
+          {
+            "part_id": 164,
+            "dominant_bone": "Logo1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 165,
+            "dominant_bone": "Logo2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 166,
+            "dominant_bone": "Logo3",
+            "role": "Equipment"
+          }
+        ],
+        "mirror_color_pairs": [
+          [
+            8,
+            7,
+            "Equipment"
+          ],
+          [
+            25,
+            22,
+            "Equipment"
+          ],
+          [
+            26,
+            24,
+            "Equipment"
+          ],
+          [
+            27,
+            23,
+            "Frame"
+          ],
+          [
+            28,
+            31,
+            "Equipment"
+          ],
+          [
+            29,
+            32,
+            "Frame"
+          ],
+          [
+            30,
+            33,
+            "Equipment"
+          ],
+          [
+            35,
+            34,
+            "Frame"
+          ],
+          [
+            38,
+            36,
+            "Equipment"
+          ],
+          [
+            56,
+            51,
+            "Primary"
+          ],
+          [
+            57,
+            52,
+            "Equipment"
+          ],
+          [
+            58,
+            53,
+            "Equipment"
+          ],
+          [
+            59,
+            54,
+            "Orange"
+          ],
+          [
+            60,
+            55,
+            "Equipment"
+          ]
+        ],
+        "views": {
+          "Hero": {
+            "camera_location_m": [
+              41.102630615234375,
+              -55.410247802734375,
+              40.79741287231445
+            ],
+            "rotation_rad": [
+              1.1169817447662354,
+              -2.7962840931650135e-08,
+              0.6556956768035889
+            ],
+            "ortho_scale_m": 35.959171295166016,
+            "file": "Renders/AirBase_Hero.png"
+          },
+          "Front": {
+            "camera_location_m": [
+              -2.6368753910064697,
+              -78.36599731445312,
+              5.8058037757873535
+            ],
+            "rotation_rad": [
+              1.5707964897155762,
+              -0.0,
+              0.0
+            ],
+            "ortho_scale_m": 35.959171295166016,
+            "file": "Renders/AirBase_Front.png"
+          },
+          "Left": {
+            "camera_location_m": [
+              77.18022918701172,
+              1.4511103630065918,
+              5.8058037757873535
+            ],
+            "rotation_rad": [
+              1.5707963705062866,
+              -0.0,
+              1.5707963705062866
+            ],
+            "ortho_scale_m": 35.959171295166016,
+            "file": "Renders/AirBase_Left.png"
+          },
+          "Back": {
+            "camera_location_m": [
+              -2.6368753910064697,
+              81.26821899414062,
+              5.8058037757873535
+            ],
+            "rotation_rad": [
+              -1.570796251296997,
+              3.141592502593994,
+              -0.0
+            ],
+            "ortho_scale_m": 35.959171295166016,
+            "file": "Renders/AirBase_Back.png"
+          }
+        },
+        "note": "Stage A source-constrained material/normal/line study; not a remade Blender product"
+      }
+    },
+    {
+      "key": "CloningCenter",
+      "label": "克隆中心",
+      "theme": {
+        "name": "浅粉医疗",
+        "Primary": "#EABCBA",
+        "Equipment": "#BD93A1",
+        "Accent": "#FEE4D9",
+        "Frame": "#B983C3"
+      },
+      "retain": "主舱、五个培养舱、五路软管、入口门和显示器。",
+      "reduction_intent": "整理舱壳与基座冗余；保留五舱、软管柔性及运动中可见内侧。",
+      "source_triangles": 2634,
+      "source_bones": 54,
+      "source_animation_count": 4,
+      "dimensions_m": [
+        7.391729354858398,
+        8.751784324645996,
+        8.926868438720703
+      ],
+      "bone_root_representation": "UE Root is represented by the FBX armature object; reconstruct/verify at production export",
+      "sheet": {
+        "file": "References_A_v4/Sheets/CloningCenter_Sheet_A_v4.png",
+        "bytes": 5781284,
+        "sha256": "a5c5908cdd93c4a248509e062e39f2018ad013c7555571a97755cde1ed02f89b",
+        "asset": "CloningCenter",
+        "role": "review_sheet",
+        "pixels": [
+          4200,
+          4640
+        ],
+        "mode": "RGB"
+      },
+      "lod_budgets_after_A": [
+        [
+          2200,
+          300
+        ],
+        [
+          1100,
+          200
+        ],
+        [
+          500,
+          0
+        ]
+      ],
+      "reference_scene": {
+        "key": "CloningCenter",
+        "theme": {
+          "name": "浅粉医疗",
+          "Primary": "#EABCBA",
+          "Equipment": "#BD93A1",
+          "Accent": "#FEE4D9",
+          "Frame": "#B983C3"
+        },
+        "material_palette": {
+          "Primary": "#EABCBA",
+          "Equipment": "#BD93A1",
+          "Frame": "#B983C3",
+          "Orange": "#FEE4D9",
+          "Berry": "#FEE4D9",
+          "Pink": "#BD93A1",
+          "Platform": "#69A6C3",
+          "PlatformTop": "#6DA6BF",
+          "Ink": "#5F8A9E"
+        },
+        "dimensions_m": [
+          7.391729354858398,
+          8.751784324645996,
+          8.926868438720703
+        ],
+        "geometry_sha256_before": "9b4841d4ac8c7b199eb5831230b1dd29be40509a0629f59f012b392cae3b89df",
+        "geometry_sha256_after": "9b4841d4ac8c7b199eb5831230b1dd29be40509a0629f59f012b392cae3b89df",
+        "source_geometry_unchanged": true,
+        "parts": [
+          {
+            "part_id": 0,
+            "dominant_bone": "LeftPart",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 1,
+            "dominant_bone": "LeftPart",
+            "role": "Berry"
+          },
+          {
+            "part_id": 2,
+            "dominant_bone": "MainBlock",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 3,
+            "dominant_bone": "MainBlock",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 4,
+            "dominant_bone": "MainBlock",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 5,
+            "dominant_bone": "MainBlock",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 6,
+            "dominant_bone": "MainBlock",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 7,
+            "dominant_bone": "MainBlock",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 8,
+            "dominant_bone": "RightPart",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 9,
+            "dominant_bone": "RightPart",
+            "role": "Berry"
+          },
+          {
+            "part_id": 10,
+            "dominant_bone": "Column",
+            "role": "Primary"
+          },
+          {
+            "part_id": 11,
+            "dominant_bone": "LeftPart",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 12,
+            "dominant_bone": "LeftPart",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 13,
+            "dominant_bone": "Basis",
+            "role": "Frame"
+          },
+          {
+            "part_id": 14,
+            "dominant_bone": "MainBlock",
+            "role": "Primary"
+          },
+          {
+            "part_id": 15,
+            "dominant_bone": "MainBlock",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 16,
+            "dominant_bone": "MainBlock",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 17,
+            "dominant_bone": "MainBlock",
+            "role": "Primary"
+          },
+          {
+            "part_id": 18,
+            "dominant_bone": "MainBlock",
+            "role": "Frame"
+          },
+          {
+            "part_id": 19,
+            "dominant_bone": "Door",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 20,
+            "dominant_bone": "Display",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 21,
+            "dominant_bone": "Display",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 22,
+            "dominant_bone": "Display",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 23,
+            "dominant_bone": "RightPart",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 24,
+            "dominant_bone": "RightPart",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 25,
+            "dominant_bone": "BackPart",
+            "role": "Primary"
+          },
+          {
+            "part_id": 26,
+            "dominant_bone": "BackPart",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 27,
+            "dominant_bone": "BackPart",
+            "role": "Frame"
+          },
+          {
+            "part_id": 28,
+            "dominant_bone": "BackPart",
+            "role": "Frame"
+          },
+          {
+            "part_id": 29,
+            "dominant_bone": "BackPart",
+            "role": "Primary"
+          },
+          {
+            "part_id": 30,
+            "dominant_bone": "Capsule1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 31,
+            "dominant_bone": "Capsule2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 32,
+            "dominant_bone": "Capsule3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 33,
+            "dominant_bone": "Capsule4",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 34,
+            "dominant_bone": "Capsule5",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 35,
+            "dominant_bone": "BoneHose5_005",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 36,
+            "dominant_bone": "BoneHose3_005",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 37,
+            "dominant_bone": "BoneHose1_004",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 38,
+            "dominant_bone": "MainBlock",
+            "role": "Primary"
+          },
+          {
+            "part_id": 39,
+            "dominant_bone": "Box2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 40,
+            "dominant_bone": "Box1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 41,
+            "dominant_bone": "BoneHose4_004",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 42,
+            "dominant_bone": "BoneHose2_005",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 43,
+            "dominant_bone": "BackPart",
+            "role": "Primary"
+          },
+          {
+            "part_id": 44,
+            "dominant_bone": "BackPart",
+            "role": "Primary"
+          },
+          {
+            "part_id": 45,
+            "dominant_bone": "BackPart",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 46,
+            "dominant_bone": "Column",
+            "role": "Berry"
+          },
+          {
+            "part_id": 47,
+            "dominant_bone": "BackPart",
+            "role": "Primary"
+          },
+          {
+            "part_id": 48,
+            "dominant_bone": "Vent2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 49,
+            "dominant_bone": "Vent1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 50,
+            "dominant_bone": "Logo",
+            "role": "Equipment"
+          }
+        ],
+        "mirror_color_pairs": [
+          [
+            2,
+            3,
+            "Equipment"
+          ],
+          [
+            4,
+            6,
+            "Equipment"
+          ],
+          [
+            5,
+            7,
+            "Equipment"
+          ],
+          [
+            8,
+            0,
+            "Equipment"
+          ],
+          [
+            9,
+            1,
+            "Berry"
+          ],
+          [
+            15,
+            16,
+            "Equipment"
+          ],
+          [
+            23,
+            11,
+            "Equipment"
+          ],
+          [
+            24,
+            12,
+            "Equipment"
+          ],
+          [
+            33,
+            30,
+            "Equipment"
+          ],
+          [
+            34,
+            31,
+            "Equipment"
+          ],
+          [
+            35,
+            42,
+            "Equipment"
+          ],
+          [
+            41,
+            37,
+            "Equipment"
+          ],
+          [
+            43,
+            44,
+            "Primary"
+          ]
+        ],
+        "views": {
+          "Hero": {
+            "camera_location_m": [
+              19.567575454711914,
+              -25.625232696533203,
+              20.108585357666016
+            ],
+            "rotation_rad": [
+              1.1169817447662354,
+              3.6647193724093086e-08,
+              0.6556957960128784
+            ],
+            "ortho_scale_m": 17.995460510253906,
+            "file": "Renders/CloningCenter_Hero.png"
+          },
+          "Front": {
+            "camera_location_m": [
+              0.0,
+              -35.894859313964844,
+              4.454525947570801
+            ],
+            "rotation_rad": [
+              1.5707964897155762,
+              -0.0,
+              0.0
+            ],
+            "ortho_scale_m": 17.995460510253906,
+            "file": "Renders/CloningCenter_Front.png"
+          },
+          "Left": {
+            "camera_location_m": [
+              35.70747375488281,
+              -0.18738508224487305,
+              4.454525947570801
+            ],
+            "rotation_rad": [
+              1.5707963705062866,
+              -0.0,
+              1.5707963705062866
+            ],
+            "ortho_scale_m": 17.995460510253906,
+            "file": "Renders/CloningCenter_Left.png"
+          },
+          "Back": {
+            "camera_location_m": [
+              0.0,
+              35.52008819580078,
+              4.454525947570801
+            ],
+            "rotation_rad": [
+              -1.570796251296997,
+              3.141592502593994,
+              -0.0
+            ],
+            "ortho_scale_m": 17.995460510253906,
+            "file": "Renders/CloningCenter_Back.png"
+          }
+        },
+        "note": "Stage A source-constrained material/normal/line study; not a remade Blender product"
+      }
+    },
+    {
+      "key": "CommandCenter",
+      "label": "指挥中心",
+      "theme": {
+        "name": "莓红指挥",
+        "Primary": "#D18B98",
+        "Equipment": "#E3B6B1",
+        "Accent": "#EE9D58",
+        "Frame": "#C383A8"
+      },
+      "retain": "中心塔、环形层板、天线、支架与后部管路。",
+      "reduction_intent": "优化层板和重复小件；保留主塔、支架、天线及全部破坏分件。",
+      "source_triangles": 4550,
+      "source_bones": 74,
+      "source_animation_count": 3,
+      "dimensions_m": [
+        9.401302337646484,
+        9.81959056854248,
+        15.205421447753906
+      ],
+      "bone_root_representation": "UE Root is represented by the FBX armature object; reconstruct/verify at production export",
+      "sheet": {
+        "file": "References_A_v4/Sheets/CommandCenter_Sheet_A_v4.png",
+        "bytes": 5403612,
+        "sha256": "05f2f1dd9196751b4cc27cd49b9cd0de585513f8dae7c4751196e04c82aa931e",
+        "asset": "CommandCenter",
+        "role": "review_sheet",
+        "pixels": [
+          4200,
+          4640
+        ],
+        "mode": "RGB"
+      },
+      "lod_budgets_after_A": [
+        [
+          3800,
+          600
+        ],
+        [
+          1900,
+          300
+        ],
+        [
+          850,
+          0
+        ]
+      ],
+      "reference_scene": {
+        "key": "CommandCenter",
+        "theme": {
+          "name": "莓红指挥",
+          "Primary": "#D18B98",
+          "Equipment": "#E3B6B1",
+          "Accent": "#EE9D58",
+          "Frame": "#C383A8"
+        },
+        "material_palette": {
+          "Primary": "#D18B98",
+          "Equipment": "#E3B6B1",
+          "Frame": "#C383A8",
+          "Orange": "#EE9D58",
+          "Berry": "#EE9D58",
+          "Pink": "#E3B6B1",
+          "Platform": "#69A6C3",
+          "PlatformTop": "#6DA6BF",
+          "Ink": "#5F8A9E"
+        },
+        "dimensions_m": [
+          9.401302337646484,
+          9.81959056854248,
+          15.205421447753906
+        ],
+        "geometry_sha256_before": "ecd81b27923d53a0dc260c4c95fd950cc1743e064679aa65ed184181015991b9",
+        "geometry_sha256_after": "ecd81b27923d53a0dc260c4c95fd950cc1743e064679aa65ed184181015991b9",
+        "source_geometry_unchanged": true,
+        "parts": [
+          {
+            "part_id": 0,
+            "dominant_bone": "Ring1",
+            "role": "Primary"
+          },
+          {
+            "part_id": 1,
+            "dominant_bone": "TowerBase",
+            "role": "Primary"
+          },
+          {
+            "part_id": 2,
+            "dominant_bone": "Radar3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 3,
+            "dominant_bone": "Ring",
+            "role": "Orange"
+          },
+          {
+            "part_id": 4,
+            "dominant_bone": "Ring1",
+            "role": "Orange"
+          },
+          {
+            "part_id": 5,
+            "dominant_bone": "Weap_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 6,
+            "dominant_bone": "Weap_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 7,
+            "dominant_bone": "Weap_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 8,
+            "dominant_bone": "Weap_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 9,
+            "dominant_bone": "Weap_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 10,
+            "dominant_bone": "Weap_R",
+            "role": "Frame"
+          },
+          {
+            "part_id": 11,
+            "dominant_bone": "Weap_R",
+            "role": "Frame"
+          },
+          {
+            "part_id": 12,
+            "dominant_bone": "Weap_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 13,
+            "dominant_bone": "Weap_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 14,
+            "dominant_bone": "Weap_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 15,
+            "dominant_bone": "Weap_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 16,
+            "dominant_bone": "Weap_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 17,
+            "dominant_bone": "Weap_L",
+            "role": "Frame"
+          },
+          {
+            "part_id": 18,
+            "dominant_bone": "Weap_L",
+            "role": "Frame"
+          },
+          {
+            "part_id": 19,
+            "dominant_bone": "Ring2",
+            "role": "Primary"
+          },
+          {
+            "part_id": 20,
+            "dominant_bone": "Antenna",
+            "role": "Frame"
+          },
+          {
+            "part_id": 21,
+            "dominant_bone": "Antenna",
+            "role": "Frame"
+          },
+          {
+            "part_id": 22,
+            "dominant_bone": "Antenna",
+            "role": "Primary"
+          },
+          {
+            "part_id": 23,
+            "dominant_bone": "Antenna",
+            "role": "Frame"
+          },
+          {
+            "part_id": 24,
+            "dominant_bone": "Tower",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 25,
+            "dominant_bone": "Tower",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 26,
+            "dominant_bone": "Tower",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 27,
+            "dominant_bone": "Tower",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 28,
+            "dominant_bone": "Tower",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 29,
+            "dominant_bone": "Tower",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 30,
+            "dominant_bone": "Tower",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 31,
+            "dominant_bone": "Tower",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 32,
+            "dominant_bone": "Tower",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 33,
+            "dominant_bone": "Tower",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 34,
+            "dominant_bone": "Tower",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 35,
+            "dominant_bone": "Tower",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 36,
+            "dominant_bone": "BlockL",
+            "role": "Primary"
+          },
+          {
+            "part_id": 37,
+            "dominant_bone": "BlockL",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 38,
+            "dominant_bone": "BlockR",
+            "role": "Primary"
+          },
+          {
+            "part_id": 39,
+            "dominant_bone": "BlockR",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 40,
+            "dominant_bone": "Bracket_L1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 41,
+            "dominant_bone": "Bracket_L2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 42,
+            "dominant_bone": "Bracket_L3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 43,
+            "dominant_bone": "Bracket_L4",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 44,
+            "dominant_bone": "Bracket_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 45,
+            "dominant_bone": "Bracket_R1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 46,
+            "dominant_bone": "Bracket_R2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 47,
+            "dominant_bone": "Bracket_R3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 48,
+            "dominant_bone": "Bracket_R4",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 49,
+            "dominant_bone": "LBlock",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 50,
+            "dominant_bone": "LBlock1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 51,
+            "dominant_bone": "LBlock2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 52,
+            "dominant_bone": "LBlock3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 53,
+            "dominant_bone": "LBlock4",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 54,
+            "dominant_bone": "LBlock5",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 55,
+            "dominant_bone": "Rack_2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 56,
+            "dominant_bone": "Rack_2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 57,
+            "dominant_bone": "Rack_2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 58,
+            "dominant_bone": "Rack_2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 59,
+            "dominant_bone": "Rack_2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 60,
+            "dominant_bone": "Rack_2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 61,
+            "dominant_bone": "Rack_2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 62,
+            "dominant_bone": "Rack_L",
+            "role": "Frame"
+          },
+          {
+            "part_id": 63,
+            "dominant_bone": "Rack_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 64,
+            "dominant_bone": "Rack_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 65,
+            "dominant_bone": "Rack_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 66,
+            "dominant_bone": "Rack_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 67,
+            "dominant_bone": "Rack_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 68,
+            "dominant_bone": "Rack_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 69,
+            "dominant_bone": "polymsh3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 70,
+            "dominant_bone": "polymsh3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 71,
+            "dominant_bone": "polymsh3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 72,
+            "dominant_bone": "BlockA",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 73,
+            "dominant_bone": "BlockA",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 74,
+            "dominant_bone": "BlockA",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 75,
+            "dominant_bone": "BackBlock",
+            "role": "Primary"
+          },
+          {
+            "part_id": 76,
+            "dominant_bone": "BackBlock",
+            "role": "Primary"
+          },
+          {
+            "part_id": 77,
+            "dominant_bone": "Bracket_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 78,
+            "dominant_bone": "Radar1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 79,
+            "dominant_bone": "Radar1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 80,
+            "dominant_bone": "Radar2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 81,
+            "dominant_bone": "Radar2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 82,
+            "dominant_bone": "Radar2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 83,
+            "dominant_bone": "Radar2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 84,
+            "dominant_bone": "Gate",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 85,
+            "dominant_bone": "Barrel4",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 86,
+            "dominant_bone": "Barrel1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 87,
+            "dominant_bone": "Barrel2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 88,
+            "dominant_bone": "Ring1",
+            "role": "Primary"
+          },
+          {
+            "part_id": 89,
+            "dominant_bone": "Weap_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 90,
+            "dominant_bone": "Weap_R",
+            "role": "Frame"
+          },
+          {
+            "part_id": 91,
+            "dominant_bone": "Weap_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 92,
+            "dominant_bone": "Tower",
+            "role": "Primary"
+          },
+          {
+            "part_id": 93,
+            "dominant_bone": "Duct",
+            "role": "Frame"
+          },
+          {
+            "part_id": 94,
+            "dominant_bone": "Duct1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 95,
+            "dominant_bone": "MainBlock",
+            "role": "Primary"
+          },
+          {
+            "part_id": 96,
+            "dominant_bone": "Supply",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 97,
+            "dominant_bone": "Supply1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 98,
+            "dominant_bone": "Supply2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 99,
+            "dominant_bone": "Radar2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 100,
+            "dominant_bone": "Barrel3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 101,
+            "dominant_bone": "Weap_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 102,
+            "dominant_bone": "Weap_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 103,
+            "dominant_bone": "Weap_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 104,
+            "dominant_bone": "Weap_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 105,
+            "dominant_bone": "Weap_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 106,
+            "dominant_bone": "Weap_L",
+            "role": "Frame"
+          },
+          {
+            "part_id": 107,
+            "dominant_bone": "Weap_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 108,
+            "dominant_bone": "Duct2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 109,
+            "dominant_bone": "Duct3",
+            "role": "Frame"
+          },
+          {
+            "part_id": 110,
+            "dominant_bone": "Rack_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 111,
+            "dominant_bone": "Supply3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 112,
+            "dominant_bone": "Vent_L1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 113,
+            "dominant_bone": "Vent_R1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 114,
+            "dominant_bone": "Rack_2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 115,
+            "dominant_bone": "BackBlock",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 116,
+            "dominant_bone": "Tube",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 117,
+            "dominant_bone": "Tube2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 118,
+            "dominant_bone": "Vent_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 119,
+            "dominant_bone": "Vent_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 120,
+            "dominant_bone": "Cable",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 121,
+            "dominant_bone": "Cable1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 122,
+            "dominant_bone": "Tube1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 123,
+            "dominant_bone": "Tube3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 124,
+            "dominant_bone": "Cable",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 125,
+            "dominant_bone": "Cable1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 126,
+            "dominant_bone": "BackBlock",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 127,
+            "dominant_bone": "BackBlock",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 128,
+            "dominant_bone": "Vent_R2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 129,
+            "dominant_bone": "Vent_L2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 130,
+            "dominant_bone": "Radar",
+            "role": "Frame"
+          },
+          {
+            "part_id": 131,
+            "dominant_bone": "Logo",
+            "role": "Equipment"
+          }
+        ],
+        "mirror_color_pairs": [
+          [
+            5,
+            12,
+            "Equipment"
+          ],
+          [
+            6,
+            13,
+            "Equipment"
+          ],
+          [
+            7,
+            14,
+            "Equipment"
+          ],
+          [
+            8,
+            15,
+            "Equipment"
+          ],
+          [
+            9,
+            16,
+            "Equipment"
+          ],
+          [
+            10,
+            17,
+            "Frame"
+          ],
+          [
+            11,
+            18,
+            "Frame"
+          ],
+          [
+            26,
+            27,
+            "Equipment"
+          ],
+          [
+            32,
+            28,
+            "Equipment"
+          ],
+          [
+            33,
+            29,
+            "Equipment"
+          ],
+          [
+            34,
+            30,
+            "Equipment"
+          ],
+          [
+            35,
+            31,
+            "Equipment"
+          ],
+          [
+            38,
+            36,
+            "Primary"
+          ],
+          [
+            39,
+            37,
+            "Equipment"
+          ],
+          [
+            44,
+            77,
+            "Equipment"
+          ],
+          [
+            45,
+            41,
+            "Equipment"
+          ],
+          [
+            46,
+            40,
+            "Equipment"
+          ],
+          [
+            47,
+            43,
+            "Equipment"
+          ],
+          [
+            48,
+            42,
+            "Equipment"
+          ],
+          [
+            52,
+            51,
+            "Equipment"
+          ],
+          [
+            53,
+            50,
+            "Equipment"
+          ],
+          [
+            55,
+            62,
+            "Frame"
+          ],
+          [
+            56,
+            63,
+            "Equipment"
+          ],
+          [
+            57,
+            64,
+            "Equipment"
+          ],
+          [
+            58,
+            65,
+            "Equipment"
+          ],
+          [
+            59,
+            66,
+            "Equipment"
+          ],
+          [
+            60,
+            67,
+            "Equipment"
+          ],
+          [
+            61,
+            68,
+            "Equipment"
+          ],
+          [
+            71,
+            70,
+            "Equipment"
+          ],
+          [
+            78,
+            79,
+            "Equipment"
+          ],
+          [
+            89,
+            91,
+            "Equipment"
+          ],
+          [
+            90,
+            106,
+            "Frame"
+          ],
+          [
+            98,
+            97,
+            "Equipment"
+          ],
+          [
+            101,
+            104,
+            "Equipment"
+          ],
+          [
+            102,
+            105,
+            "Equipment"
+          ],
+          [
+            103,
+            107,
+            "Equipment"
+          ],
+          [
+            108,
+            93,
+            "Frame"
+          ],
+          [
+            109,
+            94,
+            "Frame"
+          ],
+          [
+            111,
+            96,
+            "Equipment"
+          ],
+          [
+            113,
+            112,
+            "Equipment"
+          ],
+          [
+            114,
+            110,
+            "Equipment"
+          ],
+          [
+            117,
+            116,
+            "Equipment"
+          ],
+          [
+            119,
+            118,
+            "Equipment"
+          ],
+          [
+            120,
+            121,
+            "Equipment"
+          ],
+          [
+            123,
+            122,
+            "Equipment"
+          ],
+          [
+            124,
+            125,
+            "Equipment"
+          ],
+          [
+            126,
+            127,
+            "Equipment"
+          ],
+          [
+            128,
+            129,
+            "Equipment"
+          ]
+        ],
+        "views": {
+          "Hero": {
+            "camera_location_m": [
+              33.330078125,
+              -43.11988830566406,
+              34.213661193847656
+            ],
+            "rotation_rad": [
+              1.1169817447662354,
+              -1.1208559413944386e-08,
+              0.6556957364082336
+            ],
+            "ortho_scale_m": 27.036170959472656,
+            "file": "Renders/CommandCenter_Hero.png"
+          },
+          "Front": {
+            "camera_location_m": [
+              -2.384185791015625e-07,
+              -60.61247253417969,
+              7.549596786499023
+            ],
+            "rotation_rad": [
+              1.570796251296997,
+              -0.0,
+              0.0
+            ],
+            "ortho_scale_m": 27.036170959472656,
+            "file": "Renders/CommandCenter_Front.png"
+          },
+          "Left": {
+            "camera_location_m": [
+              60.821685791015625,
+              0.2092142105102539,
+              7.549596786499023
+            ],
+            "rotation_rad": [
+              1.5707963705062866,
+              -0.0,
+              1.5707963705062866
+            ],
+            "ortho_scale_m": 27.036170959472656,
+            "file": "Renders/CommandCenter_Left.png"
+          },
+          "Back": {
+            "camera_location_m": [
+              -2.384185791015625e-07,
+              61.03089904785156,
+              7.549596786499023
+            ],
+            "rotation_rad": [
+              1.570796251296997,
+              8.742279788975793e-08,
+              3.1415927410125732
+            ],
+            "ortho_scale_m": 27.036170959472656,
+            "file": "Renders/CommandCenter_Back.png"
+          }
+        },
+        "note": "Stage A source-constrained material/normal/line study; not a remade Blender product"
+      }
+    },
+    {
+      "key": "MilitaryFactory",
+      "label": "军工厂",
+      "theme": {
+        "name": "钢蓝工业",
+        "Primary": "#6DA6BF",
+        "Equipment": "#AF91D5",
+        "Accent": "#EE9D58",
+        "Frame": "#9590C6"
+      },
+      "retain": "四段卷帘门、三路弯管、四角支腿与通信设备。",
+      "reduction_intent": "整理壁板和支腿冗余；保留门行程、舱内结构与配套飞行无人机。",
+      "source_triangles": 2130,
+      "source_bones": 45,
+      "source_animation_count": 4,
+      "dimensions_m": [
+        9.283242225646973,
+        12.266594886779785,
+        10.251752853393555
+      ],
+      "bone_root_representation": "UE Root is represented by the FBX armature object; reconstruct/verify at production export",
+      "sheet": {
+        "file": "References_A_v4/Sheets/MilitaryFactory_Sheet_A_v4.png",
+        "bytes": 5607540,
+        "sha256": "2e624f4a649232052b015a155851a8e9dad2f3bfcd4a9c765ea0f398e56f42ba",
+        "asset": "MilitaryFactory",
+        "role": "review_sheet",
+        "pixels": [
+          4200,
+          4640
+        ],
+        "mode": "RGB"
+      },
+      "lod_budgets_after_A": [
+        [
+          1800,
+          250
+        ],
+        [
+          900,
+          150
+        ],
+        [
+          400,
+          0
+        ]
+      ],
+      "reference_scene": {
+        "key": "MilitaryFactory",
+        "theme": {
+          "name": "钢蓝工业",
+          "Primary": "#6DA6BF",
+          "Equipment": "#AF91D5",
+          "Accent": "#EE9D58",
+          "Frame": "#9590C6"
+        },
+        "material_palette": {
+          "Primary": "#6DA6BF",
+          "Equipment": "#AF91D5",
+          "Frame": "#9590C6",
+          "Orange": "#EE9D58",
+          "Berry": "#EE9D58",
+          "Pink": "#AF91D5",
+          "Platform": "#69A6C3",
+          "PlatformTop": "#6DA6BF",
+          "Ink": "#5F8A9E"
+        },
+        "dimensions_m": [
+          9.283242225646973,
+          12.266594886779785,
+          10.251752853393555
+        ],
+        "geometry_sha256_before": "ff2abacf0fc4aef2efd4d2dbe3aafdd235cdec216770c7c316d65d82d513ab3f",
+        "geometry_sha256_after": "ff2abacf0fc4aef2efd4d2dbe3aafdd235cdec216770c7c316d65d82d513ab3f",
+        "source_geometry_unchanged": true,
+        "parts": [
+          {
+            "part_id": 0,
+            "dominant_bone": "PartStructure2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 1,
+            "dominant_bone": "MainBlock",
+            "role": "Primary"
+          },
+          {
+            "part_id": 2,
+            "dominant_bone": "Antenna1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 3,
+            "dominant_bone": "Antenna1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 4,
+            "dominant_bone": "Antenna2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 5,
+            "dominant_bone": "Antenna2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 6,
+            "dominant_bone": "Antenna3",
+            "role": "Primary"
+          },
+          {
+            "part_id": 7,
+            "dominant_bone": "Antenna3",
+            "role": "Primary"
+          },
+          {
+            "part_id": 8,
+            "dominant_bone": "Damper_L1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 9,
+            "dominant_bone": "Damper_L1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 10,
+            "dominant_bone": "Damper_L2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 11,
+            "dominant_bone": "Damper_L2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 12,
+            "dominant_bone": "Damper_L3",
+            "role": "Frame"
+          },
+          {
+            "part_id": 13,
+            "dominant_bone": "Damper_L3",
+            "role": "Frame"
+          },
+          {
+            "part_id": 14,
+            "dominant_bone": "Damper_L4",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 15,
+            "dominant_bone": "Damper_L4",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 16,
+            "dominant_bone": "Damper_R1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 17,
+            "dominant_bone": "Damper_R1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 18,
+            "dominant_bone": "Damper_R2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 19,
+            "dominant_bone": "Damper_R2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 20,
+            "dominant_bone": "Damper_R3",
+            "role": "Frame"
+          },
+          {
+            "part_id": 21,
+            "dominant_bone": "Damper_R3",
+            "role": "Frame"
+          },
+          {
+            "part_id": 22,
+            "dominant_bone": "Damper_R4",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 23,
+            "dominant_bone": "Damper_R4",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 24,
+            "dominant_bone": "ElectronicUnit_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 25,
+            "dominant_bone": "ElectronicUnit_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 26,
+            "dominant_bone": "ElectronicUnit_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 27,
+            "dominant_bone": "PartStructure1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 28,
+            "dominant_bone": "Pipe_L",
+            "role": "Primary"
+          },
+          {
+            "part_id": 29,
+            "dominant_bone": "Pipe_R",
+            "role": "Primary"
+          },
+          {
+            "part_id": 30,
+            "dominant_bone": "MainBlock",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 31,
+            "dominant_bone": "DoorPart1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 32,
+            "dominant_bone": "DoorPart2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 33,
+            "dominant_bone": "DoorPart3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 34,
+            "dominant_bone": "DoorPart4",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 35,
+            "dominant_bone": "CivilBlock_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 36,
+            "dominant_bone": "CivilBlock_M",
+            "role": "Orange"
+          },
+          {
+            "part_id": 37,
+            "dominant_bone": "CivilBlock_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 38,
+            "dominant_bone": "RoboLeg_L2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 39,
+            "dominant_bone": "RoboLeg_L2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 40,
+            "dominant_bone": "RoboLeg_L2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 41,
+            "dominant_bone": "RoboLeg_L2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 42,
+            "dominant_bone": "RoboLeg_R2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 43,
+            "dominant_bone": "RoboLeg_R2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 44,
+            "dominant_bone": "RoboLeg_R2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 45,
+            "dominant_bone": "RoboLeg_R2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 46,
+            "dominant_bone": "RoboLeg_R1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 47,
+            "dominant_bone": "RoboLeg_R1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 48,
+            "dominant_bone": "RoboLeg_R1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 49,
+            "dominant_bone": "RoboLeg_R1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 50,
+            "dominant_bone": "RoboLeg_L1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 51,
+            "dominant_bone": "RoboLeg_L1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 52,
+            "dominant_bone": "RoboLeg_L1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 53,
+            "dominant_bone": "RoboLeg_L1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 54,
+            "dominant_bone": "Light1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 55,
+            "dominant_bone": "Light2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 56,
+            "dominant_bone": "Light3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 57,
+            "dominant_bone": "Light4",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 58,
+            "dominant_bone": "Light1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 59,
+            "dominant_bone": "Vent_L",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 60,
+            "dominant_bone": "ElectronicUnit_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 61,
+            "dominant_bone": "Light2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 62,
+            "dominant_bone": "Light3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 63,
+            "dominant_bone": "Light4",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 64,
+            "dominant_bone": "Vent_R",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 65,
+            "dominant_bone": "Container_R",
+            "role": "Primary"
+          },
+          {
+            "part_id": 66,
+            "dominant_bone": "Container_L",
+            "role": "Primary"
+          },
+          {
+            "part_id": 67,
+            "dominant_bone": "Tube1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 68,
+            "dominant_bone": "Tube2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 69,
+            "dominant_bone": "Tube3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 70,
+            "dominant_bone": "Tube4",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 71,
+            "dominant_bone": "Antenna3",
+            "role": "Primary"
+          },
+          {
+            "part_id": 72,
+            "dominant_bone": "Logo",
+            "role": "Equipment"
+          }
+        ],
+        "mirror_color_pairs": [
+          [
+            26,
+            24,
+            "Equipment"
+          ],
+          [
+            29,
+            28,
+            "Primary"
+          ],
+          [
+            37,
+            35,
+            "Equipment"
+          ],
+          [
+            38,
+            42,
+            "Equipment"
+          ],
+          [
+            39,
+            43,
+            "Equipment"
+          ],
+          [
+            40,
+            44,
+            "Equipment"
+          ],
+          [
+            41,
+            45,
+            "Equipment"
+          ],
+          [
+            50,
+            46,
+            "Equipment"
+          ],
+          [
+            51,
+            47,
+            "Equipment"
+          ],
+          [
+            52,
+            48,
+            "Equipment"
+          ],
+          [
+            53,
+            49,
+            "Equipment"
+          ],
+          [
+            56,
+            54,
+            "Equipment"
+          ],
+          [
+            57,
+            55,
+            "Equipment"
+          ],
+          [
+            62,
+            58,
+            "Equipment"
+          ],
+          [
+            63,
+            61,
+            "Equipment"
+          ],
+          [
+            64,
+            59,
+            "Equipment"
+          ],
+          [
+            65,
+            66,
+            "Primary"
+          ]
+        ],
+        "views": {
+          "Hero": {
+            "camera_location_m": [
+              26.88821029663086,
+              -34.708316802978516,
+              26.632299423217773
+            ],
+            "rotation_rad": [
+              1.1169817447662354,
+              -1.1208559413944386e-08,
+              0.6556957364082336
+            ],
+            "ortho_scale_m": 22.02190589904785,
+            "file": "Renders/MilitaryFactory_Hero.png"
+          },
+          "Front": {
+            "camera_location_m": [
+              0.0,
+              -48.82002258300781,
+              5.121730804443359
+            ],
+            "rotation_rad": [
+              1.5707964897155762,
+              -0.0,
+              0.0
+            ],
+            "ortho_scale_m": 22.02190589904785,
+            "file": "Renders/MilitaryFactory_Front.png"
+          },
+          "Left": {
+            "camera_location_m": [
+              49.06637954711914,
+              0.24635553359985352,
+              5.121730804443359
+            ],
+            "rotation_rad": [
+              1.5707963705062866,
+              -0.0,
+              1.5707963705062866
+            ],
+            "ortho_scale_m": 22.02190589904785,
+            "file": "Renders/MilitaryFactory_Left.png"
+          },
+          "Back": {
+            "camera_location_m": [
+              0.0,
+              49.31273651123047,
+              5.121730804443359
+            ],
+            "rotation_rad": [
+              -1.570796251296997,
+              3.141592502593994,
+              -0.0
+            ],
+            "ortho_scale_m": 22.02190589904785,
+            "file": "Renders/MilitaryFactory_Back.png"
+          }
+        },
+        "note": "Stage A source-constrained material/normal/line study; not a remade Blender product"
+      }
+    },
+    {
+      "key": "Reactor",
+      "label": "反应堆",
+      "theme": {
+        "name": "青绿动力",
+        "Primary": "#2EAEB6",
+        "Equipment": "#6DA6BF",
+        "Accent": "#EE9D58",
+        "Frame": "#50A3A6"
+      },
+      "retain": "三向支撑、分瓣壳体、散热栅、顶盖和连杆。",
+      "reduction_intent": "优化壳体与支座分段；保留三重径向结构、顶盖、连杆和活动内部件。",
+      "source_triangles": 3654,
+      "source_bones": 12,
+      "source_animation_count": 3,
+      "dimensions_m": [
+        5.412111282348633,
+        5.649188041687012,
+        4.77436637878418
+      ],
+      "bone_root_representation": "UE Root is represented by the FBX armature object; reconstruct/verify at production export",
+      "sheet": {
+        "file": "References_A_v4/Sheets/Reactor_Sheet_A_v4.png",
+        "bytes": 5829028,
+        "sha256": "b1408e079c54261e8995eda09247ab6d47067390535c3cb02104d18338cb51e1",
+        "asset": "Reactor",
+        "role": "review_sheet",
+        "pixels": [
+          4200,
+          4640
+        ],
+        "mode": "RGB"
+      },
+      "lod_budgets_after_A": [
+        [
+          3000,
+          500
+        ],
+        [
+          1500,
+          250
+        ],
+        [
+          700,
+          0
+        ]
+      ],
+      "reference_scene": {
+        "key": "Reactor",
+        "theme": {
+          "name": "青绿动力",
+          "Primary": "#2EAEB6",
+          "Equipment": "#6DA6BF",
+          "Accent": "#EE9D58",
+          "Frame": "#50A3A6"
+        },
+        "material_palette": {
+          "Primary": "#2EAEB6",
+          "Equipment": "#6DA6BF",
+          "Frame": "#50A3A6",
+          "Orange": "#EE9D58",
+          "Berry": "#EE9D58",
+          "Pink": "#6DA6BF",
+          "Platform": "#69A6C3",
+          "PlatformTop": "#6DA6BF",
+          "Ink": "#5F8A9E"
+        },
+        "dimensions_m": [
+          5.412111282348633,
+          5.649188041687012,
+          4.77436637878418
+        ],
+        "geometry_sha256_before": "075b9bba7d005c181646cd20a708b965d424f44791c7d2e51699740bd7694b6f",
+        "geometry_sha256_after": "075b9bba7d005c181646cd20a708b965d424f44791c7d2e51699740bd7694b6f",
+        "source_geometry_unchanged": true,
+        "parts": [
+          {
+            "part_id": 0,
+            "dominant_bone": "Gears",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 1,
+            "dominant_bone": "Gears",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 2,
+            "dominant_bone": "Hatch",
+            "role": "Frame"
+          },
+          {
+            "part_id": 3,
+            "dominant_bone": "Hatch",
+            "role": "Frame"
+          },
+          {
+            "part_id": 4,
+            "dominant_bone": "Rod",
+            "role": "Frame"
+          },
+          {
+            "part_id": 5,
+            "dominant_bone": "Airing",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 6,
+            "dominant_bone": "Airing",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 7,
+            "dominant_bone": "Block1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 8,
+            "dominant_bone": "Block1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 9,
+            "dominant_bone": "Block1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 10,
+            "dominant_bone": "Block1",
+            "role": "Primary"
+          },
+          {
+            "part_id": 11,
+            "dominant_bone": "Block1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 12,
+            "dominant_bone": "Block1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 13,
+            "dominant_bone": "Block1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 14,
+            "dominant_bone": "Block1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 15,
+            "dominant_bone": "Block1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 16,
+            "dominant_bone": "Block1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 17,
+            "dominant_bone": "Block1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 18,
+            "dominant_bone": "Block1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 19,
+            "dominant_bone": "Block1",
+            "role": "Frame"
+          },
+          {
+            "part_id": 20,
+            "dominant_bone": "Block1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 21,
+            "dominant_bone": "Block2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 22,
+            "dominant_bone": "Block2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 23,
+            "dominant_bone": "Block2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 24,
+            "dominant_bone": "Block2",
+            "role": "Primary"
+          },
+          {
+            "part_id": 25,
+            "dominant_bone": "Block2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 26,
+            "dominant_bone": "Block2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 27,
+            "dominant_bone": "Block2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 28,
+            "dominant_bone": "Block2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 29,
+            "dominant_bone": "Block2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 30,
+            "dominant_bone": "Block2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 31,
+            "dominant_bone": "Block2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 32,
+            "dominant_bone": "Block2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 33,
+            "dominant_bone": "Block2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 34,
+            "dominant_bone": "Block2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 35,
+            "dominant_bone": "Block3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 36,
+            "dominant_bone": "Block3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 37,
+            "dominant_bone": "Block3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 38,
+            "dominant_bone": "Block3",
+            "role": "Primary"
+          },
+          {
+            "part_id": 39,
+            "dominant_bone": "Block3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 40,
+            "dominant_bone": "Block3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 41,
+            "dominant_bone": "Block3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 42,
+            "dominant_bone": "Block3",
+            "role": "Frame"
+          },
+          {
+            "part_id": 43,
+            "dominant_bone": "Block3",
+            "role": "Frame"
+          },
+          {
+            "part_id": 44,
+            "dominant_bone": "Block3",
+            "role": "Frame"
+          },
+          {
+            "part_id": 45,
+            "dominant_bone": "Block3",
+            "role": "Frame"
+          },
+          {
+            "part_id": 46,
+            "dominant_bone": "Block3",
+            "role": "Frame"
+          },
+          {
+            "part_id": 47,
+            "dominant_bone": "Block3",
+            "role": "Frame"
+          },
+          {
+            "part_id": 48,
+            "dominant_bone": "Block3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 49,
+            "dominant_bone": "Hatch",
+            "role": "Orange"
+          },
+          {
+            "part_id": 50,
+            "dominant_bone": "Block1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 51,
+            "dominant_bone": "Block1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 52,
+            "dominant_bone": "Block2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 53,
+            "dominant_bone": "Block2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 54,
+            "dominant_bone": "Block3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 55,
+            "dominant_bone": "Block3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 56,
+            "dominant_bone": "Block1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 57,
+            "dominant_bone": "Block1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 58,
+            "dominant_bone": "Block1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 59,
+            "dominant_bone": "Block2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 60,
+            "dominant_bone": "Block2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 61,
+            "dominant_bone": "Block2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 62,
+            "dominant_bone": "Block3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 63,
+            "dominant_bone": "Block3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 64,
+            "dominant_bone": "Block3",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 65,
+            "dominant_bone": "Logo1",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 66,
+            "dominant_bone": "Logo2",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 67,
+            "dominant_bone": "Logo3",
+            "role": "Equipment"
+          }
+        ],
+        "mirror_color_pairs": [
+          [
+            9,
+            37,
+            "Equipment"
+          ],
+          [
+            15,
+            18,
+            "Frame"
+          ],
+          [
+            29,
+            46,
+            "Frame"
+          ],
+          [
+            32,
+            43,
+            "Frame"
+          ],
+          [
+            56,
+            62,
+            "Equipment"
+          ],
+          [
+            57,
+            63,
+            "Equipment"
+          ],
+          [
+            58,
+            64,
+            "Equipment"
+          ],
+          [
+            65,
+            67,
+            "Equipment"
+          ]
+        ],
+        "views": {
+          "Hero": {
+            "camera_location_m": [
+              11.881674766540527,
+              -15.866247177124023,
+              12.188339233398438
+            ],
+            "rotation_rad": [
+              1.1169816255569458,
+              -2.651072961157297e-08,
+              0.6556956768035889
+            ],
+            "ortho_scale_m": 10.673113822937012,
+            "file": "Renders/Reactor_Hero.png"
+          },
+          "Front": {
+            "camera_location_m": [
+              -0.5012693405151367,
+              -22.365171432495117,
+              2.2819833755493164
+            ],
+            "rotation_rad": [
+              1.5707964897155762,
+              -0.0,
+              0.0
+            ],
+            "ortho_scale_m": 10.673113822937012,
+            "file": "Renders/Reactor_Front.png"
+          },
+          "Left": {
+            "camera_location_m": [
+              22.095481872558594,
+              0.23158109188079834,
+              2.2819833755493164
+            ],
+            "rotation_rad": [
+              1.5707964897155762,
+              -1.1920927533992653e-07,
+              1.5707964897155762
+            ],
+            "ortho_scale_m": 10.673113822937012,
+            "file": "Renders/Reactor_Left.png"
+          },
+          "Back": {
+            "camera_location_m": [
+              -0.5012693405151367,
+              22.828332901000977,
+              2.2819833755493164
+            ],
+            "rotation_rad": [
+              -1.570796251296997,
+              3.141592502593994,
+              -0.0
+            ],
+            "ortho_scale_m": 10.673113822937012,
+            "file": "Renders/Reactor_Back.png"
+          }
+        },
+        "note": "Stage A source-constrained material/normal/line study; not a remade Blender product"
+      }
+    },
+    {
+      "key": "StrategyCenter",
+      "label": "战略中心",
+      "theme": {
+        "name": "紫色情报",
+        "Primary": "#BC8EC9",
+        "Equipment": "#E3B6B1",
+        "Accent": "#2EAEB6",
+        "Frame": "#A58BC7"
+      },
+      "retain": "旋转座、定向阵列、天线、支架和基座。",
+      "reduction_intent": "整理层板和重复件；保留阵列朝向、旋转座与天线。",
+      "source_triangles": 4326,
+      "source_bones": 88,
+      "source_animation_count": 3,
+      "dimensions_m": [
+        8.180628776550293,
+        7.4766082763671875,
+        11.444680213928223
+      ],
+      "bone_root_representation": "UE Root is represented by the FBX armature object; reconstruct/verify at production export",
+      "sheet": {
+        "file": "References_A_v4/Sheets/StrategyCenter_Sheet_A_v4.png",
+        "bytes": 5589220,
+        "sha256": "9b07216edb67a2e4ef0e95d0328248e66f987ef38e56cd039c11f394ecfbde42",
+        "asset": "StrategyCenter",
+        "role": "review_sheet",
+        "pixels": [
+          4200,
+          4640
+        ],
+        "mode": "RGB"
+      },
+      "lod_budgets_after_A": [
+        [
+          3600,
+          600
+        ],
+        [
+          1800,
+          300
+        ],
+        [
+          800,
+          0
+        ]
+      ],
+      "reference_scene": {
+        "key": "StrategyCenter",
+        "theme": {
+          "name": "紫色情报",
+          "Primary": "#BC8EC9",
+          "Equipment": "#E3B6B1",
+          "Accent": "#2EAEB6",
+          "Frame": "#A58BC7"
+        },
+        "material_palette": {
+          "Primary": "#BC8EC9",
+          "Equipment": "#E3B6B1",
+          "Frame": "#A58BC7",
+          "Orange": "#2EAEB6",
+          "Berry": "#2EAEB6",
+          "Pink": "#E3B6B1",
+          "Platform": "#69A6C3",
+          "PlatformTop": "#6DA6BF",
+          "Ink": "#5F8A9E"
+        },
+        "dimensions_m": [
+          8.180628776550293,
+          7.4766082763671875,
+          11.444680213928223
+        ],
+        "geometry_sha256_before": "61d24e36b8c0013128f429b791f07b7d31503deee0186b02a7d178dce9babef0",
+        "geometry_sha256_after": "61d24e36b8c0013128f429b791f07b7d31503deee0186b02a7d178dce9babef0",
+        "source_geometry_unchanged": true,
+        "parts": [
+          {
+            "part_id": 0,
+            "dominant_bone": "0_cube103",
+            "role": "Primary"
+          },
+          {
+            "part_id": 1,
+            "dominant_bone": "0_cube102",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 2,
+            "dominant_bone": "0_cube101",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 3,
+            "dominant_bone": "0_cube100",
+            "role": "Primary"
+          },
+          {
+            "part_id": 4,
+            "dominant_bone": "0_cube84",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 5,
+            "dominant_bone": "0_cube74",
+            "role": "Primary"
+          },
+          {
+            "part_id": 6,
+            "dominant_bone": "0_cube47",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 7,
+            "dominant_bone": "0_Cube52",
+            "role": "Primary"
+          },
+          {
+            "part_id": 8,
+            "dominant_bone": "0_cube81",
+            "role": "Primary"
+          },
+          {
+            "part_id": 9,
+            "dominant_bone": "0_cube80",
+            "role": "Primary"
+          },
+          {
+            "part_id": 10,
+            "dominant_bone": "0_cube79",
+            "role": "Primary"
+          },
+          {
+            "part_id": 11,
+            "dominant_bone": "0_cube60",
+            "role": "Primary"
+          },
+          {
+            "part_id": 12,
+            "dominant_bone": "VentL",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 13,
+            "dominant_bone": "VentR",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 14,
+            "dominant_bone": "0_cube103",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 15,
+            "dominant_bone": "0_cube103",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 16,
+            "dominant_bone": "0_cube100",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 17,
+            "dominant_bone": "0_cube100",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 18,
+            "dominant_bone": "0_cube74",
+            "role": "Primary"
+          },
+          {
+            "part_id": 19,
+            "dominant_bone": "0_cube74",
+            "role": "Frame"
+          },
+          {
+            "part_id": 20,
+            "dominant_bone": "0_cube74",
+            "role": "Frame"
+          },
+          {
+            "part_id": 21,
+            "dominant_bone": "0_cube74",
+            "role": "Frame"
+          },
+          {
+            "part_id": 22,
+            "dominant_bone": "0_cube74",
+            "role": "Frame"
+          },
+          {
+            "part_id": 23,
+            "dominant_bone": "0_cube74",
+            "role": "Frame"
+          },
+          {
+            "part_id": 24,
+            "dominant_bone": "0_cube74",
+            "role": "Frame"
+          },
+          {
+            "part_id": 25,
+            "dominant_bone": "0_cube74",
+            "role": "Frame"
+          },
+          {
+            "part_id": 26,
+            "dominant_bone": "0_cube74",
+            "role": "Frame"
+          },
+          {
+            "part_id": 27,
+            "dominant_bone": "0_cube74",
+            "role": "Frame"
+          },
+          {
+            "part_id": 28,
+            "dominant_bone": "0_cube74",
+            "role": "Frame"
+          },
+          {
+            "part_id": 29,
+            "dominant_bone": "0_cube74",
+            "role": "Primary"
+          },
+          {
+            "part_id": 30,
+            "dominant_bone": "0_Cube97",
+            "role": "Frame"
+          },
+          {
+            "part_id": 31,
+            "dominant_bone": "0_Cube51",
+            "role": "Primary"
+          },
+          {
+            "part_id": 32,
+            "dominant_bone": "0_cube47",
+            "role": "Primary"
+          },
+          {
+            "part_id": 33,
+            "dominant_bone": "0_cube47",
+            "role": "Primary"
+          },
+          {
+            "part_id": 34,
+            "dominant_bone": "0_cube47",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 35,
+            "dominant_bone": "0_cube47",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 36,
+            "dominant_bone": "0_cube47",
+            "role": "Frame"
+          },
+          {
+            "part_id": 37,
+            "dominant_bone": "0_cube47",
+            "role": "Frame"
+          },
+          {
+            "part_id": 38,
+            "dominant_bone": "0_cube47",
+            "role": "Frame"
+          },
+          {
+            "part_id": 39,
+            "dominant_bone": "0_cube47",
+            "role": "Frame"
+          },
+          {
+            "part_id": 40,
+            "dominant_bone": "0_cube47",
+            "role": "Frame"
+          },
+          {
+            "part_id": 41,
+            "dominant_bone": "0_cube47",
+            "role": "Frame"
+          },
+          {
+            "part_id": 42,
+            "dominant_bone": "0_cube47",
+            "role": "Frame"
+          },
+          {
+            "part_id": 43,
+            "dominant_bone": "0_Cube49",
+            "role": "Primary"
+          },
+          {
+            "part_id": 44,
+            "dominant_bone": "0_Cube50",
+            "role": "Primary"
+          },
+          {
+            "part_id": 45,
+            "dominant_bone": "0_Cube54",
+            "role": "Primary"
+          },
+          {
+            "part_id": 46,
+            "dominant_bone": "0_Cube54",
+            "role": "Frame"
+          },
+          {
+            "part_id": 47,
+            "dominant_bone": "0_Cube54",
+            "role": "Frame"
+          },
+          {
+            "part_id": 48,
+            "dominant_bone": "0_Cube54",
+            "role": "Frame"
+          },
+          {
+            "part_id": 49,
+            "dominant_bone": "0_cylinder",
+            "role": "Frame"
+          },
+          {
+            "part_id": 50,
+            "dominant_bone": "0_cylinder",
+            "role": "Frame"
+          },
+          {
+            "part_id": 51,
+            "dominant_bone": "0_cube48",
+            "role": "Primary"
+          },
+          {
+            "part_id": 52,
+            "dominant_bone": "0_cube48",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 53,
+            "dominant_bone": "0_cube48",
+            "role": "Frame"
+          },
+          {
+            "part_id": 54,
+            "dominant_bone": "0_polymsh21",
+            "role": "Primary"
+          },
+          {
+            "part_id": 55,
+            "dominant_bone": "0_polymsh21",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 56,
+            "dominant_bone": "0_polymsh21",
+            "role": "Berry"
+          },
+          {
+            "part_id": 57,
+            "dominant_bone": "0_polymsh21",
+            "role": "Berry"
+          },
+          {
+            "part_id": 58,
+            "dominant_bone": "0_cube46",
+            "role": "Frame"
+          },
+          {
+            "part_id": 59,
+            "dominant_bone": "0_cube45",
+            "role": "Frame"
+          },
+          {
+            "part_id": 60,
+            "dominant_bone": "0_cube44",
+            "role": "Frame"
+          },
+          {
+            "part_id": 61,
+            "dominant_bone": "0_cube40",
+            "role": "Frame"
+          },
+          {
+            "part_id": 62,
+            "dominant_bone": "0_cube39",
+            "role": "Frame"
+          },
+          {
+            "part_id": 63,
+            "dominant_bone": "0_cube38",
+            "role": "Frame"
+          },
+          {
+            "part_id": 64,
+            "dominant_bone": "0_cube37",
+            "role": "Frame"
+          },
+          {
+            "part_id": 65,
+            "dominant_bone": "0_cube36",
+            "role": "Frame"
+          },
+          {
+            "part_id": 66,
+            "dominant_bone": "0_cube34",
+            "role": "Frame"
+          },
+          {
+            "part_id": 67,
+            "dominant_bone": "0_cube33",
+            "role": "Frame"
+          },
+          {
+            "part_id": 68,
+            "dominant_bone": "0_cube32",
+            "role": "Frame"
+          },
+          {
+            "part_id": 69,
+            "dominant_bone": "0_cube31",
+            "role": "Frame"
+          },
+          {
+            "part_id": 70,
+            "dominant_bone": "0_cube30",
+            "role": "Frame"
+          },
+          {
+            "part_id": 71,
+            "dominant_bone": "0_cube27",
+            "role": "Frame"
+          },
+          {
+            "part_id": 72,
+            "dominant_bone": "0_cube26",
+            "role": "Frame"
+          },
+          {
+            "part_id": 73,
+            "dominant_bone": "0_cube25",
+            "role": "Frame"
+          },
+          {
+            "part_id": 74,
+            "dominant_bone": "0_cube24",
+            "role": "Frame"
+          },
+          {
+            "part_id": 75,
+            "dominant_bone": "0_cube23",
+            "role": "Frame"
+          },
+          {
+            "part_id": 76,
+            "dominant_bone": "0_cube22",
+            "role": "Frame"
+          },
+          {
+            "part_id": 77,
+            "dominant_bone": "0_cube18",
+            "role": "Frame"
+          },
+          {
+            "part_id": 78,
+            "dominant_bone": "0_cube17",
+            "role": "Frame"
+          },
+          {
+            "part_id": 79,
+            "dominant_bone": "0_cube16",
+            "role": "Frame"
+          },
+          {
+            "part_id": 80,
+            "dominant_bone": "0_cube15",
+            "role": "Frame"
+          },
+          {
+            "part_id": 81,
+            "dominant_bone": "0_cube9",
+            "role": "Frame"
+          },
+          {
+            "part_id": 82,
+            "dominant_bone": "0_cube10",
+            "role": "Frame"
+          },
+          {
+            "part_id": 83,
+            "dominant_bone": "0_cube11",
+            "role": "Frame"
+          },
+          {
+            "part_id": 84,
+            "dominant_bone": "0_cube12",
+            "role": "Frame"
+          },
+          {
+            "part_id": 85,
+            "dominant_bone": "0_cube20",
+            "role": "Frame"
+          },
+          {
+            "part_id": 86,
+            "dominant_bone": "0_cube19",
+            "role": "Frame"
+          },
+          {
+            "part_id": 87,
+            "dominant_bone": "0_cube8",
+            "role": "Frame"
+          },
+          {
+            "part_id": 88,
+            "dominant_bone": "0_cube4",
+            "role": "Frame"
+          },
+          {
+            "part_id": 89,
+            "dominant_bone": "0_cube2",
+            "role": "Frame"
+          },
+          {
+            "part_id": 90,
+            "dominant_bone": "0_cube3",
+            "role": "Frame"
+          },
+          {
+            "part_id": 91,
+            "dominant_bone": "0_cube28",
+            "role": "Frame"
+          },
+          {
+            "part_id": 92,
+            "dominant_bone": "0_cube29",
+            "role": "Frame"
+          },
+          {
+            "part_id": 93,
+            "dominant_bone": "0_cube21",
+            "role": "Frame"
+          },
+          {
+            "part_id": 94,
+            "dominant_bone": "0_cube14",
+            "role": "Frame"
+          },
+          {
+            "part_id": 95,
+            "dominant_bone": "0_polymsh12",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 96,
+            "dominant_bone": "0_polymsh12",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 97,
+            "dominant_bone": "0_polymsh12",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 98,
+            "dominant_bone": "0_polymsh12",
+            "role": "Frame"
+          },
+          {
+            "part_id": 99,
+            "dominant_bone": "0_polymsh12",
+            "role": "Frame"
+          },
+          {
+            "part_id": 100,
+            "dominant_bone": "0_polymsh12",
+            "role": "Frame"
+          },
+          {
+            "part_id": 101,
+            "dominant_bone": "0_polymsh12",
+            "role": "Frame"
+          },
+          {
+            "part_id": 102,
+            "dominant_bone": "0_polymsh12",
+            "role": "Frame"
+          },
+          {
+            "part_id": 103,
+            "dominant_bone": "0_polymsh12",
+            "role": "Frame"
+          },
+          {
+            "part_id": 104,
+            "dominant_bone": "0_polymsh12",
+            "role": "Frame"
+          },
+          {
+            "part_id": 105,
+            "dominant_bone": "0_polymsh12",
+            "role": "Frame"
+          },
+          {
+            "part_id": 106,
+            "dominant_bone": "0_polymsh12",
+            "role": "Frame"
+          },
+          {
+            "part_id": 107,
+            "dominant_bone": "0_polymsh11",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 108,
+            "dominant_bone": "0_polymsh11",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 109,
+            "dominant_bone": "0_polymsh11",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 110,
+            "dominant_bone": "0_polymsh11",
+            "role": "Frame"
+          },
+          {
+            "part_id": 111,
+            "dominant_bone": "0_polymsh11",
+            "role": "Frame"
+          },
+          {
+            "part_id": 112,
+            "dominant_bone": "0_polymsh11",
+            "role": "Frame"
+          },
+          {
+            "part_id": 113,
+            "dominant_bone": "0_polymsh11",
+            "role": "Frame"
+          },
+          {
+            "part_id": 114,
+            "dominant_bone": "0_polymsh11",
+            "role": "Frame"
+          },
+          {
+            "part_id": 115,
+            "dominant_bone": "0_polymsh11",
+            "role": "Frame"
+          },
+          {
+            "part_id": 116,
+            "dominant_bone": "0_polymsh11",
+            "role": "Frame"
+          },
+          {
+            "part_id": 117,
+            "dominant_bone": "0_polymsh11",
+            "role": "Frame"
+          },
+          {
+            "part_id": 118,
+            "dominant_bone": "0_polymsh11",
+            "role": "Frame"
+          },
+          {
+            "part_id": 119,
+            "dominant_bone": "0_polymsh8",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 120,
+            "dominant_bone": "0_polymsh8",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 121,
+            "dominant_bone": "0_polymsh8",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 122,
+            "dominant_bone": "0_polymsh8",
+            "role": "Frame"
+          },
+          {
+            "part_id": 123,
+            "dominant_bone": "0_polymsh8",
+            "role": "Frame"
+          },
+          {
+            "part_id": 124,
+            "dominant_bone": "0_polymsh8",
+            "role": "Frame"
+          },
+          {
+            "part_id": 125,
+            "dominant_bone": "0_polymsh8",
+            "role": "Frame"
+          },
+          {
+            "part_id": 126,
+            "dominant_bone": "0_polymsh8",
+            "role": "Frame"
+          },
+          {
+            "part_id": 127,
+            "dominant_bone": "0_polymsh8",
+            "role": "Frame"
+          },
+          {
+            "part_id": 128,
+            "dominant_bone": "0_polymsh8",
+            "role": "Frame"
+          },
+          {
+            "part_id": 129,
+            "dominant_bone": "0_polymsh8",
+            "role": "Frame"
+          },
+          {
+            "part_id": 130,
+            "dominant_bone": "0_polymsh8",
+            "role": "Frame"
+          },
+          {
+            "part_id": 131,
+            "dominant_bone": "0_polymsh7",
+            "role": "Primary"
+          },
+          {
+            "part_id": 132,
+            "dominant_bone": "0_polymsh",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 133,
+            "dominant_bone": "0_polymsh",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 134,
+            "dominant_bone": "0_polymsh",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 135,
+            "dominant_bone": "0_polymsh",
+            "role": "Frame"
+          },
+          {
+            "part_id": 136,
+            "dominant_bone": "0_polymsh",
+            "role": "Frame"
+          },
+          {
+            "part_id": 137,
+            "dominant_bone": "0_polymsh",
+            "role": "Frame"
+          },
+          {
+            "part_id": 138,
+            "dominant_bone": "0_polymsh",
+            "role": "Frame"
+          },
+          {
+            "part_id": 139,
+            "dominant_bone": "0_polymsh",
+            "role": "Frame"
+          },
+          {
+            "part_id": 140,
+            "dominant_bone": "0_polymsh",
+            "role": "Frame"
+          },
+          {
+            "part_id": 141,
+            "dominant_bone": "0_polymsh",
+            "role": "Frame"
+          },
+          {
+            "part_id": 142,
+            "dominant_bone": "0_polymsh",
+            "role": "Frame"
+          },
+          {
+            "part_id": 143,
+            "dominant_bone": "0_polymsh",
+            "role": "Frame"
+          },
+          {
+            "part_id": 144,
+            "dominant_bone": "0_cube106",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 145,
+            "dominant_bone": "0_cube106",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 146,
+            "dominant_bone": "0_cube106",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 147,
+            "dominant_bone": "0_cube105",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 148,
+            "dominant_bone": "0_cube105",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 149,
+            "dominant_bone": "0_cube105",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 150,
+            "dominant_bone": "0_cube78",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 151,
+            "dominant_bone": "0_cube78",
+            "role": "Primary"
+          },
+          {
+            "part_id": 152,
+            "dominant_bone": "0_cube78",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 153,
+            "dominant_bone": "0_cube68",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 154,
+            "dominant_bone": "0_cube68",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 155,
+            "dominant_bone": "0_cube68",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 156,
+            "dominant_bone": "0_cube59",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 157,
+            "dominant_bone": "0_cube59",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 158,
+            "dominant_bone": "0_cube59",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 159,
+            "dominant_bone": "0_polymsh035",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 160,
+            "dominant_bone": "0_polymsh30",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 161,
+            "dominant_bone": "0_polymsh30",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 162,
+            "dominant_bone": "0_polymsh26",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 163,
+            "dominant_bone": "0_cube47",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 164,
+            "dominant_bone": "0_cube48",
+            "role": "Frame"
+          },
+          {
+            "part_id": 165,
+            "dominant_bone": "0_polymsh31",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 166,
+            "dominant_bone": "0_polymsh28",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 167,
+            "dominant_bone": "0_Cylinder030",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 168,
+            "dominant_bone": "0_Cylinder25",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 169,
+            "dominant_bone": "0_cube47",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 170,
+            "dominant_bone": "0_cube47",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 171,
+            "dominant_bone": "0_cube47",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 172,
+            "dominant_bone": "0_cube47",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 173,
+            "dominant_bone": "0_cylinder",
+            "role": "Berry"
+          },
+          {
+            "part_id": 174,
+            "dominant_bone": "0_cube48",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 175,
+            "dominant_bone": "0_cube48",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 176,
+            "dominant_bone": "0_polymsh25",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 177,
+            "dominant_bone": "0_polymsh25",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 178,
+            "dominant_bone": "0_polymsh13",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 179,
+            "dominant_bone": "0_polymsh10",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 180,
+            "dominant_bone": "0_polymsh9",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 181,
+            "dominant_bone": "0_polymsh6",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 182,
+            "dominant_bone": "0_polymsh7",
+            "role": "Frame"
+          },
+          {
+            "part_id": 183,
+            "dominant_bone": "0_polymsh7",
+            "role": "Frame"
+          },
+          {
+            "part_id": 184,
+            "dominant_bone": "0_polymsh7",
+            "role": "Frame"
+          },
+          {
+            "part_id": 185,
+            "dominant_bone": "0_polymsh7",
+            "role": "Frame"
+          },
+          {
+            "part_id": 186,
+            "dominant_bone": "Logo",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 187,
+            "dominant_bone": "Logo",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 188,
+            "dominant_bone": "Logo",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 189,
+            "dominant_bone": "Logo",
+            "role": "Equipment"
+          }
+        ],
+        "mirror_color_pairs": [
+          [
+            1,
+            4,
+            "Equipment"
+          ],
+          [
+            3,
+            0,
+            "Primary"
+          ],
+          [
+            9,
+            8,
+            "Primary"
+          ],
+          [
+            16,
+            15,
+            "Equipment"
+          ],
+          [
+            17,
+            14,
+            "Equipment"
+          ],
+          [
+            18,
+            29,
+            "Primary"
+          ],
+          [
+            19,
+            24,
+            "Frame"
+          ],
+          [
+            20,
+            25,
+            "Frame"
+          ],
+          [
+            21,
+            26,
+            "Frame"
+          ],
+          [
+            22,
+            27,
+            "Frame"
+          ],
+          [
+            23,
+            28,
+            "Frame"
+          ],
+          [
+            30,
+            42,
+            "Frame"
+          ],
+          [
+            35,
+            34,
+            "Equipment"
+          ],
+          [
+            36,
+            40,
+            "Frame"
+          ],
+          [
+            37,
+            39,
+            "Frame"
+          ],
+          [
+            38,
+            41,
+            "Frame"
+          ],
+          [
+            50,
+            49,
+            "Frame"
+          ],
+          [
+            57,
+            56,
+            "Berry"
+          ],
+          [
+            60,
+            58,
+            "Frame"
+          ],
+          [
+            64,
+            62,
+            "Frame"
+          ],
+          [
+            65,
+            61,
+            "Frame"
+          ],
+          [
+            70,
+            68,
+            "Frame"
+          ],
+          [
+            75,
+            73,
+            "Frame"
+          ],
+          [
+            76,
+            72,
+            "Frame"
+          ],
+          [
+            79,
+            77,
+            "Frame"
+          ],
+          [
+            80,
+            86,
+            "Frame"
+          ],
+          [
+            81,
+            83,
+            "Frame"
+          ],
+          [
+            87,
+            84,
+            "Frame"
+          ],
+          [
+            89,
+            88,
+            "Frame"
+          ],
+          [
+            91,
+            66,
+            "Frame"
+          ],
+          [
+            92,
+            67,
+            "Frame"
+          ],
+          [
+            93,
+            71,
+            "Frame"
+          ],
+          [
+            94,
+            85,
+            "Frame"
+          ],
+          [
+            95,
+            132,
+            "Equipment"
+          ],
+          [
+            96,
+            133,
+            "Equipment"
+          ],
+          [
+            97,
+            134,
+            "Equipment"
+          ],
+          [
+            98,
+            135,
+            "Frame"
+          ],
+          [
+            99,
+            136,
+            "Frame"
+          ],
+          [
+            100,
+            137,
+            "Frame"
+          ],
+          [
+            101,
+            138,
+            "Frame"
+          ],
+          [
+            102,
+            139,
+            "Frame"
+          ],
+          [
+            103,
+            140,
+            "Frame"
+          ],
+          [
+            104,
+            141,
+            "Frame"
+          ],
+          [
+            105,
+            142,
+            "Frame"
+          ],
+          [
+            106,
+            143,
+            "Frame"
+          ],
+          [
+            107,
+            119,
+            "Equipment"
+          ],
+          [
+            108,
+            120,
+            "Equipment"
+          ],
+          [
+            109,
+            121,
+            "Equipment"
+          ],
+          [
+            110,
+            122,
+            "Frame"
+          ],
+          [
+            111,
+            123,
+            "Frame"
+          ],
+          [
+            112,
+            124,
+            "Frame"
+          ],
+          [
+            113,
+            125,
+            "Frame"
+          ],
+          [
+            114,
+            126,
+            "Frame"
+          ],
+          [
+            115,
+            127,
+            "Frame"
+          ],
+          [
+            116,
+            128,
+            "Frame"
+          ],
+          [
+            117,
+            129,
+            "Frame"
+          ],
+          [
+            118,
+            130,
+            "Frame"
+          ],
+          [
+            153,
+            144,
+            "Equipment"
+          ],
+          [
+            154,
+            145,
+            "Equipment"
+          ],
+          [
+            155,
+            146,
+            "Equipment"
+          ],
+          [
+            156,
+            147,
+            "Equipment"
+          ],
+          [
+            157,
+            148,
+            "Equipment"
+          ],
+          [
+            158,
+            149,
+            "Equipment"
+          ],
+          [
+            166,
+            159,
+            "Equipment"
+          ],
+          [
+            168,
+            167,
+            "Equipment"
+          ],
+          [
+            169,
+            171,
+            "Equipment"
+          ],
+          [
+            170,
+            172,
+            "Equipment"
+          ],
+          [
+            177,
+            176,
+            "Equipment"
+          ],
+          [
+            178,
+            181,
+            "Equipment"
+          ],
+          [
+            179,
+            180,
+            "Equipment"
+          ],
+          [
+            184,
+            182,
+            "Frame"
+          ],
+          [
+            185,
+            183,
+            "Frame"
+          ],
+          [
+            187,
+            186,
+            "Equipment"
+          ]
+        ],
+        "views": {
+          "Hero": {
+            "camera_location_m": [
+              25.086585998535156,
+              -32.572181701660156,
+              25.77566909790039
+            ],
+            "rotation_rad": [
+              1.1169817447662354,
+              6.744571123817877e-09,
+              0.6556958556175232
+            ],
+            "ortho_scale_m": 20.79786491394043,
+            "file": "Renders/StrategyCenter_Hero.png"
+          },
+          "Front": {
+            "camera_location_m": [
+              0.0,
+              -45.73834228515625,
+              5.706400394439697
+            ],
+            "rotation_rad": [
+              1.5707964897155762,
+              -0.0,
+              0.0
+            ],
+            "ortho_scale_m": 20.79786491394043,
+            "file": "Renders/StrategyCenter_Front.png"
+          },
+          "Left": {
+            "camera_location_m": [
+              45.77872085571289,
+              0.04037916660308838,
+              5.706400394439697
+            ],
+            "rotation_rad": [
+              1.5707963705062866,
+              -0.0,
+              1.5707963705062866
+            ],
+            "ortho_scale_m": 20.79786491394043,
+            "file": "Renders/StrategyCenter_Left.png"
+          },
+          "Back": {
+            "camera_location_m": [
+              0.0,
+              45.81909942626953,
+              5.706400394439697
+            ],
+            "rotation_rad": [
+              -1.570796251296997,
+              3.141592502593994,
+              -0.0
+            ],
+            "ortho_scale_m": 20.79786491394043,
+            "file": "Renders/StrategyCenter_Back.png"
+          }
+        },
+        "note": "Stage A source-constrained material/normal/line study; not a remade Blender product"
+      }
+    },
+    {
+      "key": "Floor",
+      "label": "共用平台",
+      "theme": {
+        "name": "蓝灰共用平台",
+        "Primary": "#FEE4D9",
+        "Equipment": "#6DA6BF",
+        "Accent": "#EE9D58",
+        "Frame": "#50A3A6"
+      },
+      "retain": "原外轮廓、双层台面、坡道、边界件与出入口；6m规整板缝。",
+      "reduction_intent": "优化边界重复件与隐藏重叠面；保留平台尺寸、坡度和出入口。",
+      "source_triangles": 8113,
+      "source_bones": 0,
+      "source_animation_count": 0,
+      "dimensions_m": [
+        84.53816223144531,
+        88.22584533691406,
+        5.68756103515625
+      ],
+      "bone_root_representation": null,
+      "sheet": {
+        "file": "References_A_v4/Sheets/Floor_Sheet_A_v4.png",
+        "bytes": 4232693,
+        "sha256": "cda7b93121b4a7131f7ef7446b6f3f6a39aacf7d040016c3c4fdace286f18c2c",
+        "asset": "Floor",
+        "role": "review_sheet",
+        "pixels": [
+          4200,
+          4640
+        ],
+        "mode": "RGB"
+      },
+      "lod_budgets_after_A": [
+        [
+          6500,
+          1000
+        ],
+        [
+          3500,
+          500
+        ],
+        [
+          1500,
+          0
+        ]
+      ],
+      "reference_scene": {
+        "key": "Floor",
+        "theme": {
+          "name": "蓝灰共用平台",
+          "Primary": "#FEE4D9",
+          "Equipment": "#6DA6BF",
+          "Accent": "#EE9D58",
+          "Frame": "#50A3A6"
+        },
+        "material_palette": {
+          "Primary": "#FEE4D9",
+          "Equipment": "#6DA6BF",
+          "Frame": "#50A3A6",
+          "Orange": "#EE9D58",
+          "Berry": "#EE9D58",
+          "Pink": "#6DA6BF",
+          "Platform": "#69A6C3",
+          "PlatformTop": "#6DA6BF",
+          "Ink": "#5F8A9E"
+        },
+        "dimensions_m": [
+          84.53816223144531,
+          88.22584533691406,
+          5.68756103515625
+        ],
+        "geometry_sha256_before": "094932140daf475f584c1c070810cce2eb88d1c0a0a148d8f57038753ad05b43",
+        "geometry_sha256_after": "094932140daf475f584c1c070810cce2eb88d1c0a0a148d8f57038753ad05b43",
+        "source_geometry_unchanged": true,
+        "parts": [
+          {
+            "part_id": 0,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 1,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 2,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 3,
+            "dominant_bone": null,
+            "role": "Orange"
+          },
+          {
+            "part_id": 4,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 5,
+            "dominant_bone": null,
+            "role": "Primary"
+          },
+          {
+            "part_id": 6,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 7,
+            "dominant_bone": null,
+            "role": "Primary"
+          },
+          {
+            "part_id": 8,
+            "dominant_bone": null,
+            "role": "Primary"
+          },
+          {
+            "part_id": 9,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 10,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 11,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 12,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 13,
+            "dominant_bone": null,
+            "role": "Primary"
+          },
+          {
+            "part_id": 14,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 15,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 16,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 17,
+            "dominant_bone": null,
+            "role": "Primary"
+          },
+          {
+            "part_id": 18,
+            "dominant_bone": null,
+            "role": "Primary"
+          },
+          {
+            "part_id": 19,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 20,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 21,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 22,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 23,
+            "dominant_bone": null,
+            "role": "Primary"
+          },
+          {
+            "part_id": 24,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 25,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 26,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 27,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 28,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 29,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 30,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 31,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 32,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 33,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 34,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 35,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 36,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 37,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 38,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 39,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 40,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 41,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 42,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 43,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 44,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 45,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 46,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 47,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 48,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 49,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 50,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 51,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 52,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 53,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 54,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 55,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 56,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 57,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 58,
+            "dominant_bone": null,
+            "role": "Primary"
+          },
+          {
+            "part_id": 59,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 60,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 61,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 62,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 63,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 64,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 65,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 66,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 67,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 68,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 69,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 70,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 71,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 72,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 73,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 74,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 75,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 76,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 77,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 78,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 79,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 80,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 81,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 82,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 83,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 84,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 85,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 86,
+            "dominant_bone": null,
+            "role": "Orange"
+          },
+          {
+            "part_id": 87,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 88,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 89,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 90,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 91,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 92,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 93,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 94,
+            "dominant_bone": null,
+            "role": "Platform"
+          },
+          {
+            "part_id": 95,
+            "dominant_bone": null,
+            "role": "Orange"
+          }
+        ],
+        "mirror_color_pairs": [],
+        "views": {
+          "Hero": {
+            "camera_location_m": [
+              184.3399200439453,
+              -255.36798095703125,
+              155.7586669921875
+            ],
+            "rotation_rad": [
+              1.1169817447662354,
+              6.744571123817877e-09,
+              0.6556958556175232
+            ],
+            "ortho_scale_m": 166.7029571533203,
+            "file": "Renders/Floor_Hero.png"
+          },
+          "Front": {
+            "camera_location_m": [
+              -9.049947738647461,
+              -356.86456298828125,
+              1.0467758178710938
+            ],
+            "rotation_rad": [
+              1.5707964897155762,
+              -0.0,
+              0.0
+            ],
+            "ortho_scale_m": 166.7029571533203,
+            "file": "Renders/Floor_Front.png"
+          },
+          "Left": {
+            "camera_location_m": [
+              343.8534240722656,
+              -3.9611740112304688,
+              1.0467758178710938
+            ],
+            "rotation_rad": [
+              1.5707963705062866,
+              -0.0,
+              1.5707963705062866
+            ],
+            "ortho_scale_m": 166.7029571533203,
+            "file": "Renders/Floor_Left.png"
+          },
+          "Back": {
+            "camera_location_m": [
+              -9.049947738647461,
+              348.94219970703125,
+              1.0467758178710938
+            ],
+            "rotation_rad": [
+              -1.570796251296997,
+              3.141592502593994,
+              -0.0
+            ],
+            "ortho_scale_m": 166.7029571533203,
+            "file": "Renders/Floor_Back.png"
+          },
+          "Top": {
+            "camera_location_m": [
+              -9.049947738647461,
+              -3.9611740112304688,
+              353.9501647949219
+            ],
+            "rotation_rad": [
+              0.0,
+              -0.0,
+              0.0
+            ],
+            "ortho_scale_m": 166.7029571533203,
+            "file": "Renders/Floor_Top.png"
+          }
+        },
+        "note": "Stage A source-constrained material/normal/line study; not a remade Blender product"
+      }
+    },
+    {
+      "key": "Lamp",
+      "label": "灯柱",
+      "theme": {
+        "name": "浅青橙色灯具",
+        "Primary": "#FEE4D9",
+        "Equipment": "#43ADB1",
+        "Accent": "#EE9D58",
+        "Frame": "#50A3A6"
+      },
+      "retain": "原支柱、弯折灯臂和灯头，保持原尺寸。",
+      "reduction_intent": "原网格48面；三档保留必要几何，不强行削减。",
+      "source_triangles": 48,
+      "source_bones": 0,
+      "source_animation_count": 0,
+      "dimensions_m": [
+        0.2870640158653259,
+        1.6315351724624634,
+        4.373559951782227
+      ],
+      "bone_root_representation": null,
+      "sheet": {
+        "file": "References_A_v4/Sheets/Lamp_Sheet_A_v4.png",
+        "bytes": 4357190,
+        "sha256": "81dcc53510dad996b643861fb8bc3f75d8e0dca7030f631689910dd98e68bac3",
+        "asset": "Lamp",
+        "role": "review_sheet",
+        "pixels": [
+          4200,
+          4640
+        ],
+        "mode": "RGB"
+      },
+      "lod_budgets_after_A": null,
+      "reference_scene": {
+        "key": "Lamp",
+        "theme": {
+          "name": "浅青橙色灯具",
+          "Primary": "#FEE4D9",
+          "Equipment": "#43ADB1",
+          "Accent": "#EE9D58",
+          "Frame": "#50A3A6"
+        },
+        "material_palette": {
+          "Primary": "#FEE4D9",
+          "Equipment": "#43ADB1",
+          "Frame": "#50A3A6",
+          "Orange": "#EE9D58",
+          "Berry": "#EE9D58",
+          "Pink": "#43ADB1",
+          "Platform": "#69A6C3",
+          "PlatformTop": "#6DA6BF",
+          "Ink": "#5F8A9E"
+        },
+        "dimensions_m": [
+          0.2870640158653259,
+          1.6315351724624634,
+          4.373559951782227
+        ],
+        "geometry_sha256_before": "4e208e07259758fc6e5534dd62bed5b907d9d5558a3c075c0a3ec3fe7eec3cb3",
+        "geometry_sha256_after": "4e208e07259758fc6e5534dd62bed5b907d9d5558a3c075c0a3ec3fe7eec3cb3",
+        "source_geometry_unchanged": true,
+        "parts": [
+          {
+            "part_id": 0,
+            "dominant_bone": null,
+            "role": "Frame"
+          },
+          {
+            "part_id": 1,
+            "dominant_bone": null,
+            "role": "Frame"
+          },
+          {
+            "part_id": 2,
+            "dominant_bone": null,
+            "role": "Orange"
+          }
+        ],
+        "mirror_color_pairs": [],
+        "views": {
+          "Hero": {
+            "camera_location_m": [
+              9.586751937866211,
+              -13.123499870300293,
+              9.791407585144043
+            ],
+            "rotation_rad": [
+              1.1169817447662354,
+              -1.1208559413944386e-08,
+              0.6556957364082336
+            ],
+            "ortho_scale_m": 6.312862873077393,
+            "file": "Renders/Lamp_Hero.png"
+          },
+          "Front": {
+            "camera_location_m": [
+              -3.2357871532440186e-05,
+              -18.154918670654297,
+              2.1219797134399414
+            ],
+            "rotation_rad": [
+              1.5707964897155762,
+              -0.0,
+              0.0
+            ],
+            "ortho_scale_m": 6.312862873077393,
+            "file": "Renders/Lamp_Front.png"
+          },
+          "Left": {
+            "camera_location_m": [
+              17.49420738220215,
+              -0.6606795191764832,
+              2.1219797134399414
+            ],
+            "rotation_rad": [
+              1.5707963705062866,
+              -0.0,
+              1.5707963705062866
+            ],
+            "ortho_scale_m": 6.312862873077393,
+            "file": "Renders/Lamp_Left.png"
+          },
+          "Back": {
+            "camera_location_m": [
+              -3.2357871532440186e-05,
+              16.833560943603516,
+              2.1219797134399414
+            ],
+            "rotation_rad": [
+              -1.570796251296997,
+              3.141592502593994,
+              -0.0
+            ],
+            "ortho_scale_m": 6.312862873077393,
+            "file": "Renders/Lamp_Back.png"
+          }
+        },
+        "note": "Stage A source-constrained material/normal/line study; not a remade Blender product"
+      }
+    },
+    {
+      "key": "Light",
+      "label": "发光贴片",
+      "theme": {
+        "name": "橙色功能灯光",
+        "Primary": "#EE9D58",
+        "Equipment": "#43ADB1",
+        "Accent": "#EE9D58",
+        "Frame": "#50A3A6"
+      },
+      "retain": "原单面半透明贴片；1.97m方形、零厚度。",
+      "reduction_intent": "原网格2面；正视沿贴片法线、左视为零厚度边缘、背面无正面图案，不补体积。",
+      "source_triangles": 2,
+      "source_bones": 0,
+      "source_animation_count": 0,
+      "dimensions_m": [
+        1.971929907798767,
+        1.971929907798767,
+        3.2126820315170335e-07
+      ],
+      "bone_root_representation": null,
+      "sheet": {
+        "file": "References_A_v4/Sheets/Light_Sheet_A_v4.png",
+        "bytes": 4780465,
+        "sha256": "f4091cf39e978afb45bc65422dc6b3f6792740c0187c377b555492b013f3b478",
+        "asset": "Light",
+        "role": "review_sheet",
+        "pixels": [
+          4200,
+          4640
+        ],
+        "mode": "RGB"
+      },
+      "lod_budgets_after_A": null,
+      "reference_scene": {
+        "key": "Light",
+        "theme": {
+          "name": "橙色功能灯光",
+          "Primary": "#EE9D58",
+          "Equipment": "#43ADB1",
+          "Accent": "#EE9D58",
+          "Frame": "#50A3A6"
+        },
+        "material_palette": {
+          "Primary": "#EE9D58",
+          "Equipment": "#43ADB1",
+          "Frame": "#50A3A6",
+          "Orange": "#EE9D58",
+          "Berry": "#EE9D58",
+          "Pink": "#43ADB1",
+          "Platform": "#69A6C3",
+          "PlatformTop": "#6DA6BF",
+          "Ink": "#5F8A9E"
+        },
+        "dimensions_m": [
+          1.971929907798767,
+          1.971929907798767,
+          3.2126820315170335e-07
+        ],
+        "geometry_sha256_before": "66ac676bc332bbd6b61e2feff77b5111133e7974166297a492a790123f2d1f15",
+        "geometry_sha256_after": "66ac676bc332bbd6b61e2feff77b5111133e7974166297a492a790123f2d1f15",
+        "source_geometry_unchanged": true,
+        "parts": [
+          {
+            "part_id": 0,
+            "dominant_bone": null,
+            "role": "Orange"
+          }
+        ],
+        "mirror_color_pairs": [],
+        "views": {
+          "Hero": {
+            "camera_location_m": [
+              4.322443962097168,
+              -5.619176864624023,
+              3.4579551219940186
+            ],
+            "rotation_rad": [
+              1.1169817447662354,
+              6.057506851675498e-08,
+              0.6556957960128784
+            ],
+            "ortho_scale_m": 3.8161232471466064,
+            "file": "Renders/Light_Hero.png"
+          },
+          "Front": {
+            "camera_location_m": [
+              0.0,
+              -1.2850728126068134e-06,
+              7.887719631195068
+            ],
+            "rotation_rad": [
+              0.0,
+              -0.0,
+              0.0
+            ],
+            "ortho_scale_m": 3.8161232471466064,
+            "file": "Renders/Light_Front.png"
+          },
+          "Left": {
+            "camera_location_m": [
+              7.887719631195068,
+              0.0,
+              0.0
+            ],
+            "rotation_rad": [
+              1.5707963705062866,
+              -0.0,
+              1.5707963705062866
+            ],
+            "ortho_scale_m": 3.8161232471466064,
+            "file": "Renders/Light_Left.png"
+          },
+          "Back": {
+            "camera_location_m": [
+              0.0,
+              1.2850728126068134e-06,
+              -7.887719631195068
+            ],
+            "rotation_rad": [
+              -2.384186643666908e-07,
+              -3.1415927410125732,
+              -8.742278367890322e-08
+            ],
+            "ortho_scale_m": 3.8161232471466064,
+            "file": "Renders/Light_Back.png"
+          }
+        },
+        "note": "Stage A source-constrained material/normal/line study; not a remade Blender product"
+      }
+    },
+    {
+      "key": "Drone",
+      "label": "配套无人机",
+      "theme": {
+        "name": "钢蓝工业 · 随军工厂",
+        "Primary": "#6DA6BF",
+        "Equipment": "#AF91D5",
+        "Accent": "#EE9D58",
+        "Frame": "#9590C6"
+      },
+      "retain": "原机身、导流件和两侧结构；沿用军工厂配色。",
+      "reduction_intent": "仅优化隐藏与冗余面；保留飞行动画、翼形及1m级原尺寸。",
+      "source_triangles": 254,
+      "source_bones": 4,
+      "source_animation_count": 1,
+      "dimensions_m": [
+        1.0165479183197021,
+        0.9991558194160461,
+        0.42290806770324707
+      ],
+      "bone_root_representation": "UE Root is represented by the FBX armature object; reconstruct/verify at production export",
+      "sheet": {
+        "file": "References_A_v4/Sheets/Drone_Sheet_A_v4.png",
+        "bytes": 4645571,
+        "sha256": "4b2d8269cd4588b1f0c7b585ca17f20660abe19b2af6c1bb6606dce8c128b249",
+        "asset": "Drone",
+        "role": "review_sheet",
+        "pixels": [
+          4200,
+          4640
+        ],
+        "mode": "RGB"
+      },
+      "lod_budgets_after_A": [
+        [
+          210,
+          40
+        ],
+        [
+          110,
+          20
+        ],
+        [
+          50,
+          0
+        ]
+      ],
+      "reference_scene": {
+        "key": "Drone",
+        "theme": {
+          "name": "钢蓝工业 · 随军工厂",
+          "Primary": "#6DA6BF",
+          "Equipment": "#AF91D5",
+          "Accent": "#EE9D58",
+          "Frame": "#9590C6"
+        },
+        "material_palette": {
+          "Primary": "#6DA6BF",
+          "Equipment": "#AF91D5",
+          "Frame": "#9590C6",
+          "Orange": "#EE9D58",
+          "Berry": "#EE9D58",
+          "Pink": "#AF91D5",
+          "Platform": "#69A6C3",
+          "PlatformTop": "#6DA6BF",
+          "Ink": "#5F8A9E"
+        },
+        "dimensions_m": [
+          1.0165479183197021,
+          0.9991558194160461,
+          0.42290806770324707
+        ],
+        "geometry_sha256_before": "aed64880c66f82477ebb3b2ec9f8a56eb30bbd2289d0eea10784b6ef6948a5bf",
+        "geometry_sha256_after": "aed64880c66f82477ebb3b2ec9f8a56eb30bbd2289d0eea10784b6ef6948a5bf",
+        "source_geometry_unchanged": true,
+        "parts": [
+          {
+            "part_id": 0,
+            "dominant_bone": "Vent",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 1,
+            "dominant_bone": "Body",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 2,
+            "dominant_bone": "Body",
+            "role": "Orange"
+          },
+          {
+            "part_id": 3,
+            "dominant_bone": "Body",
+            "role": "Equipment"
+          },
+          {
+            "part_id": 4,
+            "dominant_bone": "Body",
+            "role": "Orange"
+          },
+          {
+            "part_id": 5,
+            "dominant_bone": "Body",
+            "role": "Orange"
+          },
+          {
+            "part_id": 6,
+            "dominant_bone": "Body",
+            "role": "Primary"
+          },
+          {
+            "part_id": 7,
+            "dominant_bone": "Body",
+            "role": "Frame"
+          },
+          {
+            "part_id": 8,
+            "dominant_bone": "Body",
+            "role": "Primary"
+          }
+        ],
+        "mirror_color_pairs": [
+          [
+            3,
+            1,
+            "Equipment"
+          ],
+          [
+            4,
+            5,
+            "Orange"
+          ]
+        ],
+        "views": {
+          "Hero": {
+            "camera_location_m": [
+              2.2282674312591553,
+              -2.839961290359497,
+              1.8303675651550293
+            ],
+            "rotation_rad": [
+              1.1169817447662354,
+              -2.7962840931650135e-08,
+              0.6556956768035889
+            ],
+            "ortho_scale_m": 1.9526126384735107,
+            "file": "Renders/Drone_Hero.png"
+          },
+          "Front": {
+            "camera_location_m": [
+              8.07642936706543e-06,
+              -4.009415626525879,
+              0.04775998741388321
+            ],
+            "rotation_rad": [
+              1.5707964897155762,
+              -0.0,
+              0.0
+            ],
+            "ortho_scale_m": 1.9526126384735107,
+            "file": "Renders/Drone_Front.png"
+          },
+          "Left": {
+            "camera_location_m": [
+              4.066199779510498,
+              0.05677589774131775,
+              0.04775998741388321
+            ],
+            "rotation_rad": [
+              1.5707963705062866,
+              -0.0,
+              1.5707963705062866
+            ],
+            "ortho_scale_m": 1.9526126384735107,
+            "file": "Renders/Drone_Left.png"
+          },
+          "Back": {
+            "camera_location_m": [
+              8.07642936706543e-06,
+              4.122967720031738,
+              0.04775998741388321
+            ],
+            "rotation_rad": [
+              -1.570796251296997,
+              3.141592502593994,
+              -0.0
+            ],
+            "ortho_scale_m": 1.9526126384735107,
+            "file": "Renders/Drone_Back.png"
+          },
+          "Top": {
+            "camera_location_m": [
+              8.07642936706543e-06,
+              0.05677589774131775,
+              4.113951683044434
+            ],
+            "rotation_rad": [
+              0.0,
+              -0.0,
+              0.0
+            ],
+            "ortho_scale_m": 1.9526126384735107,
+            "file": "Renders/Drone_Top.png"
+          }
+        },
+        "note": "Stage A source-constrained material/normal/line study; not a remade Blender product"
+      }
+    }
+  ],
+  "canonical_images": [
+    {
+      "file": "References_A_v4/Images/AirBase_Hero.png",
+      "bytes": 2005367,
+      "sha256": "3a83c410db04bcf08185e3ab79d62731dfd004ec72f408dac0fe322e03c6b8b6",
+      "asset": "AirBase",
+      "view": "Hero",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          41.102630615234375,
+          -55.410247802734375,
+          40.79741287231445
+        ],
+        "rotation_rad": [
+          1.1169817447662354,
+          -2.7962840931650135e-08,
+          0.6556956768035889
+        ],
+        "ortho_scale_m": 35.959171295166016,
+        "file": "Renders/AirBase_Hero.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/AirBase_Front.png",
+      "bytes": 1849312,
+      "sha256": "103c3b162ae068af05ddf3ec8548e2493d9868cd545464a499c375acda026159",
+      "asset": "AirBase",
+      "view": "Front",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          -2.6368753910064697,
+          -78.36599731445312,
+          5.8058037757873535
+        ],
+        "rotation_rad": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale_m": 35.959171295166016,
+        "file": "Renders/AirBase_Front.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/AirBase_Left.png",
+      "bytes": 1864577,
+      "sha256": "b3c8e004d85eb1afcd0ab02c3edd08a1cfde8bb48291850b2e5a107d931b4670",
+      "asset": "AirBase",
+      "view": "Left",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          77.18022918701172,
+          1.4511103630065918,
+          5.8058037757873535
+        ],
+        "rotation_rad": [
+          1.5707963705062866,
+          -0.0,
+          1.5707963705062866
+        ],
+        "ortho_scale_m": 35.959171295166016,
+        "file": "Renders/AirBase_Left.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/AirBase_Back.png",
+      "bytes": 1855297,
+      "sha256": "a730a127a1425db1ebb78559bb7ab469e01e1f3491b344ed7b3e8ea70f90aa8a",
+      "asset": "AirBase",
+      "view": "Back",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          -2.6368753910064697,
+          81.26821899414062,
+          5.8058037757873535
+        ],
+        "rotation_rad": [
+          -1.570796251296997,
+          3.141592502593994,
+          -0.0
+        ],
+        "ortho_scale_m": 35.959171295166016,
+        "file": "Renders/AirBase_Back.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/CloningCenter_Hero.png",
+      "bytes": 2101692,
+      "sha256": "1dc91584966255668f33b0a7b71b42298f67410b0aa360ef9321db1015a5f173",
+      "asset": "CloningCenter",
+      "view": "Hero",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          19.567575454711914,
+          -25.625232696533203,
+          20.108585357666016
+        ],
+        "rotation_rad": [
+          1.1169817447662354,
+          3.6647193724093086e-08,
+          0.6556957960128784
+        ],
+        "ortho_scale_m": 17.995460510253906,
+        "file": "Renders/CloningCenter_Hero.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/CloningCenter_Front.png",
+      "bytes": 1920201,
+      "sha256": "841adb10da31f654364f2b2270d00bd05b87e9a9d41061e22e29fb8891f701b4",
+      "asset": "CloningCenter",
+      "view": "Front",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          0.0,
+          -35.894859313964844,
+          4.454525947570801
+        ],
+        "rotation_rad": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale_m": 17.995460510253906,
+        "file": "Renders/CloningCenter_Front.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/CloningCenter_Left.png",
+      "bytes": 1997811,
+      "sha256": "787fb33a41f5bdd1fd83d1004e5e4a4affeec684ba4d16c8db58e44c5bf90ccc",
+      "asset": "CloningCenter",
+      "view": "Left",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          35.70747375488281,
+          -0.18738508224487305,
+          4.454525947570801
+        ],
+        "rotation_rad": [
+          1.5707963705062866,
+          -0.0,
+          1.5707963705062866
+        ],
+        "ortho_scale_m": 17.995460510253906,
+        "file": "Renders/CloningCenter_Left.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/CloningCenter_Back.png",
+      "bytes": 2002364,
+      "sha256": "59d86467fa97670a5cf81b6f9117f500de14fecdcab65ada435917bb3c2ca0f2",
+      "asset": "CloningCenter",
+      "view": "Back",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          0.0,
+          35.52008819580078,
+          4.454525947570801
+        ],
+        "rotation_rad": [
+          -1.570796251296997,
+          3.141592502593994,
+          -0.0
+        ],
+        "ortho_scale_m": 17.995460510253906,
+        "file": "Renders/CloningCenter_Back.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/CommandCenter_Hero.png",
+      "bytes": 2044245,
+      "sha256": "ee6c59c95c4462671c58b44c424f83a47127eb2013d6ce6e18b185d6021e6a8c",
+      "asset": "CommandCenter",
+      "view": "Hero",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          33.330078125,
+          -43.11988830566406,
+          34.213661193847656
+        ],
+        "rotation_rad": [
+          1.1169817447662354,
+          -1.1208559413944386e-08,
+          0.6556957364082336
+        ],
+        "ortho_scale_m": 27.036170959472656,
+        "file": "Renders/CommandCenter_Hero.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/CommandCenter_Front.png",
+      "bytes": 1931812,
+      "sha256": "ec3aadccbc32d39992706a8472a4b8f97d483374c11e7f4d8c3097b7be78e084",
+      "asset": "CommandCenter",
+      "view": "Front",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          -2.384185791015625e-07,
+          -60.61247253417969,
+          7.549596786499023
+        ],
+        "rotation_rad": [
+          1.570796251296997,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale_m": 27.036170959472656,
+        "file": "Renders/CommandCenter_Front.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/CommandCenter_Left.png",
+      "bytes": 1940380,
+      "sha256": "182d80392ce7dbde6cbc28671943ca3ef95639e896d92a4d2ec1711cce5c436d",
+      "asset": "CommandCenter",
+      "view": "Left",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          60.821685791015625,
+          0.2092142105102539,
+          7.549596786499023
+        ],
+        "rotation_rad": [
+          1.5707963705062866,
+          -0.0,
+          1.5707963705062866
+        ],
+        "ortho_scale_m": 27.036170959472656,
+        "file": "Renders/CommandCenter_Left.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/CommandCenter_Back.png",
+      "bytes": 1937690,
+      "sha256": "d03e83de05c4f3729cd64d23a8dd20ce28914c29981db58f5ef7b081c8211351",
+      "asset": "CommandCenter",
+      "view": "Back",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          -2.384185791015625e-07,
+          61.03089904785156,
+          7.549596786499023
+        ],
+        "rotation_rad": [
+          1.570796251296997,
+          8.742279788975793e-08,
+          3.1415927410125732
+        ],
+        "ortho_scale_m": 27.036170959472656,
+        "file": "Renders/CommandCenter_Back.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/MilitaryFactory_Hero.png",
+      "bytes": 2100432,
+      "sha256": "528161f315f07f49798493fc10b75cab3f461f569bb95914be0b2c918f334dfd",
+      "asset": "MilitaryFactory",
+      "view": "Hero",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          26.88821029663086,
+          -34.708316802978516,
+          26.632299423217773
+        ],
+        "rotation_rad": [
+          1.1169817447662354,
+          -1.1208559413944386e-08,
+          0.6556957364082336
+        ],
+        "ortho_scale_m": 22.02190589904785,
+        "file": "Renders/MilitaryFactory_Hero.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/MilitaryFactory_Front.png",
+      "bytes": 1886922,
+      "sha256": "4469d22112eb159cf00f7e385b8bc3d2ad907f6e15f29a4b6e8b04c87b5f1ead",
+      "asset": "MilitaryFactory",
+      "view": "Front",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          0.0,
+          -48.82002258300781,
+          5.121730804443359
+        ],
+        "rotation_rad": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale_m": 22.02190589904785,
+        "file": "Renders/MilitaryFactory_Front.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/MilitaryFactory_Left.png",
+      "bytes": 1940882,
+      "sha256": "9e4fe0729d9729860c316343532601172b47d3a7de5cbeedbf357e074bd34d5b",
+      "asset": "MilitaryFactory",
+      "view": "Left",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          49.06637954711914,
+          0.24635553359985352,
+          5.121730804443359
+        ],
+        "rotation_rad": [
+          1.5707963705062866,
+          -0.0,
+          1.5707963705062866
+        ],
+        "ortho_scale_m": 22.02190589904785,
+        "file": "Renders/MilitaryFactory_Left.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/MilitaryFactory_Back.png",
+      "bytes": 1911855,
+      "sha256": "dfb05e6a5a403592636e81302068977af62adf1bbe047938a952ca601f26272d",
+      "asset": "MilitaryFactory",
+      "view": "Back",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          0.0,
+          49.31273651123047,
+          5.121730804443359
+        ],
+        "rotation_rad": [
+          -1.570796251296997,
+          3.141592502593994,
+          -0.0
+        ],
+        "ortho_scale_m": 22.02190589904785,
+        "file": "Renders/MilitaryFactory_Back.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Reactor_Hero.png",
+      "bytes": 2021461,
+      "sha256": "0329b124dcc6a5d901b627f62b7e08a5e484b8a878dd6e7ba718865b6a4e3411",
+      "asset": "Reactor",
+      "view": "Hero",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          11.881674766540527,
+          -15.866247177124023,
+          12.188339233398438
+        ],
+        "rotation_rad": [
+          1.1169816255569458,
+          -2.651072961157297e-08,
+          0.6556956768035889
+        ],
+        "ortho_scale_m": 10.673113822937012,
+        "file": "Renders/Reactor_Hero.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Reactor_Front.png",
+      "bytes": 2009598,
+      "sha256": "72bf5f066040ab61b87637a22cebeb63a68d97b76a7d7f3a7625bb242bc02ffb",
+      "asset": "Reactor",
+      "view": "Front",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          -0.5012693405151367,
+          -22.365171432495117,
+          2.2819833755493164
+        ],
+        "rotation_rad": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale_m": 10.673113822937012,
+        "file": "Renders/Reactor_Front.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Reactor_Left.png",
+      "bytes": 2009157,
+      "sha256": "6b7b9d89ccb3ab7d78a68bd86c71cbc70cda21c3e7749ff444a2f97cb99395d1",
+      "asset": "Reactor",
+      "view": "Left",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          22.095481872558594,
+          0.23158109188079834,
+          2.2819833755493164
+        ],
+        "rotation_rad": [
+          1.5707964897155762,
+          -1.1920927533992653e-07,
+          1.5707964897155762
+        ],
+        "ortho_scale_m": 10.673113822937012,
+        "file": "Renders/Reactor_Left.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Reactor_Back.png",
+      "bytes": 2050305,
+      "sha256": "b11f09d4d79a99f84a278ffa00cfbd05602373f9568e5bcf74b4675d7ce30939",
+      "asset": "Reactor",
+      "view": "Back",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          -0.5012693405151367,
+          22.828332901000977,
+          2.2819833755493164
+        ],
+        "rotation_rad": [
+          -1.570796251296997,
+          3.141592502593994,
+          -0.0
+        ],
+        "ortho_scale_m": 10.673113822937012,
+        "file": "Renders/Reactor_Back.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/StrategyCenter_Hero.png",
+      "bytes": 2097266,
+      "sha256": "ba408cb2d1a850cffc250ed839e8fb3b4dda2e816b0ee741361d677460b7d354",
+      "asset": "StrategyCenter",
+      "view": "Hero",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          25.086585998535156,
+          -32.572181701660156,
+          25.77566909790039
+        ],
+        "rotation_rad": [
+          1.1169817447662354,
+          6.744571123817877e-09,
+          0.6556958556175232
+        ],
+        "ortho_scale_m": 20.79786491394043,
+        "file": "Renders/StrategyCenter_Hero.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/StrategyCenter_Front.png",
+      "bytes": 1898909,
+      "sha256": "9a5be571833d74a126bc9dfcb1c127f53aba3895fa0aa6d43133cff7ef3fb43f",
+      "asset": "StrategyCenter",
+      "view": "Front",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          0.0,
+          -45.73834228515625,
+          5.706400394439697
+        ],
+        "rotation_rad": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale_m": 20.79786491394043,
+        "file": "Renders/StrategyCenter_Front.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/StrategyCenter_Left.png",
+      "bytes": 1985263,
+      "sha256": "a54199742ae83af321061ac8b199d414d77d8df1e6b732569c5e11822db64a3e",
+      "asset": "StrategyCenter",
+      "view": "Left",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          45.77872085571289,
+          0.04037916660308838,
+          5.706400394439697
+        ],
+        "rotation_rad": [
+          1.5707963705062866,
+          -0.0,
+          1.5707963705062866
+        ],
+        "ortho_scale_m": 20.79786491394043,
+        "file": "Renders/StrategyCenter_Left.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/StrategyCenter_Back.png",
+      "bytes": 1992806,
+      "sha256": "9b07b69b0e1f34bb860f11974a252b9a26961ce2f2a38fc05c72c68888b48ebf",
+      "asset": "StrategyCenter",
+      "view": "Back",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          0.0,
+          45.81909942626953,
+          5.706400394439697
+        ],
+        "rotation_rad": [
+          -1.570796251296997,
+          3.141592502593994,
+          -0.0
+        ],
+        "ortho_scale_m": 20.79786491394043,
+        "file": "Renders/StrategyCenter_Back.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Floor_Hero.png",
+      "bytes": 1806386,
+      "sha256": "1498844760f5b6232e43e986560cfab4005e49aca8d0c77a14fa7e48e1eaedfc",
+      "asset": "Floor",
+      "view": "Hero",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          184.3399200439453,
+          -255.36798095703125,
+          155.7586669921875
+        ],
+        "rotation_rad": [
+          1.1169817447662354,
+          6.744571123817877e-09,
+          0.6556958556175232
+        ],
+        "ortho_scale_m": 166.7029571533203,
+        "file": "Renders/Floor_Hero.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Floor_Front.png",
+      "bytes": 1663821,
+      "sha256": "aa69a58720a96f6c989ef9a6c4588c6e443462771cd7be4a4cdbabc989a2deff",
+      "asset": "Floor",
+      "view": "Front",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          -9.049947738647461,
+          -356.86456298828125,
+          1.0467758178710938
+        ],
+        "rotation_rad": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale_m": 166.7029571533203,
+        "file": "Renders/Floor_Front.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Floor_Left.png",
+      "bytes": 1667559,
+      "sha256": "a2acec4758538f72e0c42afbd974a5c29bcf410aa76ac75b7ef7fd711fa61383",
+      "asset": "Floor",
+      "view": "Left",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          343.8534240722656,
+          -3.9611740112304688,
+          1.0467758178710938
+        ],
+        "rotation_rad": [
+          1.5707963705062866,
+          -0.0,
+          1.5707963705062866
+        ],
+        "ortho_scale_m": 166.7029571533203,
+        "file": "Renders/Floor_Left.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Floor_Back.png",
+      "bytes": 1661876,
+      "sha256": "bf7bb7ef4f216e9f259fcbe5e60c66c5b9f0c5fb009911efe082bf03c854e1fe",
+      "asset": "Floor",
+      "view": "Back",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          -9.049947738647461,
+          348.94219970703125,
+          1.0467758178710938
+        ],
+        "rotation_rad": [
+          -1.570796251296997,
+          3.141592502593994,
+          -0.0
+        ],
+        "ortho_scale_m": 166.7029571533203,
+        "file": "Renders/Floor_Back.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Floor_Top.png",
+      "bytes": 1796753,
+      "sha256": "1e38e90f246505697b05d9cdf323dbb01a6d13eb7a099d3589b6f2c09bd475f6",
+      "asset": "Floor",
+      "view": "Top",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          -9.049947738647461,
+          -3.9611740112304688,
+          353.9501647949219
+        ],
+        "rotation_rad": [
+          0.0,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale_m": 166.7029571533203,
+        "file": "Renders/Floor_Top.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Lamp_Hero.png",
+      "bytes": 1674583,
+      "sha256": "2c76260d7901575762e48c895fd98bcebf113e613fb1baca592fdeed5d961e76",
+      "asset": "Lamp",
+      "view": "Hero",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          9.586751937866211,
+          -13.123499870300293,
+          9.791407585144043
+        ],
+        "rotation_rad": [
+          1.1169817447662354,
+          -1.1208559413944386e-08,
+          0.6556957364082336
+        ],
+        "ortho_scale_m": 6.312862873077393,
+        "file": "Renders/Lamp_Hero.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Lamp_Front.png",
+      "bytes": 1707605,
+      "sha256": "fa398a09e907b8d062c6d0cf207b631797d66a9d2ddb80c7232b8d4252d6c345",
+      "asset": "Lamp",
+      "view": "Front",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          -3.2357871532440186e-05,
+          -18.154918670654297,
+          2.1219797134399414
+        ],
+        "rotation_rad": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale_m": 6.312862873077393,
+        "file": "Renders/Lamp_Front.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Lamp_Left.png",
+      "bytes": 1719012,
+      "sha256": "33c181602fce944efca8480a63d52a71115df101958a230af5361f2192a1b859",
+      "asset": "Lamp",
+      "view": "Left",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          17.49420738220215,
+          -0.6606795191764832,
+          2.1219797134399414
+        ],
+        "rotation_rad": [
+          1.5707963705062866,
+          -0.0,
+          1.5707963705062866
+        ],
+        "ortho_scale_m": 6.312862873077393,
+        "file": "Renders/Lamp_Left.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Lamp_Back.png",
+      "bytes": 1707326,
+      "sha256": "e4edc8dcb65226b11c230f18b9ea29bb4c7e96b05b3e3b877fa057eae8c2ab92",
+      "asset": "Lamp",
+      "view": "Back",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          -3.2357871532440186e-05,
+          16.833560943603516,
+          2.1219797134399414
+        ],
+        "rotation_rad": [
+          -1.570796251296997,
+          3.141592502593994,
+          -0.0
+        ],
+        "ortho_scale_m": 6.312862873077393,
+        "file": "Renders/Lamp_Back.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Light_Hero.png",
+      "bytes": 1752102,
+      "sha256": "4afd9fe20bfd69084ca7ae86f9305297c64dd59f5cfde3099a6bbe0c2530e72f",
+      "asset": "Light",
+      "view": "Hero",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          4.322443962097168,
+          -5.619176864624023,
+          3.4579551219940186
+        ],
+        "rotation_rad": [
+          1.1169817447662354,
+          6.057506851675498e-08,
+          0.6556957960128784
+        ],
+        "ortho_scale_m": 3.8161232471466064,
+        "file": "Renders/Light_Hero.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Light_Front.png",
+      "bytes": 2105182,
+      "sha256": "fdcda5b9e8e88a20cd860bc047055d2d176fabe2d42dafeca4a139c74098da26",
+      "asset": "Light",
+      "view": "Front",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          0.0,
+          -1.2850728126068134e-06,
+          7.887719631195068
+        ],
+        "rotation_rad": [
+          0.0,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale_m": 3.8161232471466064,
+        "file": "Renders/Light_Front.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Light_Left.png",
+      "bytes": 1628137,
+      "sha256": "ac5fa9918967f8478d3c504911bbc3df391f2ff2f0075f79c87c4cb8a2621cf1",
+      "asset": "Light",
+      "view": "Left",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          7.887719631195068,
+          0.0,
+          0.0
+        ],
+        "rotation_rad": [
+          1.5707963705062866,
+          -0.0,
+          1.5707963705062866
+        ],
+        "ortho_scale_m": 3.8161232471466064,
+        "file": "Renders/Light_Left.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Light_Back.png",
+      "bytes": 1666747,
+      "sha256": "59bf0df73ef9b95109b321514111cc0014e2cfc1aa06d036780ccd70a94fc329",
+      "asset": "Light",
+      "view": "Back",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          0.0,
+          1.2850728126068134e-06,
+          -7.887719631195068
+        ],
+        "rotation_rad": [
+          -2.384186643666908e-07,
+          -3.1415927410125732,
+          -8.742278367890322e-08
+        ],
+        "ortho_scale_m": 3.8161232471466064,
+        "file": "Renders/Light_Back.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Drone_Hero.png",
+      "bytes": 1827297,
+      "sha256": "1d395b8800a42eb222a0b534bbb46358cb63276dd5e5b21e0060414be58ff7a0",
+      "asset": "Drone",
+      "view": "Hero",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          2.2282674312591553,
+          -2.839961290359497,
+          1.8303675651550293
+        ],
+        "rotation_rad": [
+          1.1169817447662354,
+          -2.7962840931650135e-08,
+          0.6556956768035889
+        ],
+        "ortho_scale_m": 1.9526126384735107,
+        "file": "Renders/Drone_Hero.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Drone_Front.png",
+      "bytes": 1748952,
+      "sha256": "f22ecc07325650516b37a0cf87d179bb5d6775fe91b896303ba8e34df20623b5",
+      "asset": "Drone",
+      "view": "Front",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          8.07642936706543e-06,
+          -4.009415626525879,
+          0.04775998741388321
+        ],
+        "rotation_rad": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale_m": 1.9526126384735107,
+        "file": "Renders/Drone_Front.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Drone_Left.png",
+      "bytes": 1716512,
+      "sha256": "dae07e4f42f993a67c4e3f09e775305e90f06b5fedb6e4df7949596632a0e07c",
+      "asset": "Drone",
+      "view": "Left",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          4.066199779510498,
+          0.05677589774131775,
+          0.04775998741388321
+        ],
+        "rotation_rad": [
+          1.5707963705062866,
+          -0.0,
+          1.5707963705062866
+        ],
+        "ortho_scale_m": 1.9526126384735107,
+        "file": "Renders/Drone_Left.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Drone_Back.png",
+      "bytes": 1788287,
+      "sha256": "ecdcbe7ecdd575bf0a9b1e579145243ae10e474823b6b8941f103e5faa2336e9",
+      "asset": "Drone",
+      "view": "Back",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          8.07642936706543e-06,
+          4.122967720031738,
+          0.04775998741388321
+        ],
+        "rotation_rad": [
+          -1.570796251296997,
+          3.141592502593994,
+          -0.0
+        ],
+        "ortho_scale_m": 1.9526126384735107,
+        "file": "Renders/Drone_Back.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Images/Drone_Top.png",
+      "bytes": 1863135,
+      "sha256": "d6ab30c3f1b29f5a7ab17dec2e64e4d1db69571eb66dbbb88a664ef52acb03b3",
+      "asset": "Drone",
+      "view": "Top",
+      "role": "canonical_reference",
+      "camera": {
+        "camera_location_m": [
+          8.07642936706543e-06,
+          0.05677589774131775,
+          4.113951683044434
+        ],
+        "rotation_rad": [
+          0.0,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale_m": 1.9526126384735107,
+        "file": "Renders/Drone_Top.png"
+      },
+      "pixels": [
+        2048,
+        2048
+      ],
+      "mode": "RGB"
+    }
+  ],
+  "overviews": [
+    {
+      "file": "References_A_v4/Overview_Buildings.png",
+      "bytes": 1544233,
+      "sha256": "44b00c4fe8acf7aba6adf2966f2d7b29836cfba7850ab50c7f0ffd1ed36e2c0f",
+      "role": "overview",
+      "pixels": [
+        3000,
+        2850
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Overview_Accessories.png",
+      "bytes": 667079,
+      "sha256": "570d4cfcc2797eec3f3c93ec9a61535760d1a9fe8966c18c30244fbb98bbf94e",
+      "role": "overview",
+      "pixels": [
+        2000,
+        2850
+      ],
+      "mode": "RGB"
+    }
+  ],
+  "assembly": [
+    {
+      "file": "References_A_v4/Assembly_Hero_A_v4.png",
+      "bytes": 7570795,
+      "sha256": "5a46b241c1515fbd43f93b351a9824e16934b903fc0ff9e6f5a4c72dac29dafd",
+      "role": "assembly_reference",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "References_A_v4/Assembly_Top_A_v4.png",
+      "bytes": 7185693,
+      "sha256": "55799515ef35bdc43df46c1a9d2018d03eda0c4fc98e17ada4abd77aa3f34607",
+      "role": "assembly_reference",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "mode": "RGB"
+    }
+  ],
+  "user_palette_inputs": [
+    {
+      "file": "Inputs/codex-clipboard-518d9d3f-2859-4ded-aa46-e6fe0d68b850.jpg",
+      "bytes": 225069,
+      "sha256": "4808ece856d2c5a3a08ff2f03e6642d717cf6b7790696debc5d654a42405f388",
+      "role": "user_palette_source"
+    },
+    {
+      "file": "Inputs/codex-clipboard-531158da-b556-43a7-83b2-14a3755ef2fb.jpg",
+      "bytes": 265658,
+      "sha256": "6d48590d65088035454e1064954926626ff212da804b4756623cf5eb7c094999",
+      "role": "user_palette_source"
+    },
+    {
+      "file": "Inputs/codex-clipboard-cc60b957-4e7b-4567-b52e-6aead03ad56d.jpg",
+      "bytes": 276712,
+      "sha256": "701a0af676046b1e0fae04ab5c9f3a675370c7677eff94006a06e9887da40d3e",
+      "role": "user_palette_source"
+    }
+  ],
+  "files": [
+    {
+      "file": "References_A_v4/SSF_ReferenceDesign_v4.blend",
+      "bytes": 2889122,
+      "sha256": "cc24bba3ac07076f3724fc8e55bfc86e6775a1c2404e7af6adb6e32d32044b25",
+      "role": "reference_scene"
+    },
+    {
+      "file": "References_A_v4/render_manifest.json",
+      "bytes": 152161,
+      "sha256": "2ab76b851b2c446dda2a01b6d99b806aced63478cbf0e5fe82ee8711b1254d38",
+      "role": "camera_palette_and_part_assignments"
+    },
+    {
+      "file": "References_A_v4/validation.json",
+      "bytes": 4959,
+      "sha256": "cb60233a6f950117602368a0409c163a3511db6ae7d8688f34a695008aa1807c",
+      "role": "technical_validation"
+    },
+    {
+      "file": "Review_A_v4.md",
+      "bytes": 12253,
+      "sha256": "3a473ff46174fe72c2c7d0a017f89ebec96557e3c3d901dd1904a103a2c9f374",
+      "role": "review_entry"
+    },
+    {
+      "file": "review_A_v4.html",
+      "bytes": 4688,
+      "sha256": "3010e721ed5b8d1c2b5af22eb8970eafa60b965638836c4f8b7df03900b9d8fd",
+      "role": "local_gallery"
+    },
+    {
+      "file": "References_A_v4/Scripts/prepare_light_palette_a4.py",
+      "bytes": 3004,
+      "sha256": "0795b0092261c8b4a2c4ba1b457358d3d2c2688034a0963de3245acbc7c5bf48",
+      "role": "frozen_reference_script"
+    },
+    {
+      "file": "References_A_v4/Scripts/render_reference_a.py",
+      "bytes": 22400,
+      "sha256": "29a401fc09f6e1c869e8a2499c5ff8be5120cf3bd11559e67842dcacb7d335ab",
+      "role": "frozen_reference_script"
+    },
+    {
+      "file": "References_A_v4/Scripts/package_reference_scene.py",
+      "bytes": 1202,
+      "sha256": "f0abd17fc308ce8162e705f4ffe9fcdedc90d268e3001b11abfd85dd08296664",
+      "role": "frozen_reference_script"
+    },
+    {
+      "file": "References_A_v4/Scripts/finalize_reference_a.py",
+      "bytes": 19338,
+      "sha256": "c59693604fdb4fae8f08333eb881080b0e7d51373dddcaf3b893bb0c5ba9e2e8",
+      "role": "frozen_reference_script"
+    },
+    {
+      "file": "References_A_v4/Scripts/build_reference_contacts.py",
+      "bytes": 1319,
+      "sha256": "7f0a11667f4bda67bbd9fbffdff81de82e1c80b3b1388b337468aee5cc1c75f7",
+      "role": "frozen_reference_script"
+    },
+    {
+      "file": "References_A_v4/Scripts/validate_reference_revision.py",
+      "bytes": 3249,
+      "sha256": "a8109db8b241c890bf39896e025bd371ec1a88d33fbf31d6acabd800ad8ea191",
+      "role": "frozen_reference_script"
+    },
+    {
+      "file": "References_A_v4/Scripts/freeze_reference_a4.py",
+      "bytes": 3051,
+      "sha256": "c1d0ead050da98d1c499766f9e7124c8800dd939e3a2f51e044ec478733982e8",
+      "role": "frozen_reference_script"
+    },
+    {
+      "file": "References_A_v4/palette_revision.json",
+      "bytes": 13582,
+      "sha256": "c77d9ba433fcdd1351735e4ffcad983372bf1aa581f89a5a677dae3a3a0b8440",
+      "role": "original_and_lightened_colors"
+    },
+    {
+      "file": "References_A_v4/packed_scene_report.json",
+      "bytes": 432,
+      "sha256": "52f1833f7149528f43f230e07c1f054a98a9881697f5bda0c106da3878505e32",
+      "role": "packed_textures"
+    },
+    {
+      "file": "References_A_v4/revision_validation.json",
+      "bytes": 3601,
+      "sha256": "3ad74221255446c1306d05a33bcbabb8be4109d5b3fde28ce00c9893bccba6ab",
+      "role": "source_and_history_checks"
+    },
+    {
+      "file": "References_A_v4/visual_qa.json",
+      "bytes": 4576,
+      "sha256": "ecc9a24341f5eb243a2fef4078c08141e435303010265846df4016889d9b9e5e",
+      "role": "assistant_visual_review"
+    },
+    {
+      "file": "References_A_v4/candidate_manifest.json",
+      "bytes": 192196,
+      "sha256": "9bbf617b63f59eeb7fb9ba43ce0521a7b758724a8d25ad5b6d8d8bc93c59bf0a",
+      "role": "layout_candidate"
+    },
+    {
+      "file": "References_A_v4/QA/Buildings_1_AllViews.png",
+      "bytes": 758801,
+      "sha256": "46bd87f8770c90c33ff02a9a8f3a8f17a82d49210d69f7c313e6ef039fa9e5e0",
+      "role": "visual_inspection_contact"
+    },
+    {
+      "file": "References_A_v4/QA/Buildings_2_AllViews.png",
+      "bytes": 843722,
+      "sha256": "b5374ff5e22179d7e01586510b690a62354f32d9e26f31a53a8d2aa5c23a44c9",
+      "role": "visual_inspection_contact"
+    },
+    {
+      "file": "References_A_v4/QA/Accessories_AllViews.png",
+      "bytes": 403176,
+      "sha256": "7ecff98d01bbccb5ce8adf39ce0529480fdc31e0def37d5e6e33a75ba0a001a7",
+      "role": "visual_inspection_contact"
+    }
+  ],
+  "production_modeling_started": false,
+  "ue_formal_import_performed": false,
+  "user_revision": "深色的颜色再浅一些，不要有太深的颜色"
+}

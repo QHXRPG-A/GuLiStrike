@@ -542,7 +542,7 @@ def validate_building_references(tables):
     for row in buildings.values():
         label = f"Buildings/{row['Name']}"
         category = row["Category"]
-        if row["Id"] <= 0 or category not in range(6) or row["PlacementType"] not in range(7):
+        if row["Id"] <= 0 or category not in range(7) or row["PlacementType"] not in range(8):
             raise SheetError(f"{label}: invalid ID, Category or PlacementType enum")
         if row["MaxHealth"] <= 0 or any(row[key] < 0 for key in
                 ("MaxShield", "BuildLevel", "BlueCost", "RedCost", "ConstructionWork")):
@@ -554,8 +554,13 @@ def validate_building_references(tables):
         if category == 2:
             unit = soldiers.get(row["ProductionUnitId"])
             if not unit or unit.get("ActorClass") or not unit.get("ModelAsset") \
+                    or unit.get("bConstructionOnly") \
                     or row["ProductionSeconds"] <= 0 or row["ProductionCount"] <= 0:
                 raise SheetError(f"{label}: barracks require a Mass unit, positive period and count")
+        if category == 6:
+            unit = soldiers.get(row.get("CompletionUnitTypeId", 0))
+            if not unit or not unit.get("bConstructionOnly") or unit.get("bSummonOnly") or unit.get("ActorClass"):
+                raise SheetError(f"{label}: constructed unit requires a construction-only Mass definition")
         if category == 3 and (row["ShieldRadius"] <= 0 or row["ShieldRechargePerSecond"] <= 0):
             raise SheetError(f"{label}: shield supply parameters are required")
         gifts = row["FirstCaptureGiftIds"]

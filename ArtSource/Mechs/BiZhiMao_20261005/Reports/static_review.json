@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "python_files": 18,
+  "python_syntax_errors": 0,
+  "native_build": "not_run; explicit permission requested, pending",
+  "runtime_gameplay": "not_run",
+  "manual_review": [
+    "server reservation and refund branches",
+    "one-time identity and health handover",
+    "navigation generation wait and exact-position birth",
+    "fixed base yaw through authority, avoidance, transport and prediction",
+    "true per-vertex mode with zero bone dependencies",
+    "configurable turret pivots and rate/limits",
+    "review-only target; production attack disabled",
+    "legacy Pioneer and WM01 defaults preserved",
+    "review fixture server-only, no direct ID6 spawn"
+  ],
+  "map_status": "saved and read back; 13 static preparation entities; new native data/classes not installed",
+  "diff_check": "passed",
+  "source_data_readback": "passed; old IDs and facing/construction defaults preserved",
+  "build_permission": "requested; user reply pending"
+}

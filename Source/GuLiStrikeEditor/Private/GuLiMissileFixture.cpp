@@ -19,12 +19,12 @@ namespace
 {
 	struct FFixture { TArray<FGuLiSoldierId> Units; TWeakObjectPtr<APlayerController> Owner; int32 Count = 1; };
 	TMap<TWeakObjectPtr<UWorld>, FFixture> Fixtures;
-	bool Allowed(APlayerController* PC)
+	bool IsMissileFixtureSession(APlayerController* PC)
 	{
 		return PC && PC->HasAuthority() && PC->IsLocalController() && PC->GetWorld()->IsPlayInEditor()
 			&& PC->GetWorld()->GetMapName().Contains(TEXT("LVL_CommanderMassPrototype"));
 	}
-	FString Fail(const FString& Message)
+	FString MissileFixtureFailure(const FString& Message)
 	{
 		FString Result; auto W=TJsonWriterFactory<>::Create(&Result);
 		W->WriteObjectStart(); W->WriteValue(TEXT("success"),false); W->WriteValue(TEXT("error"),Message); W->WriteObjectEnd(); W->Close(); return Result;
@@ -37,10 +37,10 @@ FString UGuLiRogueCardQALibrary::BuildMissileFixture(APlayerController* PC,int32
 		|| (Count==2 && ProjectilesPerSalvo==60);
 	const bool bPerformanceCase = (Count==100 || Count==500)
 		&& (ProjectilesPerSalvo==1 || ProjectilesPerSalvo==4 || ProjectilesPerSalvo==8);
-	if (!Allowed(PC) || (!bGuidanceCase && !bPerformanceCase) || Center.ContainsNaN())
-		return Fail(TEXT("Use a local authoritative PIE commander: guidance 25x6/25x7/2x60, performance 100/500 x 1/4/8."));
+	if (!IsMissileFixtureSession(PC) || (!bGuidanceCase && !bPerformanceCase) || Center.ContainsNaN())
+		return MissileFixtureFailure(TEXT("Use a local authoritative PIE commander: guidance 25x6/25x7/2x60, performance 100/500 x 1/4/8."));
 	for (auto It=Fixtures.CreateIterator();It;++It) if (!It.Key().IsValid()) It.RemoveCurrent();
-	if (Fixtures.Contains(PC->GetWorld())) return Fail(TEXT("Restart PIE for a fresh population and acquisition baseline before changing cases."));
+	if (Fixtures.Contains(PC->GetWorld())) return MissileFixtureFailure(TEXT("Restart PIE for a fresh population and acquisition baseline before changing cases."));
 	auto* Player=PC->GetPlayerState<AGuLiBattlePlayerState>();
 	auto* Army=PC->GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
 	const auto* Data=PC->GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
@@ -48,7 +48,7 @@ FString UGuLiRogueCardQALibrary::BuildMissileFixture(APlayerController* PC,int32
 	auto* Tasks=PC->GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>();
 	const auto* Profile=Player && Army ? Army->FindResolvedSkill(Player->GetTeam(),2,TEXT("MissileLauncher")) : nullptr;
 	if (!Player || !Player->IsCommander() || !Player->IsBattleReady() || !Profile || Profile->ProjectileCount!=1 || !Definition || !Tasks)
-		return Fail(TEXT("Start a fresh ready commander match with base projectile count 1."));
+		return MissileFixtureFailure(TEXT("Start a fresh ready commander match with base projectile count 1."));
 	FGuLiSkillSource Source; Source.SourceInstanceId=FGuid::NewGuid(); Source.DebugLabel=TEXT("WM01MissilePerformanceFixture");
 	auto& Unlock=Source.Unlocks.AddDefaulted_GetRef(); Unlock.Target.UnitTypeIds.Add(2); Unlock.Target.SlotId=TEXT("MissileLauncher");
 	if (ProjectilesPerSalvo>1)
@@ -58,7 +58,7 @@ FString UGuLiRogueCardQALibrary::BuildMissileFixture(APlayerController* PC,int32
 		Modifier.IntegerMagnitude=ProjectilesPerSalvo-1;
 	}
 	FString Error;
-	if (!Army->UpsertSource(*Player,Source,Error)) return Fail(Error);
+	if (!Army->UpsertSource(*Player,Source,Error)) return MissileFixtureFailure(Error);
 	Army->CommitPendingChanges();
 	// Respect the same resolved avoidance radius as authority spawning. The old
 	// 400 cm grid rejected most WM01s after its diameter became 1250 cm.
@@ -71,7 +71,7 @@ FString UGuLiRogueCardQALibrary::BuildMissileFixture(APlayerController* PC,int32
 	const FVector LayoutCenter=bGuidanceCase ? Center : Center+FVector(0,(Columns-Rows)*Spacing*.5f,0);
 	const FString Built=BuildFixture(PC,Count,LayoutCenter,Spacing,bGuidanceCase);
 	TSharedPtr<FJsonObject> Json;
-	if (!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Built),Json) || !Json.IsValid() || !Json->HasField(TEXT("units"))) return Fail(TEXT("Fixture creation failed."));
+	if (!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Built),Json) || !Json.IsValid() || !Json->HasField(TEXT("units"))) return MissileFixtureFailure(TEXT("Fixture creation failed."));
 	auto& Fixture=Fixtures.Add(PC->GetWorld()); Fixture.Owner=PC; Fixture.Count=ProjectilesPerSalvo;
 	for (const auto& Value:Json->GetArrayField(TEXT("units")))
 	{
@@ -98,7 +98,7 @@ FString UGuLiRogueCardQALibrary::BuildMissileFixture(APlayerController* PC,int32
 
 FString UGuLiRogueCardQALibrary::FireMissileFixture(APlayerController* PC)
 {
-	if (!Allowed(PC)) return Fail(TEXT("PIE authority required."));
+	if (!IsMissileFixtureSession(PC)) return MissileFixtureFailure(TEXT("PIE authority required."));
 	const auto* Fixture=Fixtures.Find(PC->GetWorld());
 	auto* Player=PC->GetPlayerState<AGuLiBattlePlayerState>();
 	const auto* Skills=Player ? Player->FindComponentByClass<UGuLiCommanderSkillComponent>() : nullptr;
@@ -106,7 +106,7 @@ FString UGuLiRogueCardQALibrary::FireMissileFixture(APlayerController* PC)
 	auto* Authority=PC->GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
 	const auto* Army=PC->GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
 	const auto* Profile=Player && Army ? Army->FindResolvedSkill(Player->GetTeam(),2,TEXT("MissileLauncher")) : nullptr;
-	if (!Fixture || Fixture->Owner.Get()!=PC || !Catalog || !Authority || !Profile) return Fail(TEXT("Build this commander's fixture first."));
+	if (!Fixture || Fixture->Owner.Get()!=PC || !Catalog || !Authority || !Profile) return MissileFixtureFailure(TEXT("Build this commander's fixture first."));
 	int32 Success=0;
 	const FGuid Request=FGuid::NewGuid();
 	for (const auto Id:Fixture->Units)
@@ -126,7 +126,7 @@ FString UGuLiRogueCardQALibrary::FireMissileFixture(APlayerController* PC)
 
 FString UGuLiRogueCardQALibrary::MissileMetrics(APlayerController* PC)
 {
-	if (!Allowed(PC)) return TEXT("{}");
+	if (!IsMissileFixtureSession(PC)) return TEXT("{}");
 	const auto* Presentation=PC->GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>();
 	if (!Presentation) return TEXT("{}"); const auto C=Presentation->GetCounters();
 	return FString::Printf(TEXT("{\"all_vfx_components\":%d,\"missile_components\":%d,\"particle_capacity\":%d,\"full_trails\":%d,\"cluster_upload_ms\":%.6f,\"frame\":%s,\"gpu_niagara_and_overdraw_require_profiler\":true}"),
@@ -153,7 +153,7 @@ namespace
 		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args,UWorld* World)
 		{
 			auto* PC=World ? World->GetFirstPlayerController() : nullptr;
-			if (!Allowed(PC) || Args.Num()!=1) return;
+			if (!IsMissileFixtureSession(PC) || Args.Num()!=1) return;
 			FName Tag;
 			if (Args[0].Equals(TEXT("near"),ESearchCase::IgnoreCase)) Tag=TEXT("WM01MissileNearCamera");
 			else if (Args[0].Equals(TEXT("overview"),ESearchCase::IgnoreCase)) Tag=TEXT("WM01MissileFixedCamera");

@@ -1,0 +1,1261 @@
+{
+  "version": "BiZhiMao_LOD_v2_vertex",
+  "actual_version_approval": "pending",
+  "ue_assets_modified": false,
+  "runtime_bones": 0,
+  "lod0_geometry_unchanged": true,
+  "lod0_export_and_texture_bytes_unchanged": true,
+  "all_lod_budgets_passed": false,
+  "passed_distance_lods": [
+    1
+  ],
+  "over_budget_distance_lods": [
+    2,
+    3
+  ],
+  "gameplay_run": false,
+  "performance_run": false,
+  "evidence": "230 real Blender renders and vertex-only FBX/texture source readback",
+  "files": [
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/BiZhiMao_LOD_v2.blend",
+      "sha256": "587deb1ecb0dde63c21d20a6353e48a448a3cd0bccadba5cc7d0f4b9e1b69fcb",
+      "bytes": 49561026
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/vertex_metadata.json",
+      "sha256": "f8a74b041679f0eed6fde4357f2f81f13f078718ff4c4f3316c1202c2d1cbfb4",
+      "bytes": 47572
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Reports/lod_compression.json",
+      "sha256": "c9f254e5afb568bf8703ea4649556856eba40613c668a97d99e264a00949ccb4",
+      "bytes": 2943
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Reports/geometry_quality.json",
+      "sha256": "e5e4015e4aaf0ccd2e672b0829183fdfaab9209e489cb29a74222140c58a9b7c",
+      "bytes": 5392
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Reports/vertex_export_readback.json",
+      "sha256": "06ce22d829a31085f66f5e46246dc37df52f2936ca1f2edd12c5b1ccc333d218",
+      "bytes": 1944
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Reports/blender_review.json",
+      "sha256": "b8a555599ba72949d387d5adeb655f18f516bf92423721b54efa80cce617addf",
+      "bytes": 6803
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/FBX/SM_BiZhiMao_Vertex_LOD0.fbx",
+      "sha256": "fe26a00188acd3e2dadf43b1b31a6da26b7e800d5e6977cd244d7d71e12f36e1",
+      "bytes": 21051756
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Textures/T_BiZhiMao_VertexPosition_LOD0.exr",
+      "sha256": "59ab51af6fb369450cfb2fc67cb4aa1e8e88c0601e7acc56faf7ce1ce014861c",
+      "bytes": 49352340
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Textures/T_BiZhiMao_VertexRotation_LOD0.png",
+      "sha256": "97ec9735e8b243f8bd72b13df3ce81903569c5c2797cb21bc9f1f0bb099c1e45",
+      "bytes": 431256
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/FBX/SM_BiZhiMao_Vertex_LOD1.fbx",
+      "sha256": "f3debf37ee04c90a32e92e174b7a9866d94c45485ff57d6dacb50e23c847e46e",
+      "bytes": 3873100
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Textures/T_BiZhiMao_VertexPosition_LOD1.exr",
+      "sha256": "ba6cab6166fe3a6b1da6a812afdca81af69bdc06b5a467028f189c200d79b39d",
+      "bytes": 9708482
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Textures/T_BiZhiMao_VertexRotation_LOD1.png",
+      "sha256": "7e1a9e8d52e633c31960fde0e22f593ac47d0eb25f37308eceac44f4b4f3d757",
+      "bytes": 192839
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/FBX/SM_BiZhiMao_Vertex_LOD2.fbx",
+      "sha256": "e81cfcd0830dec91dda31accd921d8cba6750073cbdb8397c11d3bed197262d1",
+      "bytes": 2455836
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Textures/T_BiZhiMao_VertexPosition_LOD2.exr",
+      "sha256": "8ff6ed93332a86f307e3233d49ca8f15325dd37deb0dd6f06d6141171f128190",
+      "bytes": 3914633
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Textures/T_BiZhiMao_VertexRotation_LOD2.png",
+      "sha256": "a68b5775aed2a2326162c1b1a092f2b3f3af2f8acc772eaa1e2dd41a05a99edf",
+      "bytes": 98654
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/FBX/SM_BiZhiMao_Vertex_LOD3.fbx",
+      "sha256": "bc0c0cb0ccfd327ab2439b630bd5684b378d961c9a30cd8978ff5c561b6bc1f6",
+      "bytes": 1460236
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Textures/T_BiZhiMao_VertexPosition_LOD3.exr",
+      "sha256": "e65a91344b4ba5dc8ab024f393d4c58c516d3afa5fa2c84588be9c8f794c4bf9",
+      "bytes": 1371936
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Textures/T_BiZhiMao_VertexRotation_LOD3.png",
+      "sha256": "8688b0a608a0dc823ae41f0b7e551e368941eb6f77fe777581da487be23b0ec6",
+      "bytes": 35938
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD0_After_Hero.png",
+      "sha256": "dccdb2a86544a073299a7c117610a6f272c69bec8907f05db5ab66e557d5c8d9",
+      "bytes": 2877356
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD0_After_Front.png",
+      "sha256": "5be0f5fc212566b08458c5a88f562512bb76defbe4957a0739db10628fc709b2",
+      "bytes": 2649603
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD0_After_Left.png",
+      "sha256": "c550cba3d7ee5cea151bd9048f048f75e34b572e6d397695b8c962369d5a8dfb",
+      "bytes": 2661334
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD0_After_Back.png",
+      "sha256": "8e0b72897b0f7de32c1ba48995ae30a62ec894d7a2323eee7a5fcc2dfe4f9bf7",
+      "bytes": 2645969
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD0_After_Gray.png",
+      "sha256": "12de752242de823ae7abbf86949d9adfaa84650a3c0826005d5cb3600e101867",
+      "bytes": 2837475
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Before_Hero.png",
+      "sha256": "a287751e9b6726544aabe48ab05d37a42f9753929309d6ada04b1f9aaf44b4c8",
+      "bytes": 2884174
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Before_Front.png",
+      "sha256": "dcfae6714970b02fa3a4439f51772a1cccc6b5cff7965c36da03a129c1c21d38",
+      "bytes": 2652404
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Before_Left.png",
+      "sha256": "94dcd5f0625a54cec5b307a43430133ef0fc448527501f0186ccbe60d6c77956",
+      "bytes": 2664601
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Before_Back.png",
+      "sha256": "930c0c0ad23ced287b1ee5202b6258348de66d83f4d844d762d0d851f4f9611f",
+      "bytes": 2645526
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Before_Gray.png",
+      "sha256": "bd5efb9cd036df124f70e01c04e824c436941506313fd60c418f4b7e64040150",
+      "bytes": 2841768
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_After_Hero.png",
+      "sha256": "ce2c4cb8b7dcbcb7be61c2bb6547eb01ba77ab5cd7e4b4989e394652f7084af2",
+      "bytes": 2814891
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_After_Front.png",
+      "sha256": "8937fec807fe5d087432050df8306be5d8d36263bd0356ee4feeed76eeb7c6eb",
+      "bytes": 2615512
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_After_Left.png",
+      "sha256": "b40ac7548225ff4aafe1a92f1f4b70cbac45250c8f7b694749ed6c32b4e8d3f0",
+      "bytes": 2634360
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_After_Back.png",
+      "sha256": "924661e0da7beb107819b7e9e461d32939c143088ed37ed1b06dca71806fd8d1",
+      "bytes": 2614763
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_After_Gray.png",
+      "sha256": "52ed4bd81ca7916c8b87119abe83adffa7fb266dc9e90b1f99eb5d3138a7ae27",
+      "bytes": 2761842
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Before_Hero.png",
+      "sha256": "b807c386d060aeec10a1ef8add4c43811cb3a347583c0215df4ac767d471de66",
+      "bytes": 2878207
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Before_Front.png",
+      "sha256": "7234255dfba99a8ee642bc7197d8616463ea1ad61b390466c3d7b01b8ace4215",
+      "bytes": 2650180
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Before_Left.png",
+      "sha256": "a8fa0f4e242bd342895813044bffa37a03a4d8bcd6e4d69ebfb878bd4a2fc51d",
+      "bytes": 2664149
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Before_Back.png",
+      "sha256": "1f9be8f606819c008828c877d77842e27323c65a0d69f59cdbc27d21ec0a9819",
+      "bytes": 2636679
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Before_Gray.png",
+      "sha256": "6ba62a4e06e1d0ac7cfc2aaaf1fcf8bd964365d36f085640fbcbd554227c8a91",
+      "bytes": 2838121
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_After_Hero.png",
+      "sha256": "d6dc570b8128131a04a08780c65c37fab21ad040344566bcd5f1a2a3f559978f",
+      "bytes": 2770038
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_After_Front.png",
+      "sha256": "790c27dee3ebc4fbb5800ead934db509eadc381fa39ce320190298b03a959e95",
+      "bytes": 2596446
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_After_Left.png",
+      "sha256": "b66c29d7dd76e9005013ff7c295bc6ca4371dc9b2ece4cc1ecaca59a5cfde768",
+      "bytes": 2618385
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_After_Back.png",
+      "sha256": "2e3e473d2f360c3128cf031d798c61a6bc8509236b8ce381e18d2ab820f62385",
+      "bytes": 2600080
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_After_Gray.png",
+      "sha256": "f2816c14ece2ee74f3a63af978c10d100237313c82ae0ad20adc06c2c4964c39",
+      "bytes": 2758443
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Before_Hero.png",
+      "sha256": "3e3f0a64f3dec35a50d2433b6c341eb3bd59dcd408e424948c8b65ca84d310c1",
+      "bytes": 2795704
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Before_Front.png",
+      "sha256": "fa86f96c42f8365c4dd77fa758fe06f4138f8d9624f078a1e7fb4be680fad6aa",
+      "bytes": 2603474
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Before_Left.png",
+      "sha256": "4670ffb607cac653313a5259419970764d569cfabfd910dd65e64ba89b574553",
+      "bytes": 2611528
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Before_Back.png",
+      "sha256": "1816a884814a7bf39468e1674b323598072b7a232fc3aa8986e4d6b7c1c11e62",
+      "bytes": 2603047
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Before_Gray.png",
+      "sha256": "cd3952678ce0d1e987e63449a738b535e749eac11c1abc64561bc1d490512de7",
+      "bytes": 2797220
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_After_Hero.png",
+      "sha256": "8f3f5955b28ef2e4c2fc16a95bd294fa0e73cd4795c61c6c27686930d72838fc",
+      "bytes": 2719805
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_After_Front.png",
+      "sha256": "fe6e523ca7e88030022f313321f653affae794f402d2ba18f9d6161983a3ac9c",
+      "bytes": 2559528
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_After_Left.png",
+      "sha256": "186a976a653d9fd092eba25d17a5379b6eaf3b5e05ca7d683cca6d726f54f256",
+      "bytes": 2575218
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_After_Back.png",
+      "sha256": "a37cae0513c8aa015a1d5e3969d87efd97fd635300789a85f9db5f44ee9c06bc",
+      "bytes": 2567614
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_After_Gray.png",
+      "sha256": "d62fdc7014b82d6942737f9ea73e9bef7e75c063c5c877cffd2ac4e70549b52a",
+      "bytes": 2746723
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Idle/000.png",
+      "sha256": "e0ba3fb69c73411776c3c44656b8b4f3b1497563c0ed43f9bf981a5e40f22cfc",
+      "bytes": 315194
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Idle/001.png",
+      "sha256": "b03f5fa370924cb85a175b672e76c06613e98399776ae452407adf9633269e6d",
+      "bytes": 314902
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Idle/002.png",
+      "sha256": "5c1d45ea9abd06e28afa20396d34edcfecdd6b2f13d6a5852eaad860544a965c",
+      "bytes": 314870
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Idle/003.png",
+      "sha256": "f7c8467facc5e76c3cd302e3d1543390a8092faa2024547cb77444ff39f0ac3e",
+      "bytes": 316273
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Idle/004.png",
+      "sha256": "fa211b4444b2244a798efb4d540513f8e7bfa83bf6ea9f81aeb57ea5d54da0fa",
+      "bytes": 316393
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Idle/005.png",
+      "sha256": "3702967c4fde6759f7bc6b8a72a72647221c97f265ad9a8768dac7d014bd123f",
+      "bytes": 316448
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Idle/006.png",
+      "sha256": "5d722802484d19781f476fe92cb39956cf63b5d9658c41d7071e90eb4bc3ed02",
+      "bytes": 316278
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Idle/007.png",
+      "sha256": "af22f8c366b67fd8b1ae4e2de6581f2a390535b8e544f235c7ab03178415ba53",
+      "bytes": 316550
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Idle/008.png",
+      "sha256": "9aa16a884cf155f3ed3f2db7c9d886a6a9cf3ccea8f5ce2cf02c35a428b1689c",
+      "bytes": 315722
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Idle/009.png",
+      "sha256": "f2a4944d1d49e4f01f3dea704a5549d70ee0a29084228fd1c103f1e76617e054",
+      "bytes": 315762
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Idle/010.png",
+      "sha256": "6e0fda33c9c7a1b746ce7ae25c23c61913bcc19f8e5a928fa04259a50692970e",
+      "bytes": 315805
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Idle/011.png",
+      "sha256": "c6e4bdd733cbb1367608bbb8971c465f37b3a30d1042eacaa7c8b65fcc0fc0e6",
+      "bytes": 315300
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Forward/000.png",
+      "sha256": "a743d38379a6d7cc6ce9abaf77a0dd9525900baca090134e994bdc786d7036f8",
+      "bytes": 317691
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Forward/001.png",
+      "sha256": "6aaea9161487c9468c547b6c0cb8bd1b67b3edaab4c3d33b70e76ad947e9efd5",
+      "bytes": 316954
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Forward/002.png",
+      "sha256": "0def934a56864131730969ae8060fa273fd50962e33d187f1c8c7a3c6d4715f8",
+      "bytes": 316109
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Forward/003.png",
+      "sha256": "ca73ca21af64a72a496cab856ab1dee1bb8b424898f7fc9dc8f8c97db11a3b46",
+      "bytes": 315300
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Forward/004.png",
+      "sha256": "82f2e55afd5d34a4330d14341669a37e3d64dc0577a3097aa6b52af383e184db",
+      "bytes": 314536
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Forward/005.png",
+      "sha256": "5c16a2e80ab0a809d1bf8abd54daec904931f3709da6f8d45567946f0ccad264",
+      "bytes": 315884
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Forward/006.png",
+      "sha256": "14c46b108f1f20d9cff708f9181dc9271e19e544c1ffbb0c167ae019b626ed6e",
+      "bytes": 316687
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Forward/007.png",
+      "sha256": "8fd4dc7e69982bda4ce46cf65e4a33d961a05a4a773922c0e9ce974f6d754b24",
+      "bytes": 315982
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Forward/008.png",
+      "sha256": "8cd3cf15c20f982fb0d096042c0966a37f0dbaaca1ff30803d1946d40157815b",
+      "bytes": 314511
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Forward/009.png",
+      "sha256": "b55dac7f423d699d909ada6b542159c813aa347c1b9173e4d7f6e38c2c4be10f",
+      "bytes": 314193
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Forward/010.png",
+      "sha256": "19d7e801698a4d6e7cd05fc49be4e0883b1f3946ada3ea04cdaf513ce23ad93e",
+      "bytes": 313407
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Forward/011.png",
+      "sha256": "ba9f2a906e25a86e1b0f4ba8c55c289335ec32073a86ef6b540f5ba723ff7f89",
+      "bytes": 315678
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Backward/000.png",
+      "sha256": "1e3f46f18013a0738653a873031e6156e06a18ffd165a331225a5d353ee9ea70",
+      "bytes": 313440
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Backward/001.png",
+      "sha256": "cb4307aa07050ab870d0f5eb48825ac6756b4cf71b4b1f90a98c8da11387fbf1",
+      "bytes": 314322
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Backward/002.png",
+      "sha256": "b2e8c702bea0e7cbb4a0b541c5e01d24fd27280a7fd5f18de0c048712ef1d11f",
+      "bytes": 315221
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Backward/003.png",
+      "sha256": "252c597635a2956a0846658a9655c1c495c07b6e62cc2b972cf0ca9a6e7d20f5",
+      "bytes": 316150
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Backward/004.png",
+      "sha256": "f837740d8c1d8a720f673ef4d7312d9b448535666b71f98a396f533ab2cb895d",
+      "bytes": 316761
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Backward/005.png",
+      "sha256": "6db1422479b36b5b7df41653068dd23dd14c4f3fe322dd6bc89b82f8fdb0c09e",
+      "bytes": 314910
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Backward/006.png",
+      "sha256": "096ee7760f48bea81dbc8a0eb0658a4f509716b9e5afbab30539cf37f49ba03e",
+      "bytes": 314861
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Backward/007.png",
+      "sha256": "6056752059144f9c0aac0f5cf162c7915b13a70bf08945d63ff64b0ecdaed408",
+      "bytes": 315456
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Backward/008.png",
+      "sha256": "49f39c9360a2a18b81e69599f00eff22e833154bb6e08fe2ae4c896eff2f35bc",
+      "bytes": 316151
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Backward/009.png",
+      "sha256": "59a90b6871fefbb99d3c6d6f3a18381981d7a14a696b90ca740118bf8fc2e6b4",
+      "bytes": 317122
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Backward/010.png",
+      "sha256": "df2754b4a8263add5ab65c79bd7937533dcc5cc2531e95595608260fd0503255",
+      "bytes": 317032
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Backward/011.png",
+      "sha256": "6757d14f6be03475b40c2ce72e4e74f4db4f41d00853142fd4a6b6d2ca56c175",
+      "bytes": 314555
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Left/000.png",
+      "sha256": "2792912d7a48ba1d343c6f53a3bea2e6a80c0dc50b677902c3b299cf2da07103",
+      "bytes": 313533
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Left/001.png",
+      "sha256": "5e65d7debb5cb995a0608ae483fdad4099baa805d28b31d41e118c289cc378c3",
+      "bytes": 313639
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Left/002.png",
+      "sha256": "440649b74ddd5c75f4ac7de8b2a9c070a0f29107b0fa064127311f1f4dd59695",
+      "bytes": 313440
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Left/003.png",
+      "sha256": "8097cf4272702c424e292c4b3854b9dfabbebb1dd1b2c7f1edf75c44bd74c7c8",
+      "bytes": 314313
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Left/004.png",
+      "sha256": "f07139d32a013ee69a45161aae19c057d69945e29454c84de64fc045e612cff1",
+      "bytes": 314826
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Left/005.png",
+      "sha256": "9db5ea877544ddf0652f5cf0df96fea10b71f65265a8f4e21d82ee3023362be4",
+      "bytes": 315929
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Left/006.png",
+      "sha256": "118cd064cd74e3841ac7c8b1d9816db34790c58fa17ff089cac328a53b200180",
+      "bytes": 317620
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Left/007.png",
+      "sha256": "f7a3edff968fd6ce9d1f569b8fb3336a2c55f151929524f61487b7d7efe1b8ed",
+      "bytes": 318209
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Left/008.png",
+      "sha256": "5b4ddf54f7c488653a6d9e5fbae8579864c21bfb5aadfde5f8f8f696e7a0fc5d",
+      "bytes": 318063
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Left/009.png",
+      "sha256": "58b350bdbf285d745ad463403388fcd966c50d3f1a51e675281eab6e2787279d",
+      "bytes": 318114
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Left/010.png",
+      "sha256": "d0757a809b5f146c4b15ee52ebcd426fb8eee368b69cc11dbcd8830e1c9cc4fd",
+      "bytes": 317065
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Left/011.png",
+      "sha256": "95f3224959991e0be6bdbefefe00d487b9577c8edb9ccf8d5f9a99efc2f30e01",
+      "bytes": 314542
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Right/000.png",
+      "sha256": "ebe7d2d634efb4fcc7ea0434d9b2d063c87f7ae5036b48125d51918b0ad8130b",
+      "bytes": 317739
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Right/001.png",
+      "sha256": "0954910173c02434f88d9c2efd8ee8ba38660350980df17928533b3fd97d4302",
+      "bytes": 318442
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Right/002.png",
+      "sha256": "7189aabf3cb8b97fc8147c745fccac06b0ab446ae5f7cb27efb2243a3ee3d83e",
+      "bytes": 318267
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Right/003.png",
+      "sha256": "5647b8f3cb5d4c7aa1a462b940ea1953df8ed49d0b3da7580b74b662cbb1b777",
+      "bytes": 318312
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Right/004.png",
+      "sha256": "1f6fb81c5534793ff1a8e5b50f9ce55f9fe1dc05f65d16074d6661713f2ca237",
+      "bytes": 317722
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Right/005.png",
+      "sha256": "b00bf19b1ea0b8a6421ded12dd32fefaf3a1e5131436881994dc09b2ed8fbc34",
+      "bytes": 314281
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Right/006.png",
+      "sha256": "4312fa1fab06e8f9c4c54a713b75b5d442209816765f1782ac2291f6ee1c1655",
+      "bytes": 314466
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Right/007.png",
+      "sha256": "5141047ac478e6e26c1ecae55f5c836e653c829e168ab2b2b40a36b54eb0c3e0",
+      "bytes": 313936
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Right/008.png",
+      "sha256": "8ef0180edb4e53027ed7ad352e14bd8eeb1345b41e6b9e1b11c891a1cdf72741",
+      "bytes": 313594
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Right/009.png",
+      "sha256": "b006fff8a862fdee824bad43b32bc570bdc457416cb5fa9dab5fc10ff2bf9725",
+      "bytes": 313832
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Right/010.png",
+      "sha256": "7e73a7eddd5a3d6b0f60e0e26a199def8d5860056755be0eeb667ec17b166508",
+      "bytes": 313561
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Right/011.png",
+      "sha256": "5b14dadf6872c03ab2000d002d8e37ed4860f39cc12cfb9cd1b36eb62484081c",
+      "bytes": 315828
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_Before_Distance.png",
+      "sha256": "61463a93cbf2bafa5f17b5eec5d172f2ab54484df5425a46f48069cf20219753",
+      "bytes": 622965
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_After_Distance.png",
+      "sha256": "86c62f42edc64f1b3e7479a178d2283c2b8eae2939b7856c9cebbbafd669564a",
+      "bytes": 620629
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Idle/000.png",
+      "sha256": "08cb75de3d794f310504265158adca0c3a5c7931d280f1228b324f03389d8c37",
+      "bytes": 311855
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Idle/001.png",
+      "sha256": "6c590985d6674d7746432b7ed907875ad2ec2efc9ea3b4175a22e9e42b3df77c",
+      "bytes": 312270
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Idle/002.png",
+      "sha256": "d585deb6976ed812f18124cb7e819e02e3db78cb6c1d39a3ad0b57ef11aaa3cc",
+      "bytes": 312649
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Idle/003.png",
+      "sha256": "9b25e6bdd9b7328760cdc4a8c9efce45dac90c97268b764b0527f9f34fadbe77",
+      "bytes": 313730
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Idle/004.png",
+      "sha256": "2842e1943059ce795af50bef23e9f2a7355f21b22e2b73d8fbd0d5ea25abd668",
+      "bytes": 313815
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Idle/005.png",
+      "sha256": "f2605dbe407c17a82b62c9958f4470d11c6720a8021ea3b7e1710c59a964cee0",
+      "bytes": 313747
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Idle/006.png",
+      "sha256": "42ffb30cff7b4fcb00973ff9db37c71d3c33b4e72a973cfd2f44c26c8f0f432f",
+      "bytes": 313886
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Idle/007.png",
+      "sha256": "ff57cb37f1c518361ca4c98bb3a2bebdde2c1d8cc752599d5afcab112a7d1741",
+      "bytes": 313341
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Idle/008.png",
+      "sha256": "b837d5898db34001f5b6bf42ada199e8a1273510448ed5a96fc89451f801215e",
+      "bytes": 312520
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Idle/009.png",
+      "sha256": "eaaad228b7a20aa24c69e17bfb16d45c909a4d9561c6eaecb952b336fb0d12ab",
+      "bytes": 312253
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Idle/010.png",
+      "sha256": "6baf118747aa9449902868bc2bc9b6e414cebed59d1de65e270db0251c563d3e",
+      "bytes": 312635
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Idle/011.png",
+      "sha256": "ae43b5ec6f32de13337cd94e28a3b95a5378352458406ff3ddf2d540f0831e6f",
+      "bytes": 312056
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Forward/000.png",
+      "sha256": "524ef632b3381ed4ccaeff4c30041b944e85e3ccd979074c4f8c39020eb23855",
+      "bytes": 314417
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Forward/001.png",
+      "sha256": "303f8e9edad0cab9ff800a88212627ffac082ac0cdf221ce8954936cabfd4d6f",
+      "bytes": 313785
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Forward/002.png",
+      "sha256": "600113f03c317ffb6eba3df0e6f4c7a1f9b85ebd4021d162220104ac7e705004",
+      "bytes": 313098
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Forward/003.png",
+      "sha256": "1e1a475c166518bb76777e8004ecf26e007b6db200b4181024ecb62f8ba84aa7",
+      "bytes": 312420
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Forward/004.png",
+      "sha256": "ad71407eb9caeff30fe7da7b96a2aae4066318e1ec1d6e17b1645661adbb254c",
+      "bytes": 311546
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Forward/005.png",
+      "sha256": "a2045a255596b87881640ec1f396d1dcf4d3c8a56a1f963c61358200db48dc9c",
+      "bytes": 312492
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Forward/006.png",
+      "sha256": "1cce10dd36880e01616b8d80c75dddac730833638b597127157ec1fa0c46b5ca",
+      "bytes": 313751
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Forward/007.png",
+      "sha256": "d5b86780d9d23639593319d2958bfb4ae3fcda94d70832019a598c5a09d7057f",
+      "bytes": 312591
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Forward/008.png",
+      "sha256": "9dfab38abb62c1d053e9405ee50f52bfc7c77e76cab6a2f7b7c3d4e1a167c5a4",
+      "bytes": 311483
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Forward/009.png",
+      "sha256": "58c8d4d3be32bc12f5b30c798622d59f85df54556d5b6522e799ab17ee25eeca",
+      "bytes": 311083
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Forward/010.png",
+      "sha256": "4148e37019bc8968bc9c193c43cd0d6914c23c65f5c15a4c7c25af6ea9895aa2",
+      "bytes": 310562
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Forward/011.png",
+      "sha256": "2bd5b08e80f147e56ccc067ab4a18dcb75563b70f1f7284643953d313731ce50",
+      "bytes": 312174
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Backward/000.png",
+      "sha256": "301873e7e23d2cddd7564219fb29a5f039f18c94fd759d91076ce3085dbccd62",
+      "bytes": 310694
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Backward/001.png",
+      "sha256": "4f759d0155bce6574087e00c7579dd012eefdd8d189695acc7c709661d9ede13",
+      "bytes": 311642
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Backward/002.png",
+      "sha256": "d7180aff4ab7f88810d5508134067b457c9f839522fbbd643c4afaf3f02104d1",
+      "bytes": 311906
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Backward/003.png",
+      "sha256": "16ae30bae6fd92fb9c61de8cd5d6666c4cd79870f5502e7edf66fdcc2b056f1b",
+      "bytes": 312846
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Backward/004.png",
+      "sha256": "a0a37a0eb14b3727625859e8a317ed25279c51d1955421c0d8ed71feeb072ad1",
+      "bytes": 312746
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Backward/005.png",
+      "sha256": "faec078f98b284bd2eff881a7354470b93af7dcf7f9479a859b89382d4641e3a",
+      "bytes": 311568
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Backward/006.png",
+      "sha256": "9e101a6dfb759dbf6637abb7c5499b3302fe224e26f9bcd9ab530d6cb49909ab",
+      "bytes": 311552
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Backward/007.png",
+      "sha256": "0792cb7cc30a5e575ac37ec2253d7975d03e29bfe99e0ae1fbdde46dfce46706",
+      "bytes": 312740
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Backward/008.png",
+      "sha256": "fe43fcadab2f179fbb80e920393430c5876df188464198dfe2b6e63b39d87e0f",
+      "bytes": 313010
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Backward/009.png",
+      "sha256": "a24645fdf206d4c2fa22a291890d4765c45ad151b8434a3bf501257a72cb6961",
+      "bytes": 313705
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Backward/010.png",
+      "sha256": "1958267f5aebc2efd3e3c3e07674c1b2111571ea0c6311b33cbb34b9ff1cd060",
+      "bytes": 313758
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Backward/011.png",
+      "sha256": "132b798008c4477aabe16a0b5134a4bccb46e3c86ea546b8e20f27cd2b497503",
+      "bytes": 311999
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Left/000.png",
+      "sha256": "7f078710abd531924fe55bf4dca27d05ec223ade10a48f2120e39c4f35399153",
+      "bytes": 311191
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Left/001.png",
+      "sha256": "9bcc6e677ed78a1561685237b67d7de28a6f46f9523e6c222800a7ccaf2e2d82",
+      "bytes": 310732
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Left/002.png",
+      "sha256": "1d663e084efd42c0ad52dfc5b10f3e137b6066e3667afb6567a7549e2f3283db",
+      "bytes": 310873
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Left/003.png",
+      "sha256": "3b17e4836a814b4b9136e7bc9b329c9fdf12a2ebfc707df1aa13798faaabda33",
+      "bytes": 311490
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Left/004.png",
+      "sha256": "c5371881c5b13095c9e2a37ff666c15cf994e6aa127ce30b9909634546a54f99",
+      "bytes": 311707
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Left/005.png",
+      "sha256": "d8069a9bd47148edfe3f4a270950e286534f46726f2f7e8e12c55bcf5b70995c",
+      "bytes": 312673
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Left/006.png",
+      "sha256": "fd3adaf3c139260f40e9b92c2923f50471e7c88b36c312848f18f2831b4b6a33",
+      "bytes": 314076
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Left/007.png",
+      "sha256": "e6b0f7ba4575f3a9b4a904e965c4c8804516dd23f6f7ffe078aa115d178cf24f",
+      "bytes": 314040
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Left/008.png",
+      "sha256": "a8c2ca6ec30657a2b3566eed02aa6edad94cec7f674697fd249aeb600a1c8090",
+      "bytes": 314679
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Left/009.png",
+      "sha256": "74f3c201cc019a868a2388d38373e55dee1b7ecd8b5d6c9172a4ec8efe7de61e",
+      "bytes": 314029
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Left/010.png",
+      "sha256": "f4483f937a054912ce25377fae96744450674fa4104d45a91daa2eb501b6e93f",
+      "bytes": 313832
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Left/011.png",
+      "sha256": "03688c5491da4b69ba20bcfd5ed3f69cc2aa7b83e52f96aec813dd551332d1df",
+      "bytes": 311716
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Right/000.png",
+      "sha256": "dd6e83a4e8643e407d56b1a2844e32371dd2f75cabaeb6ddb30eb6e1e4b19e9c",
+      "bytes": 314533
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Right/001.png",
+      "sha256": "6651e18301578d4d88c0d86a867adf8e32ff2799d91e48c22217852c88e3c8b4",
+      "bytes": 314762
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Right/002.png",
+      "sha256": "16987a70e6e2cc117ae54a08865461796888142902c691b56864d8614073a490",
+      "bytes": 314079
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Right/003.png",
+      "sha256": "a1bf7c4e7f15dad179e2bbf9569fb74e1235897bd6d267f20ab8be5945a6a179",
+      "bytes": 314606
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Right/004.png",
+      "sha256": "a359a7325f195bec6e87e242cadf49b821b95ac24dc32866cf4084908378482c",
+      "bytes": 313938
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Right/005.png",
+      "sha256": "7f980665c0d6317754245e7a8c7f7cdd58b5d6bf53c55cab9ab83da022267322",
+      "bytes": 311423
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Right/006.png",
+      "sha256": "3a9c31abd3831d8ea8d458e6b3624842d6e15dee6404d7c9f50d67aaff3473e4",
+      "bytes": 311265
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Right/007.png",
+      "sha256": "7325a54e661b4fae4037768adbb602cf065a8ba27eb26c21168ca90701bc60ef",
+      "bytes": 311007
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Right/008.png",
+      "sha256": "3581099218420f6876e53b978f05eb361d6cfd277c46f6a146a72dd12c37e22e",
+      "bytes": 311126
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Right/009.png",
+      "sha256": "bb329c2836cd02bb9ab4539ac0ef48279fc50f1bcb8256b346df66b7f5551c56",
+      "bytes": 310682
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Right/010.png",
+      "sha256": "a92928273995f12bb3c5ec1e738dbe6cd22ded5fd4173a27cff8924793d192be",
+      "bytes": 310720
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Right/011.png",
+      "sha256": "5d8dc1c34ac670636cfe8bcf3306c4a9389f6462446d6a6fd339251660d3bfe6",
+      "bytes": 312483
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_Before_Distance.png",
+      "sha256": "b4e34f70aeb5a03f26f6bb26115bc867ab915a59d95c39e7fed658e75f88e530",
+      "bytes": 589656
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_After_Distance.png",
+      "sha256": "01c339d83cfe8503571fde01664bfe2d718836da52556c084a2860e45275ad8f",
+      "bytes": 588619
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Idle/000.png",
+      "sha256": "68966c8d652de5d217a732135649088627598e6d812cfb6320fc1b0a684591ee",
+      "bytes": 307526
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Idle/001.png",
+      "sha256": "62a72c178526446eda3dd680cd70a335ead342e33456b20408e43a94f5569021",
+      "bytes": 307667
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Idle/002.png",
+      "sha256": "05c2425b49baea8ba6a5ed2d308e00c9cc9c4ec009fcaa6c06ddd7f3d029d4e9",
+      "bytes": 307526
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Idle/003.png",
+      "sha256": "37c0b937c6d0ed50c3eee026bdf85ee1f388409febaeae1703f6c3495d4c9fc9",
+      "bytes": 308784
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Idle/004.png",
+      "sha256": "ef9b8d08f3ec763c1a13373e9aaee2076d29c2c0efb4e571f4878ec700d5d723",
+      "bytes": 308807
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Idle/005.png",
+      "sha256": "93691b08f608b3f81473fe139dc0c370da84d7b97882cb8572a4b10a8f2682ea",
+      "bytes": 308867
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Idle/006.png",
+      "sha256": "f1f49b58cfe5ba90d94520b5e311c3962b04d4fc5c699d60c1c8abf2ca9e0fd4",
+      "bytes": 308550
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Idle/007.png",
+      "sha256": "112770c82481862dc8dd19aa91d72a33b736a0cefda593d7d525a8bed84967e2",
+      "bytes": 308119
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Idle/008.png",
+      "sha256": "0d7e79f6592f323e08d9617988a652fe6da69f89cb9bdccae89198ff7a241d33",
+      "bytes": 308052
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Idle/009.png",
+      "sha256": "ae47c848f3058cd1b54d90a4fbd30c6d93c95775057f7d97251af65bc82df02c",
+      "bytes": 308026
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Idle/010.png",
+      "sha256": "175d553bf71eec2676ad6f6fc8ddbe0584364e1b969c549ea4e52b57aa528368",
+      "bytes": 307930
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Idle/011.png",
+      "sha256": "ed68c60047b9a16e8c5b8b15483e47c8cb9bc7b6fa0ef257e173b5368ce468ff",
+      "bytes": 307889
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Forward/000.png",
+      "sha256": "f587ef951af7988d35a64782e38d8079d6ecc97e2d8235623f6621fe3054338e",
+      "bytes": 309696
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Forward/001.png",
+      "sha256": "668fa94581e50157ca7b84f5a4f2b1404bd80b1e818970d6b5ed80203bf0e332",
+      "bytes": 308882
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Forward/002.png",
+      "sha256": "4139eb3c3a02271d36d1a71c2eb32630be9aaec3055e6f3b5c003ec0837be031",
+      "bytes": 307976
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Forward/003.png",
+      "sha256": "7c2a7dedcd7c0b6025b5495ef97b243c24137469357511dacbb5039af7739840",
+      "bytes": 307205
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Forward/004.png",
+      "sha256": "03a40415166acf789da34974ec57c02fdfa0eb4be9efd6384ab0a20beaa006be",
+      "bytes": 306684
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Forward/005.png",
+      "sha256": "57ccd28c4adcf1f79d5f7fde4b9aec26c29453f64df016094ceffcfd111bf8f7",
+      "bytes": 307800
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Forward/006.png",
+      "sha256": "9b657304c608673d436ca8925626ff83097320af1419b0379b88aa6b148bad6c",
+      "bytes": 308531
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Forward/007.png",
+      "sha256": "5898c9ba60aeecd8a3bc92d97856fcea5deaae344faa532f003d3411644b4203",
+      "bytes": 307674
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Forward/008.png",
+      "sha256": "04554e15de182e3742ddcff949752af83aa48896b20af0a65f80c97984b73985",
+      "bytes": 307468
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Forward/009.png",
+      "sha256": "940d0898561593c69d8ece164c3779d060c86e71b20fbdc450786edd91ec71ec",
+      "bytes": 307049
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Forward/010.png",
+      "sha256": "fb816900a6b6df2b371cc7ee1e5be66320f14bb07d064a752ed347011c9a4ab2",
+      "bytes": 306835
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Forward/011.png",
+      "sha256": "3ee3743cdc69b4a0b6a479a01ef990c0c1b7d69f2cfbd518644cd00a0d5d5776",
+      "bytes": 307652
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Backward/000.png",
+      "sha256": "5274a5b31dc86ae2128a801424ea4795c59e91169367f12b7ae173380abab292",
+      "bytes": 306441
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Backward/001.png",
+      "sha256": "d71a8db5b1d1e3b90e35c03610718958a1cd5dab868fa334e5ce97f69a0494d5",
+      "bytes": 306833
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Backward/002.png",
+      "sha256": "28e9fbe1687ffe99d9540f6573f8e4c53a13ecd598a8d06d91fdf5aad29c0f7c",
+      "bytes": 307728
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Backward/003.png",
+      "sha256": "b4889d039547ef44e7242e28aad4dd5d3e3f4020e53008d2522b5af10e54a47d",
+      "bytes": 308253
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Backward/004.png",
+      "sha256": "0f5e9703c31cfb18e0aef72560b7ccab04778507bc148cfdf88102854cd56116",
+      "bytes": 308619
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Backward/005.png",
+      "sha256": "f48f94ce51988dc841b9912c56dc9c10ad7fdc9c67cc1bb8d364abaa500490c2",
+      "bytes": 307280
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Backward/006.png",
+      "sha256": "0dc626f4ebff38ad90af9fed718fcd7a78a4b582b86e119df611b19c492684d6",
+      "bytes": 307130
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Backward/007.png",
+      "sha256": "507fde4f2b14ab48aaad714c0f5da1d34b1c4ca3134a035bd16697ab4551b2a8",
+      "bytes": 307742
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Backward/008.png",
+      "sha256": "8cba32b9b48bebdee79dcaaf9ef316c4a06dfc5500fea44878991b23907812d7",
+      "bytes": 307976
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Backward/009.png",
+      "sha256": "cc7d4b01d824eeddf2e02dd5440536ead7e3c2499ab5be8cadc4891b354edf0c",
+      "bytes": 308863
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Backward/010.png",
+      "sha256": "7761a842484c20f6376bf6e21fcc4df279b37828e9ebb80b9cb2a978050e2ef2",
+      "bytes": 308636
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Backward/011.png",
+      "sha256": "2e6b7fb271d08bb4921abb2e1e367a4e05440cbd0ff4f5a5297140e14745a8dd",
+      "bytes": 307041
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Left/000.png",
+      "sha256": "64addb9798bb6d1f24a4ac457a9dc077e1053509a88de9378f236b4f9215f02f",
+      "bytes": 306138
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Left/001.png",
+      "sha256": "b23fb4dfa48fc73efc1eb5d0bb6a5dc94a64765c9888bce2ff24ce36d45fff05",
+      "bytes": 306002
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Left/002.png",
+      "sha256": "270d913269fb3f5fe2fd83eba23b5f29ff370f8a04a8360d56a39c34d12b6eba",
+      "bytes": 306159
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Left/003.png",
+      "sha256": "1c2271ac1d822047b7e70c116bfc21fd97f654c727fdacfadc3af77cc856dd61",
+      "bytes": 306438
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Left/004.png",
+      "sha256": "93a84908d80e3be048e858f3a85f08079691b6bd352192c66d54c4b78edf8d70",
+      "bytes": 306579
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Left/005.png",
+      "sha256": "6715592605c03f826e185414d64d32d2504c8b59dc6ff5e7363fa7b0560c7ab6",
+      "bytes": 308097
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Left/006.png",
+      "sha256": "358dce37b09cf4decf994467a4684d154a50c9fc1e6333008bae881c080810f1",
+      "bytes": 309656
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Left/007.png",
+      "sha256": "601f6d7520ad6b510849390439cadffd9f4903febd5151449d04283a6acdd009",
+      "bytes": 309257
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Left/008.png",
+      "sha256": "cf3f3b3e137cd7d3d0f32946b570d0748726c5e9da2b991af23eb523dfe9d523",
+      "bytes": 310018
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Left/009.png",
+      "sha256": "f71134f2f50310d8e5852b25f24b39f496be947b1249af2490b0aefaa3e81eb7",
+      "bytes": 309704
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Left/010.png",
+      "sha256": "ff4a29a07cb9f7535afc069219c3e024e37a1f60b50ab22ebba40925d7680a05",
+      "bytes": 309097
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Left/011.png",
+      "sha256": "4f6c8563b57dfd903a42f146a340a0104652d30532ceb7c41c44a6a71761bbe7",
+      "bytes": 307007
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Right/000.png",
+      "sha256": "5f7cb73c79cbca0327a9e6631e9d9c8d47c6a0f59decc793da2c5706c3f76380",
+      "bytes": 309685
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Right/001.png",
+      "sha256": "09776ed79aba2db5633ff4c609bea2527293d96d9167a1fd5e1a84b9dbb28764",
+      "bytes": 309961
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Right/002.png",
+      "sha256": "9723f54550a656cabd88bbc9fd153dcb2aa7f56bdbaab71775c0cd1a2fe6c7bc",
+      "bytes": 309483
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Right/003.png",
+      "sha256": "166a239cd52c9401927e198e763acb88960b2f4ff41e13ae9d9499f5f3f9cfb9",
+      "bytes": 309357
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Right/004.png",
+      "sha256": "346c546d79ba8c4bc15a2e64b2e7e3f3dbe6cd4c7396812cdd7c8db6eb7677b9",
+      "bytes": 308973
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Right/005.png",
+      "sha256": "b8ee97120614f7e0307273f71980a565e89e558bf2fc866822c5b204ac3526b1",
+      "bytes": 306835
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Right/006.png",
+      "sha256": "e9d37256208d02548624594cce2b11212b63e5ad6f9594318f25227db19ce7b4",
+      "bytes": 306304
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Right/007.png",
+      "sha256": "e6388d4d3b9193ff52bc58472ac78c922b691503f61168cbd9c2b011d9ed5bd7",
+      "bytes": 305943
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Right/008.png",
+      "sha256": "7cd172dd259e41813dd5def1eb55d7303ae2f7421e8d42bf85bac106a0785455",
+      "bytes": 306051
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Right/009.png",
+      "sha256": "0cc5d28b7201582e7360862f0562040741163ed8d9b052559ea84b48780fab47",
+      "bytes": 305990
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Right/010.png",
+      "sha256": "ad54ab8c08ca3d1e2e78dd09cf70fad7ce565ad9b81e0d9cc20d77a497c5d433",
+      "bytes": 306245
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Right/011.png",
+      "sha256": "c40c38e5817427152e28cf94fe05594af13c8de222b3ad627724464bb31bb3db",
+      "bytes": 307626
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_Before_Distance.png",
+      "sha256": "5a26c3282c2c82274ea4b537059ae133728b35112dd6667d27db4b215f7cd2bd",
+      "bytes": 579761
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_After_Distance.png",
+      "sha256": "59d54fba37b172f6daf469c2bd632340ce2be663d5c6434bd8c18adcf0dab04a",
+      "bytes": 579474
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_After_PitchMin.png",
+      "sha256": "813b07595137c101ca6b50a9bc8a5c9b2124550f96919e9773699e67042089fa",
+      "bytes": 2580605
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_After_PitchMax.png",
+      "sha256": "f179264ed37f4ea2ba891edaa180742c2c8915b007d547e803225468990d6e09",
+      "bytes": 2682387
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD1_After_Yaw180.png",
+      "sha256": "a5f6a1e3820405b63a57d96d504886fb3f0a53045db8c4acecd69dc220afa5f4",
+      "bytes": 2624210
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_After_PitchMin.png",
+      "sha256": "d9e9c89c63487a06c09f26af76539be8f7cdc55e8c27b78e534f319af195e63a",
+      "bytes": 2561481
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_After_PitchMax.png",
+      "sha256": "a4ec7b0716988ceee5c21906603f6fafe478747aedacfeab98ccdc902edda568",
+      "bytes": 2655123
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD2_After_Yaw180.png",
+      "sha256": "a35af6902f94104c00b15816999d42bef617dd567ac5c7ac8465b29b4b011d13",
+      "bytes": 2598075
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_After_PitchMin.png",
+      "sha256": "ed253b441689744fbbea0cdfcf94c673569dce94f19fa1040579ea6a84a85f35",
+      "bytes": 2531653
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_After_PitchMax.png",
+      "sha256": "e56d917996f61bde6884bb3aec2f3ef28c591aa8adaa3e8e2a27e77834790d80",
+      "bytes": 2598424
+    },
+    {
+      "path": "ArtSource/Mechs/BiZhiMao_20261005/LOD_v2/Review/LOD3_After_Yaw180.png",
+      "sha256": "a12882a2e26fa90f08e13ef7fdb0578cf7403290051e56774a7c1638ad96f267",
+      "bytes": 2560534
+    }
+  ]
+}

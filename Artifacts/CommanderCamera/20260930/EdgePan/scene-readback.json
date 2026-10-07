@@ -1,0 +1,183 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "success": true,
+  "saved": true,
+  "runtime_validation": "not_run",
+  "actors": [
+    {
+      "label": "CommanderCamera_EntryFocus",
+      "class": "TargetPoint",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_1",
+      "location": [
+        -3200.0,
+        69500.0,
+        -1769.3494622632427
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "label": "CommanderCamera_FarCorner_NorthEast",
+      "class": "TargetPoint",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_3",
+      "location": [
+        89000.0,
+        89000.0,
+        -1694.6997549019436
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "label": "CommanderCamera_FarCorner_SouthWest",
+      "class": "TargetPoint",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_2",
+      "location": [
+        -89000.0,
+        -89000.0,
+        -1694.6997549020018
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "label": "CommanderCamera_Instructions",
+      "class": "Note",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_41",
+      "location": [
+        -1700.0,
+        72500.0,
+        -1200.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "text": "指挥官三档镜头与总览 LOD（2026-09-30）\n已加载原生Camera行并导入Camera表；玩家可进入指挥官验收。当前场景保存/实体回读只证明布置，不证明新代码或视觉效果已通过。\n参数唯一入口：Data/Excel/GuLiStrikeCommander.xlsx → Camera → Default；运行时 DT_GuLiStrikeCommander_Camera。\n真实入口：原型图 Play 后进入指挥官，现有 F4 为真实选牌入口；观察 CameraActor 只供编辑器定位，不替代 CameraPawn。\n1. gs.GM.Commander.Camera.Debug 1 显示档位/目标离地/实际离地/俯角/过渡。Height 命令用完整前缀 gs.GM.Commander.Camera.Height 35、300、700 分别观察边界；第一档 25→55度，第二档55度。\n2. 在山坡方向平移，观察镜头平滑跟地；Z/C绕焦点旋转。避障只抬高实际高度，档位按滚轮设定高度。\n边缘平移复验：Height 306和700，方向键/屏幕下边缘将南北两侧部队移到画面中间；观察焦点只受战场安全边界限制，相机和视野可越界，不应被底部HUD前方卡住。在四边与四角分别转向和平移，检查贴边滑动、缩放及总览返回；地形外相机沿用最近地形边缘高度。\n3. 滚轮目标超过700米的当帧立即开始0.6秒平滑过渡，不等实际镜头追上700米；进入后90度俯视，按进入朝向就近对齐0/90/180/270度，最多转45度回正；高度按可用画面算定并锁住；向内一格立即触发返回原焦点/朝向/700米。过渡中反向滚轮可返回；中途不提交世界选取/落点。总览平移和旋转锁定。\n切档复验：Height 650后向外一格应立即进入过渡；先Z/C旋转再总览，地图应沿最短方向小角度回正；接近90/180/270度时不应转回0度，已经正向时只升高和俯视；过渡中不应横滚或临近结束突然扭转。总览连续外滚保持同一高度，内滚返回700米边缘及原朝向。\n4. 总览所有单位/建筑模型及附属效果消失，地形/环境/矿藏保留；单位14px、建筑20px图标随DPI缩放，选中/受击显示血条。友军图标点选/框选、右键下令沿现有规则；建筑和敌方图标可本地观察，不能因此取得控制权。\n5. 4:3、16:9、21:9及调整窗口，检查战场留在HUD外可用矩形内，四边5%留白。远端角标对应两个 FarCorner 标记。当前资产实读为1.8×1.8km，计划的2.8km不作为硬编码。\n6. 总览时新生/死亡/建成/销毁持续更新；退出恢复模型，不补播旧特效。多本地视图分别隐藏。小地图、F5–F8书签及定位直接退出总览，在目标位置回到第二档。\n7. gs.Commander.LOD.Stats WM01MissileBatches 观察导弹目标/预算；指挥官分档来自Camera，旧near/mid距离覆盖仅用于非指挥视图。\n手工结果请按镜头、取景、选择下令、对象生命周期、多视图分别反馈。助手未运行PIE或自动化。"
+    },
+    {
+      "label": "CommanderCamera_Observe_Near35",
+      "class": "CameraActor",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_9",
+      "location": [
+        -10705.774221783457,
+        69500.0,
+        1730.6505377367573
+      ],
+      "rotation": [
+        0.0,
+        -25.0,
+        0.0
+      ],
+      "fov": 45.0
+    },
+    {
+      "label": "CommanderCamera_Observe_Tactical300",
+      "class": "CameraActor",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_10",
+      "location": [
+        -24206.226146291294,
+        69500.0,
+        28231.267898320788
+      ],
+      "rotation": [
+        0.0,
+        -55.0,
+        0.0
+      ],
+      "fov": 45.0
+    },
+    {
+      "label": "CommanderCamera_Observe_Tactical700",
+      "class": "CameraActor",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_11",
+      "location": [
+        -52214.52767467969,
+        69500.0,
+        68295.06050349439
+      ],
+      "rotation": [
+        0.0,
+        -55.0,
+        0.0
+      ],
+      "fov": 45.0
+    },
+    {
+      "label": "CommanderCamera_TerrainFollow_High",
+      "class": "TargetPoint",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_4",
+      "location": [
+        0.0,
+        0.0,
+        1831.9977405024545
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "battlefield_bounds_cm": [
+    [
+      -90000.0,
+      -90000.0
+    ],
+    [
+      90000.0,
+      90000.0
+    ]
+  ],
+  "battlefield_size_m": [
+    1800.0,
+    1800.0
+  ],
+  "camera_row": {
+    "Name": "Default",
+    "Id": 1,
+    "Note": "三档镜头；距离米、俯角向下为正、时间秒。x由战场和HUD可用画面计算；数值修改后导出并导入Camera表。",
+    "MinimumHeightMeters": 35.0,
+    "TacticalStartHeightMeters": 300.0,
+    "TacticalMaximumHeightMeters": 700.0,
+    "InitialHeightMeters": 133.4,
+    "NearPitchDegrees": 25.0,
+    "TacticalPitchDegrees": 55.0,
+    "OverviewPitchDegrees": 90.0,
+    "FieldOfViewDegrees": 45.0,
+    "ZoomStepMultiplier": 1.18,
+    "ZoomInterpolationPerSecond": 8.0,
+    "YawDegreesPerSecond": 70.0,
+    "MoveHeightMultiplierPerSecond": 1.4,
+    "MinimumMoveMetersPerSecond": 12.0,
+    "MaximumMoveMetersPerSecond": 92.0,
+    "RiseHalfLifeSeconds": 0.2,
+    "DescentHalfLifeSeconds": 0.35,
+    "MaximumRiseMetersPerSecond": 60.0,
+    "MaximumDescentMetersPerSecond": 30.0,
+    "LookAheadSeconds": 0.75,
+    "BoundaryPaddingMeters": 10.0,
+    "PivotClearanceMeters": 0.3,
+    "BoomClearanceMeters": 0.4,
+    "CameraClearanceMeters": 1.0,
+    "BoomSampleSpacingMeters": 20.0,
+    "OverviewTransitionSeconds": 0.6,
+    "OverviewPaddingFraction": 0.05,
+    "OverviewUnitIconPixels": 14.0,
+    "OverviewBuildingIconPixels": 20.0,
+    "OverviewYawDegrees": 0.0
+  },
+  "camera_struct_loaded": true,
+  "camera_table_exists": true,
+  "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode"
+}

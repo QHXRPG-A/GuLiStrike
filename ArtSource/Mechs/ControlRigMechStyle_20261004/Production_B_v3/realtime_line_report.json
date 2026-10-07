@@ -1,0 +1,112 @@
+{
+  "version": "B-v3",
+  "source": "frozen B-v2",
+  "freestyle_enabled": false,
+  "shader_line_method": "selected structural edges, distance fields in two additional UV channels plus independent native-baked 2K mask",
+  "body_geometry_changed": false,
+  "source_rig_animation_changed": false,
+  "lods": [
+    {
+      "selected_structural_edges": 8477,
+      "selected_triangle_edges": 16436,
+      "edge_kinds": {
+        "mechanical_crease": 7959,
+        "open_structural_boundary": 518
+      },
+      "body_triangles": 57323,
+      "body_vertices": 33644,
+      "vertex_positions_exactly_preserved": true,
+      "triangular_surface_exactly_preserved": true,
+      "three_uv_channels": true,
+      "lod": 0,
+      "outline_triangles": 12794,
+      "outline_kept_components": 212,
+      "outline_skipped_small_components": 666,
+      "total_triangles": 70117,
+      "body_cap": 32000,
+      "outline_cap": 8000,
+      "body_delta": 25323,
+      "outline_delta": 4794,
+      "total_cap": 40000,
+      "total_delta": 30117
+    },
+    {
+      "selected_structural_edges": 11808,
+      "selected_triangle_edges": 22622,
+      "edge_kinds": {
+        "mechanical_crease": 10810,
+        "open_structural_boundary": 998
+      },
+      "body_triangles": 55594,
+      "body_vertices": 32764,
+      "vertex_positions_exactly_preserved": true,
+      "triangular_surface_exactly_preserved": true,
+      "three_uv_channels": true,
+      "lod": 1,
+      "outline_triangles": 9412,
+      "outline_kept_components": 153,
+      "outline_skipped_small_components": 725,
+      "total_triangles": 65006,
+      "body_cap": 14000,
+      "outline_cap": 3000,
+      "body_delta": 41594,
+      "outline_delta": 6412,
+      "total_cap": 17000,
+      "total_delta": 48006
+    },
+    {
+      "selected_structural_edges": 12900,
+      "selected_triangle_edges": 24576,
+      "edge_kinds": {
+        "mechanical_crease": 11670,
+        "open_structural_boundary": 1230
+      },
+      "body_triangles": 46326,
+      "body_vertices": 27892,
+      "vertex_positions_exactly_preserved": true,
+      "triangular_surface_exactly_preserved": true,
+      "three_uv_channels": true,
+      "lod": 2,
+      "outline_triangles": 5570,
+      "outline_kept_components": 63,
+      "outline_skipped_small_components": 815,
+      "total_triangles": 51896,
+      "body_cap": 5000,
+      "outline_cap": 1000,
+      "body_delta": 41326,
+      "outline_delta": 4570,
+      "total_cap": 6000,
+      "total_delta": 45896
+    },
+    {
+      "selected_structural_edges": 14539,
+      "selected_triangle_edges": 27836,
+      "edge_kinds": {
+        "mechanical_crease": 13281,
+        "open_structural_boundary": 1258
+      },
+      "body_triangles": 38428,
+      "body_vertices": 23308,
+      "vertex_positions_exactly_preserved": true,
+      "triangular_surface_exactly_preserved": true,
+      "three_uv_channels": true,
+      "lod": 3,
+      "outline_triangles": 0,
+      "total_triangles": 38428,
+      "body_cap": 2000,
+      "outline_cap": 0,
+      "body_delta": 36428,
+      "outline_delta": 0,
+      "total_cap": 2000,
+      "total_delta": 36428
+    }
+  ],
+  "three_tone_coefficients": [
+    0.42,
+    0.74,
+    1.0
+  ],
+  "ink_srgb": "#1B2422",
+  "shader_render_is_actual_model_not_freestyle": true,
+  "outline_scope": "Substantial teal/rust outer armor; small fittings, bearing caps and interior skeleton retain the actual surface structural-line shader. Body geometry is never deleted by outline filtering."
+}

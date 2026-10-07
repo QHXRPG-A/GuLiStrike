@@ -1,0 +1,128 @@
+{
+  "running": false,
+  "cancelled": true,
+  "evidence": {
+    "scope": "cosmetic-only explosion at current camera focus; no damage or camera changes",
+    "samples": [
+      {
+        "wall_seconds": 0.125,
+        "active": true,
+        "visible": true,
+        "bounds": "(<Struct 'Vector' (0x000001E1AF3D7B70) {x: -7759.352291, y: 43875.774632, z: -1836.093692}>, <Struct 'Vector' (0x000001E1AF3D7940) {x: 440.000010, y: 440.000010, z: 440.000010}>, 762.1023559570312)",
+        "emitters": [
+          {
+            "name": "Explosion_Flipbook",
+            "particles": 0,
+            "visible_particles": 0
+          },
+          {
+            "name": "Distortion",
+            "particles": 0,
+            "visible_particles": 0
+          },
+          {
+            "name": "OmnidirectionalBurst",
+            "particles": 0,
+            "visible_particles": 0
+          }
+        ],
+        "captured": "<Object '/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:NiagaraSimCache_0' (0x000001E48BE64600) Class 'NiagaraSimCache'>"
+      },
+      {
+        "wall_seconds": 0.31199999999989814,
+        "active": true,
+        "visible": true,
+        "bounds": "(<Struct 'Vector' (0x000001E1AF3D7E90) {x: -7755.717281, y: 43873.423070, z: -1923.480502}>, <Struct 'Vector' (0x000001E1AF429B90) {x: 486.853606, y: 461.741862, z: 536.125503}>, 858.872802734375)",
+        "emitters": [
+          {
+            "name": "Explosion_Flipbook",
+            "particles": 0,
+            "visible_particles": 0
+          },
+          {
+            "name": "Distortion",
+            "particles": 4,
+            "visible_particles": 4
+          },
+          {
+            "name": "OmnidirectionalBurst",
+            "particles": 50,
+            "visible_particles": 50
+          }
+        ],
+        "captured": "<Object '/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:NiagaraSimCache_1' (0x000001E48BE67F80) Class 'NiagaraSimCache'>"
+      },
+      {
+        "wall_seconds": 1.2030000000013388,
+        "active": true,
+        "visible": true,
+        "bounds": "(<Struct 'Vector' (0x000001E1AF42BDF0) {x: -7755.717281, y: 43873.423070, z: -1923.480502}>, <Struct 'Vector' (0x000001E1AF42BD50) {x: 486.853606, y: 461.741862, z: 536.125503}>, 858.872802734375)",
+        "emitters": [
+          {
+            "name": "Explosion_Flipbook",
+            "particles": 0,
+            "visible_particles": 0
+          },
+          {
+            "name": "Distortion",
+            "particles": 4,
+            "visible_particles": 4
+          },
+          {
+            "name": "OmnidirectionalBurst",
+            "particles": 50,
+            "visible_particles": 50
+          }
+        ],
+        "captured": "<Object '/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:NiagaraSimCache_2' (0x000001E48319AF00) Class 'NiagaraSimCache'>"
+      },
+      {
+        "wall_seconds": 2.8430000000007567,
+        "active": true,
+        "visible": true,
+        "bounds": "(<Struct 'Vector' (0x000001E1AF42BDA0) {x: -7755.717281, y: 43873.423070, z: -1923.480502}>, <Struct 'Vector' (0x000001E1AF429E60) {x: 486.853606, y: 461.741862, z: 536.125503}>, 858.872802734375)",
+        "emitters": [
+          {
+            "name": "Explosion_Flipbook",
+            "particles": 0,
+            "visible_particles": 0
+          },
+          {
+            "name": "Distortion",
+            "particles": 4,
+            "visible_particles": 4
+          },
+          {
+            "name": "OmnidirectionalBurst",
+            "particles": 50,
+            "visible_particles": 50
+          }
+        ],
+        "captured": "<Object '/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:NiagaraSimCache_3' (0x000001E48319A000) Class 'NiagaraSimCache'>"
+      }
+    ],
+    "camera": {
+      "tier": "<GuLiCommanderCameraTier.TACTICAL: 1>",
+      "height_m": 361.05279541015625,
+      "location": [
+        -2656.252552349605,
+        65723.5105421166,
+        34332.29657718817
+      ],
+      "rotation": "<Struct 'Rotator' (0x000001E1AF3D7D00) {pitch: -55.000000, yaw: -101.449249, roll: 0.000000}>"
+    },
+    "location": [
+      -7759.352290737115,
+      43875.774632170425,
+      -1966.0936917509455
+    ],
+    "camera_distance_cm": 42672.45396560756,
+    "old_gate_would_allow": false,
+    "bursts_played_before": 0,
+    "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.WorldSettings.NiagaraComponent_9",
+    "visual_scale": 2.4,
+    "success": true,
+    "error": "Traceback (most recent call last):\n  File \"<string>\", line 35, in tick\n  File \"<string>\", line 13, in finish\n  File \"D:\\UnrealEngine-5.7\\Engine\\Binaries\\ThirdParty\\Python3\\Win64\\Lib\\json\\__init__.py\", line 238, in dumps\n    **kw).encode(obj)\n          ^^^^^^^^^^^\n  File \"D:\\UnrealEngine-5.7\\Engine\\Binaries\\ThirdParty\\Python3\\Win64\\Lib\\json\\encoder.py\", line 202, in encode\n    chunks = list(chunks)\n             ^^^^^^^^^^^^\n  File \"D:\\UnrealEngine-5.7\\Engine\\Binaries\\ThirdParty\\Python3\\Win64\\Lib\\json\\encoder.py\", line 432, in _iterencode\n    yield from _iterencode_dict(o, _current_indent_level)\n  File \"D:\\UnrealEngine-5.7\\Engine\\Binaries\\ThirdParty\\Python3\\Win64\\Lib\\json\\encoder.py\", line 406, in _iterencode_dict\n    yield from chunks\n  File \"D:\\UnrealEngine-5.7\\Engine\\Binaries\\ThirdParty\\Python3\\Win64\\Lib\\json\\encoder.py\", line 326, in _iterencode_list\n    yield from chunks\n  File \"D:\\UnrealEngine-5.7\\Engine\\Binaries\\ThirdParty\\Python3\\Win64\\Lib\\json\\encoder.py\", line 406, in _iterencode_dict\n    yield from chunks\n  File \"D:\\UnrealEngine-5.7\\Engine\\Binaries\\ThirdParty\\Python3\\Win64\\Lib\\json\\encoder.py\", line 439, in _iterencode\n    o = _default(o)\n        ^^^^^^^^^^^\n  File \"D:\\UnrealEngine-5.7\\Engine\\Binaries\\ThirdParty\\Python3\\Win64\\Lib\\json\\encoder.py\", line 180, in default\n    raise TypeError(f'Object of type {o.__class__.__name__} '\nTypeError: Object of type NiagaraSimCache is not JSON serializable\n",
+    "screenshot": "D:\\UE5.7\\test1\\Artifacts\\CommanderLOD\\20260930\\ImpactVisibility\\control-burst-peak.png"
+  }
+}

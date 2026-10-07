@@ -1,0 +1,20 @@
+{
+  "source_sha256": {
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderCameraPawn.cpp": "15ec52552730a6f10573add5be40d902d8484ca2e1bf4fe74030995b4f3610c2",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderCameraPawn.h": "42e09d30b2c10ec41d5d7bfad95a27cf27d21073446a6e9f5454bafeeaedfabb",
+    "Scripts/CommanderCamera/author_camera_scene.py": "5f572396b4af8def9d1c35fccb1377adf5e4f9bd0f43364e7430631a9445ba67"
+  },
+  "public_api": "unchanged",
+  "ownership": "existing local CameraPawn ReturnYaw; no replicated state added",
+  "alignment_rule": "base + 90 * round(normalize(entry_yaw - base) / 90); nearest quarter-turn, correction <= 45 degrees",
+  "interpolation": "smoothstep over pitch and shortest signed yaw; roll zero, no quaternion-to-Euler conversion at vertical pitch",
+  "stability": "saved ReturnYaw anchors enter/reverse/viewport resize; exit restores saved heading",
+  "config": "existing Camera.OverviewYawDegrees=0 is the alignment basis; no schema or value changes",
+  "reviewed_examples": "80 -> 90 (+10), 170 -> 180 (+10), -170 -> 180 (-10), -90 -> -90 (0), 45-degree tie deterministic",
+  "script_ast": "passed",
+  "native_compile": "passed",
+  "scene_update": "saved and 8 related entities read back",
+  "runtime_validation": "not_run",
+  "existing_camera_table": "readback passed; yaw basis=0, transition=0.6",
+  "source_unchanged_after_build": true
+}

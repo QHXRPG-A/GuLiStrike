@@ -78,6 +78,7 @@ void UGuLiBuildingLifecycleComponent::InitializeBuilding(int32 DefinitionId, int
 }
 void UGuLiBuildingLifecycleComponent::RegisterInstance()
 {
+	if (State.Phase == EGuLiBuildingPhase::Destroyed || State.Phase == EGuLiBuildingPhase::ConvertedToUnit) return;
 	GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->Register(*this);
 }
 float UGuLiBuildingLifecycleComponent::GetConstructionProgress() const
@@ -90,7 +91,7 @@ float UGuLiBuildingLifecycleComponent::GetConstructionProgress() const
 void UGuLiBuildingLifecycleComponent::OnRep_State()
 {
 	if (!State.InstanceId) return; // Initial component replication precedes its authored identity.
-	if (State.Phase == EGuLiBuildingPhase::Destroyed)
+	if (State.Phase == EGuLiBuildingPhase::Destroyed || State.Phase == EGuLiBuildingPhase::ConvertedToUnit)
 		GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->Unregister(*this);
 	else RegisterInstance();
 	OnConstructionStateChanged.Broadcast();
@@ -117,9 +118,18 @@ void UGuLiBuildingLifecycleComponent::RefreshTeam()
 		Health->ConfigureServerTarget(Health->GetTargetHandle(), GetTeam());
 	GetOwner()->ForceNetUpdate();
 }
+void UGuLiBuildingLifecycleComponent::MarkConvertedToUnit()
+{
+	check(GetOwner()->HasAuthority());
+	if (State.Phase != EGuLiBuildingPhase::Completed) return;
+	State.Phase = EGuLiBuildingPhase::ConvertedToUnit;
+	GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->Unregister(*this);
+	OnConstructionStateChanged.Broadcast();
+	GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
+}
 void UGuLiBuildingLifecycleComponent::HandleDeath()
 {
-	if (State.Phase == EGuLiBuildingPhase::Destroyed) return;
+	if (State.Phase == EGuLiBuildingPhase::Destroyed || State.Phase == EGuLiBuildingPhase::ConvertedToUnit) return;
 	State.Phase = EGuLiBuildingPhase::Destroyed;
 	ActiveContributors.Reset(); State.bHasActiveBuilders = false;
 	ConstructionSlots.Reset(); ++SlotGeneration; bSlotsPending=false; PendingConstructionWork=0; SetComponentTickEnabled(false);

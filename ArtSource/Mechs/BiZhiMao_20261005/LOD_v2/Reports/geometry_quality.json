@@ -1,0 +1,181 @@
+{
+  "version": "BiZhiMao_LOD_v2",
+  "success": true,
+  "runtime_bones": 0,
+  "rig_offline_only": true,
+  "lods": [
+    {
+      "lod": 0,
+      "sections": [
+        {
+          "object": "ControlRigMech_LOD0_Body",
+          "vertices": 33644,
+          "triangles": 57323,
+          "degenerate_triangles": 0,
+          "maximum_offline_weights": 4,
+          "top4_weight_vertices": 0,
+          "materials": 1,
+          "min_m": [
+            -4.6096649169921875,
+            -8.136292457580566,
+            -0.0005880392272956669
+          ],
+          "max_m": [
+            4.609664440155029,
+            5.082787036895752,
+            6.888712406158447
+          ],
+          "source_surface_distance_p95_cm": 0.0,
+          "source_surface_distance_max_cm": 2.0711831748485565
+        },
+        {
+          "object": "ControlRigMech_B_v4_LOD0_Outline",
+          "vertices": 7198,
+          "triangles": 12794,
+          "degenerate_triangles": 0,
+          "maximum_offline_weights": 2,
+          "top4_weight_vertices": 0,
+          "materials": 1,
+          "min_m": [
+            -4.549635887145996,
+            -8.12734603881836,
+            -0.0005880392272956669
+          ],
+          "max_m": [
+            4.54963493347168,
+            5.014838695526123,
+            6.888712406158447
+          ],
+          "source_surface_distance_p95_cm": null,
+          "source_surface_distance_max_cm": null
+        }
+      ]
+    },
+    {
+      "lod": 1,
+      "sections": [
+        {
+          "object": "ControlRigMech_LOD1_Body",
+          "vertices": 9905,
+          "triangles": 13919,
+          "degenerate_triangles": 0,
+          "maximum_offline_weights": 4,
+          "top4_weight_vertices": 0,
+          "materials": 1,
+          "min_m": [
+            -4.603097915649414,
+            -8.141288757324219,
+            0.009109023958444595
+          ],
+          "max_m": [
+            4.606938362121582,
+            5.0772809982299805,
+            6.888838768005371
+          ],
+          "source_surface_distance_p95_cm": 1.408827379345893,
+          "source_surface_distance_max_cm": 9.445605427026749
+        },
+        {
+          "object": "ControlRigMech_B_v4_LOD1_Outline",
+          "vertices": 1769,
+          "triangles": 2994,
+          "degenerate_triangles": 0,
+          "maximum_offline_weights": 1,
+          "top4_weight_vertices": 0,
+          "materials": 1,
+          "min_m": [
+            -4.224127769470215,
+            -8.141681671142578,
+            0.017581602558493614
+          ],
+          "max_m": [
+            4.187349796295166,
+            4.717087268829346,
+            6.901212215423584
+          ],
+          "source_surface_distance_p95_cm": null,
+          "source_surface_distance_max_cm": null
+        }
+      ]
+    },
+    {
+      "lod": 2,
+      "sections": [
+        {
+          "object": "ControlRigMech_LOD2_Body",
+          "vertices": 6615,
+          "triangles": 9457,
+          "degenerate_triangles": 0,
+          "maximum_offline_weights": 4,
+          "top4_weight_vertices": 0,
+          "materials": 1,
+          "min_m": [
+            -4.603097915649414,
+            -8.127074241638184,
+            0.009109023958444595
+          ],
+          "max_m": [
+            4.606938362121582,
+            5.0772809982299805,
+            6.888838768005371
+          ],
+          "source_surface_distance_p95_cm": 1.9307138398289654,
+          "source_surface_distance_max_cm": 10.262375324964523
+        },
+        {
+          "object": "ControlRigMech_B_v4_LOD2_Outline",
+          "vertices": 486,
+          "triangles": 997,
+          "degenerate_triangles": 0,
+          "maximum_offline_weights": 1,
+          "top4_weight_vertices": 0,
+          "materials": 1,
+          "min_m": [
+            -4.075777530670166,
+            -7.9663615226745605,
+            1.1050418615341187
+          ],
+          "max_m": [
+            4.074100971221924,
+            4.556883335113525,
+            6.630922317504883
+          ],
+          "source_surface_distance_p95_cm": null,
+          "source_surface_distance_max_cm": null
+        }
+      ]
+    },
+    {
+      "lod": 3,
+      "sections": [
+        {
+          "object": "ControlRigMech_LOD3_Body",
+          "vertices": 4370,
+          "triangles": 6125,
+          "degenerate_triangles": 0,
+          "maximum_offline_weights": 4,
+          "top4_weight_vertices": 0,
+          "materials": 1,
+          "min_m": [
+            -4.603097915649414,
+            -8.105097770690918,
+            0.009118078276515007
+          ],
+          "max_m": [
+            4.606938362121582,
+            5.0772809982299805,
+            6.818610668182373
+          ],
+          "source_surface_distance_p95_cm": 2.455370184034109,
+          "source_surface_distance_max_cm": 10.262375324964523
+        }
+      ]
+    }
+  ],
+  "gameplay_validation": "not_run",
+  "weight_pruning_required": false,
+  "blend_sha256": "587deb1ecb0dde63c21d20a6353e48a448a3cd0bccadba5cc7d0f4b9e1b69fcb",
+  "v1_blend_sha256": "0164e5f8f6e99c932445e82811a0116e672e1aa029ad864c083b86512789f64d",
+  "frozen_blend_sha256": "bf566b78fb3fd03c516016ed0e32bc7ee8412929c303283985340d5d5b5d853b",
+  "presentation_update_geometry_unchanged": true
+}

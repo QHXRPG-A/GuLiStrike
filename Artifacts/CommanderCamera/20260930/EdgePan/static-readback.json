@@ -1,0 +1,37 @@
+{
+  "source_sha256": {
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderCameraPawn.cpp": "83dc022d6c732214b980623480efbe0898fd46e5914e8a451db2e520cdb2ce5f",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderCameraPawn.h": "fa252349638ae58b5467e84cdd6e63c36c4a6844077eeb662eb9e8090ba2372e",
+    "Scripts/CommanderCamera/author_camera_scene.py": "b040e31c6faed8d16d9169560074105c91bcb606be3aed5d20a516f18dc03d01"
+  },
+  "diagnosis": "normal footprint includes lens and full viewport, clamped to playable bounds; input edge and arrow-key paths are not blocked by HUD",
+  "pre_fix_observation": "read only snapshots of existing user PIE, no camera/input changes or new PIE started",
+  "bounds_cm": {
+    "playable_min": [
+      -90000,
+      -90000
+    ],
+    "playable_max": [
+      90000,
+      90000
+    ],
+    "landscape_min": [
+      -115000,
+      -115000
+    ],
+    "landscape_max": [
+      115000,
+      115000
+    ]
+  },
+  "focus_rule": "clamp focus only to existing playable boundary with Camera.BoundaryPaddingMeters; no yaw/zoom/viewport dependent contraction or oversized-axis centering",
+  "ground_rule": "strict Landscape height first; for camera-only positions outside the sampled bounds use nearest edge height, 1cm inset; missing interior terrain still rejects pose",
+  "scope": "private CameraPawn helpers; public API, shared Landscape query, selection and server validation unchanged",
+  "preserved": "three tiers, immediate overview threshold, 0.6s transition, nearest cardinal heading and return state",
+  "script_ast": "passed",
+  "native_compile": "passed",
+  "scene_update": "saved and 8 related entities read back",
+  "new_runtime_validation": "not_run",
+  "existing_camera_table": "readback passed; boundary padding=10m, yaw basis=0, transition=0.6",
+  "source_unchanged_after_build": true
+}

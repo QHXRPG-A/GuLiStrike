@@ -1,0 +1,341 @@
+{
+  "success": true,
+  "name": "BiZhiMao",
+  "id": 6,
+  "approval_B": "approved",
+  "approved_content_sha256": "761bc5edd06b08c598771943b46ebcbd7bc8285b42d345e234fea0907d02783d",
+  "formal_root": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1",
+  "state": "formal_switched_verified",
+  "switched": true,
+  "assets": [
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Materials/M_BiZhiMao_Outline.M_BiZhiMao_Outline",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Outline.M_BiZhiMao_Outline",
+      "class_name": "Material",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD0",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD1",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD2",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD0",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD1",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD2",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/MF_BiZhiMao_VertexVAT"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD0.T_BiZhiMao_VertexPosition_LOD0",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD0.T_BiZhiMao_VertexPosition_LOD0",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD1.T_BiZhiMao_VertexPosition_LOD1",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD1.T_BiZhiMao_VertexPosition_LOD1",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD2.T_BiZhiMao_VertexPosition_LOD2",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD2.T_BiZhiMao_VertexPosition_LOD2",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD0.T_BiZhiMao_VertexRotation_LOD0",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD0.T_BiZhiMao_VertexRotation_LOD0",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD1.T_BiZhiMao_VertexRotation_LOD1",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD1.T_BiZhiMao_VertexRotation_LOD1",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD2.T_BiZhiMao_VertexRotation_LOD2",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD2.T_BiZhiMao_VertexRotation_LOD2",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/VAT/MF_BiZhiMao_VertexVAT.MF_BiZhiMao_VertexVAT",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/MF_BiZhiMao_VertexVAT.MF_BiZhiMao_VertexVAT",
+      "class_name": "MaterialFunction",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD0",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD1",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD2",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD0",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD1",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD2"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Materials/M_BiZhiMao_Toon3_SparseLines.M_BiZhiMao_Toon3_SparseLines",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Toon3_SparseLines.M_BiZhiMao_Toon3_SparseLines",
+      "class_name": "Material",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD0",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD1",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD2",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD0",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD1",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD2",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/MF_BiZhiMao_VertexVAT",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_InternalLineMask_2K"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_InternalLineMask_2K.T_BiZhiMao_InternalLineMask_2K",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_InternalLineMask_2K.T_BiZhiMao_InternalLineMask_2K",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Materials/MI_BiZhiMao_LOD0.MI_BiZhiMao_LOD0",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD0.MI_BiZhiMao_LOD0",
+      "class_name": "MaterialInstanceConstant",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Toon3_SparseLines"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Materials/MI_BiZhiMao_LOD1.MI_BiZhiMao_LOD1",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD1.MI_BiZhiMao_LOD1",
+      "class_name": "MaterialInstanceConstant",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Toon3_SparseLines"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Materials/MI_BiZhiMao_LOD2.MI_BiZhiMao_LOD2",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD2.MI_BiZhiMao_LOD2",
+      "class_name": "MaterialInstanceConstant",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Toon3_SparseLines"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+      "class_name": "StaticMesh",
+      "dependencies": [
+        "/Script/NavigationSystem",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Outline",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD0",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD1",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD2"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "class_name": "StaticMesh",
+      "dependencies": [
+        "/Script/NavigationSystem",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Outline",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD0",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD1",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD2"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_BaseColor_2K.T_BiZhiMao_BaseColor_2K",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_BaseColor_2K.T_BiZhiMao_BaseColor_2K",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_FunctionalMask_2K.T_BiZhiMao_FunctionalMask_2K",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_FunctionalMask_2K.T_BiZhiMao_FunctionalMask_2K",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_ORM_2K.T_BiZhiMao_ORM_2K",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_ORM_2K.T_BiZhiMao_ORM_2K",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/VAT/MI_BiZhiMao_Hit.MI_BiZhiMao_Hit",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/MI_BiZhiMao_Hit.MI_BiZhiMao_Hit",
+      "class_name": "MaterialInstanceConstant",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Toon3_SparseLines"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/VAT/MI_BiZhiMao_Phase.MI_BiZhiMao_Phase",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/MI_BiZhiMao_Phase.MI_BiZhiMao_Phase",
+      "class_name": "MaterialInstanceConstant",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Toon3_SparseLines"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/VAT/MI_BiZhiMao_Wreck.MI_BiZhiMao_Wreck",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/MI_BiZhiMao_Wreck.MI_BiZhiMao_Wreck",
+      "class_name": "MaterialInstanceConstant",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Toon3_SparseLines"
+      ]
+    },
+    {
+      "source": "Approved vertex_metadata.json",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT",
+      "class_name": "GuLiVATDefinition",
+      "dependencies": [
+        "/Script/GuLiStrike",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD0",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD1",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexPosition_LOD2",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD0",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD1",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Textures/T_BiZhiMao_VertexRotation_LOD2",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/MI_BiZhiMao_Hit",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/MI_BiZhiMao_Phase",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/MI_BiZhiMao_Wreck"
+      ]
+    },
+    {
+      "source": "BiZhiMao/Review/UE/LOD0_Hero.png",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/UI/T_UI_BiZhiMao.T_UI_BiZhiMao",
+      "class_name": "Texture2D",
+      "dependencies": []
+    }
+  ],
+  "models": [
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+      "lod_count": 3,
+      "triangles": [
+        70117,
+        16913,
+        6125
+      ],
+      "sections": [
+        2,
+        2,
+        1
+      ],
+      "material_slots": [
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD0.MI_BiZhiMao_LOD0",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Outline.M_BiZhiMao_Outline",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD1.MI_BiZhiMao_LOD1",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD2.MI_BiZhiMao_LOD2"
+      ],
+      "screen_sizes": [
+        1.0,
+        0.4000000059604645,
+        0.05999999865889549
+      ],
+      "uv_channels": [
+        6,
+        6,
+        6
+      ],
+      "lod0_geometry_operation": "Native duplication; no geometric, UV, normal or socket authoring operation."
+    },
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "lod_count": 3,
+      "triangles": [
+        70117,
+        16913,
+        6125
+      ],
+      "sections": [
+        2,
+        2,
+        1
+      ],
+      "material_slots": [
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD0.MI_BiZhiMao_LOD0",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Outline.M_BiZhiMao_Outline",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD1.MI_BiZhiMao_LOD1",
+        "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD2.MI_BiZhiMao_LOD2"
+      ],
+      "screen_sizes": [
+        1.0,
+        0.4000000059604645,
+        0.05999999865889549
+      ],
+      "uv_channels": [
+        6,
+        6,
+        6
+      ],
+      "lod0_geometry_operation": "Native duplication; no geometric, UV, normal or socket authoring operation."
+    }
+  ],
+  "animation": {
+    "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT",
+    "valid": true,
+    "bones": 0,
+    "bone_deltas": 0,
+    "muzzles": 0,
+    "vertex_lod_count": 3,
+    "clips": [
+      {
+        "name": "Idle",
+        "first_frame": 0,
+        "frame_count": 32,
+        "stride_cm": 0.0,
+        "duration_seconds": 8.666666984558105,
+        "loop": true
+      },
+      {
+        "name": "Forward",
+        "first_frame": 32,
+        "frame_count": 32,
+        "stride_cm": 600.0,
+        "duration_seconds": 3.0,
+        "loop": true
+      },
+      {
+        "name": "Backward",
+        "first_frame": 64,
+        "frame_count": 32,
+        "stride_cm": 600.0,
+        "duration_seconds": 3.0,
+        "loop": true
+      },
+      {
+        "name": "Left",
+        "first_frame": 96,
+        "frame_count": 32,
+        "stride_cm": 600.0,
+        "duration_seconds": 3.0,
+        "loop": true
+      },
+      {
+        "name": "Right",
+        "first_frame": 128,
+        "frame_count": 32,
+        "stride_cm": 600.0,
+        "duration_seconds": 3.0,
+        "loop": true
+      },
+      {
+        "name": "Death",
+        "first_frame": 160,
+        "frame_count": 2,
+        "stride_cm": 0.0,
+        "duration_seconds": 0.03333333507180214,
+        "loop": false
+      }
+    ],
+    "source_stride_scale": 2,
+    "straight_speed_cm_s": 144,
+    "straight_cycles_per_second": 0.24,
+    "texture_validation_errors": []
+  },
+  "model_asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+  "vat_definition": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT",
+  "runtime_fields_available": true,
+  "vertex_configuration": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\BiZhiMao\\vertex_metadata.json"
+}

@@ -1,0 +1,33 @@
+{
+  "camera": {
+    "tier": "<GuLiCommanderCameraTier.TACTICAL: 1>",
+    "height": 593.2210693359375,
+    "location": [
+      572.7550462415511,
+      81666.8624563446,
+      57564.97689980219
+    ]
+  },
+  "components": [
+    {
+      "class": "GuLiCommanderNetSyncComponent",
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0.CommanderNetSync",
+      "methods": []
+    },
+    {
+      "class": "GuLiCommanderSkillComponent",
+      "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerState_0.CommanderSkills",
+      "methods": [
+        "activate_global_skill",
+        "get_global_skill_level",
+        "get_global_skills",
+        "get_last_reply",
+        "get_selected_unit_skills",
+        "on_skill_reply"
+      ],
+      "last_reply": "(RequestId=6E33487B4FBA5B74D2C2BA8203251670,MatchEpoch=3859285963,Code=Succeeded,Error=\"\",Units=((SoldierId=(Value=76),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=8C0844904E95DA83EA2122A38D5BD143)),(SoldierId=(Value=201)),(SoldierId=(Value=221)),(SoldierId=(Value=215)),(SoldierId=(Value=216)),(SoldierId=(Value=202)),(SoldierId=(Value=210)),(SoldierId=(Value=222)),(SoldierId=(Value=77),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=CB16192447D0E3D60ABA1CA31D481488)),(SoldierId=(Value=223)),(SoldierId=(Value=206)),(SoldierId=(Value=217)),(SoldierId=(Value=225)),(SoldierId=(Value=91),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=D443D5BA464979DF33C10A984772D366)),(SoldierId=(Value=214)),(SoldierId=(Value=94),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=7B0AC000485F5F9B3D3C10BEB41E1C5F)),(SoldierId=(Value=98),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=328EDC0D4F9DC26478DABC93886FA3BD)),(SoldierId=(Value=213)),(SoldierId=(Value=85),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=F43F7755435F21BE79F3E985149EFFC8)),(SoldierId=(Value=79),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=0D16940346B3DEB8672CD38D2C0E156B)),(SoldierId=(Value=100),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=3E678C6440A3DFE6275865B41B707AF5)),(SoldierId=(Value=83),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=AA719BE24534BB7ADBB2BE8D611E7EC2)),(SoldierId=(Value=86),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=B754C3B248135A0AEF4E5AB0A8535333)),(SoldierId=(Value=97),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=C283DCC544C9A035A4E6A7A7F5DF4E45)),(SoldierId=(Value=84),SkillId=\"WM01_HomingMissile\",Code=Cooldown,ReadyAtServerSeconds=111.917684),(SoldierId=(Value=78),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=7FFFA12F42BB4EE6E3D47E9B487D9392)),(SoldierId=(Value=88),SkillId=\"WM01_HomingMissile\",Code=Cooldown,ReadyAtServerSeconds=111.917684),(SoldierId=(Value=80),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=8416192D49BB4C1D1DC45598EA9352B2)),(SoldierId=(Value=95),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=7B5F350645E4FE3B8CD151AF3DF43F13)),(SoldierId=(Value=89),SkillId=\"WM01_HomingMissile\",Code=Cooldown,ReadyAtServerSeconds=111.917684),(SoldierId=(Value=99),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=D701D43049A52E5DA0861988FFBDC1C5)),(SoldierId=(Value=96),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=E37B45F446E9211EA6F2FE912C3420C0)),(SoldierId=(Value=92),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=7527F38D423811264B07B187BFA8699D)),(SoldierId=(Value=90),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=D37AB71B49F18F87F51DE59DB823A4E5)),(SoldierId=(Value=81),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=31BC172F40C112E3D4219A9FC4DD2EA6)),(SoldierId=(Value=93),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=5EB093EC4E88A935CBE4CF98F54BDD3B)),(SoldierId=(Value=204)),(SoldierId=(Value=82),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=86A77D2F4E15FB2701E50A8C788DE968)),(SoldierId=(Value=205)),(SoldierId=(Value=219)),(SoldierId=(Value=209)),(SoldierId=(Value=224)),(SoldierId=(Value=220)),(SoldierId=(Value=212)),(SoldierId=(Value=208)),(SoldierId=(Value=207)),(SoldierId=(Value=203)),(SoldierId=(Value=218)),(SoldierId=(Value=211)),(SoldierId=(Value=87),SkillId=\"WM01_HomingMissile\",Code=Succeeded,ReadyAtServerSeconds=114.717684,Execution=(bSucceeded=True,EffectId=0CB80C754A5FE476E049A2BAC4625799))),Global=(bSucceeded=False,CastId=00000000000000000000000000000000,EffectId=00000000000000000000000000000000,Error=\"\"))",
+      "selected_skills": []
+    }
+  ],
+  "success": true
+}

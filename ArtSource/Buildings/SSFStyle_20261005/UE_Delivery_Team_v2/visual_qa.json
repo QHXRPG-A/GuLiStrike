@@ -1,0 +1,46 @@
+{
+  "version": "SSF_TeamPalette_B_v2",
+  "date": "2026-10-07",
+  "assistant_visual_review_performed": true,
+  "user_release_for_formal_storage": true,
+  "user_release_quote": "导入至ue作为正式资源",
+  "source_blend_sha256": "5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6",
+  "review_method": "助手实际查看原生UE截图组成的图板，并与冻结的实际Blender B_v2总览比对；不由数据校验代替读图。图板仅排列截图和文字，未重绘模型。",
+  "inspected_UE_boards": [
+    "Sheets/QA_Blue_UE_LODs_1.png",
+    "Sheets/QA_Red_UE_LODs_1.png",
+    "Sheets/QA_Blue_UE_LODs_2.png",
+    "Sheets/QA_Red_UE_LODs_2.png",
+    "Sheets/QA_Blue_UE_Near.png",
+    "Sheets/QA_Red_UE_Near.png",
+    "Sheets/QA_Blue_UE_Distances.png",
+    "Sheets/QA_Red_UE_Distances.png",
+    "Sheets/Blue_Red_UE_Overview.png"
+  ],
+  "inspected_source_board": "../TeamPalette_B_v2_20261007/Sheets/Blue_Red_Buildings_Overview.png",
+  "native_capture_coverage": {
+    "forced_LOD_images": 36,
+    "near_35m_25deg_images": 12,
+    "tactical_300m_700m_and_overview_1500m_images": 36,
+    "total": 84,
+    "native_image_size": [2048, 2048]
+  },
+  "observations": [
+    "六座建筑均有蓝红两队版本。UE整体色块分配、浅色和点缀位置与实际Blender B_v2一致：蓝方橙/蓝灰/奶油白，红方莓红/浅粉/橙。蓝方AirBase及红方CommandCenter保留对应参考配色，军工厂和战略中心的主体已采用当前B_v2的较浅队色。",
+    "三档明暗以明确的平涂色块呈现，装甲接缝及内部线稿在LOD0/1可见；外轮廓、开口和分件关系保持。未观察到整体灰模、默认棋盘材质、整块颜色缺失或轴向翻转。",
+    "LOD1保留近景主要结构和线稿，LOD2淡出细线，保留主要色块、入口、雷达天线、机械臂与支脚等识别结构。远档局部曲面更分面、接缝及细小零件较粗，继承冻结的B_v2实际几何，不在本次导入中另改形。",
+    "同机位三档图均完整展示模型。35m/25°固定距离近景中AirBase顶部及前缘、CommandCenter底部和MilitaryFactory下方支撑部分超出画框，这是窄视角取景限制；完整几何另见同机位LOD图及网格导出回读，不能将该近景画框视为结构缺失。",
+    "300–700m和1500m原始距离图保持真实屏幕投影大小。色块能随距离缩小显示，模型在总览中仅占少量像素；这些独立资源截图不证明实际战场中的远景识别度，尤其1500m不适合评估内部细节。",
+    "实际自动LOD记录与图片相符：35m均为LOD0；300m多数建筑为LOD1，Reactor/StrategyCenter为LOD2；700m和1500m均为LOD2。"
+  ],
+  "inherited_limitations": [
+    "预算内真实描边壳覆盖部分主要轮廓，局部覆盖弱于最初参考；原记录继续披露，本次没有加厚或扩大描边。",
+    "内部线稿遮罩含原源贴图留下的零碎细纹，近景仍可见，本次忠实保留已展示B_v2。",
+    "原B_v1本体预算差额继承到两队；当前用户放行针对实际可见版本的正式存储，不自动提高全局面数预算。",
+    "未接入游戏，未在正式战场运行PIE、联机或性能测试；动画技术对照见378组实际组件检查。"
+  ],
+  "conclusion": "当前实际UE版本保持已放行Blender B_v2的蓝红配色、结构、线稿与三档明暗/LOD，可作为正式资源保存；上述原有差异及取景限制继续记录。",
+  "gameplay_integrated": false,
+  "performance_acceptance_claimed": false,
+  "global_budget_exception_approved": false
+}

@@ -1,0 +1,145 @@
+{
+  "tables": [
+    {
+      "asset": "DT_GuLiStrikeBuildings_Buildings",
+      "source_rows": [
+        "MissileTurret",
+        "SentryTurret",
+        "ManualOutpost",
+        "BasicBarracks",
+        "ShieldGenerator",
+        "ResourceFactory",
+        "TerritoryStronghold",
+        "BiZhiMaoConstruction"
+      ],
+      "created": false,
+      "row_names": [
+        "MissileTurret",
+        "SentryTurret",
+        "ManualOutpost",
+        "BasicBarracks",
+        "ShieldGenerator",
+        "ResourceFactory",
+        "TerritoryStronghold",
+        "BiZhiMaoConstruction"
+      ],
+      "row_checks": {
+        "MissileTurret": true,
+        "SentryTurret": true,
+        "ManualOutpost": true,
+        "BasicBarracks": true,
+        "ShieldGenerator": true,
+        "ResourceFactory": true,
+        "TerritoryStronghold": true,
+        "BiZhiMaoConstruction": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeCommander_Soldiers",
+      "source_rows": [
+        "DefaultSoldier",
+        "WM01",
+        "ElectromagneticMiner",
+        "ConstructionVehicle",
+        "SweeperSummon",
+        "BiZhiMao"
+      ],
+      "created": false,
+      "row_names": [
+        "DefaultSoldier",
+        "WM01",
+        "ElectromagneticMiner",
+        "ConstructionVehicle",
+        "SweeperSummon",
+        "BiZhiMao"
+      ],
+      "row_checks": {
+        "DefaultSoldier": true,
+        "WM01": true,
+        "ElectromagneticMiner": true,
+        "ConstructionVehicle": true,
+        "SweeperSummon": true,
+        "BiZhiMao": true
+      },
+      "imported": true
+    }
+  ],
+  "config_wired": [
+    "DT_GuLiStrikeBuildings_Buildings",
+    "DT_GuLiStrikeCommander_Soldiers"
+  ],
+  "unwired": [],
+  "errors": [],
+  "construction_shapes": {
+    "success": true,
+    "entries": [
+      {
+        "definition": 1,
+        "success": true,
+        "rebuilt": false,
+        "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_1.DA_ConstructionShape_1",
+        "contours": 2,
+        "bounds": "IsValid=true, Min=(X=-251.946 Y=-272.859 Z=-0.720), Max=(X=251.946 Y=274.839 Z=667.928)"
+      },
+      {
+        "definition": 2,
+        "success": true,
+        "rebuilt": false,
+        "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_2.DA_ConstructionShape_2",
+        "contours": 1,
+        "bounds": "IsValid=true, Min=(X=-193.579 Y=-386.678 Z=0.000), Max=(X=193.579 Y=386.678 Z=335.038)"
+      },
+      {
+        "definition": 3,
+        "success": true,
+        "rebuilt": false,
+        "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_3.DA_ConstructionShape_3",
+        "contours": 6,
+        "bounds": "IsValid=true, Min=(X=-710.309 Y=-661.981 Z=0.000), Max=(X=710.309 Y=661.981 Z=6000.000)"
+      },
+      {
+        "definition": 4,
+        "success": true,
+        "rebuilt": false,
+        "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_4.DA_ConstructionShape_4",
+        "contours": 1,
+        "bounds": "IsValid=true, Min=(X=-400.000 Y=-300.000 Z=0.000), Max=(X=400.000 Y=300.000 Z=400.000)"
+      },
+      {
+        "definition": 5,
+        "success": true,
+        "rebuilt": false,
+        "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_5.DA_ConstructionShape_5",
+        "contours": 1,
+        "bounds": "IsValid=true, Min=(X=-305.087 Y=-345.288 Z=0.000), Max=(X=305.087 Y=345.288 Z=1000.000)"
+      },
+      {
+        "definition": 6,
+        "success": true,
+        "rebuilt": false,
+        "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_6.DA_ConstructionShape_6",
+        "contours": 1,
+        "bounds": "IsValid=true, Min=(X=-479.255 Y=-601.572 Z=-0.184), Max=(X=479.821 Y=601.575 Z=440.206)"
+      },
+      {
+        "definition": 7,
+        "success": true,
+        "rebuilt": false,
+        "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_7.DA_ConstructionShape_7",
+        "contours": 1,
+        "bounds": "IsValid=true, Min=(X=-300.000 Y=-300.000 Z=0.000), Max=(X=300.000 Y=300.000 Z=1000.000)"
+      },
+      {
+        "definition": 8,
+        "success": true,
+        "rebuilt": true,
+        "asset": "/Game/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_8.DA_ConstructionShape_8",
+        "contours": 26,
+        "bounds": "IsValid=true, Min=(X=-1016.557 Y=-921.933 Z=-3.598), Max=(X=1629.010 Y=921.933 Z=1381.053)"
+      }
+    ]
+  },
+  "part_ids": {},
+  "orphan_tables": []
+}

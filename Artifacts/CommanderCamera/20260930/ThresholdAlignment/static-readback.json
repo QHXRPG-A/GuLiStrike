@@ -1,0 +1,34 @@
+{
+  "source_sha256": {
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderCameraPawn.cpp": "531ed6892831a7260a7f2f54decaae165c6467a2e4aedcd6758e45819a00e8d2",
+    "Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSubsystem.cpp": "05e1f4810ab70d6f545c7f58ffe2eae1de67d056ae50ad1b2aa2c5ec8dd5a82d",
+    "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h": "adb38dad2484a93d2b24e9b229654507d3d0049db3a5435d50d907c124d3e02e",
+    "Tools/DataPipeline/export_data_from_excel.py": "87532913913006ea8c0c7464cac89eae68d4ebe2dd13eca8a4cc956fcf4c1608",
+    "Scripts/CommanderCamera/author_camera_source.py": "9548f25c39cb56bfe5ca4741c9de83d9e2c0db076fcec70fd8b7876d69531a27",
+    "Scripts/CommanderCamera/author_camera_scene.py": "8d1bc7b50af4fcd981b8dd7efaae01b8f9c0b887290b2cd90b76d170664b0557",
+    "Scripts/CommanderCamera/import_camera_data.py": "cdd4235c3fd5087b1d3d0ee58ff324f8f8c28f5496d957f3f6a40683b6203004"
+  },
+  "source_sheet": "Camera",
+  "excel_rows": 4,
+  "excel_columns": 32,
+  "numeric_parameters": 29,
+  "excel_json_match": true,
+  "overview_yaw_degrees": 0,
+  "transition_seconds": 0.6,
+  "static_review": [
+    "crossing requested height starts transition immediately",
+    "inward overview scroll targets tactical ceiling",
+    "outward overview scroll cannot increase overview height",
+    "framing uses fixed overview yaw; return retains saved yaw",
+    "oversized normal footprint centers affected axis without rejecting the 700m return"
+  ],
+  "native_compile": "passed",
+  "runtime_validation": "not_run",
+  "player_feedback": "user-feedback.png",
+  "data_table_import": "passed",
+  "excel_json_datatable_match": true,
+  "scene_saved_and_entities_read_back": true,
+  "scene_entity_count": 8,
+  "source_unchanged_after_build": true,
+  "checked_at": "2026-09-30T13:23:51"
+}

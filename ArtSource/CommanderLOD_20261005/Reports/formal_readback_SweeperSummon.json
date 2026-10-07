@@ -1,0 +1,69 @@
+{
+  "success": true,
+  "name": "SweeperSummon",
+  "id": 5,
+  "formal_root": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1",
+  "models": [
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/SweeperSummon/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "formal": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "lod_count": 3,
+      "triangles": [
+        5456,
+        1363,
+        220
+      ],
+      "sections": [
+        1,
+        1,
+        1
+      ],
+      "screen_sizes": [
+        1.0,
+        0.3199999928474426,
+        0.02500000037252903
+      ],
+      "geometry": [
+        {
+          "lod": 0,
+          "corners": 16368,
+          "uv_channels": 3,
+          "sha256": "90ea4651b380f37ef5d45303d6e7b293c1d4e3ba76c674dd9c85a73c6bebc29b",
+          "candidate_equal": true
+        },
+        {
+          "lod": 1,
+          "corners": 16368,
+          "uv_channels": 3,
+          "sha256": "90ea4651b380f37ef5d45303d6e7b293c1d4e3ba76c674dd9c85a73c6bebc29b",
+          "candidate_equal": true
+        },
+        {
+          "lod": 2,
+          "corners": 16368,
+          "uv_channels": 3,
+          "sha256": "90ea4651b380f37ef5d45303d6e7b293c1d4e3ba76c674dd9c85a73c6bebc29b",
+          "candidate_equal": true
+        }
+      ],
+      "normals_and_colors": "Native duplication; no normal/color authoring or regeneration operation performed.",
+      "sockets": [
+        "FX_AimTarget",
+        "FX_Muzzle_Basic_01",
+        "Rigid_GunPitch_01",
+        "Rigid_Wheel_FL",
+        "Rigid_Wheel_FR",
+        "Rigid_Wheel_RL",
+        "Rigid_Wheel_RR"
+      ]
+    }
+  ],
+  "asset_count": 4,
+  "animation": null,
+  "closure": "No candidate package dependencies",
+  "approval_B": "approved",
+  "content_sha256": "761bc5edd06b08c598771943b46ebcbd7bc8285b42d345e234fea0907d02783d",
+  "native_compile": "passed",
+  "pie": "not_run",
+  "fps": "not_run"
+}

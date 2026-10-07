@@ -1,0 +1,438 @@
+[
+  {
+    "id": 3,
+    "name": "ElectromagneticMiner",
+    "components": [
+      {
+        "name": "SkeletalMeshComponent0",
+        "type": "SkeletalMeshComponent",
+        "mesh": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+        "mesh_type": "SkeletalMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          -0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ],
+        "skeletal_lod_count": 1,
+        "skeleton": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Lvl1_Skeleton.Chassis_Transporter_Lvl1_Skeleton"
+      },
+      {
+        "name": "Cockpit_Freight_Spoiler",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Cockpits/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          187.44271850585938,
+          0.0,
+          154.81328964233398
+        ],
+        "rotation": [
+          1.4124500318633039e-30,
+          1.2722218874358041e-14,
+          -90.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Top_Turret_2x_Lvl1",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Top/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          -98.10089874267578,
+          -0.157745361328125,
+          291.58996200561523
+        ],
+        "rotation": [
+          1.4124500318633039e-30,
+          1.2722218874358041e-14,
+          -90.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Weapon_Rocket_Mount_Lvl2",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Weapons/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          -92.7929105758667,
+          -34.987709045410156,
+          359.3638572692871
+        ],
+        "rotation": [
+          -3.5083545633527932e-15,
+          1.2722218874358041e-14,
+          -90.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Weapon_Rocket_Mount_Lvl3",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Weapons/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          -92.7929105758667,
+          34.672218322753906,
+          359.3638572692871
+        ],
+        "rotation": [
+          -3.5083545633527932e-15,
+          1.2722218874358041e-14,
+          -90.0
+        ],
+        "scale": [
+          -1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Collector_L",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          -83.10089874267578,
+          -76.00004536132474,
+          370.9999620056153
+        ],
+        "rotation": [
+          1.2722218874358041e-14,
+          -0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+          "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+        ]
+      },
+      {
+        "name": "Collector_R",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          -83.10089874267578,
+          75.99995463867526,
+          370.9999620056153
+        ],
+        "rotation": [
+          1.2722218874358041e-14,
+          -0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+          "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+        ]
+      },
+      {
+        "name": "Side_Winglet_Spike_Lvl3",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Side_Wings/Side_Winglets/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          -185.747314453125,
+          -135.46893310546875,
+          201.52346420288086
+        ],
+        "rotation": [
+          -90.0,
+          2.5444437748716082e-14,
+          -90.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "ConstructionVehicle",
+    "components": [
+      {
+        "name": "SkeletalMeshComponent0",
+        "type": "SkeletalMeshComponent",
+        "mesh": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+        "mesh_type": "SkeletalMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          -0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ],
+        "skeletal_lod_count": 1,
+        "skeleton": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Lvl1_Skeleton.Chassis_Transporter_Lvl1_Skeleton"
+      },
+      {
+        "name": "Cockpit_Freight_Spoiler",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Cockpits/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          187.44271850585938,
+          0.0,
+          154.81328964233398
+        ],
+        "rotation": [
+          1.4124500318633039e-30,
+          1.2722218874358041e-14,
+          -90.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Top_Turret_2x_Lvl1",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Top/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          -98.10089874267578,
+          -0.157745361328125,
+          291.58996200561523
+        ],
+        "rotation": [
+          1.4124500318633039e-30,
+          1.2722218874358041e-14,
+          -90.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Weapon_Rocket_Mount_Lvl2",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Weapons/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          -92.7929105758667,
+          -34.987709045410156,
+          359.3638572692871
+        ],
+        "rotation": [
+          -3.5083545633527932e-15,
+          1.2722218874358041e-14,
+          -90.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Weapon_Rocket_Mount_Lvl3",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Weapons/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          -92.7929105758667,
+          34.672218322753906,
+          359.3638572692871
+        ],
+        "rotation": [
+          -3.5083545633527932e-15,
+          1.2722218874358041e-14,
+          -90.0
+        ],
+        "scale": [
+          -1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Collector_L",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          -83.10089874267578,
+          -76.00004536132474,
+          370.9999620056153
+        ],
+        "rotation": [
+          1.2722218874358041e-14,
+          -0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+          "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+        ]
+      },
+      {
+        "name": "Collector_R",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          -83.10089874267578,
+          75.99995463867526,
+          370.9999620056153
+        ],
+        "rotation": [
+          1.2722218874358041e-14,
+          -0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+          "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+        ]
+      },
+      {
+        "name": "Side_Winglet_Spike_Lvl3",
+        "type": "StaticMeshComponent",
+        "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Side_Wings/Side_Winglets/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+        "mesh_type": "StaticMesh",
+        "visible": true,
+        "hidden_in_game": false,
+        "location": [
+          -185.747314453125,
+          -135.46893310546875,
+          201.52346420288086
+        ],
+        "rotation": [
+          -90.0,
+          2.5444437748716082e-14,
+          -90.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      }
+    ]
+  }
+]

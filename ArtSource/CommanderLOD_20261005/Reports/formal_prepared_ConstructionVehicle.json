@@ -1,0 +1,356 @@
+{
+  "success": true,
+  "name": "ConstructionVehicle",
+  "id": 4,
+  "approval_B": "approved",
+  "approved_content_sha256": "761bc5edd06b08c598771943b46ebcbd7bc8285b42d345e234fea0907d02783d",
+  "formal_root": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1",
+  "state": "formal_switched_verified",
+  "switched": true,
+  "assets": [
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/BP_ConstructionVehicle_LODReview.BP_ConstructionVehicle_LODReview",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier",
+      "class_name": "Blueprint",
+      "dependencies": [
+        "/Script/Niagara",
+        "/Script/GuLiStrike",
+        "/Script/ClothingSystemRuntimeNv",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Chassis_Transporter_Cockpit_Lvl2",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Cockpit_Freight_Wide",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Side_Winglet_Spike_Lvl1",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Top_Turret_2x_Lvl1",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+      "class_name": "SkeletalMesh",
+      "dependencies": [
+        "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Lvl1_Skeleton",
+        "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Cockpit_Lvl2_PhysicsAsset",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "source": "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+      "class_name": "Material",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Textures/MC_Vehicles_Emission",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Textures/MC_Vehicles_Normal",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Textures/MC_Vehicles_PBR_Metalness",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Textures/MC_Vehicles_PBR_Roughness",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Textures/Base_Color_HandPainted/MC_Vehicles_Diffuse_Red"
+      ]
+    },
+    {
+      "source": "/Game/MC_Vehicle_Constructor/Textures/MC_Vehicles_Emission.MC_Vehicles_Emission",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Textures/MC_Vehicles_Emission.MC_Vehicles_Emission",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/MC_Vehicle_Constructor/Textures/MC_Vehicles_Normal.MC_Vehicles_Normal",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Textures/MC_Vehicles_Normal.MC_Vehicles_Normal",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/MC_Vehicle_Constructor/Textures/MC_Vehicles_PBR_Metalness.MC_Vehicles_PBR_Metalness",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Textures/MC_Vehicles_PBR_Metalness.MC_Vehicles_PBR_Metalness",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/MC_Vehicle_Constructor/Textures/MC_Vehicles_PBR_Roughness.MC_Vehicles_PBR_Roughness",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Textures/MC_Vehicles_PBR_Roughness.MC_Vehicles_PBR_Roughness",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/MC_Vehicle_Constructor/Textures/Base_Color_HandPainted/MC_Vehicles_Diffuse_Red.MC_Vehicles_Diffuse_Red",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Textures/Base_Color_HandPainted/MC_Vehicles_Diffuse_Red.MC_Vehicles_Diffuse_Red",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+      "class_name": "StaticMesh",
+      "dependencies": [
+        "/Script/NavigationSystem",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+      "class_name": "StaticMesh",
+      "dependencies": [
+        "/Script/NavigationSystem",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "class_name": "StaticMesh",
+      "dependencies": [
+        "/Script/NavigationSystem",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle",
+      "class_name": "Material",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+      "class_name": "StaticMesh",
+      "dependencies": [
+        "/Script/NavigationSystem",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "class_name": "StaticMesh",
+      "dependencies": [
+        "/Script/NavigationSystem",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR"
+      ]
+    }
+  ],
+  "models": [
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+      "lod_count": 3,
+      "skeleton": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Lvl1_Skeleton.Chassis_Transporter_Lvl1_Skeleton",
+      "physics_asset": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Cockpit_Lvl2_PhysicsAsset.Chassis_Transporter_Cockpit_Lvl2_PhysicsAsset",
+      "bone_count": 12,
+      "lod0_geometry_operation": "Native duplication; approved skin weights and reference pose unchanged."
+    },
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+      "lod_count": 3,
+      "triangles": [
+        514,
+        206,
+        64
+      ],
+      "sections": [
+        1,
+        1,
+        1
+      ],
+      "material_slots": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ],
+      "screen_sizes": [
+        1.0,
+        0.0560000017285347,
+        0.02800000086426735
+      ],
+      "uv_channels": [
+        2,
+        0,
+        0
+      ],
+      "lod0_geometry_operation": "Native duplication; no geometric, UV, normal or socket authoring operation."
+    },
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+      "lod_count": 3,
+      "triangles": [
+        42,
+        42,
+        42
+      ],
+      "sections": [
+        1,
+        1,
+        1
+      ],
+      "material_slots": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ],
+      "screen_sizes": [
+        1.0,
+        0.0560000017285347,
+        0.02800000086426735
+      ],
+      "uv_channels": [
+        2,
+        0,
+        0
+      ],
+      "lod0_geometry_operation": "Native duplication; no geometric, UV, normal or socket authoring operation."
+    },
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "lod_count": 3,
+      "triangles": [
+        5660,
+        2264,
+        509
+      ],
+      "sections": [
+        2,
+        2,
+        2
+      ],
+      "material_slots": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+      ],
+      "screen_sizes": [
+        1.0,
+        0.0560000017285347,
+        0.02800000086426735
+      ],
+      "uv_channels": [
+        2,
+        0,
+        0
+      ],
+      "lod0_geometry_operation": "Native duplication; no geometric, UV, normal or socket authoring operation."
+    },
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+      "lod_count": 3,
+      "triangles": [
+        160,
+        64,
+        64
+      ],
+      "sections": [
+        1,
+        1,
+        1
+      ],
+      "material_slots": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ],
+      "screen_sizes": [
+        1.0,
+        0.0560000017285347,
+        0.02800000086426735
+      ],
+      "uv_channels": [
+        2,
+        0,
+        0
+      ],
+      "lod0_geometry_operation": "Native duplication; no geometric, UV, normal or socket authoring operation."
+    },
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "formal": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "lod_count": 3,
+      "triangles": [
+        240,
+        95,
+        64
+      ],
+      "sections": [
+        1,
+        1,
+        1
+      ],
+      "material_slots": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ],
+      "screen_sizes": [
+        1.0,
+        0.0560000017285347,
+        0.02800000086426735
+      ],
+      "uv_channels": [
+        2,
+        0,
+        0
+      ],
+      "lod0_geometry_operation": "Native duplication; no geometric, UV, normal or socket authoring operation."
+    }
+  ],
+  "animation": null,
+  "component_bindings": [
+    {
+      "component": "SkeletalMeshComponent0",
+      "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+      "materials": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "component": "Cockpit_Freight_Spoiler",
+      "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+      "materials": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "component": "Top_Turret_2x_Lvl1",
+      "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+      "materials": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "component": "Weapon_Rocket_Mount_Lvl2",
+      "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "materials": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "component": "Weapon_Rocket_Mount_Lvl3",
+      "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "materials": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "component": "Collector_L",
+      "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "materials": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+      ]
+    },
+    {
+      "component": "Collector_R",
+      "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "materials": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+      ]
+    },
+    {
+      "component": "Side_Winglet_Spike_Lvl3",
+      "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+      "materials": [
+        "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ]
+    }
+  ],
+  "presentation_class": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier_C",
+  "model_asset": "",
+  "vat_definition": "",
+  "runtime_fields_available": false
+}

@@ -1,0 +1,91 @@
+{
+  "version": "B-v3",
+  "bone_count": 152,
+  "bone_names_parents_and_rest_matrices_exactly_match_B2": true,
+  "freestyle_in_actual_render": false,
+  "body_checks": [
+    {
+      "lod": 0,
+      "body_surface_uv0_skin_names_weights_preserved_exactly": true,
+      "max_corner_normal_delta": 0.011989980936050415,
+      "max_corner_normal_angle_degrees": 0.7494300603866577,
+      "normal_comparison_tolerance_degrees": 1.0,
+      "original_zero_corner_normals_recalculated": 0,
+      "body_triangles": 57323,
+      "unweighted_vertices": 0,
+      "max_weight_sum_error": 1.3604767445940524e-07,
+      "body_material_sections": 1,
+      "uv_channels": [
+        "ControlRigMech_AtlasUV",
+        "GuLi_StructuralDistance_RG",
+        "GuLi_StructuralDistance_B"
+      ],
+      "three_tone": true,
+      "internal_line_strength": 1.0
+    },
+    {
+      "lod": 1,
+      "body_surface_uv0_skin_names_weights_preserved_exactly": true,
+      "max_corner_normal_delta": 0.011955127120018005,
+      "max_corner_normal_angle_degrees": 0.7845156192779541,
+      "normal_comparison_tolerance_degrees": 1.0,
+      "original_zero_corner_normals_recalculated": 48,
+      "body_triangles": 55594,
+      "unweighted_vertices": 0,
+      "max_weight_sum_error": 1.3604767445940524e-07,
+      "body_material_sections": 1,
+      "uv_channels": [
+        "ControlRigMech_AtlasUV",
+        "GuLi_StructuralDistance_RG",
+        "GuLi_StructuralDistance_B"
+      ],
+      "three_tone": true,
+      "internal_line_strength": 0.8500000238418579
+    },
+    {
+      "lod": 2,
+      "body_surface_uv0_skin_names_weights_preserved_exactly": true,
+      "max_corner_normal_delta": 0.011960677802562714,
+      "max_corner_normal_angle_degrees": 0.7881706953048706,
+      "normal_comparison_tolerance_degrees": 1.0,
+      "original_zero_corner_normals_recalculated": 52,
+      "body_triangles": 46326,
+      "unweighted_vertices": 0,
+      "max_weight_sum_error": 1.3604767445940524e-07,
+      "body_material_sections": 1,
+      "uv_channels": [
+        "ControlRigMech_AtlasUV",
+        "GuLi_StructuralDistance_RG",
+        "GuLi_StructuralDistance_B"
+      ],
+      "three_tone": true,
+      "internal_line_strength": 0.6000000238418579
+    },
+    {
+      "lod": 3,
+      "body_surface_uv0_skin_names_weights_preserved_exactly": true,
+      "max_corner_normal_delta": 0.011956743896007538,
+      "max_corner_normal_angle_degrees": 0.7863439321517944,
+      "normal_comparison_tolerance_degrees": 1.0,
+      "original_zero_corner_normals_recalculated": 57,
+      "body_triangles": 38428,
+      "unweighted_vertices": 0,
+      "max_weight_sum_error": 1.3604767445940524e-07,
+      "body_material_sections": 1,
+      "uv_channels": [
+        "ControlRigMech_AtlasUV",
+        "GuLi_StructuralDistance_RG",
+        "GuLi_StructuralDistance_B"
+      ],
+      "three_tone": true,
+      "internal_line_strength": 0.0
+    }
+  ],
+  "line_diagnostics": "NoLines/InternalOnly/OutlineOnly/AllLines actual same geometry/shader scene; no compositing or image editing",
+  "limitations": [
+    "Budget not met",
+    "UE equivalent material/import/readback not performed",
+    "Commander FPS not measured",
+    "Small interior pieces use surface lines rather than outline geometry"
+  ]
+}

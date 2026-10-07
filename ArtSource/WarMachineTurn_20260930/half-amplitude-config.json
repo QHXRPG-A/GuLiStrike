@@ -1,0 +1,35 @@
+{
+  "success": true,
+  "checked_utc": "2026-09-30T09:28:16.606746+00:00",
+  "request": "Halve carrier-turn banking amplitudes",
+  "config": "Config/DefaultGame.ini",
+  "previous_degrees": {
+    "TurnDiscDegrees": 12.0,
+    "TurnLegDegrees": 8.0,
+    "TurnUpperDegrees": 15.0
+  },
+  "current_degrees": {
+    "TurnDiscDegrees": 6.0,
+    "TurnLegDegrees": 4.0,
+    "TurnUpperDegrees": 7.5
+  },
+  "unchanged": {
+    "VisualYawDamping": 3.0,
+    "VisualYawSnapDegrees": 0.25,
+    "TurnFullBankRate": 90.0,
+    "TurnRateDeadZone": 2.0,
+    "TurnDiscEnterSeconds": 0.2,
+    "TurnLegEnterSeconds": 0.3,
+    "TurnUpperEnterSeconds": 0.45,
+    "TurnDiscReturnSeconds": 0.35,
+    "TurnLegReturnSeconds": 0.45,
+    "TurnUpperReturnSeconds": 0.7,
+    "MinimumDiscTilt": 5.0,
+    "MaximumDiscTilt": 15.0
+  },
+  "native_source_changed": false,
+  "native_compile_required": false,
+  "runtime_validation": "not_run",
+  "scene": "/Game/Maps/LVL_CommanderMassPrototype",
+  "scene_reused": true
+}

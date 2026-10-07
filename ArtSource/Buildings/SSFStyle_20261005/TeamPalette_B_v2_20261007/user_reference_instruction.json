@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-07",
+  "user_quote": "蓝色方所有建筑改成图1配色，红色方把所有建筑改成图二配色，先放Blender给我审核",
+  "version": "SSF_TeamPalette_B_v2",
+  "references": [
+    {
+      "team": "Blue",
+      "label": "图1",
+      "original_path": "C:\\Users\\a\\AppData\\Local\\Temp\\codex-clipboard-1916ab2b-24ad-4cf2-87aa-dcb93bda8563.png",
+      "preserved_file": "Inputs/Blue_Palette_Reference.png",
+      "sha256": "7bb49a3dbe83941090e6778cb94a65f195d44f3e4b56de5b43f3fbacbcead41d",
+      "dimensions": [
+        787,
+        635
+      ]
+    },
+    {
+      "team": "Red",
+      "label": "图2",
+      "original_path": "C:\\Users\\a\\AppData\\Local\\Temp\\codex-clipboard-f2bee0e8-1fa1-4029-baba-e13e80b8cffe.png",
+      "preserved_file": "Inputs/Red_Palette_Reference.png",
+      "sha256": "0045fe5882bbcc3862a0a6e494ea790d1ba8ffd47ce50a067d064fd51733e285",
+      "dimensions": [
+        411,
+        589
+      ]
+    }
+  ],
+  "source_version": "SSF_Production_B_v1",
+  "source_blend_sha256": "6f386c2e4782ce6ab6e81ae0f2380a6345fa05cdc6fc3dcf9d260c13ed3a806e",
+  "candidate_blend_sha256": "5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6",
+  "palette_anchors": {
+    "Blue": "original AirBase palette",
+    "Red": "original CommandCenter palette"
+  },
+  "interpretation": "Apply each reference palette to the six buildings; keep existing functional color regions, geometry, rigs, UVs, weights and actions. Preview both teams in Blender.",
+  "candidate_B_approval": false,
+  "candidate_UE_import_authorized": false,
+  "UE_changed_this_task": false,
+  "other_assets_recolored": false
+}

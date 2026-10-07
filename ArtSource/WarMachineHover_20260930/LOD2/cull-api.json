@@ -1,0 +1,55 @@
+{
+  "NiagaraSystem": [
+    "- ``allow_culling_for_local_players_override`` (bool):  [Read-Write] The override value for bAllowCullingForLocalPlayers from the Effect Type.",
+    "- ``effect_type`` (NiagaraEffectType):  [Read-Write] An effect types defines settings shared between systems, for example scalability and validation rules.",
+    "- ``fixed_bounds`` (Box):  [Read-Write] The fixed bounding box value for the whole system. When placed in the level and the bounding box is not visible to the camera, the effect is culled from rendering.",
+    "- ``override_allow_culling_for_local_players`` (bool):  [Read-Write] Controls whether we should override the Effect Type value for bAllowCullingForLocalPlayers.",
+    "- ``override_scalability_settings`` (bool):  [Read-Write]",
+    "- ``override_translucency_sort_distance_offset`` (bool):  [Read-Write]",
+    "- ``system_scalability_overrides`` (NiagaraSystemScalabilityOverrides):  [Read-Write]",
+    "- ``translucency_sort_distance_offset`` (float):  [Read-Write] When enabled this is the default value set on the component.",
+    "  Modifies the sort distance for translucent objects, see PrimitiveComponent description for more details."
+  ],
+  "NiagaraEmitter": [
+    "- ``scalability_overrides`` (NiagaraEmitterScalabilityOverrides):  [Read-Write] Use property in struct returned from GetEmitterData() instead",
+    "  deprecated: Property 'ScalabilityOverrides' is deprecated."
+  ],
+  "NiagaraSpriteRendererProperties": [
+    "- ``allow_in_cull_proxies`` (bool):  [Read-Write]",
+    "- ``enable_camera_distance_culling`` (bool):  [Read-Write] Enables frustum culling of individual sprites",
+    "- ``gpu_translucent_latency`` (NiagaraRendererGpuTranslucentLatency):  [Read-Write] Gpu simulations run at different points in the frame depending on what features are used, i.e. depth buffer, distance fields, etc.",
+    "- ``max_camera_distance`` (float):  [Read-Write]",
+    "- ``max_facing_camera_blend_distance`` (float):  [Read-Write] When FacingMode is FacingCameraDistanceBlend, the distance at which the sprite is fully facing the camera position",
+    "- ``min_camera_distance`` (float):  [Read-Write]",
+    "- ``min_facing_camera_blend_distance`` (float):  [Read-Write] When FacingMode is FacingCameraDistanceBlend, the distance at which the sprite is fully facing the camera plane."
+  ],
+  "NiagaraSystemScalabilityOverride": [
+    "Niagara System Scalability Override",
+    "- ``cull_by_distance`` (bool):  [Read-Write] Controls whether distance culling is enabled.",
+    "- ``cull_max_instance_count`` (bool):  [Read-Write] Controls whether we should cull systems based on how many instances with the same Effect Type are active.",
+    "- ``cull_per_system_max_instance_count`` (bool):  [Read-Write] Controls whether we should cull systems based on how many instances of the system are active.",
+    "- ``cull_proxy_mode`` (NiagaraCullProxyMode):  [Read-Write] Controls what, if any, proxy will be used in place of culled systems.",
+    "- ``max_distance`` (float):  [Read-Write] Effects of this type are culled beyond this distance.",
+    "- ``max_instances`` (int32):  [Read-Write] Effects of this type will be culled when total active instances using this same EffectType exceeds this number.",
+    "  If the effect type has a significance handler, instances are sorted by their significance and only the N most significant will be kept. The rest are culled.",
+    "  If it does not have a significance handler, instance count culling will be applied at spawn time only. New FX that would exceed the counts are not spawned/activated.",
+    "- ``max_system_instances`` (int32):  [Read-Write] Effects of this type will be culled when total active instances of the same NiagaraSystem exceeds this number.",
+    "  If the effect type has a significance handler, instances are sorted by their significance and only the N most significant will be kept. The rest are culled.",
+    "  If it does not have a significance handler, instance count culling will be applied at spawn time only. New FX that would exceed the counts are not spawned/activated.",
+    "- ``override_cull_proxy_settings`` (bool):  [Read-Write] Controls whether we override the cull proxy settings.",
+    "- ``override_distance_settings`` (bool):  [Read-Write] Controls whether we override the distance culling settings.",
+    "- ``override_instance_count_settings`` (bool):  [Read-Write] Controls whether we override the instance count culling settings.",
+    "- ``override_per_system_instance_count_settings`` (bool):  [Read-Write] Controls whether we override the per system instance count culling settings.",
+    "- ``override_visibility_settings`` (bool):  [Read-Write] Controls whether we override the visibility culling settings.",
+    "- ``visibility_culling`` (NiagaraSystemVisibilityCullingSettings):  [Read-Write] Settings controlling how systems are culled by visibility."
+  ],
+  "NiagaraEffectType": [
+    "Main usage of effect types is to control scalability settings for a group of effects, setting visibility and cull reactions on a per-platform basis.",
+    "- ``allow_culling_for_local_players`` (bool):  [Read-Write] Controls whether or not culling is allowed for FX that are owned by, attached to or instigated by a locally controlled pawn.",
+    "- ``cull_reaction`` (NiagaraCullReaction):  [Read-Write] How effects of this type react when they fail the cull checks.",
+    "- ``emitter_scalability_settings`` (NiagaraEmitterScalabilitySettingsArray):  [Read-Write]",
+    "- ``significance_handler`` (NiagaraSignificanceHandler):  [Read-Write] Used to determine the relative significance of FX in the scene which is used in other scalability systems such as instance count culling.",
+    "- ``system_scalability_settings`` (NiagaraSystemScalabilitySettingsArray):  [Read-Write]",
+    "- ``update_frequency`` (NiagaraScalabilityUpdateFrequency):  [Read-Write] How regularly effects of this type are checked for scalability."
+  ]
+}

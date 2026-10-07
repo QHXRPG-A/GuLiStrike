@@ -1,0 +1,122 @@
+{
+  "version": "SSF_Reference_A_v7",
+  "date": "2026-10-05",
+  "reviewer": "assistant",
+  "review_status": "reference_ready_for_user_A",
+  "user_approval_A": "pending",
+  "user_approval_B": "not_started",
+  "actual_images_inspected": [
+    {
+      "file": "Style_Comparison_A_v6_to_A_v7.png",
+      "pixels": [
+        3000,
+        2720
+      ],
+      "sha256": "73ecd88ec1d28f4e34d3b87b9379ebcf8ba9f856e996931e6bed1800f4fd958c"
+    },
+    {
+      "file": "Style_Breakdown_A_v6.png",
+      "pixels": [
+        3000,
+        2740
+      ],
+      "sha256": "a4bb354dcd766eb993bc5470c2b0e7bb5c57b4d48c348e4a683c43df78cf9641"
+    },
+    {
+      "file": "QA/Buildings_1_AllViews.png",
+      "pixels": [
+        2400,
+        1950
+      ],
+      "sha256": "0a33f872e5af1196b0232d2803e2bd7e610352155d419c56e04b294373c382d6"
+    },
+    {
+      "file": "QA/Buildings_2_AllViews.png",
+      "pixels": [
+        2400,
+        1950
+      ],
+      "sha256": "d1eb9e3a319599c70f50c2020cb70bfb6f85279dc71cd081a6cfed497bd22414"
+    },
+    {
+      "file": "QA/Accessories_AllViews.png",
+      "pixels": [
+        2400,
+        2600
+      ],
+      "sha256": "da5d3958d6164bcfd2a4f9d97bffd35c18c8597dc9a9f49248946333aa277d6d"
+    },
+    {
+      "file": "Images/Floor_Top.png",
+      "pixels": [
+        2048,
+        2048
+      ],
+      "sha256": "d6dac2e82bc6dd34f50ee33faf1c435a2f3ab043153f434823995055921b243c"
+    },
+    {
+      "file": "Images/Drone_Top.png",
+      "pixels": [
+        2048,
+        2048
+      ],
+      "sha256": "7a6115882ad018543f650463588814d38d21f6e5fa1a0af450fcd9a3261677ab"
+    },
+    {
+      "file": "Assembly_Hero_A_v7.png",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "sha256": "b07cdb64b6f411ad1db24356adfbe80b2431de49b42ebc5b4ddec04d54021fa0"
+    },
+    {
+      "file": "Assembly_Top_A_v7.png",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "sha256": "053f38185cae2cb47708d6c9f8b6b2f1e2690cec110ec69b1daa954352073adb"
+    },
+    {
+      "file": "Overview_Buildings.png",
+      "pixels": [
+        3000,
+        2850
+      ],
+      "sha256": "37d002be07de4b59f752a3d105b61dcd0d8012c3e68be087354ebd1cb8e59efd"
+    },
+    {
+      "file": "Sheets/StrategyCenter_Sheet_A_v7.png",
+      "pixels": [
+        4200,
+        4640
+      ],
+      "sha256": "44814bd7cdea897cca58a59bc26da75c37453e1485f114ed4f09b8816c48b2bf"
+    }
+  ],
+  "coverage": {
+    "core_asset_views": 40,
+    "extra_top_views": 2,
+    "assembly_views": 2,
+    "before_after_comparison": true,
+    "native_line_tone_breakdown": true
+  },
+  "findings": [
+    "A_v6 already has connected linework and three discrete bands, but MilitaryFactory Hero native band IDs show only 0.70% shadow coverage.",
+    "A_v7 preserves all 40 palette HEX roles and all 90 actual material base RGB and band RGB values. Geometry, pose, normals, cameras and fixed light direction are unchanged.",
+    "New thresholds 0.38/0.68 visibly separate large light, middle and dark regions; MilitaryFactory Hero coverage is 48.11/38.46/13.43 percent, specific to this view.",
+    "Single-asset contours are now clearer with outer strokes heavier than internal structure lines; assembly strokes are separately controlled at 1.6/3.0 pixels to prevent small buildings becoming dark clusters.",
+    "Core hero/orthographic views agree in structure, pose, scale and palette. Source curves, repeated parts and assembly relationships remain intact.",
+    "Floor retains original outline/ramps and regular 6m panel seams; Light remains a flat single-sided source display and is not forced to have fake volumetric shading.",
+    "The full comparison and isolated line/band renders give visual evidence beyond node existence. Actual saved scene reopened and all 90 RGB/ramp comparisons passed."
+  ],
+  "limitations": [
+    "Still reference design on original source geometry; production remeshing, decimation, three LODs and outline shell are not made.",
+    "Internal reference masks are source-UV contours with some source border irregularities; clean production line atlas is made after A and checked at B.",
+    "The three bands use fixed normal-based art lighting, not physical scene cast-shadow lighting.",
+    "22 source clips are inventoried; full production animation/Root bone compatibility, export round-trip, formal UE materials and project camera validation have not run.",
+    "Assembly placement is illustrative; source small props and source flat Light are retained. No real-combat frame-rate measurement."
+  ],
+  "next_action": "User review of the specific complete SSF_Reference_A_v7 version before Blender production."
+}

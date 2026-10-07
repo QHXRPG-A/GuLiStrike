@@ -1,0 +1,304 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "preparation_only": true,
+  "new_gameplay_ready": false,
+  "play_started": false,
+  "actual_version_approval": "pending",
+  "navigation": "RecastNavMesh-CommanderSoldier",
+  "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+  "original_deployments_preserved": 7,
+  "entities": [
+    {
+      "label": "BiZhiMaoQA_MoveTarget",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_36",
+      "type": "StaticMeshActor",
+      "position": [
+        18500.0,
+        70000.0,
+        2007.3402691075216
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "mesh": "/Engine/BasicShapes/Sphere.Sphere",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "navigation": false
+    },
+    {
+      "label": "BiZhiMaoQA_Sample",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_37",
+      "type": "StaticMeshActor",
+      "position": [
+        15000.0,
+        70000.0,
+        1007.3402691075215
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "mesh": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "navigation": false
+    },
+    {
+      "label": "BiZhiMaoQA_BuildSingle",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_42",
+      "type": "StaticMeshActor",
+      "position": [
+        15000.0,
+        61000.0,
+        906.7790832519531
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        4.0,
+        1.0
+      ],
+      "mesh": "/Engine/BasicShapes/Plane.Plane",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "navigation": false
+    },
+    {
+      "label": "BiZhiMaoQA_BuildCooperative",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_43",
+      "type": "StaticMeshActor",
+      "position": [
+        20500.0,
+        61000.0,
+        906.7790832519531
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        4.0,
+        1.0
+      ],
+      "mesh": "/Engine/BasicShapes/Plane.Plane",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "navigation": false
+    },
+    {
+      "label": "BiZhiMaoQA_BuilderA",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_44",
+      "type": "StaticMeshActor",
+      "position": [
+        15000.0,
+        66000.0,
+        907.5281897433807
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        4.0,
+        1.0
+      ],
+      "mesh": "/Engine/BasicShapes/Plane.Plane",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "navigation": false
+    },
+    {
+      "label": "BiZhiMaoQA_BuilderB",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_45",
+      "type": "StaticMeshActor",
+      "position": [
+        17000.0,
+        66000.0,
+        907.5788309469111
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        4.0,
+        1.0
+      ],
+      "mesh": "/Engine/BasicShapes/Plane.Plane",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "navigation": false
+    },
+    {
+      "label": "BiZhiMaoQA_MoveForward",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_46",
+      "type": "StaticMeshActor",
+      "position": [
+        15000.0,
+        53000.0,
+        906.7790832519531
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        4.0,
+        1.0
+      ],
+      "mesh": "/Engine/BasicShapes/Plane.Plane",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "navigation": false
+    },
+    {
+      "label": "BiZhiMaoQA_MoveSideways",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_47",
+      "type": "StaticMeshActor",
+      "position": [
+        24500.0,
+        61000.0,
+        906.7790832519531
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        4.0,
+        1.0
+      ],
+      "mesh": "/Engine/BasicShapes/Plane.Plane",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "navigation": false
+    },
+    {
+      "label": "BiZhiMaoQA_ConversionBlocker",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_48",
+      "type": "StaticMeshActor",
+      "position": [
+        25500.0,
+        66000.0,
+        1302.0504597947734
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        8.0,
+        8.0,
+        8.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "<CollisionEnabled.QUERY_ONLY: 1>",
+      "navigation": false
+    },
+    {
+      "label": "BiZhiMaoQA_Notes_Build",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TextRenderActor_12",
+      "type": "TextRenderActor",
+      "position": [
+        15500.0,
+        64600.0,
+        901.7790832519531
+      ],
+      "rotation": [
+        0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "B -> 7: 60 BLUE / 30 RED / 60 WORK / 1 POP"
+    },
+    {
+      "label": "BiZhiMaoQA_Notes_Move",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TextRenderActor_13",
+      "type": "TextRenderActor",
+      "position": [
+        15000.0,
+        56800.0,
+        901.7790832519531
+      ],
+      "rotation": [
+        0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "FIXED BASE YAW / MOVE 144cm/s / S STOP / NO ATTACK"
+    },
+    {
+      "label": "BiZhiMaoQA_Notes_Review",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TextRenderActor_14",
+      "type": "TextRenderActor",
+      "position": [
+        15000.0,
+        72200.0,
+        1127.3402691075216
+      ],
+      "rotation": [
+        0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "VAT REVIEW: MOVE TARGET / YAW 30deg/s / PITCH -10..45 at 15deg/s"
+    },
+    {
+      "label": "BiZhiMaoQA_Notes_Status",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TextRenderActor_15",
+      "type": "TextRenderActor",
+      "position": [
+        15000.0,
+        72900.0,
+        1127.3402691075216
+      ],
+      "rotation": [
+        0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "STATIC PREPARATION ONLY / NATIVE BUILD AND DATA INSTALL PENDING"
+    }
+  ]
+}

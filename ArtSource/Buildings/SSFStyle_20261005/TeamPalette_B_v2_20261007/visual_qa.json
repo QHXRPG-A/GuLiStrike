@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-07",
+  "version": "SSF_TeamPalette_B_v2",
+  "candidate_blend_sha256": "5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6",
+  "assistant_visual_review_performed": true,
+  "user_B_approval": false,
+  "method": "Viewed the actual Blender render contacts through view_image. Sheets only arrange native pixels and add labels; no AI replacement or retouching.",
+  "inspected": [
+    "Sheets/QA_Blue_Views_1.png",
+    "Sheets/QA_Blue_Views_2.png",
+    "Sheets/QA_Blue_Views_3.png",
+    "Sheets/QA_Red_Views_1.png",
+    "Sheets/QA_Red_Views_2.png",
+    "Sheets/QA_Red_Views_3.png",
+    "Sheets/QA_Blue_LODs_1.png",
+    "Sheets/QA_Blue_LODs_2.png",
+    "Sheets/QA_Red_LODs_1.png",
+    "Sheets/QA_Red_LODs_2.png",
+    "Sheets/Blue_Buildings_Overview.png",
+    "Sheets/Red_Buildings_Overview.png",
+    "Renders/Blue_Red_Assembly_Compare.png",
+    "Sheets/Blue_CommandCenter_Views.png",
+    "Sheets/Red_Reactor_Views.png",
+    "Sheets/Blue_StrategyCenter_LODs.png",
+    "Sheets/Red_MilitaryFactory_LODs.png"
+  ],
+  "coverage": {
+    "building_variants": 12,
+    "Hero_Front_Left_Back_views": 48,
+    "same_camera_LOD_samples": 36
+  },
+  "findings": [
+    "Blue variants consistently use orange, bluegrey and cream; Red variants use berry, pale pink and orange. Blue AirBase and Red CommandCenter keep the original reference palettes.",
+    "All six kinds retain their individual silhouette, entrances, attachments and functional asymmetry. Color placement is consistent between each variant's Hero/Front/Left/Back.",
+    "Discrete tone regions remain visible. Existing internal panel masks are retained on LOD0/1; LOD2 suppresses fine lines. Real outline shells remain on LOD0/1.",
+    "The visible LOD simplification is the already-delivered B_v1 geometry. The recolor introduced no new silhouette changes; source/candidate geometry, normals, UVs, weights and reference bones were independently checked.",
+    "Existing source-derived internal masks have some irregular/UV texture marks, and outline coverage remains limited to the previous shell budget. This task did not retopologize or repair those inherited differences."
+  ],
+  "verification_boundary": "Color and retained appearance checked in Blender, not a new full animation movie review, UE validation, gameplay integration or performance measurement. Existing 24 body budget differences remain recorded with B_v1.",
+  "ready_for_user_Blender_review": true
+}

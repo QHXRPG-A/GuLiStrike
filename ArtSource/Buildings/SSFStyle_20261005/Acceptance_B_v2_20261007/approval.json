@@ -1,0 +1,45 @@
+{
+  "version": "SSF_TeamPalette_B_v2",
+  "date": "2026-10-07",
+  "status": "approved",
+  "stage": "final_actual_asset_review",
+  "user_quote": "审核通过",
+  "message_context": "用户在蓝红两队正式UE B_v2导入完成、实际UE预览和交付记录展示之后明确通过审核。",
+  "source_blend": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\TeamPalette_B_v2_20261007\\SSF_TeamPalette_B_v2.blend",
+  "source_blend_sha256": "5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6",
+  "target_roots": {
+    "Blue": "/Game/GuLiStrike/Buildings/SSFStylized/Blue",
+    "Red": "/Game/GuLiStrike/Buildings/SSFStylized/Red"
+  },
+  "accepted_new_resource_count": 48,
+  "accepted_building_variants": 12,
+  "LOD_count_per_mesh": 3,
+  "scope": "当前实际B_v2蓝红各六座建筑及对应材质贴图，包含当前可见版本已披露的几何与描边差异。",
+  "approved_UE_preview": "UE_Delivery_Team_v2/Sheets/Blue_Red_UE_Overview.png",
+  "approved_UE_preview_sha256": "69b68a011a4c506f817eef4336cbc5709d966d55102e09cc3ccc13d02adae9f8",
+  "formal_delivery": "UE_Delivery_Team_v2/formal_delivery.json",
+  "formal_delivery_sha256": "b4d750a85ad64d9bd22e357d30d1398fdac3e5a2420533c7a4b707bfbbd8dd20",
+  "frozen_delivery_checks": [
+    {
+      "manifest": "TeamPalette_B_v2_20261007/delivery_manifest.json",
+      "manifest_sha256": "6bdc3ae994f2a6efb936968e4b650da45a57278578970286e5813f58a7b5845d",
+      "verified_file_count": 147,
+      "unchanged": true
+    },
+    {
+      "manifest": "UE_Delivery_Team_v2/delivery_manifest.json",
+      "manifest_sha256": "b6485b51c5eeaf0d4684e441b18b037aa3f49aea5598747a1309e24b3b3a198a",
+      "verified_file_count": 196,
+      "unchanged": true
+    }
+  ],
+  "earlier_import_authorization": "approval_B_v2_import_20261007.json",
+  "original_budget_caps_changed": false,
+  "global_art_revision": "1.3",
+  "performance_validation": "not_run",
+  "gameplay_integration_authorized": false,
+  "gameplay_integrated": false,
+  "UE_reimport_performed_this_turn": false,
+  "source_or_UE_assets_edited_this_turn": false,
+  "record": "Acceptance_B_v2_20261007/approval.json"
+}

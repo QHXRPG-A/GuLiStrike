@@ -1,0 +1,70 @@
+{
+  "success": true,
+  "source_sheet": "Camera",
+  "runtime_validation": "not_run",
+  "pipeline": {
+    "tables": [
+      {
+        "asset": "DT_GuLiStrikeCommander_Camera",
+        "source_rows": [
+          "Default"
+        ],
+        "created": false,
+        "row_names": [
+          "Default"
+        ],
+        "row_checks": {
+          "Default": true
+        },
+        "imported": true
+      }
+    ],
+    "config_wired": [
+      "DT_GuLiStrikeCommander_Camera"
+    ],
+    "unwired": [],
+    "errors": [],
+    "part_ids": {},
+    "orphan_tables": []
+  },
+  "saved": true,
+  "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Camera.DT_GuLiStrikeCommander_Camera",
+  "struct": "/Script/GuLiStrike.GuLiStrikeCommanderCameraRow",
+  "rows": [
+    {
+      "Name": "Default",
+      "Id": 1,
+      "Note": "三档镜头；距离米、俯角向下为正、时间秒。x由战场和HUD可用画面计算；数值修改后导出并导入Camera表。",
+      "MinimumHeightMeters": 35,
+      "TacticalStartHeightMeters": 300,
+      "TacticalMaximumHeightMeters": 700,
+      "InitialHeightMeters": 133.4,
+      "NearPitchDegrees": 25,
+      "TacticalPitchDegrees": 55,
+      "OverviewPitchDegrees": 90,
+      "FieldOfViewDegrees": 45,
+      "ZoomStepMultiplier": 1.18,
+      "ZoomInterpolationPerSecond": 8,
+      "YawDegreesPerSecond": 70,
+      "MoveHeightMultiplierPerSecond": 1.4,
+      "MinimumMoveMetersPerSecond": 12,
+      "MaximumMoveMetersPerSecond": 92,
+      "RiseHalfLifeSeconds": 0.2,
+      "DescentHalfLifeSeconds": 0.35,
+      "MaximumRiseMetersPerSecond": 60,
+      "MaximumDescentMetersPerSecond": 30,
+      "LookAheadSeconds": 0.75,
+      "BoundaryPaddingMeters": 10,
+      "PivotClearanceMeters": 0.3,
+      "BoomClearanceMeters": 0.4,
+      "CameraClearanceMeters": 1,
+      "BoomSampleSpacingMeters": 20,
+      "OverviewTransitionSeconds": 0.6,
+      "OverviewPaddingFraction": 0.05,
+      "OverviewUnitIconPixels": 14,
+      "OverviewBuildingIconPixels": 20,
+      "OverviewYawDegrees": 0
+    }
+  ],
+  "settings_reference": "/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Camera.DT_GuLiStrikeCommander_Camera"
+}

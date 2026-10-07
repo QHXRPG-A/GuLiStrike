@@ -41,12 +41,14 @@
 
 - B-v1 用户批准及冻结 SHA256：`../approval_B_v1_20261003.json`。
 - 44 骨骼、刚性权重、七动画和导出回读：`Reports/fbx_readback.json`。
-- 四档面数、骨骼 UV、材质区段：`Reports/ue_art_readback.json`。
+指挥官模型统一为 LOD0 近景、LOD1 中景、LOD2 远景；当前规范与候选见[本次迁移](../../../../Progress/RequirementDocument/20261005-指挥官三档LOD纠正与资源迁移.md)。本轮保留已审近景，新的实际版本 B 待审核，正式资源待放行后切换。
 - 骨骼版材质、参考姿态、状态覆盖材质：`Reports/ue_art_finalization.json`。
-- 编辑器资产展示的待机、移动瞄准、死亡和四档 LOD：`Reports/ue_art_capture.json`；真实 PIE 图和三档镜头读图见委托验收报告。
 - Editor 构建、BuildId 和新类型加载：`Reports/editor_build.json`、`Reports/editor_reload.json`。
 - 正式运行定义、源像素、六张表、技能与头像磁盘重载：`Reports/ue_runtime_readback.json`。
 - 当前地图保存、七部署点与四阻挡物：`Reports/qa_final_saved_scene.json`，停止 PIE 与烘焙状态：`Reports/qa_editor_final_state.json`。
 - 本次核心功能汇总：`Reports/qa_acceptance_summary.json`；最新编译：`Reports/qa_exact_dedup_build.log`。
 
 编译、CPU/GPU 源像素、正式表、场景实体及委托 PIE 效果分别记录。旧 `acceptance_scene_readback.json` 的“入口就绪”遗漏启动守卫，本次已通过真实启动发现并修复，当前结论以委托报告为准。美术 A/B 用户批准记录继续保留。
+
+> 2026-10-05 LOD 勘误：按用户明确指令更正以上相关段落和预算说明；其他历史内容保留。修改范围及原文校验见[勘误清单](../../../CommanderLOD_20261005/Reports/document_erratum.json)。冻结模型及原始机器回读不作为当前制作入口。
+

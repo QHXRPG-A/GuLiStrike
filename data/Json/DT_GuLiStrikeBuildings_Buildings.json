@@ -35,7 +35,8 @@
     "FirstCaptureGiftIds": "",
     "TransitFieldId": 0,
     "ShieldRadius": 0.0,
-    "ShieldRechargePerSecond": 0.0
+    "ShieldRechargePerSecond": 0.0,
+    "CompletionUnitTypeId": 0
   },
   {
     "Name": "SentryTurret",
@@ -73,7 +74,8 @@
     "FirstCaptureGiftIds": "",
     "TransitFieldId": 0,
     "ShieldRadius": 0.0,
-    "ShieldRechargePerSecond": 0.0
+    "ShieldRechargePerSecond": 0.0,
+    "CompletionUnitTypeId": 0
   },
   {
     "Name": "ManualOutpost",
@@ -111,7 +113,8 @@
     "FirstCaptureGiftIds": "",
     "TransitFieldId": 0,
     "ShieldRadius": 0.0,
-    "ShieldRechargePerSecond": 0.0
+    "ShieldRechargePerSecond": 0.0,
+    "CompletionUnitTypeId": 0
   },
   {
     "Name": "BasicBarracks",
@@ -149,7 +152,8 @@
     "FirstCaptureGiftIds": "",
     "TransitFieldId": 0,
     "ShieldRadius": 0.0,
-    "ShieldRechargePerSecond": 0.0
+    "ShieldRechargePerSecond": 0.0,
+    "CompletionUnitTypeId": 0
   },
   {
     "Name": "ShieldGenerator",
@@ -187,7 +191,8 @@
     "FirstCaptureGiftIds": "",
     "TransitFieldId": 0,
     "ShieldRadius": 4000.0,
-    "ShieldRechargePerSecond": 20.0
+    "ShieldRechargePerSecond": 20.0,
+    "CompletionUnitTypeId": 0
   },
   {
     "Name": "ResourceFactory",
@@ -225,7 +230,8 @@
     "FirstCaptureGiftIds": "",
     "TransitFieldId": 0,
     "ShieldRadius": 0.0,
-    "ShieldRechargePerSecond": 0.0
+    "ShieldRechargePerSecond": 0.0,
+    "CompletionUnitTypeId": 0
   },
   {
     "Name": "TerritoryStronghold",
@@ -263,6 +269,46 @@
     "FirstCaptureGiftIds": "4,5,6",
     "TransitFieldId": 2001,
     "ShieldRadius": 0.0,
-    "ShieldRechargePerSecond": 0.0
+    "ShieldRechargePerSecond": 0.0,
+    "CompletionUnitTypeId": 0
+  },
+  {
+    "Name": "BiZhiMaoConstruction",
+    "Id": 8,
+    "Note": "仅己方工程车贡献60工作量；完工原位转兵种ID6；人口预留1",
+    "Category": 6,
+    "PlacementType": 7,
+    "DisplayName": "彼之矛",
+    "Description": "巨型重炮工地：60蓝、30红、1人口；完工展开待机，等待指令。",
+    "Mesh": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+    "CollisionExtent": {
+      "X": 1629.010009765625,
+      "Y": 921.9329833984375,
+      "Z": 690.5267333984375
+    },
+    "VisualOffset": {
+      "X": 0.0,
+      "Y": 0.0,
+      "Z": 0.0
+    },
+    "MeshScale": {
+      "X": 2.0,
+      "Y": 2.0,
+      "Z": 2.0
+    },
+    "MaxHealth": 1000.0,
+    "MaxShield": 0.0,
+    "BuildLevel": 1,
+    "BlueCost": 60,
+    "RedCost": 30,
+    "ConstructionWork": 60.0,
+    "ProductionUnitId": 0,
+    "ProductionSeconds": 0.0,
+    "ProductionCount": 0,
+    "FirstCaptureGiftIds": "",
+    "TransitFieldId": 0,
+    "ShieldRadius": 0.0,
+    "ShieldRechargePerSecond": 0.0,
+    "CompletionUnitTypeId": 6
   }
 ]

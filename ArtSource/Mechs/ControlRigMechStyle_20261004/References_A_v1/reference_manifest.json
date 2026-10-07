@@ -1,0 +1,322 @@
+{
+  "version": "A-v1",
+  "created_utc": "2026-10-04T02:59:41.357812+00:00",
+  "art_revision": "1.2",
+  "stage": "reference_design_submitted_for_user_A",
+  "A": "pending",
+  "B": "not_started",
+  "approved_plan_is_not_approval_A_or_B": true,
+  "source_mesh": "/Game/Assets/ControlRig/Characters/Mech/Meshes/SKM_Mech.SKM_Mech",
+  "source_skeleton": "/Game/Assets/ControlRig/Characters/Mech/Meshes/SK_Mech.SK_Mech",
+  "source_control_rig": "/Game/Assets/ControlRig/Characters/Mech/Rigs/CR_Mech.CR_Mech",
+  "source_statistics": {
+    "bone_count": 152,
+    "triangles_UE": 284700,
+    "triangles_Blender_reference": 284660,
+    "vertices_UE": 203324,
+    "source_lod_count": 1,
+    "source_lod0_sections": 14,
+    "source_duplicate_faces_removed_by_Blender_validation": 40,
+    "source_physics_asset": null,
+    "source_socket_count": 0,
+    "dimensions_m": [
+      9.226408958435059,
+      13.233314514160156,
+      6.892552375793457
+    ]
+  },
+  "reference_method": "material and camera study on exported actual source geometry, no AI bitmap generation",
+  "geometry_and_weights_unchanged_during_reference_design": true,
+  "active_decimation_applied": false,
+  "reference_scene_is_not_a_production_asset": true,
+  "geometry_and_skinweight_sha256": {
+    "SKM_Mech.001": "ae5f6551debb92c1fd700b29afe1e3f2b0d1a8db7d5d3e688959a15f55720c1b"
+  },
+  "same_source_pose_all_views": true,
+  "orthographic_scale_m": 16.144643783569336,
+  "palette_srgb": {
+    "WarmWhite": "#F1E7D5",
+    "Coral": "#E97868",
+    "Chassis": "#48413E",
+    "Steel": "#756A60",
+    "Amber": "#F4B65C",
+    "Ink": "#241F20"
+  },
+  "cameras": {
+    "Hero": {
+      "type": "ORTHO",
+      "location_m": [
+        29.319177627563477,
+        -39.46352005004883,
+        25.866188049316406
+      ],
+      "rotation_radians": [
+        1.1334216594696045,
+        -6.619977455102344e-08,
+        0.657888650894165
+      ],
+      "ortho_scale_m": 16.144643783569336
+    },
+    "Front": {
+      "type": "ORTHO",
+      "location_m": [
+        -2.1457672119140625e-05,
+        -54.45428466796875,
+        3.445624351501465
+      ],
+      "rotation_radians": [
+        1.5707964897155762,
+        -0.0,
+        0.0
+      ],
+      "ortho_scale_m": 16.144643783569336
+    },
+    "Left": {
+      "type": "ORTHO",
+      "location_m": [
+        52.93323516845703,
+        -1.5210249423980713,
+        3.445624351501465
+      ],
+      "rotation_radians": [
+        1.5707963705062866,
+        -0.0,
+        1.5707963705062866
+      ],
+      "ortho_scale_m": 16.144643783569336
+    },
+    "Back": {
+      "type": "ORTHO",
+      "location_m": [
+        -2.1457672119140625e-05,
+        51.4122314453125,
+        3.445624351501465
+      ],
+      "rotation_radians": [
+        -1.570796251296997,
+        3.141592502593994,
+        -0.0
+      ],
+      "ortho_scale_m": 16.144643783569336
+    }
+  },
+  "animation_sources": [
+    {
+      "name": "Mech_Deploy",
+      "duration_s": 5.0,
+      "fps": 30.0,
+      "sampled_keys": 151,
+      "bone_tracks": 152
+    },
+    {
+      "name": "Mech_Idle",
+      "duration_s": 8.666666984558105,
+      "fps": 30.0,
+      "sampled_keys": 261,
+      "bone_tracks": 152
+    },
+    {
+      "name": "Mech_Walk",
+      "duration_s": 5.0,
+      "fps": 30.0,
+      "sampled_keys": 151,
+      "bone_tracks": 152
+    }
+  ],
+  "control_rig_snapshot": {
+    "graphs": 31,
+    "nodes": 811,
+    "links": 1057,
+    "static_default_hierarchy_items": 1,
+    "static_hierarchy_is_not_runtime_control_count": true
+  },
+  "production_lod_caps": [
+    {
+      "lod": 0,
+      "body": 32000,
+      "outline": 8000,
+      "total": 40000,
+      "screen_size": 1.0
+    },
+    {
+      "lod": 1,
+      "body": 14000,
+      "outline": 3000,
+      "total": 17000,
+      "screen_size": 0.4
+    },
+    {
+      "lod": 2,
+      "body": 5000,
+      "outline": 1000,
+      "total": 6000,
+      "screen_size": 0.16
+    },
+    {
+      "lod": 3,
+      "body": 2000,
+      "outline": 0,
+      "total": 2000,
+      "screen_size": 0.06
+    }
+  ],
+  "production_lods_or_atlas_created": false,
+  "UE_formal_assets_created_or_modified": false,
+  "native_compile_or_gameplay_run": false,
+  "target_after_B": "/Game/GuLiStrike/Mechs/ControlRigMech",
+  "technical_verification": "passed source/query/render/hash checks; production compatibility and UE checks not run",
+  "user_visual_approval": "pending",
+  "files": [
+    {
+      "path": "References_A_v1/ControlRigMech_A_v1_Hero.png",
+      "bytes": 2901260,
+      "sha256": "5038cfafdf8a4bc2cd84b917df83b611174a886a05b4466b86c210a7b0a63af5",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Baseline/ControlRigMech_Source_Hero_2048.png",
+      "bytes": 2773880,
+      "sha256": "d98187fe335293b253c22681b199d4bb998034cf994506e2a12174f55960d733",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "References_A_v1/ControlRigMech_A_v1_Front.png",
+      "bytes": 2747660,
+      "sha256": "2b1a658e0f00c19105fc91a837274d1584d734ba48294c52becb0dcd11672c44",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Baseline/ControlRigMech_Source_Front_2048.png",
+      "bytes": 2648931,
+      "sha256": "8cf224469f0b5c478709a1b6c48fbf3e69e0c4f68113f2c3f8e87ca7884dabaf",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "References_A_v1/ControlRigMech_A_v1_Left.png",
+      "bytes": 2788084,
+      "sha256": "2f7e81e1eb5fb61fd3f22e2aeb7c3763efa18da8508bec9ce73b3ee7af885983",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Baseline/ControlRigMech_Source_Left_2048.png",
+      "bytes": 2598291,
+      "sha256": "a6a69274875b413420c9a57a040368ad1c0e4b6ba9aee3aca527403eaadd2631",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "References_A_v1/ControlRigMech_A_v1_Back.png",
+      "bytes": 2714061,
+      "sha256": "445c240236d4a6c04c4ea9f03f3bc57becb3b59545ba9cab47bf5c9945ffdb70",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Baseline/ControlRigMech_Source_Back_2048.png",
+      "bytes": 2616155,
+      "sha256": "3fb61ef34bcf33a00d810352feb182bfc701eaea4ed69cfdd53eab72d22b6e64",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "References_A_v1/ControlRigMech_A_v1_ReferenceStudy.blend",
+      "bytes": 11206961,
+      "sha256": "8371c7b265ccd4ba76ad6bd41585893187f689a1803215eabb6b6489637e60d4"
+    },
+    {
+      "path": "References_A_v1/reference_setup.json",
+      "bytes": 168905,
+      "sha256": "b0bc537248bccf74e493c0974165619104e12668fe5a062a5f6a3ddbd47b707f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 9567,
+      "sha256": "807dd0853d98ec2b341e38e8a04c9b81f57457abef6d89624b84f6cf1116336b"
+    },
+    {
+      "path": "Source/SKM_Mech_Source_LOD0.fbx",
+      "bytes": 7359520,
+      "sha256": "faa2a8ddb1b11f67f7be12197c1993360354274150fbfdbec8c3b472c6c58add"
+    },
+    {
+      "path": "Source/SKM_Mech_Source_AllLODs.fbx",
+      "bytes": 7359536,
+      "sha256": "6e8d8bdfe46a838a07394749b7c52c55e7622d893017bfd144abd7ceb8e8a727"
+    },
+    {
+      "path": "Source/source_manifest.json",
+      "bytes": 177618,
+      "sha256": "a01b0db4b1112399dc48b76f9f6c12e27672f1e476e5cfee4f57b035eb4c57af"
+    },
+    {
+      "path": "Source/rig_animation_baseline.json",
+      "bytes": 1786175,
+      "sha256": "e8b18383f9f591122e84e83e09e8973c762c3afae571133a61c154166695151e"
+    },
+    {
+      "path": "Baseline/blender_source_inspection.json",
+      "bytes": 60567,
+      "sha256": "f56b752e41297e6286acbf65b3978e7fed47817abddd925a2d3c13b085a7e719"
+    },
+    {
+      "path": "Baseline/source_lod_inspection.json",
+      "bytes": 5203,
+      "sha256": "ff901df3e03c97ad748b3ce0bb73e61e749d42447c8f63d92a8d135b634b0cc0"
+    },
+    {
+      "path": "Baseline/fbx_count_audit.json",
+      "bytes": 383,
+      "sha256": "34b8bd1167829d1e845ef4f97b6bb7d3ec08731ad7175b0627f7d4a5d6dd3af9"
+    },
+    {
+      "path": "Baseline/source_connected_parts.json",
+      "bytes": 4237961,
+      "sha256": "bb7305f8c5a5c9c22f322f5374f832e5264aea97cccf6cea4e1f50978ea4a718"
+    },
+    {
+      "path": "Baseline/ControlRigMech_SourceImported.blend",
+      "bytes": 11216833,
+      "sha256": "acd35678e47bc62c069d4a3774deb6e2c7fba91e3ad27e0a53567ad6e868f478"
+    },
+    {
+      "path": "Baseline/ControlRigMech_SourceInspection.blend",
+      "bytes": 11201356,
+      "sha256": "443691eb77112c15dbee81c1917b5ff7e2f55fadddb8f9916d9ea954501de37f"
+    },
+    {
+      "path": "Scripts/check_source_fbx.py",
+      "bytes": 1873,
+      "sha256": "00fb7e5203dc11fb8f2993dd2b1121fc6389a7f79280f59bd750ac7a5bb5179f"
+    },
+    {
+      "path": "Scripts/export_source_ue.py",
+      "bytes": 9331,
+      "sha256": "6bcdc02fdf1a4840d228878e22ea7f761b0e54cd7df23952d19c3585212ad21e"
+    },
+    {
+      "path": "Scripts/finalize_reference_a.py",
+      "bytes": 6561,
+      "sha256": "3fa526fb819b65c08a0c1d7e659ed2cf3f48ba7b650005b3f9d5d4f94a2070e7"
+    },
+    {
+      "path": "Scripts/inspect_source_blender.py",
+      "bytes": 7372,
+      "sha256": "0ff243e6eaa2058ce90c648e9a828ffe78b2a92644af529b351b0961313f759f"
+    },
+    {
+      "path": "Scripts/query_rig_animation_ue.py",
+      "bytes": 4267,
+      "sha256": "e76d5b0035fbc70a817249deb1b2c7ca42ac54e0fafa5af3db501b93d71117e8"
+    },
+    {
+      "path": "Scripts/render_reference_a.py",
+      "bytes": 10521,
+      "sha256": "bc9b2f3f517bed0895cadd71e5b77b0c23e29853fa952747dd0d245996dc5eba"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
+#include "Gameplay/Building/GuLiConstructedUnitComponent.h"
 #include "Commander/Presentation/GuLiCommanderCameraGeometry.h"
 #include "Gameplay/Data/GuLiGameText.h"
 
@@ -782,6 +783,8 @@ EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateServ
 	{
 		return EGuLiBuildingPlacementRejectReason::AssetUnavailable;
 	}
+	if (OutDefinition->CompletionUnitTypeId > 0 && PlayerState->GetBattleRole() != EGuLiCommanderRole::Commander)
+		return EGuLiBuildingPlacementRejectReason::UnauthorizedRole;
 
 	FHitResult GroundHit;
 	if (!TraceServerGround(FVector(Request.DesiredGroundLocation), GroundHit))
@@ -923,6 +926,7 @@ FGuLiBuildingPlacementResult UGuLiBuildingPlacementComponent::ProcessServerReque
 		check(EconomySubsystem);
 		IGuLiTeamEconomy& Economy = *EconomySubsystem;
 		FGuLiEconomyReservation EconomyReservation;
+		FGuid UnitReservation;
 		const bool bUseEconomy = Economy.IsMatchActive();
 		if (bUseEconomy && !Economy.AreTransactionsOpen())
 		{
@@ -945,6 +949,15 @@ FGuLiBuildingPlacementResult UGuLiBuildingPlacementComponent::ProcessServerReque
 		}
 		FTransform GroundTransform = SpawnTransform;
 		GroundTransform.AddToTranslation(FVector(0,0,-Definition->CollisionExtent.Z));
+		if (Definition->CompletionUnitTypeId > 0 && !World->GetSubsystem<UGuLiBattleAuthoritySubsystem>()
+			->ReserveConstructionUnit(PlayerState->GetTeam(), uint16(Definition->CompletionUnitTypeId), UnitReservation))
+		{
+			if (bUseEconomy) Economy.Refund(EconomyReservation);
+			Result.RejectReason = EGuLiBuildingPlacementRejectReason::PopulationLimitReached;
+			LastServerResult = Result;
+			if (bSendResult) SendPlacementResult(Result);
+			return Result;
+		}
 		AActor* Building = GuLiBuildings::Spawn(*World, Definition->DefinitionId, PlayerState->GetTeam(), GroundTransform, *SupportingActor,
 			World->GetSubsystem<UGuLiResourceWorldSubsystem>()->FindTerritoryIndex(GroundTransform.GetLocation()),
 			EGuLiBuildingOrigin::Manual, false, PlayerState->GetPlayerGuid());
@@ -952,10 +965,12 @@ FGuLiBuildingPlacementResult UGuLiBuildingPlacementComponent::ProcessServerReque
 		{
 			Result.RejectReason = EGuLiBuildingPlacementRejectReason::SpawnFailed;
 			if (bUseEconomy) Economy.Refund(EconomyReservation);
+			if (UnitReservation.IsValid()) World->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->ReleaseConstructionUnit(UnitReservation);
 		}
 		else
 		{
 			Building->SetOwner(PlayerController);
+			if (UnitReservation.IsValid()) Building->FindComponentByClass<UGuLiConstructedUnitComponent>()->SetPopulationReservation(UnitReservation);
 			if (bUseEconomy) Economy.Commit(EconomyReservation);
 		}
 	}

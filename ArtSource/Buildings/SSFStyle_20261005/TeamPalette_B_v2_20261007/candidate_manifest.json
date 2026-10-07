@@ -1,0 +1,1537 @@
+{
+  "version": "SSF_TeamPalette_B_v2",
+  "date": "2026-10-07",
+  "stage": "actual_Blender_color_candidate_pending_user_review",
+  "source_blend": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\Production_B_v1\\SSF_Production_B_v1.blend",
+  "source_blend_sha256": "6f386c2e4782ce6ab6e81ae0f2380a6345fa05cdc6fc3dcf9d260c13ed3a806e",
+  "blender_version": "5.2.2 LTS",
+  "user_instruction": "蓝色方所有建筑改成图1配色，红色方把所有建筑改成图二配色，先放Blender给我审核",
+  "modified_scope": [
+    "AirBase",
+    "CloningCenter",
+    "CommandCenter",
+    "MilitaryFactory",
+    "Reactor",
+    "StrategyCenter"
+  ],
+  "UE_modified": false,
+  "gameplay_integrated": false,
+  "user_B_approval": false,
+  "other_assets_recolored": false,
+  "source_editable_parts_preserved_in_original_scenes": true,
+  "ink_hex": "#1A182F",
+  "tone_factors": [
+    0.4,
+    0.72,
+    1.0
+  ],
+  "tone_thresholds": [
+    0.38,
+    0.68
+  ],
+  "role_mapping": {
+    "Blue": {
+      "AirBase": {
+        "Primary": "#EE9D58",
+        "Equipment": "#274E61",
+        "Accent": "#FEE4D9",
+        "Frame": "#1A182F"
+      },
+      "CloningCenter": {
+        "Primary": "#FEE4D9",
+        "Equipment": "#274E61",
+        "Accent": "#EE9D58",
+        "Frame": "#1A182F"
+      },
+      "CommandCenter": {
+        "Primary": "#274E61",
+        "Equipment": "#FEE4D9",
+        "Accent": "#EE9D58",
+        "Frame": "#1A182F"
+      },
+      "MilitaryFactory": {
+        "Primary": "#274E61",
+        "Equipment": "#EE9D58",
+        "Accent": "#FEE4D9",
+        "Frame": "#274E61"
+      },
+      "Reactor": {
+        "Primary": "#274E61",
+        "Equipment": "#FEE4D9",
+        "Accent": "#EE9D58",
+        "Frame": "#1A182F"
+      },
+      "StrategyCenter": {
+        "Primary": "#274E61",
+        "Equipment": "#FEE4D9",
+        "Accent": "#EE9D58",
+        "Frame": "#274E61"
+      }
+    },
+    "Red": {
+      "AirBase": {
+        "Primary": "#EE9D58",
+        "Equipment": "#A34053",
+        "Accent": "#E3B6B1",
+        "Frame": "#662249"
+      },
+      "CloningCenter": {
+        "Primary": "#E3B6B1",
+        "Equipment": "#A34053",
+        "Accent": "#EE9D58",
+        "Frame": "#662249"
+      },
+      "CommandCenter": {
+        "Primary": "#A34053",
+        "Equipment": "#E3B6B1",
+        "Accent": "#EE9D58",
+        "Frame": "#662249"
+      },
+      "MilitaryFactory": {
+        "Primary": "#A34053",
+        "Equipment": "#E3B6B1",
+        "Accent": "#EE9D58",
+        "Frame": "#A34053"
+      },
+      "Reactor": {
+        "Primary": "#A34053",
+        "Equipment": "#E3B6B1",
+        "Accent": "#EE9D58",
+        "Frame": "#662249"
+      },
+      "StrategyCenter": {
+        "Primary": "#A34053",
+        "Equipment": "#E3B6B1",
+        "Accent": "#EE9D58",
+        "Frame": "#A34053"
+      }
+    }
+  },
+  "assets": [
+    {
+      "team": "Blue",
+      "key": "AirBase",
+      "scene": "Blue_AirBase",
+      "rig": "Blue_AirBase_Rig",
+      "bone_count": 78,
+      "bone_signature": "f1958abc7b70c5a7c1973ceec6e42826fbe5b0e5854a7762b2846d5fdc35570e",
+      "source_compatible_animation_names": [
+        "TB1_AirBase_Destroy1_Anim",
+        "TB1_AirBase_Destroy2_Anim",
+        "TB1_AirBase_Idle_Anim",
+        "TB1_AirBase_OpenDoor_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "source_body_triangles": 5216,
+          "source_outline_triangles": 700,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_AirBase_LOD0_Body",
+              "source": "AirBase_LOD0_Body",
+              "geometry_UV_normals_weights_signature": "b7b6d264217f0b1e7effe1cd1020bad94fe4c2982354518fb4713af7010c100a"
+            },
+            {
+              "role": "outline",
+              "name": "Blue_AirBase_LOD0_Outline",
+              "source": "AirBase_LOD0_Outline",
+              "geometry_UV_normals_weights_signature": "82f6226fd1251c644a6665da68d7d2770754573d22734ddcf0582f8954f659da"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 12026,
+            "source_color_max_error": 2.4575624024691933e-07,
+            "corner_counts_per_role": [
+              2470,
+              7048,
+              366,
+              2142
+            ]
+          },
+          "body": "Blue_AirBase_LOD0_Body",
+          "outline": "Blue_AirBase_LOD0_Outline"
+        },
+        {
+          "LOD": 1,
+          "source_body_triangles": 4839,
+          "source_outline_triangles": 400,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_AirBase_LOD1_Body",
+              "source": "AirBase_LOD1_Body",
+              "geometry_UV_normals_weights_signature": "48b141c68b4c2e26f9a937c175a448cb9f138a84c421289ef8fec004bee90c4c"
+            },
+            {
+              "role": "outline",
+              "name": "Blue_AirBase_LOD1_Outline",
+              "source": "AirBase_LOD1_Outline",
+              "geometry_UV_normals_weights_signature": "38d19dc4c392b14426b736ad8658d86f82fecf90d2dce691aaf2e0f2e57d08ba"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 11317,
+            "source_color_max_error": 2.4575624024691933e-07,
+            "corner_counts_per_role": [
+              1941,
+              6868,
+              366,
+              2142
+            ]
+          },
+          "body": "Blue_AirBase_LOD1_Body",
+          "outline": "Blue_AirBase_LOD1_Outline"
+        },
+        {
+          "LOD": 2,
+          "source_body_triangles": 4128,
+          "source_outline_triangles": 0,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_AirBase_LOD2_Body",
+              "source": "AirBase_LOD2_Body",
+              "geometry_UV_normals_weights_signature": "c54b940a9625b5b50a4ad22d16ba6040b5acf91f5eba11dc4e3a08c3c7e6314c"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 10360,
+            "source_color_max_error": 2.795705711378105e-07,
+            "corner_counts_per_role": [
+              1374,
+              6426,
+              426,
+              2134
+            ]
+          },
+          "body": "Blue_AirBase_LOD2_Body"
+        }
+      ]
+    },
+    {
+      "team": "Blue",
+      "key": "CloningCenter",
+      "scene": "Blue_CloningCenter",
+      "rig": "Blue_CloningCenter_Rig",
+      "bone_count": 54,
+      "bone_signature": "d82a248ba0b3815c00a0c4deb988359ae49ca7baa513d2b0d865a31c584fe21f",
+      "source_compatible_animation_names": [
+        "TB1_CloningCenter_Destroy1_Anim",
+        "TB1_CloningCenter_Destroy2_Anim",
+        "TB1_CloningCenter_Idle_Anim",
+        "TB1_CloningCenter_OpenDoor_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "source_body_triangles": 2454,
+          "source_outline_triangles": 296,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_CloningCenter_LOD0_Body",
+              "source": "CloningCenter_LOD0_Body",
+              "geometry_UV_normals_weights_signature": "f3669cf0a0de7c8c21d842ac199748ef06e0b5a6b8c8dd10bf4ffb4ec08c06c4"
+            },
+            {
+              "role": "outline",
+              "name": "Blue_CloningCenter_LOD0_Outline",
+              "source": "CloningCenter_LOD0_Outline",
+              "geometry_UV_normals_weights_signature": "296c73a1917cc691492943dd5cb0afaa8223ffcc8a03aaa02202e9f518d09d7d"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 6126,
+            "source_color_max_error": 2.4575624024691933e-07,
+            "corner_counts_per_role": [
+              2080,
+              3680,
+              196,
+              170
+            ]
+          },
+          "body": "Blue_CloningCenter_LOD0_Body",
+          "outline": "Blue_CloningCenter_LOD0_Outline"
+        },
+        {
+          "LOD": 1,
+          "source_body_triangles": 2338,
+          "source_outline_triangles": 200,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_CloningCenter_LOD1_Body",
+              "source": "CloningCenter_LOD1_Body",
+              "geometry_UV_normals_weights_signature": "560bc9a164243dce42c95fdbace2339ecfb174e313729a16efaf1e6b06422b07"
+            },
+            {
+              "role": "outline",
+              "name": "Blue_CloningCenter_LOD1_Outline",
+              "source": "CloningCenter_LOD1_Outline",
+              "geometry_UV_normals_weights_signature": "9fcf55db0b56f75b32e4a9fb7f991d674fa8e5deb7b9db6729a5497df247441b"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 5936,
+            "source_color_max_error": 2.5981063345170696e-07,
+            "corner_counts_per_role": [
+              1900,
+              3680,
+              196,
+              160
+            ]
+          },
+          "body": "Blue_CloningCenter_LOD1_Body",
+          "outline": "Blue_CloningCenter_LOD1_Outline"
+        },
+        {
+          "LOD": 2,
+          "source_body_triangles": 2170,
+          "source_outline_triangles": 0,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_CloningCenter_LOD2_Body",
+              "source": "CloningCenter_LOD2_Body",
+              "geometry_UV_normals_weights_signature": "782f66de763cb99d09158b491a6ce111f80f64bebb56240bbe58a3aa90361267"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 5654,
+            "source_color_max_error": 2.4575624024691933e-07,
+            "corner_counts_per_role": [
+              1702,
+              3612,
+              196,
+              144
+            ]
+          },
+          "body": "Blue_CloningCenter_LOD2_Body"
+        }
+      ]
+    },
+    {
+      "team": "Blue",
+      "key": "CommandCenter",
+      "scene": "Blue_CommandCenter",
+      "rig": "Blue_CommandCenter_Rig",
+      "bone_count": 74,
+      "bone_signature": "b80c69d162cb4e4b4c3285448652d52b2637ac13d68d77d25dd56ac8d82623b1",
+      "source_compatible_animation_names": [
+        "TB1_CommandCenter_Destoy1_Anim",
+        "TB1_CommandCenter_Destoy2_Anim",
+        "TB1_CommandCenter_Edle_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "source_body_triangles": 4465,
+          "source_outline_triangles": 598,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_CommandCenter_LOD0_Body",
+              "source": "CommandCenter_LOD0_Body",
+              "geometry_UV_normals_weights_signature": "9da27669d3bcbd960c14598acd1cc017bc91f480e3fb6895f136f6c19724e497"
+            },
+            {
+              "role": "outline",
+              "name": "Blue_CommandCenter_LOD0_Outline",
+              "source": "CommandCenter_LOD0_Outline",
+              "geometry_UV_normals_weights_signature": "ab99f8250b485576404993073e091d8187e44f2fecc467c0365472ffa10a7cea"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 9681,
+            "source_color_max_error": 1.365714012990793e-07,
+            "corner_counts_per_role": [
+              1591,
+              7220,
+              206,
+              664
+            ]
+          },
+          "body": "Blue_CommandCenter_LOD0_Body",
+          "outline": "Blue_CommandCenter_LOD0_Outline"
+        },
+        {
+          "LOD": 1,
+          "source_body_triangles": 4277,
+          "source_outline_triangles": 299,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_CommandCenter_LOD1_Body",
+              "source": "CommandCenter_LOD1_Body",
+              "geometry_UV_normals_weights_signature": "664200eccf0a63b11578941d7d70b0a6e5d39b470c4ec4808046627c555fe568"
+            },
+            {
+              "role": "outline",
+              "name": "Blue_CommandCenter_LOD1_Outline",
+              "source": "CommandCenter_LOD1_Outline",
+              "geometry_UV_normals_weights_signature": "4384469a9a8f79e349616b44a9b1e7dcf8fc82e172d2a3b1eb1c8431303d3544"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 9585,
+            "source_color_max_error": 2.086162567138672e-07,
+            "corner_counts_per_role": [
+              1657,
+              7058,
+              206,
+              664
+            ]
+          },
+          "body": "Blue_CommandCenter_LOD1_Body",
+          "outline": "Blue_CommandCenter_LOD1_Outline"
+        },
+        {
+          "LOD": 2,
+          "source_body_triangles": 3999,
+          "source_outline_triangles": 0,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_CommandCenter_LOD2_Body",
+              "source": "CommandCenter_LOD2_Body",
+              "geometry_UV_normals_weights_signature": "a792d81870beca1437daa7a251695d22694c25e00e6ae60bd10125257327e5ba"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 9383,
+            "source_color_max_error": 2.086162567138672e-07,
+            "corner_counts_per_role": [
+              1729,
+              6784,
+              206,
+              664
+            ]
+          },
+          "body": "Blue_CommandCenter_LOD2_Body"
+        }
+      ]
+    },
+    {
+      "team": "Blue",
+      "key": "MilitaryFactory",
+      "scene": "Blue_MilitaryFactory",
+      "rig": "Blue_MilitaryFactory_Rig",
+      "bone_count": 45,
+      "bone_signature": "b6e368b8943e202b2863ed9e61b7ed9e22f3948cab1843ad0fd9039f768b5c68",
+      "source_compatible_animation_names": [
+        "TB1_MilitaryFactory_Destroy1_Anim",
+        "TB1_MilitaryFactory_Destroy2_Anim",
+        "TB1_MilitaryFactory_Idle_Anim",
+        "TB1_MilitaryFactory_OpenDoor_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "source_body_triangles": 1953,
+          "source_outline_triangles": 249,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_MilitaryFactory_LOD0_Body",
+              "source": "MilitaryFactory_LOD0_Body",
+              "geometry_UV_normals_weights_signature": "27b33944628fac0a8a8d5147395ee3d2e0cff5fb3dd6ded377e7aed21a5dbab6"
+            },
+            {
+              "role": "outline",
+              "name": "Blue_MilitaryFactory_LOD0_Outline",
+              "source": "MilitaryFactory_LOD0_Outline",
+              "geometry_UV_normals_weights_signature": "2efbe40430621968676546d07d6cbbb546da6a19e2f51c574af0cde54778c0d3"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 4697,
+            "source_color_max_error": 1.497548112183722e-07,
+            "corner_counts_per_role": [
+              1176,
+              3031,
+              186,
+              304
+            ]
+          },
+          "body": "Blue_MilitaryFactory_LOD0_Body",
+          "outline": "Blue_MilitaryFactory_LOD0_Outline"
+        },
+        {
+          "LOD": 1,
+          "source_body_triangles": 1895,
+          "source_outline_triangles": 149,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_MilitaryFactory_LOD1_Body",
+              "source": "MilitaryFactory_LOD1_Body",
+              "geometry_UV_normals_weights_signature": "0dde46c817955f0cf6ab23255f1868eacb005bdc1524b35b51d6dea0ef61e09a"
+            },
+            {
+              "role": "outline",
+              "name": "Blue_MilitaryFactory_LOD1_Outline",
+              "source": "MilitaryFactory_LOD1_Outline",
+              "geometry_UV_normals_weights_signature": "f18ee276da7ab90604a96b194f68960270fe65e68965d94b03120ccf5768b266"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 4639,
+            "source_color_max_error": 1.6924465739975858e-07,
+            "corner_counts_per_role": [
+              1152,
+              2991,
+              192,
+              304
+            ]
+          },
+          "body": "Blue_MilitaryFactory_LOD1_Body",
+          "outline": "Blue_MilitaryFactory_LOD1_Outline"
+        },
+        {
+          "LOD": 2,
+          "source_body_triangles": 1639,
+          "source_outline_triangles": 0,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_MilitaryFactory_LOD2_Body",
+              "source": "MilitaryFactory_LOD2_Body",
+              "geometry_UV_normals_weights_signature": "b8512bf0cc173a510b83e7f0d2adc7c5e5191dad6326cd84b4f0f775481f5084"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 4265,
+            "source_color_max_error": 2.154235829721074e-07,
+            "corner_counts_per_role": [
+              1032,
+              2773,
+              156,
+              304
+            ]
+          },
+          "body": "Blue_MilitaryFactory_LOD2_Body"
+        }
+      ]
+    },
+    {
+      "team": "Blue",
+      "key": "Reactor",
+      "scene": "Blue_Reactor",
+      "rig": "Blue_Reactor_Rig",
+      "bone_count": 12,
+      "bone_signature": "962e253b0d91adc3a24f716752e50b367d0e6ca8022662e29b4f36a26bb43de7",
+      "source_compatible_animation_names": [
+        "TB1_Reactor_Destroy1_Anim",
+        "TB1_Reactor_Destroy2_Anim",
+        "TB1_Reactor_Idle_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "source_body_triangles": 3546,
+          "source_outline_triangles": 494,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_Reactor_LOD0_Body",
+              "source": "Reactor_LOD0_Body",
+              "geometry_UV_normals_weights_signature": "722e17d5de5706181ccefc72154f865397cf6a8827cea2c52f05cef6c83b5a06"
+            },
+            {
+              "role": "outline",
+              "name": "Blue_Reactor_LOD0_Outline",
+              "source": "Reactor_LOD0_Outline",
+              "geometry_UV_normals_weights_signature": "3e21e44bec51a4254cb3d0ca88453a93d887c9619b5c1db6deb638209724bf43"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 9396,
+            "source_color_max_error": 1.497548112183722e-07,
+            "corner_counts_per_role": [
+              1164,
+              7128,
+              216,
+              888
+            ]
+          },
+          "body": "Blue_Reactor_LOD0_Body",
+          "outline": "Blue_Reactor_LOD0_Outline"
+        },
+        {
+          "LOD": 1,
+          "source_body_triangles": 3154,
+          "source_outline_triangles": 238,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_Reactor_LOD1_Body",
+              "source": "Reactor_LOD1_Body",
+              "geometry_UV_normals_weights_signature": "d66a73ec485dc1771b78ac1cd0eaae8cfc33c101dad557e097c85b6de13eec76"
+            },
+            {
+              "role": "outline",
+              "name": "Blue_Reactor_LOD1_Outline",
+              "source": "Reactor_LOD1_Outline",
+              "geometry_UV_normals_weights_signature": "9c7e388b87e09129e3be3a5cb9ff406d1d1d1a319f2b6502229417f4d69cce4e"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 8462,
+            "source_color_max_error": 2.004746164629978e-07,
+            "corner_counts_per_role": [
+              1164,
+              6170,
+              240,
+              888
+            ]
+          },
+          "body": "Blue_Reactor_LOD1_Body",
+          "outline": "Blue_Reactor_LOD1_Outline"
+        },
+        {
+          "LOD": 2,
+          "source_body_triangles": 2635,
+          "source_outline_triangles": 0,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_Reactor_LOD2_Body",
+              "source": "Reactor_LOD2_Body",
+              "geometry_UV_normals_weights_signature": "987b6576e6c54b0eea92cfe8c9addfc1e17bfe2b738d628cd4c41bda0c6f9e66"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 7537,
+            "source_color_max_error": 2.154235829721074e-07,
+            "corner_counts_per_role": [
+              1074,
+              5319,
+              252,
+              892
+            ]
+          },
+          "body": "Blue_Reactor_LOD2_Body"
+        }
+      ]
+    },
+    {
+      "team": "Blue",
+      "key": "StrategyCenter",
+      "scene": "Blue_StrategyCenter",
+      "rig": "Blue_StrategyCenter_Rig",
+      "bone_count": 88,
+      "bone_signature": "398e9136e3ec450a6a19c14e022052092e8c359c907fb938600fc985ee06de32",
+      "source_compatible_animation_names": [
+        "TB1_StrategyCenter_Dead1_Anim",
+        "TB1_StrategyCenter_Dead2_Anim",
+        "TB1_StrategyCenter_Idle_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "source_body_triangles": 4175,
+          "source_outline_triangles": 600,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_StrategyCenter_LOD0_Body",
+              "source": "StrategyCenter_LOD0_Body",
+              "geometry_UV_normals_weights_signature": "c32c0a85f7fffdb23db6644cf9301c8c0b3189e0163fbc45d94db8d7f485984c"
+            },
+            {
+              "role": "outline",
+              "name": "Blue_StrategyCenter_LOD0_Outline",
+              "source": "StrategyCenter_LOD0_Outline",
+              "geometry_UV_normals_weights_signature": "ca174a1a853554935cc4f2ebd8ae024b89c6cc7814f9d65f30ce97f73164e0f8"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 9528,
+            "source_color_max_error": 1.365714012990793e-07,
+            "corner_counts_per_role": [
+              2300,
+              4827,
+              234,
+              2167
+            ]
+          },
+          "body": "Blue_StrategyCenter_LOD0_Body",
+          "outline": "Blue_StrategyCenter_LOD0_Outline"
+        },
+        {
+          "LOD": 1,
+          "source_body_triangles": 3939,
+          "source_outline_triangles": 298,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_StrategyCenter_LOD1_Body",
+              "source": "StrategyCenter_LOD1_Body",
+              "geometry_UV_normals_weights_signature": "f579f24de946da401a02e13e759d7cca4bc07d17c4fcff5be46bc5f0428488fa"
+            },
+            {
+              "role": "outline",
+              "name": "Blue_StrategyCenter_LOD1_Outline",
+              "source": "StrategyCenter_LOD1_Outline",
+              "geometry_UV_normals_weights_signature": "7ce5ed75326ee6b1808e27feaa278d37df935af46ab9de61e90fec8b003e4064"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 9172,
+            "source_color_max_error": 2.0212918627748877e-07,
+            "corner_counts_per_role": [
+              2290,
+              4481,
+              234,
+              2167
+            ]
+          },
+          "body": "Blue_StrategyCenter_LOD1_Body",
+          "outline": "Blue_StrategyCenter_LOD1_Outline"
+        },
+        {
+          "LOD": 2,
+          "source_body_triangles": 3582,
+          "source_outline_triangles": 0,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Blue_StrategyCenter_LOD2_Body",
+              "source": "StrategyCenter_LOD2_Body",
+              "geometry_UV_normals_weights_signature": "78f16b48a3fba77b5e1cb588ed94b5189c99aad1372aa5f9027fe85f44e6656d"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 8443,
+            "source_color_max_error": 2.0212918627748877e-07,
+            "corner_counts_per_role": [
+              2175,
+              3835,
+              266,
+              2167
+            ]
+          },
+          "body": "Blue_StrategyCenter_LOD2_Body"
+        }
+      ]
+    },
+    {
+      "team": "Red",
+      "key": "AirBase",
+      "scene": "Red_AirBase",
+      "rig": "Red_AirBase_Rig",
+      "bone_count": 78,
+      "bone_signature": "f1958abc7b70c5a7c1973ceec6e42826fbe5b0e5854a7762b2846d5fdc35570e",
+      "source_compatible_animation_names": [
+        "TB1_AirBase_Destroy1_Anim",
+        "TB1_AirBase_Destroy2_Anim",
+        "TB1_AirBase_Idle_Anim",
+        "TB1_AirBase_OpenDoor_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "source_body_triangles": 5216,
+          "source_outline_triangles": 700,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_AirBase_LOD0_Body",
+              "source": "AirBase_LOD0_Body",
+              "geometry_UV_normals_weights_signature": "b7b6d264217f0b1e7effe1cd1020bad94fe4c2982354518fb4713af7010c100a"
+            },
+            {
+              "role": "outline",
+              "name": "Red_AirBase_LOD0_Outline",
+              "source": "AirBase_LOD0_Outline",
+              "geometry_UV_normals_weights_signature": "82f6226fd1251c644a6665da68d7d2770754573d22734ddcf0582f8954f659da"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 12026,
+            "source_color_max_error": 2.4575624024691933e-07,
+            "corner_counts_per_role": [
+              2470,
+              7048,
+              366,
+              2142
+            ]
+          },
+          "body": "Red_AirBase_LOD0_Body",
+          "outline": "Red_AirBase_LOD0_Outline"
+        },
+        {
+          "LOD": 1,
+          "source_body_triangles": 4839,
+          "source_outline_triangles": 400,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_AirBase_LOD1_Body",
+              "source": "AirBase_LOD1_Body",
+              "geometry_UV_normals_weights_signature": "48b141c68b4c2e26f9a937c175a448cb9f138a84c421289ef8fec004bee90c4c"
+            },
+            {
+              "role": "outline",
+              "name": "Red_AirBase_LOD1_Outline",
+              "source": "AirBase_LOD1_Outline",
+              "geometry_UV_normals_weights_signature": "38d19dc4c392b14426b736ad8658d86f82fecf90d2dce691aaf2e0f2e57d08ba"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 11317,
+            "source_color_max_error": 2.4575624024691933e-07,
+            "corner_counts_per_role": [
+              1941,
+              6868,
+              366,
+              2142
+            ]
+          },
+          "body": "Red_AirBase_LOD1_Body",
+          "outline": "Red_AirBase_LOD1_Outline"
+        },
+        {
+          "LOD": 2,
+          "source_body_triangles": 4128,
+          "source_outline_triangles": 0,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_AirBase_LOD2_Body",
+              "source": "AirBase_LOD2_Body",
+              "geometry_UV_normals_weights_signature": "c54b940a9625b5b50a4ad22d16ba6040b5acf91f5eba11dc4e3a08c3c7e6314c"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 10360,
+            "source_color_max_error": 2.795705711378105e-07,
+            "corner_counts_per_role": [
+              1374,
+              6426,
+              426,
+              2134
+            ]
+          },
+          "body": "Red_AirBase_LOD2_Body"
+        }
+      ]
+    },
+    {
+      "team": "Red",
+      "key": "CloningCenter",
+      "scene": "Red_CloningCenter",
+      "rig": "Red_CloningCenter_Rig",
+      "bone_count": 54,
+      "bone_signature": "d82a248ba0b3815c00a0c4deb988359ae49ca7baa513d2b0d865a31c584fe21f",
+      "source_compatible_animation_names": [
+        "TB1_CloningCenter_Destroy1_Anim",
+        "TB1_CloningCenter_Destroy2_Anim",
+        "TB1_CloningCenter_Idle_Anim",
+        "TB1_CloningCenter_OpenDoor_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "source_body_triangles": 2454,
+          "source_outline_triangles": 296,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_CloningCenter_LOD0_Body",
+              "source": "CloningCenter_LOD0_Body",
+              "geometry_UV_normals_weights_signature": "f3669cf0a0de7c8c21d842ac199748ef06e0b5a6b8c8dd10bf4ffb4ec08c06c4"
+            },
+            {
+              "role": "outline",
+              "name": "Red_CloningCenter_LOD0_Outline",
+              "source": "CloningCenter_LOD0_Outline",
+              "geometry_UV_normals_weights_signature": "296c73a1917cc691492943dd5cb0afaa8223ffcc8a03aaa02202e9f518d09d7d"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 6126,
+            "source_color_max_error": 2.4575624024691933e-07,
+            "corner_counts_per_role": [
+              2080,
+              3680,
+              196,
+              170
+            ]
+          },
+          "body": "Red_CloningCenter_LOD0_Body",
+          "outline": "Red_CloningCenter_LOD0_Outline"
+        },
+        {
+          "LOD": 1,
+          "source_body_triangles": 2338,
+          "source_outline_triangles": 200,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_CloningCenter_LOD1_Body",
+              "source": "CloningCenter_LOD1_Body",
+              "geometry_UV_normals_weights_signature": "560bc9a164243dce42c95fdbace2339ecfb174e313729a16efaf1e6b06422b07"
+            },
+            {
+              "role": "outline",
+              "name": "Red_CloningCenter_LOD1_Outline",
+              "source": "CloningCenter_LOD1_Outline",
+              "geometry_UV_normals_weights_signature": "9fcf55db0b56f75b32e4a9fb7f991d674fa8e5deb7b9db6729a5497df247441b"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 5936,
+            "source_color_max_error": 2.5981063345170696e-07,
+            "corner_counts_per_role": [
+              1900,
+              3680,
+              196,
+              160
+            ]
+          },
+          "body": "Red_CloningCenter_LOD1_Body",
+          "outline": "Red_CloningCenter_LOD1_Outline"
+        },
+        {
+          "LOD": 2,
+          "source_body_triangles": 2170,
+          "source_outline_triangles": 0,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_CloningCenter_LOD2_Body",
+              "source": "CloningCenter_LOD2_Body",
+              "geometry_UV_normals_weights_signature": "782f66de763cb99d09158b491a6ce111f80f64bebb56240bbe58a3aa90361267"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 5654,
+            "source_color_max_error": 2.4575624024691933e-07,
+            "corner_counts_per_role": [
+              1702,
+              3612,
+              196,
+              144
+            ]
+          },
+          "body": "Red_CloningCenter_LOD2_Body"
+        }
+      ]
+    },
+    {
+      "team": "Red",
+      "key": "CommandCenter",
+      "scene": "Red_CommandCenter",
+      "rig": "Red_CommandCenter_Rig",
+      "bone_count": 74,
+      "bone_signature": "b80c69d162cb4e4b4c3285448652d52b2637ac13d68d77d25dd56ac8d82623b1",
+      "source_compatible_animation_names": [
+        "TB1_CommandCenter_Destoy1_Anim",
+        "TB1_CommandCenter_Destoy2_Anim",
+        "TB1_CommandCenter_Edle_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "source_body_triangles": 4465,
+          "source_outline_triangles": 598,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_CommandCenter_LOD0_Body",
+              "source": "CommandCenter_LOD0_Body",
+              "geometry_UV_normals_weights_signature": "9da27669d3bcbd960c14598acd1cc017bc91f480e3fb6895f136f6c19724e497"
+            },
+            {
+              "role": "outline",
+              "name": "Red_CommandCenter_LOD0_Outline",
+              "source": "CommandCenter_LOD0_Outline",
+              "geometry_UV_normals_weights_signature": "ab99f8250b485576404993073e091d8187e44f2fecc467c0365472ffa10a7cea"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 9681,
+            "source_color_max_error": 1.365714012990793e-07,
+            "corner_counts_per_role": [
+              1591,
+              7220,
+              206,
+              664
+            ]
+          },
+          "body": "Red_CommandCenter_LOD0_Body",
+          "outline": "Red_CommandCenter_LOD0_Outline"
+        },
+        {
+          "LOD": 1,
+          "source_body_triangles": 4277,
+          "source_outline_triangles": 299,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_CommandCenter_LOD1_Body",
+              "source": "CommandCenter_LOD1_Body",
+              "geometry_UV_normals_weights_signature": "664200eccf0a63b11578941d7d70b0a6e5d39b470c4ec4808046627c555fe568"
+            },
+            {
+              "role": "outline",
+              "name": "Red_CommandCenter_LOD1_Outline",
+              "source": "CommandCenter_LOD1_Outline",
+              "geometry_UV_normals_weights_signature": "4384469a9a8f79e349616b44a9b1e7dcf8fc82e172d2a3b1eb1c8431303d3544"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 9585,
+            "source_color_max_error": 2.086162567138672e-07,
+            "corner_counts_per_role": [
+              1657,
+              7058,
+              206,
+              664
+            ]
+          },
+          "body": "Red_CommandCenter_LOD1_Body",
+          "outline": "Red_CommandCenter_LOD1_Outline"
+        },
+        {
+          "LOD": 2,
+          "source_body_triangles": 3999,
+          "source_outline_triangles": 0,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_CommandCenter_LOD2_Body",
+              "source": "CommandCenter_LOD2_Body",
+              "geometry_UV_normals_weights_signature": "a792d81870beca1437daa7a251695d22694c25e00e6ae60bd10125257327e5ba"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 9383,
+            "source_color_max_error": 2.086162567138672e-07,
+            "corner_counts_per_role": [
+              1729,
+              6784,
+              206,
+              664
+            ]
+          },
+          "body": "Red_CommandCenter_LOD2_Body"
+        }
+      ]
+    },
+    {
+      "team": "Red",
+      "key": "MilitaryFactory",
+      "scene": "Red_MilitaryFactory",
+      "rig": "Red_MilitaryFactory_Rig",
+      "bone_count": 45,
+      "bone_signature": "b6e368b8943e202b2863ed9e61b7ed9e22f3948cab1843ad0fd9039f768b5c68",
+      "source_compatible_animation_names": [
+        "TB1_MilitaryFactory_Destroy1_Anim",
+        "TB1_MilitaryFactory_Destroy2_Anim",
+        "TB1_MilitaryFactory_Idle_Anim",
+        "TB1_MilitaryFactory_OpenDoor_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "source_body_triangles": 1953,
+          "source_outline_triangles": 249,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_MilitaryFactory_LOD0_Body",
+              "source": "MilitaryFactory_LOD0_Body",
+              "geometry_UV_normals_weights_signature": "27b33944628fac0a8a8d5147395ee3d2e0cff5fb3dd6ded377e7aed21a5dbab6"
+            },
+            {
+              "role": "outline",
+              "name": "Red_MilitaryFactory_LOD0_Outline",
+              "source": "MilitaryFactory_LOD0_Outline",
+              "geometry_UV_normals_weights_signature": "2efbe40430621968676546d07d6cbbb546da6a19e2f51c574af0cde54778c0d3"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 4697,
+            "source_color_max_error": 1.497548112183722e-07,
+            "corner_counts_per_role": [
+              1176,
+              3031,
+              186,
+              304
+            ]
+          },
+          "body": "Red_MilitaryFactory_LOD0_Body",
+          "outline": "Red_MilitaryFactory_LOD0_Outline"
+        },
+        {
+          "LOD": 1,
+          "source_body_triangles": 1895,
+          "source_outline_triangles": 149,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_MilitaryFactory_LOD1_Body",
+              "source": "MilitaryFactory_LOD1_Body",
+              "geometry_UV_normals_weights_signature": "0dde46c817955f0cf6ab23255f1868eacb005bdc1524b35b51d6dea0ef61e09a"
+            },
+            {
+              "role": "outline",
+              "name": "Red_MilitaryFactory_LOD1_Outline",
+              "source": "MilitaryFactory_LOD1_Outline",
+              "geometry_UV_normals_weights_signature": "f18ee276da7ab90604a96b194f68960270fe65e68965d94b03120ccf5768b266"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 4639,
+            "source_color_max_error": 1.6924465739975858e-07,
+            "corner_counts_per_role": [
+              1152,
+              2991,
+              192,
+              304
+            ]
+          },
+          "body": "Red_MilitaryFactory_LOD1_Body",
+          "outline": "Red_MilitaryFactory_LOD1_Outline"
+        },
+        {
+          "LOD": 2,
+          "source_body_triangles": 1639,
+          "source_outline_triangles": 0,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_MilitaryFactory_LOD2_Body",
+              "source": "MilitaryFactory_LOD2_Body",
+              "geometry_UV_normals_weights_signature": "b8512bf0cc173a510b83e7f0d2adc7c5e5191dad6326cd84b4f0f775481f5084"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 4265,
+            "source_color_max_error": 2.154235829721074e-07,
+            "corner_counts_per_role": [
+              1032,
+              2773,
+              156,
+              304
+            ]
+          },
+          "body": "Red_MilitaryFactory_LOD2_Body"
+        }
+      ]
+    },
+    {
+      "team": "Red",
+      "key": "Reactor",
+      "scene": "Red_Reactor",
+      "rig": "Red_Reactor_Rig",
+      "bone_count": 12,
+      "bone_signature": "962e253b0d91adc3a24f716752e50b367d0e6ca8022662e29b4f36a26bb43de7",
+      "source_compatible_animation_names": [
+        "TB1_Reactor_Destroy1_Anim",
+        "TB1_Reactor_Destroy2_Anim",
+        "TB1_Reactor_Idle_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "source_body_triangles": 3546,
+          "source_outline_triangles": 494,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_Reactor_LOD0_Body",
+              "source": "Reactor_LOD0_Body",
+              "geometry_UV_normals_weights_signature": "722e17d5de5706181ccefc72154f865397cf6a8827cea2c52f05cef6c83b5a06"
+            },
+            {
+              "role": "outline",
+              "name": "Red_Reactor_LOD0_Outline",
+              "source": "Reactor_LOD0_Outline",
+              "geometry_UV_normals_weights_signature": "3e21e44bec51a4254cb3d0ca88453a93d887c9619b5c1db6deb638209724bf43"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 9396,
+            "source_color_max_error": 1.497548112183722e-07,
+            "corner_counts_per_role": [
+              1164,
+              7128,
+              216,
+              888
+            ]
+          },
+          "body": "Red_Reactor_LOD0_Body",
+          "outline": "Red_Reactor_LOD0_Outline"
+        },
+        {
+          "LOD": 1,
+          "source_body_triangles": 3154,
+          "source_outline_triangles": 238,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_Reactor_LOD1_Body",
+              "source": "Reactor_LOD1_Body",
+              "geometry_UV_normals_weights_signature": "d66a73ec485dc1771b78ac1cd0eaae8cfc33c101dad557e097c85b6de13eec76"
+            },
+            {
+              "role": "outline",
+              "name": "Red_Reactor_LOD1_Outline",
+              "source": "Reactor_LOD1_Outline",
+              "geometry_UV_normals_weights_signature": "9c7e388b87e09129e3be3a5cb9ff406d1d1d1a319f2b6502229417f4d69cce4e"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 8462,
+            "source_color_max_error": 2.004746164629978e-07,
+            "corner_counts_per_role": [
+              1164,
+              6170,
+              240,
+              888
+            ]
+          },
+          "body": "Red_Reactor_LOD1_Body",
+          "outline": "Red_Reactor_LOD1_Outline"
+        },
+        {
+          "LOD": 2,
+          "source_body_triangles": 2635,
+          "source_outline_triangles": 0,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_Reactor_LOD2_Body",
+              "source": "Reactor_LOD2_Body",
+              "geometry_UV_normals_weights_signature": "987b6576e6c54b0eea92cfe8c9addfc1e17bfe2b738d628cd4c41bda0c6f9e66"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 7537,
+            "source_color_max_error": 2.154235829721074e-07,
+            "corner_counts_per_role": [
+              1074,
+              5319,
+              252,
+              892
+            ]
+          },
+          "body": "Red_Reactor_LOD2_Body"
+        }
+      ]
+    },
+    {
+      "team": "Red",
+      "key": "StrategyCenter",
+      "scene": "Red_StrategyCenter",
+      "rig": "Red_StrategyCenter_Rig",
+      "bone_count": 88,
+      "bone_signature": "398e9136e3ec450a6a19c14e022052092e8c359c907fb938600fc985ee06de32",
+      "source_compatible_animation_names": [
+        "TB1_StrategyCenter_Dead1_Anim",
+        "TB1_StrategyCenter_Dead2_Anim",
+        "TB1_StrategyCenter_Idle_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "source_body_triangles": 4175,
+          "source_outline_triangles": 600,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_StrategyCenter_LOD0_Body",
+              "source": "StrategyCenter_LOD0_Body",
+              "geometry_UV_normals_weights_signature": "c32c0a85f7fffdb23db6644cf9301c8c0b3189e0163fbc45d94db8d7f485984c"
+            },
+            {
+              "role": "outline",
+              "name": "Red_StrategyCenter_LOD0_Outline",
+              "source": "StrategyCenter_LOD0_Outline",
+              "geometry_UV_normals_weights_signature": "ca174a1a853554935cc4f2ebd8ae024b89c6cc7814f9d65f30ce97f73164e0f8"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 9528,
+            "source_color_max_error": 1.365714012990793e-07,
+            "corner_counts_per_role": [
+              2300,
+              4827,
+              234,
+              2167
+            ]
+          },
+          "body": "Red_StrategyCenter_LOD0_Body",
+          "outline": "Red_StrategyCenter_LOD0_Outline"
+        },
+        {
+          "LOD": 1,
+          "source_body_triangles": 3939,
+          "source_outline_triangles": 298,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_StrategyCenter_LOD1_Body",
+              "source": "StrategyCenter_LOD1_Body",
+              "geometry_UV_normals_weights_signature": "f579f24de946da401a02e13e759d7cca4bc07d17c4fcff5be46bc5f0428488fa"
+            },
+            {
+              "role": "outline",
+              "name": "Red_StrategyCenter_LOD1_Outline",
+              "source": "StrategyCenter_LOD1_Outline",
+              "geometry_UV_normals_weights_signature": "7ce5ed75326ee6b1808e27feaa278d37df935af46ab9de61e90fec8b003e4064"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 9172,
+            "source_color_max_error": 2.0212918627748877e-07,
+            "corner_counts_per_role": [
+              2290,
+              4481,
+              234,
+              2167
+            ]
+          },
+          "body": "Red_StrategyCenter_LOD1_Body",
+          "outline": "Red_StrategyCenter_LOD1_Outline"
+        },
+        {
+          "LOD": 2,
+          "source_body_triangles": 3582,
+          "source_outline_triangles": 0,
+          "objects": [
+            {
+              "role": "body",
+              "name": "Red_StrategyCenter_LOD2_Body",
+              "source": "StrategyCenter_LOD2_Body",
+              "geometry_UV_normals_weights_signature": "78f16b48a3fba77b5e1cb588ed94b5189c99aad1372aa5f9027fe85f44e6656d"
+            }
+          ],
+          "palette_check": {
+            "opaque_corners": 8443,
+            "source_color_max_error": 2.0212918627748877e-07,
+            "corner_counts_per_role": [
+              2175,
+              3835,
+              266,
+              2167
+            ]
+          },
+          "body": "Red_StrategyCenter_LOD2_Body"
+        }
+      ]
+    }
+  ],
+  "texture_variants": [
+    {
+      "file": "Textures\\Blue_AirBase_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "source_pixel_space": "sRGB",
+      "remapped_texels": 1226429,
+      "team": "Blue",
+      "asset": "AirBase"
+    },
+    {
+      "file": "Textures\\Blue_CloningCenter_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "source_pixel_space": "sRGB",
+      "remapped_texels": 2092756,
+      "team": "Blue",
+      "asset": "CloningCenter"
+    },
+    {
+      "file": "Textures\\Blue_CommandCenter_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "source_pixel_space": "sRGB",
+      "remapped_texels": 1364193,
+      "team": "Blue",
+      "asset": "CommandCenter"
+    },
+    {
+      "file": "Textures\\Blue_MilitaryFactory_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "source_pixel_space": "sRGB",
+      "remapped_texels": 1938499,
+      "team": "Blue",
+      "asset": "MilitaryFactory"
+    },
+    {
+      "file": "Textures\\Blue_Reactor_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "source_pixel_space": "sRGB",
+      "remapped_texels": 1618705,
+      "team": "Blue",
+      "asset": "Reactor"
+    },
+    {
+      "file": "Textures\\Blue_StrategyCenter_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "source_pixel_space": "sRGB",
+      "remapped_texels": 1108617,
+      "team": "Blue",
+      "asset": "StrategyCenter"
+    },
+    {
+      "file": "Textures\\Red_AirBase_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "source_pixel_space": "sRGB",
+      "remapped_texels": 1226429,
+      "team": "Red",
+      "asset": "AirBase"
+    },
+    {
+      "file": "Textures\\Red_CloningCenter_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "source_pixel_space": "sRGB",
+      "remapped_texels": 2092756,
+      "team": "Red",
+      "asset": "CloningCenter"
+    },
+    {
+      "file": "Textures\\Red_CommandCenter_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "source_pixel_space": "sRGB",
+      "remapped_texels": 1364193,
+      "team": "Red",
+      "asset": "CommandCenter"
+    },
+    {
+      "file": "Textures\\Red_MilitaryFactory_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "source_pixel_space": "sRGB",
+      "remapped_texels": 1938499,
+      "team": "Red",
+      "asset": "MilitaryFactory"
+    },
+    {
+      "file": "Textures\\Red_Reactor_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "source_pixel_space": "sRGB",
+      "remapped_texels": 1618705,
+      "team": "Red",
+      "asset": "Reactor"
+    },
+    {
+      "file": "Textures\\Red_StrategyCenter_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "source_pixel_space": "sRGB",
+      "remapped_texels": 1108617,
+      "team": "Red",
+      "asset": "StrategyCenter"
+    }
+  ],
+  "retained_original_animation_names": [
+    "TB1_AirBase_Destroy1_Anim",
+    "TB1_AirBase_Destroy2_Anim",
+    "TB1_AirBase_Idle_Anim",
+    "TB1_AirBase_OpenDoor_Anim",
+    "TB1_CloningCenter_Destroy1_Anim",
+    "TB1_CloningCenter_Destroy2_Anim",
+    "TB1_CloningCenter_Idle_Anim",
+    "TB1_CloningCenter_OpenDoor_Anim",
+    "TB1_CommandCenter_Destoy1_Anim",
+    "TB1_CommandCenter_Destoy2_Anim",
+    "TB1_CommandCenter_Edle_Anim",
+    "TB1_Drone_Fly_Anim",
+    "TB1_MilitaryFactory_Destroy1_Anim",
+    "TB1_MilitaryFactory_Destroy2_Anim",
+    "TB1_MilitaryFactory_Idle_Anim",
+    "TB1_MilitaryFactory_OpenDoor_Anim",
+    "TB1_Reactor_Destroy1_Anim",
+    "TB1_Reactor_Destroy2_Anim",
+    "TB1_Reactor_Idle_Anim",
+    "TB1_StrategyCenter_Dead1_Anim",
+    "TB1_StrategyCenter_Dead2_Anim",
+    "TB1_StrategyCenter_Idle_Anim"
+  ],
+  "Blue_assembly": {
+    "scene": "Blue_Buildings_Assembly",
+    "center_m": [
+      -9.044075012207031,
+      -3.9682483673095703,
+      7.5776519775390625
+    ],
+    "extent_m": [
+      84.88078308105469,
+      88.56607055664062,
+      18.749313354492188
+    ],
+    "platform_color_unchanged": true
+  },
+  "Red_assembly": {
+    "scene": "Red_Buildings_Assembly",
+    "center_m": [
+      -9.044075012207031,
+      -3.9682483673095703,
+      7.5776519775390625
+    ],
+    "extent_m": [
+      84.88078308105469,
+      88.56607055664062,
+      18.749313354492188
+    ],
+    "platform_color_unchanged": true
+  },
+  "review_scene": {
+    "scene": "Review_Blue_Red_Buildings",
+    "center_m": [
+      -13.34945297241211,
+      -12.229345321655273,
+      7.523555278778076
+    ],
+    "extent_m": [
+      176.1002197265625,
+      47.315189361572266,
+      15.257508277893066
+    ],
+    "Blue_on_left_Red_on_right": true,
+    "uses_real_project_dimensions": true
+  },
+  "original_B_v1_file_preserved": true,
+  "source_geometry_normals_UVs_weights_and_bones_preserved": true,
+  "new_body_LOD_count": 36,
+  "candidate_blend": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\TeamPalette_B_v2_20261007\\SSF_TeamPalette_B_v2.blend",
+  "candidate_blend_sha256": "5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6",
+  "success": true
+}

@@ -1,0 +1,78 @@
+{
+  "name": "DefaultSoldier",
+  "id": 1,
+  "display_name": "先驱号",
+  "blend": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\DefaultSoldier\\DefaultSoldier_3Tier.blend",
+  "triangles": [
+    37338,
+    15905,
+    1943
+  ],
+  "meshes": [
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 37338,
+          "mesh_names": [
+            "SM_Pioneer_VAT_LOD0"
+          ],
+          "uv_channels": [
+            3
+          ],
+          "materials": [
+            2
+          ]
+        },
+        {
+          "index": 1,
+          "triangles": 15905,
+          "mesh_names": [
+            "SM_Pioneer_VAT_LOD1"
+          ],
+          "uv_channels": [
+            3
+          ],
+          "materials": [
+            2
+          ]
+        },
+        {
+          "index": 2,
+          "triangles": 1943,
+          "mesh_names": [
+            "SM_Pioneer_VAT_LOD2"
+          ],
+          "uv_channels": [
+            3
+          ],
+          "materials": [
+            1
+          ]
+        }
+      ],
+      "lod0_signature": "72d3e8b87d966e418da8cee9fa9c2a793064713be58074432d19acd9350d82ac",
+      "source_lod0_signature": "72d3e8b87d966e418da8cee9fa9c2a793064713be58074432d19acd9350d82ac",
+      "lod0_preserved": true,
+      "native_triangles": [
+        37338,
+        15905,
+        1944
+      ],
+      "fbx_triangles": [
+        37338,
+        15905,
+        1943
+      ],
+      "export_triangle_delta": [
+        0,
+        0,
+        1
+      ],
+      "armatures": 0
+    }
+  ],
+  "lod0_preserved": true,
+  "approval": "pending"
+}

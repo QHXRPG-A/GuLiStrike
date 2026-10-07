@@ -13,10 +13,8 @@
 
 ## 面数与源文件
 
-| 扫荡者 | LOD0 | LOD1 | LOD2 | LOD3 |
-|---|---:|---:|---:|---:|
-| 去线稿后 UE | 5,456 | 1,363 | 901 | 220 |
-| 之前含外轮廓 | 10,912 | 2,727 | 900 | 220 |
+指挥官模型统一为 LOD0 近景、LOD1 中景、LOD2 远景；当前规范与候选见[本次迁移](../../Progress/RequirementDocument/20261005-指挥官三档LOD纠正与资源迁移.md)。本轮保留已审近景，新的实际版本 B 待审核，正式资源待放行后切换。
+
 
 Blender 主体 5,482 三角面，导入器剔除退化面后 UE 为 5,456。主体几何未重建，四轮和机枪骨骼、UV 和枪口保持。制作文件为 `Models/Sweeper_NoInk.blend`，静态/骨骼导出为 `Models/SM_Sweeper_NoInk.fbx` 与 `SK_Sweeper_NoInk.fbx`。用户原先未保存的 Blender 交互文件没有覆盖。
 
@@ -43,3 +41,5 @@ Blender 主体 5,482 三角面，导入器剔除退化面后 UE 为 5,456。主�
 - 扫荡者旧版位于 `/Game/Commander/Units/Tactical/Cel/Sweeper/Rollback`，包括 `SM_Sweeper_Cel_WithInk`、`SK_Sweeper_Cel_WithInk`、`M_Sweeper_Cel_WithInk`；回退网格的主体已引用回退材质，不受新材质去线稿影响。
 - 地面旧尺寸副本为 `/Game/GuLiStrike/FX/CombatExplosions/Rollback/NS_GroundDestruction_03_Before060`。也可把新系统 `User.PresentationScale` 改回 1 恢复渲染尺寸。`Scripts/scale_ground_destruction_visual.py` 重复执行不会再乘一次 0.6；原 Revision 2 部署保留当前项目副本。
 - `level_lighting_rollback.json` 保留调整前的完整 PostProcessSettings 和天空光下半球颜色；需回退时只恢复其中指定关卡的两个对象并保存该关卡。调整脚本为 `Scripts/adjust_commander_level_readability.py`，它只应用属性，保存作为独立步骤。
+
+> 2026-10-05 LOD 勘误：按用户明确指令更正以上相关段落和预算说明；其他历史内容保留。修改范围及原文校验见[勘误清单](../CommanderLOD_20261005/Reports/document_erratum.json)。冻结模型及原始机器回读不作为当前制作入口。

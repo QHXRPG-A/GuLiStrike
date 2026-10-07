@@ -400,6 +400,11 @@ public:
 	bool SummonSoldierBatch(EGuLiTeam Team, FGuLiSoldierId CasterId, uint16 UnitTypeId, int32 Count,
 		float Clearance, int32 OuterRings, int32 CandidatesPerRing, TArray<FGuLiSoldierId>& OutIds, FString& Error);
 	FIntPoint GetTeamPopulation(EGuLiTeam Team) const;
+	/** Population token held by a construction site; no entity exists until commit. */
+	bool ReserveConstructionUnit(EGuLiTeam Team, uint16 UnitTypeId, FGuid& OutReservation);
+	void ReleaseConstructionUnit(const FGuid& Reservation);
+	bool CompleteConstructionUnit(const FGuid& Reservation, const FTransform& GroundPose,
+		float RemainingHealth, const AActor& ConstructionSite, FGuLiSoldierId& OutId);
 	int32 GetTeamUnitCap() const;
 	void RegisterAutomaticAdvance(TConstArrayView<FGuLiSoldierId> Soldiers);
 	bool IsAutomaticallyAdvancing(FGuLiSoldierId Soldier) const;
@@ -490,7 +495,14 @@ public:
 private:
 	int32 ReservedRedPopulation = 0;
 	int32 ReservedBluePopulation = 0;
-	bool SpawnReservedSoldier(EGuLiTeam Team, uint16 UnitTypeId, const FVector& Location, FGuLiSoldierId& OutId);
+	bool SpawnReservedSoldier(EGuLiTeam Team, uint16 UnitTypeId, const FVector& Location, FGuLiSoldierId& OutId,
+		float InitialYaw = 0.0f, const AActor* IgnoredConstructionSite = nullptr, float InitialHealth = -1.0f);
+	struct FConstructionUnitReservation
+	{
+		EGuLiTeam Team = EGuLiTeam::Unassigned;
+		uint16 UnitTypeId = 0;
+	};
+	TMap<FGuid, FConstructionUnitReservation> ConstructionUnitReservations;
 	void RetireExpiredSoldiers();
 	/** 检查 World 存在且不是普通客户端；生成部队还需满足世界和导航就绪条件。 */
 	bool IsAuthorityWorld() const;

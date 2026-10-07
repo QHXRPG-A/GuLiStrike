@@ -1,0 +1,146 @@
+{
+  "success": true,
+  "version": "BiZhiMao_v1",
+  "actual_version_approval": "pending",
+  "native_gameplay_installed": false,
+  "art_assets": [
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Skeleton/SKEL_BiZhiMao",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_Construction",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/M_BiZhiMao_Outline",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_VAT",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/MI_BiZhiMao_Phase",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/MI_BiZhiMao_Wreck",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/MI_BiZhiMao_Hit",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD3",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD2",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_BonePosition",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD1",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_BoneRotation",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD0",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_BoneAffine",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_BaseColor_2K",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_InternalLineMask_2K",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_FunctionalMask_2K",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_ORM_2K",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/MF_BiZhiMao_WeightedVAT",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/M_BiZhiMao_Toon3_SparseLines",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SKM_BiZhiMao",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Animations/AS_BiZhiMao_Right",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Animations/AS_BiZhiMao_Left",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Animations/AS_BiZhiMao_Backward",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Animations/AS_BiZhiMao_Forward",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Animations/AS_BiZhiMao_Idle",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Animations/AS_BiZhiMao_Deploy_Source",
+    "/Game/GuLiStrike/Commander/Units/BiZhiMao/Rigs/CR_BiZhiMao"
+  ],
+  "lods": [
+    {
+      "lod": 0,
+      "triangles": 70117,
+      "vertices": 205141,
+      "sections": 2,
+      "screen_size": 1,
+      "budget_status": "existing source over budget"
+    },
+    {
+      "lod": 1,
+      "triangles": 65006,
+      "vertices": 191454,
+      "sections": 2,
+      "screen_size": 0.4,
+      "budget_status": "existing source over budget"
+    },
+    {
+      "lod": 2,
+      "triangles": 51896,
+      "vertices": 153198,
+      "sections": 2,
+      "screen_size": 0.16,
+      "budget_status": "existing source over budget"
+    },
+    {
+      "lod": 3,
+      "triangles": 38428,
+      "vertices": 114263,
+      "sections": 1,
+      "screen_size": 0.06,
+      "budget_status": "existing source over budget"
+    }
+  ],
+  "animations": [
+    {
+      "name": "Idle",
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Animations/AS_BiZhiMao_Idle.AS_BiZhiMao_Idle",
+      "bones": 152,
+      "seconds": 8.666666984558105,
+      "source_comparison": []
+    },
+    {
+      "name": "Forward",
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Animations/AS_BiZhiMao_Forward.AS_BiZhiMao_Forward",
+      "bones": 152,
+      "seconds": 3.0,
+      "source_comparison": []
+    },
+    {
+      "name": "Backward",
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Animations/AS_BiZhiMao_Backward.AS_BiZhiMao_Backward",
+      "bones": 152,
+      "seconds": 3.0,
+      "source_comparison": []
+    },
+    {
+      "name": "Left",
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Animations/AS_BiZhiMao_Left.AS_BiZhiMao_Left",
+      "bones": 152,
+      "seconds": 3.0,
+      "source_comparison": []
+    },
+    {
+      "name": "Right",
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Animations/AS_BiZhiMao_Right.AS_BiZhiMao_Right",
+      "bones": 152,
+      "seconds": 3.0,
+      "source_comparison": []
+    },
+    {
+      "name": "Deploy_Source",
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Animations/AS_BiZhiMao_Deploy_Source.AS_BiZhiMao_Deploy_Source",
+      "bones": 152,
+      "seconds": 5.0,
+      "source_comparison": [
+        {
+          "time_s": 0,
+          "translation_cm": 0.0,
+          "scale": 0.0,
+          "rotation_one_minus_abs_dot": 6.610690483910275e-08
+        },
+        {
+          "time_s": 2.5,
+          "translation_cm": 0.0,
+          "scale": 0.0,
+          "rotation_one_minus_abs_dot": 5.569561778440146e-08
+        },
+        {
+          "time_s": 5.0,
+          "translation_cm": 0.0,
+          "scale": 0.0,
+          "rotation_one_minus_abs_dot": 5.06741429928681e-08
+        }
+      ]
+    }
+  ],
+  "reference_pose": {
+    "max_translation_error_cm": 0.0,
+    "max_scale_error": 0.0,
+    "max_rotation_one_minus_abs_dot": 6.753968828654422e-08
+  },
+  "control_rig": {
+    "graphs": 31,
+    "nodes": 811,
+    "links": 1057,
+    "source_graph_match": true
+  },
+  "source_physics_asset": null,
+  "source_sockets": 0
+}

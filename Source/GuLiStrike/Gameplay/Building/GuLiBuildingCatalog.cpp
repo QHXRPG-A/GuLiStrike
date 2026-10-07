@@ -34,10 +34,12 @@ bool UGuLiBuildingCatalog::ResolveTable(bool bForceRefresh)
 		D.MaxHealth = R.MaxHealth; D.MaxShield = R.MaxShield; D.BuildLevel = R.BuildLevel;
 		D.Cost.Blue = R.BlueCost; D.Cost.Red = R.RedCost; D.ConstructionWork = R.ConstructionWork;
 		D.ProductionUnitId = R.ProductionUnitId; D.ProductionSeconds = R.ProductionSeconds; D.ProductionCount = R.ProductionCount;
+		D.CompletionUnitTypeId = R.CompletionUnitTypeId;
 		D.TransitFieldId = R.TransitFieldId; D.ShieldRadius = R.ShieldRadius; D.ShieldRechargePerSecond = R.ShieldRechargePerSecond;
 		TArray<FString> Gifts; R.FirstCaptureGiftIds.ParseIntoArray(Gifts, TEXT(","));
 		for (const auto& Gift : Gifts) D.FirstCaptureGiftIds.Add(FCString::Atoi(*Gift));
-		if (R.Id <= 0 || R.Category < 0 || R.Category > 5 || !D.IsUsable() || R.MaxHealth <= 0)
+		if (R.Id <= 0 || R.Category < 0 || R.Category > 6 || !D.IsUsable() || R.MaxHealth <= 0
+			|| (D.Category == EGuLiBuildingCategory::ConstructedUnit && D.CompletionUnitTypeId <= 0))
 		{
 			UE_LOG(LogTemp, Error, TEXT("Invalid building row %s"), *Name.ToString());
 			return false;

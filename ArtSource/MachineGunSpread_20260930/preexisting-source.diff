@@ -1,0 +1,525 @@
+diff --git a/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp b/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
+index 776e1caa..e1fd6621 100644
+--- a/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
++++ b/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
+@@ -42,6 +42,7 @@
+ #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
+ #include "Gameplay/CommanderSkills/GuLiCommanderSkillDefinition.h"
+ #include "Gameplay/CommanderSkills/GuLiUnitSkillExecution.h"
++#include "Gameplay/CommanderSkills/GuLiWarMachineMissileSkill.h"
+ #include "Gameplay/Tuning/GuLiRuntimeTuningSubsystem.h"
+ #include "GameFramework/Controller.h"
+ #include "HAL/PlatformTime.h"
+@@ -92,7 +93,6 @@ namespace GuLiCommanderMassPrivate
+ 	constexpr float FormationArrivalToleranceCentimeters = 100.0f;
+ 	constexpr float TravelWeight = 0.70f;
+ 	constexpr float SlotCorrectionWeight = 0.30f;
+-	constexpr float ManualAvoidanceStrength = 0.25f;
+ 	constexpr int32 MaximumFriendlyYieldUnitsPerMech = 16;
+ 	constexpr float GroundMechYieldQueryCellSizeCentimeters = 1000.0f;
+ 	constexpr float GroundMechYieldActivationPaddingCentimeters = 100.0f;
+@@ -1221,7 +1221,9 @@ namespace GuLiCommanderMassPrivate
+ 		AvoidanceParameters.SeparationRadiusScale = 0.95f;
+ 		AvoidanceParameters.ObstacleSeparationDistance = AgentRadiusCentimeters * 0.35f;
+ 		AvoidanceParameters.PredictiveAvoidanceDistance = AgentRadiusCentimeters * 0.35f;
+-		AvoidanceParameters.ObstaclePredictiveAvoidanceStiffness = 140.0f;
++		AvoidanceParameters.ObstaclePredictiveAvoidanceStiffness = 700.0f;
++		AvoidanceParameters.PredictiveAvoidanceRadiusScale = 1.0f;
++		AvoidanceParameters.PredictiveAvoidanceTime = 2.5f;
+ 
+ 		FMassArchetypeSharedFragmentValues SharedValues;
+ 		SharedValues.Add(EntityManager.GetOrCreateConstSharedFragment(
+@@ -3712,71 +3714,46 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
+ 		EntityManager.GetFragmentDataChecked<FGuLiMassSlotTargetFragment>(S.Entity).WorldTarget=Waypoint;
+ 	}
+ 
+-	const bool bPeriodicManualAvoidanceRefresh =
+-		AuthorityState->ServerSimTick
+-			% GuLiCommanderNavigationPolicy::MovementUpdateIntervalTicks == 0u;
+-	const bool bManualAvoidanceStorageChanged =
+-		AuthorityState->CachedManualAvoidanceVelocities.Num()
+-			< AuthorityState->Soldiers.Num();
+-	if (bPeriodicManualAvoidanceRefresh
+-		|| AuthorityState->bForceManualAvoidanceRefresh
+-		|| bManualAvoidanceStorageChanged)
+-	{
+-		const UGuLiDynamicObstacleRegistrySubsystem* ObstacleRegistry =
+-			GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
+-		check(ObstacleRegistry);
+-		const TConstArrayView<FGuLiDynamicObstacle> DynamicObstacles =
+-			ObstacleRegistry->GetObstacles();
+-		AuthorityState->ManualAvoidanceAgents.SetNum(
+-			AuthorityState->Soldiers.Num());
+-		bool bAnySoldierReceivesAvoidance = false;
+-		float MaximumSoldierRadius = MemberAgentRadiusCentimeters;
+-		for (int32 SoldierIndex = 0; SoldierIndex < AuthorityState->Soldiers.Num(); ++SoldierIndex)
+-		{
+-			const FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
+-			GuLiCommanderNavigationPolicy::FManualAvoidanceAgent& Agent =
+-				AuthorityState->ManualAvoidanceAgents[SoldierIndex];
+-			Agent.StableSoldierId = Soldier.SoldierId.Value;
+-			Agent.Location = Soldier.Location;
+-			Agent.bParticipates = Soldier.IsPresent() && !Soldier.Location.ContainsNaN();
+-			Agent.bReceivesAvoidance = Agent.bParticipates
+-				&& bReceivesAvoidance[SoldierIndex];
+-			Agent.RadiusCentimeters = Soldier.AvoidanceRadiusCentimeters;
+-			MaximumSoldierRadius = FMath::Max(MaximumSoldierRadius, Agent.RadiusCentimeters);
+-			bAnySoldierReceivesAvoidance |= Agent.bReceivesAvoidance;
+-		}
+-		float AvoidanceCellSizeCentimeters = MaximumSoldierRadius * 2.0f;
+-
+-		if (bAnySoldierReceivesAvoidance)
+-		{
+-			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_ManualAvoidanceRefresh);
+-			const float MinimumAvoidanceDistanceCentimeters = FMath::Max(
+-				1.0f,
+-				MemberAgentRadiusCentimeters * 2.0f);
+-			const GuLiCommanderNavigationPolicy::FManualAvoidanceMetrics Metrics =
+-				GuLiCommanderNavigationPolicy::BuildManualAvoidanceVelocities(
+-					AuthorityState->ManualAvoidanceAgents,
+-					AvoidanceCellSizeCentimeters,
+-					MinimumAvoidanceDistanceCentimeters,
+-					AvoidanceAgentHeightCentimeters,
+-					MaximumUnitMovementSpeed,
+-					ManualAvoidanceStrength,
+-					AuthorityState->ManualAvoidanceSpatialGrid,
+-					AuthorityState->CachedManualAvoidanceVelocities);
+-			++AuthorityState->ManualAvoidanceRefreshes;
+-			AuthorityState->ManualAvoidanceCandidatePairs += Metrics.CandidatePairs;
+-			AuthorityState->ManualAvoidanceOverlapPairs += Metrics.OverlapPairs;
+-			AuthorityState->MaximumManualAvoidanceBucketOccupancy = FMath::Max(
+-				AuthorityState->MaximumManualAvoidanceBucketOccupancy,
+-				Metrics.MaximumBucketOccupancy);
+-		}
+-		else
+-		{
+-			AuthorityState->ManualAvoidanceSpatialGrid.Reset();
+-			AuthorityState->CachedManualAvoidanceVelocities.Init(
+-				FVector::ZeroVector,
+-				AuthorityState->Soldiers.Num());
+-		}
++	// Freeze every candidate before any authority location is committed. The soft solver
++	// returns absolute velocities, including low-speed friendly pressure on stopped units.
++	AuthorityState->ManualAvoidanceAgents.SetNum(AuthorityState->Soldiers.Num());
++	for (int32 I = 0; I < AuthorityState->Soldiers.Num(); ++I)
++	{
++		const FSoldierRuntime& S = AuthorityState->Soldiers[I];
++		if (S.ActiveNavigation && S.ActiveNavigation->Path.IsValid() && !S.ActiveNavigation->Path->IsUpToDate())
++			bSuppressMovementForStep[I] = true;
++		auto& Agent = AuthorityState->ManualAvoidanceAgents[I];
++		Agent = {};
++		Agent.StableSoldierId = S.SoldierId.Value;
++		Agent.Team = static_cast<uint8>(S.Team);
++		Agent.Location = S.Location;
++		Agent.RadiusCentimeters = S.AvoidanceRadiusCentimeters;
++		Agent.MaximumSpeed = GetUnitMovementSpeed(S.Team, S.UnitTypeId);
++		Agent.bParticipates = S.IsPresent() && EntityManager.IsEntityValid(S.Entity);
++		Agent.bReceivesAvoidance = Agent.bParticipates && S.CanAct()
++			&& bReceivesAvoidance[I] && !bSuppressMovementForStep[I] && !S.bAttackMoveHolding;
++		Agent.bCanBePushed = Agent.bParticipates && S.CanAct() && !S.bGroundMechYielding
++			&& (!S.ActiveOrderId || S.bAttackMoveHolding);
++		if (Agent.bReceivesAvoidance)
++		{
++			const FVector PredictiveAcceleration = EntityManager
++				.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(S.Entity).Value;
++			const FVector Target = (DesiredVelocities[I]
++				+ PredictiveAcceleration.GetClampedToMaxSize(Agent.MaximumSpeed * 4.0f) * MovementUpdateDeltaSeconds[I])
++				.GetClampedToMaxSize(Agent.MaximumSpeed);
++			Agent.DesiredVelocity = FMath::VInterpTo(S.Velocity, Target, MovementUpdateDeltaSeconds[I], 8.0f);
++		}
++	}
++	{
++		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_ManualAvoidanceRefresh);
++		const auto Metrics = GuLiCommanderNavigationPolicy::SolveSoftAvoidanceVelocities(
++			AuthorityState->ManualAvoidanceAgents, AvoidanceAgentHeightCentimeters,
++			AuthorityState->ManualAvoidanceSpatialGrid, AuthorityState->CachedManualAvoidanceVelocities);
++		++AuthorityState->ManualAvoidanceRefreshes;
++		AuthorityState->ManualAvoidanceCandidatePairs += Metrics.CandidatePairs;
++		AuthorityState->ManualAvoidanceOverlapPairs += Metrics.OverlapPairs;
++		AuthorityState->MaximumManualAvoidanceBucketOccupancy = FMath::Max(
++			AuthorityState->MaximumManualAvoidanceBucketOccupancy, Metrics.MaximumBucketOccupancy);
+ 		AuthorityState->bForceManualAvoidanceRefresh = false;
+ 	}
+ 
+@@ -3823,33 +3800,12 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
+ 			&& !bSuppressMovementForStep[SoldierIndex])
+ 		{
+ 			const float MovementDeltaSeconds = MovementUpdateDeltaSeconds[SoldierIndex];
+-			FVector AvoidanceVelocity = FVector::ZeroVector;
+-			if (bReceivesAvoidance[SoldierIndex])
+-			{
+-				if (AuthorityState->CachedManualAvoidanceVelocities.IsValidIndex(SoldierIndex))
+-				{
+-					AvoidanceVelocity +=
+-						AuthorityState->CachedManualAvoidanceVelocities[SoldierIndex];
+-				}
+-				const FGuLiMassAvoidanceOutputFragment& AvoidanceOutput = EntityManager
+-					.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(Soldier.Entity);
+-				AvoidanceVelocity += AvoidanceOutput.Value.GetClampedToMaxSize(
+-					GetUnitMovementSpeed(Soldier.Team,Soldier.UnitTypeId) * 4.0f) * MovementDeltaSeconds;
+-			}
++			FVector TargetVelocity = AuthorityState->CachedManualAvoidanceVelocities[SoldierIndex];
++			if (auto* Registry = World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>())
++				TargetVelocity = ConstrainEnvironmentVelocity(Soldier, *Registry->GetSnapshot(), TargetVelocity,
++					MovementDeltaSeconds, GetUnitMovementSpeed(Soldier.Team, Soldier.UnitTypeId));
++			Soldier.Velocity = TargetVelocity.IsNearlyZero(1.0f) ? FVector::ZeroVector : TargetVelocity;
+ 
+-			FVector TargetVelocity = (DesiredVelocities[SoldierIndex] + AvoidanceVelocity)
+-				.GetClampedToMaxSize(GetUnitMovementSpeed(Soldier.Team,Soldier.UnitTypeId));
+-			if (auto* Registry=World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>())
+-				TargetVelocity=ConstrainEnvironmentVelocity(Soldier,*Registry->GetSnapshot(),TargetVelocity,MovementDeltaSeconds,GetUnitMovementSpeed(Soldier.Team,Soldier.UnitTypeId));
+-			Soldier.Velocity = TargetVelocity.IsNearlyZero(1.0f)
+-				? FVector::ZeroVector
+-				: FMath::VInterpTo(
+-					Soldier.Velocity,
+-					TargetVelocity,
+-					MovementDeltaSeconds,
+-					8.0f);
+-
+-			if (Soldier.ContactObstacle) Soldier.Velocity=TargetVelocity;
+ 			if (!Soldier.Velocity.IsNearlyZero(1.0f))
+ 			{
+ 				const FVector CandidateLocation = Soldier.LastValidNavLocation.Location
+@@ -4043,6 +3999,42 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
+ 				if (bCandidateClear) if (!Soldier.bNavigationBudgetPending) ++AuthorityState->SurfaceMoveFailures;
+ 			}
+ 		}
++		else if (AuthorityState->ManualAvoidanceAgents[SoldierIndex].bCanBePushed
++			&& !AuthorityState->CachedManualAvoidanceVelocities[SoldierIndex].IsNearlyZero(1.0f))
++		{
++			// Passive pressure never creates a move order, clears S, or restores an old destination.
++			const auto Snapshot = World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>()->GetSnapshot();
++			const FVector Target = AuthorityState->CachedManualAvoidanceVelocities[SoldierIndex];
++			const float PassiveMaximumSpeed = GetUnitMovementSpeed(Soldier.Team, Soldier.UnitTypeId) * 0.25f;
++			const FVector Velocity = ConstrainEnvironmentVelocity(Soldier, *Snapshot,
++				FMath::VInterpTo(Soldier.Velocity, Target, FixedDeltaSeconds, 8.0f)
++					.GetClampedToMaxSize(PassiveMaximumSpeed), FixedDeltaSeconds, PassiveMaximumSpeed);
++			FNavLocation SurfaceLocation;
++			++AuthorityState->SurfaceMoveCalls;
++			const bool bMoved = CommanderNavigationData && FindMoveAlongCurrentNavigationSurface(
++				*CommanderNavigationData, Soldier.LastValidNavLocation,
++				Soldier.Location + Velocity * FixedDeltaSeconds, SurfaceLocation,
++				AuthorityState->PlanningBudget, Soldier.bNavigationBudgetPending, this);
++			if (bMoved && Snapshot->IsSegmentClear(Soldier.Location, SurfaceLocation.Location,
++				Soldier.AvoidanceRadiusCentimeters, true)
++				&& GuLiCommanderNavigationPolicy::IsSurfaceMoveResultAcceptable(true,
++					Soldier.LastValidNavLocation.Location, SurfaceLocation.Location,
++					MaximumSurfaceStepZCentimeters, MaximumSurfaceSlopeDegrees))
++			{
++				Soldier.Velocity = (SurfaceLocation.Location - Soldier.Location) / FixedDeltaSeconds;
++				Soldier.Location = SurfaceLocation.Location;
++				Soldier.LastValidNavLocation = SurfaceLocation;
++				Soldier.LastMovementUpdateSimulationSeconds = AuthorityState->SimulationSeconds;
++				if (!Soldier.ActiveOrderId)
++				{
++					Soldier.CurrentNavigationWaypoint = Soldier.Location;
++					auto& Move = EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
++					Move.Center = Soldier.Location;
++					Move.DesiredSpeed = FMassInt16Real(0.0f);
++				}
++			}
++			else Soldier.Velocity = FVector::ZeroVector;
++		}
+ 		else if (!bHasMovingOrder || bSuppressMovementForStep[SoldierIndex])
+ 		{
+ 			Soldier.Velocity = FVector::ZeroVector;
+@@ -4149,7 +4141,7 @@ bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
+ 					FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location));
+ 	}
+ 	TArray<FGuLiSoldierId> HitIds;
+-	if (!GuLiCommanderSelectionQuery::ResolveCandidates(Request, PlayerState.GetTeam(), Population, HitIds))
++	if (!GuLiCommanderSelectionQuery::ResolveCandidates(Request, PlayerState.GetTeam(), Population, HitIds, GetWorld()))
+ 	{
+ 		OutAck.Result = EGuLiCommandAckResult::InvalidTarget;
+ 		return false;
+@@ -6045,6 +6037,10 @@ void UGuLiBattleAuthoritySubsystem::ExecuteSelectedUnitSkills(AGuLiBattlePlayerS
+ 	if (!IsAuthorityWorld() || !AuthorityState || !PlayerState.IsCommander() || !RequestId.IsValid()) return;
+ 	TSet<uint32> Visited;
+ 	const double Now = AuthorityState->SimulationSeconds;
++	// One dispatch owns one circle. Keep this separate from RequestId: editor
++	// callers can use a shared root event for several independent dispatches.
++	const FGuid GuidanceBatchId = FGuid::NewGuid();
++	int32 RemainingGuidanceCapacity = INDEX_NONE;
+ 	for (const auto& Cohort : Selection.Cohorts) for (auto Id : Cohort.MemberIds)
+ 	{
+ 		if (Visited.Contains(Id.Value)) continue;
+@@ -6076,9 +6072,23 @@ void UGuLiBattleAuthoritySubsystem::ExecuteSelectedUnitSkills(AGuLiBattlePlayerS
+ 		Context.Level = Soldier.ActiveSkill.Level;
+ 		Context.UnitTypeId = Soldier.UnitTypeId;
+ 		Context.ShotOrdinal = Soldier.ActiveSkill.SuccessfulCasts;
+-		OutResults.Add(GuLiUnitSkillExecution::Execute(Definition, Caster, Soldier.ActiveSkill, Now, GetWorld()->GetTimeSeconds(),
++		const auto* PointConfig = Definition ? Cast<UGuLiPointSkillConfiguration>(Definition->Configuration) : nullptr;
++		const bool bGuidedMissiles = Soldier.UnitTypeId == 2 && PointConfig
++			&& PointConfig->SourceWeaponSlot == TEXT("MissileLauncher")
++			&& Definition->ExecutorClass->IsChildOf(UGuLiWarMachineMissileSkillExecutor::StaticClass());
++		if (bGuidedMissiles)
++		{
++			if (RemainingGuidanceCapacity == INDEX_NONE)
++				RemainingGuidanceCapacity = PointConfig->MaxProjectilesPerActivation;
++			Context.RemainingGuidanceCapacity = RemainingGuidanceCapacity;
++			Context.GuidanceBatchId = GuidanceBatchId;
++		}
++		auto Result = GuLiUnitSkillExecution::Execute(Definition, Caster, Soldier.ActiveSkill, Now, GetWorld()->GetTimeSeconds(),
+ 			[Definition](const FGuLiActiveSkillExecutionContext& Cast, const UDataAsset* Configuration)
+-			{ return Definition->ExecutorClass->GetDefaultObject<UGuLiCommanderSkillExecutor>()->Execute(Cast, Configuration); }));
++			{ return Definition->ExecutorClass->GetDefaultObject<UGuLiCommanderSkillExecutor>()->Execute(Cast, Configuration); });
++		if (bGuidedMissiles && Result.Execution.bSucceeded)
++			RemainingGuidanceCapacity -= Result.Execution.LaunchedProjectileCount;
++		OutResults.Add(MoveTemp(Result));
+ 	}
+ }
+ 
+diff --git a/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.cpp b/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.cpp
+index b786ac51..b35a85b9 100644
+--- a/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.cpp
++++ b/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.cpp
+@@ -468,6 +468,9 @@ bool UGuLiCombatEffectRuntimeSubsystem::PreparePointProjectile(
+     if (!SynchronizeEpoch() || !Definition || !Definition->IsValidDefinition() || !Request.FrozenField.IsValid()
+         || !Request.Motion.IsValid() || Request.SourceTransform.ContainsNaN() || Request.TargetLocation.ContainsNaN() || Request.MuzzleOffset.ContainsNaN()
+         || (Request.GroundWarningStyle && !Request.GroundWarningStyle->IsValidStyle())
++        || (Request.GuidanceBatchId.IsValid() && (!Request.GroundWarningStyle
++            || Request.GuidanceCenter.ContainsNaN() || Request.GuidanceCenter.GetAbsMax() > 10000000
++            || !FMath::IsFinite(Request.GuidanceRadius) || Request.GuidanceRadius <= 0 || Request.GuidanceRadius > 100000))
+         || !PrepareContext(Request.Context, Prepared)) return {};
+     UGuLiSpellFieldDefinition* Field = Definition->ImpactField.LoadSynchronous();
+     if (!Field || !Field->IsValidDefinition()) return {};
+@@ -487,6 +490,9 @@ bool UGuLiCombatEffectRuntimeSubsystem::PreparePointProjectile(
+     if (!Request.bUseAuthoredPointTrajectory)
+     { State.Motion.LiftSeconds = 0; State.Motion.LateralOffset = 0; State.Motion.VerticalCurve = 0; State.Motion.LongitudinalCurve = 0; }
+     State.GroundWarningStyle = Request.GroundWarningStyle;
++    State.GuidanceBatchId = Request.GuidanceBatchId;
++    State.GuidanceCenter = Request.GuidanceCenter;
++    State.GuidanceRadius = Request.GuidanceRadius;
+     State.Radius = Request.FrozenField.Radius;
+     State.Location = Request.SourceTransform.TransformPosition(Request.MuzzleOffset); State.LaunchLocation = State.Location;
+     State.LastTargetLocation = Request.TargetLocation;
+diff --git a/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.h b/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.h
+index 096546fa..b5bcc888 100644
+--- a/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.h
++++ b/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.h
+@@ -112,6 +112,10 @@ struct GULISTRIKE_API FGuLiCombatEffectState
+ 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiProjectileEffectDefinition> ProjectileDefinition;
+ 	/** Optional generic ground cue, frozen at launch and reconstructed by rendering clients. */
+ 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiGroundWarningStyle> GroundWarningStyle;
++	/** Optional shared guidance cue; distinct from each projectile's impact warning. */
++	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FGuid GuidanceBatchId;
++	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantize GuidanceCenter = FVector::ZeroVector;
++	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") float GuidanceRadius = 0.0f;
+ 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiSpellFieldDefinition> FieldDefinition;
+ 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantize Location = FVector::ZeroVector;
+ 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantize Velocity = FVector::ZeroVector;
+@@ -210,6 +214,9 @@ struct GULISTRIKE_API FGuLiCombatAttackRequest
+ 	FGuLiProjectileMotionSettings Motion;
+ 	bool bUseAuthoredPointTrajectory = false;
+ 	UGuLiGroundWarningStyle* GroundWarningStyle = nullptr;
++	FGuid GuidanceBatchId;
++	FVector GuidanceCenter = FVector::ZeroVector;
++	float GuidanceRadius = 0.0f;
+ 	float MaximumTravelDistance = 30000.0f;
+ };
+ 
+diff --git a/Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h b/Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h
+index 4677bee2..898685aa 100644
+--- a/Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h
++++ b/Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h
+@@ -73,6 +73,138 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
+ 
+ };
+ 
++/** DataTable DT_GuLiStrikeCommander_Camera 的行结构（源: GuLiStrikeCommander.xlsx / Camera）。 */
++USTRUCT(BlueprintType)
++struct FGuLiStrikeCommanderCameraRow : public FTableRowBase
++{
++	GENERATED_BODY()
++
++	/** id (int, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	int32 Id = 0;
++
++	/** Note (str, Optional) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	FString Note;
++
++	/** MinimumHeightMeters (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float MinimumHeightMeters = 0.0f;
++
++	/** TacticalStartHeightMeters (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float TacticalStartHeightMeters = 0.0f;
++
++	/** TacticalMaximumHeightMeters (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float TacticalMaximumHeightMeters = 0.0f;
++
++	/** InitialHeightMeters (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float InitialHeightMeters = 0.0f;
++
++	/** NearPitchDegrees (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float NearPitchDegrees = 0.0f;
++
++	/** TacticalPitchDegrees (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float TacticalPitchDegrees = 0.0f;
++
++	/** OverviewPitchDegrees (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float OverviewPitchDegrees = 0.0f;
++
++	/** FieldOfViewDegrees (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float FieldOfViewDegrees = 0.0f;
++
++	/** ZoomStepMultiplier (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float ZoomStepMultiplier = 0.0f;
++
++	/** ZoomInterpolationPerSecond (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float ZoomInterpolationPerSecond = 0.0f;
++
++	/** YawDegreesPerSecond (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float YawDegreesPerSecond = 0.0f;
++
++	/** MoveHeightMultiplierPerSecond (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float MoveHeightMultiplierPerSecond = 0.0f;
++
++	/** MinimumMoveMetersPerSecond (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float MinimumMoveMetersPerSecond = 0.0f;
++
++	/** MaximumMoveMetersPerSecond (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float MaximumMoveMetersPerSecond = 0.0f;
++
++	/** RiseHalfLifeSeconds (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float RiseHalfLifeSeconds = 0.0f;
++
++	/** DescentHalfLifeSeconds (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float DescentHalfLifeSeconds = 0.0f;
++
++	/** MaximumRiseMetersPerSecond (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float MaximumRiseMetersPerSecond = 0.0f;
++
++	/** MaximumDescentMetersPerSecond (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float MaximumDescentMetersPerSecond = 0.0f;
++
++	/** LookAheadSeconds (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float LookAheadSeconds = 0.0f;
++
++	/** BoundaryPaddingMeters (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float BoundaryPaddingMeters = 0.0f;
++
++	/** PivotClearanceMeters (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float PivotClearanceMeters = 0.0f;
++
++	/** BoomClearanceMeters (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float BoomClearanceMeters = 0.0f;
++
++	/** CameraClearanceMeters (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float CameraClearanceMeters = 0.0f;
++
++	/** BoomSampleSpacingMeters (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float BoomSampleSpacingMeters = 0.0f;
++
++	/** OverviewTransitionSeconds (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float OverviewTransitionSeconds = 0.0f;
++
++	/** OverviewPaddingFraction (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float OverviewPaddingFraction = 0.0f;
++
++	/** OverviewUnitIconPixels (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float OverviewUnitIconPixels = 0.0f;
++
++	/** OverviewBuildingIconPixels (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float OverviewBuildingIconPixels = 0.0f;
++
++	/** OverviewYawDegrees (float, Necessary) */
++	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
++	float OverviewYawDegrees = 0.0f;
++
++};
++
+ /** DataTable DT_GuLiStrikeCommander_Skills 的行结构（源: GuLiStrikeSecondaryWeapons.xlsx / Skills）。 */
+ USTRUCT(BlueprintType)
+ struct FGuLiStrikeCommanderSkillsRow : public FTableRowBase
+diff --git a/Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSubsystem.cpp b/Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSubsystem.cpp
+index b5b9c3c6..b1f846c2 100644
+--- a/Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSubsystem.cpp
++++ b/Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSubsystem.cpp
+@@ -11,6 +11,7 @@
+ #include "Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h"
+ #include "Gameplay/Skills/GuLiSkillResolver.h"
+ #include "GuLiStrike.h"
++#include "UObject/UnrealType.h"
+ 
+ namespace
+ {
+@@ -50,6 +51,7 @@ void UGuLiCommanderDataSubsystem::Initialize(FSubsystemCollectionBase& Collectio
+ 	Units = GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>();
+ 	Fields = GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>();
+ 	const auto* Settings = GetDefault<UGuLiCommanderDataSettings>();
++	LoadCameraConfig(Settings);
+ 	LoadSkillCatalog(Settings);
+ 	if (!Units->IsCatalogValid())
+ 	{
+@@ -59,6 +61,41 @@ void UGuLiCommanderDataSubsystem::Initialize(FSubsystemCollectionBase& Collectio
+ 	LoadWeaponMountCatalog(Settings);
+ }
+ 
++void UGuLiCommanderDataSubsystem::LoadCameraConfig(const UGuLiCommanderDataSettings* Settings)
++{
++	bCameraConfigValid = false;
++	UDataTable* Table = Settings ? Settings->CameraDataTable.LoadSynchronous() : nullptr;
++	const auto* Row = Table && Table->GetRowStruct() == FGuLiStrikeCommanderCameraRow::StaticStruct()
++		? Table->FindRow<FGuLiStrikeCommanderCameraRow>(TEXT("Default"), TEXT("CommanderCamera"), false) : nullptr;
++	CameraConfigError = TEXT("Missing/invalid Commander Camera table (Camera / 1 / Default).");
++	if (Row && Row->Id == 1 && Table->GetRowMap().Num() == 1)
++	{
++		bool bFinitePositive = true;
++		for (TFieldIterator<FFloatProperty> It(FGuLiStrikeCommanderCameraRow::StaticStruct()); It; ++It)
++		{
++			const float Value = It->GetPropertyValue_InContainer(Row);
++			const FName Field = It->GetFName();
++			const bool bValidRange = Field == TEXT("OverviewYawDegrees") ? Value >= -180 && Value <= 180
++				: Field == TEXT("OverviewPaddingFraction") ? Value >= 0 : Value > 0;
++			bFinitePositive &= FMath::IsFinite(Value) && bValidRange;
++		}
++		if (bFinitePositive && Row->MinimumHeightMeters < Row->TacticalStartHeightMeters
++			&& Row->TacticalStartHeightMeters < Row->TacticalMaximumHeightMeters
++			&& Row->InitialHeightMeters >= Row->MinimumHeightMeters && Row->InitialHeightMeters <= Row->TacticalMaximumHeightMeters
++			&& Row->NearPitchDegrees < Row->TacticalPitchDegrees && Row->TacticalPitchDegrees < 90
++			&& Row->OverviewPitchDegrees == 90 && Row->FieldOfViewDegrees >= 10 && Row->FieldOfViewDegrees <= 120
++			&& Row->ZoomStepMultiplier > 1 && Row->OverviewPaddingFraction < .4f
++			&& Row->MinimumMoveMetersPerSecond <= Row->MaximumMoveMetersPerSecond)
++		{
++			CameraConfig = *Row;
++			CameraConfigError.Reset();
++			bCameraConfigValid = true;
++			return;
++		}
++	}
++	UE_LOG(LogGuLiStrike, Error, TEXT("%s Camera input disabled until a valid table is imported."), *CameraConfigError);
++}
++
+ const FGuLiTeleportFieldConfig* UGuLiCommanderDataSubsystem::FindTeleportFieldConfig(const int32 Level) const
+ {
+ 	return Fields->FindTeleportField(Level);

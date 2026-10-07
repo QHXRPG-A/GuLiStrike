@@ -256,12 +256,12 @@ void UGuLiCommanderHUDWidget::BuildConsoleLayout()
 	PlaceConsoleWidget(Top,MakeConsoleText(TEXT("TXT_RosterValue"),TEXT("— / —"),17),{745,11},{230,28});
 	PlaceConsoleWidget(Top,MakeConsoleText(TEXT("TXT_Energy"),GuLiGameText::Text(TEXT("UI.ConsoleLayout.027")),17),{1020,11},{364,28});
 	// Context and queue drawers remain separate from the battle view when not needed.
-	ContextPanel=MakeConsolePanel(Root,TEXT("C_Context"),{0,0},{460,324});
+	ContextPanel=MakeConsolePanel(Root,TEXT("C_Context"),{0,0},{460,411});
 	if(auto* S=Cast<UCanvasPanelSlot>(ContextPanel->GetParent()->Slot))
 	{ S->SetAnchors(FAnchors(1,1)); S->SetAlignment({1,1}); S->SetPosition({-16,-344}); }
 	ContextCaption=MakeConsoleText(TEXT("TXT_Context"),TEXT(""),16); ContextCaption->SetAutoWrapText(true);
 	PlaceConsoleWidget(ContextPanel,ContextCaption,{16,12},{428,116});
-	for(int32 I=1;I<=6;++I)
+	for(int32 I=1;I<=7;++I)
 	{
 		auto* B=MakeActionButton(*FString::Printf(TEXT("BTN_Building_%d"),I),FString::FromInt(I),TEXT("Building"),I,*FString::Printf(TEXT("Building.%d"),I));
 		PlaceConsoleWidget(ContextPanel,B,{float(14+((I-1)%3)*144),float(132+((I-1)/3)*87)},{136,78});

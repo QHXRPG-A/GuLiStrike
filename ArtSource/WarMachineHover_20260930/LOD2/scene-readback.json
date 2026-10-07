@@ -1,0 +1,122 @@
+{
+  "success": true,
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "runtime_pie": "not_run",
+  "native_build": "not_run_new_lod_native_pending",
+  "actors": [
+    {
+      "label": "CommanderDistanceCull_Observe_Tactical300",
+      "class": "CameraActor",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_13",
+      "location_cm": [
+        -13006.226146291294,
+        -16000.0,
+        30120.0
+      ],
+      "rotation": [
+        0.0,
+        -55.0,
+        0.0
+      ],
+      "editor_only": true,
+      "fov": 45.0
+    },
+    {
+      "label": "CommanderDistanceCull_Observe_Tactical700",
+      "class": "CameraActor",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_14",
+      "location_cm": [
+        -41014.52767467969,
+        -16000.0,
+        70120.0
+      ],
+      "rotation": [
+        0.0,
+        -55.0,
+        0.0
+      ],
+      "editor_only": true,
+      "fov": 45.0
+    },
+    {
+      "label": "CommanderLOD_DistanceCull_Instructions",
+      "class": "Note",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_43",
+      "location_cm": [
+        6500.0,
+        -17000.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "editor_only": true,
+      "text": "指挥官视觉距离裁剪修复（2026-09-30）\n前置：本轮C++尚未编译。需先获准构建并加载最新GuLiStrikeEditor；已有正式Niagara已保存。场景数据回读不代表运行效果验收。\n规则：第一档近景、第二档战术不再受旧200m/360m/血条60m独立距离裁剪；第三档总览隐藏世界模型、喷焰、拖尾、战斗特效和世界血条，保留原总览UI。\n真实入口：本图Play进入指挥官，gs.GM.Commander.Camera.Debug 1显示档位。Height命令完整前缀gs.GM.Commander.Camera.Height，先35，再300、700；观察CameraActor仅用于编辑器取景，不替代真实CameraPawn档位。\n样本：WarMachineHover_PlayablePreview位于(8000,-16000,0)cm，保留13个51float样本；本入口旁的Tactical300/700观察镜头指向该区域。\n1. 在第一、第二档观察盘底倒三角始终贴盘；移动起步短尾约1秒渐长到速度对应5–15米，停下0.30秒淡出。用真实WM01部队移动、停下、转弯复验；静态样本不能代替实战。\n2. 300m和700m下令实战攻击，观察枪口焰、弹道、持续场、受击、死亡爆炸和残骸；选中/受伤血条和选择圈不因旧距离消失。解锁导弹仓继续沿RogueCards_F4_Entry真实F4流程，Q导弹沿原技能入口。\n3. 向外滚轮进入第三档，总览隐藏上述世界表现；向内返回第二档恢复持续表现，新开火正常，不补播旧爆炸。镜头可继续按CommanderCamera_Instructions检查边缘和平移。\n4. 有僚机/地面机甲参加战斗时，第二档观察飞行尾迹/火箭跳喷口；本次只改显示规则，非指挥官视图保留原距离后备。\n请反馈档位、镜头高度及具体消失对象；助手未启动PIE、自动化或性能测试。"
+    }
+  ],
+  "fixture": {
+    "label": "WarMachineHover_PlayablePreview",
+    "location_cm": [
+      8000.0,
+      -16000.0,
+      0.0
+    ],
+    "instances": 13,
+    "custom_floats": 51,
+    "mesh": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid"
+  },
+  "vfx_rows": [
+    {
+      "Name": "RocketJet",
+      "Id": 10,
+      "Note": "玩家地面机甲火箭跳双侧持续喷气",
+      "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_RocketJet.NS_GroundMech_RocketJet",
+      "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)"
+    },
+    {
+      "Name": "WarMachineHover",
+      "Id": 48,
+      "Note": "重防号盘底喷焰与5–15米渐长拖尾；1024喷口每批；指挥官前两档显示，第三档总览隐藏",
+      "ResourcePath": "/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool",
+      "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)"
+    }
+  ],
+  "camera_row": {
+    "Name": "Default",
+    "Id": 1,
+    "Note": "三档镜头；距离米、俯角向下为正、时间秒。x由战场和HUD可用画面计算；数值修改后导出并导入Camera表。",
+    "MinimumHeightMeters": 35,
+    "TacticalStartHeightMeters": 300,
+    "TacticalMaximumHeightMeters": 700,
+    "InitialHeightMeters": 133.4,
+    "NearPitchDegrees": 25,
+    "TacticalPitchDegrees": 55,
+    "OverviewPitchDegrees": 90,
+    "FieldOfViewDegrees": 45,
+    "ZoomStepMultiplier": 1.18,
+    "ZoomInterpolationPerSecond": 8,
+    "YawDegreesPerSecond": 70,
+    "MoveHeightMultiplierPerSecond": 1.4,
+    "MinimumMoveMetersPerSecond": 12,
+    "MaximumMoveMetersPerSecond": 92,
+    "RiseHalfLifeSeconds": 0.2,
+    "DescentHalfLifeSeconds": 0.35,
+    "MaximumRiseMetersPerSecond": 60,
+    "MaximumDescentMetersPerSecond": 30,
+    "LookAheadSeconds": 0.75,
+    "BoundaryPaddingMeters": 10,
+    "PivotClearanceMeters": 0.3,
+    "BoomClearanceMeters": 0.4,
+    "CameraClearanceMeters": 1,
+    "BoomSampleSpacingMeters": 20,
+    "OverviewTransitionSeconds": 0.6,
+    "OverviewPaddingFraction": 0.05,
+    "OverviewUnitIconPixels": 14,
+    "OverviewBuildingIconPixels": 20,
+    "OverviewYawDegrees": 0
+  },
+  "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode"
+}

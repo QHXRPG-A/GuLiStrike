@@ -1,3 +1,5 @@
+> 当前指挥官三档制作入口：[../CommanderLOD_20261005/README.md](../CommanderLOD_20261005/README.md)。以下是冻结来源与历史操作记录，旧脚本已撤出生产默认入口。
+
 # Mass 无骨骼机械动画
 
 重防号与扫荡者采用静态 ISM + 刚性部件 WPO。正式运行不创建骨骼组件或动画蓝图；共享表现代码仍批量更新每单位的姿态数据，并非完全没有 CPU 更新。
@@ -28,10 +30,12 @@ UV0 保持原贴图；全精度 UV1 存局部枢轴 XY，UV2 存 Z 与整数部�
 
 ## 验证与限制
 
-`verification.json` 是检查状态入口。`ue-import.json`、`data-import.json`、`material-diagnostics.json`、`lod-verification.json`、`scene-delivery.json` 为证据；`Previews/` 为实际 UE 静态 ISM 动作姿态图。导出的渲染 LOD0–3 均保留三组 UV，没有非整数部件或跨部件三角形。低 LOD 允许简化小枪管；不会用空网格隐藏整个单位。
+指挥官模型统一为 LOD0 近景、LOD1 中景、LOD2 远景；当前规范与候选见[本次迁移](../../Progress/RequirementDocument/20261005-指挥官三档LOD纠正与资源迁移.md)。本轮保留已审近景，新的实际版本 B 待审核，正式资源待放行后切换。
 
 `ue-import.json` 中高阶 LOD 的 source UV 数为 0，是 UE 自动减面 LOD 没有独立 Source MeshDescription；实际 RenderData 导出回读均为 3，见 `lod-verification.json`。
 
 用户批准后，源码版UE5.7的`GuLiStrikeEditor Win64 Development`已构建成功，8份模块清单BuildId一致，证据见`native-build-report.json`。编辑器尚未启动加载，新自动化契约尚未运行。预览图不能证明战斗、网络、传送、死亡与复用已通过。现有 Mass 地图配置混编总数 500；最大相机臂长 36000 cm。最大视距实际可见数与 Game/Draw/GPU 开销尚未采样，不能填为通过或零开销。
 
 指挥官HUD源码新增离地高度和画面中心地面距离，位于FPS/RTT下方、10Hz更新、米/一位小数。文案资产回读见`camera-text-import.json`；`MassRigid_CameraDistance`为地图内采样说明。此读数已通过C++构建，但当前没有实机HUD或性能采样结果。测试地图本身遵循既有Git忽略规则，已保存的本地布置可由`Scripts/author_mass_rigid_scene.py`重建。
+
+> 2026-10-05 LOD 勘误：按用户明确指令更正以上相关段落和预算说明；其他历史内容保留。修改范围及原文校验见[勘误清单](../CommanderLOD_20261005/Reports/document_erratum.json)。冻结模型及原始机器回读不作为当前制作入口。

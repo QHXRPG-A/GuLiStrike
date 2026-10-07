@@ -1,0 +1,78 @@
+{
+  "name": "SweeperSummon",
+  "id": 5,
+  "display_name": "扫荡者",
+  "blend": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\SweeperSummon\\SweeperSummon_3Tier.blend",
+  "triangles": [
+    5456,
+    1355,
+    220
+  ],
+  "meshes": [
+    {
+      "source": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 5456,
+          "mesh_names": [
+            "SM_Sweeper_Rigid_LOD0"
+          ],
+          "uv_channels": [
+            3
+          ],
+          "materials": [
+            1
+          ]
+        },
+        {
+          "index": 1,
+          "triangles": 1355,
+          "mesh_names": [
+            "SM_Sweeper_Rigid_LOD1"
+          ],
+          "uv_channels": [
+            3
+          ],
+          "materials": [
+            1
+          ]
+        },
+        {
+          "index": 2,
+          "triangles": 220,
+          "mesh_names": [
+            "SM_Sweeper_Rigid_LOD2"
+          ],
+          "uv_channels": [
+            3
+          ],
+          "materials": [
+            1
+          ]
+        }
+      ],
+      "lod0_signature": "18ba6264e83e62fb9adb5d9c29c92f123cd7fb17a6c377ccb01f7d83c7f562ea",
+      "source_lod0_signature": "18ba6264e83e62fb9adb5d9c29c92f123cd7fb17a6c377ccb01f7d83c7f562ea",
+      "lod0_preserved": true,
+      "native_triangles": [
+        5456,
+        1363,
+        220
+      ],
+      "fbx_triangles": [
+        5456,
+        1355,
+        220
+      ],
+      "export_triangle_delta": [
+        0,
+        8,
+        0
+      ],
+      "armatures": 0
+    }
+  ],
+  "lod0_preserved": true,
+  "approval": "pending"
+}

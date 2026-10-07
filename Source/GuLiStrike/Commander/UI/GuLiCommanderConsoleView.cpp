@@ -208,7 +208,7 @@ void UGuLiCommanderHUDWidget::RefreshConsoleContext()
 	ContextPanel->GetParent()->SetVisibility((Build || Transit) && !bMenuOpen?ESlateVisibility::SelfHitTestInvisible:ESlateVisibility::Collapsed);
 	ContextCaption->SetText(Build?FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.062"))+Building->GetPlacementStatusText().ToString()):
 		Teleport?FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.063"))+Teleport->GetStatusText().ToString()):FText::GetEmpty());
-	for(int32 I=1;I<=6;++I)
+	for(int32 I=1;I<=7;++I)
 	{
 		auto* B=Cast<UGuLiCommanderActionButton>(FindRuntimeWidget(*FString::Printf(TEXT("BTN_Building_%d"),I))); if(!B) continue;
 		B->SetVisibility(Build?ESlateVisibility::Visible:ESlateVisibility::Collapsed);

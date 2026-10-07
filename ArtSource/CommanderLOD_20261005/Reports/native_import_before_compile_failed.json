@@ -1,0 +1,41 @@
+{
+  "tables": [
+    {
+      "asset": "DT_GuLiStrikeCommander_Soldiers",
+      "source_rows": [
+        "DefaultSoldier",
+        "WM01",
+        "ElectromagneticMiner",
+        "ConstructionVehicle",
+        "SweeperSummon",
+        "BiZhiMao"
+      ],
+      "created": false,
+      "row_names": [
+        "DefaultSoldier",
+        "WM01",
+        "ElectromagneticMiner",
+        "ConstructionVehicle",
+        "SweeperSummon",
+        "BiZhiMao"
+      ],
+      "row_checks": {
+        "DefaultSoldier": false,
+        "WM01": false,
+        "ElectromagneticMiner": false,
+        "ConstructionVehicle": false,
+        "SweeperSummon": false,
+        "BiZhiMao": false
+      },
+      "imported": false,
+      "err": "Traceback (most recent call last):\n  File \"import_data_to_engine.py\", line 250, in import_table\nRuntimeError: row value mismatch: {'DefaultSoldier': False, 'WM01': False, 'ElectromagneticMiner': False, 'ConstructionVehicle': False, 'SweeperSummon': False, 'BiZhiMao': False}\n"
+    }
+  ],
+  "config_wired": [],
+  "unwired": [
+    "DT_GuLiStrikeCommander_Soldiers（WIRING 未登记，已导入但未接线）"
+  ],
+  "errors": [],
+  "part_ids": {},
+  "orphan_tables": []
+}

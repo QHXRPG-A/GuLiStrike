@@ -1,0 +1,1212 @@
+{
+  "success": true,
+  "version": "SSF_Reference_A_v6",
+  "source_version": "SSF_Reference_A_v3",
+  "modified_assets": [
+    "MilitaryFactory",
+    "StrategyCenter"
+  ],
+  "actual_materials_checked": 90,
+  "changed_materials": 5,
+  "unchanged_shader_graphs": 85,
+  "all_other_eight_assets_unchanged": true,
+  "all_other_asset_renders_same_bytes": 34,
+  "material_checks": [
+    {
+      "asset": "AirBase",
+      "role": "Primary",
+      "material": "A3_AirBase_Primary_LineMask_AirBase_LineMask",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "80f153a25f931b7bf2271c48b9205f3a74a7f0f555813d16067209a36217ae10",
+      "shader_signature_after": "80f153a25f931b7bf2271c48b9205f3a74a7f0f555813d16067209a36217ae10"
+    },
+    {
+      "asset": "AirBase",
+      "role": "Equipment",
+      "material": "A3_AirBase_Equipment_LineMask_AirBase_LineMask",
+      "source_hex": "#274E61",
+      "output_hex": "#274E61",
+      "changed": false,
+      "shader_signature_before": "8ab1ef632e9050c2cdf68563ef43053a0892f40b6b441b6e7cce84dd16151c08",
+      "shader_signature_after": "8ab1ef632e9050c2cdf68563ef43053a0892f40b6b441b6e7cce84dd16151c08"
+    },
+    {
+      "asset": "AirBase",
+      "role": "Frame",
+      "material": "A3_AirBase_Frame_LineMask_AirBase_LineMask",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "shader_signature_before": "cff5e9a4f9dec1494687975df9539baae523061b09a2de46e8729423c954f792",
+      "shader_signature_after": "cff5e9a4f9dec1494687975df9539baae523061b09a2de46e8729423c954f792"
+    },
+    {
+      "asset": "AirBase",
+      "role": "Orange",
+      "material": "A3_AirBase_Orange_LineMask_AirBase_LineMask",
+      "source_hex": "#FEE4D9",
+      "output_hex": "#FEE4D9",
+      "changed": false,
+      "shader_signature_before": "7cd59ea769a93b477cee1b71bca75e76918ebccbf19ab707efa6dc05365e9c06",
+      "shader_signature_after": "7cd59ea769a93b477cee1b71bca75e76918ebccbf19ab707efa6dc05365e9c06"
+    },
+    {
+      "asset": "AirBase",
+      "role": "Berry",
+      "material": "A3_AirBase_Berry_LineMask_AirBase_LineMask",
+      "source_hex": "#FEE4D9",
+      "output_hex": "#FEE4D9",
+      "changed": false,
+      "shader_signature_before": "7cd59ea769a93b477cee1b71bca75e76918ebccbf19ab707efa6dc05365e9c06",
+      "shader_signature_after": "7cd59ea769a93b477cee1b71bca75e76918ebccbf19ab707efa6dc05365e9c06"
+    },
+    {
+      "asset": "AirBase",
+      "role": "Pink",
+      "material": "A3_AirBase_Pink_LineMask_AirBase_LineMask",
+      "source_hex": "#274E61",
+      "output_hex": "#274E61",
+      "changed": false,
+      "shader_signature_before": "8ab1ef632e9050c2cdf68563ef43053a0892f40b6b441b6e7cce84dd16151c08",
+      "shader_signature_after": "8ab1ef632e9050c2cdf68563ef43053a0892f40b6b441b6e7cce84dd16151c08"
+    },
+    {
+      "asset": "AirBase",
+      "role": "Platform",
+      "material": "A3_AirBase_Platform_LineMask_AirBase_LineMask",
+      "source_hex": "#274E61",
+      "output_hex": "#274E61",
+      "changed": false,
+      "shader_signature_before": "11a1f92b8198970e99d78c902c0022304d757ad968b77c119f0f6f2dfc2b07f5",
+      "shader_signature_after": "11a1f92b8198970e99d78c902c0022304d757ad968b77c119f0f6f2dfc2b07f5"
+    },
+    {
+      "asset": "AirBase",
+      "role": "PlatformTop",
+      "material": "A3_AirBase_PlatformTop_LineMask_AirBase_LineMask",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "95baa56e02a6ac9f5de4ecb3ab308a540bfb9464277efbf11f78f97675d51cb7",
+      "shader_signature_after": "95baa56e02a6ac9f5de4ecb3ab308a540bfb9464277efbf11f78f97675d51cb7"
+    },
+    {
+      "asset": "AirBase",
+      "role": "Ink",
+      "material": "A3_AirBase_Ink_LineMask_AirBase_LineMask",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "shader_signature_before": "cff5e9a4f9dec1494687975df9539baae523061b09a2de46e8729423c954f792",
+      "shader_signature_after": "cff5e9a4f9dec1494687975df9539baae523061b09a2de46e8729423c954f792"
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Primary",
+      "material": "A3_CloningCenter_Primary_LineMask_CloningCenter_LineMask",
+      "source_hex": "#EABCBA",
+      "output_hex": "#EABCBA",
+      "changed": false,
+      "shader_signature_before": "b75460a2b144cc6d96a07d3e6b6631e6fba5eba21cc0f52ba604a97642b512b6",
+      "shader_signature_after": "b75460a2b144cc6d96a07d3e6b6631e6fba5eba21cc0f52ba604a97642b512b6"
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Equipment",
+      "material": "A3_CloningCenter_Equipment_LineMask_CloningCenter_LineMask",
+      "source_hex": "#835061",
+      "output_hex": "#835061",
+      "changed": false,
+      "shader_signature_before": "ec9ff099b32025839f077f468b089935717c1280241e5ad27014e0553cb65b43",
+      "shader_signature_after": "ec9ff099b32025839f077f468b089935717c1280241e5ad27014e0553cb65b43"
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Frame",
+      "material": "A3_CloningCenter_Frame_LineMask_CloningCenter_LineMask",
+      "source_hex": "#45184D",
+      "output_hex": "#45184D",
+      "changed": false,
+      "shader_signature_before": "83d50aaef2454fe76c4575a4153db649cd806b06dc023972c4c8fd4126b9de2f",
+      "shader_signature_after": "83d50aaef2454fe76c4575a4153db649cd806b06dc023972c4c8fd4126b9de2f"
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Orange",
+      "material": "A3_CloningCenter_Orange_LineMask_CloningCenter_LineMask",
+      "source_hex": "#FEE4D9",
+      "output_hex": "#FEE4D9",
+      "changed": false,
+      "shader_signature_before": "7ea68e579466325129c8f171e05849300a52d0df86d972f42f687ffc8242e01f",
+      "shader_signature_after": "7ea68e579466325129c8f171e05849300a52d0df86d972f42f687ffc8242e01f"
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Berry",
+      "material": "A3_CloningCenter_Berry_LineMask_CloningCenter_LineMask",
+      "source_hex": "#FEE4D9",
+      "output_hex": "#FEE4D9",
+      "changed": false,
+      "shader_signature_before": "7ea68e579466325129c8f171e05849300a52d0df86d972f42f687ffc8242e01f",
+      "shader_signature_after": "7ea68e579466325129c8f171e05849300a52d0df86d972f42f687ffc8242e01f"
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Pink",
+      "material": "A3_CloningCenter_Pink_LineMask_CloningCenter_LineMask",
+      "source_hex": "#835061",
+      "output_hex": "#835061",
+      "changed": false,
+      "shader_signature_before": "ec9ff099b32025839f077f468b089935717c1280241e5ad27014e0553cb65b43",
+      "shader_signature_after": "ec9ff099b32025839f077f468b089935717c1280241e5ad27014e0553cb65b43"
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Platform",
+      "material": "A3_CloningCenter_Platform_LineMask_CloningCenter_LineMask",
+      "source_hex": "#274E61",
+      "output_hex": "#274E61",
+      "changed": false,
+      "shader_signature_before": "66445685de53e7b520b313a36a6778b27082acb0f55eeac52adc81ababf83be7",
+      "shader_signature_after": "66445685de53e7b520b313a36a6778b27082acb0f55eeac52adc81ababf83be7"
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "PlatformTop",
+      "material": "A3_CloningCenter_PlatformTop_LineMask_CloningCenter_LineMask",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "a1615b24f111b4bdc25406e567f3ad131b4512275fa84fcfe5b816fa74ec535b",
+      "shader_signature_after": "a1615b24f111b4bdc25406e567f3ad131b4512275fa84fcfe5b816fa74ec535b"
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Ink",
+      "material": "A3_CloningCenter_Ink_LineMask_CloningCenter_LineMask",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "shader_signature_before": "73bf79ccddfd3997396d9fab0b69587fe57b2fd706418eb22500ef11bb0d630d",
+      "shader_signature_after": "73bf79ccddfd3997396d9fab0b69587fe57b2fd706418eb22500ef11bb0d630d"
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Primary",
+      "material": "A3_CommandCenter_Primary_LineMask_CommandCenter_LineMask",
+      "source_hex": "#A34053",
+      "output_hex": "#A34053",
+      "changed": false,
+      "shader_signature_before": "56606afc78d439a511cc1eb62de9901530cc5f99b7c7a5689a1c95a0dfea8d05",
+      "shader_signature_after": "56606afc78d439a511cc1eb62de9901530cc5f99b7c7a5689a1c95a0dfea8d05"
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Equipment",
+      "material": "A3_CommandCenter_Equipment_LineMask_CommandCenter_LineMask",
+      "source_hex": "#E3B6B1",
+      "output_hex": "#E3B6B1",
+      "changed": false,
+      "shader_signature_before": "ac4bb4daed14e64efb6742b7ba62fcfd91779ef244c84e964068643947c578c0",
+      "shader_signature_after": "ac4bb4daed14e64efb6742b7ba62fcfd91779ef244c84e964068643947c578c0"
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Frame",
+      "material": "A3_CommandCenter_Frame_LineMask_CommandCenter_LineMask",
+      "source_hex": "#662249",
+      "output_hex": "#662249",
+      "changed": false,
+      "shader_signature_before": "198a68f66bef93fc6decb84892fecfa14af57f89dc47eb09ac0ab0bffebe0b3e",
+      "shader_signature_after": "198a68f66bef93fc6decb84892fecfa14af57f89dc47eb09ac0ab0bffebe0b3e"
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Orange",
+      "material": "A3_CommandCenter_Orange_LineMask_CommandCenter_LineMask",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "59cb004d8d2081744c6335d60ac518b48159b9cec5f9314c7dc241bfd6aafff5",
+      "shader_signature_after": "59cb004d8d2081744c6335d60ac518b48159b9cec5f9314c7dc241bfd6aafff5"
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Berry",
+      "material": "A3_CommandCenter_Berry_LineMask_CommandCenter_LineMask",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "59cb004d8d2081744c6335d60ac518b48159b9cec5f9314c7dc241bfd6aafff5",
+      "shader_signature_after": "59cb004d8d2081744c6335d60ac518b48159b9cec5f9314c7dc241bfd6aafff5"
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Pink",
+      "material": "A3_CommandCenter_Pink_LineMask_CommandCenter_LineMask",
+      "source_hex": "#E3B6B1",
+      "output_hex": "#E3B6B1",
+      "changed": false,
+      "shader_signature_before": "ac4bb4daed14e64efb6742b7ba62fcfd91779ef244c84e964068643947c578c0",
+      "shader_signature_after": "ac4bb4daed14e64efb6742b7ba62fcfd91779ef244c84e964068643947c578c0"
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Platform",
+      "material": "A3_CommandCenter_Platform_LineMask_CommandCenter_LineMask",
+      "source_hex": "#274E61",
+      "output_hex": "#274E61",
+      "changed": false,
+      "shader_signature_before": "85ec807824b77a48244aae6725537a716e90c4357c5fd4346338888f7dd4345e",
+      "shader_signature_after": "85ec807824b77a48244aae6725537a716e90c4357c5fd4346338888f7dd4345e"
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "PlatformTop",
+      "material": "A3_CommandCenter_PlatformTop_LineMask_CommandCenter_LineMask",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "135b02fb8bc618bea2d2a5b752054bc426a51de0c5721d934fa03dcc5bbb7a36",
+      "shader_signature_after": "135b02fb8bc618bea2d2a5b752054bc426a51de0c5721d934fa03dcc5bbb7a36"
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Ink",
+      "material": "A3_CommandCenter_Ink_LineMask_CommandCenter_LineMask",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "shader_signature_before": "0fa1f6598be0bf2066db6c0beeba4fb327d82f0b9ef5c9fc0f65f8e2ad2693a4",
+      "shader_signature_after": "0fa1f6598be0bf2066db6c0beeba4fb327d82f0b9ef5c9fc0f65f8e2ad2693a4"
+    },
+    {
+      "asset": "Floor",
+      "role": "Primary",
+      "material": "A3_Floor_Primary",
+      "source_hex": "#FEE4D9",
+      "output_hex": "#FEE4D9",
+      "changed": false,
+      "shader_signature_before": "4f188407a6483264c4723e0b5a0e30c04dc8d013f69f2d137925fa8d3535f096",
+      "shader_signature_after": "4f188407a6483264c4723e0b5a0e30c04dc8d013f69f2d137925fa8d3535f096"
+    },
+    {
+      "asset": "Floor",
+      "role": "Equipment",
+      "material": "A3_Floor_Equipment",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "66d8fe3e84bd9886e02947510e5d227dc08beab9eeefc14cec998c4cebea4668",
+      "shader_signature_after": "66d8fe3e84bd9886e02947510e5d227dc08beab9eeefc14cec998c4cebea4668"
+    },
+    {
+      "asset": "Floor",
+      "role": "Frame",
+      "material": "A3_Floor_Frame",
+      "source_hex": "#032E30",
+      "output_hex": "#032E30",
+      "changed": false,
+      "shader_signature_before": "98809be33139b3176cedeeab466162909da215a4cfaa15165efaa44648cef13f",
+      "shader_signature_after": "98809be33139b3176cedeeab466162909da215a4cfaa15165efaa44648cef13f"
+    },
+    {
+      "asset": "Floor",
+      "role": "Orange",
+      "material": "A3_Floor_Orange",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "31ad7ba2b5aac15ae8d74e6dcf840489bef95df98156748c574360b2be276523",
+      "shader_signature_after": "31ad7ba2b5aac15ae8d74e6dcf840489bef95df98156748c574360b2be276523"
+    },
+    {
+      "asset": "Floor",
+      "role": "Berry",
+      "material": "A3_Floor_Berry",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "31ad7ba2b5aac15ae8d74e6dcf840489bef95df98156748c574360b2be276523",
+      "shader_signature_after": "31ad7ba2b5aac15ae8d74e6dcf840489bef95df98156748c574360b2be276523"
+    },
+    {
+      "asset": "Floor",
+      "role": "Pink",
+      "material": "A3_Floor_Pink",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "66d8fe3e84bd9886e02947510e5d227dc08beab9eeefc14cec998c4cebea4668",
+      "shader_signature_after": "66d8fe3e84bd9886e02947510e5d227dc08beab9eeefc14cec998c4cebea4668"
+    },
+    {
+      "asset": "Floor",
+      "role": "Platform",
+      "material": "A3_Floor_Platform",
+      "source_hex": "#274E61",
+      "output_hex": "#274E61",
+      "changed": false,
+      "shader_signature_before": "b67806e23bc31ae257c406488462a95f313a51bd8abacb957fa751b8e347118d",
+      "shader_signature_after": "b67806e23bc31ae257c406488462a95f313a51bd8abacb957fa751b8e347118d"
+    },
+    {
+      "asset": "Floor",
+      "role": "PlatformTop",
+      "material": "A3_Floor_PlatformTop",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "66d8fe3e84bd9886e02947510e5d227dc08beab9eeefc14cec998c4cebea4668",
+      "shader_signature_after": "66d8fe3e84bd9886e02947510e5d227dc08beab9eeefc14cec998c4cebea4668"
+    },
+    {
+      "asset": "Floor",
+      "role": "Ink",
+      "material": "A3_Floor_Ink",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "shader_signature_before": "a21b5c35e240bb7ad5fe4227252f78aa5af6b1f596bc7e464a02a1effed86734",
+      "shader_signature_after": "a21b5c35e240bb7ad5fe4227252f78aa5af6b1f596bc7e464a02a1effed86734"
+    },
+    {
+      "asset": "Lamp",
+      "role": "Primary",
+      "material": "A3_Lamp_Primary_LineMask_Lamp_LineMask",
+      "source_hex": "#FEE4D9",
+      "output_hex": "#FEE4D9",
+      "changed": false,
+      "shader_signature_before": "36a8197c08b3339bd9d4c88da7226512dfb14ef444395345f689401b1a312370",
+      "shader_signature_after": "36a8197c08b3339bd9d4c88da7226512dfb14ef444395345f689401b1a312370"
+    },
+    {
+      "asset": "Lamp",
+      "role": "Equipment",
+      "material": "A3_Lamp_Equipment_LineMask_Lamp_LineMask",
+      "source_hex": "#0A6F73",
+      "output_hex": "#0A6F73",
+      "changed": false,
+      "shader_signature_before": "af0abea8989ff7c2222a35af4796d802ce3c4a3ab36536f00e51b1efc3062ac5",
+      "shader_signature_after": "af0abea8989ff7c2222a35af4796d802ce3c4a3ab36536f00e51b1efc3062ac5"
+    },
+    {
+      "asset": "Lamp",
+      "role": "Frame",
+      "material": "A3_Lamp_Frame_LineMask_Lamp_LineMask",
+      "source_hex": "#032E30",
+      "output_hex": "#032E30",
+      "changed": false,
+      "shader_signature_before": "598236dc4de8c2923adb2579d7030de0750bf1a15b10ddea084fb8881a35a092",
+      "shader_signature_after": "598236dc4de8c2923adb2579d7030de0750bf1a15b10ddea084fb8881a35a092"
+    },
+    {
+      "asset": "Lamp",
+      "role": "Orange",
+      "material": "A3_Lamp_Orange_LineMask_Lamp_LineMask",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "8c6a692ec36bf79d44a8d223609e23aaba3d53f4be1f8f96e86f1e424bf81337",
+      "shader_signature_after": "8c6a692ec36bf79d44a8d223609e23aaba3d53f4be1f8f96e86f1e424bf81337"
+    },
+    {
+      "asset": "Lamp",
+      "role": "Berry",
+      "material": "A3_Lamp_Berry_LineMask_Lamp_LineMask",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "8c6a692ec36bf79d44a8d223609e23aaba3d53f4be1f8f96e86f1e424bf81337",
+      "shader_signature_after": "8c6a692ec36bf79d44a8d223609e23aaba3d53f4be1f8f96e86f1e424bf81337"
+    },
+    {
+      "asset": "Lamp",
+      "role": "Pink",
+      "material": "A3_Lamp_Pink_LineMask_Lamp_LineMask",
+      "source_hex": "#0A6F73",
+      "output_hex": "#0A6F73",
+      "changed": false,
+      "shader_signature_before": "af0abea8989ff7c2222a35af4796d802ce3c4a3ab36536f00e51b1efc3062ac5",
+      "shader_signature_after": "af0abea8989ff7c2222a35af4796d802ce3c4a3ab36536f00e51b1efc3062ac5"
+    },
+    {
+      "asset": "Lamp",
+      "role": "Platform",
+      "material": "A3_Lamp_Platform_LineMask_Lamp_LineMask",
+      "source_hex": "#274E61",
+      "output_hex": "#274E61",
+      "changed": false,
+      "shader_signature_before": "3f076d482e69eb78534bc93b159be4643e45f4fdbdabc8a604b51c1d56cc0124",
+      "shader_signature_after": "3f076d482e69eb78534bc93b159be4643e45f4fdbdabc8a604b51c1d56cc0124"
+    },
+    {
+      "asset": "Lamp",
+      "role": "PlatformTop",
+      "material": "A3_Lamp_PlatformTop_LineMask_Lamp_LineMask",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "1a6f88b6fbde73ebbb3847ec449a9132d6df94250b672367bea6c76bd1a45640",
+      "shader_signature_after": "1a6f88b6fbde73ebbb3847ec449a9132d6df94250b672367bea6c76bd1a45640"
+    },
+    {
+      "asset": "Lamp",
+      "role": "Ink",
+      "material": "A3_Lamp_Ink_LineMask_Lamp_LineMask",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "shader_signature_before": "956f0ab4c5bcd35a1fc104b57fdd9a643ca089f6488d595e5a8a411b2d8c5422",
+      "shader_signature_after": "956f0ab4c5bcd35a1fc104b57fdd9a643ca089f6488d595e5a8a411b2d8c5422"
+    },
+    {
+      "asset": "Light",
+      "role": "Primary",
+      "material": "A3_Light_Primary",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "31ad7ba2b5aac15ae8d74e6dcf840489bef95df98156748c574360b2be276523",
+      "shader_signature_after": "31ad7ba2b5aac15ae8d74e6dcf840489bef95df98156748c574360b2be276523"
+    },
+    {
+      "asset": "Light",
+      "role": "Equipment",
+      "material": "A3_Light_Equipment",
+      "source_hex": "#0A6F73",
+      "output_hex": "#0A6F73",
+      "changed": false,
+      "shader_signature_before": "1823abcb58d9aa12a6fa32e5aa358ec63d7481559f92ec36da85be833622c9c3",
+      "shader_signature_after": "1823abcb58d9aa12a6fa32e5aa358ec63d7481559f92ec36da85be833622c9c3"
+    },
+    {
+      "asset": "Light",
+      "role": "Frame",
+      "material": "A3_Light_Frame",
+      "source_hex": "#032E30",
+      "output_hex": "#032E30",
+      "changed": false,
+      "shader_signature_before": "98809be33139b3176cedeeab466162909da215a4cfaa15165efaa44648cef13f",
+      "shader_signature_after": "98809be33139b3176cedeeab466162909da215a4cfaa15165efaa44648cef13f"
+    },
+    {
+      "asset": "Light",
+      "role": "Orange",
+      "material": "A3_Light_Orange",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "31ad7ba2b5aac15ae8d74e6dcf840489bef95df98156748c574360b2be276523",
+      "shader_signature_after": "31ad7ba2b5aac15ae8d74e6dcf840489bef95df98156748c574360b2be276523"
+    },
+    {
+      "asset": "Light",
+      "role": "Berry",
+      "material": "A3_Light_Berry",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "31ad7ba2b5aac15ae8d74e6dcf840489bef95df98156748c574360b2be276523",
+      "shader_signature_after": "31ad7ba2b5aac15ae8d74e6dcf840489bef95df98156748c574360b2be276523"
+    },
+    {
+      "asset": "Light",
+      "role": "Pink",
+      "material": "A3_Light_Pink",
+      "source_hex": "#0A6F73",
+      "output_hex": "#0A6F73",
+      "changed": false,
+      "shader_signature_before": "1823abcb58d9aa12a6fa32e5aa358ec63d7481559f92ec36da85be833622c9c3",
+      "shader_signature_after": "1823abcb58d9aa12a6fa32e5aa358ec63d7481559f92ec36da85be833622c9c3"
+    },
+    {
+      "asset": "Light",
+      "role": "Platform",
+      "material": "A3_Light_Platform",
+      "source_hex": "#274E61",
+      "output_hex": "#274E61",
+      "changed": false,
+      "shader_signature_before": "b67806e23bc31ae257c406488462a95f313a51bd8abacb957fa751b8e347118d",
+      "shader_signature_after": "b67806e23bc31ae257c406488462a95f313a51bd8abacb957fa751b8e347118d"
+    },
+    {
+      "asset": "Light",
+      "role": "PlatformTop",
+      "material": "A3_Light_PlatformTop",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "66d8fe3e84bd9886e02947510e5d227dc08beab9eeefc14cec998c4cebea4668",
+      "shader_signature_after": "66d8fe3e84bd9886e02947510e5d227dc08beab9eeefc14cec998c4cebea4668"
+    },
+    {
+      "asset": "Light",
+      "role": "Ink",
+      "material": "A3_Light_Ink",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "shader_signature_before": "a21b5c35e240bb7ad5fe4227252f78aa5af6b1f596bc7e464a02a1effed86734",
+      "shader_signature_after": "a21b5c35e240bb7ad5fe4227252f78aa5af6b1f596bc7e464a02a1effed86734"
+    },
+    {
+      "asset": "Drone",
+      "role": "Primary",
+      "material": "A3_Drone_Primary_LineMask_Drone_LineMask",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "b7cfecfb04672778f65ba544bdd1196cbf21ba3d89d326c0a35778910195c17a",
+      "shader_signature_after": "b7cfecfb04672778f65ba544bdd1196cbf21ba3d89d326c0a35778910195c17a"
+    },
+    {
+      "asset": "Drone",
+      "role": "Equipment",
+      "material": "A3_Drone_Equipment_LineMask_Drone_LineMask",
+      "source_hex": "#2A104B",
+      "output_hex": "#2A104B",
+      "changed": false,
+      "shader_signature_before": "4c2cd74c5f7225a1c845aa08fbae663a1a8a3a68564ac872df5d6fae2e3dd8ce",
+      "shader_signature_after": "4c2cd74c5f7225a1c845aa08fbae663a1a8a3a68564ac872df5d6fae2e3dd8ce"
+    },
+    {
+      "asset": "Drone",
+      "role": "Frame",
+      "material": "A3_Drone_Frame_LineMask_Drone_LineMask",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "shader_signature_before": "9d2c7cb011551725ae6e7aa8f9da274171abcf6d8db65576390021d9d8570935",
+      "shader_signature_after": "9d2c7cb011551725ae6e7aa8f9da274171abcf6d8db65576390021d9d8570935"
+    },
+    {
+      "asset": "Drone",
+      "role": "Orange",
+      "material": "A3_Drone_Orange_LineMask_Drone_LineMask",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "b491d64cf15642a24f2cf1d5a8db98c6d6701ac0cc9f7bf37f4ea97427db6279",
+      "shader_signature_after": "b491d64cf15642a24f2cf1d5a8db98c6d6701ac0cc9f7bf37f4ea97427db6279"
+    },
+    {
+      "asset": "Drone",
+      "role": "Berry",
+      "material": "A3_Drone_Berry_LineMask_Drone_LineMask",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "b491d64cf15642a24f2cf1d5a8db98c6d6701ac0cc9f7bf37f4ea97427db6279",
+      "shader_signature_after": "b491d64cf15642a24f2cf1d5a8db98c6d6701ac0cc9f7bf37f4ea97427db6279"
+    },
+    {
+      "asset": "Drone",
+      "role": "Pink",
+      "material": "A3_Drone_Pink_LineMask_Drone_LineMask",
+      "source_hex": "#2A104B",
+      "output_hex": "#2A104B",
+      "changed": false,
+      "shader_signature_before": "4c2cd74c5f7225a1c845aa08fbae663a1a8a3a68564ac872df5d6fae2e3dd8ce",
+      "shader_signature_after": "4c2cd74c5f7225a1c845aa08fbae663a1a8a3a68564ac872df5d6fae2e3dd8ce"
+    },
+    {
+      "asset": "Drone",
+      "role": "Platform",
+      "material": "A3_Drone_Platform_LineMask_Drone_LineMask",
+      "source_hex": "#274E61",
+      "output_hex": "#274E61",
+      "changed": false,
+      "shader_signature_before": "03e814aadd0c497fecb1209f883967754efb35322af931bc3dee337bb27078e5",
+      "shader_signature_after": "03e814aadd0c497fecb1209f883967754efb35322af931bc3dee337bb27078e5"
+    },
+    {
+      "asset": "Drone",
+      "role": "PlatformTop",
+      "material": "A3_Drone_PlatformTop_LineMask_Drone_LineMask",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "b7cfecfb04672778f65ba544bdd1196cbf21ba3d89d326c0a35778910195c17a",
+      "shader_signature_after": "b7cfecfb04672778f65ba544bdd1196cbf21ba3d89d326c0a35778910195c17a"
+    },
+    {
+      "asset": "Drone",
+      "role": "Ink",
+      "material": "A3_Drone_Ink_LineMask_Drone_LineMask",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "shader_signature_before": "9d2c7cb011551725ae6e7aa8f9da274171abcf6d8db65576390021d9d8570935",
+      "shader_signature_after": "9d2c7cb011551725ae6e7aa8f9da274171abcf6d8db65576390021d9d8570935"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Primary",
+      "material": "A3_MilitaryFactory_Primary_LineMask_MilitaryFactory_LineMask",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "7fe79f7bafec3e63b9299cd85db8ec11a117c4050deb4834c821caaef78873f6",
+      "shader_signature_after": "7fe79f7bafec3e63b9299cd85db8ec11a117c4050deb4834c821caaef78873f6"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Equipment",
+      "material": "A3_MilitaryFactory_Equipment_LineMask_MilitaryFactory_LineMask",
+      "source_hex": "#2A104B",
+      "output_hex": "#9972CA",
+      "changed": true,
+      "shader_signature_before": "d59f04a88b79c30a8f4891ee14c150369ca53dc711fdb3b698f3f254a95c099d",
+      "shader_signature_after": "0878880ab1c44bedcee11fb279dd7c7c601f7b08716ac539e9a9f5e6bf4ee1fd"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Frame",
+      "material": "A3_MilitaryFactory_Frame_LineMask_MilitaryFactory_LineMask",
+      "source_hex": "#1A182F",
+      "output_hex": "#756FB5",
+      "changed": true,
+      "shader_signature_before": "9fa25b05fda71da2589d0dd145b842b083239100f35dc5f860837802ddf730cb",
+      "shader_signature_after": "d96c994edabccd20853729d3a0191c8213ea743f7921dfcc5669952e793b090c"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Orange",
+      "material": "A3_MilitaryFactory_Orange_LineMask_MilitaryFactory_LineMask",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "b223dfee8c1520472a5d5142525ff792dc0bfa3326afd9f685168f32f828a9fd",
+      "shader_signature_after": "b223dfee8c1520472a5d5142525ff792dc0bfa3326afd9f685168f32f828a9fd"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Berry",
+      "material": "A3_MilitaryFactory_Berry_LineMask_MilitaryFactory_LineMask",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "b223dfee8c1520472a5d5142525ff792dc0bfa3326afd9f685168f32f828a9fd",
+      "shader_signature_after": "b223dfee8c1520472a5d5142525ff792dc0bfa3326afd9f685168f32f828a9fd"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Pink",
+      "material": "A3_MilitaryFactory_Pink_LineMask_MilitaryFactory_LineMask",
+      "source_hex": "#2A104B",
+      "output_hex": "#9972CA",
+      "changed": true,
+      "shader_signature_before": "d59f04a88b79c30a8f4891ee14c150369ca53dc711fdb3b698f3f254a95c099d",
+      "shader_signature_after": "0878880ab1c44bedcee11fb279dd7c7c601f7b08716ac539e9a9f5e6bf4ee1fd"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Platform",
+      "material": "A3_MilitaryFactory_Platform_LineMask_MilitaryFactory_LineMask",
+      "source_hex": "#274E61",
+      "output_hex": "#274E61",
+      "changed": false,
+      "shader_signature_before": "102b5ecd49ffa63aa04474cadbaffac72cf82dd5b2046aaff545683e6602ef11",
+      "shader_signature_after": "102b5ecd49ffa63aa04474cadbaffac72cf82dd5b2046aaff545683e6602ef11"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "PlatformTop",
+      "material": "A3_MilitaryFactory_PlatformTop_LineMask_MilitaryFactory_LineMask",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "7fe79f7bafec3e63b9299cd85db8ec11a117c4050deb4834c821caaef78873f6",
+      "shader_signature_after": "7fe79f7bafec3e63b9299cd85db8ec11a117c4050deb4834c821caaef78873f6"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Ink",
+      "material": "A3_MilitaryFactory_Ink_LineMask_MilitaryFactory_LineMask",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "shader_signature_before": "9fa25b05fda71da2589d0dd145b842b083239100f35dc5f860837802ddf730cb",
+      "shader_signature_after": "9fa25b05fda71da2589d0dd145b842b083239100f35dc5f860837802ddf730cb"
+    },
+    {
+      "asset": "Reactor",
+      "role": "Primary",
+      "material": "A3_Reactor_Primary_LineMask_Reactor_LineMask",
+      "source_hex": "#0D9099",
+      "output_hex": "#0D9099",
+      "changed": false,
+      "shader_signature_before": "37253cf0519a83e1ae7890925d48199c4994fdf592aa91f6e58c092224ef8be8",
+      "shader_signature_after": "37253cf0519a83e1ae7890925d48199c4994fdf592aa91f6e58c092224ef8be8"
+    },
+    {
+      "asset": "Reactor",
+      "role": "Equipment",
+      "material": "A3_Reactor_Equipment_LineMask_Reactor_LineMask",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "86d24c1f9f4a11aada896b29c32e54f92e6e8ed1122330df21d50ff85ad6b6b5",
+      "shader_signature_after": "86d24c1f9f4a11aada896b29c32e54f92e6e8ed1122330df21d50ff85ad6b6b5"
+    },
+    {
+      "asset": "Reactor",
+      "role": "Frame",
+      "material": "A3_Reactor_Frame_LineMask_Reactor_LineMask",
+      "source_hex": "#032E30",
+      "output_hex": "#032E30",
+      "changed": false,
+      "shader_signature_before": "e0572781e27751549ed4b3815faab0afe4bf0f613cabfa46cdb34e92c33c7c0f",
+      "shader_signature_after": "e0572781e27751549ed4b3815faab0afe4bf0f613cabfa46cdb34e92c33c7c0f"
+    },
+    {
+      "asset": "Reactor",
+      "role": "Orange",
+      "material": "A3_Reactor_Orange_LineMask_Reactor_LineMask",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "9c19636f8bf819a5dced6a6bedea8c786abe5126466c118c461db35ae520bbfa",
+      "shader_signature_after": "9c19636f8bf819a5dced6a6bedea8c786abe5126466c118c461db35ae520bbfa"
+    },
+    {
+      "asset": "Reactor",
+      "role": "Berry",
+      "material": "A3_Reactor_Berry_LineMask_Reactor_LineMask",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "shader_signature_before": "9c19636f8bf819a5dced6a6bedea8c786abe5126466c118c461db35ae520bbfa",
+      "shader_signature_after": "9c19636f8bf819a5dced6a6bedea8c786abe5126466c118c461db35ae520bbfa"
+    },
+    {
+      "asset": "Reactor",
+      "role": "Pink",
+      "material": "A3_Reactor_Pink_LineMask_Reactor_LineMask",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "86d24c1f9f4a11aada896b29c32e54f92e6e8ed1122330df21d50ff85ad6b6b5",
+      "shader_signature_after": "86d24c1f9f4a11aada896b29c32e54f92e6e8ed1122330df21d50ff85ad6b6b5"
+    },
+    {
+      "asset": "Reactor",
+      "role": "Platform",
+      "material": "A3_Reactor_Platform_LineMask_Reactor_LineMask",
+      "source_hex": "#274E61",
+      "output_hex": "#274E61",
+      "changed": false,
+      "shader_signature_before": "fec7cd6ca9c668bbb668edbece14302997f1d0e940ab402085ddd43cf96f5431",
+      "shader_signature_after": "fec7cd6ca9c668bbb668edbece14302997f1d0e940ab402085ddd43cf96f5431"
+    },
+    {
+      "asset": "Reactor",
+      "role": "PlatformTop",
+      "material": "A3_Reactor_PlatformTop_LineMask_Reactor_LineMask",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "86d24c1f9f4a11aada896b29c32e54f92e6e8ed1122330df21d50ff85ad6b6b5",
+      "shader_signature_after": "86d24c1f9f4a11aada896b29c32e54f92e6e8ed1122330df21d50ff85ad6b6b5"
+    },
+    {
+      "asset": "Reactor",
+      "role": "Ink",
+      "material": "A3_Reactor_Ink_LineMask_Reactor_LineMask",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "shader_signature_before": "199db1bf303e2c55b880b3e376aadb13f09c126ff0da1bbe6d771921bdd57021",
+      "shader_signature_after": "199db1bf303e2c55b880b3e376aadb13f09c126ff0da1bbe6d771921bdd57021"
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Primary",
+      "material": "A3_StrategyCenter_Primary_LineMask_StrategyCenter_LineMask",
+      "source_hex": "#522C5C",
+      "output_hex": "#AA6EB9",
+      "changed": true,
+      "shader_signature_before": "b25df948db4b0a6016a866462d522ce48fc9c463152f0e0d27637d0a2e31676a",
+      "shader_signature_after": "c74381e2df25bce3f0ac44e370f9c8d3be78e5b6dfc51f4a6ccc4a9781d85dff"
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Equipment",
+      "material": "A3_StrategyCenter_Equipment_LineMask_StrategyCenter_LineMask",
+      "source_hex": "#E3B6B1",
+      "output_hex": "#E3B6B1",
+      "changed": false,
+      "shader_signature_before": "659be3ca5f5b3d8d11c4616bc7f3df057f4374757fe64891cd0a8372abf8ad5f",
+      "shader_signature_after": "659be3ca5f5b3d8d11c4616bc7f3df057f4374757fe64891cd0a8372abf8ad5f"
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Frame",
+      "material": "A3_StrategyCenter_Frame_LineMask_StrategyCenter_LineMask",
+      "source_hex": "#2A104B",
+      "output_hex": "#8A67B6",
+      "changed": true,
+      "shader_signature_before": "eb5e7660a0453b5138d500b61e912b6fc069e1faa5bae76cee5af6cccbbeaf09",
+      "shader_signature_after": "77a7ef17eafecede7492935a5cac55c3e31f49c129fab07d4396bea22f708955"
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Orange",
+      "material": "A3_StrategyCenter_Orange_LineMask_StrategyCenter_LineMask",
+      "source_hex": "#0D9099",
+      "output_hex": "#0D9099",
+      "changed": false,
+      "shader_signature_before": "0338d87c902917b29949367c1e96c25d412dc924ca00166dfde90ff65bba10d8",
+      "shader_signature_after": "0338d87c902917b29949367c1e96c25d412dc924ca00166dfde90ff65bba10d8"
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Berry",
+      "material": "A3_StrategyCenter_Berry_LineMask_StrategyCenter_LineMask",
+      "source_hex": "#0D9099",
+      "output_hex": "#0D9099",
+      "changed": false,
+      "shader_signature_before": "0338d87c902917b29949367c1e96c25d412dc924ca00166dfde90ff65bba10d8",
+      "shader_signature_after": "0338d87c902917b29949367c1e96c25d412dc924ca00166dfde90ff65bba10d8"
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Pink",
+      "material": "A3_StrategyCenter_Pink_LineMask_StrategyCenter_LineMask",
+      "source_hex": "#E3B6B1",
+      "output_hex": "#E3B6B1",
+      "changed": false,
+      "shader_signature_before": "659be3ca5f5b3d8d11c4616bc7f3df057f4374757fe64891cd0a8372abf8ad5f",
+      "shader_signature_after": "659be3ca5f5b3d8d11c4616bc7f3df057f4374757fe64891cd0a8372abf8ad5f"
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Platform",
+      "material": "A3_StrategyCenter_Platform_LineMask_StrategyCenter_LineMask",
+      "source_hex": "#274E61",
+      "output_hex": "#274E61",
+      "changed": false,
+      "shader_signature_before": "b761803d5844923e2618fc62d38f6fe2070f9b697685e706ad4c0626c345c1c8",
+      "shader_signature_after": "b761803d5844923e2618fc62d38f6fe2070f9b697685e706ad4c0626c345c1c8"
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "PlatformTop",
+      "material": "A3_StrategyCenter_PlatformTop_LineMask_StrategyCenter_LineMask",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "shader_signature_before": "30c573f88c1bb98d7d589b4141ef52b4ac73d61e1d86a1b3e083846131162b67",
+      "shader_signature_after": "30c573f88c1bb98d7d589b4141ef52b4ac73d61e1d86a1b3e083846131162b67"
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Ink",
+      "material": "A3_StrategyCenter_Ink_LineMask_StrategyCenter_LineMask",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "shader_signature_before": "a67f51832d3e41d6f649fdf45cd6bcc610801aa5fbf6af1468ab5be33109b769",
+      "shader_signature_after": "a67f51832d3e41d6f649fdf45cd6bcc610801aa5fbf6af1468ab5be33109b769"
+    }
+  ],
+  "preserved_renders": [
+    {
+      "asset": "AirBase",
+      "view": "Hero",
+      "file": "Renders/AirBase_Hero.png",
+      "source_sha256": "df4d332f70a4cdba066b689d5dd2d2de73bdd3cf4c6d133b480e00f8fee2438a",
+      "same_bytes": true
+    },
+    {
+      "asset": "AirBase",
+      "view": "Front",
+      "file": "Renders/AirBase_Front.png",
+      "source_sha256": "de7a0c7426d1aec7915e9317b1a8b4f3d19679ffdb4eb73f085d92bc74c40b9d",
+      "same_bytes": true
+    },
+    {
+      "asset": "AirBase",
+      "view": "Left",
+      "file": "Renders/AirBase_Left.png",
+      "source_sha256": "34e092a2dc2d090c28843f8f72aa513b9130e334f42fe5e311f4233746bf9b37",
+      "same_bytes": true
+    },
+    {
+      "asset": "AirBase",
+      "view": "Back",
+      "file": "Renders/AirBase_Back.png",
+      "source_sha256": "0afeb98968c74682545f9ef360fadc693fafa385b0825ee1c4e7901c5b7af8bc",
+      "same_bytes": true
+    },
+    {
+      "asset": "CloningCenter",
+      "view": "Hero",
+      "file": "Renders/CloningCenter_Hero.png",
+      "source_sha256": "a30d624b95c705f9083703027a1a1e5a65e0f30facf80c642dcb95cedc631d86",
+      "same_bytes": true
+    },
+    {
+      "asset": "CloningCenter",
+      "view": "Front",
+      "file": "Renders/CloningCenter_Front.png",
+      "source_sha256": "2885554a227b06db6d0a40820330099b28965006242b59c5fbc858163a8325f6",
+      "same_bytes": true
+    },
+    {
+      "asset": "CloningCenter",
+      "view": "Left",
+      "file": "Renders/CloningCenter_Left.png",
+      "source_sha256": "b695c5ad5f3b32fc69872261fb688e1e82ec7f99b8a9f061b37f12be8552e6e8",
+      "same_bytes": true
+    },
+    {
+      "asset": "CloningCenter",
+      "view": "Back",
+      "file": "Renders/CloningCenter_Back.png",
+      "source_sha256": "d5ad003699aebe64ac2506db15a9a645f416fa4138cd64748d1c557283f721a9",
+      "same_bytes": true
+    },
+    {
+      "asset": "CommandCenter",
+      "view": "Hero",
+      "file": "Renders/CommandCenter_Hero.png",
+      "source_sha256": "b289d2ec20eb738cc9c6a224f535a2a4f6dc6e213d377bc6af28e3f238e48f45",
+      "same_bytes": true
+    },
+    {
+      "asset": "CommandCenter",
+      "view": "Front",
+      "file": "Renders/CommandCenter_Front.png",
+      "source_sha256": "c4e60b7edc1687a6fa9e130976713610f23747e4f9f27fb24fe271fbf1703a13",
+      "same_bytes": true
+    },
+    {
+      "asset": "CommandCenter",
+      "view": "Left",
+      "file": "Renders/CommandCenter_Left.png",
+      "source_sha256": "de161603173e397b4ef0b41b6c952e504cceb9d3029e86493475bc9fc25b3043",
+      "same_bytes": true
+    },
+    {
+      "asset": "CommandCenter",
+      "view": "Back",
+      "file": "Renders/CommandCenter_Back.png",
+      "source_sha256": "71d169c6e5ada43650f5c825bec7bc0da4a45e0eae8067ad40c817eb551e4960",
+      "same_bytes": true
+    },
+    {
+      "asset": "Floor",
+      "view": "Hero",
+      "file": "Renders/Floor_Hero.png",
+      "source_sha256": "287451d3c2798472d930dcb6e5a4373daa38c52860b43040d3fe46eaad4291a4",
+      "same_bytes": true
+    },
+    {
+      "asset": "Floor",
+      "view": "Front",
+      "file": "Renders/Floor_Front.png",
+      "source_sha256": "8ca46e1f9196c854325478eeee1ce66de5c72157dbe5bf03e1e63cdbda3b590a",
+      "same_bytes": true
+    },
+    {
+      "asset": "Floor",
+      "view": "Left",
+      "file": "Renders/Floor_Left.png",
+      "source_sha256": "677ac70dd51f8d731df743e5b66dc965e50842761da8bb47baf816cf0e01a8af",
+      "same_bytes": true
+    },
+    {
+      "asset": "Floor",
+      "view": "Back",
+      "file": "Renders/Floor_Back.png",
+      "source_sha256": "15424e32bbf788cf4930e2becd8baccce1fe8ae85aeadedb750bd28f246ea7b9",
+      "same_bytes": true
+    },
+    {
+      "asset": "Floor",
+      "view": "Top",
+      "file": "Renders/Floor_Top.png",
+      "source_sha256": "23203f44e1f14b8a1025b127e76c573e20708eebc33f45a21fc332e2a320a80f",
+      "same_bytes": true
+    },
+    {
+      "asset": "Lamp",
+      "view": "Hero",
+      "file": "Renders/Lamp_Hero.png",
+      "source_sha256": "f200136c3c42935988ed98083bc8ce41e81f70c03ef2bdfcc659aae5c25a5f2e",
+      "same_bytes": true
+    },
+    {
+      "asset": "Lamp",
+      "view": "Front",
+      "file": "Renders/Lamp_Front.png",
+      "source_sha256": "3f030ce99a7ed4997020212d5fc64dee40d89e864c36b57b75bb5f8fb9c35a23",
+      "same_bytes": true
+    },
+    {
+      "asset": "Lamp",
+      "view": "Left",
+      "file": "Renders/Lamp_Left.png",
+      "source_sha256": "5ca970ae7dc3dadf60c9289e10fb4c9673f07019f5f88999c403752bb2c660b3",
+      "same_bytes": true
+    },
+    {
+      "asset": "Lamp",
+      "view": "Back",
+      "file": "Renders/Lamp_Back.png",
+      "source_sha256": "6253d9dea1807cc25b9231e6d74191aa6f4e30bec73ec9e07a1bf84dae60186f",
+      "same_bytes": true
+    },
+    {
+      "asset": "Light",
+      "view": "Hero",
+      "file": "Renders/Light_Hero.png",
+      "source_sha256": "ed8e474c1b94bb178015fdef55dd2930c7660c5239d3bbf385afd3387c8e0f4e",
+      "same_bytes": true
+    },
+    {
+      "asset": "Light",
+      "view": "Front",
+      "file": "Renders/Light_Front.png",
+      "source_sha256": "433eaa9e48bfe59869a6e5163ed57d36efbc9d8713c935a313006bf57f5f01aa",
+      "same_bytes": true
+    },
+    {
+      "asset": "Light",
+      "view": "Left",
+      "file": "Renders/Light_Left.png",
+      "source_sha256": "36a5d97aebbd9e0aeed61dce82a91256f941fa0917c625ec7eb4a1c95f6edbf4",
+      "same_bytes": true
+    },
+    {
+      "asset": "Light",
+      "view": "Back",
+      "file": "Renders/Light_Back.png",
+      "source_sha256": "18dc11195df28cb5a66d0417b3cef360814ac2ac939fadb8bbb8dcb65f4418ef",
+      "same_bytes": true
+    },
+    {
+      "asset": "Drone",
+      "view": "Hero",
+      "file": "Renders/Drone_Hero.png",
+      "source_sha256": "09d07c30d6476b5089e8836fb41871b1a227b1c69038575244d9f7f9ae3d04f5",
+      "same_bytes": true
+    },
+    {
+      "asset": "Drone",
+      "view": "Front",
+      "file": "Renders/Drone_Front.png",
+      "source_sha256": "819f29689ee6938e211fb7726a63afd74610c691087ea680254c432d52c22a59",
+      "same_bytes": true
+    },
+    {
+      "asset": "Drone",
+      "view": "Left",
+      "file": "Renders/Drone_Left.png",
+      "source_sha256": "cad6c751d6318560219d1af6a00038968d1878c18b77eee5d793e67a80e5579f",
+      "same_bytes": true
+    },
+    {
+      "asset": "Drone",
+      "view": "Back",
+      "file": "Renders/Drone_Back.png",
+      "source_sha256": "51becd97c3c0520f0e2c17e00cba4bff786dcf1d472da0d56e22db612a375da9",
+      "same_bytes": true
+    },
+    {
+      "asset": "Drone",
+      "view": "Top",
+      "file": "Renders/Drone_Top.png",
+      "source_sha256": "35291c991724a8f8d30e2ee474c0a7bbef36930e5e16f0a38179523741ea3e1c",
+      "same_bytes": true
+    },
+    {
+      "asset": "Reactor",
+      "view": "Hero",
+      "file": "Renders/Reactor_Hero.png",
+      "source_sha256": "42ec90fabd08ab946768492fd308adcfdffe2b7148e6bc35f32c6c4ec901868d",
+      "same_bytes": true
+    },
+    {
+      "asset": "Reactor",
+      "view": "Front",
+      "file": "Renders/Reactor_Front.png",
+      "source_sha256": "9a6b0d50fcd5a09b8b61b9d02a1f6e9c8ad2b9c9b46e1562448d5f5558d2fab1",
+      "same_bytes": true
+    },
+    {
+      "asset": "Reactor",
+      "view": "Left",
+      "file": "Renders/Reactor_Left.png",
+      "source_sha256": "1a7940a3893517e82413c0e6d7ee0b0804a7c2caff9c376ee605b32e5fb97dd0",
+      "same_bytes": true
+    },
+    {
+      "asset": "Reactor",
+      "view": "Back",
+      "file": "Renders/Reactor_Back.png",
+      "source_sha256": "9223ce486938500c5564237246e233db88deeefdc58cc17bacb536a50c8d15bc",
+      "same_bytes": true
+    }
+  ],
+  "geometry_checks": [
+    {
+      "asset": "AirBase",
+      "source_geometry_weights_equal": true,
+      "sha256": "7c227f2a060f5db9aa356e29d4ba823be9be21aa96ae7442ca45d5419b07fe3f"
+    },
+    {
+      "asset": "CloningCenter",
+      "source_geometry_weights_equal": true,
+      "sha256": "9b4841d4ac8c7b199eb5831230b1dd29be40509a0629f59f012b392cae3b89df"
+    },
+    {
+      "asset": "CommandCenter",
+      "source_geometry_weights_equal": true,
+      "sha256": "ecd81b27923d53a0dc260c4c95fd950cc1743e064679aa65ed184181015991b9"
+    },
+    {
+      "asset": "Floor",
+      "source_geometry_weights_equal": true,
+      "sha256": "094932140daf475f584c1c070810cce2eb88d1c0a0a148d8f57038753ad05b43"
+    },
+    {
+      "asset": "Lamp",
+      "source_geometry_weights_equal": true,
+      "sha256": "4e208e07259758fc6e5534dd62bed5b907d9d5558a3c075c0a3ec3fe7eec3cb3"
+    },
+    {
+      "asset": "Light",
+      "source_geometry_weights_equal": true,
+      "sha256": "66ac676bc332bbd6b61e2feff77b5111133e7974166297a492a790123f2d1f15"
+    },
+    {
+      "asset": "Drone",
+      "source_geometry_weights_equal": true,
+      "sha256": "aed64880c66f82477ebb3b2ec9f8a56eb30bbd2289d0eea10784b6ef6948a5bf"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "source_geometry_weights_equal": true,
+      "sha256": "ff2abacf0fc4aef2efd4d2dbe3aafdd235cdec216770c7c316d65d82d513ab3f"
+    },
+    {
+      "asset": "Reactor",
+      "source_geometry_weights_equal": true,
+      "sha256": "075b9bba7d005c181646cd20a708b965d424f44791c7d2e51699740bd7694b6f"
+    },
+    {
+      "asset": "StrategyCenter",
+      "source_geometry_weights_equal": true,
+      "sha256": "61d24e36b8c0013128f429b791f07b7d31503deee0186b02a7d178dce9babef0"
+    }
+  ],
+  "line_ink_unchanged": true,
+  "three_tone_shading_unchanged": true,
+  "production_modeling_started": false,
+  "ue_formal_import_performed": false
+}

@@ -1,0 +1,505 @@
+{
+  "id": 2,
+  "name": "WM01",
+  "display_name": "重防号",
+  "presentation_scale": 0.2,
+  "actor_class": "",
+  "presentation_class": "",
+  "vat_definition": "",
+  "components": [],
+  "meshes": [
+    {
+      "asset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "lod_count": 4,
+      "selected_indices": [
+        0,
+        1,
+        3
+      ],
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 38843,
+          "sections": 2,
+          "vertices": 70017,
+          "uv_channels": 3
+        },
+        {
+          "index": 1,
+          "triangles": 9711,
+          "sections": 2,
+          "vertices": 23191,
+          "uv_channels": 0
+        },
+        {
+          "index": 2,
+          "triangles": 1554,
+          "sections": 2,
+          "vertices": 3678,
+          "uv_channels": 0
+        },
+        {
+          "index": 3,
+          "triangles": 776,
+          "sections": 2,
+          "vertices": 1879,
+          "uv_channels": 0
+        }
+      ],
+      "screen_sizes": [
+        1.0,
+        0.3199999928474426,
+        0.09000000357627869,
+        0.02500000037252903
+      ],
+      "materials": [
+        {
+          "index": 0,
+          "path": "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid",
+          "slot": "M_Tactical_Contour"
+        },
+        {
+          "index": 1,
+          "path": "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid",
+          "slot": "M_WarMachine_Cel"
+        }
+      ],
+      "sockets": [
+        {
+          "name": "FX_AimTarget",
+          "location": [
+            0.0,
+            0.0,
+            2354.951631817522
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FX_Muzzle_Basic_01",
+          "location": [
+            1769.8602676391602,
+            1461.23685836792,
+            2335.858785900774
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_Disc_RL",
+          "location": [
+            -1754.1141357421875,
+            1902.1273193359375,
+            624.6787719726562
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_Disc_RR",
+          "location": [
+            -1754.1141357421875,
+            -1902.1273193359375,
+            624.6787719726562
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FX_Hover_FL",
+          "location": [
+            1466.9862031936646,
+            1631.252098083496,
+            0.0
+          ],
+          "rotation": [
+            -90.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1957.238531112671,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FX_Hover_FR",
+          "location": [
+            1466.9862031936646,
+            -1631.252098083496,
+            0.0
+          ],
+          "rotation": [
+            -90.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1957.238531112671,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FX_Hover_RL",
+          "location": [
+            -1754.1141033172607,
+            1902.1273136138916,
+            0.0
+          ],
+          "rotation": [
+            -90.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1957.2386741638184,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FX_Hover_RR",
+          "location": [
+            -1754.1141033172607,
+            -1902.1273136138916,
+            0.0
+          ],
+          "rotation": [
+            -90.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1957.2386741638184,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_LegRoot_FL",
+          "location": [
+            418.845947265625,
+            642.4403076171875,
+            1627.3221435546875
+          ],
+          "rotation": [
+            -0.0,
+            0.0,
+            133.3316650390625
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_LegEnd_FL",
+          "location": [
+            1043.17431640625,
+            1231.429443359375,
+            1131.77734375
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_LegRoot_FR",
+          "location": [
+            418.845947265625,
+            -642.4403076171875,
+            1627.3221435546875
+          ],
+          "rotation": [
+            -0.0,
+            0.0,
+            46.668338775634766
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_LegEnd_FR",
+          "location": [
+            1043.17431640625,
+            -1231.429443359375,
+            1131.77734375
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FX_Missile_01",
+          "location": [
+            -729.1603565216064,
+            932.1683883666992,
+            3877.283823284807
+          ],
+          "rotation": [
+            0.0,
+            45.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_LegRoot_RL",
+          "location": [
+            -985.7050170898438,
+            642.4403076171875,
+            1419.3992919921875
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            -148.61680603027344
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_LegEnd_RL",
+          "location": [
+            -1432.6771240234375,
+            1375.181640625,
+            923.8545532226562
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_LegRoot_RR",
+          "location": [
+            -985.7050170898438,
+            -642.4403076171875,
+            1419.3992919921875
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            -31.383190155029297
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_LegEnd_RR",
+          "location": [
+            -1432.6771240234375,
+            -1375.181640625,
+            923.8545532226562
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FX_Missile_02",
+          "location": [
+            -729.1603565216064,
+            -932.1683883666992,
+            3877.283823284807
+          ],
+          "rotation": [
+            0.0,
+            45.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "FX_Muzzle_Basic_02",
+          "location": [
+            1769.8602676391602,
+            -1468.76314163208,
+            2335.858785900774
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_UpperYaw",
+          "location": [
+            -387.3536682128906,
+            0.0,
+            1920.1622314453125
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_GunPitch_01",
+          "location": [
+            -954.2127685546875,
+            1228.19482421875,
+            2335.85888671875
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_GunPitch_02",
+          "location": [
+            -954.2127685546875,
+            -1228.19482421875,
+            2335.85888671875
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_Disc_FL",
+          "location": [
+            1466.9862060546875,
+            1631.2520751953125,
+            624.6788330078125
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Rigid_Disc_FR",
+          "location": [
+            1466.9862060546875,
+            -1631.2520751953125,
+            624.6788330078125
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "fbx": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\WM01\\Sources\\SM_WarMachine_Rigid_RenderLODs.fbx",
+      "fbx_sha256": "1897188457da1a7f6aacd8eaf2f79a05b60408c1420dcd4e9aefbf831cdd6083"
+    }
+  ]
+}

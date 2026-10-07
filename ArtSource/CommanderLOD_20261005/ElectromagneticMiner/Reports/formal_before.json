@@ -1,0 +1,592 @@
+{
+  "id": 3,
+  "name": "ElectromagneticMiner",
+  "display_name": "电磁矿车",
+  "presentation_scale": 0.6084579714416871,
+  "actor_class": "/Script/GuLiStrike.GuLiMiningVehiclePawn",
+  "presentation_class": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
+  "vat_definition": "",
+  "components": [
+    {
+      "name": "Collector_L_GEN_VARIABLE",
+      "mesh": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+        "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+      ]
+    },
+    {
+      "name": "Collector_L_GEN_VARIABLE",
+      "mesh": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+        "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+      ]
+    },
+    {
+      "name": "Weapon_Rocket_Mount_Lvl3_GEN_VARIABLE",
+      "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Weapons/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "name": "Weapon_Rocket_Mount_Lvl3_GEN_VARIABLE",
+      "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Weapons/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "name": "Weapon_Rocket_Mount_Lvl2_GEN_VARIABLE",
+      "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Weapons/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "name": "Weapon_Rocket_Mount_Lvl2_GEN_VARIABLE",
+      "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Weapons/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "name": "Side_Winglet_Spike_Lvl3_GEN_VARIABLE",
+      "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Side_Wings/Side_Winglets/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        -90.0,
+        0.0,
+        9.507781584261465e-08
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "name": "Cockpit_Freight_Spoiler_GEN_VARIABLE",
+      "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Cockpits/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "name": "Top_Turret_2x_Lvl1_GEN_VARIABLE",
+      "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Top/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+      ]
+    },
+    {
+      "name": "Collector_R_GEN_VARIABLE",
+      "mesh": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+        "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+      ]
+    },
+    {
+      "name": "Collector_R_GEN_VARIABLE",
+      "mesh": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+        "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+      ]
+    }
+  ],
+  "meshes": [
+    {
+      "asset": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "lod_count": 1,
+      "selected_indices": [
+        0
+      ],
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 5660,
+          "sections": 2,
+          "vertices": 3605,
+          "uv_channels": 2
+        }
+      ],
+      "screen_sizes": [
+        2.0
+      ],
+      "materials": [
+        {
+          "index": 0,
+          "path": "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+          "slot": "A_MC_Vehicles_Mat"
+        },
+        {
+          "index": 1,
+          "path": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle",
+          "slot": "DefaultMaterial"
+        }
+      ],
+      "sockets": [],
+      "fbx": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\ElectromagneticMiner\\Sources\\SM_TeslaCollector_Styled_RenderLODs.fbx",
+      "fbx_sha256": "371ef099f120a2de3a1760ae68def919399f0a6af45a9347953b00df159b3776"
+    },
+    {
+      "asset": "/Game/MC_Vehicle_Constructor/Meshes/Cockpits/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+      "lod_count": 1,
+      "selected_indices": [
+        0
+      ],
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 514,
+          "sections": 1,
+          "vertices": 398,
+          "uv_channels": 1
+        }
+      ],
+      "screen_sizes": [
+        2.0
+      ],
+      "materials": [
+        {
+          "index": 0,
+          "path": "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+          "slot": "A_MC_Vehicles_Mat"
+        }
+      ],
+      "sockets": [
+        {
+          "name": "Mount_Side_L",
+          "location": [
+            81.172119140625,
+            -0.2496337890625,
+            40.82841491699219
+          ],
+          "rotation": [
+            -3.5083545633527932e-15,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Mount_Side_R",
+          "location": [
+            -81.172119140625,
+            -0.2496337890625,
+            40.82841491699219
+          ],
+          "rotation": [
+            -3.5083545633527932e-15,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            -1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Mount_Back",
+          "location": [
+            2.5769707548417564e-13,
+            -44.305660247802734,
+            72.59333801269531
+          ],
+          "rotation": [
+            -3.5083545633527932e-15,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Mount_Weapon_Top",
+          "location": [
+            -9.663381206337363e-13,
+            11.963784217834473,
+            154.14869689941406
+          ],
+          "rotation": [
+            -3.5083545633527932e-15,
+            90.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Mount_Nose",
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation": [
+            -3.5083545633527932e-15,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "fbx": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\ElectromagneticMiner\\Sources\\Cockpit_Freight_Wide_RenderLODs.fbx",
+      "fbx_sha256": "dad43714d01a255ffaa7020486cbcacf24a11629524ed5442c3f73b99291e25d"
+    },
+    {
+      "asset": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Side_Wings/Side_Winglets/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+      "lod_count": 1,
+      "selected_indices": [
+        0
+      ],
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 42,
+          "sections": 1,
+          "vertices": 43,
+          "uv_channels": 1
+        }
+      ],
+      "screen_sizes": [
+        2.0
+      ],
+      "materials": [
+        {
+          "index": 0,
+          "path": "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+          "slot": "A_MC_Vehicles_Mat"
+        }
+      ],
+      "sockets": [],
+      "fbx": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\ElectromagneticMiner\\Sources\\Side_Winglet_Spike_Lvl1_RenderLODs.fbx",
+      "fbx_sha256": "1b7d9720d9dca9bc44a0347ed4f8e2b4e53439cd81d8b325f5f0e4e5ab23c4f3"
+    },
+    {
+      "asset": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Weapons/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "lod_count": 1,
+      "selected_indices": [
+        0
+      ],
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 240,
+          "sections": 1,
+          "vertices": 212,
+          "uv_channels": 1
+        }
+      ],
+      "screen_sizes": [
+        2.0
+      ],
+      "materials": [
+        {
+          "index": 0,
+          "path": "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+          "slot": "A_MC_Vehicles_Mat"
+        }
+      ],
+      "sockets": [
+        {
+          "name": "Mount_Rocket_1",
+          "location": [
+            33.73016357421875,
+            30.066410064697266,
+            38.99295425415039
+          ],
+          "rotation": [
+            -4.579830912838749e-15,
+            -39.999996185302734,
+            2.9438589847758214e-15
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Mount_Rocket_2",
+          "location": [
+            93.67113494873047,
+            30.066410064697266,
+            1.8410366987690625e-15
+          ],
+          "rotation": [
+            -3.5083545633527932e-15,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Mount_Rocket_3",
+          "location": [
+            33.73016357421875,
+            30.066410064697266,
+            -39.0
+          ],
+          "rotation": [
+            -4.579830912838749e-15,
+            39.999996185302734,
+            -2.9438589847758214e-15
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "fbx": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\ElectromagneticMiner\\Sources\\Weapon_Rocket_Mount_Lvl2_RenderLODs.fbx",
+      "fbx_sha256": "a66b5bd7c9b22e14f9a687d3ec02472c56eecefd75e7e1217ee71c7435ccc74c"
+    },
+    {
+      "asset": "/Game/MC_Vehicle_Constructor/Meshes/Top/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+      "lod_count": 1,
+      "selected_indices": [
+        0
+      ],
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 160,
+          "sections": 1,
+          "vertices": 153,
+          "uv_channels": 1
+        }
+      ],
+      "screen_sizes": [
+        2.0
+      ],
+      "materials": [
+        {
+          "index": 0,
+          "path": "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+          "slot": "A_MC_Vehicles_Mat"
+        }
+      ],
+      "sockets": [
+        {
+          "name": "Mount_Weapon_L",
+          "location": [
+            34.82996368408203,
+            5.307988166809082,
+            67.77389526367188
+          ],
+          "rotation": [
+            -3.5083545633527932e-15,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Mount_Weapon_R",
+          "location": [
+            -34.82996368408203,
+            5.307988166809082,
+            67.77389526367188
+          ],
+          "rotation": [
+            -3.5083545633527932e-15,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            -1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "fbx": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\ElectromagneticMiner\\Sources\\Top_Turret_2x_Lvl1_RenderLODs.fbx",
+      "fbx_sha256": "6002b8a1a857e3c683407d9769e6b295ccd425bc639fdaa86af8e34ffd6ff7a8"
+    }
+  ]
+}

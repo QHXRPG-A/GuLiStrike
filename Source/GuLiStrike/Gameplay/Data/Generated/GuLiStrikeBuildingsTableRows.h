@@ -111,4 +111,8 @@ struct FGuLiStrikeBuildingsBuildingsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buildings")
 	float ShieldRechargePerSecond = 0.0f;
 
+	/** CompletionUnitTypeId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buildings")
+	int32 CompletionUnitTypeId = 0;
+
 };

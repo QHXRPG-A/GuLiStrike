@@ -1,0 +1,7614 @@
+{
+  "version": "A-v1",
+  "stage": "source_based_reference_design",
+  "production_model": false,
+  "A_approval": "pending",
+  "B_approval": "not_started",
+  "palette_srgb": {
+    "WarmWhite": "#F1E7D5",
+    "Coral": "#E97868",
+    "Chassis": "#48413E",
+    "Steel": "#756A60",
+    "Amber": "#F4B65C",
+    "Ink": "#241F20"
+  },
+  "light_world": [
+    0.35,
+    -0.55,
+    0.76
+  ],
+  "tone_thresholds": [
+    0,
+    0.12,
+    0.55
+  ],
+  "tone_linear_factors": [
+    0.42,
+    0.74,
+    1
+  ],
+  "pose": "original UE skeletal mesh reference pose, gun elevated as in source",
+  "same_scale_all_views": true,
+  "cameras": {
+    "Hero": {
+      "type": "ORTHO",
+      "location_m": [
+        29.319177627563477,
+        -39.46352005004883,
+        25.866188049316406
+      ],
+      "rotation_radians": [
+        1.1334216594696045,
+        -6.619977455102344e-08,
+        0.657888650894165
+      ],
+      "ortho_scale_m": 16.144643783569336
+    },
+    "Front": {
+      "type": "ORTHO",
+      "location_m": [
+        -2.1457672119140625e-05,
+        -54.45428466796875,
+        3.445624351501465
+      ],
+      "rotation_radians": [
+        1.5707964897155762,
+        -0.0,
+        0.0
+      ],
+      "ortho_scale_m": 16.144643783569336
+    },
+    "Left": {
+      "type": "ORTHO",
+      "location_m": [
+        52.93323516845703,
+        -1.5210249423980713,
+        3.445624351501465
+      ],
+      "rotation_radians": [
+        1.5707963705062866,
+        -0.0,
+        1.5707963705062866
+      ],
+      "ortho_scale_m": 16.144643783569336
+    },
+    "Back": {
+      "type": "ORTHO",
+      "location_m": [
+        -2.1457672119140625e-05,
+        51.4122314453125,
+        3.445624351501465
+      ],
+      "rotation_radians": [
+        -1.570796251296997,
+        3.141592502593994,
+        -0.0
+      ],
+      "ortho_scale_m": 16.144643783569336
+    }
+  },
+  "geometry_skinweight_hash_before": {
+    "SKM_Mech.001": "ae5f6551debb92c1fd700b29afe1e3f2b0d1a8db7d5d3e688959a15f55720c1b"
+  },
+  "geometry_skinweight_hash_after": {
+    "SKM_Mech.001": "ae5f6551debb92c1fd700b29afe1e3f2b0d1a8db7d5d3e688959a15f55720c1b"
+  },
+  "geometry_changed": false,
+  "decimation_applied": false,
+  "normals": "source imported custom normals, unchanged",
+  "original_decals": "source grime/normal/decal cards suppressed only by transparent material",
+  "outline_method_for_reference": "Freestyle; production will use the approved simplified outline shell",
+  "line_widths_px": {
+    "internal": 1.4,
+    "silhouette": 2.25
+  },
+  "component_color_assignments": [
+    {
+      "component": 0,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 4,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 8,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 12,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 16,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 20,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 24,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 28,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 32,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 36,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 40,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 44,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 48,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 52,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 56,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 60,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 64,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 68,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 72,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 76,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 80,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 84,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 88,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 92,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 96,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 100,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 104,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 108,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 112,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 116,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 120,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 124,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 8
+      }
+    },
+    {
+      "component": 134,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 18
+      }
+    },
+    {
+      "component": 154,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 4
+      }
+    },
+    {
+      "component": 160,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 8
+      }
+    },
+    {
+      "component": 170,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 4
+      }
+    },
+    {
+      "component": 176,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 18
+      }
+    },
+    {
+      "component": 196,
+      "dominant_bone": "piston_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 14
+      }
+    },
+    {
+      "component": 212,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 16
+      }
+    },
+    {
+      "component": 230,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 234,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 238,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 242,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 246,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 250,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 254,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 258,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 262,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 266,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 270,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 274,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 278,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 282,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 286,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 290,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 294,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 298,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 302,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 306,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 310,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 314,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 318,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 322,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 326,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 330,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 334,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 338,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 342,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 346,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 350,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 354,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 358,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 362,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 366,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 370,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 374,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 378,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 382,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 386,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 390,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 394,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 398,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 402,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 406,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 410,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 414,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 418,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 422,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 426,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 430,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 434,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 438,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 442,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 446,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 450,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 454,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 458,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 462,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 466,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 470,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 474,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 478,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 482,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 486,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 490,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 494,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 498,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 502,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 506,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 510,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 514,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 518,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 522,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 526,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 530,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 534,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 538,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 542,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 546,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 550,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 554,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 558,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 562,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 566,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 570,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 574,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 578,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 582,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 586,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 590,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 594,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 598,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 602,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 606,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 610,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 614,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 618,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 622,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 626,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 630,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 634,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 638,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 642,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 646,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 650,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 654,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 658,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 662,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 666,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 670,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 674,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 678,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 682,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 686,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 690,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 694,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 698,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 702,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 706,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 710,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 714,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 718,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 722,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 726,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 730,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 734,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 738,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 742,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 746,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 750,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 754,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 758,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 762,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 766,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 770,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 774,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 778,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 782,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 786,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 790,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 794,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 798,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 802,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 806,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 810,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 814,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 818,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 822,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 826,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 830,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 834,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 838,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 842,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 846,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 6
+      }
+    },
+    {
+      "component": 896,
+      "dominant_bone": "piston_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 48
+      }
+    },
+    {
+      "component": 904,
+      "dominant_bone": "piston_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 96
+      }
+    },
+    {
+      "component": 1096,
+      "dominant_bone": "piston_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 96
+      }
+    },
+    {
+      "component": 1100,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 46
+      }
+    },
+    {
+      "component": 1148,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 46
+      }
+    },
+    {
+      "component": 1196,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 46
+      }
+    },
+    {
+      "component": 1244,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 16
+      }
+    },
+    {
+      "component": 1262,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 16
+      }
+    },
+    {
+      "component": 1280,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 16
+      }
+    },
+    {
+      "component": 1298,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 16
+      }
+    },
+    {
+      "component": 1405,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 108
+      }
+    },
+    {
+      "component": 1472,
+      "dominant_bone": "piston_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 48
+      }
+    },
+    {
+      "component": 1481,
+      "dominant_bone": "piston_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 96
+      }
+    },
+    {
+      "component": 1579,
+      "dominant_bone": "piston_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 96
+      }
+    },
+    {
+      "component": 1677,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 46
+      }
+    },
+    {
+      "component": 1725,
+      "dominant_bone": "piston_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 48
+      }
+    },
+    {
+      "component": 1774,
+      "dominant_bone": "piston_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 48
+      }
+    },
+    {
+      "component": 8413,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 29950,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 4334,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 30342,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 1883,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 14782,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 9254,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 9460,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 9535,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 5045,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 31779,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 10013,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 10132,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 5319,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 2036,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 32694,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 10684,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 33086,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 10814,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 33478,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 670
+      }
+    },
+    {
+      "component": 6581,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 108
+      }
+    },
+    {
+      "component": 48460,
+      "dominant_bone": "piston_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 4016,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 34
+      }
+    },
+    {
+      "component": 2132,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 34
+      }
+    },
+    {
+      "component": 2160,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 34
+      }
+    },
+    {
+      "component": 2184,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 34
+      }
+    },
+    {
+      "component": 13304,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Coral": 74
+      }
+    },
+    {
+      "component": 28888,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Coral": 74
+      }
+    },
+    {
+      "component": 21293,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 248
+      }
+    },
+    {
+      "component": 21936,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Coral": 364
+      }
+    },
+    {
+      "component": 3127,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Coral": 364
+      }
+    },
+    {
+      "component": 7072,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 60
+      }
+    },
+    {
+      "component": 39847,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1886
+      }
+    },
+    {
+      "component": 13104,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "WarmWhite": 80
+      }
+    },
+    {
+      "component": 23728,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "WarmWhite": 80
+      }
+    },
+    {
+      "component": 12808,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "WarmWhite": 80
+      }
+    },
+    {
+      "component": 12888,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "WarmWhite": 80
+      }
+    },
+    {
+      "component": 12732,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "WarmWhite": 134
+      }
+    },
+    {
+      "component": 13076,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "WarmWhite": 134
+      }
+    },
+    {
+      "component": 29567,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "WarmWhite": 560
+      }
+    },
+    {
+      "component": 17893,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "WarmWhite": 4836
+      }
+    },
+    {
+      "component": 43280,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 43392,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 43465,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 43632,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 43728,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 43840,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 43952,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 44024,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 44176,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 5063,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 5556,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 5740,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 5924,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 45313,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 45340,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 198
+      }
+    },
+    {
+      "component": 40315,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 198
+      }
+    },
+    {
+      "component": 40339,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 198
+      }
+    },
+    {
+      "component": 40363,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 198
+      }
+    },
+    {
+      "component": 29630,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 198
+      }
+    },
+    {
+      "component": 40399,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 198
+      }
+    },
+    {
+      "component": 40423,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 198
+      }
+    },
+    {
+      "component": 11767,
+      "dominant_bone": "antenna_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 418
+      }
+    },
+    {
+      "component": 11171,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 282
+      }
+    },
+    {
+      "component": 21526,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 108
+      }
+    },
+    {
+      "component": 40447,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 198
+      }
+    },
+    {
+      "component": 48080,
+      "dominant_bone": "piston_02_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 15640,
+      "dominant_bone": "piston_02_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 37516,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1089
+      }
+    },
+    {
+      "component": 6752,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 28
+      }
+    },
+    {
+      "component": 6784,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 28
+      }
+    },
+    {
+      "component": 6816,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 28
+      }
+    },
+    {
+      "component": 6840,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 28
+      }
+    },
+    {
+      "component": 6872,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 28
+      }
+    },
+    {
+      "component": 45664,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 7168,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 96
+      }
+    },
+    {
+      "component": 7264,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 96
+      }
+    },
+    {
+      "component": 7283,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 18
+      }
+    },
+    {
+      "component": 7296,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 18
+      }
+    },
+    {
+      "component": 7391,
+      "dominant_bone": "piston_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 408
+      }
+    },
+    {
+      "component": 20036,
+      "dominant_bone": "piston_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 408
+      }
+    },
+    {
+      "component": 7614,
+      "dominant_bone": "piston_02_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 188
+      }
+    },
+    {
+      "component": 7767,
+      "dominant_bone": "piston_02_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 188
+      }
+    },
+    {
+      "component": 23456,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Coral": 1964
+      }
+    },
+    {
+      "component": 42890,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "WarmWhite": 110
+      }
+    },
+    {
+      "component": 7941,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "WarmWhite": 214
+      }
+    },
+    {
+      "component": 47764,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "WarmWhite": 214
+      }
+    },
+    {
+      "component": 9879,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 44528,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 44640,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 44680,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 44792,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 196
+      }
+    },
+    {
+      "component": 11214,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 248
+      }
+    },
+    {
+      "component": 21444,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 108
+      }
+    },
+    {
+      "component": 21564,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 108
+      }
+    },
+    {
+      "component": 11419,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 94
+      }
+    },
+    {
+      "component": 11445,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 94
+      }
+    },
+    {
+      "component": 11536,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 28
+      }
+    },
+    {
+      "component": 11560,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 28
+      }
+    },
+    {
+      "component": 11592,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 28
+      }
+    },
+    {
+      "component": 11624,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 28
+      }
+    },
+    {
+      "component": 11656,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 28
+      }
+    },
+    {
+      "component": 15594,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 238
+      }
+    },
+    {
+      "component": 50300,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1486,
+        "Steel": 1102
+      }
+    },
+    {
+      "component": 49959,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1486,
+        "Steel": 1102
+      }
+    },
+    {
+      "component": 19846,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 260
+      }
+    },
+    {
+      "component": 19653,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 260
+      }
+    },
+    {
+      "component": 48508,
+      "dominant_bone": "piston_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 51035,
+      "dominant_bone": "piston_01_r",
+      "colors_by_polygon_count": {
+        "Coral": 1340,
+        "Steel": 672
+      }
+    },
+    {
+      "component": 46748,
+      "dominant_bone": "piston_01_l",
+      "colors_by_polygon_count": {
+        "Coral": 1340,
+        "Steel": 672
+      }
+    },
+    {
+      "component": 12157,
+      "dominant_bone": "piston_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 408
+      }
+    },
+    {
+      "component": 12344,
+      "dominant_bone": "piston_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 408
+      }
+    },
+    {
+      "component": 12386,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 94
+      }
+    },
+    {
+      "component": 12422,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 94
+      }
+    },
+    {
+      "component": 23652,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "WarmWhite": 138
+      }
+    },
+    {
+      "component": 13146,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 74
+      }
+    },
+    {
+      "component": 13171,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 74
+      }
+    },
+    {
+      "component": 39989,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 74
+      }
+    },
+    {
+      "component": 39947,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 74
+      }
+    },
+    {
+      "component": 13236,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Coral": 32
+      }
+    },
+    {
+      "component": 13255,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Coral": 32
+      }
+    },
+    {
+      "component": 13265,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Coral": 32
+      }
+    },
+    {
+      "component": 40115,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Coral": 32
+      }
+    },
+    {
+      "component": 34948,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 604
+      }
+    },
+    {
+      "component": 35191,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 604
+      }
+    },
+    {
+      "component": 28944,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Coral": 604
+      }
+    },
+    {
+      "component": 47668,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "WarmWhite": 192
+      }
+    },
+    {
+      "component": 13912,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "WarmWhite": 192
+      }
+    },
+    {
+      "component": 42864,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "WarmWhite": 110
+      }
+    },
+    {
+      "component": 48396,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 260
+      }
+    },
+    {
+      "component": 48428,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 260
+      }
+    },
+    {
+      "component": 15967,
+      "dominant_bone": "piston_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 238
+      }
+    },
+    {
+      "component": 16080,
+      "dominant_bone": "piston_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 238
+      }
+    },
+    {
+      "component": 39887,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 34
+      }
+    },
+    {
+      "component": 16342,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 34
+      }
+    },
+    {
+      "component": 39867,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 34
+      }
+    },
+    {
+      "component": 16366,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 34
+      }
+    },
+    {
+      "component": 19445,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 416
+      }
+    },
+    {
+      "component": 22391,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 19
+      }
+    },
+    {
+      "component": 58883,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1198,
+        "Chassis": 1390
+      }
+    },
+    {
+      "component": 59590,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1198,
+        "Chassis": 1390
+      }
+    },
+    {
+      "component": 25179,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1198,
+        "Chassis": 1390
+      }
+    },
+    {
+      "component": 60860,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1198,
+        "Chassis": 1390
+      }
+    },
+    {
+      "component": 61495,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1198,
+        "Chassis": 1390
+      }
+    },
+    {
+      "component": 54645,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1198,
+        "Chassis": 1390
+      }
+    },
+    {
+      "component": 63484,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1198,
+        "Chassis": 1582
+      }
+    },
+    {
+      "component": 28819,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1198,
+        "Chassis": 1582
+      }
+    },
+    {
+      "component": 33597,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "WarmWhite": 110
+      }
+    },
+    {
+      "component": 35368,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "WarmWhite": 110
+      }
+    },
+    {
+      "component": 42800,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "WarmWhite": 194
+      }
+    },
+    {
+      "component": 42815,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "WarmWhite": 194
+      }
+    },
+    {
+      "component": 42980,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "WarmWhite": 110
+      }
+    },
+    {
+      "component": 37088,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "WarmWhite": 110
+      }
+    },
+    {
+      "component": 37097,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "WarmWhite": 110
+      }
+    },
+    {
+      "component": 37139,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "WarmWhite": 110
+      }
+    },
+    {
+      "component": 47180,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 156
+      }
+    },
+    {
+      "component": 47280,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 156
+      }
+    },
+    {
+      "component": 48225,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 156
+      }
+    },
+    {
+      "component": 40471,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 156
+      }
+    },
+    {
+      "component": 48296,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 156
+      }
+    },
+    {
+      "component": 49271,
+      "dominant_bone": "piston_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 336,
+        "Steel": 96
+      }
+    },
+    {
+      "component": 40920,
+      "dominant_bone": "piston_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 336,
+        "Steel": 96
+      }
+    },
+    {
+      "component": 45840,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 508
+      }
+    },
+    {
+      "component": 42625,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 156
+      }
+    },
+    {
+      "component": 42649,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 156
+      }
+    },
+    {
+      "component": 47372,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 156
+      }
+    },
+    {
+      "component": 45560,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 30
+      }
+    },
+    {
+      "component": 45572,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 30
+      }
+    },
+    {
+      "component": 48838,
+      "dominant_bone": "piston_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 238
+      }
+    },
+    {
+      "component": 48982,
+      "dominant_bone": "piston_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 238
+      }
+    },
+    {
+      "component": 50200,
+      "dominant_bone": "piston_02_r",
+      "colors_by_polygon_count": {
+        "Steel": 48
+      }
+    },
+    {
+      "component": 49420,
+      "dominant_bone": "piston_02_l",
+      "colors_by_polygon_count": {
+        "Steel": 48
+      }
+    },
+    {
+      "component": 65049,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Chassis": 310
+      }
+    },
+    {
+      "component": 65440,
+      "dominant_bone": "cannon_02",
+      "colors_by_polygon_count": {
+        "Chassis": 1052
+      }
+    },
+    {
+      "component": 57100,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 310
+      }
+    },
+    {
+      "component": 57436,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 310
+      }
+    },
+    {
+      "component": 64816,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 310
+      }
+    },
+    {
+      "component": 56189,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Chassis": 310
+      }
+    },
+    {
+      "component": 55344,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "Chassis": 508
+      }
+    },
+    {
+      "component": 65587,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "Chassis": 508
+      }
+    },
+    {
+      "component": 55948,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 310
+      }
+    },
+    {
+      "component": 57292,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 310
+      }
+    },
+    {
+      "component": 56044,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 310
+      }
+    },
+    {
+      "component": 56236,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Chassis": 310
+      }
+    },
+    {
+      "component": 63821,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 572
+      }
+    },
+    {
+      "component": 56380,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "Chassis": 192
+      }
+    },
+    {
+      "component": 56428,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "Chassis": 192
+      }
+    },
+    {
+      "component": 56512,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 572
+      }
+    },
+    {
+      "component": 60824,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 572
+      }
+    },
+    {
+      "component": 63000,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 572
+      }
+    },
+    {
+      "component": 57846,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 572
+      }
+    },
+    {
+      "component": 59808,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 572
+      }
+    },
+    {
+      "component": 61244,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 572
+      }
+    },
+    {
+      "component": 62071,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Chassis": 572
+      }
+    },
+    {
+      "component": 66748,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "Chassis": 118
+      }
+    },
+    {
+      "component": 66820,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "Chassis": 118
+      }
+    },
+    {
+      "component": 66892,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Amber": 118
+      }
+    },
+    {
+      "component": 66964,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Amber": 118
+      }
+    },
+    {
+      "component": 67036,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Amber": 118
+      }
+    },
+    {
+      "component": 67108,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Amber": 118
+      }
+    },
+    {
+      "component": 67180,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Amber": 118
+      }
+    },
+    {
+      "component": 67304,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Amber": 118
+      }
+    },
+    {
+      "component": 67360,
+      "dominant_bone": "turret_base",
+      "colors_by_polygon_count": {
+        "Amber": 118
+      }
+    },
+    {
+      "component": 67440,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Amber": 118
+      }
+    },
+    {
+      "component": 67468,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "Amber": 148
+      }
+    },
+    {
+      "component": 67558,
+      "dominant_bone": "main_gun",
+      "colors_by_polygon_count": {
+        "Amber": 148
+      }
+    },
+    {
+      "component": 67688,
+      "dominant_bone": "cannon_03",
+      "colors_by_polygon_count": {
+        "Amber": 118
+      }
+    },
+    {
+      "component": 67832,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "Chassis": 1152
+      }
+    },
+    {
+      "component": 68432,
+      "dominant_bone": "cannon_01",
+      "colors_by_polygon_count": {
+        "Chassis": 1152
+      }
+    },
+    {
+      "component": 69045,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 492
+      }
+    },
+    {
+      "component": 71703,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 546
+      }
+    },
+    {
+      "component": 69349,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 248
+      }
+    },
+    {
+      "component": 69483,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 248
+      }
+    },
+    {
+      "component": 69549,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 430
+      }
+    },
+    {
+      "component": 70574,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 988
+      }
+    },
+    {
+      "component": 70872,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 988
+      }
+    },
+    {
+      "component": 71484,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 300
+      }
+    },
+    {
+      "component": 71245,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 300
+      }
+    },
+    {
+      "component": 72034,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 28
+      }
+    },
+    {
+      "component": 72064,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 16
+      }
+    },
+    {
+      "component": 72082,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 16
+      }
+    },
+    {
+      "component": 72100,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 16
+      }
+    },
+    {
+      "component": 72118,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 16
+      }
+    },
+    {
+      "component": 72136,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 28
+      }
+    },
+    {
+      "component": 72166,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 28
+      }
+    },
+    {
+      "component": 72196,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 28
+      }
+    },
+    {
+      "component": 72226,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 28
+      }
+    },
+    {
+      "component": 72256,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 28
+      }
+    },
+    {
+      "component": 72455,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 248
+      }
+    },
+    {
+      "component": 72655,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 248
+      }
+    },
+    {
+      "component": 72919,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 248
+      }
+    },
+    {
+      "component": 73053,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 248
+      }
+    },
+    {
+      "component": 73317,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 248
+      }
+    },
+    {
+      "component": 73451,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 248
+      }
+    },
+    {
+      "component": 73702,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 248
+      }
+    },
+    {
+      "component": 73835,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 248
+      }
+    },
+    {
+      "component": 75151,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 988
+      }
+    },
+    {
+      "component": 74575,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 988
+      }
+    },
+    {
+      "component": 75908,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 300
+      }
+    },
+    {
+      "component": 75627,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Chassis": 300
+      }
+    },
+    {
+      "component": 76223,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 400
+      }
+    },
+    {
+      "component": 76679,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 400
+      }
+    },
+    {
+      "component": 76719,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 400
+      }
+    },
+    {
+      "component": 77167,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 400
+      }
+    },
+    {
+      "component": 77400,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 400
+      }
+    },
+    {
+      "component": 77669,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 400
+      }
+    },
+    {
+      "component": 77702,
+      "dominant_bone": "hatch_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 556
+      }
+    },
+    {
+      "component": 78664,
+      "dominant_bone": "hatch_03_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 556
+      }
+    },
+    {
+      "component": 78135,
+      "dominant_bone": "hatch_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 20
+      }
+    },
+    {
+      "component": 79009,
+      "dominant_bone": "hatch_03_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 20
+      }
+    },
+    {
+      "component": 78408,
+      "dominant_bone": "hatch_02_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 556
+      }
+    },
+    {
+      "component": 78568,
+      "dominant_bone": "hatch_02_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 20
+      }
+    },
+    {
+      "component": 79029,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 414
+      }
+    },
+    {
+      "component": 79181,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 414
+      }
+    },
+    {
+      "component": 79333,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 416
+      }
+    },
+    {
+      "component": 79486,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 414
+      }
+    },
+    {
+      "component": 80684,
+      "dominant_bone": "hatch_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 556
+      }
+    },
+    {
+      "component": 81491,
+      "dominant_bone": "hatch_03_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 556
+      }
+    },
+    {
+      "component": 80865,
+      "dominant_bone": "hatch_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 20
+      }
+    },
+    {
+      "component": 81744,
+      "dominant_bone": "hatch_03_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 20
+      }
+    },
+    {
+      "component": 81029,
+      "dominant_bone": "hatch_02_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 556
+      }
+    },
+    {
+      "component": 81304,
+      "dominant_bone": "hatch_02_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 20
+      }
+    },
+    {
+      "component": 81767,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 414
+      }
+    },
+    {
+      "component": 81919,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 414
+      }
+    },
+    {
+      "component": 82071,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 416
+      }
+    },
+    {
+      "component": 82286,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 414
+      }
+    },
+    {
+      "component": 83559,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 416
+      }
+    },
+    {
+      "component": 83476,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "WarmWhite": 414
+      }
+    },
+    {
+      "component": 84619,
+      "dominant_bone": "hatch_fr_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 556
+      }
+    },
+    {
+      "component": 84150,
+      "dominant_bone": "hatch_fr_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 20
+      }
+    },
+    {
+      "component": 84158,
+      "dominant_bone": "hatch_fr_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 556
+      }
+    },
+    {
+      "component": 84586,
+      "dominant_bone": "hatch_fr_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 20
+      }
+    },
+    {
+      "component": 84805,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Coral": 464
+      }
+    },
+    {
+      "component": 85087,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Coral": 464
+      }
+    },
+    {
+      "component": 85585,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 800
+      }
+    },
+    {
+      "component": 127271,
+      "dominant_bone": "toe_2_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 360,
+        "Chassis": 144
+      }
+    },
+    {
+      "component": 88028,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 85956,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 85988,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 86120,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 86228,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 86773,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 87087,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 87287,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 87516,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 87636,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 137293,
+      "dominant_bone": "toe_1_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 360,
+        "Chassis": 144
+      }
+    },
+    {
+      "component": 88482,
+      "dominant_bone": "toe_1_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 88200,
+      "dominant_bone": "toe_1_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 88514,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 24
+      }
+    },
+    {
+      "component": 88563,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "Coral": 94
+      }
+    },
+    {
+      "component": 88911,
+      "dominant_bone": "legpump_fr_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 556
+      }
+    },
+    {
+      "component": 88994,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 16
+      }
+    },
+    {
+      "component": 89016,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 16
+      }
+    },
+    {
+      "component": 89671,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "Coral": 1494
+      }
+    },
+    {
+      "component": 90022,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 268
+      }
+    },
+    {
+      "component": 90452,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 429
+      }
+    },
+    {
+      "component": 91435,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1140
+      }
+    },
+    {
+      "component": 90701,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1140
+      }
+    },
+    {
+      "component": 92686,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1222
+      }
+    },
+    {
+      "component": 93370,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1222
+      }
+    },
+    {
+      "component": 93574,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Coral": 464
+      }
+    },
+    {
+      "component": 94007,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Coral": 464
+      }
+    },
+    {
+      "component": 94354,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 800
+      }
+    },
+    {
+      "component": 94607,
+      "dominant_bone": "toe_1_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 360,
+        "Chassis": 144
+      }
+    },
+    {
+      "component": 96797,
+      "dominant_bone": "toe_1_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 94725,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 94757,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 94877,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 94997,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 95542,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 95742,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 95939,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 96285,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 96405,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 154783,
+      "dominant_bone": "toe_2_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 360,
+        "Chassis": 144
+      }
+    },
+    {
+      "component": 97251,
+      "dominant_bone": "toe_2_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 96952,
+      "dominant_bone": "toe_2_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 97283,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 24
+      }
+    },
+    {
+      "component": 97332,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "Coral": 94
+      }
+    },
+    {
+      "component": 97387,
+      "dominant_bone": "legpump_bk_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 556
+      }
+    },
+    {
+      "component": 97763,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 16
+      }
+    },
+    {
+      "component": 97785,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 16
+      }
+    },
+    {
+      "component": 98167,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "Coral": 1494
+      }
+    },
+    {
+      "component": 98791,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 268
+      }
+    },
+    {
+      "component": 99221,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 429
+      }
+    },
+    {
+      "component": 100204,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1140
+      }
+    },
+    {
+      "component": 99470,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1140
+      }
+    },
+    {
+      "component": 101455,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1222
+      }
+    },
+    {
+      "component": 102248,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1222
+      }
+    },
+    {
+      "component": 102343,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Coral": 464
+      }
+    },
+    {
+      "component": 102656,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Coral": 464
+      }
+    },
+    {
+      "component": 103123,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 800
+      }
+    },
+    {
+      "component": 105374,
+      "dominant_bone": "toe_1_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 360,
+        "Chassis": 144
+      }
+    },
+    {
+      "component": 105566,
+      "dominant_bone": "toe_1_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 103494,
+      "dominant_bone": "toe_1_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 103526,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 103646,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 103766,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 104311,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 104511,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 104708,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 105054,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 105174,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 105935,
+      "dominant_bone": "toe_2_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 360,
+        "Chassis": 144
+      }
+    },
+    {
+      "component": 106020,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 105716,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 106052,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 24
+      }
+    },
+    {
+      "component": 106080,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "Coral": 94
+      }
+    },
+    {
+      "component": 106156,
+      "dominant_bone": "legpump_fr_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 556
+      }
+    },
+    {
+      "component": 106532,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 16
+      }
+    },
+    {
+      "component": 106554,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 16
+      }
+    },
+    {
+      "component": 107151,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "Coral": 1494
+      }
+    },
+    {
+      "component": 107708,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 268
+      }
+    },
+    {
+      "component": 107990,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 429
+      }
+    },
+    {
+      "component": 108973,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1140
+      }
+    },
+    {
+      "component": 108239,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1140
+      }
+    },
+    {
+      "component": 109981,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1222
+      }
+    },
+    {
+      "component": 110600,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1222
+      }
+    },
+    {
+      "component": 111176,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Coral": 464
+      }
+    },
+    {
+      "component": 111424,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Coral": 464
+      }
+    },
+    {
+      "component": 111892,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 800
+      }
+    },
+    {
+      "component": 114143,
+      "dominant_bone": "toe_2_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 360,
+        "Chassis": 144
+      }
+    },
+    {
+      "component": 114335,
+      "dominant_bone": "toe_2_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 112263,
+      "dominant_bone": "toe_2_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 112295,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 112415,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 112535,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 112966,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 113163,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 113477,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 420
+      }
+    },
+    {
+      "component": 113823,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 113943,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Coral": 166
+      }
+    },
+    {
+      "component": 114367,
+      "dominant_bone": "toe_1_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 360,
+        "Chassis": 144
+      }
+    },
+    {
+      "component": 114789,
+      "dominant_bone": "toe_1_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 114485,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 118
+      }
+    },
+    {
+      "component": 114821,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 24
+      }
+    },
+    {
+      "component": 114896,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "Coral": 94
+      }
+    },
+    {
+      "component": 114925,
+      "dominant_bone": "legpump_bk_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 556
+      }
+    },
+    {
+      "component": 115301,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 16
+      }
+    },
+    {
+      "component": 115323,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 16
+      }
+    },
+    {
+      "component": 116103,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "Coral": 1494
+      }
+    },
+    {
+      "component": 116329,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 268
+      }
+    },
+    {
+      "component": 116759,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 429
+      }
+    },
+    {
+      "component": 116958,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1140
+      }
+    },
+    {
+      "component": 117910,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1140
+      }
+    },
+    {
+      "component": 118664,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1222
+      }
+    },
+    {
+      "component": 119731,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "WarmWhite": 1222
+      }
+    },
+    {
+      "component": 119887,
+      "dominant_bone": "legpump_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 200
+      }
+    },
+    {
+      "component": 120069,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 270
+      }
+    },
+    {
+      "component": 120245,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 270
+      }
+    },
+    {
+      "component": 120461,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 632
+      }
+    },
+    {
+      "component": 120928,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 284
+      }
+    },
+    {
+      "component": 121034,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 156
+      }
+    },
+    {
+      "component": 121114,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 480
+      }
+    },
+    {
+      "component": 121194,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 480
+      }
+    },
+    {
+      "component": 121654,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 88
+      }
+    },
+    {
+      "component": 121851,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 274
+      }
+    },
+    {
+      "component": 121971,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 316
+      }
+    },
+    {
+      "component": 122093,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 858
+      }
+    },
+    {
+      "component": 122855,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "Steel": 1860
+      }
+    },
+    {
+      "component": 135053,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 2252
+      }
+    },
+    {
+      "component": 124135,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 124235,
+      "dominant_bone": "legbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 124274,
+      "dominant_bone": "legbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 125119,
+      "dominant_bone": "legbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 1196
+      }
+    },
+    {
+      "component": 126525,
+      "dominant_bone": "toe_1_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 698
+      }
+    },
+    {
+      "component": 126423,
+      "dominant_bone": "toe_2_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 698
+      }
+    },
+    {
+      "component": 126767,
+      "dominant_bone": "toe_2_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 556
+      }
+    },
+    {
+      "component": 126949,
+      "dominant_bone": "toe_1_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 556
+      }
+    },
+    {
+      "component": 127429,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 127528,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 118
+      }
+    },
+    {
+      "component": 127907,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 88
+      }
+    },
+    {
+      "component": 128219,
+      "dominant_bone": "leg_fr_03_l",
+      "colors_by_polygon_count": {
+        "Chassis": 280
+      }
+    },
+    {
+      "component": 128299,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 760
+      }
+    },
+    {
+      "component": 129016,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 129103,
+      "dominant_bone": "piston_1_02_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 129229,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 129270,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 129431,
+      "dominant_bone": "piston_4_01_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 129752,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 129925,
+      "dominant_bone": "piston_2_01_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 130967,
+      "dominant_bone": "piston_1_01_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 130616,
+      "dominant_bone": "piston_2_02_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 130705,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 130773,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 131051,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 131087,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 132543,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "Steel": 248
+      }
+    },
+    {
+      "component": 131338,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 131813,
+      "dominant_bone": "piston_3_01_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 132000,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 132083,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 132119,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 132167,
+      "dominant_bone": "leg_fr_03_l",
+      "colors_by_polygon_count": {
+        "Chassis": 130
+      }
+    },
+    {
+      "component": 132251,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 208
+      }
+    },
+    {
+      "component": 132375,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 142
+      }
+    },
+    {
+      "component": 132455,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 142
+      }
+    },
+    {
+      "component": 132797,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 348
+      }
+    },
+    {
+      "component": 132829,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 132973,
+      "dominant_bone": "toe_1_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 133045,
+      "dominant_bone": "toe_2_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 133605,
+      "dominant_bone": "toe_1_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 133261,
+      "dominant_bone": "toe_2_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 133399,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 134055,
+      "dominant_bone": "piston_1_02_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 60
+      }
+    },
+    {
+      "component": 134088,
+      "dominant_bone": "piston_2_02_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 60
+      }
+    },
+    {
+      "component": 134219,
+      "dominant_bone": "piston_5_02_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 76
+      }
+    },
+    {
+      "component": 134247,
+      "dominant_bone": "legpump_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 98
+      }
+    },
+    {
+      "component": 134403,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 292
+      }
+    },
+    {
+      "component": 134477,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 30
+      }
+    },
+    {
+      "component": 136077,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 376
+      }
+    },
+    {
+      "component": 134773,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 135363,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 858
+      }
+    },
+    {
+      "component": 136384,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 136407,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 136597,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 136637,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 136813,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 136965,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 137117,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 137403,
+      "dominant_bone": "toe_1_fr_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 118
+      }
+    },
+    {
+      "component": 137528,
+      "dominant_bone": "legpump_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 200
+      }
+    },
+    {
+      "component": 137576,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 270
+      }
+    },
+    {
+      "component": 137927,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 270
+      }
+    },
+    {
+      "component": 138269,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 632
+      }
+    },
+    {
+      "component": 138399,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 284
+      }
+    },
+    {
+      "component": 138582,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 156
+      }
+    },
+    {
+      "component": 138662,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 480
+      }
+    },
+    {
+      "component": 138822,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 480
+      }
+    },
+    {
+      "component": 139258,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 88
+      }
+    },
+    {
+      "component": 139399,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 274
+      }
+    },
+    {
+      "component": 139519,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 316
+      }
+    },
+    {
+      "component": 139799,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 858
+      }
+    },
+    {
+      "component": 141063,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "Steel": 1860
+      }
+    },
+    {
+      "component": 152421,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 2252
+      }
+    },
+    {
+      "component": 141696,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 141783,
+      "dominant_bone": "legbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 141822,
+      "dominant_bone": "legbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 142782,
+      "dominant_bone": "legbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 1196
+      }
+    },
+    {
+      "component": 145295,
+      "dominant_bone": "toe_2_bk_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 698
+      }
+    },
+    {
+      "component": 143604,
+      "dominant_bone": "toe_1_bk_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 698
+      }
+    },
+    {
+      "component": 144315,
+      "dominant_bone": "toe_1_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 556
+      }
+    },
+    {
+      "component": 144637,
+      "dominant_bone": "toe_2_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 556
+      }
+    },
+    {
+      "component": 144987,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 145119,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 118
+      }
+    },
+    {
+      "component": 145455,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 88
+      }
+    },
+    {
+      "component": 145767,
+      "dominant_bone": "leg_bk_03_l",
+      "colors_by_polygon_count": {
+        "Chassis": 280
+      }
+    },
+    {
+      "component": 145967,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 760
+      }
+    },
+    {
+      "component": 146549,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 146713,
+      "dominant_bone": "piston_2_02_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 146808,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 146824,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 147060,
+      "dominant_bone": "piston_4_01_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 147334,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 147983,
+      "dominant_bone": "piston_1_01_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 148333,
+      "dominant_bone": "piston_2_01_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 148127,
+      "dominant_bone": "piston_1_02_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 148253,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 148293,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 148599,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 148635,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 148720,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "Steel": 248
+      }
+    },
+    {
+      "component": 148886,
+      "dominant_bone": "leg_bk_03_l",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 149239,
+      "dominant_bone": "piston_3_01_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 149555,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 149631,
+      "dominant_bone": "leg_bk_03_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 149667,
+      "dominant_bone": "leg_bk_03_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 149726,
+      "dominant_bone": "leg_bk_03_l",
+      "colors_by_polygon_count": {
+        "Chassis": 130
+      }
+    },
+    {
+      "component": 149799,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 208
+      }
+    },
+    {
+      "component": 149952,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 142
+      }
+    },
+    {
+      "component": 150003,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 142
+      }
+    },
+    {
+      "component": 150135,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 348
+      }
+    },
+    {
+      "component": 150407,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 151293,
+      "dominant_bone": "toe_2_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 151053,
+      "dominant_bone": "toe_1_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 151192,
+      "dominant_bone": "toe_2_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 150892,
+      "dominant_bone": "toe_1_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 150909,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 151614,
+      "dominant_bone": "piston_2_02_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 60
+      }
+    },
+    {
+      "component": 151635,
+      "dominant_bone": "piston_1_02_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 60
+      }
+    },
+    {
+      "component": 151767,
+      "dominant_bone": "piston_5_02_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 76
+      }
+    },
+    {
+      "component": 151835,
+      "dominant_bone": "legpump_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 98
+      }
+    },
+    {
+      "component": 151951,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 292
+      }
+    },
+    {
+      "component": 152025,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 30
+      }
+    },
+    {
+      "component": 152045,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 376
+      }
+    },
+    {
+      "component": 152368,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 152911,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 858
+      }
+    },
+    {
+      "component": 153847,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 153991,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 154147,
+      "dominant_bone": "leg_bk_03_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 154215,
+      "dominant_bone": "leg_bk_03_l",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 154419,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 154515,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 154667,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 154919,
+      "dominant_bone": "toe_2_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 118
+      }
+    },
+    {
+      "component": 155024,
+      "dominant_bone": "legpump_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 200
+      }
+    },
+    {
+      "component": 155167,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 270
+      }
+    },
+    {
+      "component": 155343,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 270
+      }
+    },
+    {
+      "component": 155559,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 632
+      }
+    },
+    {
+      "component": 155949,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 284
+      }
+    },
+    {
+      "component": 156132,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 156
+      }
+    },
+    {
+      "component": 156212,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 480
+      }
+    },
+    {
+      "component": 156372,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 480
+      }
+    },
+    {
+      "component": 156803,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 88
+      }
+    },
+    {
+      "component": 156949,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 274
+      }
+    },
+    {
+      "component": 157069,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 316
+      }
+    },
+    {
+      "component": 157191,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 858
+      }
+    },
+    {
+      "component": 158613,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "Steel": 1860
+      }
+    },
+    {
+      "component": 170151,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 2252
+      }
+    },
+    {
+      "component": 159240,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 159333,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 159372,
+      "dominant_bone": "legbase_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 160539,
+      "dominant_bone": "legbase_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 1196
+      }
+    },
+    {
+      "component": 161623,
+      "dominant_bone": "toe_2_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 698
+      }
+    },
+    {
+      "component": 162728,
+      "dominant_bone": "toe_1_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 698
+      }
+    },
+    {
+      "component": 161744,
+      "dominant_bone": "toe_1_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 556
+      }
+    },
+    {
+      "component": 162047,
+      "dominant_bone": "toe_2_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 556
+      }
+    },
+    {
+      "component": 162527,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 162669,
+      "dominant_bone": "toe_1_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 118
+      }
+    },
+    {
+      "component": 163005,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 88
+      }
+    },
+    {
+      "component": 163317,
+      "dominant_bone": "leg_fr_03_r",
+      "colors_by_polygon_count": {
+        "Chassis": 280
+      }
+    },
+    {
+      "component": 163517,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 760
+      }
+    },
+    {
+      "component": 164099,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 164248,
+      "dominant_bone": "piston_2_02_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 164327,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 164394,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 164619,
+      "dominant_bone": "piston_4_01_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 164904,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 165023,
+      "dominant_bone": "piston_1_01_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 165888,
+      "dominant_bone": "piston_2_01_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 165677,
+      "dominant_bone": "piston_1_02_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 165803,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 165871,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 166149,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 166213,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 166225,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "Steel": 248
+      }
+    },
+    {
+      "component": 166436,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 166911,
+      "dominant_bone": "piston_3_01_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 167137,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 167181,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 167251,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 167296,
+      "dominant_bone": "leg_fr_03_r",
+      "colors_by_polygon_count": {
+        "Chassis": 130
+      }
+    },
+    {
+      "component": 167349,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 208
+      }
+    },
+    {
+      "component": 167512,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 142
+      }
+    },
+    {
+      "component": 167584,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 142
+      }
+    },
+    {
+      "component": 167895,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 348
+      }
+    },
+    {
+      "component": 167927,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 168071,
+      "dominant_bone": "toe_2_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 168143,
+      "dominant_bone": "toe_1_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 168703,
+      "dominant_bone": "toe_2_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 168359,
+      "dominant_bone": "toe_1_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 168592,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 169152,
+      "dominant_bone": "piston_2_02_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 60
+      }
+    },
+    {
+      "component": 169185,
+      "dominant_bone": "piston_1_02_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 60
+      }
+    },
+    {
+      "component": 169317,
+      "dominant_bone": "piston_5_02_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 76
+      }
+    },
+    {
+      "component": 169376,
+      "dominant_bone": "legpump_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 98
+      }
+    },
+    {
+      "component": 169501,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 292
+      }
+    },
+    {
+      "component": 169575,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 30
+      }
+    },
+    {
+      "component": 171175,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 376
+      }
+    },
+    {
+      "component": 169871,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 170461,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 858
+      }
+    },
+    {
+      "component": 171419,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 171563,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 171696,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 171764,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 171959,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 172111,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 172263,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 172502,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 118
+      }
+    },
+    {
+      "component": 172534,
+      "dominant_bone": "legpump_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 200
+      }
+    },
+    {
+      "component": 172716,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 270
+      }
+    },
+    {
+      "component": 172892,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 270
+      }
+    },
+    {
+      "component": 173108,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 632
+      }
+    },
+    {
+      "component": 173621,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 284
+      }
+    },
+    {
+      "component": 173681,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 156
+      }
+    },
+    {
+      "component": 174213,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 480
+      }
+    },
+    {
+      "component": 174056,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 480
+      }
+    },
+    {
+      "component": 174301,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 88
+      }
+    },
+    {
+      "component": 174367,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 274
+      }
+    },
+    {
+      "component": 174632,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 316
+      }
+    },
+    {
+      "component": 174740,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 858
+      }
+    },
+    {
+      "component": 175502,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "Steel": 1860
+      }
+    },
+    {
+      "component": 187700,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 2252
+      }
+    },
+    {
+      "component": 176782,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 176882,
+      "dominant_bone": "legbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 176955,
+      "dominant_bone": "legbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 177766,
+      "dominant_bone": "legbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 1196
+      }
+    },
+    {
+      "component": 179172,
+      "dominant_bone": "toe_1_bk_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 698
+      }
+    },
+    {
+      "component": 179070,
+      "dominant_bone": "toe_2_bk_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 698
+      }
+    },
+    {
+      "component": 179414,
+      "dominant_bone": "toe_2_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 556
+      }
+    },
+    {
+      "component": 179596,
+      "dominant_bone": "toe_1_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 556
+      }
+    },
+    {
+      "component": 180076,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 180192,
+      "dominant_bone": "toe_2_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 118
+      }
+    },
+    {
+      "component": 180554,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 88
+      }
+    },
+    {
+      "component": 180904,
+      "dominant_bone": "leg_bk_03_r",
+      "colors_by_polygon_count": {
+        "Chassis": 280
+      }
+    },
+    {
+      "component": 181188,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 760
+      }
+    },
+    {
+      "component": 181596,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 181750,
+      "dominant_bone": "piston_1_02_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 181876,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 181917,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 182078,
+      "dominant_bone": "piston_4_01_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 182456,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 183103,
+      "dominant_bone": "piston_2_01_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 183614,
+      "dominant_bone": "piston_1_01_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 183221,
+      "dominant_bone": "piston_2_02_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 183360,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 183420,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 183698,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 183734,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 185190,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "Steel": 248
+      }
+    },
+    {
+      "component": 184057,
+      "dominant_bone": "leg_bk_03_r",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 184191,
+      "dominant_bone": "piston_3_01_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 676
+      }
+    },
+    {
+      "component": 184682,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 298
+      }
+    },
+    {
+      "component": 184730,
+      "dominant_bone": "leg_bk_03_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 184766,
+      "dominant_bone": "leg_bk_03_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 184814,
+      "dominant_bone": "leg_bk_03_r",
+      "colors_by_polygon_count": {
+        "Chassis": 130
+      }
+    },
+    {
+      "component": 185000,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 208
+      }
+    },
+    {
+      "component": 185022,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 142
+      }
+    },
+    {
+      "component": 185102,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 142
+      }
+    },
+    {
+      "component": 185444,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 348
+      }
+    },
+    {
+      "component": 185517,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 185620,
+      "dominant_bone": "toe_1_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 185692,
+      "dominant_bone": "toe_2_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 186252,
+      "dominant_bone": "toe_1_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 185908,
+      "dominant_bone": "toe_2_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 262
+      }
+    },
+    {
+      "component": 186029,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 186703,
+      "dominant_bone": "piston_1_02_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 60
+      }
+    },
+    {
+      "component": 186759,
+      "dominant_bone": "piston_2_02_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 60
+      }
+    },
+    {
+      "component": 186866,
+      "dominant_bone": "piston_5_02_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 76
+      }
+    },
+    {
+      "component": 186894,
+      "dominant_bone": "legpump_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 98
+      }
+    },
+    {
+      "component": 186990,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 292
+      }
+    },
+    {
+      "component": 187124,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 30
+      }
+    },
+    {
+      "component": 188724,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 376
+      }
+    },
+    {
+      "component": 187420,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 188231,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 858
+      }
+    },
+    {
+      "component": 188942,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 189086,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 166
+      }
+    },
+    {
+      "component": 189242,
+      "dominant_bone": "leg_bk_03_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 189310,
+      "dominant_bone": "leg_bk_03_r",
+      "colors_by_polygon_count": {
+        "Chassis": 48
+      }
+    },
+    {
+      "component": 189435,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 189587,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 189739,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 178
+      }
+    },
+    {
+      "component": 190040,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "Chassis": 118
+      }
+    },
+    {
+      "component": 190080,
+      "dominant_bone": "base",
+      "colors_by_polygon_count": {
+        "Steel": 6
+      }
+    },
+    {
+      "component": 190088,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 190200,
+      "dominant_bone": "toe_1_fr_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 190312,
+      "dominant_bone": "foot_fr_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 190528,
+      "dominant_bone": "toe_1_fr_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 190592,
+      "dominant_bone": "piston_2_01_fr_l",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 190634,
+      "dominant_bone": "piston_4_01_fr_l",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 190676,
+      "dominant_bone": "piston_1_01_fr_l",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 190752,
+      "dominant_bone": "piston_3_02_fr_l",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 190792,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 190800,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 190912,
+      "dominant_bone": "toe_2_bk_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 191024,
+      "dominant_bone": "foot_bk_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 191240,
+      "dominant_bone": "toe_2_bk_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 191304,
+      "dominant_bone": "piston_1_01_bk_l",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 191346,
+      "dominant_bone": "piston_4_01_bk_l",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 191388,
+      "dominant_bone": "piston_2_01_bk_l",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 191464,
+      "dominant_bone": "piston_3_02_bk_l",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 191504,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 191512,
+      "dominant_bone": "toe_1_fr_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 191624,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 191736,
+      "dominant_bone": "toe_1_fr_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 191952,
+      "dominant_bone": "foot_fr_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 192016,
+      "dominant_bone": "piston_1_01_fr_r",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 192058,
+      "dominant_bone": "piston_4_01_fr_r",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 192100,
+      "dominant_bone": "piston_2_01_fr_r",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 192176,
+      "dominant_bone": "piston_3_02_fr_r",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 192216,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 192224,
+      "dominant_bone": "toe_2_bk_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 192336,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 192448,
+      "dominant_bone": "toe_2_bk_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 192664,
+      "dominant_bone": "foot_bk_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 208
+      }
+    },
+    {
+      "component": 192728,
+      "dominant_bone": "piston_2_01_bk_r",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 192770,
+      "dominant_bone": "piston_4_01_bk_r",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 192812,
+      "dominant_bone": "piston_1_01_bk_r",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 192888,
+      "dominant_bone": "piston_3_02_bk_r",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 192928,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "Steel": 40
+      }
+    },
+    {
+      "component": 192936,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 1152
+      }
+    },
+    {
+      "component": 194096,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 1104
+      }
+    },
+    {
+      "component": 194161,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 1152
+      }
+    },
+    {
+      "component": 195048,
+      "dominant_bone": "toecord_1_fr_02_l",
+      "colors_by_polygon_count": {
+        "Chassis": 1104
+      }
+    },
+    {
+      "component": 195386,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 1152
+      }
+    },
+    {
+      "component": 196064,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 1104
+      }
+    },
+    {
+      "component": 197168,
+      "dominant_bone": "toe_2_bk_01_l",
+      "colors_by_polygon_count": {
+        "Chassis": 1152
+      }
+    },
+    {
+      "component": 197236,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "Chassis": 1104
+      }
+    },
+    {
+      "component": 197836,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 1152
+      }
+    },
+    {
+      "component": 198795,
+      "dominant_bone": "toecord_1_fr_02_r",
+      "colors_by_polygon_count": {
+        "Chassis": 1104
+      }
+    },
+    {
+      "component": 199061,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 1152
+      }
+    },
+    {
+      "component": 199686,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 1104
+      }
+    },
+    {
+      "component": 200286,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 1152
+      }
+    },
+    {
+      "component": 201428,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 1104
+      }
+    },
+    {
+      "component": 201511,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 1152
+      }
+    },
+    {
+      "component": 202416,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "Chassis": 1104
+      }
+    },
+    {
+      "component": 202736,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 16
+      }
+    },
+    {
+      "component": 202751,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202755,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202759,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 16
+      }
+    },
+    {
+      "component": 202774,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202778,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202782,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 16
+      }
+    },
+    {
+      "component": 202797,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202801,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202805,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 16
+      }
+    },
+    {
+      "component": 202820,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202824,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202828,
+      "dominant_bone": "legpump_fr_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 18
+      }
+    },
+    {
+      "component": 202848,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202852,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202856,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202860,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202864,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202868,
+      "dominant_bone": "pistonbase_fr_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202872,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202876,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202880,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202884,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202888,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202892,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202896,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202900,
+      "dominant_bone": "leg_fr_04_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202904,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202908,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202912,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202916,
+      "dominant_bone": "leg_fr_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202920,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202924,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202928,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202932,
+      "dominant_bone": "leg_fr_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202936,
+      "dominant_bone": "toe_2_fr_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202940,
+      "dominant_bone": "toe_1_fr_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202944,
+      "dominant_bone": "toe_2_fr_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202948,
+      "dominant_bone": "toe_1_fr_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202952,
+      "dominant_bone": "legpump_bk_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 18
+      }
+    },
+    {
+      "component": 202972,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202976,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202980,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202984,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202988,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202992,
+      "dominant_bone": "pistonbase_bk_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 202996,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203000,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203004,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203008,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203012,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203016,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203020,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203024,
+      "dominant_bone": "leg_bk_04_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203028,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203032,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203036,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203040,
+      "dominant_bone": "leg_bk_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203044,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203048,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203052,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203056,
+      "dominant_bone": "leg_bk_02_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203060,
+      "dominant_bone": "toe_1_bk_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203064,
+      "dominant_bone": "toe_2_bk_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203068,
+      "dominant_bone": "toe_1_bk_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203072,
+      "dominant_bone": "toe_2_bk_01_l",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203076,
+      "dominant_bone": "legpump_fr_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 18
+      }
+    },
+    {
+      "component": 203096,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203100,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203104,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203108,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203112,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203116,
+      "dominant_bone": "pistonbase_fr_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203120,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203124,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203128,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203132,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203136,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203140,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203144,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203148,
+      "dominant_bone": "leg_fr_04_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203152,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203156,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203160,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203164,
+      "dominant_bone": "leg_fr_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203168,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203172,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203176,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203180,
+      "dominant_bone": "leg_fr_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203184,
+      "dominant_bone": "toe_1_fr_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203188,
+      "dominant_bone": "toe_2_fr_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203192,
+      "dominant_bone": "toe_1_fr_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203196,
+      "dominant_bone": "toe_2_fr_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203200,
+      "dominant_bone": "legpump_bk_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 18
+      }
+    },
+    {
+      "component": 203220,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203224,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203228,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203232,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203236,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203240,
+      "dominant_bone": "pistonbase_bk_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203244,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203248,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203252,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203256,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203260,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203264,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203268,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203272,
+      "dominant_bone": "leg_bk_04_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203276,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203280,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203284,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203288,
+      "dominant_bone": "leg_bk_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203292,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203296,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203300,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203304,
+      "dominant_bone": "leg_bk_02_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203308,
+      "dominant_bone": "toe_2_bk_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203312,
+      "dominant_bone": "toe_1_bk_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203316,
+      "dominant_bone": "toe_2_bk_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    },
+    {
+      "component": 203320,
+      "dominant_bone": "toe_1_bk_01_r",
+      "colors_by_polygon_count": {
+        "OriginalDecalsSuppressed": 2
+      }
+    }
+  ],
+  "reference_triangles_by_color": {
+    "OriginalDecalsSuppressed": 1758,
+    "WarmWhite": 107576,
+    "Coral": 18972,
+    "Chassis": 128082,
+    "Steel": 26914,
+    "Amber": 1358
+  },
+  "production_lod_budgets_not_yet_implemented": true
+}

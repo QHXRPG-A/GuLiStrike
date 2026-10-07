@@ -1,0 +1,632 @@
+{
+  "version": "CommanderLOD_3Tier_v1",
+  "state": "applied_verified",
+  "approval_B": "approved",
+  "formal_switched": true,
+  "prerequisites": [],
+  "steps": [
+    "Preserve latest source rows and native reference readback per group",
+    "Copy the complete approved group to versioned formal folders; remap its internal candidate dependencies",
+    "Read back all three tiers, materials, animation definitions and component transforms before switching",
+    "Change only the group ModelAsset/PresentationClass/VATDefinition references; BiZhiMao also changes construction ID8 Mesh",
+    "Export via the existing Excel pipeline, import/reload native tables, verify unchanged IDs and gameplay values",
+    "If any step fails, restore the complete group and native tables from that group snapshot"
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "name": "DefaultSoldier",
+      "original_references": {
+        "ModelAsset": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+        "PresentationClass": "",
+        "VATDefinition": "/Game/GuLiStrike/Robots/RSGMech/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT"
+      },
+      "review_references": {
+        "ModelAsset": "/Game/GuLiStrike/Commander/LODReview_20261005/DefaultSoldier/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+        "PresentationClass": "",
+        "VATDefinition": "/Game/GuLiStrike/Commander/LODReview_20261005/DefaultSoldier/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT"
+      },
+      "resource_group": {
+        "id": 1,
+        "name": "DefaultSoldier",
+        "approval": "pending",
+        "formal_changed": false,
+        "original_model": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+        "original_presentation": "",
+        "original_vat": "/Game/GuLiStrike/Robots/RSGMech/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+        "candidate_models": [
+          "/Game/GuLiStrike/Commander/LODReview_20261005/DefaultSoldier/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT"
+        ],
+        "component_bindings": [],
+        "candidate_presentation": null,
+        "candidate_vat": "/Game/GuLiStrike/Commander/LODReview_20261005/DefaultSoldier/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT"
+      },
+      "rollback": "Restore this group reference set in Excel/JSON/DataTable; discard its failed versioned copies; leave other groups intact."
+    },
+    {
+      "id": 2,
+      "name": "WM01",
+      "original_references": {
+        "ModelAsset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+        "PresentationClass": "",
+        "VATDefinition": ""
+      },
+      "review_references": {
+        "ModelAsset": "/Game/GuLiStrike/Commander/LODReview_20261005/WM01/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+        "PresentationClass": "",
+        "VATDefinition": ""
+      },
+      "resource_group": {
+        "id": 2,
+        "name": "WM01",
+        "approval": "pending",
+        "formal_changed": false,
+        "original_model": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+        "original_presentation": "",
+        "original_vat": "",
+        "candidate_models": [
+          "/Game/GuLiStrike/Commander/LODReview_20261005/WM01/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid"
+        ],
+        "component_bindings": [],
+        "candidate_presentation": null,
+        "candidate_vat": null
+      },
+      "rollback": "Restore this group reference set in Excel/JSON/DataTable; discard its failed versioned copies; leave other groups intact."
+    },
+    {
+      "id": 3,
+      "name": "ElectromagneticMiner",
+      "original_references": {
+        "ModelAsset": "",
+        "PresentationClass": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
+        "VATDefinition": ""
+      },
+      "review_references": {
+        "ModelAsset": "",
+        "PresentationClass": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/BP_ElectromagneticMiner_LODReview.BP_ElectromagneticMiner_LODReview_C",
+        "VATDefinition": ""
+      },
+      "resource_group": {
+        "id": 3,
+        "name": "ElectromagneticMiner",
+        "approval": "pending",
+        "formal_changed": false,
+        "original_model": "",
+        "original_presentation": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
+        "original_vat": "",
+        "candidate_models": [
+          "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2"
+        ],
+        "component_bindings": [
+          {
+            "component": "SkeletalMeshComponent0",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              -0.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+            ]
+          },
+          {
+            "component": "Cockpit_Freight_Spoiler",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+            "location": [
+              187.44271850585938,
+              4.1620642682641505e-14,
+              154.81328964233398
+            ],
+            "rotation": [
+              1.4124500318633039e-30,
+              1.2722218874358041e-14,
+              -90.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+            ]
+          },
+          {
+            "component": "Top_Turret_2x_Lvl1",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+            "location": [
+              -98.10089874267578,
+              -0.15774536132807399,
+              291.58996200561523
+            ],
+            "rotation": [
+              1.4124500318633039e-30,
+              1.2722218874358041e-14,
+              -90.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+            ]
+          },
+          {
+            "component": "Weapon_Rocket_Mount_Lvl2",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+            "location": [
+              -92.7929105758667,
+              -34.98770904541011,
+              359.3638572692871
+            ],
+            "rotation": [
+              -3.5083545633527932e-15,
+              1.2722218874358041e-14,
+              -90.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+            ]
+          },
+          {
+            "component": "Weapon_Rocket_Mount_Lvl3",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+            "location": [
+              -92.79291057586669,
+              34.67221832275398,
+              359.3638572692871
+            ],
+            "rotation": [
+              -3.5083545633527932e-15,
+              1.2722218874358041e-14,
+              -90.0
+            ],
+            "scale": [
+              -1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+            ]
+          },
+          {
+            "component": "Collector_L",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+            "location": [
+              -83.10089874267578,
+              -76.00004536132806,
+              370.9999620056187
+            ],
+            "rotation": [
+              1.2722218874358041e-14,
+              -0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+              "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+            ]
+          },
+          {
+            "component": "Collector_R",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+            "location": [
+              -83.10089874267578,
+              75.99995463867198,
+              370.9999620056187
+            ],
+            "rotation": [
+              1.2722218874358041e-14,
+              -0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+              "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+            ]
+          },
+          {
+            "component": "Side_Winglet_Spike_Lvl3",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+            "location": [
+              -185.747314453125,
+              -135.46893310546872,
+              201.52346420288086
+            ],
+            "rotation": [
+              -90.0,
+              2.5444437748716082e-14,
+              -90.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+            ]
+          }
+        ],
+        "candidate_presentation": "/Game/GuLiStrike/Commander/LODReview_20261005/ElectromagneticMiner/BP_ElectromagneticMiner_LODReview.BP_ElectromagneticMiner_LODReview_C",
+        "candidate_vat": null
+      },
+      "rollback": "Restore this group reference set in Excel/JSON/DataTable; discard its failed versioned copies; leave other groups intact."
+    },
+    {
+      "id": 4,
+      "name": "ConstructionVehicle",
+      "original_references": {
+        "ModelAsset": "",
+        "PresentationClass": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle.BP_ConstructionVehicle_C",
+        "VATDefinition": ""
+      },
+      "review_references": {
+        "ModelAsset": "",
+        "PresentationClass": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/BP_ConstructionVehicle_LODReview.BP_ConstructionVehicle_LODReview_C",
+        "VATDefinition": ""
+      },
+      "resource_group": {
+        "id": 4,
+        "name": "ConstructionVehicle",
+        "approval": "pending",
+        "formal_changed": false,
+        "original_model": "",
+        "original_presentation": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle.BP_ConstructionVehicle_C",
+        "original_vat": "",
+        "candidate_models": [
+          "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2"
+        ],
+        "component_bindings": [
+          {
+            "component": "SkeletalMeshComponent0",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              -0.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+            ]
+          },
+          {
+            "component": "Cockpit_Freight_Spoiler",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+            "location": [
+              187.44271850585938,
+              4.1620642682641505e-14,
+              154.81328964233398
+            ],
+            "rotation": [
+              1.4124500318633039e-30,
+              1.2722218874358041e-14,
+              -90.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+            ]
+          },
+          {
+            "component": "Top_Turret_2x_Lvl1",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+            "location": [
+              -98.10089874267578,
+              -0.15774536132807399,
+              291.58996200561523
+            ],
+            "rotation": [
+              1.4124500318633039e-30,
+              1.2722218874358041e-14,
+              -90.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+            ]
+          },
+          {
+            "component": "Weapon_Rocket_Mount_Lvl2",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+            "location": [
+              -92.7929105758667,
+              -34.98770904541011,
+              359.3638572692871
+            ],
+            "rotation": [
+              -3.5083545633527932e-15,
+              1.2722218874358041e-14,
+              -90.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+            ]
+          },
+          {
+            "component": "Weapon_Rocket_Mount_Lvl3",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+            "location": [
+              -92.79291057586669,
+              34.67221832275398,
+              359.3638572692871
+            ],
+            "rotation": [
+              -3.5083545633527932e-15,
+              1.2722218874358041e-14,
+              -90.0
+            ],
+            "scale": [
+              -1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+            ]
+          },
+          {
+            "component": "Collector_L",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+            "location": [
+              -83.10089874267578,
+              -76.00004536132806,
+              370.9999620056187
+            ],
+            "rotation": [
+              1.2722218874358041e-14,
+              -0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+              "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+            ]
+          },
+          {
+            "component": "Collector_R",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+            "location": [
+              -83.10089874267578,
+              75.99995463867198,
+              370.9999620056187
+            ],
+            "rotation": [
+              1.2722218874358041e-14,
+              -0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+              "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+            ]
+          },
+          {
+            "component": "Side_Winglet_Spike_Lvl3",
+            "mesh": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+            "location": [
+              -185.747314453125,
+              -135.46893310546872,
+              201.52346420288086
+            ],
+            "rotation": [
+              -90.0,
+              2.5444437748716082e-14,
+              -90.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+            ]
+          }
+        ],
+        "candidate_presentation": "/Game/GuLiStrike/Commander/LODReview_20261005/ConstructionVehicle/BP_ConstructionVehicle_LODReview.BP_ConstructionVehicle_LODReview_C",
+        "candidate_vat": null
+      },
+      "rollback": "Restore this group reference set in Excel/JSON/DataTable; discard its failed versioned copies; leave other groups intact."
+    },
+    {
+      "id": 5,
+      "name": "SweeperSummon",
+      "original_references": {
+        "ModelAsset": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+        "PresentationClass": "",
+        "VATDefinition": ""
+      },
+      "review_references": {
+        "ModelAsset": "/Game/GuLiStrike/Commander/LODReview_20261005/SweeperSummon/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+        "PresentationClass": "",
+        "VATDefinition": ""
+      },
+      "resource_group": {
+        "id": 5,
+        "name": "SweeperSummon",
+        "approval": "pending",
+        "formal_changed": false,
+        "original_model": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+        "original_presentation": "",
+        "original_vat": "",
+        "candidate_models": [
+          "/Game/GuLiStrike/Commander/LODReview_20261005/SweeperSummon/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid"
+        ],
+        "component_bindings": [],
+        "candidate_presentation": null,
+        "candidate_vat": null
+      },
+      "rollback": "Restore this group reference set in Excel/JSON/DataTable; discard its failed versioned copies; leave other groups intact."
+    },
+    {
+      "id": 6,
+      "name": "BiZhiMao",
+      "original_references": {
+        "ModelAsset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+        "PresentationClass": "",
+        "VATDefinition": "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT"
+      },
+      "review_references": {
+        "ModelAsset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_VAT",
+        "PresentationClass": "",
+        "VATDefinition": "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT"
+      },
+      "resource_group": {
+        "id": 6,
+        "name": "BiZhiMao",
+        "approval": "pending",
+        "formal_changed": false,
+        "original_model": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+        "original_presentation": "",
+        "original_vat": "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT",
+        "candidate_models": [
+          "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_VAT",
+          "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_Construction"
+        ],
+        "component_bindings": [],
+        "candidate_presentation": null,
+        "candidate_vat": null,
+        "vertex_configuration": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\BiZhiMao\\vertex_metadata.json",
+        "native_data_asset_state": "requires permitted native compile to expose vertex fields"
+      },
+      "rollback": "Restore this group reference set in Excel/JSON/DataTable; discard its failed versioned copies; leave other groups intact."
+    }
+  ],
+  "current_formal_groups": [
+    {
+      "id": 1,
+      "name": "DefaultSoldier",
+      "formal_root": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1",
+      "asset_count": 15,
+      "model_asset": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "presentation_class": "",
+      "vat_definition": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+      "readback": "Reports/formal_readback_DefaultSoldier.json"
+    },
+    {
+      "id": 2,
+      "name": "WM01",
+      "formal_root": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1",
+      "asset_count": 6,
+      "model_asset": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "presentation_class": "",
+      "vat_definition": "",
+      "readback": "Reports/formal_readback_WM01.json"
+    },
+    {
+      "id": 3,
+      "name": "ElectromagneticMiner",
+      "formal_root": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1",
+      "asset_count": 14,
+      "model_asset": "",
+      "presentation_class": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/BP_ElectromagneticMiner_3Tier.BP_ElectromagneticMiner_3Tier_C",
+      "vat_definition": "",
+      "readback": "Reports/formal_readback_ElectromagneticMiner.json"
+    },
+    {
+      "id": 4,
+      "name": "ConstructionVehicle",
+      "formal_root": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1",
+      "asset_count": 14,
+      "model_asset": "",
+      "presentation_class": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier_C",
+      "vat_definition": "",
+      "readback": "Reports/formal_readback_ConstructionVehicle.json"
+    },
+    {
+      "id": 5,
+      "name": "SweeperSummon",
+      "formal_root": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1",
+      "asset_count": 4,
+      "model_asset": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "presentation_class": "",
+      "vat_definition": "",
+      "readback": "Reports/formal_readback_SweeperSummon.json"
+    },
+    {
+      "id": 6,
+      "name": "BiZhiMao",
+      "formal_root": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1",
+      "asset_count": 23,
+      "model_asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "presentation_class": "",
+      "vat_definition": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT",
+      "readback": "Reports/formal_readback_BiZhiMao.json"
+    }
+  ],
+  "approval_receipt": "approval_B.json",
+  "native_build": "Reports/native_build.json"
+}

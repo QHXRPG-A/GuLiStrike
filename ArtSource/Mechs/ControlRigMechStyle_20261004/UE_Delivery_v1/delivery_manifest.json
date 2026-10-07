@@ -1,0 +1,486 @@
+{
+  "version": "UE-v1",
+  "approved_source": "B-v4",
+  "approved_source_manifest_sha256": "802ade7bbd94e336ec8d6b2fb7fa8dbe36efc7a27a20cb7ba37df34fc144da16",
+  "formal_root": "/Game/GuLiStrike/Mechs/ControlRigMech",
+  "assets_via_native_API": [
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Animations/Mech_Deploy",
+      "class": "AnimSequence",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Script/MovieScene",
+        "/Script/AnimationModifiers",
+        "/Engine/Animation/DefaultAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultRecorderBoneCompression",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Script/ControlRig",
+        "/Script/AnimationData",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Animations/Mech_Idle",
+      "class": "AnimSequence",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Script/MovieScene",
+        "/Script/AnimationModifiers",
+        "/Engine/Animation/DefaultAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultRecorderBoneCompression",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Script/ControlRig",
+        "/Script/AnimationData",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Animations/Mech_Walk",
+      "class": "AnimSequence",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Script/MovieScene",
+        "/Script/AnimationModifiers",
+        "/Engine/Animation/DefaultAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultRecorderBoneCompression",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Script/ControlRig",
+        "/Script/AnimationData",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD0",
+      "class": "MaterialInstanceConstant",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_Toon3_SparseLines"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD1",
+      "class": "MaterialInstanceConstant",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_Toon3_SparseLines"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD2",
+      "class": "MaterialInstanceConstant",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_Toon3_SparseLines"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD3",
+      "class": "MaterialInstanceConstant",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_Toon3_SparseLines"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_BaseOutline",
+      "class": "Material",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": []
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_Toon3_SparseLines",
+      "class": "Material",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_InternalLineMask_2K"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech",
+      "class": "SkeletalMesh",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD0",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD1",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD2",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD3",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_BaseOutline",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Rigs/CR_ControlRigMech"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4",
+      "class": "World",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Script/NavigationSystem",
+        "/Engine/BasicShapes/Cube",
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Engine/EditorResources/LightIcons/S_LightError",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/M_ControlRigMech_PreviewBackground"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/M_ControlRigMech_PreviewBackground",
+      "class": "Material",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": []
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Rigs/CR_ControlRigMech",
+      "class": "ControlRigBlueprint",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Script/CoreUObject",
+        "/Script/Engine",
+        "/Script/AnimationCore",
+        "/Script/ControlRig",
+        "/ControlRig/Controls/DefaultGizmoLibraryNormalized",
+        "/Script/ControlRigDeveloper",
+        "/Script/RigVM",
+        "/Script/RigVMDeveloper",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech",
+      "class": "Skeleton",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech"
+      ]
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_BaseColor_2K",
+      "class": "Texture2D",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [],
+      "runtime_reported_dimensions_at_query": [
+        2048,
+        2048
+      ],
+      "source_dimensions": [
+        2048,
+        2048
+      ],
+      "source_import_files": [
+        "D:/UE5.7/test1/ArtSource/Mechs/ControlRigMechStyle_20261004/Production_B_v4/Textures/ControlRigMech_BaseColor_2K.png"
+      ],
+      "srgb": true,
+      "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>"
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_FunctionalMask_2K",
+      "class": "Texture2D",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [],
+      "runtime_reported_dimensions_at_query": [
+        2048,
+        2048
+      ],
+      "source_dimensions": [
+        2048,
+        2048
+      ],
+      "source_import_files": [
+        "D:/UE5.7/test1/ArtSource/Mechs/ControlRigMechStyle_20261004/Production_B_v4/Textures/ControlRigMech_FunctionalMask_2K.png"
+      ],
+      "srgb": false,
+      "compression": "<TextureCompressionSettings.TC_MASKS: 2>"
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_InternalLineMask_2K",
+      "class": "Texture2D",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [],
+      "runtime_reported_dimensions_at_query": [
+        2048,
+        2048
+      ],
+      "source_dimensions": [
+        2048,
+        2048
+      ],
+      "source_import_files": [
+        "D:/UE5.7/test1/ArtSource/Mechs/ControlRigMechStyle_20261004/Production_B_v4/Textures/ControlRigMech_InternalLineMask_2K.png"
+      ],
+      "srgb": false,
+      "compression": "<TextureCompressionSettings.TC_MASKS: 2>"
+    },
+    {
+      "package": "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_ORM_2K",
+      "class": "Texture2D",
+      "owner": "GuLiStrike.ControlRigMech.B-v4.UE-v1",
+      "dependencies": [],
+      "runtime_reported_dimensions_at_query": [
+        2048,
+        2048
+      ],
+      "source_dimensions": [
+        2048,
+        2048
+      ],
+      "source_import_files": [
+        "D:/UE5.7/test1/ArtSource/Mechs/ControlRigMechStyle_20261004/Production_B_v4/Textures/ControlRigMech_ORM_2K.png"
+      ],
+      "srgb": false,
+      "compression": "<TextureCompressionSettings.TC_MASKS: 2>"
+    }
+  ],
+  "source_B_integrity_report": "source_integrity_report.json",
+  "files": [
+    {
+      "path": "blender_export_readback.json",
+      "bytes": 5663,
+      "sha256": "5aeb410a40e3cadf262fd864825d7a0d20773cf427a03fb799bb23cab54bee77"
+    },
+    {
+      "path": "FBX/SKM_ControlRigMech_B_v4_LOD0.fbx",
+      "bytes": 14429180,
+      "sha256": "8a8498a93376ad6819600d2d864bc6ded3fb14ad324f04e1277668801b4cf269"
+    },
+    {
+      "path": "FBX/SKM_ControlRigMech_B_v4_LOD1.fbx",
+      "bytes": 9706620,
+      "sha256": "ed8f6aa6cc46db181c1bb2cd95984c3ada4d76816341d23e2bceaceffbe92040"
+    },
+    {
+      "path": "FBX/SKM_ControlRigMech_B_v4_LOD2.fbx",
+      "bytes": 8108076,
+      "sha256": "a3302b325ff40b0e640d7fb3a0c508f7aad2edf970bade3486088a21bcb4642e"
+    },
+    {
+      "path": "FBX/SKM_ControlRigMech_B_v4_LOD3.fbx",
+      "bytes": 6165084,
+      "sha256": "d0b452cfa425583517cdc0ca50dc5609a1a583d04361077b692c5245eefa511f"
+    },
+    {
+      "path": "FBX/UE_Readback_AllLODs.fbx",
+      "bytes": 14370192,
+      "sha256": "9c93979de4e978d4de5302a662283db42327cbb90bd18f1426293c58f641c9f3"
+    },
+    {
+      "path": "final_live_inventory.json",
+      "bytes": 12725,
+      "sha256": "c8c0b516e4987d7f51a568473d3926ce5cd211186a020ba11ce85f8bc6cef92e"
+    },
+    {
+      "path": "live_shader_fix.json",
+      "bytes": 307,
+      "sha256": "e36576e6db374cf60f9c5bffc1ce1c3fffcc0e3f44d0f41e7b12c0de8f1b98e8"
+    },
+    {
+      "path": "native_normal_comparison.json",
+      "bytes": 279,
+      "sha256": "5a81ca592d12825cb5da144bf83cb4597e257e91c5142fda71e0049612c0ad57"
+    },
+    {
+      "path": "native_ue_fbx_readback.json",
+      "bytes": 6717,
+      "sha256": "3cf143a2a98ad5841e569bb567181a40b1e23bca91f931202f728cfe0c6ca83b"
+    },
+    {
+      "path": "preview_attempt_raw_vs_component.json",
+      "bytes": 41017,
+      "sha256": "3cde62250f84ad38289e291b4a11497e85e05b856dd1cabbb54227d54e6ab24f"
+    },
+    {
+      "path": "Previews/UE_B_v4_Back.png",
+      "bytes": 4252804,
+      "sha256": "8ce038c8679769073c0f1a38c1952f3dbc80109db589b3f08cd491b8b366d1fb"
+    },
+    {
+      "path": "Previews/UE_B_v4_CommanderNear.png",
+      "bytes": 4252804,
+      "sha256": "d647913217f74f88bfc572eca4b1a614acf53d052ff20fb64175fc5a1b60437b"
+    },
+    {
+      "path": "Previews/UE_B_v4_CommanderOverview.png",
+      "bytes": 4252804,
+      "sha256": "d868388fbe61aab7966e3fee17b3eca973694adccfc5db745088d2e41d5bfd57"
+    },
+    {
+      "path": "Previews/UE_B_v4_CommanderTactical.png",
+      "bytes": 4252804,
+      "sha256": "dc74c1f6ea69f3919ea7d7ee0ea8fbd23dee76a6ae7c49d1cbe70c9eee3a9ede"
+    },
+    {
+      "path": "Previews/UE_B_v4_Front.png",
+      "bytes": 4252804,
+      "sha256": "1b4bc90ef89b827dc19b3106e2aae7f9d28483d744a1e87877cca61f71ae3c5d"
+    },
+    {
+      "path": "Previews/UE_B_v4_Hero.png",
+      "bytes": 4252804,
+      "sha256": "568fc10885b91e55841b61d40caf7ef67ec280a7b38ee6806076a70b2050b52e"
+    },
+    {
+      "path": "Previews/UE_B_v4_Left.png",
+      "bytes": 4252804,
+      "sha256": "54e009408bdd493a85ab3568f83d1f2c18990a38e30ba1448b0df3fe21a8c680"
+    },
+    {
+      "path": "Previews/UE_B_v4_LOD1.png",
+      "bytes": 4252804,
+      "sha256": "ac9a1587a1cb92c565df766303e0fb13b71a4c209570a33bae4f1e3ab5673d56"
+    },
+    {
+      "path": "Previews/UE_B_v4_LOD2.png",
+      "bytes": 4252804,
+      "sha256": "eb9da9cc5a94ef6d2ceb50b99cb93731ab050214382be19b439ad005109fc357"
+    },
+    {
+      "path": "Previews/UE_B_v4_LOD3.png",
+      "bytes": 4252804,
+      "sha256": "f68b37fcae9bede38e7a7134071839b8cc775883bedfb0b8d39beff055eba330"
+    },
+    {
+      "path": "Previews/UE_B_v4_Mech_Deploy_End.png",
+      "bytes": 4252804,
+      "sha256": "381e01b27216df881fe98a41e5b7628fd0d92447aa9b87a5762d0bfca6aa7644"
+    },
+    {
+      "path": "Previews/UE_B_v4_Mech_Deploy_Mid.png",
+      "bytes": 4252804,
+      "sha256": "9a735c2467e5bd1803fcca593a59a6a045d6be3e32acd50328d881adcd3f9241"
+    },
+    {
+      "path": "Previews/UE_B_v4_Mech_Deploy_Start.png",
+      "bytes": 4252804,
+      "sha256": "c6108acfacc1eb27d326eceedcbbd076becb0b6af1e993faa4ad7308ab084cd9"
+    },
+    {
+      "path": "Previews/UE_B_v4_Mech_Idle_End.png",
+      "bytes": 4252804,
+      "sha256": "b1b2c38c6a4195b815c93125830d82af501243aec0b02038441bd841dcd9ad0f"
+    },
+    {
+      "path": "Previews/UE_B_v4_Mech_Idle_Mid.png",
+      "bytes": 4252804,
+      "sha256": "6fece2ae62953941d494b1b86eeb1219e0ccbaa58bc4b60a3ea046c22936d574"
+    },
+    {
+      "path": "Previews/UE_B_v4_Mech_Idle_Start.png",
+      "bytes": 4252804,
+      "sha256": "280d2bfc2da43f361b27bc081c7948643e06ece1fa4b57a2ee97442249f9e24e"
+    },
+    {
+      "path": "Previews/UE_B_v4_Mech_Walk_End.png",
+      "bytes": 4252804,
+      "sha256": "03dc9e1f2ca6860d2581c4b1ebc0d98f24ea615c13683f878601e70a0f0d40ef"
+    },
+    {
+      "path": "Previews/UE_B_v4_Mech_Walk_Mid.png",
+      "bytes": 4252804,
+      "sha256": "598f7a9fd686c3a6c16e3a5b5225cbe6846ecb9080099af8cc82bcc365b439bf"
+    },
+    {
+      "path": "Previews/UE_B_v4_Mech_Walk_Start.png",
+      "bytes": 4252804,
+      "sha256": "0b1c6781d4f3f335631444643832fe4dcfcd11faf386c71dc18e48724e300152"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5787,
+      "sha256": "90c2e3f751800cbbfb3e0a17c5d75c475145ecf5d6d87fda536e2c493e4e29a5"
+    },
+    {
+      "path": "reference_review_saved.json",
+      "bytes": 229,
+      "sha256": "ca79a33372f255661969fcd15e51f6c2cec67250922295f6eb3b58013451bcc4"
+    },
+    {
+      "path": "Review_UE_v1.html",
+      "bytes": 3980,
+      "sha256": "c3563bc22ca6c01333c94f568e6da5d6ebbdece25d1e1099bef5f410fabade50"
+    },
+    {
+      "path": "Scripts/animation_compression_probe_ue.py",
+      "bytes": 3038,
+      "sha256": "a392c861c52f07d9baec3fdb784371e6719757206e4a3797064ebfafb1ea0523"
+    },
+    {
+      "path": "Scripts/check_native_ue_fbx_blender.py",
+      "bytes": 2609,
+      "sha256": "6010c6b56522a2ee635b9926654ea085c52e6fdc3c766eb8320cb629f7f0433e"
+    },
+    {
+      "path": "Scripts/compare_native_normals_blender.py",
+      "bytes": 1664,
+      "sha256": "b2709b978a1a69074316d89970fc0845d597b60abbc51c9502d7700225377592"
+    },
+    {
+      "path": "Scripts/export_readback_blender.py",
+      "bytes": 12183,
+      "sha256": "01f3ae25ea1bdcdc2b64b1a9b533447e8eb2e2a31f36257d3fa1a97cd937aeb6"
+    },
+    {
+      "path": "Scripts/final_live_inventory_ue.py",
+      "bytes": 4886,
+      "sha256": "61a3e8a3c503c59318d92ec998e8c60c821f9862052dabc7c9b109ed80cdb5d7"
+    },
+    {
+      "path": "Scripts/finalize_delivery.py",
+      "bytes": 22940,
+      "sha256": "78d6241c9acf3cdd6b80ffae1f30bfed6834e4617234bd2c099f6e971eb60014"
+    },
+    {
+      "path": "Scripts/fix_live_shader_ue.py",
+      "bytes": 851,
+      "sha256": "da297279c1ea1bf20cc7d8e23a203f3719c6bddc8fd5e5751c325d4ba352907e"
+    },
+    {
+      "path": "Scripts/import_ue.py",
+      "bytes": 19792,
+      "sha256": "f3792be6a98617fad0b0c93af8e0d0bc63b5813fe1659b9ed5ea4b3b9bc3ee89"
+    },
+    {
+      "path": "Scripts/preflight_ue.py",
+      "bytes": 2483,
+      "sha256": "0826b0103f5db6289a26142d751f21be5e9fa9acd782f200908398daaeb1437d"
+    },
+    {
+      "path": "Scripts/preview_readback_ue.py",
+      "bytes": 18783,
+      "sha256": "750a0c817d26e99efbf5788550d17fc4c8a9cdb0b669de340535ff0e01c6e803"
+    },
+    {
+      "path": "Scripts/record_import_authorization.py",
+      "bytes": 1725,
+      "sha256": "cda7b78e60a770b7bdb22710c9def7bb4de2e221a706c29908d4db4d049082e5"
+    },
+    {
+      "path": "Scripts/save_reference_review_ue.py",
+      "bytes": 2122,
+      "sha256": "6a608214e65e391e435fd17996167ea8c9cdaedbda65ce97f1418f341183484d"
+    },
+    {
+      "path": "Scripts/scene_capture_probe_ue.py",
+      "bytes": 1767,
+      "sha256": "282fdd3b0467cd686cb31bf900180ffd66ebea3fd4d6e2737a845a9941b12797"
+    },
+    {
+      "path": "source_integrity_report.json",
+      "bytes": 278,
+      "sha256": "94630f08d2b74e862170b2d51c414c0d1a71a0577da9d8520af6902cc52f8d8c"
+    },
+    {
+      "path": "ue_import_report.json",
+      "bytes": 22736,
+      "sha256": "291c740f483d3490cf96eae60c916598ff38ad8dbdf38bd343806a6a81438f2b"
+    },
+    {
+      "path": "ue_preview_readback_report.json",
+      "bytes": 51037,
+      "sha256": "9b5dbead43d73eff3c5620be08fa77f77c3ec168c26a7ac87b2a14b82e01b4ef"
+    }
+  ],
+  "budget": "over_budget",
+  "FPS": "not_measured",
+  "verification": "partial overall; import/readback/actual rendered stage passed"
+}

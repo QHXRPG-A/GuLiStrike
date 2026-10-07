@@ -18,10 +18,8 @@
 
 静态/骨骼 FBX、贴图与 Blender 文件位于 `Models`。当前 Blender 交互文件为 `Models/Tactical_Cel_Review.blend`，保留旧场景并新增 `Sweeper_Cel_Review` 和 `WarMachine_Cel_Review`。
 
-| 模型 | LOD0 | LOD1 | LOD2 | LOD3 |
-|---|---:|---:|---:|---:|
-| 扫荡者（含描边） | 10,912 | 2,727 | 900 | 220 |
-| 重防号（含描边） | 27,303 | 6,826 | 300 | 70 |
+指挥官模型统一为 LOD0 近景、LOD1 中景、LOD2 远景；当前规范与候选见[本次迁移](../../Progress/RequirementDocument/20261005-指挥官三档LOD纠正与资源迁移.md)。本轮保留已审近景，新的实际版本 B 待审核，正式资源待放行后切换。
+
 
 屏幕比例阈值为 1 / 0.32 / 0.09 / 0.025；模型有主体与轮廓两个材质槽。LOD0 未达到早期 4,000 / 6,000 面预算，不能据此宣称批量单位性能优化完成。未在本轮实现材质顶点机械动画。
 
@@ -58,3 +56,5 @@ NS01 保留自己的环层，三个径向发射器的初始水平位移/速度�
 - 摧毁原配置段和之前轰炸变体记录在 `explosion_rollback.json`。
 - 重导入运行 `Scripts/import_cel_model_assets.py`（独立导入进程），会调用 `finalize_cel_model_assets.py` 保留 LOD 和挂点。
 - 爆炸制作/安装分别为 `Scripts/build_reference_combat_explosions.py`、`Scripts/install_reference_combat_explosions.py`。只保存明确列出的目标资产。
+
+> 2026-10-05 LOD 勘误：按用户明确指令更正以上相关段落和预算说明；其他历史内容保留。修改范围及原文校验见[勘误清单](../CommanderLOD_20261005/Reports/document_erratum.json)。冻结模型及原始机器回读不作为当前制作入口。

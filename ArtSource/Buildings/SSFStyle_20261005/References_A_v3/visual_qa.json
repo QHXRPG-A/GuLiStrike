@@ -1,0 +1,79 @@
+{
+  "version": "SSF_Reference_A_v3",
+  "date": "2026-10-05",
+  "reviewer": "Codex assistant",
+  "purpose": "Actual image inspection, separate from user A/B decision",
+  "review_status": "reference_ready_for_user_A",
+  "user_approval_A": "pending",
+  "user_approval_B": "not_started",
+  "actual_images_inspected": [
+    {
+      "file": "QA/Buildings_1_AllViews.png",
+      "coverage": "AirBase, CloningCenter, CommandCenter; Hero/Front/Left/Back; 12 actual renders",
+      "sha256": "a91e5744cd175136a160a47dbc1c4a5aa08c7ba50e2a29be7d30b3e168e55582"
+    },
+    {
+      "file": "QA/Buildings_2_AllViews.png",
+      "coverage": "MilitaryFactory, Reactor, StrategyCenter; Hero/Front/Left/Back; 12 actual renders",
+      "sha256": "40184a2a123d717a4ce4c2b49a236bdcbf3e44bca5d103db597f911de8c9173a"
+    },
+    {
+      "file": "QA/Accessories_AllViews.png",
+      "coverage": "Floor, Lamp, Light, Drone; Hero/Front/Left/Back; 16 actual renders",
+      "sha256": "a18f94f41a3720d1c0524ce529c2a729964ffbd686e16737d082611c8e7563fc"
+    },
+    {
+      "file": "Overview_Buildings.png",
+      "coverage": "Six distinct palettes together; asset labels and swatches",
+      "sha256": "1c906ace380c941cd44d5d3b261bbb1192e7db80b6e908c6e8861baa9fcd4f0d"
+    },
+    {
+      "file": "Images/StrategyCenter_Front.png",
+      "coverage": "Dark purple readout, pink framing, teal band and annotation",
+      "sha256": "c7c25fbbd0c77ab4ba39f6dcccb60e0b9f32ffcf4eca05d807b18f5c30031286"
+    },
+    {
+      "file": "Images/Light_Front.png",
+      "coverage": "Original single-sided flat sprite, orange mask visibility and zero-thickness annotation",
+      "sha256": "d604a94181797e14dbdfba921bd97c59c5bf23e31ea7cbaeaf489fa1058d4d8d"
+    },
+    {
+      "file": "Images/Floor_Top.png",
+      "coverage": "Platform silhouette, two levels, ramps, 6m reference seams and annotation",
+      "sha256": "0dd10706f83e87ae2eb689e8e1ad36e2c7885b8e1120bded4c9a0dbe42ff1b9c"
+    },
+    {
+      "file": "Images/Drone_Top.png",
+      "coverage": "MilitaryFactory-matching palette and source silhouette",
+      "sha256": "8819c0be3f56c657eb05d798dd8da689495c1f2e063316dda8296617effe8f82"
+    },
+    {
+      "file": "Sheets/AirBase_Sheet_A_v3.png",
+      "coverage": "Four-view page composition and readable version/dimensions/retained-parts annotation",
+      "sha256": "ea2ef9f76f05fd0b84f08d23a9c8e99cf749339bd5956bd6af6005c4e3510127"
+    },
+    {
+      "file": "Assembly_Hero_A_v3.png",
+      "coverage": "Original-size composition; all six buildings and accessory relationship",
+      "sha256": "ee087ce9d9229870c1836763562252eaa2a4055f0032601383eea3ff0988fb6c"
+    },
+    {
+      "file": "Assembly_Top_A_v3.png",
+      "coverage": "Palette distribution and source footprint in illustrative arrangement",
+      "sha256": "4a502bdfbeb981139cffb3ca1820be40b5e26bfb53c844b4452dd91c8bc387bf"
+    }
+  ],
+  "observations": [
+    "Six schemes differ by broad body/equipment colors; change is visible beyond accent patches.",
+    "Same-asset views retain source pose, regular curves, component correspondence and color boundaries.",
+    "Existing functional asymmetry and radial structures remain; existing mirror pairs share roles.",
+    "Purple StrategyCenter retains readable pink supports and teal bands; source panel divisions remain visible.",
+    "Light is a transparent plane: left is an edge and back has no front graphic. Its reference boundary indicates footprint, not solid framing.",
+    "Assembly is illustrative placement at source dimensions, not an approved playable layout; lamp/light positions and sprite-boundary strokes are display conventions."
+  ],
+  "limits": [
+    "Source geometry serves A only; production simplification, editable remade pieces, atlas and outline-shell budgets not yet produced.",
+    "22 source animations and five-time pose inventory are archived; full motion and LOD compatibility validation is a later B requirement.",
+    "No formal UE appearance or performance validation performed."
+  ]
+}

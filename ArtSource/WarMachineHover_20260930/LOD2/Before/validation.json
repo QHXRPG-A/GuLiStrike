@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "scope": "UE isolated GPU preview; synthetic movement; not PIE/network/performance acceptance",
+  "production_fx_reference_changed": false,
+  "production_resource_applied": true,
+  "native_build_this_task": "Existing authorized build verified; no new native build in this task",
+  "candidate_compile": {
+    "success": true,
+    "errors": [],
+    "warnings": []
+  },
+  "preview_compile": {
+    "success": true,
+    "errors": [],
+    "warnings": []
+  },
+  "pod_source_fix": true,
+  "pod_ue_import": true,
+  "captures": 48,
+  "gpu_samples": 17,
+  "max_attachment_error_cm": 0.0008645082952820219,
+  "all_17_attachment_and_path_checks_passed": true,
+  "source_sha256": {
+    "Scripts\\build_warmachine_hover_reference.py": "224a944a5c188349de95b497aea731c4b0e3eb9f26f3c98218dd7b630254a6ba",
+    "Scripts\\preview_warmachine_hover_reference.py": "060d3bf97d42907a1a8b0e00882693e1af6910ba63958d6c1919895dd0141734",
+    "Scripts\\import_warmachine_pod_partition.py": "a14291c1396277bdb9d0cef7ce1c86c960f3d5c92f8a30a1c256d0443f093c39",
+    "Scripts\\Blender\\fix_warmachine_pod_partition.py": "c1cb0dde2854c7d3a0677fa85857821b0c874a646eb20dfff9a5189de371af54",
+    "Scripts\\Blender\\export_mass_rigid_animation.py": "855fbf21bbe4b435e8f9a138142740b6ffbe2dd5989f12bdd37505dba3eba2fe",
+    "Scripts\\report_warmachine_hover_reference.py": "7c4503ee95cf497ab3b46beecaf6d7678db71d427336d0ad8dc846a33e1314db"
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "success": true,
+  "data_applied": true,
+  "scene_saved": true,
+  "runtime_validation": "not_run",
+  "tables": [
+    {
+      "asset": "DT_GuLiStrikeCommander_UnitSkills",
+      "source_rows": [
+        "SoldierA_Strafe",
+        "WM01_Strafe",
+        "SoldierA_Test",
+        "WM01_Test",
+        "WM01_MissileLauncher"
+      ],
+      "created": false,
+      "row_names": [
+        "SoldierA_Strafe",
+        "WM01_Strafe",
+        "SoldierA_Test",
+        "WM01_Test",
+        "WM01_MissileLauncher"
+      ],
+      "row_checks": {
+        "SoldierA_Strafe": true,
+        "WM01_Strafe": true,
+        "SoldierA_Test": true,
+        "WM01_Test": true,
+        "WM01_MissileLauncher": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeSecondaryUnitSkills_Skills",
+      "source_rows": [
+        "WM01_HomingMissile"
+      ],
+      "created": false,
+      "row_names": [
+        "WM01_HomingMissile"
+      ],
+      "row_checks": {
+        "WM01_HomingMissile": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeSecondaryWeapons_Projectiles",
+      "source_rows": [
+        "WM01_Missile"
+      ],
+      "created": false,
+      "row_names": [
+        "WM01_Missile"
+      ],
+      "row_checks": {
+        "WM01_Missile": true
+      },
+      "imported": true
+    }
+  ],
+  "readback": {
+    "gun_range_cm": 12000,
+    "missile_range_cm": 24000.0,
+    "missile_authored_range_cm": 24000.0,
+    "missile_source_slot": "BasicAttack",
+    "missile_range_multiplier": 2.0,
+    "missile_speed_cm_per_second": 2400.0,
+    "missile_lifetime_seconds": 20.0,
+    "catalog_issues": []
+  },
+  "entities": [
+    {
+      "label": "WM01Range_GunInside110m",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_34",
+      "cls": "TargetPoint",
+      "location": [
+        3000.0,
+        72000.0,
+        -1757.2955596891227
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "distance_cm": 11000.000000000065
+    },
+    {
+      "label": "WM01Range_GunOutside130m",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_35",
+      "cls": "TargetPoint",
+      "location": [
+        5000.0,
+        72000.0,
+        -1757.7513850290154
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "distance_cm": 13000.000008033789
+    },
+    {
+      "label": "WM01Range_Label_GunInside110m",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TextRenderActor_4",
+      "cls": "TextRenderActor",
+      "location": [
+        3000.0,
+        72000.0,
+        -1722.2955596891227
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": "GunInside110m"
+    },
+    {
+      "label": "WM01Range_Label_GunOutside130m",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TextRenderActor_5",
+      "cls": "TextRenderActor",
+      "location": [
+        5000.0,
+        72000.0,
+        -1722.7513850290154
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": "GunOutside130m"
+    },
+    {
+      "label": "WM01Range_Label_QInside230m",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TextRenderActor_6",
+      "cls": "TextRenderActor",
+      "location": [
+        15000.0,
+        72000.0,
+        -1722.7825347065595
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": "QInside230m"
+    },
+    {
+      "label": "WM01Range_Label_QOutside250m",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TextRenderActor_7",
+      "cls": "TextRenderActor",
+      "location": [
+        17000.0,
+        72000.0,
+        -1722.2943707389393
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": "QOutside250m"
+    },
+    {
+      "label": "WM01Range_Label_Source",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TextRenderActor_3",
+      "cls": "TextRenderActor",
+      "location": [
+        -8000.0,
+        72000.0,
+        -1722.2943527427205
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": "Source"
+    },
+    {
+      "label": "WM01Range_PlayerInstructions",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_55",
+      "cls": "Note",
+      "location": [
+        -8000.0,
+        73200.0,
+        -1357.2943527427205
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": "重防号 WM01 / UnitTypeId=2 射程验收：机枪30→120米，Q导弹96→240米。\n新开本图单机PIE，就绪红队指挥官；每个距离场景使用新局，保持测试单位原地。\n源点生成：gs.GM.Skill.Spawn Red 2 -8000.00 72000.00 -1757.29\n机枪界内：gs.GM.Skill.Spawn Blue 2 3000.00 72000.00 -1757.30\n机枪界外：gs.GM.Skill.Spawn Blue 2 5000.00 72000.00 -1757.75\n分别观察该重防号：110米自动开火，130米不以该目标开火；不要把其他单位攻击计入。控制台Spawn输出ID，gs.GM.Skill.Soldier <ID>可查看该兵的目标与射击次数。\nQ：F4获得04.01重防导弹仓，选中源点单台，按Q点击QInside230m地面标记；应发射并飞抵落点。等待其6秒冷却，再按Q点击QOutside250m；应拒绝且不扣冷却。\nQ圆心范围为最终BasicAttack×2；基础随机落点半径8米，最多248米。导弹速度24米/秒，最长飞行20秒；远距允许超过旧8秒继续飞行。\n静态数据及实体已核对；游戏效果待玩家验证，助手未启动PIE。"
+    },
+    {
+      "label": "WM01Range_QInside230m",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_36",
+      "cls": "TargetPoint",
+      "location": [
+        15000.0,
+        72000.0,
+        -1757.7825347065595
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "distance_cm": 23000.000005180904
+    },
+    {
+      "label": "WM01Range_QOutside250m",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_37",
+      "cls": "TargetPoint",
+      "location": [
+        17000.0,
+        72000.0,
+        -1757.2943707389393
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "distance_cm": 25000.0
+    },
+    {
+      "label": "WM01Range_Source",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_33",
+      "cls": "TargetPoint",
+      "location": [
+        -8000.0,
+        72000.0,
+        -1757.2943527427205
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "distance_cm": 0.0
+    }
+  ],
+  "spawn_commands": {
+    "Source": "gs.GM.Skill.Spawn Red 2 -8000.00 72000.00 -1757.29",
+    "GunInside110m": "gs.GM.Skill.Spawn Blue 2 3000.00 72000.00 -1757.30",
+    "GunOutside130m": "gs.GM.Skill.Spawn Blue 2 5000.00 72000.00 -1757.75",
+    "QInside230m": "gs.GM.Skill.Spawn Blue 2 15000.00 72000.00 -1757.78",
+    "QOutside250m": "gs.GM.Skill.Spawn Blue 2 17000.00 72000.00 -1757.29"
+  },
+  "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "scene_verified_after_static_check": true
+}

@@ -1,0 +1,1757 @@
+{
+  "success": true,
+  "map": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4",
+  "captures": [
+    {
+      "name": "UE_B_v4_Hero.png",
+      "view": "Hero",
+      "lod": 0,
+      "animation": null,
+      "t": 0.0,
+      "camera": {
+        "position_cm": [
+          2931.9177627563477,
+          3946.352005004883,
+          2586.6188049316406
+        ],
+        "rotation": "<Struct 'Rotator' (0x000002116EFAD690) {pitch: -25.065351, yaw: -127.701604, roll: -0.000000}>",
+        "forced_lod": 1
+      }
+    },
+    {
+      "name": "UE_B_v4_Front.png",
+      "view": "Front",
+      "lod": 0,
+      "animation": null,
+      "t": 0.0,
+      "camera": {
+        "position_cm": [
+          -0.0021457672119140625,
+          5445.428466796875,
+          344.5624351501465
+        ],
+        "rotation": "<Struct 'Rotator' (0x0000021048A19A00) {pitch: -0.002149, yaw: -89.999977, roll: -0.000000}>",
+        "forced_lod": 1
+      }
+    },
+    {
+      "name": "UE_B_v4_Left.png",
+      "view": "Left",
+      "lod": 0,
+      "animation": null,
+      "t": 0.0,
+      "camera": {
+        "position_cm": [
+          5293.323516845703,
+          152.10249423980713,
+          344.5624351501465
+        ],
+        "rotation": "<Struct 'Rotator' (0x0000021048A193C0) {pitch: -0.002149, yaw: 179.989060, roll: 0.000000}>",
+        "forced_lod": 1
+      }
+    },
+    {
+      "name": "UE_B_v4_Back.png",
+      "view": "Back",
+      "lod": 0,
+      "animation": null,
+      "t": 0.0,
+      "camera": {
+        "position_cm": [
+          -0.0021457672119140625,
+          -5141.22314453125,
+          344.5624351501465
+        ],
+        "rotation": "<Struct 'Rotator' (0x0000021048A19410) {pitch: -0.002148, yaw: 89.999977, roll: 0.000000}>",
+        "forced_lod": 1
+      }
+    },
+    {
+      "name": "UE_B_v4_LOD1.png",
+      "view": "Hero",
+      "lod": 1,
+      "animation": null,
+      "t": 0.0,
+      "camera": {
+        "position_cm": [
+          2931.9177627563477,
+          3946.352005004883,
+          2586.6188049316406
+        ],
+        "rotation": "<Struct 'Rotator' (0x0000021048A18F10) {pitch: -25.065351, yaw: -127.701604, roll: -0.000000}>",
+        "forced_lod": 2
+      }
+    },
+    {
+      "name": "UE_B_v4_LOD2.png",
+      "view": "Hero",
+      "lod": 2,
+      "animation": null,
+      "t": 0.0,
+      "camera": {
+        "position_cm": [
+          2931.9177627563477,
+          3946.352005004883,
+          2586.6188049316406
+        ],
+        "rotation": "<Struct 'Rotator' (0x0000021048A18600) {pitch: -25.065351, yaw: -127.701604, roll: -0.000000}>",
+        "forced_lod": 3
+      }
+    },
+    {
+      "name": "UE_B_v4_LOD3.png",
+      "view": "Hero",
+      "lod": 3,
+      "animation": null,
+      "t": 0.0,
+      "camera": {
+        "position_cm": [
+          2931.9177627563477,
+          3946.352005004883,
+          2586.6188049316406
+        ],
+        "rotation": "<Struct 'Rotator' (0x0000021048A18A10) {pitch: -25.065351, yaw: -127.701604, roll: -0.000000}>",
+        "forced_lod": 4
+      }
+    },
+    {
+      "name": "UE_B_v4_Mech_Deploy_Start.png",
+      "view": "Hero",
+      "lod": 0,
+      "animation": "Mech_Deploy",
+      "t": 0.0,
+      "camera": {
+        "position_cm": [
+          2931.9177627563477,
+          3946.352005004883,
+          2586.6188049316406
+        ],
+        "rotation": "<Struct 'Rotator' (0x0000021048A18EC0) {pitch: -25.065351, yaw: -127.701604, roll: -0.000000}>",
+        "forced_lod": 1
+      }
+    },
+    {
+      "name": "UE_B_v4_Mech_Deploy_Mid.png",
+      "view": "Hero",
+      "lod": 0,
+      "animation": "Mech_Deploy",
+      "t": 2.5,
+      "camera": {
+        "position_cm": [
+          2931.9177627563477,
+          3946.352005004883,
+          2586.6188049316406
+        ],
+        "rotation": "<Struct 'Rotator' (0x000002116EFD3580) {pitch: -25.065351, yaw: -127.701604, roll: -0.000000}>",
+        "forced_lod": 1
+      }
+    },
+    {
+      "name": "UE_B_v4_Mech_Deploy_End.png",
+      "view": "Hero",
+      "lod": 0,
+      "animation": "Mech_Deploy",
+      "t": 5.0,
+      "camera": {
+        "position_cm": [
+          2931.9177627563477,
+          3946.352005004883,
+          2586.6188049316406
+        ],
+        "rotation": "<Struct 'Rotator' (0x000002116EFAF580) {pitch: -25.065351, yaw: -127.701604, roll: -0.000000}>",
+        "forced_lod": 1
+      }
+    },
+    {
+      "name": "UE_B_v4_Mech_Idle_Start.png",
+      "view": "Hero",
+      "lod": 0,
+      "animation": "Mech_Idle",
+      "t": 0.0,
+      "camera": {
+        "position_cm": [
+          2931.9177627563477,
+          3946.352005004883,
+          2586.6188049316406
+        ],
+        "rotation": "<Struct 'Rotator' (0x0000021048A18DD0) {pitch: -25.065351, yaw: -127.701604, roll: -0.000000}>",
+        "forced_lod": 1
+      }
+    },
+    {
+      "name": "UE_B_v4_Mech_Idle_Mid.png",
+      "view": "Hero",
+      "lod": 0,
+      "animation": "Mech_Idle",
+      "t": 4.333333492279053,
+      "camera": {
+        "position_cm": [
+          2931.9177627563477,
+          3946.352005004883,
+          2586.6188049316406
+        ],
+        "rotation": "<Struct 'Rotator' (0x000002116EFAD190) {pitch: -25.065351, yaw: -127.701604, roll: -0.000000}>",
+        "forced_lod": 1
+      }
+    },
+    {
+      "name": "UE_B_v4_Mech_Idle_End.png",
+      "view": "Hero",
+      "lod": 0,
+      "animation": "Mech_Idle",
+      "t": 8.666666984558105,
+      "camera": {
+        "position_cm": [
+          2931.9177627563477,
+          3946.352005004883,
+          2586.6188049316406
+        ],
+        "rotation": "<Struct 'Rotator' (0x0000021048A19A00) {pitch: -25.065351, yaw: -127.701604, roll: -0.000000}>",
+        "forced_lod": 1
+      }
+    },
+    {
+      "name": "UE_B_v4_Mech_Walk_Start.png",
+      "view": "Hero",
+      "lod": 0,
+      "animation": "Mech_Walk",
+      "t": 0.0,
+      "camera": {
+        "position_cm": [
+          2931.9177627563477,
+          3946.352005004883,
+          2586.6188049316406
+        ],
+        "rotation": "<Struct 'Rotator' (0x000002116EFAE720) {pitch: -25.065351, yaw: -127.701604, roll: -0.000000}>",
+        "forced_lod": 1
+      }
+    },
+    {
+      "name": "UE_B_v4_Mech_Walk_Mid.png",
+      "view": "Hero",
+      "lod": 0,
+      "animation": "Mech_Walk",
+      "t": 2.5,
+      "camera": {
+        "position_cm": [
+          2931.9177627563477,
+          3946.352005004883,
+          2586.6188049316406
+        ],
+        "rotation": "<Struct 'Rotator' (0x0000021048A1A0E0) {pitch: -25.065351, yaw: -127.701604, roll: -0.000000}>",
+        "forced_lod": 1
+      }
+    },
+    {
+      "name": "UE_B_v4_Mech_Walk_End.png",
+      "view": "Hero",
+      "lod": 0,
+      "animation": "Mech_Walk",
+      "t": 5.0,
+      "camera": {
+        "position_cm": [
+          2931.9177627563477,
+          3946.352005004883,
+          2586.6188049316406
+        ],
+        "rotation": "<Struct 'Rotator' (0x000002116EFAF1C0) {pitch: -25.065351, yaw: -127.701604, roll: -0.000000}>",
+        "forced_lod": 1
+      }
+    },
+    {
+      "name": "UE_B_v4_CommanderNear.png",
+      "view": "CommanderNear",
+      "lod": null,
+      "animation": null,
+      "t": 0.0,
+      "camera": {
+        "position_cm": [
+          -7505.774221783456,
+          0.0,
+          3500.0
+        ],
+        "rotation": "<Struct 'Rotator' (0x0000021048A193C0) {pitch: -25.000000, yaw: 0.000000, roll: 0.000000}>",
+        "forced_lod": 0
+      }
+    },
+    {
+      "name": "UE_B_v4_CommanderTactical.png",
+      "view": "CommanderTactical",
+      "lod": null,
+      "animation": null,
+      "t": 0.0,
+      "camera": {
+        "position_cm": [
+          -21006.226146291294,
+          0.0,
+          30000.0
+        ],
+        "rotation": "<Struct 'Rotator' (0x000002116EFAE720) {pitch: -55.000000, yaw: 0.000000, roll: 0.000000}>",
+        "forced_lod": 0
+      }
+    },
+    {
+      "name": "UE_B_v4_CommanderOverview.png",
+      "view": "CommanderOverview",
+      "lod": null,
+      "animation": null,
+      "t": 0.0,
+      "camera": {
+        "position_cm": [
+          0.0,
+          0.0,
+          228143.1816442575
+        ],
+        "rotation": "<Struct 'Rotator' (0x0000021048A18A10) {pitch: -90.000000, yaw: 0.000000, roll: 0.000000}>",
+        "forced_lod": 0
+      }
+    }
+  ],
+  "component_pose_checks": [
+    {
+      "animation": "Mech_Deploy",
+      "t": 0.0,
+      "bone_count": 152,
+      "comparison": "actual delivered component vs actual source component, both UE evaluated playback",
+      "max_152_bone_global_position_delta_cm": 9.9795990843272e-05,
+      "max_scale_delta": 0.0,
+      "max_rotation_delta_deg": 7.507384646206089e-05,
+      "target_component_vs_source_raw": {
+        "position_cm": 0.008582873100769146,
+        "scale": 0.0,
+        "rotation_degrees": 0.002081110697120819
+      },
+      "source_component_vs_source_raw": {
+        "position_cm": 0.008496349079527003,
+        "scale": 0.0,
+        "rotation_degrees": 0.0020502907938274003
+      },
+      "selected_bones": {
+        "root": {
+          "translation_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "base": {
+          "translation_cm": [
+            0.0,
+            7.206315517425537,
+            87.3800048828125
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "cannon_02": {
+          "translation_cm": [
+            -0.37686583615215186,
+            99.93273991352875,
+            225.3223267320445
+          ],
+          "rotation_xyzw": [
+            0.7071048021316528,
+            0.7071070671081543,
+            0.001091800513677299,
+            -0.0010923838708549738
+          ],
+          "scale": [
+            0.5164262056350708,
+            1.0,
+            1.0
+          ]
+        },
+        "foot_fr_01_l": {
+          "translation_cm": [
+            162.69678815769487,
+            244.1220649943098,
+            74.37540907618623
+          ],
+          "rotation_xyzw": [
+            -0.08943527936935425,
+            0.14884541928768158,
+            0.5072133541107178,
+            0.8441451191902161
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "foot_fr_01_r": {
+          "translation_cm": [
+            -162.69660192960364,
+            244.12150494317615,
+            74.37521841512708
+          ],
+          "rotation_xyzw": [
+            0.8452165126800537,
+            -0.5078572034835815,
+            0.14263565838336945,
+            0.08570414781570435
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "foot_bk_01_l": {
+          "translation_cm": [
+            174.65665418660103,
+            -195.78852018988968,
+            74.37840668667005
+          ],
+          "rotation_xyzw": [
+            0.4031374156475067,
+            0.8777822256088257,
+            0.10747290402650833,
+            -0.23543193936347961
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "foot_bk_01_r": {
+          "translation_cm": [
+            -174.657067787124,
+            -195.78857026008004,
+            74.37480747803735
+          ],
+          "rotation_xyzw": [
+            0.15800133347511292,
+            0.07203429192304611,
+            -0.8949711322784424,
+            0.4109419882297516
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      },
+      "evaluated_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_2.SkeletalMeshComponent0.AnimSingleNodeInstance_5",
+      "source_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_3.SkeletalMeshComponent0.AnimSingleNodeInstance_0"
+    },
+    {
+      "animation": "Mech_Deploy",
+      "t": 2.5,
+      "bone_count": 152,
+      "comparison": "actual delivered component vs actual source component, both UE evaluated playback",
+      "max_152_bone_global_position_delta_cm": 0.00012696044809365148,
+      "max_scale_delta": 0.0,
+      "max_rotation_delta_deg": 8.108602555363424e-05,
+      "target_component_vs_source_raw": {
+        "position_cm": 0.01535405875481368,
+        "scale": 0.0,
+        "rotation_degrees": 0.0020463057531893715
+      },
+      "source_component_vs_source_raw": {
+        "position_cm": 0.015429188413526296,
+        "scale": 0.0,
+        "rotation_degrees": 0.002058292267136903
+      },
+      "selected_bones": {
+        "root": {
+          "translation_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "base": {
+          "translation_cm": [
+            0.0,
+            7.206315517425537,
+            127.3689956665039
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "cannon_02": {
+          "translation_cm": [
+            -0.3785789799499,
+            500.5470592508418,
+            464.081127548557
+          ],
+          "rotation_xyzw": [
+            0.6952607035636902,
+            0.6952630281448364,
+            0.12888328731060028,
+            -0.1288834512233734
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "foot_fr_01_l": {
+          "translation_cm": [
+            289.91885749322176,
+            483.392017358777,
+            24.984583883012284
+          ],
+          "rotation_xyzw": [
+            -0.018101632595062256,
+            0.03012632392346859,
+            0.5147199034690857,
+            0.856637716293335
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "foot_fr_01_r": {
+          "translation_cm": [
+            -289.84355845512124,
+            483.2500202356164,
+            22.133519194734983
+          ],
+          "rotation_xyzw": [
+            0.8569766283035278,
+            -0.5149235129356384,
+            0.01807912439107895,
+            0.010862869210541248
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "foot_bk_01_l": {
+          "translation_cm": [
+            351.2301474842547,
+            -401.205416958792,
+            23.089735404851755
+          ],
+          "rotation_xyzw": [
+            0.41700294613838196,
+            0.9085408449172974,
+            0.010256846435368061,
+            -0.02359740063548088
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "foot_bk_01_r": {
+          "translation_cm": [
+            -351.3325976951311,
+            -401.3223455315312,
+            25.550615011014
+          ],
+          "rotation_xyzw": [
+            0.03469686210155487,
+            0.015343159437179565,
+            -0.9081848859786987,
+            0.4168463945388794
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      },
+      "evaluated_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_2.SkeletalMeshComponent0.AnimSingleNodeInstance_6",
+      "source_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_3.SkeletalMeshComponent0.AnimSingleNodeInstance_1"
+    },
+    {
+      "animation": "Mech_Deploy",
+      "t": 5.0,
+      "bone_count": 152,
+      "comparison": "actual delivered component vs actual source component, both UE evaluated playback",
+      "max_152_bone_global_position_delta_cm": 0.00010183320979213695,
+      "max_scale_delta": 0.0,
+      "max_rotation_delta_deg": 8.108602555363424e-05,
+      "target_component_vs_source_raw": {
+        "position_cm": 0.015073661490346002,
+        "scale": 0.0,
+        "rotation_degrees": 0.002057126098596952
+      },
+      "source_component_vs_source_raw": {
+        "position_cm": 0.015073661471131204,
+        "scale": 0.0,
+        "rotation_degrees": 0.002057126098596952
+      },
+      "selected_bones": {
+        "root": {
+          "translation_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "base": {
+          "translation_cm": [
+            0.0,
+            7.206317901611328,
+            192.8958740234375
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "cannon_02": {
+          "translation_cm": [
+            -0.3785789799499,
+            500.5470616350276,
+            529.6080059054906
+          ],
+          "rotation_xyzw": [
+            0.6952607035636902,
+            0.6952630281448364,
+            0.12888328731060028,
+            -0.1288834512233734
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "foot_fr_01_l": {
+          "translation_cm": [
+            289.8010465307873,
+            483.17043524131543,
+            17.850019302963755
+          ],
+          "rotation_xyzw": [
+            9.030572556412153e-08,
+            -8.274372853556144e-10,
+            0.5150380730628967,
+            0.8571673035621643
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "foot_fr_01_r": {
+          "translation_cm": [
+            -289.80100129909295,
+            483.17002314010495,
+            17.850003338111563
+          ],
+          "rotation_xyzw": [
+            0.8571673035621643,
+            -0.5150380730628967,
+            -7.739099361359081e-10,
+            -9.033889369902681e-08
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "foot_bk_01_l": {
+          "translation_cm": [
+            351.14052987446394,
+            -401.10803108750605,
+            17.862721973952162
+          ],
+          "rotation_xyzw": [
+            0.4171288311481476,
+            0.9088472127914429,
+            -0.0004814067215193063,
+            -0.0002014788769884035
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "foot_bk_01_r": {
+          "translation_cm": [
+            -351.135989788773,
+            -401.1060445917166,
+            17.850812801054268
+          ],
+          "rotation_xyzw": [
+            0.00021934891992714256,
+            -0.0004814306157641113,
+            -0.9088472127914429,
+            0.41712886095046997
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      },
+      "evaluated_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_2.SkeletalMeshComponent0.AnimSingleNodeInstance_7",
+      "source_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_3.SkeletalMeshComponent0.AnimSingleNodeInstance_2"
+    },
+    {
+      "animation": "Mech_Idle",
+      "t": 0.0,
+      "bone_count": 152,
+      "comparison": "actual delivered component vs actual source component, both UE evaluated playback",
+      "max_152_bone_global_position_delta_cm": 0.0005156271368161889,
+      "max_scale_delta": 1.115100495107539e-06,
+      "max_rotation_delta_deg": 9.193838031549024e-05,
+      "target_component_vs_source_raw": {
+        "position_cm": 0.01593857252246117,
+        "scale": 1.115100495107539e-06,
+        "rotation_degrees": 0.0020537613348422137
+      },
+      "source_component_vs_source_raw": {
+        "position_cm": 0.016002231667440043,
+        "scale": 0.0,
+        "rotation_degrees": 0.0020640425970202816
+      },
+      "selected_bones": {
+        "root": {
+          "translation_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "base": {
+          "translation_cm": [
+            0.0,
+            7.206317901611328,
+            192.8958740234375
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "cannon_02": {
+          "translation_cm": [
+            -0.3785234298897677,
+            500.5470454090431,
+            529.6079961829404
+          ],
+          "rotation_xyzw": [
+            0.6952606439590454,
+            0.6952630877494812,
+            0.12888310849666595,
+            -0.12888365983963013
+          ],
+          "scale": [
+            0.9999998211860728,
+            0.9999996423721491,
+            1.0
+          ]
+        },
+        "foot_fr_01_l": {
+          "translation_cm": [
+            289.8010181533621,
+            483.1704534768458,
+            17.84995312616637
+          ],
+          "rotation_xyzw": [
+            2.4313839830369943e-08,
+            1.2755342027048755e-07,
+            0.5150380730628967,
+            0.8571673035621643
+          ],
+          "scale": [
+            1.0000000596046377,
+            1.0000000596046235,
+            0.9999999403953552
+          ]
+        },
+        "foot_fr_01_r": {
+          "translation_cm": [
+            -289.80119078854915,
+            483.17029661138383,
+            17.850292033458846
+          ],
+          "rotation_xyzw": [
+            0.8571673035621643,
+            -0.5150380730628967,
+            -7.147174301280756e-07,
+            -4.413395799929276e-07
+          ],
+          "scale": [
+            0.9999994635582858,
+            0.9999993443490247,
+            0.9999998211860763
+          ]
+        },
+        "foot_bk_01_l": {
+          "translation_cm": [
+            351.14050225368464,
+            -401.10798278467564,
+            17.86261651851271
+          ],
+          "rotation_xyzw": [
+            0.4171287715435028,
+            0.9088472723960876,
+            -0.0004812945262528956,
+            -0.00020182656589895487
+          ],
+          "scale": [
+            0.9999999999999893,
+            0.9999995827675257,
+            1.0000000596046377
+          ]
+        },
+        "foot_bk_01_r": {
+          "translation_cm": [
+            -351.1359993167988,
+            -401.1060482355014,
+            17.85071168986314
+          ],
+          "rotation_xyzw": [
+            0.0002195893321186304,
+            -0.00048129260540008545,
+            -0.9088472127914429,
+            0.41712889075279236
+          ],
+          "scale": [
+            1.0000000596046377,
+            0.999999940395341,
+            0.9999998807907104
+          ]
+        }
+      },
+      "evaluated_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_2.SkeletalMeshComponent0.AnimSingleNodeInstance_8",
+      "source_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_3.SkeletalMeshComponent0.AnimSingleNodeInstance_3"
+    },
+    {
+      "animation": "Mech_Idle",
+      "t": 4.333333492279053,
+      "bone_count": 152,
+      "comparison": "actual delivered component vs actual source component, both UE evaluated playback",
+      "max_152_bone_global_position_delta_cm": 0.00023164593244649382,
+      "max_scale_delta": 1.115100495107539e-06,
+      "max_rotation_delta_deg": 4.449463289449265e-05,
+      "target_component_vs_source_raw": {
+        "position_cm": 0.01602306823038459,
+        "scale": 1.115100495107539e-06,
+        "rotation_degrees": 0.0020715779091536697
+      },
+      "source_component_vs_source_raw": {
+        "position_cm": 0.01606245309308399,
+        "scale": 0.0,
+        "rotation_degrees": 0.0020793327193412265
+      },
+      "selected_bones": {
+        "root": {
+          "translation_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "base": {
+          "translation_cm": [
+            0.0,
+            7.206317901611328,
+            192.8958740234375
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "cannon_02": {
+          "translation_cm": [
+            -0.3785234298897677,
+            500.5470454090431,
+            529.6079961829404
+          ],
+          "rotation_xyzw": [
+            0.6952606439590454,
+            0.6952630877494812,
+            0.12888310849666595,
+            -0.12888365983963013
+          ],
+          "scale": [
+            0.9999998211860728,
+            0.9999996423721491,
+            1.0
+          ]
+        },
+        "foot_fr_01_l": {
+          "translation_cm": [
+            289.80098212171794,
+            483.1703962838901,
+            17.850022254777862
+          ],
+          "rotation_xyzw": [
+            -8.436737175543385e-08,
+            1.1883208372864829e-07,
+            0.515038251876831,
+            0.8571671843528748
+          ],
+          "scale": [
+            1.0000000596046377,
+            1.0000000596046235,
+            0.9999999403953552
+          ]
+        },
+        "foot_fr_01_r": {
+          "translation_cm": [
+            -289.80093802380554,
+            483.1699192966118,
+            17.8501530507463
+          ],
+          "rotation_xyzw": [
+            0.8571673035621643,
+            -0.5150380730628967,
+            -9.374777931725475e-08,
+            -1.9176577836788056e-07
+          ],
+          "scale": [
+            0.9999994635582858,
+            0.9999993443490247,
+            0.9999998211860763
+          ]
+        },
+        "foot_bk_01_l": {
+          "translation_cm": [
+            351.14057712335693,
+            -401.10805532746815,
+            17.86266676580401
+          ],
+          "rotation_xyzw": [
+            0.4171287715435028,
+            0.9088472723960876,
+            -0.0004814467974938452,
+            -0.00020162620057817549
+          ],
+          "scale": [
+            0.9999999999999893,
+            0.9999995827675257,
+            1.0000000596046377
+          ]
+        },
+        "foot_bk_01_r": {
+          "translation_cm": [
+            -351.136024218658,
+            -401.10607260975684,
+            17.85067654293729
+          ],
+          "rotation_xyzw": [
+            0.00021949945949018002,
+            -0.0004813346022274345,
+            -0.9088472127914429,
+            0.41712886095046997
+          ],
+          "scale": [
+            1.0000000596046377,
+            0.999999940395341,
+            0.9999998807907104
+          ]
+        }
+      },
+      "evaluated_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_2.SkeletalMeshComponent0.AnimSingleNodeInstance_9",
+      "source_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_3.SkeletalMeshComponent0.AnimSingleNodeInstance_4"
+    },
+    {
+      "animation": "Mech_Idle",
+      "t": 8.666666984558105,
+      "bone_count": 152,
+      "comparison": "actual delivered component vs actual source component, both UE evaluated playback",
+      "max_152_bone_global_position_delta_cm": 0.0007754743696578856,
+      "max_scale_delta": 1.115100495107539e-06,
+      "max_rotation_delta_deg": 0.0003101678696508263,
+      "target_component_vs_source_raw": {
+        "position_cm": 0.0160791760245792,
+        "scale": 1.115100495107539e-06,
+        "rotation_degrees": 0.0020811198038559755
+      },
+      "source_component_vs_source_raw": {
+        "position_cm": 0.01605203486664407,
+        "scale": 0.0,
+        "rotation_degrees": 0.002075352164479387
+      },
+      "selected_bones": {
+        "root": {
+          "translation_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "base": {
+          "translation_cm": [
+            0.0,
+            7.206317901611328,
+            192.8958740234375
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "cannon_02": {
+          "translation_cm": [
+            -0.3785234298897677,
+            500.5470454090431,
+            529.6079961829404
+          ],
+          "rotation_xyzw": [
+            0.6952606439590454,
+            0.6952630877494812,
+            0.12888310849666595,
+            -0.12888365983963013
+          ],
+          "scale": [
+            0.9999998211860728,
+            0.9999996423721491,
+            1.0
+          ]
+        },
+        "foot_fr_01_l": {
+          "translation_cm": [
+            289.80099833522075,
+            483.1704063081679,
+            17.849947194719153
+          ],
+          "rotation_xyzw": [
+            2.1491530333150877e-07,
+            -2.695808554165069e-08,
+            0.5150380730628967,
+            0.8571673035621643
+          ],
+          "scale": [
+            1.0000000596046377,
+            1.0000000596046235,
+            0.9999999403953552
+          ]
+        },
+        "foot_fr_01_r": {
+          "translation_cm": [
+            -289.8009197340358,
+            483.1698730702283,
+            17.850113654330784
+          ],
+          "rotation_xyzw": [
+            0.8571673035621643,
+            -0.5150380730628967,
+            2.3291758566301723e-07,
+            5.0762242409518876e-08
+          ],
+          "scale": [
+            0.9999994635582858,
+            0.9999993443490247,
+            0.9999998211860763
+          ]
+        },
+        "foot_bk_01_l": {
+          "translation_cm": [
+            351.140627536988,
+            -401.1081047124324,
+            17.862714519388245
+          ],
+          "rotation_xyzw": [
+            0.4171288311481476,
+            0.9088472127914429,
+            -0.0004814491840079427,
+            -0.00020134009537287056
+          ],
+          "scale": [
+            0.9999999999999893,
+            0.9999995827675257,
+            1.0000000596046377
+          ]
+        },
+        "foot_bk_01_r": {
+          "translation_cm": [
+            -351.1361627840094,
+            -401.1063729124891,
+            17.850954154884167
+          ],
+          "rotation_xyzw": [
+            0.00021890609059482813,
+            -0.0004817776498384774,
+            -0.9088472127914429,
+            0.41712889075279236
+          ],
+          "scale": [
+            1.0000000596046377,
+            0.999999940395341,
+            0.9999998807907104
+          ]
+        }
+      },
+      "evaluated_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_2.SkeletalMeshComponent0.AnimSingleNodeInstance_10",
+      "source_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_3.SkeletalMeshComponent0.AnimSingleNodeInstance_5"
+    },
+    {
+      "animation": "Mech_Walk",
+      "t": 0.0,
+      "bone_count": 152,
+      "comparison": "actual delivered component vs actual source component, both UE evaluated playback",
+      "max_152_bone_global_position_delta_cm": 0.0018400597005456638,
+      "max_scale_delta": 1.115100495107539e-06,
+      "max_rotation_delta_deg": 0.0003159654664201842,
+      "target_component_vs_source_raw": {
+        "position_cm": 0.017555641030017805,
+        "scale": 1.115100495107539e-06,
+        "rotation_degrees": 0.010731661960968713
+      },
+      "source_component_vs_source_raw": {
+        "position_cm": 0.015986121503442512,
+        "scale": 0.0,
+        "rotation_degrees": 0.010462563360286064
+      },
+      "selected_bones": {
+        "root": {
+          "translation_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "base": {
+          "translation_cm": [
+            0.0,
+            7.206317901611328,
+            192.8958740234375
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "cannon_02": {
+          "translation_cm": [
+            -0.3785234298897677,
+            500.5470454090431,
+            529.6079961829404
+          ],
+          "rotation_xyzw": [
+            0.6952606439590454,
+            0.6952630877494812,
+            0.12888310849666595,
+            -0.12888365983963013
+          ],
+          "scale": [
+            0.9999998211860728,
+            0.9999996423721491,
+            1.0
+          ]
+        },
+        "foot_fr_01_l": {
+          "translation_cm": [
+            289.8010573558161,
+            483.17042068728773,
+            17.84993313662288
+          ],
+          "rotation_xyzw": [
+            -2.1024374063927098e-07,
+            -6.755877279829292e-08,
+            0.5150384902954102,
+            0.8571670651435852
+          ],
+          "scale": [
+            1.0000000596046377,
+            1.0000000596046235,
+            0.9999999403953552
+          ]
+        },
+        "foot_fr_01_r": {
+          "translation_cm": [
+            -289.80158889621043,
+            483.17113039048513,
+            17.850874655936565
+          ],
+          "rotation_xyzw": [
+            0.8571673035621643,
+            -0.5150380730628967,
+            -2.028017661359627e-06,
+            -1.3082237728667678e-06
+          ],
+          "scale": [
+            0.9999994635582858,
+            0.9999993443490247,
+            0.9999998211860763
+          ]
+        },
+        "foot_bk_01_l": {
+          "translation_cm": [
+            351.14188092673936,
+            -401.10957956248615,
+            17.863795593293375
+          ],
+          "rotation_xyzw": [
+            0.4171288311481476,
+            0.9088472127914429,
+            -0.00048281849012710154,
+            -0.00019840210734400898
+          ],
+          "scale": [
+            0.9999999999999893,
+            0.9999995827675257,
+            1.0000000596046377
+          ]
+        },
+        "foot_bk_01_r": {
+          "translation_cm": [
+            -351.1360117592314,
+            -401.1060359917019,
+            17.850765416201853
+          ],
+          "rotation_xyzw": [
+            0.00021934087271802127,
+            -0.0004814282583538443,
+            -0.9088472127914429,
+            0.4171288013458252
+          ],
+          "scale": [
+            1.0000000596046377,
+            0.999999940395341,
+            0.9999998807907104
+          ]
+        }
+      },
+      "evaluated_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_2.SkeletalMeshComponent0.AnimSingleNodeInstance_11",
+      "source_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_3.SkeletalMeshComponent0.AnimSingleNodeInstance_6"
+    },
+    {
+      "animation": "Mech_Walk",
+      "t": 2.5,
+      "bone_count": 152,
+      "comparison": "actual delivered component vs actual source component, both UE evaluated playback",
+      "max_152_bone_global_position_delta_cm": 0.0002048864498296857,
+      "max_scale_delta": 1.115100495107539e-06,
+      "max_rotation_delta_deg": 4.026337134929288e-05,
+      "target_component_vs_source_raw": {
+        "position_cm": 0.0784478341857624,
+        "scale": 1.115100495107539e-06,
+        "rotation_degrees": 0.03089058245180235
+      },
+      "source_component_vs_source_raw": {
+        "position_cm": 0.07841473606010137,
+        "scale": 0.0,
+        "rotation_degrees": 0.03088219715490649
+      },
+      "selected_bones": {
+        "root": {
+          "translation_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "base": {
+          "translation_cm": [
+            0.0,
+            7.206317901611328,
+            192.8958740234375
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "cannon_02": {
+          "translation_cm": [
+            -0.3785234298897677,
+            500.5470454090431,
+            529.6079961829404
+          ],
+          "rotation_xyzw": [
+            0.6952606439590454,
+            0.6952630877494812,
+            0.12888310849666595,
+            -0.12888365983963013
+          ],
+          "scale": [
+            0.9999998211860728,
+            0.9999996423721491,
+            1.0
+          ]
+        },
+        "foot_fr_01_l": {
+          "translation_cm": [
+            289.8143906657613,
+            483.19189601748263,
+            17.905494275633924
+          ],
+          "rotation_xyzw": [
+            4.9834896344691515e-05,
+            -7.299334538402036e-05,
+            0.5150337219238281,
+            0.8571699261665344
+          ],
+          "scale": [
+            1.0000000596046377,
+            1.0000000596046235,
+            0.9999999403953552
+          ]
+        },
+        "foot_fr_01_r": {
+          "translation_cm": [
+            -289.80106055299836,
+            483.16994114623344,
+            17.85007375770808
+          ],
+          "rotation_xyzw": [
+            0.85716712474823,
+            -0.5150383114814758,
+            -2.561712051374343e-07,
+            1.093950956487788e-07
+          ],
+          "scale": [
+            0.9999994635582858,
+            0.9999993443490247,
+            0.9999998211860763
+          ]
+        },
+        "foot_bk_01_l": {
+          "translation_cm": [
+            351.14064960241615,
+            -401.10821791102614,
+            17.862830761447633
+          ],
+          "rotation_xyzw": [
+            0.41712892055511475,
+            0.9088471531867981,
+            -0.00048149022040888667,
+            -0.00020128884352743626
+          ],
+          "scale": [
+            0.9999999999999893,
+            0.9999995827675257,
+            1.0000000596046377
+          ]
+        },
+        "foot_bk_01_r": {
+          "translation_cm": [
+            -351.11702381513834,
+            -401.0826096095462,
+            17.847043104453636
+          ],
+          "rotation_xyzw": [
+            0.00025220561656169593,
+            -0.00046353592188097537,
+            -0.9088494777679443,
+            0.4171239137649536
+          ],
+          "scale": [
+            1.0000000596046377,
+            0.999999940395341,
+            0.9999998807907104
+          ]
+        }
+      },
+      "evaluated_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_2.SkeletalMeshComponent0.AnimSingleNodeInstance_12",
+      "source_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_3.SkeletalMeshComponent0.AnimSingleNodeInstance_7"
+    },
+    {
+      "animation": "Mech_Walk",
+      "t": 5.0,
+      "bone_count": 152,
+      "comparison": "actual delivered component vs actual source component, both UE evaluated playback",
+      "max_152_bone_global_position_delta_cm": 0.00019660950733366506,
+      "max_scale_delta": 1.115100495107539e-06,
+      "max_rotation_delta_deg": 3.9826504483037906e-05,
+      "target_component_vs_source_raw": {
+        "position_cm": 0.016085808245581094,
+        "scale": 1.115100495107539e-06,
+        "rotation_degrees": 0.01831064286598655
+      },
+      "source_component_vs_source_raw": {
+        "position_cm": 0.016076916924192674,
+        "scale": 0.0,
+        "rotation_degrees": 0.018309501106608648
+      },
+      "selected_bones": {
+        "root": {
+          "translation_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "base": {
+          "translation_cm": [
+            0.0,
+            7.206317901611328,
+            192.8958740234375
+          ],
+          "rotation_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "cannon_02": {
+          "translation_cm": [
+            -0.3785234298897677,
+            500.5470454090431,
+            529.6079961829404
+          ],
+          "rotation_xyzw": [
+            0.6952606439590454,
+            0.6952630877494812,
+            0.12888310849666595,
+            -0.12888365983963013
+          ],
+          "scale": [
+            0.9999998211860728,
+            0.9999996423721491,
+            1.0
+          ]
+        },
+        "foot_fr_01_l": {
+          "translation_cm": [
+            289.8010551288025,
+            483.17042181813383,
+            17.84993304429195
+          ],
+          "rotation_xyzw": [
+            -2.1555588602950593e-07,
+            -7.034732618649286e-08,
+            0.5150384902954102,
+            0.8571670651435852
+          ],
+          "scale": [
+            1.0000000596046377,
+            1.0000000596046235,
+            0.9999999403953552
+          ]
+        },
+        "foot_fr_01_r": {
+          "translation_cm": [
+            -289.8008780120415,
+            483.16979415772886,
+            17.85001201650649
+          ],
+          "rotation_xyzw": [
+            0.8571673035621643,
+            -0.5150380730628967,
+            2.0302398695548618e-07,
+            3.2149532813718906e-08
+          ],
+          "scale": [
+            0.9999994635582858,
+            0.9999993443490247,
+            0.9999998211860763
+          ]
+        },
+        "foot_bk_01_l": {
+          "translation_cm": [
+            351.14080420625953,
+            -401.10833005706104,
+            17.862898873072496
+          ],
+          "rotation_xyzw": [
+            0.4171288311481476,
+            0.9088472127914429,
+            -0.0004816732252947986,
+            -0.0002008980663958937
+          ],
+          "scale": [
+            0.9999999999999893,
+            0.9999995827675257,
+            1.0000000596046377
+          ]
+        },
+        "foot_bk_01_r": {
+          "translation_cm": [
+            -351.1361248505244,
+            -401.1061783348663,
+            17.850875967291312
+          ],
+          "rotation_xyzw": [
+            0.00021920475410297513,
+            -0.0004817678709514439,
+            -0.9088473916053772,
+            0.41712847352027893
+          ],
+          "scale": [
+            1.0000000596046377,
+            0.999999940395341,
+            0.9999998807907104
+          ]
+        }
+      },
+      "evaluated_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_2.SkeletalMeshComponent0.AnimSingleNodeInstance_13",
+      "source_anim_instance": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/LVL_ControlRigMech_B_v4.LVL_ControlRigMech_B_v4:PersistentLevel.SkeletalMeshActor_3.SkeletalMeshComponent0.AnimSingleNodeInstance_8"
+    }
+  ],
+  "PIE": "not_run",
+  "asset_reload": {
+    "mesh": "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech.SKM_ControlRigMech",
+    "skeleton": "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech.SKEL_ControlRigMech",
+    "lods": [
+      {
+        "lod": 0,
+        "sections": 2,
+        "render_vertices": 204254,
+        "screen_size": 1.0,
+        "materials": [
+          "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD0.MI_ControlRigMech_LOD0",
+          "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_BaseOutline.M_ControlRigMech_BaseOutline"
+        ]
+      },
+      {
+        "lod": 1,
+        "sections": 2,
+        "render_vertices": 101600,
+        "screen_size": 0.4000000059604645,
+        "materials": [
+          "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD1.MI_ControlRigMech_LOD1",
+          "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_BaseOutline.M_ControlRigMech_BaseOutline"
+        ]
+      },
+      {
+        "lod": 2,
+        "sections": 2,
+        "render_vertices": 85108,
+        "screen_size": 0.1599999964237213,
+        "materials": [
+          "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD2.MI_ControlRigMech_LOD2",
+          "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_BaseOutline.M_ControlRigMech_BaseOutline"
+        ]
+      },
+      {
+        "lod": 3,
+        "sections": 1,
+        "render_vertices": 63058,
+        "screen_size": 0.05999999865889549,
+        "materials": [
+          "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD3.MI_ControlRigMech_LOD3"
+        ]
+      }
+    ],
+    "physics": null,
+    "sockets": 0
+  },
+  "copied_skeleton_exact_source_reference": true,
+  "UE_export_readback_file": "FBX\\UE_Readback_AllLODs.fbx",
+  "preview_background_material": "/Game/GuLiStrike/Mechs/ControlRigMech/Preview/M_ControlRigMech_PreviewBackground.M_ControlRigMech_PreviewBackground",
+  "camera_source": {
+    "path": "Data/Json/DT_GuLiStrikeCommander_Camera.json",
+    "row": {
+      "Name": "Default",
+      "Id": 1,
+      "Note": "三档镜头；距离米、俯角向下为正、时间秒。x由战场和HUD可用画面计算；数值修改后导出并导入Camera表。",
+      "MinimumHeightMeters": 35.0,
+      "TacticalStartHeightMeters": 300.0,
+      "TacticalMaximumHeightMeters": 700.0,
+      "InitialHeightMeters": 133.4,
+      "NearPitchDegrees": 25.0,
+      "TacticalPitchDegrees": 55.0,
+      "OverviewPitchDegrees": 90.0,
+      "FieldOfViewDegrees": 45.0,
+      "ZoomStepMultiplier": 1.18,
+      "ZoomInterpolationPerSecond": 8.0,
+      "YawDegreesPerSecond": 70.0,
+      "MoveHeightMultiplierPerSecond": 1.4,
+      "MinimumMoveMetersPerSecond": 12.0,
+      "MaximumMoveMetersPerSecond": 92.0,
+      "RiseHalfLifeSeconds": 0.2,
+      "DescentHalfLifeSeconds": 0.35,
+      "MaximumRiseMetersPerSecond": 60.0,
+      "MaximumDescentMetersPerSecond": 30.0,
+      "LookAheadSeconds": 0.75,
+      "BoundaryPaddingMeters": 10.0,
+      "PivotClearanceMeters": 0.3,
+      "BoomClearanceMeters": 0.4,
+      "CameraClearanceMeters": 1.0,
+      "BoomSampleSpacingMeters": 20.0,
+      "OverviewTransitionSeconds": 0.6,
+      "OverviewPaddingFraction": 0.05,
+      "OverviewUnitIconPixels": 14.0,
+      "OverviewBuildingIconPixels": 20.0,
+      "OverviewYawDegrees": 0.0
+    },
+    "no_HUD_overlay": true
+  },
+  "overview_framing": {
+    "playable_minimum_cm": [
+      -90000.0,
+      -90000.0
+    ],
+    "playable_maximum_cm": [
+      90000.0,
+      90000.0
+    ],
+    "height_cm": 228143.1816442575,
+    "aspect_ratio": 1.0,
+    "HUD_effect_on_framing": "not evaluated; full review viewport used"
+  },
+  "capture_method": "Native SceneCapture2D FinalColorLDR, 2048x2048 RGBA8, target gamma 2.2; no image painting",
+  "user_review_session_left_open": true
+}

@@ -1,0 +1,164 @@
+{
+  "state": "rolled_back_source_and_native_verified",
+  "groups": [
+    {
+      "id": 1,
+      "name": "DefaultSoldier",
+      "before": {
+        "ModelAsset": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+        "PresentationClass": "",
+        "VATDefinition": "/Game/GuLiStrike/Robots/RSGMech/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT"
+      },
+      "after": {
+        "ModelAsset": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+        "PresentationClass": "",
+        "VATDefinition": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT"
+      }
+    },
+    {
+      "id": 2,
+      "name": "WM01",
+      "before": {
+        "ModelAsset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+        "PresentationClass": "",
+        "VATDefinition": ""
+      },
+      "after": {
+        "ModelAsset": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+        "PresentationClass": "",
+        "VATDefinition": ""
+      }
+    },
+    {
+      "id": 3,
+      "name": "ElectromagneticMiner",
+      "before": {
+        "ModelAsset": "",
+        "PresentationClass": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
+        "VATDefinition": ""
+      },
+      "after": {
+        "ModelAsset": "",
+        "PresentationClass": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/BP_ElectromagneticMiner_3Tier.BP_ElectromagneticMiner_3Tier_C",
+        "VATDefinition": ""
+      }
+    },
+    {
+      "id": 4,
+      "name": "ConstructionVehicle",
+      "before": {
+        "ModelAsset": "",
+        "PresentationClass": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle.BP_ConstructionVehicle_C",
+        "VATDefinition": ""
+      },
+      "after": {
+        "ModelAsset": "",
+        "PresentationClass": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier_C",
+        "VATDefinition": ""
+      }
+    },
+    {
+      "id": 5,
+      "name": "SweeperSummon",
+      "before": {
+        "ModelAsset": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+        "PresentationClass": "",
+        "VATDefinition": ""
+      },
+      "after": {
+        "ModelAsset": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+        "PresentationClass": "",
+        "VATDefinition": ""
+      }
+    }
+  ],
+  "rollback_cells": [
+    {
+      "cell": "F4",
+      "value": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "type": "string"
+    },
+    {
+      "cell": "I4",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "O4",
+      "value": "/Game/GuLiStrike/Robots/RSGMech/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+      "type": "string"
+    },
+    {
+      "cell": "F5",
+      "value": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "type": "string"
+    },
+    {
+      "cell": "I5",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "O5",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "F6",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "I6",
+      "value": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
+      "type": "string"
+    },
+    {
+      "cell": "O6",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "F7",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "I7",
+      "value": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle.BP_ConstructionVehicle_C",
+      "type": "string"
+    },
+    {
+      "cell": "O7",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "F8",
+      "value": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "type": "string"
+    },
+    {
+      "cell": "I8",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "O8",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "native_imported": false,
+  "pending_groups": [
+    "DefaultSoldier",
+    "WM01",
+    "ElectromagneticMiner",
+    "ConstructionVehicle",
+    "SweeperSummon",
+    "BiZhiMao"
+  ],
+  "failure_reason": "Loaded native Soldiers struct has no FacingPolicy/MassAvoidanceRadiusMeters/construction fields; full pipeline readback rejected the import.",
+  "native_rollback_verified": true,
+  "formal_references_switched": false
+}

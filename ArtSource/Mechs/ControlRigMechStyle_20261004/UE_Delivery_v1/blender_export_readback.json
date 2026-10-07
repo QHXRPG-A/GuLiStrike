@@ -1,0 +1,179 @@
+{
+  "success": true,
+  "source_blend_sha256": "bf566b78fb3fd03c516016ed0e32bc7ee8412929c303283985340d5d5b5d853b",
+  "export_units": "cm, object and root scale 1; original UE animation copies remain native",
+  "vertex_color_encoding": "FBX RGB sRGB palette; UE shader explicitly decodes to linear",
+  "lods": [
+    {
+      "lod": 0,
+      "fbx_path": "FBX\\SKM_ControlRigMech_B_v4_LOD0.fbx",
+      "fbx_sha256": "8a8498a93376ad6819600d2d864bc6ded3fb14ad324f04e1277668801b4cf269",
+      "triangles": 70117,
+      "sections": {
+        "0": 57323,
+        "1": 12794
+      },
+      "export_cleanup": {
+        "zero_area_triangles_removed": 0,
+        "duplicate_faces_removed": 0,
+        "no_vertices_moved": true
+      },
+      "dimensions_m": [
+        9.219329833984375,
+        13.2278369140625,
+        6.923256225585938
+      ],
+      "vertex_groups": 152,
+      "uv_channels": 3,
+      "readback": {
+        "passed": true,
+        "all_corner_position_max_error_m": 0.0,
+        "uv_max_errors": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "palette_srgb_max_error": 0.0,
+        "corner_normal_max_error_degrees": 0.7092790712032478,
+        "corner_normal_p99_error_degrees": 0.01202848539953523,
+        "normal_roundtrip_note": "Blender packed custom normals are re-encoded on FBX readback; maximum under 1 degree, P99 under 0.05 degree",
+        "all_corner_weight_max_error": 0.0,
+        "reference_bone_matrix_max_error_cm": 0.00030517578125,
+        "bone_count": 152,
+        "root_object_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "lod": 1,
+      "fbx_path": "FBX\\SKM_ControlRigMech_B_v4_LOD1.fbx",
+      "fbx_sha256": "ed8f6aa6cc46db181c1bb2cd95984c3ada4d76816341d23e2bceaceffbe92040",
+      "triangles": 65002,
+      "sections": {
+        "0": 55592,
+        "1": 9410
+      },
+      "export_cleanup": {
+        "zero_area_triangles_removed": 0,
+        "duplicate_faces_removed": 4,
+        "no_vertices_moved": true
+      },
+      "dimensions_m": [
+        9.219329833984375,
+        13.229803466796875,
+        6.927028198242187
+      ],
+      "vertex_groups": 152,
+      "uv_channels": 3,
+      "readback": {
+        "passed": true,
+        "all_corner_position_max_error_m": 0.0,
+        "uv_max_errors": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "palette_srgb_max_error": 0.0,
+        "corner_normal_max_error_degrees": 0.028789511203968825,
+        "corner_normal_p99_error_degrees": 0.004120239083450963,
+        "normal_roundtrip_note": "Blender packed custom normals are re-encoded on FBX readback; maximum under 1 degree, P99 under 0.05 degree",
+        "all_corner_weight_max_error": 0.0,
+        "reference_bone_matrix_max_error_cm": 0.00030517578125,
+        "bone_count": 152,
+        "root_object_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "lod": 2,
+      "fbx_path": "FBX\\SKM_ControlRigMech_B_v4_LOD2.fbx",
+      "fbx_sha256": "a3302b325ff40b0e640d7fb3a0c508f7aad2edf970bade3486088a21bcb4642e",
+      "triangles": 51870,
+      "sections": {
+        "0": 46308,
+        "1": 5562
+      },
+      "export_cleanup": {
+        "zero_area_triangles_removed": 0,
+        "duplicate_faces_removed": 26,
+        "no_vertices_moved": true
+      },
+      "dimensions_m": [
+        9.219329833984375,
+        13.2347216796875,
+        6.912288208007812
+      ],
+      "vertex_groups": 152,
+      "uv_channels": 3,
+      "readback": {
+        "passed": true,
+        "all_corner_position_max_error_m": 0.0,
+        "uv_max_errors": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "palette_srgb_max_error": 0.0,
+        "corner_normal_max_error_degrees": 0.12984231401204407,
+        "corner_normal_p99_error_degrees": 0.004054467762159631,
+        "normal_roundtrip_note": "Blender packed custom normals are re-encoded on FBX readback; maximum under 1 degree, P99 under 0.05 degree",
+        "all_corner_weight_max_error": 0.0,
+        "reference_bone_matrix_max_error_cm": 0.00030517578125,
+        "bone_count": 152,
+        "root_object_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "lod": 3,
+      "fbx_path": "FBX\\SKM_ControlRigMech_B_v4_LOD3.fbx",
+      "fbx_sha256": "d0b452cfa425583517cdc0ca50dc5609a1a583d04361077b692c5245eefa511f",
+      "triangles": 38395,
+      "sections": {
+        "0": 38395
+      },
+      "export_cleanup": {
+        "zero_area_triangles_removed": 0,
+        "duplicate_faces_removed": 33,
+        "no_vertices_moved": true
+      },
+      "dimensions_m": [
+        9.219329833984375,
+        13.21907958984375,
+        6.883512573242188
+      ],
+      "vertex_groups": 152,
+      "uv_channels": 3,
+      "readback": {
+        "passed": true,
+        "all_corner_position_max_error_m": 0.0,
+        "uv_max_errors": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "palette_srgb_max_error": 0.0,
+        "corner_normal_max_error_degrees": 0.027567261140575786,
+        "corner_normal_p99_error_degrees": 0.004075890797735574,
+        "normal_roundtrip_note": "Blender packed custom normals are re-encoded on FBX readback; maximum under 1 degree, P99 under 0.05 degree",
+        "all_corner_weight_max_error": 0.0,
+        "reference_bone_matrix_max_error_cm": 0.00030517578125,
+        "bone_count": 152,
+        "root_object_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    }
+  ]
+}

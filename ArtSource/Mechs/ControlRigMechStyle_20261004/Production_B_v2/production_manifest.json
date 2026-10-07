@@ -1,0 +1,2725 @@
+{
+  "version": "B-v2",
+  "created_utc": "2026-10-04T05:48:42.611031+00:00",
+  "art_revision": "1.2",
+  "stage": "actual_Blender_candidate_submitted_for_B",
+  "A": "approved",
+  "approved_A_manifest_sha256": "ea47e95d2e5ee1f8d2bfe3ccd1fd9b249873e99fe31d93f9c9935b72af1ed9ac",
+  "B": "pending",
+  "user_B_approval": null,
+  "UE_formal_import": "not run",
+  "source_mesh": "/Game/Assets/ControlRig/Characters/Mech/Meshes/SKM_Mech",
+  "source_control_rig": "/Game/Assets/ControlRig/Characters/Mech/Rigs/CR_Mech",
+  "formal_target_after_B": "/Game/GuLiStrike/Mechs/ControlRigMech",
+  "final_blender_sha256": "8e94a4547875ba54b731770b77297a229fbe36e53112a634624bb6502dee88ef",
+  "final_geometry_audit": {
+    "version": "B-v2",
+    "verification": "partial",
+    "bone_count": 152,
+    "source_bone_names_hierarchy_match": true,
+    "root_rest_at_origin_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rig_identity_object_scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "lods": [
+      {
+        "lod": 0,
+        "vertices": 33644,
+        "triangles": 57323,
+        "bounds_m": [
+          [
+            -4.6096649169921875,
+            -8.136292457580566,
+            -0.0005880392272956669
+          ],
+          [
+            4.609664440155029,
+            5.082787036895752,
+            6.888712406158447
+          ]
+        ],
+        "unweighted_vertices": 0,
+        "max_weight_sum_error": 1.3604767445940524e-07,
+        "nonfinite_vertex_count": 0,
+        "nonfinite_corner_normal_count": 0,
+        "degenerate_triangles": 0,
+        "duplicate_index_faces": 0,
+        "duplicate_same_winding_faces": 0,
+        "opposed_index_coincident_faces": 0,
+        "review_portable_geometry_normals_weights_hash_identical": true,
+        "geometry_skin_normal_sha256": "91309df5f0be434e86580f2e1cc2636a375496c0bf4bb21a8c6046872f49c88c",
+        "body_material_sections": 1,
+        "vertex_group_names_complete": true
+      },
+      {
+        "lod": 1,
+        "vertices": 32764,
+        "triangles": 55594,
+        "bounds_m": [
+          [
+            -4.6096649169921875,
+            -8.136292457580566,
+            -0.0005880392272956669
+          ],
+          [
+            4.609664440155029,
+            5.082787036895752,
+            6.888712406158447
+          ]
+        ],
+        "unweighted_vertices": 0,
+        "max_weight_sum_error": 1.3604767445940524e-07,
+        "nonfinite_vertex_count": 0,
+        "nonfinite_corner_normal_count": 0,
+        "degenerate_triangles": 0,
+        "duplicate_index_faces": 0,
+        "duplicate_same_winding_faces": 0,
+        "opposed_index_coincident_faces": 0,
+        "review_portable_geometry_normals_weights_hash_identical": true,
+        "geometry_skin_normal_sha256": "2505dbf5d26de72d343b18d50261ea896c6c54a93ce70d8a1d092cf2af7e9485",
+        "body_material_sections": 1,
+        "vertex_group_names_complete": true
+      },
+      {
+        "lod": 2,
+        "vertices": 27892,
+        "triangles": 46326,
+        "bounds_m": [
+          [
+            -4.6096649169921875,
+            -8.136292457580566,
+            -0.0005827870918437839
+          ],
+          [
+            4.609664440155029,
+            5.082787036895752,
+            6.888712406158447
+          ]
+        ],
+        "unweighted_vertices": 0,
+        "max_weight_sum_error": 1.3604767445940524e-07,
+        "nonfinite_vertex_count": 0,
+        "nonfinite_corner_normal_count": 0,
+        "degenerate_triangles": 0,
+        "duplicate_index_faces": 0,
+        "duplicate_same_winding_faces": 0,
+        "opposed_index_coincident_faces": 0,
+        "review_portable_geometry_normals_weights_hash_identical": true,
+        "geometry_skin_normal_sha256": "af4bdb5eb5f4b48fe3eba8309ea36cbc904064237377055de153beb733d8c6f5",
+        "body_material_sections": 1,
+        "vertex_group_names_complete": true
+      },
+      {
+        "lod": 3,
+        "vertices": 23308,
+        "triangles": 38428,
+        "bounds_m": [
+          [
+            -4.6096649169921875,
+            -8.136292457580566,
+            0.005199898034334183
+          ],
+          [
+            4.609664440155029,
+            5.082787036895752,
+            6.888712406158447
+          ]
+        ],
+        "unweighted_vertices": 0,
+        "max_weight_sum_error": 1.3604767445940524e-07,
+        "nonfinite_vertex_count": 0,
+        "nonfinite_corner_normal_count": 0,
+        "degenerate_triangles": 0,
+        "duplicate_index_faces": 0,
+        "duplicate_same_winding_faces": 0,
+        "opposed_index_coincident_faces": 0,
+        "review_portable_geometry_normals_weights_hash_identical": true,
+        "geometry_skin_normal_sha256": "57490b9efb5c4cb7e691c483ff9b557c876ee7e160440fb743f459a42c7c8fcb",
+        "body_material_sections": 1,
+        "vertex_group_names_complete": true
+      }
+    ],
+    "authoring_parts": 761,
+    "editable_mirror_modifiers": 86,
+    "editable_screw_modifiers": 2,
+    "source_dims_m": [
+      9.2264084815979,
+      13.23331356048584,
+      6.892551568802446
+    ],
+    "body_dims_m": [
+      9.219329357147217,
+      13.219079494476318,
+      6.889300445385743
+    ],
+    "sampled_nearest_source_surface_distance_m": {
+      "samples": 8411,
+      "median": 5.333283752406714e-07,
+      "p95": 0.0043867784552276134,
+      "max": 0.04483063146471977,
+      "scope": "sampled LOD0 vertex-to-source-surface distance only; does not certify all assembly intersections"
+    },
+    "textures": [
+      {
+        "file": "ControlRigMech_BaseColor_2K.png",
+        "file_bytes": 163211,
+        "resolution": [
+          2048,
+          2048
+        ],
+        "uncompressed_RGBA8_bytes": 16777216
+      },
+      {
+        "file": "ControlRigMech_FunctionalMask_2K.png",
+        "file_bytes": 154659,
+        "resolution": [
+          2048,
+          2048
+        ],
+        "uncompressed_RGBA8_bytes": 16777216
+      },
+      {
+        "file": "ControlRigMech_InternalLineMask_2K.png",
+        "file_bytes": 445983,
+        "resolution": [
+          2048,
+          2048
+        ],
+        "uncompressed_RGBA8_bytes": 16777216
+      },
+      {
+        "file": "ControlRigMech_ORM_2K.png",
+        "file_bytes": 153628,
+        "resolution": [
+          2048,
+          2048
+        ],
+        "uncompressed_RGBA8_bytes": 16777216
+      }
+    ],
+    "total_texture_RGBA8_bytes": 67108864,
+    "UE_export_readback": "pending B approval",
+    "UE_formal_import": "not run",
+    "commander_UE_cameras": "not run",
+    "runtime_fps_measurement": "not run"
+  },
+  "lod_budget_result": "over budget, differences and real comparisons submitted; no budget exception accepted yet",
+  "lods": [
+    {
+      "lod": 0,
+      "body_triangles": 57323,
+      "outline_triangles": 7520,
+      "total_triangles": 64843,
+      "caps": {
+        "body": 32000,
+        "outline": 8000,
+        "total": 40000
+      },
+      "difference": {
+        "body": 25323,
+        "outline": 0,
+        "total": 24843
+      },
+      "body_sections": 1,
+      "outline_sections": 1,
+      "screen_size": 1,
+      "internal_lines": 1
+    },
+    {
+      "lod": 1,
+      "body_triangles": 55594,
+      "outline_triangles": 2820,
+      "total_triangles": 58414,
+      "caps": {
+        "body": 14000,
+        "outline": 3000,
+        "total": 17000
+      },
+      "difference": {
+        "body": 41594,
+        "outline": 0,
+        "total": 41414
+      },
+      "body_sections": 1,
+      "outline_sections": 1,
+      "screen_size": 0.4,
+      "internal_lines": 1
+    },
+    {
+      "lod": 2,
+      "body_triangles": 46326,
+      "outline_triangles": 1094,
+      "total_triangles": 47420,
+      "caps": {
+        "body": 5000,
+        "outline": 1000,
+        "total": 6000
+      },
+      "difference": {
+        "body": 41326,
+        "outline": 94,
+        "total": 41420
+      },
+      "body_sections": 1,
+      "outline_sections": 1,
+      "screen_size": 0.16,
+      "internal_lines": 0.6
+    },
+    {
+      "lod": 3,
+      "body_triangles": 38428,
+      "outline_triangles": 0,
+      "total_triangles": 38428,
+      "caps": {
+        "body": 2000,
+        "outline": 0,
+        "total": 2000
+      },
+      "difference": {
+        "body": 36428,
+        "outline": 0,
+        "total": 36428
+      },
+      "body_sections": 1,
+      "outline_sections": 0,
+      "screen_size": 0.06,
+      "internal_lines": 0
+    }
+  ],
+  "main_image_line_method": "native Freestyle on actual production mesh",
+  "portable_shader_line_fidelity": "partial; softer internal lines",
+  "UE_export_readback": "pending B approval",
+  "runtime_fps": "not measured",
+  "A_v1_and_A_v2_frozen_files_validated": 41,
+  "withdrawn_B_v1_frozen_files_validated": 352,
+  "all_native_movie_frames_checked": 283,
+  "revises_version": "B-v1",
+  "revision_reason": "Restore structurally intact distant LODs and correct full-motion video encoding.",
+  "files": [
+    {
+      "path": "Production_B_v2/ControlRigMech_B_v2_Production.blend",
+      "bytes": 51167875,
+      "sha256": "8e94a4547875ba54b731770b77297a229fbe36e53112a634624bb6502dee88ef"
+    },
+    {
+      "path": "Production_B_v2/README.md",
+      "bytes": 8738,
+      "sha256": "9a9ce519019987b093daa7f96b43ad75679902505bf0274acd3d81c0b468ded8"
+    },
+    {
+      "path": "Production_B_v2/Review_B_v2.html",
+      "bytes": 7113,
+      "sha256": "151c3ba4d35dfed9370f9defd52bf48c0e4d077f945757539883341155cc2fb3"
+    },
+    {
+      "path": "Production_B_v2/production_render_report.json",
+      "bytes": 134682,
+      "sha256": "1f26e981f4a38bd93df10ac11e2feabdf13a91a288682968bdb9ec7f9b43bcd6"
+    },
+    {
+      "path": "Production_B_v2/native_geometry_audit.json",
+      "bytes": 5596,
+      "sha256": "8962bea7d7d617babd25061187f68ecc3de98c033d8aa164fff1a28233cc7704"
+    },
+    {
+      "path": "Production_B_v2/motion_contact_audit.json",
+      "bytes": 8156,
+      "sha256": "00bd81dec4e59f2df6d79ff689bb8912a6ed69510adac319af6865a513444689"
+    },
+    {
+      "path": "Production_B_v2/construction_report.json",
+      "bytes": 573180,
+      "sha256": "1e9eccb4eb1471e62c4b5eb3701462aef90ba5a8d579aad55aa9523b2a33480d"
+    },
+    {
+      "path": "Production_B_v2/regular_caps_report.json",
+      "bytes": 1054,
+      "sha256": "61f9939f3201cfdb6d418ab32616972c0fd20ec07c1d98c2dd961fff56b479f7"
+    },
+    {
+      "path": "Production_B_v2/Blender_Live_B_v2.png",
+      "bytes": 2081295,
+      "sha256": "bbf3aa658e66d72ab3495ed045422a4ca087a5c5230fcb4855493eae32ddfd35",
+      "width": 3840,
+      "height": 2054
+    },
+    {
+      "path": "Approvals/Approval_A_v2_20261004.json",
+      "bytes": 502,
+      "sha256": "27bed5b0930500ca75ea7a7232b4b60a729ff0374e02dee1755ba84e5e245ef0"
+    },
+    {
+      "path": "Production_B_v2/ControlRigMech_B_v2_Hero.png",
+      "bytes": 2872860,
+      "sha256": "c1c32df0bde61d1930c36f0c3ca62e333d45a67cedb0d9001f1ad6fc2c5dfb26",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/ControlRigMech_B_v2_Front.png",
+      "bytes": 2733008,
+      "sha256": "25eda439377286afbc43fc6aea8e470f3ecbc1fee29b00c7968a8ff557877b37",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/ControlRigMech_B_v2_Left.png",
+      "bytes": 2752517,
+      "sha256": "464e4db009d3e7874d2cd89ec7d0b6754bae45b67bfe847077ee6dd7df7bd777",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/ControlRigMech_B_v2_Back.png",
+      "bytes": 2720604,
+      "sha256": "4ebdab9e6027c3feb3e999fd97a7adac812dfa4102dc9b52259bc3916675ff8d",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/Portable/ControlRigMech_B_v2_Portable_Back.png",
+      "bytes": 2697938,
+      "sha256": "813b2338eb7daf45db4b1836b9379c6be72bd3fed624ddd0398f187166dd18c1",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/Portable/ControlRigMech_B_v2_Portable_Front.png",
+      "bytes": 2711931,
+      "sha256": "85af7fe26e522351df2e41ffb9ecdf86aefd6a7bd5facc5b30353a7c827aea7b",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/Portable/ControlRigMech_B_v2_Portable_Hero.png",
+      "bytes": 2851401,
+      "sha256": "ba32bbb406ff070c60a2642c0ce12638a233e668a451dad3f7de6d6f898fa754",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/Portable/ControlRigMech_B_v2_Portable_Left.png",
+      "bytes": 2721053,
+      "sha256": "7b9fbf7b3c105e04f67518d37fa31cb7f6322ff3e2865f535c832d2a9b925adb",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/Textures/ControlRigMech_BaseColor_2K.png",
+      "bytes": 163211,
+      "sha256": "cd8888a74449a2df6d23b95b41169aaf4a1b8a64ada8e6ad8a10be68626ba94e",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/Textures/ControlRigMech_FunctionalMask_2K.png",
+      "bytes": 154659,
+      "sha256": "b57a843cfb573c7e9e3c6709282a77b913b9249a595e307cdd4d71aa83606c07",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/Textures/ControlRigMech_InternalLineMask_2K.png",
+      "bytes": 445983,
+      "sha256": "6adeb78fc331044d0ba7233a487f80b3b018e8f654dd799bddcfc186f72e638a",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/Textures/ControlRigMech_ORM_2K.png",
+      "bytes": 153628,
+      "sha256": "b1e9704ff0981685b9444c7fcb25e1f4792c0692bd8600b811af2c2d5ed720ad",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/LODComparison/ControlRigMech_B_v2_LOD0_SameCamera.png",
+      "bytes": 2851401,
+      "sha256": "99e4911261328c40779c405dfff85fc781e8d29a8e20f8b0fbeed8be99aa12f0",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/LODComparison/ControlRigMech_B_v2_LOD0_ScreenIllustration.png",
+      "bytes": 1169812,
+      "sha256": "97b48858eef923e8d5ae7c96817d22db084b7695768b510cafa662897e5e5596",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/LODComparison/ControlRigMech_B_v2_LOD1_SameCamera.png",
+      "bytes": 2856232,
+      "sha256": "b470c80d70aabf27e50a1df7cde01e9e319de56e5148e7f882ebb29cee25e142",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/LODComparison/ControlRigMech_B_v2_LOD1_ScreenIllustration.png",
+      "bytes": 973889,
+      "sha256": "d7842f2381667187818f887021c43ddaa537f6d7ff8a8450d5e8700a27050ccd",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/LODComparison/ControlRigMech_B_v2_LOD2_SameCamera.png",
+      "bytes": 2840863,
+      "sha256": "ebbbc2bb3f6ed20861f84efd37d2eb52cfcd6978790c11cee1b2c225d085c8f1",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/LODComparison/ControlRigMech_B_v2_LOD2_ScreenIllustration.png",
+      "bytes": 916352,
+      "sha256": "f7de0eeb6026ced65cc4384dcd397dc595b5261887de1cc8dce6eed9329502eb",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/LODComparison/ControlRigMech_B_v2_LOD3_SameCamera.png",
+      "bytes": 2768345,
+      "sha256": "92550a30eacea519f211d25cdfd146c105dc2c89b669f3eaf076ab1bd80ec65a",
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "path": "Production_B_v2/LODComparison/ControlRigMech_B_v2_LOD3_ScreenIllustration.png",
+      "bytes": 900087,
+      "sha256": "4725aa8b87e6b7b780052cf009b16ccc590011832966e12d13597261395dd7a1",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationSource/capture_manifest.json",
+      "bytes": 937,
+      "sha256": "0c11a54663fc85d3889a7f058538e19779b639010b52ce5d6cf9b0c9625152fd"
+    },
+    {
+      "path": "Production_B_v2/AnimationSource/Mech_Deploy_FullPose.json",
+      "bytes": 3448248,
+      "sha256": "b73421015d0222be842f88efd16a0dbdc66912ed15d985a6b14e7c46380ce019"
+    },
+    {
+      "path": "Production_B_v2/AnimationSource/Mech_Idle_FullPose.json",
+      "bytes": 5973450,
+      "sha256": "9d29178e07d7dd24f2c7337e177ee92b0309a7a4b340b62002b676fe2e5638b7"
+    },
+    {
+      "path": "Production_B_v2/AnimationSource/Mech_Walk_FullPose.json",
+      "bytes": 3434944,
+      "sha256": "4c30d456aaba43d9a2d7abedd62eb67113dd117d9bf2475343bd0fec552186ad"
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/animation_preview_report.json",
+      "bytes": 9588,
+      "sha256": "8b6ab64020ad963ae2453cf5cb72cc23cf7551503f34367b98eb68464041806f"
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/ControlRigMech_B_v2_Deploy.mp4",
+      "bytes": 1009171,
+      "sha256": "9d1c5c254958eae6b7e0ebda70b25102664647239220d5e77a656a474ef6e831"
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/ControlRigMech_B_v2_Idle.mp4",
+      "bytes": 1606617,
+      "sha256": "29a7ba109bbfe41da6dea073511ec52cdb3e1b7978945cbc4c3fe2ce9c2fcf38"
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/ControlRigMech_B_v2_Walk.mp4",
+      "bytes": 919550,
+      "sha256": "a97e54dbe13bface707ad6397bee5ab182841eab99e23bbe410ef1717cc441e5"
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/ControlRigMech_Deploy_End.png",
+      "bytes": 1030293,
+      "sha256": "7fc1feec07e68ddd06e9695ed7c2d0927890c9e931910074f6fed68d6a0ea93d",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/ControlRigMech_Deploy_Middle.png",
+      "bytes": 1025728,
+      "sha256": "846368a34401c749b2818af25cf4bbedd8572578eadc0e3261157bfb3c44ede1",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/ControlRigMech_Deploy_Start.png",
+      "bytes": 966394,
+      "sha256": "e7f79706cdec5868e71156e887f40d8c3a6c3ee4ded423d8b6a7418d8c5a45fd",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/ControlRigMech_Idle_End.png",
+      "bytes": 1032453,
+      "sha256": "68766e1d5f241a994f6f23c0979de3d3010dcca31178faf8d144290a9fecf429",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/ControlRigMech_Idle_Middle.png",
+      "bytes": 1032466,
+      "sha256": "308a24499be31a8dce34fe6548f76a86234e17fc0b3778d7034ec791281969e4",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/ControlRigMech_Idle_Start.png",
+      "bytes": 1030890,
+      "sha256": "a1cc6b5900c3d4dd184e325e2eeabfbe4f87238f264716f291c11d667202b5b2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/ControlRigMech_Walk_End.png",
+      "bytes": 1028699,
+      "sha256": "7f77de18007efce97f08c0ee46552b9fc30152f90c21f8afb6dd3ceecbfac22a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/ControlRigMech_Walk_Middle.png",
+      "bytes": 1033971,
+      "sha256": "2bff019689b593f3fd9a307533781b064e74b76c172c35d8a255eeab206168b7",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/ControlRigMech_Walk_Start.png",
+      "bytes": 1029706,
+      "sha256": "66f60fa3c19c216ea5ac747f99f70308e8081dada1aa0bba06da39d01d504ce2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Decoded_Deploy_End.png",
+      "bytes": 439460,
+      "sha256": "fa49c21557a1d9edc2798903834f2a3d3cb17e1eb64f7c0beeb0f54c13189ee1",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Decoded_Deploy_Middle.png",
+      "bytes": 1010154,
+      "sha256": "d4bbd7357efc6cbb92cceae6c481cd5e42f64b88fc1ff42b0ba66444968e2305",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Decoded_Deploy_Start.png",
+      "bytes": 430574,
+      "sha256": "5677ac660213338124eff5b9d7a33d2f4841c8e27999f81f8d9afcfacee637f7",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Decoded_Idle_End.png",
+      "bytes": 600477,
+      "sha256": "b831431c41f43b9f7ebae78d67db10833d9393ee7091b3c1be027bdd5f926cea",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Decoded_Idle_Middle.png",
+      "bytes": 1013347,
+      "sha256": "7780bfd2d98dc50399ce05b01b136634196d6de302add8ef500b527733b8bbaf",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Decoded_Idle_Start.png",
+      "bytes": 580742,
+      "sha256": "ce36f86568d837bc8923c9c717e1852c501b9973b0f95a442794ea1c1d0d3054",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Decoded_Walk_End.png",
+      "bytes": 441533,
+      "sha256": "9cddc1076bfeb411dbd1d91fcac8d71faa2d948a37a73750d03bfd61910df3ce",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Decoded_Walk_Middle.png",
+      "bytes": 1010324,
+      "sha256": "2a9d8edf0a306dbbaef85f0dd80a2da696b4121d600ece3db9781d79fe6e2639",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Decoded_Walk_Start.png",
+      "bytes": 571550,
+      "sha256": "4999f3b606c1bbaf20e72454d073b6a11f1d5b49bba2439102112ff3a2350046",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0001.png",
+      "bytes": 966394,
+      "sha256": "e7f79706cdec5868e71156e887f40d8c3a6c3ee4ded423d8b6a7418d8c5a45fd",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0002.png",
+      "bytes": 966272,
+      "sha256": "381b3439bd0c76db4e9144464585740f607a7a01ce12d31c0ce09e494d661d1e",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0003.png",
+      "bytes": 967534,
+      "sha256": "c8f4e72e61b5f6a747d349e48996b3d26fd04f83e35cc5ddb1da4e4596475cd9",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0004.png",
+      "bytes": 970653,
+      "sha256": "47f6b99bcf15a182192f4c9c03bbecd68f50f5527860e45473302eea562a30b5",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0005.png",
+      "bytes": 976030,
+      "sha256": "f211a0db2df6511be06e715099f0e1fe8bbcefc692d00ce6130f161369e605c1",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0006.png",
+      "bytes": 983891,
+      "sha256": "9ea68db51f82f14576fe14080bb56b4c7de0de55754f6eef2cf91a9c5374b34e",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0007.png",
+      "bytes": 990926,
+      "sha256": "30f6c9058d189a485eea5cb5fadab1bc8b32e85d48bb18ac60c304498ec3067a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0008.png",
+      "bytes": 995995,
+      "sha256": "4f2575baee89e3d4dce2f193251ef5b8ec29b18a36be02b84caa0dc6c423c7ee",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0009.png",
+      "bytes": 1001579,
+      "sha256": "972b3d95352d7e205dd69aeda3d4d7857dfa58e4bc6d2c84ca5367a1815fde7d",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0010.png",
+      "bytes": 1007583,
+      "sha256": "ff28fb9da626d81b20794dccbbf99facb55ffb7b134aeaf27a36c599a4fc9f67",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0011.png",
+      "bytes": 1011551,
+      "sha256": "6b7b4fa008c658c62e0dd1ab74c27131696c7d90e1a8ed306b2b9d6788f3bb38",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0012.png",
+      "bytes": 1012806,
+      "sha256": "eed8d8bfa2b52585155a87918835e948b67fb867e2f78c74012d602a70529390",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0013.png",
+      "bytes": 1014047,
+      "sha256": "01cc1e433f5dcd71e3ea33942324f249e115249ae41b885a820ee968e280ba36",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0014.png",
+      "bytes": 1013867,
+      "sha256": "41db16b7c4dabec6b5a952ffa4b3690c5a06a59c67e164306a886e44b969452c",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0015.png",
+      "bytes": 1012303,
+      "sha256": "9034dfa568fde2686933dad99d3c5a6ec8cc1dc8a017c2d6f71326910d73466c",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0016.png",
+      "bytes": 1011906,
+      "sha256": "b99f54893b4dcb73f2a19396f9ee23144909e2ac87675032793524e469b52900",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0017.png",
+      "bytes": 1011895,
+      "sha256": "13432e39127676e9307bd64640d82921361f2d95b75ecbaf307406e627f6b6ce",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0018.png",
+      "bytes": 1013629,
+      "sha256": "7a94547afddd0f0413481492416c61eb941ee3bf552d2ed394c8f9145659a7e8",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0019.png",
+      "bytes": 1015817,
+      "sha256": "226d3fcff9a3dd7e0b62ac29a1ed06362c506bcd8a187b009dd1b0a6c24ef21a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0020.png",
+      "bytes": 1016964,
+      "sha256": "6dc56ed92c8332d2496d8604e64aa6f3a62fdfba2e3f1d21e5ab24d29decd5c2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0021.png",
+      "bytes": 1017253,
+      "sha256": "477bec2db8ae27fe556fe9522d7f68428a4d978f55522aa9c192090ae6ae7eb8",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0022.png",
+      "bytes": 1017736,
+      "sha256": "00e2529792f03f07ecd0c208663f162c10412d4bb90033b0df6dc6ae35467bc6",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0023.png",
+      "bytes": 1017948,
+      "sha256": "ddb77f766f1f0077f454ed7bed437f3d263b656a7dc890bb4f06304ff41f1ed3",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0024.png",
+      "bytes": 1016367,
+      "sha256": "7d9d0eeedf4b8eb4c5033127a71ef8372d520eded63ca339dbe1595817ecc962",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0025.png",
+      "bytes": 1013426,
+      "sha256": "aff250e3da7b6e9126fb4152d204d9d81e81b02f21a34f2a38ace454bd184d55",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0026.png",
+      "bytes": 1014146,
+      "sha256": "9ce79b8bda78079ddd22ed44a5aa53d739a15845e50d11230e70060d63a9428b",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0027.png",
+      "bytes": 1014622,
+      "sha256": "bed1f9d10b49577af15142ec018bb5463ab89003a4a7ccb3822b3c6c5be22070",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0028.png",
+      "bytes": 1018030,
+      "sha256": "9ea5a870e2d7f34640ca4641ffb2f8caf242775129cfd535fe8bb676e404b472",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0029.png",
+      "bytes": 1021243,
+      "sha256": "4fc97acac6f37d22b7926169afcee4efefcdc7a5b051aa14dcd5c88cb1065eb2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0030.png",
+      "bytes": 1022246,
+      "sha256": "4e73d3d58811678002ce357f003a53d89f1a372a96e0e143c089817990fbcf30",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0031.png",
+      "bytes": 1021875,
+      "sha256": "528099b076ccc154278b98eb04e1e9619a5eeb51fb8cabc4eb8473415dbccc43",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0032.png",
+      "bytes": 1021938,
+      "sha256": "f7c628e96ef675043fce87c7f8c05f51cdca415e2821dec584e44fbccc639f7a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0033.png",
+      "bytes": 1022886,
+      "sha256": "a772b40e441c0c5fb6a87e22c669f7ed6e425ec65990c38499db0e300c8014da",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0034.png",
+      "bytes": 1024377,
+      "sha256": "27e60cb122f538c5eb86acb57501819faf2b2a5e25fc4d109a98179e1b3920f3",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0035.png",
+      "bytes": 1024257,
+      "sha256": "f299e61de2d8ed4492e0bad529a4239efa855496799c8ef24036ed5e54efb5c5",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0036.png",
+      "bytes": 1025015,
+      "sha256": "847e220aaa584af3140f80e1bc77255d031f6258a56a02ed9e625bb4223b0585",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0037.png",
+      "bytes": 1025040,
+      "sha256": "ddc217834a0d8108734b21192f50c4b62c09281bcb7c7bfccfbc795f662b2510",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0038.png",
+      "bytes": 1025199,
+      "sha256": "58a39095dad301823bf0ed2798dc714ba79fd5b434c105e831f6e0020341e0e5",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0039.png",
+      "bytes": 1025728,
+      "sha256": "846368a34401c749b2818af25cf4bbedd8572578eadc0e3261157bfb3c44ede1",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0040.png",
+      "bytes": 1026268,
+      "sha256": "1259764164276766482f6498962162325249c6227671b2477c2ea69927e52d40",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0041.png",
+      "bytes": 1027081,
+      "sha256": "753244a7b4e122bf91573d7479876d500ebb2e5f255098b25e5aa762ab8c195a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0042.png",
+      "bytes": 1028042,
+      "sha256": "d44644885bc747bbb49e478b700f57e13dd859d1d5d7da7ddb9a6a6b6c3af4c8",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0043.png",
+      "bytes": 1027592,
+      "sha256": "6d1a7efd22afb229bb6fa1f3be54b91fbb4148ded94b606fe42a452c6f6eb386",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0044.png",
+      "bytes": 1028585,
+      "sha256": "ee2065663c783cfc1bafcc3febc5a44588370ab3ddf1425ac1402d8e83e2f1fc",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0045.png",
+      "bytes": 1028483,
+      "sha256": "792a41e43053a84ffe5103863a88881fe887c040c0fa12b4e617b57eff4693c8",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0046.png",
+      "bytes": 1028605,
+      "sha256": "d2411cb554a6eea8876b1919783de3345692d099a75d0196d1cf06be17fc4ae1",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0047.png",
+      "bytes": 1029110,
+      "sha256": "9a0fbcf181362027fe25b102583afad5eeb9842deb8b1c1319928477b34e72f5",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0048.png",
+      "bytes": 1030007,
+      "sha256": "2953c64a5ac16c04eea697346d1a8a636ddcbcf89a87f7848ad9adcec72f3999",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0049.png",
+      "bytes": 1030138,
+      "sha256": "8f4126373e8f2699ebf775eff6cfca1be2717e42dce8517e70c1471f70157391",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0050.png",
+      "bytes": 1030888,
+      "sha256": "e3dbd88b503f3f1594757131ae80a4bbf8d8f5311caa0975dfc2d065db40a4a4",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0051.png",
+      "bytes": 1030262,
+      "sha256": "c02f9007b6c6c294124abac29b81fefc003f42c16d0fa4fa710cb54f1aedb868",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0052.png",
+      "bytes": 1030265,
+      "sha256": "d510c8b8d67f8fc6f156eb90c5108f28b8102f6c429e90520aaab21830702e72",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0053.png",
+      "bytes": 1030279,
+      "sha256": "b820dc98804c003e523d0e36b09fa8a82b6bf622bfce792e2ecf1cc76f205a1f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0054.png",
+      "bytes": 1030284,
+      "sha256": "ee8db3d437914b245b7343e6a5acc1141c659a56f0c3b1180707d6c72a2efc39",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0055.png",
+      "bytes": 1030287,
+      "sha256": "470e375799347385e997152545b6d2116956479725dc3eff6cfdad5e0ace1ed5",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0056.png",
+      "bytes": 1030287,
+      "sha256": "0d8c2e5a2da8d4f5f3a612b7c8e01bb4b213ff8ca613cb6e9799a070a42e4f33",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0057.png",
+      "bytes": 1030287,
+      "sha256": "4f2e7acd876df7ea1fb0a41b57e55af641f4054eb9a1151e73998521fc500751",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0058.png",
+      "bytes": 1030287,
+      "sha256": "75b7b09288202c985f553b45a309b87788f29400cccdb656839c2d394f4e3efc",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0059.png",
+      "bytes": 1030287,
+      "sha256": "8e9f8710d190b82620fb309f1a97ad066db2c7d9cce7713ccc19c6fa46733ca3",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0060.png",
+      "bytes": 1030287,
+      "sha256": "69c72083dc7d82e2ce3b452a2a001d0d5de9daf3832ea99f10d92be31c7d6dc1",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0061.png",
+      "bytes": 1030287,
+      "sha256": "ceb8852fa753254c7caa64e5c67b3f5b1e41f5d02f76ec08d61b6a5832235c3f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0062.png",
+      "bytes": 1030287,
+      "sha256": "73bf7b1a4f846f3cf84a4785f73c58da62dfb5a94be794ed85aaf57c1abe1ab8",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0063.png",
+      "bytes": 1030287,
+      "sha256": "c145b0c12c334e1450d799de74d9e0b89324697bd96d2f89a944a17f80e0fed5",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0064.png",
+      "bytes": 1030287,
+      "sha256": "50f118af77d3e488d72f19d3154ba97ca6c62d1f0bed77cb71b280e94949fa4e",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0065.png",
+      "bytes": 1030287,
+      "sha256": "430779a34fc7a55e1a2f8012a3298b78ff658a9890ac40801987949e779d2694",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0066.png",
+      "bytes": 1030287,
+      "sha256": "084bdb50fc8ac7ffe6bec510f049b736023e045540fe50ed88db808f978929cd",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0067.png",
+      "bytes": 1030287,
+      "sha256": "8576df7466dd6ab4c2153ec4f5497d344e629e21bf3794cf078a83455aaac44d",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0068.png",
+      "bytes": 1030287,
+      "sha256": "0b3002f76e20f128d9e75a0743633a7522a9ce091f6686fbcb2c2a77a219fe29",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0069.png",
+      "bytes": 1030287,
+      "sha256": "d899dd018f485872a7d0241507478e32cb2fdd7b785d067a3f8d0377b0253698",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0070.png",
+      "bytes": 1030292,
+      "sha256": "af12ccf70d3d70239d6b96f4cfeadd01a995d9d1a7df06c347e7c1a019d427f5",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0071.png",
+      "bytes": 1030293,
+      "sha256": "b87c2af658436779860928dd95af9da1647d50d7629e84e3242eaf98b8842132",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0072.png",
+      "bytes": 1030293,
+      "sha256": "3fa3840c22a11caf624ebdd97c569f2d8956f6a246ca7dbb5eecdb13345d519f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0073.png",
+      "bytes": 1030293,
+      "sha256": "c68109d6144c528d38f496174323ee72911bfe9d75678fe60b571512f12cd215",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0074.png",
+      "bytes": 1030293,
+      "sha256": "50feb0f66d842d49bb03af3c7cf4d8a2d6a661a79a8ba11a4e860a272418c81e",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0075.png",
+      "bytes": 1030293,
+      "sha256": "a7d2fbe21a7d5fd0ff8ee0ebc62a95dffc01820dd910947ff8ffc8501751394f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Deploy_Frames/0076.png",
+      "bytes": 1030293,
+      "sha256": "7fc1feec07e68ddd06e9695ed7c2d0927890c9e931910074f6fed68d6a0ea93d",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0001.png",
+      "bytes": 1030890,
+      "sha256": "a1cc6b5900c3d4dd184e325e2eeabfbe4f87238f264716f291c11d667202b5b2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0002.png",
+      "bytes": 1030863,
+      "sha256": "915df38ae2160bf8e96e0be88e21885cbc8c49fd606df0603583056accc94916",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0003.png",
+      "bytes": 1030830,
+      "sha256": "5b0e5245104c55b126f92cf5412402e64a4762a210bfd2837e22af7883ff38ad",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0004.png",
+      "bytes": 1030788,
+      "sha256": "e4c9df19c9039e9e7667c43ecdd2255c8ef94005ea7e961c7a5164b9d7fa990b",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0005.png",
+      "bytes": 1030536,
+      "sha256": "22193caebe498b9b89913a6eacda55c46d446ea89bbfa9b08d145d9b6adb11c9",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0006.png",
+      "bytes": 1030757,
+      "sha256": "8a7ea6f7c56758bad0e4180a18707f20fb826286740b5e4ee5d7c195e2d4164f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0007.png",
+      "bytes": 1030822,
+      "sha256": "0e48923b73ee283f174bbd6bda0e627dfffbb91f184e3c91c850b9a2d69dcffa",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0008.png",
+      "bytes": 1030490,
+      "sha256": "db90bcb88372120dccf7052b648414063d3acdd35d2a0ef27d681c0a2d31b4cd",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0009.png",
+      "bytes": 1030542,
+      "sha256": "d6a9dfd5e61e588895d5b1fd0072aabf348642105efb024867dd3a47ce3d6307",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0010.png",
+      "bytes": 1030716,
+      "sha256": "f0c3a44c7bf64453740cf096df354c7a31436f674a6704aab6c282e2949cbaa3",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0011.png",
+      "bytes": 1030789,
+      "sha256": "2f5816ff6f4affffff33671e97529c6bb29afa8f05102544062816756065e106",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0012.png",
+      "bytes": 1030508,
+      "sha256": "802659e3280a17fd97ff89c92a623d38a7eb48a1198ea3a5345f8e145b461cdd",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0013.png",
+      "bytes": 1030500,
+      "sha256": "30428cee2ca9f5c8f3d90cff523c0cb963d7d011628793965c42653e8dbd858f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0014.png",
+      "bytes": 1030516,
+      "sha256": "08745498cd36d5222c3d7ee1cb5bc977f10837e34f8062da0fb52042beaeab58",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0015.png",
+      "bytes": 1030520,
+      "sha256": "74b09b7a63c7944c23890fe5064b5605ad21b097c295aacfd9b65811c05fb89f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0016.png",
+      "bytes": 1030519,
+      "sha256": "7c86f79692939308ceba2f498e3f602d924ee9ca9f7b21c737587f7ecf96bd95",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0017.png",
+      "bytes": 1030579,
+      "sha256": "aa3069e5fd424de1106de26c32a8756f033351593f6650e3a753821556596304",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0018.png",
+      "bytes": 1030577,
+      "sha256": "0701ac447ddc0d6f28c742e8a7133bd9b887c43d1ca2bb977423a23103a30294",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0019.png",
+      "bytes": 1030516,
+      "sha256": "1defcdc16680fc73179d36227d6d72d24d0449aa3d82cce7d7c95eb2ea42c848",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0020.png",
+      "bytes": 1030543,
+      "sha256": "1158b271f9895f11bf1e66144ca5d351c90575d997452274dc38e346c690f812",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0021.png",
+      "bytes": 1030685,
+      "sha256": "b311e629aa991ddac307ac1f183e944848a94df5cafd182b1d349d4ffed554f4",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0022.png",
+      "bytes": 1030688,
+      "sha256": "8238364b605c5353b12b576f79129e2af0ad2573539822c5654100262872a100",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0023.png",
+      "bytes": 1030042,
+      "sha256": "698f10374033e47d7c93ce78245ba26f1c511618f27e1d4ac2f12f5402552bf0",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0024.png",
+      "bytes": 1030797,
+      "sha256": "ed8c079faec85942c0f1a25a083af1a1b26ee54f9ca7c784c5b308a79657a91b",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0025.png",
+      "bytes": 1033279,
+      "sha256": "fe24bd6e397336cd60191f64a6a3fab663c34c20e997af25c2164c9ed57afca9",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0026.png",
+      "bytes": 1034025,
+      "sha256": "cd99fe35e4553129a179244b7290a02398a0f37d239ee0d17cb6b0fb416c238f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0027.png",
+      "bytes": 1034065,
+      "sha256": "440cc40df76b9dbb625940119b92154fff9ec1ff11b2579eba1c8eccc24ac52a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0028.png",
+      "bytes": 1033893,
+      "sha256": "c61d91c901c6a2e5ed7ec3c62ab01d66d10aaa6cdf87765e17cd6eb6e3314283",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0029.png",
+      "bytes": 1033658,
+      "sha256": "b97f8d5f606fadc280965aabfed5915bd36110996cda01f863526565813e0ca1",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0030.png",
+      "bytes": 1034161,
+      "sha256": "e8cd4a058ce71d7e0a5b24c5a93a677780a147aaad0ae37fbe97567adaad1fc3",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0031.png",
+      "bytes": 1034241,
+      "sha256": "b96f5564a75c85b58ecea4d9e2cc0d6fb78cf5a2512b12b17c4f910d77422f4f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0032.png",
+      "bytes": 1033859,
+      "sha256": "dc39d27826a6d56bc9187e1af840cecd5f821c708befb08b55b179cfa653c578",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0033.png",
+      "bytes": 1034421,
+      "sha256": "c87a3cb81c2bd000ab3d57f185faf3a920e26cb90de3830c53e89890ae4cb162",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0034.png",
+      "bytes": 1033642,
+      "sha256": "28bc832ec59f1463237d1e085d1e57e6e4194c8fd621e18fd3a8d73f9dc0a327",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0035.png",
+      "bytes": 1034528,
+      "sha256": "6835ea8d2b0baaeea98d94d898ea057898d1f8cf337482567f4bb30095c877d4",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0036.png",
+      "bytes": 1034238,
+      "sha256": "b0f6bac7eec16261e7156cab1caab724d2cc40b361a0b2e24f774234e48fbb48",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0037.png",
+      "bytes": 1034331,
+      "sha256": "271f65fbdfbb683498d33e50a781a00e2e4a90775130506466265cc989e26434",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0038.png",
+      "bytes": 1034477,
+      "sha256": "9d1475feee81a3910c2be6f17da9d9181dbcac1396c6fd35dc7f463320815d88",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0039.png",
+      "bytes": 1034244,
+      "sha256": "fb394aaee3bcb73ff6d13688685cb239336c99698bcae4de55ceb5e3e7b78fd7",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0040.png",
+      "bytes": 1034193,
+      "sha256": "fa561112d08661e25a101cae40d92a1771a3ad756c804df76cf890efc8b43110",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0041.png",
+      "bytes": 1033889,
+      "sha256": "82e8986a6ee61254fd218c286a4408c77fab791a143d35b311c45583f4d2d4f6",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0042.png",
+      "bytes": 1033789,
+      "sha256": "49705c7394d979d972b66f15192a7f5109fe14e0631921039621cf900a02a18b",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0043.png",
+      "bytes": 1033846,
+      "sha256": "e05b4fa95c73167a000c3dd7613378dc127314bee4ae8f7cd838ffae449c79fd",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0044.png",
+      "bytes": 1033831,
+      "sha256": "478415baa53cb647a88a380972b81ffcbba7c83730a0416ba170742d2a49e036",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0045.png",
+      "bytes": 1033822,
+      "sha256": "602aa4242d05b7260b5ea2a09551eb7c770f1d0cbd07e5d8a48e292c6c9ba217",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0046.png",
+      "bytes": 1033821,
+      "sha256": "e8a082eea2a6616a9a8b17da29d42bb58c2209f49b6e3fc540df6f2aa87755e2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0047.png",
+      "bytes": 1034377,
+      "sha256": "65d8b7399f14a7a26b34061abe1d21f8d4bdd4d914c6f8f657c623011bc521e6",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0048.png",
+      "bytes": 1034705,
+      "sha256": "bb19542ec8c9e2f860c4a404947231b654e3890ee3b632a39fd3a24d197955fb",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0049.png",
+      "bytes": 1033950,
+      "sha256": "6a8dd06d3f684a5803b4db8a399c0c6085de75d14637da53f7be0b0b2963c70f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0050.png",
+      "bytes": 1034641,
+      "sha256": "c6634415ab3a67293ebf83b2ab713c073491a5cccf7abcd089a0eb5445f12028",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0051.png",
+      "bytes": 1035409,
+      "sha256": "847db919fa282fb2e5fa9d199fbb439f9d8a8e71305d80d7f71ce4dc009f0e8f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0052.png",
+      "bytes": 1035442,
+      "sha256": "bde84ff422d150ee0ae004581fdc358578470f7413eb6c0f293c0c74e80efb23",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0053.png",
+      "bytes": 1035585,
+      "sha256": "b6f07498db032dc94d302b353fb88d81cfe0c7d3de2295c63d902c0f7d68d772",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0054.png",
+      "bytes": 1035515,
+      "sha256": "1bc18b1232a25bc542b16ffd1326f00c8b5fea16f55bf09d256716263121640a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0055.png",
+      "bytes": 1033481,
+      "sha256": "3d24c09ada391624b25130a14847d7b751035da21bce85f7d8dc29d9251e967b",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0056.png",
+      "bytes": 1032292,
+      "sha256": "0a1050a88777ef2ae2a5988b6542604fd4403bd10190f013d5dba21fd54db4ba",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0057.png",
+      "bytes": 1032255,
+      "sha256": "d87de11afb5654e5436a8e0e3b8f7d231ca92594c42db8c8fa8938af858902ad",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0058.png",
+      "bytes": 1032751,
+      "sha256": "6ebc182aacdb85d827b51bf91beac9f91c32f5cc37cf95c442ec75c041eefbbf",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0059.png",
+      "bytes": 1032279,
+      "sha256": "9d9f560a18a56825582425d117c634ec1e9b3b6eba94f8bf559c01bc6e3fae32",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0060.png",
+      "bytes": 1032680,
+      "sha256": "498d162959624948bb58c83071c887055a1fe19aa26c31576c1e8734dd282857",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0061.png",
+      "bytes": 1032466,
+      "sha256": "7c9244489422bf61252f2545541a13236f16f899008c9cce9effe48c0c4fcc0b",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0062.png",
+      "bytes": 1032471,
+      "sha256": "78e6b45bd1da2fa95047c6c91289378c96da49f17ca21d8fe4954d6873ffc7eb",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0063.png",
+      "bytes": 1032463,
+      "sha256": "3d58d209e844b29de2de7e21f4cc1135219265d2460899b6ea000ece582040e3",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0064.png",
+      "bytes": 1032492,
+      "sha256": "2442cdfa8be90819d4487198dde5bb67d37acd788a180feac6b268db5aa33695",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0065.png",
+      "bytes": 1032449,
+      "sha256": "a420a46ac5964212bd5cb3f032bee0353b1eecf8b39501e427530c0cb121a841",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0066.png",
+      "bytes": 1032466,
+      "sha256": "308a24499be31a8dce34fe6548f76a86234e17fc0b3778d7034ec791281969e4",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0067.png",
+      "bytes": 1032794,
+      "sha256": "639504be6e41c3dd1fe9231846cd4de1376132a4f3796c9362801e8eb788dd19",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0068.png",
+      "bytes": 1032677,
+      "sha256": "c3aaebbcfe4d145c0d87d3eb7a735867ea47732ec82da10f705816946eb5e6dd",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0069.png",
+      "bytes": 1033021,
+      "sha256": "edf7b499d48517767113b13203e11469389c5ad270111b51d11ac408b85007a2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0070.png",
+      "bytes": 1032800,
+      "sha256": "cab5fdc66cfc4540f5ca9881403da5ee69bae2dc472664d486e057af3147aacd",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0071.png",
+      "bytes": 1032484,
+      "sha256": "3b99c8466ed12669db5f2d1b6266dfa9ff79e86182a23c13ec85181466bc202f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0072.png",
+      "bytes": 1032345,
+      "sha256": "96851311808141395cd4ee40fd8726c003cc502cecba3a7b6ba604c2053798ad",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0073.png",
+      "bytes": 1031463,
+      "sha256": "9d5e9abcf53d8264cca41aada79520e3a272bc9bf87c19729b7abc49c6b2bd32",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0074.png",
+      "bytes": 1032083,
+      "sha256": "dd961b90001441e1def8c0c412aff5fb4a20a04ea16c25836e6fd099ede27f5a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0075.png",
+      "bytes": 1031887,
+      "sha256": "133f0ee90c36cd064c6a3dc475809a896c927db82ca463f52b87c42aa146e8e5",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0076.png",
+      "bytes": 1031955,
+      "sha256": "fb50c263f5c9a95232acc6bfd1539a5a9abe27bb78a3ec6becba47e7d2ff5682",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0077.png",
+      "bytes": 1031721,
+      "sha256": "f6f00baae34ac01bd1fd3282e06ac7a8a955627ab9cef5c1f966f152e68f3e12",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0078.png",
+      "bytes": 1031855,
+      "sha256": "14afcc6f4ee506985051593035a6043ca58d3ac9fd94725aecf2af87c1cbaf4d",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0079.png",
+      "bytes": 1031500,
+      "sha256": "fc65954c3d623dc79e7a3d74dad5757b0625daa97401811223f700e32863a7a7",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0080.png",
+      "bytes": 1031200,
+      "sha256": "7d47447028ed9acacbf7da334231fc9cbd9d45cc742b6cce2e6382c606454457",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0081.png",
+      "bytes": 1030875,
+      "sha256": "4fbff2c41963193400fb9f022c2a817313d77ca3403919cf273b7b2a70f4f90f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0082.png",
+      "bytes": 1030588,
+      "sha256": "91436a57461fc1cd8bd72b2be0ef3cfc37c3d9daa9ed440931f7792ef3325222",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0083.png",
+      "bytes": 1030894,
+      "sha256": "c20743e379d9a490d458b998013b8108b17dce00367e9f4ead28a780a38da68b",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0084.png",
+      "bytes": 1031159,
+      "sha256": "4d26c91e9fd31991559edcbcb02e0f8e41367121599a9622e3e82609719a6791",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0085.png",
+      "bytes": 1032512,
+      "sha256": "cc738fab34f0f1a51fae598de94b00f936592f8225cb1b4f93ffe571ed5fe85e",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0086.png",
+      "bytes": 1033529,
+      "sha256": "f0f248b8854753593eff90b2148855c64af057b84f9644cf99e32cb86e58a624",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0087.png",
+      "bytes": 1033245,
+      "sha256": "02a3b627b4265e8be38e79b81f897c43befd9441762768707e36a11d830881ea",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0088.png",
+      "bytes": 1032979,
+      "sha256": "18ac4f4a8b58cffbbf3d3c6c9dcb66dffe0832cf57e60f935c8c4363e2a0f5fd",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0089.png",
+      "bytes": 1032540,
+      "sha256": "9fe0fafa70f83fdc687ef548f895c93feb308f91a9697359af06883d9416014c",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0090.png",
+      "bytes": 1032752,
+      "sha256": "1a3fee0d0f5acf1157c1bc730e1cad7985260f9f58776f9bf2d09cedc3798367",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0091.png",
+      "bytes": 1032929,
+      "sha256": "75f02490276a5a5bb07899104e0dc60b3651e6906caa13aa07e1059e5bbd9808",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0092.png",
+      "bytes": 1032794,
+      "sha256": "ff8fb2c47c3bc13051cbb6752bf7abcbe1d6dfeb97a0f48c11a461b3f0e7cec7",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0093.png",
+      "bytes": 1032730,
+      "sha256": "3715273dc9138417b69872ddf3d551d38cac1d8421c27c5b4d588303f955eccb",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0094.png",
+      "bytes": 1033304,
+      "sha256": "96c8bc1bed8950fb7fc1fc95adfeb672dbb043a16950dbd4120f76515207a7c2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0095.png",
+      "bytes": 1033035,
+      "sha256": "bf438a50b68978051b77ab0c2d7790a04d91d6d261115df917600c035b2fab81",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0096.png",
+      "bytes": 1033486,
+      "sha256": "1034605ce5ed613782fab469310d774d88802d02146969758cf9c94e6a6d8a19",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0097.png",
+      "bytes": 1033010,
+      "sha256": "1e82d31dd63ca46a1e51a2807939eaf9823b864a908ab12a55cbb0d5e4979ef4",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0098.png",
+      "bytes": 1033348,
+      "sha256": "d047c2393157e546fca427c79ccf5f2896a425c9170797529c494bea68a5b52c",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0099.png",
+      "bytes": 1032899,
+      "sha256": "4cf79b86f7b14c827b02de80c0fcced734c38e835d05c79476da733db6abd765",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0100.png",
+      "bytes": 1032724,
+      "sha256": "2f072c4f282ae4500e5302da383c566c037015ce7934da87b693da010a17943f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0101.png",
+      "bytes": 1032977,
+      "sha256": "78c761fc24120417aeaeb700147eeeb69dec3cac655c94fdb5b78a938dcb9311",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0102.png",
+      "bytes": 1032368,
+      "sha256": "e2f674dd18c741508c5e0af0a16cdf686f42847fdfd01cac19dfdf6549e60db8",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0103.png",
+      "bytes": 1032375,
+      "sha256": "9c28a2e48fdb11ad5de8e789fbbad6937bbf6a7294f8dc77547b69b930ff4dd3",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0104.png",
+      "bytes": 1032234,
+      "sha256": "dad2becc489c39038114ddcf89727feeed47b5e2a6813e4fc88c4b3d74f80c77",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0105.png",
+      "bytes": 1032624,
+      "sha256": "fd5f9d3ed3fdabe028e6b64ebf6560c9e8c6be646b8a946540f5f26048168b81",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0106.png",
+      "bytes": 1032585,
+      "sha256": "9b5afcbe574768d4e826dbac13ab18b99fe865993137ac5110103d254daff323",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0107.png",
+      "bytes": 1032263,
+      "sha256": "8bae7da6838de8dbd7c6dc87fbee5ba994b8f26e91589807fca698e37357038a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0108.png",
+      "bytes": 1032750,
+      "sha256": "39e9f298a16014a1602c8236ea1308b4e0387679b270ddd491dfd87bee95b0e1",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0109.png",
+      "bytes": 1032598,
+      "sha256": "45b8904c6e813256336cc83ca2c96e70fbe95a90954e1c2c3603c164be7f8d8f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0110.png",
+      "bytes": 1032749,
+      "sha256": "12e7ca58ccf7bb6fa31f9b3d6d0942c422c538775a011677d74d0091866df175",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0111.png",
+      "bytes": 1032625,
+      "sha256": "2a0c2a71c364f9e12584ad25a4bf938fcf753698283dec80d0a9515bac6e84bf",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0112.png",
+      "bytes": 1032919,
+      "sha256": "40920af607e2fdfe1b833c2211fbad670d6a48119f1e961901f3245ba92d5a01",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0113.png",
+      "bytes": 1032749,
+      "sha256": "10d91841f7fc675376df532d7826fc03bba2242e66e2790a2ab4fb3c9cb1fc34",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0114.png",
+      "bytes": 1032659,
+      "sha256": "5f36fc0877e254148ffb3856e10e5baf3f2cccb5b54ba5c98956b8aaee0c30ab",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0115.png",
+      "bytes": 1032076,
+      "sha256": "15e4dba595c7ab6d464b9a083f4d5dfcbbe9de40c7a77902f0bb9023a40686c0",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0116.png",
+      "bytes": 1032529,
+      "sha256": "83c6d3e8158e652cf018cd8666958c0fa573fb4a71807ae2583bb0743d319541",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0117.png",
+      "bytes": 1031987,
+      "sha256": "1888ddae7376f4072aaf1d13891fabca4628ff4bfce085aead52cc2f1fb66dfc",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0118.png",
+      "bytes": 1031938,
+      "sha256": "522bd2e8ca50e3502c8e00068b58c6b677daf2cb449116fcbea4c7db6b03cf02",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0119.png",
+      "bytes": 1031832,
+      "sha256": "bf75d3dd7615912b9cd29197cbc7c50b4aa3ef87f05bba3ffd01adaf4f82798a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0120.png",
+      "bytes": 1031656,
+      "sha256": "b51ffcd055918e55764040cc21598ca1d969054ae59e2b7d370cda7d8fac69d0",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0121.png",
+      "bytes": 1031164,
+      "sha256": "2a5620ac05fa501ccca531796b9413c5eb9d3ed2e5bed065cdd7efb1d308e67f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0122.png",
+      "bytes": 1031676,
+      "sha256": "1a1fbe8e3ecd49d172b15e92a691f2ff049bbb123da0a3125d1b6e40800897ae",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0123.png",
+      "bytes": 1032256,
+      "sha256": "2b4ed06303b5cbbd5c31ee35ed5255091413367219950ab2d4e311e39ed627cd",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0124.png",
+      "bytes": 1032801,
+      "sha256": "10d8c9b780bd23d8137f8acc73b76437a67f9fd7ced7976725c4ad735d7433b8",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0125.png",
+      "bytes": 1031874,
+      "sha256": "001d3fbccb745c567c94d0cbb266f2b86db5523da36a9aa1a1ac4b2e748abab7",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0126.png",
+      "bytes": 1032431,
+      "sha256": "4a665bcf51d5ce6525f7142b61f76e907ff840a67d885124af04443a644c1372",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0127.png",
+      "bytes": 1032413,
+      "sha256": "1fa03016706cc31ba137fb12899cf600cf98199abb5aef8c4d33704fce06da2a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0128.png",
+      "bytes": 1032256,
+      "sha256": "5bed23cf027aa9867752bf51294b85567e5f962dc939861205efd16d6c6ae644",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0129.png",
+      "bytes": 1032265,
+      "sha256": "8e29ad0a3a2423a4aa389b5546c5a2e700570d8d5d0768f52d8d95699881ecf6",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0130.png",
+      "bytes": 1032469,
+      "sha256": "8c86777a5c31a7b7d0427ffb26ce92a4bdb1e2b205a47c24782347d7d8cd58a6",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Idle_Frames/0131.png",
+      "bytes": 1032453,
+      "sha256": "68766e1d5f241a994f6f23c0979de3d3010dcca31178faf8d144290a9fecf429",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0001.png",
+      "bytes": 1029706,
+      "sha256": "66f60fa3c19c216ea5ac747f99f70308e8081dada1aa0bba06da39d01d504ce2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0002.png",
+      "bytes": 1028989,
+      "sha256": "25c3aff2053ba3508abfaf2b34e2df72b440edcacb632de530503b910fa8ba0a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0003.png",
+      "bytes": 1028947,
+      "sha256": "906fd69730dbd2bdd32c55fbc3fe4de21baed293215965aef5017ebdaa64c2ca",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0004.png",
+      "bytes": 1028724,
+      "sha256": "c9d03fff9a89d2977785c9a9898ab2142a29cd6d991433217a9716147d1ed13a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0005.png",
+      "bytes": 1029181,
+      "sha256": "98587b1d0074240e7feeade65bf198626e1925927bc23556d69eb247f6a4a095",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0006.png",
+      "bytes": 1029101,
+      "sha256": "04076b4ec4f001681f50a93c909669071ea827f3ff699fcb5b7136d7791c4120",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0007.png",
+      "bytes": 1030786,
+      "sha256": "5d7232dcdd59059743e574c92334f89bfd5ddc343ced67dc2b241556e8fffdca",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0008.png",
+      "bytes": 1030194,
+      "sha256": "8b9f3417c943c72fec2b7aa8b4b7b63d520daf1253501ac1e60bd908caec7bab",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0009.png",
+      "bytes": 1031121,
+      "sha256": "b2f7e5e2bcd81ef44fcff06f3285a8b4c4aa85f42389b1abc7eada372267f7e1",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0010.png",
+      "bytes": 1031456,
+      "sha256": "ff10faf88ae3d06ba261455b973f3392c8f7bc1068f58a84c8b2a27b3d493bce",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0011.png",
+      "bytes": 1032960,
+      "sha256": "9dfc47067ad69d36d7803df0c12ce5b73706ff83000cfebcef71fe22449c42e9",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0012.png",
+      "bytes": 1033429,
+      "sha256": "c557d0411d0668115af8df8659459a5fe49862ff6332c14064f3e9a445316002",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0013.png",
+      "bytes": 1034433,
+      "sha256": "2e1e7ec9d2d08930507db3b5c841ce602b5991583a658e5d1248e01cd94bb5dd",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0014.png",
+      "bytes": 1034000,
+      "sha256": "2bcbe4977c0c61c0d598515e09bbfe5ecb25860c0a13dffe249bd9de96d333a9",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0015.png",
+      "bytes": 1034236,
+      "sha256": "e849d97e42ce09f9c2d16f4d990e280b4a50606ce26f37d6efed2f9d204bf8c2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0016.png",
+      "bytes": 1033444,
+      "sha256": "934f1fc5fe22820974d3e553e31960f080e3fa52608e5984b82d71e34cc5809f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0017.png",
+      "bytes": 1033497,
+      "sha256": "cd96d1ddc09fa51a84d989f8cf8a5aab275ecd7967a6f39c7bbb364632e68063",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0018.png",
+      "bytes": 1033406,
+      "sha256": "51286f2d884669d55e0598dc1ea2f1ce0848520c85f007890fc1a0749f24d5c2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0019.png",
+      "bytes": 1032864,
+      "sha256": "2eb817cca53b1cc473bd2e55dc0d482302bb5c821c59eb0c5179c2e9111ec53c",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0020.png",
+      "bytes": 1032238,
+      "sha256": "cbab1447b9f49130d0d8e065d15595f23ad5498c44f26786706668f831ef9652",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0021.png",
+      "bytes": 1031239,
+      "sha256": "bbdfa354a252b4630c5c567ac27d7a68d57045bc70394759806dd3ea33cd3bbc",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0022.png",
+      "bytes": 1030149,
+      "sha256": "697966cffec6962db2403b9bb7556a57a2f2ba486fa6899d78504f571bb185a7",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0023.png",
+      "bytes": 1029623,
+      "sha256": "f9f35b86d5072e506b394863195cbe0709e98fda47dc3a7029f908bfa4c1e35c",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0024.png",
+      "bytes": 1029090,
+      "sha256": "2e38e66802c3eab160dd80636c0d8a9a7959bdad57e909a9221354e84e22984f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0025.png",
+      "bytes": 1029187,
+      "sha256": "675fec0fce5370f90e97e69f49a6f42916808bb7ae14f4f1456a7932f588e195",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0026.png",
+      "bytes": 1028699,
+      "sha256": "21b671ad8856e0eea9852eac21f76b2129935eacbb757e6fbf8748ec58f32b82",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0027.png",
+      "bytes": 1029001,
+      "sha256": "da0b90e78e4e428fbaaf3a7654efce42520c1f8847e0c9933e53f06c6b41f3df",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0028.png",
+      "bytes": 1028951,
+      "sha256": "423b6bf237783c52291c8319bbfb242e12f62e6b87f2a82ab341e28a6ae3b796",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0029.png",
+      "bytes": 1028730,
+      "sha256": "e123d8649d1aca0dfaa3103f469881a7aa4d188889b2ec985251c41475f1d24d",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0030.png",
+      "bytes": 1028970,
+      "sha256": "0fe209df99f20369a2871aecc77e6d9b45289747a9a66490effdcfb8f9f2ae4c",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0031.png",
+      "bytes": 1029123,
+      "sha256": "cb2de25307083ac899a24d48d3c1552c5e8a570f098f6566a13a2ef0bc0c66db",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0032.png",
+      "bytes": 1030780,
+      "sha256": "02a01d66e3b11c1effe9069bc21df7980bef0d4d2271846106f4f9a526331458",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0033.png",
+      "bytes": 1030174,
+      "sha256": "162228c5862e34c7ebf76a982f880f63812328844a101c66419c7e69a2e14079",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0034.png",
+      "bytes": 1031139,
+      "sha256": "28832511044188469726bbfb09fa25fff975754bcae446b06a932543f6985338",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0035.png",
+      "bytes": 1031476,
+      "sha256": "0296d7ba6a8ad04faaca126d4c4080b27aecb2cf7dff19f3f1bbf4dc895a99c2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0036.png",
+      "bytes": 1032967,
+      "sha256": "60d705d0815bd4041504f752ea9c4cf1d3ef62b5109b3e5522a8bab3fe7cf1d2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0037.png",
+      "bytes": 1033429,
+      "sha256": "d8a5f54f570c3f3d91d31bd995a3ad4f6e2e0fc5e92661c7da12ab58c395704f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0038.png",
+      "bytes": 1034412,
+      "sha256": "00080aa0c36f0e28c0889e65e7cc8b7cb0524b8a99394a5115ea7683dad64c25",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0039.png",
+      "bytes": 1033971,
+      "sha256": "2bff019689b593f3fd9a307533781b064e74b76c172c35d8a255eeab206168b7",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0040.png",
+      "bytes": 1034199,
+      "sha256": "ab1c53e6f0344b574dede2f25c1363fe2af54db3a43464e2ac51253d3a584433",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0041.png",
+      "bytes": 1033459,
+      "sha256": "1f055f1d5b8f7eb99819f9a0c409bb01ca320c4b328d8b9dd72ee97157b6cdaa",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0042.png",
+      "bytes": 1033505,
+      "sha256": "44b5f245af66922fe526e2f8a76ecedcc2096c727fedc1106b0c073c0c9be68d",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0043.png",
+      "bytes": 1033410,
+      "sha256": "602c8a49477a1bbd34d3510c77fa85722b3a68b373277d73d8727f72f08d47f2",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0044.png",
+      "bytes": 1032871,
+      "sha256": "404802f622459ea333648f69d95fd825011f5c716f0e08283210e3f8bb518838",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0045.png",
+      "bytes": 1032249,
+      "sha256": "f3ec58c33461ddaec325c0de534cc1d463c48295b65bd3dec79aa616ef4ba806",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0046.png",
+      "bytes": 1031241,
+      "sha256": "e132ef379358e714e47a97718801347dea1beac8fe8c37c8ebbd0a3c154158ad",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0047.png",
+      "bytes": 1030138,
+      "sha256": "24b0b8cf925c9a3699f0dff9de59a45527e698f33cf08ded3b736cacdce749ee",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0048.png",
+      "bytes": 1029613,
+      "sha256": "0a70ba543d76e44575dcb30b87da49488b050aed7eb63b4b83a272b041b6d5a8",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0049.png",
+      "bytes": 1029092,
+      "sha256": "c840190f445c3655c3a17bd106f6ae41ee76737db60e71e97609f668d034c408",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0050.png",
+      "bytes": 1029168,
+      "sha256": "a14a6f321498a37a222027b62e19f0c1d0f6b318851750de9a7ec46175c7feb4",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0051.png",
+      "bytes": 1028698,
+      "sha256": "58bd2bf888db278cef0e04f7f80125f30caee36484d589136ab933309c124a48",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0052.png",
+      "bytes": 1028975,
+      "sha256": "c30b321e318a9311b0cc980cf946cfd30e25e2fdf4b855182558d90fd21cc330",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0053.png",
+      "bytes": 1028954,
+      "sha256": "7dc33bd6d7e3963ebb792da4c7bb49846611ac30c4a89158b43756832f4f3e36",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0054.png",
+      "bytes": 1028715,
+      "sha256": "f646650f0191c5ead175085b193a50a2d8cae08325d9a81934fbb4c77b4ef3b5",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0055.png",
+      "bytes": 1028953,
+      "sha256": "652f9a85abb2e3e37e19e0a275bab22757c2085bd9c6796ce529fc2b0e49d23f",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0056.png",
+      "bytes": 1029119,
+      "sha256": "a1a48993f940bc6282289df0d8cf0127fbf9780de44d3178e6684f361c3b40f3",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0057.png",
+      "bytes": 1030810,
+      "sha256": "736925a7874eeb8c2f416b6e432c3925393bfac9b7b2f75f08e2181e5880806b",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0058.png",
+      "bytes": 1030187,
+      "sha256": "4b19dda0bf206a88a2edb3b879f8fdb43b5cba09c0c526837e59d2e0f88e5937",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0059.png",
+      "bytes": 1031112,
+      "sha256": "d6e6f14b03a7a860daaf5009d29a9d34aa3b4d9af4112e442886efc75812e395",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0060.png",
+      "bytes": 1031501,
+      "sha256": "b4d68738d20960b4c72585e5487cc274ad48f68eb0489fb8cdc87d886c6ddf32",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0061.png",
+      "bytes": 1032957,
+      "sha256": "ce436aa04262005f50e7e2677e06cfa3e241548bc1f6090802b2797b10b016ac",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0062.png",
+      "bytes": 1033459,
+      "sha256": "7511c0083c2c0a0e338a02f979b9a17510b761eb2b5699fd2a618f056d68b856",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0063.png",
+      "bytes": 1034405,
+      "sha256": "8f362e8f9299ca88589c33d6167d1a2fce94fe2d59f23d57fee29aff92f3d287",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0064.png",
+      "bytes": 1034020,
+      "sha256": "e63669b14137297cf76417923353f5a88951127cc586387941a88deec4a53132",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0065.png",
+      "bytes": 1034178,
+      "sha256": "80b5d062edd912c9c67ff1f002bb6fefde9bcbee25f8b10da69e494a66f39a07",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0066.png",
+      "bytes": 1033485,
+      "sha256": "870604ead89af5adcc91615020b277935f34cbeaebbf83d1355c3b0b53663979",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0067.png",
+      "bytes": 1033546,
+      "sha256": "adf92c53ba885a46dc572d39deb832e6a650c20cc5f0e058d25159b49068f8ec",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0068.png",
+      "bytes": 1033412,
+      "sha256": "5a65ee7c93e28cbe6e9d71b3079d8b091f8ce8538680a465a6fb2c673e97da97",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0069.png",
+      "bytes": 1032900,
+      "sha256": "2b2ee7fa093070ed0b538dd1bd43d648be7478243b227c58f2098584f614a97e",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0070.png",
+      "bytes": 1032226,
+      "sha256": "e3348001fd11ecd75c2ea5277f5d06148b55226913973bda1c7b56e033d8d156",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0071.png",
+      "bytes": 1031149,
+      "sha256": "95b6ca65142543c4c1fc3f8604f4770e0b797460c50c82e341ceb1659c2b6524",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0072.png",
+      "bytes": 1030185,
+      "sha256": "72bbb406c718a85e17c20f92abef5f0a3b8239a5515964b4dab96b6b160f3a98",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0073.png",
+      "bytes": 1029587,
+      "sha256": "c59fb10ec3027361c886fe8512ec109e216d9f6f9f56b2ad655e5118474f57b9",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0074.png",
+      "bytes": 1029098,
+      "sha256": "839d931a436a20ef60c344067e1ce3942bb9366929a4372844f048513f3cb8ac",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0075.png",
+      "bytes": 1029167,
+      "sha256": "0a1552c14af3ac557a55acbacfbbbb8b47552de28b061473ee9dd8dd1818f9e5",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/Mech_Walk_Frames/0076.png",
+      "bytes": 1028699,
+      "sha256": "7f77de18007efce97f08c0ee46552b9fc30152f90c21f8afb6dd3ceecbfac22a",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/movie_frame_fidelity_report.json",
+      "bytes": 44744,
+      "sha256": "0edf562d3953c8d0561c897a7868a5295dbbea4cd8394236688fa590bd306c0c"
+    },
+    {
+      "path": "Production_B_v2/AnimationPreviews/movie_readback_report.json",
+      "bytes": 513,
+      "sha256": "6039e2d925a1562510d239407825813b0fa439e752d0674d871aa10a7099d5b7"
+    },
+    {
+      "path": "Scripts/capture_full_source_animations.py",
+      "bytes": 2693,
+      "sha256": "c737eecf43feb5dcf61d10f9e07f2e5e9f89c9cc8ecdbb068a0363e9bcaa41e2"
+    },
+    {
+      "path": "Scripts/build_production_b_v1.py",
+      "bytes": 16453,
+      "sha256": "54511f953216face1a1bceacc3225d1a81c8aece829c83df0b2cffc5328f4980"
+    },
+    {
+      "path": "Scripts/refine_production_normals.py",
+      "bytes": 1113,
+      "sha256": "aab2f0baee763e565b3b21a29ca78bf50a09a8eed9ca3ef9bc32c9900c754e91"
+    },
+    {
+      "path": "Scripts/rebuild_regular_joint_caps.py",
+      "bytes": 4505,
+      "sha256": "c192e29db6504abd9128d422c6298d58d920c7007f832d4f58c21c156f9a2494"
+    },
+    {
+      "path": "Scripts/prepare_production_atlas_lods.py",
+      "bytes": 18817,
+      "sha256": "31e2aa49ff10646ebc5e420a93d198744ca02edc6145702fecf5aa06db94f6a0"
+    },
+    {
+      "path": "Scripts/finish_review_scene_b_v1.py",
+      "bytes": 4572,
+      "sha256": "1fc4e901441cc609821b7572aff9c1989d1f0bc798cb7b86024e165dc93aad81"
+    },
+    {
+      "path": "Scripts/build_safe_lods_b_v2.py",
+      "bytes": 4776,
+      "sha256": "1d824aeb9dbd4c3bdc95540a2e7afe2a16b749129368bc09199904aa59317666"
+    },
+    {
+      "path": "Scripts/render_motion_b_v2.py",
+      "bytes": 4491,
+      "sha256": "f5c78fe541d659017ce6e918a7384d0ad1ade8180e595be0dc8a2b5babada1b5"
+    },
+    {
+      "path": "Scripts/audit_production_b_v2.py",
+      "bytes": 5682,
+      "sha256": "3b48716bc2123e055efe08f18566c511a1e1482fb598e6277cba35623f67f7a4"
+    },
+    {
+      "path": "Scripts/audit_motion_contact_b_v2.py",
+      "bytes": 3810,
+      "sha256": "5add139d790766da31b638677ad4fff38b93e72a255b31c9b9c3fdd06a9b1c76"
+    },
+    {
+      "path": "Scripts/render_lod_comparison_b_v2.py",
+      "bytes": 1487,
+      "sha256": "9675ad89616debf4752d69b014c112a7b1c2e88998a8f044aa5f1d612bb80dc0"
+    },
+    {
+      "path": "Scripts/verify_movies_b_v2.py",
+      "bytes": 1803,
+      "sha256": "eff6a5e9a8aed7f4162a397c106cbbcd7e8d4401d1995f3221c377fc18d23aa6"
+    },
+    {
+      "path": "Scripts/audit_movie_fidelity_b_v2.py",
+      "bytes": 2210,
+      "sha256": "d5353206de710647088f327d35f833e9c738a37fb75858f01ce92bbe1e9177c5"
+    },
+    {
+      "path": "Scripts/finalize_production_b_v2.py",
+      "bytes": 20408,
+      "sha256": "cefb9fb15a160bd2d93f2b80535a7b04bd82e58eb75a1eb07bbb4bf29e3703b6"
+    }
+  ]
+}

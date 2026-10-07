@@ -1,0 +1,88 @@
+{
+  "user_authorization": "“镜头表”改名为Camera，然后编译、导入新Camera DataTable，我来验收；承接上一轮构建及重开编辑器提议。",
+  "engine": "D:/UnrealEngine-5.7",
+  "target": "GuLiStrikeEditor Win64 Development",
+  "exit_code": 0,
+  "result": "Succeeded",
+  "duration_seconds": 105.31,
+  "manifests": [
+    {
+      "path": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\GuLiMapAuthoring\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\Tripo3DUEBridge-UE5.7-Win64\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\UnrealMCP\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\UnrealMCPython\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\VibeUE\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    }
+  ],
+  "all_build_ids_match": true,
+  "source_sha256": {
+    "Source/GuLiStrike/Battle/Network/GuLiBattleTypes.h": "d1159da24fac1c5ae0c02baddd53a0ae6cd86e2e629efed3b2798ca670985962",
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.cpp": "e3091162f29d139ca582574e7d55baa846d62586eb4d45d9f15a9289cc0da243",
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.h": "0de397732fff2ae5756a0270c1e454ac4a8dad31a39d9e3cea1b76c4a69d445a",
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderResourceAdapter.cpp": "8756eea413b56df86dc6cb11cc03d9548090f2dad7ba2f831229f2b7f9eb8711",
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderResourceAdapter.h": "73f26db882e390953c12a45ed5856ec5e5616cb20dabfbf941625345adfaff68",
+    "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp": "3616a18289ee227b0bfff1a0786b183a040f25aa7d29066e348f2857b75a316e",
+    "Source/GuLiStrike/Commander/Mass/GuLiCommanderSelectionQuery.cpp": "2f95f6e405cef3c23db6107d6be8d29424f306c50f0c6cad2556583f08b3d073",
+    "Source/GuLiStrike/Commander/Mass/GuLiCommanderSelectionQuery.h": "88596f265f0f88bce9f4398ffde63f8a7d47ae1498234e160b3254e0045a910b",
+    "Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp": "b02fd1ae97322d91c6b24ae57c515cee9b6534252db9daf2121d0a1c86542d1a",
+    "Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h": "12c31b1975e14c489188931762d6b3aab36b754fb5f7962b99cc56dd01eff87b",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderCameraGeometry.cpp": "d0149b9a53b47434a8ae102357ae6de22984ff860da0bad9f286ddaaf1fe5260",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderCameraGeometry.h": "d79c5ff3cd185cd2a20f0d82ebe9591b0ed2f3abad2fb2b48be64bc8761772cc",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderCameraPawn.cpp": "3e37733bcbf0547a9d6b3e971f54a385ea4a96a3cf276d8a061a117693086c2a",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderCameraPawn.h": "42e09d30b2c10ec41d5d7bfad95a27cf27d21073446a6e9f5454bafeeaedfabb",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.cpp": "8fd8c838f595dd0586171bc3698d923b97ba24edc14312d82cfa56ac1bb30cd6",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.h": "2beda4aea7c7767459932ea154de50679a4d7e0951adcd09c89aac1f02e22c79",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODPolicy.h": "ed09854e48ce00596450f9989338a5971fef6e7dde15cd215df7b02507553fb6",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODSubsystem.cpp": "0ea1ebfde19a583377a82779cc74d1a8dff5eaeef59b188406819500844b2049",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODSubsystem.h": "23cfecb5637abe348828b00b374ed627b8204b4eaf50ac708bc987bcc4230148",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.cpp": "077f001b0be1b3f4b3797af2c7fca95ef6ae0c3d530c6174761f81c06d4c9db3",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.h": "ae5532a980b12385de9364345c7b1139fa7617b96db555c5e762c1f832e0d697",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderOverviewSubsystem.cpp": "308bc9059bcec912d30606bc0517b68629475513d11655d59cba25860286ee07",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderOverviewSubsystem.h": "7fbf2f924fcbce9e3276016888921c84d7b33335f681c2894f53249d5608a326",
+    "Source/GuLiStrike/Commander/UI/GuLiCommanderHUDWidget.cpp": "08b5c4969e58f68f0123e6c76c0c3be5a59516f559db0ea94b956fe8777c9fd6",
+    "Source/GuLiStrike/Commander/UI/GuLiCommanderHUDWidget.h": "46f52eebcb522b4c8e14c09ab6cebe0d9807149fe91c187248ef21120d3aff60",
+    "Source/GuLiStrike/Commander/UI/GuLiCommanderOverviewMarker.h": "923e8273a12fffc60e31c711c6e015ff8f6b29346bcc0108153e62d2ec2eb875",
+    "Source/GuLiStrike/Commander/UI/GuLiCommanderOverviewOverlay.cpp": "afa8d496e593a6741e9df0dfbdc8c4cc7be35b102bc2f239700bebf0c2002150",
+    "Source/GuLiStrike/Gameplay/Building/GuLiBuildingConstructionContour.cpp": "d938afd841f679f242cacdd517cf2912452f59ac8dec114004f09706b30cf0cb",
+    "Source/GuLiStrike/Gameplay/Building/GuLiBuildingPlacementComponent.cpp": "7a1dd2c7571c49195b6866857c3d977cedce2a241ccc20a8657b216a754e009b",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp": "432002f766065e5afc4ba11ca5a568adb995fb6279facad8127df315c184f197",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp": "c4f761527c82041d0b206b393a1dea9952d4c552fafd4661c751ca726886fef2",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMechanicalMuzzlePresentation.cpp": "b3b87cc925331d1e26cbf05dfabab0012d0b345d6f4d8f6e0e7a55ab3040a658",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.cpp": "50d639133a20a8e3a79578f9f7bc3878395300c9eeb3c73cf94f130921e6f63f",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiRogueUpgradePresentation.cpp": "80478590a446e2c9bfc61934dc9465d3e3892722df0c2140954d70f371fe12db",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.cpp": "b86222a5540d0a1c5e214b70893b5f839018832d91b393c3c2e031451115f9fa",
+    "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h": "a43ef951c94b7dd6002ea74868a8f8eab98bb9ce4fc1a1ab505f22e7187eeb33",
+    "Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSettings.cpp": "bdee2474046ebc836f5d36c76cf29a847adfc416e5ac887921143d1a37361192",
+    "Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSettings.h": "ccad433ff22454b3dbf646dd41c0c14aa70022eaa9dcf21a78f8bb03b414d39b",
+    "Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSubsystem.cpp": "925265ef8a5edf8c1997b70a52427d183b17ffef36dd10e26cf1aa3db8ac9457",
+    "Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSubsystem.h": "f154e6ce3c5830611bffa66ebf73303f1401bfe91d46054f0e744df166e1cd8f",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiWarMachineHoverComponent.cpp": "4db4b21f2b75f6adfd876a05e4a63e44018b8f2db277b27a1da1ee3d66ddee40",
+    "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportInputComponent.cpp": "a0eab7aabfc17c3d39cce5eb5cf6157cd2d0f5074618287088a758297839804b"
+  },
+  "runtime_validation": "not_run"
+}

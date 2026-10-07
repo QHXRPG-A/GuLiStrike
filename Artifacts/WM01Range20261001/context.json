@@ -1,0 +1,663 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "pie": false,
+  "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+  "related": [
+    {
+      "label": "RogueCards_F4_Entry",
+      "cls": "Note",
+      "location": [
+        -3200.0,
+        72500.0,
+        -1200.0
+      ]
+    },
+    {
+      "label": "WM01Missile_FixtureCenter",
+      "cls": "TargetPoint",
+      "location": [
+        -8000.0,
+        72000.0,
+        -1300.0
+      ]
+    },
+    {
+      "label": "WM01Missile_Camera_Overview",
+      "cls": "CameraActor",
+      "location": [
+        -8000.0,
+        62000.0,
+        7200.0
+      ]
+    },
+    {
+      "label": "WM01Missile_Camera_Near",
+      "cls": "CameraActor",
+      "location": [
+        -12000.0,
+        64200.0,
+        1200.0
+      ]
+    },
+    {
+      "label": "WM01Missile_CandidateInstructions",
+      "cls": "Note",
+      "location": [
+        -8000.0,
+        73500.0,
+        -1200.0
+      ]
+    },
+    {
+      "label": "WM01Missile_Case_100x1",
+      "cls": "Note",
+      "location": [
+        -10500.0,
+        75000.0,
+        -1200.0
+      ]
+    },
+    {
+      "label": "WM01Missile_Case_100x4",
+      "cls": "Note",
+      "location": [
+        -8000.0,
+        75000.0,
+        -1200.0
+      ]
+    },
+    {
+      "label": "WM01Missile_Case_100x8",
+      "cls": "Note",
+      "location": [
+        -5500.0,
+        75000.0,
+        -1200.0
+      ]
+    },
+    {
+      "label": "WM01Missile_Case_500x1",
+      "cls": "Note",
+      "location": [
+        -10500.0,
+        76000.0,
+        -1200.0
+      ]
+    },
+    {
+      "label": "WM01Missile_Case_500x4",
+      "cls": "Note",
+      "location": [
+        -8000.0,
+        76000.0,
+        -1200.0
+      ]
+    },
+    {
+      "label": "WM01Missile_Case_500x8",
+      "cls": "Note",
+      "location": [
+        -5500.0,
+        76000.0,
+        -1200.0
+      ]
+    },
+    {
+      "label": "WM01_Reference_TransientModel",
+      "cls": "Actor",
+      "location": [
+        8000.0,
+        -26000.0,
+        0.0
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_01",
+      "cls": "TargetPoint",
+      "location": [
+        -10540.0,
+        69460.0,
+        -1766.3908864991529
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_02",
+      "cls": "TargetPoint",
+      "location": [
+        -9270.0,
+        69460.0,
+        -1766.3908864991529
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_03",
+      "cls": "TargetPoint",
+      "location": [
+        -8000.0,
+        69460.0,
+        -1766.3908864991529
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_04",
+      "cls": "TargetPoint",
+      "location": [
+        -6730.0,
+        69460.0,
+        -1766.3908864991529
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_05",
+      "cls": "TargetPoint",
+      "location": [
+        -5460.0,
+        69460.0,
+        -1766.3908864991529
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_06",
+      "cls": "TargetPoint",
+      "location": [
+        -10540.0,
+        70730.0,
+        -1764.4594745279244
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_07",
+      "cls": "TargetPoint",
+      "location": [
+        -9270.0,
+        70730.0,
+        -1764.4575611129917
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_08",
+      "cls": "TargetPoint",
+      "location": [
+        -8000.0,
+        70730.0,
+        -1764.456584907718
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_09",
+      "cls": "TargetPoint",
+      "location": [
+        -6730.0,
+        70730.0,
+        -1764.456584907718
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_10",
+      "cls": "TargetPoint",
+      "location": [
+        -5460.0,
+        70730.0,
+        -1764.4580087571198
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_11",
+      "cls": "TargetPoint",
+      "location": [
+        -10540.0,
+        72000.0,
+        -1757.6349568210906
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_12",
+      "cls": "TargetPoint",
+      "location": [
+        -9270.0,
+        72000.0,
+        -1757.5266485340019
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_13",
+      "cls": "TargetPoint",
+      "location": [
+        -8000.0,
+        72000.0,
+        -1757.2943527427205
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_14",
+      "cls": "TargetPoint",
+      "location": [
+        -6730.0,
+        72000.0,
+        -1757.3071212687753
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_15",
+      "cls": "TargetPoint",
+      "location": [
+        -5460.0,
+        72000.0,
+        -1757.6578804528026
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_16",
+      "cls": "TargetPoint",
+      "location": [
+        -10540.0,
+        73270.0,
+        -1759.5411005073022
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_17",
+      "cls": "TargetPoint",
+      "location": [
+        -9270.0,
+        73270.0,
+        -1759.4327922202137
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_18",
+      "cls": "TargetPoint",
+      "location": [
+        -8000.0,
+        73270.0,
+        -1759.4124810665478
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_19",
+      "cls": "TargetPoint",
+      "location": [
+        -6730.0,
+        73270.0,
+        -1759.4124810665478
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_20",
+      "cls": "TargetPoint",
+      "location": [
+        -5460.0,
+        73270.0,
+        -1759.5640241390142
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_21",
+      "cls": "TargetPoint",
+      "location": [
+        -10540.0,
+        74540.0,
+        -1761.5292248739686
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_22",
+      "cls": "TargetPoint",
+      "location": [
+        -9270.0,
+        74540.0,
+        -1761.5292248739686
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_23",
+      "cls": "TargetPoint",
+      "location": [
+        -8000.0,
+        74540.0,
+        -1761.5292248739686
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_24",
+      "cls": "TargetPoint",
+      "location": [
+        -6730.0,
+        74540.0,
+        -1761.5292248739686
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_25",
+      "cls": "TargetPoint",
+      "location": [
+        -5460.0,
+        74540.0,
+        -1761.5292248739686
+      ]
+    },
+    {
+      "label": "WM01Guidance_Target_A",
+      "cls": "TargetPoint",
+      "location": [
+        -10300.0,
+        75500.0,
+        -1760.2700498668924
+      ]
+    },
+    {
+      "label": "WM01Guidance_Label_A",
+      "cls": "TextRenderActor",
+      "location": [
+        -10300.0,
+        75500.0,
+        -1725.2700498668924
+      ]
+    },
+    {
+      "label": "WM01Guidance_Target_B",
+      "cls": "TargetPoint",
+      "location": [
+        -8000.0,
+        77800.0,
+        -1753.6337611728534
+      ]
+    },
+    {
+      "label": "WM01Guidance_Label_B",
+      "cls": "TextRenderActor",
+      "location": [
+        -8000.0,
+        77800.0,
+        -1718.6337611728534
+      ]
+    },
+    {
+      "label": "WM01Guidance_Target_C",
+      "cls": "TargetPoint",
+      "location": [
+        -5700.0,
+        75500.0,
+        -1760.271739631898
+      ]
+    },
+    {
+      "label": "WM01Guidance_Label_C",
+      "cls": "TextRenderActor",
+      "location": [
+        -5700.0,
+        75500.0,
+        -1725.271739631898
+      ]
+    },
+    {
+      "label": "WM01Guidance_Instructions",
+      "cls": "Note",
+      "location": [
+        -8000.0,
+        73000.0,
+        -1200.0
+      ]
+    },
+    {
+      "label": "MachineGunReview_Ground",
+      "cls": "StaticMeshActor",
+      "location": [
+        -8500.0,
+        -10000.0,
+        960.0
+      ]
+    },
+    {
+      "label": "MachineGunReview_MuzzleBefore",
+      "cls": "NiagaraActor",
+      "location": [
+        -10000.0,
+        -12000.0,
+        1467.17
+      ]
+    },
+    {
+      "label": "MachineGunReview_MuzzleWM01After",
+      "cls": "NiagaraActor",
+      "location": [
+        -8200.0,
+        -12000.0,
+        1467.17
+      ]
+    },
+    {
+      "label": "MachineGunReview_MuzzleSweeperAfter",
+      "cls": "NiagaraActor",
+      "location": [
+        -6400.0,
+        -12000.0,
+        1117.62
+      ]
+    },
+    {
+      "label": "MachineGunReview_ImpactBefore",
+      "cls": "NiagaraActor",
+      "location": [
+        -10000.0,
+        -9800.0,
+        1100.0
+      ]
+    },
+    {
+      "label": "MachineGunReview_ImpactAfter",
+      "cls": "NiagaraActor",
+      "location": [
+        -8200.0,
+        -9800.0,
+        1100.0
+      ]
+    },
+    {
+      "label": "MachineGunReview_TracerBefore",
+      "cls": "NiagaraActor",
+      "location": [
+        -10000.0,
+        -7600.0,
+        1000.0
+      ]
+    },
+    {
+      "label": "MachineGunReview_TracerAfter",
+      "cls": "NiagaraActor",
+      "location": [
+        -7500.0,
+        -7600.0,
+        1000.0
+      ]
+    },
+    {
+      "label": "MachineGunReview_Camera",
+      "cls": "CameraActor",
+      "location": [
+        -8500.0,
+        -16500.0,
+        8800.0
+      ]
+    },
+    {
+      "label": "MachineGunReview_Instructions",
+      "cls": "Note",
+      "location": [
+        -11200.0,
+        -13000.0,
+        1300.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_Ground",
+      "cls": "StaticMeshActor",
+      "location": [
+        -8500.0,
+        -400.0,
+        960.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_Sweeper_Center",
+      "cls": "StaticMeshActor",
+      "location": [
+        -10500.0,
+        -1000.0,
+        1785.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_Sweeper_Left5",
+      "cls": "StaticMeshActor",
+      "location": [
+        -10587.488663525924,
+        -1000.0,
+        1785.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_Sweeper_Right5",
+      "cls": "StaticMeshActor",
+      "location": [
+        -10412.511336474076,
+        -1000.0,
+        1785.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_Sweeper_Down5",
+      "cls": "StaticMeshActor",
+      "location": [
+        -10500.0,
+        -1000.0,
+        1697.511336474076
+      ]
+    },
+    {
+      "label": "MachineGunSpread_Sweeper_Up5",
+      "cls": "StaticMeshActor",
+      "location": [
+        -10500.0,
+        -1000.0,
+        1872.488663525924
+      ]
+    },
+    {
+      "label": "MachineGunSpread_Sweeper_DiameterHorizontal",
+      "cls": "StaticMeshActor",
+      "location": [
+        -10500.0,
+        0.0,
+        1785.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_Sweeper_DiameterVertical",
+      "cls": "StaticMeshActor",
+      "location": [
+        -10500.0,
+        0.0,
+        1785.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_Sweeper_Instructions",
+      "cls": "Note",
+      "location": [
+        -10500.0,
+        -2000.0,
+        1785.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_WM01_Center",
+      "cls": "StaticMeshActor",
+      "location": [
+        -7500.0,
+        -500.0,
+        1785.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_WM01_Left5",
+      "cls": "StaticMeshActor",
+      "location": [
+        -7631.232995288886,
+        -500.0,
+        1785.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_WM01_Right5",
+      "cls": "StaticMeshActor",
+      "location": [
+        -7368.767004711114,
+        -500.0,
+        1785.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_WM01_Down5",
+      "cls": "StaticMeshActor",
+      "location": [
+        -7500.0,
+        -500.0,
+        1653.767004711114
+      ]
+    },
+    {
+      "label": "MachineGunSpread_WM01_Up5",
+      "cls": "StaticMeshActor",
+      "location": [
+        -7500.0,
+        -500.0,
+        1916.232995288886
+      ]
+    },
+    {
+      "label": "MachineGunSpread_WM01_DiameterHorizontal",
+      "cls": "StaticMeshActor",
+      "location": [
+        -7500.0,
+        1000.0,
+        1785.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_WM01_DiameterVertical",
+      "cls": "StaticMeshActor",
+      "location": [
+        -7500.0,
+        1000.0,
+        1785.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_WM01_Instructions",
+      "cls": "Note",
+      "location": [
+        -7500.0,
+        -2000.0,
+        1785.0
+      ]
+    },
+    {
+      "label": "MachineGunSpread_PlayerInstructions",
+      "cls": "Note",
+      "location": [
+        -11700.0,
+        -2700.0,
+        1185.0
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "WM01_HomingMissile",
+      "range": 9600.0,
+      "source": "BasicAttack",
+      "multiplier": 3.200000047683716
+    }
+  ]
+}

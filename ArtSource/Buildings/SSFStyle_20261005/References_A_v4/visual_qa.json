@@ -1,0 +1,124 @@
+{
+  "version": "SSF_Reference_A_v4",
+  "review_date": "2026-10-05",
+  "reviewer": "Codex assistant",
+  "review_status": "reference_ready_for_user_A",
+  "user_approval_A": "pending",
+  "user_approval_B": "not_started",
+  "actual_images_inspected": [
+    {
+      "file": "QA/Buildings_1_AllViews.png",
+      "sha256": "46bd87f8770c90c33ff02a9a8f3a8f17a82d49210d69f7c313e6ef039fa9e5e0",
+      "pixels": [
+        2400,
+        1950
+      ],
+      "coverage": "AirBase、CloningCenter、CommandCenter，各效果/正/左/背，共12视图"
+    },
+    {
+      "file": "QA/Buildings_2_AllViews.png",
+      "sha256": "b5374ff5e22179d7e01586510b690a62354f32d9e26f31a53a8d2aa5c23a44c9",
+      "pixels": [
+        2400,
+        1950
+      ],
+      "coverage": "MilitaryFactory、Reactor、StrategyCenter，各效果/正/左/背，共12视图"
+    },
+    {
+      "file": "QA/Accessories_AllViews.png",
+      "sha256": "7ecff98d01bbccb5ce8adf39ce0529480fdc31e0def37d5e6e33a75ba0a001a7",
+      "pixels": [
+        2400,
+        2600
+      ],
+      "coverage": "Floor、Lamp、Light、Drone，各效果/正/左/背，共16视图"
+    },
+    {
+      "file": "Overview_Buildings.png",
+      "sha256": "44b00c4fe8acf7aba6adf2966f2d7b29836cfba7850ab50c7f0ffd1ed36e2c0f",
+      "pixels": [
+        3000,
+        2850
+      ],
+      "coverage": "六座不同浅色系总览"
+    },
+    {
+      "file": "Images/Drone_Top.png",
+      "sha256": "d6ab30c3f1b29f5a7ab17dec2e64e4d1db69571eb66dbbb88a664ef52acb03b3",
+      "pixels": [
+        2048,
+        2048
+      ],
+      "coverage": "无人机补充顶视"
+    },
+    {
+      "file": "Images/Floor_Top.png",
+      "sha256": "1e38e90f246505697b05d9cdf323dbb01a6d13eb7a099d3589b6f2c09bd475f6",
+      "pixels": [
+        2048,
+        2048
+      ],
+      "coverage": "平台补充顶视"
+    },
+    {
+      "file": "Assembly_Hero_A_v4.png",
+      "sha256": "5a46b241c1515fbd43f93b351a9824e16934b903fc0ff9e6f5a4c72dac29dafd",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "coverage": "原尺寸组合透视"
+    },
+    {
+      "file": "Assembly_Top_A_v4.png",
+      "sha256": "55799515ef35bdc43df46c1a9d2018d03eda0c4fc98e17ada4abd77aa3f34607",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "coverage": "原尺寸组合顶视"
+    },
+    {
+      "file": "Images/MilitaryFactory_Front.png",
+      "sha256": "4469d22112eb159cf00f7e385b8bc3d2ad907f6e15f29a4b6e8b04c87b5f1ead",
+      "pixels": [
+        2048,
+        2048
+      ],
+      "coverage": "单张2K正交与标注"
+    },
+    {
+      "file": "Sheets/StrategyCenter_Sheet_A_v4.png",
+      "sha256": "9b07216edb67a2e4ef0e95d0328248e66f987ef38e56cd039c11f394ecfbde42",
+      "pixels": [
+        4200,
+        4640
+      ],
+      "coverage": "完整四视图图板及标注"
+    }
+  ],
+  "coverage": {
+    "building_views": 24,
+    "accessory_views": 16,
+    "extra_top_views": 2,
+    "assembly_views": 2,
+    "six_buildings_and_four_props": true
+  },
+  "findings": [
+    "用户要求深色变浅已落实到主体、设备、框架、内部线、外轮廓及三档阴影；色值和提亮来源见palette_revision.json。",
+    "暖橙、浅粉、柔莓红、浅钢蓝、浅青绿、浅紫六套方向仍有区别；无人机、平台及灯具同步提亮。",
+    "实际源网格同机位出图，效果图与三视图的零件装配、轮廓、分色和可见结构保持一致，未发现新增视图结构冲突。",
+    "蓝灰线条较A_v3更柔和；内线仍能描述主要装甲接缝，规则曲面和机械层叠关系可见。",
+    "灯片仍为单面零厚度源网格；背面不虚构图案、左视为薄边，外框标示占地范围。",
+    "组合图按源尺寸排布，只作配色和尺寸关系参考。"
+  ],
+  "limitations": [
+    "这是以实际源网格生成的参考设计，未重制或减面；Freestyle结构线/外轮廓是参考表现，不等于已完成生产描边壳和线稿遮罩。",
+    "22个原动画、骨架及活动范围基线已留存；当前静态参考审核不替代成品动画兼容性、LOD、导出回读及UE验证。",
+    "浅色平台和浅蓝设备在组合图中部分色相接近；项目近景/战术/总览镜头的辨识度由B及UE实际预览继续检验。",
+    "Blender导入的UE Root对应Armature对象；生产版本须恢复并核验UE骨骼契约。"
+  ],
+  "production_modeling_started": false,
+  "new_lods_created": false,
+  "ue_formal_import_performed": false
+}

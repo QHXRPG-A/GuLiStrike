@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "changes": [
+    {
+      "table": "DT_GuLiStrikeCommander_UnitSkills",
+      "row": "WM01_Strafe",
+      "field": "RangeCentimeters",
+      "before": 3000.0,
+      "after": 12000.0
+    },
+    {
+      "table": "DT_GuLiStrikeSecondaryUnitSkills_Skills",
+      "row": "WM01_HomingMissile",
+      "field": "Note",
+      "before": "重防号Q；每圈最多60发，整台齐射不拆分，未分配单位留待下一Q；成功单位独立6秒冷却；共享引导圈半径8米，保留单弹3米预警；射程取最终普攻x3.2，落点在直径16米内随机。",
+      "after": "重防号Q；每圈最多60发，整台齐射不拆分，未分配单位留待下一Q；成功单位独立6秒冷却；共享引导圈半径8米，保留单弹3米预警；射程取最终普攻x2，基础240米（2026-10-01由96米x2.5），落点在直径16米内随机。"
+    },
+    {
+      "table": "DT_GuLiStrikeSecondaryUnitSkills_Skills",
+      "row": "WM01_HomingMissile",
+      "field": "RangeCentimeters",
+      "before": 9600.0,
+      "after": 24000.0
+    },
+    {
+      "table": "DT_GuLiStrikeSecondaryUnitSkills_Skills",
+      "row": "WM01_HomingMissile",
+      "field": "RangeMultiplier",
+      "before": 3.2,
+      "after": 2.0
+    },
+    {
+      "table": "DT_GuLiStrikeSecondaryWeapons_Projectiles",
+      "row": "WM01_Missile",
+      "field": "MaximumLifetimeSeconds",
+      "before": 8.0,
+      "after": 20.0
+    }
+  ],
+  "generated_headers_changed": false,
+  "compile_required": false,
+  "runtime_validation": "not_run"
+}

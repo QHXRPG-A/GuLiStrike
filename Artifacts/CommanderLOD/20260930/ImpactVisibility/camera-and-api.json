@@ -1,0 +1,36 @@
+{
+  "camera": {
+    "tier": "<GuLiCommanderCameraTier.OVERVIEW: 2>",
+    "actual_height_m": 6123.28759765625,
+    "target_height_m": 700.0,
+    "location": [
+      6437.438886764974,
+      48291.74089039933,
+      610403.3229734648
+    ],
+    "pitch": 82.67198944091797,
+    "actor_location": [
+      6437.438886764974,
+      48291.74089039933,
+      610403.3229734648
+    ]
+  },
+  "controller_methods": [
+    "find_camera_component_when_view_target",
+    "get_view_target",
+    "on_become_view_target",
+    "on_end_view_target",
+    "set_view_target_with_blend",
+    "smooth_target_view_rotation_speed"
+  ],
+  "qa_methods": [
+    "build_missile_fixture",
+    "fire_missile_fixture",
+    "missile_metrics"
+  ],
+  "spawn_doc": "X.spawn_system_at_location(world_context_object, system_template, location, rotation=[0.000000, 0.000000, 0.000000], scale=[1.000000, 1.000000, 1.000000], auto_destroy=True, auto_activate=True, pooling_method=NCPoolMethod.NONE, pre_cull_check=True) -> NiagaraComponent\r\nSpawns a Niagara System at the specified world location/rotation\r\n\r\nArgs:\r\n    world_context_object (Object): \r\n    system_template (NiagaraSystem): \r\n    location (Vector): \r\n    rotation (Rotator): \r\n    scale (Vector): \r\n    auto_destroy (bool): \r\n    auto_activate (bool): \r\n    pooling_method (NCPoolMethod): \r\n    pre_cull_check (bool): \r\n\r\nReturns:\r\n    NiagaraComponent: The spawned UNiagaraComponent",
+  "screenshot_doc": "X.take_high_res_screenshot(res_x, res_y, filename, camera=None, mask_enabled=False, capture_hdr=False, comparison_tolerance=ComparisonTolerance.LOW, comparison_notes=\"\", delay=0.000000, force_game_view=True) -> AutomationEditorTask\r\ntake high res screenshot in editor.\r\n\r\nArgs:\r\n    res_x (int32): \r\n    res_y (int32): \r\n    filename (str): \r\n    camera (CameraActor): \r\n    mask_enabled (bool): \r\n    capture_hdr (bool): \r\n    comparison_tolerance (ComparisonTolerance): \r\n    comparison_notes (str): \r\n    delay (float): \r\n    force_game_view (bool): \r\n\r\nReturns:\r\n    AutomationEditorTask:",
+  "maximum_visual_distance": 20000.0,
+  "compile": "Unexpected hover system",
+  "success": true
+}

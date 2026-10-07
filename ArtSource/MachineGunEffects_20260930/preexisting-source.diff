@@ -1,0 +1,209 @@
+diff --git a/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.h b/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.h
+index 479f6ade..84ca4045 100644
+--- a/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.h
++++ b/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.h
+@@ -76,10 +76,11 @@ public:
+ 	/** Native/test fallback used only when MotionProfileRow is empty. */
+ 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") FGuLiProjectileMotionSettings Motion;
+ 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") TSoftObjectPtr<UGuLiSpellFieldDefinition> ImpactField;
+-	/** Contains the missile mesh/bright core and flame/ribbon emitters; no replicated visual Actor. */
++	/** Per-projectile visual, also used while the production WM01 GPU resources are unavailable. */
+ 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") int32 FlightVfxId = 0;
+-	/** Shared spatial GPU batches. Enable only on the dedicated WM01 projectile asset. */
+-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") bool bUseMissileClusterRendering = false;
++	/** WM01's MissileLauncher profile always uses production GPU batches, in every game world. */
++	UFUNCTION(BlueprintPure, Category="Visual")
++	bool UsesMissileClusterRendering() const;
+ 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual", meta=(ClampMin="0", Units="s")) float TrailFadeSeconds = 0.5f;
+ 	/** Resolves the authoritative table profile; invalid authored rows never fall back. */
+ 	UFUNCTION(BlueprintPure, Category="Projectile")
+@@ -144,6 +145,7 @@ public:
+ 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire|Lighting", meta=(ClampMin="0", Units="cm")) float TracerLightRadius = 360.0f;
+ 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire|Lighting", meta=(ClampMin="0")) float TracerLightBrightness = 25.0f;
+ 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") FLinearColor GunfireTint = FLinearColor(1.0f, 0.72f, 0.32f);
++	/** Fallback range for non-commander views. Commander near/tactical visibility uses camera tiers. */
+ 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Scalability", meta=(ClampMin="100")) float MaximumVisualDistance = 20000.0f;
+ 	const FGuLiWeaponEffectMount* FindMount(int32 UnitTypeId, FName SlotId) const;
+ };
+diff --git a/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp b/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp
+index 0650ee53..2a63d667 100644
+--- a/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp
++++ b/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp
+@@ -1,9 +1,10 @@
+ #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
++#include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
++#include "Engine/World.h"
+ #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+ 
+ #include "Battle/Framework/GuLiBattlePlayerState.h"
+ #include "Battle/Combat/GuLiCombatDamageLedger.h"
+-#include "Engine/World.h"
+ #include "GameFramework/PlayerController.h"
+ #include "GameFramework/Pawn.h"
+ #include "NiagaraComponent.h"
+@@ -44,7 +45,7 @@ void UGuLiCombatEffectPresentationSubsystem::FreeLaserSlot(const int32 Slot)
+ void UGuLiCombatEffectPresentationSubsystem::ResetLaserPool()
+ {
+ 	for (auto& Block : LaserBlocks) if (IsValid(Block.Component))
+-	{ Block.Component->DeactivateImmediate(); Block.Component->ReleaseToPool(); }
++	{ Block.Component->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Block.Component); Block.Component->ReleaseToPool(); }
+ 	LaserBlocks.Reset(); FreeLaserSlots.Reset();
+ }
+ 
+@@ -81,7 +82,8 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
+ 			? FMath::Min(Now - GuLiCombatEffects::GroundProjectileStepSeconds, State.SampleTime) : Now;
+ 		const bool bReachedTerminal = bFinished && (!bGround || RenderTime >= State.SampleTime);
+ 		const float Age = FMath::Clamp(RenderTime - State.StartTime, 0.0f, State.EndTime - State.StartTime);
+-		const FVector Head = bReachedTerminal ? FVector(State.Location) : FVector(State.LaunchLocation) + FVector(State.Velocity) * Age;
++		const FVector Head = bReachedTerminal ? FVector(State.Location) : FVector(State.LaunchLocation) + FVector(State.Velocity) * Age
++			+ (bGround ? EvaluateLaunchVisualOffset(Visual, TEXT("BasicAttack"), RenderTime) : FVector::ZeroVector);
+ 		if (bGround && bReachedTerminal && !Visual.bActivationPlayed)
+ 		{
+ 			Visual.bActivationPlayed = true;
+@@ -96,7 +98,8 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
+ 		auto& Block = LaserBlocks[Visual.LaserSlot / LaserBlockSize]; const int32 Index = Visual.LaserSlot % LaserBlockSize;
+ 		const FVector Direction = FVector(State.LaunchDirection).GetSafeNormal();
+ 		const float AuthoredLength = Catalog->LaserLength * Block.BaseScale.X;
+-		const float Length = FMath::Min(AuthoredLength, static_cast<float>(FVector::Distance(Head, State.LaunchLocation)));
++		const float Length = FMath::Min(AuthoredLength, bGround ? float(FVector(State.Velocity).Size()) * Age
++			: static_cast<float>(FVector::Distance(Head, State.LaunchLocation)));
+ 		FLinearColor Tint = LocalTeam == EGuLiTeam::Unassigned ? FLinearColor::White
+ 			: (State.SourceTeam == LocalTeam
+ 				? (bGround ? Catalog->FriendlyGroundMachineGunTint : Catalog->FriendlyLaserTint)
+@@ -126,7 +129,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
+ 	{
+ 		if (!Block.bVisible)
+ 		{
+-			if (IsValid(Block.Component)) { Block.Component->DeactivateImmediate(); Block.Component->ReleaseToPool(); Block.Component = nullptr; }
++			if (IsValid(Block.Component)) { Block.Component->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Block.Component); Block.Component->ReleaseToPool(); Block.Component = nullptr; }
+ 			continue;
+ 		}
+ 		bool bActivate = false;
+@@ -138,6 +141,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
+ 			Block.Component = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), System, FVector::ZeroVector,
+ 				FRotator::ZeroRotator, FVector::OneVector, false, false, ENCPoolMethod::ManualRelease, false);
+ 			if (!Block.Component) continue;
++			if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(Block.Component);
+ 			Block.Component->SetCastShadow(false); bActivate = true;
+ 		}
+ 		using Arrays = UNiagaraDataInterfaceArrayFunctionLibrary;
+diff --git a/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h b/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h
+index 7c655546..9bc2e65b 100644
+--- a/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h
++++ b/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h
+@@ -17,6 +17,8 @@ struct FGuLiLocalCombatEffect
+ 	UPROPERTY() TObjectPtr<UNiagaraComponent> Waiting;
+ 	UPROPERTY() TObjectPtr<UNiagaraComponent> ActiveLoop;
+ 	FVector RenderLocation = FVector::ZeroVector;
++	FVector LaunchVisualOffset = FVector::ZeroVector;
++	bool bLaunchVisualOffsetResolved = false;
+ 	int32 NextGunShotOrdinal = 0;
+ 	int32 LaserSlot = INDEX_NONE;
+ 	float LaserMuzzleUntil = 0;
+@@ -131,7 +133,9 @@ public:
+ 	void UnregisterPoseResolver(EGuLiTargetKind Kind, const UObject* Owner);
+ 	using FMuzzleResolver = TFunction<bool(const FGuLiCombatShotCue&, FTransform&, float&)>;
+ 	using FShotObserver = TFunction<void(const FGuLiCombatShotCue&)>;
+-	void RegisterMuzzleResolver(EGuLiTargetKind Kind, UObject* Owner, FMuzzleResolver Resolver, FShotObserver Observer = {});
++	using FLaunchOffsetResolver = TFunction<bool(const FGuLiTargetHandle&, FName, const FVector&, FVector&)>;
++	void RegisterMuzzleResolver(EGuLiTargetKind Kind, UObject* Owner, FMuzzleResolver Resolver,
++		FShotObserver Observer = {}, FLaunchOffsetResolver LaunchOffset = {});
+ 	void UnregisterMuzzleResolver(EGuLiTargetKind Kind, const UObject* Owner);
+ 	/** Existing accepted shot cues supply cosmetic aim; no authority or network state is added. */
+ 	bool TryGetWeaponAim(const FGuLiTargetHandle& Source, FName SlotId, FVector& Target) const;
+@@ -143,7 +147,7 @@ public:
+ private:
+ 	friend class UGuLiRogueCardQALibrary;
+ 	struct FPoseProvider { TWeakObjectPtr<UObject> Owner; FPoseResolver Resolve; };
+-	struct FMuzzleProvider { TWeakObjectPtr<UObject> Owner; FMuzzleResolver Resolve; FShotObserver Observe; };
++	struct FMuzzleProvider { TWeakObjectPtr<UObject> Owner; FMuzzleResolver Resolve; FShotObserver Observe; FLaunchOffsetResolver LaunchOffset; };
+ 	struct FActiveMuzzleKey
+ 	{
+ 		FGuLiTargetHandle Source;
+@@ -177,6 +181,7 @@ private:
+ 	void ResetRogueUpgradePool();
+ 	void UpdateMechanicalMuzzles(float Now, bool bEnabled);
+ 	void ResetMechanicalMuzzles();
++	FVector EvaluateLaunchVisualOffset(FGuLiLocalCombatEffect& Visual, FName Slot, float RenderTime);
+ 	bool ResolvePose(const FGuLiTargetHandle& Target, FTransform& Transform, int32& UnitTypeId) const;
+ 	bool ResolveMuzzleTransform(const FGuLiCombatShotCue& Cue, FTransform& Transform, float& RenderTime) const;
+ 	bool ResolveMuzzlePosition(const FGuLiCombatShotCue& Cue, FVector& Position) const;
+@@ -186,6 +191,8 @@ private:
+ 	bool IsVisibleLocation(FVector Location) const;
+ 	void UpdateField(FGuLiLocalCombatEffect& Visual, float Now);
+ 	void UpdateGroundWarning(const FGuLiCombatEffectState& State, bool bEnabled);
++	void RemoveGuidanceMember(const FGuLiCombatEffectState& State);
++	void RefreshGuidanceWarning(const FGuid& BatchId, bool bEnabled);
+ 	void ResetVisuals();
+ 
+ 	UPROPERTY(Transient) TObjectPtr<UGuLiCombatEffectCatalog> Catalog;
+@@ -208,6 +215,8 @@ private:
+ 	TMap<EGuLiTargetKind, FMuzzleProvider> MuzzleProviders;
+ 	mutable TMap<FGuLiTargetHandle, TWeakObjectPtr<AActor>> ShipPoseCache;
+ 	TMap<FGuid, uint32> Tombstones;
++	/** IDs only; projectile Visuals own the frozen launch payload and lifetime. */
++	TMap<FGuid, TSet<FGuid>> GuidanceMembers;
+ 	TArray<FGuid> TombstoneOrder;
+ 	TSet<FGuid> SeenShots;
+ 	TArray<FGuid> ShotOrder;
+diff --git a/Source/GuLiStrike/Gameplay/CombatEffects/GuLiMechanicalMuzzlePresentation.cpp b/Source/GuLiStrike/Gameplay/CombatEffects/GuLiMechanicalMuzzlePresentation.cpp
+index b11cb1e1..f652539f 100644
+--- a/Source/GuLiStrike/Gameplay/CombatEffects/GuLiMechanicalMuzzlePresentation.cpp
++++ b/Source/GuLiStrike/Gameplay/CombatEffects/GuLiMechanicalMuzzlePresentation.cpp
+@@ -1,4 +1,6 @@
+ #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
++#include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
++#include "Engine/World.h"
+ 
+ #include "NiagaraComponent.h"
+ #include "NiagaraFunctionLibrary.h"
+@@ -6,10 +8,31 @@
+ #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
+ #include "Gameplay/Data/Generated/GuLiVfxIds.h"
+ 
++FVector UGuLiCombatEffectPresentationSubsystem::EvaluateLaunchVisualOffset(
++	FGuLiLocalCombatEffect& Visual, FName Slot, float RenderTime)
++{
++	constexpr float ConvergenceSeconds = .12f;
++	const float Age = RenderTime - Visual.State.StartTime;
++	if (Age < 0) return FVector::ZeroVector;
++	if (!Visual.bLaunchVisualOffsetResolved)
++	{
++		Visual.bLaunchVisualOffsetResolved = true;
++		if (Age < ConvergenceSeconds && Visual.State.Source.Kind == EGuLiTargetKind::CommanderSoldier)
++			if (const auto* Provider = MuzzleProviders.Find(Visual.State.Source.Kind);
++				Provider && Provider->Owner.IsValid() && Provider->LaunchOffset)
++				Provider->LaunchOffset(Visual.State.Source, Slot, Visual.State.LaunchLocation, Visual.LaunchVisualOffset);
++	}
++	// A terminal network state can arrive ahead of the buffered presentation clock.
++	// The caller handles the actual displayed impact; do not drop the offset early.
++	if (Age >= ConvergenceSeconds) return FVector::ZeroVector;
++	const float T = FMath::Clamp(Age / ConvergenceSeconds, 0.0f, 1.0f);
++	return Visual.LaunchVisualOffset * (1 - T*T*(3-2*T));
++}
++
+ void UGuLiCombatEffectPresentationSubsystem::ResetMechanicalMuzzles()
+ {
+ 	for (auto& Item : MechanicalMuzzles)
+-		if (IsValid(Item.Component)) { Item.Component->DeactivateImmediate(); Item.Component->ReleaseToPool(); }
++		if (IsValid(Item.Component)) { Item.Component->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Item.Component); Item.Component->ReleaseToPool(); }
+ 	MechanicalMuzzles.Reset();
+ 	LoadedMechanicalMuzzleSystem = nullptr;
+ }
+@@ -26,7 +49,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateMechanicalMuzzles(float Now,
+ 		if (!bEnabled || !bResolved || !IsVisibleLocation(Muzzle.GetLocation()) || Age > 1.0f
+ 			|| Now-Item.Cue.ServerTime > 2.0f || (Item.bStarted && (!IsValid(Item.Component) || Item.Component->IsComplete())))
+ 		{
+-			if (IsValid(Item.Component)) { Item.Component->DeactivateImmediate(); Item.Component->ReleaseToPool(); }
++			if (IsValid(Item.Component)) { Item.Component->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Item.Component); Item.Component->ReleaseToPool(); }
+ 			MechanicalMuzzles.RemoveAtSwap(Index, 1, EAllowShrinking::No);
+ 			continue;
+ 		}
+@@ -41,6 +64,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateMechanicalMuzzles(float Now,
+ 				LoadedMechanicalMuzzleSystem, Muzzle.GetLocation(), Muzzle.Rotator(), GuLiVfx::Scale(this, GuLiVfxIds::MachineGunImpact),
+ 				false, false, ENCPoolMethod::ManualRelease, false) : nullptr;
+ 			Item.bStarted = true;
++			if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(Item.Component);
+ 			if (Item.Component) { Item.Component->SetCastShadow(false); Item.Component->Activate(true); ++Counters.BurstsPlayed; }
+ 		}
+ 		if (IsValid(Item.Component))

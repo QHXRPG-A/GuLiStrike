@@ -1,0 +1,11443 @@
+{
+  "API": {
+    "commit_weights_to_skeletal_mesh": "x.commit_weights_to_skeletal_mesh() -> bool\r\nActually applies the weight modifications to the skeletal mesh. This action creates an undo transaction.\nThe skeletal mesh asset will be dirtied, but it is up to the user to save the asset if required.\r\n\r\nReturns:\r\n    bool: true if weights were applied to a skeletal mesh, false otherwise",
+    "get_skeletal_mesh": "x.get_skeletal_mesh() -> SkeletalMesh\r\nGet a reference to the skeletal mesh that was loaded\r\n\r\nReturns:\r\n    SkeletalMesh: USkeletalMesh* - the mesh that was loaded, or null",
+    "get_vertex_weights": "x.get_vertex_weights(vertex_id) -> Map[Name, float]\r\nGet all bone weights for a single vertex.\r\n\r\nArgs:\r\n    vertex_id (int32): the index of the vertex\r\n\r\nReturns:\r\n    Map[Name, float]: a map of Bone Name to weight values for all bones that influence the specified vertex.",
+    "normalize_all_weights": "x.normalize_all_weights() -> bool\r\nNormalize weights on all vertices in the mesh.\r\n\r\nReturns:\r\n    bool: true if normalization was performed, false otherwise",
+    "normalize_vertex_weights": "x.normalize_vertex_weights(vertex_id) -> bool\r\nNormalize weights on the specified vertex.\r\n\r\nArgs:\r\n    vertex_id (int32): the index of the vertex to normalize weights on\r\n\r\nReturns:\r\n    bool: true if normalization was performed, false otherwise",
+    "prune_all_weights": "x.prune_all_weights(weight_threshold) -> bool\r\nRemove all weights below the given threshold value, on all vertices.\r\n\r\nArgs:\r\n    weight_threshold (float): vertex weights below this value will be removed.\r\n\r\nReturns:\r\n    bool: true if influences were removed, false otherwise",
+    "prune_vertex_weights": "x.prune_vertex_weights(vertex_id, weight_threshold) -> bool\r\nRemove all weights below the given threshold value, on the given vertex.\nInfluences that are pruned will no longer receive weight from normalization.\r\n\r\nArgs:\r\n    vertex_id (int32): the index of the vertex to prune weights on\r\n    weight_threshold (float): vertex weights below this value will be removed.\r\n\r\nReturns:\r\n    bool: true if influences were removed, false otherwise",
+    "set_skeletal_mesh": "x.set_skeletal_mesh(mesh) -> bool\r\nCall this first to load the weights for a skeletal mesh for fast editing.\r\n\r\nArgs:\r\n    mesh (SkeletalMesh): The skeletal mesh asset to load for weight editing\r\n\r\nReturns:\r\n    bool: bool - true if the mesh weights were successfully loaded.",
+    "set_vertex_weights": "x.set_vertex_weights(vertex_id, weights, replace_all=False) -> bool\r\nSet bone weights for a single vertex. The weights are stored as supplied and not normalized until\neither \"CommitWeightsToSkeletalMesh()\" or \"NormalizeVertexWeights()\" is called.\r\n\r\nArgs:\r\n    vertex_id (int32): the index of the vertex\r\n    weights (Map[Name, float]): a map of Bone-Name to Weight for all bones that influence the specified vertex, ie {\"Head\": 0.6, \"Neck\": 0.4}\r\n    replace_all (bool): if true, all weights on this vertex will be replaced with the input weights. Default is false.\r\n\r\nReturns:\r\n    bool:"
+  },
+  "weights": [
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh30": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh046": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh050": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh26": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh27": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "polymsh29": 1.0
+    },
+    {
+      "cube124": 1.0
+    },
+    {
+      "cube124": 1.0
+    },
+    {
+      "cube124": 1.0
+    },
+    {
+      "cube124": 1.0
+    },
+    {
+      "cube124": 1.0
+    },
+    {
+      "cube124": 1.0
+    },
+    {
+      "cube124": 1.0
+    },
+    {
+      "cube124": 1.0
+    },
+    {
+      "cube124": 1.0
+    },
+    {
+      "cube124": 1.0
+    },
+    {
+      "cube124": 1.0
+    },
+    {
+      "cube124": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "cube122": 1.0
+    },
+    {
+      "cube122": 1.0
+    },
+    {
+      "cube122": 1.0
+    },
+    {
+      "cube122": 1.0
+    },
+    {
+      "cube122": 1.0
+    },
+    {
+      "cube122": 1.0
+    },
+    {
+      "cube122": 1.0
+    },
+    {
+      "cube122": 1.0
+    },
+    {
+      "cube122": 1.0
+    },
+    {
+      "cube122": 1.0
+    },
+    {
+      "cube122": 1.0
+    },
+    {
+      "cube122": 1.0
+    },
+    {
+      "cube130": 1.0
+    },
+    {
+      "cube130": 1.0
+    },
+    {
+      "cube130": 1.0
+    },
+    {
+      "cube130": 1.0
+    },
+    {
+      "cube130": 1.0
+    },
+    {
+      "cube130": 1.0
+    },
+    {
+      "cube130": 1.0
+    },
+    {
+      "cube130": 1.0
+    },
+    {
+      "cube130": 1.0
+    },
+    {
+      "cube130": 1.0
+    },
+    {
+      "cube130": 1.0
+    },
+    {
+      "cube130": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "cube129": 1.0
+    },
+    {
+      "cube129": 1.0
+    },
+    {
+      "cube129": 1.0
+    },
+    {
+      "cube129": 1.0
+    },
+    {
+      "cube129": 1.0
+    },
+    {
+      "cube129": 1.0
+    },
+    {
+      "cube129": 1.0
+    },
+    {
+      "cube129": 1.0
+    },
+    {
+      "cube129": 1.0
+    },
+    {
+      "cube129": 1.0
+    },
+    {
+      "cube129": 1.0
+    },
+    {
+      "cube129": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "polymsh17": 1.0
+    },
+    {
+      "cube7": 1.0
+    },
+    {
+      "cube7": 1.0
+    },
+    {
+      "cube7": 1.0
+    },
+    {
+      "cube7": 1.0
+    },
+    {
+      "cube7": 1.0
+    },
+    {
+      "cube7": 1.0
+    },
+    {
+      "cube7": 1.0
+    },
+    {
+      "cube7": 1.0
+    },
+    {
+      "cube7": 1.0
+    },
+    {
+      "cube7": 1.0
+    },
+    {
+      "cube7": 1.0
+    },
+    {
+      "cube7": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "cube6": 1.0
+    },
+    {
+      "cube6": 1.0
+    },
+    {
+      "cube6": 1.0
+    },
+    {
+      "cube6": 1.0
+    },
+    {
+      "cube6": 1.0
+    },
+    {
+      "cube6": 1.0
+    },
+    {
+      "cube6": 1.0
+    },
+    {
+      "cube6": 1.0
+    },
+    {
+      "cube6": 1.0
+    },
+    {
+      "cube6": 1.0
+    },
+    {
+      "cube6": 1.0
+    },
+    {
+      "cube6": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "polymsh051": 1.0
+    },
+    {
+      "cube132": 1.0
+    },
+    {
+      "cube132": 1.0
+    },
+    {
+      "cube132": 1.0
+    },
+    {
+      "cube132": 1.0
+    },
+    {
+      "cube132": 1.0
+    },
+    {
+      "cube132": 1.0
+    },
+    {
+      "cube132": 1.0
+    },
+    {
+      "cube132": 1.0
+    },
+    {
+      "cube132": 1.0
+    },
+    {
+      "cube132": 1.0
+    },
+    {
+      "cube132": 1.0
+    },
+    {
+      "cube132": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "cube131": 1.0
+    },
+    {
+      "cube131": 1.0
+    },
+    {
+      "cube131": 1.0
+    },
+    {
+      "cube131": 1.0
+    },
+    {
+      "cube131": 1.0
+    },
+    {
+      "cube131": 1.0
+    },
+    {
+      "cube131": 1.0
+    },
+    {
+      "cube131": 1.0
+    },
+    {
+      "cube131": 1.0
+    },
+    {
+      "cube131": 1.0
+    },
+    {
+      "cube131": 1.0
+    },
+    {
+      "cube131": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "polymsh38": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube74": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube85": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube81": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "cube100": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube102": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Cube103": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object004": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object003": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "Object002": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "cube113": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube114": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Cube115": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "Object001": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh42": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh41": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "polymsh_detached2": 1.0
+    },
+    {
+      "polymsh_detached2": 1.0
+    },
+    {
+      "polymsh_detached2": 1.0
+    },
+    {
+      "polymsh_detached2": 1.0
+    },
+    {
+      "polymsh_detached2": 1.0
+    },
+    {
+      "polymsh_detached2": 1.0
+    },
+    {
+      "polymsh_detached2": 1.0
+    },
+    {
+      "polymsh_detached2": 1.0
+    },
+    {
+      "polymsh_detached2": 1.0
+    },
+    {
+      "polymsh_detached2": 1.0
+    },
+    {
+      "polymsh_detached2": 1.0
+    },
+    {
+      "polymsh_detached2": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "Cube112": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "cube110": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "Cube109": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "cube107": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "polymsh40": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube111": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "Cube108": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube22": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "cube45": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "Anten0": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "polymsh43": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "cube48": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "polymsh44": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "polymsh_detached4": 1.0
+    },
+    {
+      "polymsh_detached4": 1.0
+    },
+    {
+      "polymsh_detached4": 1.0
+    },
+    {
+      "polymsh_detached4": 1.0
+    },
+    {
+      "polymsh_detached4": 1.0
+    },
+    {
+      "polymsh_detached4": 1.0
+    },
+    {
+      "polymsh_detached4": 1.0
+    },
+    {
+      "polymsh_detached4": 1.0
+    },
+    {
+      "polymsh_detached5": 1.0
+    },
+    {
+      "polymsh_detached5": 1.0
+    },
+    {
+      "polymsh_detached5": 1.0
+    },
+    {
+      "polymsh_detached5": 1.0
+    },
+    {
+      "polymsh_detached5": 1.0
+    },
+    {
+      "polymsh_detached5": 1.0
+    },
+    {
+      "polymsh_detached5": 1.0
+    },
+    {
+      "polymsh_detached5": 1.0
+    },
+    {
+      "Logo1": 1.0
+    },
+    {
+      "Logo1": 1.0
+    },
+    {
+      "Logo1": 1.0
+    },
+    {
+      "Logo1": 1.0
+    },
+    {
+      "Logo2": 1.0
+    },
+    {
+      "Logo2": 1.0
+    },
+    {
+      "Logo2": 1.0
+    },
+    {
+      "Logo2": 1.0
+    },
+    {
+      "Logo2": 1.0
+    },
+    {
+      "Logo2": 1.0
+    },
+    {
+      "Logo2": 1.0
+    },
+    {
+      "Logo2": 1.0
+    },
+    {
+      "Logo2": 1.0
+    },
+    {
+      "Logo3": 1.0
+    },
+    {
+      "Logo3": 1.0
+    },
+    {
+      "Logo3": 1.0
+    },
+    {
+      "Logo3": 1.0
+    },
+    {
+      "Logo3": 1.0
+    },
+    {
+      "Logo3": 1.0
+    },
+    {
+      "Logo3": 1.0
+    },
+    {
+      "Logo3": 1.0
+    },
+    {
+      "Logo3": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh23": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh22": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "polymsh39": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "cube16": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh19": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "polymsh052": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "cube30": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh045": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "polymsh049": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    },
+    {
+      "cube31": 1.0
+    }
+  ],
+  "bones": [
+    {
+      "name": "Root",
+      "parent": ""
+    },
+    {
+      "name": "polymsh22",
+      "parent": "Root"
+    },
+    {
+      "name": "polymsh23",
+      "parent": "Root"
+    },
+    {
+      "name": "polymsh26",
+      "parent": "Root"
+    },
+    {
+      "name": "polymsh27",
+      "parent": "Root"
+    },
+    {
+      "name": "polymsh29",
+      "parent": "Root"
+    },
+    {
+      "name": "polymsh30",
+      "parent": "Root"
+    },
+    {
+      "name": "polymsh43",
+      "parent": "Root"
+    },
+    {
+      "name": "polymsh44",
+      "parent": "Root"
+    },
+    {
+      "name": "Bone001",
+      "parent": "Root"
+    },
+    {
+      "name": "Bone002",
+      "parent": "Bone001"
+    },
+    {
+      "name": "cube124",
+      "parent": "Bone002"
+    },
+    {
+      "name": "Bone003",
+      "parent": "Bone002"
+    },
+    {
+      "name": "polymsh046",
+      "parent": "Bone003"
+    },
+    {
+      "name": "Logo2",
+      "parent": "polymsh046"
+    },
+    {
+      "name": "polymsh045",
+      "parent": "Bone002"
+    },
+    {
+      "name": "cube122",
+      "parent": "Bone001"
+    },
+    {
+      "name": "Bone004",
+      "parent": "Root"
+    },
+    {
+      "name": "Bone005",
+      "parent": "Bone004"
+    },
+    {
+      "name": "Bone006",
+      "parent": "Bone005"
+    },
+    {
+      "name": "polymsh050",
+      "parent": "Bone006"
+    },
+    {
+      "name": "Logo3",
+      "parent": "polymsh050"
+    },
+    {
+      "name": "cube130",
+      "parent": "Bone005"
+    },
+    {
+      "name": "polymsh049",
+      "parent": "Bone005"
+    },
+    {
+      "name": "cube129",
+      "parent": "Bone004"
+    },
+    {
+      "name": "Bone007",
+      "parent": "Root"
+    },
+    {
+      "name": "Bone008",
+      "parent": "Bone007"
+    },
+    {
+      "name": "Bone009",
+      "parent": "Bone008"
+    },
+    {
+      "name": "polymsh17",
+      "parent": "Bone009"
+    },
+    {
+      "name": "cube7",
+      "parent": "Bone008"
+    },
+    {
+      "name": "polymsh19",
+      "parent": "Bone008"
+    },
+    {
+      "name": "cube6",
+      "parent": "Bone007"
+    },
+    {
+      "name": "Bone010",
+      "parent": "Root"
+    },
+    {
+      "name": "Bone011",
+      "parent": "Bone010"
+    },
+    {
+      "name": "Bone012",
+      "parent": "Bone011"
+    },
+    {
+      "name": "polymsh051",
+      "parent": "Bone012"
+    },
+    {
+      "name": "cube132",
+      "parent": "Bone011"
+    },
+    {
+      "name": "polymsh052",
+      "parent": "Bone011"
+    },
+    {
+      "name": "cube131",
+      "parent": "Bone010"
+    },
+    {
+      "name": "Base",
+      "parent": "Root"
+    },
+    {
+      "name": "polymsh38",
+      "parent": "Base"
+    },
+    {
+      "name": "cube22",
+      "parent": "Base"
+    },
+    {
+      "name": "cube30",
+      "parent": "Base"
+    },
+    {
+      "name": "cube31",
+      "parent": "Base"
+    },
+    {
+      "name": "BoneAnten1",
+      "parent": "Base"
+    },
+    {
+      "name": "cube74",
+      "parent": "BoneAnten1"
+    },
+    {
+      "name": "BoneAnten2",
+      "parent": "BoneAnten1"
+    },
+    {
+      "name": "cube85",
+      "parent": "BoneAnten2"
+    },
+    {
+      "name": "cube81",
+      "parent": "BoneAnten2"
+    },
+    {
+      "name": "cube48",
+      "parent": "Base"
+    },
+    {
+      "name": "Logo1",
+      "parent": "cube48"
+    },
+    {
+      "name": "cube100",
+      "parent": "Base"
+    },
+    {
+      "name": "Cube102",
+      "parent": "Base"
+    },
+    {
+      "name": "Cube103",
+      "parent": "Base"
+    },
+    {
+      "name": "Object004",
+      "parent": "Base"
+    },
+    {
+      "name": "Object003",
+      "parent": "Base"
+    },
+    {
+      "name": "Object002",
+      "parent": "Base"
+    },
+    {
+      "name": "cube113",
+      "parent": "Base"
+    },
+    {
+      "name": "Cube114",
+      "parent": "Base"
+    },
+    {
+      "name": "Cube115",
+      "parent": "Base"
+    },
+    {
+      "name": "Object001",
+      "parent": "Base"
+    },
+    {
+      "name": "polymsh_detached4",
+      "parent": "Base"
+    },
+    {
+      "name": "polymsh_detached5",
+      "parent": "Base"
+    },
+    {
+      "name": "polymsh42",
+      "parent": "Base"
+    },
+    {
+      "name": "polymsh41",
+      "parent": "Base"
+    },
+    {
+      "name": "polymsh39",
+      "parent": "Base"
+    },
+    {
+      "name": "cube16",
+      "parent": "Base"
+    },
+    {
+      "name": "polymsh_detached2",
+      "parent": "Base"
+    },
+    {
+      "name": "Cube112",
+      "parent": "Base"
+    },
+    {
+      "name": "cube110",
+      "parent": "Base"
+    },
+    {
+      "name": "Cube109",
+      "parent": "Base"
+    },
+    {
+      "name": "cube107",
+      "parent": "Base"
+    },
+    {
+      "name": "cube45",
+      "parent": "Base"
+    },
+    {
+      "name": "polymsh40",
+      "parent": "Base"
+    },
+    {
+      "name": "Cube111",
+      "parent": "Base"
+    },
+    {
+      "name": "Cube108",
+      "parent": "Base"
+    },
+    {
+      "name": "BoneAnten0",
+      "parent": "Base"
+    },
+    {
+      "name": "Anten0",
+      "parent": "BoneAnten0"
+    }
+  ],
+  "factory_compressed_rotations": [
+    {
+      "name": "Root",
+      "source": "(Rotation=(X=-0.707107,Y=0.000000,Z=0.000000,W=0.707107),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=0.000000,W=0.707107),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+    },
+    {
+      "name": "BoneBlockB",
+      "source": "(Rotation=(X=-0.707107,Y=-0.000000,Z=-0.000001,W=0.707107),Translation=(X=-0.000313,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=0.707107,Y=0.000000,Z=0.000000,W=-0.707107),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+    },
+    {
+      "name": "Antenna1",
+      "source": "(Rotation=(X=-0.707107,Y=-0.000000,Z=-0.000001,W=0.707107),Translation=(X=126.652024,Y=-263.004653,Z=660.609651),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=126.653412,Y=-263.004504,Z=660.609504),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Antenna2",
+      "source": "(Rotation=(X=-0.707107,Y=-0.000000,Z=-0.000001,W=0.707107),Translation=(X=124.614852,Y=-332.611489,Z=663.979618),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=124.616272,Y=-332.611371,Z=663.979484),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Antenna3",
+      "source": "(Rotation=(X=-0.561264,Y=0.430371,Z=-0.430204,W=0.560971),Translation=(X=-160.150103,Y=-300.883571,Z=673.517356),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.560986,Y=0.430459,Z=-0.430459,W=0.560985),Translation=(X=-160.152832,Y=-300.883165,Z=673.516172),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Damper_L1",
+      "source": "(Rotation=(X=0.706928,Y=-0.015911,Z=-0.015911,W=-0.706928),Translation=(X=201.677142,Y=-520.809694,Z=611.956842),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.706928,Y=0.015912,Z=0.015911,W=0.706928),Translation=(X=201.678558,Y=-520.809523,Z=611.956624),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Damper_L2",
+      "source": "(Rotation=(X=-0.670027,Y=0.225914,Z=0.230477,W=0.668511),Translation=(X=177.672961,Y=-520.809380,Z=611.957051),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.670070,Y=0.225981,Z=0.230453,W=0.668454),Translation=(X=177.674377,Y=-520.809523,Z=611.956624),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Damper_L3",
+      "source": "(Rotation=(X=0.709486,Y=0.008170,Z=0.002360,W=-0.704668),Translation=(X=153.668811,Y=-520.809676,Z=611.956772),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.709486,Y=-0.008170,Z=-0.002359,W=0.704668),Translation=(X=153.670227,Y=-520.809523,Z=611.956624),Scale3D=(X=0.393701,Y=0.393701,Z=0.393700))"
+    },
+    {
+      "name": "Damper_L4",
+      "source": "(Rotation=(X=-0.677738,Y=0.201576,Z=0.200811,W=0.678021),Translation=(X=129.664630,Y=-520.808018,Z=611.959666),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.677730,Y=0.201589,Z=0.200813,W=0.678026),Translation=(X=129.666046,Y=-520.809523,Z=611.956624),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Damper_R1",
+      "source": "(Rotation=(X=0.707105,Y=-0.001487,Z=-0.001487,W=-0.707105),Translation=(X=-126.703986,Y=-521.713254,Z=612.698057),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707105,Y=0.001488,Z=0.001488,W=0.707105),Translation=(X=-126.702568,Y=-521.713210,Z=612.698323),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Damper_R2",
+      "source": "(Rotation=(X=0.707034,Y=0.010135,Z=0.010135,W=-0.707034),Translation=(X=-153.807935,Y=-520.809556,Z=611.956319),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707034,Y=-0.010134,Z=-0.010134,W=0.707034),Translation=(X=-153.806519,Y=-520.809523,Z=611.956624),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Damper_R3",
+      "source": "(Rotation=(X=0.707064,Y=0.007739,Z=0.007740,W=-0.707065),Translation=(X=-177.812085,Y=-520.809547,Z=611.956283),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707064,Y=-0.007739,Z=-0.007739,W=0.707064),Translation=(X=-177.810669,Y=-520.809523,Z=611.956624),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Damper_R4",
+      "source": "(Rotation=(X=-0.649893,Y=-0.278673,Z=-0.278601,W=0.649894),Translation=(X=-201.815930,Y=-520.811064,Z=611.952647),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.649885,Y=-0.278657,Z=-0.278657,W=0.649885),Translation=(X=-201.814819,Y=-520.809523,Z=611.956624),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "ElectronicUnit_L",
+      "source": "(Rotation=(X=0.707107,Y=0.000000,Z=0.000001,W=-0.707107),Translation=(X=122.057494,Y=-296.339954,Z=600.947650),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=122.058807,Y=-296.339816,Z=600.947515),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "ElectronicUnit_R",
+      "source": "(Rotation=(X=0.707107,Y=0.000000,Z=0.000001,W=-0.707107),Translation=(X=-120.290722,Y=-296.339863,Z=608.471402),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-120.289398,Y=-296.339817,Z=608.471624),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "PartStructure1",
+      "source": "(Rotation=(X=0.707107,Y=0.000000,Z=0.000001,W=-0.707107),Translation=(X=-0.001967,Y=-184.418306,Z=397.333088),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-0.000997,Y=-184.418246,Z=397.333116),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "PartStructure2",
+      "source": "(Rotation=(X=0.707107,Y=0.000000,Z=0.000001,W=-0.707107),Translation=(X=-0.002192,Y=41.685449,Z=609.337726),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-0.000997,Y=41.685541,Z=609.337720),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Pipe_L",
+      "source": "(Rotation=(X=0.707107,Y=0.000000,Z=0.000001,W=-0.707107),Translation=(X=138.279281,Y=-472.422048,Z=461.248254),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=138.280457,Y=-472.421924,Z=461.248121),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Pipe_R",
+      "source": "(Rotation=(X=0.707107,Y=0.000000,Z=0.000001,W=-0.707107),Translation=(X=-138.281632,Y=-472.421940,Z=461.247846),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-138.280457,Y=-472.421924,Z=461.248121),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Tube1",
+      "source": "(Rotation=(X=0.706871,Y=0.018254,Z=0.018254,W=-0.706871),Translation=(X=218.177495,Y=148.108113,Z=527.469807),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.706871,Y=-0.018253,Z=-0.018253,W=0.706871),Translation=(X=218.178528,Y=148.108278,Z=527.469463),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Tube2",
+      "source": "(Rotation=(X=0.706564,Y=-0.027707,Z=-0.027706,W=-0.706564),Translation=(X=219.622569,Y=-113.353319,Z=527.469533),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.706564,Y=0.027707,Z=0.027707,W=0.706564),Translation=(X=219.623901,Y=-113.353124,Z=527.469166),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Tube3",
+      "source": "(Rotation=(X=0.706751,Y=-0.022424,Z=-0.022424,W=-0.706751),Translation=(X=-220.445567,Y=146.987312,Z=527.469160),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.706751,Y=0.022424,Z=0.022424,W=0.706751),Translation=(X=-220.444366,Y=146.987306,Z=527.469463),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Tube4",
+      "source": "(Rotation=(X=0.706865,Y=0.018468,Z=0.018468,W=-0.706866),Translation=(X=-219.232457,Y=-112.588806,Z=527.468948),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.706865,Y=-0.018468,Z=-0.018468,W=0.706866),Translation=(X=-219.231323,Y=-112.588842,Z=527.469288),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "BoneBlockA",
+      "source": "(Rotation=(X=-0.707107,Y=0.000000,Z=0.000000,W=0.707107),Translation=(X=0.000000,Y=0.000103,Z=0.000565),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=0.707107,Y=0.000000,Z=0.000000,W=-0.707107),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+    },
+    {
+      "name": "MainBlock",
+      "source": "(Rotation=(X=-0.707107,Y=0.000000,Z=0.000000,W=0.707107),Translation=(X=0.000000,Y=0.000103,Z=0.000565),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "DoorPart1",
+      "source": "(Rotation=(X=-0.707107,Y=0.000011,Z=-0.000010,W=0.707107),Translation=(X=-0.001015,Y=481.306373,Z=53.065487),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-0.001033,Y=481.306249,Z=53.065065),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "DoorPart2",
+      "source": "(Rotation=(X=-0.707292,Y=0.000085,Z=0.000005,W=0.706922),Translation=(X=-0.000913,Y=475.054378,Z=160.024371),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-0.000977,Y=475.054305,Z=160.024251),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "DoorPart3",
+      "source": "(Rotation=(X=-0.707107,Y=0.000046,Z=-0.000046,W=0.707107),Translation=(X=-0.000902,Y=468.097703,Z=266.984823),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-0.001007,Y=468.097680,Z=266.983651),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "DoorPart4",
+      "source": "(Rotation=(X=-0.707080,Y=-0.000036,Z=0.000036,W=0.707134),Translation=(X=-0.000820,Y=460.436376,Z=373.945869),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-0.000977,Y=460.436343,Z=373.942929),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "CivilBlock_L",
+      "source": "(Rotation=(X=-0.707080,Y=0.000819,Z=0.000816,W=0.707133),Translation=(X=338.133891,Y=17.176217,Z=96.686530),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=338.133850,Y=17.176195,Z=96.685335),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "CivilBlock_M",
+      "source": "(Rotation=(X=-0.707107,Y=0.000000,Z=0.000000,W=0.707107),Translation=(X=-0.001061,Y=419.134733,Z=559.319768),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-0.001298,Y=419.134735,Z=559.318087),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Logo",
+      "source": "(Rotation=(X=-0.000000,Y=-0.000000,Z=-0.000000,W=-1.000000),Translation=(X=-0.001015,Y=419.134751,Z=629.660032),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=0.000000,Y=0.000000,Z=0.000000,W=-1.000000),Translation=(X=-0.001312,Y=419.134769,Z=629.658261),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))"
+    },
+    {
+      "name": "CivilBlock_R",
+      "source": "(Rotation=(X=-0.707102,Y=0.000306,Z=0.000306,W=0.707112),Translation=(X=-338.132772,Y=17.176257,Z=96.688617),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-338.133850,Y=17.176195,Z=96.685335),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Container_R",
+      "source": "(Rotation=(X=-0.707106,Y=-0.000480,Z=-0.000480,W=0.707107),Translation=(X=-97.569415,Y=-559.428271,Z=209.486070),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-97.569496,Y=-559.428762,Z=209.486805),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Container_L",
+      "source": "(Rotation=(X=-0.707107,Y=-0.000140,Z=0.000150,W=0.707107),Translation=(X=97.569699,Y=-559.429797,Z=209.487284),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=97.569489,Y=-559.428762,Z=209.486805),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "RoboLeg_L2",
+      "source": "(Rotation=(X=-0.706941,Y=0.000109,Z=0.000006,W=0.707272),Translation=(X=-346.316881,Y=472.436572,Z=104.882547),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-346.315430,Y=472.436519,Z=104.881952),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "RoboLeg_R2",
+      "source": "(Rotation=(X=0.707107,Y=-0.000000,Z=-0.000000,W=-0.707107),Translation=(X=346.315474,Y=472.436602,Z=104.882459),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=346.315430,Y=472.436519,Z=104.881952),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "RoboLeg_R1",
+      "source": "(Rotation=(X=0.707107,Y=-0.000000,Z=-0.000000,W=-0.707107),Translation=(X=346.315535,Y=-441.610492,Z=104.882041),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=346.315491,Y=-441.610576,Z=104.881706),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "RoboLeg_L1",
+      "source": "(Rotation=(X=-0.707107,Y=-0.000261,Z=-0.000125,W=0.707107),Translation=(X=-346.314470,Y=-441.610370,Z=104.880930),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-346.315491,Y=-441.610576,Z=104.881706),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Light1",
+      "source": "(Rotation=(X=-0.706738,Y=0.000336,Z=-0.000103,W=0.707475),Translation=(X=316.391241,Y=348.735710,Z=590.587548),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=316.390991,Y=348.735687,Z=590.584732),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Light2",
+      "source": "(Rotation=(X=-0.707219,Y=-0.000394,Z=0.000287,W=0.706994),Translation=(X=278.168097,Y=-346.742374,Z=590.586132),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=278.167847,Y=-346.742275,Z=590.584957),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Light3",
+      "source": "(Rotation=(X=-0.706987,Y=0.000191,Z=0.000110,W=0.707227),Translation=(X=-316.388757,Y=348.735679,Z=590.587205),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-316.390991,Y=348.735687,Z=590.584732),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Light4",
+      "source": "(Rotation=(X=-0.707265,Y=-0.000152,Z=0.000067,W=0.706948),Translation=(X=-278.163202,Y=-346.741947,Z=590.586551),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-278.167847,Y=-346.742275,Z=590.584957),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Vent_L",
+      "source": "(Rotation=(X=-0.707107,Y=0.000000,Z=0.000000,W=0.707107),Translation=(X=315.859673,Y=16.774114,Z=559.434162),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=315.859436,Y=16.774055,Z=559.433789),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    },
+    {
+      "name": "Vent_R",
+      "source": "(Rotation=(X=-0.707107,Y=0.000128,Z=0.000128,W=0.707107),Translation=(X=-315.859199,Y=16.774053,Z=559.432659),Scale3D=(X=1.000000,Y=1.000000,Z=1.000000))",
+      "copy": "(Rotation=(X=-0.707107,Y=0.000000,Z=-0.000000,W=0.707107),Translation=(X=-315.859436,Y=16.774055,Z=559.433789),Scale3D=(X=0.393701,Y=0.393701,Z=0.393701))"
+    }
+  ]
+}

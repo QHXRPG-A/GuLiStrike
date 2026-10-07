@@ -1,0 +1,45 @@
+{
+  "success": true,
+  "saved_assets": [],
+  "target_assets": [],
+  "source_available": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "engine": "5.7.4-0+UE5",
+  "APIs": {
+    "SkeletalMeshEditorSubsystem": {
+      "import_lod": "X.import_lod(base_mesh, lod_index, source_filename) -> int32\r\nImport or re-import a LOD into the specified base mesh. If the LOD do not exist it will import it and add it to the base static mesh. If the LOD already exist it will re-import the specified LOD.\r\n\r\nArgs:\r\n    base_mesh (SkeletalMesh): \r\n    lod_index (int32): \r\n    source_filename (str): \r\n\r\nReturns:\r\n    int32: The index of the LOD that was imported or re-imported. Will return INDEX_NONE if anything goes bad.",
+      "get_lod_count": "X.get_lod_count(skeletal_mesh) -> int32\r\nRetrieve the number of LOD contain in the specified skeletal mesh.\r\n\r\nArgs:\r\n    skeletal_mesh (SkeletalMesh): \r\n\r\nReturns:\r\n    int32: The LOD number.",
+      "get_lod_build_settings": "X.get_lod_build_settings(skeletal_mesh, lod_index) -> SkeletalMeshBuildSettings\r\nCopy the build options with the specified LOD build settings.\r\n\r\nArgs:\r\n    skeletal_mesh (SkeletalMesh): Mesh to process.\r\n    lod_index (int32): The LOD we get the reduction settings.\r\n\r\nReturns:\r\n    SkeletalMeshBuildSettings: \r\n\r\n    out_build_options (SkeletalMeshBuildSettings): The build settings where we copy the build options.",
+      "set_lod_build_settings": "X.set_lod_build_settings(skeletal_mesh, lod_index, build_options) -> None\r\nSet the LOD build options for the specified LOD index.\r\n\r\nArgs:\r\n    skeletal_mesh (SkeletalMesh): Mesh to process.\r\n    lod_index (int32): The LOD we will apply the build settings.\r\n    build_options (SkeletalMeshBuildSettings): The build settings we want to apply to the LOD."
+    },
+    "AnimationLibrary": {
+      "get_bone_pose_for_time": "X.get_bone_pose_for_time(animation_sequence_base, bone_name, time, extract_root_motion) -> Transform\r\nGet Bone Pose for Time\r\n\r\nArgs:\r\n    animation_sequence_base (AnimSequenceBase): \r\n    bone_name (Name): \r\n    time (float): \r\n    extract_root_motion (bool): \r\n\r\nReturns:\r\n    Transform: \r\n\r\n    pose (Transform):",
+      "get_num_frames": "X.get_num_frames(animation_sequence_base) -> int32\r\nRetrieves the number of animation frames for the given Animation Sequence\r\n\r\nArgs:\r\n    animation_sequence_base (AnimSequenceBase): \r\n\r\nReturns:\r\n    int32: \r\n\r\n    num_frames (int32):"
+    },
+    "SkeletonService": {
+      "list_bones": "X.list_bones(asset_path) -> Array[BoneNodeInfo]\r\nList all bones in a Skeleton or Skeletal Mesh.\r\n\r\nArgs:\r\n    asset_path (str): Path to Skeleton or Skeletal Mesh\r\n\r\nReturns:\r\n    Array[BoneNodeInfo]: Array of bone information Example: bones = unreal.SkeletonService.list_bones(\"/Game/SKM_Mannequin\") for bone in bones: indent = \"  \" * bone.depth print(f\"{indent}{bone.bone_name}\")"
+    },
+    "SkeletalMesh": {
+      "get_lod_info": null
+    },
+    "SkeletonModifier": {
+      "set_bone_transform": "x.set_bone_transform(bone_name, new_transform, move_children) -> bool\r\nSets the bone the desired local transform\r\n\r\nArgs:\r\n    bone_name (Name): The new bone's name that needs to be moved.\r\n    new_transform (Transform): The new local transform in the bone's parent space.\r\n    move_children (bool): Propagate new transform to children\r\n\r\nReturns:\r\n    bool: \\c true if the operation succeeded, false otherwise."
+    },
+    "PhysicsAsset": {
+      "set_preview_mesh": null
+    },
+    "Skeleton": {
+      "set_preview_mesh": null
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "success": true,
   "candidate_revision": 3,
-  "editor_candidate": 1,
+  "editor_candidate": null,
   "map": "/Game/Maps/LVL_CommanderMassPrototype",
   "preview": "ArtSource/FX/WM01MissileCluster/Candidate_v3/review.html",
   "source_workbooks_created": 0,
@@ -12,8 +12,8 @@
   "scene_saved_and_cold_readback": "passed",
   "assistant_gameplay_validation": "not_run",
   "performance_measurement": "not_run",
-  "user_visual_acceptance": "pending",
-  "production_cluster_enabled": false,
+  "user_visual_acceptance": "User authorized current v3 production integration; full gameplay visual acceptance pending",
+  "production_cluster_enabled": true,
   "cold_load_scope": "Fresh editor load; UE deferred GPU compile completed explicitly before readback. Runtime auto-readiness still pending player check.",
   "visual_limits": "Eight-lane corners and some strip junction contrast remain visible; not volumetric smoke.",
   "values": {
@@ -29,5 +29,14 @@
     "q_base_range_m": 96,
     "q_attack_range_multiplier": 3.2,
     "explosion_radius_cm": 300
-  }
+  },
+  "previous_candidate_delivery_state": {
+    "editor_candidate": 1,
+    "production_cluster_enabled": false,
+    "user_visual_acceptance": "pending"
+  },
+  "candidate_switch": "removed",
+  "production_routing": "Native Projectiles UnitTypeId=2 / MissileLauncher; no asset checkbox or editor/map gate",
+  "production_activation": "Artifacts/WM01MissileCards/Visual_v3/ProductionActivation/production-readback.json",
+  "production_build": "Artifacts/WM01MissileCards/Visual_v3/ProductionActivation/build-result-attempt2.json"
 }

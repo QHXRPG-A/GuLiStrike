@@ -1,0 +1,285 @@
+{
+  "success": true,
+  "units": [
+    {
+      "name": "DefaultSoldier",
+      "material_dependencies": [
+        "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD0.MI_Pioneer_LOD0",
+        "/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_Contour.M_Pioneer_Contour",
+        "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD1.MI_Pioneer_LOD1",
+        "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD2.MI_Pioneer_LOD2",
+        "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD3.MI_Pioneer_LOD3"
+      ],
+      "textures": [
+        {
+          "asset": "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BonePosition.T_Pioneer_BonePosition",
+          "width": 44,
+          "height": 311,
+          "compression": "<TextureCompressionSettings.TC_HDR_F32: 16>",
+          "srgb": false,
+          "mip_policy": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>",
+          "editor_resource_bytes": 262144
+        },
+        {
+          "asset": "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BoneRotation.T_Pioneer_BoneRotation",
+          "width": 44,
+          "height": 311,
+          "compression": "<TextureCompressionSettings.TC_HDR_F32: 16>",
+          "srgb": false,
+          "mip_policy": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>",
+          "editor_resource_bytes": 262144
+        },
+        {
+          "asset": "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BaseColor.T_Pioneer_BaseColor",
+          "width": 2048,
+          "height": 2048,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "srgb": true,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 2818048
+        },
+        {
+          "asset": "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_LineMask.T_Pioneer_LineMask",
+          "width": 2048,
+          "height": 2048,
+          "compression": "<TextureCompressionSettings.TC_MASKS: 2>",
+          "srgb": false,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 2818048
+        }
+      ],
+      "budget_note": "Material dependency union including base defaults and instance overrides; source dimensions and compression. Resident GPU bytes depend on cooked formats and streaming."
+    },
+    {
+      "name": "WM01",
+      "material_dependencies": [
+        "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid",
+        "/Game/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid"
+      ],
+      "textures": [
+        {
+          "asset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_BaseColor.T_WarMachine_BaseColor",
+          "width": 2048,
+          "height": 2048,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "srgb": true,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 2818048
+        },
+        {
+          "asset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_LineMask.T_WarMachine_LineMask",
+          "width": 2048,
+          "height": 2048,
+          "compression": "<TextureCompressionSettings.TC_MASKS: 2>",
+          "srgb": false,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 2818048
+        }
+      ],
+      "budget_note": "Material dependency union including base defaults and instance overrides; source dimensions and compression. Resident GPU bytes depend on cooked formats and streaming."
+    },
+    {
+      "name": "ElectromagneticMiner",
+      "material_dependencies": [
+        "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+        "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+      ],
+      "textures": [
+        {
+          "asset": "/Game/MC_Vehicle_Constructor/Textures/MC_Vehicles_Normal.MC_Vehicles_Normal",
+          "width": 4096,
+          "height": 4096,
+          "compression": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+          "srgb": false,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 22413312
+        },
+        {
+          "asset": "/Game/MC_Vehicle_Constructor/Textures/MC_Vehicles_Emission.MC_Vehicles_Emission",
+          "width": 4096,
+          "height": 4096,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "srgb": true,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 22413312
+        },
+        {
+          "asset": "/Game/MC_Vehicle_Constructor/Textures/Base_Color_HandPainted/MC_Vehicles_Diffuse_Red.MC_Vehicles_Diffuse_Red",
+          "width": 4096,
+          "height": 4096,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "srgb": true,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 22413312
+        },
+        {
+          "asset": "/Game/MC_Vehicle_Constructor/Textures/MC_Vehicles_PBR_Metalness.MC_Vehicles_PBR_Metalness",
+          "width": 4096,
+          "height": 4096,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "srgb": true,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 11206656
+        },
+        {
+          "asset": "/Game/MC_Vehicle_Constructor/Textures/MC_Vehicles_PBR_Roughness.MC_Vehicles_PBR_Roughness",
+          "width": 4096,
+          "height": 4096,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "srgb": true,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 11206656
+        }
+      ],
+      "budget_note": "Material dependency union including base defaults and instance overrides; source dimensions and compression. Resident GPU bytes depend on cooked formats and streaming."
+    },
+    {
+      "name": "ConstructionVehicle",
+      "material_dependencies": [
+        "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+        "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+      ],
+      "textures": [
+        {
+          "asset": "/Game/MC_Vehicle_Constructor/Textures/MC_Vehicles_Normal.MC_Vehicles_Normal",
+          "width": 4096,
+          "height": 4096,
+          "compression": "<TextureCompressionSettings.TC_NORMALMAP: 1>",
+          "srgb": false,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 22413312
+        },
+        {
+          "asset": "/Game/MC_Vehicle_Constructor/Textures/MC_Vehicles_Emission.MC_Vehicles_Emission",
+          "width": 4096,
+          "height": 4096,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "srgb": true,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 22413312
+        },
+        {
+          "asset": "/Game/MC_Vehicle_Constructor/Textures/Base_Color_HandPainted/MC_Vehicles_Diffuse_Red.MC_Vehicles_Diffuse_Red",
+          "width": 4096,
+          "height": 4096,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "srgb": true,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 22413312
+        },
+        {
+          "asset": "/Game/MC_Vehicle_Constructor/Textures/MC_Vehicles_PBR_Metalness.MC_Vehicles_PBR_Metalness",
+          "width": 4096,
+          "height": 4096,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "srgb": true,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 11206656
+        },
+        {
+          "asset": "/Game/MC_Vehicle_Constructor/Textures/MC_Vehicles_PBR_Roughness.MC_Vehicles_PBR_Roughness",
+          "width": 4096,
+          "height": 4096,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "srgb": true,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 11206656
+        }
+      ],
+      "budget_note": "Material dependency union including base defaults and instance overrides; source dimensions and compression. Resident GPU bytes depend on cooked formats and streaming."
+    },
+    {
+      "name": "SweeperSummon",
+      "material_dependencies": [
+        "/Game/Commander/Units/MechanicalAnimation/M_Sweeper_Cel_Rigid.M_Sweeper_Cel_Rigid"
+      ],
+      "textures": [
+        {
+          "asset": "/Game/Commander/Units/Tactical/Cel/Sweeper/Textures/T_Sweeper_BaseColor.T_Sweeper_BaseColor",
+          "width": 2048,
+          "height": 2048,
+          "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>",
+          "srgb": true,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 2818048
+        }
+      ],
+      "budget_note": "Material dependency union including base defaults and instance overrides; source dimensions and compression. Resident GPU bytes depend on cooked formats and streaming."
+    },
+    {
+      "name": "BiZhiMao",
+      "material_dependencies": [
+        "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Materials/MI_BiZhiMao_LOD0.MI_BiZhiMao_LOD0",
+        "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Materials/M_BiZhiMao_Outline.M_BiZhiMao_Outline",
+        "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Materials/MI_BiZhiMao_LOD1.MI_BiZhiMao_LOD1",
+        "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Materials/MI_BiZhiMao_LOD2.MI_BiZhiMao_LOD2"
+      ],
+      "textures": [
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD0.T_BiZhiMao_VertexPosition_LOD0",
+          "width": 4096,
+          "height": 1620,
+          "compression": "<TextureCompressionSettings.TC_HDR: 6>",
+          "srgb": false,
+          "mip_policy": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>",
+          "editor_resource_bytes": 54525952
+        },
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD0.T_BiZhiMao_VertexRotation_LOD0",
+          "width": 4096,
+          "height": 1620,
+          "compression": "<TextureCompressionSettings.TC_VECTOR_DISPLACEMENTMAP: 5>",
+          "srgb": false,
+          "mip_policy": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>",
+          "editor_resource_bytes": 27262976
+        },
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD1.T_BiZhiMao_VertexPosition_LOD1",
+          "width": 4096,
+          "height": 366,
+          "compression": "<TextureCompressionSettings.TC_HDR: 6>",
+          "srgb": false,
+          "mip_policy": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>",
+          "editor_resource_bytes": 12582912
+        },
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD1.T_BiZhiMao_VertexRotation_LOD1",
+          "width": 4096,
+          "height": 366,
+          "compression": "<TextureCompressionSettings.TC_VECTOR_DISPLACEMENTMAP: 5>",
+          "srgb": false,
+          "mip_policy": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>",
+          "editor_resource_bytes": 6291456
+        },
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD2.T_BiZhiMao_VertexPosition_LOD2",
+          "width": 4096,
+          "height": 84,
+          "compression": "<TextureCompressionSettings.TC_HDR: 6>",
+          "srgb": false,
+          "mip_policy": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>",
+          "editor_resource_bytes": 3145728
+        },
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD2.T_BiZhiMao_VertexRotation_LOD2",
+          "width": 4096,
+          "height": 84,
+          "compression": "<TextureCompressionSettings.TC_VECTOR_DISPLACEMENTMAP: 5>",
+          "srgb": false,
+          "mip_policy": "<TextureMipGenSettings.TMGS_NO_MIPMAPS: 13>",
+          "editor_resource_bytes": 1572864
+        },
+        {
+          "asset": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Textures/T_BiZhiMao_InternalLineMask_2K.T_BiZhiMao_InternalLineMask_2K",
+          "width": 2048,
+          "height": 2048,
+          "compression": "<TextureCompressionSettings.TC_MASKS: 2>",
+          "srgb": false,
+          "mip_policy": "<TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP: 0>",
+          "editor_resource_bytes": 49152
+        }
+      ],
+      "budget_note": "Material dependency union including base defaults and instance overrides; source dimensions and compression. Resident GPU bytes depend on cooked formats and streaming."
+    }
+  ]
+}

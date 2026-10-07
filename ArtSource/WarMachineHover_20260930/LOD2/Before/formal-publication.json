@@ -1,0 +1,129 @@
+{
+  "success": true,
+  "authorization": "用户：需要应用正式资源",
+  "timestamp": "2026-09-30T17:32:21.039195",
+  "formal_system": "/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool",
+  "backups": [
+    "/Game/GuLiStrike/FX/WarMachineHover/Archive_20260930_PreReference/M_WarMachineHoverJet",
+    "/Game/GuLiStrike/FX/WarMachineHover/Archive_20260930_PreReference/M_WarMachineHoverTrail",
+    "/Game/GuLiStrike/FX/WarMachineHover/Archive_20260930_PreReference/NS_WarMachineHoverPool"
+  ],
+  "native_build": "Existing authorized build verified; no new native build in this task",
+  "runtime_pie": "not_run",
+  "registry_before": {
+    "Name": "WarMachineHover",
+    "Id": 48,
+    "Note": "重防号四盘蓝色喷流与世界空间余迹；1024喷口每批；独立180-200米淡出",
+    "ResourcePath": "/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool",
+    "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)"
+  },
+  "saved": [
+    "/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverJet",
+    "/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverTrail",
+    "/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool"
+  ],
+  "compile": {
+    "success": true,
+    "errors": [],
+    "warnings": []
+  },
+  "parameters": {
+    "HoverMinTrailLength": 500.0,
+    "HoverMaxTrailLength": 1500.0,
+    "HoverTrailGrowTime": 1.0
+  },
+  "emitters": {
+    "LaserBolts": {
+      "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x00000249438ED340) {emitter_name: \"LaserBolts\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+      "modules": [
+        "ParticleState",
+        "EmitterState",
+        "SpawnBurst_Instantaneous",
+        "InitializeHoverLane",
+        "ReadHoverNozzle",
+        "ReferenceJetShape"
+      ],
+      "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x00000249438E9B00) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverJet.M_WarMachineHoverJet\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>"
+    },
+    "LaserMuzzles": {
+      "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x00000249438EDF20) {emitter_name: \"LaserMuzzles\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+      "modules": [
+        "ParticleState",
+        "EmitterState",
+        "SpawnBurst_Instantaneous",
+        "InitializeHoverLane",
+        "ReadHoverNozzle",
+        "InitializeReferenceHistory",
+        "AdvanceReferenceHistory"
+      ],
+      "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x00000249438EB2C0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WarMachineHover/M_WarMachineHoverTrail.M_WarMachineHoverTrail\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>"
+    }
+  },
+  "native_gpu_diagnostics": "System valid=1 ready=1 gpu=1\nEditor needs_compile=0 outstanding_including_gpu=0\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n",
+  "registry_after": {
+    "Name": "WarMachineHover",
+    "Id": 48,
+    "Note": "重防号四盘蓝色喷流与世界空间余迹；1024喷口每批；独立180-200米淡出",
+    "ResourcePath": "/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool",
+    "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)"
+  },
+  "production_resource_applied": true,
+  "registry_path_unchanged": true,
+  "disk_readback": {
+    "success": true,
+    "packages_reloaded": true,
+    "note": "Three explicit production packages were reloaded; the first immediate check observed asynchronous shader compilation.",
+    "diagnostics": "System valid=1 ready=1 gpu=1\nEditor needs_compile=0 outstanding_including_gpu=0\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserBolts_1.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool:LaserMuzzles_1.GPUComputeScript status=NCS_UpToDate\nGPU finished=1 complete=1\n",
+    "parameters": {
+      "HoverMinTrailLength": 500.0,
+      "HoverMaxTrailLength": 1500.0,
+      "HoverTrailGrowTime": 1.0
+    },
+    "metadata": "v2 attached core; speed720=500cm speed1440=1500cm; grow 1s on each start; clear cyan GPU distance history; formal application authorized 20260930"
+  },
+  "native_baseline": {
+    "success": true,
+    "built_this_task": false,
+    "existing_build_record": "ArtSource/WarMachineTurn_20260930/build-editor-result.json",
+    "compile_action": "[34/70] Compile [x64] GuLiWarMachineHoverComponent.cpp",
+    "build_start": "2026-09-30T09:10:53.8009465Z",
+    "sources": {
+      "GuLiWarMachineHoverComponent.h": {
+        "path": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Presentation\\GuLiWarMachineHoverComponent.h",
+        "sha256": "61d571f387bfe90c29753d1c403626c8c11d223408a6bd66af76fdae0595b07d",
+        "modified_utc": "2026-09-30T07:14:15.701753+00:00",
+        "predates_build": true
+      },
+      "GuLiWarMachineHoverComponent.cpp": {
+        "path": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Presentation\\GuLiWarMachineHoverComponent.cpp",
+        "sha256": "e4d847803ce15c30ac8911bfcbd4204ca13b1e40d2b136d7a0f13f30d9116e93",
+        "modified_utc": "2026-09-30T07:14:15.702858+00:00",
+        "predates_build": true
+      }
+    },
+    "binaries": [
+      {
+        "path": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiStrike.dll",
+        "sha256": "b153a5488519619c0fbd629c3b5fb052b538e6cda0d13be17256b538835082f9",
+        "matches_recorded_build": true
+      },
+      {
+        "path": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiStrikeEditor.dll",
+        "sha256": "2efd016f940ca8d1784724afbc6938096e904be2d96c2a44fb283c02f28e4c70",
+        "matches_recorded_build": true
+      }
+    ],
+    "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "scope": "Existing authorized build compiled HoverComponent after the current sources last changed; DLL hashes and all 8 module manifests match its recorded artifacts."
+  },
+  "loaded_modules": [
+    {
+      "ModuleName": "UnrealEditor-GuLiStrike.dll",
+      "FileName": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiStrike.dll"
+    },
+    {
+      "ModuleName": "UnrealEditor-GuLiStrikeEditor.dll",
+      "FileName": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiStrikeEditor.dll"
+    }
+  ]
+}

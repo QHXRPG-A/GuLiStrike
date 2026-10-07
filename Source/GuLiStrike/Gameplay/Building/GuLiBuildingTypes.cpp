@@ -56,7 +56,8 @@ bool GuLiBuildingPlacementPolicy::IsKnownBuildingType(const EGuLiBuildingType Ty
 		|| Type == EGuLiBuildingType::Outpost
 		|| Type == EGuLiBuildingType::Barracks
 		|| Type == EGuLiBuildingType::ShieldGenerator
-		|| Type == EGuLiBuildingType::Factory;
+		|| Type == EGuLiBuildingType::Factory
+		|| Type == EGuLiBuildingType::BiZhiMaoConstruction;
 }
 
 FGuLiResourceAmounts GuLiBuildingPlacementPolicy::GetEconomyCost(const EGuLiBuildingType Type)
@@ -129,7 +130,7 @@ GuLiBuildingPlacementPolicy::FNumberKeyDecision GuLiBuildingPlacementPolicy::Res
 	const EGuLiCommanderRole Role)
 {
 	FNumberKeyDecision Decision;
-	if (bBuildModeActive && IsBuildingRole(Role) && Number >= 1 && Number <= 6)
+	if (bBuildModeActive && IsBuildingRole(Role) && Number >= 1 && Number <= 7)
 	{
 		Decision.bHandled = true;
 		Decision.SelectedType = static_cast<EGuLiBuildingType>(Number);
@@ -178,6 +179,8 @@ FText GetGuLiBuildingPlacementReasonText(const EGuLiBuildingPlacementRejectReaso
 		return GuLiGameText::Get(TEXT("UI.BuildingTypes.153"));
 	case EGuLiBuildingPlacementRejectReason::SpawnFailed:
 		return GuLiGameText::Get(TEXT("UI.BuildingTypes.154"));
+	case EGuLiBuildingPlacementRejectReason::PopulationLimitReached:
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.PopulationLimit"));
 	default:
 		return GuLiGameText::Get(TEXT("UI.BuildingTypes.155"));
 	}
@@ -199,6 +202,8 @@ FText GetGuLiBuildingFallbackDisplayName(const EGuLiBuildingType Type)
 		return GuLiGameText::Get(TEXT("UI.BuildingTypes.160"));
 	case EGuLiBuildingType::Factory:
 		return GuLiGameText::Get(TEXT("UI.BuildingTypes.161"));
+	case EGuLiBuildingType::BiZhiMaoConstruction:
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.BiZhiMao"));
 	default:
 		return GuLiGameText::Get(TEXT("UI.BuildingTypes.162"));
 	}

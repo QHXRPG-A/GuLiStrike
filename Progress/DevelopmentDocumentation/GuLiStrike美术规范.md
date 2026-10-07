@@ -15,7 +15,7 @@ categories:
 status: done
 verification: passed
 created: '2026-09-17'
-updated: '2026-09-30'
+updated: '2026-10-07'
 summary: 建立独立规范并接入模型、特效、地编技能；维护参考版本、用户双审记录和UI原图保留规则。
 next_action: 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。
 relations:
@@ -25,7 +25,7 @@ status_note: 本工作项完成指规范和技能接入完成，不代表现有�
 
 # GuLiStrike 美术规范 — 维护与验收台账
 
-当前规则唯一来源：[《GuLiStrike 美术规范》v1.2](../RequirementDocument/GuLiStrike美术规范.md)。本文件记录建立过程与审核证据，不复制另一份造型或爆炸标准。
+当前规则唯一来源：[《GuLiStrike 美术规范》v1.3](../RequirementDocument/GuLiStrike美术规范.md)。本文件记录建立过程与审核证据，不复制另一份造型或爆炸标准。
 
 ## 本次落实
 
@@ -198,6 +198,146 @@ Ship组件分批制作与审核入口：[首批双联炮/CIWS/Thor](20260917-Shi
 
 2026-09-30补充：用户针对重防号导弹当前`Candidate_v3`明确“赶紧切换啊”“代码层面彻底替换啊”，据此放行本版本正式接入。参考与32帧源预览沿用[Candidate_v3](../../ArtSource/FX/WM01MissileCluster/Candidate_v3/review.html)，规范保持v1.2。原生按WM01/MissileLauncher表记录默认使用v3，候选及资产开关删除；授权构建重开、三档GPU与保存后包重载回读通过。接入放行不等于完整实战视觉终验或性能通过，本轮未启动PIE或测量。详见[当前开发记录](20260929-重防号导弹解锁与肉鸽卡牌.md#2026-09-30-v3原生正式接入)。
 
-2026-09-30重防号悬浮喷焰：用户指定白芯青蓝尖焰参考A，随后否定倒三角脱离盘底的预览，明确起步渐长及“更清晰、5–15m”。当前`Reference_v2`按这些反馈修订，[48帧实际UE候选](../../ArtSource/WarMachineHover_20260930/review.html)及17次GPU检查完成，B仍待用户决定，正式VFX48未切换。导弹仓漏标24个零件修复属于既有模型隐藏缺陷，未改变几何/UV0/材质，已导入正式刚性网格并回读四级LOD。全局规范仍为v1.2，详见[开发记录](20260929-重防号悬浮与GPU引擎喷流.md)。
+指挥官模型统一为 LOD0 近景、LOD1 中景、LOD2 远景；当前规范与候选见[本次迁移](../RequirementDocument/20261005-指挥官三档LOD纠正与资源迁移.md)。本轮保留已审近景，CommanderLOD_3Tier_v1实际版本B已通过；六组正式资源已切换保存，游戏运行与FPS未运行。
 
 同日后续用户明确“需要应用正式资源”，据此放行已展示的5–15米渐长尾焰正式应用。原位更新VFX48的`NS_WarMachineHoverPool`及两个正式材质，保存与包重载后参数/编译就绪检查通过；此前候选待应用状态结束。已有后续授权构建包含本项15米包围盒，当前DLL及8份BuildId核验一致，本輪未重复构建或启动PIE。应用授权不扩大为实战、网络或性能终验；见[正式应用归档](../Archive/20260930-重防号5至15米渐长尾焰正式应用.md)，全局规范仍为v1.2。
+
+## 2026-10-04 ControlRig 机甲参考 A-v1
+
+用户明确要求实施 ControlRig 机甲美术统一计划，首轮停在参考审核 A。源实际为四足单主炮、152 骨骼、284,700 三角面、14 区段、1 LOD，CR_Mech 的 preview/骨架引用及部署/待机/行走已只读登记。暖白、珊瑚红、深暖灰、琥珀灯的[四张2K参考与四张灰模](../../ArtSource/Mechs/ControlRigMechStyle_20261004/README.md)共用姿态、尺度和配色，保持源结构与法线，未重拓扑或主动减面。
+
+当前 A-v1 [冻结清单](../../ArtSource/Mechs/ControlRigMechStyle_20261004/References_A_v1/reference_manifest.json) SHA256 为 `93324b32cb12fb9273bdb3d7ad5c60ce59798655f30bb657f53cca7f18db4fb4`；A 待用户针对该版本决定，B 和正式 UE 副本未开始。部署真实位移及 cannon_02 缩放已采样；默认 Blender FBX 导入将 root 表示为 Armature 对象的差异留给 B 兼容处理。预算和性能没有过审结论，未改变 Ground、重防号或战斗引用。详见[实施记录](20261004-ControlRig机甲美术统一.md)与[阶段归档](../Archive/20261004-ControlRig机甲参考A_v1交付.md)，全局规范保持 v1.2。
+
+## 2026-10-04 ControlRig 机甲四色参考 A-v2
+
+用户随后附色板并要求“改成这种配色”，据此用深青灰`#2C3735`、铁锈红`#8E3A2A`、灰青`#557B78`和沙米色`#D5C09C`替代本资产A-v1暖白/珊瑚红方向。当前[A-v2四张2K参考](../../ArtSource/Mechs/ControlRigMechStyle_20261004/References_A_v2/README.md)保持源结构、同姿态/同尺度、分色区域、三档明暗和结构线；与A-v1相同的几何/权重、骨骼/姿态和法线已核对。用户色板原件已复制留档，旧27个冻结文件及清单哈希保持原样。
+
+A-v1决定更新为修改后再审历史；A-v2清单SHA256为`ea47e95d2e5ee1f8d2bfe3ccd1fd9b249873e99fe31d93f9c9935b72af1ed9ac`，当前待用户对具体版本审核。B和正式UE副本未开始；改色授权不记为A/B通过，也不推广到其他资产。详见[四色增量归档](../Archive/20261004-ControlRig机甲四色参考A_v2.md)，全局规范仍为v1.2。
+
+## 2026-10-04 ControlRig A 放行与 Blender B-v2 候选
+
+用户通过A-v2后提交B-v2：152骨骼、三动作，预算超标；Freestyle主展示未代表实际内线完成。283帧视频回读通过，未导入UE，详见[当时归档](../Archive/20261004-ControlRig机甲A放行与BlenderB_v2候选.md)。
+
+## 2026-10-04 ControlRig B-v4 / UE-v1
+
+
+## 2026-10-05 彼之矛逐顶点动画 v1
+
+用户批准彼之矛首轮开发方案，并勘误“定点动画”为“顶点动画，不需要骨骼”。本轮复用已审ControlRig B_v4，冻结源blend SHA256为 `bf566b78fb3fd03c516016ed0e32bc7ee8412929c303283985340d5d5b5d853b`；旧配色/稀疏线稿/三档明暗的放行继续有效，派生兵种战场尺度为2倍。
+
+
+## 2026-10-05 彼之矛远景 LOD_v2
+
+
+> 2026-10-05 LOD 勘误：按用户明确指令更正以上相关段落和预算说明；其他历史内容保留。修改范围及原文校验见[勘误清单](../../ArtSource/CommanderLOD_20261005/Reports/document_erratum.json)。冻结模型及原始机器回读不作为当前制作入口。
+
+
+
+## 2026-10-05：v1.3 指挥官模型三档勘误
+
+用户明确统一Soldiers六种兵种为LOD0近景、LOD1中景、LOD2远景，保留近景、既有配色/线稿例外、ID和变形路线。重防号仍按WM01/ID2路由，玩家Ground不迁移。规则变更已确认；`CommanderLOD_3Tier_v1`实际成品B尚未通过，正式资源未切换。
+
+[当前审核与哈希](../../ArtSource/CommanderLOD_20261005/review_manifest.json)、[候选实景](../../ArtSource/CommanderLOD_20261005/Review/index.html)、[迁移开发](20261005-指挥官三档LOD纠正与资源迁移.md)、[勘误归档](../Archive/20261005-指挥官三档LOD纠正与候选资源交付.md)。冻结源/原始回读继续保留，当前生成脚本使用三档入口。原生编译、PIE、联机和实战帧率未运行。
+
+## 2026-10-05 指挥官三档成品放行
+
+用户在打开审核Map后明确“审核通过”，对应`CommanderLOD_3Tier_v1`、SHA256 `761bc5edd06b08c598771943b46ebcbd7bc8285b42d345e234fea0907d02783d`；[B决定](../../ArtSource/CommanderLOD_20261005/approval_B.json)与批准时源文件哈希固定。随后用户明确“现在编译并重开 UE”，源码Editor构建、模块版本和新字段加载通过。六种兵种76个正式资源组已切换并保存回读，模型均为LOD0/1/2；[正式交付](../../ArtSource/CommanderLOD_20261005/formal_delivery.json)与[新增归档](../Archive/20261005-指挥官三档LOD审核放行与正式资源切换.md)为当前入口。
+
+四足彼之矛保留已审四色、稀疏轮廓与三档明暗，正式运行资源无骨骼。车辆远景每台多10面、彼之矛近/远景原预算差额和重防号源远景剪影偏差继续登记；美术B不替代预算、玩法或帧率结果。规范仍为v1.3，未启动PIE/联机/性能测试。
+
+## 2026-10-05 SSF 建筑六套色系参考 A-v3
+
+用户先批准SSF六座建筑、平台、灯柱/灯片和无人机制作方案，随后明确“这些建筑色系是不是太单一了，希望每个建筑都是不同的色系，在参考色系中去选然后组合”。据此替代本批原奶油白/蓝绿统一主体方向，重新组合为：空军基地暖橙、克隆中心浅粉、指挥中心莓红、军工厂钢蓝、反应堆青绿、战略中心紫色；无人机跟随军工厂，平台蓝灰。所有主体、设备、点缀和框架色值来自三张用户色卡。
+
+当前版本[SSF_Reference_A_v3](../../ArtSource/Buildings/SSFStyle_20261005/Review_A_v3.md)有42张2K效果/正交图、十套图板、两张4K原尺寸组合和纹理已打包的参考Blender文件；[冻结清单](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v3/reference_manifest.json)及[版本修改核对](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v3/revision_validation.json)记录图纸哈希、同机位结构和旧版本保持。10个原网格、7套骨架和22个动画基线留存，尚未重制成品或实际减面。
+
+A-v1/A-v2为历史，原共同配色收到修改要求；A-v3待用户针对整套具体图纸决定，B未开始。正式UE目录尚未创建本批资产，原包保持。助手[视觉检查](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v3/visual_qa.json)与技术验证单独记录，均不代替A/B；相应[开发](20261005-SSF建筑美术统一与三档LOD.md)和[配色增量](../Archive/20261005-SSF建筑六套独立配色参考A_v3.md)为当前入口。此项资产方向不新增全局配色规则，规范仍v1.3。
+
+## 2026-10-05 SSF 建筑浅色化参考 A-v4
+
+用户随后明确“深色的颜色再浅一些，不要有太深的颜色”。据此保留六座独立色系与分件配色区域，将深紫、深蓝、深青、深莓色及机械框架提亮；内部线和外轮廓改为中亮蓝灰`#5F8A9E`，三档明暗系数由`0.40 / 0.72 / 1.00`改为`0.78 / 0.90 / 1.00`。主体/设备/点缀的基础色目标L*至少65，框架至少62；这是基础色值约束，不将其冒充最终渲染像素亮度。已较亮的橙色、奶油色、粉色保留，新增HEX与原卡对应关系见[40项派生色记录](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v4/palette_revision.json)。
+
+当前[SSF_Reference_A_v4全套参考](../../ArtSource/Buildings/SSFStyle_20261005/Review_A_v4.md)已同步更新42张2K效果/正交图、十套图板、两张4K组合及打包纹理的参考Blender场景。[冻结清单](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v4/reference_manifest.json)SHA256为`6d3af05f70ea2aa2d6ff860c0b1d7b4af5547cd3ea5d23e3ac17bbbcd4e0d81b`，79个跟踪文件哈希核对一致；[历史与结构核对](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v4/revision_validation.json)确认A_v1/v2/v3各64个历史文件保持，以及10个源网格的几何、权重、尺寸、配色区域和相机相同。[助手实际读图记录](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v4/visual_qa.json)覆盖全套40核心视图、2补充顶视及2组合图，不代替用户决定。
+
+A_v3按本次反馈修改后再审，A_v4待具体版本审核，B未开始；未重制、减面、生成生产LOD或正式导入UE。22动画兼容及项目镜头辨识留在成品验收阶段。此为本批配色修订，规范仍v1.3；版本边界与资源清单见[新增归档](../Archive/20261005-SSF建筑浅色化参考A_v4.md)及[当前开发记录](20261005-SSF建筑美术统一与三档LOD.md)。
+
+## 2026-10-05 SSF 仅深色提亮参考 A-v5
+
+用户最新明确“深色调浅，浅色别动”。当前[A_v5全套参考](../../ArtSource/Buildings/SSFStyle_20261005/Review_A_v5.md)以A_v3原色为基准，仅提亮原深色；原橙、奶油白、浅粉、浅蓝、蓝绿中间色的HEX保持，三档因子恢复并保持`0.40/0.72/1.0`，撤销A_v4全局暗部抬亮。共40项配色角色中18项提亮、22项保持，原深色描线与平台仍变浅；这不修改其他资产或全局默认规则，规范仍v1.3。
+
+[真实Blender材质回读](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v5/palette_preservation_validation.json)检查90个材质，46个受保护浅色材质的基础色及90个三档色阶保持原方案；无全局曝光或gamma改变。修改深色线稿会影响边缘像素，不将材质原值保持误记为整图逐像素相同。[冻结清单](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v5/reference_manifest.json)SHA256为`f3a3d853bef64c1b4fba8132dd3e403a75b201d86401b513deb19769c11f48b9`，80个跟踪文件核对一致；[历史核对](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v5/revision_validation.json)确认A_v1/v2/v3/v4冻结文件和10资产结构/相机保持。
+
+42张2K单图、十套图板及两张4K组合已同步更新，[助手读图记录](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v5/visual_qa.json)覆盖40核心视图、2补充顶视及2组合。A_v4按最新反馈修改后再审，A_v5待用户审核，B未开始；未进行成品重制、减面、生产LOD或正式UE导入。下一步见[当前开发记录](20261005-SSF建筑美术统一与三档LOD.md)及[浅色保持增量](../Archive/20261005-SSF建筑仅深色提亮参考A_v5.md)。
+
+## 2026-10-05 SSF 附图基准与两座局部提亮 A-v6
+
+用户最新附图明确“以你刚刚调的这一版为准，军工厂和战略中心的深色需要调浅，其他别动”。实际附图与归档A_v3总览像素一致，已原样留存，[基准确认](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v6/baseline_selection.json)记录附件SHA256和选择依据。当前[A_v6整套参考](../../ArtSource/Buildings/SSFStyle_20261005/Review_A_v6.md)读取实际A_v3参考场景，仅将军工厂深紫设备/框架提亮为`#9972CA / #756FB5`、战略中心深紫主体/框架提亮为`#AA6EB9 / #8A67B6`。两座浅色、其余四座及全部配套保持A_v3；无人机不随本轮军工厂改色，原描线`#1A182F`及三档因子`0.40/0.72/1.0`不改。此次限定范围覆盖此前A_v4/v5全面提亮方向，历史记录继续保留。
+
+[实际限定修改核对](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v6/scope_preservation_validation.json)记录90个实际材质图中5个改变、85个相同；5个为四项配色角色及军工厂设备别名，其他八资产72个材质图相同，其34张原始视图与A_v3字节一致。全套仍有42张2K单图、十套图板、两张4K组合及10纹理已打包的参考blend；[保存后材质回读](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v6/palette_preservation_validation.json)检查实际RGB、色阶及图签名。[助手实际读图](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v6/visual_qa.json)覆盖40核心视图、2补充俯视和2组合，两座修订图板另行放大检查。
+
+[冻结清单](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v6/reference_manifest.json)SHA256为`cd3cde73b94a6b2b034a306064be1e726a25075ba5910721b16d3dfad129341f`，84个跟踪文件核对一致；[历史与结构检查](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v6/revision_validation.json)确认五个旧版本冻结文件、10资产几何/权重、尺寸、机位和组合布局保持。用户选定修改基准不记为A_v6通过；当前A_v6待审核、B未开始，未制作生产LOD或正式导入UE。22动画兼容及实际项目镜头验收仍留在成品阶段，全局美术规范仍v1.3，见[新增局部修订归档](../Archive/20261005-SSF军工厂与战略中心局部提亮A_v6.md)。
+
+## 2026-10-05 SSF 线稿与三档明暗可见性修正 A-v7
+
+用户反馈“线稿和三档明暗好像没加？”。实际重新打开A_v6并渲染关闭/单独显示对照，确认线稿和三档均已接入，但军工厂该Hero机位暗部只占0.70%，总览内线及外轮廓偏细。[实际拆分图](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v7/Style_Breakdown_A_v6.png)与[节点回读](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v7/A_v6_native_node_audit.json)分别记录可见结果和连接，不能只凭节点存在判断风格已表达充分。
+
+当前[A_v7完整参考](../../ArtSource/Buildings/SSFStyle_20261005/Review_A_v7.md)保留A_v6全部40项HEX、90个材质基础RGB及三档RGB、光向、法线、几何和机位。色阶阈值改为0.38/0.68，三档因子仍为0.40/0.72/1.0；2048px资产图结构线/外轮廓为2.2/4.4px，内部遮罩强度0.65，组合图使用1.6/3.0px，避免小建筑成为黑团。[同机位前后对照](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v7/Style_Comparison_A_v6_to_A_v7.png)可检查线条与大色阶变化；[实际分区记录](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v7/style_visibility_validation.json)中军工厂该机位亮/中/暗为48.11%/38.46%/13.43%，仅适用于此视图。
+
+42张2K视图、十套图板和两张4K组合已同步重出，10纹理保持打包；最终场景保存后重开，[90材质RGB核对](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v7/palette_preservation_validation.json)无差值。[冻结清单](../../ArtSource/Buildings/SSFStyle_20261005/References_A_v7/reference_manifest.json)SHA256为`d1d3dcabdac432395edd1554da297de47e555a94c9e6ff77893043a7487c0173`，137跟踪文件核对一致，六个旧版本和10资产结构/机位保持。A_v6依反馈修正为A_v7，当前A_v7待审核、B未开始；外轮廓仍是参考Freestyle，生产规则线稿图集、描边壳、三档LOD、22动画兼容及正式UE材质留在后续阶段。此修正回应原定风格，不新增全局规则，规范仍v1.3，见[增量归档](../Archive/20261005-SSF线稿与三档明暗可见性修正A_v7.md)。
+
+## 2026-10-05 SSF A_v7制作放行与实际成品 B_v1
+
+用户明确“开始制作，严格一比一按照参考图和原模型制作”，作为已展示SSF_Reference_A_v7的制作放行，[A决定](../../ArtSource/Buildings/SSFStyle_20261005/approval_A.json)固定清单 `d1d3dcabdac432395edd1554da297de47e555a94c9e6ff77893043a7487c0173`，不记为尚未展示B的通过。七个参考版本原样保留。
+
+当前[实际Blender B_v1](../../ArtSource/Buildings/SSFStyle_20261005/Review_B_v1.md)交付十类资产、792分件、355骨骼、三档LOD、独立线稿与真实描边壳，保持A_v7全部配色及三档因子。42张2K效果/正交图、参考同机位/三档LOD对比、两张4K组合、全部22原名完整动画预览与MP4回读完成；6003源姿态留存，实际变形抽样最大位置差5.888243316e-6m。
+
+原结构保护下[24档本体差额](../../ArtSource/Buildings/SSFStyle_20261005/Production_B_v1/Budget_Exceptions.md)未达原上限，例外未批准；描边预算达标但部分覆盖/线宽弱于参考Freestyle，提交用户B决定。实际成品SHA256 `6f386c2e4782ce6ab6e81ae0f2380a6345fa05cdc6fc3dcf9d260c13ed3a806e`，冻结清单 `47fa0b49979828e331ca702d526f18d65b63ff639bd72404390288f6894adf29`；[当前核对](../../ArtSource/Buildings/SSFStyle_20261005/DeliveryValidation_B_v1.json)记录496个交付文件哈希保持。
+
+B与预算例外待审核，正式UE导入、导出回读、引用/物理资产/无人机蓝图和项目指挥官镜头均未执行；资源预算和Blender检查不替代实战帧率。全局规范仍v1.3，增量见[归档](../Archive/20261005-SSF建筑Blender成品B_v1与预算例外.md)。
+
+## 2026-10-06 当前 B_v1 正式资源入库
+
+用户查看实际Blender成品后明确“传ue，作为住正式资源存GuLiStrike中，暂不接入游戏中”。[本次放行](../../ArtSource/Buildings/SSFStyle_20261005/approval_B_import_20261006.json)只针对当前`SSF_Production_B_v1`的正式资源存储；Blender SHA256为`6f386c2e4782ce6ab6e81ae0f2380a6345fa05cdc6fc3dcf9d260c13ed3a806e`，冻结清单为`47fa0b49979828e331ca702d526f18d65b63ff639bd72404390288f6894adf29`。这是具体版本B存储放行，包含已披露差额，不推导全局预算上调、玩法或性能验收。
+
+正式目录`/Game/GuLiStrike/Buildings/SSFStylized`已保存105个资源：10网格各3LOD、7套骨架/355骨骼、6源物理资产副本、22原名动画、38贴图、4母材质、16材质实例、1无人机蓝图副本和1独立机械动画压缩设置。原商城包、A_v1–A_v7及496个冻结B交付文件保持。源无人机未指派物理资产，正式副本继续不伪造物理资产。
+
+30档UE网格回读最大几何差9.53674316e-06m，权重差6.19888306e-06；22动画×3LOD×起/中/末共198组实际组件对照最大位置差0.107709347cm、缩放差3.81655967e-07、旋转差0.02797342°。对照基线为原可编辑动画按原运行采样率重采样后的局部四元数插值，原有1/2fps低采样动作保持；原压缩噪声差另行记录。 骨架参考姿态按源恢复，三档UV/法线/材质区段及屏幕阈值保持；独立ACL设置使用0.001cm误差阈值和100cm虚拟顶点距离，保护机械活动件，原压缩设置未改。原时长、采样率、帧数、4条可编辑变换曲线与`Destoy`/`Edle`名称保留。
+
+保存后独立重载105资产，原商城包引用为0；依赖只保留新目录、Engine、ACL和既有Script插件。54张实际UE图覆盖10资产×3LOD、六座35m/25°、300–700m/55°和1500m/55°预览；资源预览在未保存Entry世界执行，未编辑战场地图或游戏引用。固定光向、三档着色、内部遮罩、近中档壳、远档淡出和Base Color/Team Color接口已建立并读图检查。
+
+[正式交付入口](../../ArtSource/Buildings/SSFStyle_20261005/UE_Delivery_v1/README.md)、[机器清单](../../ArtSource/Buildings/SSFStyle_20261005/UE_Delivery_v1/formal_delivery.json)、[独立重载/姿态/截图](../../ArtSource/Buildings/SSFStyle_20261005/UE_Delivery_v1/ue_validation.json)、[UE回读](../../ArtSource/Buildings/SSFStyle_20261005/UE_Delivery_v1/ue_mesh_readback.json)、[视觉记录](../../ArtSource/Buildings/SSFStyle_20261005/UE_Delivery_v1/visual_qa.json)。
+
+24项本体预算差额和部分壳覆盖弱于参考的B_v1既有差异继续登记，原上限未变。当前版本已获存储放行；进一步减面、玩法接入、实战帧率和真实战场总览属于后续范围。本轮未运行PIE、联机或原生构建。上方参考/成品阶段的待审及未导入描述是历史事实，由本条最新放行与交付接续。
+
+
+## 2026-10-07 蓝红阵营配色实际 Blender B_v2
+
+用户最新附两张实际效果图，明确“蓝色方所有建筑改成图1配色，红色方把所有建筑改成图二配色，先放Blender给我审核”。此指令替代六座建筑各独立色系的旧方向：蓝方橙`#EE9D58`/蓝灰`#274E61`/奶油白`#FEE4D9`，红方莓红`#A34053`/浅粉`#E3B6B1`/橙`#EE9D58`；六座各制作两队副本，保持原功能分区。蓝方AirBase和红方CommandCenter直接沿用附图对应原调色，少量框架与线条保持原参考颜色；军工厂和战略中心的框架在新队色中使用蓝灰/莓红，不新增大面积近黑色块。Floor、Lamp、Light、Drone不在此次调色范围。
+
+[实际审核B_v2](../../ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Review_B_v2.md)与已打开[Blender](../../ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/SSF_TeamPalette_B_v2.blend)提供12个模型、36档本体、24档真实描边壳、12套兼容原骨架、12张打包2K基础色图集及75张原生渲染。默认场景`Review_Blue_Red_Buildings`左蓝右红；单模型场景与48张效果/三视图、36档同机位LOD样本可近看。原22个Action、线稿遮罩、三档明暗和原B_v1的全部可编辑分件保留。
+
+[独立回读](../../ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/native_validation.json)核对60个网格的几何/法线/UV/权重、36档配色和风格节点；[助手读图](../../ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/visual_qa.json)覆盖12模型的48核心视图及36个LOD样本，两个原色锚点保持。来源B_v1 SHA256为`6f386c2e4782ce6ab6e81ae0f2380a6345fa05cdc6fc3dcf9d260c13ed3a806e`，当前B_v2 SHA256为`5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6`；[用户指令/附图](../../ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/user_reference_instruction.json)保存原图和哈希。
+
+当前B_v2待用户针对实际成品审核；B_v1的正式存储放行与105资源交付继续有效，不能推导B_v2已通过。**本轮未更新UE、不接入玩法**，原24项本体预算差额及真实壳局部覆盖差异继续登记，未重新减面或提高预算。此为资产队色修订，规范仍v1.3；[本轮增量归档](../Archive/20261007-SSF建筑蓝红阵营配色Blender审核B_v2.md)记录版本、验证和下一步。
+
+
+## 2026-10-07 B_v2 蓝红阵营正式资源入库
+
+用户看到实际Blender `SSF_TeamPalette_B_v2` 后明确“导入至ue作为正式资源”，已登记[本版本存储放行](../../ArtSource/Buildings/SSFStyle_20261005/approval_B_v2_import_20261007.json)，SHA256固定为 `5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6`。这是当前可见版本的正式资源放行，暂不接入游戏，不扩大为全局预算或性能验收。
+
+[正式交付](../../ArtSource/Buildings/SSFStyle_20261005/UE_Delivery_Team_v2/README.md)新增48资源：12骨骼网格各3LOD、24材质实例、12张2K基础色图集，分入 `/Game/GuLiStrike/Buildings/SSFStylized/Blue` 与 `/Game/GuLiStrike/Buildings/SSFStylized/Red`。六座建筑均有两队配色，原B_v1保留；复用原正式6兼容骨架、6物理资产、21建筑动画、共用三档/描边/半透明母材质和6线稿遮罩。原无人机、平台、灯具及第22个无人机动画保持。
+
+导出前147冻结文件哈希核对保持；36个B_v2 FBX独立回读后完成导入，36档实际UE存储网格再次导出回读。最大几何差 `4.86280396e-06 m`、权重差 `6.19888306e-06`，实际三档面数、法线和4UV配色/队色/远档淡出传输保持。只保存本轮Blue/Red归属包，未覆盖旧正式资源或商城包。
+
+[独立UE重载](../../ArtSource/Buildings/SSFStyle_20261005/UE_Delivery_Team_v2/ue_validation.json)检查48资产、资源引用、骨架参考姿态、材质接口与21建筑动画的两队/三LOD/起中末共378组实际组件对照，最大位置/缩放/角度差 `[0.0, 0.0, 0.0]`（cm/无量纲/°）。84张实际2K UE图覆盖12模型×3档及35m/25°、300–700m/55°、1500m/55°独立资源镜头；[读图记录](../../ArtSource/Buildings/SSFStyle_20261005/UE_Delivery_Team_v2/visual_qa.json)与[原生图清单](../../ArtSource/Buildings/SSFStyle_20261005/UE_Delivery_Team_v2/preview_inventory.json)分别登记。预览使用未保存Entry世界，未接入游戏、改战场地图、运行PIE或做性能测试。
+
+原24项本体差额（含平台/无人机）和真实描边局部覆盖差异继续记录；两队建筑各18档继承差额，不擅改主要结构或提高预算。上方B_v2提交时待审/未导入是历史事实，以本条具体版本放行与完成交付接续。规范仍v1.3，见[新增归档](../Archive/20261007-SSF建筑蓝红正式资源B_v2入库.md)。
+
+
+## 2026-10-07 蓝红正式 B_v2 用户审核通过
+
+用户在正式UE交付后明确“审核通过”，[本次最终审核记录](../../ArtSource/Buildings/SSFStyle_20261005/Acceptance_B_v2_20261007/README.md)固定版本为 `SSF_TeamPalette_B_v2`，来源Blender SHA256 `5cee0988de1a4201cd9eb60de9cbd30ccddd108090b99b3e86f50c4bf2d584b6`。蓝红各六座建筑、12网格各三档LOD、24材质实例、12图集共48新增正式资源已完成本轮美术与正式资源交付验收；规范v1.3保持。
+
+本决定接续此前“导入至ue作为正式资源”的存储放行，确认当前实际成品的配色、结构、线稿、三档明暗与LOD。已披露的本体差额及局部描边差异随具体版本留档，原面数上限未提高。沿用已有36LOD回读、378动画姿态对照、84实际UE图及保存重载结果；本轮仅更新审核记录，没有重新导入、改模型或扩大验证。147个Blender冻结文件与196个UE交付证据文件哈希保持。
+
+正式目录为 `/Game/GuLiStrike/Buildings/SSFStylized/Blue` 与 `/Game/GuLiStrike/Buildings/SSFStylized/Red`，继续复用B_v1正式共享依赖。原商城包、B_v1、平台、灯具和无人机保持，**暂不接入游戏**；实战性能、玩法和联机仍不在本次资产验收范围。前文待审和存储放行状态保留为历史，以本条最终通过决定为当前状态。

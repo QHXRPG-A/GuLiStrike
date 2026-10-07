@@ -5,6 +5,10 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectTypes.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
+#include "Gameplay/Building/GuLiPlacedBuilding.h"
+#include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
+#include "Gameplay/Building/GuLiConstructedUnitComponent.h"
+#include "EngineUtils.h"
 
 bool AGuLiCommanderPresentationActor::TryGetPresentedVisualTransform(FGuLiSoldierId Id, FTransform& Out) const
 {
@@ -48,11 +52,29 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 	const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 	const auto* Definition = Handle && Data ? Data->FindSoldierDefinition(Handle->BatchUnitTypeId) : nullptr;
 	if (!Definition) return;
+	if (Definition->bConstructionOnly && !Soldier.bConstructionVisualHandled)
+	{
+		// The Mass pose may precede the site's component RepNotify. Retire the exact
+		// matching completed site before drawing the new ID, avoiding a duplicate frame.
+		for (TActorIterator<AGuLiPlacedBuilding> It(GetWorld()); It; ++It)
+		{
+			auto* Life=It->FindComponentByClass<UGuLiBuildingLifecycleComponent>();
+			if (!Life || !Life->GetState().InstanceId || Life->GetTeam()!=Handle->BatchTeam
+				|| Life->GetDefinition().CompletionUnitTypeId!=Handle->BatchUnitTypeId
+				|| !Life->GetGroundLocation().Equals(Soldier.PresentedTransform.GetLocation(),2.f)) continue;
+			// An older lifecycle snapshot can still say UnderConstruction when Mass
+			// arrives first. Its exact construction-only spawn proves conversion.
+			if (Life->GetState().Phase!=EGuLiBuildingPhase::Destroyed)
+				if (auto* Conversion=It->FindComponentByClass<UGuLiConstructedUnitComponent>()) Conversion->RetireVisualForMass(Id);
+		}
+		Soldier.bConstructionVisualHandled=true;
+	}
 	if (Definition->VATDefinition)
 	{
 		const auto& D = *Definition->VATDefinition;
 		Soldier.PreviousVATPlayback = Soldier.VATPlayback;
 		const auto& Samples = Soldier.Samples;
+		FVector VATVelocity = FVector::ZeroVector;
 		if (!Samples.IsEmpty())
 		{
 			const auto* A = &Samples[0]; const auto* B = A;
@@ -65,6 +87,7 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 			const double Interval = B->ServerTimeSeconds - A->ServerTimeSeconds;
 			const float Alpha = B->bTeleport || Interval <= UE_DOUBLE_SMALL_NUMBER ? 1.0f
 				: float(FMath::Clamp((Soldier.RenderServerTimeSeconds - A->ServerTimeSeconds) / Interval, 0.0, 1.0));
+			VATVelocity = FMath::Lerp(A->Velocity, B->Velocity, Alpha);
 			Soldier.VATPlayback = Soldier.RenderServerTimeSeconds >= B->ServerTimeSeconds ? B->VATPlayback : A->VATPlayback;
 			if (A->VATPlayback.Clip == B->VATPlayback.Clip && D.Clips.IsValidIndex(A->VATPlayback.Clip))
 			{
@@ -92,7 +115,8 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 		else GuLiVATAnimation::Step(D, FVector::ZeroVector, Soldier.PresentedTransform.Rotator().Yaw, bAlive, Dt, Soldier.VATPlayback);
 		if (auto* Component = FindUnitInstances(Handle->BatchUnitTypeId, Handle->BatchTeam))
 			GuLiVATAnimation::WriteInstance(*Component,Handle->UnitInstanceIndex,D,Soldier.VATPlayback,Soldier.PreviousVATPlayback,
-				Soldier.MechanicalPose,Soldier.PresentedTransform.Rotator().Yaw,bReset);
+				Soldier.MechanicalPose,Soldier.PresentedTransform.Rotator().Yaw,bReset,VATVelocity);
+
 		return;
 	}
 	if (!Definition->MechanicalAnimation.IsEnabled()) return;
@@ -246,6 +270,7 @@ void AGuLiCommanderPresentationActor::ApplyMechanicalOverlay(UInstancedStaticMes
 			const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 			const auto* D = Handle && Data ? Data->FindSoldierDefinition(Handle->BatchUnitTypeId) : nullptr;
 			if (D && D->VATDefinition) GuLiVATAnimation::WriteInstance(Component,Index,*D->VATDefinition,
-				Soldier->VATPlayback,Soldier->PreviousVATPlayback,Soldier->MechanicalPose,Soldier->PresentedTransform.Rotator().Yaw,true);
+				Soldier->VATPlayback,Soldier->PreviousVATPlayback,Soldier->MechanicalPose,Soldier->PresentedTransform.Rotator().Yaw,true,
+				Soldier->Samples.IsEmpty() ? FVector::ZeroVector : Soldier->Samples.Last().Velocity);
 		}
 }

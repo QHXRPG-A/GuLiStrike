@@ -1,0 +1,5009 @@
+{
+  "version": "SSF_Production_B_v1",
+  "date": "2026-10-05",
+  "art_revision": "1.3",
+  "stage": "actual_Blender_product_submitted_for_B",
+  "source_blend_sha256": "6f386c2e4782ce6ab6e81ae0f2380a6345fa05cdc6fc3dcf9d260c13ed3a806e",
+  "approved_A_version": "SSF_Reference_A_v7",
+  "A_manifest_sha256": "d1d3dcabdac432395edd1554da297de47e555a94c9e6ff77893043a7487c0173",
+  "approvals": {
+    "A": "approved",
+    "B": "pending_user_decision",
+    "body_budget_exceptions": "pending_user_decision"
+  },
+  "assets": [
+    {
+      "key": "AirBase",
+      "source_dimensions_m": [
+        17.525365829467773,
+        19.95427703857422,
+        11.801692008972168
+      ],
+      "editable_parts": 167,
+      "bone_count": 78,
+      "lods": [
+        {
+          "LOD": 0,
+          "body": "AirBase_LOD0_Body",
+          "body_triangles": 5216,
+          "body_cap": 4300,
+          "outline_cap": 700,
+          "retained_mechanical_parts": 167,
+          "body_delta": 916,
+          "actual_body_sections": 2,
+          "outline_triangles": 700,
+          "outline_width_m": 0.038628016039729124,
+          "outline_components": [
+            "AirBase_P145_polymsh23",
+            "AirBase_P140_polymsh22",
+            "AirBase_P101_polymsh39",
+            "AirBase_P142_cube16",
+            "AirBase_P053_polymsh19",
+            "AirBase_P058_polymsh052",
+            "AirBase_P066_cube30",
+            "AirBase_P045_polymsh045",
+            "AirBase_P049_polymsh049",
+            "AirBase_P074_cube31"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "AirBase_LOD0_Outline",
+          "total_triangles": 5916,
+          "total_cap": 5000,
+          "total_delta": 916,
+          "actual_total_sections": 3,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 1,
+          "body": "AirBase_LOD1_Body",
+          "body_triangles": 4839,
+          "body_cap": 2300,
+          "outline_cap": 400,
+          "retained_mechanical_parts": 167,
+          "body_delta": 2539,
+          "actual_body_sections": 2,
+          "outline_triangles": 400,
+          "outline_width_m": 0.048285020049661405,
+          "outline_components": [
+            "AirBase_P145_polymsh23_LOD1",
+            "AirBase_P140_polymsh22_LOD1",
+            "AirBase_P101_polymsh39_LOD1",
+            "AirBase_P142_cube16_LOD1",
+            "AirBase_P044_polymsh045_LOD1",
+            "AirBase_P066_cube30_LOD1",
+            "AirBase_P038_polymsh23_LOD1"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "AirBase_LOD1_Outline",
+          "total_triangles": 5239,
+          "total_cap": 2700,
+          "total_delta": 2539,
+          "actual_total_sections": 3,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 2,
+          "body": "AirBase_LOD2_Body",
+          "body_triangles": 4128,
+          "body_cap": 1050,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 167,
+          "body_delta": 3078,
+          "actual_body_sections": 2,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 4128,
+          "total_cap": 1050,
+          "total_delta": 3078,
+          "actual_total_sections": 2,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        }
+      ],
+      "animations": [
+        "TB1_AirBase_Destroy1_Anim",
+        "TB1_AirBase_Destroy2_Anim",
+        "TB1_AirBase_Idle_Anim",
+        "TB1_AirBase_OpenDoor_Anim"
+      ]
+    },
+    {
+      "key": "CloningCenter",
+      "source_dimensions_m": [
+        7.391729354858398,
+        8.751784324645996,
+        8.926868438720703
+      ],
+      "editable_parts": 53,
+      "bone_count": 54,
+      "lods": [
+        {
+          "LOD": 0,
+          "body": "CloningCenter_LOD0_Body",
+          "body_triangles": 2454,
+          "body_cap": 2200,
+          "outline_cap": 300,
+          "retained_mechanical_parts": 53,
+          "body_delta": 254,
+          "actual_body_sections": 2,
+          "outline_triangles": 296,
+          "outline_width_m": 0.019331061094999314,
+          "outline_components": [
+            "CloningCenter_P013_Basis",
+            "CloningCenter_P038_MainBlock",
+            "CloningCenter_P025_BackPart",
+            "CloningCenter_P014_MainBlock",
+            "CloningCenter_P011_LeftPart",
+            "CloningCenter_P023_RightPart",
+            "CloningCenter_P017_MainBlock",
+            "CloningCenter_P019_Door",
+            "CloningCenter_P018_MainBlock",
+            "CloningCenter_P026_BackPart"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "CloningCenter_LOD0_Outline",
+          "total_triangles": 2750,
+          "total_cap": 2500,
+          "total_delta": 250,
+          "actual_total_sections": 3,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 1,
+          "body": "CloningCenter_LOD1_Body",
+          "body_triangles": 2338,
+          "body_cap": 1100,
+          "outline_cap": 200,
+          "retained_mechanical_parts": 53,
+          "body_delta": 1238,
+          "actual_body_sections": 2,
+          "outline_triangles": 200,
+          "outline_width_m": 0.02416382636874914,
+          "outline_components": [
+            "CloningCenter_P013_Basis_LOD1",
+            "CloningCenter_P038_MainBlock_LOD1",
+            "CloningCenter_P025_BackPart_LOD1",
+            "CloningCenter_P014_MainBlock_LOD1",
+            "CloningCenter_P011_LeftPart_LOD1"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "CloningCenter_LOD1_Outline",
+          "total_triangles": 2538,
+          "total_cap": 1300,
+          "total_delta": 1238,
+          "actual_total_sections": 3,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 2,
+          "body": "CloningCenter_LOD2_Body",
+          "body_triangles": 2170,
+          "body_cap": 500,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 53,
+          "body_delta": 1670,
+          "actual_body_sections": 2,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 2170,
+          "total_cap": 500,
+          "total_delta": 1670,
+          "actual_total_sections": 2,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        }
+      ],
+      "animations": [
+        "TB1_CloningCenter_Destroy1_Anim",
+        "TB1_CloningCenter_Destroy2_Anim",
+        "TB1_CloningCenter_Idle_Anim",
+        "TB1_CloningCenter_OpenDoor_Anim"
+      ]
+    },
+    {
+      "key": "CommandCenter",
+      "source_dimensions_m": [
+        9.401302337646484,
+        9.81959056854248,
+        15.205421447753906
+      ],
+      "editable_parts": 132,
+      "bone_count": 74,
+      "lods": [
+        {
+          "LOD": 0,
+          "body": "CommandCenter_LOD0_Body",
+          "body_triangles": 4465,
+          "body_cap": 3800,
+          "outline_cap": 600,
+          "retained_mechanical_parts": 132,
+          "body_delta": 665,
+          "actual_body_sections": 2,
+          "outline_triangles": 598,
+          "outline_width_m": 0.02904276177287102,
+          "outline_components": [
+            "CommandCenter_P060_Rack_2",
+            "CommandCenter_P067_Rack_L",
+            "CommandCenter_P061_Rack_2",
+            "CommandCenter_P068_Rack_L",
+            "CommandCenter_P075_BackBlock",
+            "CommandCenter_P001_TowerBase",
+            "CommandCenter_P092_Tower",
+            "CommandCenter_P038_BlockR",
+            "CommandCenter_P036_BlockL",
+            "CommandCenter_P095_MainBlock",
+            "CommandCenter_P072_BlockA",
+            "CommandCenter_P004_Ring1",
+            "CommandCenter_P069_polymsh3"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "CommandCenter_LOD0_Outline",
+          "total_triangles": 5063,
+          "total_cap": 4400,
+          "total_delta": 663,
+          "actual_total_sections": 3,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 1,
+          "body": "CommandCenter_LOD1_Body",
+          "body_triangles": 4277,
+          "body_cap": 1900,
+          "outline_cap": 300,
+          "retained_mechanical_parts": 132,
+          "body_delta": 2377,
+          "actual_body_sections": 2,
+          "outline_triangles": 299,
+          "outline_width_m": 0.03630345221608878,
+          "outline_components": [
+            "CommandCenter_P060_Rack_2_LOD1",
+            "CommandCenter_P067_Rack_L_LOD1",
+            "CommandCenter_P061_Rack_2_LOD1",
+            "CommandCenter_P068_Rack_L_LOD1",
+            "CommandCenter_P075_BackBlock_LOD1",
+            "CommandCenter_P001_TowerBase_LOD1",
+            "CommandCenter_P092_Tower_LOD1",
+            "CommandCenter_P038_BlockR_LOD1",
+            "CommandCenter_P036_BlockL_LOD1",
+            "CommandCenter_P072_BlockA_LOD1",
+            "CommandCenter_P004_Ring1_LOD1",
+            "CommandCenter_P069_polymsh3_LOD1"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "CommandCenter_LOD1_Outline",
+          "total_triangles": 4576,
+          "total_cap": 2200,
+          "total_delta": 2376,
+          "actual_total_sections": 3,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 2,
+          "body": "CommandCenter_LOD2_Body",
+          "body_triangles": 3999,
+          "body_cap": 850,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 132,
+          "body_delta": 3149,
+          "actual_body_sections": 2,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 3999,
+          "total_cap": 850,
+          "total_delta": 3149,
+          "actual_total_sections": 2,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        }
+      ],
+      "animations": [
+        "TB1_CommandCenter_Destoy1_Anim",
+        "TB1_CommandCenter_Destoy2_Anim",
+        "TB1_CommandCenter_Edle_Anim"
+      ]
+    },
+    {
+      "key": "Floor",
+      "source_dimensions_m": [
+        84.53816223144531,
+        88.22584533691406,
+        5.68756103515625
+      ],
+      "editable_parts": 96,
+      "bone_count": 0,
+      "lods": [
+        {
+          "LOD": 0,
+          "body": "Floor_LOD0_Body",
+          "body_triangles": 6699,
+          "body_cap": 6500,
+          "outline_cap": 1000,
+          "retained_mechanical_parts": 96,
+          "body_delta": 199,
+          "actual_body_sections": 1,
+          "outline_triangles": 963,
+          "outline_width_m": 0.17907544225454333,
+          "outline_components": [
+            "Floor_P002_STATIC",
+            "Floor_P001_STATIC",
+            "Floor_P095_STATIC",
+            "Floor_P000_STATIC",
+            "Floor_P071_STATIC",
+            "Floor_P076_STATIC",
+            "Floor_P068_STATIC",
+            "Floor_P084_STATIC",
+            "Floor_P074_STATIC",
+            "Floor_P075_STATIC",
+            "Floor_P080_STATIC",
+            "Floor_P081_STATIC",
+            "Floor_P083_STATIC",
+            "Floor_P086_STATIC"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "Floor_LOD0_Outline",
+          "total_triangles": 7662,
+          "total_cap": 7500,
+          "total_delta": 162,
+          "actual_total_sections": 2,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 1,
+          "body": "Floor_LOD1_Body",
+          "body_triangles": 6699,
+          "body_cap": 3500,
+          "outline_cap": 500,
+          "retained_mechanical_parts": 96,
+          "body_delta": 3199,
+          "actual_body_sections": 1,
+          "outline_triangles": 473,
+          "outline_width_m": 0.22384430281817916,
+          "outline_components": [
+            "Floor_P002_STATIC_LOD1",
+            "Floor_P001_STATIC_LOD1",
+            "Floor_P095_STATIC_LOD1",
+            "Floor_P000_STATIC_LOD1",
+            "Floor_P071_STATIC_LOD1",
+            "Floor_P076_STATIC_LOD1",
+            "Floor_P068_STATIC_LOD1",
+            "Floor_P084_STATIC_LOD1",
+            "Floor_P086_STATIC_LOD1"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "Floor_LOD1_Outline",
+          "total_triangles": 7172,
+          "total_cap": 4000,
+          "total_delta": 3172,
+          "actual_total_sections": 2,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 2,
+          "body": "Floor_LOD2_Body",
+          "body_triangles": 6057,
+          "body_cap": 1500,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 96,
+          "body_delta": 4557,
+          "actual_body_sections": 1,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 6057,
+          "total_cap": 1500,
+          "total_delta": 4557,
+          "actual_total_sections": 1,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        }
+      ],
+      "animations": []
+    },
+    {
+      "key": "Lamp",
+      "source_dimensions_m": [
+        0.2870640158653259,
+        1.6315351724624634,
+        4.373559951782227
+      ],
+      "editable_parts": 3,
+      "bone_count": 0,
+      "lods": [
+        {
+          "LOD": 0,
+          "body": "Lamp_LOD0_Body",
+          "body_triangles": 48,
+          "body_cap": 48,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 3,
+          "body_delta": 0,
+          "actual_body_sections": 1,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 48,
+          "total_cap": 48,
+          "total_delta": 0,
+          "actual_total_sections": 1,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        },
+        {
+          "LOD": 1,
+          "body": "Lamp_LOD1_Body",
+          "body_triangles": 48,
+          "body_cap": 48,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 3,
+          "body_delta": 0,
+          "actual_body_sections": 1,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 48,
+          "total_cap": 48,
+          "total_delta": 0,
+          "actual_total_sections": 1,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        },
+        {
+          "LOD": 2,
+          "body": "Lamp_LOD2_Body",
+          "body_triangles": 48,
+          "body_cap": 48,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 3,
+          "body_delta": 0,
+          "actual_body_sections": 1,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 48,
+          "total_cap": 48,
+          "total_delta": 0,
+          "actual_total_sections": 1,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        }
+      ],
+      "animations": []
+    },
+    {
+      "key": "Light",
+      "source_dimensions_m": [
+        1.971929907798767,
+        1.971929907798767,
+        3.2126820315170335e-07
+      ],
+      "editable_parts": 1,
+      "bone_count": 0,
+      "lods": [
+        {
+          "LOD": 0,
+          "body": "Light_LOD0_Body",
+          "body_triangles": 2,
+          "body_cap": 2,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 1,
+          "body_delta": 0,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 2,
+          "total_cap": 2,
+          "total_delta": 0,
+          "actual_total_sections": 1,
+          "actual_body_sections": 1,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        },
+        {
+          "LOD": 1,
+          "body": "Light_LOD1_Body",
+          "body_triangles": 2,
+          "body_cap": 2,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 1,
+          "body_delta": 0,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 2,
+          "total_cap": 2,
+          "total_delta": 0,
+          "actual_total_sections": 1,
+          "actual_body_sections": 1,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        },
+        {
+          "LOD": 2,
+          "body": "Light_LOD2_Body",
+          "body_triangles": 2,
+          "body_cap": 2,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 1,
+          "body_delta": 0,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 2,
+          "total_cap": 2,
+          "total_delta": 0,
+          "actual_total_sections": 1,
+          "actual_body_sections": 1,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        }
+      ],
+      "animations": []
+    },
+    {
+      "key": "Drone",
+      "source_dimensions_m": [
+        1.0165479183197021,
+        0.9991558194160461,
+        0.42290806770324707
+      ],
+      "editable_parts": 9,
+      "bone_count": 4,
+      "lods": [
+        {
+          "LOD": 0,
+          "body": "Drone_LOD0_Body",
+          "body_triangles": 254,
+          "body_cap": 210,
+          "outline_cap": 40,
+          "retained_mechanical_parts": 9,
+          "body_delta": 44,
+          "actual_body_sections": 1,
+          "outline_triangles": 36,
+          "outline_width_m": 0.002097533107735217,
+          "outline_components": [
+            "Drone_P007_Body",
+            "Drone_P000_Vent",
+            "Drone_P005_Body"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "Drone_LOD0_Outline",
+          "total_triangles": 290,
+          "total_cap": 250,
+          "total_delta": 40,
+          "actual_total_sections": 2,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 1,
+          "body": "Drone_LOD1_Body",
+          "body_triangles": 254,
+          "body_cap": 110,
+          "outline_cap": 20,
+          "retained_mechanical_parts": 9,
+          "body_delta": 144,
+          "actual_body_sections": 1,
+          "outline_triangles": 18,
+          "outline_width_m": 0.002621916384669021,
+          "outline_components": [
+            "Drone_P007_Body_LOD1",
+            "Drone_P000_Vent_LOD1"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "Drone_LOD1_Outline",
+          "total_triangles": 272,
+          "total_cap": 130,
+          "total_delta": 142,
+          "actual_total_sections": 2,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 2,
+          "body": "Drone_LOD2_Body",
+          "body_triangles": 210,
+          "body_cap": 50,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 9,
+          "body_delta": 160,
+          "actual_body_sections": 1,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 210,
+          "total_cap": 50,
+          "total_delta": 160,
+          "actual_total_sections": 1,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        }
+      ],
+      "animations": [
+        "TB1_Drone_Fly_Anim"
+      ]
+    },
+    {
+      "key": "MilitaryFactory",
+      "source_dimensions_m": [
+        9.283242225646973,
+        12.266594886779785,
+        10.251752853393555
+      ],
+      "editable_parts": 73,
+      "bone_count": 45,
+      "lods": [
+        {
+          "LOD": 0,
+          "body": "MilitaryFactory_LOD0_Body",
+          "body_triangles": 1953,
+          "body_cap": 1800,
+          "outline_cap": 250,
+          "retained_mechanical_parts": 73,
+          "body_delta": 153,
+          "actual_body_sections": 2,
+          "outline_triangles": 249,
+          "outline_width_m": 0.023656344227492812,
+          "outline_components": [
+            "MilitaryFactory_P027_PartStructure1",
+            "MilitaryFactory_P037_CivilBlock_R",
+            "MilitaryFactory_P035_CivilBlock_L",
+            "MilitaryFactory_P030_MainBlock",
+            "MilitaryFactory_P031_DoorPart1",
+            "MilitaryFactory_P022_Damper_R4",
+            "MilitaryFactory_P017_Damper_R1",
+            "MilitaryFactory_P020_Damper_R3"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "MilitaryFactory_LOD0_Outline",
+          "total_triangles": 2202,
+          "total_cap": 2050,
+          "total_delta": 152,
+          "actual_total_sections": 3,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 1,
+          "body": "MilitaryFactory_LOD1_Body",
+          "body_triangles": 1895,
+          "body_cap": 900,
+          "outline_cap": 150,
+          "retained_mechanical_parts": 73,
+          "body_delta": 995,
+          "actual_body_sections": 2,
+          "outline_triangles": 149,
+          "outline_width_m": 0.029570430284366015,
+          "outline_components": [
+            "MilitaryFactory_P027_PartStructure1_LOD1",
+            "MilitaryFactory_P037_CivilBlock_R_LOD1",
+            "MilitaryFactory_P030_MainBlock_LOD1",
+            "MilitaryFactory_P022_Damper_R4_LOD1",
+            "MilitaryFactory_P017_Damper_R1_LOD1"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "MilitaryFactory_LOD1_Outline",
+          "total_triangles": 2044,
+          "total_cap": 1050,
+          "total_delta": 994,
+          "actual_total_sections": 3,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 2,
+          "body": "MilitaryFactory_LOD2_Body",
+          "body_triangles": 1639,
+          "body_cap": 400,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 73,
+          "body_delta": 1239,
+          "actual_body_sections": 2,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 1639,
+          "total_cap": 400,
+          "total_delta": 1239,
+          "actual_total_sections": 2,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        }
+      ],
+      "animations": [
+        "TB1_MilitaryFactory_Destroy1_Anim",
+        "TB1_MilitaryFactory_Destroy2_Anim",
+        "TB1_MilitaryFactory_Idle_Anim",
+        "TB1_MilitaryFactory_OpenDoor_Anim"
+      ]
+    },
+    {
+      "key": "Reactor",
+      "source_dimensions_m": [
+        5.412111282348633,
+        5.649188041687012,
+        4.77436637878418
+      ],
+      "editable_parts": 68,
+      "bone_count": 12,
+      "lods": [
+        {
+          "LOD": 0,
+          "body": "Reactor_LOD0_Body",
+          "body_triangles": 3546,
+          "body_cap": 3000,
+          "outline_cap": 500,
+          "retained_mechanical_parts": 68,
+          "body_delta": 546,
+          "actual_body_sections": 2,
+          "outline_triangles": 494,
+          "outline_width_m": 0.01146525898948312,
+          "outline_components": [
+            "Reactor_P024_Block2",
+            "Reactor_P038_Block3",
+            "Reactor_P010_Block1",
+            "Reactor_P006_Airing"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "Reactor_LOD0_Outline",
+          "total_triangles": 4040,
+          "total_cap": 3500,
+          "total_delta": 540,
+          "actual_total_sections": 3,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 1,
+          "body": "Reactor_LOD1_Body",
+          "body_triangles": 3154,
+          "body_cap": 1500,
+          "outline_cap": 250,
+          "retained_mechanical_parts": 68,
+          "body_delta": 1654,
+          "actual_body_sections": 2,
+          "outline_triangles": 238,
+          "outline_width_m": 0.0143315737368539,
+          "outline_components": [
+            "Reactor_P024_Block2_LOD1",
+            "Reactor_P006_Airing_LOD1",
+            "Reactor_P002_Hatch_LOD1",
+            "Reactor_P003_Hatch_LOD1",
+            "Reactor_P027_Block2_LOD1"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "Reactor_LOD1_Outline",
+          "total_triangles": 3392,
+          "total_cap": 1750,
+          "total_delta": 1642,
+          "actual_total_sections": 3,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 2,
+          "body": "Reactor_LOD2_Body",
+          "body_triangles": 2635,
+          "body_cap": 700,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 68,
+          "body_delta": 1935,
+          "actual_body_sections": 2,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 2635,
+          "total_cap": 700,
+          "total_delta": 1935,
+          "actual_total_sections": 2,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        }
+      ],
+      "animations": [
+        "TB1_Reactor_Destroy1_Anim",
+        "TB1_Reactor_Destroy2_Anim",
+        "TB1_Reactor_Idle_Anim"
+      ]
+    },
+    {
+      "key": "StrategyCenter",
+      "source_dimensions_m": [
+        8.180628776550293,
+        7.4766082763671875,
+        11.444680213928223
+      ],
+      "editable_parts": 190,
+      "bone_count": 88,
+      "lods": [
+        {
+          "LOD": 0,
+          "body": "StrategyCenter_LOD0_Body",
+          "body_triangles": 4175,
+          "body_cap": 3600,
+          "outline_cap": 600,
+          "retained_mechanical_parts": 190,
+          "body_delta": 575,
+          "actual_body_sections": 2,
+          "outline_triangles": 600,
+          "outline_width_m": 0.02234145645052195,
+          "outline_components": [
+            "StrategyCenter_P033_0_cube47",
+            "StrategyCenter_P131_0_polymsh7",
+            "StrategyCenter_P051_0_cube48",
+            "StrategyCenter_P055_0_polymsh21",
+            "StrategyCenter_P032_0_cube47",
+            "StrategyCenter_P005_0_cube74",
+            "StrategyCenter_P054_0_polymsh21",
+            "StrategyCenter_P151_0_cube78",
+            "StrategyCenter_P006_0_cube47",
+            "StrategyCenter_P145_0_cube106",
+            "StrategyCenter_P148_0_cube105",
+            "StrategyCenter_P154_0_cube68",
+            "StrategyCenter_P157_0_cube59",
+            "StrategyCenter_P010_0_cube79",
+            "StrategyCenter_P150_0_cube78",
+            "StrategyCenter_P016_0_cube100",
+            "StrategyCenter_P097_0_polymsh12"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "StrategyCenter_LOD0_Outline",
+          "total_triangles": 4775,
+          "total_cap": 4200,
+          "total_delta": 575,
+          "actual_total_sections": 3,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 1,
+          "body": "StrategyCenter_LOD1_Body",
+          "body_triangles": 3939,
+          "body_cap": 1800,
+          "outline_cap": 300,
+          "retained_mechanical_parts": 190,
+          "body_delta": 2139,
+          "actual_body_sections": 2,
+          "outline_triangles": 298,
+          "outline_width_m": 0.027926820563152436,
+          "outline_components": [
+            "StrategyCenter_P131_0_polymsh7_LOD1",
+            "StrategyCenter_P033_0_cube47_LOD1",
+            "StrategyCenter_P051_0_cube48_LOD1",
+            "StrategyCenter_P055_0_polymsh21_LOD1",
+            "StrategyCenter_P032_0_cube47_LOD1",
+            "StrategyCenter_P005_0_cube74_LOD1",
+            "StrategyCenter_P150_0_cube78_LOD1"
+          ],
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact",
+          "outline": "StrategyCenter_LOD1_Outline",
+          "total_triangles": 4237,
+          "total_cap": 2100,
+          "total_delta": 2137,
+          "actual_total_sections": 3,
+          "outline_delta": 0
+        },
+        {
+          "LOD": 2,
+          "body": "StrategyCenter_LOD2_Body",
+          "body_triangles": 3582,
+          "body_cap": 800,
+          "outline_cap": 0,
+          "retained_mechanical_parts": 190,
+          "body_delta": 2782,
+          "actual_body_sections": 2,
+          "outline_triangles": 0,
+          "outline_components": [],
+          "outline": null,
+          "total_triangles": 3582,
+          "total_cap": 800,
+          "total_delta": 2782,
+          "actual_total_sections": 2,
+          "outline_delta": 0,
+          "outline_scope": "Opaque major mechanical surfaces selected within cap; every body component remains intact"
+        }
+      ],
+      "animations": [
+        "TB1_StrategyCenter_Dead1_Anim",
+        "TB1_StrategyCenter_Dead2_Anim",
+        "TB1_StrategyCenter_Idle_Anim"
+      ]
+    }
+  ],
+  "full_source_animation_samples": 6003,
+  "all_22_clips_and_3_actual_LODs": true,
+  "native_preview_frames": 3012,
+  "all_body_caps_passed": false,
+  "body_budget_exception_count": 24,
+  "all_outline_caps_passed": true,
+  "files": [
+    {
+      "file": "approval_A.json",
+      "bytes": 434,
+      "sha256": "48556920ec2af8ba6c1f9c9b3edf0964ecab5fcfb66b7f46ee14a1fb768b6c45"
+    },
+    {
+      "file": "Production_B_v1/animation_deformation_validation.json",
+      "bytes": 35821,
+      "sha256": "7aea271a1ca77453d5109ddd1d1968be77f5644f84e8d0f5a61a4d0919fa70b7"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/animation_preview_manifest.json",
+      "bytes": 40118,
+      "sha256": "08445147edff48351b1800d8e6b00b0d2a93ba611bf73f7bcc6622fcd439149c"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Destroy1_Anim_Decoded_0.png",
+      "bytes": 380455,
+      "sha256": "d293e50e46094e0443fdc47dddac557af9cdc0b9b3cc3faebf5fcb69fb9bf58d",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Destroy1_Anim_Decoded_1.png",
+      "bytes": 867502,
+      "sha256": "52bc88f040e2705bba128e725a1eae06c6b65d8fe69351d07dc66f9403aaca28",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Destroy1_Anim_Decoded_2.png",
+      "bytes": 871583,
+      "sha256": "7bb42dd59423e0d94da4ed674b80b1443682c564ca7a6c4783c234f183c8a52c",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Destroy1_Anim_Decoded_3.png",
+      "bytes": 861615,
+      "sha256": "55fb0da43dd7916f032e4909387112aa6720cba8734761e3f9491b6850d1cfe1",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Destroy1_Anim_Decoded_4.png",
+      "bytes": 449492,
+      "sha256": "87c18f3cd713060269a7f589e951a5822aaa8fd8a53e6a0b6e2dab7d2823220f",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Destroy2_Anim_Decoded_0.png",
+      "bytes": 352927,
+      "sha256": "4ed6f9a16689fef73f85775cdc5a03e6e1a9144314b7a5f3e2b7c6199bc295e4",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Destroy2_Anim_Decoded_1.png",
+      "bytes": 855490,
+      "sha256": "2fef12fe555a15b125bd4078ccc347df5b2930e4bcde3bac38c83edfb6f3322f",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Destroy2_Anim_Decoded_2.png",
+      "bytes": 892496,
+      "sha256": "675efd947a38618439503723293ff8e1c6575a7cd1d9b4382acfc8e9916bac34",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Destroy2_Anim_Decoded_3.png",
+      "bytes": 867157,
+      "sha256": "c6fd8ea9e95a4a1293c87beaeba107b443a2285bc2a2b1f0cadfd76c55054f71",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Destroy2_Anim_Decoded_4.png",
+      "bytes": 762873,
+      "sha256": "e262d383aae9244f35bbae66fe927c5ac55c956af67189fe206936794e4f8e6c",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Idle_Anim_Decoded_0.png",
+      "bytes": 384951,
+      "sha256": "04cf311973f43e783c890eca35b643f26f6d84b3074758a8152db9077e305fbf",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Idle_Anim_Decoded_1.png",
+      "bytes": 826422,
+      "sha256": "5fcef3b0a014e770b6d34f6afd75b38f581e771a030471c8eb4db025a88410e9",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Idle_Anim_Decoded_2.png",
+      "bytes": 831258,
+      "sha256": "7e647f614b3f3d98583157c0ea8d4fc549d8ed74722bd5fa838b67fe7f636997",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Idle_Anim_Decoded_3.png",
+      "bytes": 831291,
+      "sha256": "28e55bb9397ea5685832ddaac78a0fa668e5867695de665d63992b2acbaccc45",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_Idle_Anim_Decoded_4.png",
+      "bytes": 719207,
+      "sha256": "83adbff10a9063414ca68806dbf71bdb26bd0dbdb37d2f0106200e71966d59e3",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_OpenDoor_Anim_Decoded_0.png",
+      "bytes": 390295,
+      "sha256": "6755895024b4a7d88a02f26c7e7cf305ae43c14581c23800ace73bd5ad007d3c",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_OpenDoor_Anim_Decoded_1.png",
+      "bytes": 866610,
+      "sha256": "781508b8dd73eab125b9b223cbf32111035cd2da89efd1db30fce3c96d9ac286",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_OpenDoor_Anim_Decoded_2.png",
+      "bytes": 852352,
+      "sha256": "b047b90121ff78d368a3d00170c7f730529de380b42fe358a2d01ab4413d0d8f",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_OpenDoor_Anim_Decoded_3.png",
+      "bytes": 857817,
+      "sha256": "d13044deb551b55407e64aad632eadc20cf9d36a82e5e24fa1512d9352a10447",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_AirBase_OpenDoor_Anim_Decoded_4.png",
+      "bytes": 741749,
+      "sha256": "e1c28feb2473980f6f634578ae48e60ed94797007bc4205256102ae5f5b1e069",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Destroy1_Anim_Decoded_0.png",
+      "bytes": 313993,
+      "sha256": "d7f45619e222ea61d00ee4c53b71d5b5ca680408029d5ab20cd6d68e9702ea72",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Destroy1_Anim_Decoded_1.png",
+      "bytes": 441667,
+      "sha256": "b5e4ec8bac7561a938161eb4db74eadbd107bf4454fe4b6e317e370d0d3cb864",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Destroy1_Anim_Decoded_2.png",
+      "bytes": 805336,
+      "sha256": "a48ab86d641c8a69244883f52a0e5aa44247ca60275998c1c8a23b791efafc4e",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Destroy1_Anim_Decoded_3.png",
+      "bytes": 793972,
+      "sha256": "33274ae7e95df6c1af6c6e1f0362afd5c9929b25006635d67ae8809b51b7c29d",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Destroy1_Anim_Decoded_4.png",
+      "bytes": 796330,
+      "sha256": "e094cbf8e055e4af5c4f263c9e0632a8c59d9bdef7b6ed6022b98ca0f4c9556b",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Destroy2_Anim_Decoded_0.png",
+      "bytes": 474996,
+      "sha256": "24ba2fd3d53b5501abc89f2ec424c366f5f1256a1a5e949b2ebd70ceb865f2e8",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Destroy2_Anim_Decoded_1.png",
+      "bytes": 584374,
+      "sha256": "c1f9bf5ee128f5b6d58fe42594decfcc00177ee5d725f099a4581db17f3ff3d8",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Destroy2_Anim_Decoded_2.png",
+      "bytes": 930466,
+      "sha256": "4d137ba4d2eec58aade96c2a57c0856e50bb828190d7bc96506e7f72d2be8460",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Destroy2_Anim_Decoded_3.png",
+      "bytes": 889230,
+      "sha256": "0bd7223f6c393887e65e68ba70af0338d966ac8535585a195d1d8b40d5f4e9ea",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Destroy2_Anim_Decoded_4.png",
+      "bytes": 889421,
+      "sha256": "7957ce8941128d8644126e66558bbb2bad47f159298baa36b659137b59b1b984",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Idle_Anim_Decoded_0.png",
+      "bytes": 462668,
+      "sha256": "1037455d66b4afb61bac2939a982f1e834cc99c2958d5bb3183735726dccc5f8",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Idle_Anim_Decoded_1.png",
+      "bytes": 465422,
+      "sha256": "74cac460b01353d429fc4f4b771a68dfde8c1d92b1d2f21e6a8a2ea135962bd4",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Idle_Anim_Decoded_2.png",
+      "bytes": 878408,
+      "sha256": "30e32de3746e6b2f998c7fd758880884de8a2eff008ed5b9aa50f4e303acf96f",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Idle_Anim_Decoded_3.png",
+      "bytes": 865229,
+      "sha256": "7d9288a20f85e74594541a9f8a81b5200ccc22c6c69979d9a3699857365208fb",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_Idle_Anim_Decoded_4.png",
+      "bytes": 865719,
+      "sha256": "77cbc7fb5cc621875a7c7f835241efd7056589784e5854af91c54b2eb33efff2",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_OpenDoor_Anim_Decoded_0.png",
+      "bytes": 467149,
+      "sha256": "9566ec441ff8bf9386f993f03b07dc1774ad880004008087ccab6f7fde43d409",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_OpenDoor_Anim_Decoded_1.png",
+      "bytes": 884279,
+      "sha256": "39465c1eb590139c01d457dee76e65f85105b35df3880aa1708392033052902d",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_OpenDoor_Anim_Decoded_2.png",
+      "bytes": 885678,
+      "sha256": "dab3ff052bef9b6cf6faa2ea0f6c3efc34ddedab8d1f52fe1f1c2a7a12cebc9a",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_OpenDoor_Anim_Decoded_3.png",
+      "bytes": 886200,
+      "sha256": "4e28a8b863d1a73aacc0afa42518e2842894214134cb6cd1b2d339537b0e0ed2",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CloningCenter_OpenDoor_Anim_Decoded_4.png",
+      "bytes": 772809,
+      "sha256": "d2f0b9f4b81b4bf08cfebc6d5744058a87cf319bbd90f4d8d2fb39761e4f6df3",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Destoy1_Anim_Decoded_0.png",
+      "bytes": 426187,
+      "sha256": "2c604d7f92635861c0f2fef1b96cdc46684be903caa92ffca785201fac1a8bc2",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Destoy1_Anim_Decoded_1.png",
+      "bytes": 493436,
+      "sha256": "6ebe9d37c37638061b0ddbd7e02809e75aeb714679142abdbcf4f26dd70152a0",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Destoy1_Anim_Decoded_2.png",
+      "bytes": 851982,
+      "sha256": "d3cd7945a4678d1ecadc32092f0d108633c8c161e9d6e83598d72d52e54bca89",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Destoy1_Anim_Decoded_3.png",
+      "bytes": 841804,
+      "sha256": "7301bbd7786071a602bdbd403ff1e3de382d3134a6b1c4d1ed145ddc4a58e0d9",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Destoy1_Anim_Decoded_4.png",
+      "bytes": 841978,
+      "sha256": "59a03932c72feb34f4af35f305032c8374d05da2ef34cc42f7d5fda7789968d9",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Destoy2_Anim_Decoded_0.png",
+      "bytes": 417488,
+      "sha256": "7ab52b51256cf8d3468385a1eface78084820ab687c496914239f544e8aa4bcd",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Destoy2_Anim_Decoded_1.png",
+      "bytes": 484127,
+      "sha256": "2fe5f2d75863d79885f1ba5f786546eafcc6cd9782cd44ecaa9eb8d3a8aba735",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Destoy2_Anim_Decoded_2.png",
+      "bytes": 863876,
+      "sha256": "a4b263928a4c8790944067081f934fceb87f4a7fda7da8b08c17664c84247ba0",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Destoy2_Anim_Decoded_3.png",
+      "bytes": 866124,
+      "sha256": "84176934d0bd71159c0b4cc9a0a5b5939c1133736d7ae8b3f281f65b0bebffa2",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Destoy2_Anim_Decoded_4.png",
+      "bytes": 445738,
+      "sha256": "c89e2527090c161f6ae40496e7d9c03c8a16fe12ec27cb464fe68d5b3450f4a2",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Edle_Anim_Decoded_0.png",
+      "bytes": 403337,
+      "sha256": "44d4de0bc13b085d4f259ac872130bfa2a5b45745d3d8495794ebfcee0297968",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Edle_Anim_Decoded_1.png",
+      "bytes": 841980,
+      "sha256": "f0c70fb170931c9c8a24515c198da12bfbfaba5ae541189a28eb5f2b27926ea0",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Edle_Anim_Decoded_2.png",
+      "bytes": 847097,
+      "sha256": "ed870872f9762e8e3397989352cbc292f2b12311fe07aeba896315391ab381ab",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Edle_Anim_Decoded_3.png",
+      "bytes": 845000,
+      "sha256": "2cf27b380635a91106c22671d8330a0413cac4d9913474e8d23f638eba0e84e2",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_CommandCenter_Edle_Anim_Decoded_4.png",
+      "bytes": 528141,
+      "sha256": "a6617bba308b83fe158dc73472959c11203f7d6fcb8a6a8ae1d5fc0702d31933",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Drone_Fly_Anim_Decoded_0.png",
+      "bytes": 313219,
+      "sha256": "1f4fbd045c4018e972ae04a150da64ad49034346f7feb648cd22f4f7ba8b030a",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Drone_Fly_Anim_Decoded_1.png",
+      "bytes": 338233,
+      "sha256": "650ab8835e76a60de1527c8dd7899fa225d81c13ed48f4d7f2fa8caf6ff4e8eb",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Drone_Fly_Anim_Decoded_2.png",
+      "bytes": 746677,
+      "sha256": "dbbf62d85efab0eb4fb89841e28684cfda8128880c9553b7b7cc30c6fc8445ea",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Drone_Fly_Anim_Decoded_3.png",
+      "bytes": 693117,
+      "sha256": "5071daf8284ad68a35d423af04ebc3a19a95c29bcd80d453acca86310e1972e4",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Drone_Fly_Anim_Decoded_4.png",
+      "bytes": 688858,
+      "sha256": "67a2aeca921c513ac7d56f6a198a7b6f581a41b9ec04656db187ffe4bb776a26",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Destroy1_Anim_Decoded_0.png",
+      "bytes": 417809,
+      "sha256": "e891639c321da3d57e2f4e9100d237eca02a11bc756a3c5f3fb4682568e063cf",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Destroy1_Anim_Decoded_1.png",
+      "bytes": 856200,
+      "sha256": "54fc095c16f66242ab220210d441535af2a407d8ebe115528a999a02abd9a3f0",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Destroy1_Anim_Decoded_2.png",
+      "bytes": 853610,
+      "sha256": "d661ebbea4f9b5c1e2d02ab22cf1e6acc23df633a44079ea2cccadcfcac8f3e6",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Destroy1_Anim_Decoded_3.png",
+      "bytes": 854127,
+      "sha256": "48070838c245394cd4b1a661b6cbe01bb439362850c5df41f43f53680fd95989",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Destroy1_Anim_Decoded_4.png",
+      "bytes": 747661,
+      "sha256": "2c41b7cffef0eedf613caee30da1c9e6c550b029c402e5e318611f4a6711c2af",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Destroy2_Anim_Decoded_0.png",
+      "bytes": 367518,
+      "sha256": "1a181aff646de2a5de5c6d0a356829639c1e33dbc970630c609bb3077a45e79f",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Destroy2_Anim_Decoded_1.png",
+      "bytes": 830059,
+      "sha256": "ea0b2367df78f96745839500d7315771987097d5054f58f2cc0616e7ff01eac4",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Destroy2_Anim_Decoded_2.png",
+      "bytes": 823633,
+      "sha256": "f2887b1d67c919fc75b8c5bbb12b4ff180cacb20e3ffcfaee5d0c282daf7b14c",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Destroy2_Anim_Decoded_3.png",
+      "bytes": 825086,
+      "sha256": "aa151a8fa90c2a3d0fb3a0494208c7f572887ea3961d4781ead6456f7a3f2843",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Destroy2_Anim_Decoded_4.png",
+      "bytes": 720135,
+      "sha256": "90ec87914a8a1ba7123dc9629510298a673e98bb92492c349da440b7401636c5",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Idle_Anim_Decoded_0.png",
+      "bytes": 467754,
+      "sha256": "99650a070330858ae5cf622dfb010d6f117f7b001d814f4bcce4e5581e02cef3",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Idle_Anim_Decoded_1.png",
+      "bytes": 881943,
+      "sha256": "a5108a6bf77a0a149eca11389adecbc1ef54e7da374fcb47b80f1875349c8e28",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Idle_Anim_Decoded_2.png",
+      "bytes": 882870,
+      "sha256": "0c3c53abc2046bf3efa75063a3b8ac3281df0d782c3b91b13fdf9338eb3b8a7e",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Idle_Anim_Decoded_3.png",
+      "bytes": 883116,
+      "sha256": "e88328e275ec3bb251cb95f73c52e2459d6b98e89810e40ebe48066adf7443e9",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_Idle_Anim_Decoded_4.png",
+      "bytes": 774479,
+      "sha256": "e9deb5d9bcf96f472ab8d00bfa28dbfdf285800f3c80f7d6b45e97b3537ff4ad",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_OpenDoor_Anim_Decoded_0.png",
+      "bytes": 466816,
+      "sha256": "385caa90aa27f2fbab6a658ec5df88652dd76394d7f9210e1e172b9ce82b0afd",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_OpenDoor_Anim_Decoded_1.png",
+      "bytes": 882995,
+      "sha256": "87873012ac54f3f66ea5598afc8bdd19b575aff6f1b9dcf96ac6322b67fa147e",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_OpenDoor_Anim_Decoded_2.png",
+      "bytes": 883418,
+      "sha256": "adeff9d8449c63f1215109658d858289b8108cc9a94bcef73da2ac9285bfbacc",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_OpenDoor_Anim_Decoded_3.png",
+      "bytes": 881732,
+      "sha256": "e8622998a434ff487defa8b2d83e06b769e9e2a53fd7fef4a2ea40e04ace751a",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_MilitaryFactory_OpenDoor_Anim_Decoded_4.png",
+      "bytes": 423366,
+      "sha256": "e7183387f6bb8b8d222fd4c36ef81983d5605ef7fc2276418bc368939dc18472",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Destroy1_Anim_Decoded_0.png",
+      "bytes": 291617,
+      "sha256": "334078cf874ad3da6ec437895bc8ffdd33f8b152be83c56012cc0c86c8949e75",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Destroy1_Anim_Decoded_1.png",
+      "bytes": 803244,
+      "sha256": "1557d32226c1c4d17cdb5b695cf5a67002ef756092303caa063b9b216eb374ff",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Destroy1_Anim_Decoded_2.png",
+      "bytes": 790333,
+      "sha256": "69b75564444de577d7d01ac1198d1f825bd9b158b7a28b07728de6ed2cabbed4",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Destroy1_Anim_Decoded_3.png",
+      "bytes": 775463,
+      "sha256": "636ee4d75586f68f1482f81c202475d2fb15394e588dc7c73e46149b26cc7579",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Destroy1_Anim_Decoded_4.png",
+      "bytes": 667947,
+      "sha256": "63f700244c2c24aef5cbc849915d9c3dfc5e585d71e7fd3b1643ba8b161a88d7",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Destroy2_Anim_Decoded_0.png",
+      "bytes": 238039,
+      "sha256": "92764c714ddeb89eb38db52c5e790581ddc4e9b51abaa234e7b16d27ddd4513d",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Destroy2_Anim_Decoded_1.png",
+      "bytes": 737932,
+      "sha256": "5b79eb5eb3ea21deb5abf617380d410aa02e6b4092a9fcc5742da22e58c5dbd9",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Destroy2_Anim_Decoded_2.png",
+      "bytes": 733648,
+      "sha256": "9f45df9a0959fac01caabbe156f071b3631683781f32046ad9ad39819362fb98",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Destroy2_Anim_Decoded_3.png",
+      "bytes": 732841,
+      "sha256": "3f78eabe4aae1322ff79d34b45d7567cc05e87b236767ec6b911afbdb4c171ff",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Destroy2_Anim_Decoded_4.png",
+      "bytes": 619642,
+      "sha256": "822572ce27dedc20e535b3f5a37d7e8c2720bcc99126e877938fbdbf601f71bb",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Idle_Anim_Decoded_0.png",
+      "bytes": 459244,
+      "sha256": "25d24e96249f72ffc5fbf2ca7d98de940974c07d5cc7851ab24b744e749e592f",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Idle_Anim_Decoded_1.png",
+      "bytes": 867532,
+      "sha256": "01647bfc92b3b273c541cf7c470f948f4ff6fbcd706c8ab0d17e62c388b4016a",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Idle_Anim_Decoded_2.png",
+      "bytes": 876337,
+      "sha256": "0d9dce3a72c8eb2770815eefc4370e284c4bd9bc7983db18480edec9b45ef560",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Idle_Anim_Decoded_3.png",
+      "bytes": 874968,
+      "sha256": "7ddf041933b54249cf0d8218083f84e13de9802f40782729074841f306dcc444",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_Reactor_Idle_Anim_Decoded_4.png",
+      "bytes": 819969,
+      "sha256": "db021922a79c06b11df1d2827ed9fa966308faac7f09fd0c405f7b1f74c9a020",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Dead1_Anim_Decoded_0.png",
+      "bytes": 430418,
+      "sha256": "ccc16b08b2869ddf8ed46666c1e189907a59f780ba3c5fa17e405956ed690b7c",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Dead1_Anim_Decoded_1.png",
+      "bytes": 543378,
+      "sha256": "e888208b0159ddb916ca9ae69465643bac3a9964feb54bab8e0574b2a037bd4a",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Dead1_Anim_Decoded_2.png",
+      "bytes": 923141,
+      "sha256": "aad6c57467d90c89d5eb76c97312f22cb97b1e4c4856b03ae6bcc2781f277eac",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Dead1_Anim_Decoded_3.png",
+      "bytes": 887907,
+      "sha256": "dad18cad1207669d679ced9ea18fd8ce2fab38f7c87d7cdc1712e95c8584d382",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Dead1_Anim_Decoded_4.png",
+      "bytes": 888106,
+      "sha256": "ce4bfa5067d0cf9cb6774d775f2f1d263114bc0e4bc88a29d93f9fbf44eb8ae7",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Dead2_Anim_Decoded_0.png",
+      "bytes": 356706,
+      "sha256": "4345677edce6c5c16d8619b1a8bc33c8e6e253f406f5007e4ad37c9aa0964cf2",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Dead2_Anim_Decoded_1.png",
+      "bytes": 478050,
+      "sha256": "041c6aaa297fab8a9055ab0d0ecb90d9844208f871141afe7ec281df05bce24f",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Dead2_Anim_Decoded_2.png",
+      "bytes": 861947,
+      "sha256": "f9ed0a26c75b81c8a8f4c4e28c730a7ab1dfc542616ae84c776c6f811b97f78c",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Dead2_Anim_Decoded_3.png",
+      "bytes": 846287,
+      "sha256": "7006bab5af1507c803dd61851bd2b55ebf27a962c16e65d733c5f987f516309b",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Dead2_Anim_Decoded_4.png",
+      "bytes": 846183,
+      "sha256": "3890ae1f27e20d33c7952950dfbb886333e79d412894c4bfa09d01907100efef",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Idle_Anim_Decoded_0.png",
+      "bytes": 435271,
+      "sha256": "f14cb47416a427027ee738957267ab45bda0369ce6b5aec15c5801dc361fe0cc",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Idle_Anim_Decoded_1.png",
+      "bytes": 872502,
+      "sha256": "f67cc340b81161a4cd022c48e1ae8f11c139fed74b9dbff5dd2dfe4353ec8d0e",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Idle_Anim_Decoded_2.png",
+      "bytes": 867482,
+      "sha256": "2701bef1d9a54084631277d4618ed72fab820bf5d41559869a2340f6cee8d392",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Idle_Anim_Decoded_3.png",
+      "bytes": 879047,
+      "sha256": "d915ff350dd43ddcc2c2d8378d339708a05304a1192ad0e564c7faa85db5eb68",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/Decoded/TB1_StrategyCenter_Idle_Anim_Decoded_4.png",
+      "bytes": 385806,
+      "sha256": "521f0d7e198011db6b32a49895fc7d324b238ec5fe52b083d5eaa8c81712bb4f",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/movie_pixel_validation.json",
+      "bytes": 17757,
+      "sha256": "d2b21b49c16d1b64d46d7283f7e6d9a70b422641e9b37858c5700bbe6dd6b01f"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/movie_readback_report.json",
+      "bytes": 34851,
+      "sha256": "238010a2876bd77df5d8567a4bb9afcfdfd49a02eb71d13154920c315d9a947b"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy1_Anim.mp4",
+      "bytes": 1052203,
+      "sha256": "9653854eeaa1ee6aa33fb53a72ceaf516edfa19fe7286bb263b58e993f080104"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy1_Anim_Checkpoint_0.png",
+      "bytes": 975330,
+      "sha256": "435cf2d33fd82cd06938904ba5097c607d6cc812e74711d29532dc59c9df5242",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy1_Anim_Checkpoint_1.png",
+      "bytes": 1031588,
+      "sha256": "367045840da8d4a3b634755dafdf74cc4b2ef8e17fbfbe768008602986fb9179",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy1_Anim_Checkpoint_2.png",
+      "bytes": 1034264,
+      "sha256": "f3e73a00763515f32ddebd49bc28f0eda3e18be201606245958124008bb091a5",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy1_Anim_Checkpoint_3.png",
+      "bytes": 1031655,
+      "sha256": "b27a3228e3503b9dc2f719bd2c55f517202d831cf03e2047e36452233c2bac86",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy1_Anim_Checkpoint_4.png",
+      "bytes": 1031588,
+      "sha256": "8b6b94c58995815ce787f8abace5c207143edf244b6472da497a63f4e31d6120",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy1_Anim_report.json",
+      "bytes": 1532,
+      "sha256": "00285b083d99506f304dbfec523528b3971d889d07567b2b4159ff9dec31d0e2"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy2_Anim.mp4",
+      "bytes": 1409902,
+      "sha256": "0ffe7c19dddbbc7dd5cb706508b73329293f808d31c3de34042027ffa2f06d69"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy2_Anim_Checkpoint_0.png",
+      "bytes": 980689,
+      "sha256": "080ce517dda406ecd85cd5bed435c55bca27c6d73377f5a5b0f4b313a85f9578",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy2_Anim_Checkpoint_1.png",
+      "bytes": 1026421,
+      "sha256": "e5551df85c184c91efa7603327c9b0283d6fdc090e18f25a7789ec7b1f460eaa",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy2_Anim_Checkpoint_2.png",
+      "bytes": 1032607,
+      "sha256": "75638551eae49a4fec993582af0348f3f8b37c56ba88e2e1f2efe9049a09bd59",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy2_Anim_Checkpoint_3.png",
+      "bytes": 1032822,
+      "sha256": "a218c50ed3cd9cda2eacecc23137cdf2c5a6b394be1ae2bcaf80e262c523157f",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy2_Anim_Checkpoint_4.png",
+      "bytes": 1033510,
+      "sha256": "e99f7a84ee51d04a77bd1112a6661aa0bebcc038b4455c0fc9f3ce1a603e10a8",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Destroy2_Anim_report.json",
+      "bytes": 1562,
+      "sha256": "4b0000c9adfa1947d6148aad680b44642acd3f6c007af943346895601ad2143b"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Idle_Anim.mp4",
+      "bytes": 959059,
+      "sha256": "ef93900a260087633d619b97e02d7b5c2a76ac21da76f5f3580b3d5a3521901e"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Idle_Anim_Checkpoint_0.png",
+      "bytes": 995142,
+      "sha256": "d9fb0466e8881f918fbcb0b9862abbe0740bd618a0d18779c2267e743e61ad90",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Idle_Anim_Checkpoint_1.png",
+      "bytes": 994805,
+      "sha256": "2b7007b74c5f072ce64cf47c096bdbfa5c2ab2bf5bad842936b9f1bdcb4c5fb5",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Idle_Anim_Checkpoint_2.png",
+      "bytes": 995353,
+      "sha256": "070f70fcac20c717383e43be2fb6df73102d051ca635ead1389329f2d08e67cb",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Idle_Anim_Checkpoint_3.png",
+      "bytes": 995328,
+      "sha256": "ca0eddff628a612122a7dec21d6ce8220ce50648dda03f4307b7b1a63e1ed82d",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Idle_Anim_Checkpoint_4.png",
+      "bytes": 995067,
+      "sha256": "c5c89995d9fe001d5c410b4d928c7576e53e0386aea227fab64dfa382526d468",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_Idle_Anim_report.json",
+      "bytes": 1534,
+      "sha256": "b8656bdb010b6e04b1a5bb497b67f065404f83c78bf02b3a9e3cc0912477b524"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_OpenDoor_Anim.mp4",
+      "bytes": 1262248,
+      "sha256": "076ec1361909dffbfb8517de120498f9e8b5c0890e841b1c374cf9b46ffb4cdf"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_OpenDoor_Anim_Checkpoint_0.png",
+      "bytes": 997496,
+      "sha256": "a91a8df783afbf373e76bbf33410fbffc7a71c70d7e89bc1aca35bfec1fefb26",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_OpenDoor_Anim_Checkpoint_1.png",
+      "bytes": 1024524,
+      "sha256": "4763212e10889349bd97d8ff71a564f5d00fa15e9311bc9fb0303432ab9eab88",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_OpenDoor_Anim_Checkpoint_2.png",
+      "bytes": 1024737,
+      "sha256": "d15b9d6e82448e9c5ce2d810fcd646a2917431942bf82645e5992a6121032f3c",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_OpenDoor_Anim_Checkpoint_3.png",
+      "bytes": 1024758,
+      "sha256": "41e9bae03b4fa2903ecfa07b0f5a48237ac6550dc40e1d880b2e72788e568b12",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_OpenDoor_Anim_Checkpoint_4.png",
+      "bytes": 997374,
+      "sha256": "4bfbc08d6b83666c9ae67dac10a99baba55d21870211fc69587e65ac6ccdcb75",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_AirBase_OpenDoor_Anim_report.json",
+      "bytes": 1564,
+      "sha256": "b9bfcb5031b3cd2d63814ec700dbd49d5b1c60c3cf7a0b3ea5e6b87380838ba3"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy1_Anim.mp4",
+      "bytes": 723023,
+      "sha256": "6d9b631f89418cbaff5bb86c143da64678856dbfbeb3c75e1a980e753b515199"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy1_Anim_Checkpoint_0.png",
+      "bytes": 946579,
+      "sha256": "39af66e6fcd962a41bf49f909b6cf6e8bab14306798dff86b626a4dc1e41b622",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy1_Anim_Checkpoint_1.png",
+      "bytes": 989034,
+      "sha256": "c463b49aa3a2ed3d54ab72f17628cd97aa9aecf50370b2ec0e3ee06b72ce19e3",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy1_Anim_Checkpoint_2.png",
+      "bytes": 979918,
+      "sha256": "71ec1d7bbed0251def93b2405ffe7e714430f69ab6287e9896addec7e784bbb6",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy1_Anim_Checkpoint_3.png",
+      "bytes": 986148,
+      "sha256": "fb7e576cbab637aed85795c181b8beddfacbd565c65c2a8ad7733c6cda3e837c",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy1_Anim_Checkpoint_4.png",
+      "bytes": 985493,
+      "sha256": "b20481a8e24a0e0a7ff0641a5ab363be7721aa140876ccae4d835c7f4053d5cb",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy1_Anim_report.json",
+      "bytes": 1599,
+      "sha256": "52fd99c348944e34653dc4ebac677862c4faae9f00f54f5e0f0749a13cd56bb8"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy2_Anim.mp4",
+      "bytes": 634937,
+      "sha256": "5ccdaa2c39a8d7f1829d8aa793dcae64aeedbe2f791210ad69b77a8e0a325d92"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy2_Anim_Checkpoint_0.png",
+      "bytes": 1066119,
+      "sha256": "a8c0c170e3e6d758e56f0c54373bb7ceca67a271ad8ace2535bcf2c3235491a9",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy2_Anim_Checkpoint_1.png",
+      "bytes": 1095485,
+      "sha256": "1c14a4d73fdee0ad8ca7be0305b3195a5c5d51ed13a09b327530b10b100010dd",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy2_Anim_Checkpoint_2.png",
+      "bytes": 1100701,
+      "sha256": "01865c4914fa78d1ab856b338d82edf58a77a0881654d6b76a979e3a9558f0cd",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy2_Anim_Checkpoint_3.png",
+      "bytes": 1100316,
+      "sha256": "08f126f27fa21f3aa99e9a67730e70ce1ebe4c1794c606dd7d7a22b40eeae65c",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy2_Anim_Checkpoint_4.png",
+      "bytes": 1100336,
+      "sha256": "747c60512e66219a9d6ed4aa31120b23e2d91436887877bb3305b12f2ab1aaea",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Destroy2_Anim_report.json",
+      "bytes": 1594,
+      "sha256": "ddd58c95eaa4ad8a5d57a53404553f1c3dc0150cec4d62847244cbb9ef5d13d4"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Idle_Anim.mp4",
+      "bytes": 439133,
+      "sha256": "86af02080e4a2de72b6543ecb11e8df0dd935faaf91c5f1380bc9e8a0aa60333"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Idle_Anim_Checkpoint_0.png",
+      "bytes": 1059174,
+      "sha256": "7fe88002d664d2d14b292c5d19c96e00a04d923c9f7773d8b4f12d7944c4e5e4",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Idle_Anim_Checkpoint_1.png",
+      "bytes": 1059112,
+      "sha256": "e399d79f39e5408b8921a80ceaf7306d3b41c06d3df951878836a6f7bbb7792a",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Idle_Anim_Checkpoint_2.png",
+      "bytes": 1059002,
+      "sha256": "4b0f0714b7243c4b295ab19d78533b4bedb0e2391554c76a59c7d3fc72c07be8",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Idle_Anim_Checkpoint_3.png",
+      "bytes": 1059095,
+      "sha256": "44e97931ec948544977352ef1e176598a3a10eced85a534e6ab4a0fddfc417ed",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Idle_Anim_Checkpoint_4.png",
+      "bytes": 1059193,
+      "sha256": "e70cc4a302998f609d43f3ecda489db2f5cb78feb3fba6dd933e59ff1a795702",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_Idle_Anim_report.json",
+      "bytes": 1566,
+      "sha256": "24f2a133d5c8aa5fbcec0cf62cf0a02e11cf88d5f57144c21ef2e6f83eec5ea0"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_OpenDoor_Anim.mp4",
+      "bytes": 954095,
+      "sha256": "c7e4f4e96a7a1f40e83e54b1d480a4ada09ecbf28355e2a2bce628d7e93fc358"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_OpenDoor_Anim_Checkpoint_0.png",
+      "bytes": 1061597,
+      "sha256": "aef2766c43af20cdd9de7891c702abbcb13f374e13c676d906b0bf9b4a78c4f2",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_OpenDoor_Anim_Checkpoint_1.png",
+      "bytes": 1067822,
+      "sha256": "8fa90fa305c9087ad12b7764b351a03f28725554bdd141cb53b1b35ae51af759",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_OpenDoor_Anim_Checkpoint_2.png",
+      "bytes": 1067989,
+      "sha256": "489a62e35f385c63cd3ffc3206c6e247c97ce91b5e65503a094c0dab6968c1df",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_OpenDoor_Anim_Checkpoint_3.png",
+      "bytes": 1067919,
+      "sha256": "3a30422b0ae9aefdfa6f0c408ab318beb2d42287c95a83e742599af243cf0c4c",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_OpenDoor_Anim_Checkpoint_4.png",
+      "bytes": 1061616,
+      "sha256": "52b8238dafedca581b2018f1e49896368f14169212e1473f8179621e43b2a0bc",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CloningCenter_OpenDoor_Anim_report.json",
+      "bytes": 1606,
+      "sha256": "d55c758b9591e8103ede688aee009355af2f03cca46a617b11deb054b5b187cc"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy1_Anim.mp4",
+      "bytes": 604439,
+      "sha256": "34b76103e58bc6c5cf88c92c214f6296336a780cd72fe01196383fd9f977c0c4"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy1_Anim_Checkpoint_0.png",
+      "bytes": 1019361,
+      "sha256": "3e8bc8b704759da10f09ff7ebeb561bfaf0a4e220ec26ae503c5108197155460",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy1_Anim_Checkpoint_1.png",
+      "bytes": 1036800,
+      "sha256": "e74866c5b424ba7cfead48d2a36ae6bef96050e068ae7377b2c998221bb03a6e",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy1_Anim_Checkpoint_2.png",
+      "bytes": 1028261,
+      "sha256": "f2db0646b48c8d26fe9a68ba6b0dd9ff78c18051ef6e92999d69afe1f3c7af97",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy1_Anim_Checkpoint_3.png",
+      "bytes": 1027160,
+      "sha256": "4ef20c935bf68a5594d2165a09149508cf930498c733857a2b7f266d2e2a640f",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy1_Anim_Checkpoint_4.png",
+      "bytes": 1027242,
+      "sha256": "83c89f7921459ac0893e71d4c86cfe448f86b9436d700e97a3bcea20752c0a28",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy1_Anim_report.json",
+      "bytes": 1590,
+      "sha256": "3fb5ca88c8ac73ecb9c9dae003b1105cddc4677520a9f47fb52eea9006d41189"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy2_Anim.mp4",
+      "bytes": 500016,
+      "sha256": "b8b6e1171a7798a6d6916f3ecbcf7f37f92c2378e8c92b267d60c3d8aa5afa72"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy2_Anim_Checkpoint_0.png",
+      "bytes": 1018224,
+      "sha256": "4ef0b5736382ff36768adb2186ec061d734f186fc771d06e25aac4c7c35bb9f4",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy2_Anim_Checkpoint_1.png",
+      "bytes": 1029287,
+      "sha256": "cd12a80941cf452f2c6ca7211c4709dc9d90bb40dcaae18089cab8b86bb54917",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy2_Anim_Checkpoint_2.png",
+      "bytes": 1028304,
+      "sha256": "62a5c3b2ceb7e5daf37071bcd068fc3fd0c4872f05245e999f6b26fcfe0a2652",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy2_Anim_Checkpoint_3.png",
+      "bytes": 1028204,
+      "sha256": "f5c67d9e80f0cce3635657295328ae770ad6c60c7ec642ca3e7218ede5586c66",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy2_Anim_Checkpoint_4.png",
+      "bytes": 1028238,
+      "sha256": "b0e70b8a8ed75adf551a4142b4d0c31dfd9b5f1a918bff7aef7e85729e4328a9",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Destoy2_Anim_report.json",
+      "bytes": 1599,
+      "sha256": "484ca5b7c4ab42fa277ca7cb6cc2aefc098ac7fdaeda680bbdc0bbddc5fb9353"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Edle_Anim.mp4",
+      "bytes": 6119397,
+      "sha256": "4f214fc50cb5db2ff1043724ba5be310050adedf6cf306c1175606f16c8916ca"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Edle_Anim_Checkpoint_0.png",
+      "bytes": 1018672,
+      "sha256": "a594ff51c5f5762b19963ea65c3a700c8a20ffcbe2b621d27a7fc221e36ca840",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Edle_Anim_Checkpoint_1.png",
+      "bytes": 1014566,
+      "sha256": "d24df25c830c21373c730f8c56090e2fc81092fd0e44e1589ac8c638e530cc9d",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Edle_Anim_Checkpoint_2.png",
+      "bytes": 1017254,
+      "sha256": "5b03077a27414e0054ac7913ef3681505fc8194acf6cd8f8a987a3527993c213",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Edle_Anim_Checkpoint_3.png",
+      "bytes": 1018123,
+      "sha256": "824306b6136e7052474c73c3782f76e0f5d93e063fff62a8831d0676117d48eb",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Edle_Anim_Checkpoint_4.png",
+      "bytes": 1018753,
+      "sha256": "8d2ef1f3b50b85f7398d4487b1546d0edddbcd4ce2bcf85adea8d7504b207b7e",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_CommandCenter_Edle_Anim_report.json",
+      "bytes": 1533,
+      "sha256": "3f047e45f5c2755ad6b18e772050d2d96caacbe19a37caedc93e2606ad25d647"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Drone_Fly_Anim.mp4",
+      "bytes": 439321,
+      "sha256": "e084328577163a0e8c44413a8d53d649ca38eb99a311c20626ae91377abd42bc"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Drone_Fly_Anim_Checkpoint_0.png",
+      "bytes": 926051,
+      "sha256": "75f8ab9ed3dcbe2000265e28683c68c9acc0f3b00275a16131bd2d65e41b99a1",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Drone_Fly_Anim_Checkpoint_1.png",
+      "bytes": 923923,
+      "sha256": "75ef91ff30c8f609ba82229f47e300bd9f511525e069e222870398a36be36a4b",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Drone_Fly_Anim_Checkpoint_2.png",
+      "bytes": 923442,
+      "sha256": "de8546d88504ed8a8a030c7d417bb4792c626ea9d101ae725e32b41a3feabf9a",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Drone_Fly_Anim_Checkpoint_3.png",
+      "bytes": 924867,
+      "sha256": "20a3f439553d4d803b552d32558d8ee5a00797cae2a60343dcd5b2f3d28653c9",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Drone_Fly_Anim_Checkpoint_4.png",
+      "bytes": 925997,
+      "sha256": "5ac3af99a2a7fb2aaee7dd2b8c8833eaebfca616fd9f25957a4d025ea568094e",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Drone_Fly_Anim_report.json",
+      "bytes": 1500,
+      "sha256": "3973fe2c4686566b08d822b9ae973a709f22e35c27805fd76b6c066fd7fc59b5"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy1_Anim.mp4",
+      "bytes": 1172889,
+      "sha256": "3f614e994f2a852b6c82fd327a1654bd815cbfc1a2af4c567e829bbcf6dc3557"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy1_Anim_Checkpoint_0.png",
+      "bytes": 1010558,
+      "sha256": "44d5aaf01c6bd4c41c06cf8015c77a0b35f157c2fb17cc0fca6aa24d40ea0451",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy1_Anim_Checkpoint_1.png",
+      "bytes": 1022138,
+      "sha256": "41295f3c1c57d11ea0a7a5188b1116f2f0b851f504a7a169ae26ca180138bb94",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy1_Anim_Checkpoint_2.png",
+      "bytes": 1023279,
+      "sha256": "58fe0f50ed41d70887fe831aefb813d90891a66132419bb6625c6eadaaf2ea97",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy1_Anim_Checkpoint_3.png",
+      "bytes": 1023019,
+      "sha256": "5517e9ac34155e343b5dc378e061573ffabbd84db2d7341cd608a63619189b73",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy1_Anim_Checkpoint_4.png",
+      "bytes": 1022760,
+      "sha256": "393fe06cebe01b247a62a70f5603f7b2eed88c99454dee6c2b362745e8a68c4c",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy1_Anim_report.json",
+      "bytes": 1628,
+      "sha256": "3fac181d8f3da7500f8f568a8cf06ade63283b2bcd1812b6fb5576a3d5e3e870"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy2_Anim.mp4",
+      "bytes": 1116935,
+      "sha256": "c537156f985f623d8a3149fb941c62780f1ce98adc9263f993a524263d7e91fd"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy2_Anim_Checkpoint_0.png",
+      "bytes": 997807,
+      "sha256": "dfc0ab99470e22afe2db51e0562b190f4d3d82fad07a9120495980f7a1efd908",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy2_Anim_Checkpoint_1.png",
+      "bytes": 1005965,
+      "sha256": "f6320b1aefe6621618cc21fb48ebe15518111daea547b364b165a6daa800d880",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy2_Anim_Checkpoint_2.png",
+      "bytes": 1006795,
+      "sha256": "fde9016f34b4a6c9010d6a1bf1061818e4e11870aebcb1498dd213d89c61da60",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy2_Anim_Checkpoint_3.png",
+      "bytes": 1007582,
+      "sha256": "8e468ee799c09e48f471fc2d6990decef335fbaa1c25f9b76b32e2cfb6599511",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy2_Anim_Checkpoint_4.png",
+      "bytes": 1007123,
+      "sha256": "41b01e21f781680322705ba63fffa0d15c6f6d57d459a8c2c82a475a4897677c",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Destroy2_Anim_report.json",
+      "bytes": 1629,
+      "sha256": "17850e99aefd36754046878add7bbd8fd63be8be4a0798e9d9dde063cd79fec4"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Idle_Anim.mp4",
+      "bytes": 1018035,
+      "sha256": "293b89b6716e66a9ba4587cffb62e480db538790978ad41ed01c2f30bbf94bfb"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Idle_Anim_Checkpoint_0.png",
+      "bytes": 1062148,
+      "sha256": "062cde838c85ef34e67783358938b52872c0936ae8b5566266a47106d896660c",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Idle_Anim_Checkpoint_1.png",
+      "bytes": 1062335,
+      "sha256": "f46faf2c8d4448399363d7c4a19f9b4bf985a852bf587fa16c60cbc3f23401a5",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Idle_Anim_Checkpoint_2.png",
+      "bytes": 1062743,
+      "sha256": "65a862829655a7269070e2dd395899751f140d32e4174fc5b7e34662c422653a",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Idle_Anim_Checkpoint_3.png",
+      "bytes": 1062671,
+      "sha256": "28c97b57943806f311ed68ae55b1fae8d809d7d0fb4390fcc6dfd7c392837dbe",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Idle_Anim_Checkpoint_4.png",
+      "bytes": 1062073,
+      "sha256": "0f12f1952fb387328d82404910665d0a9ac7cabab01233f92a40956fe8cd10a3",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_Idle_Anim_report.json",
+      "bytes": 1602,
+      "sha256": "1c5afa173e903903642053d2c2a54a913cb9fcfcf20f21e064595198873f3605"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_OpenDoor_Anim.mp4",
+      "bytes": 2109978,
+      "sha256": "65c2ec70972de4ad07a4e65dca939af7305a7d775b64a5cea41b5b252ec4db5f"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_OpenDoor_Anim_Checkpoint_0.png",
+      "bytes": 1063192,
+      "sha256": "d3037454605fc955d073420f9173263f6d39259477249e64dca5b5adca6addfe",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_OpenDoor_Anim_Checkpoint_1.png",
+      "bytes": 1058559,
+      "sha256": "aebe66ca799b1597a1c468d4ef30923e64e0f3047d486ef3e0845e8a14d27dad",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_OpenDoor_Anim_Checkpoint_2.png",
+      "bytes": 1057920,
+      "sha256": "16d0ca34eb7f461f97380604ddcd871724f55bbca3ba52122151d8fb46e380c0",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_OpenDoor_Anim_Checkpoint_3.png",
+      "bytes": 1058529,
+      "sha256": "a7136ccec0d34d62e624b8ec6deb0a3bdb73a3f57c5b8e7d8f5ae7ec51342758",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_OpenDoor_Anim_Checkpoint_4.png",
+      "bytes": 1063187,
+      "sha256": "45582544a37dcdadc63d3f4f32f7c20eaf81ca5f09c42bbee9cc3d620e7733df",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_MilitaryFactory_OpenDoor_Anim_report.json",
+      "bytes": 1621,
+      "sha256": "acd5352642b5567dc7f4b4b88d0e888558e5e2ff63b8588f23fb85f2777cb29d"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy1_Anim.mp4",
+      "bytes": 1186998,
+      "sha256": "604cf972b69fe3bb321f47eeb06a3e7a37bcf8650483cb6823d27af62a987282"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy1_Anim_Checkpoint_0.png",
+      "bytes": 928655,
+      "sha256": "71f49876364a38043f5bb93dfd3f2afe0f57023f6deef85a9d8c3426909e51f7",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy1_Anim_Checkpoint_1.png",
+      "bytes": 949623,
+      "sha256": "9775a243ab64f4fb3d155bd0a46f33b00a960fecfab94df0185bf58cdb42611e",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy1_Anim_Checkpoint_2.png",
+      "bytes": 953595,
+      "sha256": "cae1525898aeeb69c90cb9f793e55c33cc01f50d204a02af8539d1440e21846b",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy1_Anim_Checkpoint_3.png",
+      "bytes": 953900,
+      "sha256": "ccc87ca00cfee917d7684822927411b08f700b2ba1200cec213ee780464dbe9a",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy1_Anim_Checkpoint_4.png",
+      "bytes": 953850,
+      "sha256": "3df9cd614584b133374c21a3be89a854f787c5737d882374a488f875cff83272",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy1_Anim_report.json",
+      "bytes": 1558,
+      "sha256": "0bdbd864f6967a1b801751c9c140ef5ce530e57ea871b8f50ff48a9694befc05"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy2_Anim.mp4",
+      "bytes": 1029448,
+      "sha256": "0333f9719f23d79a4d85a65ace5200ff81aeb93d2d680d19c5397cb0d7d67fa5"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy2_Anim_Checkpoint_0.png",
+      "bytes": 896852,
+      "sha256": "b2cfce5192c55dda9876943124a5312f3cfe68f7b655f6b58d712af55381ccd2",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy2_Anim_Checkpoint_1.png",
+      "bytes": 912530,
+      "sha256": "e9c3c5f2faba5b1125052bb32b3087aaef3818d32e1f561791ec16742e88eacb",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy2_Anim_Checkpoint_2.png",
+      "bytes": 918814,
+      "sha256": "6bb09913d66295bdad58401fc2b355a8fe0cc07dfedcbfaaa702931aeb185eb1",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy2_Anim_Checkpoint_3.png",
+      "bytes": 918435,
+      "sha256": "6ab467dded68a5f1305ea441fe2eb929d101dc4d4db567346823f379bd22ca0e",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy2_Anim_Checkpoint_4.png",
+      "bytes": 918417,
+      "sha256": "df6400ee7d6160ebecb62e4171658e1da3efd7552e258c7c76b7d2502cc39f50",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Destroy2_Anim_report.json",
+      "bytes": 1561,
+      "sha256": "147ebdc1dc870aa2a0c4c7f47e3467b4e7bc88aafee824dd48de336b1739bd64"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Idle_Anim.mp4",
+      "bytes": 1860217,
+      "sha256": "7cea3b928ace901d3b607089858897476459b8556bbf212b82429843d3a86ae0"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Idle_Anim_Checkpoint_0.png",
+      "bytes": 1035077,
+      "sha256": "6ae1324782ff617cd2ff9303230dd18801a6d0b3d53fffdda0c34e07494da1b2",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Idle_Anim_Checkpoint_1.png",
+      "bytes": 1037196,
+      "sha256": "340507b1b558205a0fa07958bb9667c76e151e8e9f01ecee87b9efab7f27ad33",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Idle_Anim_Checkpoint_2.png",
+      "bytes": 1038919,
+      "sha256": "0a03ac42baf7ed88175f996349b190329e181a0609b56349b7620ecf6886a24d",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Idle_Anim_Checkpoint_3.png",
+      "bytes": 1040737,
+      "sha256": "28f77b13d701eeabb1f2f794c4ec745be4e7adfa1e9e424d0ed8a5d33cc0827f",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Idle_Anim_Checkpoint_4.png",
+      "bytes": 1034790,
+      "sha256": "8a710621025cf685f125930971bfbb0701fa48e7d5efcd5b93e022879e3304bb",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_Reactor_Idle_Anim_report.json",
+      "bytes": 1537,
+      "sha256": "9646cdbe45067ba672b08bf977788b5756e7488174c0b17ee945e9844d07b757"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead1_Anim.mp4",
+      "bytes": 717341,
+      "sha256": "66ffbe29c341b9cfc6739e22be1cc3b25b4d3eca4829b3ae8d22c2369b0d503a"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead1_Anim_Checkpoint_0.png",
+      "bytes": 1042767,
+      "sha256": "da94c18f10657655828942a6e990a60f5b5bb698dc96bc2faa516ed6728cbed1",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead1_Anim_Checkpoint_1.png",
+      "bytes": 1083628,
+      "sha256": "0960715bbba61bd0e7fae5349a04c966890dee84e96230e285ef38eb0dcadd49",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead1_Anim_Checkpoint_2.png",
+      "bytes": 1088690,
+      "sha256": "0dd76747be4c71dd5fd3e75d5ec9f5aeab6f001e734b9fc0c73f8244a3553f59",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead1_Anim_Checkpoint_3.png",
+      "bytes": 1088702,
+      "sha256": "ab065c10f1adf1c7358b89641b0a5a4233eeca453f1c8b7d41e66e0da2758f04",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead1_Anim_Checkpoint_4.png",
+      "bytes": 1088802,
+      "sha256": "658b9ab02b4aa249836839e624ce9195c89aa046d842dbf0fff7c64ea665523b",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead1_Anim_report.json",
+      "bytes": 1579,
+      "sha256": "a2becf2c606d7f0cfd32dddef16905979e5a35ffd86951cf24b5f2f5c75b55c5"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead2_Anim.mp4",
+      "bytes": 660854,
+      "sha256": "43b3f37a23082440118513c905f8ea15d74de49c40189658df2113eb06c3a91c"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead2_Anim_Checkpoint_0.png",
+      "bytes": 989038,
+      "sha256": "b20b563c63dfeaffe9353421f199f5fd931f3f1a31cd2a9126333ed3a1957107",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead2_Anim_Checkpoint_1.png",
+      "bytes": 1029175,
+      "sha256": "732761117000d66d6d3d07b3428f0ab2e777d4fa6d163b26385217944bc94969",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead2_Anim_Checkpoint_2.png",
+      "bytes": 1031972,
+      "sha256": "d26cf50926a5cb73837d9bfa73f25b3e1e1a68826911d5ad195d9485f516b22b",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead2_Anim_Checkpoint_3.png",
+      "bytes": 1031843,
+      "sha256": "5a86db54526b7c4e182f2e16647cc47ffb93495ba21fec22138715571410cb24",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead2_Anim_Checkpoint_4.png",
+      "bytes": 1031427,
+      "sha256": "d41ee294aba3b9f1c74edb7c3d5d32c1dfca55f30218e83ee07cc649127ff05f",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Dead2_Anim_report.json",
+      "bytes": 1584,
+      "sha256": "8782bd291c6364f3a9276bdd7cc731c7536dedc26b8a89438fabb50a5860321e"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Idle_Anim.mp4",
+      "bytes": 7842324,
+      "sha256": "0dcd38ee466b34d9fb656bae8d33091cff9db1299dda065362734a8574d35768"
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Idle_Anim_Checkpoint_0.png",
+      "bytes": 1043156,
+      "sha256": "4909e2b0ef8a77379bd06f44bcab2286ae0b814a95409d99b6a8240b59ff8c7a",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Idle_Anim_Checkpoint_1.png",
+      "bytes": 1033531,
+      "sha256": "2be67855b9176c7e57946ae14d671de0a3f31bad2e02dfe5671f7c0f229c9c6f",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Idle_Anim_Checkpoint_2.png",
+      "bytes": 1038036,
+      "sha256": "e333c1eab089779abb603ce7acb52fd58baf32f586c2a71b5830534bb22f15e3",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Idle_Anim_Checkpoint_3.png",
+      "bytes": 1033363,
+      "sha256": "6fdc233e15ee8d50a6503edf5259cd41792816226524349aaad1116bc061b99e",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Idle_Anim_Checkpoint_4.png",
+      "bytes": 1043239,
+      "sha256": "8ba5373592c59859e75f98870a172e91f325d92d21ef14f7d5031aa387c4aa01",
+      "resolution": [
+        1920,
+        768
+      ]
+    },
+    {
+      "file": "Production_B_v1/AnimationPreviews/TB1_StrategyCenter_Idle_Anim_report.json",
+      "bytes": 1578,
+      "sha256": "9f2c1d19e8ec97842db979d07d6a207d3ced4f5cbbd16034f3a5e9f6b0ee7770"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_AirBase_Destroy1_Anim_FullPose.json",
+      "bytes": 1513940,
+      "sha256": "c3924985d7973acbc0061a2bf28436fd4cb558de32f8dc3bb19779408c1a7120"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_AirBase_Destroy2_Anim_FullPose.json",
+      "bytes": 2052226,
+      "sha256": "c0c95e1328ea151ff36857d5497ed17b6028f694f2b03991c78d306cc7663f20"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_AirBase_Idle_Anim_FullPose.json",
+      "bytes": 1683280,
+      "sha256": "236dbdf31d08f5c5712a29a94f25ffded26e1969ac68178d23d099a602c91ae9"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_AirBase_OpenDoor_Anim_FullPose.json",
+      "bytes": 1716133,
+      "sha256": "d8a2b008d7be8a098f15b096fa15284250cc6273ff4439e00a74b7c1c137c1d7"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_CloningCenter_Destroy1_Anim_FullPose.json",
+      "bytes": 747522,
+      "sha256": "d2674d2d39ae863dc736022261a871f9aedb17ccc9ac658d7073fdadf5a46fd8"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_CloningCenter_Destroy2_Anim_FullPose.json",
+      "bytes": 669471,
+      "sha256": "6149d5a2d9871f2088b00a36a8a16426cd351162ad75c3ed69f44d3e94ea1123"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_CloningCenter_Idle_Anim_FullPose.json",
+      "bytes": 577129,
+      "sha256": "566b2ba6f85fb01f3e02a0b39a0122a3f7413c3e542667df95839cfec0ca6128"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_CloningCenter_OpenDoor_Anim_FullPose.json",
+      "bytes": 1109371,
+      "sha256": "b945bf39fe7837f2df202dc1a959b4d1600399e866629ace698b1036a2405380"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_CommandCenter_Destoy1_Anim_FullPose.json",
+      "bytes": 1019291,
+      "sha256": "4b5dd50630e043a33de3f9983c8e581c979cb32d8e690613a74ce85c42282615"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_CommandCenter_Destoy2_Anim_FullPose.json",
+      "bytes": 840910,
+      "sha256": "fe536bc0437397f57309b72b409c9076ce6bae8b52e353766c060fe521170b92"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_CommandCenter_Edle_Anim_FullPose.json",
+      "bytes": 10883121,
+      "sha256": "52b24e7530ba051157b068ec7b75103f8099a476d182596f0a744d497c6e6d5c"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_Drone_Fly_Anim_FullPose.json",
+      "bytes": 31905,
+      "sha256": "8a2692e7ccd0f92e3d0f579ec5a03b7b42333c273fa43114e64f9cb3ed6f3f16"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_MilitaryFactory_Destroy1_Anim_FullPose.json",
+      "bytes": 1204383,
+      "sha256": "f57078534327293e2fd9f56db2674e1bb0af0ee6306d25c38eb5a452869eb5d4"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_MilitaryFactory_Destroy2_Anim_FullPose.json",
+      "bytes": 1214978,
+      "sha256": "7d12b3b59d95f30a509f72563f1ce5acff6f93b5794498ff2df777ba9309aa6c"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_MilitaryFactory_Idle_Anim_FullPose.json",
+      "bytes": 944120,
+      "sha256": "50276595e506028a3997bc0ce8009a1836a4a5c08e16b184126a1a8c6e7b48d3"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_MilitaryFactory_OpenDoor_Anim_FullPose.json",
+      "bytes": 1883479,
+      "sha256": "6bbd59a21cbf5aa8879d8b748486e9436ebc3bc2d7784904b7d38e5a156479dc"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_Reactor_Destroy1_Anim_FullPose.json",
+      "bytes": 312344,
+      "sha256": "ccbddd05d92cf4d2f03f32cc0f5eb7d2e1ff55592918ce514067c376d7d641e5"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_Reactor_Destroy2_Anim_FullPose.json",
+      "bytes": 343891,
+      "sha256": "b155a0a94499a66579d915ef751bfdc72ee19ec2d1260ca812daf90c36732cff"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_Reactor_Idle_Anim_FullPose.json",
+      "bytes": 587511,
+      "sha256": "aad15e3098680c0b5a0cd489f4f33eea70143f1adf77a3132e1550d43589617d"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_StrategyCenter_Dead1_Anim_FullPose.json",
+      "bytes": 1197613,
+      "sha256": "edaf5474ba3da63f107cf5860109b36213858e186212bde6b1e48756af986371"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_StrategyCenter_Dead2_Anim_FullPose.json",
+      "bytes": 1205727,
+      "sha256": "019846aedf1bea1c36e7a9658da73b3a827649601357c0e9e409aa34157b892d"
+    },
+    {
+      "file": "Production_B_v1/AnimationSource/TB1_StrategyCenter_Idle_Anim_FullPose.json",
+      "bytes": 14296215,
+      "sha256": "5f8b18c6192c5cbaa89edac7d0ef4dfd3a412a60770ea42a30d79db99a4a1244"
+    },
+    {
+      "file": "Production_B_v1/budget_exception_record.json",
+      "bytes": 16501,
+      "sha256": "47bc8fe11af711dede17dcc0b7581c1585811c3d9fb6ca9c7fceb3dfbee3c8a2"
+    },
+    {
+      "file": "Production_B_v1/Budget_Exceptions.md",
+      "bytes": 1415,
+      "sha256": "38d47a762ae8fc45f7fbe2bfb5b315df89be7dad31db1bfb61d20eb406c23f2d"
+    },
+    {
+      "file": "Production_B_v1/construction_report.json",
+      "bytes": 912009,
+      "sha256": "71b0aed2f827a10e4a56c7f18f53c1055c974c434bd4961350b55427d2710c1f"
+    },
+    {
+      "file": "Production_B_v1/native_validation.json",
+      "bytes": 63451,
+      "sha256": "42eb3992f71984a34f824379076b694303d707c0ae5ffdfe1b9ed14c02beb006"
+    },
+    {
+      "file": "Production_B_v1/Overview_Buildings_B_v1.png",
+      "bytes": 1640038,
+      "sha256": "d7aedb635a9909c5a2d1228be56670b26b92257f999fd0635f9b73c0eb7a0b01",
+      "resolution": [
+        3000,
+        2850
+      ]
+    },
+    {
+      "file": "Production_B_v1/palette_preservation_validation.json",
+      "bytes": 6889,
+      "sha256": "e51d5604d89daddcaf931039b875aeda5b55a283b188413523bd2634a745b328"
+    },
+    {
+      "file": "Production_B_v1/QA/Accessories_AllViews.png",
+      "bytes": 402388,
+      "sha256": "63ca47a1cb6aa6d3dd57d1f213d7c508770de71d1abaa35b2e4cacd35d35651f",
+      "resolution": [
+        2400,
+        2600
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/All_Movies_Decoded_1.png",
+      "bytes": 3214486,
+      "sha256": "273b05f27024caef3863233c95361ee2d62dccac42f9a7f91cdc488dcab777b4",
+      "resolution": [
+        2880,
+        3900
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/All_Movies_Decoded_2.png",
+      "bytes": 3121005,
+      "sha256": "7759fa59f960cc7ff31a9d6ae036dbf8ca07b66edfa8086f4b0a943700cde403",
+      "resolution": [
+        2880,
+        3900
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/All_Movies_Decoded_3.png",
+      "bytes": 3163217,
+      "sha256": "15ba4c7287c44477bf01a3b3b917b2504d1cdc7498a34a35be0417a64717a63b",
+      "resolution": [
+        2880,
+        3900
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/All_Movies_Decoded_4.png",
+      "bytes": 2172864,
+      "sha256": "21e7ea94fbc554ebef2d02c84d22cb2646bedbae2f3a14067b614cb3e9dbb03b",
+      "resolution": [
+        2880,
+        2600
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/Buildings_1_AllViews.png",
+      "bytes": 805935,
+      "sha256": "31ef6462ff060f0d489b60078de26954dfb1bdbb58177ab24f767fd6290dcc53",
+      "resolution": [
+        2400,
+        1950
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/Buildings_2_AllViews.png",
+      "bytes": 967614,
+      "sha256": "bd0c3e37ff057274798bc92302dd53b7f1ebed87dc58747e36779e9c3a8e6b42",
+      "resolution": [
+        2400,
+        1950
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/Gray_Normals_1.png",
+      "bytes": 331947,
+      "sha256": "8b4d287056a9f1138d5776dff3b2ad3d6449d15d38a2de5dc9803f9e4c08cff8",
+      "resolution": [
+        800,
+        3400
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/Gray_Normals_2.png",
+      "bytes": 259902,
+      "sha256": "0d64e31e8b1a98b73ee8e4863436db16a76e9693f17cf7127ad7f9bbd2fc7b26",
+      "resolution": [
+        800,
+        3400
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/Gray_Normals_3.png",
+      "bytes": 184376,
+      "sha256": "ce97e6335c49e57b89102c87ee36646ba08ddc32c29020d76478a73f0d842779",
+      "resolution": [
+        800,
+        1700
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/Reference_and_Product_1.png",
+      "bytes": 1149808,
+      "sha256": "a3fdb2e33bbc8047b672d3571693d80124b0882cce3d50803dff8cdfa79753a0",
+      "resolution": [
+        1600,
+        3400
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/Reference_and_Product_2.png",
+      "bytes": 778112,
+      "sha256": "7138cef99a4307f56e86e9a7656d8ae0cef6e3b87a0ef4ae31d6b763609c56d5",
+      "resolution": [
+        1600,
+        3400
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/Reference_and_Product_3.png",
+      "bytes": 682930,
+      "sha256": "01576378cae9e0e171114231e3993c2c99d57a9a82a0e269d6849197b94f08ec",
+      "resolution": [
+        1600,
+        1700
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/Three_LODs_1.png",
+      "bytes": 831356,
+      "sha256": "69e20e57ab5289511ba1e60f2d68115fe382b5b6a39b0f44a0d8deb230ec40ae",
+      "resolution": [
+        1800,
+        2600
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/Three_LODs_2.png",
+      "bytes": 494940,
+      "sha256": "4f069ea1ac5e8d4dc3810eb44bd0307e715c1fe1f226755145a3ab7d0bc1d32d",
+      "resolution": [
+        1800,
+        2600
+      ]
+    },
+    {
+      "file": "Production_B_v1/QA/Three_LODs_3.png",
+      "bytes": 500748,
+      "sha256": "35486104e1126c751686fff0bb4d981a69616c3e5d10f5cf357b1bf6dff35c1e",
+      "resolution": [
+        1800,
+        1300
+      ]
+    },
+    {
+      "file": "Production_B_v1/README.md",
+      "bytes": 1510,
+      "sha256": "4be672609658d557ccadf0f2e4686f113e939b44db5a88771717b648647efcbd"
+    },
+    {
+      "file": "Production_B_v1/render_evidence_manifest.json",
+      "bytes": 21177,
+      "sha256": "34d133d3bdd6b4977a3616b0b2c420d5c2b9c7752f995a93509b2b02b8cb33d4"
+    },
+    {
+      "file": "Production_B_v1/Renders/AirBase_Back.png",
+      "bytes": 2791163,
+      "sha256": "07ce879feebffbf1094a1eebb00e3e40bc64733f6a0b8844df6c29f6b823cac7",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/AirBase_Front.png",
+      "bytes": 2794431,
+      "sha256": "d42a69e863dc57f085de1b3cfa2932b2d6524295e7a19e59d198c78a7f5fa7fe",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/AirBase_GrayNormals.png",
+      "bytes": 2535320,
+      "sha256": "b3f53cc67e5b07e1f087329bf3bf2a582eeeeb496d6c02fcf068db4ae00f93ac",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/AirBase_Hero.png",
+      "bytes": 2990183,
+      "sha256": "a2f793b103d6e66874da74486da4182d666826ef205cd5f426773b28e38b36e3",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/AirBase_Hero_LOD1.png",
+      "bytes": 2970011,
+      "sha256": "266b43f068983bf325887722c5b2093ec80ffbaa715f4efb8eedb0060fe0dcc5",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/AirBase_Hero_LOD2.png",
+      "bytes": 2821110,
+      "sha256": "ab23a1549834edfcf9299f97b99b9d774a6f8e7347675145daf0fc27c0bf5769",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/AirBase_Left.png",
+      "bytes": 2804304,
+      "sha256": "00ee9b43362baebd9b35ce2a9299323499c0f9a0e76dd8872e2eb65db35986d5",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Assembly_Hero.png",
+      "bytes": 11881401,
+      "sha256": "64af2d2a8d8b985edf0c3dd22061e2179385847c296f5c4ae64daa004a32cd37",
+      "resolution": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Assembly_Top.png",
+      "bytes": 11326247,
+      "sha256": "aade00b0806acd5d3eaddbcbdd38d1ddcd0e74b5b6294cc7e083d32b2db6479c",
+      "resolution": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CloningCenter_Back.png",
+      "bytes": 2982136,
+      "sha256": "011a83c257b40e8818850de6b31d7613609502f4a278ffe80d78807f83677b00",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CloningCenter_Front.png",
+      "bytes": 2969381,
+      "sha256": "90472f80ef5b2565279ba8deff322e18385dc1d600118532ced9304d662bcb61",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CloningCenter_GrayNormals.png",
+      "bytes": 2546228,
+      "sha256": "573730dfd7bf327ec5e8ce8939b6836bed4bbb89e804d0b22ad7d11f1c4efbe4",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CloningCenter_Hero.png",
+      "bytes": 3224597,
+      "sha256": "2751ab279822ffbed94bda0b80e4e5efd218ce15e55a50f09a3116408ceb162f",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CloningCenter_Hero_LOD1.png",
+      "bytes": 3179248,
+      "sha256": "03d8d88ee4cc08de54d492840d86110ed1925ae8c0b25cb14453d714a034cef1",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CloningCenter_Hero_LOD2.png",
+      "bytes": 2959306,
+      "sha256": "bf2b74610849a1f4c8e1ca4e3f9eb754f5ce4d950e95c93ec7b5ec19b95bfb78",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CloningCenter_Left.png",
+      "bytes": 3031620,
+      "sha256": "521da50c500240c57c36da9481c1e3b9004e73a4c3a5a56fe100978679b02a73",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CommandCenter_Back.png",
+      "bytes": 2873542,
+      "sha256": "04641b26a75ce96ee578bed3496ca9e13a80ba0edb62f3ca7c30eb0cd688e8d0",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CommandCenter_Front.png",
+      "bytes": 2924927,
+      "sha256": "5db6503c1af4a3b7a3382fee5d1bc12dd1a5cf9778fe4ea2886043c8f22d1b6a",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CommandCenter_GrayNormals.png",
+      "bytes": 2568550,
+      "sha256": "0364a07034aa2061f0468cdf45d8ad24ef00999b5fc8ee1a8154f2c4568f1b4c",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CommandCenter_Hero.png",
+      "bytes": 3075044,
+      "sha256": "e3cc374a8ec3474311c69ccbf0640cdc63e37417b04a5d6562b36009e881d528",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CommandCenter_Hero_LOD1.png",
+      "bytes": 3042580,
+      "sha256": "17c2b3405d369ad48b3f9df344f051ab7afde89da264310ae2a79e8d4cfb5a03",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CommandCenter_Hero_LOD2.png",
+      "bytes": 2892324,
+      "sha256": "b4d1898f827b4d95ef4148585bf040f000bb187a4d2847e5389ffc0045c33870",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/CommandCenter_Left.png",
+      "bytes": 2914565,
+      "sha256": "ac5f70104568feca0e48e1e926f3c80f49c513f3a3d5f55d8e5cfacfa672045b",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Drone_Back.png",
+      "bytes": 2711560,
+      "sha256": "9cf0dfa5037d3c2daa80c588db0baab2891038fccd7e78c7beba067e064430ad",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Drone_Front.png",
+      "bytes": 2696196,
+      "sha256": "b4a7fa3238cf8f2263a38c7023215825da9360e26cb132deb08976994b8db39f",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Drone_GrayNormals.png",
+      "bytes": 2510004,
+      "sha256": "27a1c6c2311e856d3e80adf8d841fae145f4141fd9eed4d38dc40358b9a5e9f5",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Drone_Hero.png",
+      "bytes": 2810367,
+      "sha256": "b89c7d807cbde48165fd9fed76c5560d582a165f0650fd595f1c21871365b71f",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Drone_Hero_LOD1.png",
+      "bytes": 2780467,
+      "sha256": "0f8c9544be18261bddf661c8c327436fca888992deac829d062395568a832802",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Drone_Hero_LOD2.png",
+      "bytes": 2660911,
+      "sha256": "abcf2269c82f62eb51da100f24bd6e9daf565584787145177dd6d8749351ee1a",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Drone_Left.png",
+      "bytes": 2658456,
+      "sha256": "ee72cf8d3de8f692380dfa200510ae51d7b44950f1b5ffd2f4cb8e65d9bb2fa8",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Drone_Top.png",
+      "bytes": 2858813,
+      "sha256": "55faee8aa65e3285465a93af9cab83849b7beed8dcaa65d3d1952f0524b3cc98",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Floor_Back.png",
+      "bytes": 2541080,
+      "sha256": "cea318ce25395ba406d254a3f2f8437de4f2d34f218bc5bfa3261f7d95cea5d8",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Floor_Front.png",
+      "bytes": 2546834,
+      "sha256": "0196ba3271a1f2adb7de809840ee3401ce5fe9020f5a0626b6b6a022fa23ca50",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Floor_GrayNormals.png",
+      "bytes": 2486230,
+      "sha256": "29edfef3a8cf85199562cf91fa194aa0a10df2e5da1a5adfdfe7d3be3fe1fb53",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Floor_Hero.png",
+      "bytes": 2744949,
+      "sha256": "a2ccc2c146fdd4bda63fde7fddb9d365f0f265e24133ef2daa3c463a7e15c18a",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Floor_Hero_LOD1.png",
+      "bytes": 2707153,
+      "sha256": "994743174fc4051841cd774ad8920d7ec42f8c8330c81e878d50000c4be51f59",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Floor_Hero_LOD2.png",
+      "bytes": 2548516,
+      "sha256": "3ce44700ce346a055742fef0e9b5abcf4b01ece001bd6f6b8e4627e8fb877191",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Floor_Left.png",
+      "bytes": 2547344,
+      "sha256": "48e1eb3434e21b54a88b9455bd6004ba764cf0d28155138a0e143e8d1bfd92c0",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Floor_Top.png",
+      "bytes": 2723268,
+      "sha256": "5e1a4bb19c221de9c7e7747d30491d09d7a6da6680450aedcec2b883e6df0d56",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Lamp_Back.png",
+      "bytes": 2626742,
+      "sha256": "701b64b53d4e73f109fd564b11c1c9757c9e6b518170b485cf9ad76b62eb666e",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Lamp_Front.png",
+      "bytes": 2629579,
+      "sha256": "b2231d99915d7b8917cc38ae0b9349bc9ed8536b1f144925940898786efa501f",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Lamp_GrayNormals.png",
+      "bytes": 2536516,
+      "sha256": "1626359707c3245d165c095fdaf40e3a10ffa2e226da6986b6e299885c935dfb",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Lamp_Hero.png",
+      "bytes": 2598259,
+      "sha256": "c8850b8a5ba8c31a1e6dd4cab71c23281920dca41d8f966e4479222821f55813",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Lamp_Hero_LOD1.png",
+      "bytes": 2593860,
+      "sha256": "5baece4ea72330b7f529f54fead23d43193a8704c4a0c75aaa620fe0cb770e20",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Lamp_Hero_LOD2.png",
+      "bytes": 2576779,
+      "sha256": "175232e8f616b7b4107b6478a326ea9c9e43dbc5b40989fb3e35afebfeb1c932",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Lamp_Left.png",
+      "bytes": 2623021,
+      "sha256": "7098edad7df925a69363985c0906e9dc41a364e35270a7f65bad8c1d329303a3",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Light_Back.png",
+      "bytes": 2499274,
+      "sha256": "6e4f39360fb50f7064b9912b0d33aba59844f2767076eca4a589ff12a822be6f",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Light_Front.png",
+      "bytes": 2905645,
+      "sha256": "8dfe8bc8dd6b6d2aaab5167a2738c4ff7caa9bd5b3f7634a440e75a22f30481f",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Light_GrayNormals.png",
+      "bytes": 2379038,
+      "sha256": "a282c85d0d4a9e88632389dd38baa8b48b13fd8f109de5f1ec55c07f105ffcf4",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Light_Hero.png",
+      "bytes": 2669312,
+      "sha256": "4425d508a27440fdcc402a2c1787c57da1179a5e394cdb392f14394b228bc0dc",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Light_Hero_LOD1.png",
+      "bytes": 2669312,
+      "sha256": "2200fcfdda8a40b75ee150c1176a5210425aab77657cd96c7d7698f2eebf602c",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Light_Hero_LOD2.png",
+      "bytes": 2669312,
+      "sha256": "787e6b2866c4f03ebcc0d711bca8e19b25c1f159362492f6a64a952946bcb810",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Light_Left.png",
+      "bytes": 2499274,
+      "sha256": "332b68e671a36e8618ef191a23c654b3c7fb4644ec912fa6740ad31d0833a742",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/MilitaryFactory_Back.png",
+      "bytes": 2912306,
+      "sha256": "bad974659bf4c4c92aa298744a608f5f4f607faadd9072f740e5cf1c07874ec4",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/MilitaryFactory_Front.png",
+      "bytes": 2887319,
+      "sha256": "8fc6b2b70ed3b7de6aabc777f5e250a118dcc8ec6ab422164198270a77eb0bbb",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/MilitaryFactory_GrayNormals.png",
+      "bytes": 2566729,
+      "sha256": "3455e899f84572380e89f133a6715b5ab4dc5be8a1438915d53a6b8cd764af33",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/MilitaryFactory_Hero.png",
+      "bytes": 3216790,
+      "sha256": "955bc7dd2143f1f11c699269c74351f2e398acffa0972ac75e330bc6186f944a",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/MilitaryFactory_Hero_LOD1.png",
+      "bytes": 3184728,
+      "sha256": "81b5d419ea03a40141e309cc0e99d6d369b5ead3bd81ccdfcf67fed6187d5bb9",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/MilitaryFactory_Hero_LOD2.png",
+      "bytes": 2962348,
+      "sha256": "b3c0c1e3c8171609eee620350c8479c6e9a3ef2b4b2a0cf8e9ebadcff2a84d56",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/MilitaryFactory_Left.png",
+      "bytes": 3001669,
+      "sha256": "a4c9e5517cf70058d4ce70e2b1513e26c49d22f61dc2e4aabb0633e6b68ec9c5",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Reactor_Back.png",
+      "bytes": 3115026,
+      "sha256": "56d4079b6f8cb8b27ecc9787d6cb00cc9dfa6a7ee4424ec5e7a2d9327741a7df",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Reactor_Front.png",
+      "bytes": 3087531,
+      "sha256": "a22dabf1f533b6237038e5dff8132ff22a46b8fcb693980a5b2e4ac847277843",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Reactor_GrayNormals.png",
+      "bytes": 2571222,
+      "sha256": "68f0f1d52372a4ebc29f967db8081d1763f6ccd06b1892141f81ea46393f987a",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Reactor_Hero.png",
+      "bytes": 3138687,
+      "sha256": "e769a39f6ec0f6fa1f8e4dfdec1496acf1673ea403965155e337b93850fa90d6",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Reactor_Hero_LOD1.png",
+      "bytes": 3099360,
+      "sha256": "a141279d027c6e7c22fbde6892282fd4859c4664d0aabd370efb1685a7bade56",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Reactor_Hero_LOD2.png",
+      "bytes": 2902079,
+      "sha256": "eb93263bee5dd49a59d121fc67889fc9c5fe24f4eb62be1ed101368b71220fc1",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Reactor_Left.png",
+      "bytes": 3070869,
+      "sha256": "ddf26cad782169d12195ebe572160989eff1336746feeeab96742ce553190cfd",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/StrategyCenter_Back.png",
+      "bytes": 2965045,
+      "sha256": "c5db99b5169b1c60908573eb2150d508eff67278212b49dd523ce4947885de4c",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/StrategyCenter_Front.png",
+      "bytes": 2896332,
+      "sha256": "af246193675677eb517ecd4285c71a5a9ea2727b13f0ccb976e02863740d800d",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/StrategyCenter_GrayNormals.png",
+      "bytes": 2600689,
+      "sha256": "2309030231c61aae1118ee955f573afbfc56840db285b896e607452f4e5605fe",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/StrategyCenter_Hero.png",
+      "bytes": 3147732,
+      "sha256": "2910c86992c59eb8bda6363777e605362f26df8bfa7ebcae4a266e33ca1df162",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/StrategyCenter_Hero_LOD1.png",
+      "bytes": 3111734,
+      "sha256": "5b771557409c212784567a849b26cb26b58cfb2c7f55064d8bc6cf83e0b0251b",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/StrategyCenter_Hero_LOD2.png",
+      "bytes": 2916815,
+      "sha256": "c4aed7b6ed4d546aeb95991c8384ba191f2522670d4ed8428a5da607ec8faaef",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/StrategyCenter_Left.png",
+      "bytes": 2984340,
+      "sha256": "57cf9a98d551ae902d8e153ba0cdd93dd1b77842839063a8cc204b2a04089d91",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Style_Combined.png",
+      "bytes": 3216790,
+      "sha256": "890e6f52931c77ef73aef43d1f562bc0a3dd7585be032ca255c86429506514dd",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Style_FlatColor.png",
+      "bytes": 2582197,
+      "sha256": "811d4cdc7885023161dd9dcb63729722e314983cb0d0901011ca2f6a158392b0",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Style_LineAndOutline.png",
+      "bytes": 3086317,
+      "sha256": "570fc7663537e90aef889f144af7d8c1379f89c52b579e093ef1dc4967a8b43e",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Renders/Style_ThreeTone.png",
+      "bytes": 2952133,
+      "sha256": "ec3eddcf2cfbcdf6cad2c6c538ee66a0dc33b005f298bf6753b7e428a6a00027",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/audit_native_animation_deformation_b1.py",
+      "bytes": 4178,
+      "sha256": "305b4c9562b23a82e4f37ea7ce1d3ffd6cebde587512f4c76c6683b7f6265d71"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/audit_native_product_b1.py",
+      "bytes": 6071,
+      "sha256": "c15449f41f5da09ebb116ead038d7446fdc8cc4b7e69d703c586f782d4b9cdc2"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/audit_palette_preservation_b1.py",
+      "bytes": 2017,
+      "sha256": "b751048291f6d324bd9b039cf1220094490078161a58c5d9b7cf131e673f7682"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/build_atlas_lines_b1.py",
+      "bytes": 21857,
+      "sha256": "f85fa87bc7c77e7472bc822c9bd1d9fb4ff57b20448e81e30f8b5dce10ba018d"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/build_production_b1.py",
+      "bytes": 16964,
+      "sha256": "13a5225cee481ea8a926184972f3f003690e89485fbdfdc3fc4236b976bf30d8"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/build_source_actions_b1.py",
+      "bytes": 5995,
+      "sha256": "c612904a2106a32859e7810124b3ec5cbbc5cbbefda86d92e5dc84777c568c8a"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/capture_production_animation_source_b1.py",
+      "bytes": 1972,
+      "sha256": "2190a8c38276777cfdd28f08ef9e64ce070da5af9a78faf835ad4844d340c59a"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/finalize_native_product_b1.py",
+      "bytes": 10634,
+      "sha256": "8bbf0a4ae76a7073ca35b288d390541ec3ef47f034d4eedd359c3065e8e871ec"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/freeze_product_b1.py",
+      "bytes": 6243,
+      "sha256": "a5c12ce578bc8e58c2df1704d5c76b6e375462206df5b5f4232f27a2f5c8cadb"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/package_product_boards_b1.py",
+      "bytes": 5038,
+      "sha256": "92a015db8309f0a348aacb4654f55764d7727819b257c3597957db5866419a70"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/package_static_qa_b1.py",
+      "bytes": 1543,
+      "sha256": "7cbb59e28b876e62cc9fabd00651e7c1323ca2a14f659d41fdc915fe6a84d1da"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/package_style_and_movies_b1.py",
+      "bytes": 3189,
+      "sha256": "4493e7bfce477f217d36fdb194e2119999014512e5c7483667970a5c3c64b246"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/record_visual_qa_b1.py",
+      "bytes": 3832,
+      "sha256": "b7b652a743472cf01dba409a229a63c68ec0c11481645a57a028b55403ca181e"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/refine_native_normals_b1.py",
+      "bytes": 3266,
+      "sha256": "5fbd40f988f188247d021ea59e7b8082173036b6698ad2018fdc8ac48130eb3a"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/render_animation_previews_b1.py",
+      "bytes": 9144,
+      "sha256": "8885e4d95062732eb7622753a276df21820c8fdb1050f94462f514f9d12a2929"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/render_native_style_breakdown_b1.py",
+      "bytes": 2053,
+      "sha256": "e85560ed35977c67b6e28c30fd38057972f53654bd7f51c4e70937687ccab149"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/render_product_evidence_b1.py",
+      "bytes": 3771,
+      "sha256": "590104d94027934e26604b0318db445ede5b37bae617414fcc2f83c9eb92c1f3"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/verify_delivered_movies_b1.py",
+      "bytes": 2368,
+      "sha256": "639ce53c7df992433dc0b6f5d074f13ce4b5057b3349d0b8d1ba036b0b4d6cf9"
+    },
+    {
+      "file": "Production_B_v1/ScriptsSnapshot/write_product_review_b1.py",
+      "bytes": 16113,
+      "sha256": "fbcf9861e33613b13c407dcfc04835ba2618ee3a7361f0b86e0a915914112210"
+    },
+    {
+      "file": "Production_B_v1/Sheets/Actual_Style_Breakdown.png",
+      "bytes": 5198068,
+      "sha256": "37afd79fbfe4b2326bf37b5fcc582caa333f662d9000c8f123b567501d649718",
+      "resolution": [
+        4200,
+        4470
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/AirBase_Actual_Views.png",
+      "bytes": 4935595,
+      "sha256": "1320fb1a90a725261cb59721ea36a595fd9f21d0bf5f43529ecdc1ecd1184666",
+      "resolution": [
+        4200,
+        4700
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/AirBase_All_Animation_Checkpoints.png",
+      "bytes": 2225876,
+      "sha256": "0b16074885a9292e01ef1db8323bdbdf2596f3bc2c98159817332c4825b03df1",
+      "resolution": [
+        3840,
+        2060
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/AirBase_LOD_Comparison.png",
+      "bytes": 2181328,
+      "sha256": "8cb91ade1076df46fd920600bf964671cee43bdc0bc199aea7f1bae48f6204b7",
+      "resolution": [
+        4800,
+        2060
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/AirBase_Reference_Comparison.png",
+      "bytes": 4864891,
+      "sha256": "13e3031d957602b80d7afbfbee6575427ec6d8edce8236050f714552a90fc5fa",
+      "resolution": [
+        4200,
+        4520
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/CloningCenter_Actual_Views.png",
+      "bytes": 5842597,
+      "sha256": "d1f00c46919640c5599478ad6f3b1e53878f5500ff58eacc68f40a221dcd65a9",
+      "resolution": [
+        4200,
+        4700
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/CloningCenter_All_Animation_Checkpoints.png",
+      "bytes": 2079564,
+      "sha256": "c1d41e1cd12f023be1353813a39afad94f7d708b8633c34277461368c8614e61",
+      "resolution": [
+        3840,
+        2060
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/CloningCenter_LOD_Comparison.png",
+      "bytes": 2498012,
+      "sha256": "2e39d8f9821675ade65cc86951db8efb9335d22d5ad225a405cc84163918f4b9",
+      "resolution": [
+        4800,
+        2060
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/CloningCenter_Reference_Comparison.png",
+      "bytes": 5665583,
+      "sha256": "472d784ee21b4cbe3d9ba0f14a2781ad44c0da78415b0179a79921ef62e14a61",
+      "resolution": [
+        4200,
+        4520
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/CommandCenter_Actual_Views.png",
+      "bytes": 5324338,
+      "sha256": "4a8332677e4cdab52284befd674cfb01bd8b77cc151491b77820b8a2885f16c0",
+      "resolution": [
+        4200,
+        4700
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/CommandCenter_All_Animation_Checkpoints.png",
+      "bytes": 1435685,
+      "sha256": "8b154f11e3cc5973b71fe5f488351998f13b17c3ba052c59d31d8fb6564f4cbb",
+      "resolution": [
+        3840,
+        1580
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/CommandCenter_LOD_Comparison.png",
+      "bytes": 2266617,
+      "sha256": "aa37ee52341849a099c91ebb6e9dbe5ae75bc3be6fa955f0e1225a4a46c8de50",
+      "resolution": [
+        4800,
+        2060
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/CommandCenter_Reference_Comparison.png",
+      "bytes": 5402451,
+      "sha256": "16d47a1eb6b5ebed27c0dd3382b2d89c72d61d4e86e118364bf29d50d804ea24",
+      "resolution": [
+        4200,
+        4520
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Drone_Actual_Top.png",
+      "bytes": 1838285,
+      "sha256": "b14bd52ae7c8e1afcc5e279f22e25b3e3b94406fd69db2dd5e0ab83783dab4a4",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Drone_Actual_Views.png",
+      "bytes": 4406944,
+      "sha256": "1d7e55c78d21212844eb981f9e27444bcb87ced3c89351fd36de44e84eb97220",
+      "resolution": [
+        4200,
+        4700
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Drone_All_Animation_Checkpoints.png",
+      "bytes": 454152,
+      "sha256": "a6cf28da27c9cebd424c999c64adf0e3730f142a734707173603ccb76426c4ac",
+      "resolution": [
+        3840,
+        620
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Drone_LOD_Comparison.png",
+      "bytes": 1815079,
+      "sha256": "db576f72b445ce1581ce34b075686466df997ee7d51ac8a40afb5d883576701d",
+      "resolution": [
+        4800,
+        2060
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Drone_Reference_Comparison.png",
+      "bytes": 4297377,
+      "sha256": "a6025dad7230694ed898578d0a3a943b6c38a0537585bf8860c427f214c10b10",
+      "resolution": [
+        4200,
+        4520
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Floor_Actual_Top.png",
+      "bytes": 1710554,
+      "sha256": "be5c70223c9dff17f8258be27393e16e1e4bcb56e0c8c8fc9b5731417c4d9cb6",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Floor_Actual_Views.png",
+      "bytes": 3878079,
+      "sha256": "7f1493973308e20c8b25fc749181815ed031dfa737127e4f2e1c7fc165bf459a",
+      "resolution": [
+        4200,
+        4700
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Floor_LOD_Comparison.png",
+      "bytes": 1830553,
+      "sha256": "ad3fe1602986b25677a71512bba92fc0a18a2ff480d221ee728c71a0642caf0e",
+      "resolution": [
+        4800,
+        2060
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Floor_Reference_Comparison.png",
+      "bytes": 3970239,
+      "sha256": "c4558fa5de8328fbbb51be7812073569464c554207bef47026feb82c09a2c452",
+      "resolution": [
+        4200,
+        4520
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Lamp_Actual_Views.png",
+      "bytes": 4143053,
+      "sha256": "335869355af175beb9afcea46eff1dc85ff8c7dbfd4e31c16505e22b78abe073",
+      "resolution": [
+        4200,
+        4700
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Lamp_LOD_Comparison.png",
+      "bytes": 1519494,
+      "sha256": "e0e4599da4275d3f69190f15440a7be85026e080ab58e4bef5d4130beb215733",
+      "resolution": [
+        4800,
+        2060
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Lamp_Reference_Comparison.png",
+      "bytes": 3876815,
+      "sha256": "80de01a1cc03b5e383d1e1023a1228279c4b71994492c0ebceefc9806e4df51f",
+      "resolution": [
+        4200,
+        4520
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Light_Actual_Views.png",
+      "bytes": 4044490,
+      "sha256": "64ed243ebfe89a0a2a2b513a2012bf70f7773305d1ae526f3e056d8cef10a95d",
+      "resolution": [
+        4200,
+        4700
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Light_LOD_Comparison.png",
+      "bytes": 1473822,
+      "sha256": "a625a282787c0db7adb490eef1ad930bd8c2e22577b4cab3dade63a603e6e0b7",
+      "resolution": [
+        4800,
+        2060
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Light_Reference_Comparison.png",
+      "bytes": 4148056,
+      "sha256": "184063903f86d6bc85e609fa428dc786708146bf85ff45b9670b119467c2fcb7",
+      "resolution": [
+        4200,
+        4520
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/MilitaryFactory_Actual_Views.png",
+      "bytes": 5648466,
+      "sha256": "c8128391945acc6cf331871148f2ac009003ebdb53ccff70e1ea946b42cd2966",
+      "resolution": [
+        4200,
+        4700
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/MilitaryFactory_All_Animation_Checkpoints.png",
+      "bytes": 2230985,
+      "sha256": "e630b276cd83de9dcdb46bde1db6882199d03a769e42d8ce7c28e50dd226cdfa",
+      "resolution": [
+        3840,
+        2060
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/MilitaryFactory_LOD_Comparison.png",
+      "bytes": 2488432,
+      "sha256": "714d0aae44d7a4e653804a54a5d62132ddc5fcd8d5ea7e6d8f260550509fd9a7",
+      "resolution": [
+        4800,
+        2060
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/MilitaryFactory_Reference_Comparison.png",
+      "bytes": 5683499,
+      "sha256": "d2cc72b974be3b5d928c5e4e2e8f7b9a0bd96d454f75e3257847f5b4c88bce11",
+      "resolution": [
+        4200,
+        4520
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Reactor_Actual_Views.png",
+      "bytes": 5946062,
+      "sha256": "eb97167d3944585c8321539e743928ddbeb07fe5d24110b73de865f411614698",
+      "resolution": [
+        4200,
+        4700
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Reactor_All_Animation_Checkpoints.png",
+      "bytes": 1483361,
+      "sha256": "eb6811060987a6d279365350168b0dc007d63168f5dbc22412009032fb5578cd",
+      "resolution": [
+        3840,
+        1580
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Reactor_LOD_Comparison.png",
+      "bytes": 2349688,
+      "sha256": "2876ad4c9f81aaf3a01736d8a5629a838a03449bf6128ffa7ad1bfa8254206e9",
+      "resolution": [
+        4800,
+        2060
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/Reactor_Reference_Comparison.png",
+      "bytes": 5687050,
+      "sha256": "f90663a8e88a161321f23c12476ccf2eb6067ff1ca8ec5f2f7599282c43f29a1",
+      "resolution": [
+        4200,
+        4520
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/StrategyCenter_Actual_Views.png",
+      "bytes": 5512072,
+      "sha256": "9e9fe344582c863db225bb1778077bb85bb923e6147f2cccf864902567acfb2c",
+      "resolution": [
+        4200,
+        4700
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/StrategyCenter_All_Animation_Checkpoints.png",
+      "bytes": 1541562,
+      "sha256": "57715969c4d1db7ef390eb2740e996edb1f2f909e9376e4f8ba220fb549ddb8e",
+      "resolution": [
+        3840,
+        1580
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/StrategyCenter_LOD_Comparison.png",
+      "bytes": 2403775,
+      "sha256": "ec384c157d244f2b523af002b4dd8f58bebe288d7e2fb7239e83f3dbb6493e69",
+      "resolution": [
+        4800,
+        2060
+      ]
+    },
+    {
+      "file": "Production_B_v1/Sheets/StrategyCenter_Reference_Comparison.png",
+      "bytes": 5465995,
+      "sha256": "be93f29cc6d9fcc062277e1dcf52eae7774db806e87d2cce178a03aa960c32f5",
+      "resolution": [
+        4200,
+        4520
+      ]
+    },
+    {
+      "file": "Production_B_v1/SSF_Production_B_v1.blend",
+      "bytes": 29327373,
+      "sha256": "6f386c2e4782ce6ab6e81ae0f2380a6345fa05cdc6fc3dcf9d260c13ed3a806e"
+    },
+    {
+      "file": "Production_B_v1/style_breakdown_manifest.json",
+      "bytes": 924,
+      "sha256": "cba2aec12e878da5c68342c275f8aff869ac0e93160ab564097e640d2696a9d5"
+    },
+    {
+      "file": "Production_B_v1/Textures/AirBase_BaseColor_2K.png",
+      "bytes": 164356,
+      "sha256": "011af3e6330ed480dbe8dcba9048cdbd4f201147b5665f3a8482765bea88595a",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/AirBase_FunctionalTeamMask_2K.png",
+      "bytes": 161253,
+      "sha256": "13d236961850270d7fe6a7cc464bf9b65b2e24f54c6ade4a761882c3344175d1",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/AirBase_InternalLineMask_2K.png",
+      "bytes": 1214063,
+      "sha256": "856d5ea6825c3ca7c10bc7feaa7516ec8ea5cba0e744302939a5782f63903ee8",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/AirBase_ORM_2K.png",
+      "bytes": 153628,
+      "sha256": "b1e9704ff0981685b9444c7fcb25e1f4792c0692bd8600b811af2c2d5ed720ad",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/CloningCenter_BaseColor_2K.png",
+      "bytes": 141016,
+      "sha256": "3e664fc98d078ad11661ba840a5602d1c557a0f24433c0ccb3f291776f3fd006",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/CloningCenter_FunctionalTeamMask_2K.png",
+      "bytes": 157271,
+      "sha256": "beecc36fed74fe194a78f723f07fdb33e724ea3241a39f91ba4ab4c506727aef",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/CloningCenter_InternalLineMask_2K.png",
+      "bytes": 1290480,
+      "sha256": "e52d4dedf11064740ca9aad65bde500ac033a5ef1ea9cb15939bc02d4c71861c",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/CloningCenter_ORM_2K.png",
+      "bytes": 153628,
+      "sha256": "b1e9704ff0981685b9444c7fcb25e1f4792c0692bd8600b811af2c2d5ed720ad",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/CommandCenter_BaseColor_2K.png",
+      "bytes": 149692,
+      "sha256": "cde2190c019c9c8d342e963f6504233a547245e11f1ac384b83b70b3a2ab60c3",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/CommandCenter_FunctionalTeamMask_2K.png",
+      "bytes": 159947,
+      "sha256": "1ed02f4fd5a769df6f5f65ed70d0295734cc74f146fa16fd0e1a277d321a6eb0",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/CommandCenter_InternalLineMask_2K.png",
+      "bytes": 1210146,
+      "sha256": "7e31c99dfbe5f3bec4e9cbbf4a8e403ca3a3b5f3b7755659457272807db0aae1",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/CommandCenter_ORM_2K.png",
+      "bytes": 153628,
+      "sha256": "b1e9704ff0981685b9444c7fcb25e1f4792c0692bd8600b811af2c2d5ed720ad",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Drone_BaseColor_1K.png",
+      "bytes": 45162,
+      "sha256": "fbd5c606a7103b2e840995afa4db704235474e45c10245fad83d071d77d609a6",
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Drone_FunctionalTeamMask_1K.png",
+      "bytes": 46024,
+      "sha256": "b000f8489a5dc3076536567350c2d20ff27a63520465cd53f9611d8c5f0dd7d1",
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Drone_InternalLineMask_1K.png",
+      "bytes": 396819,
+      "sha256": "95db5b1faee2480542ee3b067482c5f92243f76bb15a42f6e94e5c6a5f63d8c2",
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Drone_ORM_1K.png",
+      "bytes": 40329,
+      "sha256": "1540695821704832e482ec96eb9fc0ca77d54f7bd2ffdc4fbf16f3a739ca2356",
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Floor_BaseColor_4K.png",
+      "bytes": 427364,
+      "sha256": "aa22532665649b568be7d168912186703ad4bee6e385a27993ed4ffc9f32d4a5",
+      "resolution": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Floor_FunctionalTeamMask_4K.png",
+      "bytes": 601249,
+      "sha256": "25d29daecd460005a621316960d7d4f2f78793b4eeaa4ff36a707d37b2cdec87",
+      "resolution": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Floor_InternalLineMask_4K.png",
+      "bytes": 2028985,
+      "sha256": "08d71f393ac93fbeaa4f8ed561c3c238f13803a56683c1d599d223ee3d231097",
+      "resolution": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Floor_ORM_4K.png",
+      "bytes": 595664,
+      "sha256": "2ac23e03d03c3dd263eb4bb7ee473b10d245b9ca99b2e40d3000b28decfe9a53",
+      "resolution": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Lamp_BaseColor_1K.png",
+      "bytes": 32396,
+      "sha256": "4158d6f518580a90fba1e75993ebaa4fc09ef11168947dd70609b295cd3df81a",
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Lamp_FunctionalTeamMask_1K.png",
+      "bytes": 41112,
+      "sha256": "18e4922ae3b0237a913a9b1be8174aea9c82af7f9234886a42c46862e00c180a",
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Lamp_InternalLineMask_1K.png",
+      "bytes": 209789,
+      "sha256": "bd8cf6e78e3730acea9dc18ae21c9abe8e57664a45f38ba236eacc47733a9922",
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Lamp_ORM_1K.png",
+      "bytes": 40329,
+      "sha256": "1540695821704832e482ec96eb9fc0ca77d54f7bd2ffdc4fbf16f3a739ca2356",
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Light_SourceEmissionAlpha_1K.png",
+      "bytes": 63381,
+      "sha256": "7c92505c1e3059ebd94c5f8ac7955fa2e8c819650b44209367991c0c5944712d",
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/MilitaryFactory_BaseColor_2K.png",
+      "bytes": 150656,
+      "sha256": "4ae7abf60d0176227ce8260c61b5defe55f17ffa65692d33e27c3fa7960b5f15",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/MilitaryFactory_FunctionalTeamMask_2K.png",
+      "bytes": 157152,
+      "sha256": "b94b8ac3a001ce3802dac76c01953e89a501dc3d9e76f48d0028c964bd71d6a5",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/MilitaryFactory_InternalLineMask_2K.png",
+      "bytes": 1112823,
+      "sha256": "7dd5dae68a608c22c4d87418835be823e2c076df6c3b181b90cab3839e08bb94",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/MilitaryFactory_ORM_2K.png",
+      "bytes": 153628,
+      "sha256": "b1e9704ff0981685b9444c7fcb25e1f4792c0692bd8600b811af2c2d5ed720ad",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Reactor_BaseColor_2K.png",
+      "bytes": 172242,
+      "sha256": "fa947e0420a7a3bf1ea0fa68892bbfd5a356c0ba3ef0f4189d435402c9cbea0f",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Reactor_FunctionalTeamMask_2K.png",
+      "bytes": 158423,
+      "sha256": "891ef8b0bb2d36a76563200f57b021aa83504301f22cf896d4b972bae9b24d20",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Reactor_InternalLineMask_2K.png",
+      "bytes": 1477556,
+      "sha256": "6915102322206954ad8979bafbacfc3107d78635606ae8226a855a02281aec49",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/Reactor_ORM_2K.png",
+      "bytes": 153628,
+      "sha256": "b1e9704ff0981685b9444c7fcb25e1f4792c0692bd8600b811af2c2d5ed720ad",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/SSF_Shared_SourceLogo_1K.png",
+      "bytes": 203777,
+      "sha256": "9ae0b8719a5c1a34cd44f6b17fc50f0cedfc0efc8452deb8fa315ac6328ea321",
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/StrategyCenter_BaseColor_2K.png",
+      "bytes": 143244,
+      "sha256": "10fd4f3ead6e8b3aa1aaa226cc0ad86f6b638a9a3dbe648537c3f58d557cefd8",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/StrategyCenter_FunctionalTeamMask_2K.png",
+      "bytes": 158727,
+      "sha256": "af4cadbf0bb0b6faaa57adfaf74424e177f2464688653852d1db3c113eb80cc3",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/StrategyCenter_InternalLineMask_2K.png",
+      "bytes": 1026095,
+      "sha256": "f4fe23a9e1c68cd23eacef5018f3496655498f89f98d5e571fda2b4af87a39b0",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/Textures/StrategyCenter_ORM_2K.png",
+      "bytes": 153628,
+      "sha256": "b1e9704ff0981685b9444c7fcb25e1f4792c0692bd8600b811af2c2d5ed720ad",
+      "resolution": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "file": "Production_B_v1/visual_qa.json",
+      "bytes": 3739,
+      "sha256": "1d4ba5f9a92a26aacbe936e8288b74d8a25316f647a20bcc43975d3392c4af6d"
+    },
+    {
+      "file": "review_B_v1.html",
+      "bytes": 17955,
+      "sha256": "2dd35652275c889a2c653783b88cc994936ca4dd2e75e029066f0f92f12089d9"
+    },
+    {
+      "file": "Review_B_v1.md",
+      "bytes": 11090,
+      "sha256": "b132d31f5cc9d0af0243bea4fde4683435522c182d82c9c9d57b7e2fbd803463"
+    },
+    {
+      "file": "Source/source_manifest.json",
+      "bytes": 423147,
+      "sha256": "df102db7a2da226b91ada3ab2d262cf6eb5820376e1a23de5d94ea7ad486fcfc"
+    }
+  ],
+  "prior_reference_verification": [
+    {
+      "version": "SSF_Reference_A_v1",
+      "manifest_sha256": "156e96955addb4bb81d6155ebef45dd9054c48e37b408f605b9a5a82f55e36de",
+      "tracked_files_verified": 5
+    },
+    {
+      "version": "SSF_Reference_A_v2",
+      "manifest_sha256": "b7a2815abe0772840fed5c63dd434a371ba57026114cf4324280d188cf8fc3d6",
+      "tracked_files_verified": 5
+    },
+    {
+      "version": "SSF_Reference_A_v3",
+      "manifest_sha256": "a27f9160ee75bb82e7a8d3f8556e326be43537adfa426111e4df9ac0578dc6cd",
+      "tracked_files_verified": 5
+    },
+    {
+      "version": "SSF_Reference_A_v4",
+      "manifest_sha256": "6d3af05f70ea2aa2d6ff860c0b1d7b4af5547cd3ea5d23e3ac17bbbcd4e0d81b",
+      "tracked_files_verified": 20
+    },
+    {
+      "version": "SSF_Reference_A_v5",
+      "manifest_sha256": "f3a3d853bef64c1b4fba8132dd3e403a75b201d86401b513deb19769c11f48b9",
+      "tracked_files_verified": 21
+    },
+    {
+      "version": "SSF_Reference_A_v6",
+      "manifest_sha256": "cd3cde73b94a6b2b034a306064be1e726a25075ba5910721b16d3dfad129341f",
+      "tracked_files_verified": 24
+    },
+    {
+      "version": "SSF_Reference_A_v7",
+      "manifest_sha256": "d1d3dcabdac432395edd1554da297de47e555a94c9e6ff77893043a7487c0173",
+      "tracked_files_verified": 77
+    }
+  ],
+  "working_intermediates_and_logs_excluded": true,
+  "formal_export_roundtrip_performed": false,
+  "UE_formal_import_performed": false,
+  "UE_performance_or_project_camera_validation_performed": false
+}

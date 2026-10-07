@@ -1,0 +1,54 @@
+{
+  "NS_WarMachineHoverReference": {
+    "parameters": {
+      "HoverMinTrailLength": "<Struct 'NiagaraParameterInfo_Custom' (0x000001C83053D080) {parameter_name: \"User.HoverMinTrailLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"500.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+      "HoverMaxTrailLength": "<Struct 'NiagaraParameterInfo_Custom' (0x000001C830531C20) {parameter_name: \"User.HoverMaxTrailLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1500.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+      "HoverTrailGrowTime": "<Struct 'NiagaraParameterInfo_Custom' (0x000001C830533180) {parameter_name: \"User.HoverTrailGrowTime\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+    },
+    "modules": {
+      "LaserBolts": [
+        "ParticleState",
+        "EmitterState",
+        "SpawnBurst_Instantaneous",
+        "InitializeHoverLane",
+        "ReadHoverNozzle",
+        "ReferenceJetShape_7"
+      ],
+      "LaserMuzzles": [
+        "ParticleState",
+        "EmitterState",
+        "SpawnBurst_Instantaneous",
+        "InitializeHoverLane",
+        "ReadHoverNozzle",
+        "InitializeReferenceHistory_7",
+        "AdvanceReferenceHistory_7"
+      ]
+    }
+  },
+  "NS_WarMachineHoverReference_Preview": {
+    "parameters": {
+      "HoverMinTrailLength": "<Struct 'NiagaraParameterInfo_Custom' (0x000001C83053D740) {parameter_name: \"User.HoverMinTrailLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"500.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+      "HoverMaxTrailLength": "<Struct 'NiagaraParameterInfo_Custom' (0x000001C8305332A0) {parameter_name: \"User.HoverMaxTrailLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1500.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+      "HoverTrailGrowTime": "<Struct 'NiagaraParameterInfo_Custom' (0x000001C83053A860) {parameter_name: \"User.HoverTrailGrowTime\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+    },
+    "modules": {
+      "LaserBolts": [
+        "ParticleState",
+        "EmitterState",
+        "SpawnBurst_Instantaneous",
+        "InitializeHoverLane",
+        "ReadHoverNozzle",
+        "PreviewReferenceJet_4"
+      ],
+      "LaserMuzzles": [
+        "ParticleState",
+        "EmitterState",
+        "SpawnBurst_Instantaneous",
+        "InitializeHoverLane",
+        "ReadHoverNozzle",
+        "InitializeReferenceHistory_5",
+        "PreviewReferenceHistory_4"
+      ]
+    }
+  }
+}

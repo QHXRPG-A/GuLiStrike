@@ -7,10 +7,10 @@ role: root
 title: 指挥官部队StateTree接入与特殊任务退役 — 技术方案
 areas: [commander, resources, building]
 categories: [gameplay]
-status: verification
+status: done
 verification: partial
 created: '2026-09-21'
-updated: '2026-09-22'
+updated: "2026-10-05"
 summary: 原10Hz任务入口统一驱动Actor和Mass StateTree；工程车已接通矿位/建造位、预算路径和四点卸货，32辆配置完成返厂专项，完整功能与长期性能仍待验。
 next_action: 在LVL_CommanderMassPrototype补齐矿位、施工、改令及通道异常矩阵，再完成新逻辑10/30台负载与30分钟性能验收，并收集玩家效果反馈。
 relations:

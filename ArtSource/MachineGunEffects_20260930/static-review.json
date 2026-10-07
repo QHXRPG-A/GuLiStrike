@@ -1,0 +1,61 @@
+{
+  "python_syntax": "passed",
+  "diff_check_exit_code": 0,
+  "diff_check_output": "",
+  "vfx_source_rows": {
+    "MachineGunImpact": {
+      "Name": "MachineGunImpact",
+      "Id": 5,
+      "Note": "指挥官、僚机、玩家地面机甲机枪命中单位或地形",
+      "ResourcePath": "/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Flash_1.NS_Flash_1",
+      "Scale": {
+        "X": 2.0,
+        "Y": 2.0,
+        "Z": 2.0
+      }
+    },
+    "GroundMachineGunMuzzle": {
+      "Name": "GroundMachineGunMuzzle",
+      "Id": 52,
+      "Note": "指挥官机械机枪枪口；保持基础尺寸，重防号在调用处乘2",
+      "ResourcePath": "/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Flash_1.NS_Flash_1",
+      "Scale": {
+        "X": 1.0,
+        "Y": 1.0,
+        "Z": 1.0
+      }
+    }
+  },
+  "native_compile": "not_run_pending_user_permission",
+  "asset_application": "not_run_pending_native_load",
+  "visual_acceptance": "not_run",
+  "source_review": [
+    "Ground-only lighting candidates and a global six-slot cap",
+    "Stable slot tie-breaker and bounded nearest selection",
+    "Non-emissive tint and independent brightness",
+    "All inactive/reused slots clear light data",
+    "Bounds include each selected light radius",
+    "Native array APIs and Niagara bindings checked against local UE5.7 headers",
+    "WarMachine hover and missile readers excluded by exact asset-path guard",
+    "Muzzle scale composed once via FVector dynamic scale"
+  ],
+  "files": {
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectAuthoringLibrary.cpp": "8a26356735aceb1657c57cc40a9aaefa8266e259aeec4928bda020129f86a580",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp": "a949fddb56b956124d97f78a262296f0df37925721d71209459e81bd8b1f9ea6",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h": "a6434e8b078842843ddac773eb70d871d49a2d462f3422e4dc90420611d8cd8d",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.h": "e4aafc15efbff048c3e8929b9b9e34773cacf5f44427be57fcc9dc468412cd51",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMechanicalMuzzlePresentation.cpp": "22bddc1b137f595c419b4220145eeac61e31c0eb684d203ab4147afc31e3c9b0",
+    "Scripts/Vfx/ground_machine_gun_lighting.py": "b84ea5de59483945046b18ba3a083cb6b8cce21bcf095a97c5d2ca6673e0a192",
+    "Scripts/apply_machine_gun_effects.py": "7f781a5dbb8a3710891356e0ca6c0b37c77a54d09bdbe099bf6b4590446cb7ed",
+    "Scripts/author_machine_gun_review_scene.py": "3e0daffdae890f955bbbb7edb59e8748729bedf7155022f9660e05240d715cd9",
+    "Scripts/build_wingman_laser_assets.py": "f5e294e4c731c94a227574911f84b41166b860264080dc94457afe110fc5436c",
+    "Source/GuLiStrike/Gameplay/Data/Generated/GuLiVfxIds.h": "9950f3ed869bafc5ed957185a9791966cecdd40b80f42202ab4a692fd19084fc"
+  },
+  "scene_saved": true,
+  "scene_actor_count": 10,
+  "progress_check": {
+    "errors": 0,
+    "existing_warnings": 14
+  },
+  "native_compile_permission": "requested_pending"
+}

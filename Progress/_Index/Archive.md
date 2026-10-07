@@ -4,6 +4,28 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-10-07 | [SSF会话临时文件清理与全项目上传范围](../Archive/20261007-SSF会话临时文件清理与全项目上传范围.md) | art, assets, tooling | passed | 按用户要求清理SSF会话3140个临时文件约3.20GB，保留正式资源及995个源文件和证据路径，上传范围为所有项目变更。 |
+| 2026-10-07 | [SSF建筑蓝红正式资源B_v2审核通过](../Archive/20261007-SSF建筑蓝红正式资源B_v2审核通过.md) | art, assets, rendering | passed | 用户明确通过当前SSF蓝红正式B_v2，48新增资源及三档LOD完成本轮资产验收，暂不接入游戏。 |
+| 2026-10-07 | [SSF建筑蓝红正式资源B_v2入库](../Archive/20261007-SSF建筑蓝红正式资源B_v2入库.md) | art, assets, rendering | partial | 用户放行当前B_v2后将蓝红两队48资源正式入库，独立重载、36LOD回读、378动画姿态和84UE图完成，不接入游戏。 |
+| 2026-10-07 | [SSF建筑蓝红阵营配色Blender审核B_v2](../Archive/20261007-SSF建筑蓝红阵营配色Blender审核B_v2.md) | art, assets, rendering | partial | 十二个蓝红建筑配色副本已在实际Blender打开，75张原生渲染和独立回读完成；B_v2待用户审核，UE保持B_v1。 |
+| 2026-10-06 | [SSF建筑B_v1正式资源入库且暂不接入玩法](../Archive/20261006-SSF建筑正式资源入库且暂不接入玩法.md) | art, assets, rendering | partial | 当前可见B_v1获用户正式存储放行，105资源、三档LOD、22动画与实际UE预览交付；保留原包，不接入玩法。 |
+| 2026-10-05 | [SSF建筑Blender成品B_v1与预算例外](../Archive/20261005-SSF建筑Blender成品B_v1与预算例外.md) | art, assets, rendering | partial | A_v7依用户制作指令放行；实际B_v1十类资产、三档LOD、22完整动作与回读交付，24档本体超额及用户B待审，正式UE未导入。 |
+| 2026-10-05 | [SSF线稿与三档明暗可见性修正A_v7](../Archive/20261005-SSF线稿与三档明暗可见性修正A_v7.md) | art, assets, rendering | partial | 核对A_v6已接入线稿和三档但可见性偏弱，保持全部配色与结构修正为完整A_v7，附实际拆分和同机位前后对照，当前待审核A。 |
+| 2026-10-05 | [SSF军工厂与战略中心局部提亮A_v6](../Archive/20261005-SSF军工厂与战略中心局部提亮A_v6.md) | art, assets, rendering | partial | 附图核对为A_v3，仅提亮军工厂与战略中心四项深色，其余八资产和两座浅色保持；交付A_v6完整参考，成品和正式导入未开始。 |
+| 2026-10-05 | [SSF建筑仅深色提亮参考A_v5](../Archive/20261005-SSF建筑仅深色提亮参考A_v5.md) | art, assets, rendering | partial | 按深色调浅浅色别动的最新澄清，仅提亮原深色，原浅色和三档明暗保持；交付全套A_v5，成品建模和正式导入未开始。 |
+| 2026-10-05 | [SSF建筑浅色化参考A_v4](../Archive/20261005-SSF建筑浅色化参考A_v4.md) | art, assets, rendering | partial | 保留六套独立色系，按用户反馈同步提亮深色、框架、线稿和三档阴影，交付完整A_v4参考；成品建模及正式导入未开始。 |
+| 2026-10-05 | [SSF建筑六套独立配色参考A_v3](../Archive/20261005-SSF建筑六套独立配色参考A_v3.md) | art, assets, rendering | partial | 按每座建筑不同色系的最新反馈，从三张用户色卡组合六套配色并交付A_v3全套效果图和三视图；成品建模及正式导入未开始。 |
+| 2026-10-05 | [SSF建筑参考A与结构基线交付](../Archive/20261005-SSF建筑参考A与结构基线交付.md) | art, assets, rendering | partial | 六座SSF建筑及四件配套的参考A_v2、原始几何与22动画基线已交付；A待用户审核，成品建模及正式导入尚未开始。 |
+| 2026-10-05 | [指挥官三档LOD审核放行与正式资源切换](../Archive/20261005-指挥官三档LOD审核放行与正式资源切换.md) | commander, art, assets, rendering, building | partial | 六兵种具体成品B已通过，76个正式资源组和三档引用已切换；获准源码Editor构建重开及真实彼之矛审核Actor保存，运行验收未执行。 |
+| 2026-10-05 | [指挥官三档LOD纠正与候选资源交付](../Archive/20261005-指挥官三档LOD纠正与候选资源交付.md) | commander, art, assets, rendering | partial | 六兵种三档候选、完整资源组、真实预览和审核Map已保存；规范v1.3及相关历史说明勘误，正式切换待本版本B放行。 |
+| 2026-10-05 | [彼之矛三档LOD进一步减面](../Archive/20261005-彼之矛三档LOD进一步减面.md) | commander, art, assets | partial | 指挥官LOD说明已按2026-10-05用户指令勘误，当前总共三档；历史源保留，新的实际版本待审核。 |
+| 2026-10-05 | [彼之矛顶点动画制作与首轮源码交付](../Archive/20261005-彼之矛顶点动画制作与首轮源码交付.md) | commander, building, art, assets | partial | 彼之矛固定朝向建造源码和源表已实现，无运行骨骼VAT资源及真实预览已交付，原型图静态审核区已保存；编译与原生数据安装待答复。 |
+| 2026-10-04 | [ControlRig机甲B-v4正式UE导入](../Archive/20261004-ControlRig机甲B_v4正式UE导入.md) | art, assets, rendering | partial | 指挥官LOD说明已按2026-10-05用户指令勘误，当前总共三档；历史源保留，新的实际版本待审核。 |
+| 2026-10-04 | [ControlRig 机甲 B-v4 减少线稿保留轮廓](../Archive/20261004-ControlRig机甲B_v4减少线稿保留轮廓.md) | art, assets, rendering | partial | 按用户要求减少内部线稿，保留基础轮廓和三档；B-v4已显示在当前Blender，四图/三动作及同机位比较留档，B待审核，原面数预算仍超标。 |
+| 2026-10-04 | [ControlRig 机甲 B-v3 实际线稿与三档明暗](../Archive/20261004-ControlRig机甲B_v3实际线稿与三档明暗.md) | art, assets, rendering | partial | 按用户实时线稿反馈修订B-v3，实际材质接入结构线/轮廓与三档明暗，当前Blender双3D预览可旋转；四图、真实三动作和预算差额已交付，B待审核。 |
+| 2026-10-04 | [ControlRig 机甲 A 放行与实际 Blender B-v2 候选](../Archive/20261004-ControlRig机甲A放行与BlenderB_v2候选.md) | art, assets, rendering | partial | 指挥官LOD说明已按2026-10-05用户指令勘误，当前总共三档；历史源保留，新的实际版本待审核。 |
+| 2026-10-04 | [ControlRig 机甲按用户色板修订参考 A-v2](../Archive/20261004-ControlRig机甲四色参考A_v2.md) | art, assets, rendering | partial | 按用户四色色板修订 ControlRig 机甲参考，交付并冻结原生2K效果与三视图，保持结构、骨架、姿态及源基线，A-v2待审核。 |
+| 2026-10-04 | [ControlRig 机甲实际源采集与参考 A-v1 交付](../Archive/20261004-ControlRig机甲参考A_v1交付.md) | art, assets, rendering | partial | 恢复源资产只读查询，确认 ControlRig 四足单炮机甲的152骨骼与高面数基线，交付并冻结一致的八张2K参考和灰模，停在用户审核A。 |
 | 2026-10-04 | [先驱号会话临时文件重试清理完成](../Archive/20261004-先驱号会话临时文件重试清理完成.md) | commander, art, assets | passed | 用户明确要求重试后，完成既有清单55个临时文件及两个空缓存目录的删除，70个冻结审核文件哈希仍全部一致。 |
 | 2026-10-04 | [先驱号初代开发通过与 GitHub 交付](../Archive/20261004-先驱号初代开发通过与GitHub交付.md) | commander, combat, art, assets, rendering, data, network, performance | passed | 用户通过先驱号初代开发并授权清理与 GitHub 上传；记录当前批准基线、临时文件排除和已编译共用依赖的交付范围。 |
 | 2026-10-04 | [绿色引导线玩家验收通过](../Archive/20261004-绿色引导线玩家验收通过.md) | commander, ui | passed | 绿色引导线遮挡修复编译加载及PIE地图占用解除后，用户回复通过；据此完成本次玩家验收，开发状态置done/passed。 |
@@ -18,8 +40,8 @@
 | 2026-10-03 | [先驱号委托 PIE 验收与运行修复](../Archive/20261003-先驱号委托PIE验收与运行修复.md) | commander, combat, art, assets, rendering, data, network | passed | 用户明确委托助手代验；本地权威 PIE 核心 13 项通过，地图启动、基础速度、初生待机和墙内生成四个问题修复后重新编译加载，场景保存与烘焙有效。 |
 | 2026-10-03 | [先驱号 Editor 编译与正式接线场景交付](../Archive/20261003-先驱号Editor编译与正式接线场景交付.md) | commander, combat, art, assets, data, network | partial | 用户另行授权编译重载，Editor 构建与新类型加载成功；正式 VAT、六张表及技能头像引用完成磁盘回读，指定地图最终保存核对通过，Mass 运行没有骨骼依赖。 |
 | 2026-10-03 | [先驱号验收区域准备与资源目录回读](../Archive/20261003-先驱号验收区域准备与资源目录回读.md) | commander, art, assets, combat | partial | 原型图七个部署点、四个阻挡物与说明已保存并实体回读；明确新玩法尚未加载，补齐实际 Skeleton 与 Physics 资源目录映射。 |
-| 2026-10-03 | [先驱号 B-v1 批准与 UE 美术 VAT 副本导入](../Archive/20261003-先驱号B-v1批准与UE美术VAT副本导入.md) | art, assets, commander, rendering, data | partial | 用户批准冻结 B-v1，完成 44 骨骼七动画 FBX 回读、正式 UE 美术副本与四档 VAT 网格及真实引擎效果图；原生运行接线待独立编译。 |
-| 2026-10-03 | [RSG 六足机器人 Blender B-v1 成品交付](../Archive/20261003-RSG六足机器人BlenderB-v1成品交付.md) | art, assets, rendering | partial | A-v3 已获用户通过，完成 Blender 可编辑分件、44骨骼、四档LOD、三档明暗/结构线及七动画；按红框将头球中央凹块改天蓝，提交实际 B-v1 待审。 |
+| 2026-10-03 | [先驱号 B-v1 批准与 UE 美术 VAT 副本导入](../Archive/20261003-先驱号B-v1批准与UE美术VAT副本导入.md) | art, assets, commander, rendering, data | partial | 指挥官LOD说明已按2026-10-05用户指令勘误，当前总共三档；历史源保留，新的实际版本待审核。 |
+| 2026-10-03 | [RSG 六足机器人 Blender B-v1 成品交付](../Archive/20261003-RSG六足机器人BlenderB-v1成品交付.md) | art, assets, rendering | partial | 指挥官LOD说明已按2026-10-05用户指令勘误，当前总共三档；历史源保留，新的实际版本待审核。 |
 | 2026-10-03 | [RSG 六足机器人 A-v3 背环与头球配色](../Archive/20261003-RSG六足机器人A-v3背环与头球配色.md) | art, assets, rendering | partial | 按用户指定将背环改天蓝、头球改浅黄，保留八个天蓝小分件，同步 A-v3 四张 2048px 参考；源结构与旧版本保持，待审核 A-v3。 |
 | 2026-10-03 | [RSG 六足机器人 A-v2 天蓝点缀](../Archive/20261003-RSG六足机器人A-v2天蓝点缀.md) | art, assets, rendering | partial | 按用户“加一点天蓝色”加入八个成对分件的少量天蓝点缀，同步四张 2048px A-v2 参考；源结构/相机及 A-v1 保持，等待审核 A-v2。 |
 | 2026-10-03 | [RSG 六足机器人审核 A-v1 参考交付](../Archive/20261003-RSG六足机器人审核A-v1参考交付.md) | art, assets, rendering | partial | 交付源模型约束的 A-v1 效果图与三视图（均 2048px）、灰模对照、配色/活动件说明和审图页；用户审核 A 待决定，未开始重制或正式 UE 导入。 |
@@ -56,7 +78,7 @@
 | 2026-09-30 | [重防号5至15米渐长尾焰正式应用](../Archive/20260930-重防号5至15米渐长尾焰正式应用.md) | commander, presentation, performance | partial | 用户明确应用正式资源后，原位更新VFX48的System与两个材质，保存重载及GPU检查通过；已有构建已编入15米包围盒。 |
 | 2026-09-30 | [重防号转向倾斜幅度减半](../Archive/20260930-重防号转向倾斜幅度减半.md) | commander, presentation | partial | 按用户反馈将WM01盘面、支撑关节及上身转向倾斜从12°/8°/15°减为6°/4°/7.5°；仅配置调整，无需重编。 |
 | 2026-09-30 | [重防号航母式转向原生编译与加载](../Archive/20260930-重防号航母式转向原生编译与加载.md) | commander, presentation, performance | partial | 用户明确要求编译；源码版Editor目标83.39秒成功，8份BuildId一致，新DLL已加载，13组预览冷加载回读通过。 |
-| 2026-09-30 | [重防号航母式转向静态与场景交付](../Archive/20260930-重防号航母式转向静态与场景交付.md) | commander, presentation, performance | partial | WM01客户端阻尼转向、分层压弯、炮管补偿与出膛偏移源码完成；四档资源及13组预览保存回读通过，未原生编译或运行验收。 |
+| 2026-09-30 | [重防号航母式转向静态与场景交付](../Archive/20260930-重防号航母式转向静态与场景交付.md) | commander, presentation, performance | partial | 指挥官LOD说明已按2026-10-05用户指令勘误，当前总共三档；历史源保留，新的实际版本待审核。 |
 | 2026-09-30 | [重防号盘底喷焰渐长尾迹与导弹仓隐藏修复](../Archive/20260930-重防号盘底喷焰渐长尾迹与导弹仓隐藏修复.md) | commander, presentation, performance | partial | 正式模型导弹仓漏标修复已保存；盘底白芯喷焰与5至15米起步渐长尾迹候选通过资源编译、48帧和17次GPU检查。 |
 | 2026-09-30 | [重防号Q每圈60发构建与场景交付](../Archive/20260930-重防号Q每圈60发构建与场景交付.md) | commander, combat, ui | partial | 已完成整台60发配额、独立共享圈、卡牌59次封顶及公共反馈，获准构建、资产导入和地图34个相关实体保存回读通过。 |
 | 2026-09-30 | [指挥官边缘平移提前受限修复](../Archive/20260930-指挥官边缘平移提前受限修复.md) | commander, ui | partial | 普通镜头由整屏视锥和镜头本体限界改为只限制观察焦点，地形外相机沿用最近边缘高度；已完成编译、重开及原型图保存回读。 |
@@ -75,7 +97,7 @@
 | 2026-09-29 | [肉鸽单行高亮Excel管线与接入修复](../Archive/20260929-肉鸽单行高亮Excel管线与接入修复.md) | commander, ui | partial | 修复原生富文本赋值与旧控件不匹配造成的说明空白，补齐Excel样式管线，构建和资产/场景保存回读通过。 |
 | 2026-09-29 | [指挥官统一三级LOD源码与场景交付](../Archive/20260929-指挥官统一三级LOD源码与场景交付.md) | commander, performance | partial | 公共自动三级LOD框架及导弹首批迁移完成，保留v2烟迹；原型地图增加三个镜头和说明并保存回读，用户选择暂不编译与运行。 |
 | 2026-09-29 | [肉鸽单行文案源码与编译](../Archive/20260929-肉鸽单行文案源码与编译.md) | commander, ui | partial | 五条说明源表和富文本制作代码完成，用户授权原生编译通过；因编辑器处于游玩，UE控件和场景接入未执行，随后用户要求总结。 |
-| 2026-09-29 | [重防号导弹集群原生构建与容量绑定](../Archive/20260929-重防号导弹集群原生构建与容量绑定.md) | commander, combat, art, performance | partial | 用户授权后源码版Editor构建成功并重开加载；六套GPU系统动态容量契约及重防号四级LOD诊断通过，运行与性能实测按用户要求暂不执行。 |
+| 2026-09-29 | [重防号导弹集群原生构建与容量绑定](../Archive/20260929-重防号导弹集群原生构建与容量绑定.md) | commander, combat, art, performance | partial | 指挥官LOD说明已按2026-10-05用户指令勘误，当前总共三档；历史源保留，新的实际版本待审核。 |
 | 2026-09-29 | [重防号导弹仓与GPU烟迹候选接入](../Archive/20260929-重防号导弹仓与GPU烟迹候选接入.md) | commander, combat, ui, art, performance | partial | 定向接入导弹仓刚性网格/WPO，生成三档GPU烟迹并完成隔离美术预览，指定地图11个相关实体保存回读；新原生构建和动态容量绑定尚待完成。 |
 | 2026-09-29 | [F4重选按钮原生编译](../Archive/20260929-F4重选按钮原生编译.md) | commander, ui, combat | partial | 用户授权后完成源码版Editor构建，退出码0，项目及6个原生插件BuildId一致；运行交互尚未验收。 |
 | 2026-09-29 | [F4重选按钮源码与选牌场景准备](../Archive/20260929-F4重选按钮与场景准备.md) | commander, ui, combat | partial | 重选按钮、服务器抽牌和旧会话失效源码已完成，文本及5张卡已导入、指定地图保存回读；新原生构建等待用户许可。 |

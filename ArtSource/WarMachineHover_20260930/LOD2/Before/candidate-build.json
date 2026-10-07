@@ -1,0 +1,662 @@
+{
+  "success": true,
+  "source": "/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool",
+  "system": "/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference",
+  "saved": [
+    "/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceJet",
+    "/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceTrail",
+    "/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference",
+    "/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference_Preview"
+  ],
+  "production_reference_changed": false,
+  "reference_sha256": "945552eb2d4f5040e011e634a49155836d27a90407808e6e0dfc804bbbc98f58",
+  "materials": {
+    "/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceJet": {
+      "diagnostics": "<Struct 'MaterialDiagnostics' (0x000001C6D6E719C0) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 10, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 0, vector_parameter_count: 0}>",
+      "graph": {
+        "material": {
+          "blend_mode": "BLEND_Translucent",
+          "shading_model": "MSM_Unlit",
+          "two_sided": true
+        },
+        "expressions": [
+          {
+            "id": "MaterialExpressionCustom_000001C6ADFEC780",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {
+              "Code": "float t=saturate(1-UV.y); float x=abs(UV.x*2-1); float flow=sin(t*23-Clock*10)*.022*t; float w=max(.001,pow(1-t,.80)); float q=(x+flow)/w; return pow(saturate(1-q*q),.7)*smoothstep(0,.018,t)*pow(saturate(1-t),.30)*Alpha;",
+              "OutputType": "CMOT_Float1",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"UV\"),(InputName=\"Alpha\",Input=(OutputIndex=4,Mask=1,MaskA=1)),(InputName=\"Clock\"))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float t=saturate(1-UV.y); float x=abs(UV.x*2-1); float flow=sin(t*23-Clock*10)*.022*t; float w=max(.001,pow(1-t,.80)); float q=(x+flow)/w; return pow(saturate(1-q*q),.7)*smoothstep(0,.018,t)*pow(saturate(1-t),.30)*Alpha;",
+            "output_type": "CMOT_Float1",
+            "custom_input_names": "UV,Alpha,Clock",
+            "inputs": [
+              "UV",
+              "Alpha",
+              "Clock"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_000001C826FCF3C0",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {
+              "Code": "float t=saturate(1-UV.y); float x=abs(UV.x*2-1); float flow=sin(t*23-Clock*10)*.022*t; float w=max(.001,pow(1-t,.80)); float q=(x+flow)/w; return pow(saturate(1-q*q),.7)*smoothstep(0,.018,t)*pow(saturate(1-t),.30)*Alpha;",
+              "OutputType": "CMOT_Float1",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"UV\"),(InputName=\"Alpha\",Input=(OutputIndex=4,Mask=1,MaskA=1)),(InputName=\"Clock\"))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float t=saturate(1-UV.y); float x=abs(UV.x*2-1); float flow=sin(t*23-Clock*10)*.022*t; float w=max(.001,pow(1-t,.80)); float q=(x+flow)/w; return pow(saturate(1-q*q),.7)*smoothstep(0,.018,t)*pow(saturate(1-t),.30)*Alpha;",
+            "output_type": "CMOT_Float1",
+            "custom_input_names": "UV,Alpha,Clock",
+            "inputs": [
+              "UV",
+              "Alpha",
+              "Clock"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionParticleColor_000001C83BEB1F80",
+            "class": "ParticleColor",
+            "class_full": "MaterialExpressionParticleColor",
+            "pos_x": -780,
+            "pos_y": 162,
+            "properties": {},
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_000001C6C6E7A3C0",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {
+              "Code": "float t=saturate(1-UV.y); float x=abs(UV.x*2-1); float flow=sin(t*23-Clock*10)*.022*t; float w=max(.001,pow(1-t,.80)); float q=(x+flow)/w; return pow(saturate(1-q*q),.7)*smoothstep(0,.018,t)*pow(saturate(1-t),.30)*Alpha;",
+              "OutputType": "CMOT_Float1",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"UV\"),(InputName=\"Alpha\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceJet.M_WarMachineReferenceJet:MaterialExpressionParticleColor_4'\",OutputIndex=4,Mask=1,MaskA=1)),(InputName=\"Clock\"))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float t=saturate(1-UV.y); float x=abs(UV.x*2-1); float flow=sin(t*23-Clock*10)*.022*t; float w=max(.001,pow(1-t,.80)); float q=(x+flow)/w; return pow(saturate(1-q*q),.7)*smoothstep(0,.018,t)*pow(saturate(1-t),.30)*Alpha;",
+            "output_type": "CMOT_Float1",
+            "custom_input_names": "UV,Alpha,Clock",
+            "inputs": [
+              "UV",
+              "Alpha",
+              "Clock"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionTextureCoordinate_000001C83091FA40",
+            "class": "TextureCoordinate",
+            "class_full": "MaterialExpressionTextureCoordinate",
+            "pos_x": -780,
+            "pos_y": 0,
+            "properties": {
+              "CoordinateIndex": "0",
+              "UTiling": "1.000000",
+              "VTiling": "1.000000",
+              "UnMirrorU": "False",
+              "UnMirrorV": "False"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionParticleColor_000001C830910B60",
+            "class": "ParticleColor",
+            "class_full": "MaterialExpressionParticleColor",
+            "pos_x": -780,
+            "pos_y": 162,
+            "properties": {},
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionTime_000001C830912760",
+            "class": "Time",
+            "class_full": "MaterialExpressionTime",
+            "pos_x": -780,
+            "pos_y": 338,
+            "properties": {
+              "bIgnorePause": "False",
+              "bOverride_Period": "False",
+              "Period": "0.000000"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_000001C7EA7ECF80",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {
+              "Code": "float t=saturate(1-UV.y); float x=abs(UV.x*2-1); float flow=sin(t*23-Clock*10)*.022*t; float w=max(.001,pow(1-t,.80)); float q=(x+flow)/w; return pow(saturate(1-q*q),.7)*smoothstep(0,.018,t)*pow(saturate(1-t),.30)*Alpha;",
+              "OutputType": "CMOT_Float1",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceJet.M_WarMachineReferenceJet:MaterialExpressionTextureCoordinate_5'\")),(InputName=\"Alpha\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceJet.M_WarMachineReferenceJet:MaterialExpressionParticleColor_5'\",OutputIndex=4,Mask=1,MaskA=1)),(InputName=\"Clock\",Input=(Expression=\"/Script/Engine.MaterialExpressionTime'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceJet.M_WarMachineReferenceJet:MaterialExpressionTime_4'\")))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float t=saturate(1-UV.y); float x=abs(UV.x*2-1); float flow=sin(t*23-Clock*10)*.022*t; float w=max(.001,pow(1-t,.80)); float q=(x+flow)/w; return pow(saturate(1-q*q),.7)*smoothstep(0,.018,t)*pow(saturate(1-t),.30)*Alpha;",
+            "output_type": "CMOT_Float1",
+            "custom_input_names": "UV,Alpha,Clock",
+            "inputs": [
+              "UV",
+              "Alpha",
+              "Clock"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_000001C826FCADC0",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -260,
+            "pos_y": 0,
+            "properties": {
+              "Code": "float t=saturate(1-UV.y); float x=abs(UV.x*2-1); float flow=sin(t*23-Clock*10)*.022*t; float w=max(.001,pow(1-t,.80)); float q=(x+flow)/w; float core=pow(saturate(1-q*1.65),.65)*(1-smoothstep(.60,.94,t)); return lerp(float3(.015,.45,1.8),float3(.85,.97,1.0)*5.0,core);",
+              "OutputType": "CMOT_Float3",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceJet.M_WarMachineReferenceJet:MaterialExpressionTextureCoordinate_5'\")),(InputName=\"Alpha\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceJet.M_WarMachineReferenceJet:MaterialExpressionParticleColor_5'\",OutputIndex=4,Mask=1,MaskA=1)),(InputName=\"Clock\",Input=(Expression=\"/Script/Engine.MaterialExpressionTime'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceJet.M_WarMachineReferenceJet:MaterialExpressionTime_4'\")))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float t=saturate(1-UV.y); float x=abs(UV.x*2-1); float flow=sin(t*23-Clock*10)*.022*t; float w=max(.001,pow(1-t,.80)); float q=(x+flow)/w; float core=pow(saturate(1-q*1.65),.65)*(1-smoothstep(.60,.94,t)); return lerp(float3(.015,.45,1.8),float3(.85,.97,1.0)*5.0,core);",
+            "output_type": "CMOT_Float3",
+            "custom_input_names": "UV,Alpha,Clock",
+            "inputs": [
+              "UV",
+              "Alpha",
+              "Clock"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionDepthFade_000001C826FCB400",
+            "class": "DepthFade",
+            "class_full": "MaterialExpressionDepthFade",
+            "pos_x": -260,
+            "pos_y": 162,
+            "properties": {
+              "OpacityDefault": "1.000000",
+              "FadeDistanceDefault": "8.000000"
+            },
+            "inputs": [
+              "Opacity",
+              "FadeDistance"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "source_id": "MaterialExpressionParticleColor_000001C83BEB1F80",
+            "source_output_index": 4,
+            "source_output_name": "A",
+            "target_id": "MaterialExpressionCustom_000001C6C6E7A3C0",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionTextureCoordinate_000001C83091FA40",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_000001C7EA7ECF80",
+            "target_input": "UV"
+          },
+          {
+            "source_id": "MaterialExpressionParticleColor_000001C830910B60",
+            "source_output_index": 4,
+            "source_output_name": "A",
+            "target_id": "MaterialExpressionCustom_000001C7EA7ECF80",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionTime_000001C830912760",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_000001C7EA7ECF80",
+            "target_input": "Clock"
+          },
+          {
+            "source_id": "MaterialExpressionTextureCoordinate_000001C83091FA40",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_000001C826FCADC0",
+            "target_input": "UV"
+          },
+          {
+            "source_id": "MaterialExpressionParticleColor_000001C830910B60",
+            "source_output_index": 4,
+            "source_output_name": "A",
+            "target_id": "MaterialExpressionCustom_000001C826FCADC0",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionTime_000001C830912760",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_000001C826FCADC0",
+            "target_input": "Clock"
+          },
+          {
+            "source_id": "MaterialExpressionCustom_000001C7EA7ECF80",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionDepthFade_000001C826FCB400",
+            "target_input": "Opacity"
+          }
+        ],
+        "output_connections": [
+          {
+            "property": "EmissiveColor",
+            "expression_id": "MaterialExpressionCustom_000001C826FCADC0",
+            "output_index": 0,
+            "output_name": ""
+          },
+          {
+            "property": "Opacity",
+            "expression_id": "MaterialExpressionDepthFade_000001C826FCB400",
+            "output_index": 0,
+            "output_name": ""
+          }
+        ]
+      }
+    },
+    "/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceTrail": {
+      "diagnostics": "<Struct 'MaterialDiagnostics' (0x000001C6BB75F900) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 10, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 0, vector_parameter_count: 0}>",
+      "graph": {
+        "material": {
+          "blend_mode": "BLEND_Translucent",
+          "shading_model": "MSM_Unlit",
+          "two_sided": true
+        },
+        "expressions": [
+          {
+            "id": "MaterialExpressionCustom_000001C7EA7E6A40",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {
+              "Code": "float x=abs(UV.x*2-1); float y=abs(UV.y*2-1); return pow(saturate(1-x*x),1.5)*pow(saturate(1-y*y),.7)*Alpha;",
+              "OutputType": "CMOT_Float1",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"UV\"),(InputName=\"Alpha\",Input=(OutputIndex=4,Mask=1,MaskA=1)),(InputName=\"Clock\"))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float x=abs(UV.x*2-1); float y=abs(UV.y*2-1); return pow(saturate(1-x*x),1.5)*pow(saturate(1-y*y),.7)*Alpha;",
+            "output_type": "CMOT_Float1",
+            "custom_input_names": "UV,Alpha,Clock",
+            "inputs": [
+              "UV",
+              "Alpha",
+              "Clock"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_000001C7EA7EDAC0",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {
+              "Code": "float x=abs(UV.x*2-1); float y=abs(UV.y*2-1); return pow(saturate(1-x*x),1.5)*pow(saturate(1-y*y),.7)*Alpha;",
+              "OutputType": "CMOT_Float1",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"UV\"),(InputName=\"Alpha\",Input=(OutputIndex=4,Mask=1,MaskA=1)),(InputName=\"Clock\"))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float x=abs(UV.x*2-1); float y=abs(UV.y*2-1); return pow(saturate(1-x*x),1.5)*pow(saturate(1-y*y),.7)*Alpha;",
+            "output_type": "CMOT_Float1",
+            "custom_input_names": "UV,Alpha,Clock",
+            "inputs": [
+              "UV",
+              "Alpha",
+              "Clock"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionParticleColor_000001C6CD61DC80",
+            "class": "ParticleColor",
+            "class_full": "MaterialExpressionParticleColor",
+            "pos_x": -780,
+            "pos_y": 162,
+            "properties": {},
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_000001C7EA7ED340",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {
+              "Code": "float x=abs(UV.x*2-1); float y=abs(UV.y*2-1); return (1-smoothstep(.66,1.0,x))*pow(saturate(1-y*y),.45)*Alpha;",
+              "OutputType": "CMOT_Float1",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"UV\"),(InputName=\"Alpha\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceTrail.M_WarMachineReferenceTrail:MaterialExpressionParticleColor_4'\",OutputIndex=4,Mask=1,MaskA=1)),(InputName=\"Clock\"))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float x=abs(UV.x*2-1); float y=abs(UV.y*2-1); return (1-smoothstep(.66,1.0,x))*pow(saturate(1-y*y),.45)*Alpha;",
+            "output_type": "CMOT_Float1",
+            "custom_input_names": "UV,Alpha,Clock",
+            "inputs": [
+              "UV",
+              "Alpha",
+              "Clock"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionTextureCoordinate_000001C826D062E0",
+            "class": "TextureCoordinate",
+            "class_full": "MaterialExpressionTextureCoordinate",
+            "pos_x": -780,
+            "pos_y": 0,
+            "properties": {
+              "CoordinateIndex": "0",
+              "UTiling": "1.000000",
+              "VTiling": "1.000000",
+              "UnMirrorU": "False",
+              "UnMirrorV": "False"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionParticleColor_000001C826D0F960",
+            "class": "ParticleColor",
+            "class_full": "MaterialExpressionParticleColor",
+            "pos_x": -780,
+            "pos_y": 162,
+            "properties": {},
+            "inputs": [],
+            "outputs": [
+              "RGB",
+              "R",
+              "G",
+              "B",
+              "A",
+              "RGBA"
+            ]
+          },
+          {
+            "id": "MaterialExpressionTime_000001C826D0FC00",
+            "class": "Time",
+            "class_full": "MaterialExpressionTime",
+            "pos_x": -780,
+            "pos_y": 338,
+            "properties": {
+              "bIgnorePause": "False",
+              "bOverride_Period": "False",
+              "Period": "0.000000"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_000001C826FCBCC0",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {
+              "Code": "float x=abs(UV.x*2-1); float y=abs(UV.y*2-1); return (1-smoothstep(.66,1.0,x))*pow(saturate(1-y*y),.45)*Alpha;",
+              "OutputType": "CMOT_Float1",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceTrail.M_WarMachineReferenceTrail:MaterialExpressionTextureCoordinate_5'\")),(InputName=\"Alpha\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceTrail.M_WarMachineReferenceTrail:MaterialExpressionParticleColor_5'\",OutputIndex=4,Mask=1,MaskA=1)),(InputName=\"Clock\",Input=(Expression=\"/Script/Engine.MaterialExpressionTime'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceTrail.M_WarMachineReferenceTrail:MaterialExpressionTime_4'\")))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float x=abs(UV.x*2-1); float y=abs(UV.y*2-1); return (1-smoothstep(.66,1.0,x))*pow(saturate(1-y*y),.45)*Alpha;",
+            "output_type": "CMOT_Float1",
+            "custom_input_names": "UV,Alpha,Clock",
+            "inputs": [
+              "UV",
+              "Alpha",
+              "Clock"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionCustom_000001C7EA7EAC80",
+            "class": "Custom",
+            "class_full": "MaterialExpressionCustom",
+            "pos_x": -260,
+            "pos_y": 0,
+            "properties": {
+              "Code": "float core=pow(saturate(1-abs(UV.x*2-1)*3.5),2); return lerp(float3(.008,.25,1.0),float3(.80,1.20,1.65),core)*1.7;",
+              "OutputType": "CMOT_Float3",
+              "Description": "Custom",
+              "Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceTrail.M_WarMachineReferenceTrail:MaterialExpressionTextureCoordinate_5'\")),(InputName=\"Alpha\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceTrail.M_WarMachineReferenceTrail:MaterialExpressionParticleColor_5'\",OutputIndex=4,Mask=1,MaskA=1)),(InputName=\"Clock\",Input=(Expression=\"/Script/Engine.MaterialExpressionTime'/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceTrail.M_WarMachineReferenceTrail:MaterialExpressionTime_4'\")))",
+              "ShowCode": "False"
+            },
+            "hlsl_code": "float core=pow(saturate(1-abs(UV.x*2-1)*3.5),2); return lerp(float3(.008,.25,1.0),float3(.80,1.20,1.65),core)*1.7;",
+            "output_type": "CMOT_Float3",
+            "custom_input_names": "UV,Alpha,Clock",
+            "inputs": [
+              "UV",
+              "Alpha",
+              "Clock"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionDepthFade_000001C7EA7E5A00",
+            "class": "DepthFade",
+            "class_full": "MaterialExpressionDepthFade",
+            "pos_x": -260,
+            "pos_y": 162,
+            "properties": {
+              "OpacityDefault": "1.000000",
+              "FadeDistanceDefault": "8.000000"
+            },
+            "inputs": [
+              "Opacity",
+              "FadeDistance"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "source_id": "MaterialExpressionParticleColor_000001C6CD61DC80",
+            "source_output_index": 4,
+            "source_output_name": "A",
+            "target_id": "MaterialExpressionCustom_000001C7EA7ED340",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionTextureCoordinate_000001C826D062E0",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_000001C826FCBCC0",
+            "target_input": "UV"
+          },
+          {
+            "source_id": "MaterialExpressionParticleColor_000001C826D0F960",
+            "source_output_index": 4,
+            "source_output_name": "A",
+            "target_id": "MaterialExpressionCustom_000001C826FCBCC0",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionTime_000001C826D0FC00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_000001C826FCBCC0",
+            "target_input": "Clock"
+          },
+          {
+            "source_id": "MaterialExpressionTextureCoordinate_000001C826D062E0",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_000001C7EA7EAC80",
+            "target_input": "UV"
+          },
+          {
+            "source_id": "MaterialExpressionParticleColor_000001C826D0F960",
+            "source_output_index": 4,
+            "source_output_name": "A",
+            "target_id": "MaterialExpressionCustom_000001C7EA7EAC80",
+            "target_input": "Alpha"
+          },
+          {
+            "source_id": "MaterialExpressionTime_000001C826D0FC00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionCustom_000001C7EA7EAC80",
+            "target_input": "Clock"
+          },
+          {
+            "source_id": "MaterialExpressionCustom_000001C826FCBCC0",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionDepthFade_000001C7EA7E5A00",
+            "target_input": "Opacity"
+          }
+        ],
+        "output_connections": [
+          {
+            "property": "EmissiveColor",
+            "expression_id": "MaterialExpressionCustom_000001C7EA7EAC80",
+            "output_index": 0,
+            "output_name": ""
+          },
+          {
+            "property": "Opacity",
+            "expression_id": "MaterialExpressionDepthFade_000001C7EA7E5A00",
+            "output_index": 0,
+            "output_name": ""
+          }
+        ]
+      }
+    }
+  },
+  "compile": {
+    "success": true,
+    "errors": [],
+    "warnings": []
+  },
+  "summary": "<Struct 'NiagaraSystemSummary' (0x000001C59E5E3960) {system_path: \"/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference\", system_name: \"NS_WarMachineHoverReference\", emitter_count: 2, emitter_names: (\"LaserBolts\",\"LaserMuzzles\"), user_parameter_count: 12, user_parameter_names: (\"User.HoverCamera\",\"User.HoverMaxTrailLength\",\"User.HoverMinTrailLength\",\"User.HoverTime\",\"User.HoverTrailGrowTime\",\"User.LaserColors\",\"User.LaserDirections\",\"User.LaserPositions\",\"User.LaserSizes\",\"User.MuzzleColors\",\"User.MuzzlePositions\",\"User.MuzzleSizes\"), has_gpu_emitters: True}>",
+  "emitters": {
+    "LaserBolts": {
+      "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001C6CA63AF80) {emitter_name: \"LaserBolts\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+      "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001C685E5A0A0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceJet.M_WarMachineReferenceJet\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+      "modules": [
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C65E452EE0) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C65E455B90) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C65E45F410) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C65E45F550) {module_name: \"InitializeHoverLane\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference.NS_WarMachineHoverReference:LaserBolts_1.NiagaraScratchPadContainer_0.InitializeHoverLane\", module_index: 3, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C65E454290) {module_name: \"ReadHoverNozzle\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference.NS_WarMachineHoverReference:LaserBolts_1.NiagaraScratchPadContainer_0.ReadHoverNozzle\", module_index: 4, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C65E45E5B0) {module_name: \"ReferenceJetShape_7\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference.NS_WarMachineHoverReference:LaserBolts_1.NiagaraScratchPadContainer_0.ReferenceJetShape_7\", module_index: 5, is_enabled: True, inputs: }>"
+      ]
+    },
+    "LaserMuzzles": {
+      "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001C685E51F40) {emitter_name: \"LaserMuzzles\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1000.000000,-1000.000000,-1000.000000) Max(1000.000000,1000.000000,1000.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+      "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x000001C685E5DCA0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/M_WarMachineReferenceTrail.M_WarMachineReferenceTrail\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>",
+      "modules": [
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C65E453BB0) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 0, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C65E45F3C0) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 1, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C65E45E600) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 2, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C65E45EF10) {module_name: \"InitializeHoverLane\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference.NS_WarMachineHoverReference:LaserMuzzles_1.NiagaraScratchPadContainer_0.InitializeHoverLane\", module_index: 3, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C65E45F050) {module_name: \"ReadHoverNozzle\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference.NS_WarMachineHoverReference:LaserMuzzles_1.NiagaraScratchPadContainer_0.ReadHoverNozzle\", module_index: 4, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C65E453FC0) {module_name: \"InitializeReferenceHistory_7\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference.NS_WarMachineHoverReference:LaserMuzzles_1.NiagaraScratchPadContainer_0.InitializeReferenceHistory_7\", module_index: 5, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C65E45B900) {module_name: \"AdvanceReferenceHistory_7\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference.NS_WarMachineHoverReference:LaserMuzzles_1.NiagaraScratchPadContainer_0.AdvanceReferenceHistory_7\", module_index: 6, is_enabled: True, inputs: }>"
+      ]
+    }
+  },
+  "preview_compile": {
+    "success": true,
+    "errors": [],
+    "warnings": []
+  },
+  "preview_system": "/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference_Preview",
+  "saved_parameters": {
+    "/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference": {
+      "HoverMinTrailLength": "<Struct 'NiagaraParameterInfo_Custom' (0x000001C7FEFFA560) {parameter_name: \"User.HoverMinTrailLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"500.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+      "HoverMaxTrailLength": "<Struct 'NiagaraParameterInfo_Custom' (0x000001C7FEFFB100) {parameter_name: \"User.HoverMaxTrailLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1500.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+      "HoverTrailGrowTime": "<Struct 'NiagaraParameterInfo_Custom' (0x000001C7FEFFC3C0) {parameter_name: \"User.HoverTrailGrowTime\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+    },
+    "/Game/GuLiStrike/FX/WarMachineHover/Reference_v2/NS_WarMachineHoverReference_Preview": {
+      "HoverMinTrailLength": "<Struct 'NiagaraParameterInfo_Custom' (0x000001C7FEFFC720) {parameter_name: \"User.HoverMinTrailLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"500.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+      "HoverMaxTrailLength": "<Struct 'NiagaraParameterInfo_Custom' (0x000001C7FEFFC540) {parameter_name: \"User.HoverMaxTrailLength\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1500.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+      "HoverTrailGrowTime": "<Struct 'NiagaraParameterInfo_Custom' (0x000001C7FEFFE340) {parameter_name: \"User.HoverTrailGrowTime\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+    }
+  },
+  "attachment_contract": "Core reads current nozzle each update. Preview consumes the same current root and speed as the model; only trail emitter stores history.",
+  "source_sha256": {
+    "Scripts\\build_warmachine_hover_reference.py": "20dc310e9f6237af89bb3f7eae0a3e814f96d6ffe11a527e58584b73720f7725",
+    "Scripts\\Niagara\\GuLiHoverReferenceJet.hlsl": "dde84f06b34e81448acbfe56bfe3f4f4b87600384081a5ba912661fab6b5aad4",
+    "Scripts\\Niagara\\GuLiHoverReferenceTrail.hlsl": "f15dec59e84f2d797cf8d41d51f2058d9f86938b60cfeb79e2e058fea0e309a3"
+  }
+}

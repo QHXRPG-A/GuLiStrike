@@ -183,7 +183,7 @@ EGuLiCommanderWorkResult UGuLiConstructionWorkComponent::GetBehaviorResult() con
 {
     using Result = EGuLiCommanderWorkResult;
     if (IsTerminalFailure()) return Result::Failed;
-    if (Target->IsCompleted()) return Result::Complete;
+    if (Target->IsCompleted() || Target->GetState().Phase == EGuLiBuildingPhase::ConvertedToUnit) return Result::Complete;
     if (UGuLiExternalUnitControlComponent::AreActorActionsLocked(GetOwner())) return Result::Running;
     if (!Intent.IsValid()) return Result::None;
     if (bApplyingWork && !Target->ValidateConstructionSlot(*CastChecked<ACharacter>(GetOwner()), Reservation)) return Result::OutOfRange;
@@ -232,7 +232,8 @@ void UGuLiConstructionWorkComponent::TickComponent(float Dt, ELevelTick TickType
         const auto* Building = Target.Get();
         if (!Building || Building->GetState().Phase == EGuLiBuildingPhase::Destroyed)
             CancelOrder(TEXT("建筑已销毁，退单"));
-        else if (Building->IsCompleted()) CancelOrder(TEXT("建筑已完成，结束工单"));
+        else if (Building->IsCompleted() || Building->GetState().Phase == EGuLiBuildingPhase::ConvertedToUnit)
+            CancelOrder(TEXT("建筑已完成，结束工单"));
         else if (Building->GetTeam() != CastChecked<IGuLiEngineeringVehicle>(GetOwner())->GetTeam())
             CancelOrder(TEXT("建筑归属变化，退单"));
         else if (Intent.IsValid() && !bApplyingWork

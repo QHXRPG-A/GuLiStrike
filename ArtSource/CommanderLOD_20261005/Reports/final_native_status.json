@@ -1,0 +1,299 @@
+{
+  "success": true,
+  "editor_world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "engine": "5.7.4-0+UE5",
+  "game_world": null,
+  "formal_switched": true,
+  "loaded_soldier_rows": [
+    {
+      "Name": "DefaultSoldier",
+      "Id": 1,
+      "Note": "B-v1先驱号；6.25米；刚性骨骼纹理VAT；默认双枪与Q召唤",
+      "MovementSpeedCmPerSecond": 1440,
+      "MaxHealth": 100,
+      "ModelAsset": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 1,
+      "DisplayName": "先驱号",
+      "ModelWidthMeters": 6.25,
+      "MinAvoidanceDistanceMeters": 0.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+      "VATDefinition": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+      "bSummonOnly": false,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "WM01",
+      "Id": 2,
+      "Note": "WM01 第二兵种；首版沿用调试数值，尚未平衡",
+      "MovementSpeedCmPerSecond": 720,
+      "MaxHealth": 300.5,
+      "ModelAsset": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 0.2,
+      "DisplayName": "重防号",
+      "ModelWidthMeters": 12.5,
+      "MinAvoidanceDistanceMeters": 2.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+      "VATDefinition": "None",
+      "bSummonOnly": false,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "ElectromagneticMiner",
+      "Id": 3,
+      "Note": "指挥官可控制矿车；Scale020后车长3.6米，900cm/s；采矿业务由矿车Manager调度",
+      "MovementSpeedCmPerSecond": 900,
+      "MaxHealth": 1000,
+      "ModelAsset": "None",
+      "Defense": 0,
+      "ActorClass": "/Script/GuLiStrike.GuLiMiningVehiclePawn",
+      "PresentationClass": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/BP_ElectromagneticMiner_3Tier.BP_ElectromagneticMiner_3Tier_C",
+      "PresentationScale": 0.608458,
+      "DisplayName": "电磁矿车",
+      "ModelWidthMeters": 3.6,
+      "MinAvoidanceDistanceMeters": 1,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
+      "VATDefinition": "None",
+      "bSummonOnly": false,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "ConstructionVehicle",
+      "Id": 4,
+      "Note": "开局每队一辆；独立建造车，施工与采矿分工",
+      "MovementSpeedCmPerSecond": 900,
+      "MaxHealth": 1000,
+      "ModelAsset": "None",
+      "Defense": 0,
+      "ActorClass": "/Script/GuLiStrike.GuLiConstructionVehiclePawn",
+      "PresentationClass": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier_C",
+      "PresentationScale": 0.608458,
+      "DisplayName": "建造车",
+      "ModelWidthMeters": 3.6,
+      "MinAvoidanceDistanceMeters": 1,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder",
+      "VATDefinition": "None",
+      "bSummonOnly": false,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "SweeperSummon",
+      "Id": 5,
+      "Note": "先驱号Q专用召唤兵；永久可控、可累积、不计生产人口",
+      "MovementSpeedCmPerSecond": 720,
+      "MaxHealth": 100,
+      "ModelAsset": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 0.2,
+      "DisplayName": "扫荡者",
+      "ModelWidthMeters": 3.1,
+      "MinAvoidanceDistanceMeters": 0.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+      "VATDefinition": "None",
+      "bSummonOnly": true,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "BiZhiMao",
+      "Id": 6,
+      "Note": "工程车施工生成；底座锁定出生朝向；首轮不攻击；已审ControlRig B_v4放大2倍",
+      "MovementSpeedCmPerSecond": 144,
+      "MaxHealth": 1000,
+      "ModelAsset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 2,
+      "DisplayName": "彼之矛",
+      "ModelWidthMeters": 18.4386,
+      "MinAvoidanceDistanceMeters": 0.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+      "VATDefinition": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT",
+      "bSummonOnly": false,
+      "bConstructionOnly": true,
+      "FacingPolicy": 1,
+      "MassAvoidanceRadiusMeters": 16.2975
+    }
+  ],
+  "vehicles": [
+    {
+      "name": "ElectromagneticMiner",
+      "components": [
+        {
+          "component": "SkeletalMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Cockpit_Freight_Spoiler",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Top_Turret_2x_Lvl1",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Weapon_Rocket_Mount_Lvl2",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Weapon_Rocket_Mount_Lvl3",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "scale": [
+            -1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Collector_L",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Collector_R",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Side_Winglet_Spike_Lvl3",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "loaded_current_native_module": true
+    },
+    {
+      "name": "ConstructionVehicle",
+      "components": [
+        {
+          "component": "SkeletalMeshComponent0",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Cockpit_Freight_Spoiler",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Top_Turret_2x_Lvl1",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Weapon_Rocket_Mount_Lvl2",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Weapon_Rocket_Mount_Lvl3",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+          "scale": [
+            -1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Collector_L",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Collector_R",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "component": "Side_Winglet_Spike_Lvl3",
+          "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "loaded_current_native_module": true
+    }
+  ],
+  "map_saved": true,
+  "dirty_content": [],
+  "dirty_maps": [],
+  "pie": "not_run",
+  "network": "not_run",
+  "fps": "not_run"
+}

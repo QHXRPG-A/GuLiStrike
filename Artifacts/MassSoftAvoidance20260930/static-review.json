@@ -1,0 +1,69 @@
+{
+  "date": "2026-09-30",
+  "scope": "Manual source/interface review, whitespace diff check, scene script AST only",
+  "diff_check_exit_code": 0,
+  "diff_check_output": "",
+  "scene_script_syntax": "passed",
+  "native_compilation": "not_run_pending_separate_user_approval",
+  "cpp_compiler_type_check": "not_run",
+  "automated_tests": "not_run",
+  "new_test_cases": 0,
+  "existing_test_maintenance": "One existing collider count assertion updated for available candidates within the new 12 limit; no new cases.",
+  "runtime_acceptance": "not_run",
+  "manual_static_review": [
+    {
+      "topic": "radius_source",
+      "result": "passed",
+      "evidence": "Initial and runtime spawn, presentation all resolve GetMassAvoidanceRadius; authority CDO supplies the same configured default. WM01 625cm; default 150cm. No use of MinAvoidanceDistanceMeters."
+    },
+    {
+      "topic": "ring_scale",
+      "result": "passed",
+      "evidence": "Mesh bounds queried through UE: X radius 48cm, Y radius 47.9999961853cm, bounds extensions zero. BuildRingTransform normalizes each XY axis by radius; no fixed XY multiplier; radius and mesh dimensions cached."
+    },
+    {
+      "topic": "predictive_query",
+      "result": "passed",
+      "evidence": "Adaptive cell size max(300,2*maxRadius); query includes radii and relative maximum travel over 2.5s; 24 threats, 12 colliders, overlap/TTC priority; radius factor1 and stiffness700; fade>=0.5."
+    },
+    {
+      "topic": "soft_separation",
+      "result": "passed",
+      "evidence": "Authority freezes candidates before integrations. Complete local pairs sorted by stable soldier IDs, 3 velocity iterations, penetration/0.5s. No position correction and no predictive collider cap applied here."
+    },
+    {
+      "topic": "passive_stop_state",
+      "result": "passed",
+      "evidence": "Only friendly pressure initiates passive velocity. Passive maximum25% enforced before smoothing/environment integration; no order creation, no clearing Stop, and no old anchor return."
+    },
+    {
+      "topic": "exclusions",
+      "result": "passed",
+      "evidence": "IsPresent excludes dead/phased; CanAct excludes external action locks from movement/passive push. Locked living units retain existing obstacle participation."
+    },
+    {
+      "topic": "navigation_failure",
+      "result": "passed",
+      "evidence": "FindMoveAlongCurrentNavigationSurface, IsSegmentClear with full radius, surface step/slope validation retained. Passive failure keeps previous position and zeroes velocity."
+    },
+    {
+      "topic": "network_and_display",
+      "result": "passed",
+      "evidence": "Passive results update Transform/Velocity fragments; CaptureSoldierPoseChunks includes idle units and quantizes location/velocity independently of ActiveOrderId. Existing interpolation retained; crowd fades local displacement only, mechanical Root XY follows PresentedTransform."
+    }
+  ],
+  "scene_saved": true,
+  "scene_actor_count": 15,
+  "source_hashes": {
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h": "24c166ba82e33f841cf975c161ed3bee492660d89d81d811ab35679ca1784edd",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.cpp": "2a162da4910c42fbb22d9b3cf7cd7fc5ba8aff83b0dcc3d49fb611c52e5baf9a",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h": "9bd10c23abc89570f8be258f182d2844cf7cb14efec21f5290c706faf9d43cd6",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.cpp": "4433ec9ec825c2a7aa12cd871b393e1fb45d84257883be6e7be3d4fd1c034c0d",
+    "Source/GuLiStrike/Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.cpp": "6c89589b8a42d5ba31393390ee8e33a2c8c326c59f894973f90ebfa2fb360a3f",
+    "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp": "c9b2632995994a28136d5a771d51ca933f0e317a9a084fa7ea8e5dd1e1e934a4",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h": "aa39a94414d110ca24c0513bc3d2d070a378c2dff14522e5ddbe5319746246dc",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp": "1c5e5810cf8b748e73818448d182cbb3d0eb6343c8a56237a1db2551248f62f1",
+    "Source/GuLiStrike/Commander/Mass/Navigation/Tests/GuLiCommanderAvoidancePolicyTests.cpp": "9f0a346a7487a929edfe79f61960d25d93a79769f80fd975033acec47a1556e5",
+    "Scripts/author_mass_soft_avoidance_scene.py": "ddb71b8ee8d9f35c89806b0a3dd29505de87677951cd4974f6fa989cbca7909b"
+  }
+}

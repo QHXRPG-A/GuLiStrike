@@ -1,0 +1,54 @@
+{
+  "target": "GuLiStrikeEditor Win64 Development",
+  "engine": "D:/UnrealEngine-5.7",
+  "user_authorization": "2026-09-30 用户回复：编译；承接爆炸LOD修复的构建、重开及验证请求",
+  "started_at": "2026-09-30T13:09:48.1052072+08:00",
+  "completed_at": "2026-09-30T13:10:17.0993935+08:00",
+  "duration_seconds": 28.9943058,
+  "exit_code": 0,
+  "log": "D:\\UE5.7\\test1\\Artifacts\\CommanderLOD\\20260930\\ImpactVisibility\\build-01.log",
+  "manifests": [
+    {
+      "path": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\GuLiMapAuthoring\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\Tripo3DUEBridge-UE5.7-Win64\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\UnrealMCP\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\UnrealMCPython\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\VibeUE\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+    }
+  ],
+  "all_build_ids_match": true,
+  "source_sha256": {
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODSubsystem.h": "adea5308c2b4957f44bea4f88061733ce9457e6a02c2fad0064bf71896b57d34",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODSubsystem.cpp": "bcebee4eacfdb6c17ab2697818ff29ed9a4650a7e4091db3af8948d7f79ef076",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp": "777367ba238e506eb0911d4a075aa2818d6907433540bd1667641a27029ccbf5",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h": "e87ee2dde54ea7d5a639ff66d90d016324bf157364e6e357d74f2ad57c2a3f32",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.cpp": "4b1bdfe33c1fe915eaecb832e75eaa9daee9f20dae85da36f4a7e9fab15f0a9e"
+  },
+  "source_unchanged_since_review": true,
+  "runtime_validation": "pending_editor_reload"
+}

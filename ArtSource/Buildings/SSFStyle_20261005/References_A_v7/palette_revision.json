@@ -1,0 +1,485 @@
+{
+  "version": "SSF_Reference_A_v7",
+  "source_version": "SSF_Reference_A_v6",
+  "user_instruction": "配色保持A_v6，仅修正线稿和三档明暗可读性。",
+  "only_modified_assets": [],
+  "themes": {
+    "AirBase": {
+      "name": "暖橙航空",
+      "Primary": "#EE9D58",
+      "Equipment": "#274E61",
+      "Accent": "#FEE4D9",
+      "Frame": "#1A182F"
+    },
+    "CloningCenter": {
+      "name": "浅粉医疗",
+      "Primary": "#EABCBA",
+      "Equipment": "#835061",
+      "Accent": "#FEE4D9",
+      "Frame": "#45184D"
+    },
+    "CommandCenter": {
+      "name": "莓红指挥",
+      "Primary": "#A34053",
+      "Equipment": "#E3B6B1",
+      "Accent": "#EE9D58",
+      "Frame": "#662249"
+    },
+    "MilitaryFactory": {
+      "name": "钢蓝工业",
+      "Primary": "#6AA4BE",
+      "Equipment": "#9972CA",
+      "Accent": "#EE9D58",
+      "Frame": "#756FB5"
+    },
+    "Reactor": {
+      "name": "青绿动力",
+      "Primary": "#0D9099",
+      "Equipment": "#6AA4BE",
+      "Accent": "#EE9D58",
+      "Frame": "#032E30"
+    },
+    "StrategyCenter": {
+      "name": "紫色情报",
+      "Primary": "#AA6EB9",
+      "Equipment": "#E3B6B1",
+      "Accent": "#0D9099",
+      "Frame": "#8A67B6"
+    },
+    "Floor": {
+      "name": "蓝灰共用平台",
+      "Primary": "#FEE4D9",
+      "Equipment": "#6AA4BE",
+      "Accent": "#EE9D58",
+      "Frame": "#032E30"
+    },
+    "Lamp": {
+      "name": "深青橙色灯具",
+      "Primary": "#FEE4D9",
+      "Equipment": "#0A6F73",
+      "Accent": "#EE9D58",
+      "Frame": "#032E30"
+    },
+    "Light": {
+      "name": "橙色功能灯光",
+      "Primary": "#EE9D58",
+      "Equipment": "#0A6F73",
+      "Accent": "#EE9D58",
+      "Frame": "#032E30"
+    },
+    "Drone": {
+      "name": "钢蓝工业 · 随军工厂",
+      "Primary": "#6AA4BE",
+      "Equipment": "#2A104B",
+      "Accent": "#EE9D58",
+      "Frame": "#1A182F"
+    }
+  },
+  "changes": [
+    {
+      "asset": "AirBase",
+      "role": "Primary",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "L_star_before": 71.55,
+      "L_star_after": 71.55
+    },
+    {
+      "asset": "AirBase",
+      "role": "Equipment",
+      "source_hex": "#274E61",
+      "output_hex": "#274E61",
+      "changed": false,
+      "L_star_before": 31.21,
+      "L_star_after": 31.21
+    },
+    {
+      "asset": "AirBase",
+      "role": "Accent",
+      "source_hex": "#FEE4D9",
+      "output_hex": "#FEE4D9",
+      "changed": false,
+      "L_star_before": 92.38,
+      "L_star_after": 92.38
+    },
+    {
+      "asset": "AirBase",
+      "role": "Frame",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "L_star_before": 9.63,
+      "L_star_after": 9.63
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Primary",
+      "source_hex": "#EABCBA",
+      "output_hex": "#EABCBA",
+      "changed": false,
+      "L_star_before": 80.18,
+      "L_star_after": 80.18
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Equipment",
+      "source_hex": "#835061",
+      "output_hex": "#835061",
+      "changed": false,
+      "L_star_before": 40.29,
+      "L_star_after": 40.29
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Accent",
+      "source_hex": "#FEE4D9",
+      "output_hex": "#FEE4D9",
+      "changed": false,
+      "L_star_before": 92.38,
+      "L_star_after": 92.38
+    },
+    {
+      "asset": "CloningCenter",
+      "role": "Frame",
+      "source_hex": "#45184D",
+      "output_hex": "#45184D",
+      "changed": false,
+      "L_star_before": 17.71,
+      "L_star_after": 17.71
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Primary",
+      "source_hex": "#A34053",
+      "output_hex": "#A34053",
+      "changed": false,
+      "L_star_before": 41.34,
+      "L_star_after": 41.34
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Equipment",
+      "source_hex": "#E3B6B1",
+      "output_hex": "#E3B6B1",
+      "changed": false,
+      "L_star_before": 77.85,
+      "L_star_after": 77.85
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Accent",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "L_star_before": 71.55,
+      "L_star_after": 71.55
+    },
+    {
+      "asset": "CommandCenter",
+      "role": "Frame",
+      "source_hex": "#662249",
+      "output_hex": "#662249",
+      "changed": false,
+      "L_star_before": 25.11,
+      "L_star_after": 25.11
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Primary",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "L_star_before": 64.43,
+      "L_star_after": 64.43
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Equipment",
+      "source_hex": "#9972CA",
+      "output_hex": "#9972CA",
+      "changed": false,
+      "L_star_before": 55.15,
+      "L_star_after": 55.15
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Accent",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "L_star_before": 71.55,
+      "L_star_after": 71.55
+    },
+    {
+      "asset": "MilitaryFactory",
+      "role": "Frame",
+      "source_hex": "#756FB5",
+      "output_hex": "#756FB5",
+      "changed": false,
+      "L_star_before": 50.08,
+      "L_star_after": 50.08
+    },
+    {
+      "asset": "Reactor",
+      "role": "Primary",
+      "source_hex": "#0D9099",
+      "output_hex": "#0D9099",
+      "changed": false,
+      "L_star_before": 54.38,
+      "L_star_after": 54.38
+    },
+    {
+      "asset": "Reactor",
+      "role": "Equipment",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "L_star_before": 64.43,
+      "L_star_after": 64.43
+    },
+    {
+      "asset": "Reactor",
+      "role": "Accent",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "L_star_before": 71.55,
+      "L_star_after": 71.55
+    },
+    {
+      "asset": "Reactor",
+      "role": "Frame",
+      "source_hex": "#032E30",
+      "output_hex": "#032E30",
+      "changed": false,
+      "L_star_before": 16.44,
+      "L_star_after": 16.44
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Primary",
+      "source_hex": "#AA6EB9",
+      "output_hex": "#AA6EB9",
+      "changed": false,
+      "L_star_before": 55.28,
+      "L_star_after": 55.28
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Equipment",
+      "source_hex": "#E3B6B1",
+      "output_hex": "#E3B6B1",
+      "changed": false,
+      "L_star_before": 77.85,
+      "L_star_after": 77.85
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Accent",
+      "source_hex": "#0D9099",
+      "output_hex": "#0D9099",
+      "changed": false,
+      "L_star_before": 54.38,
+      "L_star_after": 54.38
+    },
+    {
+      "asset": "StrategyCenter",
+      "role": "Frame",
+      "source_hex": "#8A67B6",
+      "output_hex": "#8A67B6",
+      "changed": false,
+      "L_star_before": 50.07,
+      "L_star_after": 50.07
+    },
+    {
+      "asset": "Floor",
+      "role": "Primary",
+      "source_hex": "#FEE4D9",
+      "output_hex": "#FEE4D9",
+      "changed": false,
+      "L_star_before": 92.38,
+      "L_star_after": 92.38
+    },
+    {
+      "asset": "Floor",
+      "role": "Equipment",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "L_star_before": 64.43,
+      "L_star_after": 64.43
+    },
+    {
+      "asset": "Floor",
+      "role": "Accent",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "L_star_before": 71.55,
+      "L_star_after": 71.55
+    },
+    {
+      "asset": "Floor",
+      "role": "Frame",
+      "source_hex": "#032E30",
+      "output_hex": "#032E30",
+      "changed": false,
+      "L_star_before": 16.44,
+      "L_star_after": 16.44
+    },
+    {
+      "asset": "Lamp",
+      "role": "Primary",
+      "source_hex": "#FEE4D9",
+      "output_hex": "#FEE4D9",
+      "changed": false,
+      "L_star_before": 92.38,
+      "L_star_after": 92.38
+    },
+    {
+      "asset": "Lamp",
+      "role": "Equipment",
+      "source_hex": "#0A6F73",
+      "output_hex": "#0A6F73",
+      "changed": false,
+      "L_star_before": 42.26,
+      "L_star_after": 42.26
+    },
+    {
+      "asset": "Lamp",
+      "role": "Accent",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "L_star_before": 71.55,
+      "L_star_after": 71.55
+    },
+    {
+      "asset": "Lamp",
+      "role": "Frame",
+      "source_hex": "#032E30",
+      "output_hex": "#032E30",
+      "changed": false,
+      "L_star_before": 16.44,
+      "L_star_after": 16.44
+    },
+    {
+      "asset": "Light",
+      "role": "Primary",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "L_star_before": 71.55,
+      "L_star_after": 71.55
+    },
+    {
+      "asset": "Light",
+      "role": "Equipment",
+      "source_hex": "#0A6F73",
+      "output_hex": "#0A6F73",
+      "changed": false,
+      "L_star_before": 42.26,
+      "L_star_after": 42.26
+    },
+    {
+      "asset": "Light",
+      "role": "Accent",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "L_star_before": 71.55,
+      "L_star_after": 71.55
+    },
+    {
+      "asset": "Light",
+      "role": "Frame",
+      "source_hex": "#032E30",
+      "output_hex": "#032E30",
+      "changed": false,
+      "L_star_before": 16.44,
+      "L_star_after": 16.44
+    },
+    {
+      "asset": "Drone",
+      "role": "Primary",
+      "source_hex": "#6AA4BE",
+      "output_hex": "#6AA4BE",
+      "changed": false,
+      "L_star_before": 64.43,
+      "L_star_after": 64.43
+    },
+    {
+      "asset": "Drone",
+      "role": "Equipment",
+      "source_hex": "#2A104B",
+      "output_hex": "#2A104B",
+      "changed": false,
+      "L_star_before": 11.76,
+      "L_star_after": 11.76
+    },
+    {
+      "asset": "Drone",
+      "role": "Accent",
+      "source_hex": "#EE9D58",
+      "output_hex": "#EE9D58",
+      "changed": false,
+      "L_star_before": 71.55,
+      "L_star_after": 71.55
+    },
+    {
+      "asset": "Drone",
+      "role": "Frame",
+      "source_hex": "#1A182F",
+      "output_hex": "#1A182F",
+      "changed": false,
+      "L_star_before": 9.63,
+      "L_star_after": 9.63
+    }
+  ],
+  "original_user_swatch_library": [
+    "#1A182F",
+    "#45184D",
+    "#662249",
+    "#A34053",
+    "#EE9D58",
+    "#EABCBA",
+    "#150017",
+    "#2A104B",
+    "#522C5C",
+    "#835061",
+    "#E3B6B1",
+    "#FEE4D9",
+    "#021716",
+    "#032E30",
+    "#0A6F73",
+    "#0D9099",
+    "#6AA4BE",
+    "#274E61"
+  ],
+  "method": "All 40 palette roles preserved from A_v6; only reference line strengths, widths and band thresholds adjusted.",
+  "platform": "#274E61",
+  "shared_ink": "#1A182F",
+  "tone_thresholds": [
+    0.38,
+    0.68
+  ],
+  "tone_factors": [
+    0.4,
+    0.72,
+    1.0
+  ],
+  "internal_line_strength": 0.65,
+  "platform_line_strength": 0.65,
+  "protected_original_swatches": [
+    "#EE9D58",
+    "#EABCBA",
+    "#E3B6B1",
+    "#FEE4D9",
+    "#0D9099",
+    "#6AA4BE"
+  ],
+  "note": "No paint HEX changed this revision. Final pixels change with the corrected line and tone treatment.",
+  "all_palette_HEX_preserved_from_A_v6": true,
+  "prior_color_revision": "References_A_v6/palette_revision.json"
+}

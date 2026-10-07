@@ -1,0 +1,259 @@
+{
+  "success": true,
+  "lod_count": 3,
+  "archive": "ArtSource\\CommanderLOD_20261005\\Reports\\legacy_producer_sources.zip",
+  "scripts": [
+    {
+      "path": "Scripts/BiZhiMao/build_lod_review.py",
+      "last_before_sha256": "2739a6c608ef16b792863950ddafec89457f7166df293eeb424ab5ea103de928",
+      "after_sha256": "2739a6c608ef16b792863950ddafec89457f7166df293eeb424ab5ea103de928",
+      "current_entry": "build_review.py",
+      "original_sha256": "5e1b9cae48417e26437f3d67cc35c0804bf3740d4eb1a7f3f9940ffb0897ce78"
+    },
+    {
+      "path": "Scripts/BiZhiMao/build_review.py",
+      "last_before_sha256": "2739a6c608ef16b792863950ddafec89457f7166df293eeb424ab5ea103de928",
+      "after_sha256": "2739a6c608ef16b792863950ddafec89457f7166df293eeb424ab5ea103de928",
+      "current_entry": "build_review.py",
+      "original_sha256": "f7c55dc7e2c9df61e93b973ba34a18e11bca9aae221dd74c94e348b50a9faa9b"
+    },
+    {
+      "path": "Scripts/BiZhiMao/capture_art_preview.py",
+      "last_before_sha256": "0eb75d04d4bd38d529107f2696d952d3baad5ba7720f2239df47691c6475d626",
+      "after_sha256": "0eb75d04d4bd38d529107f2696d952d3baad5ba7720f2239df47691c6475d626",
+      "current_entry": "capture_preview.py",
+      "original_sha256": "5830366e7659c9a8d632735a60700d3e1460407b838b7c99ef56bd025e17af8d"
+    },
+    {
+      "path": "Scripts/BiZhiMao/convert_native_captures.py",
+      "last_before_sha256": "b0a3391e0a2e3475b588cec3803ac33d9b2c3d168c6a487f365cd581734bfb35",
+      "after_sha256": "b0a3391e0a2e3475b588cec3803ac33d9b2c3d168c6a487f365cd581734bfb35",
+      "current_entry": "convert_preview.py",
+      "original_sha256": "b36d0272ab49acec0572080d17e1d089786e812beca02b0e320890b33abb6a1a"
+    },
+    {
+      "path": "Scripts/BiZhiMao/import_art_assets.py",
+      "last_before_sha256": "4d435d0d059b1151abcca70b7ddeab779db4e0465cd1305826e40afbe22f1de8",
+      "after_sha256": "4d435d0d059b1151abcca70b7ddeab779db4e0465cd1305826e40afbe22f1de8",
+      "current_entry": "stage_bizhimao.py",
+      "original_sha256": "97f978c7fee86b31604fa9eba6cb0ee27449418fa1ab9ec2dfa9e288701d3c44"
+    },
+    {
+      "path": "Scripts/BiZhiMao/import_vertex_assets.py",
+      "last_before_sha256": "4d435d0d059b1151abcca70b7ddeab779db4e0465cd1305826e40afbe22f1de8",
+      "after_sha256": "4d435d0d059b1151abcca70b7ddeab779db4e0465cd1305826e40afbe22f1de8",
+      "current_entry": "stage_bizhimao.py",
+      "original_sha256": "3d0d3c05dab3539cf85474a541932d92bbb081020b6a1b5471687b82ade38db4"
+    },
+    {
+      "path": "Scripts/BiZhiMao/prepare_acceptance_scene.py",
+      "last_before_sha256": "e08786c966b2922951ad5faa6a054574b2cc749ccaee49464f5a887ffda518be",
+      "after_sha256": "e08786c966b2922951ad5faa6a054574b2cc749ccaee49464f5a887ffda518be",
+      "current_entry": "build_review_scene.py",
+      "original_sha256": "929f4c693bf210c65fb9f4d861f958b2505816ef35908323a8cb260419c07e12"
+    },
+    {
+      "path": "Scripts/BiZhiMao/prepare_blender.py",
+      "last_before_sha256": "82bfb59d6bcd59d4478fd260ab7bc0631e8fdf354b386be30c54da28371f82d0",
+      "after_sha256": "82bfb59d6bcd59d4478fd260ab7bc0631e8fdf354b386be30c54da28371f82d0",
+      "current_entry": "prepare_bizhimao.py",
+      "original_sha256": "0a1eadfeff5909eb21ee38d1c80437da7a1ed698b5cf06af685f59f3abc61b01"
+    },
+    {
+      "path": "Scripts/BiZhiMao/prepare_lod_blender_view.py",
+      "last_before_sha256": "82bfb59d6bcd59d4478fd260ab7bc0631e8fdf354b386be30c54da28371f82d0",
+      "after_sha256": "82bfb59d6bcd59d4478fd260ab7bc0631e8fdf354b386be30c54da28371f82d0",
+      "current_entry": "prepare_bizhimao.py",
+      "original_sha256": "526ad27de2e18ec0db01a5b7e911c4e9b484c96e4abfff4402fc646218ac085b"
+    },
+    {
+      "path": "Scripts/BiZhiMao/readback_art.py",
+      "last_before_sha256": "804c4b0205bcd42a62517a6a02fe9a8ab50217b57c353c9d34ab328b0ab8cb6e",
+      "after_sha256": "804c4b0205bcd42a62517a6a02fe9a8ab50217b57c353c9d34ab328b0ab8cb6e",
+      "current_entry": "inspect_candidates.py",
+      "original_sha256": "df0368e8f4b246cfa098779700e0de80629652e60203adaa0adadd48e8349e48"
+    },
+    {
+      "path": "Scripts/BiZhiMao/readback_vertex_assets.py",
+      "last_before_sha256": "804c4b0205bcd42a62517a6a02fe9a8ab50217b57c353c9d34ab328b0ab8cb6e",
+      "after_sha256": "804c4b0205bcd42a62517a6a02fe9a8ab50217b57c353c9d34ab328b0ab8cb6e",
+      "current_entry": "inspect_candidates.py",
+      "original_sha256": "cfc3aa15041865bbff782e84bb03d1b7c1f8b17e014f7e40d7754834aa908feb"
+    },
+    {
+      "path": "Scripts/BiZhiMao/render_lod_review.py",
+      "last_before_sha256": "547188709e0c5d0919fa32500b4dfe06f541c8824ea2b4b17672d4f54af2d3b3",
+      "after_sha256": "547188709e0c5d0919fa32500b4dfe06f541c8824ea2b4b17672d4f54af2d3b3",
+      "current_entry": "render_bizhimao.py",
+      "original_sha256": "d327705343b8b2affe0152c32dd8295fb33a6275a45692dbb58f7caa93cf29c3"
+    },
+    {
+      "path": "Scripts/BiZhiMao/render_review.py",
+      "last_before_sha256": "547188709e0c5d0919fa32500b4dfe06f541c8824ea2b4b17672d4f54af2d3b3",
+      "after_sha256": "547188709e0c5d0919fa32500b4dfe06f541c8824ea2b4b17672d4f54af2d3b3",
+      "current_entry": "render_bizhimao.py",
+      "original_sha256": "42cfe9612e7ab8430afc7bd71e29ef84007cd731f4e2922d48cea0309e3f0900"
+    },
+    {
+      "path": "Scripts/BiZhiMao/compress_lods.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "2377016d2360bf64d46aff2d7772bcfa3f3e1bb03a8404fbf4536616c7fdb849"
+    },
+    {
+      "path": "Scripts/BiZhiMao/check_lod_geometry.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "321c326a7cab0cb7da928ce8eaf91dcaaa1f54e986b486631aa8283e91bd95d9"
+    },
+    {
+      "path": "Scripts/BiZhiMao/export_static_meshes.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "1b472466e29509b2c6ed9bd6a59e73f86c167a42471a2bee27a04e894dcbc7be"
+    },
+    {
+      "path": "Scripts/BiZhiMao/inspect_lod_topology.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "7e69a4a0ed83bab9c01d68736d75e8136bac5658effa5573c40aee226202812e"
+    },
+    {
+      "path": "Scripts/BiZhiMao/probe_lod_reduction.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "575e1b581492bb3a6bfbd918cc1fb5f379152cf5cc756797fd9dd41008859b0c"
+    },
+    {
+      "path": "Scripts/BiZhiMao/probe_part_lods.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "5fe0f3eee1563e634ab4a44f5e9051b7b86503e91c947cc6578e2a8b57e0da97"
+    },
+    {
+      "path": "Scripts/BiZhiMao/probe_planar_lods.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "d614860da0260eb4a25445f941ec040ed0ff9cf9c9c25edd96e518ce46c121d6"
+    },
+    {
+      "path": "Scripts/BiZhiMao/refine_lod_candidate.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "27446a1719d6ce959db08e229572c3249bf9c10b7036d70a4905d9625616a0f0"
+    },
+    {
+      "path": "Scripts/BiZhiMao/report_lod_blender_open.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "825eec73c2435b590e1ff67b43cd01b293180a1261bcd4e0739e7507f660555d"
+    },
+    {
+      "path": "Scripts/BiZhiMao/verify_art_assets.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "a83f6898aab4dd4744f1ec86c3587d7de5b027503b2949bc1a49ebdfc9d577aa"
+    },
+    {
+      "path": "Scripts/BiZhiMao/deploy_runtime_assets.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "4780858732f16804d1af8897bb84e84ce4224a749e9a226c6d0a80e8da17b9f6"
+    },
+    {
+      "path": "Scripts/BiZhiMao/readback_runtime_assets.py",
+      "last_before_sha256": "804c4b0205bcd42a62517a6a02fe9a8ab50217b57c353c9d34ab328b0ab8cb6e",
+      "after_sha256": "804c4b0205bcd42a62517a6a02fe9a8ab50217b57c353c9d34ab328b0ab8cb6e",
+      "current_entry": "inspect_candidates.py",
+      "original_sha256": "dd3ea13675045fefa50be483644da73dec49e5a371bce53cb5b6edccf4627263"
+    },
+    {
+      "path": "Scripts/BiZhiMao/update_source_tables.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "5136ecd6ea040c22e4443ca24ca65a5b7540f068ea7a92cd15789f3137aa9b75"
+    },
+    {
+      "path": "Scripts/Pioneer/import_art_assets.py",
+      "last_before_sha256": "19284220114fd1b5e32407b0ef73d95c7436e5dbe114a1b27168a8f03fce9d9c",
+      "after_sha256": "19284220114fd1b5e32407b0ef73d95c7436e5dbe114a1b27168a8f03fce9d9c",
+      "current_entry": "stage_native.py",
+      "original_sha256": "c8df5409a97ac0aef554bb9496023ce95f249fa42e8454f713dc7e11e3f69b6d"
+    },
+    {
+      "path": "Scripts/Pioneer/finalize_art_assets.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "02a6fe46aa5cb28b6284e790551cbdb95b727d1795e82a3710ce1a4b20e7db77"
+    },
+    {
+      "path": "Scripts/Pioneer/capture_art_preview.py",
+      "last_before_sha256": "0eb75d04d4bd38d529107f2696d952d3baad5ba7720f2239df47691c6475d626",
+      "after_sha256": "0eb75d04d4bd38d529107f2696d952d3baad5ba7720f2239df47691c6475d626",
+      "current_entry": "capture_preview.py",
+      "original_sha256": "0921be2bf92be7051afa649d07861f9461c66b90bf281faedeb1f52ccc442c99"
+    },
+    {
+      "path": "Scripts/CommanderLOD/migrate_bizhimao_helpers.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "65f5a920e055b99e6f6b8657a1f4aa44ee2864c97334151fef105931a2c0797e"
+    },
+    {
+      "path": "Scripts/CommanderLOD/fix_preview_visibility.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "1ad282c179a49ce2b631bbf68443efc1482dd86ce32e54e4da1823b4640d5884"
+    },
+    {
+      "path": "Scripts/import_mass_rigid_animation.py",
+      "last_before_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "286abf5da492ddb66216b48976c3a08cad13797d9693407ac7506b09489f0846"
+    },
+    {
+      "path": "Scripts/import_warmachine_production_v6.py",
+      "last_before_sha256": "e6c78f217d1768e1e849e234874de877607b7c4874e0b4bb92df7cd5a520dfe9",
+      "after_sha256": "19284220114fd1b5e32407b0ef73d95c7436e5dbe114a1b27168a8f03fce9d9c",
+      "current_entry": "stage_native.py",
+      "original_sha256": "e6c78f217d1768e1e849e234874de877607b7c4874e0b4bb92df7cd5a520dfe9"
+    },
+    {
+      "path": "Scripts/verify_warmachine_production_v6.py",
+      "last_before_sha256": "91a029a6b35917dcc9184cee2c42ac194bc1265d13cd1d140e801c52ad8e466e",
+      "after_sha256": "804c4b0205bcd42a62517a6a02fe9a8ab50217b57c353c9d34ab328b0ab8cb6e",
+      "current_entry": "inspect_candidates.py",
+      "original_sha256": "91a029a6b35917dcc9184cee2c42ac194bc1265d13cd1d140e801c52ad8e466e"
+    },
+    {
+      "path": "Scripts/finalize_cel_model_assets.py",
+      "last_before_sha256": "a1987b3e4f56273f320647c66cb16471899c7b01898ae6a5f026302df07b08b0",
+      "after_sha256": "de402911d4c8a0aae92e7bc54dced8c9096e423d11436a1f93756132c1f6ecc0",
+      "current_entry": "current source information",
+      "original_sha256": "a1987b3e4f56273f320647c66cb16471899c7b01898ae6a5f026302df07b08b0"
+    },
+    {
+      "path": "Scripts/Blender/export_mass_rigid_editable.py",
+      "last_before_sha256": "c74b39df7dce37e11d6465e232429eab95175f09fcf78133ea0fb7732e864828",
+      "after_sha256": "c74b39df7dce37e11d6465e232429eab95175f09fcf78133ea0fb7732e864828",
+      "current_entry": "export_rigid_candidates.py",
+      "original_sha256": "b1befb73134c5fcac29d228ca0e6456783d6c5140af235bb5b6e629d6bfa43cc"
+    }
+  ]
+}

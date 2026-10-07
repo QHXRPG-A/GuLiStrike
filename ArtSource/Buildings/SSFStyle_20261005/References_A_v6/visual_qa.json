@@ -1,0 +1,112 @@
+{
+  "version": "SSF_Reference_A_v6",
+  "date": "2026-10-05",
+  "reviewer": "assistant",
+  "review_status": "reference_ready_for_user_A",
+  "user_approval_A": "pending",
+  "user_approval_B": "not_started",
+  "actual_images_inspected": [
+    {
+      "file": "Overview_Buildings.png",
+      "pixels": [
+        3000,
+        2850
+      ],
+      "sha256": "07d9c610e83e327b49e856c64a55d0811f33abd09b2298bac93cc605eadcac17"
+    },
+    {
+      "file": "QA/Buildings_1_AllViews.png",
+      "pixels": [
+        2400,
+        1950
+      ],
+      "sha256": "f4a4ee8ea78d8411cd68969e09fda53dc6e2891e56c145b91109efb16ad63b07"
+    },
+    {
+      "file": "QA/Buildings_2_AllViews.png",
+      "pixels": [
+        2400,
+        1950
+      ],
+      "sha256": "b0d4c245b200e800f4fdc7a34787c581c64be2ad7db79764638b87f53c965e40"
+    },
+    {
+      "file": "QA/Accessories_AllViews.png",
+      "pixels": [
+        2400,
+        2600
+      ],
+      "sha256": "c870843dc7b344f4d5667cacff48158c655f7c3dae08222b58cff8b8828ad3a8"
+    },
+    {
+      "file": "Assembly_Hero_A_v6.png",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "sha256": "cef4622a57a5babfd89cb8de8af21cc48fc965794103f7a6c3e353a6c69c5d7e"
+    },
+    {
+      "file": "Assembly_Top_A_v6.png",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "sha256": "92dc50b52aa72fcf0ca5487cfc8d222957a5b9380ace289a4cfcfa6011fd117d"
+    },
+    {
+      "file": "Images/Drone_Top.png",
+      "pixels": [
+        2048,
+        2048
+      ],
+      "sha256": "c41763c1e92783d4ea2deb58c5ef57d1e300d3eb6a355ca3d8786b3ff136275e"
+    },
+    {
+      "file": "Images/Floor_Top.png",
+      "pixels": [
+        2048,
+        2048
+      ],
+      "sha256": "558843dcfddad4d90de9ac8358ccf5fb6e60b46d26709396e2f6267a5141d10e"
+    },
+    {
+      "file": "Sheets/MilitaryFactory_Sheet_A_v6.png",
+      "pixels": [
+        4200,
+        4640
+      ],
+      "sha256": "d83bfbc8830772dce1a5ed636ff9ebef6585782a48a5cfae6bb6a81a00623352"
+    },
+    {
+      "file": "Sheets/StrategyCenter_Sheet_A_v6.png",
+      "pixels": [
+        4200,
+        4640
+      ],
+      "sha256": "0510db2f6116937bddbf961e69df32ecd42c3dc7b5569434d38ec7db90f549c7"
+    }
+  ],
+  "coverage": {
+    "core_asset_views": 40,
+    "extra_top_views": 2,
+    "assembly_views": 2,
+    "building_sheets_inspected": 2
+  },
+  "findings": [
+    "User attachment is pixel-identical to archived A_v3 overview; actual A_v3 Blender scene used as baseline.",
+    "Only MilitaryFactory dark equipment/frame and StrategyCenter dark primary/frame are lightened. Their original light blue, orange, pink and teal colors remain.",
+    "Other four buildings and Floor, Lamp, Light and Drone retain A_v3 palettes and original line/shading. Their 34 raw view files are byte-identical to A_v3.",
+    "Native shader comparison: 90 actual material graphs checked; 5 changed (four theme roles plus the MilitaryFactory equipment alias), 85 unchanged. All 72 graphs for the other eight assets are unchanged.",
+    "Saved Blender scene reopened and actual RGB, three-tone ramps and shader signatures checked before packaging.",
+    "Inspected hero and orthographic views agree in pose, structure, scale and color; the two modified buildings now use lighter purple blocks while retaining the A_v3 line ink.",
+    "Source proportions, symmetry, assembly relationships and geometry/weights are preserved for all ten assets; assembly images retain actual relative dimensions."
+  ],
+  "limitations": [
+    "This is reference design on source geometry, not production remodeling or decimation. No three-LOD production meshes or outline shells have been created.",
+    "All 22 source clips are inventoried; full production animation compatibility, Root bone reconstruction and UE export round-trip have not been validated.",
+    "No formal UE import, project camera acceptance or combat frame-rate measurement performed.",
+    "Light remains the original flat single-sided display plane; its annotated boundary is not modeled thickness. Assembly placement is illustrative and not a level-layout approval."
+  ],
+  "next_action": "User review of the specific complete SSF_Reference_A_v6 package before production modeling."
+}

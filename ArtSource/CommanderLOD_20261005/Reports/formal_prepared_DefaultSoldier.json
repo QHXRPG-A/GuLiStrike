@@ -1,0 +1,201 @@
+{
+  "success": true,
+  "name": "DefaultSoldier",
+  "id": 1,
+  "approval_B": "approved",
+  "approved_content_sha256": "761bc5edd06b08c598771943b46ebcbd7bc8285b42d345e234fea0907d02783d",
+  "formal_root": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1",
+  "state": "formal_switched_verified",
+  "switched": true,
+  "assets": [
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/DefaultSoldier/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "class_name": "StaticMesh",
+      "dependencies": [
+        "/Script/NavigationSystem",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/MI_Pioneer_LOD0",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/M_Pioneer_Contour",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/MI_Pioneer_LOD1",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/MI_Pioneer_LOD2"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD0.MI_Pioneer_LOD0",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/MI_Pioneer_LOD0.MI_Pioneer_LOD0",
+      "class_name": "MaterialInstanceConstant",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/M_Pioneer_Toon3"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_Toon3.M_Pioneer_Toon3",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/M_Pioneer_Toon3.M_Pioneer_Toon3",
+      "class_name": "Material",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/MF_Pioneer_BoneVAT",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BaseColor",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_LineMask"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BonePosition.T_Pioneer_BonePosition",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition.T_Pioneer_BonePosition",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BoneRotation.T_Pioneer_BoneRotation",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation.T_Pioneer_BoneRotation",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/VAT/MF_Pioneer_BoneVAT.MF_Pioneer_BoneVAT",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/MF_Pioneer_BoneVAT.MF_Pioneer_BoneVAT",
+      "class_name": "MaterialFunction",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_BaseColor.T_Pioneer_BaseColor",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BaseColor.T_Pioneer_BaseColor",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/Textures/T_Pioneer_LineMask.T_Pioneer_LineMask",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_LineMask.T_Pioneer_LineMask",
+      "class_name": "Texture2D",
+      "dependencies": []
+    },
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/Materials/M_Pioneer_Contour.M_Pioneer_Contour",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/M_Pioneer_Contour.M_Pioneer_Contour",
+      "class_name": "Material",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/MF_Pioneer_BoneVAT"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD1.MI_Pioneer_LOD1",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/MI_Pioneer_LOD1.MI_Pioneer_LOD1",
+      "class_name": "MaterialInstanceConstant",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/M_Pioneer_Toon3"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/Materials/MI_Pioneer_LOD3.MI_Pioneer_LOD3",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/MI_Pioneer_LOD2.MI_Pioneer_LOD2",
+      "class_name": "MaterialInstanceConstant",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/M_Pioneer_Toon3"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Commander/LODReview_20261005/DefaultSoldier/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+      "class_name": "GuLiVATDefinition",
+      "dependencies": [
+        "/Script/GuLiStrike",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/M_Pioneer_Hit",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/M_Pioneer_Phase",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/M_Pioneer_Wreck"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/VAT/M_Pioneer_Hit.M_Pioneer_Hit",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/M_Pioneer_Hit.M_Pioneer_Hit",
+      "class_name": "Material",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/MF_Pioneer_BoneVAT"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/VAT/M_Pioneer_Phase.M_Pioneer_Phase",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/M_Pioneer_Phase.M_Pioneer_Phase",
+      "class_name": "Material",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/MF_Pioneer_BoneVAT"
+      ]
+    },
+    {
+      "source": "/Game/GuLiStrike/Robots/RSGMech/VAT/M_Pioneer_Wreck.M_Pioneer_Wreck",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/M_Pioneer_Wreck.M_Pioneer_Wreck",
+      "class_name": "Material",
+      "dependencies": [
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/MF_Pioneer_BoneVAT"
+      ]
+    }
+  ],
+  "models": [
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/DefaultSoldier/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "lod_count": 3,
+      "triangles": [
+        37338,
+        15905,
+        1944
+      ],
+      "sections": [
+        2,
+        2,
+        1
+      ],
+      "material_slots": [
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/MI_Pioneer_LOD0.MI_Pioneer_LOD0",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/M_Pioneer_Contour.M_Pioneer_Contour",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/MI_Pioneer_LOD1.MI_Pioneer_LOD1",
+        "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/MI_Pioneer_LOD2.MI_Pioneer_LOD2"
+      ],
+      "screen_sizes": [
+        1.0,
+        0.4000000059604645,
+        0.05999999865889549
+      ],
+      "uv_channels": [
+        3,
+        3,
+        3
+      ],
+      "lod0_geometry_operation": "Native duplication; no geometric, UV, normal or socket authoring operation."
+    }
+  ],
+  "animation": {
+    "asset": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+    "valid": true,
+    "bones": 44,
+    "clips": [
+      "Idle",
+      "Forward",
+      "Backward",
+      "Left",
+      "Right",
+      "Death",
+      "Landing"
+    ],
+    "textures": [
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition.T_Pioneer_BonePosition",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation.T_Pioneer_BoneRotation"
+    ]
+  },
+  "model_asset": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+  "vat_definition": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+  "runtime_fields_available": false
+}

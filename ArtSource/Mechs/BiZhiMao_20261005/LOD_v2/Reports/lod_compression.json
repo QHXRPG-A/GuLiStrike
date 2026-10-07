@@ -1,0 +1,95 @@
+{
+  "version": "BiZhiMao_LOD_v2",
+  "lod0_geometry_signature": "7231ac6c08ea7da17fdbc5c2301e6617b802b5a7565d0c3f303850635b7b1799",
+  "lod0_unchanged": true,
+  "source_file_sha256": "0164e5f8f6e99c932445e82811a0116e672e1aa029ad864c083b86512789f64d",
+  "source_file_unchanged": true,
+  "user_request": "LOD三档再进一步减面压缩",
+  "interpreted_scope": "LOD1/LOD2/LOD3; preserve LOD0",
+  "ue_formal_assets_modified": false,
+  "actual_version_approval": "pending",
+  "lods": [
+    {
+      "lod": 1,
+      "body_triangles": 13919,
+      "outline_triangles": 2994,
+      "total_triangles": 16913,
+      "cap_body": 14000,
+      "cap_outline": 3000,
+      "cap_total": 17000,
+      "budget_passed": true,
+      "screen_size": 0.4,
+      "small_detail_omissions": {
+        "parts": 125,
+        "source_triangles": 2628,
+        "retained_mechanisms": 771
+      },
+      "surface_constraints": {
+        "method": "per-component structural floors; no global surface snapping"
+      },
+      "runtime_bones": 0,
+      "material_sections": 2,
+      "degenerate_faces_removed": 0,
+      "contour_parts": {
+        "major_parts": 63,
+        "minimum_extent_m": 1.1580042839050293,
+        "method": "whole connected contour parts; no additional collapsing"
+      },
+      "body_over_budget": 0,
+      "outline_over_budget": 0
+    },
+    {
+      "lod": 2,
+      "body_triangles": 9457,
+      "outline_triangles": 997,
+      "total_triangles": 10454,
+      "cap_body": 5000,
+      "cap_outline": 1000,
+      "cap_total": 6000,
+      "budget_passed": false,
+      "screen_size": 0.16,
+      "small_detail_omissions": {
+        "parts": 408,
+        "source_triangles": 10872,
+        "retained_mechanisms": 488
+      },
+      "surface_constraints": {
+        "method": "per-component structural floors; no global surface snapping"
+      },
+      "runtime_bones": 0,
+      "material_sections": 2,
+      "degenerate_faces_removed": 0,
+      "contour_parts": {
+        "major_parts": 18,
+        "minimum_extent_m": 0.689346807077527,
+        "method": "whole connected contour parts; no additional collapsing"
+      },
+      "body_over_budget": 4457,
+      "outline_over_budget": 0
+    },
+    {
+      "lod": 3,
+      "body_triangles": 6125,
+      "outline_triangles": 0,
+      "total_triangles": 6125,
+      "cap_body": 2000,
+      "cap_outline": 0,
+      "cap_total": 2000,
+      "budget_passed": false,
+      "screen_size": 0.06,
+      "small_detail_omissions": {
+        "parts": 583,
+        "source_triangles": 18192,
+        "retained_mechanisms": 313
+      },
+      "surface_constraints": {
+        "method": "per-component structural floors; no global surface snapping"
+      },
+      "runtime_bones": 0,
+      "material_sections": 1,
+      "degenerate_faces_removed": 0,
+      "body_over_budget": 4125,
+      "outline_over_budget": 0
+    }
+  ]
+}

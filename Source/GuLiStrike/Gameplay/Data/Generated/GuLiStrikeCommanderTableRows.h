@@ -79,6 +79,18 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	bool bSummonOnly = false;
 
+	/** bConstructionOnly (bool, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	bool bConstructionOnly = false;
+
+	/** FacingPolicy (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	int32 FacingPolicy = 0;
+
+	/** MassAvoidanceRadiusMeters (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	float MassAvoidanceRadiusMeters = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeCommander_Camera 的行结构（源: GuLiStrikeCommander.xlsx / Camera）。 */

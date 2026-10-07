@@ -1,0 +1,91 @@
+[
+  {
+    "label": "RogueCards_F4_Entry",
+    "class": "Note",
+    "location": [
+      -3200.0,
+      72500.0,
+      -1200.0
+    ]
+  },
+  {
+    "label": "WarMachineHover_PlayablePreview",
+    "class": "Actor",
+    "location": [
+      8000.0,
+      -16000.0,
+      0.0
+    ],
+    "instances": [
+      {
+        "component": "InstancedStaticMesh",
+        "instances": 13,
+        "custom_floats": 51,
+        "mesh": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid"
+      }
+    ]
+  },
+  {
+    "label": "WarMachineHover_PreviewInstructions",
+    "class": "Note",
+    "location": [
+      8000.0,
+      -17000.0,
+      0.0
+    ]
+  },
+  {
+    "label": "CommanderLOD_Instructions",
+    "class": "Note",
+    "location": [
+      -8000.0,
+      76500.0,
+      -1200.0
+    ]
+  },
+  {
+    "label": "CommanderCamera_EntryFocus",
+    "class": "TargetPoint",
+    "location": [
+      -3200.0,
+      69500.0,
+      -1769.3494622632427
+    ]
+  },
+  {
+    "label": "CommanderCamera_Observe_Near35",
+    "class": "CameraActor",
+    "location": [
+      -10705.774221783457,
+      69500.0,
+      1730.6505377367573
+    ]
+  },
+  {
+    "label": "CommanderCamera_Observe_Tactical300",
+    "class": "CameraActor",
+    "location": [
+      -24206.226146291294,
+      69500.0,
+      28231.267898320788
+    ]
+  },
+  {
+    "label": "CommanderCamera_Observe_Tactical700",
+    "class": "CameraActor",
+    "location": [
+      -52214.52767467969,
+      69500.0,
+      68295.06050349439
+    ]
+  },
+  {
+    "label": "CommanderCamera_Instructions",
+    "class": "Note",
+    "location": [
+      -1700.0,
+      72500.0,
+      -1200.0
+    ]
+  }
+]

@@ -5,7 +5,7 @@
     "Note": "B-v1先驱号；6.25米；刚性骨骼纹理VAT；默认双枪与Q召唤",
     "MovementSpeedCmPerSecond": 1440.0,
     "MaxHealth": 100.0,
-    "ModelAsset": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+    "ModelAsset": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
     "Defense": 0.0,
     "ActorClass": "",
     "PresentationClass": "",
@@ -14,8 +14,11 @@
     "ModelWidthMeters": 6.25,
     "MinAvoidanceDistanceMeters": 0.5,
     "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
-    "VATDefinition": "/Game/GuLiStrike/Robots/RSGMech/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
-    "bSummonOnly": false
+    "VATDefinition": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+    "bSummonOnly": false,
+    "bConstructionOnly": false,
+    "FacingPolicy": 0,
+    "MassAvoidanceRadiusMeters": 0.0
   },
   {
     "Name": "WM01",
@@ -23,7 +26,7 @@
     "Note": "WM01 第二兵种；首版沿用调试数值，尚未平衡",
     "MovementSpeedCmPerSecond": 720.0,
     "MaxHealth": 300.5,
-    "ModelAsset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+    "ModelAsset": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
     "Defense": 0.0,
     "ActorClass": "",
     "PresentationClass": "",
@@ -33,7 +36,10 @@
     "MinAvoidanceDistanceMeters": 2.5,
     "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
     "VATDefinition": "",
-    "bSummonOnly": false
+    "bSummonOnly": false,
+    "bConstructionOnly": false,
+    "FacingPolicy": 0,
+    "MassAvoidanceRadiusMeters": 0.0
   },
   {
     "Name": "ElectromagneticMiner",
@@ -44,14 +50,17 @@
     "ModelAsset": "",
     "Defense": 0.0,
     "ActorClass": "/Script/GuLiStrike.GuLiMiningVehiclePawn",
-    "PresentationClass": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
+    "PresentationClass": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/BP_ElectromagneticMiner_3Tier.BP_ElectromagneticMiner_3Tier_C",
     "PresentationScale": 0.6084579714416871,
     "DisplayName": "电磁矿车",
     "ModelWidthMeters": 3.6,
     "MinAvoidanceDistanceMeters": 1.0,
     "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
     "VATDefinition": "",
-    "bSummonOnly": false
+    "bSummonOnly": false,
+    "bConstructionOnly": false,
+    "FacingPolicy": 0,
+    "MassAvoidanceRadiusMeters": 0.0
   },
   {
     "Name": "ConstructionVehicle",
@@ -62,14 +71,17 @@
     "ModelAsset": "",
     "Defense": 0.0,
     "ActorClass": "/Script/GuLiStrike.GuLiConstructionVehiclePawn",
-    "PresentationClass": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle.BP_ConstructionVehicle_C",
+    "PresentationClass": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier_C",
     "PresentationScale": 0.6084579714416871,
     "DisplayName": "建造车",
     "ModelWidthMeters": 3.6,
     "MinAvoidanceDistanceMeters": 1.0,
     "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder",
     "VATDefinition": "",
-    "bSummonOnly": false
+    "bSummonOnly": false,
+    "bConstructionOnly": false,
+    "FacingPolicy": 0,
+    "MassAvoidanceRadiusMeters": 0.0
   },
   {
     "Name": "SweeperSummon",
@@ -77,7 +89,7 @@
     "Note": "先驱号Q专用召唤兵；永久可控、可累积、不计生产人口",
     "MovementSpeedCmPerSecond": 720.0,
     "MaxHealth": 100.0,
-    "ModelAsset": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+    "ModelAsset": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
     "Defense": 0.0,
     "ActorClass": "",
     "PresentationClass": "",
@@ -87,6 +99,30 @@
     "MinAvoidanceDistanceMeters": 0.5,
     "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
     "VATDefinition": "",
-    "bSummonOnly": true
+    "bSummonOnly": true,
+    "bConstructionOnly": false,
+    "FacingPolicy": 0,
+    "MassAvoidanceRadiusMeters": 0.0
+  },
+  {
+    "Name": "BiZhiMao",
+    "Id": 6,
+    "Note": "工程车施工生成；底座锁定出生朝向；首轮不攻击；已审ControlRig B_v4放大2倍",
+    "MovementSpeedCmPerSecond": 144.0,
+    "MaxHealth": 1000.0,
+    "ModelAsset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+    "Defense": 0.0,
+    "ActorClass": "",
+    "PresentationClass": "",
+    "PresentationScale": 2.0,
+    "DisplayName": "彼之矛",
+    "ModelWidthMeters": 18.4386,
+    "MinAvoidanceDistanceMeters": 0.5,
+    "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+    "VATDefinition": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT",
+    "bSummonOnly": false,
+    "bConstructionOnly": true,
+    "FacingPolicy": 1,
+    "MassAvoidanceRadiusMeters": 16.2975439453125
   }
 ]

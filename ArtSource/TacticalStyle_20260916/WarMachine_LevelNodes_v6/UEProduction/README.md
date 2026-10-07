@@ -8,7 +8,7 @@
 - 同步骨骼版本：`/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel`
 - 材质与贴图：同根目录下的 `Materials`、`Textures`。沿用现有两份三渲二/描边材质，更新对应 BaseColor 和 LineMask。
 
-UE 已打开正式静态网格编辑器。在内容浏览器粘贴上述路径可再次打开；检查正面、侧面与斜视下的两处前方水平节点、四个水平悬浮盘和支架连接。LOD Picker 可分别查看 LOD0–3，Socket Manager 可检查保留的炮口与导弹挂点。
+指挥官模型统一为 LOD0 近景、LOD1 中景、LOD2 远景；当前规范与候选见[本次迁移](../../../../Progress/RequirementDocument/20261005-指挥官三档LOD纠正与资源迁移.md)。本轮保留已审近景，新的实际版本 B 待审核，正式资源待放行后切换。
 
 `DT_GuLiStrikeCommander_Soldiers` 的 `WM01` 行继续引用同一静态网格，因此使用该行的重防号会取得新资源。`PresentationScale=0.2`、移动速度、血量和12.5米名义占地配置均未改变。当前关卡仍为 `/Game/Maps/LVL_CommanderMassPrototype`；未启动游玩。用户后续可在既有重防号入口核验战斗中的模型、炮口和导弹发射位置。
 
@@ -43,3 +43,5 @@ LOD0比旧网格增加了11,540三角面，来自已确认的连接结构和轮�
 `BackupBefore/Content/Commander/Units/Tactical/Cel/WarMachine` 保留导入前7个完整包，包含两网格、骨架、两贴图和两材质；仅文件复制，没有解析二进制内容。需要回退时先协调保存并关闭加载这些包的编辑器，再按清单将整组备份恢复到原路径，重新打开项目。不要在编辑器仍持有资源时从文件系统覆盖。
 
 可复现脚本在 `SourceSnapshot`，当前入口为项目 `Scripts/Blender/export_warmachine_production_v6.py`、`Scripts/import_warmachine_production_v6.py` 和 `Scripts/verify_warmachine_production_v6.py`。导入使用当前编辑器、显式旧FBX工厂；临时关闭的Interchange开关已恢复。仅保存本轮五个变更包，旧材质网络没有重建，未保存玩法地图。
+
+> 2026-10-05 LOD 勘误：按用户明确指令更正以上相关段落和预算说明；其他历史内容保留。修改范围及原文校验见[勘误清单](../../../CommanderLOD_20261005/Reports/document_erratum.json)。冻结模型及原始机器回读不作为当前制作入口。

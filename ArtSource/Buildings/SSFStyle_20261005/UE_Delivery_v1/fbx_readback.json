@@ -1,0 +1,609 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "asset": "AirBase",
+      "LOD": 0,
+      "fbx_sha256": "6a8e62645a990fe598f7ceaa752b3bdcc4d6c62f6288cb9f64bff179f2626248",
+      "triangles": 5916,
+      "vertices": 3629,
+      "geometry_error_m": 3.025192654604325e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 78,
+      "material_sections": 3,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 5688,
+        "minimum_length": 0.9999998304151396,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "AirBase",
+      "LOD": 1,
+      "fbx_sha256": "9f5d120baf0e21c42874f23a14989caf0bcbee281421ac71b116d0b845a96d7d",
+      "triangles": 5239,
+      "vertices": 3276,
+      "geometry_error_m": 3.025192654604325e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 78,
+      "material_sections": 3,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 5110,
+        "minimum_length": 0.9999997830269116,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "AirBase",
+      "LOD": 2,
+      "fbx_sha256": "68eddbb39bb9e336fdd8a19c54fa54c8f2044cc3758894bfc60d15a499911ac4",
+      "triangles": 4128,
+      "vertices": 2680,
+      "geometry_error_m": 3.025192654604325e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 78,
+      "material_sections": 2,
+      "normals_nonzero": false,
+      "raw_FBX_normals": {
+        "vectors": 4171,
+        "minimum_length": 0.9999997291596447,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 6,
+      "reader_limitation": "Blender re-encodes unit FBX normals into compressed corner fans; cancellation at thin mirrored caps produces zero values. Raw FBX vectors are valid; UE stored normals must pass independent export readback."
+    },
+    {
+      "asset": "CloningCenter",
+      "LOD": 0,
+      "fbx_sha256": "f76748e5238942f4d025cf6d5c83ddf821d34d281de003dd034811e639daa8c7",
+      "triangles": 2750,
+      "vertices": 1643,
+      "geometry_error_m": 1.2157009905422456e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 54,
+      "material_sections": 3,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 3654,
+        "minimum_length": 0.9999998367771307,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "CloningCenter",
+      "LOD": 1,
+      "fbx_sha256": "c3a2d5eec0ffff7f30929e4ca2f308839191a29e648593763be7d20bed3e7247",
+      "triangles": 2538,
+      "vertices": 1516,
+      "geometry_error_m": 1.2157009905422456e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 54,
+      "material_sections": 3,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 3438,
+        "minimum_length": 0.9999998389661228,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "CloningCenter",
+      "LOD": 2,
+      "fbx_sha256": "716c88ef1072806e3c6bf5291d426afb4a86146811b201b6a1ac6388f40d2c39",
+      "triangles": 2170,
+      "vertices": 1311,
+      "geometry_error_m": 1.2157009905422456e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 54,
+      "material_sections": 2,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 3070,
+        "minimum_length": 0.9999998389661228,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "CommandCenter",
+      "LOD": 0,
+      "fbx_sha256": "7c2f318759997d80f2726273f4f725ce4a00cdc840b29302bbf90c3ea657577c",
+      "triangles": 5063,
+      "vertices": 3099,
+      "geometry_error_m": 4.768517101183534e-07,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 74,
+      "material_sections": 3,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 4925,
+        "minimum_length": 0.9999998272905688,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "CommandCenter",
+      "LOD": 1,
+      "fbx_sha256": "fe48b9f600ae03a4407e72c83a960f6a2cb815a18a9f08f64532ebb1098790f5",
+      "triangles": 4576,
+      "vertices": 2843,
+      "geometry_error_m": 4.768517101183534e-07,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 74,
+      "material_sections": 3,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 4671,
+        "minimum_length": 0.9999998272905688,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "CommandCenter",
+      "LOD": 2,
+      "fbx_sha256": "594692c57e5a32f9f6c238503ab58e21e19071134ff1935755fae33b6688a9d2",
+      "triangles": 3999,
+      "vertices": 2499,
+      "geometry_error_m": 4.768517101183534e-07,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 74,
+      "material_sections": 2,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 4385,
+        "minimum_length": 0.9999998383852018,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Floor",
+      "LOD": 0,
+      "fbx_sha256": "d652da998dd2285870a7c9eb3fe8290bdf2d59d4832320b20106c458a2517a67",
+      "triangles": 7662,
+      "vertices": 5041,
+      "geometry_error_m": 5.394796517066425e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 0,
+      "material_sections": 2,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 7765,
+        "minimum_length": 0.9999998253205818,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Floor",
+      "LOD": 1,
+      "fbx_sha256": "203fc98859910f3f0cb39816ec469105499ae8740bd96adaaaef1774dcf01c29",
+      "triangles": 7172,
+      "vertices": 4733,
+      "geometry_error_m": 5.394796517066425e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 0,
+      "material_sections": 2,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 6895,
+        "minimum_length": 0.9999998253205818,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Floor",
+      "LOD": 2,
+      "fbx_sha256": "0695358631b4980d82dd0dddf53c3db4836acb60c37c930218ead1b76c61a46d",
+      "triangles": 6057,
+      "vertices": 4091,
+      "geometry_error_m": 5.394796517066425e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 0,
+      "material_sections": 1,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 9637,
+        "minimum_length": 0.9999998390981849,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Lamp",
+      "LOD": 0,
+      "fbx_sha256": "ea279c802084ad4764f0721a8ee8f955c0c284f7415a2ca9fea0a3bb7675c492",
+      "triangles": 48,
+      "vertices": 32,
+      "geometry_error_m": 1.2907548807561398e-07,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 0,
+      "material_sections": 1,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 61,
+        "minimum_length": 0.9999999403953552,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Lamp",
+      "LOD": 1,
+      "fbx_sha256": "ebfbe31352b629b019a7b300f55940e4f6d276d82e13568d722da2d86bc91e9f",
+      "triangles": 48,
+      "vertices": 32,
+      "geometry_error_m": 1.2907548807561398e-07,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 0,
+      "material_sections": 1,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 61,
+        "minimum_length": 0.9999999403953552,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Lamp",
+      "LOD": 2,
+      "fbx_sha256": "90c82b9e0da8c132fcc360c357e95565f0f962cbd8f19f41f55a367d6da3fe9b",
+      "triangles": 48,
+      "vertices": 32,
+      "geometry_error_m": 1.2907548807561398e-07,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 0,
+      "material_sections": 1,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 61,
+        "minimum_length": 0.9999999403953552,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Light",
+      "LOD": 0,
+      "fbx_sha256": "86d756b0b3200c3561b860c6a9748c5f6b3c9e880cedfead9da968386cfa252e",
+      "triangles": 2,
+      "vertices": 4,
+      "geometry_error_m": 8.429369557916289e-08,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 0,
+      "material_sections": 1,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 2,
+        "minimum_length": 0.9999999403953685,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Light",
+      "LOD": 1,
+      "fbx_sha256": "42738b2cab012e94b93c8ce171d09b34c2b79ea7b1d3400250bfc92a01aa90d9",
+      "triangles": 2,
+      "vertices": 4,
+      "geometry_error_m": 8.429369557916289e-08,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 0,
+      "material_sections": 1,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 2,
+        "minimum_length": 0.9999999403953685,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Light",
+      "LOD": 2,
+      "fbx_sha256": "dcc21e4165e21b67a344f048ef3e140b97ec82aee8ec82c4e511f85291238fda",
+      "triangles": 2,
+      "vertices": 4,
+      "geometry_error_m": 8.429369557916289e-08,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 0,
+      "material_sections": 1,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 2,
+        "minimum_length": 0.9999999403953685,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Drone",
+      "LOD": 0,
+      "fbx_sha256": "42e1ef0df33008b3f36de7b46b07c2308c8dacf1c4693640b855db861ea378a6",
+      "triangles": 290,
+      "vertices": 181,
+      "geometry_error_m": 8.56006536764653e-08,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 4,
+      "material_sections": 2,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 386,
+        "minimum_length": 0.9999998437333905,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Drone",
+      "LOD": 1,
+      "fbx_sha256": "2017852b2af902bf17e6fc069b8ba8b403e66dd48a570ee6cdb2b5cbe45df63c",
+      "triangles": 272,
+      "vertices": 169,
+      "geometry_error_m": 8.56006536764653e-08,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 4,
+      "material_sections": 2,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 367,
+        "minimum_length": 0.9999998437333905,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Drone",
+      "LOD": 2,
+      "fbx_sha256": "c7e634077d46c3bc1f588e15d4cde963ffe23d305e2dc4f6b4b14f816a7ebec7",
+      "triangles": 210,
+      "vertices": 130,
+      "geometry_error_m": 9.064142147963139e-08,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 4,
+      "material_sections": 1,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 353,
+        "minimum_length": 0.9999998483718975,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "MilitaryFactory",
+      "LOD": 0,
+      "fbx_sha256": "f512721a5e5a37c415e86df051cc267468de579561a87a7d58e33e918ec3038d",
+      "triangles": 2202,
+      "vertices": 1395,
+      "geometry_error_m": 1.51748895405035e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 45,
+      "material_sections": 3,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 2770,
+        "minimum_length": 0.9999998401705971,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "MilitaryFactory",
+      "LOD": 1,
+      "fbx_sha256": "387180205e868f412a1fbaeb09e345f5022a763732e64b47c1d2904287a22c3e",
+      "triangles": 2044,
+      "vertices": 1302,
+      "geometry_error_m": 1.51748895405035e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 45,
+      "material_sections": 3,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 2564,
+        "minimum_length": 0.9999998401705971,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "MilitaryFactory",
+      "LOD": 2,
+      "fbx_sha256": "b5a4f2917ead94129455af36cbb4a288d846f7438dfc09d1cfe6662774802d91",
+      "triangles": 1639,
+      "vertices": 1076,
+      "geometry_error_m": 1.51748895405035e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 45,
+      "material_sections": 2,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 2130,
+        "minimum_length": 0.9999998239645941,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Reactor",
+      "LOD": 0,
+      "fbx_sha256": "f47307d1a35bd80efefaaa115d50ce4896ef4753f5961c5aa98d1fb390eaa58c",
+      "triangles": 4040,
+      "vertices": 2309,
+      "geometry_error_m": 5.990192448734888e-07,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 12,
+      "material_sections": 3,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 4946,
+        "minimum_length": 0.9999998461843048,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Reactor",
+      "LOD": 1,
+      "fbx_sha256": "0377b04afc267193b6a2601b85fadb4093102ce44e38c1be52235bcc9a4e3940",
+      "triangles": 3392,
+      "vertices": 1993,
+      "geometry_error_m": 7.251218221426825e-07,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 12,
+      "material_sections": 3,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 4228,
+        "minimum_length": 0.9999998442659387,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "Reactor",
+      "LOD": 2,
+      "fbx_sha256": "ba639c664d2750dacb7d434be8dbade64b456b7d1216305d49e9f460418bca50",
+      "triangles": 2635,
+      "vertices": 1598,
+      "geometry_error_m": 5.990192448734888e-07,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 12,
+      "material_sections": 2,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 3664,
+        "minimum_length": 0.9999998230406111,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "StrategyCenter",
+      "LOD": 0,
+      "fbx_sha256": "1b0c57fef46beb7f456e2631fd2b1077da9064efc8cffa5f298d999fd26c477a",
+      "triangles": 4775,
+      "vertices": 3091,
+      "geometry_error_m": 1.1071070957768825e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 88,
+      "material_sections": 3,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 4757,
+        "minimum_length": 0.9999998261743981,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "StrategyCenter",
+      "LOD": 1,
+      "fbx_sha256": "0b8b26f2e160b515938732de534a4ab5629b77c77571dcecf81acf1e598e0614",
+      "triangles": 4237,
+      "vertices": 2793,
+      "geometry_error_m": 1.1071070957768825e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 88,
+      "material_sections": 3,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 4415,
+        "minimum_length": 0.9999998261743981,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    },
+    {
+      "asset": "StrategyCenter",
+      "LOD": 2,
+      "fbx_sha256": "bca514b167970efec5efac48e624a2915cb6ef940a41b5210c4e9f490e2bc41e",
+      "triangles": 3582,
+      "vertices": 2448,
+      "geometry_error_m": 1.1071070957768825e-06,
+      "UV_channels": 4,
+      "UV_palette_and_LOD_fade_preserved": true,
+      "weight_error": 0.0,
+      "bones": 88,
+      "material_sections": 2,
+      "normals_nonzero": true,
+      "raw_FBX_normals": {
+        "vectors": 3574,
+        "minimum_length": 0.9999998261743981,
+        "all_vectors_valid": true
+      },
+      "Blender_compressed_normal_zero_count": 0
+    }
+  ],
+  "reader": "Blender native FBX importer plus independent raw FBX normal validation",
+  "source_saved": false,
+  "UE_normal_readback_required": true
+}

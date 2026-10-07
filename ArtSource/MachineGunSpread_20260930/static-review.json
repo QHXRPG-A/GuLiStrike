@@ -1,0 +1,25 @@
+{
+  "excel": "Data/Excel/GuLiStrikeSecondaryWeapons.xlsx",
+  "sheet": "UnitSkills",
+  "generated_rows": {
+    "SoldierA_Strafe": 10.0,
+    "WM01_Strafe": 10.0,
+    "SoldierA_Test": 0.0,
+    "WM01_Test": 0.0,
+    "WM01_MissileLauncher": 0.0
+  },
+  "diff_check": true,
+  "review": {
+    "authority_only": true,
+    "uniform_azimuth_and_cos_theta": true,
+    "half_angle_degrees": 5,
+    "zero_preserves_aim": true,
+    "muzzle_direction_preserved": true,
+    "angle_validation": "finite 0..180 inclusive in skill catalog and ground launch",
+    "seed": "ShotId + MatchEpoch + MuzzleIndex",
+    "wire_format_changed": false
+  },
+  "pie_run": false,
+  "images_read": false,
+  "player_acceptance": "pending"
+}

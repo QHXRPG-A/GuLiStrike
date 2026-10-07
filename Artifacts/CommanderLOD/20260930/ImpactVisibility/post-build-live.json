@@ -1,0 +1,53 @@
+{
+  "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "qa": {
+    "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+    "local": true,
+    "ready": true,
+    "team": 1,
+    "commander": true,
+    "viewmode": 3,
+    "materials": 1,
+    "detail_lighting": 0,
+    "f4_debug_count": 0,
+    "open": false,
+    "closing": false,
+    "committed": false,
+    "submitting": false,
+    "session": "00000000000000000000000000000000",
+    "fade": 0,
+    "phase": -1,
+    "selected": -1,
+    "overlay": false,
+    "blur": 0,
+    "capture": false,
+    "director": false,
+    "target": false,
+    "ticking": false,
+    "upgrade_active": 0,
+    "upgrade_visible": 0,
+    "upgrade_components": 0,
+    "upgrade_particles": 0,
+    "upgrade_ms": 0
+  },
+  "camera": {
+    "class": "GuLiCommanderCameraPawn",
+    "tier": "<GuLiCommanderCameraTier.TACTICAL: 1>",
+    "height_m": 300.97723388671875,
+    "target_m": 300.9774169921875,
+    "position": "<Struct 'Vector' (0x0000018865CE4F60) {x: -5666.146597, y: 70478.030720, z: 28329.414871}>"
+  },
+  "subsystems": {
+    "GuLiCombatEffectRuntimeSubsystem": {
+      "counters": "(ProjectilesLaunched=7,FieldsCreated=2,Pulses=2,DamageCommits=0,ShotsPublished=0,GunBurstsStarted=0,LogicalGunShots=0,CandidateChecks=0,LastStepMilliseconds=0.041500)"
+    },
+    "GuLiCombatEffectPresentationSubsystem": {
+      "counters": "(ReceivedShots=0,WrittenShots=0,DroppedShots=0,ReceivedStates=102,RejectedStates=0,BurstsPlayed=2,MachineGunImpactsPlayed=0,SynthesizedGunShots=0,ComponentCount=3,LaserActive=0,LaserCapacity=0,LaserVisible=0,LastUpdateMilliseconds=0.155800,UpgradeActive=0,UpgradeVisible=0,UpgradeComponents=0,UpgradeVisibleParticles=0,UpgradeUpdateMilliseconds=0.000000,MissileClusterComponents=2,MissileParticleCapacity=70,MissileFullTrails=0,MissileClusterUpdateMilliseconds=0.090100)",
+      "sample_states": [
+        "(MatchEpoch=4090332079,EffectId=AB1DB41E40D5964B06051FB7082607B0,Kind=Projectile,Phase=Active,EndReason=None,Source=(Kind=CommanderSoldier,AuthorityId=F3CD83AF0000004C434D4452534F4C44,Generation=1,LocalId=76),SourceTeam=Unassigned,PlayerBulletVfxId=0,Target=(Kind=None,AuthorityId=00000000000000000000000000000000,Generation=0,LocalId=0),ProjectileDefinition=\"/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile\",GroundWarningStyle=\"/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red.DA_GroundWarning_Red\",FieldDefinition=\"/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_MissileExplosion.DA_WM01_MissileExplosion\",Location=(X=-12804.819386,Y=48499.813310,Z=-1485.665531),Velocity=(X=-2281.586618,Y=-418.797690,Z=-615.606205),LaunchLocation=(X=-7191.061423,Y=49336.953440,Z=-986.880943),LastTargetLocation=(X=-14248.421878,Y=48300.693932,Z=-1900.036489),LaunchDirection=(X=-0.989391,Y=-0.145276,Z=0.000000),Motion=(Speed=2400.000000,LiftSeconds=0.250000,MinimumLiftHeight=160.000000,MaximumLiftHeight=420.000000,LateralOffset=260.000000,VerticalCurve=320.000000,LongitudinalCurve=220.000000,ConvergenceDistance=700.000000,TurnRate=240.000000,SweepRadius=6.000000,MaximumLifetime=8.000000),SlotId=\"\",MuzzleOffset=(X=0.000000,Y=0.000000,Z=0.000000),FireRateHz=0.000000,bFixedPoint=True,RandomSeed=-339205547,VariantIndex=0,StartTime=54.809967,SampleTime=57.429279,ActivationTime=0.000000,EndTime=62.809967,Radius=300.000000,Sequence=80)",
+        "(MatchEpoch=4090332079,EffectId=E8EA900540EA72BE1F5E76BDB7AC07EC,Kind=Projectile,Phase=Active,EndReason=None,Source=(Kind=CommanderSoldier,AuthorityId=F3CD83AF00000056434D4452534F4C44,Generation=1,LocalId=86),SourceTeam=Unassigned,PlayerBulletVfxId=0,Target=(Kind=None,AuthorityId=00000000000000000000000000000000,Generation=0,LocalId=0),ProjectileDefinition=\"/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile\",GroundWarningStyle=\"/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red.DA_GroundWarning_Red\",FieldDefinition=\"/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_MissileExplosion.DA_WM01_MissileExplosion\",Location=(X=-12575.692666,Y=48968.100288,Z=-1626.157207),Velocity=(X=-2348.902483,Y=232.118099,Z=-434.486264),LaunchLocation=(X=-6771.439564,Y=48718.444578,Z=-1010.796462),LastTargetLocation=(X=-13810.655429,Y=48995.518013,Z=-1887.924815),LaunchDirection=(X=-0.999226,Y=0.039331,Z=0.000000),Motion=(Speed=2400.000000,LiftSeconds=0.250000,MinimumLiftHeight=160.000000,MaximumLiftHeight=420.000000,LateralOffset=260.000000,VerticalCurve=320.000000,LongitudinalCurve=220.000000,ConvergenceDistance=700.000000,TurnRate=240.000000,SweepRadius=6.000000,MaximumLifetime=8.000000),SlotId=\"\",MuzzleOffset=(X=0.000000,Y=0.000000,Z=0.000000),FireRateHz=0.000000,bFixedPoint=True,RandomSeed=-1476336965,VariantIndex=0,StartTime=54.809967,SampleTime=57.429279,ActivationTime=0.000000,EndTime=62.809967,Radius=300.000000,Sequence=80)",
+        "(MatchEpoch=4090332079,EffectId=E2A94C604587CBB50828F2A859842A98,Kind=Projectile,Phase=Active,EndReason=None,Source=(Kind=CommanderSoldier,AuthorityId=F3CD83AF0000004D434D4452534F4C44,Generation=1,LocalId=77),SourceTeam=Unassigned,PlayerBulletVfxId=0,Target=(Kind=None,AuthorityId=00000000000000000000000000000000,Generation=0,LocalId=0),ProjectileDefinition=\"/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile\",GroundWarningStyle=\"/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red.DA_GroundWarning_Red\",FieldDefinition=\"/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_MissileExplosion.DA_WM01_MissileExplosion\",Location=(X=-13279.491511,Y=48919.045805,Z=-1636.452345),Velocity=(X=-2289.969093,Y=-143.450695,Z=-703.891647),LaunchLocation=(X=-7668.070646,Y=49379.959895,Z=-982.797272),LastTargetLocation=(X=-13911.249637,Y=48830.087105,Z=-1892.591283),LaunchDirection=(X=-0.996144,Y=-0.087736,Z=0.000000),Motion=(Speed=2400.000000,LiftSeconds=0.250000,MinimumLiftHeight=160.000000,MaximumLiftHeight=420.000000,LateralOffset=260.000000,VerticalCurve=320.000000,LongitudinalCurve=220.000000,ConvergenceDistance=700.000000,TurnRate=240.000000,SweepRadius=6.000000,MaximumLifetime=8.000000),SlotId=\"\",MuzzleOffset=(X=0.000000,Y=0.000000,Z=0.000000),FireRateHz=0.000000,bFixedPoint=True,RandomSeed=-1490122795,VariantIndex=0,StartTime=54.809967,SampleTime=57.429279,ActivationTime=0.000000,EndTime=62.809967,Radius=300.000000,Sequence=80)"
+      ]
+    }
+  }
+}

@@ -20,13 +20,14 @@ enum class EGuLiBuildingType : uint8
 	Outpost = 3,
 	Barracks = 4,
 	ShieldGenerator = 5,
-	Factory = 6
+	Factory = 6,
+	BiZhiMaoConstruction = 7
 };
 
 UENUM(BlueprintType)
 enum class EGuLiBuildingCategory : uint8
 {
-	General, Tower, Barracks, ShieldGenerator, Factory, Stronghold
+	General, Tower, Barracks, ShieldGenerator, Factory, Stronghold, ConstructedUnit
 };
 
 /** One authoritative reason for a placement result. None means the server accepted the request. */
@@ -48,7 +49,8 @@ enum class EGuLiBuildingPlacementRejectReason : uint8
 	RateLimited,
 	Duplicate,
 	InsufficientResources,
-	SpawnFailed
+	SpawnFailed,
+	PopulationLimitReached
 };
 
 /** Catalog row shared by preview, placement validation and the replicated building actor. */
@@ -69,6 +71,8 @@ struct GULISTRIKE_API FGuLiBuildingDefinition
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") int32 ProductionUnitId = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") float ProductionSeconds = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") int32 ProductionCount = 0;
+	/** Zero for ordinary buildings; nonzero consumes the site to create one Mass unit. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") int32 CompletionUnitTypeId = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") TArray<int32> FirstCaptureGiftIds;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") int32 TransitFieldId = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") float ShieldRadius = 0;

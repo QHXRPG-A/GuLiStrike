@@ -1,0 +1,506 @@
+--- before/Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODSubsystem.h
++++ Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODSubsystem.h
+@@ -17,10 +17,14 @@
+ 	virtual void Deinitialize() override;
+ 
+ 	FGuLiCommanderLODDecision Evaluate(const FGuLiCommanderLODQuery& Query);
+-	/** Burst admission: commander LOD0/1 allow, LOD2 suppresses. Other views use the
++	/** World-effect admission: commander LOD0/1 allow, LOD2 suppresses. Other views use the
+ 	 * caller's distance limit (<= 0 means unlimited). Any eligible local view wins;
+ 	 * registered visual components remain hidden per overview view by its own mask. */
+-	bool ShouldRenderCombatBurst(const FVector& Location, double NonCommanderMaximumDistance);
++	bool ShouldRenderWorldEffect(const FVector& Location, double NonCommanderMaximumDistance);
++	/** Continuous FX opacity: commander near/tactical views retain full visibility;
++	 * overview contributes none. Other local views fade over the supplied cm range.
++	 * The most visible local view wins; overview retains its per-view component mask. */
++	float GetContinuousEffectDistanceFade(const FVector& Location, double NonCommanderFadeStart, double NonCommanderFadeEnd);
+ 	const FGuLiCommanderLODSettings& GetSettings() const { return EffectiveSettings; }
+ 	TArray<FGuLiCommanderLODSettingView> ListSettings(const FString& Prefix = FString()) const;
+ 	bool SetSetting(const FString& Key, const FString& Value, FString& Error);
+--- before/Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODSubsystem.cpp
++++ Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODSubsystem.cpp
+@@ -167,7 +167,7 @@
+ 	return Result;
+ }
+ 
+-bool UGuLiCommanderLODSubsystem::ShouldRenderCombatBurst(const FVector& Location, const double NonCommanderMaximumDistance)
++bool UGuLiCommanderLODSubsystem::ShouldRenderWorldEffect(const FVector& Location, const double NonCommanderMaximumDistance)
+ {
+ 	EnsureViews();
+ 	++QueryCount;
+@@ -176,7 +176,7 @@
+ 	{
+ 		if (View.CameraLevel.IsSet())
+ 		{
+-			// Tactical cameras sit above the legacy VFX range. Only overview suppresses bursts.
++			// Tactical cameras sit above the legacy VFX range. Only overview suppresses world effects.
+ 			if (View.CameraLevel.GetValue() != EGuLiCommanderLODLevel::Minimal) return true;
+ 			continue;
+ 		}
+@@ -184,6 +184,29 @@
+ 			|| FVector::DistSquared(View.Position, Location) <= FMath::Square(NonCommanderMaximumDistance)) return true;
+ 	}
+ 	return false;
++}
++
++float UGuLiCommanderLODSubsystem::GetContinuousEffectDistanceFade(const FVector& Location,
++	const double NonCommanderFadeStart, const double NonCommanderFadeEnd)
++{
++	EnsureViews();
++	++QueryCount;
++	if (Location.ContainsNaN() || !FMath::IsFinite(NonCommanderFadeStart) || !FMath::IsFinite(NonCommanderFadeEnd)
++		|| NonCommanderFadeStart < 0 || NonCommanderFadeEnd <= NonCommanderFadeStart) return 0;
++	float Fade = 0;
++	for (const auto& View : Views)
++	{
++		if (View.CameraLevel.IsSet())
++		{
++			if (View.CameraLevel.GetValue() != EGuLiCommanderLODLevel::Minimal) return 1;
++			continue;
++		}
++		const double Distance = FVector::Distance(View.Position, Location);
++		const float ViewFade = float(FMath::Clamp((NonCommanderFadeEnd - Distance)
++			/ (NonCommanderFadeEnd - NonCommanderFadeStart), 0.0, 1.0));
++		Fade = FMath::Max(Fade, ViewFade);
++	}
++	return Fade;
+ }
+ 
+ TArray<FGuLiCommanderLODSettingView> UGuLiCommanderLODSubsystem::ListSettings(const FString& Prefix) const
+--- before/Source/GuLiStrike/Gameplay/Presentation/GuLiWarMachineHoverComponent.cpp
++++ Source/GuLiStrike/Gameplay/Presentation/GuLiWarMachineHoverComponent.cpp
+@@ -1,4 +1,5 @@
+ #include "Gameplay/Presentation/GuLiWarMachineHoverComponent.h"
++#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
+ #include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
+ 
+ #include "Engine/World.h"
+@@ -58,6 +59,8 @@
+ 
+ float UGuLiWarMachineHoverComponent::FadeAt(const FVector& Position) const
+ {
++	if (auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>())
++		return LOD->GetContinuousEffectDistanceFade(Position, 18000.0, 20000.0);
+ 	return FMath::Clamp((20000.0f - float(FVector::Distance(CameraPosition, Position))) / 2000.0f, 0.0f, 1.0f);
+ }
+ 
+@@ -103,7 +106,9 @@
+ 	B.Colors[I] = FLinearColor(.04f, .28f, 1.0f, Fade * .90f);
+ 	B.TrailPositions[I] = Source.Position + Down * (Length * .65f);
+ 	B.TrailSizes[I] = FVector2D(Width, Source.bReset ? 0 : Source.HorizontalSpeed);
+-	B.TrailColors[I] = FLinearColor(float(Slot.Generation), 1, 0, 0);
++	// Carry the shared view policy to GPU history, so tactical tails are not
++	// independently clipped by the old 200 m camera-distance limit.
++	B.TrailColors[I] = FLinearColor(float(Slot.Generation), 1, Fade, 0);
+ 	B.Bounds += FBox(Source.Position - FVector(Width), Source.Position + FVector(Width));
+ 	B.Bounds += Source.Position + Down * Length;
+ 	++ActiveNozzles;
+--- before/Scripts/build_warmachine_hover_reference.py
++++ Scripts/build_warmachine_hover_reference.py
+@@ -105,9 +105,10 @@
+         ('Travel','float','Particles.RefTravel'),('Phase','float','Particles.RefPhase'),
+         ('SampleDistance','float','Particles.RefSampleDistance'),('Heading','Vector','Particles.RefHeading'),
+         ('LastMoving','float','Particles.RefLastMoving'),('Span','float','Particles.RefSpan'),('Length','float','Particles.RefLength'),
+-        ('MoveAge','float','Particles.RefMoveAge'),('WasMoving','float','Particles.RefWasMoving')]
++        ('MoveAge','float','Particles.RefMoveAge'),('WasMoving','float','Particles.RefWasMoving'),
++        ('ViewFade','float','Particles.RefViewFade')]
+     history_init=('Previous=float3(0,0,0); PreviousTime=-100000; Travel=0; Phase=0; SampleDistance=-100000; '
+-        'Heading=float3(1,0,0); LastMoving=-100000; Span=0; Length=0; MoveAge=0; WasMoving=0;')
++        'Heading=float3(1,0,0); LastMoving=-100000; Span=0; Length=0; MoveAge=0; WasMoving=0; ViewFade=0;')
+     scratch(SYSTEM,'LaserMuzzles','ParticleSpawn','InitializeReferenceHistory',[],fields,history_init)
+     inputs=[('NozzlePosition','Position','Particles.Position'),('NozzleSize','vec2','Particles.SpriteSize'),
+         ('Meta','Color','Particles.Color'),('Lane','int','Particles.HoverLane'),('Now','float','User.HoverTime'),
+@@ -118,7 +119,8 @@
+         ('SavedSampleDistance','float','Particles.RefSampleDistance'),('SavedHeading','Vector','Particles.RefHeading'),
+         ('SavedLastMoving','float','Particles.RefLastMoving'),('SavedSpan','float','Particles.RefSpan'),
+         ('SavedLength','float','Particles.RefLength'),('MinLength','float','User.HoverMinTrailLength'),('MaxLength','float','User.HoverMaxTrailLength'),
+-        ('SavedMoveAge','float','Particles.RefMoveAge'),('SavedWasMoving','float','Particles.RefWasMoving'),('GrowTime','float','User.HoverTrailGrowTime')]
++        ('SavedMoveAge','float','Particles.RefMoveAge'),('SavedWasMoving','float','Particles.RefWasMoving'),('GrowTime','float','User.HoverTrailGrowTime'),
++        ('SavedViewFade','float','Particles.RefViewFade')]
+     outputs=[('PositionOut','Position','Particles.Position'),('AlignmentOut','Vector','Particles.SpriteAlignment'),
+         ('SizeOut','vec2','Particles.SpriteSize'),('ColorOut','Color','Particles.Color'),
+         ('AnchorOut','Position','Particles.HoverAnchor'),('BornOut','float','Particles.HoverBorn'),
+@@ -127,7 +129,8 @@
+         ('PhaseOut','float','Particles.RefPhase'),('SampleDistanceOut','float','Particles.RefSampleDistance'),
+         ('HeadingOut','Vector','Particles.RefHeading'),('LastMovingOut','float','Particles.RefLastMoving'),
+         ('SpanOut','float','Particles.RefSpan'),('LengthOut','float','Particles.RefLength'),
+-        ('MoveAgeOut','float','Particles.RefMoveAge'),('WasMovingOut','float','Particles.RefWasMoving')]
++        ('MoveAgeOut','float','Particles.RefMoveAge'),('WasMovingOut','float','Particles.RefWasMoving'),
++        ('ViewFadeOut','float','Particles.RefViewFade')]
+     scratch(SYSTEM,'LaserMuzzles','ParticleUpdate','AdvanceReferenceHistory',inputs,outputs,(ROOT/'Scripts/Niagara/GuLiHoverReferenceTrail.hlsl').read_text(encoding='utf-8'))
+     for emitter,mat in [('LaserBolts',core),('LaserMuzzles',trail)]:
+         require(EM.set_renderer_property(SYSTEM,emitter,0,'Material',mat),'material')
+--- before/Scripts/Niagara/GuLiHoverReferenceTrail.hlsl
++++ Scripts/Niagara/GuLiHoverReferenceTrail.hlsl
+@@ -1,5 +1,6 @@
+ // GPU world-space history, centimetres. One live head and nine history lanes.
+ // Legacy upload contract: Size=(1.1 * disc diameter, actual horizontal speed).
++// Meta.b carries the CPU-resolved local-view opacity. Zero is the legacy sender.
+ // A distance clock avoids resampling old buckets when the speed changes.
+ AnchorOut=SavedAnchor; HeadingOut=SavedHeading; SampleDistanceOut=SavedSampleDistance;
+ TravelOut=SavedTravel; PhaseOut=SavedPhase; PreviousOut=NozzlePosition;
+@@ -71,7 +72,12 @@
+ float behind=max(0.0,TravelOut-SampleDistanceOut);
+ float distanceFade=pow(saturate(1.0-behind/max(LengthOut,1.0)),0.45);
+ float stopFade=saturate(1.0-max(0.0,Now-LastMovingOut)/0.30);
+-float viewFade=saturate((20000.0-distance(Camera,AnchorOut))/2000.0);
++// Keep the last admitted opacity for the short retired-tail fade. A current
++// source uses the same near/tactical/overview policy as its attached core.
++// Legacy senders already gate admission on the CPU. Never add a second,
++// camera-distance gate here: it would hide admitted tactical-view particles.
++ViewFadeOut=active ? (Meta.b>0.0 ? saturate(Meta.b) : 1.0) : SavedViewFade;
++float viewFade=ViewFadeOut;
+ float valid=BornOut>-99999.0 && behind<=LengthOut ? 1.0 : 0.0;
+ AlignmentOut=HeadingOut;
+ // Taper the width along the travelled path; overlap adjacent soft segments.
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp
+@@ -218,7 +218,10 @@
+ 
+ bool UGuLiCombatEffectPresentationSubsystem::IsVisibleLocation(FVector Location) const
+ {
+-	return Catalog && ClosestLocalCameraDistanceSquared(Location)
++	if (!Catalog || Location.ContainsNaN()) return false;
++	if (auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>())
++		return LOD->ShouldRenderWorldEffect(Location, Catalog->MaximumVisualDistance);
++	return ClosestLocalCameraDistanceSquared(Location)
+ 		<= FMath::Square(static_cast<double>(Catalog->MaximumVisualDistance));
+ }
+ 
+@@ -598,7 +601,7 @@
+ 		}
+ 		const double CameraDistanceSquared = FMath::Min(
+ 			ClosestLocalCameraDistanceSquared(Start), ClosestLocalCameraDistanceSquared(End));
+-		if (CameraDistanceSquared > FMath::Square(static_cast<double>(Catalog->MaximumVisualDistance)))
++		if (!IsVisibleLocation(Start) && !IsVisibleLocation(End))
+ 		{ ++Counters.DroppedShots; continue; }
+ 		FGunfireRow& Row = Rows.AddDefaulted_GetRef();
+ 		Row.Direction = Delta / Length;
+@@ -629,8 +632,7 @@
+ 				if (!CurrentDirection.IsNearlyZero()) Muzzle.LastDirection = CurrentDirection;
+ 			}
+ 			const double CameraDistanceSquared = ClosestLocalCameraDistanceSquared(Start);
+-			if (Muzzle.LastDirection.IsNearlyZero()
+-				|| CameraDistanceSquared > FMath::Square(static_cast<double>(Catalog->MaximumVisualDistance))) continue;
++			if (Muzzle.LastDirection.IsNearlyZero() || !IsVisibleLocation(Start)) continue;
+ 			FGunfireRow& Row = Rows.AddDefaulted_GetRef();
+ 			Row.Direction = Muzzle.LastDirection;
+ 			Row.Length = Catalog->MuzzleLength * GunfireBaseScale.X;
+@@ -720,7 +722,7 @@
+ 		Visual.bActivationPlayed = true;
+ 		auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>();
+ 		const bool bBurstVisible = Catalog && LOD
+-			? LOD->ShouldRenderCombatBurst(Position, Catalog->MaximumVisualDistance) : bVisible;
++			? LOD->ShouldRenderWorldEffect(Position, Catalog->MaximumVisualDistance) : bVisible;
+ 		if (!Visual.bSuppressOldBurst && bBurstVisible && Definition->ActivationVariants.IsValidIndex(Visual.State.VariantIndex))
+ 		{
+ 			const auto& Variant = Definition->ActivationVariants[Visual.State.VariantIndex];
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.cpp
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.cpp
+@@ -77,6 +77,8 @@
+ {
+ 	if (!GetWorld() || Location.ContainsNaN()) return false;
+ 	const float Distance = GetDefault<UGuLiUnitFeedbackSettings>()->CullDistance;
++	if (auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>())
++		return LOD->ShouldRenderWorldEffect(Location, Distance);
+ 	if (Distance <= 0) return true;
+ 	for (auto It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+ 	{
+@@ -218,9 +220,6 @@
+ 
+ bool UGuLiUnitFeedbackSubsystem::ShouldRenderExplosion(const FVector& Location) const
+ {
+-	if (!GetWorld()) return false;
+-	if (auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>())
+-		return LOD->ShouldRenderCombatBurst(Location, GetDefault<UGuLiUnitFeedbackSettings>()->CullDistance);
+ 	return IsWithinCullDistance(Location);
+ }
+ 
+--- before/Source/GuLiStrike/Commander/UI/GuLiCommanderHealthBarRenderer.cpp
++++ Source/GuLiStrike/Commander/UI/GuLiCommanderHealthBarRenderer.cpp
+@@ -8,6 +8,7 @@
+ #include "Commander/Framework/GuLiCommanderPlayerController.h"
+ #include "Commander/Network/GuLiSoldierStateReplicator.h"
+ #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
++#include "Commander/Presentation/GuLiCommanderCameraPawn.h"
+ #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
+ #include "Battle/Combat/GuLiCombatDamageLedger.h"
+ #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
+@@ -33,7 +34,6 @@
+ 	constexpr int32 SelectedCustomDataIndex = 1;
+ 	constexpr int32 VisibleCustomDataIndex = 2;
+ 	constexpr int32 CustomDataFloatCount = 3;
+-	constexpr float MaximumDrawDistanceCentimeters = 6000.0f;
+ 	constexpr float FallbackSoldierHeightCentimeters = 44.0f;
+ 	constexpr float HeightPaddingCentimeters = 4.0f;
+ 	constexpr float DesiredWidthPixels = 84.0f;
+@@ -70,10 +70,11 @@
+ 	HealthBarInstances->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+ 	HealthBarInstances->SetCanEverAffectNavigation(false);
+ 	HealthBarInstances->SetIsReplicated(false);
+-	// Visibility is governed below by planar distance to the RTS camera focus.
+-	// A component end-cull distance is measured from the elevated camera eye and
+-	// would incorrectly cull every bar at the default 800 m spring-arm length.
++	// Commander near/tactical views retain bars; overview uses its HUD markers.
+ 	HealthBarInstances->SetCullDistances(0, 0);
++	HealthBarInstances->SetCullDistance(0.0f);
++	HealthBarInstances->bNeverDistanceCull = true;
++	HealthBarInstances->bAllowCullDistanceVolume = false;
+ 	HealthBarInstances->SetCastShadow(false);
+ 	HealthBarInstances->SetAffectDistanceFieldLighting(false);
+ 	HealthBarInstances->SetAffectDynamicIndirectLighting(false);
+@@ -571,10 +572,10 @@
+ 	if (Width <= 0 || Height <= 0) { HideAllInstances(); return; }
+ 	const APlayerCameraManager* Camera = Controller->PlayerCameraManager.Get();
+ 	const FVector CameraLocation = Camera->GetCameraLocation();
+-	const FVector FocusLocation = Controller->GetPawn() ? Controller->GetPawn()->GetActorLocation() : CameraLocation;
+-	const auto* Commander = Cast<AGuLiCommanderPlayerController>(Controller);
+-	const bool bCommanderView = Commander && Commander->IsCommanderViewActive();
+-	const float MaxDistance = bCommanderView ? GuLiCommanderHealthBars::MaximumDrawDistanceCentimeters : GetDefault<UGuLiUnitFeedbackSettings>()->CullDistance;
++	const auto* CommanderCamera = Cast<AGuLiCommanderCameraPawn>(Controller->GetViewTarget());
++	const bool bCommanderView = CommanderCamera && CommanderCamera->HasCameraConfig();
++	if (bCommanderView && CommanderCamera->IsOverviewPresentation()) { HideAllInstances(); return; }
++	const float MaxDistance = bCommanderView ? 0.0f : GetDefault<UGuLiUnitFeedbackSettings>()->CullDistance;
+ 	const float Now = GetWorld()->GetTimeSeconds();
+ 	const FRotationMatrix Basis(Camera->GetCameraRotation());
+ 	const FQuat Rotation = FRotationMatrix::MakeFromXY(Basis.GetUnitAxis(EAxis::Y), Basis.GetUnitAxis(EAxis::Z)).ToQuat();
+@@ -582,8 +583,7 @@
+ 	auto MakeBarTransform = [&](const FVector& Location, FTransform& Out)
+ 	{
+ 		const float Distance = FVector::Distance(CameraLocation, Location);
+-		const float CullDistance = bCommanderView ? FVector::Dist2D(FocusLocation, Location) : Distance;
+-		if (MaxDistance > 0 && CullDistance > MaxDistance) return false;
++		if (MaxDistance > 0 && Distance > MaxDistance) return false;
+ 		const FVector2D Size = CalculateWorldSizeCentimeters(Distance, Camera->GetFOVAngle(), Width, Height);
+ 		if (Size.X <= UE_SMALL_NUMBER || Size.Y <= UE_SMALL_NUMBER) return false;
+ 		Out = FTransform(Rotation, Location, HealthBarBaseScale * FVector(Size.X / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, Size.Y / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, 1));
+--- before/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp
++++ Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp
+@@ -292,7 +292,7 @@
+ 	RingInstances->SetAffectDistanceFieldLighting(false);
+ 	RingInstances->SetAffectDynamicIndirectLighting(false);
+ 	RingInstances->SetVisibleInRayTracing(false);
+-	RingInstances->SetCullDistances(0, 0);
++	GuLiCommanderPresentation::DisableUnitDistanceCulling(*RingInstances);
+ 	RingInstances->NumCustomDataFloats = 4;
+ 
+ 	UnitMeshAsset = TSoftObjectPtr<UStaticMesh>(FSoftObjectPath(
+@@ -753,9 +753,7 @@
+ 		GuLiUnitRenderPolicy::ApplyReflectionExclusions(*Component);
+ 	}
+ 
+-	RingInstances->SetCullDistances(
+-		Effective.RingCullDistanceCentimeters,
+-		Effective.RingCullDistanceCentimeters);
++	GuLiCommanderPresentation::DisableUnitDistanceCulling(*RingInstances);
+ 	RingInstances->SetCastShadow(false);
+ 	RingInstances->SetAffectDistanceFieldLighting(false);
+ 	RingInstances->SetAffectDynamicIndirectLighting(false);
+--- before/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationPerformanceSettings.cpp
++++ Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationPerformanceSettings.cpp
+@@ -81,8 +81,7 @@
+ 
+ 	bool IsValidRingCullDistance(const int32 Value)
+ 	{
+-		return Value >= 0
+-			&& Value <= FGuLiCommanderPresentationPerformanceSettings::MaximumCullDistanceCentimeters;
++		return Value == 0;
+ 	}
+ }
+ 
+@@ -143,9 +142,11 @@
+ 	{
+ 		int32 ParsedValue = 0;
+ 		const FString& RawValue = ConfigSettings.RingCullDistanceCentimeters.GetValue();
+-		if (ParseStrictInteger(RawValue, ParsedValue) && IsValidRingCullDistance(ParsedValue))
+-		{
+-			BaselineSettings.RingCullDistanceCentimeters = ParsedValue;
++		if (ParseStrictInteger(RawValue, ParsedValue) && ParsedValue >= 0
++			&& ParsedValue <= FGuLiCommanderPresentationPerformanceSettings::MaximumCullDistanceCentimeters)
++		{
++			// Legacy ring ranges migrate to the same camera-tier policy as unit bodies.
++			BaselineSettings.RingCullDistanceCentimeters = 0;
+ 			ConfigBaselineKeys.Add(RingCullDistanceKey);
+ 		}
+ 		else
+@@ -260,9 +261,7 @@
+ 		View.AcceptedValues = (Key == GuLiCommanderPresentationPerformance::UnitCullDistanceKey)
+ 			? FString(TEXT("0 only; Mass unit distance culling is disabled"))
+ 			: (Key == GuLiCommanderPresentationPerformance::RingCullDistanceKey)
+-				? FString::Printf(
+-					TEXT("integer [0,%d]; 0 disables distance culling"),
+-					FGuLiCommanderPresentationPerformanceSettings::MaximumCullDistanceCentimeters)
++				? FString(TEXT("0 only; commander ring distance culling is disabled"))
+ 				: TEXT("true|false|1|0");
+ 	}
+ 	return Result;
+@@ -305,7 +304,7 @@
+ 				*Value,
+ 				CanonicalKey == UnitCullDistanceKey
+ 					? TEXT("0; Mass unit distance culling cannot be enabled")
+-					: TEXT("integer cull distance in [0,10000000]"));
++					: TEXT("0; commander ring distance culling cannot be enabled"));
+ 			return Result;
+ 		}
+ 
+--- before/Source/GuLiStrike/Gameplay/Wingman/GuLiWingmanPawn.cpp
++++ Source/GuLiStrike/Gameplay/Wingman/GuLiWingmanPawn.cpp
+@@ -2,6 +2,9 @@
+ 
+ #include "Gameplay/Wingman/GuLiWingmanPawn.h"
+ #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
++#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
++#include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
++#include "Engine/World.h"
+ #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
+ #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
+ #include "Gameplay/Presentation/GuLiTeamOutlineComponent.h"
+@@ -470,7 +473,10 @@
+ 
+ void AGuLiWingmanPawn::UpdateFlightTrail(const float Opacity, const bool bResetTrail)
+ {
+-	const float SafeOpacity = FMath::IsFinite(Opacity) ? FMath::Clamp(Opacity, 0.0f, 1.0f) : 0.0f;
++	float SafeOpacity = FMath::IsFinite(Opacity) ? FMath::Clamp(Opacity, 0.0f, 1.0f) : 0.0f;
++	if (GetWorld())
++		if (auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>())
++			if (!LOD->ShouldRenderWorldEffect(GetActorLocation(), FlightTrailCullDistance)) SafeOpacity = 0.0f;
+ 	if (GetNetMode() == NM_DedicatedServer || !GetWorld() || !GetWorld()->IsGameWorld()
+ 		|| !Runtime.Dynamics.bAlive || IsHidden() || SafeOpacity <= 0.0f
+ 		|| !VisualMesh || !VisualMesh->GetStaticMesh() || FlightTrailVfxId <= 0 || bFlightTrailLoadFailed)
+@@ -499,8 +505,8 @@
+ 		FlightTrail->SetRelativeRotation(FRotator(0.0f, 180.0f, 0.0f));
+ 		FlightTrail->SetCanEverAffectNavigation(false);
+ 		FlightTrail->SetCastShadow(false);
+-		FlightTrail->SetCullDistance(FlightTrailCullDistance);
+ 		FlightTrail->RegisterComponent();
++		if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(FlightTrail);
+ 	}
+ 
+ 	const FVector Location = PresentationRoot->GetComponentLocation();
+@@ -522,7 +528,7 @@
+ 		FVector2D(0.0f, 3600.0f), FVector2D(0.65f, 1.3f), Speed));
+ 	FlightTrail->SetVariableVec3(TEXT("User.Forward"), PresentationRoot->GetForwardVector());
+ 	FlightTrail->SetVariableVec3(TEXT("User.Right"), PresentationRoot->GetRightVector());
+-	// Niagara owns distance-cull resume. Do not reactivate a culled system every frame.
++	// Start once after the view policy admits this trail; do not restart every frame.
+ 	if (!bFlightTrailRunning)
+ 	{
+ 		FlightTrail->Activate(true);
+--- before/Source/GuLiStrike/Commander/Presentation/GuLiCommanderOverviewSubsystem.cpp
++++ Source/GuLiStrike/Commander/Presentation/GuLiCommanderOverviewSubsystem.cpp
+@@ -35,7 +35,13 @@
+ void UGuLiCommanderOverviewSubsystem::ActorSpawned(AActor* Actor) { if (IsValid(Actor)) Actors.Add(Actor); }
+ void UGuLiCommanderOverviewSubsystem::RegisterVisual(UPrimitiveComponent* Component)
+ {
+-	if (IsValid(Component)) Visuals.AddUnique(Component);
++	if (!IsValid(Component)) return;
++	// Distance admission belongs to the shared view policy, never the elevated
++	// camera's primitive draw distance or a level CullDistanceVolume.
++	Component->SetCullDistance(0.0f);
++	Component->bNeverDistanceCull = true;
++	Component->bAllowCullDistanceVolume = false;
++	Visuals.AddUnique(Component);
+ }
+ void UGuLiCommanderOverviewSubsystem::ForgetVisual(UPrimitiveComponent* Component)
+ {
+--- before/Scripts/build_unit_feedback_assets.py
++++ Scripts/build_unit_feedback_assets.py
+@@ -90,7 +90,8 @@
+     effect = ASSETS.load_asset(effect_path) if ASSETS.does_asset_exist(effect_path) else unreal.AssetToolsHelpers.get_asset_tools().create_asset(
+         'FXT_UnitDestruction', DEST, unreal.NiagaraEffectType, unreal.NiagaraEffectTypeFactoryNew())
+     settings = unreal.NiagaraSystemScalabilitySettings()
+-    settings.set_editor_property('cull_by_distance', True)
++    # Camera-tier admission is owned by the runtime shared LOD policy.
++    settings.set_editor_property('cull_by_distance', False)
+     settings.set_editor_property('max_distance', 36000.0)
+     array = effect.get_editor_property('system_scalability_settings')
+     array.set_editor_property('settings', [settings])
+--- before/Scripts/build_wingman_flight_vfx.py
++++ Scripts/build_wingman_flight_vfx.py
+@@ -164,7 +164,8 @@
+     effect = ASSETS.load_asset(effect_path) if ASSETS.does_asset_exist(effect_path) else TOOLS.create_asset(
+         'FXT_WingmanFlight', DEST, unreal.NiagaraEffectType, unreal.NiagaraEffectTypeFactoryNew())
+     settings = unreal.NiagaraSystemScalabilitySettings()
+-    settings.set_editor_property('cull_by_distance', True)
++    # Camera-tier admission is owned by the runtime shared LOD policy.
++    settings.set_editor_property('cull_by_distance', False)
+     settings.set_editor_property('max_distance', 36000.0)
+     array = effect.get_editor_property('system_scalability_settings')
+     array.set_editor_property('settings', [settings])
+--- before/Scripts/Niagara/GuLiHoverTrail.hlsl
++++ Scripts/Niagara/GuLiHoverTrail.hlsl
+@@ -1,5 +1,5 @@
+ // GPU-only persistent lane. Ten lanes per nozzle, .03 s apart, .30 s lifetime.
+-// The DI reader supplies current nozzle Position/Direction, Size=(width,speed), Meta=(generation,active,0,0).
++// The DI reader supplies current nozzle Position/Direction, Size=(width,speed), Meta=(generation,active,viewFade,0).
+ // SavedAnchor is a Position (simulation space); direction/age/width are particle state.
+ AnchorOut=SavedAnchor; DirectionOut=SavedDirection; BornOut=Born; WidthOut=SavedWidth;
+ GenerationOut=SeenGeneration; BucketOut=SeenBucket;
+@@ -13,7 +13,8 @@
+ }
+ float age=max(0.0,Now-BornOut);
+ PositionOut=AnchorOut+DirectionOut*(80.0*age);
+-float fade=saturate((20000.0-distance(Camera,PositionOut))/2000.0);
++ViewFadeOut=Meta.g>0.5 ? (Meta.b>0.0 ? saturate(Meta.b) : 1.0) : SavedViewFade;
++float fade=ViewFadeOut;
+ float life=saturate(1.0-age/0.30);
+ SizeOut=life*fade>0.0 ? float2(WidthOut,WidthOut*.55)*(1.0+min(age,.30)) : float2(0,0);
+ ColorOut=float4(.04,.28,.95,.45*life*life*fade);
+--- before/Scripts/build_warmachine_hover_fx.py
++++ Scripts/build_warmachine_hover_fx.py
+@@ -86,8 +86,9 @@
+         code='Slot=ExecIndex(); Life=1000000000.0; Position=float3(0,0,0); Velocity=float3(0,0,0); Size=float2(0,0); Color=float4(0,0,0,0); Rotation=0;'
+         if is_tail:
+             outputs += [('Lane','int','Particles.HoverLane'),('Anchor','Position','Particles.HoverAnchor'),('Down','Vector','Particles.HoverDown'),
+-                ('Born','float','Particles.HoverBorn'),('Width','float','Particles.HoverWidth'),('Generation','float','Particles.HoverGeneration'),('Bucket','int','Particles.HoverBucket')]
+-            code += 'Slot=ExecIndex() / 10; Lane=ExecIndex() % 10; Anchor=float3(0,0,0); Down=float3(0,0,-1); Born=-100000; Width=0; Generation=-1; Bucket=-1;'
++                ('Born','float','Particles.HoverBorn'),('Width','float','Particles.HoverWidth'),('Generation','float','Particles.HoverGeneration'),('Bucket','int','Particles.HoverBucket'),
++                ('ViewFade','float','Particles.HoverViewFade')]
++            code += 'Slot=ExecIndex() / 10; Lane=ExecIndex() % 10; Anchor=float3(0,0,0); Down=float3(0,0,-1); Born=-100000; Width=0; Generation=-1; Bucket=-1; ViewFade=0;'
+         scratch(SYSTEM,emitter,'ParticleSpawn','InitializeHoverLane',[],outputs,code)
+         reader=SP.create_scratch_module(SYSTEM,emitter,'ParticleUpdate','ReadHoverNozzle')
+         assert prop(reader,'success')
+@@ -99,10 +100,10 @@
+                 ('NozzleSize','vec2','Particles.SpriteSize'),('Meta','Color','Particles.Color'),('Lane','int','Particles.HoverLane'),
+                 ('Now','float','User.HoverTime'),('Camera','Position','User.HoverCamera'),('SavedAnchor','Position','Particles.HoverAnchor'),
+                 ('SavedDirection','Vector','Particles.HoverDown'),('Born','float','Particles.HoverBorn'),('SavedWidth','float','Particles.HoverWidth'),
+-                ('SeenGeneration','float','Particles.HoverGeneration'),('SeenBucket','int','Particles.HoverBucket')]
++                ('SeenGeneration','float','Particles.HoverGeneration'),('SeenBucket','int','Particles.HoverBucket'),('SavedViewFade','float','Particles.HoverViewFade')]
+             outputs=[('PositionOut','Position','Particles.Position'),('SizeOut','vec2','Particles.SpriteSize'),('ColorOut','Color','Particles.Color'),
+                 ('AnchorOut','Position','Particles.HoverAnchor'),('DirectionOut','Vector','Particles.HoverDown'),('BornOut','float','Particles.HoverBorn'),
+-                ('WidthOut','float','Particles.HoverWidth'),('GenerationOut','float','Particles.HoverGeneration'),('BucketOut','int','Particles.HoverBucket')]
++                ('WidthOut','float','Particles.HoverWidth'),('GenerationOut','float','Particles.HoverGeneration'),('BucketOut','int','Particles.HoverBucket'),('ViewFadeOut','float','Particles.HoverViewFade')]
+             scratch(SYSTEM,emitter,'ParticleUpdate','AdvanceHoverTrailGPU',inputs,outputs,(ROOT/'Scripts/Niagara/GuLiHoverTrail.hlsl').read_text())
+         assert EM.set_renderer_property(SYSTEM,emitter,0,'Material',mat)
+         assert EM.set_renderer_property(SYSTEM,emitter,0,'Alignment',alignment)
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.h
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.h
+@@ -145,6 +145,7 @@
+ 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire|Lighting", meta=(ClampMin="0", Units="cm")) float TracerLightRadius = 360.0f;
+ 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire|Lighting", meta=(ClampMin="0")) float TracerLightBrightness = 25.0f;
+ 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") FLinearColor GunfireTint = FLinearColor(1.0f, 0.72f, 0.32f);
++	/** Fallback range for non-commander views. Commander near/tactical visibility uses camera tiers. */
+ 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Scalability", meta=(ClampMin="100")) float MaximumVisualDistance = 20000.0f;
+ 	const FGuLiWeaponEffectMount* FindMount(int32 UnitTypeId, FName SlotId) const;
+ };
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h
+@@ -32,6 +32,7 @@
+ 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") FName GroundExplosionScaleParameter = TEXT("User.Scale");
+ 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") FName WingmanExplosionScaleParameter;
+ 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="1")) int32 MaximumConcurrentExplosions = 64;
++	/** Non-commander fallback only; commander feedback is hidden only in overview. */
+ 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0")) float CullDistance = 36000.0f;
+ 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0", Units="s")) float HealthBarHoldSeconds = 3.0f;
+ 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0.01", Units="s")) float HealthBarFadeSeconds = 0.5f;
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.cpp
++++ Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.cpp
+@@ -17,7 +17,7 @@
+ {
+ 	TAutoConsoleVariable<int32> FullTrailBudget(TEXT("gs.MissileCluster.FullTrails"), 512, TEXT("Full trails, including fading slots and quality handoffs."));
+ 	TAutoConsoleVariable<int32> ParticleBudget(TEXT("gs.MissileCluster.Particles"), 65536, TEXT("GPU capacity budget; bodies/flames are the minimum. Lower budgets drain existing history before reclaiming it."));
+-	TAutoConsoleVariable<float> MaximumDistance(TEXT("gs.MissileCluster.Distance"), 20000.f, TEXT("Visual distance in cm; culling includes 2.4 seconds of historical smoke."));
++	TAutoConsoleVariable<float> MaximumDistance(TEXT("gs.MissileCluster.Distance"), 20000.f, TEXT("Non-commander view distance in cm; commander near/tactical views use camera tiers. Includes 2.4 seconds of historical smoke."));
+ 	TAutoConsoleVariable<float> MinimumScreenFraction(TEXT("gs.MissileCluster.MinScreenFraction"), .001f, TEXT("Cull below this projected history-bound fraction."));
+ 	constexpr float MissileClusterCellSize = 4000.f;
+ 	constexpr int32 Lanes[] = {0, 8, 24};

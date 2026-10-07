@@ -1,0 +1,778 @@
+{
+  "success": true,
+  "source_version": "B-v4",
+  "assets": [
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech.SKEL_ControlRigMech",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech.SKM_ControlRigMech",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_BaseColor_2K.T_ControlRigMech_BaseColor_2K",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_InternalLineMask_2K.T_ControlRigMech_InternalLineMask_2K",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_FunctionalMask_2K.T_ControlRigMech_FunctionalMask_2K",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_ORM_2K.T_ControlRigMech_ORM_2K",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_Toon3_SparseLines.M_ControlRigMech_Toon3_SparseLines",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_BaseOutline.M_ControlRigMech_BaseOutline",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD0.MI_ControlRigMech_LOD0",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD1.MI_ControlRigMech_LOD1",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD2.MI_ControlRigMech_LOD2",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD3.MI_ControlRigMech_LOD3",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Animations/Mech_Deploy.Mech_Deploy",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Animations/Mech_Idle.Mech_Idle",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Animations/Mech_Walk.Mech_Walk",
+    "/Game/GuLiStrike/Mechs/ControlRigMech/Rigs/CR_ControlRigMech.CR_ControlRigMech"
+  ],
+  "budget": "over_budget; not FPS acceptance",
+  "reference_pose": {
+    "count": 152,
+    "names_and_parents_equal": true,
+    "order_equal": true,
+    "max_local_position_error_cm": 0.00019201540117476685,
+    "max_local_angle_error_deg": 0.00028140876719936336,
+    "max_local_scale_delta": 5.364418029785156e-07,
+    "worst": []
+  },
+  "shader": {
+    "lighting": "unlit art light, same normal dot and 3 constant bands as Blender",
+    "light_UE": [
+      0.35,
+      0.55,
+      0.76
+    ],
+    "coefficients": [
+      0.42,
+      0.74,
+      1.0
+    ],
+    "thresholds": [
+      0.12,
+      0.55
+    ],
+    "line_strength": [
+      0.3,
+      0.22,
+      0.1,
+      0
+    ],
+    "line_half_width_m": [
+      0.006,
+      0.007,
+      0.008,
+      0.006
+    ],
+    "uv_channels": 3,
+    "vertex_palette": "sRGB FBX RGB -> explicit linear decode",
+    "outline": "evaluated inverted skinned hull from approved GN, backface culling, LOD3 disabled"
+  },
+  "mesh": "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech.SKM_ControlRigMech",
+  "skeleton": "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech.SKEL_ControlRigMech",
+  "lods": [
+    {
+      "lod": 0,
+      "source_triangles": 70117,
+      "source_sections": {
+        "0": 57323,
+        "1": 12794
+      },
+      "actual_UE_sections": 2,
+      "render_vertices": 204254,
+      "screen_size": 1.0,
+      "material_indices": [
+        0,
+        1
+      ],
+      "materials": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD0.MI_ControlRigMech_LOD0",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_BaseOutline.M_ControlRigMech_BaseOutline"
+      ]
+    },
+    {
+      "lod": 1,
+      "source_triangles": 65002,
+      "source_sections": {
+        "0": 55592,
+        "1": 9410
+      },
+      "actual_UE_sections": 2,
+      "render_vertices": 101600,
+      "screen_size": 0.4000000059604645,
+      "material_indices": [
+        2,
+        1
+      ],
+      "materials": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD1.MI_ControlRigMech_LOD1",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_BaseOutline.M_ControlRigMech_BaseOutline"
+      ]
+    },
+    {
+      "lod": 2,
+      "source_triangles": 51870,
+      "source_sections": {
+        "0": 46308,
+        "1": 5562
+      },
+      "actual_UE_sections": 2,
+      "render_vertices": 85108,
+      "screen_size": 0.1599999964237213,
+      "material_indices": [
+        3,
+        1
+      ],
+      "materials": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD2.MI_ControlRigMech_LOD2",
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/M_ControlRigMech_BaseOutline.M_ControlRigMech_BaseOutline"
+      ]
+    },
+    {
+      "lod": 3,
+      "source_triangles": 38395,
+      "source_sections": {
+        "0": 38395
+      },
+      "actual_UE_sections": 1,
+      "render_vertices": 63058,
+      "screen_size": 0.05999999865889549,
+      "material_indices": [
+        4
+      ],
+      "materials": [
+        "/Game/GuLiStrike/Mechs/ControlRigMech/Materials/MI_ControlRigMech_LOD3.MI_ControlRigMech_LOD3"
+      ]
+    }
+  ],
+  "dimensions_cm": [
+    921.9327697753906,
+    1322.7835998535156,
+    692.3255980014801
+  ],
+  "skin": {
+    "vertices_checked": 40903,
+    "rigid_vertices": 39948,
+    "flexible_vertices": 955,
+    "invalid_vertices": 0,
+    "weighted_bones": 125
+  },
+  "physics": null,
+  "sockets": 0,
+  "animations": [
+    {
+      "path": "/Game/GuLiStrike/Mechs/ControlRigMech/Animations/Mech_Deploy.Mech_Deploy",
+      "skeleton": "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech.SKEL_ControlRigMech",
+      "seconds": 5.0,
+      "samples": [
+        {
+          "time_s": 0.0,
+          "all_152_bone_translation_max_delta_cm": 0.0,
+          "scale_max_delta": 0.0,
+          "quaternion_one_minus_dot_max": 5.107405831594747e-08,
+          "selected_bones": {
+            "root": {
+              "translation_cm": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "base": {
+              "translation_cm": [
+                -1.4779288903810084e-11,
+                7.206315517425537,
+                87.3800048828125
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "cannon_02": {
+              "translation_cm": [
+                0.00036593672120943666,
+                200.57583618164062,
+                1.9249326214776374e-05
+              ],
+              "rotation_xyzw": [
+                0.7046732306480408,
+                0.7046729922294617,
+                0.05861574038863182,
+                0.05861567333340645
+              ],
+              "scale": [
+                0.5164262056350708,
+                1.0,
+                1.0
+              ]
+            }
+          }
+        },
+        {
+          "time_s": 2.5,
+          "all_152_bone_translation_max_delta_cm": 0.0,
+          "scale_max_delta": 0.0,
+          "quaternion_one_minus_dot_max": 5.569561778440146e-08,
+          "selected_bones": {
+            "root": {
+              "translation_cm": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "base": {
+              "translation_cm": [
+                -1.4779288903810084e-11,
+                7.206315517425537,
+                127.3689956665039
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "cannon_02": {
+              "translation_cm": [
+                2.9297747460077517e-05,
+                329.3359680175781,
+                1.9249326214776374e-05
+              ],
+              "rotation_xyzw": [
+                0.7046732306480408,
+                0.7046729922294617,
+                0.05861574038863182,
+                0.05861567333340645
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          }
+        },
+        {
+          "time_s": 5.0,
+          "all_152_bone_translation_max_delta_cm": 0.0,
+          "scale_max_delta": 0.0,
+          "quaternion_one_minus_dot_max": 3.814430371562594e-08,
+          "selected_bones": {
+            "root": {
+              "translation_cm": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "base": {
+              "translation_cm": [
+                -1.4779288903810084e-11,
+                7.206315517425537,
+                192.8958740234375
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "cannon_02": {
+              "translation_cm": [
+                2.9297747460077517e-05,
+                329.3359680175781,
+                1.9249326214776374e-05
+              ],
+              "rotation_xyzw": [
+                0.7046732306480408,
+                0.7046729922294617,
+                0.05861574038863182,
+                0.05861567333340645
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          }
+        }
+      ],
+      "transfer": "Source native 30fps TQS reconstructed by UE AnimationDataController on copied skeleton",
+      "bone_tracks": 152,
+      "native_displacement_and_scale_preserved": true,
+      "curve_normalization": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Mechs/ControlRigMech/Animations/Mech_Idle.Mech_Idle",
+      "skeleton": "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech.SKEL_ControlRigMech",
+      "seconds": 8.666666984558105,
+      "samples": [
+        {
+          "time_s": 0.0,
+          "all_152_bone_translation_max_delta_cm": 0.0,
+          "scale_max_delta": 0.0,
+          "quaternion_one_minus_dot_max": 4.438953116192579e-08,
+          "selected_bones": {
+            "root": {
+              "translation_cm": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "base": {
+              "translation_cm": [
+                0.0,
+                7.206317901611328,
+                192.8958740234375
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "cannon_02": {
+              "translation_cm": [
+                2.9297747460077517e-05,
+                329.3359680175781,
+                1.7453174223192036e-05
+              ],
+              "rotation_xyzw": [
+                0.7046732306480408,
+                0.7046729922294617,
+                0.058615781366825104,
+                0.05861562862992287
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          }
+        },
+        {
+          "time_s": 4.333333492279053,
+          "all_152_bone_translation_max_delta_cm": 0.0,
+          "scale_max_delta": 0.0,
+          "quaternion_one_minus_dot_max": 4.9337057328457945e-08,
+          "selected_bones": {
+            "root": {
+              "translation_cm": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "base": {
+              "translation_cm": [
+                0.0,
+                7.206317901611328,
+                192.8958740234375
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "cannon_02": {
+              "translation_cm": [
+                2.9297747460077517e-05,
+                329.3359680175781,
+                1.7453174223192036e-05
+              ],
+              "rotation_xyzw": [
+                0.7046732306480408,
+                0.7046729922294617,
+                0.058615781366825104,
+                0.05861562862992287
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          }
+        },
+        {
+          "time_s": 8.666666984558105,
+          "all_152_bone_translation_max_delta_cm": 0.0,
+          "scale_max_delta": 0.0,
+          "quaternion_one_minus_dot_max": 5.306446126951414e-08,
+          "selected_bones": {
+            "root": {
+              "translation_cm": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "base": {
+              "translation_cm": [
+                0.0,
+                7.206317901611328,
+                192.8958740234375
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "cannon_02": {
+              "translation_cm": [
+                2.9297747460077517e-05,
+                329.3359680175781,
+                1.7453174223192036e-05
+              ],
+              "rotation_xyzw": [
+                0.7046732306480408,
+                0.7046729922294617,
+                0.058615781366825104,
+                0.05861562862992287
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          }
+        }
+      ],
+      "transfer": "Source native 30fps TQS reconstructed by UE AnimationDataController on copied skeleton",
+      "bone_tracks": 152,
+      "native_displacement_and_scale_preserved": true,
+      "curve_normalization": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Mechs/ControlRigMech/Animations/Mech_Walk.Mech_Walk",
+      "skeleton": "/Game/GuLiStrike/Mechs/ControlRigMech/Skeleton/SKEL_ControlRigMech.SKEL_ControlRigMech",
+      "seconds": 5.0,
+      "samples": [
+        {
+          "time_s": 0.0,
+          "all_152_bone_translation_max_delta_cm": 0.0,
+          "scale_max_delta": 0.0,
+          "quaternion_one_minus_dot_max": 5.6134582093747554e-08,
+          "selected_bones": {
+            "root": {
+              "translation_cm": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "base": {
+              "translation_cm": [
+                0.0,
+                7.206317901611328,
+                192.8958740234375
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "cannon_02": {
+              "translation_cm": [
+                2.9297747460077517e-05,
+                329.3359680175781,
+                1.7453174223192036e-05
+              ],
+              "rotation_xyzw": [
+                0.7046732306480408,
+                0.7046729922294617,
+                0.058615781366825104,
+                0.05861562862992287
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          }
+        },
+        {
+          "time_s": 2.5,
+          "all_152_bone_translation_max_delta_cm": 0.0,
+          "scale_max_delta": 0.0,
+          "quaternion_one_minus_dot_max": 5.5631194206817725e-08,
+          "selected_bones": {
+            "root": {
+              "translation_cm": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "base": {
+              "translation_cm": [
+                0.0,
+                7.206317901611328,
+                192.8958740234375
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "cannon_02": {
+              "translation_cm": [
+                2.9297747460077517e-05,
+                329.3359680175781,
+                1.7453174223192036e-05
+              ],
+              "rotation_xyzw": [
+                0.7046732306480408,
+                0.7046729922294617,
+                0.058615781366825104,
+                0.05861562862992287
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          }
+        },
+        {
+          "time_s": 5.0,
+          "all_152_bone_translation_max_delta_cm": 0.0,
+          "scale_max_delta": 0.0,
+          "quaternion_one_minus_dot_max": 5.46672325185682e-08,
+          "selected_bones": {
+            "root": {
+              "translation_cm": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "base": {
+              "translation_cm": [
+                0.0,
+                7.206317901611328,
+                192.8958740234375
+              ],
+              "rotation_xyzw": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "cannon_02": {
+              "translation_cm": [
+                2.9297747460077517e-05,
+                329.3359680175781,
+                1.7453174223192036e-05
+              ],
+              "rotation_xyzw": [
+                0.7046732306480408,
+                0.7046729922294617,
+                0.058615781366825104,
+                0.05861562862992287
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          }
+        }
+      ],
+      "transfer": "Source native 30fps TQS reconstructed by UE AnimationDataController on copied skeleton",
+      "bone_tracks": 152,
+      "native_displacement_and_scale_preserved": true,
+      "curve_normalization": false
+    }
+  ],
+  "control_rig": {
+    "path": "/Game/GuLiStrike/Mechs/ControlRigMech/Rigs/CR_ControlRigMech.CR_ControlRigMech",
+    "preview_mesh": "/Game/GuLiStrike/Mechs/ControlRigMech/Meshes/SKM_ControlRigMech.SKM_ControlRigMech",
+    "graphs": 31,
+    "nodes": 811,
+    "links": 1057,
+    "all_graph_nodes_pins_links_match_source": true
+  },
+  "textures": [
+    {
+      "path": "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_BaseColor_2K.T_ControlRigMech_BaseColor_2K",
+      "srgb": true,
+      "compression": "<TextureCompressionSettings.TC_DEFAULT: 0>"
+    },
+    {
+      "path": "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_InternalLineMask_2K.T_ControlRigMech_InternalLineMask_2K",
+      "srgb": false,
+      "compression": "<TextureCompressionSettings.TC_MASKS: 2>"
+    },
+    {
+      "path": "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_FunctionalMask_2K.T_ControlRigMech_FunctionalMask_2K",
+      "srgb": false,
+      "compression": "<TextureCompressionSettings.TC_MASKS: 2>"
+    },
+    {
+      "path": "/Game/GuLiStrike/Mechs/ControlRigMech/Textures/T_ControlRigMech_ORM_2K.T_ControlRigMech_ORM_2K",
+      "srgb": false,
+      "compression": "<TextureCompressionSettings.TC_MASKS: 2>"
+    }
+  ]
+}

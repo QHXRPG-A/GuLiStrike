@@ -4,13 +4,37 @@
 
 bool UGuLiVATDefinition::IsValidDefinition() const
 {
-	if (!BonePosition || !BoneRotation || Bones.IsEmpty() || Clips.IsEmpty() || FramesPerSecond <= 0
-		|| !GameplayBounds.IsValid || !RuntimeRenderBounds.IsValid || Muzzles.Num() != 2) return false;
-	const int32 Frames = BoneDeltas.Num() / Bones.Num();
-	if (Frames * Bones.Num() != BoneDeltas.Num()) return false;
+	if (Clips.IsEmpty() || Clips.Num() > MAX_uint8 || FramesPerSecond <= 0
+		|| !GameplayBounds.IsValid || !RuntimeRenderBounds.IsValid || Muzzles.Num() > 2
+		|| !FMath::IsFinite(UpperTurnRateDegreesPerSecond) || UpperTurnRateDegreesPerSecond <= 0
+		|| !FMath::IsFinite(PitchTurnRateDegreesPerSecond) || PitchTurnRateDegreesPerSecond <= 0
+		|| !FMath::IsFinite(MinimumPitchDegrees) || !FMath::IsFinite(MaximumPitchDegrees)
+		|| MinimumPitchDegrees > MaximumPitchDegrees || UpperPivot.ContainsNaN() || PitchPivot.ContainsNaN()
+		|| PitchAxis.ContainsNaN() || PitchAxis.IsNearlyZero()) return false;
+	int32 Frames = 0;
+	if (bVertexAnimation)
+	{
+		if (VertexLODs.Num() != 3 || BonePosition || BoneRotation
+			|| !Bones.IsEmpty() || !BoneDeltas.IsEmpty() || !Muzzles.IsEmpty()) return false;
+		for (const auto& LOD : VertexLODs)
+			if (!LOD.Position || !LOD.Rotation || LOD.VertexCount <= 0 || LOD.TextureWidth <= 0
+				|| LOD.RowsPerFrame != FMath::DivideAndRoundUp(LOD.VertexCount, LOD.TextureWidth)
+				|| LOD.FramesPerClip < 2 || LOD.TextureFrames != LOD.FramesPerClip*5+2) return false;
+		Frames = 32*5+2; // Shared phase encoding; LOD materials map it onto their own sample rate.
+	}
+	else
+	{
+		if (!BonePosition || !BoneRotation || Bones.IsEmpty()) return false;
+		Frames = BoneDeltas.Num()/Bones.Num();
+		if (Frames*Bones.Num()!=BoneDeltas.Num()) return false;
+	}
+	if (bDirectionalBlend)
+		for (FName Name : {FName(TEXT("Forward")),FName(TEXT("Backward")),FName(TEXT("Left")),FName(TEXT("Right"))})
+			if (FindClip(Name)==INDEX_NONE) return false;
 	for (const auto& Clip : Clips)
-		if (Clip.FrameCount < 2 || Clip.FirstFrame < 0 || Clip.FirstFrame + Clip.FrameCount > Frames
-			|| !FMath::IsFinite(Clip.DurationSeconds) || Clip.DurationSeconds <= 0) return false;
+		if (Clip.FrameCount < 2 || Clip.FirstFrame < 0 || Clip.FirstFrame+Clip.FrameCount > Frames
+			|| !FMath::IsFinite(Clip.DurationSeconds) || Clip.DurationSeconds <= 0
+			|| !FMath::IsFinite(Clip.StrideCentimeters) || Clip.StrideCentimeters < 0) return false;
 	for (const auto& Muzzle : Muzzles)
 		if (!Bones.IsValidIndex(Muzzle.BoneIndex) || Muzzle.ReferencePosition.ContainsNaN()) return false;
 	return true;
@@ -21,26 +45,43 @@ TArray<FString> UGuLiVATDefinition::ValidateImportedTextures() const
 	TArray<FString> Errors;
 	if (!IsValidDefinition()) { Errors.Add(TEXT("Invalid VAT definition.")); return Errors; }
 #if WITH_EDITOR
-	const int32 Frames = BoneDeltas.Num() / Bones.Num();
-	for (int32 TextureIndex = 0; TextureIndex < 2; ++TextureIndex)
+	if (bVertexAnimation)
 	{
-		UTexture2D* Texture = TextureIndex == 0 ? BonePosition : BoneRotation;
-		if (Texture->Source.GetSizeX() != Bones.Num() || Texture->Source.GetSizeY() != Frames
-			|| Texture->Source.GetFormat() != TSF_RGBA32F || Texture->SRGB || Texture->CompressionSettings != TC_HDR_F32
-			|| Texture->Filter != TF_Nearest || Texture->MipGenSettings != TMGS_NoMipmaps)
+		for (const auto& LOD : VertexLODs)
+			for (int32 Role = 0; Role < 2; ++Role)
+			{
+				UTexture2D* Texture = Role == 0 ? LOD.Position.Get() : LOD.Rotation.Get();
+				const bool bSourceFormatValid = Role == 0
+					? Texture->Source.GetFormat() == TSF_RGBA32F || Texture->Source.GetFormat() == TSF_RGBA16F
+					: Texture->Source.GetFormat() == TSF_BGRA8;
+				if (Texture->Source.GetSizeX()!=LOD.TextureWidth || Texture->Source.GetSizeY()!=LOD.RowsPerFrame*LOD.TextureFrames
+					|| Texture->SRGB || Texture->Filter!=TF_Nearest || Texture->MipGenSettings!=TMGS_NoMipmaps
+					|| Texture->CompressionSettings != (Role == 0 ? TC_HDR : TC_VectorDisplacementmap)
+					|| !bSourceFormatValid)
+					Errors.Add(Texture->GetName()+TEXT(": vertex VAT expects authored dimensions/format, nearest sampling and no sRGB/mips."));
+			}
+		return Errors;
+	}
+	const int32 Frames = BoneDeltas.Num()/Bones.Num();
+	for (int32 TextureIndex=0; TextureIndex<2; ++TextureIndex)
+	{
+		UTexture2D* Texture=TextureIndex==0 ? BonePosition.Get() : BoneRotation.Get();
+		if (Texture->Source.GetSizeX()!=Bones.Num() || Texture->Source.GetSizeY()!=Frames
+			|| Texture->Source.GetFormat()!=TSF_RGBA32F || Texture->SRGB || Texture->CompressionSettings!=TC_HDR_F32
+			|| Texture->Filter!=TF_Nearest || Texture->MipGenSettings!=TMGS_NoMipmaps)
 		{ Errors.Add(Texture->GetName()+TEXT(": expected nearest RGBA32F, no sRGB/mips, one texel per bone/frame.")); continue; }
 		TArray64<uint8> Raw;
-		if (!Texture->Source.GetMipData(Raw,0) || Raw.Num() != int64(BoneDeltas.Num()) * 4 * sizeof(float))
+		if (!Texture->Source.GetMipData(Raw,0) || Raw.Num()!=int64(BoneDeltas.Num())*4*sizeof(float))
 		{ Errors.Add(Texture->GetName()+TEXT(": invalid source pixels.")); continue; }
-		const float* Values = reinterpret_cast<const float*>(Raw.GetData());
-		for (int32 Index = 0; Index < BoneDeltas.Num(); ++Index)
+		const float* Values=reinterpret_cast<const float*>(Raw.GetData());
+		for (int32 Index=0; Index<BoneDeltas.Num(); ++Index)
 		{
-			const auto& Delta = BoneDeltas[Index];
-			const FVector P = Delta.GetTranslation(); const FQuat Q = Delta.GetRotation();
-			const double Expected[4] = {TextureIndex == 0 ? P.X : Q.X, TextureIndex == 0 ? P.Y : Q.Y,
-				TextureIndex == 0 ? P.Z : Q.Z, TextureIndex == 0 ? 1 : Q.W};
-			for (int32 Channel = 0; Channel < 4; ++Channel)
-				if (!FMath::IsFinite(Values[Index*4+Channel]) || FMath::Abs(Values[Index*4+Channel]-Expected[Channel]) > .001)
+			const auto& Delta=BoneDeltas[Index];
+			const FVector P=Delta.GetTranslation(); const FQuat Q=Delta.GetRotation();
+			const double Expected[4]={TextureIndex==0?P.X:Q.X, TextureIndex==0?P.Y:Q.Y,
+				TextureIndex==0?P.Z:Q.Z, TextureIndex==0?1:Q.W};
+			for (int32 Channel=0; Channel<4; ++Channel)
+				if (!FMath::IsFinite(Values[Index*4+Channel]) || FMath::Abs(Values[Index*4+Channel]-Expected[Channel])>.001)
 				{
 					Errors.Add(FString::Printf(TEXT("%s: CPU/GPU source differs at frame %d bone %d channel %d."),
 						*Texture->GetName(),Index/Bones.Num(),Index%Bones.Num(),Channel));
@@ -74,7 +115,8 @@ FTransform UGuLiVATDefinition::SampleBone(int32 Bone, float Frame) const
 	const float Alpha = Safe - First;
 	// Normalized quaternion lerp is identical to the vertex shader, including hemisphere fix.
 	const FQuat Q = FQuat::FastLerp(A.GetRotation(), B.GetRotation(), Alpha).GetNormalized();
-	return FTransform(Q, FMath::Lerp(A.GetTranslation(), B.GetTranslation(), Alpha));
+	return FTransform(Q, FMath::Lerp(A.GetTranslation(), B.GetTranslation(), Alpha),
+		FMath::Lerp(A.GetScale3D(), B.GetScale3D(), Alpha));
 }
 
 void GuLiVATAnimation::Step(const UGuLiVATDefinition& D, const FVector& Velocity,
@@ -85,14 +127,16 @@ void GuLiVATAnimation::Step(const UGuLiVATDefinition& D, const FVector& Velocity
 	FName Name = TEXT("Idle");
 	if (!bAlive) Name = TEXT("Death");
 	else if (Speed > 5)
-		Name = FMath::Abs(Local.X) >= FMath::Abs(Local.Y)
+		Name = D.bDirectionalBlend ? TEXT("Forward") : FMath::Abs(Local.X) >= FMath::Abs(Local.Y)
 			? (Local.X >= 0 ? TEXT("Forward") : TEXT("Backward"))
 			: (Local.Y >= 0 ? TEXT("Right") : TEXT("Left"));
 	const int32 Clip = D.FindClip(Name);
 	if (!D.Clips.IsValidIndex(Clip)) return;
 	if (!P.bInitialized || P.Clip != Clip) { P.Clip = uint8(Clip); P.Phase = 0; P.bInitialized = true; }
 	const auto& C = D.Clips[Clip];
-	P.Rate = C.StrideCentimeters > 0 ? Speed / C.StrideCentimeters : 1 / C.DurationSeconds;
+	// Both clips share phase. L1 speed compensates their normalized directional blend.
+	const float GaitSpeed = D.bDirectionalBlend ? FMath::Abs(Local.X)+FMath::Abs(Local.Y) : Speed;
+	P.Rate = C.StrideCentimeters > 0 ? GaitSpeed / C.StrideCentimeters : 1 / C.DurationSeconds;
 	P.Phase += FMath::Max(0.0f, Dt) * P.Rate;
 	P.Phase = C.bLoop ? FMath::Frac(P.Phase) : FMath::Min(P.Phase, 1.0f);
 }
@@ -101,13 +145,22 @@ void GuLiVATAnimation::StepAim(const UGuLiVATDefinition& D, const FGuLiVATPlayba
 	const FTransform& Root, const FVector* Target, float Dt, FGuLiMechanicalAnimationState& Aim)
 {
 	if (!Aim.bInitialized) { Aim.UpperYawDegrees = Root.Rotator().Yaw; Aim.bInitialized = true; }
-	const int32 Top = D.Bones.IndexOfByPredicate([](const auto& B) { return B.Name == TEXT("Top_M"); });
+	const int32 Top = D.Bones.IndexOfByPredicate([&D](const auto& B) { return B.Name == D.UpperBoneName; });
 	const FVector Pivot = Root.TransformPosition(D.SampleBone(Top, D.TextureFrame(P.Clip, P.Phase)).TransformPosition(D.UpperPivot));
 	const FVector Direction = Target ? *Target - Pivot : Root.GetRotation().GetForwardVector();
 	const FRotator Wanted = Direction.Rotation();
-	Aim.UpperYawDegrees = FMath::FixedTurn(Aim.UpperYawDegrees, Wanted.Yaw, 180 * Dt);
+	Aim.UpperYawDegrees = FMath::FixedTurn(Aim.UpperYawDegrees, Wanted.Yaw, D.UpperTurnRateDegreesPerSecond * FMath::Max(0.f,Dt));
+	float WantedPitch = Wanted.Pitch;
+	if (Target && (D.bVertexAnimation || !D.PitchBoneName.IsNone()))
+	{
+		const int32 Gun = D.Bones.IndexOfByPredicate([&D](const auto& B) { return B.Name == D.PitchBoneName; });
+		const FVector NeutralGun = Root.TransformPosition(D.SampleBone(Gun,D.TextureFrame(P.Clip,P.Phase)).TransformPosition(D.PitchPivot));
+		const FQuat Yaw = FRotator(0,FMath::FindDeltaAngleDegrees(Root.Rotator().Yaw,Aim.UpperYawDegrees),0).Quaternion();
+		const FVector GunPivot = Pivot+Yaw.RotateVector(NeutralGun-Pivot);
+		WantedPitch = (*Target-GunPivot).Rotation().Pitch;
+	}
 	for (int32 Side = 0; Side < 2; ++Side)
-		Aim.GunPitchDegrees[Side] = FMath::FInterpConstantTo(Aim.GunPitchDegrees[Side], Target ? FMath::Clamp(Wanted.Pitch, -80.0f, 80.0f) : 0.0f, Dt, 90);
+		Aim.GunPitchDegrees[Side] = FMath::FInterpConstantTo(Aim.GunPitchDegrees[Side], Target ? FMath::Clamp(WantedPitch, D.MinimumPitchDegrees, D.MaximumPitchDegrees) : 0.0f, Dt, D.PitchTurnRateDegreesPerSecond);
 }
 
 bool GuLiVATAnimation::ResolveMuzzle(const UGuLiVATDefinition& D, const FGuLiVATPlayback& P,
@@ -117,7 +170,7 @@ bool GuLiVATAnimation::ResolveMuzzle(const UGuLiVATDefinition& D, const FGuLiVAT
 	const auto& M = D.Muzzles[Side];
 	const float Frame = D.TextureFrame(P.Clip, P.Phase);
 	const FTransform Delta = D.SampleBone(M.BoneIndex, Frame);
-	const int32 Top = D.Bones.IndexOfByPredicate([](const auto& B) { return B.Name == TEXT("Top_M"); });
+	const int32 Top = D.Bones.IndexOfByPredicate([&D](const auto& B) { return B.Name == D.UpperBoneName; });
 	const FVector Upper = D.SampleBone(Top, Frame).TransformPosition(D.UpperPivot);
 	const FVector Pivot = Delta.TransformPosition(M.PitchPivot);
 	FVector Position = Delta.TransformPosition(M.ReferencePosition);
@@ -134,10 +187,23 @@ bool GuLiVATAnimation::ResolveMuzzle(const UGuLiVATDefinition& D, const FGuLiVAT
 
 void GuLiVATAnimation::WriteInstance(UInstancedStaticMeshComponent& C, int32 Index,
 	const UGuLiVATDefinition& D, const FGuLiVATPlayback& P, const FGuLiVATPlayback& Before,
-	const FGuLiMechanicalAnimationState& Aim, float BodyYaw, bool bReset)
+	const FGuLiMechanicalAnimationState& Aim, float BodyYaw, bool bReset, const FVector& Velocity)
 {
 	if (C.NumCustomDataFloats < CustomDataFloatCount || Index < 0) return;
-	const float Values[4] = {D.TextureFrame(P.Clip, P.Phase),
+	float Frame = D.TextureFrame(P.Clip, P.Phase), OtherFrame = Frame, Blend = 0;
+	if (D.bDirectionalBlend && D.Clips.IsValidIndex(P.Clip) && D.Clips[P.Clip].StrideCentimeters > 0)
+	{
+		const FVector Local = FRotator(0,BodyYaw,0).UnrotateVector(Velocity);
+		const float Total = FMath::Abs(Local.X)+FMath::Abs(Local.Y);
+		const int32 X = D.FindClip(Local.X >= 0 ? TEXT("Forward") : TEXT("Backward"));
+		const int32 Y = D.FindClip(Local.Y >= 0 ? TEXT("Right") : TEXT("Left"));
+		if (D.Clips.IsValidIndex(X) && D.Clips.IsValidIndex(Y) && Total > UE_SMALL_NUMBER)
+		{
+			Frame = D.TextureFrame(uint8(X),P.Phase); OtherFrame = D.TextureFrame(uint8(Y),P.Phase);
+			Blend = FMath::Abs(Local.Y)/Total;
+		}
+	}
+	const float Values[4] = {Frame,
 		FMath::DegreesToRadians(FMath::FindDeltaAngleDegrees(BodyYaw, Aim.UpperYawDegrees)),
 		FMath::DegreesToRadians(Aim.GunPitchDegrees[0]), FMath::DegreesToRadians(Aim.GunPitchDegrees[1])};
 	for (int32 Field = 0; Field < 4; ++Field)
@@ -146,5 +212,14 @@ void GuLiVATAnimation::WriteInstance(UInstancedStaticMeshComponent& C, int32 Ind
 			? C.PerInstanceSMCustomData[Index * C.NumCustomDataFloats + FirstCustomData + Field] : Values[Field];
 		C.SetCustomDataValue(Index, FirstCustomData + 4 + Field, Previous, false);
 		C.SetCustomDataValue(Index, FirstCustomData + Field, Values[Field], false);
+	}
+	const float Extra[2] = {OtherFrame, Blend};
+	for (int32 Field = 0; Field < 2; ++Field)
+	{
+		const int32 Slot = 59+Field;
+		const float Previous = bReset ? Extra[Field] : C.PerInstanceSMCustomData.IsValidIndex(Index*C.NumCustomDataFloats+Slot)
+			? C.PerInstanceSMCustomData[Index*C.NumCustomDataFloats+Slot] : Extra[Field];
+		C.SetCustomDataValue(Index,61+Field,Previous,false);
+		C.SetCustomDataValue(Index,Slot,Extra[Field],false);
 	}
 }

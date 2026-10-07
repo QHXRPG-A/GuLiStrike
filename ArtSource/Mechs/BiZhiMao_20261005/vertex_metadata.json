@@ -1,0 +1,2275 @@
+{
+  "version": "BiZhiMao_v1_vertex",
+  "runtime_bones": 0,
+  "runtime_skeletal_components": 0,
+  "source_sha256": "bf566b78fb3fd03c516016ed0e32bc7ee8412929c303283985340d5d5b5d853b",
+  "presentation_scale": 2,
+  "upper_pivot_cm": [
+    0.565493106842041,
+    0.0,
+    251.7650146484375
+  ],
+  "pitch_pivot_cm": [
+    -17.352558135986328,
+    -2.294405747479359e-14,
+    326.4154968261719
+  ],
+  "pitch_axis": [
+    0,
+    -1,
+    0
+  ],
+  "pitch_limits": [
+    -10,
+    45
+  ],
+  "upper_turn_rate": 30,
+  "pitch_turn_rate": 15,
+  "gameplay_bounds_cm": {
+    "min": [
+      -508.27874755859375,
+      -460.9664001464844,
+      -1.798893928527832
+    ],
+    "max": [
+      814.5050048828125,
+      460.96649169921875,
+      690.5267333984375
+    ]
+  },
+  "runtime_render_bounds_cm": {
+    "min": [
+      -900,
+      -900,
+      -100
+    ],
+    "max": [
+      900,
+      900,
+      1600
+    ]
+  },
+  "origin_footprint_radius_cm": 814.877197265625,
+  "gun_linkages": [
+    {
+      "bone_a": 5,
+      "bone_b": 15,
+      "anchor_a": [
+        146.2047576904297,
+        -52.93750762939453,
+        390.75408935546875
+      ],
+      "anchor_b": [
+        216.853515625,
+        -52.93750762939453,
+        275.0127258300781
+      ]
+    },
+    {
+      "bone_a": 4,
+      "bone_b": 16,
+      "anchor_a": [
+        146.2050018310547,
+        52.937496185302734,
+        390.7539978027344
+      ],
+      "anchor_b": [
+        216.8539581298828,
+        52.9375,
+        275.01300048828125
+      ]
+    }
+  ],
+  "lods": [
+    {
+      "lod": 0,
+      "vertex_count": 40842,
+      "texture_width": 4096,
+      "rows_per_frame": 10,
+      "frames_per_clip": 32,
+      "texture_frames": 162,
+      "width": 4096,
+      "height": 1620,
+      "position": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Textures\\T_BiZhiMao_VertexPosition_LOD0.exr",
+      "rotation": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Textures\\T_BiZhiMao_VertexRotation_LOD0.png",
+      "fbx": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\FBX\\SM_BiZhiMao_Vertex_LOD0.fbx",
+      "sections": [
+        {
+          "section": 0,
+          "triangles": 57323,
+          "vertices": 33644
+        },
+        {
+          "section": 1,
+          "triangles": 12794,
+          "vertices": 7198
+        }
+      ],
+      "position_gpu_bytes": 53084160,
+      "rotation_gpu_bytes": 26542080,
+      "maximum_position_half_precision_error_cm_at_scale2": 0.12493896484375,
+      "maximum_rotation_quantization_error_degrees": 0.812764585018158,
+      "source_exr_readback_passed": true,
+      "samples": [
+        {
+          "vertex": 0,
+          "frame": 0,
+          "pixel": [
+            0,
+            0
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 16822,
+          "frame": 0,
+          "pixel": [
+            438,
+            4
+          ],
+          "delta_cm": [
+            -5.6571044921875,
+            4.65765380859375,
+            -6.143341064453125
+          ],
+          "rotation_rgba": [
+            122,
+            122,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 33643,
+          "frame": 0,
+          "pixel": [
+            875,
+            8
+          ],
+          "delta_cm": [
+            -3.0517578125e-05,
+            -9.1552734375e-05,
+            -0.000125885009765625
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 33644,
+          "frame": 0,
+          "pixel": [
+            876,
+            8
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 37243,
+          "frame": 0,
+          "pixel": [
+            379,
+            9
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 40841,
+          "frame": 0,
+          "pixel": [
+            3977,
+            9
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 16,
+          "pixel": [
+            0,
+            160
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 16822,
+          "frame": 16,
+          "pixel": [
+            438,
+            164
+          ],
+          "delta_cm": [
+            -1.8857421875,
+            1.502960205078125,
+            -1.8654022216796875
+          ],
+          "rotation_rgba": [
+            125,
+            126,
+            129,
+            255
+          ]
+        },
+        {
+          "vertex": 33643,
+          "frame": 16,
+          "pixel": [
+            875,
+            168
+          ],
+          "delta_cm": [
+            0.000213623046875,
+            -9.1552734375e-05,
+            -6.103515625e-05
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 33644,
+          "frame": 16,
+          "pixel": [
+            876,
+            168
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 37243,
+          "frame": 16,
+          "pixel": [
+            379,
+            169
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 40841,
+          "frame": 16,
+          "pixel": [
+            3977,
+            169
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 32,
+          "pixel": [
+            0,
+            320
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 16822,
+          "frame": 32,
+          "pixel": [
+            438,
+            324
+          ],
+          "delta_cm": [
+            7.667877197265625,
+            13.809967041015625,
+            -1.3988037109375
+          ],
+          "rotation_rgba": [
+            118,
+            118,
+            126,
+            254
+          ]
+        },
+        {
+          "vertex": 33643,
+          "frame": 32,
+          "pixel": [
+            875,
+            328
+          ],
+          "delta_cm": [
+            22.494415283203125,
+            0.005157470703125,
+            -0.0038852691650390625
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 33644,
+          "frame": 32,
+          "pixel": [
+            876,
+            328
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 37243,
+          "frame": 32,
+          "pixel": [
+            379,
+            329
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 40841,
+          "frame": 32,
+          "pixel": [
+            3977,
+            329
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 96,
+          "pixel": [
+            0,
+            960
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 16822,
+          "frame": 96,
+          "pixel": [
+            438,
+            964
+          ],
+          "delta_cm": [
+            -13.71173095703125,
+            -12.6337890625,
+            -1.4439468383789062
+          ],
+          "rotation_rgba": [
+            119,
+            118,
+            132,
+            254
+          ]
+        },
+        {
+          "vertex": 33643,
+          "frame": 96,
+          "pixel": [
+            875,
+            968
+          ],
+          "delta_cm": [
+            -0.00360107421875,
+            -22.497222900390625,
+            -0.0024318695068359375
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 33644,
+          "frame": 96,
+          "pixel": [
+            876,
+            968
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 37243,
+          "frame": 96,
+          "pixel": [
+            379,
+            969
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 40841,
+          "frame": 96,
+          "pixel": [
+            3977,
+            969
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 161,
+          "pixel": [
+            0,
+            1610
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 16822,
+          "frame": 161,
+          "pixel": [
+            438,
+            1614
+          ],
+          "delta_cm": [
+            -5.6571044921875,
+            4.65765380859375,
+            -6.143341064453125
+          ],
+          "rotation_rgba": [
+            122,
+            122,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 33643,
+          "frame": 161,
+          "pixel": [
+            875,
+            1618
+          ],
+          "delta_cm": [
+            -3.0517578125e-05,
+            -9.1552734375e-05,
+            -0.000125885009765625
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 33644,
+          "frame": 161,
+          "pixel": [
+            876,
+            1618
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 37243,
+          "frame": 161,
+          "pixel": [
+            379,
+            1619
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 40841,
+          "frame": 161,
+          "pixel": [
+            3977,
+            1619
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        }
+      ],
+      "sha256": {
+        "T_BiZhiMao_VertexPosition_LOD0.exr": "59ab51af6fb369450cfb2fc67cb4aa1e8e88c0601e7acc56faf7ce1ce014861c",
+        "T_BiZhiMao_VertexRotation_LOD0.png": "97ec9735e8b243f8bd72b13df3ce81903569c5c2797cb21bc9f1f0bb099c1e45",
+        "SM_BiZhiMao_Vertex_LOD0.fbx": "fe26a00188acd3e2dadf43b1b31a6da26b7e800d5e6977cd244d7d71e12f36e1"
+      }
+    },
+    {
+      "lod": 1,
+      "vertex_count": 38075,
+      "texture_width": 4096,
+      "rows_per_frame": 10,
+      "frames_per_clip": 24,
+      "texture_frames": 122,
+      "width": 4096,
+      "height": 1220,
+      "position": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Textures\\T_BiZhiMao_VertexPosition_LOD1.exr",
+      "rotation": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Textures\\T_BiZhiMao_VertexRotation_LOD1.png",
+      "fbx": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\FBX\\SM_BiZhiMao_Vertex_LOD1.fbx",
+      "sections": [
+        {
+          "section": 0,
+          "triangles": 55594,
+          "vertices": 32764
+        },
+        {
+          "section": 1,
+          "triangles": 9412,
+          "vertices": 5311
+        }
+      ],
+      "position_gpu_bytes": 39976960,
+      "rotation_gpu_bytes": 19988480,
+      "maximum_position_half_precision_error_cm_at_scale2": 0.124969482421875,
+      "maximum_rotation_quantization_error_degrees": 0.7773240804672241,
+      "source_exr_readback_passed": true,
+      "samples": [
+        {
+          "vertex": 0,
+          "frame": 0,
+          "pixel": [
+            0,
+            0
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 16382,
+          "frame": 0,
+          "pixel": [
+            4094,
+            3
+          ],
+          "delta_cm": [
+            -5.826080322265625,
+            4.64996337890625,
+            -7.3205718994140625
+          ],
+          "rotation_rgba": [
+            122,
+            122,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 32763,
+          "frame": 0,
+          "pixel": [
+            4091,
+            7
+          ],
+          "delta_cm": [
+            -3.0517578125e-05,
+            -9.1552734375e-05,
+            -0.000125885009765625
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 32764,
+          "frame": 0,
+          "pixel": [
+            4092,
+            7
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 35419,
+          "frame": 0,
+          "pixel": [
+            2651,
+            8
+          ],
+          "delta_cm": [
+            9.1552734375e-05,
+            3.0517578125e-05,
+            -2.574920654296875e-05
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 38074,
+          "frame": 0,
+          "pixel": [
+            1210,
+            9
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 12,
+          "pixel": [
+            0,
+            120
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 16382,
+          "frame": 12,
+          "pixel": [
+            4094,
+            123
+          ],
+          "delta_cm": [
+            -2.36175537109375,
+            1.638397216796875,
+            -2.5910491943359375
+          ],
+          "rotation_rgba": [
+            125,
+            126,
+            129,
+            255
+          ]
+        },
+        {
+          "vertex": 32763,
+          "frame": 12,
+          "pixel": [
+            4091,
+            127
+          ],
+          "delta_cm": [
+            0.000213623046875,
+            -9.1552734375e-05,
+            -6.103515625e-05
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 32764,
+          "frame": 12,
+          "pixel": [
+            4092,
+            127
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 35419,
+          "frame": 12,
+          "pixel": [
+            2651,
+            128
+          ],
+          "delta_cm": [
+            0.0,
+            -0.0001220703125,
+            -0.00010967254638671875
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 38074,
+          "frame": 12,
+          "pixel": [
+            1210,
+            129
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 24,
+          "pixel": [
+            0,
+            240
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 16382,
+          "frame": 24,
+          "pixel": [
+            4094,
+            243
+          ],
+          "delta_cm": [
+            8.434783935546875,
+            13.3839111328125,
+            -3.1085739135742188
+          ],
+          "rotation_rgba": [
+            118,
+            118,
+            126,
+            254
+          ]
+        },
+        {
+          "vertex": 32763,
+          "frame": 24,
+          "pixel": [
+            4091,
+            247
+          ],
+          "delta_cm": [
+            22.494415283203125,
+            0.005157470703125,
+            -0.0038852691650390625
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 32764,
+          "frame": 24,
+          "pixel": [
+            4092,
+            247
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 35419,
+          "frame": 24,
+          "pixel": [
+            2651,
+            248
+          ],
+          "delta_cm": [
+            59.9935302734375,
+            0.003021240234375,
+            0.0028696060180664062
+          ],
+          "rotation_rgba": [
+            128,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 38074,
+          "frame": 24,
+          "pixel": [
+            1210,
+            249
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 72,
+          "pixel": [
+            0,
+            720
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 16382,
+          "frame": 72,
+          "pixel": [
+            4094,
+            723
+          ],
+          "delta_cm": [
+            -14.8121337890625,
+            -12.37060546875,
+            -3.0621795654296875
+          ],
+          "rotation_rgba": [
+            119,
+            118,
+            132,
+            254
+          ]
+        },
+        {
+          "vertex": 32763,
+          "frame": 72,
+          "pixel": [
+            4091,
+            727
+          ],
+          "delta_cm": [
+            -0.00360107421875,
+            -22.497222900390625,
+            -0.0024318695068359375
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 32764,
+          "frame": 72,
+          "pixel": [
+            4092,
+            727
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 35419,
+          "frame": 72,
+          "pixel": [
+            2651,
+            728
+          ],
+          "delta_cm": [
+            -0.005584716796875,
+            -59.995849609375,
+            0.0028619766235351562
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 38074,
+          "frame": 72,
+          "pixel": [
+            1210,
+            729
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 121,
+          "pixel": [
+            0,
+            1210
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 16382,
+          "frame": 121,
+          "pixel": [
+            4094,
+            1213
+          ],
+          "delta_cm": [
+            -5.826080322265625,
+            4.64996337890625,
+            -7.3205718994140625
+          ],
+          "rotation_rgba": [
+            122,
+            122,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 32763,
+          "frame": 121,
+          "pixel": [
+            4091,
+            1217
+          ],
+          "delta_cm": [
+            -3.0517578125e-05,
+            -9.1552734375e-05,
+            -0.000125885009765625
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 32764,
+          "frame": 121,
+          "pixel": [
+            4092,
+            1217
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 35419,
+          "frame": 121,
+          "pixel": [
+            2651,
+            1218
+          ],
+          "delta_cm": [
+            9.1552734375e-05,
+            3.0517578125e-05,
+            -2.574920654296875e-05
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 38074,
+          "frame": 121,
+          "pixel": [
+            1210,
+            1219
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        }
+      ],
+      "sha256": {
+        "T_BiZhiMao_VertexPosition_LOD1.exr": "bebe179d63f628f4afaafa482e609a96d11d8816dd4226b697b4b3528af70226",
+        "T_BiZhiMao_VertexRotation_LOD1.png": "4eb571bdf1aef9b7da9d43eeb99b8577e8051b09fc4de2e01971f25d4e9f7a4c",
+        "SM_BiZhiMao_Vertex_LOD1.fbx": "a6392d69ca1fe12d0f9d44d487f55e8c07a58aeaa165d574c3402799356ae570"
+      }
+    },
+    {
+      "lod": 2,
+      "vertex_count": 30913,
+      "texture_width": 4096,
+      "rows_per_frame": 8,
+      "frames_per_clip": 16,
+      "texture_frames": 82,
+      "width": 4096,
+      "height": 656,
+      "position": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Textures\\T_BiZhiMao_VertexPosition_LOD2.exr",
+      "rotation": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Textures\\T_BiZhiMao_VertexRotation_LOD2.png",
+      "fbx": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\FBX\\SM_BiZhiMao_Vertex_LOD2.fbx",
+      "sections": [
+        {
+          "section": 0,
+          "triangles": 46326,
+          "vertices": 27892
+        },
+        {
+          "section": 1,
+          "triangles": 5570,
+          "vertices": 3021
+        }
+      ],
+      "position_gpu_bytes": 21495808,
+      "rotation_gpu_bytes": 10747904,
+      "maximum_position_half_precision_error_cm_at_scale2": 0.125,
+      "maximum_rotation_quantization_error_degrees": 0.8146883249282837,
+      "source_exr_readback_passed": true,
+      "samples": [
+        {
+          "vertex": 0,
+          "frame": 0,
+          "pixel": [
+            0,
+            0
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 13946,
+          "frame": 0,
+          "pixel": [
+            1658,
+            3
+          ],
+          "delta_cm": [
+            0.89599609375,
+            -1.2761993408203125,
+            -3.2397613525390625
+          ],
+          "rotation_rgba": [
+            130,
+            131,
+            127,
+            255
+          ]
+        },
+        {
+          "vertex": 27891,
+          "frame": 0,
+          "pixel": [
+            3315,
+            6
+          ],
+          "delta_cm": [
+            -3.0517578125e-05,
+            -9.1552734375e-05,
+            -0.000125885009765625
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 27892,
+          "frame": 0,
+          "pixel": [
+            3316,
+            6
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 29402,
+          "frame": 0,
+          "pixel": [
+            730,
+            7
+          ],
+          "delta_cm": [
+            13.4464111328125,
+            -7.251007080078125,
+            4.318145751953125
+          ],
+          "rotation_rgba": [
+            126,
+            124,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 30912,
+          "frame": 0,
+          "pixel": [
+            2240,
+            7
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 8,
+          "pixel": [
+            0,
+            64
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 13946,
+          "frame": 8,
+          "pixel": [
+            1658,
+            67
+          ],
+          "delta_cm": [
+            3.8112335205078125,
+            -5.47283935546875,
+            -33.53544616699219
+          ],
+          "rotation_rgba": [
+            147,
+            159,
+            125,
+            249
+          ]
+        },
+        {
+          "vertex": 27891,
+          "frame": 8,
+          "pixel": [
+            3315,
+            70
+          ],
+          "delta_cm": [
+            0.000213623046875,
+            -9.1552734375e-05,
+            -6.103515625e-05
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 27892,
+          "frame": 8,
+          "pixel": [
+            3316,
+            70
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 29402,
+          "frame": 8,
+          "pixel": [
+            730,
+            71
+          ],
+          "delta_cm": [
+            77.73486328125,
+            -36.3421630859375,
+            -3.402496337890625
+          ],
+          "rotation_rgba": [
+            118,
+            101,
+            131,
+            252
+          ]
+        },
+        {
+          "vertex": 30912,
+          "frame": 8,
+          "pixel": [
+            2240,
+            71
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 16,
+          "pixel": [
+            0,
+            128
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 13946,
+          "frame": 16,
+          "pixel": [
+            1658,
+            131
+          ],
+          "delta_cm": [
+            6.878021240234375,
+            3.485504150390625,
+            -7.399383544921875
+          ],
+          "rotation_rgba": [
+            132,
+            135,
+            131,
+            255
+          ]
+        },
+        {
+          "vertex": 27891,
+          "frame": 16,
+          "pixel": [
+            3315,
+            134
+          ],
+          "delta_cm": [
+            22.494415283203125,
+            0.005157470703125,
+            -0.0038852691650390625
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 27892,
+          "frame": 16,
+          "pixel": [
+            3316,
+            134
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 29402,
+          "frame": 16,
+          "pixel": [
+            730,
+            135
+          ],
+          "delta_cm": [
+            28.60321044921875,
+            16.4854736328125,
+            -16.611175537109375
+          ],
+          "rotation_rgba": [
+            127,
+            126,
+            132,
+            255
+          ]
+        },
+        {
+          "vertex": 30912,
+          "frame": 16,
+          "pixel": [
+            2240,
+            135
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 48,
+          "pixel": [
+            0,
+            384
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 13946,
+          "frame": 48,
+          "pixel": [
+            1658,
+            387
+          ],
+          "delta_cm": [
+            -8.310226440429688,
+            -12.156051635742188,
+            -5.2274627685546875
+          ],
+          "rotation_rgba": [
+            131,
+            132,
+            118,
+            255
+          ]
+        },
+        {
+          "vertex": 27891,
+          "frame": 48,
+          "pixel": [
+            3315,
+            390
+          ],
+          "delta_cm": [
+            -0.00360107421875,
+            -22.497222900390625,
+            -0.0024318695068359375
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 27892,
+          "frame": 48,
+          "pixel": [
+            3316,
+            390
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 29402,
+          "frame": 48,
+          "pixel": [
+            730,
+            391
+          ],
+          "delta_cm": [
+            -12.91656494140625,
+            -57.43267822265625,
+            -12.221420288085938
+          ],
+          "rotation_rgba": [
+            128,
+            127,
+            119,
+            255
+          ]
+        },
+        {
+          "vertex": 30912,
+          "frame": 48,
+          "pixel": [
+            2240,
+            391
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 81,
+          "pixel": [
+            0,
+            648
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 13946,
+          "frame": 81,
+          "pixel": [
+            1658,
+            651
+          ],
+          "delta_cm": [
+            0.89599609375,
+            -1.2761993408203125,
+            -3.2397613525390625
+          ],
+          "rotation_rgba": [
+            130,
+            131,
+            127,
+            255
+          ]
+        },
+        {
+          "vertex": 27891,
+          "frame": 81,
+          "pixel": [
+            3315,
+            654
+          ],
+          "delta_cm": [
+            -3.0517578125e-05,
+            -9.1552734375e-05,
+            -0.000125885009765625
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 27892,
+          "frame": 81,
+          "pixel": [
+            3316,
+            654
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 29402,
+          "frame": 81,
+          "pixel": [
+            730,
+            655
+          ],
+          "delta_cm": [
+            13.4464111328125,
+            -7.251007080078125,
+            4.318145751953125
+          ],
+          "rotation_rgba": [
+            126,
+            124,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 30912,
+          "frame": 81,
+          "pixel": [
+            2240,
+            655
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        }
+      ],
+      "sha256": {
+        "T_BiZhiMao_VertexPosition_LOD2.exr": "2f760a4ca3fb7219f719bed18a48657ff8429889b327eabf7fef5fa09198a7aa",
+        "T_BiZhiMao_VertexRotation_LOD2.png": "b4856944ecd2203f48ac2b926447152b2dc4fa167a0de47eb252c4aa5f414b46",
+        "SM_BiZhiMao_Vertex_LOD2.fbx": "d95083f00812ce075a222976e7b6cd996530e49e17e3f1d02485f85cf14b2afa"
+      }
+    },
+    {
+      "lod": 3,
+      "vertex_count": 23308,
+      "texture_width": 4096,
+      "rows_per_frame": 6,
+      "frames_per_clip": 8,
+      "texture_frames": 42,
+      "width": 4096,
+      "height": 252,
+      "position": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Textures\\T_BiZhiMao_VertexPosition_LOD3.exr",
+      "rotation": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Textures\\T_BiZhiMao_VertexRotation_LOD3.png",
+      "fbx": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\FBX\\SM_BiZhiMao_Vertex_LOD3.fbx",
+      "sections": [
+        {
+          "section": 0,
+          "triangles": 38428,
+          "vertices": 23308
+        }
+      ],
+      "position_gpu_bytes": 8257536,
+      "rotation_gpu_bytes": 4128768,
+      "maximum_position_half_precision_error_cm_at_scale2": 0.12481689453125,
+      "maximum_rotation_quantization_error_degrees": 0.778330385684967,
+      "source_exr_readback_passed": true,
+      "samples": [
+        {
+          "vertex": 0,
+          "frame": 0,
+          "pixel": [
+            0,
+            0
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 11654,
+          "frame": 0,
+          "pixel": [
+            3462,
+            2
+          ],
+          "delta_cm": [
+            7.4361572265625,
+            -6.660552978515625,
+            -8.2840576171875
+          ],
+          "rotation_rgba": [
+            126,
+            124,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 23307,
+          "frame": 0,
+          "pixel": [
+            2827,
+            5
+          ],
+          "delta_cm": [
+            -3.0517578125e-05,
+            -9.1552734375e-05,
+            -0.000125885009765625
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 4,
+          "pixel": [
+            0,
+            24
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 11654,
+          "frame": 4,
+          "pixel": [
+            3462,
+            26
+          ],
+          "delta_cm": [
+            51.938690185546875,
+            -38.85990905761719,
+            -99.49601745605469
+          ],
+          "rotation_rgba": [
+            118,
+            101,
+            131,
+            252
+          ]
+        },
+        {
+          "vertex": 23307,
+          "frame": 4,
+          "pixel": [
+            2827,
+            29
+          ],
+          "delta_cm": [
+            0.000152587890625,
+            0.0,
+            1.52587890625e-05
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 8,
+          "pixel": [
+            0,
+            48
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 11654,
+          "frame": 8,
+          "pixel": [
+            3462,
+            50
+          ],
+          "delta_cm": [
+            21.628662109375,
+            2.5972442626953125,
+            -21.183990478515625
+          ],
+          "rotation_rgba": [
+            127,
+            126,
+            132,
+            255
+          ]
+        },
+        {
+          "vertex": 23307,
+          "frame": 8,
+          "pixel": [
+            2827,
+            53
+          ],
+          "delta_cm": [
+            22.494415283203125,
+            0.005157470703125,
+            -0.0038852691650390625
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 24,
+          "pixel": [
+            0,
+            144
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 11654,
+          "frame": 24,
+          "pixel": [
+            3462,
+            146
+          ],
+          "delta_cm": [
+            -3.898468017578125,
+            -34.32872009277344,
+            -14.7003173828125
+          ],
+          "rotation_rgba": [
+            128,
+            127,
+            119,
+            255
+          ]
+        },
+        {
+          "vertex": 23307,
+          "frame": 24,
+          "pixel": [
+            2827,
+            149
+          ],
+          "delta_cm": [
+            -0.00360107421875,
+            -22.497222900390625,
+            -0.0024318695068359375
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 0,
+          "frame": 41,
+          "pixel": [
+            0,
+            246
+          ],
+          "delta_cm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rgba": [
+            128,
+            128,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 11654,
+          "frame": 41,
+          "pixel": [
+            3462,
+            248
+          ],
+          "delta_cm": [
+            7.4361572265625,
+            -6.660552978515625,
+            -8.2840576171875
+          ],
+          "rotation_rgba": [
+            126,
+            124,
+            128,
+            255
+          ]
+        },
+        {
+          "vertex": 23307,
+          "frame": 41,
+          "pixel": [
+            2827,
+            251
+          ],
+          "delta_cm": [
+            -3.0517578125e-05,
+            -9.1552734375e-05,
+            -0.000125885009765625
+          ],
+          "rotation_rgba": [
+            127,
+            127,
+            128,
+            255
+          ]
+        }
+      ],
+      "sha256": {
+        "T_BiZhiMao_VertexPosition_LOD3.exr": "c7cfea1d0c208f6fb26502d612362ca7b61ad750577a6aad33d00a627173fb51",
+        "T_BiZhiMao_VertexRotation_LOD3.png": "4d64926870e30e4d64c5eb1b54c64924b80d391382238e901bf5a726d99e6d0a",
+        "SM_BiZhiMao_Vertex_LOD3.fbx": "38951530e44ffa7e3fd4227f82d73ec0b9247725d7cd4d4ae4c3e582e527fca7"
+      }
+    }
+  ],
+  "clips": [
+    {
+      "name": "Idle",
+      "first_frame": 0,
+      "frame_count": 32,
+      "duration_seconds": 8.666666666666666,
+      "stride_cm": 0.0,
+      "loop": true
+    },
+    {
+      "name": "Forward",
+      "first_frame": 32,
+      "frame_count": 32,
+      "duration_seconds": 3.0,
+      "stride_cm": 300.0,
+      "loop": true
+    },
+    {
+      "name": "Backward",
+      "first_frame": 64,
+      "frame_count": 32,
+      "duration_seconds": 3.0,
+      "stride_cm": 300.0,
+      "loop": true
+    },
+    {
+      "name": "Left",
+      "first_frame": 96,
+      "frame_count": 32,
+      "duration_seconds": 3.0,
+      "stride_cm": 300.0,
+      "loop": true
+    },
+    {
+      "name": "Right",
+      "first_frame": 128,
+      "frame_count": 32,
+      "duration_seconds": 3.0,
+      "stride_cm": 300.0,
+      "loop": true
+    },
+    {
+      "name": "Death",
+      "first_frame": 160,
+      "frame_count": 2,
+      "duration_seconds": 0.03333333333333333,
+      "stride_cm": 0,
+      "loop": false
+    }
+  ],
+  "gpu_animation_bytes": 184221696,
+  "actual_version_approval": "pending"
+}

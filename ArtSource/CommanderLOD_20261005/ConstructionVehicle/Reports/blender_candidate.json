@@ -1,0 +1,385 @@
+{
+  "name": "ConstructionVehicle",
+  "id": 4,
+  "display_name": "建造车",
+  "blend": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\ConstructionVehicle\\ConstructionVehicle_3Tier.blend",
+  "triangles": [
+    14676,
+    5889,
+    1508
+  ],
+  "meshes": [
+    {
+      "source": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 5660,
+          "mesh_names": [
+            "SM_TeslaCollector_Styled_LOD0"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            2
+          ]
+        },
+        {
+          "index": 1,
+          "triangles": 2264,
+          "mesh_names": [
+            "SM_TeslaCollector_Styled_LOD1"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            2
+          ]
+        },
+        {
+          "index": 2,
+          "triangles": 509,
+          "mesh_names": [
+            "SM_TeslaCollector_Styled_LOD2"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            2
+          ]
+        }
+      ],
+      "lod0_signature": "f05927cc006be01ff018612699bc08b102d4869fcc7b3f3376661c119e5cebf0",
+      "source_lod0_signature": "f05927cc006be01ff018612699bc08b102d4869fcc7b3f3376661c119e5cebf0",
+      "lod0_preserved": true,
+      "native_triangles": [
+        5660,
+        2264,
+        509
+      ],
+      "fbx_triangles": [
+        5660,
+        2264,
+        509
+      ],
+      "export_triangle_delta": [
+        0,
+        0,
+        0
+      ],
+      "armatures": 0
+    },
+    {
+      "source": "/Game/MC_Vehicle_Constructor/Meshes/Cockpits/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 514,
+          "mesh_names": [
+            "Cockpit_Freight_Wide_LOD0"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            1
+          ]
+        },
+        {
+          "index": 1,
+          "triangles": 206,
+          "mesh_names": [
+            "Cockpit_Freight_Wide_LOD1"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            1
+          ]
+        },
+        {
+          "index": 2,
+          "triangles": 64,
+          "mesh_names": [
+            "Cockpit_Freight_Wide_LOD2"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            1
+          ]
+        }
+      ],
+      "lod0_signature": "b25ffee2389cf57b66d457aa3cbc35617e51840217efa4ca6dca2222f9f8c6f4",
+      "source_lod0_signature": "b25ffee2389cf57b66d457aa3cbc35617e51840217efa4ca6dca2222f9f8c6f4",
+      "lod0_preserved": true,
+      "native_triangles": [
+        514,
+        206,
+        64
+      ],
+      "fbx_triangles": [
+        514,
+        206,
+        64
+      ],
+      "export_triangle_delta": [
+        0,
+        0,
+        0
+      ],
+      "armatures": 0
+    },
+    {
+      "source": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Side_Wings/Side_Winglets/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 42,
+          "mesh_names": [
+            "Side_Winglet_Spike_Lvl1_LOD0"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            1
+          ]
+        },
+        {
+          "index": 1,
+          "triangles": 42,
+          "mesh_names": [
+            "Side_Winglet_Spike_Lvl1_LOD1"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            1
+          ]
+        },
+        {
+          "index": 2,
+          "triangles": 42,
+          "mesh_names": [
+            "Side_Winglet_Spike_Lvl1_LOD2"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            1
+          ]
+        }
+      ],
+      "lod0_signature": "2343652aa87cc10a824de87af5989c3f33990a0d3ac950a689cbb4df4b079e02",
+      "source_lod0_signature": "2343652aa87cc10a824de87af5989c3f33990a0d3ac950a689cbb4df4b079e02",
+      "lod0_preserved": true,
+      "native_triangles": [
+        42,
+        42,
+        42
+      ],
+      "fbx_triangles": [
+        42,
+        42,
+        42
+      ],
+      "export_triangle_delta": [
+        0,
+        0,
+        0
+      ],
+      "armatures": 0
+    },
+    {
+      "source": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Weapons/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 240,
+          "mesh_names": [
+            "Weapon_Rocket_Mount_Lvl2_LOD0"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            1
+          ]
+        },
+        {
+          "index": 1,
+          "triangles": 93,
+          "mesh_names": [
+            "Weapon_Rocket_Mount_Lvl2_LOD1"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            1
+          ]
+        },
+        {
+          "index": 2,
+          "triangles": 63,
+          "mesh_names": [
+            "Weapon_Rocket_Mount_Lvl2_LOD2"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            1
+          ]
+        }
+      ],
+      "lod0_signature": "314f0843a7c2fb2356a7709c846b36f60d3f29daa7edafc42250af39d01b2002",
+      "source_lod0_signature": "314f0843a7c2fb2356a7709c846b36f60d3f29daa7edafc42250af39d01b2002",
+      "lod0_preserved": true,
+      "native_triangles": [
+        240,
+        95,
+        64
+      ],
+      "fbx_triangles": [
+        240,
+        93,
+        63
+      ],
+      "export_triangle_delta": [
+        0,
+        2,
+        1
+      ],
+      "armatures": 0
+    },
+    {
+      "source": "/Game/MC_Vehicle_Constructor/Meshes/Top/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 160,
+          "mesh_names": [
+            "Top_Turret_2x_Lvl1_LOD0"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            1
+          ]
+        },
+        {
+          "index": 1,
+          "triangles": 64,
+          "mesh_names": [
+            "Top_Turret_2x_Lvl1_LOD1"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            1
+          ]
+        },
+        {
+          "index": 2,
+          "triangles": 64,
+          "mesh_names": [
+            "Top_Turret_2x_Lvl1_LOD2"
+          ],
+          "uv_channels": [
+            2
+          ],
+          "materials": [
+            1
+          ]
+        }
+      ],
+      "lod0_signature": "e7674b3796c34cf700b1c09d4ae64ef8150a026ddcef514e837cb2acfabb2acc",
+      "source_lod0_signature": "e7674b3796c34cf700b1c09d4ae64ef8150a026ddcef514e837cb2acfabb2acc",
+      "lod0_preserved": true,
+      "native_triangles": [
+        160,
+        64,
+        64
+      ],
+      "fbx_triangles": [
+        160,
+        64,
+        64
+      ],
+      "export_triangle_delta": [
+        0,
+        0,
+        0
+      ],
+      "armatures": 0
+    },
+    {
+      "source": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Transporter/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+      "lods": [
+        {
+          "index": 0,
+          "triangles": 2160,
+          "mesh_names": [
+            "Chassis_Transporter_Cockpit_Lvl2_LOD0"
+          ],
+          "uv_channels": [
+            1
+          ],
+          "materials": [
+            1
+          ]
+        },
+        {
+          "index": 1,
+          "triangles": 863,
+          "mesh_names": [
+            "Chassis_Transporter_Cockpit_Lvl2_LOD1"
+          ],
+          "uv_channels": [
+            1
+          ],
+          "materials": [
+            1
+          ]
+        },
+        {
+          "index": 2,
+          "triangles": 194,
+          "mesh_names": [
+            "Chassis_Transporter_Cockpit_Lvl2_LOD2"
+          ],
+          "uv_channels": [
+            1
+          ],
+          "materials": [
+            1
+          ]
+        }
+      ],
+      "lod0_signature": "d49a1229a527d30cb782a90af0037bc2e61aeb712b7a8992e919e4a17eca0224",
+      "source_lod0_signature": "d49a1229a527d30cb782a90af0037bc2e61aeb712b7a8992e919e4a17eca0224",
+      "lod0_preserved": true,
+      "native_triangles": null,
+      "fbx_triangles": [
+        2160,
+        863,
+        194
+      ],
+      "export_triangle_delta": null,
+      "armatures": 1
+    }
+  ],
+  "lod0_preserved": true,
+  "approval": "pending"
+}

@@ -37,34 +37,18 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | combat, commander, network, performance, ship, wingman | 7/8 (88%) | 补齐同负载旧版差值、原生60/120Hz和未覆盖的视觉与重连矩阵。 | 2026-10-04 |
+| [彼之矛工程车建造与四足重炮](../DevelopmentDocumentation/20261005-彼之矛工程车建造与四足重炮.md) | art, assets, building, commander | 9/10 (90%) | 在LVL_CommanderMassPrototype的BiZhiMaoQA区由玩家验证B→7施工、固定底座四向移动和目标炮台跟随；攻击逻辑另行制定。 | 2026-10-05 |
+| [ControlRig 机甲美术统一 — 制作与审核记录](../DevelopmentDocumentation/20261004-ControlRig机甲美术统一.md) | art, assets, rendering | 7/7 (100%) | 指挥官LOD说明已按2026-10-05用户指令勘误，当前总共三档；历史源保留，新的实际版本待审核。 | 2026-10-04 |
 | [机枪枪口命中与弹道照明](../DevelopmentDocumentation/20260930-机枪枪口命中与弹道照明.md) | combat, commander, vfx | — | 玩家在LVL_CommanderMassPrototype验证两种地面兵种照明、全部机枪命中及密集交火清理。 | 2026-09-30 |
-| [指挥官三档镜头与总览LOD — 实施与交付](../DevelopmentDocumentation/20260930-指挥官三档镜头与总览LOD.md) | commander, performance, ui | 8/9 (89%) | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 | 2026-09-30 |
-| [指挥官统一三级LOD — 实施与接入约定](../DevelopmentDocumentation/20260929-指挥官统一三级LOD.md) | commander, performance | 8/10 (80%) | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 原100台完整人数、多World和性能验证仍独立待定。 | 2026-09-30 |
-| [重防号导弹解锁与肉鸽卡牌 — 技术方案](../DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md) | art, combat, commander, performance, ui | 10/13 (77%) | 玩家直接进入LVL_CommanderMassPrototype复查v3射程、爆炸/预警和烟迹；无需候选命令，完整运行与性能实测仍待反馈。 | 2026-09-30 |
-| [重防号悬浮与GPU引擎喷流](../DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md) | commander, performance, presentation | — | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 | 2026-09-30 |
-| [肉鸽卡牌单行文案与高亮 — 实施记录](../DevelopmentDocumentation/20260929-肉鸽卡牌单行文案与高亮.md) | commander, ui | 6/7 (86%) | 在LVL_CommanderMassPrototype重新进入游戏按F4，复验单位、属性、黄色粗体和不同窗口比例的单行显示。 | 2026-09-29 |
-| [F4肉鸽卡牌重选 — 实施记录](../DevelopmentDocumentation/20260929-F4肉鸽卡牌重选.md) | combat, commander, ui | 6/6 (100%) | 重新打开源码版编辑器，在LVL_CommanderMassPrototype按F4验证重选、无其他牌提示和确认流程。 | 2026-09-29 |
-| [Mass无骨骼动画与远距离持续显示](../DevelopmentDocumentation/20260929-Mass无骨骼动画与远距离持续显示.md) | combat, commander, performance, presentation, ui | — | 启动源码版编辑器加载已构建的模块，在现有Mass地图完成实机验收与性能采样。 | 2026-09-29 |
-| [重防号能力卡 — 六层视差与可编辑文案交付](../DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md) | assets, rendering, ui | 7/9 (78%) | 用户在LVL_WarMachineTarotReview核验三张新牌面、极限偏转与既有两次点击流程。 | 2026-09-29 |
-| [提速单位坡面卡住与子弹提前显示修复](../DevelopmentDocumentation/20260928-提速单位坡面卡住与子弹提前显示修复.md) | combat, commander, vfx | — | 在LVL_CommanderMassPrototype通过F4叠加五张机动卡，框选重防号上坡并观察交战弹道，完成玩家效果验收。 | 2026-09-28 |
 | [肉鸽卡牌数据表与实战选牌 — 技术方案](../DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md) | combat, commander, performance, ui, vfx | 10/11 (91%) | 玩家在 LVL_CommanderMassPrototype 按 F4 选牌，核验光粒随机散布、错时上升和密度。 | 2026-09-28 |
 | [三棵指挥官StateTree分层重构 — 技术方案与交付](../DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md) | building, commander, resources | 10/11 (91%) | 在 /Game/Maps/LVL_CommanderMassPrototype 按审核步骤确认三棵树的持续阶段、局部恢复和公共打断效果。 | 2026-09-28 |
 | [Mass分帧寻路与避障稳定性](../DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md) | commander, network, performance | 9/11 (82%) | 玩家在LVL_CommanderMassPrototype的MassNavRepair_GiftEdge确认R2效果。 | 2026-09-24 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | building, commander, data, economy, map | 18/20 (90%) | 在已加载屋顶修复的原型地图验证据点出口、赠品清场与矿厂正常入厂；原包围和边界未验证项继续保留。 | 2026-09-24 |
 | [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | combat, commander, network, ship, ui, vfx, wingman | 8/8 (100%) | 在已加载新代码的 /Game/Maps/LVL_CommanderMassPrototype 的 TeleportGround 观察点验收落位与回源。 | 2026-09-24 |
-| [Mass历史插值与三倍速度纠偏](../DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md) | commander, movement, network, performance | 13/15 (87%) | 定位位置队列长等待中引擎补额、保守预留与命令状态屏障的占比；独立追查导航单步跳点，保留晚加入/重连及紧急状态专项验收。 | 2026-09-23 |
-| [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | commander, performance, ui | 3/4 (75%) | 由玩家核对原地图左上角显示、窗口适配和RTT；不自动启动PIE。 | 2026-09-23 |
-| [导航内存优化与对局容量预算](../DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md) | navigation, performance | 11/13 (85%) | 玩家核对连续纠偏与HUD；服务端异常XY位移、姿态供给及专服容量测量继续后续处理。 | 2026-09-23 |
-| [三张视差3D卡牌交互演示 — 技术方案](../DevelopmentDocumentation/20260922-三张视差3D卡牌交互演示.md) | presentation, ui, vfx | 9/10 (90%) | 在 LVL_CardRevealDemo 体验两次点击流程、±12° 悬停以及窗口失焦回正，确认视觉与手感。 | 2026-09-22 |
-| [指挥官部队StateTree接入与特殊任务退役 — 技术方案](../DevelopmentDocumentation/20260921-指挥官部队StateTree接入与特殊任务退役.md) | building, commander, resources | 10/13 (77%) | 在LVL_CommanderMassPrototype补齐矿位、施工、改令及通道异常矩阵，再完成新逻辑10/30台负载与30分钟性能验收，并收集玩家效果反馈。 | 2026-09-22 |
-| [地面机甲辅助瞄准 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md) | combat, data, ground-mech, input | 6/7 (86%) | 玩家在既有FireReview观察射向修正、最近目标切换、离圈自由瞄准及鼠标位置不变。 | 2026-09-21 |
-| [玩家地面机甲与Mass单位立体碰撞 — 技术方案与实施记录](../DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md) | movement, navigation, network, performance | 14/16 (88%) | 完成Listen/Dedicated真实接触验收并记录仍未覆盖的视觉与网络条件。 | 2026-09-20 |
 | [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | combat, input, network, vfx | 8/9 (89%) | 用户审核FireReview的枪口、弹道及缓冲后坐；批准后将已验证配置接到正式BP_GroundMech_Light。 | 2026-09-20 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | commander, navigation, resources | 4/4 (100%) | 后续确认旧BuildingWorld测试更新范围，补密集狭路及大规模性能观察。 | 2026-09-15 |
 | [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | combat, commander, data, wingman | 8/8 (100%) | 本次归并已交付；前次4项现有回归适配仍等待用户范围确认。 | 2026-09-14 |
 | [地图资源密度涂绘与导出 — 技术方案与实施记录](../DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md) | data-pipeline, map-authoring, outpost, resource | 8/9 (89%) | 保存并重启旧 Editor，在隔离验证地图执行人工验收矩阵并记录证据。 | 2026-09-10 |
-| [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | combat, ship, ui, vfx, wingman | — | 在交互式源码Editor中补做三种目标分辨率、分屏、贴地绕山、Listen/Dedicated/Late Join及10枚齐射GPU/Bounds截图验收。 | 2026-09-10 |
 | [指挥官双机甲骨骼与武器挂点 — 技术方案](../DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md) | assets, combat, commander, network, vfx | 7/12 (58%) | 完成主体、武器、四足/六足 FK 和 IK 控制，保留辅助结构 | 2026-09-07 |
 | [指挥官 WM01 第二兵种与多 ISM 表现 — 技术方案](../DevelopmentDocumentation/20260904-指挥官WM01第二兵种与多ISM表现.md) | assets, combat, commander, network, ui | 9/12 (75%) | 在最终 WM01 资产和数据上运行获准的聚焦测试（本轮按要求停在测试阶段） | 2026-09-05 |
 | [僚机无规则护航盘旋技能重构 — 开发文档](../DevelopmentDocumentation/20260904-僚机无规则护航盘旋技能重构.md) | combat, commander, network, ship, wingman | 11/13 (85%) | 向用户说明拟新增测试及文件，取得明确测试许可 | 2026-09-05 |
@@ -74,10 +58,31 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [SSF建筑美术统一与三档LOD](../DevelopmentDocumentation/20261005-SSF建筑美术统一与三档LOD.md) | art, assets, rendering | 11/11 (100%) | 本轮资产制作与交付已验收；后续游戏接入或新版本改造另按用户任务执行。 | 2026-10-07 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。 | 2026-10-07 |
+| [指挥官三档LOD纠正与资源迁移](../DevelopmentDocumentation/20261005-指挥官三档LOD纠正与资源迁移.md) | art, assets, commander, rendering | 12/12 (100%) | — | 2026-10-05 |
+| [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | combat, commander, network, performance, ship, wingman | 7/8 (88%) | 补齐同负载旧版差值、原生60/120Hz和未覆盖的视觉与重连矩阵。 | 2026-10-05 |
+| [指挥官三档镜头与总览LOD — 实施与交付](../DevelopmentDocumentation/20260930-指挥官三档镜头与总览LOD.md) | commander, performance, ui | 8/9 (89%) | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 | 2026-10-05 |
+| [指挥官统一三级LOD — 实施与接入约定](../DevelopmentDocumentation/20260929-指挥官统一三级LOD.md) | commander, performance | 8/10 (80%) | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 原100台完整人数、多World和性能验证仍独立待定。 | 2026-10-05 |
+| [肉鸽卡牌单行文案与高亮 — 实施记录](../DevelopmentDocumentation/20260929-肉鸽卡牌单行文案与高亮.md) | commander, ui | 6/7 (86%) | 在LVL_CommanderMassPrototype重新进入游戏按F4，复验单位、属性、黄色粗体和不同窗口比例的单行显示。 | 2026-10-05 |
+| [F4肉鸽卡牌重选 — 实施记录](../DevelopmentDocumentation/20260929-F4肉鸽卡牌重选.md) | combat, commander, ui | 6/6 (100%) | 重新打开源码版编辑器，在LVL_CommanderMassPrototype按F4验证重选、无其他牌提示和确认流程。 | 2026-10-05 |
+| [重防号导弹解锁与肉鸽卡牌 — 技术方案](../DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md) | art, combat, commander, performance, ui | 9/12 (75%) | 玩家直接进入LVL_CommanderMassPrototype复查v3射程、爆炸/预警和烟迹；无需候选命令，完整运行与性能实测仍待反馈。 | 2026-10-05 |
+| [重防号悬浮与GPU引擎喷流](../DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md) | commander, performance, presentation | — | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 | 2026-10-05 |
+| [Mass无骨骼动画与远距离持续显示](../DevelopmentDocumentation/20260929-Mass无骨骼动画与远距离持续显示.md) | combat, commander, performance, presentation, ui | — | 启动源码版编辑器加载已构建的模块，在现有Mass地图完成实机验收与性能采样。 | 2026-10-05 |
+| [提速单位坡面卡住与子弹提前显示修复](../DevelopmentDocumentation/20260928-提速单位坡面卡住与子弹提前显示修复.md) | combat, commander, vfx | — | 在LVL_CommanderMassPrototype通过F4叠加五张机动卡，框选重防号上坡并观察交战弹道，完成玩家效果验收。 | 2026-10-05 |
+| [重防号能力卡 — 六层视差与可编辑文案交付](../DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md) | assets, rendering, ui | 7/9 (78%) | 用户在LVL_WarMachineTarotReview核验三张新牌面、极限偏转与既有两次点击流程。 | 2026-10-05 |
+| [Mass历史插值与三倍速度纠偏](../DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md) | commander, movement, network, performance | 13/15 (87%) | 定位位置队列长等待中引擎补额、保守预留与命令状态屏障的占比；独立追查导航单步跳点，保留晚加入/重连及紧急状态专项验收。 | 2026-10-05 |
+| [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | commander, performance, ui | 3/4 (75%) | 由玩家核对原地图左上角显示、窗口适配和RTT；不自动启动PIE。 | 2026-10-05 |
+| [导航内存优化与对局容量预算](../DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md) | navigation, performance | 11/13 (85%) | 玩家核对连续纠偏与HUD；服务端异常XY位移、姿态供给及专服容量测量继续后续处理。 | 2026-10-05 |
+| [三张视差3D卡牌交互演示 — 技术方案](../DevelopmentDocumentation/20260922-三张视差3D卡牌交互演示.md) | presentation, ui, vfx | 9/10 (90%) | 在 LVL_CardRevealDemo 体验两次点击流程、±12° 悬停以及窗口失焦回正，确认视觉与手感。 | 2026-10-05 |
+| [指挥官部队StateTree接入与特殊任务退役 — 技术方案](../DevelopmentDocumentation/20260921-指挥官部队StateTree接入与特殊任务退役.md) | building, commander, resources | 10/13 (77%) | 在LVL_CommanderMassPrototype补齐矿位、施工、改令及通道异常矩阵，再完成新逻辑10/30台负载与30分钟性能验收，并收集玩家效果反馈。 | 2026-10-05 |
+| [地面机甲辅助瞄准 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md) | combat, data, ground-mech, input | 6/7 (86%) | 玩家在既有FireReview观察射向修正、最近目标切换、离圈自由瞄准及鼠标位置不变。 | 2026-10-05 |
+| [玩家地面机甲与Mass单位立体碰撞 — 技术方案与实施记录](../DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md) | movement, navigation, network, performance | 14/16 (88%) | 完成Listen/Dedicated真实接触验收并记录仍未覆盖的视觉与网络条件。 | 2026-10-05 |
+| [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | combat, ship, ui, vfx, wingman | — | 在交互式源码Editor中补做三种目标分辨率、分屏、贴地绕山、Listen/Dedicated/Late Join及10枚齐射GPU/Bounds截图验收。 | 2026-10-05 |
 | [绿色引导线实时连接优化 — 技术方案](../DevelopmentDocumentation/绿色引导线实时连接优化.md) | commander, ui | 9/9 (100%) | — | 2026-10-04 |
 | [先驱号步态减速与移动点击精度 — 实施记录](../DevelopmentDocumentation/20261003-先驱号步态减速与移动点击精度.md) | art, commander, rendering | 6/6 (100%) | — | 2026-10-04 |
 | [先驱号 VAT 导入与 Q 召唤接入 — 实施记录](../DevelopmentDocumentation/20261003-先驱号VAT导入与Q召唤接入.md) | art, assets, combat, commander, data, rendering | 8/8 (100%) | — | 2026-10-04 |
-| [RSG 六足机器人美术统一 — 制作与审核记录](../DevelopmentDocumentation/20261003-RSG六足机器人美术统一.md) | art, assets, rendering | 11/11 (100%) | — | 2026-10-03 |
+| [RSG 六足机器人美术统一 — 制作与审核记录](../DevelopmentDocumentation/20261003-RSG六足机器人美术统一.md) | art, assets, rendering | 10/10 (100%) | — | 2026-10-03 |
 | [不可达移动指令拒绝与原状态保留 — 技术方案](../DevelopmentDocumentation/不可达移动指令拒绝与原状态保留.md) | commander, navigation, network | 9/10 (90%) | — | 2026-10-02 |
 | [指挥官坡面导航过滤与精度修正 — 技术方案](../DevelopmentDocumentation/指挥官坡面导航过滤与精度修正.md) | commander, navigation | 10/13 (77%) | — | 2026-10-02 |
 | [导航连通性烘焙校验 — 技术方案](../DevelopmentDocumentation/导航连通性烘焙校验.md) | commander, navigation | 8/8 (100%) | — | 2026-10-02 |
@@ -89,8 +94,7 @@
 | [Mass选择圈同步与软避障修正 — 技术方案](../DevelopmentDocumentation/20260930-Mass选择圈同步与软避障修正.md) | commander, navigation, ui | 8/8 (100%) | — | 2026-09-30 |
 | [重防号航母式转向表现](../DevelopmentDocumentation/20260930-重防号航母式转向表现.md) | commander, performance, presentation | 8/8 (100%) | — | 2026-09-30 |
 | [重防号Q每圈60发分批引导 — 技术方案](../DevelopmentDocumentation/20260930-重防号Q每圈60发分批引导.md) | combat, commander, ui | 8/8 (100%) | — | 2026-09-30 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。 | 2026-09-30 |
-| [Ship导入与扫荡者重防号风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者重防号风格重制.md) | combat, commander, rendering, ship | 9/12 (75%) | 继续实战轰炸、僚机死亡、机械姿态和完整性能验收。 | 2026-09-29 |
+| [Ship导入与扫荡者重防号风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者重防号风格重制.md) | combat, commander, rendering, ship | 7/10 (70%) | 继续实战轰炸、僚机死亡、机械姿态和完整性能验收。 | 2026-09-29 |
 | [FireReview双阵营靶场与敌方描边 — 技术方案](../DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md) | combat, commander, ground-mech, presentation | 9/9 (100%) | 玩家在/Game/Maps/LVL_GroundMech_FireReview确认两队待命、敌方红色描边及受击销毁效果。 | 2026-09-21 |
 | [统一特效目录与ID引用 — 技术方案](../DevelopmentDocumentation/20260921-统一特效目录与ID引用.md) | combat, vfx | 6/6 (100%) | — | 2026-09-21 |
 | [地面机甲动画蓝图与空中战斗 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲动画蓝图与空中战斗.md) | animation, combat, ground-mech | 8/8 (100%) | 按后续实际使用反馈调整；未覆盖专项和容量条视觉终验见本文边界。 | 2026-09-21 |

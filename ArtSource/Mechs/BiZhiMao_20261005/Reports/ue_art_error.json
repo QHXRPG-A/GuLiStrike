@@ -1,0 +1,4 @@
+{
+  "success": false,
+  "error": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"D:\\UE5.7\\test1\\Scripts\\BiZhiMao\\import_art_assets.py\", line 184, in <module>\n    sk=copy(SOURCE+'/Meshes/SKM_ControlRigMech',BASE+'/Meshes/SKM_BiZhiMao');sk.set_editor_property('skeleton',skeleton);save(sk)\n                                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nException: SkeletalMesh: Property 'Skeleton' for attribute 'skeleton' on 'SkeletalMesh' is read-only and cannot be set\n"
+}

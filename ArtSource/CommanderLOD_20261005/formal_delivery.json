@@ -1,0 +1,108 @@
+{
+  "success": true,
+  "version": "CommanderLOD_3Tier_v1",
+  "content_sha256": "761bc5edd06b08c598771943b46ebcbd7bc8285b42d345e234fea0907d02783d",
+  "art_revision": "1.3",
+  "approval_B": "approved",
+  "formal_switched": true,
+  "lod_count": 3,
+  "groups": [
+    {
+      "id": 1,
+      "name": "DefaultSoldier",
+      "formal_root": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1",
+      "asset_count": 15,
+      "model_asset": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "presentation_class": "",
+      "vat_definition": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+      "readback": "Reports/formal_readback_DefaultSoldier.json"
+    },
+    {
+      "id": 2,
+      "name": "WM01",
+      "formal_root": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1",
+      "asset_count": 6,
+      "model_asset": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "presentation_class": "",
+      "vat_definition": "",
+      "readback": "Reports/formal_readback_WM01.json"
+    },
+    {
+      "id": 3,
+      "name": "ElectromagneticMiner",
+      "formal_root": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1",
+      "asset_count": 14,
+      "model_asset": "",
+      "presentation_class": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/BP_ElectromagneticMiner_3Tier.BP_ElectromagneticMiner_3Tier_C",
+      "vat_definition": "",
+      "readback": "Reports/formal_readback_ElectromagneticMiner.json"
+    },
+    {
+      "id": 4,
+      "name": "ConstructionVehicle",
+      "formal_root": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1",
+      "asset_count": 14,
+      "model_asset": "",
+      "presentation_class": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier_C",
+      "vat_definition": "",
+      "readback": "Reports/formal_readback_ConstructionVehicle.json"
+    },
+    {
+      "id": 5,
+      "name": "SweeperSummon",
+      "formal_root": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1",
+      "asset_count": 4,
+      "model_asset": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "presentation_class": "",
+      "vat_definition": "",
+      "readback": "Reports/formal_readback_SweeperSummon.json"
+    },
+    {
+      "id": 6,
+      "name": "BiZhiMao",
+      "formal_root": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1",
+      "asset_count": 23,
+      "model_asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "presentation_class": "",
+      "vat_definition": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT",
+      "readback": "Reports/formal_readback_BiZhiMao.json"
+    }
+  ],
+  "total_assets": 76,
+  "construction": {
+    "id": 8,
+    "name": "BiZhiMaoConstruction",
+    "before": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+    "after": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+    "cells": [
+      {
+        "cell": "H11",
+        "value": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+        "type": "string"
+      }
+    ],
+    "rollback_cells": [
+      {
+        "cell": "H11",
+        "value": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+        "type": "string"
+      }
+    ]
+  },
+  "native_compile": "passed",
+  "engine": "D:/UnrealEngine-5.7",
+  "editor_reopened": true,
+  "review_map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "review_groups": 18,
+  "feature_fixture": "BiZhiMaoQA_Sample",
+  "feature_gameplay_review": "pending",
+  "source_gameplay_values_unchanged": true,
+  "original_groups_retained": true,
+  "frozen_sources_unchanged": true,
+  "budgets": "Existing differences remain recorded; B is not budget/FPS acceptance.",
+  "pie": "not_run",
+  "network": "not_run",
+  "fps": "not_run",
+  "attack_logic": "not_implemented",
+  "final_native_readback": "Reports/final_native_status.json"
+}

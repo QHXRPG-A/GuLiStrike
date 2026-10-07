@@ -1,0 +1,1038 @@
+{
+  "success": true,
+  "date": "2026-10-06",
+  "release": {
+    "stage": "B_and_formal_UE_storage_release",
+    "status": "released_for_formal_UE_storage",
+    "version": "SSF_Production_B_v1",
+    "date": "2026-10-06",
+    "user_quote": "传ue，作为住正式资源存GuLiStrike中，暂不接入游戏中",
+    "source_blend_sha256": "6f386c2e4782ce6ab6e81ae0f2380a6345fa05cdc6fc3dcf9d260c13ed3a806e",
+    "manifest_sha256": "47fa0b49979828e331ca702d526f18d65b63ff639bd72404390288f6894adf29",
+    "target_root": "/Game/GuLiStrike/Buildings/SSFStylized",
+    "scope": "Current visible B_v1 including its disclosed geometry/style differences; store formal asset copies only",
+    "body_budget_exceptions": "24 differences accompany this version-specific storage release; original caps unchanged, no gameplay/performance acceptance inferred",
+    "gameplay_integration_authorized": false,
+    "original_source_package_preserved": true
+  },
+  "target": "/Game/GuLiStrike/Buildings/SSFStylized",
+  "engine": "5.7.4-0+UE5",
+  "asset_count": 105,
+  "asset_classes": {
+    "AnimSequence": 22,
+    "MaterialInstanceConstant": 16,
+    "SkeletalMesh": 7,
+    "PhysicsAsset": 6,
+    "Skeleton": 7,
+    "Texture2D": 38,
+    "Blueprint": 1,
+    "StaticMesh": 3,
+    "AnimBoneCompressionSettings": 1,
+    "Material": 4
+  },
+  "meshes": 10,
+  "skeletons": 7,
+  "bones": 355,
+  "animations": 22,
+  "physics_assets": 6,
+  "textures": 38,
+  "master_materials": 4,
+  "material_instances": 16,
+  "drone_blueprints": 1,
+  "private_animation_compression_presets": 1,
+  "LOD_count": 3,
+  "screen_sizes": [
+    1.0,
+    0.1,
+    0.035
+  ],
+  "max_UE_mesh_roundtrip_error_m": 9.5367431640625e-06,
+  "max_UE_skin_weight_error": 6.198883056640625e-06,
+  "component_animation_LOD_samples": 198,
+  "max_component_pose_error_cm_scale_degrees": [
+    0.10770934711268013,
+    3.816559672636655e-07,
+    0.027973419950922018
+  ],
+  "rendered_previews": 54,
+  "original_pack_dependencies": 0,
+  "gameplay_integrated": false,
+  "maps_saved": [],
+  "source_package_preserved": true,
+  "frozen_B_source_preserved": true,
+  "budget_cap_differences_retained": 24,
+  "performance_tested": false,
+  "animation_pose_baseline": "original editable RAW resampled at original runtime target rate, followed by local quaternion interpolation; original 1/2 FPS clips retained",
+  "limits": [
+    "198 actual component samples cover start/middle/end of 22 clips at three LODs against the original runtime sampling baseline; they are not every-frame gameplay validation",
+    "Current B_v1 has 24 disclosed body-cap differences and partial outline hull coverage; original budgets remain unchanged",
+    "Distance previews use isolated unsaved Entry actors; battlefield composition, gameplay and combat FPS are outside this delivery"
+  ],
+  "assets": [
+    {
+      "key": "AirBase",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/AirBase/Meshes/SK_TB1_AirBase.SK_TB1_AirBase",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Meshes/SK_TB1_AirBase",
+      "type": "SkeletalMesh",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/AirBase/Meshes/TB1_AirBase_Skeleton.TB1_AirBase_Skeleton",
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Meshes/TB1_AirBase_Skeleton.TB1_AirBase_Skeleton",
+      "physics": "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Meshes/SK_TB1_AirBase_Physics.SK_TB1_AirBase_Physics",
+      "LOD_count": 3,
+      "screen_sizes": [
+        1.0,
+        0.1,
+        0.035
+      ],
+      "material_slots": [
+        "SSF_Body",
+        "SSF_Display",
+        "SSF_Outline"
+      ],
+      "dimensions_cm": [
+        1752.536865234375,
+        1998.263427734375,
+        1180.1692323684692
+      ],
+      "reference_contract": {
+        "bones": 78,
+        "translation_error_cm": 0.0,
+        "scale_error": 0.0,
+        "angle_error_deg": 1.7075472925031877e-06,
+        "root_scale": [
+          1.0,
+          0.9999999403953552,
+          0.9999999403953552
+        ]
+      },
+      "body_and_outline_triangles": [
+        {
+          "body": 5216,
+          "outline": 700
+        },
+        {
+          "body": 4839,
+          "outline": 400
+        },
+        {
+          "body": 4128,
+          "outline": 0
+        }
+      ],
+      "UE_export_readback": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\UE_Readback\\AirBase.fbx",
+      "full_precision_UVs": true,
+      "textures": [
+        "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Textures/T_AirBase_BaseColor_2K.T_AirBase_BaseColor_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Textures/T_AirBase_InternalLineMask_2K.T_AirBase_InternalLineMask_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Textures/T_AirBase_FunctionalTeamMask_2K.T_AirBase_FunctionalTeamMask_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Textures/T_AirBase_ORM_2K.T_AirBase_ORM_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Textures/T_SSF_Shared_SourceLogo_1K.T_SSF_Shared_SourceLogo_1K"
+      ]
+    },
+    {
+      "key": "CloningCenter",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/CloningCenter/Meshes/SK_TB1_CloningCenter.SK_TB1_CloningCenter",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Meshes/SK_TB1_CloningCenter",
+      "type": "SkeletalMesh",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/CloningCenter/Meshes/TB1_CloningCenter_Skeleton.TB1_CloningCenter_Skeleton",
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Meshes/TB1_CloningCenter_Skeleton.TB1_CloningCenter_Skeleton",
+      "physics": "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Meshes/TB1_CloningCenter_PhysicsAsset.TB1_CloningCenter_PhysicsAsset",
+      "LOD_count": 3,
+      "screen_sizes": [
+        1.0,
+        0.1,
+        0.035
+      ],
+      "material_slots": [
+        "SSF_Body",
+        "SSF_Display",
+        "SSF_Outline"
+      ],
+      "dimensions_cm": [
+        739.1729431152344,
+        878.7232360839844,
+        893.3859007358551
+      ],
+      "reference_contract": {
+        "bones": 54,
+        "translation_error_cm": 0.0,
+        "scale_error": 0.0,
+        "angle_error_deg": 1.7075472925031877e-06,
+        "root_scale": [
+          1.0,
+          0.9999999403953552,
+          0.9999999403953552
+        ]
+      },
+      "body_and_outline_triangles": [
+        {
+          "body": 2454,
+          "outline": 296
+        },
+        {
+          "body": 2338,
+          "outline": 200
+        },
+        {
+          "body": 2170,
+          "outline": 0
+        }
+      ],
+      "UE_export_readback": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\UE_Readback\\CloningCenter.fbx",
+      "full_precision_UVs": true,
+      "textures": [
+        "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Textures/T_CloningCenter_BaseColor_2K.T_CloningCenter_BaseColor_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Textures/T_CloningCenter_InternalLineMask_2K.T_CloningCenter_InternalLineMask_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Textures/T_CloningCenter_FunctionalTeamMask_2K.T_CloningCenter_FunctionalTeamMask_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Textures/T_CloningCenter_ORM_2K.T_CloningCenter_ORM_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Textures/T_SSF_Shared_SourceLogo_1K.T_SSF_Shared_SourceLogo_1K"
+      ]
+    },
+    {
+      "key": "CommandCenter",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/CommandCenter/Meshes/SK_TB1_CommandCenter.SK_TB1_CommandCenter",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Meshes/SK_TB1_CommandCenter",
+      "type": "SkeletalMesh",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/CommandCenter/Meshes/TB1_CommandCenter_Skeleton.TB1_CommandCenter_Skeleton",
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Meshes/TB1_CommandCenter_Skeleton.TB1_CommandCenter_Skeleton",
+      "physics": "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Meshes/SK_TB1_CommandCenter_Physics.SK_TB1_CommandCenter_Physics",
+      "LOD_count": 3,
+      "screen_sizes": [
+        1.0,
+        0.1,
+        0.035
+      ],
+      "material_slots": [
+        "SSF_Body",
+        "SSF_Display",
+        "SSF_Outline"
+      ],
+      "dimensions_cm": [
+        940.1301574707031,
+        981.9589233398438,
+        1520.5420594215393
+      ],
+      "reference_contract": {
+        "bones": 74,
+        "translation_error_cm": 0.0,
+        "scale_error": 0.0,
+        "angle_error_deg": 1.7075472925031877e-06,
+        "root_scale": [
+          0.30000001192092896,
+          0.29999998211860657,
+          0.29999998211860657
+        ]
+      },
+      "body_and_outline_triangles": [
+        {
+          "body": 4465,
+          "outline": 598
+        },
+        {
+          "body": 4277,
+          "outline": 299
+        },
+        {
+          "body": 3999,
+          "outline": 0
+        }
+      ],
+      "UE_export_readback": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\UE_Readback\\CommandCenter.fbx",
+      "full_precision_UVs": true,
+      "textures": [
+        "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Textures/T_CommandCenter_BaseColor_2K.T_CommandCenter_BaseColor_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Textures/T_CommandCenter_InternalLineMask_2K.T_CommandCenter_InternalLineMask_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Textures/T_CommandCenter_FunctionalTeamMask_2K.T_CommandCenter_FunctionalTeamMask_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Textures/T_CommandCenter_ORM_2K.T_CommandCenter_ORM_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Textures/T_SSF_Shared_SourceLogo_1K.T_SSF_Shared_SourceLogo_1K"
+      ]
+    },
+    {
+      "key": "Floor",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/Floor/Meshes/SK_TB1_Floor.SK_TB1_Floor",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Floor/Meshes/SM_TB1_Floor",
+      "type": "StaticMesh",
+      "skeleton_source": null,
+      "skeleton": null,
+      "physics": null,
+      "LOD_count": 3,
+      "screen_sizes": [
+        1.0,
+        0.1,
+        0.035
+      ],
+      "material_slots": [
+        "SSF_Body",
+        "SSF_Outline"
+      ],
+      "dimensions_cm": [
+        8488.07861328125,
+        8856.607666015625,
+        585.0687103271484
+      ],
+      "reference_contract": {},
+      "body_and_outline_triangles": [
+        {
+          "body": 6699,
+          "outline": 963
+        },
+        {
+          "body": 6699,
+          "outline": 473
+        },
+        {
+          "body": 6057,
+          "outline": 0
+        }
+      ],
+      "UE_export_readback": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\UE_Readback\\Floor.fbx",
+      "full_precision_UVs": true,
+      "textures": [
+        "/Game/GuLiStrike/Buildings/SSFStylized/Floor/Textures/T_Floor_BaseColor_4K.T_Floor_BaseColor_4K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Floor/Textures/T_Floor_InternalLineMask_4K.T_Floor_InternalLineMask_4K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Floor/Textures/T_Floor_FunctionalTeamMask_4K.T_Floor_FunctionalTeamMask_4K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Floor/Textures/T_Floor_ORM_4K.T_Floor_ORM_4K"
+      ],
+      "actual_triangles": [
+        7662,
+        7172,
+        6057
+      ]
+    },
+    {
+      "key": "Lamp",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/Floor/Meshes/SK_TB1_Lamp.SK_TB1_Lamp",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Lamp/Meshes/SM_TB1_Lamp",
+      "type": "StaticMesh",
+      "skeleton_source": null,
+      "skeleton": null,
+      "physics": null,
+      "LOD_count": 3,
+      "screen_sizes": [
+        1.0,
+        0.1,
+        0.035
+      ],
+      "material_slots": [
+        "SSF_Body"
+      ],
+      "dimensions_cm": [
+        28.70641040802002,
+        163.1535234451294,
+        437.3559789657593
+      ],
+      "reference_contract": {},
+      "body_and_outline_triangles": [
+        {
+          "body": 48,
+          "outline": 0
+        },
+        {
+          "body": 48,
+          "outline": 0
+        },
+        {
+          "body": 48,
+          "outline": 0
+        }
+      ],
+      "UE_export_readback": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\UE_Readback\\Lamp.fbx",
+      "full_precision_UVs": true,
+      "textures": [
+        "/Game/GuLiStrike/Buildings/SSFStylized/Lamp/Textures/T_Lamp_BaseColor_1K.T_Lamp_BaseColor_1K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Lamp/Textures/T_Lamp_InternalLineMask_1K.T_Lamp_InternalLineMask_1K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Lamp/Textures/T_Lamp_FunctionalTeamMask_1K.T_Lamp_FunctionalTeamMask_1K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Lamp/Textures/T_Lamp_ORM_1K.T_Lamp_ORM_1K"
+      ],
+      "actual_triangles": [
+        48,
+        48,
+        48
+      ]
+    },
+    {
+      "key": "Light",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/Floor/Meshes/SK_TB1_Light.SK_TB1_Light",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Light/Meshes/SM_TB1_Light",
+      "type": "StaticMesh",
+      "skeleton_source": null,
+      "skeleton": null,
+      "physics": null,
+      "LOD_count": 3,
+      "screen_sizes": [
+        1.0,
+        0.1,
+        0.035
+      ],
+      "material_slots": [
+        "SSF_LightDisplay"
+      ],
+      "dimensions_cm": [
+        197.19300842285156,
+        197.19300842285156,
+        3.2126819860422984e-05
+      ],
+      "reference_contract": {},
+      "body_and_outline_triangles": [
+        {
+          "body": 2,
+          "outline": 0
+        },
+        {
+          "body": 2,
+          "outline": 0
+        },
+        {
+          "body": 2,
+          "outline": 0
+        }
+      ],
+      "UE_export_readback": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\UE_Readback\\Light.fbx",
+      "full_precision_UVs": true,
+      "textures": [
+        "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Textures/T_Light_SourceEmissionAlpha_1K.T_Light_SourceEmissionAlpha_1K"
+      ],
+      "actual_triangles": [
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "key": "Drone",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Meshes/SK_TB1_Drone.SK_TB1_Drone",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Meshes/SK_TB1_Drone",
+      "type": "SkeletalMesh",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Meshes/TB1_Drone_Skeleton.TB1_Drone_Skeleton",
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Meshes/TB1_Drone_Skeleton.TB1_Drone_Skeleton",
+      "physics": null,
+      "LOD_count": 3,
+      "screen_sizes": [
+        1.0,
+        0.1,
+        0.035
+      ],
+      "material_slots": [
+        "SSF_Body",
+        "SSF_Outline"
+      ],
+      "dimensions_cm": [
+        101.65479278564453,
+        100.07877731323242,
+        42.64338302612305
+      ],
+      "reference_contract": {
+        "bones": 4,
+        "translation_error_cm": 0.0,
+        "scale_error": 0.0,
+        "angle_error_deg": 1.7075472925031877e-06,
+        "root_scale": [
+          1.0,
+          0.9999999403953552,
+          0.9999999403953552
+        ]
+      },
+      "body_and_outline_triangles": [
+        {
+          "body": 254,
+          "outline": 36
+        },
+        {
+          "body": 254,
+          "outline": 18
+        },
+        {
+          "body": 210,
+          "outline": 0
+        }
+      ],
+      "UE_export_readback": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\UE_Readback\\Drone.fbx",
+      "full_precision_UVs": true,
+      "textures": [
+        "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Textures/T_Drone_BaseColor_1K.T_Drone_BaseColor_1K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Textures/T_Drone_InternalLineMask_1K.T_Drone_InternalLineMask_1K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Textures/T_Drone_FunctionalTeamMask_1K.T_Drone_FunctionalTeamMask_1K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Textures/T_Drone_ORM_1K.T_Drone_ORM_1K"
+      ]
+    },
+    {
+      "key": "MilitaryFactory",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Meshes/SK_TB1_MilitaryFactory.SK_TB1_MilitaryFactory",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Meshes/SK_TB1_MilitaryFactory",
+      "type": "SkeletalMesh",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Meshes/TB1_MilitaryFactory_Skeleton.TB1_MilitaryFactory_Skeleton",
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Meshes/TB1_MilitaryFactory_Skeleton.TB1_MilitaryFactory_Skeleton",
+      "physics": "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Meshes/TB1_MilitaryFactory_PhysicsAsset.TB1_MilitaryFactory_PhysicsAsset",
+      "LOD_count": 3,
+      "screen_sizes": [
+        1.0,
+        0.1,
+        0.035
+      ],
+      "material_slots": [
+        "SSF_Body",
+        "SSF_Display",
+        "SSF_Outline"
+      ],
+      "dimensions_cm": [
+        928.32421875,
+        1226.6594848632812,
+        1026.4584649801254
+      ],
+      "reference_contract": {
+        "bones": 45,
+        "translation_error_cm": 0.0,
+        "scale_error": 0.0,
+        "angle_error_deg": 1.7075472925031877e-06,
+        "root_scale": [
+          1.0,
+          0.9999999403953552,
+          0.9999999403953552
+        ]
+      },
+      "body_and_outline_triangles": [
+        {
+          "body": 1953,
+          "outline": 249
+        },
+        {
+          "body": 1895,
+          "outline": 149
+        },
+        {
+          "body": 1639,
+          "outline": 0
+        }
+      ],
+      "UE_export_readback": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\UE_Readback\\MilitaryFactory.fbx",
+      "full_precision_UVs": true,
+      "textures": [
+        "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Textures/T_MilitaryFactory_BaseColor_2K.T_MilitaryFactory_BaseColor_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Textures/T_MilitaryFactory_InternalLineMask_2K.T_MilitaryFactory_InternalLineMask_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Textures/T_MilitaryFactory_FunctionalTeamMask_2K.T_MilitaryFactory_FunctionalTeamMask_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Textures/T_MilitaryFactory_ORM_2K.T_MilitaryFactory_ORM_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Textures/T_SSF_Shared_SourceLogo_1K.T_SSF_Shared_SourceLogo_1K"
+      ]
+    },
+    {
+      "key": "Reactor",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/Reactor/Meshes/SK_TB1_Reactor.SK_TB1_Reactor",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Meshes/SK_TB1_Reactor",
+      "type": "SkeletalMesh",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/Reactor/Meshes/TB1_Reactor_Skeleton.TB1_Reactor_Skeleton",
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Meshes/TB1_Reactor_Skeleton.TB1_Reactor_Skeleton",
+      "physics": "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Meshes/TB1_Reactor_PhysicsAsset.TB1_Reactor_PhysicsAsset",
+      "LOD_count": 3,
+      "screen_sizes": [
+        1.0,
+        0.1,
+        0.035
+      ],
+      "material_slots": [
+        "SSF_Body",
+        "SSF_Display",
+        "SSF_Outline"
+      ],
+      "dimensions_cm": [
+        541.2111358642578,
+        564.9187622070312,
+        477.43652725219727
+      ],
+      "reference_contract": {
+        "bones": 12,
+        "translation_error_cm": 0.0,
+        "scale_error": 0.0,
+        "angle_error_deg": 1.7075472925031877e-06,
+        "root_scale": [
+          1.0,
+          0.9999999403953552,
+          0.9999999403953552
+        ]
+      },
+      "body_and_outline_triangles": [
+        {
+          "body": 3546,
+          "outline": 494
+        },
+        {
+          "body": 3154,
+          "outline": 238
+        },
+        {
+          "body": 2635,
+          "outline": 0
+        }
+      ],
+      "UE_export_readback": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\UE_Readback\\Reactor.fbx",
+      "full_precision_UVs": true,
+      "textures": [
+        "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Textures/T_Reactor_BaseColor_2K.T_Reactor_BaseColor_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Textures/T_Reactor_InternalLineMask_2K.T_Reactor_InternalLineMask_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Textures/T_Reactor_FunctionalTeamMask_2K.T_Reactor_FunctionalTeamMask_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Textures/T_Reactor_ORM_2K.T_Reactor_ORM_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Textures/T_SSF_Shared_SourceLogo_1K.T_SSF_Shared_SourceLogo_1K"
+      ]
+    },
+    {
+      "key": "StrategyCenter",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/StrategyCenter/Meshes/SK_TB1_StrategyCenter.SK_TB1_StrategyCenter",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Meshes/SK_TB1_StrategyCenter",
+      "type": "SkeletalMesh",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/StrategyCenter/Meshes/TB1_StrategyCenter_Skeleton.TB1_StrategyCenter_Skeleton",
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Meshes/TB1_StrategyCenter_Skeleton.TB1_StrategyCenter_Skeleton",
+      "physics": "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Meshes/TB1_StrategyCenter_PhysicsAsset.TB1_StrategyCenter_PhysicsAsset",
+      "LOD_count": 3,
+      "screen_sizes": [
+        1.0,
+        0.1,
+        0.035
+      ],
+      "material_slots": [
+        "SSF_Body",
+        "SSF_Display",
+        "SSF_Outline"
+      ],
+      "dimensions_cm": [
+        818.0629577636719,
+        747.6607971191406,
+        1145.0554041862488
+      ],
+      "reference_contract": {
+        "bones": 88,
+        "translation_error_cm": 0.0,
+        "scale_error": 0.0,
+        "angle_error_deg": 1.7075472925031877e-06,
+        "root_scale": [
+          1.0,
+          0.9999999403953552,
+          0.9999999403953552
+        ]
+      },
+      "body_and_outline_triangles": [
+        {
+          "body": 4175,
+          "outline": 600
+        },
+        {
+          "body": 3939,
+          "outline": 298
+        },
+        {
+          "body": 3582,
+          "outline": 0
+        }
+      ],
+      "UE_export_readback": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\UE_Readback\\StrategyCenter.fbx",
+      "full_precision_UVs": true,
+      "textures": [
+        "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Textures/T_StrategyCenter_BaseColor_2K.T_StrategyCenter_BaseColor_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Textures/T_StrategyCenter_InternalLineMask_2K.T_StrategyCenter_InternalLineMask_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Textures/T_StrategyCenter_FunctionalTeamMask_2K.T_StrategyCenter_FunctionalTeamMask_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Textures/T_StrategyCenter_ORM_2K.T_StrategyCenter_ORM_2K",
+        "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Textures/T_SSF_Shared_SourceLogo_1K.T_SSF_Shared_SourceLogo_1K"
+      ]
+    }
+  ],
+  "animations_detail": [
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/AirBase/Animations/TB1_AirBase_Destroy1_Anim.TB1_AirBase_Destroy1_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Animations/TB1_AirBase_Destroy1_Anim",
+      "key": "AirBase",
+      "duration_s": 5.0,
+      "frames": 150,
+      "sampled_all_bones_max_error": 3.0517578125e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Meshes/TB1_AirBase_Skeleton.TB1_AirBase_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/AirBase/Animations/TB1_AirBase_Destroy2_Anim.TB1_AirBase_Destroy2_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Animations/TB1_AirBase_Destroy2_Anim",
+      "key": "AirBase",
+      "duration_s": 6.666666507720947,
+      "frames": 200,
+      "sampled_all_bones_max_error": 6.103515625e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Meshes/TB1_AirBase_Skeleton.TB1_AirBase_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/AirBase/Animations/TB1_AirBase_Idle_Anim.TB1_AirBase_Idle_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Animations/TB1_AirBase_Idle_Anim",
+      "key": "AirBase",
+      "duration_s": 6.666666507720947,
+      "frames": 200,
+      "sampled_all_bones_max_error": 7.572558414880874e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Meshes/TB1_AirBase_Skeleton.TB1_AirBase_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/AirBase/Animations/TB1_AirBase_OpenDoor_Anim.TB1_AirBase_OpenDoor_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Animations/TB1_AirBase_OpenDoor_Anim",
+      "key": "AirBase",
+      "duration_s": 6.666666507720947,
+      "frames": 200,
+      "sampled_all_bones_max_error": 8.631674575031098e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Meshes/TB1_AirBase_Skeleton.TB1_AirBase_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/CloningCenter/Animations/TB1_CloningCenter_Destroy1_Anim.TB1_CloningCenter_Destroy1_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Animations/TB1_CloningCenter_Destroy1_Anim",
+      "key": "CloningCenter",
+      "duration_s": 3.3333332538604736,
+      "frames": 100,
+      "sampled_all_bones_max_error": 2.1579186437577746e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Meshes/TB1_CloningCenter_Skeleton.TB1_CloningCenter_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/CloningCenter/Animations/TB1_CloningCenter_Destroy2_Anim.TB1_CloningCenter_Destroy2_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Animations/TB1_CloningCenter_Destroy2_Anim",
+      "key": "CloningCenter",
+      "duration_s": 3.3333332538604736,
+      "frames": 100,
+      "sampled_all_bones_max_error": 2.6702880859375e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Meshes/TB1_CloningCenter_Skeleton.TB1_CloningCenter_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/CloningCenter/Animations/TB1_CloningCenter_Idle_Anim.TB1_CloningCenter_Idle_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Animations/TB1_CloningCenter_Idle_Anim",
+      "key": "CloningCenter",
+      "duration_s": 3.3333332538604736,
+      "frames": 100,
+      "sampled_all_bones_max_error": 4.57763671875e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Meshes/TB1_CloningCenter_Skeleton.TB1_CloningCenter_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": false,
+      "float_curves": 0,
+      "transform_curves": 1
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/CloningCenter/Animations/TB1_CloningCenter_OpenDoor_Anim.TB1_CloningCenter_OpenDoor_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Animations/TB1_CloningCenter_OpenDoor_Anim",
+      "key": "CloningCenter",
+      "duration_s": 6.666666507720947,
+      "frames": 200,
+      "sampled_all_bones_max_error": 3.0517578125e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Meshes/TB1_CloningCenter_Skeleton.TB1_CloningCenter_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": false,
+      "float_curves": 0,
+      "transform_curves": 1
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/CommandCenter/Animations/TB1_CommandCenter_Destoy1_Anim.TB1_CommandCenter_Destoy1_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Animations/TB1_CommandCenter_Destoy1_Anim",
+      "key": "CommandCenter",
+      "duration_s": 3.3333332538604736,
+      "frames": 96,
+      "sampled_all_bones_max_error": 9.15527343753747e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Meshes/TB1_CommandCenter_Skeleton.TB1_CommandCenter_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/CommandCenter/Animations/TB1_CommandCenter_Destoy2_Anim.TB1_CommandCenter_Destoy2_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Animations/TB1_CommandCenter_Destoy2_Anim",
+      "key": "CommandCenter",
+      "duration_s": 2.6666667461395264,
+      "frames": 77,
+      "sampled_all_bones_max_error": 0.00013811166634388142,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Meshes/TB1_CommandCenter_Skeleton.TB1_CommandCenter_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/CommandCenter/Animations/TB1_CommandCenter_Edle_Anim.TB1_CommandCenter_Edle_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Animations/TB1_CommandCenter_Edle_Anim",
+      "key": "CommandCenter",
+      "duration_s": 40.0,
+      "frames": 1200,
+      "sampled_all_bones_max_error": 6.678444442753448e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Meshes/TB1_CommandCenter_Skeleton.TB1_CommandCenter_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Animations/TB1_Drone_Fly_Anim.TB1_Drone_Fly_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Animations/TB1_Drone_Fly_Anim",
+      "key": "Drone",
+      "duration_s": 3.3333332538604736,
+      "frames": 100,
+      "sampled_all_bones_max_error": 3.30872226854266e-24,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Meshes/TB1_Drone_Skeleton.TB1_Drone_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Animations/TB1_MilitaryFactory_Destroy1_Anim.TB1_MilitaryFactory_Destroy1_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Animations/TB1_MilitaryFactory_Destroy1_Anim",
+      "key": "MilitaryFactory",
+      "duration_s": 6.666666507720947,
+      "frames": 200,
+      "sampled_all_bones_max_error": 2.3470662213753712e-07,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Meshes/TB1_MilitaryFactory_Skeleton.TB1_MilitaryFactory_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Animations/TB1_MilitaryFactory_Destroy2_Anim.TB1_MilitaryFactory_Destroy2_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Animations/TB1_MilitaryFactory_Destroy2_Anim",
+      "key": "MilitaryFactory",
+      "duration_s": 6.666666507720947,
+      "frames": 200,
+      "sampled_all_bones_max_error": 2.2561454034175643e-07,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Meshes/TB1_MilitaryFactory_Skeleton.TB1_MilitaryFactory_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Animations/TB1_MilitaryFactory_Idle_Anim.TB1_MilitaryFactory_Idle_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Animations/TB1_MilitaryFactory_Idle_Anim",
+      "key": "MilitaryFactory",
+      "duration_s": 6.666666507720947,
+      "frames": 13,
+      "sampled_all_bones_max_error": 1.9148069096974751e-07,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Meshes/TB1_MilitaryFactory_Skeleton.TB1_MilitaryFactory_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Animations/TB1_MilitaryFactory_OpenDoor_Anim.TB1_MilitaryFactory_OpenDoor_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Animations/TB1_MilitaryFactory_OpenDoor_Anim",
+      "key": "MilitaryFactory",
+      "duration_s": 13.333333015441895,
+      "frames": 26,
+      "sampled_all_bones_max_error": 1.9148069096974751e-07,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Meshes/TB1_MilitaryFactory_Skeleton.TB1_MilitaryFactory_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/Reactor/Animations/TB1_Reactor_Destroy1_Anim.TB1_Reactor_Destroy1_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Animations/TB1_Reactor_Destroy1_Anim",
+      "key": "Reactor",
+      "duration_s": 6.666666507720947,
+      "frames": 200,
+      "sampled_all_bones_max_error": 3.371747880871523e-07,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Meshes/TB1_Reactor_Skeleton.TB1_Reactor_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/Reactor/Animations/TB1_Reactor_Destroy2_Anim.TB1_Reactor_Destroy2_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Animations/TB1_Reactor_Destroy2_Anim",
+      "key": "Reactor",
+      "duration_s": 6.666666507720947,
+      "frames": 200,
+      "sampled_all_bones_max_error": 1.333442040563071e-06,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Meshes/TB1_Reactor_Skeleton.TB1_Reactor_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/Reactor/Animations/TB1_Reactor_Idle_Anim.TB1_Reactor_Idle_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Animations/TB1_Reactor_Idle_Anim",
+      "key": "Reactor",
+      "duration_s": 11.666666984558105,
+      "frames": 350,
+      "sampled_all_bones_max_error": 5.5791350446004405e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Meshes/TB1_Reactor_Skeleton.TB1_Reactor_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/StrategyCenter/Animations/TB1_StrategyCenter_Dead1_Anim.TB1_StrategyCenter_Dead1_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Animations/TB1_StrategyCenter_Dead1_Anim",
+      "key": "StrategyCenter",
+      "duration_s": 3.3333332538604736,
+      "frames": 100,
+      "sampled_all_bones_max_error": 1.52587890625e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Meshes/TB1_StrategyCenter_Skeleton.TB1_StrategyCenter_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/StrategyCenter/Animations/TB1_StrategyCenter_Dead2_Anim.TB1_StrategyCenter_Dead2_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Animations/TB1_StrategyCenter_Dead2_Anim",
+      "key": "StrategyCenter",
+      "duration_s": 3.3333332538604736,
+      "frames": 100,
+      "sampled_all_bones_max_error": 1.52587890625e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Meshes/TB1_StrategyCenter_Skeleton.TB1_StrategyCenter_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": true,
+      "float_curves": 0,
+      "transform_curves": 0
+    },
+    {
+      "source": "/Game/Assets/SSF_Buildings/Buildings/StrategyCenter/Animations/TB1_StrategyCenter_Idle_Anim.TB1_StrategyCenter_Idle_Anim",
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Animations/TB1_StrategyCenter_Idle_Anim",
+      "key": "StrategyCenter",
+      "duration_s": 43.3333625793457,
+      "frames": 43,
+      "sampled_all_bones_max_error": 6.823937919616058e-05,
+      "skeleton": "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Meshes/TB1_StrategyCenter_Skeleton.TB1_StrategyCenter_Skeleton",
+      "editable_motion_curves_preserved": true,
+      "editor_curve_swatch_metadata_equal": false,
+      "float_curves": 0,
+      "transform_curves": 2
+    }
+  ],
+  "saved_packages": [
+    "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Textures/T_AirBase_BaseColor_2K.T_AirBase_BaseColor_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Textures/T_AirBase_InternalLineMask_2K.T_AirBase_InternalLineMask_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Textures/T_AirBase_FunctionalTeamMask_2K.T_AirBase_FunctionalTeamMask_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Textures/T_AirBase_ORM_2K.T_AirBase_ORM_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Textures/T_SSF_Shared_SourceLogo_1K.T_SSF_Shared_SourceLogo_1K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Textures/T_CloningCenter_BaseColor_2K.T_CloningCenter_BaseColor_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Textures/T_CloningCenter_InternalLineMask_2K.T_CloningCenter_InternalLineMask_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Textures/T_CloningCenter_FunctionalTeamMask_2K.T_CloningCenter_FunctionalTeamMask_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Textures/T_CloningCenter_ORM_2K.T_CloningCenter_ORM_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Textures/T_CommandCenter_BaseColor_2K.T_CommandCenter_BaseColor_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Textures/T_CommandCenter_InternalLineMask_2K.T_CommandCenter_InternalLineMask_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Textures/T_CommandCenter_FunctionalTeamMask_2K.T_CommandCenter_FunctionalTeamMask_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Textures/T_CommandCenter_ORM_2K.T_CommandCenter_ORM_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Floor/Textures/T_Floor_BaseColor_4K.T_Floor_BaseColor_4K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Floor/Textures/T_Floor_InternalLineMask_4K.T_Floor_InternalLineMask_4K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Floor/Textures/T_Floor_FunctionalTeamMask_4K.T_Floor_FunctionalTeamMask_4K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Floor/Textures/T_Floor_ORM_4K.T_Floor_ORM_4K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Lamp/Textures/T_Lamp_BaseColor_1K.T_Lamp_BaseColor_1K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Lamp/Textures/T_Lamp_InternalLineMask_1K.T_Lamp_InternalLineMask_1K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Lamp/Textures/T_Lamp_FunctionalTeamMask_1K.T_Lamp_FunctionalTeamMask_1K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Lamp/Textures/T_Lamp_ORM_1K.T_Lamp_ORM_1K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Textures/T_Light_SourceEmissionAlpha_1K.T_Light_SourceEmissionAlpha_1K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Textures/T_Drone_BaseColor_1K.T_Drone_BaseColor_1K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Textures/T_Drone_InternalLineMask_1K.T_Drone_InternalLineMask_1K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Textures/T_Drone_FunctionalTeamMask_1K.T_Drone_FunctionalTeamMask_1K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Textures/T_Drone_ORM_1K.T_Drone_ORM_1K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Textures/T_MilitaryFactory_BaseColor_2K.T_MilitaryFactory_BaseColor_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Textures/T_MilitaryFactory_InternalLineMask_2K.T_MilitaryFactory_InternalLineMask_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Textures/T_MilitaryFactory_FunctionalTeamMask_2K.T_MilitaryFactory_FunctionalTeamMask_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Textures/T_MilitaryFactory_ORM_2K.T_MilitaryFactory_ORM_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Textures/T_Reactor_BaseColor_2K.T_Reactor_BaseColor_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Textures/T_Reactor_InternalLineMask_2K.T_Reactor_InternalLineMask_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Textures/T_Reactor_FunctionalTeamMask_2K.T_Reactor_FunctionalTeamMask_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Textures/T_Reactor_ORM_2K.T_Reactor_ORM_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Textures/T_StrategyCenter_BaseColor_2K.T_StrategyCenter_BaseColor_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Textures/T_StrategyCenter_InternalLineMask_2K.T_StrategyCenter_InternalLineMask_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Textures/T_StrategyCenter_FunctionalTeamMask_2K.T_StrategyCenter_FunctionalTeamMask_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Textures/T_StrategyCenter_ORM_2K.T_StrategyCenter_ORM_2K",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Materials/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Materials/M_SSF_Outline.M_SSF_Outline",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Materials/M_SSF_SourceDisplay.M_SSF_SourceDisplay",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Materials/M_SSF_LightDisplay.M_SSF_LightDisplay",
+    "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Materials/MI_AirBase_Body.MI_AirBase_Body",
+    "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Materials/MI_AirBase_Display.MI_AirBase_Display",
+    "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Meshes/SK_TB1_AirBase_Physics.SK_TB1_AirBase_Physics",
+    "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Meshes/TB1_AirBase_Skeleton.TB1_AirBase_Skeleton",
+    "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Meshes/SK_TB1_AirBase.SK_TB1_AirBase",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Materials/MI_CloningCenter_Body.MI_CloningCenter_Body",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Materials/MI_CloningCenter_Display.MI_CloningCenter_Display",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Meshes/TB1_CloningCenter_PhysicsAsset.TB1_CloningCenter_PhysicsAsset",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Meshes/TB1_CloningCenter_Skeleton.TB1_CloningCenter_Skeleton",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Meshes/SK_TB1_CloningCenter.SK_TB1_CloningCenter",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Materials/MI_CommandCenter_Body.MI_CommandCenter_Body",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Materials/MI_CommandCenter_Display.MI_CommandCenter_Display",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Meshes/SK_TB1_CommandCenter_Physics.SK_TB1_CommandCenter_Physics",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Meshes/TB1_CommandCenter_Skeleton.TB1_CommandCenter_Skeleton",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Meshes/SK_TB1_CommandCenter.SK_TB1_CommandCenter",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Floor/Materials/MI_Floor_Body.MI_Floor_Body",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Floor/Meshes/SM_TB1_Floor.SM_TB1_Floor",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Lamp/Materials/MI_Lamp_Body.MI_Lamp_Body",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Lamp/Meshes/SM_TB1_Lamp.SM_TB1_Lamp",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Light/Materials/MI_Light_Display.MI_Light_Display",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Light/Meshes/SM_TB1_Light.SM_TB1_Light",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Materials/MI_Drone_Body.MI_Drone_Body",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Meshes/TB1_Drone_Skeleton.TB1_Drone_Skeleton",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Meshes/SK_TB1_Drone.SK_TB1_Drone",
+    "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Materials/MI_MilitaryFactory_Body.MI_MilitaryFactory_Body",
+    "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Materials/MI_MilitaryFactory_Display.MI_MilitaryFactory_Display",
+    "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Meshes/TB1_MilitaryFactory_PhysicsAsset.TB1_MilitaryFactory_PhysicsAsset",
+    "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Meshes/TB1_MilitaryFactory_Skeleton.TB1_MilitaryFactory_Skeleton",
+    "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Meshes/SK_TB1_MilitaryFactory.SK_TB1_MilitaryFactory",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Materials/MI_Reactor_Body.MI_Reactor_Body",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Materials/MI_Reactor_Display.MI_Reactor_Display",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Meshes/TB1_Reactor_PhysicsAsset.TB1_Reactor_PhysicsAsset",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Meshes/TB1_Reactor_Skeleton.TB1_Reactor_Skeleton",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Meshes/SK_TB1_Reactor.SK_TB1_Reactor",
+    "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Materials/MI_StrategyCenter_Body.MI_StrategyCenter_Body",
+    "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Materials/MI_StrategyCenter_Display.MI_StrategyCenter_Display",
+    "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Meshes/TB1_StrategyCenter_PhysicsAsset.TB1_StrategyCenter_PhysicsAsset",
+    "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Meshes/TB1_StrategyCenter_Skeleton.TB1_StrategyCenter_Skeleton",
+    "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Meshes/SK_TB1_StrategyCenter.SK_TB1_StrategyCenter",
+    "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Animations/TB1_AirBase_Destroy1_Anim.TB1_AirBase_Destroy1_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Animations/TB1_AirBase_Destroy2_Anim.TB1_AirBase_Destroy2_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Animations/TB1_AirBase_Idle_Anim.TB1_AirBase_Idle_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/AirBase/Animations/TB1_AirBase_OpenDoor_Anim.TB1_AirBase_OpenDoor_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Animations/TB1_CloningCenter_Destroy1_Anim.TB1_CloningCenter_Destroy1_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Animations/TB1_CloningCenter_Destroy2_Anim.TB1_CloningCenter_Destroy2_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Animations/TB1_CloningCenter_Idle_Anim.TB1_CloningCenter_Idle_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CloningCenter/Animations/TB1_CloningCenter_OpenDoor_Anim.TB1_CloningCenter_OpenDoor_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Animations/TB1_CommandCenter_Destoy1_Anim.TB1_CommandCenter_Destoy1_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Animations/TB1_CommandCenter_Destoy2_Anim.TB1_CommandCenter_Destoy2_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/CommandCenter/Animations/TB1_CommandCenter_Edle_Anim.TB1_CommandCenter_Edle_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Animations/TB1_Drone_Fly_Anim.TB1_Drone_Fly_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Animations/TB1_MilitaryFactory_Destroy1_Anim.TB1_MilitaryFactory_Destroy1_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Animations/TB1_MilitaryFactory_Destroy2_Anim.TB1_MilitaryFactory_Destroy2_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Animations/TB1_MilitaryFactory_Idle_Anim.TB1_MilitaryFactory_Idle_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/MilitaryFactory/Animations/TB1_MilitaryFactory_OpenDoor_Anim.TB1_MilitaryFactory_OpenDoor_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Animations/TB1_Reactor_Destroy1_Anim.TB1_Reactor_Destroy1_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Animations/TB1_Reactor_Destroy2_Anim.TB1_Reactor_Destroy2_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Reactor/Animations/TB1_Reactor_Idle_Anim.TB1_Reactor_Idle_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Animations/TB1_StrategyCenter_Dead1_Anim.TB1_StrategyCenter_Dead1_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Animations/TB1_StrategyCenter_Dead2_Anim.TB1_StrategyCenter_Dead2_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/StrategyCenter/Animations/TB1_StrategyCenter_Idle_Anim.TB1_StrategyCenter_Idle_Anim",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Drone/Blueprints/TB1_MoveDrone.TB1_MoveDrone",
+    "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Compression/BCS_SSF_MechanicalPrecision.BCS_SSF_MechanicalPrecision"
+  ],
+  "evidence": {
+    "reload_animations_render": "ue_validation.json",
+    "mesh_readback": "ue_mesh_readback.json",
+    "visual": "visual_qa.json",
+    "reference_pose": "reference_pose_repair.json",
+    "animation_precision": "animation_compression_precision.json",
+    "source_preservation": "frozen_source_validation.json"
+  }
+}

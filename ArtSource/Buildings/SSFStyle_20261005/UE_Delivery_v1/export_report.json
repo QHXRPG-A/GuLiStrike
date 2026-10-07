@@ -1,0 +1,1447 @@
+{
+  "success": true,
+  "source_version": "SSF_Production_B_v1",
+  "source_sha256": "6f386c2e4782ce6ab6e81ae0f2380a6345fa05cdc6fc3dcf9d260c13ed3a806e",
+  "target_root": "/Game/GuLiStrike/Buildings/SSFStylized",
+  "assets": [
+    {
+      "key": "AirBase",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/AirBase/Meshes/SK_TB1_AirBase.SK_TB1_AirBase",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/AirBase/Meshes/TB1_AirBase_Skeleton.TB1_AirBase_Skeleton",
+      "physics_source": "/Game/Assets/SSF_Buildings/Buildings/AirBase/Meshes/SK_TB1_AirBase_Physics.SK_TB1_AirBase_Physics",
+      "textures": {
+        "base": {
+          "file": "Textures\\AirBase_BaseColor_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "sRGB"
+        },
+        "line": {
+          "file": "Textures\\AirBase_InternalLineMask_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "functional": {
+          "file": "Textures\\AirBase_FunctionalTeamMask_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "orm": {
+          "file": "Textures\\AirBase_ORM_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "shared_display": {
+          "file": "Textures/SSF_Shared_SourceLogo_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "shared_between_six_buildings": true
+        }
+      },
+      "theme": {
+        "name": "暖橙航空",
+        "Primary": "#EE9D58",
+        "Equipment": "#274E61",
+        "Accent": "#FEE4D9",
+        "Frame": "#1A182F"
+      },
+      "bone_count": 78,
+      "animations": [
+        "TB1_AirBase_Destroy1_Anim",
+        "TB1_AirBase_Destroy2_Anim",
+        "TB1_AirBase_Idle_Anim",
+        "TB1_AirBase_OpenDoor_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\AirBase_LOD0.fbx",
+          "sha256": "6a8e62645a990fe598f7ceaa752b3bdcc4d6c62f6288cb9f64bff179f2626248",
+          "triangles": 5916,
+          "body_triangles": 5216,
+          "outline_triangles": 700,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display",
+            "SSF_Outline"
+          ],
+          "bone_count": 78,
+          "bounds_m": {
+            "min": [
+              -11.399558067321777,
+              -8.554384231567383,
+              -0.09504234045743942
+            ],
+            "max": [
+              6.125807285308838,
+              11.428248405456543,
+              11.706647872924805
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        },
+        {
+          "LOD": 1,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\AirBase_LOD1.fbx",
+          "sha256": "9f5d120baf0e21c42874f23a14989caf0bcbee281421ac71b116d0b845a96d7d",
+          "triangles": 5239,
+          "body_triangles": 4839,
+          "outline_triangles": 400,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display",
+            "SSF_Outline"
+          ],
+          "bone_count": 78,
+          "bounds_m": {
+            "min": [
+              -11.399558067321777,
+              -8.526028633117676,
+              -0.09504234045743942
+            ],
+            "max": [
+              6.125807285308838,
+              11.428248405456543,
+              11.706647872924805
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        },
+        {
+          "LOD": 2,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\AirBase_LOD2.fbx",
+          "sha256": "68eddbb39bb9e336fdd8a19c54fa54c8f2044cc3758894bfc60d15a499911ac4",
+          "triangles": 4128,
+          "body_triangles": 4128,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display"
+          ],
+          "bone_count": 78,
+          "bounds_m": {
+            "min": [
+              -11.399558067321777,
+              -8.526028633117676,
+              -0.0965888500213623
+            ],
+            "max": [
+              6.125807285308838,
+              11.428248405456543,
+              11.706647872924805
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        }
+      ]
+    },
+    {
+      "key": "CloningCenter",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/CloningCenter/Meshes/SK_TB1_CloningCenter.SK_TB1_CloningCenter",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/CloningCenter/Meshes/TB1_CloningCenter_Skeleton.TB1_CloningCenter_Skeleton",
+      "physics_source": "/Game/Assets/SSF_Buildings/Buildings/CloningCenter/Meshes/TB1_CloningCenter_PhysicsAsset.TB1_CloningCenter_PhysicsAsset",
+      "textures": {
+        "base": {
+          "file": "Textures\\CloningCenter_BaseColor_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "sRGB"
+        },
+        "line": {
+          "file": "Textures\\CloningCenter_InternalLineMask_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "functional": {
+          "file": "Textures\\CloningCenter_FunctionalTeamMask_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "orm": {
+          "file": "Textures\\CloningCenter_ORM_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "shared_display": {
+          "file": "Textures/SSF_Shared_SourceLogo_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "shared_between_six_buildings": true
+        }
+      },
+      "theme": {
+        "name": "浅粉医疗",
+        "Primary": "#EABCBA",
+        "Equipment": "#835061",
+        "Accent": "#FEE4D9",
+        "Frame": "#45184D"
+      },
+      "bone_count": 54,
+      "animations": [
+        "TB1_CloningCenter_Destroy1_Anim",
+        "TB1_CloningCenter_Destroy2_Anim",
+        "TB1_CloningCenter_Idle_Anim",
+        "TB1_CloningCenter_OpenDoor_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\CloningCenter_LOD0.fbx",
+          "sha256": "f76748e5238942f4d025cf6d5c83ddf821d34d281de003dd034811e639daa8c7",
+          "triangles": 2750,
+          "body_triangles": 2454,
+          "outline_triangles": 296,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display",
+            "SSF_Outline"
+          ],
+          "bone_count": 54,
+          "bounds_m": {
+            "min": [
+              -3.695864677429199,
+              -4.581381320953369,
+              -0.01590002328157425
+            ],
+            "max": [
+              3.69586443901062,
+              4.205851078033447,
+              8.917959213256836
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        },
+        {
+          "LOD": 1,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\CloningCenter_LOD1.fbx",
+          "sha256": "c3a2d5eec0ffff7f30929e4ca2f308839191a29e648593763be7d20bed3e7247",
+          "triangles": 2538,
+          "body_triangles": 2338,
+          "outline_triangles": 200,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display",
+            "SSF_Outline"
+          ],
+          "bone_count": 54,
+          "bounds_m": {
+            "min": [
+              -3.695864677429199,
+              -4.56558895111084,
+              -0.01067825872451067
+            ],
+            "max": [
+              3.69586443901062,
+              4.210186958312988,
+              8.917959213256836
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        },
+        {
+          "LOD": 2,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\CloningCenter_LOD2.fbx",
+          "sha256": "716c88ef1072806e3c6bf5291d426afb4a86146811b201b6a1ac6388f40d2c39",
+          "triangles": 2170,
+          "body_triangles": 2170,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display"
+          ],
+          "bone_count": 54,
+          "bounds_m": {
+            "min": [
+              -3.695864677429199,
+              -4.5632734298706055,
+              -0.00890854001045227
+            ],
+            "max": [
+              3.69586443901062,
+              4.188507080078125,
+              8.917959213256836
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        }
+      ]
+    },
+    {
+      "key": "CommandCenter",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/CommandCenter/Meshes/SK_TB1_CommandCenter.SK_TB1_CommandCenter",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/CommandCenter/Meshes/TB1_CommandCenter_Skeleton.TB1_CommandCenter_Skeleton",
+      "physics_source": "/Game/Assets/SSF_Buildings/Buildings/CommandCenter/Meshes/SK_TB1_CommandCenter_Physics.SK_TB1_CommandCenter_Physics",
+      "textures": {
+        "base": {
+          "file": "Textures\\CommandCenter_BaseColor_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "sRGB"
+        },
+        "line": {
+          "file": "Textures\\CommandCenter_InternalLineMask_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "functional": {
+          "file": "Textures\\CommandCenter_FunctionalTeamMask_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "orm": {
+          "file": "Textures\\CommandCenter_ORM_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "shared_display": {
+          "file": "Textures/SSF_Shared_SourceLogo_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "shared_between_six_buildings": true
+        }
+      },
+      "theme": {
+        "name": "莓红指挥",
+        "Primary": "#A34053",
+        "Equipment": "#E3B6B1",
+        "Accent": "#EE9D58",
+        "Frame": "#662249"
+      },
+      "bone_count": 74,
+      "animations": [
+        "TB1_CommandCenter_Destoy1_Anim",
+        "TB1_CommandCenter_Destoy2_Anim",
+        "TB1_CommandCenter_Edle_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\CommandCenter_LOD0.fbx",
+          "sha256": "7c2f318759997d80f2726273f4f725ce4a00cdc840b29302bbf90c3ea657577c",
+          "triangles": 5063,
+          "body_triangles": 4465,
+          "outline_triangles": 598,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display",
+            "SSF_Outline"
+          ],
+          "bone_count": 74,
+          "bounds_m": {
+            "min": [
+              -4.700651168823242,
+              -4.700581073760986,
+              -0.05311250686645508
+            ],
+            "max": [
+              4.700650215148926,
+              5.1190080642700195,
+              15.15230941772461
+            ]
+          },
+          "root_scale": [
+            0.29999998211860657,
+            0.29999998211860657,
+            0.29999998211860657
+          ]
+        },
+        {
+          "LOD": 1,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\CommandCenter_LOD1.fbx",
+          "sha256": "fe48b9f600ae03a4407e72c83a960f6a2cb815a18a9f08f64532ebb1098790f5",
+          "triangles": 4576,
+          "body_triangles": 4277,
+          "outline_triangles": 299,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display",
+            "SSF_Outline"
+          ],
+          "bone_count": 74,
+          "bounds_m": {
+            "min": [
+              -4.700651168823242,
+              -4.700581073760986,
+              -0.05311250686645508
+            ],
+            "max": [
+              4.700650215148926,
+              5.1190080642700195,
+              15.15230941772461
+            ]
+          },
+          "root_scale": [
+            0.29999998211860657,
+            0.29999998211860657,
+            0.29999998211860657
+          ]
+        },
+        {
+          "LOD": 2,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\CommandCenter_LOD2.fbx",
+          "sha256": "594692c57e5a32f9f6c238503ab58e21e19071134ff1935755fae33b6688a9d2",
+          "triangles": 3999,
+          "body_triangles": 3999,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display"
+          ],
+          "bone_count": 74,
+          "bounds_m": {
+            "min": [
+              -4.700651168823242,
+              -4.669930934906006,
+              -0.05311250686645508
+            ],
+            "max": [
+              4.700650215148926,
+              5.119007587432861,
+              15.15230941772461
+            ]
+          },
+          "root_scale": [
+            0.29999998211860657,
+            0.29999998211860657,
+            0.29999998211860657
+          ]
+        }
+      ]
+    },
+    {
+      "key": "Floor",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/Floor/Meshes/SK_TB1_Floor.SK_TB1_Floor",
+      "skeleton_source": null,
+      "physics_source": null,
+      "textures": {
+        "base": {
+          "file": "Textures\\Floor_BaseColor_4K.png",
+          "resolution": [
+            4096,
+            4096
+          ],
+          "colorspace": "sRGB"
+        },
+        "line": {
+          "file": "Textures\\Floor_InternalLineMask_4K.png",
+          "resolution": [
+            4096,
+            4096
+          ],
+          "colorspace": "Non-Color"
+        },
+        "functional": {
+          "file": "Textures\\Floor_FunctionalTeamMask_4K.png",
+          "resolution": [
+            4096,
+            4096
+          ],
+          "colorspace": "Non-Color"
+        },
+        "orm": {
+          "file": "Textures\\Floor_ORM_4K.png",
+          "resolution": [
+            4096,
+            4096
+          ],
+          "colorspace": "Non-Color"
+        }
+      },
+      "theme": {
+        "name": "蓝灰共用平台",
+        "Primary": "#FEE4D9",
+        "Equipment": "#6AA4BE",
+        "Accent": "#EE9D58",
+        "Frame": "#032E30"
+      },
+      "bone_count": 0,
+      "animations": [],
+      "lods": [
+        {
+          "LOD": 0,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Floor_LOD0.fbx",
+          "sha256": "d652da998dd2285870a7c9eb3fe8290bdf2d59d4832320b20106c458a2517a67",
+          "triangles": 7662,
+          "body_triangles": 6699,
+          "outline_triangles": 963,
+          "materials": [
+            "SSF_Body",
+            "SSF_Outline"
+          ],
+          "bone_count": 0,
+          "bounds_m": {
+            "min": [
+              -51.484466552734375,
+              -48.25128173828125,
+              -1.7970048189163208
+            ],
+            "max": [
+              33.39631652832031,
+              40.314788818359375,
+              4.053682327270508
+            ]
+          },
+          "root_scale": null
+        },
+        {
+          "LOD": 1,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Floor_LOD1.fbx",
+          "sha256": "203fc98859910f3f0cb39816ec469105499ae8740bd96adaaaef1774dcf01c29",
+          "triangles": 7172,
+          "body_triangles": 6699,
+          "outline_triangles": 473,
+          "materials": [
+            "SSF_Body",
+            "SSF_Outline"
+          ],
+          "bone_count": 0,
+          "bounds_m": {
+            "min": [
+              -51.52582931518555,
+              -48.0740966796875,
+              -1.7970046997070312
+            ],
+            "max": [
+              33.42592239379883,
+              40.35615158081055,
+              4.0982136726379395
+            ]
+          },
+          "root_scale": null
+        },
+        {
+          "LOD": 2,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Floor_LOD2.fbx",
+          "sha256": "0695358631b4980d82dd0dddf53c3db4836acb60c37c930218ead1b76c61a46d",
+          "triangles": 6057,
+          "body_triangles": 6057,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_Body"
+          ],
+          "bone_count": 0,
+          "bounds_m": {
+            "min": [
+              -51.319026947021484,
+              -48.0740966796875,
+              -1.7970046997070312
+            ],
+            "max": [
+              33.219139099121094,
+              40.15174865722656,
+              3.8905563354492188
+            ]
+          },
+          "root_scale": null
+        }
+      ]
+    },
+    {
+      "key": "Lamp",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/Floor/Meshes/SK_TB1_Lamp.SK_TB1_Lamp",
+      "skeleton_source": null,
+      "physics_source": null,
+      "textures": {
+        "base": {
+          "file": "Textures\\Lamp_BaseColor_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "colorspace": "sRGB"
+        },
+        "line": {
+          "file": "Textures\\Lamp_InternalLineMask_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "colorspace": "Non-Color"
+        },
+        "functional": {
+          "file": "Textures\\Lamp_FunctionalTeamMask_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "colorspace": "Non-Color"
+        },
+        "orm": {
+          "file": "Textures\\Lamp_ORM_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "colorspace": "Non-Color"
+        }
+      },
+      "theme": {
+        "name": "深青橙色灯具",
+        "Primary": "#FEE4D9",
+        "Equipment": "#0A6F73",
+        "Accent": "#EE9D58",
+        "Frame": "#032E30"
+      },
+      "bone_count": 0,
+      "animations": [],
+      "lods": [
+        {
+          "LOD": 0,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Lamp_LOD0.fbx",
+          "sha256": "ea279c802084ad4764f0721a8ee8f955c0c284f7415a2ca9fea0a3bb7675c492",
+          "triangles": 48,
+          "body_triangles": 48,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_Body"
+          ],
+          "bone_count": 0,
+          "bounds_m": {
+            "min": [
+              -0.1435643583536148,
+              -1.4764471054077148,
+              -0.06480002403259277
+            ],
+            "max": [
+              0.14349965751171112,
+              0.15508808195590973,
+              4.308759689331055
+            ]
+          },
+          "root_scale": null
+        },
+        {
+          "LOD": 1,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Lamp_LOD1.fbx",
+          "sha256": "ebfbe31352b629b019a7b300f55940e4f6d276d82e13568d722da2d86bc91e9f",
+          "triangles": 48,
+          "body_triangles": 48,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_Body"
+          ],
+          "bone_count": 0,
+          "bounds_m": {
+            "min": [
+              -0.1435643583536148,
+              -1.4764471054077148,
+              -0.06480002403259277
+            ],
+            "max": [
+              0.14349965751171112,
+              0.15508808195590973,
+              4.308759689331055
+            ]
+          },
+          "root_scale": null
+        },
+        {
+          "LOD": 2,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Lamp_LOD2.fbx",
+          "sha256": "90c82b9e0da8c132fcc360c357e95565f0f962cbd8f19f41f55a367d6da3fe9b",
+          "triangles": 48,
+          "body_triangles": 48,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_Body"
+          ],
+          "bone_count": 0,
+          "bounds_m": {
+            "min": [
+              -0.1435643583536148,
+              -1.4764471054077148,
+              -0.06480002403259277
+            ],
+            "max": [
+              0.14349965751171112,
+              0.15508808195590973,
+              4.308759689331055
+            ]
+          },
+          "root_scale": null
+        }
+      ]
+    },
+    {
+      "key": "Light",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/Floor/Meshes/SK_TB1_Light.SK_TB1_Light",
+      "skeleton_source": null,
+      "physics_source": null,
+      "textures": {
+        "display": {
+          "file": "Textures/Light_SourceEmissionAlpha_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "colorspace": "Non-Color"
+        }
+      },
+      "theme": {
+        "name": "橙色功能灯光",
+        "Primary": "#EE9D58",
+        "Equipment": "#0A6F73",
+        "Accent": "#EE9D58",
+        "Frame": "#032E30"
+      },
+      "bone_count": 0,
+      "animations": [],
+      "lods": [
+        {
+          "LOD": 0,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Light_LOD0.fbx",
+          "sha256": "86d756b0b3200c3561b860c6a9748c5f6b3c9e880cedfead9da968386cfa252e",
+          "triangles": 2,
+          "body_triangles": 2,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_LightDisplay"
+          ],
+          "bone_count": 0,
+          "bounds_m": {
+            "min": [
+              -0.9859649538993835,
+              -0.9859649538993835,
+              -1.6063410157585167e-07
+            ],
+            "max": [
+              0.9859649538993835,
+              0.9859649538993835,
+              1.6063410157585167e-07
+            ]
+          },
+          "root_scale": null
+        },
+        {
+          "LOD": 1,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Light_LOD1.fbx",
+          "sha256": "42738b2cab012e94b93c8ce171d09b34c2b79ea7b1d3400250bfc92a01aa90d9",
+          "triangles": 2,
+          "body_triangles": 2,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_LightDisplay"
+          ],
+          "bone_count": 0,
+          "bounds_m": {
+            "min": [
+              -0.9859649538993835,
+              -0.9859649538993835,
+              -1.6063410157585167e-07
+            ],
+            "max": [
+              0.9859649538993835,
+              0.9859649538993835,
+              1.6063410157585167e-07
+            ]
+          },
+          "root_scale": null
+        },
+        {
+          "LOD": 2,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Light_LOD2.fbx",
+          "sha256": "dcc21e4165e21b67a344f048ef3e140b97ec82aee8ec82c4e511f85291238fda",
+          "triangles": 2,
+          "body_triangles": 2,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_LightDisplay"
+          ],
+          "bone_count": 0,
+          "bounds_m": {
+            "min": [
+              -0.9859649538993835,
+              -0.9859649538993835,
+              -1.6063410157585167e-07
+            ],
+            "max": [
+              0.9859649538993835,
+              0.9859649538993835,
+              1.6063410157585167e-07
+            ]
+          },
+          "root_scale": null
+        }
+      ]
+    },
+    {
+      "key": "Drone",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Meshes/SK_TB1_Drone.SK_TB1_Drone",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Meshes/TB1_Drone_Skeleton.TB1_Drone_Skeleton",
+      "physics_source": null,
+      "textures": {
+        "base": {
+          "file": "Textures\\Drone_BaseColor_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "colorspace": "sRGB"
+        },
+        "line": {
+          "file": "Textures\\Drone_InternalLineMask_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "colorspace": "Non-Color"
+        },
+        "functional": {
+          "file": "Textures\\Drone_FunctionalTeamMask_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "colorspace": "Non-Color"
+        },
+        "orm": {
+          "file": "Textures\\Drone_ORM_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "colorspace": "Non-Color"
+        }
+      },
+      "theme": {
+        "name": "钢蓝工业 · 随军工厂",
+        "Primary": "#6AA4BE",
+        "Equipment": "#2A104B",
+        "Accent": "#EE9D58",
+        "Frame": "#1A182F"
+      },
+      "bone_count": 4,
+      "animations": [
+        "TB1_Drone_Fly_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Drone_LOD0.fbx",
+          "sha256": "42e1ef0df33008b3f36de7b46b07c2308c8dacf1c4693640b855db861ea378a6",
+          "triangles": 290,
+          "body_triangles": 254,
+          "outline_triangles": 36,
+          "materials": [
+            "SSF_Body",
+            "SSF_Outline"
+          ],
+          "bone_count": 4,
+          "bounds_m": {
+            "min": [
+              -0.5082659125328064,
+              -0.44443395733833313,
+              -0.1652611643075943
+            ],
+            "max": [
+              0.5082820057868958,
+              0.5563538074493408,
+              0.26117265224456787
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        },
+        {
+          "LOD": 1,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Drone_LOD1.fbx",
+          "sha256": "2017852b2af902bf17e6fc069b8ba8b403e66dd48a570ee6cdb2b5cbe45df63c",
+          "triangles": 272,
+          "body_triangles": 254,
+          "outline_triangles": 18,
+          "materials": [
+            "SSF_Body",
+            "SSF_Outline"
+          ],
+          "bone_count": 4,
+          "bounds_m": {
+            "min": [
+              -0.5082659125328064,
+              -0.4448419511318207,
+              -0.16565296053886414
+            ],
+            "max": [
+              0.5082820057868958,
+              0.5563538074493408,
+              0.2592138946056366
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        },
+        {
+          "LOD": 2,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Drone_LOD2.fbx",
+          "sha256": "c7e634077d46c3bc1f588e15d4cde963ffe23d305e2dc4f6b4b14f816a7ebec7",
+          "triangles": 210,
+          "body_triangles": 210,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_Body"
+          ],
+          "bone_count": 4,
+          "bounds_m": {
+            "min": [
+              -0.5082659125328064,
+              -0.44280195236206055,
+              -0.16369393467903137
+            ],
+            "max": [
+              0.5082820057868958,
+              0.5563538074493408,
+              0.2592138946056366
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        }
+      ]
+    },
+    {
+      "key": "MilitaryFactory",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Meshes/SK_TB1_MilitaryFactory.SK_TB1_MilitaryFactory",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Meshes/TB1_MilitaryFactory_Skeleton.TB1_MilitaryFactory_Skeleton",
+      "physics_source": "/Game/Assets/SSF_Buildings/Buildings/MilitaryFactory/Meshes/TB1_MilitaryFactory_PhysicsAsset.TB1_MilitaryFactory_PhysicsAsset",
+      "textures": {
+        "base": {
+          "file": "Textures\\MilitaryFactory_BaseColor_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "sRGB"
+        },
+        "line": {
+          "file": "Textures\\MilitaryFactory_InternalLineMask_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "functional": {
+          "file": "Textures\\MilitaryFactory_FunctionalTeamMask_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "orm": {
+          "file": "Textures\\MilitaryFactory_ORM_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "shared_display": {
+          "file": "Textures/SSF_Shared_SourceLogo_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "shared_between_six_buildings": true
+        }
+      },
+      "theme": {
+        "name": "钢蓝工业",
+        "Primary": "#6AA4BE",
+        "Equipment": "#9972CA",
+        "Accent": "#EE9D58",
+        "Frame": "#756FB5"
+      },
+      "bone_count": 45,
+      "animations": [
+        "TB1_MilitaryFactory_Destroy1_Anim",
+        "TB1_MilitaryFactory_Destroy2_Anim",
+        "TB1_MilitaryFactory_Idle_Anim",
+        "TB1_MilitaryFactory_OpenDoor_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\MilitaryFactory_LOD0.fbx",
+          "sha256": "f512721a5e5a37c415e86df051cc267468de579561a87a7d58e33e918ec3038d",
+          "triangles": 2202,
+          "body_triangles": 1953,
+          "outline_triangles": 249,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display",
+            "SSF_Outline"
+          ],
+          "bone_count": 45,
+          "bounds_m": {
+            "min": [
+              -4.641621112823486,
+              -5.886941909790039,
+              -0.016978448256850243
+            ],
+            "max": [
+              4.641621112823486,
+              6.379652500152588,
+              10.24760627746582
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        },
+        {
+          "LOD": 1,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\MilitaryFactory_LOD1.fbx",
+          "sha256": "387180205e868f412a1fbaeb09e345f5022a763732e64b47c1d2904287a22c3e",
+          "triangles": 2044,
+          "body_triangles": 1895,
+          "outline_triangles": 149,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display",
+            "SSF_Outline"
+          ],
+          "bone_count": 45,
+          "bounds_m": {
+            "min": [
+              -4.641621112823486,
+              -5.886941909790039,
+              -0.004144191741943359
+            ],
+            "max": [
+              4.641621112823486,
+              6.379652500152588,
+              10.24760627746582
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        },
+        {
+          "LOD": 2,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\MilitaryFactory_LOD2.fbx",
+          "sha256": "b5a4f2917ead94129455af36cbb4a288d846f7438dfc09d1cfe6662774802d91",
+          "triangles": 1639,
+          "body_triangles": 1639,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display"
+          ],
+          "bone_count": 45,
+          "bounds_m": {
+            "min": [
+              -4.641621112823486,
+              -5.886941909790039,
+              -0.004144191741943359
+            ],
+            "max": [
+              4.641621112823486,
+              6.379652500152588,
+              10.24760627746582
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        }
+      ]
+    },
+    {
+      "key": "Reactor",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/Reactor/Meshes/SK_TB1_Reactor.SK_TB1_Reactor",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/Reactor/Meshes/TB1_Reactor_Skeleton.TB1_Reactor_Skeleton",
+      "physics_source": "/Game/Assets/SSF_Buildings/Buildings/Reactor/Meshes/TB1_Reactor_PhysicsAsset.TB1_Reactor_PhysicsAsset",
+      "textures": {
+        "base": {
+          "file": "Textures\\Reactor_BaseColor_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "sRGB"
+        },
+        "line": {
+          "file": "Textures\\Reactor_InternalLineMask_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "functional": {
+          "file": "Textures\\Reactor_FunctionalTeamMask_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "orm": {
+          "file": "Textures\\Reactor_ORM_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "shared_display": {
+          "file": "Textures/SSF_Shared_SourceLogo_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "shared_between_six_buildings": true
+        }
+      },
+      "theme": {
+        "name": "青绿动力",
+        "Primary": "#0D9099",
+        "Equipment": "#6AA4BE",
+        "Accent": "#EE9D58",
+        "Frame": "#032E30"
+      },
+      "bone_count": 12,
+      "animations": [
+        "TB1_Reactor_Destroy1_Anim",
+        "TB1_Reactor_Destroy2_Anim",
+        "TB1_Reactor_Idle_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Reactor_LOD0.fbx",
+          "sha256": "f47307d1a35bd80efefaaa115d50ce4896ef4753f5961c5aa98d1fb390eaa58c",
+          "triangles": 4040,
+          "body_triangles": 3546,
+          "outline_triangles": 494,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display",
+            "SSF_Outline"
+          ],
+          "bone_count": 12,
+          "bounds_m": {
+            "min": [
+              -3.207324743270874,
+              -2.5930123329162598,
+              -0.10519931465387344
+            ],
+            "max": [
+              2.2047863006591797,
+              3.0561752319335938,
+              4.669166088104248
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        },
+        {
+          "LOD": 1,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Reactor_LOD1.fbx",
+          "sha256": "0377b04afc267193b6a2601b85fadb4093102ce44e38c1be52235bcc9a4e3940",
+          "triangles": 3392,
+          "body_triangles": 3154,
+          "outline_triangles": 238,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display",
+            "SSF_Outline"
+          ],
+          "bone_count": 12,
+          "bounds_m": {
+            "min": [
+              -3.207324743270874,
+              -2.5930123329162598,
+              -0.10519931465387344
+            ],
+            "max": [
+              2.2047863006591797,
+              3.0561752319335938,
+              4.669166088104248
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        },
+        {
+          "LOD": 2,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\Reactor_LOD2.fbx",
+          "sha256": "ba639c664d2750dacb7d434be8dbade64b456b7d1216305d49e9f460418bca50",
+          "triangles": 2635,
+          "body_triangles": 2635,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display"
+          ],
+          "bone_count": 12,
+          "bounds_m": {
+            "min": [
+              -3.207324743270874,
+              -2.5930123329162598,
+              -0.10519931465387344
+            ],
+            "max": [
+              2.2047863006591797,
+              3.0561752319335938,
+              4.669166088104248
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        }
+      ]
+    },
+    {
+      "key": "StrategyCenter",
+      "source": "/Game/Assets/SSF_Buildings/Buildings/StrategyCenter/Meshes/SK_TB1_StrategyCenter.SK_TB1_StrategyCenter",
+      "skeleton_source": "/Game/Assets/SSF_Buildings/Buildings/StrategyCenter/Meshes/TB1_StrategyCenter_Skeleton.TB1_StrategyCenter_Skeleton",
+      "physics_source": "/Game/Assets/SSF_Buildings/Buildings/StrategyCenter/Meshes/TB1_StrategyCenter_PhysicsAsset.TB1_StrategyCenter_PhysicsAsset",
+      "textures": {
+        "base": {
+          "file": "Textures\\StrategyCenter_BaseColor_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "sRGB"
+        },
+        "line": {
+          "file": "Textures\\StrategyCenter_InternalLineMask_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "functional": {
+          "file": "Textures\\StrategyCenter_FunctionalTeamMask_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "orm": {
+          "file": "Textures\\StrategyCenter_ORM_2K.png",
+          "resolution": [
+            2048,
+            2048
+          ],
+          "colorspace": "Non-Color"
+        },
+        "shared_display": {
+          "file": "Textures/SSF_Shared_SourceLogo_1K.png",
+          "resolution": [
+            1024,
+            1024
+          ],
+          "shared_between_six_buildings": true
+        }
+      },
+      "theme": {
+        "name": "紫色情报",
+        "Primary": "#AA6EB9",
+        "Equipment": "#E3B6B1",
+        "Accent": "#0D9099",
+        "Frame": "#8A67B6"
+      },
+      "bone_count": 88,
+      "animations": [
+        "TB1_StrategyCenter_Dead1_Anim",
+        "TB1_StrategyCenter_Dead2_Anim",
+        "TB1_StrategyCenter_Idle_Anim"
+      ],
+      "lods": [
+        {
+          "LOD": 0,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\StrategyCenter_LOD0.fbx",
+          "sha256": "1b0c57fef46beb7f456e2631fd2b1077da9064efc8cffa5f298d999fd26c477a",
+          "triangles": 4775,
+          "body_triangles": 4175,
+          "outline_triangles": 600,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display",
+            "SSF_Outline"
+          ],
+          "bone_count": 88,
+          "bounds_m": {
+            "min": [
+              -4.090313911437988,
+              -3.697925090789795,
+              -0.021812403574585915
+            ],
+            "max": [
+              4.0903143882751465,
+              3.778681755065918,
+              11.428741455078125
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        },
+        {
+          "LOD": 1,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\StrategyCenter_LOD1.fbx",
+          "sha256": "0b8b26f2e160b515938732de534a4ab5629b77c77571dcecf81acf1e598e0614",
+          "triangles": 4237,
+          "body_triangles": 3939,
+          "outline_triangles": 298,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display",
+            "SSF_Outline"
+          ],
+          "bone_count": 88,
+          "bounds_m": {
+            "min": [
+              -4.090313911437988,
+              -3.697925090789795,
+              -0.02727339044213295
+            ],
+            "max": [
+              4.0903143882751465,
+              3.778681755065918,
+              11.428741455078125
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        },
+        {
+          "LOD": 2,
+          "fbx": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\SSFStyle_20261005\\UE_Delivery_v1\\FBX\\StrategyCenter_LOD2.fbx",
+          "sha256": "bca514b167970efec5efac48e624a2915cb6ef940a41b5210c4e9f490e2bc41e",
+          "triangles": 3582,
+          "body_triangles": 3582,
+          "outline_triangles": 0,
+          "materials": [
+            "SSF_Body",
+            "SSF_Display"
+          ],
+          "bone_count": 88,
+          "bounds_m": {
+            "min": [
+              -4.090313911437988,
+              -3.697925090789795,
+              -0.015938639640808105
+            ],
+            "max": [
+              4.0903143882751465,
+              3.778681755065918,
+              11.428741455078125
+            ]
+          },
+          "root_scale": [
+            0.9999999403953552,
+            0.9999999403953552,
+            0.9999999403953552
+          ]
+        }
+      ]
+    }
+  ],
+  "portable_uvs": [
+    "AtlasUV",
+    "SourceUV",
+    "PaletteLinear_RG",
+    "PaletteLinear_B_LODTeam"
+  ],
+  "bone_space": "original UE reference including CommandCenter 0.3 root scale",
+  "source_saved": false
+}

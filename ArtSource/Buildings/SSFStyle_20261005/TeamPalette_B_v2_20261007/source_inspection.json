@@ -1,0 +1,2290 @@
+{
+  "version": "5.2.2 LTS",
+  "binary": "D:\\steam\\steamapps\\common\\Blender\\blender.exe",
+  "scene_names": [
+    "A3_ReferenceAssembly",
+    "Baseline_AirBase",
+    "Baseline_CloningCenter",
+    "Baseline_CommandCenter",
+    "Baseline_Drone",
+    "Baseline_Floor",
+    "Baseline_Lamp",
+    "Baseline_Light",
+    "Baseline_MilitaryFactory",
+    "Baseline_Reactor",
+    "Baseline_StrategyCenter",
+    "Production_AirBase",
+    "Production_Assembly",
+    "Production_CloningCenter",
+    "Production_CommandCenter",
+    "Production_Drone",
+    "Production_Floor",
+    "Production_Lamp",
+    "Production_Light",
+    "Production_MilitaryFactory",
+    "Production_Reactor",
+    "Production_StrategyCenter",
+    "Scene"
+  ],
+  "assets": [
+    {
+      "key": "AirBase",
+      "scene": "Production_AirBase",
+      "rig": "Rig_AirBase",
+      "body": "AirBase_LOD0_Body",
+      "attributes": [
+        [
+          "SSF_ComponentID",
+          "FACE",
+          "INT"
+        ],
+        [
+          "custom_normal",
+          "CORNER",
+          "INT16_2D"
+        ],
+        [
+          "SSF_PaletteLinear",
+          "CORNER",
+          "FLOAT_COLOR"
+        ],
+        [
+          "SourceUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          "SSF_AtlasUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          ".select_vert",
+          "POINT",
+          "BOOLEAN"
+        ],
+        [
+          ".select_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          "sharp_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          ".select_poly",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_vert",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_edge",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_face",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          "position",
+          "POINT",
+          "FLOAT_VECTOR"
+        ],
+        [
+          ".edge_verts",
+          "EDGE",
+          "INT32_2D"
+        ],
+        [
+          ".corner_vert",
+          "CORNER",
+          "INT"
+        ],
+        [
+          ".corner_edge",
+          "CORNER",
+          "INT"
+        ],
+        [
+          "material_index",
+          "FACE",
+          "INT"
+        ],
+        [
+          "sharp_face",
+          "FACE",
+          "BOOLEAN"
+        ]
+      ],
+      "palette_sample": [
+        [
+          0.991102,
+          0.775822,
+          0.693872,
+          1.0
+        ],
+        [
+          0.8,
+          0.8,
+          0.8,
+          1.0
+        ],
+        [
+          0.854993,
+          0.337164,
+          0.097587,
+          1.0
+        ],
+        [
+          0.020289,
+          0.076185,
+          0.119538,
+          1.0
+        ],
+        [
+          0.01033,
+          0.009134,
+          0.028426,
+          1.0
+        ]
+      ],
+      "materials": [
+        "M_SSF_AirBase_ThreeTone_LOD0",
+        "M_SSF_AirBase_SourceTranslucentDisplay_LOD0"
+      ]
+    },
+    {
+      "key": "CloningCenter",
+      "scene": "Production_CloningCenter",
+      "rig": "Rig_CloningCenter",
+      "body": "CloningCenter_LOD0_Body",
+      "attributes": [
+        [
+          "SSF_ComponentID",
+          "FACE",
+          "INT"
+        ],
+        [
+          "custom_normal",
+          "CORNER",
+          "INT16_2D"
+        ],
+        [
+          "SSF_PaletteLinear",
+          "CORNER",
+          "FLOAT_COLOR"
+        ],
+        [
+          "SourceUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          "SSF_AtlasUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          ".select_vert",
+          "POINT",
+          "BOOLEAN"
+        ],
+        [
+          ".select_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          "sharp_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          ".select_poly",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_vert",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_edge",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_face",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          "position",
+          "POINT",
+          "FLOAT_VECTOR"
+        ],
+        [
+          ".edge_verts",
+          "EDGE",
+          "INT32_2D"
+        ],
+        [
+          ".corner_vert",
+          "CORNER",
+          "INT"
+        ],
+        [
+          ".corner_edge",
+          "CORNER",
+          "INT"
+        ],
+        [
+          "material_index",
+          "FACE",
+          "INT"
+        ],
+        [
+          "sharp_face",
+          "FACE",
+          "BOOLEAN"
+        ]
+      ],
+      "palette_sample": [
+        [
+          0.822786,
+          0.502886,
+          0.491021,
+          1.0
+        ],
+        [
+          0.059511,
+          0.009134,
+          0.074214,
+          1.0
+        ],
+        [
+          0.991102,
+          0.775822,
+          0.693872,
+          1.0
+        ],
+        [
+          0.8,
+          0.8,
+          0.8,
+          1.0
+        ],
+        [
+          0.226966,
+          0.08022,
+          0.119538,
+          1.0
+        ]
+      ],
+      "materials": [
+        "M_SSF_CloningCenter_ThreeTone_LOD0",
+        "M_SSF_CloningCenter_SourceTranslucentDisplay_LOD0"
+      ]
+    },
+    {
+      "key": "CommandCenter",
+      "scene": "Production_CommandCenter",
+      "rig": "Rig_CommandCenter",
+      "body": "CommandCenter_LOD0_Body",
+      "attributes": [
+        [
+          "SSF_ComponentID",
+          "FACE",
+          "INT"
+        ],
+        [
+          "custom_normal",
+          "CORNER",
+          "INT16_2D"
+        ],
+        [
+          "SSF_PaletteLinear",
+          "CORNER",
+          "FLOAT_COLOR"
+        ],
+        [
+          "SourceUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          "SSF_AtlasUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          ".select_vert",
+          "POINT",
+          "BOOLEAN"
+        ],
+        [
+          ".select_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          "sharp_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          ".select_poly",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_vert",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_edge",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_face",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          "position",
+          "POINT",
+          "FLOAT_VECTOR"
+        ],
+        [
+          ".edge_verts",
+          "EDGE",
+          "INT32_2D"
+        ],
+        [
+          ".corner_vert",
+          "CORNER",
+          "INT"
+        ],
+        [
+          ".corner_edge",
+          "CORNER",
+          "INT"
+        ],
+        [
+          "material_index",
+          "FACE",
+          "INT"
+        ],
+        [
+          "sharp_face",
+          "FACE",
+          "BOOLEAN"
+        ]
+      ],
+      "palette_sample": [
+        [
+          0.8,
+          0.8,
+          0.8,
+          1.0
+        ],
+        [
+          0.132868,
+          0.015996,
+          0.066626,
+          1.0
+        ],
+        [
+          0.854993,
+          0.337164,
+          0.097587,
+          1.0
+        ],
+        [
+          0.366253,
+          0.051269,
+          0.0865,
+          1.0
+        ],
+        [
+          0.768151,
+          0.467784,
+          0.439657,
+          1.0
+        ]
+      ],
+      "materials": [
+        "M_SSF_CommandCenter_ThreeTone_LOD0",
+        "M_SSF_CommandCenter_SourceTranslucentDisplay_LOD0"
+      ]
+    },
+    {
+      "key": "Floor",
+      "scene": "Production_Floor",
+      "rig": null,
+      "body": "Floor_LOD0_Body",
+      "attributes": [
+        [
+          "SSF_ComponentID",
+          "FACE",
+          "INT"
+        ],
+        [
+          "custom_normal",
+          "CORNER",
+          "INT16_2D"
+        ],
+        [
+          "SSF_PaletteLinear",
+          "CORNER",
+          "FLOAT_COLOR"
+        ],
+        [
+          "SourceUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          "LightMapUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          "SSF_AtlasUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          ".select_vert",
+          "POINT",
+          "BOOLEAN"
+        ],
+        [
+          ".select_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          "sharp_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          ".select_poly",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_vert",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_edge",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_face",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          "position",
+          "POINT",
+          "FLOAT_VECTOR"
+        ],
+        [
+          ".edge_verts",
+          "EDGE",
+          "INT32_2D"
+        ],
+        [
+          ".corner_vert",
+          "CORNER",
+          "INT"
+        ],
+        [
+          ".corner_edge",
+          "CORNER",
+          "INT"
+        ],
+        [
+          "material_index",
+          "FACE",
+          "INT"
+        ],
+        [
+          "sharp_face",
+          "FACE",
+          "BOOLEAN"
+        ]
+      ],
+      "palette_sample": [
+        [
+          0.020289,
+          0.076185,
+          0.119538,
+          1.0
+        ],
+        [
+          0.991102,
+          0.775822,
+          0.693872,
+          1.0
+        ],
+        [
+          0.854993,
+          0.337164,
+          0.097587,
+          1.0
+        ]
+      ],
+      "materials": [
+        "M_SSF_Floor_ThreeTone_LOD0"
+      ]
+    },
+    {
+      "key": "Lamp",
+      "scene": "Production_Lamp",
+      "rig": null,
+      "body": "Lamp_LOD0_Body",
+      "attributes": [
+        [
+          "SSF_ComponentID",
+          "FACE",
+          "INT"
+        ],
+        [
+          "custom_normal",
+          "CORNER",
+          "INT16_2D"
+        ],
+        [
+          "SSF_PaletteLinear",
+          "CORNER",
+          "FLOAT_COLOR"
+        ],
+        [
+          "SourceUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          "LightMapUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          "SSF_AtlasUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          ".select_vert",
+          "POINT",
+          "BOOLEAN"
+        ],
+        [
+          ".select_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          "sharp_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          ".select_poly",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_vert",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_edge",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_face",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          "position",
+          "POINT",
+          "FLOAT_VECTOR"
+        ],
+        [
+          ".edge_verts",
+          "EDGE",
+          "INT32_2D"
+        ],
+        [
+          ".corner_vert",
+          "CORNER",
+          "INT"
+        ],
+        [
+          ".corner_edge",
+          "CORNER",
+          "INT"
+        ],
+        [
+          "material_index",
+          "FACE",
+          "INT"
+        ],
+        [
+          "sharp_face",
+          "FACE",
+          "BOOLEAN"
+        ]
+      ],
+      "palette_sample": [
+        [
+          0.000911,
+          0.027321,
+          0.029557,
+          1.0
+        ],
+        [
+          0.854993,
+          0.337164,
+          0.097587,
+          1.0
+        ]
+      ],
+      "materials": [
+        "M_SSF_Lamp_ThreeTone_LOD0"
+      ]
+    },
+    {
+      "key": "Light",
+      "scene": "Production_Light",
+      "rig": null,
+      "body": "Light_LOD0_Body",
+      "attributes": [
+        [
+          ".select_vert",
+          "POINT",
+          "BOOLEAN"
+        ],
+        [
+          "position",
+          "POINT",
+          "FLOAT_VECTOR"
+        ],
+        [
+          ".corner_vert",
+          "CORNER",
+          "INT"
+        ],
+        [
+          ".corner_edge",
+          "CORNER",
+          "INT"
+        ],
+        [
+          ".select_poly",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          "sharp_face",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          ".edge_verts",
+          "EDGE",
+          "INT32_2D"
+        ],
+        [
+          ".select_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          "custom_normal",
+          "CORNER",
+          "INT16_2D"
+        ],
+        [
+          "sharp_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          "SourceUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          "LightMapUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          "SSF_PaletteLinear",
+          "CORNER",
+          "FLOAT_COLOR"
+        ],
+        [
+          "SSF_ComponentID",
+          "FACE",
+          "INT"
+        ],
+        [
+          "material_index",
+          "FACE",
+          "INT"
+        ]
+      ],
+      "palette_sample": [
+        [
+          0.8,
+          0.8,
+          0.8,
+          1.0
+        ]
+      ],
+      "materials": [
+        "M_SSF_Light_SourceTranslucent_LOD0"
+      ]
+    },
+    {
+      "key": "Drone",
+      "scene": "Production_Drone",
+      "rig": "Rig_Drone",
+      "body": "Drone_LOD0_Body",
+      "attributes": [
+        [
+          "SSF_ComponentID",
+          "FACE",
+          "INT"
+        ],
+        [
+          "custom_normal",
+          "CORNER",
+          "INT16_2D"
+        ],
+        [
+          "SSF_PaletteLinear",
+          "CORNER",
+          "FLOAT_COLOR"
+        ],
+        [
+          "SourceUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          "SSF_AtlasUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          ".select_vert",
+          "POINT",
+          "BOOLEAN"
+        ],
+        [
+          ".select_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          "sharp_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          ".select_poly",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_vert",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_edge",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_face",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          "position",
+          "POINT",
+          "FLOAT_VECTOR"
+        ],
+        [
+          ".edge_verts",
+          "EDGE",
+          "INT32_2D"
+        ],
+        [
+          ".corner_vert",
+          "CORNER",
+          "INT"
+        ],
+        [
+          ".corner_edge",
+          "CORNER",
+          "INT"
+        ],
+        [
+          "material_index",
+          "FACE",
+          "INT"
+        ],
+        [
+          "sharp_face",
+          "FACE",
+          "BOOLEAN"
+        ]
+      ],
+      "palette_sample": [
+        [
+          0.144128,
+          0.371238,
+          0.514918,
+          1.0
+        ],
+        [
+          0.01033,
+          0.009134,
+          0.028426,
+          1.0
+        ],
+        [
+          0.854993,
+          0.337164,
+          0.097587,
+          1.0
+        ],
+        [
+          0.023153,
+          0.005182,
+          0.07036,
+          1.0
+        ]
+      ],
+      "materials": [
+        "M_SSF_Drone_ThreeTone_LOD0"
+      ]
+    },
+    {
+      "key": "MilitaryFactory",
+      "scene": "Production_MilitaryFactory",
+      "rig": "Rig_MilitaryFactory",
+      "body": "MilitaryFactory_LOD0_Body",
+      "attributes": [
+        [
+          "SSF_ComponentID",
+          "FACE",
+          "INT"
+        ],
+        [
+          "custom_normal",
+          "CORNER",
+          "INT16_2D"
+        ],
+        [
+          "SSF_PaletteLinear",
+          "CORNER",
+          "FLOAT_COLOR"
+        ],
+        [
+          "SourceUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          "SSF_AtlasUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          ".select_vert",
+          "POINT",
+          "BOOLEAN"
+        ],
+        [
+          ".select_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          "sharp_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          ".select_poly",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_vert",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_edge",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_face",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          "position",
+          "POINT",
+          "FLOAT_VECTOR"
+        ],
+        [
+          ".edge_verts",
+          "EDGE",
+          "INT32_2D"
+        ],
+        [
+          ".corner_vert",
+          "CORNER",
+          "INT"
+        ],
+        [
+          ".corner_edge",
+          "CORNER",
+          "INT"
+        ],
+        [
+          "material_index",
+          "FACE",
+          "INT"
+        ],
+        [
+          "sharp_face",
+          "FACE",
+          "BOOLEAN"
+        ]
+      ],
+      "palette_sample": [
+        [
+          0.144128,
+          0.371238,
+          0.514918,
+          1.0
+        ],
+        [
+          0.177888,
+          0.158961,
+          0.462077,
+          1.0
+        ],
+        [
+          0.8,
+          0.8,
+          0.8,
+          1.0
+        ],
+        [
+          0.854993,
+          0.337164,
+          0.097587,
+          1.0
+        ],
+        [
+          0.318547,
+          0.168269,
+          0.590619,
+          1.0
+        ]
+      ],
+      "materials": [
+        "M_SSF_MilitaryFactory_ThreeTone_LOD0",
+        "M_SSF_MilitaryFactory_SourceTranslucentDisplay_LOD0"
+      ]
+    },
+    {
+      "key": "Reactor",
+      "scene": "Production_Reactor",
+      "rig": "Rig_Reactor",
+      "body": "Reactor_LOD0_Body",
+      "attributes": [
+        [
+          "SSF_ComponentID",
+          "FACE",
+          "INT"
+        ],
+        [
+          "custom_normal",
+          "CORNER",
+          "INT16_2D"
+        ],
+        [
+          "SSF_PaletteLinear",
+          "CORNER",
+          "FLOAT_COLOR"
+        ],
+        [
+          "SourceUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          "SSF_AtlasUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          ".select_vert",
+          "POINT",
+          "BOOLEAN"
+        ],
+        [
+          ".select_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          "sharp_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          ".select_poly",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_vert",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_edge",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_face",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          "position",
+          "POINT",
+          "FLOAT_VECTOR"
+        ],
+        [
+          ".edge_verts",
+          "EDGE",
+          "INT32_2D"
+        ],
+        [
+          ".corner_vert",
+          "CORNER",
+          "INT"
+        ],
+        [
+          ".corner_edge",
+          "CORNER",
+          "INT"
+        ],
+        [
+          "material_index",
+          "FACE",
+          "INT"
+        ],
+        [
+          "sharp_face",
+          "FACE",
+          "BOOLEAN"
+        ]
+      ],
+      "palette_sample": [
+        [
+          0.004025,
+          0.278894,
+          0.318547,
+          1.0
+        ],
+        [
+          0.144128,
+          0.371238,
+          0.514918,
+          1.0
+        ],
+        [
+          0.8,
+          0.8,
+          0.8,
+          1.0
+        ],
+        [
+          0.000911,
+          0.027321,
+          0.029557,
+          1.0
+        ],
+        [
+          0.854993,
+          0.337164,
+          0.097587,
+          1.0
+        ]
+      ],
+      "materials": [
+        "M_SSF_Reactor_ThreeTone_LOD0",
+        "M_SSF_Reactor_SourceTranslucentDisplay_LOD0"
+      ]
+    },
+    {
+      "key": "StrategyCenter",
+      "scene": "Production_StrategyCenter",
+      "rig": "Rig_StrategyCenter",
+      "body": "StrategyCenter_LOD0_Body",
+      "attributes": [
+        [
+          "SSF_ComponentID",
+          "FACE",
+          "INT"
+        ],
+        [
+          "custom_normal",
+          "CORNER",
+          "INT16_2D"
+        ],
+        [
+          "SSF_PaletteLinear",
+          "CORNER",
+          "FLOAT_COLOR"
+        ],
+        [
+          "SourceUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          "SSF_AtlasUV",
+          "CORNER",
+          "FLOAT2"
+        ],
+        [
+          ".select_vert",
+          "POINT",
+          "BOOLEAN"
+        ],
+        [
+          ".select_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          "sharp_edge",
+          "EDGE",
+          "BOOLEAN"
+        ],
+        [
+          ".select_poly",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_vert",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_edge",
+          "CORNER",
+          "BOOLEAN"
+        ],
+        [
+          ".uv_select_face",
+          "FACE",
+          "BOOLEAN"
+        ],
+        [
+          "position",
+          "POINT",
+          "FLOAT_VECTOR"
+        ],
+        [
+          ".edge_verts",
+          "EDGE",
+          "INT32_2D"
+        ],
+        [
+          ".corner_vert",
+          "CORNER",
+          "INT"
+        ],
+        [
+          ".corner_edge",
+          "CORNER",
+          "INT"
+        ],
+        [
+          "material_index",
+          "FACE",
+          "INT"
+        ],
+        [
+          "sharp_face",
+          "FACE",
+          "BOOLEAN"
+        ]
+      ],
+      "palette_sample": [
+        [
+          0.004025,
+          0.278894,
+          0.318547,
+          1.0
+        ],
+        [
+          0.8,
+          0.8,
+          0.8,
+          1.0
+        ],
+        [
+          0.401978,
+          0.155926,
+          0.48515,
+          1.0
+        ],
+        [
+          0.254152,
+          0.135633,
+          0.467784,
+          1.0
+        ],
+        [
+          0.768151,
+          0.467784,
+          0.439657,
+          1.0
+        ]
+      ],
+      "materials": [
+        "M_SSF_StrategyCenter_ThreeTone_LOD0",
+        "M_SSF_StrategyCenter_SourceTranslucentDisplay_LOD0"
+      ]
+    }
+  ],
+  "material_info": [
+    {
+      "name": "M_SSF_AirBase_ThreeTone_LOD0",
+      "diffuse": [
+        0.8549926280975342,
+        0.33716362714767456,
+        0.09758734703063965,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "材质输出",
+          "type": "OUTPUT_MATERIAL",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Displacement",
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "Thickness",
+              0.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "自发光",
+          "type": "EMISSION",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Strength",
+              1.0
+            ],
+            [
+              "Weight",
+              0.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "几何数据",
+          "type": "NEW_GEOMETRY",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "FixedArtLight",
+          "type": "VECT_MATH",
+          "attribute": null,
+          "operation": "DOT_PRODUCT",
+          "layer_name": null,
+          "inputs": [
+            [
+              "Vector",
+              [
+                0.3495458662509918,
+                -0.549286425113678,
+                0.7590138912200928
+              ]
+            ],
+            [
+              "Vector",
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "Scale",
+              1.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "Approved_A7_ThreeTone",
+          "type": "VALTORGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "UV 贴图",
+          "type": "UVMAP",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "Portable_BaseColor",
+          "type": "TEX_IMAGE",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": "AirBase_BaseColor_2K.png"
+        },
+        {
+          "name": "Approved_PaletteLinear",
+          "type": "VERTEX_COLOR",
+          "attribute": null,
+          "operation": null,
+          "layer_name": "SSF_PaletteLinear",
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "图像纹理",
+          "type": "TEX_IMAGE",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": "AirBase_FunctionalTeamMask_2K.png"
+        },
+        {
+          "name": "分离颜色",
+          "type": "SEPARATE_COLOR",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "Base Color",
+          "type": "RGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [
+            [
+              "Color",
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            ]
+          ],
+          "image": null
+        },
+        {
+          "name": "Team Color",
+          "type": "RGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [
+            [
+              "Color",
+              [
+                0.9911020994186401,
+                0.7758222222328186,
+                0.6938717365264893,
+                1.0
+              ]
+            ]
+          ],
+          "image": null
+        },
+        {
+          "name": "矢量运算",
+          "type": "VECT_MATH",
+          "attribute": null,
+          "operation": "DISTANCE",
+          "layer_name": null,
+          "inputs": [
+            [
+              "Vector",
+              [
+                0.9911020994186401,
+                0.7758222222328186,
+                0.6938717365264893
+              ]
+            ],
+            [
+              "Vector",
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "Scale",
+              1.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "运算",
+          "type": "MATH",
+          "attribute": null,
+          "operation": "LESS_THAN",
+          "layer_name": null,
+          "inputs": [
+            [
+              "Value",
+              9.999999747378752e-05
+            ],
+            [
+              "Value",
+              0.5
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "混合 (旧版)",
+          "type": "MIX_RGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "混合 (旧版).001",
+          "type": "MIX_RGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Factor",
+              1.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "混合 (旧版).002",
+          "type": "MIX_RGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Factor",
+              1.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "Independent_InternalLineMask",
+          "type": "TEX_IMAGE",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": "AirBase_InternalLineMask_2K.png"
+        },
+        {
+          "name": "分离颜色.001",
+          "type": "SEPARATE_COLOR",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "SourcePanelLineStrength",
+          "type": "MATH",
+          "attribute": null,
+          "operation": "MULTIPLY",
+          "layer_name": null,
+          "inputs": [
+            [
+              "Value",
+              0.6499999761581421
+            ],
+            [
+              "Value",
+              0.5
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "FullStrengthMechanicalSeams",
+          "type": "MATH",
+          "attribute": null,
+          "operation": "MAXIMUM",
+          "layer_name": null,
+          "inputs": [
+            [
+              "Value",
+              0.5
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "InternalLineStrength",
+          "type": "MATH",
+          "attribute": null,
+          "operation": "MULTIPLY",
+          "layer_name": null,
+          "inputs": [
+            [
+              "Value",
+              1.0
+            ],
+            [
+              "Value",
+              0.5
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "混合 (旧版).003",
+          "type": "MIX_RGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Color2",
+              [
+                0.01032982300966978,
+                0.009134058840572834,
+                0.028426039963960648,
+                1.0
+              ]
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        }
+      ]
+    },
+    {
+      "name": "M_SSF_AirBase_SourceTranslucentDisplay_LOD0",
+      "diffuse": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "图像纹理",
+          "type": "TEX_IMAGE",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": "SSF_Shared_SourceLogo_1K"
+        },
+        {
+          "name": "自发光",
+          "type": "EMISSION",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Color",
+              [
+                0.9911020994186401,
+                0.7758222222328186,
+                0.6938717365264893,
+                1.0
+              ]
+            ],
+            [
+              "Strength",
+              1.0
+            ],
+            [
+              "Weight",
+              0.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "透明 BSDF",
+          "type": "BSDF_TRANSPARENT",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Color",
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            ],
+            [
+              "Weight",
+              0.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "混合着色器",
+          "type": "MIX_SHADER",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "材质输出",
+          "type": "OUTPUT_MATERIAL",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Displacement",
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "Thickness",
+              0.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "UV 贴图",
+          "type": "UVMAP",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        }
+      ]
+    },
+    {
+      "name": "M_SSF_CommandCenter_ThreeTone_LOD0",
+      "diffuse": [
+        0.366252601146698,
+        0.05126945674419403,
+        0.08650045841932297,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "材质输出",
+          "type": "OUTPUT_MATERIAL",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Displacement",
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "Thickness",
+              0.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "自发光",
+          "type": "EMISSION",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Strength",
+              1.0
+            ],
+            [
+              "Weight",
+              0.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "几何数据",
+          "type": "NEW_GEOMETRY",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "FixedArtLight",
+          "type": "VECT_MATH",
+          "attribute": null,
+          "operation": "DOT_PRODUCT",
+          "layer_name": null,
+          "inputs": [
+            [
+              "Vector",
+              [
+                0.3495458662509918,
+                -0.549286425113678,
+                0.7590138912200928
+              ]
+            ],
+            [
+              "Vector",
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "Scale",
+              1.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "Approved_A7_ThreeTone",
+          "type": "VALTORGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "UV 贴图",
+          "type": "UVMAP",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "Portable_BaseColor",
+          "type": "TEX_IMAGE",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": "CommandCenter_BaseColor_2K.png"
+        },
+        {
+          "name": "Approved_PaletteLinear",
+          "type": "VERTEX_COLOR",
+          "attribute": null,
+          "operation": null,
+          "layer_name": "SSF_PaletteLinear",
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "图像纹理",
+          "type": "TEX_IMAGE",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": "CommandCenter_FunctionalTeamMask_2K.png"
+        },
+        {
+          "name": "分离颜色",
+          "type": "SEPARATE_COLOR",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "Base Color",
+          "type": "RGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [
+            [
+              "Color",
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            ]
+          ],
+          "image": null
+        },
+        {
+          "name": "Team Color",
+          "type": "RGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [
+            [
+              "Color",
+              [
+                0.8549926280975342,
+                0.33716362714767456,
+                0.09758734703063965,
+                1.0
+              ]
+            ]
+          ],
+          "image": null
+        },
+        {
+          "name": "矢量运算",
+          "type": "VECT_MATH",
+          "attribute": null,
+          "operation": "DISTANCE",
+          "layer_name": null,
+          "inputs": [
+            [
+              "Vector",
+              [
+                0.8549926280975342,
+                0.33716362714767456,
+                0.09758734703063965
+              ]
+            ],
+            [
+              "Vector",
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "Scale",
+              1.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "运算",
+          "type": "MATH",
+          "attribute": null,
+          "operation": "LESS_THAN",
+          "layer_name": null,
+          "inputs": [
+            [
+              "Value",
+              9.999999747378752e-05
+            ],
+            [
+              "Value",
+              0.5
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "混合 (旧版)",
+          "type": "MIX_RGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "混合 (旧版).001",
+          "type": "MIX_RGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Factor",
+              1.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "混合 (旧版).002",
+          "type": "MIX_RGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Factor",
+              1.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "Independent_InternalLineMask",
+          "type": "TEX_IMAGE",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": "CommandCenter_InternalLineMask_2K.png"
+        },
+        {
+          "name": "分离颜色.001",
+          "type": "SEPARATE_COLOR",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "SourcePanelLineStrength",
+          "type": "MATH",
+          "attribute": null,
+          "operation": "MULTIPLY",
+          "layer_name": null,
+          "inputs": [
+            [
+              "Value",
+              0.6499999761581421
+            ],
+            [
+              "Value",
+              0.5
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "FullStrengthMechanicalSeams",
+          "type": "MATH",
+          "attribute": null,
+          "operation": "MAXIMUM",
+          "layer_name": null,
+          "inputs": [
+            [
+              "Value",
+              0.5
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "InternalLineStrength",
+          "type": "MATH",
+          "attribute": null,
+          "operation": "MULTIPLY",
+          "layer_name": null,
+          "inputs": [
+            [
+              "Value",
+              1.0
+            ],
+            [
+              "Value",
+              0.5
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "混合 (旧版).003",
+          "type": "MIX_RGB",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Color2",
+              [
+                0.01032982300966978,
+                0.009134058840572834,
+                0.028426039963960648,
+                1.0
+              ]
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        }
+      ]
+    },
+    {
+      "name": "M_SSF_CommandCenter_SourceTranslucentDisplay_LOD0",
+      "diffuse": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "图像纹理",
+          "type": "TEX_IMAGE",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": "SSF_Shared_SourceLogo_1K"
+        },
+        {
+          "name": "自发光",
+          "type": "EMISSION",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Color",
+              [
+                0.8549926280975342,
+                0.33716362714767456,
+                0.09758734703063965,
+                1.0
+              ]
+            ],
+            [
+              "Strength",
+              1.0
+            ],
+            [
+              "Weight",
+              0.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "透明 BSDF",
+          "type": "BSDF_TRANSPARENT",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Color",
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            ],
+            [
+              "Weight",
+              0.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "混合着色器",
+          "type": "MIX_SHADER",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "材质输出",
+          "type": "OUTPUT_MATERIAL",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [
+            [
+              "Displacement",
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "Thickness",
+              0.0
+            ]
+          ],
+          "outputs": [],
+          "image": null
+        },
+        {
+          "name": "UV 贴图",
+          "type": "UVMAP",
+          "attribute": null,
+          "operation": null,
+          "layer_name": null,
+          "inputs": [],
+          "outputs": [],
+          "image": null
+        }
+      ]
+    }
+  ]
+}

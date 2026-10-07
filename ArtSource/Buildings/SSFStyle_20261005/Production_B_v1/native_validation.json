@@ -1,0 +1,2081 @@
+{
+  "version": "SSF_Production_B_v1",
+  "source_blend_sha256": "6f386c2e4782ce6ab6e81ae0f2380a6345fa05cdc6fc3dcf9d260c13ed3a806e",
+  "technical_geometry_checks_passed": true,
+  "visual_user_approval": false,
+  "budget_caps_all_passed": false,
+  "budget_exception_count": 24,
+  "source_UE_import_compatibility_not_yet_verified": true,
+  "asset_checks": [
+    {
+      "asset": "AirBase",
+      "source_bones": 78,
+      "source_hierarchy_preserved": true,
+      "LOD_checks": [
+        {
+          "LOD": 0,
+          "body_triangles": 5216,
+          "outline_triangles": 700,
+          "sections": 3,
+          "body_cap": 4300,
+          "outline_cap": 700,
+          "body_delta": 916,
+          "source_dimensions_m": [
+            17.525365829467773,
+            19.95427703857422,
+            11.801692008972168
+          ],
+          "actual_dimensions_m": [
+            17.525365352630615,
+            19.95427703857422,
+            11.801690220832825
+          ],
+          "dimension_max_difference_m": 1.7881393432617188e-06,
+          "retained_component_count": 167,
+          "source_component_count": 167,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 1,
+          "body_triangles": 4839,
+          "outline_triangles": 400,
+          "sections": 3,
+          "body_cap": 2300,
+          "outline_cap": 400,
+          "body_delta": 2539,
+          "source_dimensions_m": [
+            17.525365829467773,
+            19.95427703857422,
+            11.801692008972168
+          ],
+          "actual_dimensions_m": [
+            17.525365352630615,
+            19.95427703857422,
+            11.801690220832825
+          ],
+          "dimension_max_difference_m": 1.7881393432617188e-06,
+          "retained_component_count": 167,
+          "source_component_count": 167,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 2,
+          "body_triangles": 4128,
+          "outline_triangles": 0,
+          "sections": 2,
+          "body_cap": 1050,
+          "outline_cap": 0,
+          "body_delta": 3078,
+          "source_dimensions_m": [
+            17.525365829467773,
+            19.95427703857422,
+            11.801692008972168
+          ],
+          "actual_dimensions_m": [
+            17.525365352630615,
+            19.95427703857422,
+            11.803236722946167
+          ],
+          "dimension_max_difference_m": 0.0015447139739990234,
+          "retained_component_count": 167,
+          "source_component_count": 167,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        }
+      ]
+    },
+    {
+      "asset": "CloningCenter",
+      "source_bones": 54,
+      "source_hierarchy_preserved": true,
+      "LOD_checks": [
+        {
+          "LOD": 0,
+          "body_triangles": 2454,
+          "outline_triangles": 296,
+          "sections": 3,
+          "body_cap": 2200,
+          "outline_cap": 300,
+          "body_delta": 254,
+          "source_dimensions_m": [
+            7.391729354858398,
+            8.751784324645996,
+            8.926868438720703
+          ],
+          "actual_dimensions_m": [
+            7.3917295932769775,
+            8.751782417297363,
+            8.926867723464966
+          ],
+          "dimension_max_difference_m": 1.9073486328125e-06,
+          "retained_component_count": 53,
+          "source_component_count": 53,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 130,
+          "weight_sum_max_error": 2.9802322387695312e-08,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 1,
+          "body_triangles": 2338,
+          "outline_triangles": 200,
+          "sections": 3,
+          "body_cap": 1100,
+          "outline_cap": 200,
+          "body_delta": 1238,
+          "source_dimensions_m": [
+            7.391729354858398,
+            8.751784324645996,
+            8.926868438720703
+          ],
+          "actual_dimensions_m": [
+            7.3917295932769775,
+            8.754096031188965,
+            8.926867723464966
+          ],
+          "dimension_max_difference_m": 0.00231170654296875,
+          "retained_component_count": 53,
+          "source_component_count": 53,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 130,
+          "weight_sum_max_error": 2.9802322387695312e-08,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 2,
+          "body_triangles": 2170,
+          "outline_triangles": 0,
+          "sections": 2,
+          "body_cap": 500,
+          "outline_cap": 0,
+          "body_delta": 1670,
+          "source_dimensions_m": [
+            7.391729354858398,
+            8.751784324645996,
+            8.926868438720703
+          ],
+          "actual_dimensions_m": [
+            7.3917295932769775,
+            8.75178050994873,
+            8.926867723464966
+          ],
+          "dimension_max_difference_m": 3.814697265625e-06,
+          "retained_component_count": 53,
+          "source_component_count": 53,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 130,
+          "weight_sum_max_error": 8.940696716308594e-08,
+          "normals_finite_and_unit": true
+        }
+      ]
+    },
+    {
+      "asset": "CommandCenter",
+      "source_bones": 74,
+      "source_hierarchy_preserved": true,
+      "LOD_checks": [
+        {
+          "LOD": 0,
+          "body_triangles": 4465,
+          "outline_triangles": 598,
+          "sections": 3,
+          "body_cap": 3800,
+          "outline_cap": 600,
+          "body_delta": 665,
+          "source_dimensions_m": [
+            9.401302337646484,
+            9.81959056854248,
+            15.205421447753906
+          ],
+          "actual_dimensions_m": [
+            9.401302337646484,
+            9.819589614868164,
+            15.205421924591064
+          ],
+          "dimension_max_difference_m": 9.5367431640625e-07,
+          "retained_component_count": 132,
+          "source_component_count": 132,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 1,
+          "body_triangles": 4277,
+          "outline_triangles": 299,
+          "sections": 3,
+          "body_cap": 1900,
+          "outline_cap": 300,
+          "body_delta": 2377,
+          "source_dimensions_m": [
+            9.401302337646484,
+            9.81959056854248,
+            15.205421447753906
+          ],
+          "actual_dimensions_m": [
+            9.401302337646484,
+            9.819589614868164,
+            15.205421924591064
+          ],
+          "dimension_max_difference_m": 9.5367431640625e-07,
+          "retained_component_count": 132,
+          "source_component_count": 132,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 2,
+          "body_triangles": 3999,
+          "outline_triangles": 0,
+          "sections": 2,
+          "body_cap": 850,
+          "outline_cap": 0,
+          "body_delta": 3149,
+          "source_dimensions_m": [
+            9.401302337646484,
+            9.81959056854248,
+            15.205421447753906
+          ],
+          "actual_dimensions_m": [
+            9.401302337646484,
+            9.788938999176025,
+            15.205421924591064
+          ],
+          "dimension_max_difference_m": 0.030651569366455078,
+          "retained_component_count": 132,
+          "source_component_count": 132,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        }
+      ]
+    },
+    {
+      "asset": "Floor",
+      "source_bones": 0,
+      "source_hierarchy_preserved": true,
+      "LOD_checks": [
+        {
+          "LOD": 0,
+          "body_triangles": 6699,
+          "outline_triangles": 963,
+          "sections": 2,
+          "body_cap": 6500,
+          "outline_cap": 1000,
+          "body_delta": 199,
+          "source_dimensions_m": [
+            84.53816223144531,
+            88.22584533691406,
+            5.68756103515625
+          ],
+          "actual_dimensions_m": [
+            84.53816604614258,
+            88.22584533691406,
+            5.68756103515625
+          ],
+          "dimension_max_difference_m": 3.814697265625e-06,
+          "retained_component_count": 96,
+          "source_component_count": 96,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 1,
+          "body_triangles": 6699,
+          "outline_triangles": 473,
+          "sections": 2,
+          "body_cap": 3500,
+          "outline_cap": 500,
+          "body_delta": 3199,
+          "source_dimensions_m": [
+            84.53816223144531,
+            88.22584533691406,
+            5.68756103515625
+          ],
+          "actual_dimensions_m": [
+            84.53816604614258,
+            88.22584533691406,
+            5.68756103515625
+          ],
+          "dimension_max_difference_m": 3.814697265625e-06,
+          "retained_component_count": 96,
+          "source_component_count": 96,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 2,
+          "body_triangles": 6057,
+          "outline_triangles": 0,
+          "sections": 1,
+          "body_cap": 1500,
+          "outline_cap": 0,
+          "body_delta": 4557,
+          "source_dimensions_m": [
+            84.53816223144531,
+            88.22584533691406,
+            5.68756103515625
+          ],
+          "actual_dimensions_m": [
+            84.53816604614258,
+            88.22584533691406,
+            5.68756103515625
+          ],
+          "dimension_max_difference_m": 3.814697265625e-06,
+          "retained_component_count": 96,
+          "source_component_count": 96,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        }
+      ]
+    },
+    {
+      "asset": "Lamp",
+      "source_bones": 0,
+      "source_hierarchy_preserved": true,
+      "LOD_checks": [
+        {
+          "LOD": 0,
+          "body_triangles": 48,
+          "outline_triangles": 0,
+          "sections": 1,
+          "body_cap": 48,
+          "outline_cap": 0,
+          "body_delta": 0,
+          "source_dimensions_m": [
+            0.2870640158653259,
+            1.6315351724624634,
+            4.373559951782227
+          ],
+          "actual_dimensions_m": [
+            0.2870640158653259,
+            1.6315351873636246,
+            4.3735597133636475
+          ],
+          "dimension_max_difference_m": 2.384185791015625e-07,
+          "retained_component_count": 3,
+          "source_component_count": 3,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 1,
+          "body_triangles": 48,
+          "outline_triangles": 0,
+          "sections": 1,
+          "body_cap": 48,
+          "outline_cap": 0,
+          "body_delta": 0,
+          "source_dimensions_m": [
+            0.2870640158653259,
+            1.6315351724624634,
+            4.373559951782227
+          ],
+          "actual_dimensions_m": [
+            0.2870640158653259,
+            1.6315351873636246,
+            4.3735597133636475
+          ],
+          "dimension_max_difference_m": 2.384185791015625e-07,
+          "retained_component_count": 3,
+          "source_component_count": 3,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 2,
+          "body_triangles": 48,
+          "outline_triangles": 0,
+          "sections": 1,
+          "body_cap": 48,
+          "outline_cap": 0,
+          "body_delta": 0,
+          "source_dimensions_m": [
+            0.2870640158653259,
+            1.6315351724624634,
+            4.373559951782227
+          ],
+          "actual_dimensions_m": [
+            0.2870640158653259,
+            1.6315351873636246,
+            4.3735597133636475
+          ],
+          "dimension_max_difference_m": 2.384185791015625e-07,
+          "retained_component_count": 3,
+          "source_component_count": 3,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        }
+      ]
+    },
+    {
+      "asset": "Light",
+      "source_bones": 0,
+      "source_hierarchy_preserved": true,
+      "LOD_checks": [
+        {
+          "LOD": 0,
+          "body_triangles": 2,
+          "outline_triangles": 0,
+          "sections": 1,
+          "body_cap": 2,
+          "outline_cap": 0,
+          "body_delta": 0,
+          "source_dimensions_m": [
+            1.971929907798767,
+            1.971929907798767,
+            3.2126820315170335e-07
+          ],
+          "actual_dimensions_m": [
+            1.971929907798767,
+            1.971929907798767,
+            3.2126820315170335e-07
+          ],
+          "dimension_max_difference_m": 0.0,
+          "retained_component_count": 1,
+          "source_component_count": 1,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 1,
+          "body_triangles": 2,
+          "outline_triangles": 0,
+          "sections": 1,
+          "body_cap": 2,
+          "outline_cap": 0,
+          "body_delta": 0,
+          "source_dimensions_m": [
+            1.971929907798767,
+            1.971929907798767,
+            3.2126820315170335e-07
+          ],
+          "actual_dimensions_m": [
+            1.971929907798767,
+            1.971929907798767,
+            3.2126820315170335e-07
+          ],
+          "dimension_max_difference_m": 0.0,
+          "retained_component_count": 1,
+          "source_component_count": 1,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 2,
+          "body_triangles": 2,
+          "outline_triangles": 0,
+          "sections": 1,
+          "body_cap": 2,
+          "outline_cap": 0,
+          "body_delta": 0,
+          "source_dimensions_m": [
+            1.971929907798767,
+            1.971929907798767,
+            3.2126820315170335e-07
+          ],
+          "actual_dimensions_m": [
+            1.971929907798767,
+            1.971929907798767,
+            3.2126820315170335e-07
+          ],
+          "dimension_max_difference_m": 0.0,
+          "retained_component_count": 1,
+          "source_component_count": 1,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        }
+      ]
+    },
+    {
+      "asset": "Drone",
+      "source_bones": 4,
+      "source_hierarchy_preserved": true,
+      "LOD_checks": [
+        {
+          "LOD": 0,
+          "body_triangles": 254,
+          "outline_triangles": 36,
+          "sections": 2,
+          "body_cap": 210,
+          "outline_cap": 40,
+          "body_delta": 44,
+          "source_dimensions_m": [
+            1.0165479183197021,
+            0.9991558194160461,
+            0.42290806770324707
+          ],
+          "actual_dimensions_m": [
+            1.0165479183197021,
+            0.9991557896137238,
+            0.42290782928466797
+          ],
+          "dimension_max_difference_m": 2.384185791015625e-07,
+          "retained_component_count": 9,
+          "source_component_count": 9,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 1,
+          "body_triangles": 254,
+          "outline_triangles": 18,
+          "sections": 2,
+          "body_cap": 110,
+          "outline_cap": 20,
+          "body_delta": 144,
+          "source_dimensions_m": [
+            1.0165479183197021,
+            0.9991558194160461,
+            0.42290806770324707
+          ],
+          "actual_dimensions_m": [
+            1.0165479183197021,
+            0.9991557896137238,
+            0.42290782928466797
+          ],
+          "dimension_max_difference_m": 2.384185791015625e-07,
+          "retained_component_count": 9,
+          "source_component_count": 9,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 2,
+          "body_triangles": 210,
+          "outline_triangles": 0,
+          "sections": 1,
+          "body_cap": 50,
+          "outline_cap": 0,
+          "body_delta": 160,
+          "source_dimensions_m": [
+            1.0165479183197021,
+            0.9991558194160461,
+            0.42290806770324707
+          ],
+          "actual_dimensions_m": [
+            1.0165479183197021,
+            0.9991557896137238,
+            0.42290782928466797
+          ],
+          "dimension_max_difference_m": 2.384185791015625e-07,
+          "retained_component_count": 9,
+          "source_component_count": 9,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        }
+      ]
+    },
+    {
+      "asset": "MilitaryFactory",
+      "source_bones": 45,
+      "source_hierarchy_preserved": true,
+      "LOD_checks": [
+        {
+          "LOD": 0,
+          "body_triangles": 1953,
+          "outline_triangles": 249,
+          "sections": 3,
+          "body_cap": 1800,
+          "outline_cap": 250,
+          "body_delta": 153,
+          "source_dimensions_m": [
+            9.283242225646973,
+            12.266594886779785,
+            10.251752853393555
+          ],
+          "actual_dimensions_m": [
+            9.283242225646973,
+            12.266594409942627,
+            10.251750469207764
+          ],
+          "dimension_max_difference_m": 2.384185791015625e-06,
+          "retained_component_count": 73,
+          "source_component_count": 73,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 1,
+          "body_triangles": 1895,
+          "outline_triangles": 149,
+          "sections": 3,
+          "body_cap": 900,
+          "outline_cap": 150,
+          "body_delta": 995,
+          "source_dimensions_m": [
+            9.283242225646973,
+            12.266594886779785,
+            10.251752853393555
+          ],
+          "actual_dimensions_m": [
+            9.283242225646973,
+            12.266594409942627,
+            10.251750469207764
+          ],
+          "dimension_max_difference_m": 2.384185791015625e-06,
+          "retained_component_count": 73,
+          "source_component_count": 73,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 2,
+          "body_triangles": 1639,
+          "outline_triangles": 0,
+          "sections": 2,
+          "body_cap": 400,
+          "outline_cap": 0,
+          "body_delta": 1239,
+          "source_dimensions_m": [
+            9.283242225646973,
+            12.266594886779785,
+            10.251752853393555
+          ],
+          "actual_dimensions_m": [
+            9.283242225646973,
+            12.266594409942627,
+            10.251750469207764
+          ],
+          "dimension_max_difference_m": 2.384185791015625e-06,
+          "retained_component_count": 73,
+          "source_component_count": 73,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        }
+      ]
+    },
+    {
+      "asset": "Reactor",
+      "source_bones": 12,
+      "source_hierarchy_preserved": true,
+      "LOD_checks": [
+        {
+          "LOD": 0,
+          "body_triangles": 3546,
+          "outline_triangles": 494,
+          "sections": 3,
+          "body_cap": 3000,
+          "outline_cap": 500,
+          "body_delta": 546,
+          "source_dimensions_m": [
+            5.412111282348633,
+            5.649188041687012,
+            4.77436637878418
+          ],
+          "actual_dimensions_m": [
+            5.412111043930054,
+            5.6491875648498535,
+            4.774365425109863
+          ],
+          "dimension_max_difference_m": 9.5367431640625e-07,
+          "retained_component_count": 68,
+          "source_component_count": 68,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 1,
+          "body_triangles": 3154,
+          "outline_triangles": 238,
+          "sections": 3,
+          "body_cap": 1500,
+          "outline_cap": 250,
+          "body_delta": 1654,
+          "source_dimensions_m": [
+            5.412111282348633,
+            5.649188041687012,
+            4.77436637878418
+          ],
+          "actual_dimensions_m": [
+            5.412111043930054,
+            5.6491875648498535,
+            4.774365425109863
+          ],
+          "dimension_max_difference_m": 9.5367431640625e-07,
+          "retained_component_count": 68,
+          "source_component_count": 68,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 2,
+          "body_triangles": 2635,
+          "outline_triangles": 0,
+          "sections": 2,
+          "body_cap": 700,
+          "outline_cap": 0,
+          "body_delta": 1935,
+          "source_dimensions_m": [
+            5.412111282348633,
+            5.649188041687012,
+            4.77436637878418
+          ],
+          "actual_dimensions_m": [
+            5.412111043930054,
+            5.6491875648498535,
+            4.774365425109863
+          ],
+          "dimension_max_difference_m": 9.5367431640625e-07,
+          "retained_component_count": 68,
+          "source_component_count": 68,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        }
+      ]
+    },
+    {
+      "asset": "StrategyCenter",
+      "source_bones": 88,
+      "source_hierarchy_preserved": true,
+      "LOD_checks": [
+        {
+          "LOD": 0,
+          "body_triangles": 4175,
+          "outline_triangles": 600,
+          "sections": 3,
+          "body_cap": 3600,
+          "outline_cap": 600,
+          "body_delta": 575,
+          "source_dimensions_m": [
+            8.180628776550293,
+            7.4766082763671875,
+            11.444680213928223
+          ],
+          "actual_dimensions_m": [
+            8.180628299713135,
+            7.476606845855713,
+            11.444680094718933
+          ],
+          "dimension_max_difference_m": 1.430511474609375e-06,
+          "retained_component_count": 190,
+          "source_component_count": 190,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 1,
+          "body_triangles": 3939,
+          "outline_triangles": 298,
+          "sections": 3,
+          "body_cap": 1800,
+          "outline_cap": 300,
+          "body_delta": 2139,
+          "source_dimensions_m": [
+            8.180628776550293,
+            7.4766082763671875,
+            11.444680213928223
+          ],
+          "actual_dimensions_m": [
+            8.180628299713135,
+            7.476606845855713,
+            11.444680094718933
+          ],
+          "dimension_max_difference_m": 1.430511474609375e-06,
+          "retained_component_count": 190,
+          "source_component_count": 190,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        },
+        {
+          "LOD": 2,
+          "body_triangles": 3582,
+          "outline_triangles": 0,
+          "sections": 2,
+          "body_cap": 800,
+          "outline_cap": 0,
+          "body_delta": 2782,
+          "source_dimensions_m": [
+            8.180628776550293,
+            7.4766082763671875,
+            11.444680213928223
+          ],
+          "actual_dimensions_m": [
+            8.180628299713135,
+            7.476606845855713,
+            11.444680094718933
+          ],
+          "dimension_max_difference_m": 1.430511474609375e-06,
+          "retained_component_count": 190,
+          "source_component_count": 190,
+          "unit_object_scale": true,
+          "nonrigid_vertices": 0,
+          "weight_sum_max_error": 0.0,
+          "normals_finite_and_unit": true
+        }
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "asset": "AirBase",
+      "channel": "base",
+      "file": "Textures\\AirBase_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "sRGB",
+      "bytes": 164356,
+      "sha256": "011af3e6330ed480dbe8dcba9048cdbd4f201147b5665f3a8482765bea88595a"
+    },
+    {
+      "asset": "AirBase",
+      "channel": "line",
+      "file": "Textures\\AirBase_InternalLineMask_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 1214063,
+      "sha256": "856d5ea6825c3ca7c10bc7feaa7516ec8ea5cba0e744302939a5782f63903ee8"
+    },
+    {
+      "asset": "AirBase",
+      "channel": "functional",
+      "file": "Textures\\AirBase_FunctionalTeamMask_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 161253,
+      "sha256": "13d236961850270d7fe6a7cc464bf9b65b2e24f54c6ade4a761882c3344175d1"
+    },
+    {
+      "asset": "AirBase",
+      "channel": "orm",
+      "file": "Textures\\AirBase_ORM_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 153628,
+      "sha256": "b1e9704ff0981685b9444c7fcb25e1f4792c0692bd8600b811af2c2d5ed720ad"
+    },
+    {
+      "asset": "AirBase",
+      "channel": "shared_display",
+      "file": "Textures/SSF_Shared_SourceLogo_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "shared_between_six_buildings": true,
+      "bytes": 203777,
+      "sha256": "9ae0b8719a5c1a34cd44f6b17fc50f0cedfc0efc8452deb8fa315ac6328ea321"
+    },
+    {
+      "asset": "CloningCenter",
+      "channel": "base",
+      "file": "Textures\\CloningCenter_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "sRGB",
+      "bytes": 141016,
+      "sha256": "3e664fc98d078ad11661ba840a5602d1c557a0f24433c0ccb3f291776f3fd006"
+    },
+    {
+      "asset": "CloningCenter",
+      "channel": "line",
+      "file": "Textures\\CloningCenter_InternalLineMask_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 1290480,
+      "sha256": "e52d4dedf11064740ca9aad65bde500ac033a5ef1ea9cb15939bc02d4c71861c"
+    },
+    {
+      "asset": "CloningCenter",
+      "channel": "functional",
+      "file": "Textures\\CloningCenter_FunctionalTeamMask_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 157271,
+      "sha256": "beecc36fed74fe194a78f723f07fdb33e724ea3241a39f91ba4ab4c506727aef"
+    },
+    {
+      "asset": "CloningCenter",
+      "channel": "orm",
+      "file": "Textures\\CloningCenter_ORM_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 153628,
+      "sha256": "b1e9704ff0981685b9444c7fcb25e1f4792c0692bd8600b811af2c2d5ed720ad"
+    },
+    {
+      "asset": "CloningCenter",
+      "channel": "shared_display",
+      "file": "Textures/SSF_Shared_SourceLogo_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "shared_between_six_buildings": true,
+      "bytes": 203777,
+      "sha256": "9ae0b8719a5c1a34cd44f6b17fc50f0cedfc0efc8452deb8fa315ac6328ea321"
+    },
+    {
+      "asset": "CommandCenter",
+      "channel": "base",
+      "file": "Textures\\CommandCenter_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "sRGB",
+      "bytes": 149692,
+      "sha256": "cde2190c019c9c8d342e963f6504233a547245e11f1ac384b83b70b3a2ab60c3"
+    },
+    {
+      "asset": "CommandCenter",
+      "channel": "line",
+      "file": "Textures\\CommandCenter_InternalLineMask_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 1210146,
+      "sha256": "7e31c99dfbe5f3bec4e9cbbf4a8e403ca3a3b5f3b7755659457272807db0aae1"
+    },
+    {
+      "asset": "CommandCenter",
+      "channel": "functional",
+      "file": "Textures\\CommandCenter_FunctionalTeamMask_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 159947,
+      "sha256": "1ed02f4fd5a769df6f5f65ed70d0295734cc74f146fa16fd0e1a277d321a6eb0"
+    },
+    {
+      "asset": "CommandCenter",
+      "channel": "orm",
+      "file": "Textures\\CommandCenter_ORM_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 153628,
+      "sha256": "b1e9704ff0981685b9444c7fcb25e1f4792c0692bd8600b811af2c2d5ed720ad"
+    },
+    {
+      "asset": "CommandCenter",
+      "channel": "shared_display",
+      "file": "Textures/SSF_Shared_SourceLogo_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "shared_between_six_buildings": true,
+      "bytes": 203777,
+      "sha256": "9ae0b8719a5c1a34cd44f6b17fc50f0cedfc0efc8452deb8fa315ac6328ea321"
+    },
+    {
+      "asset": "Floor",
+      "channel": "base",
+      "file": "Textures\\Floor_BaseColor_4K.png",
+      "resolution": [
+        4096,
+        4096
+      ],
+      "colorspace": "sRGB",
+      "bytes": 427364,
+      "sha256": "aa22532665649b568be7d168912186703ad4bee6e385a27993ed4ffc9f32d4a5"
+    },
+    {
+      "asset": "Floor",
+      "channel": "line",
+      "file": "Textures\\Floor_InternalLineMask_4K.png",
+      "resolution": [
+        4096,
+        4096
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 2028985,
+      "sha256": "08d71f393ac93fbeaa4f8ed561c3c238f13803a56683c1d599d223ee3d231097"
+    },
+    {
+      "asset": "Floor",
+      "channel": "functional",
+      "file": "Textures\\Floor_FunctionalTeamMask_4K.png",
+      "resolution": [
+        4096,
+        4096
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 601249,
+      "sha256": "25d29daecd460005a621316960d7d4f2f78793b4eeaa4ff36a707d37b2cdec87"
+    },
+    {
+      "asset": "Floor",
+      "channel": "orm",
+      "file": "Textures\\Floor_ORM_4K.png",
+      "resolution": [
+        4096,
+        4096
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 595664,
+      "sha256": "2ac23e03d03c3dd263eb4bb7ee473b10d245b9ca99b2e40d3000b28decfe9a53"
+    },
+    {
+      "asset": "Lamp",
+      "channel": "base",
+      "file": "Textures\\Lamp_BaseColor_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "colorspace": "sRGB",
+      "bytes": 32396,
+      "sha256": "4158d6f518580a90fba1e75993ebaa4fc09ef11168947dd70609b295cd3df81a"
+    },
+    {
+      "asset": "Lamp",
+      "channel": "line",
+      "file": "Textures\\Lamp_InternalLineMask_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 209789,
+      "sha256": "bd8cf6e78e3730acea9dc18ae21c9abe8e57664a45f38ba236eacc47733a9922"
+    },
+    {
+      "asset": "Lamp",
+      "channel": "functional",
+      "file": "Textures\\Lamp_FunctionalTeamMask_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 41112,
+      "sha256": "18e4922ae3b0237a913a9b1be8174aea9c82af7f9234886a42c46862e00c180a"
+    },
+    {
+      "asset": "Lamp",
+      "channel": "orm",
+      "file": "Textures\\Lamp_ORM_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 40329,
+      "sha256": "1540695821704832e482ec96eb9fc0ca77d54f7bd2ffdc4fbf16f3a739ca2356"
+    },
+    {
+      "asset": "Light",
+      "channel": "display",
+      "file": "Textures/Light_SourceEmissionAlpha_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 63381,
+      "sha256": "7c92505c1e3059ebd94c5f8ac7955fa2e8c819650b44209367991c0c5944712d"
+    },
+    {
+      "asset": "Drone",
+      "channel": "base",
+      "file": "Textures\\Drone_BaseColor_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "colorspace": "sRGB",
+      "bytes": 45162,
+      "sha256": "fbd5c606a7103b2e840995afa4db704235474e45c10245fad83d071d77d609a6"
+    },
+    {
+      "asset": "Drone",
+      "channel": "line",
+      "file": "Textures\\Drone_InternalLineMask_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 396819,
+      "sha256": "95db5b1faee2480542ee3b067482c5f92243f76bb15a42f6e94e5c6a5f63d8c2"
+    },
+    {
+      "asset": "Drone",
+      "channel": "functional",
+      "file": "Textures\\Drone_FunctionalTeamMask_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 46024,
+      "sha256": "b000f8489a5dc3076536567350c2d20ff27a63520465cd53f9611d8c5f0dd7d1"
+    },
+    {
+      "asset": "Drone",
+      "channel": "orm",
+      "file": "Textures\\Drone_ORM_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 40329,
+      "sha256": "1540695821704832e482ec96eb9fc0ca77d54f7bd2ffdc4fbf16f3a739ca2356"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "channel": "base",
+      "file": "Textures\\MilitaryFactory_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "sRGB",
+      "bytes": 150656,
+      "sha256": "4ae7abf60d0176227ce8260c61b5defe55f17ffa65692d33e27c3fa7960b5f15"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "channel": "line",
+      "file": "Textures\\MilitaryFactory_InternalLineMask_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 1112823,
+      "sha256": "7dd5dae68a608c22c4d87418835be823e2c076df6c3b181b90cab3839e08bb94"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "channel": "functional",
+      "file": "Textures\\MilitaryFactory_FunctionalTeamMask_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 157152,
+      "sha256": "b94b8ac3a001ce3802dac76c01953e89a501dc3d9e76f48d0028c964bd71d6a5"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "channel": "orm",
+      "file": "Textures\\MilitaryFactory_ORM_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 153628,
+      "sha256": "b1e9704ff0981685b9444c7fcb25e1f4792c0692bd8600b811af2c2d5ed720ad"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "channel": "shared_display",
+      "file": "Textures/SSF_Shared_SourceLogo_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "shared_between_six_buildings": true,
+      "bytes": 203777,
+      "sha256": "9ae0b8719a5c1a34cd44f6b17fc50f0cedfc0efc8452deb8fa315ac6328ea321"
+    },
+    {
+      "asset": "Reactor",
+      "channel": "base",
+      "file": "Textures\\Reactor_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "sRGB",
+      "bytes": 172242,
+      "sha256": "fa947e0420a7a3bf1ea0fa68892bbfd5a356c0ba3ef0f4189d435402c9cbea0f"
+    },
+    {
+      "asset": "Reactor",
+      "channel": "line",
+      "file": "Textures\\Reactor_InternalLineMask_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 1477556,
+      "sha256": "6915102322206954ad8979bafbacfc3107d78635606ae8226a855a02281aec49"
+    },
+    {
+      "asset": "Reactor",
+      "channel": "functional",
+      "file": "Textures\\Reactor_FunctionalTeamMask_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 158423,
+      "sha256": "891ef8b0bb2d36a76563200f57b021aa83504301f22cf896d4b972bae9b24d20"
+    },
+    {
+      "asset": "Reactor",
+      "channel": "orm",
+      "file": "Textures\\Reactor_ORM_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 153628,
+      "sha256": "b1e9704ff0981685b9444c7fcb25e1f4792c0692bd8600b811af2c2d5ed720ad"
+    },
+    {
+      "asset": "Reactor",
+      "channel": "shared_display",
+      "file": "Textures/SSF_Shared_SourceLogo_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "shared_between_six_buildings": true,
+      "bytes": 203777,
+      "sha256": "9ae0b8719a5c1a34cd44f6b17fc50f0cedfc0efc8452deb8fa315ac6328ea321"
+    },
+    {
+      "asset": "StrategyCenter",
+      "channel": "base",
+      "file": "Textures\\StrategyCenter_BaseColor_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "sRGB",
+      "bytes": 143244,
+      "sha256": "10fd4f3ead6e8b3aa1aaa226cc0ad86f6b638a9a3dbe648537c3f58d557cefd8"
+    },
+    {
+      "asset": "StrategyCenter",
+      "channel": "line",
+      "file": "Textures\\StrategyCenter_InternalLineMask_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 1026095,
+      "sha256": "f4fe23a9e1c68cd23eacef5018f3496655498f89f98d5e571fda2b4af87a39b0"
+    },
+    {
+      "asset": "StrategyCenter",
+      "channel": "functional",
+      "file": "Textures\\StrategyCenter_FunctionalTeamMask_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 158727,
+      "sha256": "af4cadbf0bb0b6faaa57adfaf74424e177f2464688653852d1db3c113eb80cc3"
+    },
+    {
+      "asset": "StrategyCenter",
+      "channel": "orm",
+      "file": "Textures\\StrategyCenter_ORM_2K.png",
+      "resolution": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color",
+      "bytes": 153628,
+      "sha256": "b1e9704ff0981685b9444c7fcb25e1f4792c0692bd8600b811af2c2d5ed720ad"
+    },
+    {
+      "asset": "StrategyCenter",
+      "channel": "shared_display",
+      "file": "Textures/SSF_Shared_SourceLogo_1K.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "shared_between_six_buildings": true,
+      "bytes": 203777,
+      "sha256": "9ae0b8719a5c1a34cd44f6b17fc50f0cedfc0efc8452deb8fa315ac6328ea321"
+    }
+  ],
+  "budget_exceptions": [
+    {
+      "asset": "AirBase",
+      "LOD": 0,
+      "body_triangles": 5216,
+      "outline_triangles": 700,
+      "sections": 3,
+      "body_cap": 4300,
+      "outline_cap": 700,
+      "body_delta": 916,
+      "source_dimensions_m": [
+        17.525365829467773,
+        19.95427703857422,
+        11.801692008972168
+      ],
+      "actual_dimensions_m": [
+        17.525365352630615,
+        19.95427703857422,
+        11.801690220832825
+      ],
+      "dimension_max_difference_m": 1.7881393432617188e-06,
+      "retained_component_count": 167,
+      "source_component_count": 167,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "AirBase",
+      "LOD": 1,
+      "body_triangles": 4839,
+      "outline_triangles": 400,
+      "sections": 3,
+      "body_cap": 2300,
+      "outline_cap": 400,
+      "body_delta": 2539,
+      "source_dimensions_m": [
+        17.525365829467773,
+        19.95427703857422,
+        11.801692008972168
+      ],
+      "actual_dimensions_m": [
+        17.525365352630615,
+        19.95427703857422,
+        11.801690220832825
+      ],
+      "dimension_max_difference_m": 1.7881393432617188e-06,
+      "retained_component_count": 167,
+      "source_component_count": 167,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "AirBase",
+      "LOD": 2,
+      "body_triangles": 4128,
+      "outline_triangles": 0,
+      "sections": 2,
+      "body_cap": 1050,
+      "outline_cap": 0,
+      "body_delta": 3078,
+      "source_dimensions_m": [
+        17.525365829467773,
+        19.95427703857422,
+        11.801692008972168
+      ],
+      "actual_dimensions_m": [
+        17.525365352630615,
+        19.95427703857422,
+        11.803236722946167
+      ],
+      "dimension_max_difference_m": 0.0015447139739990234,
+      "retained_component_count": 167,
+      "source_component_count": 167,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "CloningCenter",
+      "LOD": 0,
+      "body_triangles": 2454,
+      "outline_triangles": 296,
+      "sections": 3,
+      "body_cap": 2200,
+      "outline_cap": 300,
+      "body_delta": 254,
+      "source_dimensions_m": [
+        7.391729354858398,
+        8.751784324645996,
+        8.926868438720703
+      ],
+      "actual_dimensions_m": [
+        7.3917295932769775,
+        8.751782417297363,
+        8.926867723464966
+      ],
+      "dimension_max_difference_m": 1.9073486328125e-06,
+      "retained_component_count": 53,
+      "source_component_count": 53,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 130,
+      "weight_sum_max_error": 2.9802322387695312e-08,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "CloningCenter",
+      "LOD": 1,
+      "body_triangles": 2338,
+      "outline_triangles": 200,
+      "sections": 3,
+      "body_cap": 1100,
+      "outline_cap": 200,
+      "body_delta": 1238,
+      "source_dimensions_m": [
+        7.391729354858398,
+        8.751784324645996,
+        8.926868438720703
+      ],
+      "actual_dimensions_m": [
+        7.3917295932769775,
+        8.754096031188965,
+        8.926867723464966
+      ],
+      "dimension_max_difference_m": 0.00231170654296875,
+      "retained_component_count": 53,
+      "source_component_count": 53,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 130,
+      "weight_sum_max_error": 2.9802322387695312e-08,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "CloningCenter",
+      "LOD": 2,
+      "body_triangles": 2170,
+      "outline_triangles": 0,
+      "sections": 2,
+      "body_cap": 500,
+      "outline_cap": 0,
+      "body_delta": 1670,
+      "source_dimensions_m": [
+        7.391729354858398,
+        8.751784324645996,
+        8.926868438720703
+      ],
+      "actual_dimensions_m": [
+        7.3917295932769775,
+        8.75178050994873,
+        8.926867723464966
+      ],
+      "dimension_max_difference_m": 3.814697265625e-06,
+      "retained_component_count": 53,
+      "source_component_count": 53,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 130,
+      "weight_sum_max_error": 8.940696716308594e-08,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "CommandCenter",
+      "LOD": 0,
+      "body_triangles": 4465,
+      "outline_triangles": 598,
+      "sections": 3,
+      "body_cap": 3800,
+      "outline_cap": 600,
+      "body_delta": 665,
+      "source_dimensions_m": [
+        9.401302337646484,
+        9.81959056854248,
+        15.205421447753906
+      ],
+      "actual_dimensions_m": [
+        9.401302337646484,
+        9.819589614868164,
+        15.205421924591064
+      ],
+      "dimension_max_difference_m": 9.5367431640625e-07,
+      "retained_component_count": 132,
+      "source_component_count": 132,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "CommandCenter",
+      "LOD": 1,
+      "body_triangles": 4277,
+      "outline_triangles": 299,
+      "sections": 3,
+      "body_cap": 1900,
+      "outline_cap": 300,
+      "body_delta": 2377,
+      "source_dimensions_m": [
+        9.401302337646484,
+        9.81959056854248,
+        15.205421447753906
+      ],
+      "actual_dimensions_m": [
+        9.401302337646484,
+        9.819589614868164,
+        15.205421924591064
+      ],
+      "dimension_max_difference_m": 9.5367431640625e-07,
+      "retained_component_count": 132,
+      "source_component_count": 132,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "CommandCenter",
+      "LOD": 2,
+      "body_triangles": 3999,
+      "outline_triangles": 0,
+      "sections": 2,
+      "body_cap": 850,
+      "outline_cap": 0,
+      "body_delta": 3149,
+      "source_dimensions_m": [
+        9.401302337646484,
+        9.81959056854248,
+        15.205421447753906
+      ],
+      "actual_dimensions_m": [
+        9.401302337646484,
+        9.788938999176025,
+        15.205421924591064
+      ],
+      "dimension_max_difference_m": 0.030651569366455078,
+      "retained_component_count": 132,
+      "source_component_count": 132,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "Floor",
+      "LOD": 0,
+      "body_triangles": 6699,
+      "outline_triangles": 963,
+      "sections": 2,
+      "body_cap": 6500,
+      "outline_cap": 1000,
+      "body_delta": 199,
+      "source_dimensions_m": [
+        84.53816223144531,
+        88.22584533691406,
+        5.68756103515625
+      ],
+      "actual_dimensions_m": [
+        84.53816604614258,
+        88.22584533691406,
+        5.68756103515625
+      ],
+      "dimension_max_difference_m": 3.814697265625e-06,
+      "retained_component_count": 96,
+      "source_component_count": 96,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "Floor",
+      "LOD": 1,
+      "body_triangles": 6699,
+      "outline_triangles": 473,
+      "sections": 2,
+      "body_cap": 3500,
+      "outline_cap": 500,
+      "body_delta": 3199,
+      "source_dimensions_m": [
+        84.53816223144531,
+        88.22584533691406,
+        5.68756103515625
+      ],
+      "actual_dimensions_m": [
+        84.53816604614258,
+        88.22584533691406,
+        5.68756103515625
+      ],
+      "dimension_max_difference_m": 3.814697265625e-06,
+      "retained_component_count": 96,
+      "source_component_count": 96,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "Floor",
+      "LOD": 2,
+      "body_triangles": 6057,
+      "outline_triangles": 0,
+      "sections": 1,
+      "body_cap": 1500,
+      "outline_cap": 0,
+      "body_delta": 4557,
+      "source_dimensions_m": [
+        84.53816223144531,
+        88.22584533691406,
+        5.68756103515625
+      ],
+      "actual_dimensions_m": [
+        84.53816604614258,
+        88.22584533691406,
+        5.68756103515625
+      ],
+      "dimension_max_difference_m": 3.814697265625e-06,
+      "retained_component_count": 96,
+      "source_component_count": 96,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "Drone",
+      "LOD": 0,
+      "body_triangles": 254,
+      "outline_triangles": 36,
+      "sections": 2,
+      "body_cap": 210,
+      "outline_cap": 40,
+      "body_delta": 44,
+      "source_dimensions_m": [
+        1.0165479183197021,
+        0.9991558194160461,
+        0.42290806770324707
+      ],
+      "actual_dimensions_m": [
+        1.0165479183197021,
+        0.9991557896137238,
+        0.42290782928466797
+      ],
+      "dimension_max_difference_m": 2.384185791015625e-07,
+      "retained_component_count": 9,
+      "source_component_count": 9,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "Drone",
+      "LOD": 1,
+      "body_triangles": 254,
+      "outline_triangles": 18,
+      "sections": 2,
+      "body_cap": 110,
+      "outline_cap": 20,
+      "body_delta": 144,
+      "source_dimensions_m": [
+        1.0165479183197021,
+        0.9991558194160461,
+        0.42290806770324707
+      ],
+      "actual_dimensions_m": [
+        1.0165479183197021,
+        0.9991557896137238,
+        0.42290782928466797
+      ],
+      "dimension_max_difference_m": 2.384185791015625e-07,
+      "retained_component_count": 9,
+      "source_component_count": 9,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "Drone",
+      "LOD": 2,
+      "body_triangles": 210,
+      "outline_triangles": 0,
+      "sections": 1,
+      "body_cap": 50,
+      "outline_cap": 0,
+      "body_delta": 160,
+      "source_dimensions_m": [
+        1.0165479183197021,
+        0.9991558194160461,
+        0.42290806770324707
+      ],
+      "actual_dimensions_m": [
+        1.0165479183197021,
+        0.9991557896137238,
+        0.42290782928466797
+      ],
+      "dimension_max_difference_m": 2.384185791015625e-07,
+      "retained_component_count": 9,
+      "source_component_count": 9,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "LOD": 0,
+      "body_triangles": 1953,
+      "outline_triangles": 249,
+      "sections": 3,
+      "body_cap": 1800,
+      "outline_cap": 250,
+      "body_delta": 153,
+      "source_dimensions_m": [
+        9.283242225646973,
+        12.266594886779785,
+        10.251752853393555
+      ],
+      "actual_dimensions_m": [
+        9.283242225646973,
+        12.266594409942627,
+        10.251750469207764
+      ],
+      "dimension_max_difference_m": 2.384185791015625e-06,
+      "retained_component_count": 73,
+      "source_component_count": 73,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "LOD": 1,
+      "body_triangles": 1895,
+      "outline_triangles": 149,
+      "sections": 3,
+      "body_cap": 900,
+      "outline_cap": 150,
+      "body_delta": 995,
+      "source_dimensions_m": [
+        9.283242225646973,
+        12.266594886779785,
+        10.251752853393555
+      ],
+      "actual_dimensions_m": [
+        9.283242225646973,
+        12.266594409942627,
+        10.251750469207764
+      ],
+      "dimension_max_difference_m": 2.384185791015625e-06,
+      "retained_component_count": 73,
+      "source_component_count": 73,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "MilitaryFactory",
+      "LOD": 2,
+      "body_triangles": 1639,
+      "outline_triangles": 0,
+      "sections": 2,
+      "body_cap": 400,
+      "outline_cap": 0,
+      "body_delta": 1239,
+      "source_dimensions_m": [
+        9.283242225646973,
+        12.266594886779785,
+        10.251752853393555
+      ],
+      "actual_dimensions_m": [
+        9.283242225646973,
+        12.266594409942627,
+        10.251750469207764
+      ],
+      "dimension_max_difference_m": 2.384185791015625e-06,
+      "retained_component_count": 73,
+      "source_component_count": 73,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "Reactor",
+      "LOD": 0,
+      "body_triangles": 3546,
+      "outline_triangles": 494,
+      "sections": 3,
+      "body_cap": 3000,
+      "outline_cap": 500,
+      "body_delta": 546,
+      "source_dimensions_m": [
+        5.412111282348633,
+        5.649188041687012,
+        4.77436637878418
+      ],
+      "actual_dimensions_m": [
+        5.412111043930054,
+        5.6491875648498535,
+        4.774365425109863
+      ],
+      "dimension_max_difference_m": 9.5367431640625e-07,
+      "retained_component_count": 68,
+      "source_component_count": 68,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "Reactor",
+      "LOD": 1,
+      "body_triangles": 3154,
+      "outline_triangles": 238,
+      "sections": 3,
+      "body_cap": 1500,
+      "outline_cap": 250,
+      "body_delta": 1654,
+      "source_dimensions_m": [
+        5.412111282348633,
+        5.649188041687012,
+        4.77436637878418
+      ],
+      "actual_dimensions_m": [
+        5.412111043930054,
+        5.6491875648498535,
+        4.774365425109863
+      ],
+      "dimension_max_difference_m": 9.5367431640625e-07,
+      "retained_component_count": 68,
+      "source_component_count": 68,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "Reactor",
+      "LOD": 2,
+      "body_triangles": 2635,
+      "outline_triangles": 0,
+      "sections": 2,
+      "body_cap": 700,
+      "outline_cap": 0,
+      "body_delta": 1935,
+      "source_dimensions_m": [
+        5.412111282348633,
+        5.649188041687012,
+        4.77436637878418
+      ],
+      "actual_dimensions_m": [
+        5.412111043930054,
+        5.6491875648498535,
+        4.774365425109863
+      ],
+      "dimension_max_difference_m": 9.5367431640625e-07,
+      "retained_component_count": 68,
+      "source_component_count": 68,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "StrategyCenter",
+      "LOD": 0,
+      "body_triangles": 4175,
+      "outline_triangles": 600,
+      "sections": 3,
+      "body_cap": 3600,
+      "outline_cap": 600,
+      "body_delta": 575,
+      "source_dimensions_m": [
+        8.180628776550293,
+        7.4766082763671875,
+        11.444680213928223
+      ],
+      "actual_dimensions_m": [
+        8.180628299713135,
+        7.476606845855713,
+        11.444680094718933
+      ],
+      "dimension_max_difference_m": 1.430511474609375e-06,
+      "retained_component_count": 190,
+      "source_component_count": 190,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "StrategyCenter",
+      "LOD": 1,
+      "body_triangles": 3939,
+      "outline_triangles": 298,
+      "sections": 3,
+      "body_cap": 1800,
+      "outline_cap": 300,
+      "body_delta": 2139,
+      "source_dimensions_m": [
+        8.180628776550293,
+        7.4766082763671875,
+        11.444680213928223
+      ],
+      "actual_dimensions_m": [
+        8.180628299713135,
+        7.476606845855713,
+        11.444680094718933
+      ],
+      "dimension_max_difference_m": 1.430511474609375e-06,
+      "retained_component_count": 190,
+      "source_component_count": 190,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    },
+    {
+      "asset": "StrategyCenter",
+      "LOD": 2,
+      "body_triangles": 3582,
+      "outline_triangles": 0,
+      "sections": 2,
+      "body_cap": 800,
+      "outline_cap": 0,
+      "body_delta": 2782,
+      "source_dimensions_m": [
+        8.180628776550293,
+        7.4766082763671875,
+        11.444680213928223
+      ],
+      "actual_dimensions_m": [
+        8.180628299713135,
+        7.476606845855713,
+        11.444680094718933
+      ],
+      "dimension_max_difference_m": 1.430511474609375e-06,
+      "retained_component_count": 190,
+      "source_component_count": 190,
+      "unit_object_scale": true,
+      "nonrigid_vertices": 0,
+      "weight_sum_max_error": 0.0,
+      "normals_finite_and_unit": true,
+      "exception_status": "pending_user_decision",
+      "reason": "Source structure, curved profiles, slender cross sections and every animated component are retained"
+    }
+  ],
+  "all_22_actions_present": true,
+  "actual_native_action_sample_matrix_max_error": 4.76837158203125e-06,
+  "all_images_packed": true,
+  "UE_formal_import_performed": false
+}

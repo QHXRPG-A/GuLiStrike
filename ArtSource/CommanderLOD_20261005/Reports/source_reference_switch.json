@@ -1,0 +1,554 @@
+{
+  "state": "native_references_verified",
+  "groups": [
+    {
+      "id": 1,
+      "name": "DefaultSoldier",
+      "before": {
+        "ModelAsset": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+        "PresentationClass": "",
+        "VATDefinition": "/Game/GuLiStrike/Robots/RSGMech/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT"
+      },
+      "after": {
+        "ModelAsset": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+        "PresentationClass": "",
+        "VATDefinition": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT"
+      }
+    },
+    {
+      "id": 2,
+      "name": "WM01",
+      "before": {
+        "ModelAsset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+        "PresentationClass": "",
+        "VATDefinition": ""
+      },
+      "after": {
+        "ModelAsset": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+        "PresentationClass": "",
+        "VATDefinition": ""
+      }
+    },
+    {
+      "id": 3,
+      "name": "ElectromagneticMiner",
+      "before": {
+        "ModelAsset": "",
+        "PresentationClass": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
+        "VATDefinition": ""
+      },
+      "after": {
+        "ModelAsset": "",
+        "PresentationClass": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/BP_ElectromagneticMiner_3Tier.BP_ElectromagneticMiner_3Tier_C",
+        "VATDefinition": ""
+      }
+    },
+    {
+      "id": 4,
+      "name": "ConstructionVehicle",
+      "before": {
+        "ModelAsset": "",
+        "PresentationClass": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle.BP_ConstructionVehicle_C",
+        "VATDefinition": ""
+      },
+      "after": {
+        "ModelAsset": "",
+        "PresentationClass": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier_C",
+        "VATDefinition": ""
+      }
+    },
+    {
+      "id": 5,
+      "name": "SweeperSummon",
+      "before": {
+        "ModelAsset": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+        "PresentationClass": "",
+        "VATDefinition": ""
+      },
+      "after": {
+        "ModelAsset": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+        "PresentationClass": "",
+        "VATDefinition": ""
+      }
+    },
+    {
+      "id": 6,
+      "name": "BiZhiMao",
+      "before": {
+        "ModelAsset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+        "PresentationClass": "",
+        "VATDefinition": "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT"
+      },
+      "after": {
+        "ModelAsset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+        "PresentationClass": "",
+        "VATDefinition": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT"
+      }
+    }
+  ],
+  "rollback_cells": [
+    {
+      "cell": "F4",
+      "value": "/Game/GuLiStrike/Robots/RSGMech/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "type": "string"
+    },
+    {
+      "cell": "I4",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "O4",
+      "value": "/Game/GuLiStrike/Robots/RSGMech/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+      "type": "string"
+    },
+    {
+      "cell": "F5",
+      "value": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "type": "string"
+    },
+    {
+      "cell": "I5",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "O5",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "F6",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "I6",
+      "value": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
+      "type": "string"
+    },
+    {
+      "cell": "O6",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "F7",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "I7",
+      "value": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle.BP_ConstructionVehicle_C",
+      "type": "string"
+    },
+    {
+      "cell": "O7",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "F8",
+      "value": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "type": "string"
+    },
+    {
+      "cell": "I8",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "O8",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "F9",
+      "value": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "type": "string"
+    },
+    {
+      "cell": "I9",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "cell": "O9",
+      "value": "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT",
+      "type": "string"
+    }
+  ],
+  "construction": {
+    "id": 8,
+    "name": "BiZhiMaoConstruction",
+    "before": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+    "after": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+    "cells": [
+      {
+        "cell": "H11",
+        "value": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+        "type": "string"
+      }
+    ],
+    "rollback_cells": [
+      {
+        "cell": "H11",
+        "value": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+        "type": "string"
+      }
+    ]
+  },
+  "native_imported": true,
+  "pending_groups": [],
+  "native_rows": [
+    {
+      "Name": "DefaultSoldier",
+      "Id": 1,
+      "Note": "B-v1先驱号；6.25米；刚性骨骼纹理VAT；默认双枪与Q召唤",
+      "MovementSpeedCmPerSecond": 1440,
+      "MaxHealth": 100,
+      "ModelAsset": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 1,
+      "DisplayName": "先驱号",
+      "ModelWidthMeters": 6.25,
+      "MinAvoidanceDistanceMeters": 0.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+      "VATDefinition": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/DA_Pioneer_VAT.DA_Pioneer_VAT",
+      "bSummonOnly": false,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "WM01",
+      "Id": 2,
+      "Note": "WM01 第二兵种；首版沿用调试数值，尚未平衡",
+      "MovementSpeedCmPerSecond": 720,
+      "MaxHealth": 300.5,
+      "ModelAsset": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 0.2,
+      "DisplayName": "重防号",
+      "ModelWidthMeters": 12.5,
+      "MinAvoidanceDistanceMeters": 2.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+      "VATDefinition": "None",
+      "bSummonOnly": false,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "ElectromagneticMiner",
+      "Id": 3,
+      "Note": "指挥官可控制矿车；Scale020后车长3.6米，900cm/s；采矿业务由矿车Manager调度",
+      "MovementSpeedCmPerSecond": 900,
+      "MaxHealth": 1000,
+      "ModelAsset": "None",
+      "Defense": 0,
+      "ActorClass": "/Script/GuLiStrike.GuLiMiningVehiclePawn",
+      "PresentationClass": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/BP_ElectromagneticMiner_3Tier.BP_ElectromagneticMiner_3Tier_C",
+      "PresentationScale": 0.608458,
+      "DisplayName": "电磁矿车",
+      "ModelWidthMeters": 3.6,
+      "MinAvoidanceDistanceMeters": 1,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
+      "VATDefinition": "None",
+      "bSummonOnly": false,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "ConstructionVehicle",
+      "Id": 4,
+      "Note": "开局每队一辆；独立建造车，施工与采矿分工",
+      "MovementSpeedCmPerSecond": 900,
+      "MaxHealth": 1000,
+      "ModelAsset": "None",
+      "Defense": 0,
+      "ActorClass": "/Script/GuLiStrike.GuLiConstructionVehiclePawn",
+      "PresentationClass": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier_C",
+      "PresentationScale": 0.608458,
+      "DisplayName": "建造车",
+      "ModelWidthMeters": 3.6,
+      "MinAvoidanceDistanceMeters": 1,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder",
+      "VATDefinition": "None",
+      "bSummonOnly": false,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "SweeperSummon",
+      "Id": 5,
+      "Note": "先驱号Q专用召唤兵；永久可控、可累积、不计生产人口",
+      "MovementSpeedCmPerSecond": 720,
+      "MaxHealth": 100,
+      "ModelAsset": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 0.2,
+      "DisplayName": "扫荡者",
+      "ModelWidthMeters": 3.1,
+      "MinAvoidanceDistanceMeters": 0.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+      "VATDefinition": "None",
+      "bSummonOnly": true,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "MassAvoidanceRadiusMeters": 0
+    },
+    {
+      "Name": "BiZhiMao",
+      "Id": 6,
+      "Note": "工程车施工生成；底座锁定出生朝向；首轮不攻击；已审ControlRig B_v4放大2倍",
+      "MovementSpeedCmPerSecond": 144,
+      "MaxHealth": 1000,
+      "ModelAsset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "Defense": 0,
+      "ActorClass": "None",
+      "PresentationClass": "None",
+      "PresentationScale": 2,
+      "DisplayName": "彼之矛",
+      "ModelWidthMeters": 18.4386,
+      "MinAvoidanceDistanceMeters": 0.5,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+      "VATDefinition": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT",
+      "bSummonOnly": false,
+      "bConstructionOnly": true,
+      "FacingPolicy": 1,
+      "MassAvoidanceRadiusMeters": 16.2975
+    }
+  ],
+  "native_building_rows": [
+    {
+      "Name": "MissileTurret",
+      "Id": 1,
+      "Note": "首版白模，可调原型值",
+      "Category": 1,
+      "PlacementType": 1,
+      "DisplayName": "防空炮",
+      "Description": "防空炮功能建筑",
+      "Mesh": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/StaticMeshes/missile_turret.missile_turret",
+      "CollisionExtent": "(X=251.946222,Y=272.874829,Z=352.076624)",
+      "VisualOffset": "(X=0.000000,Y=-4.857962,Z=0.000000)",
+      "MeshScale": "(X=0.200000,Y=0.200000,Z=0.200000)",
+      "MaxHealth": 2000,
+      "MaxShield": 0,
+      "BuildLevel": 1,
+      "BlueCost": 20,
+      "RedCost": 0,
+      "ConstructionWork": 10,
+      "ProductionUnitId": 0,
+      "ProductionSeconds": 0,
+      "ProductionCount": 0,
+      "FirstCaptureGiftIds": "",
+      "TransitFieldId": 0,
+      "ShieldRadius": 0,
+      "ShieldRechargePerSecond": 0,
+      "CompletionUnitTypeId": 0
+    },
+    {
+      "Name": "SentryTurret",
+      "Id": 2,
+      "Note": "首版白模，可调原型值",
+      "Category": 1,
+      "PlacementType": 2,
+      "DisplayName": "哨戒炮",
+      "Description": "哨戒炮功能建筑",
+      "Mesh": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
+      "CollisionExtent": "(X=193.579248,Y=386.678027,Z=167.518890)",
+      "VisualOffset": "(X=0.000000,Y=0.000000,Z=0.795630)",
+      "MeshScale": "(X=0.200000,Y=0.200000,Z=0.200000)",
+      "MaxHealth": 1500,
+      "MaxShield": 0,
+      "BuildLevel": 1,
+      "BlueCost": 10,
+      "RedCost": 0,
+      "ConstructionWork": 10,
+      "ProductionUnitId": 0,
+      "ProductionSeconds": 0,
+      "ProductionCount": 0,
+      "FirstCaptureGiftIds": "",
+      "TransitFieldId": 0,
+      "ShieldRadius": 0,
+      "ShieldRechargePerSecond": 0,
+      "CompletionUnitTypeId": 0
+    },
+    {
+      "Name": "ManualOutpost",
+      "Id": 3,
+      "Note": "首版白模，可调原型值",
+      "Category": 0,
+      "PlacementType": 3,
+      "DisplayName": "前哨建筑",
+      "Description": "前哨建筑功能建筑",
+      "Mesh": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+      "CollisionExtent": "(X=710.308643,Y=661.980518,Z=3000.000000)",
+      "VisualOffset": "(X=2.117871,Y=-50.517188,Z=0.000000)",
+      "MeshScale": "(X=0.200000,Y=0.200000,Z=0.200000)",
+      "MaxHealth": 5000,
+      "MaxShield": 0,
+      "BuildLevel": 1,
+      "BlueCost": 40,
+      "RedCost": 0,
+      "ConstructionWork": 10,
+      "ProductionUnitId": 0,
+      "ProductionSeconds": 0,
+      "ProductionCount": 0,
+      "FirstCaptureGiftIds": "",
+      "TransitFieldId": 0,
+      "ShieldRadius": 0,
+      "ShieldRechargePerSecond": 0,
+      "CompletionUnitTypeId": 0
+    },
+    {
+      "Name": "BasicBarracks",
+      "Id": 4,
+      "Note": "首版白模，可调原型值",
+      "Category": 2,
+      "PlacementType": 4,
+      "DisplayName": "基础兵营",
+      "Description": "基础兵营功能建筑",
+      "Mesh": "/Engine/BasicShapes/Cube.Cube",
+      "CollisionExtent": "(X=400.000000,Y=300.000000,Z=200.000000)",
+      "VisualOffset": "(X=0.000000,Y=0.000000,Z=200.000000)",
+      "MeshScale": "(X=8.000000,Y=6.000000,Z=4.000000)",
+      "MaxHealth": 2000,
+      "MaxShield": 0,
+      "BuildLevel": 1,
+      "BlueCost": 30,
+      "RedCost": 10,
+      "ConstructionWork": 10,
+      "ProductionUnitId": 1,
+      "ProductionSeconds": 10,
+      "ProductionCount": 24,
+      "FirstCaptureGiftIds": "",
+      "TransitFieldId": 0,
+      "ShieldRadius": 0,
+      "ShieldRechargePerSecond": 0,
+      "CompletionUnitTypeId": 0
+    },
+    {
+      "Name": "ShieldGenerator",
+      "Id": 5,
+      "Note": "首版白模，可调原型值",
+      "Category": 3,
+      "PlacementType": 5,
+      "DisplayName": "护盾发生器",
+      "Description": "护盾发生器功能建筑",
+      "Mesh": "/Game/GuLiStrike/Buildings/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
+      "CollisionExtent": "(X=305.087006,Y=345.288040,Z=500.000000)",
+      "VisualOffset": "(X=46.912994,Y=0.000000,Z=0.000000)",
+      "MeshScale": "(X=2.000000,Y=2.000000,Z=2.000000)",
+      "MaxHealth": 2000,
+      "MaxShield": 500,
+      "BuildLevel": 1,
+      "BlueCost": 20,
+      "RedCost": 10,
+      "ConstructionWork": 10,
+      "ProductionUnitId": 0,
+      "ProductionSeconds": 0,
+      "ProductionCount": 0,
+      "FirstCaptureGiftIds": "",
+      "TransitFieldId": 0,
+      "ShieldRadius": 4000,
+      "ShieldRechargePerSecond": 20,
+      "CompletionUnitTypeId": 0
+    },
+    {
+      "Name": "ResourceFactory",
+      "Id": 6,
+      "Note": "首版白模，可调原型值",
+      "Category": 4,
+      "PlacementType": 6,
+      "DisplayName": "矿厂",
+      "Description": "矿厂功能建筑",
+      "Mesh": "/Engine/BasicShapes/Cube.Cube",
+      "CollisionExtent": "(X=600.000000,Y=650.000000,Z=400.000000)",
+      "VisualOffset": "(X=0.000000,Y=0.000000,Z=400.000000)",
+      "MeshScale": "(X=12.000000,Y=13.000000,Z=8.000000)",
+      "MaxHealth": 3000,
+      "MaxShield": 0,
+      "BuildLevel": 1,
+      "BlueCost": 40,
+      "RedCost": 10,
+      "ConstructionWork": 10,
+      "ProductionUnitId": 0,
+      "ProductionSeconds": 0,
+      "ProductionCount": 0,
+      "FirstCaptureGiftIds": "",
+      "TransitFieldId": 0,
+      "ShieldRadius": 0,
+      "ShieldRechargePerSecond": 0,
+      "CompletionUnitTypeId": 0
+    },
+    {
+      "Name": "TerritoryStronghold",
+      "Id": 7,
+      "Note": "首版白模，可调原型值",
+      "Category": 5,
+      "PlacementType": 0,
+      "DisplayName": "地图据点",
+      "Description": "地图据点功能建筑",
+      "Mesh": "/Engine/BasicShapes/Cylinder.Cylinder",
+      "CollisionExtent": "(X=300.000000,Y=300.000000,Z=500.000000)",
+      "VisualOffset": "(X=0.000000,Y=0.000000,Z=500.000000)",
+      "MeshScale": "(X=6.000000,Y=6.000000,Z=10.000000)",
+      "MaxHealth": 1,
+      "MaxShield": 0,
+      "BuildLevel": 0,
+      "BlueCost": 0,
+      "RedCost": 0,
+      "ConstructionWork": 0,
+      "ProductionUnitId": 0,
+      "ProductionSeconds": 0,
+      "ProductionCount": 0,
+      "FirstCaptureGiftIds": "4,5,6",
+      "TransitFieldId": 2001,
+      "ShieldRadius": 0,
+      "ShieldRechargePerSecond": 0,
+      "CompletionUnitTypeId": 0
+    },
+    {
+      "Name": "BiZhiMaoConstruction",
+      "Id": 8,
+      "Note": "仅己方工程车贡献60工作量；完工原位转兵种ID6；人口预留1",
+      "Category": 6,
+      "PlacementType": 7,
+      "DisplayName": "彼之矛",
+      "Description": "巨型重炮工地：60蓝、30红、1人口；完工展开待机，等待指令。",
+      "Mesh": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+      "CollisionExtent": "(X=1629.010010,Y=921.932983,Z=690.526733)",
+      "VisualOffset": "(X=0.000000,Y=0.000000,Z=0.000000)",
+      "MeshScale": "(X=2.000000,Y=2.000000,Z=2.000000)",
+      "MaxHealth": 1000,
+      "MaxShield": 0,
+      "BuildLevel": 1,
+      "BlueCost": 60,
+      "RedCost": 30,
+      "ConstructionWork": 60,
+      "ProductionUnitId": 0,
+      "ProductionSeconds": 0,
+      "ProductionCount": 0,
+      "FirstCaptureGiftIds": "",
+      "TransitFieldId": 0,
+      "ShieldRadius": 0,
+      "ShieldRechargePerSecond": 0,
+      "CompletionUnitTypeId": 6
+    }
+  ],
+  "approval_B": "approved",
+  "original_groups_retained": true,
+  "pie": "not_run",
+  "network": "not_run",
+  "fps": "not_run"
+}

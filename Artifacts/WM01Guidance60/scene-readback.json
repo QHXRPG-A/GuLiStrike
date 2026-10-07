@@ -1,0 +1,481 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "saved": true,
+  "runtime_validation": "not_run",
+  "entities": [
+    {
+      "label": "RogueCards_F4_Entry",
+      "class": "Note",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_24",
+      "location": [
+        -3200.0,
+        72500.0,
+        -1200.0
+      ],
+      "tags": [],
+      "text": "重防号肉鸽卡：就绪指挥官席位按F4，随机显示最多三张合格卡；底部右侧“重选”免费重抽，优先换成未显示的合格牌，无其他牌时提示并保留原牌。Esc关闭后重开保持最新候选。初始无导弹技能/导弹仓；重防导弹仓04.01每队一次。解锁后出现导弹伤害03.01与雨点攻势05.01，后者每次加一枚同时齐射导弹，可叠加。单击翻牌，再单击确认。现有/后续单位同队生效。运行与美术效果待验证。\n重选验证：F4打开后，底部右侧“重选”免费更换当前候选，优先换成未显示的合格牌；选择前或翻面完成后可用，入场/翻面/提交期间禁用。没有其他合格牌时保留原牌并提示。重选不会发奖励，单击翻牌后再次确认才结算；Esc关闭再开保持最新候选。当前5张卡中，初始合格牌只有01.01/02.01/04.01；获得04.01后，合格池扩展为01.01/02.01/03.01/05.01，可观察换牌。本次仅保存配置和核对实体；重选原生代码需编译加载后由玩家验证。\n[WM01 导弹候选 20260929]\n初始重防号无 Q、无导弹仓；F4 获 04.01 后本队现有及后续单位解锁。03.01/05.01 依赖 04.01；04.01 每队每局一次。候选与六组集群场景见 WM01Missile_CandidateInstructions，构建/运行/性能/视觉审核状态分别记录。\n[指挥官统一 LOD 20260929]\n公共三级 LOD 和 lod0/lod1/lod2 观察镜头见 CommanderLOD_Instructions。当前编辑器已加载公共LOD原生类；运行范围与结果以开发记录为准。\n夹具间距与驻留修正源码尚未编译加载。旧版Build 100实际仅生成36/37台且会自动前进；不能当作完整人数验收。\n[三档镜头 20260930]\n新版分档与总览操作见 CommanderCamera_Instructions；指挥官档位读取Camera，旧距离分档仅作历史说明。已加载原生Camera行并导入Camera表；玩家可进入指挥官验收。\n[WM01 Q 每圈60发 20260930]\n每圈60发的25台验证区见 WM01Guidance_Instructions；保留本入口的真实F4流程。雨点攻势最多59次，单台上限60发。"
+    },
+    {
+      "label": "WM01Missile_FixtureCenter",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_0",
+      "location": [
+        -8000.0,
+        72000.0,
+        -1300.0
+      ],
+      "tags": [
+        "WM01MissileReview20260929",
+        "WM01MissileFixtureCenter",
+        "WM01GuidanceReview20260930",
+        "WM01GuidanceFixtureCenter"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_01",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_5",
+      "location": [
+        -10540.0,
+        69460.0,
+        -1766.3908864991529
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_02",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_6",
+      "location": [
+        -9270.0,
+        69460.0,
+        -1766.3908864991529
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_03",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_7",
+      "location": [
+        -8000.0,
+        69460.0,
+        -1766.3908864991529
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_04",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_8",
+      "location": [
+        -6730.0,
+        69460.0,
+        -1766.3908864991529
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_05",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_9",
+      "location": [
+        -5460.0,
+        69460.0,
+        -1766.3908864991529
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_06",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_10",
+      "location": [
+        -10540.0,
+        70730.0,
+        -1764.4594745279244
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_07",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_11",
+      "location": [
+        -9270.0,
+        70730.0,
+        -1764.4575611129917
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_08",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_12",
+      "location": [
+        -8000.0,
+        70730.0,
+        -1764.456584907718
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_09",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_13",
+      "location": [
+        -6730.0,
+        70730.0,
+        -1764.456584907718
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_10",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_14",
+      "location": [
+        -5460.0,
+        70730.0,
+        -1764.4580087571198
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_11",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_15",
+      "location": [
+        -10540.0,
+        72000.0,
+        -1757.6349568210906
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_12",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_16",
+      "location": [
+        -9270.0,
+        72000.0,
+        -1757.5266485340019
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_13",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_17",
+      "location": [
+        -8000.0,
+        72000.0,
+        -1757.2943527427205
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_14",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_18",
+      "location": [
+        -6730.0,
+        72000.0,
+        -1757.3071212687753
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_15",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_19",
+      "location": [
+        -5460.0,
+        72000.0,
+        -1757.6578804528026
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_16",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_20",
+      "location": [
+        -10540.0,
+        73270.0,
+        -1759.5411005073022
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_17",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_21",
+      "location": [
+        -9270.0,
+        73270.0,
+        -1759.4327922202137
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_18",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_22",
+      "location": [
+        -8000.0,
+        73270.0,
+        -1759.4124810665478
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_19",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_23",
+      "location": [
+        -6730.0,
+        73270.0,
+        -1759.4124810665478
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_20",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_24",
+      "location": [
+        -5460.0,
+        73270.0,
+        -1759.5640241390142
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_21",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_25",
+      "location": [
+        -10540.0,
+        74540.0,
+        -1761.5292248739686
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_22",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_26",
+      "location": [
+        -9270.0,
+        74540.0,
+        -1761.5292248739686
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_23",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_27",
+      "location": [
+        -8000.0,
+        74540.0,
+        -1761.5292248739686
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_24",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_28",
+      "location": [
+        -6730.0,
+        74540.0,
+        -1761.5292248739686
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Slot_25",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_29",
+      "location": [
+        -5460.0,
+        74540.0,
+        -1761.5292248739686
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Target_A",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_30",
+      "location": [
+        -10300.0,
+        75500.0,
+        -1760.2700498668924
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Label_A",
+      "class": "TextRenderActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TextRenderActor_0",
+      "location": [
+        -10300.0,
+        75500.0,
+        -1725.2700498668924
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ],
+      "text": "A"
+    },
+    {
+      "label": "WM01Guidance_Target_B",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_31",
+      "location": [
+        -8000.0,
+        77800.0,
+        -1753.6337611728534
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Label_B",
+      "class": "TextRenderActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TextRenderActor_1",
+      "location": [
+        -8000.0,
+        77800.0,
+        -1718.6337611728534
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ],
+      "text": "B"
+    },
+    {
+      "label": "WM01Guidance_Target_C",
+      "class": "TargetPoint",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_32",
+      "location": [
+        -5700.0,
+        75500.0,
+        -1760.271739631898
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ]
+    },
+    {
+      "label": "WM01Guidance_Label_C",
+      "class": "TextRenderActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TextRenderActor_2",
+      "location": [
+        -5700.0,
+        75500.0,
+        -1725.271739631898
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ],
+      "text": "C"
+    },
+    {
+      "label": "WM01Guidance_Instructions",
+      "class": "Note",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_42",
+      "location": [
+        -8000.0,
+        73000.0,
+        -1200.0
+      ],
+      "tags": [
+        "WM01GuidanceReview20260930"
+      ],
+      "text": "重防号 Q 每个共享引导圈最多60发，整台齐射不拆分；半径8米，保留单弹预警。\n本区保存25个出生位置与A/B/C目标标记；真实Mass单位由玩家主动准备，未替换地图默认部队。\n新开PIE并就绪指挥官，在控制台执行 gs.MissileFixture.Build 25 6；这是弹量/解锁准备，F4卡牌获取另行验证。\n关闭控制台，只框选该25台，6秒内先后指向A/B/C按Q，预期60/60/30发；第四次Q无新圈。只发射的单位进入6秒冷却。\n共享圈固定在各次按键位置，最后一枚结束后消失；移动鼠标不移动旧圈；同点重复Q独立清理。\n必须使用真实选择+Q，不使用 gs.MissileFixture.Fire（旧性能入口逐台独立施放）。\n每个补充配置重新开PIE：gs.MissileFixture.Build 25 7 -> 56/56/56/7；gs.MissileFixture.Build 2 60 -> 60/60。\nF4功能验证另开干净局：04.01解锁，05.01基础1发最多获得59次；到60后不再抽到，旧候选确认也重检。\n源码新增反射字段和准备参数须编译并重开后使用；资源导入状态见 Artifacts/WM01Guidance60/asset-readback.json。\n助手仅保存场景与核对实体/导航位置，未启动PIE、自动发射或进行效果验收。"
+    }
+  ],
+  "formation": {
+    "rows": 5,
+    "columns": 5,
+    "unit_type_id": 2,
+    "spacing_cm": 1270.0,
+    "runtime_units_created": false,
+    "manual_prepare_command": "gs.MissileFixture.Build 25 6"
+  },
+  "maximum_target_distance_cm": 8718.22015919801,
+  "navigation_points_checked": 28,
+  "default_deployments_unchanged": true,
+  "new_native_schema_loaded": true,
+  "saved_file_confirmation": {
+    "saved_local_time": "2026-09-30T15:03:32+08:00",
+    "map_file_bytes": 127358379,
+    "evidence": "Editor save_current_level returned true; exact editor log records successful temp-to-umap move; disk LastWriteTime matches."
+  },
+  "later_editor_state": {
+    "second_editor_started_local_time": "2026-09-30T15:05:32+08:00",
+    "extra_save_attempt": "failed: Windows sharing violation (Error Code 32)",
+    "subsequent_scene_edits_observed": true,
+    "guidance_entities_rechecked": 34,
+    "guidance_entity_mismatches": 0,
+    "action": "Preserved subsequent scene edits and both editor processes; no reload, forced close or overwrite."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "verification": "static_review_only",
+  "build": "not_run",
+  "new_native_code_loaded": false,
+  "source_sha256": {
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODSubsystem.h": "adea5308c2b4957f44bea4f88061733ce9457e6a02c2fad0064bf71896b57d34",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODSubsystem.cpp": "bcebee4eacfdb6c17ab2697818ff29ed9a4650a7e4091db3af8948d7f79ef076",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp": "777367ba238e506eb0911d4a075aa2818d6907433540bd1667641a27029ccbf5",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h": "e87ee2dde54ea7d5a639ff66d90d016324bf157364e6e357d74f2ad57c2a3f32",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.cpp": "4b1bdfe33c1fe915eaecb832e75eaa9daee9f20dae85da36f4a7e9fab15f0a9e"
+  },
+  "reviewed": [
+    "Commander LOD0/1 admit explosion independent of legacy distance; LOD2 suppresses",
+    "Any eligible local view admits shared effect; Overview registry retains per-view masking",
+    "Non-Commander views retain caller-provided maximum range",
+    "Both explosion queue and final spawn recheck after asynchronous asset load",
+    "LOD subsystem is client World owned and resets views on deinitialize",
+    "Field one-shot suppression and activation flags prevent replay of old bursts",
+    "Hit overlays, wreck distance, damage, asset references and budgets preserved"
+  ],
+  "scene_entities_read_back": 13,
+  "runtime_fix_verification": "pending authorized build; existing PIE diagnosis is old implementation",
+  "probe_cleanup": {
+    "callback_unregistered": true,
+    "component_destroyed": true
+  }
+}

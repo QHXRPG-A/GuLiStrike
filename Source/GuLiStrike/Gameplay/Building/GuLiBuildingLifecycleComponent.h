@@ -17,7 +17,7 @@ public:
 	virtual FVector GetBuildingGroundLocation() const = 0;
 };
 UENUM(BlueprintType)
-enum class EGuLiBuildingPhase : uint8 { UnderConstruction, Completed, Destroyed };
+enum class EGuLiBuildingPhase : uint8 { UnderConstruction, Completed, Destroyed, ConvertedToUnit };
 UENUM()
 enum class EGuLiBuildingOrigin : uint8 { Manual, Map, Gift };
 
@@ -66,6 +66,8 @@ public:
 	bool ValidateConstructionSlot(const ACharacter& Vehicle, const FGuLiConstructionSlotReservation& Reservation) const;
 	void ReleaseConstructionSlot(const ACharacter& Vehicle, const FGuLiConstructionSlotReservation& Reservation);
 	void RefreshTeam();
+	/** Retire the construction identity without fabricating a destruction/death event. */
+	void MarkConvertedToUnit();
 	UFUNCTION(BlueprintPure, Category="Building") const FGuLiBuildingLifecycleState& GetState() const { return State; }
 	const FGuLiBuildingDefinition& GetDefinition() const;
 	EGuLiTeam GetTeam() const;

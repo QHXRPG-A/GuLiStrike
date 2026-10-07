@@ -1,0 +1,394 @@
+{
+  "success": true,
+  "version": "BiZhiMao_v1_vertex",
+  "runtime_bones": 0,
+  "assets": [
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "type": "StaticMesh"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/MI_BiZhiMao_Phase.MI_BiZhiMao_Phase",
+      "type": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/MI_BiZhiMao_Wreck.MI_BiZhiMao_Wreck",
+      "type": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/MI_BiZhiMao_Hit.MI_BiZhiMao_Hit",
+      "type": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD3.MI_BiZhiMao_LOD3",
+      "type": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD2.MI_BiZhiMao_LOD2",
+      "type": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD1.MI_BiZhiMao_LOD1",
+      "type": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/MI_BiZhiMao_LOD0.MI_BiZhiMao_LOD0",
+      "type": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/M_BiZhiMao_Outline.M_BiZhiMao_Outline",
+      "type": "Material"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD0.T_BiZhiMao_VertexPosition_LOD0",
+      "type": "Texture2D"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD0.T_BiZhiMao_VertexRotation_LOD0",
+      "type": "Texture2D"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD1.T_BiZhiMao_VertexPosition_LOD1",
+      "type": "Texture2D"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD1.T_BiZhiMao_VertexRotation_LOD1",
+      "type": "Texture2D"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD2.T_BiZhiMao_VertexPosition_LOD2",
+      "type": "Texture2D"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD2.T_BiZhiMao_VertexRotation_LOD2",
+      "type": "Texture2D"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD3.T_BiZhiMao_VertexPosition_LOD3",
+      "type": "Texture2D"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD3.T_BiZhiMao_VertexRotation_LOD3",
+      "type": "Texture2D"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/VAT/MF_BiZhiMao_VertexVAT.MF_BiZhiMao_VertexVAT",
+      "type": "MaterialFunction"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_InternalLineMask_2K.T_BiZhiMao_InternalLineMask_2K",
+      "type": "Texture2D"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Materials/M_BiZhiMao_Toon3_SparseLines.M_BiZhiMao_Toon3_SparseLines",
+      "type": "Material"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+      "type": "StaticMesh"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_BaseColor_2K.T_BiZhiMao_BaseColor_2K",
+      "type": "Texture2D"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_FunctionalMask_2K.T_BiZhiMao_FunctionalMask_2K",
+      "type": "Texture2D"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_ORM_2K.T_BiZhiMao_ORM_2K",
+      "type": "Texture2D"
+    }
+  ],
+  "lods": [
+    {
+      "lod": 0,
+      "triangles": 70117,
+      "body_triangles": 57323,
+      "contour_triangles": 12794,
+      "sections": 2,
+      "vertices": 205141,
+      "animation_vertices": 40842,
+      "uv_samples": [
+        {
+          "corner": 0,
+          "vertex": 9,
+          "piston_flag": 0,
+          "yaw_weight": 1.0,
+          "pitch_weight": 0.0,
+          "lod": 0.0
+        },
+        {
+          "corner": 52587,
+          "vertex": 10617,
+          "piston_flag": 0,
+          "yaw_weight": 0.0,
+          "pitch_weight": 0.0,
+          "lod": 0.0
+        },
+        {
+          "corner": 105175,
+          "vertex": 19412,
+          "piston_flag": 0,
+          "yaw_weight": 0.0,
+          "pitch_weight": 0.0,
+          "lod": 0.0
+        },
+        {
+          "corner": 157763,
+          "vertex": 30266,
+          "piston_flag": 0,
+          "yaw_weight": 0.0,
+          "pitch_weight": 0.0,
+          "lod": 0.0
+        },
+        {
+          "corner": 210350,
+          "vertex": 40762,
+          "piston_flag": 0,
+          "yaw_weight": 0.0,
+          "pitch_weight": 0.0,
+          "lod": 0.0
+        }
+      ],
+      "budget_passed": false,
+      "screen_size": 1
+    },
+    {
+      "lod": 1,
+      "triangles": 65006,
+      "body_triangles": 55594,
+      "contour_triangles": 9412,
+      "sections": 2,
+      "vertices": 191454,
+      "animation_vertices": 38075,
+      "uv_samples": [
+        {
+          "corner": 0,
+          "vertex": 9,
+          "piston_flag": 0,
+          "yaw_weight": 1.0,
+          "pitch_weight": 0.0,
+          "lod": 1.0
+        },
+        {
+          "corner": 48754,
+          "vertex": 9675,
+          "piston_flag": 0,
+          "yaw_weight": 0.0,
+          "pitch_weight": 0.0,
+          "lod": 1.0
+        },
+        {
+          "corner": 97509,
+          "vertex": 18930,
+          "piston_flag": 0,
+          "yaw_weight": 0.0,
+          "pitch_weight": 0.0,
+          "lod": 1.0
+        },
+        {
+          "corner": 146263,
+          "vertex": 28222,
+          "piston_flag": 0,
+          "yaw_weight": 0.0,
+          "pitch_weight": 0.0,
+          "lod": 1.0
+        },
+        {
+          "corner": 195017,
+          "vertex": 33693,
+          "piston_flag": 0,
+          "yaw_weight": 1.0,
+          "pitch_weight": 1.0,
+          "lod": 1.0
+        }
+      ],
+      "budget_passed": false,
+      "screen_size": 0.4
+    },
+    {
+      "lod": 2,
+      "triangles": 51896,
+      "body_triangles": 46326,
+      "contour_triangles": 5570,
+      "sections": 2,
+      "vertices": 153198,
+      "animation_vertices": 30913,
+      "uv_samples": [
+        {
+          "corner": 0,
+          "vertex": 89,
+          "piston_flag": 0,
+          "yaw_weight": 1.0,
+          "pitch_weight": 0.0,
+          "lod": 2.0
+        },
+        {
+          "corner": 38922,
+          "vertex": 9178,
+          "piston_flag": 0,
+          "yaw_weight": 0.0,
+          "pitch_weight": 0.0,
+          "lod": 2.0
+        },
+        {
+          "corner": 77844,
+          "vertex": 15118,
+          "piston_flag": 0,
+          "yaw_weight": 0.0,
+          "pitch_weight": 0.0,
+          "lod": 2.0
+        },
+        {
+          "corner": 116766,
+          "vertex": 18362,
+          "piston_flag": 0,
+          "yaw_weight": 0.0,
+          "pitch_weight": 0.0,
+          "lod": 2.0
+        },
+        {
+          "corner": 155687,
+          "vertex": 28875,
+          "piston_flag": 0,
+          "yaw_weight": 1.0,
+          "pitch_weight": 0.0,
+          "lod": 2.0
+        }
+      ],
+      "budget_passed": false,
+      "screen_size": 0.16
+    },
+    {
+      "lod": 3,
+      "triangles": 38428,
+      "body_triangles": 38428,
+      "contour_triangles": 0,
+      "sections": 1,
+      "vertices": 114263,
+      "animation_vertices": 23308,
+      "uv_samples": [
+        {
+          "corner": 0,
+          "vertex": 59,
+          "piston_flag": 0,
+          "yaw_weight": 1.0,
+          "pitch_weight": 0.0,
+          "lod": 3.0
+        },
+        {
+          "corner": 28821,
+          "vertex": 5910,
+          "piston_flag": 0,
+          "yaw_weight": 0.0,
+          "pitch_weight": 0.0,
+          "lod": 3.0
+        },
+        {
+          "corner": 57642,
+          "vertex": 1356,
+          "piston_flag": 0,
+          "yaw_weight": 1.0,
+          "pitch_weight": 0.0,
+          "lod": 3.0
+        },
+        {
+          "corner": 86463,
+          "vertex": 18195,
+          "piston_flag": 0,
+          "yaw_weight": 0.0,
+          "pitch_weight": 0.0,
+          "lod": 3.0
+        },
+        {
+          "corner": 115283,
+          "vertex": 12370,
+          "piston_flag": 0,
+          "yaw_weight": 0.0,
+          "pitch_weight": 0.0,
+          "lod": 3.0
+        }
+      ],
+      "budget_passed": false,
+      "screen_size": 0.06
+    }
+  ],
+  "textures": [
+    {
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD0.T_BiZhiMao_VertexPosition_LOD0",
+      "size": [
+        4096,
+        1620
+      ],
+      "compression": "<TextureCompressionSettings.TC_HDR: 6>"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD0.T_BiZhiMao_VertexRotation_LOD0",
+      "size": [
+        4096,
+        1620
+      ],
+      "compression": "<TextureCompressionSettings.TC_VECTOR_DISPLACEMENTMAP: 5>"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD1.T_BiZhiMao_VertexPosition_LOD1",
+      "size": [
+        4096,
+        1220
+      ],
+      "compression": "<TextureCompressionSettings.TC_HDR: 6>"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD1.T_BiZhiMao_VertexRotation_LOD1",
+      "size": [
+        4096,
+        1220
+      ],
+      "compression": "<TextureCompressionSettings.TC_VECTOR_DISPLACEMENTMAP: 5>"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD2.T_BiZhiMao_VertexPosition_LOD2",
+      "size": [
+        4096,
+        656
+      ],
+      "compression": "<TextureCompressionSettings.TC_HDR: 6>"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD2.T_BiZhiMao_VertexRotation_LOD2",
+      "size": [
+        4096,
+        656
+      ],
+      "compression": "<TextureCompressionSettings.TC_VECTOR_DISPLACEMENTMAP: 5>"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexPosition_LOD3.T_BiZhiMao_VertexPosition_LOD3",
+      "size": [
+        4096,
+        252
+      ],
+      "compression": "<TextureCompressionSettings.TC_HDR: 6>"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/Textures/T_BiZhiMao_VertexRotation_LOD3.T_BiZhiMao_VertexRotation_LOD3",
+      "size": [
+        4096,
+        252
+      ],
+      "compression": "<TextureCompressionSettings.TC_VECTOR_DISPLACEMENTMAP: 5>"
+    }
+  ],
+  "source_texture_exports": [
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Reports\\NativeTextureSource\\T_BiZhiMao_VertexPosition_LOD0.exr",
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Reports\\NativeTextureSource\\T_BiZhiMao_VertexRotation_LOD0.tga",
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Reports\\NativeTextureSource\\T_BiZhiMao_VertexPosition_LOD1.exr",
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Reports\\NativeTextureSource\\T_BiZhiMao_VertexRotation_LOD1.tga",
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Reports\\NativeTextureSource\\T_BiZhiMao_VertexPosition_LOD2.exr",
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Reports\\NativeTextureSource\\T_BiZhiMao_VertexRotation_LOD2.tga",
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Reports\\NativeTextureSource\\T_BiZhiMao_VertexPosition_LOD3.exr",
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\BiZhiMao_20261005\\Reports\\NativeTextureSource\\T_BiZhiMao_VertexRotation_LOD3.tga"
+  ],
+  "animation_gpu_bytes": 184221696
+}

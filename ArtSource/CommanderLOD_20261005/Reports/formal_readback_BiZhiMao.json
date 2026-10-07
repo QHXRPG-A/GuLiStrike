@@ -1,0 +1,121 @@
+{
+  "success": true,
+  "name": "BiZhiMao",
+  "id": 6,
+  "formal_root": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1",
+  "models": [
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+      "lod_count": 3,
+      "triangles": [
+        70117,
+        16913,
+        6125
+      ],
+      "sections": [
+        2,
+        2,
+        1
+      ],
+      "screen_sizes": [
+        1.0,
+        0.4000000059604645,
+        0.05999999865889549
+      ],
+      "geometry": [
+        {
+          "lod": 0,
+          "corners": 210351,
+          "uv_channels": 6,
+          "sha256": "57f62161bd0e2d079253bebefe6ded2012cc6fa87f052b2547570b03f0e145fe",
+          "candidate_equal": true
+        },
+        {
+          "lod": 1,
+          "corners": 50739,
+          "uv_channels": 6,
+          "sha256": "b5457554ac1cb9ce98b324a9fe265de553c411413a7cd09c0228279d8e8d4fbb",
+          "candidate_equal": true
+        },
+        {
+          "lod": 2,
+          "corners": 18375,
+          "uv_channels": 6,
+          "sha256": "070a49647d234d6faa7f8ecb9db9727d281f0064821ed7d45b415fec848d0c8b",
+          "candidate_equal": true
+        }
+      ],
+      "normals_and_colors": "Native duplication; no normal/color authoring or regeneration operation performed.",
+      "sockets": []
+    },
+    {
+      "candidate": "/Game/GuLiStrike/Commander/LODReview_20261005/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "lod_count": 3,
+      "triangles": [
+        70117,
+        16913,
+        6125
+      ],
+      "sections": [
+        2,
+        2,
+        1
+      ],
+      "screen_sizes": [
+        1.0,
+        0.4000000059604645,
+        0.05999999865889549
+      ],
+      "geometry": [
+        {
+          "lod": 0,
+          "corners": 210351,
+          "uv_channels": 6,
+          "sha256": "57f62161bd0e2d079253bebefe6ded2012cc6fa87f052b2547570b03f0e145fe",
+          "candidate_equal": true
+        },
+        {
+          "lod": 1,
+          "corners": 50739,
+          "uv_channels": 6,
+          "sha256": "b5457554ac1cb9ce98b324a9fe265de553c411413a7cd09c0228279d8e8d4fbb",
+          "candidate_equal": true
+        },
+        {
+          "lod": 2,
+          "corners": 18375,
+          "uv_channels": 6,
+          "sha256": "070a49647d234d6faa7f8ecb9db9727d281f0064821ed7d45b415fec848d0c8b",
+          "candidate_equal": true
+        }
+      ],
+      "normals_and_colors": "Native duplication; no normal/color authoring or regeneration operation performed.",
+      "sockets": []
+    }
+  ],
+  "asset_count": 23,
+  "animation": {
+    "asset": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/VAT/DA_BiZhiMao_VAT.DA_BiZhiMao_VAT",
+    "vertex_animation": true,
+    "bones": 0,
+    "clips": [
+      "Idle",
+      "Forward",
+      "Backward",
+      "Left",
+      "Right",
+      "Death"
+    ],
+    "vertex_lods": 3,
+    "texture_validation_errors": [],
+    "shader_sha256": "70c36fcaba279bdbe986b633eea2cb9de620e375e9fe0d24b573383f36f8d057"
+  },
+  "closure": "No candidate package dependencies",
+  "approval_B": "approved",
+  "content_sha256": "761bc5edd06b08c598771943b46ebcbd7bc8285b42d345e234fea0907d02783d",
+  "native_compile": "passed",
+  "pie": "not_run",
+  "fps": "not_run"
+}

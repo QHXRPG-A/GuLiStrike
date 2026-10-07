@@ -154,6 +154,9 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 
 	FGuLiSoldierDefinition Resolved = Fallback;
 	Resolved.DisplayName = FText::FromString(Row->DisplayName);
+	Resolved.bConstructionOnly = Row->bConstructionOnly;
+	Resolved.FacingPolicy = Row->FacingPolicy == 1
+		? EGuLiSoldierFacingPolicy::FixedSpawnYaw : EGuLiSoldierFacingPolicy::FaceVelocity;
 	bOutEntireDefinitionFromDataTable = true;
 	if (Row->Id > 0 && Row->Id <= MAX_uint16)
 	{
@@ -176,7 +179,9 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 
 	// Pioneer and War Machine widths are already final world meters.
 	Resolved.MassAvoidanceRadiusCm = 0.0f;
-	if (Resolved.UnitTypeId == 1u || Resolved.UnitTypeId == 2u)
+	if (FMath::IsFinite(Row->MassAvoidanceRadiusMeters) && Row->MassAvoidanceRadiusMeters > 0)
+		Resolved.MassAvoidanceRadiusCm = Row->MassAvoidanceRadiusMeters * 100.0f;
+	else if (Resolved.UnitTypeId == 1u || Resolved.UnitTypeId == 2u)
 	{
 		const float Radius = Row->ModelWidthMeters * 50.0f;
 		if (FMath::IsFinite(Radius) && Radius > 0.0f)

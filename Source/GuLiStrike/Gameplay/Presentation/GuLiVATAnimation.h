@@ -41,7 +41,21 @@ struct GULISTRIKE_API FGuLiVATMuzzle
 	UPROPERTY(EditAnywhere) FVector PitchPivot = FVector::ZeroVector;
 };
 
-/** CPU and GPU consume the same rigid bone deltas. No skeletal tick per instance. */
+/** Static vertices sample one shared animation atlas per LOD. No runtime skeleton. */
+USTRUCT(BlueprintType)
+struct GULISTRIKE_API FGuLiVertexVATLOD
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere) TObjectPtr<UTexture2D> Position;
+	UPROPERTY(EditAnywhere) TObjectPtr<UTexture2D> Rotation;
+	UPROPERTY(EditAnywhere) int32 VertexCount = 0;
+	UPROPERTY(EditAnywhere) int32 TextureWidth = 4096;
+	UPROPERTY(EditAnywhere) int32 RowsPerFrame = 0;
+	UPROPERTY(EditAnywhere) int32 FramesPerClip = 32;
+	UPROPERTY(EditAnywhere) int32 TextureFrames = 0;
+};
+
+/** Legacy rigid VAT remains supported; vertex VAT carries no Bones/BoneDeltas. */
 UCLASS(BlueprintType)
 class GULISTRIKE_API UGuLiVATDefinition : public UDataAsset
 {
@@ -49,6 +63,18 @@ class GULISTRIKE_API UGuLiVATDefinition : public UDataAsset
 public:
 	UPROPERTY(EditAnywhere) TObjectPtr<UTexture2D> BonePosition;
 	UPROPERTY(EditAnywhere) TObjectPtr<UTexture2D> BoneRotation;
+	UPROPERTY(EditAnywhere) bool bVertexAnimation = false;
+	UPROPERTY(EditAnywhere) TArray<FGuLiVertexVATLOD> VertexLODs;
+	UPROPERTY(EditAnywhere) bool bDirectionalBlend = false;
+	/** Names, reference pivots and rates are asset data; old Pioneer defaults remain unchanged. */
+	UPROPERTY(EditAnywhere) FName UpperBoneName = TEXT("Top_M");
+	UPROPERTY(EditAnywhere) FName PitchBoneName;
+	UPROPERTY(EditAnywhere) FVector PitchPivot = FVector::ZeroVector;
+	UPROPERTY(EditAnywhere) FVector PitchAxis = FVector(0,-1,0);
+	UPROPERTY(EditAnywhere) float UpperTurnRateDegreesPerSecond = 180;
+	UPROPERTY(EditAnywhere) float PitchTurnRateDegreesPerSecond = 90;
+	UPROPERTY(EditAnywhere) float MinimumPitchDegrees = -80;
+	UPROPERTY(EditAnywhere) float MaximumPitchDegrees = 80;
 	UPROPERTY(EditAnywhere) int32 FramesPerSecond = 30;
 	UPROPERTY(EditAnywhere) TArray<FGuLiVATBone> Bones;
 	UPROPERTY(EditAnywhere) TArray<FGuLiVATClip> Clips;
@@ -82,7 +108,7 @@ namespace GuLiVATAnimation
 {
 	// Keep all 51 legacy mechanical slots (including Hit at 0) unchanged.
 	inline constexpr int32 FirstCustomData = 51;
-	inline constexpr int32 CustomDataFloatCount = 59;
+	inline constexpr int32 CustomDataFloatCount = 63;
 	GULISTRIKE_API void Step(const UGuLiVATDefinition& Definition, const FVector& Velocity,
 		float BodyYaw, bool bAlive, float Dt, FGuLiVATPlayback& Playback);
 	GULISTRIKE_API void StepAim(const UGuLiVATDefinition& Definition, const FGuLiVATPlayback& Playback,
@@ -91,5 +117,6 @@ namespace GuLiVATAnimation
 		const FGuLiMechanicalAnimationState& Aim, const FTransform& Root, int32 Side, FTransform& Out);
 	GULISTRIKE_API void WriteInstance(UInstancedStaticMeshComponent& Component, int32 Index,
 		const UGuLiVATDefinition& Definition, const FGuLiVATPlayback& Current, const FGuLiVATPlayback& Previous,
-		const FGuLiMechanicalAnimationState& Aim, float BodyYaw, bool bReset);
+		const FGuLiMechanicalAnimationState& Aim, float BodyYaw, bool bReset,
+		const FVector& Velocity = FVector::ZeroVector);
 }
