@@ -39,6 +39,7 @@
 | [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | development | done | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-09 |
+| [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [全项目统一色库与美术技能接入](../Archive/20261008-全项目统一色库与美术技能接入.md) | archive | recorded | 2026-10-08 |
 | [十四模型配色 Blender 成品 B_v1 交付](../Archive/20261008-十四模型配色Blender成品B_v1交付.md) | archive | recorded | 2026-10-08 |
 | [十四模型配色参考 A_v3 与三视图交付](../Archive/20261008-十四模型配色参考A_v3交付.md) | archive | recorded | 2026-10-08 |
@@ -204,6 +205,7 @@
 | [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | development | done | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-09 |
+| [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [扫荡者橙区正式导入与自动改色](../Archive/20261009-扫荡者橙区正式导入与自动改色.md) | archive | recorded | 2026-10-09 |
 | [扫荡者原橙区队色Blender候选交付](../Archive/20261009-扫荡者原橙区队色Blender候选交付.md) | archive | recorded | 2026-10-09 |
 | [全项目统一色库与美术技能接入](../Archive/20261008-全项目统一色库与美术技能接入.md) | archive | recorded | 2026-10-08 |
@@ -729,6 +731,7 @@
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
 | [Mass单位脚环统一20cm — 实施记录](../DevelopmentDocumentation/20261007-Mass单位脚环统一20cm.md) | development | verification | 2026-10-09 |
+| [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [扫荡者橙区正式导入与自动改色](../Archive/20261009-扫荡者橙区正式导入与自动改色.md) | archive | recorded | 2026-10-09 |
 | [扫荡者原橙区队色Blender候选交付](../Archive/20261009-扫荡者原橙区队色Blender候选交付.md) | archive | recorded | 2026-10-09 |
 | [场景UI源码与18组红蓝模型对照交付](../Archive/20261008-场景UI源码与红蓝模型对照交付.md) | archive | recorded | 2026-10-08 |
@@ -1144,6 +1147,7 @@
 |---|---|---|---|
 | [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
+| [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [扫荡者橙区正式导入与自动改色](../Archive/20261009-扫荡者橙区正式导入与自动改色.md) | archive | recorded | 2026-10-09 |
 | [地面机甲辅助瞄准 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md) | development | done | 2026-10-05 |
 | [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-04 |
@@ -1291,6 +1295,7 @@
 |---|---|---|---|
 | [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
+| [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 
 ## input
 
@@ -1931,6 +1936,7 @@
 | [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | development | done | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-09 |
+| [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [扫荡者橙区正式导入与自动改色](../Archive/20261009-扫荡者橙区正式导入与自动改色.md) | archive | recorded | 2026-10-09 |
 | [扫荡者原橙区队色Blender候选交付](../Archive/20261009-扫荡者原橙区队色Blender候选交付.md) | archive | recorded | 2026-10-09 |
 | [全项目统一色库与美术技能接入](../Archive/20261008-全项目统一色库与美术技能接入.md) | archive | recorded | 2026-10-08 |
@@ -2081,6 +2087,7 @@
 |---|---|---|---|
 | [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
+| [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | development | done | 2026-10-05 |
 | [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | done | 2026-10-05 |
 | [飞行物批量启停同步与实际时间网络预算](../RequirementDocument/20261004-飞行物批量启停同步与实际时间网络预算.md) | requirement | approved | 2026-10-04 |
@@ -2263,6 +2270,7 @@
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
 | [Mass单位脚环统一20cm — 实施记录](../DevelopmentDocumentation/20261007-Mass单位脚环统一20cm.md) | development | verification | 2026-10-09 |
+| [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [场景UI源码与18组红蓝模型对照交付](../Archive/20261008-场景UI源码与红蓝模型对照交付.md) | archive | recorded | 2026-10-08 |
 | [Mass脚环20cm正式材质与环境影响核对](../Archive/20261007-Mass脚环20cm正式材质与环境影响核对.md) | archive | recorded | 2026-10-07 |
 | [指挥官三档镜头与总览LOD — 实施与交付](../DevelopmentDocumentation/20260930-指挥官三档镜头与总览LOD.md) | development | done | 2026-10-05 |

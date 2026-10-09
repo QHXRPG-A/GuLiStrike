@@ -4,6 +4,7 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-10-09 | [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | assets, art, data, rendering, ui, commander, ground_mech, ship | passed | 同步本会话当前文档与历史阶段，清理30个临时备份、缓存、日志及草稿，保留已放行源文件与审核证据；主变更已推送GitHub main，1151个LFS对象上传完成。 |
 | 2026-10-09 | [扫荡者橙区正式导入与自动改色](../Archive/20261009-扫荡者橙区正式导入与自动改色.md) | assets, data, rendering, commander | partial | 用户放行扫荡者原橙区B_v1；正式UV遮罩和本地自动改色已接入，Excel与三表保存回读、双方真实Q召唤及原三LOD属性核对通过，两类占位改色关闭。 |
 | 2026-10-09 | [扫荡者原橙区队色Blender候选交付](../Archive/20261009-扫荡者原橙区队色Blender候选交付.md) | assets, rendering, commander | partial | 按用户取消新参考图并选择原橙区的决定，交付扫荡者蓝红共享网格B候选和精确UV遮罩，三LOD保存回读及固定区对照通过，Blender已打开、B待审核。 |
 | 2026-10-08 | [全项目统一色库与美术技能接入](../Archive/20261008-全项目统一色库与美术技能接入.md) | art, rendering, assets, vfx | passed | 将用户四张色卡确认为全项目22色色库并接入美术skill，允许跨图组合并保留功能色和已审资产例外；本轮仅修改skill和文档。 |
