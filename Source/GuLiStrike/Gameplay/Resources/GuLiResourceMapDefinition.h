@@ -25,8 +25,9 @@ struct GULISTRIKE_API FGuLiOreVisualAsset
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Visual")
 	EGuLiOreVisualStage Stage = EGuLiOreVisualStage::Full;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Visual")
+	UPROPERTY(BlueprintReadOnly, Category = "Resources|Legacy", meta=(DeprecatedProperty, DeprecationMessage="Resolve ModelId from the Models table; legacy serialized reference only."))
 	TSoftObjectPtr<UStaticMesh> Mesh;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Resources|Visual") int32 ModelId = 0;
 
 	bool IsWellFormed() const;
 };
@@ -158,8 +159,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Visual")
 	TArray<FGuLiOreVisualAsset> OreVisuals;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Visual")
+	UPROPERTY(BlueprintReadOnly, Category = "Resources|Legacy", meta=(DeprecatedProperty, DeprecationMessage="Use FactoryModelId; serialized migration cache only."))
 	TSoftClassPtr<AActor> FactoryPresentationClass;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Resources|Visual") int32 FactoryModelId = 2006;
 
 	UFUNCTION(BlueprintCallable, Category = "Resources|Validation")
 	bool ValidateConfig(FString& OutError) const;

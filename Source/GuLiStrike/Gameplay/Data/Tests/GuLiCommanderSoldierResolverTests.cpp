@@ -14,8 +14,24 @@
 
 #include <limits>
 
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
+
 namespace GuLiCommanderSoldierResolverTests
 {
+	// Existing resolver fixtures now supply their mesh through the uniform model catalogue.
+	struct FScopedModelCatalog
+	{
+		TStrongObjectPtr<UDataTable> Table;
+		TSoftObjectPtr<UDataTable> Previous;
+		explicit FScopedModelCatalog(UObject* Resource) : Table(NewObject<UDataTable>())
+		{
+			Table->RowStruct=FGuLiStrikeModelsModelsRow::StaticStruct();
+			FGuLiStrikeModelsModelsRow Model; Model.Id=42; Model.ResourceType=TEXT("StaticMesh"); Model.ResourcePath=Resource;
+			Table->AddRow(TEXT("ResolverFixture"),Model);
+			auto* Settings=GetMutableDefault<UGuLiModelRegistrySettings>(); Previous=Settings->ModelsTable; Settings->ModelsTable=Table.Get();
+		}
+		~FScopedModelCatalog() { GetMutableDefault<UGuLiModelRegistrySettings>()->ModelsTable=Previous; }
+	};
 	FGuLiSoldierDefinition MakeTestFallback(UStaticMesh* Model)
 	{
 		FGuLiSoldierDefinition Fallback;
@@ -56,7 +72,8 @@ bool FGuLiCommanderSoldierValidRowTest::RunTest(const FString& Parameters)
 	Row.Id = 2;
 	Row.MovementSpeedCmPerSecond = 3600.0f;
 	Row.MaxHealth = 300.5f;
-	Row.ModelAsset = TSoftObjectPtr<UObject>(RowMesh.Get());
+	GuLiCommanderSoldierResolverTests::FScopedModelCatalog ModelCatalog(RowMesh.Get());
+	Row.ModelId = 42;
 	Row.Defense = 8.0f;
 
 	bool bEntireDefinitionFromDataTable = false;
@@ -90,7 +107,8 @@ bool FGuLiCommanderSoldierInvalidValuesFallbackTest::RunTest(const FString& Para
 	Row.PresentationScale = 1.0f;
 	Row.MovementSpeedCmPerSecond = -1.0f;
 	Row.MaxHealth = std::numeric_limits<float>::quiet_NaN();
-	Row.ModelAsset = TSoftObjectPtr<UObject>(WrongModel.Get());
+	GuLiCommanderSoldierResolverTests::FScopedModelCatalog ModelCatalog(WrongModel.Get());
+	Row.ModelId = 42;
 	Row.Defense = std::numeric_limits<float>::infinity();
 
 	bool bEntireDefinitionFromDataTable = true;
@@ -156,9 +174,9 @@ bool FGuLiCommanderSoldierDefaultBaselineTest::RunTest(const FString& Parameters
 	if (IsValid(Fallback.Model))
 	{
 		TestEqual(
-			TEXT("fallback resolves to the dedicated Crowd mesh"),
+			TEXT("fallback resolves through the stable default model ID"),
 			Fallback.Model->GetPathName(),
-			FString(TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd")));
+			GuLiModels::Path(nullptr, GuLiModelIds::DefaultSoldier).ToString());
 	}
 	TestEqual(TEXT("fallback defense"), Fallback.Defense, 0.0f);
 	return true;
@@ -244,7 +262,8 @@ bool FGuLiCommanderSoldierHealthBoundaryTest::RunTest(const FString& Parameters)
 	Row.PresentationScale = 1.0f;
 	Row.Id = 2;
 	Row.MovementSpeedCmPerSecond = 3600.0f;
-	Row.ModelAsset = TSoftObjectPtr<UObject>(Model.Get());
+	GuLiCommanderSoldierResolverTests::FScopedModelCatalog ModelCatalog(Model.Get());
+	Row.ModelId = 42;
 	for (const float Candidate : {0.5f, 300.5f, 1000000000.0f})
 	{
 		Row.MaxHealth = Candidate;

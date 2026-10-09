@@ -1,0 +1,299 @@
+{
+  "python_syntax_files": 74,
+  "model_constant_errors": [],
+  "diff_whitespace": "passed",
+  "source_table_parity": [
+    {
+      "table": "Commander_Soldiers",
+      "original_rows": 6,
+      "exported_rows": 6,
+      "gameplay_fields": "compared without visual path columns"
+    },
+    {
+      "table": "Buildings_Buildings",
+      "original_rows": 8,
+      "exported_rows": 8,
+      "gameplay_fields": "compared without visual path columns"
+    },
+    {
+      "table": "Ship_Parts",
+      "original_rows": 4,
+      "exported_rows": 18,
+      "gameplay_fields": "compared without visual path columns"
+    },
+    {
+      "table": "Ship_Tuning",
+      "original_rows": 2,
+      "exported_rows": 2,
+      "gameplay_fields": "compared without visual path columns"
+    }
+  ],
+  "resource_factory_exception": "original actual assembly replaces old table proxy; component snapshots compared in editor-static-validation.json",
+  "B_contract_models": [
+    {
+      "model": "BiZhiMao",
+      "meshes": 3,
+      "roles": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "model": "DefaultSoldier",
+      "meshes": 3,
+      "roles": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "model": "ManualOutpost",
+      "meshes": 1,
+      "roles": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "model": "MissileTurret",
+      "meshes": 1,
+      "roles": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "model": "ResourceFactory",
+      "meshes": 3,
+      "roles": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    {
+      "model": "SSF_AirBase",
+      "meshes": 3,
+      "roles": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "model": "SSF_CloningCenter",
+      "meshes": 3,
+      "roles": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "model": "SSF_CommandCenter",
+      "meshes": 3,
+      "roles": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "model": "SSF_MilitaryFactory",
+      "meshes": 3,
+      "roles": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "model": "SSF_Reactor",
+      "meshes": 3,
+      "roles": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "model": "SSF_StrategyCenter",
+      "meshes": 3,
+      "roles": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "model": "SentryTurret",
+      "meshes": 1,
+      "roles": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "model": "ShieldGenerator",
+      "meshes": 1,
+      "roles": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "7"
+      ]
+    },
+    {
+      "model": "WM01",
+      "meshes": 3,
+      "roles": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    }
+  ],
+  "source_and_mask_hashes": "checked",
+  "errors": [],
+  "native_compile": true,
+  "new_datatable_import": true,
+  "runtime_verified": "partial; see session-validation-summary.json",
+  "automated_tests_added_or_run": false,
+  "cplusplus_review": "Latest source built successfully using UE5.7 source engine; not a stability/performance pass",
+  "cpd_existing_writes": {
+    "HitTimeCustomDataIndex": 7
+  },
+  "cpd_new_ranges": {
+    "primary": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "secondary": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "enabled": 16,
+    "lamp": 17
+  },
+  "excel_sha256": "bae1ab7c081c13f87d4837de6aafd821479ad6aa79ab4f6d46ef0dddcfa8af48",
+  "python_syntax_paths": [
+    "Scripts/CommanderIsland/readback_scene.py",
+    "Scripts/CommanderLOD/common.py",
+    "Scripts/CommanderLOD/import_formal_tables.py",
+    "Scripts/CommanderLOD/switch_source_references.py",
+    "Scripts/GroundMech/build_demo.py",
+    "Scripts/Models/author_team_region_function.py",
+    "Scripts/Models/bind_formal_paint_materials.py",
+    "Scripts/Models/build_formal_review_gallery.py",
+    "Scripts/Models/capture_model_baseline.py",
+    "Scripts/Models/capture_model_runtime.py",
+    "Scripts/Models/capture_parameter_defaults.py",
+    "Scripts/Models/capture_previous_shadow_reference.py",
+    "Scripts/Models/capture_registered_parameters.py",
+    "Scripts/Models/capture_runtime_paint_gallery.py",
+    "Scripts/Models/capture_scene_ui_inspection_profile.py",
+    "Scripts/Models/check_final_selection.py",
+    "Scripts/Models/diagnose_aa_capture.py",
+    "Scripts/Models/diagnose_mass_paint_runtime.py",
+    "Scripts/Models/export_blender_region_contract.py",
+    "Scripts/Models/export_paint_geometry.py",
+    "Scripts/Models/finalize_delivery_records.py",
+    "Scripts/Models/inspect_cluster_mesh_instances.py",
+    "Scripts/Models/inspect_dark_particle_sources.py",
+    "Scripts/Models/inspect_formal_shadow_materials.py",
+    "Scripts/Models/inspect_paint_correspondence.py",
+    "Scripts/Models/inspect_runtime_motion_functions.py",
+    "Scripts/Models/lighten_formal_dark_surfaces.py",
+    "Scripts/Models/lighten_ore_rock_surfaces.py",
+    "Scripts/Models/locate_scene_visual_artifacts.py",
+    "Scripts/Models/migrate_model_workbooks.py",
+    "Scripts/Models/model_catalog.py",
+    "Scripts/Models/prepare_acceptance_scenes.py",
+    "Scripts/Models/prepare_paint_candidates.py",
+    "Scripts/Models/probe_aa_projection.py",
+    "Scripts/Models/promote_formal_model_paint.py",
+    "Scripts/Models/readback_blender_region_contract.py",
+    "Scripts/Models/rebuild_formal_team_function.py",
+    "Scripts/Models/recover_final_preview.py",
+    "Scripts/Models/render_ore_relight_comparison.py",
+    "Scripts/Models/repair_formal_material_parents.py",
+    "Scripts/Models/repair_formal_ssf_palette.py",
+    "Scripts/Models/repair_formal_team_function.py",
+    "Scripts/Models/repair_runtime_review_presenters.py",
+    "Scripts/Models/resolve_surface_paint.py",
+    "Scripts/Models/restore_aa_import_scale.py",
+    "Scripts/Models/retire_unused_replaced_paint.py",
+    "Scripts/Models/seed_model_bindings.py",
+    "Scripts/Models/set_scene_ui_inspection_profile.py",
+    "Scripts/Models/setup_final_preview_subset.py",
+    "Scripts/Models/setup_runtime_paint_samples.py",
+    "Scripts/Models/stage_model_interfaces.py",
+    "Scripts/Models/tone_style.py",
+    "Scripts/Models/validate_model_catalog_in_editor.py",
+    "Scripts/Models/verify_model_runtime.py",
+    "Scripts/Models/verify_runtime_ownership_colors.py",
+    "Scripts/Models/verify_runtime_parameter_roundtrip.py",
+    "Scripts/Pioneer/readback_runtime_assets.py",
+    "Scripts/Pioneer/update_source_tables.py",
+    "Scripts/Scale020/demo_review.py",
+    "Scripts/SceneUI/author_color_review.py",
+    "Scripts/SceneUI/build_review_gallery.py",
+    "Scripts/SceneUI/capture_color_review.py",
+    "Scripts/SceneUI/export_review_inputs.py",
+    "Scripts/SceneUI/inspect_review_sources.py",
+    "Scripts/SceneUI/prepare_acceptance_scene.py",
+    "Scripts/SceneUI/readback_review_materials.py",
+    "Scripts/SceneUI/refresh_color_review.py",
+    "Scripts/author_ship_component_blueprints.py",
+    "Scripts/build_building_assets.py",
+    "Scripts/build_commander_sc2_ui.py",
+    "Scripts/import_data_to_engine.py",
+    "Scripts/migrate_unit_and_spell_field_tables.py",
+    "Scripts/validate_commander_ring_asset.py",
+    "Tools/DataPipeline/export_data_from_excel.py"
+  ],
+  "final_refresh": "2026-10-08T23:01:03.505587+08:00",
+  "model_table_validation": "27 tables passed",
+  "editor_validation": "84 resources / 2782 ordinary parameters / 68 expanded CPD bindings / 0 errors / 3 deferred masks",
+  "B_source_sha256": "c28e175b95f6393a51256392097dd8244e17fc8dee82b85ef78d2c03aa1067e0"
+}

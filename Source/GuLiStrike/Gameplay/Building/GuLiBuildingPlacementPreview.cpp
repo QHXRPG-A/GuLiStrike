@@ -32,6 +32,7 @@ AGuLiBuildingPlacementPreview::AGuLiBuildingPlacementPreview()
 	GridDecal->SetupAttachment(SceneRoot);
 	GridDecal->SetRelativeRotation(FRotator(-90, 0, 0));
 	GridDecal->SetFadeScreenSize(0.0f);
+	GridDecal->SetHiddenInGame(true); // Footprint grid is drawn in the final screen layer.
 }
 
 bool AGuLiBuildingPlacementPreview::Configure(
@@ -53,9 +54,14 @@ bool AGuLiBuildingPlacementPreview::Configure(
 		return false;
 	}
 	bHasPlacementValidity = false;
-	if (!GuLiBuildingVisuals::CreatePreviewMeshes(*this, *SceneRoot, Definition, PreviewMaterialInstance, PreviewMeshes)) return false;
+	SceneUIFootprintExtent = Definition.CollisionExtent;
+	UMaterialInterface* MaskMaterial = SceneUIMaskMaterial.LoadSynchronous();
+	if (!MaskMaterial || !GuLiBuildingVisuals::CreatePreviewMeshes(*this, *SceneRoot, Definition, MaskMaterial, PreviewMeshes)) return false;
 	for (UMeshComponent* Mesh : PreviewMeshes)
+	{
+		Mesh->SetVisibleInSceneCaptureOnly(true);
 		Mesh->SetRelativeScale3D(GuLiVfx::Scale(this, PreviewVfxId, Mesh->GetRelativeScale3D()));
+	}
 	GridMaterialInstance->SetScalarParameterValue(TEXT("GridSize"), GuLiBuildingPlacementPolicy::GridSizeCentimeters);
 	GridDecal->SetDecalMaterial(GridMaterialInstance);
 	// The decal's local X is depth; after projecting down, Z spans footprint X.

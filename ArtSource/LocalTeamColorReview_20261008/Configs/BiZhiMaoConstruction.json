@@ -1,0 +1,64 @@
+{
+  "name": "BiZhiMaoConstruction",
+  "group": "Building",
+  "mesh": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+  "kind": "StaticMesh",
+  "bounds": "<Struct 'BoxSphereBounds' (0x0000028085B2B280) {origin: {x: 153.113144, y: 0.000031, z: 344.363922}, box_extent: {x: 661.391846, y: 460.966461, z: 346.162811}, sphere_radius: 821.127747}>",
+  "definition_id": 8,
+  "display_name": "彼之矛",
+  "mesh_scale": {
+    "X": 2.0,
+    "Y": 2.0,
+    "Z": 2.0
+  },
+  "version": "LocalTeamColorReview.20261008.v1",
+  "mutable_regions": "沿用彼之矛装甲和标识分区，建造体结构固定",
+  "source_palette_candidates": [
+    "#557B78",
+    "#8E3A2A"
+  ],
+  "blue_reference": "#2877DB",
+  "red_reference": "#D7534D",
+  "enemy_non_blue_palette": "#D7534D",
+  "configuration_status": "candidate_pending_region_review",
+  "runtime_enabled": false,
+  "geometry_animation_lod_unchanged": true,
+  "materials": [
+    {
+      "slot": 0,
+      "name": "Body_LOD0",
+      "fixed": false,
+      "source": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD0.MI_BiZhiMao_LOD0",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/BiZhiMaoConstruction/M_Review_M_BiZhiMao_Toon3_SparseLines.M_Review_M_BiZhiMao_Toon3_SparseLines",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/BiZhiMaoConstruction/MI_Blue_0.MI_Blue_0",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/BiZhiMaoConstruction/MI_Red_0.MI_Red_0",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/BiZhiMaoConstruction/MI_Regions_0.MI_Regions_0"
+    },
+    {
+      "slot": 1,
+      "name": "Outline",
+      "fixed": true,
+      "source": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Outline.M_BiZhiMao_Outline"
+    },
+    {
+      "slot": 2,
+      "name": "Body_LOD1",
+      "fixed": false,
+      "source": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD1.MI_BiZhiMao_LOD1",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/BiZhiMaoConstruction/M_Review_M_BiZhiMao_Toon3_SparseLines.M_Review_M_BiZhiMao_Toon3_SparseLines",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/BiZhiMaoConstruction/MI_Blue_2.MI_Blue_2",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/BiZhiMaoConstruction/MI_Red_2.MI_Red_2",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/BiZhiMaoConstruction/MI_Regions_2.MI_Regions_2"
+    },
+    {
+      "slot": 3,
+      "name": "Body_LOD2",
+      "fixed": false,
+      "source": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/MI_BiZhiMao_LOD2.MI_BiZhiMao_LOD2",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/BiZhiMaoConstruction/M_Review_M_BiZhiMao_Toon3_SparseLines.M_Review_M_BiZhiMao_Toon3_SparseLines",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/BiZhiMaoConstruction/MI_Blue_3.MI_Blue_3",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/BiZhiMaoConstruction/MI_Red_3.MI_Red_3",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/BiZhiMaoConstruction/MI_Regions_3.MI_Regions_3"
+    }
+  ]
+}

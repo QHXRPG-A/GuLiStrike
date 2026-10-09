@@ -1,0 +1,60 @@
+{
+  "models": 84,
+  "parts": 103,
+  "parameters": 2854,
+  "regions": 9404,
+  "soldier_refs": {
+    "DefaultSoldier": 1001,
+    "WM01": 1002,
+    "ElectromagneticMiner": 1003,
+    "ConstructionVehicle": 1004,
+    "SweeperSummon": 1005,
+    "BiZhiMao": 1006
+  },
+  "building_refs": {
+    "MissileTurret": 2001,
+    "SentryTurret": 2002,
+    "ManualOutpost": 2003,
+    "BasicBarracks": 2004,
+    "ShieldGenerator": 2005,
+    "ResourceFactory": 2006,
+    "TerritoryStronghold": 2007,
+    "BiZhiMaoConstruction": 2008
+  },
+  "ship_part_refs": {
+    "SC_Autocannon": 5101,
+    "SC_Bottom_Twin_Barrel_Turret": 5102,
+    "SC_CIWS": 5103,
+    "SC_High_Rate_Fire_Cannon": 5104,
+    "SC_Single_Barrel_Turret": 5105,
+    "SC_Triple_Barrel_Turret": 5106,
+    "SC_Twin_Barrel_Turret": 5107,
+    "SC_Drone_LaunchBay": 5108,
+    "SC_Electronic_JammingDevice": 5109,
+    "SC_Incendiary_Bomb_LaunchBay": 5110,
+    "SC_Missile_Bay": 5111,
+    "SC_Shield_Generator": 5112,
+    "SC_Thor_MissilePod": 5113,
+    "SC_Thor_MissilePod_Lv2": 5113,
+    "Engine_Heavy": 5901,
+    "Engine_Standard": 5902,
+    "Weapon_Laser": 5903,
+    "Weapon_RocketPod": 5904
+  },
+  "hull_refs": {
+    "Default": 5001,
+    "Dreadnought": 5002
+  },
+  "baseline": "Data\\Models\\migration-baseline-20261008.json",
+  "native_compile": true,
+  "ue_import": true,
+  "source_preservation": "distinct miner/builder component resources preserved",
+  "formal_asset_import": true,
+  "model_descriptions": 84,
+  "final_refresh": "2026-10-08T23:01:03.505587+08:00",
+  "deferred_region_masks": [
+    1005,
+    2004,
+    2007
+  ]
+}

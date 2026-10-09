@@ -1,0 +1,585 @@
+{
+  "version": "LocalTeamColorReference_A_v3_20261008",
+  "reviewed_at": "2026-10-08T11:29:32.034178+08:00",
+  "reviewer": "assistant",
+  "method": "Visual inspection of imagegen tool results and local board/source images; not an automated image-comparison test.",
+  "models_reviewed": 14,
+  "selected_boards": 28,
+  "successful_generation_records": 40,
+  "draft_boards_retained": 12,
+  "palette_contract": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    },
+    "fixed_secondary": {
+      "hex": "#D5C09C",
+      "card": 1,
+      "label": "固定米砂"
+    },
+    "blue_secondary": {
+      "hex": "#274E61",
+      "card": 4,
+      "label": "深蓝灰队色"
+    },
+    "red_secondary": {
+      "hex": "#662249",
+      "card": 2,
+      "label": "深莓队色"
+    }
+  },
+  "cream_coverage": {
+    "target_visible_model_percent": [
+      20,
+      30
+    ],
+    "measured": false,
+    "background_outline_shadow_excluded": true
+  },
+  "limits": [
+    "Generated orthographic-looking views and painted surfaces are 2D references, with approximate perspective/detail; source mesh and native views remain authoritative.",
+    "No pixel-exact geometry, fixed-area raster equality, RGB under shading, or precise surface coverage is claimed.",
+    "Assistant review does not grant user A approval or represent real Blender B, UE model changes, gameplay or environment-render verification.",
+    "Browser interaction not run because prior tool denied file://; no alternative entry-point workaround."
+  ],
+  "models": [
+    {
+      "id": "DefaultSoldier",
+      "name": "先驱号",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/DefaultSoldier_blue.png",
+          "sha256": "84969b5585d5d9b8017acb6b5474568967982152cf3daa351a930a929d764dea",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/DefaultSoldier_red.png",
+          "sha256": "7bbd4097686df5d5e287cb0e09b5f42124ff775fd2ebc221df97ca17d1c89f29",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "六足、双侧枪组、两根天线和后围带作为原结构约束。",
+        "中央壳米砂、腿主甲乳白，完整肩盒浅队色、后环及腿外护板深队色。",
+        "修订蓝方左视肩盒原误留乳白，与红方对应；原有小琥珀指示固定。"
+      ],
+      "revisions": [
+        "DefaultSoldier_blue_first-draft.png"
+      ],
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    },
+    {
+      "id": "WM01",
+      "name": "重防号",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/WM01_blue.png",
+          "sha256": "1ec0b6628baa7b5b3049c99a8c18425111d1e323d4ee42ec174fdf501cfa8817",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/WM01_red.png",
+          "sha256": "753830e0c37ad3eef46158a05bf0c0cc01b3252c4b1c6e40bea233348c6ebd40",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "按 WM01/UnitTypeId=2 定位，非玩家 Ground 占位 Pawn。",
+        "两侧各双炮、两组导弹舱各四口（2×2）、中央前伸体与四悬浮盘保留；部分视角盘被遮挡。",
+        "主体和盘上甲米砂，枪管/支架/盘内机构深灰；炮组外甲和舱侧浅队色，盘外护环深队色，前甲及口框乳白。"
+      ],
+      "revisions": [],
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    },
+    {
+      "id": "BiZhiMao",
+      "name": "彼之矛",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/BiZhiMao_blue.png",
+          "sha256": "b797e0239a573471b8ecc12ee9d22c0ce463434a07761e5cca42dd371ff46c6e",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/BiZhiMao_red.png",
+          "sha256": "8e70646732d3bdffae52377e4977872577757ab2ab4c73926d4be6d80e9d253a",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "长炮、原开口桁架、四足及姿态作为约束，施工体共用此版。",
+        "炮上甲及主壳米砂、腿甲乳白，炮侧护板浅队色，炮口套/踝外甲深队色；内部桁架与机构深灰。"
+      ],
+      "revisions": [],
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    },
+    {
+      "id": "ShieldGenerator",
+      "name": "护盾发生器",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/ShieldGenerator_blue.png",
+          "sha256": "6a54468d2ef48ef260ddcbcdae0fa5600b4676a26f99bd65322f7870a4ccc8cb",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/ShieldGenerator_red.png",
+          "sha256": "06a1e1e5a1cb7bc2db8d7ce4d852f1a8c7b88d34333ceb360641846cf76b28d1",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "保留 Y 型连接顶板和三柱，不增加灯。",
+        "原三个顶部色点在蓝版均蓝、红版均红；红顶不再残留固定蓝/青点，未见大光晕覆盖装甲。",
+        "上部完整大检修盖浅队色，底座窄环深队色；柱下部大面米砂，小护板及固定边乳白。"
+      ],
+      "revisions": [
+        "ShieldGenerator_blue_first-draft.png"
+      ],
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    },
+    {
+      "id": "ManualOutpost",
+      "name": "前哨建筑",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/ManualOutpost_blue.png",
+          "sha256": "c215f435ee3d78db0e21f1a553ad03508bb6b01ec9ad9f0cad2115ba417df435",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/ManualOutpost_red.png",
+          "sha256": "31ee895c0d2cc6891fedb9a589820eaf8116412047ef2c9f83f06d62d32e9294",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "依据最新用户决定按数个完整矩形组件与一个外部半圆环配色，取消原按高度分段。",
+        "最高中央宽矩形在正侧后图保持整件浅队色，前方遮挡部分不另划高度颜色；相邻完整矩形米砂、外围窄件乳白。",
+        "外部半圆环整体深队色，板间槽及支承深灰；蓝红相同整件分配，不增加饰件。"
+      ],
+      "revisions": [
+        "ManualOutpost_blue_height-draft.png",
+        "ManualOutpost_red_height-draft.png"
+      ],
+      "user_correction": "outpost 颜色不应该像鸡尾酒一样垂直分布，它是由中间数个矩形组件和外部一个半圆环组件组成的，应该以组件为单位赋予色彩",
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    },
+    {
+      "id": "MissileTurret",
+      "name": "防空炮",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/MissileTurret_blue.png",
+          "sha256": "d31715c5d1ee3812785c14949e16d501b84beb428c4b38c0229a362f7d0f8305",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/MissileTurret_red.png",
+          "sha256": "389f271c1d290d11c20f35bff34fa630a5ad224f13fe01c310400039e60acbea",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "双侧发射仓维持原俯仰，正面每仓五枚弹头，其他视角闭盖与遮挡遵从来源。",
+        "Source Right(+Y)用作正视、Source Back用作左视、Source Left用作后视。",
+        "外侧大甲浅队色，长检修盖/转台环深队色，中箱/基座米砂，发射机构与口内深灰；薄框乳白。"
+      ],
+      "revisions": [],
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    },
+    {
+      "id": "SentryTurret",
+      "name": "哨戒炮",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/SentryTurret_blue.png",
+          "sha256": "4c5aee84a7f32ea50b8e753b15c47a409b6b4f4a0cbfdfda38c94c2ab62634e8",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/SentryTurret_red.png",
+          "sha256": "d212bd46ddb81cd52c36b1089e5e7ee0a18197ac4056dc829d816ff4250ef290",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "保留单阶梯炮管、四向基座、一根原回线软管。",
+        "侧面原六孔通风分区按2×3核对；孔内和炮管固定深灰。",
+        "完整侧甲浅队色，后盖和转台环深队色，基座米砂，前框与顶盖乳白。"
+      ],
+      "revisions": [],
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    },
+    {
+      "id": "ResourceFactory",
+      "name": "矿厂",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/ResourceFactory_blue.png",
+          "sha256": "c42422f7914bc16cc4c7475bebc604c1deb9e9e59199856f485c87e0531d851f",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/ResourceFactory_red.png",
+          "sha256": "21e2c71f5c3e847a672667a26ac585f8e6443b5698f6083d3ed632fb8528eb7c",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "基于完整 Blueprint 组装图，核对五门板、三个侧柜及闭门、平放坡道状态。",
+        "主墙及坡道米砂，门板/屋顶框乳白；屋顶中央盖和入口侧翼浅队色、侧柜既有横饰带深队色。",
+        "未把旧环境蓝光带入基础涂装。"
+      ],
+      "revisions": [],
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    },
+    {
+      "id": "SSF_AirBase",
+      "name": "SSF 空军基地",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/SSF_AirBase_blue.png",
+          "sha256": "ae6c07c7dc368e94a3879b9ffefb54a35347de1a3d98b847dee999ebbbd38625",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/SSF_AirBase_red.png",
+          "sha256": "2b4694b122ada01002bedcc9579959a970f89473a1e43a2ac1962a57164b97dc",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "保留扁穹顶、原扇形分板、主压条及相邻雷达塔。",
+        "穹顶两组既有大扇板浅队色，中心盖及端面/下缘深队色；其余穹顶米砂、压条乳白，俯视队色面积增加。",
+        "工作雷达面、支座及线缆固定深灰。"
+      ],
+      "revisions": [],
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    },
+    {
+      "id": "SSF_CloningCenter",
+      "name": "SSF 克隆中心",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/SSF_CloningCenter_blue.png",
+          "sha256": "a764f91c231f429cd5f76e19bc6168e3757ed0061df088bcaa3a4f14c3d784e1",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/SSF_CloningCenter_red.png",
+          "sha256": "3ab13a73b78a49b0d163f10d9373fa7e2fee37daba76de0bb3292fabe3dd506a",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "保留两层成对的四舱、背架、吊线、原侧天线与斜入口。",
+        "四舱罩浅队色、舱框/侧盖/顶口窄框深队色；背架米砂、入口顶盖乳白。",
+        "修订红方顶口内侧误为莓色的问题，口内保持固定深灰，软管不染队色。"
+      ],
+      "revisions": [
+        "SSF_CloningCenter_red_first-draft.png"
+      ],
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    },
+    {
+      "id": "SSF_CommandCenter",
+      "name": "SSF 指挥中心",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/SSF_CommandCenter_blue.png",
+          "sha256": "0b48bd67dfbfc43664625b9c94941ab589d5e167968abdfb1fc2b22afdc24d82",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/SSF_CommandCenter_red.png",
+          "sha256": "b6c7d9e13d1aae1351355f434932973e6fe8765a56993623a4009c216fb47cc0",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "保留分层塔冠、中央天线、原支架和侧雷达。",
+        "四视图上部完整主环及下部外护板为浅队色，固定冠米砂/脚护甲乳白，塔心机构深灰。",
+        "蓝方首稿上环与支架对应问题已修订；红方正侧后塔心及两小天线尖串色已恢复固定区。"
+      ],
+      "revisions": [
+        "SSF_CommandCenter_blue_first-draft.png",
+        "SSF_CommandCenter_red_first-draft.png"
+      ],
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    },
+    {
+      "id": "SSF_MilitaryFactory",
+      "name": "SSF 军工厂",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/SSF_MilitaryFactory_blue.png",
+          "sha256": "4382a955c5e204f288c577c94f9bf1941572eec11a2eb29260df3b510add44ad",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/SSF_MilitaryFactory_red.png",
+          "sha256": "3a71f2a6af2c7f53e03ef8159ee9b6b63a420769c15019bdf3b8ae4210dc5d06",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "保留原宽体厂房、屋顶拱架、原门口、墙面和侧雷达。",
+        "原拱架和入口护板浅队色，侧后腰带深队色；大墙面米砂、门板和窄边乳白。",
+        "机构/工作雷达面深灰，原小琥珀功能灯在两队一致，未新增橙色大块。"
+      ],
+      "revisions": [],
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    },
+    {
+      "id": "SSF_Reactor",
+      "name": "SSF 反应堆",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/SSF_Reactor_blue.png",
+          "sha256": "3890cb3ef46e125f08edd774df46bab8357a840198b9dcb650ac61e12b827305",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/SSF_Reactor_red.png",
+          "sha256": "08e6b136b540072c5ff3d7a6b8d4ff2e2d9c61d0193296055f9a4c896a03aa99",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "保留容器、四支撑腿、观察口、原软管和上部设备。",
+        "主壳两侧连续大甲浅队色，顶环/窗口窄框深队色；服务板和其余容器米砂，腿外甲乳白。",
+        "修订只改窗口、软管误乳白与紅方顶部额外小色点；最终分节软管/冷却片/顶盒固定深灰，无新增三颗队色小灯。"
+      ],
+      "revisions": [
+        "SSF_Reactor_blue_first-draft.png",
+        "SSF_Reactor_blue_second-draft.png",
+        "SSF_Reactor_red_first-draft.png"
+      ],
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    },
+    {
+      "id": "SSF_StrategyCenter",
+      "name": "SSF 战略中心",
+      "status": "assistant_reviewed_for_reference_A",
+      "boards": {
+        "blue": {
+          "path": "Boards/SSF_StrategyCenter_blue.png",
+          "sha256": "1013bc75aeeb6c6d8ba9b77bf7152cdd647143317377efc58aabd756d6c71a4c",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        },
+        "red": {
+          "path": "Boards/SSF_StrategyCenter_red.png",
+          "sha256": "7f21deeda5e6ee095a048223e1b00369a15c839aab3fc9f91384ed302b7c46b4",
+          "views_inspected": [
+            "Hero",
+            "Front",
+            "Left",
+            "Back"
+          ]
+        }
+      },
+      "checks": [
+        "保留原斜阵列、四天线、侧转轴及底部支撑。",
+        "大腰甲浅队色，外部阵列边框/盖背与上环深队色；固定壳米砂、支撑乳白。",
+        "修订中央工作阵面混入蓝格的问题，最终中央工作格阵固定深灰；外边框为深队色区。"
+      ],
+      "revisions": [
+        "SSF_StrategyCenter_blue_first-draft.png",
+        "SSF_StrategyCenter_blue_second-draft.png"
+      ],
+      "user_A": "pending",
+      "Blender_B": "not_started"
+    }
+  ],
+  "A_approval": "all_pending",
+  "B_construction": "not_started",
+  "UE_resource_update": false
+}

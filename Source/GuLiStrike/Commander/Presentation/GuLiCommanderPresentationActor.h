@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Commander/UI/GuLiSceneUITypes.h"
 #include "HAL/ThreadSafeBool.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "Commander/Presentation/GuLiCommanderPresentationPerformanceSettings.h"
@@ -16,6 +17,7 @@
 #include "GuLiCommanderPresentationActor.generated.h"
 
 class APlayerController;
+class AGuLiCommanderPlayerController;
 class AGuLiBattlePlayerState;
 class UGuLiCommanderNetSyncComponent;
 class AGuLiSoldierStateReplicator;
@@ -245,6 +247,8 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Commander|Presentation")
 	UInstancedStaticMeshComponent* GetRingInstances() const { return RingInstances; }
+	/** Existing ring anchors/radii, without transferring ownership of simulation or selection. */
+	void GatherSceneUIRings(TArray<FGuLiSceneUIRing>& Out, const APlayerController* Viewer) const;
 
 	/** Returns the current interpolated/predicted visual transform without exposing authority writes. */
 	// 本地只读查询；有效时写 OutTransform 并返回 true，供 HUD/诊断使用，不开放权威写入。
@@ -456,7 +460,7 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Presentation")
 	TObjectPtr<UInstancedStaticMeshComponent> RingInstances;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Commander|Presentation")
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Presentation", meta=(DeprecatedProperty, DeprecationMessage="Resolved Soldier ModelId cache; use Models Excel."))
 	TSoftObjectPtr<UStaticMesh> UnitMeshAsset;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Commander|Presentation")

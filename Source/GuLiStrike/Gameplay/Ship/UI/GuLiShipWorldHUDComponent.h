@@ -22,6 +22,7 @@ class UMaterialInterface;
 class UStaticMeshComponent;
 class UUserWidget;
 class UWidgetComponent;
+struct FGuLiSceneUIWorldWidget;
 
 /**
  * Local-only presenter for one owning-player screen widget and four world-space Ship HUD nodes.
@@ -37,6 +38,7 @@ public:
 
 	/** Re-evaluates local ownership and creates/destroys the screen HUD and world-space nodes. */
 	void HandleOwnerControllerChanged();
+	void GatherSceneUIWidgets(TArray<FGuLiSceneUIWorldWidget>& Out) const;
 
 protected:
 	virtual void BeginPlay() override;

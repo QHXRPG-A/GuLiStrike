@@ -1,0 +1,38 @@
+{
+  "name": "ShieldGenerator",
+  "group": "Building",
+  "mesh": "/Game/GuLiStrike/Buildings/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
+  "kind": "StaticMesh",
+  "bounds": "<Struct 'BoxSphereBounds' (0x0000028085B2F740) {origin: {x: -23.456497, y: -0.000008, z: 250.000000}, box_extent: {x: 152.543503, y: 172.644020, z: 250.000000}, sphere_radius: 316.787360}>",
+  "definition_id": 5,
+  "display_name": "护盾发生器",
+  "mesh_scale": {
+    "X": 2.0,
+    "Y": 2.0,
+    "Z": 2.0
+  },
+  "version": "LocalTeamColorReview.20261008.v1",
+  "mutable_regions": "青绿装甲和砖红标识；青色功能发光、灰白结构固定",
+  "source_palette_candidates": [
+    "#22676C",
+    "#853B37"
+  ],
+  "blue_reference": "#2877DB",
+  "red_reference": "#D7534D",
+  "enemy_non_blue_palette": "#D7534D",
+  "configuration_status": "candidate_pending_region_review",
+  "runtime_enabled": false,
+  "geometry_animation_lod_unchanged": true,
+  "materials": [
+    {
+      "slot": 0,
+      "name": "M_ShieldGenerator_HardSurface",
+      "fixed": false,
+      "source": "/Game/GuLiStrike/Buildings/ShieldGenerator/Materials/M_ShieldGenerator_HardSurface.M_ShieldGenerator_HardSurface",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/ShieldGenerator/M_Review_M_ShieldGenerator_HardSurface.M_Review_M_ShieldGenerator_HardSurface",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/ShieldGenerator/MI_Blue_0.MI_Blue_0",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/ShieldGenerator/MI_Red_0.MI_Red_0",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/ShieldGenerator/MI_Regions_0.MI_Regions_0"
+    }
+  ]
+}

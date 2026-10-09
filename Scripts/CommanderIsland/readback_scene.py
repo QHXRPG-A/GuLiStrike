@@ -2,8 +2,11 @@
 import json,math
 from pathlib import Path
 import unreal
+import sys
 
 ROOT=Path(unreal.Paths.project_dir()).resolve()
+sys.path.insert(0,str(ROOT/'Scripts'))
+from Models import model_catalog
 FILES=ROOT/'ArtSource/Environment/GuLiStrike_CommanderIsland_1800m_v1'
 ACTORS=unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
 LEVELS=unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
@@ -104,7 +107,8 @@ def main():
     controller=unreal.get_default_object(mode).get_editor_property('player_controller_class')
     assert controller.get_name()=='GuLiCommanderPlayerController'
     settings=unreal.get_default_object(unreal.load_class(None,'/Script/GuLiStrike.GuLiOutpostPresentationSettings'))
-    config={n:settings.get_editor_property(n) for n in ('Mesh','BodyMaterial','HaloMaterial','ModelHeightCm','FloatAmplitudeCm','FloatPeriodSeconds','LandingSeconds')}
+    config={n:settings.get_editor_property(n) for n in ('ModelId','BodyMaterial','HaloMaterial','ModelHeightCm','FloatAmplitudeCm','FloatPeriodSeconds','LandingSeconds')}
+    config['Mesh']=unreal.load_object(None,model_catalog.resource(config['ModelId']))
     presentation_error=unreal.GuLiCommanderIslandAuthoringLibrary.validate_outpost_presentation_assets()
     assert not presentation_error,presentation_error
     mesh=config['Mesh'];b=mesh.get_bounds();scale=config['ModelHeightCm']/(2*b.box_extent.z)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Commander/UI/GuLiSceneUITypes.h"
 #include "Components/PrimitiveComponent.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "Commander/Network/GuLiMoveLatency.h"
@@ -9,11 +10,11 @@
 class UGuLiCommanderNetSyncComponent;
 class AGuLiSoldierStateReplicator;
 class AGuLiCommanderPresentationActor;
+class AGuLiCommanderPlayerController;
 class UMaterialInterface;
 struct FGuLiSoldierRosterDelta;
-class FGuLiRouteLineSceneProxy;
 
-/** Local selected routes. Network application and rendering have independent cursors. */
+/** Per-view selected route cache consumed by the final Slate layer. */
 UCLASS(Config=Game)
 class GULISTRIKE_API UGuLiCommanderRouteLineComponent final : public UPrimitiveComponent
 {
@@ -31,8 +32,10 @@ public:
 	int32 GetPendingLineCount() const { return Queued.Num() + AwaitingPresentation.Num(); }
 	int32 GetVisibleLineCount() const { return Slots.Num(); }
 	int32 CountInvalidDisplayedLines() const;
+	void GatherSceneUILines(TArray<FGuLiSceneUILine>& Out) const;
+	void InitializeForController(AGuLiCommanderPlayerController* Viewer, AGuLiCommanderPresentationActor* Source);
+	void RecordSceneUISubmission() const;
 private:
-	friend class FGuLiRouteLineSceneProxy;
 	/** Translucent overlay material with depth testing disabled, configured in DefaultGame.ini. */
 	UPROPERTY(Config, EditDefaultsOnly, Category="Commander|RouteLine")
 	TSoftObjectPtr<UMaterialInterface> OverlayMaterial;
@@ -52,6 +55,8 @@ private:
 	TWeakObjectPtr<UGuLiCommanderNetSyncComponent> NetSync;
 	TWeakObjectPtr<AGuLiSoldierStateReplicator> Roster;
 	TWeakObjectPtr<AGuLiCommanderPresentationActor> Presentation;
+	TWeakObjectPtr<AGuLiCommanderPlayerController> LocalController;
+	mutable TSet<uint64> SubmittedBatches;
 	bool bWasActive=false;
 	void Unbind();
 	void ClearLines();

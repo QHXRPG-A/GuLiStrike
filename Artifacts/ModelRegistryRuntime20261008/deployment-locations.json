@@ -1,0 +1,142 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "points": [
+      {
+        "name": "GuLiCommanderDeploymentPoint_0",
+        "label": "PioneerQA_Single",
+        "location": [
+          0.0,
+          65000.0,
+          901.7790832519531
+        ],
+        "type": 1,
+        "team": "<GuLiTeam.RED: 1>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_1",
+        "label": "PioneerQA_Multi_A",
+        "location": [
+          -2300.0,
+          65000.0,
+          902.8101841762227
+        ],
+        "type": 1,
+        "team": "<GuLiTeam.RED: 1>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_2",
+        "label": "PioneerQA_Multi_B",
+        "location": [
+          -2300.0,
+          67000.0,
+          902.8744151862275
+        ],
+        "type": 1,
+        "team": "<GuLiTeam.RED: 1>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_3",
+        "label": "PioneerQA_SizeReference_WM01",
+        "location": [
+          0.0,
+          63000.0,
+          901.7790832519531
+        ],
+        "type": 2,
+        "team": "<GuLiTeam.RED: 1>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_4",
+        "label": "PioneerQA_Blocked",
+        "location": [
+          -45000.0,
+          60000.0,
+          1073.7790832519531
+        ],
+        "type": 1,
+        "team": "<GuLiTeam.RED: 1>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_5",
+        "label": "PioneerQA_Target_InRange",
+        "location": [
+          5600.0,
+          65000.0,
+          901.7790832519531
+        ],
+        "type": 2,
+        "team": "<GuLiTeam.BLUE: 2>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_6",
+        "label": "PioneerQA_Target_OutOfRange",
+        "location": [
+          6900.0,
+          63800.0,
+          901.7790832519531
+        ],
+        "type": 2,
+        "team": "<GuLiTeam.BLUE: 2>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_7",
+        "label": "SceneUI_Blue_Pioneer",
+        "location": [
+          -24000.0,
+          79000.0,
+          1073.4416723888016
+        ],
+        "type": 1,
+        "team": "<GuLiTeam.BLUE: 2>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_8",
+        "label": "SceneUI_Blue_WM01",
+        "location": [
+          -24000.0,
+          73000.0,
+          1073.4416723888016
+        ],
+        "type": 2,
+        "team": "<GuLiTeam.BLUE: 2>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_9",
+        "label": "SceneUI_Red_Pioneer",
+        "location": [
+          -14000.0,
+          79000.0,
+          1057.2619611356704
+        ],
+        "type": 1,
+        "team": "<GuLiTeam.RED: 1>"
+      },
+      {
+        "name": "GuLiCommanderDeploymentPoint_10",
+        "label": "SceneUI_Red_WM01",
+        "location": [
+          -14000.0,
+          73000.0,
+          1073.4416723888016
+        ],
+        "type": 2,
+        "team": "<GuLiTeam.RED: 1>"
+      }
+    ],
+    "nav_api": [
+      "get_navigation_system",
+      "get_random_location_in_navigable_radius",
+      "get_random_point_in_navigable_radius",
+      "is_navigation_being_built",
+      "is_navigation_being_built_or_locked",
+      "navigation_raycast",
+      "on_navigation_bounds_updated",
+      "on_navigation_generation_finished_delegate",
+      "project_point_to_navigation",
+      "register_navigation_invoker",
+      "unregister_navigation_invoker"
+    ]
+  }
+}

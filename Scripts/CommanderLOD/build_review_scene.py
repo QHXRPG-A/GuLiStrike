@@ -18,6 +18,7 @@ groups=[]
 
 def spawn(cls,label,pos):
     actor=existing.get(label) or actors.spawn_actor_from_class(cls,pos)
+    if not isinstance(actor,cls):raise RuntimeError('Review fixture must use its static reference class: '+label)
     actor.set_actor_label(label);actor.tags=[unreal.Name(tag)]
     actor.set_editor_property('is_editor_only_actor',True)
     actor.set_actor_location(pos,False,True)
@@ -51,13 +52,12 @@ for row_index,unit in enumerate(units()):
                 group['actors'].append(actor.get_actor_label());group['components'].append(component.get_path_name())
         else:
             path=REVIEW_PACKAGE+'/BiZhiMao/Meshes/SM_BiZhiMao_VAT' if name=='BiZhiMao' else data['meshes'][0]['asset']
-            actor=spawn(unreal.GuLiCommanderPresentationActor,f'{prefix}_LOD{lod}',origin)
+            actor=spawn(unreal.StaticMeshActor,f'{prefix}_LOD{lod}',origin)
             actor.set_actor_rotation(unreal.Rotator(0,0,0),True)
-            component=next(component for component in actor.get_components_by_class(unreal.InstancedStaticMeshComponent) if component.get_name()=='UnitInstances')
+            component=actor.static_mesh_component
             configure(component,unreal.load_asset(path),lod)
-            component.clear_instances();component.set_num_custom_data_floats(63)
-            component.add_instance(unreal.Transform(scale=unreal.Vector(unit['PresentationScale'],unit['PresentationScale'],unit['PresentationScale'])),False)
-            for index,value in [(0,-1000),(29,-1000),(30,1)]:component.set_custom_data_value(0,index,value,True)
+            actor.set_actor_scale3d(unreal.Vector(*([unit['PresentationScale']]*3)))
+            component.set_evaluate_world_position_offset(False)
             group['actors'].append(actor.get_actor_label());group['components'].append(component.get_path_name())
         label=spawn(unreal.TextRenderActor,f'{prefix}_LOD{lod}_Label',origin+unreal.Vector(0,-2100,300))
         text=label.get_component_by_class(unreal.TextRenderComponent)

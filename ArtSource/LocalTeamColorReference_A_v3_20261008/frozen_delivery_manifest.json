@@ -1,0 +1,737 @@
+{
+  "version": "LocalTeamColorReference_A_v3_20261008",
+  "stage": "reference_A",
+  "frozen_at": "2026-10-08T11:32:51.215649+08:00",
+  "models": 14,
+  "selected_boards": 28,
+  "A_approval": "all_pending",
+  "B_construction": "not_started",
+  "formal_ue_update": false,
+  "file_count": 144,
+  "excluded": [
+    "frozen_delivery_manifest.json (self)",
+    "__pycache__ and diagnostics"
+  ],
+  "files": [
+    {
+      "path": "approval_A.json",
+      "bytes": 4432,
+      "sha256": "10099cbc26c9775580554a9fc89693f92f56a4c2d697cd44f92c57460045ad3c"
+    },
+    {
+      "path": "Boards/BiZhiMao_blue.png",
+      "bytes": 1744126,
+      "sha256": "b797e0239a573471b8ecc12ee9d22c0ce463434a07761e5cca42dd371ff46c6e"
+    },
+    {
+      "path": "Boards/BiZhiMao_red.png",
+      "bytes": 1803567,
+      "sha256": "8e70646732d3bdffae52377e4977872577757ab2ab4c73926d4be6d80e9d253a"
+    },
+    {
+      "path": "Boards/DefaultSoldier_blue.png",
+      "bytes": 1863520,
+      "sha256": "84969b5585d5d9b8017acb6b5474568967982152cf3daa351a930a929d764dea"
+    },
+    {
+      "path": "Boards/DefaultSoldier_blue_first-draft.png",
+      "bytes": 1845497,
+      "sha256": "fab2af3453d401eda45e47f5babe22105536ffee84ccf38f31183fed791ec027"
+    },
+    {
+      "path": "Boards/DefaultSoldier_red.png",
+      "bytes": 1849185,
+      "sha256": "7bbd4097686df5d5e287cb0e09b5f42124ff775fd2ebc221df97ca17d1c89f29"
+    },
+    {
+      "path": "Boards/ManualOutpost_blue.png",
+      "bytes": 1388358,
+      "sha256": "c215f435ee3d78db0e21f1a553ad03508bb6b01ec9ad9f0cad2115ba417df435"
+    },
+    {
+      "path": "Boards/ManualOutpost_blue_height-draft.png",
+      "bytes": 1519201,
+      "sha256": "fd09468d838054f386c7dde4d06bbe82c03b054f114dfc7116572c0dc0535bf1"
+    },
+    {
+      "path": "Boards/ManualOutpost_red.png",
+      "bytes": 1440439,
+      "sha256": "31ee895c0d2cc6891fedb9a589820eaf8116412047ef2c9f83f06d62d32e9294"
+    },
+    {
+      "path": "Boards/ManualOutpost_red_height-draft.png",
+      "bytes": 1526434,
+      "sha256": "09cdfb079414f40c7ae00311ec0601bd0f87136bfcb6c70abe87dc022b8a8a48"
+    },
+    {
+      "path": "Boards/MissileTurret_blue.png",
+      "bytes": 1709647,
+      "sha256": "d31715c5d1ee3812785c14949e16d501b84beb428c4b38c0229a362f7d0f8305"
+    },
+    {
+      "path": "Boards/MissileTurret_red.png",
+      "bytes": 1717405,
+      "sha256": "389f271c1d290d11c20f35bff34fa630a5ad224f13fe01c310400039e60acbea"
+    },
+    {
+      "path": "Boards/ResourceFactory_blue.png",
+      "bytes": 1654161,
+      "sha256": "c42422f7914bc16cc4c7475bebc604c1deb9e9e59199856f485c87e0531d851f"
+    },
+    {
+      "path": "Boards/ResourceFactory_red.png",
+      "bytes": 1700850,
+      "sha256": "21e2c71f5c3e847a672667a26ac585f8e6443b5698f6083d3ed632fb8528eb7c"
+    },
+    {
+      "path": "Boards/SentryTurret_blue.png",
+      "bytes": 1527468,
+      "sha256": "4c5aee84a7f32ea50b8e753b15c47a409b6b4f4a0cbfdfda38c94c2ab62634e8"
+    },
+    {
+      "path": "Boards/SentryTurret_red.png",
+      "bytes": 1524091,
+      "sha256": "d212bd46ddb81cd52c36b1089e5e7ee0a18197ac4056dc829d816ff4250ef290"
+    },
+    {
+      "path": "Boards/ShieldGenerator_blue.png",
+      "bytes": 1567852,
+      "sha256": "6a54468d2ef48ef260ddcbcdae0fa5600b4676a26f99bd65322f7870a4ccc8cb"
+    },
+    {
+      "path": "Boards/ShieldGenerator_blue_first-draft.png",
+      "bytes": 1579477,
+      "sha256": "0eb74d791f8aed05602f2ba0607ba33a08cac14dfb8dd87485d38ea3f69eb0da"
+    },
+    {
+      "path": "Boards/ShieldGenerator_red.png",
+      "bytes": 1575725,
+      "sha256": "06a1e1e5a1cb7bc2db8d7ce4d852f1a8c7b88d34333ceb360641846cf76b28d1"
+    },
+    {
+      "path": "Boards/SSF_AirBase_blue.png",
+      "bytes": 1647468,
+      "sha256": "ae6c07c7dc368e94a3879b9ffefb54a35347de1a3d98b847dee999ebbbd38625"
+    },
+    {
+      "path": "Boards/SSF_AirBase_red.png",
+      "bytes": 1609787,
+      "sha256": "2b4694b122ada01002bedcc9579959a970f89473a1e43a2ac1962a57164b97dc"
+    },
+    {
+      "path": "Boards/SSF_CloningCenter_blue.png",
+      "bytes": 1651375,
+      "sha256": "a764f91c231f429cd5f76e19bc6168e3757ed0061df088bcaa3a4f14c3d784e1"
+    },
+    {
+      "path": "Boards/SSF_CloningCenter_red.png",
+      "bytes": 1622876,
+      "sha256": "3ab13a73b78a49b0d163f10d9373fa7e2fee37daba76de0bb3292fabe3dd506a"
+    },
+    {
+      "path": "Boards/SSF_CloningCenter_red_first-draft.png",
+      "bytes": 1626278,
+      "sha256": "f193adeb1f5d140ce0694baad42a77b430fd1b9b41bee93bac1bb09b87cf6084"
+    },
+    {
+      "path": "Boards/SSF_CommandCenter_blue.png",
+      "bytes": 1638257,
+      "sha256": "0b48bd67dfbfc43664625b9c94941ab589d5e167968abdfb1fc2b22afdc24d82"
+    },
+    {
+      "path": "Boards/SSF_CommandCenter_blue_first-draft.png",
+      "bytes": 1661726,
+      "sha256": "c3ca4d43375261be22a494d972b6d5bea0ec048bdbc90f372bffd521c0303fcb"
+    },
+    {
+      "path": "Boards/SSF_CommandCenter_red.png",
+      "bytes": 1636928,
+      "sha256": "b6c7d9e13d1aae1351355f434932973e6fe8765a56993623a4009c216fb47cc0"
+    },
+    {
+      "path": "Boards/SSF_CommandCenter_red_first-draft.png",
+      "bytes": 1614100,
+      "sha256": "3d53f9d05f0597e7fa9939cd23364181768afd81ec282ef30627c70888d52b26"
+    },
+    {
+      "path": "Boards/SSF_MilitaryFactory_blue.png",
+      "bytes": 1626078,
+      "sha256": "4382a955c5e204f288c577c94f9bf1941572eec11a2eb29260df3b510add44ad"
+    },
+    {
+      "path": "Boards/SSF_MilitaryFactory_red.png",
+      "bytes": 1616767,
+      "sha256": "3a71f2a6af2c7f53e03ef8159ee9b6b63a420769c15019bdf3b8ae4210dc5d06"
+    },
+    {
+      "path": "Boards/SSF_Reactor_blue.png",
+      "bytes": 1707562,
+      "sha256": "3890cb3ef46e125f08edd774df46bab8357a840198b9dcb650ac61e12b827305"
+    },
+    {
+      "path": "Boards/SSF_Reactor_blue_first-draft.png",
+      "bytes": 1683089,
+      "sha256": "f2be3b739e2603835cc24c18a1e8f828cf870ad3fe0523c1a506ceb21bc4ac14"
+    },
+    {
+      "path": "Boards/SSF_Reactor_blue_second-draft.png",
+      "bytes": 1708929,
+      "sha256": "73ae0c53c0770a1b7dbcc9d5ee21688853830ec7c2cac33b3397d549228e106e"
+    },
+    {
+      "path": "Boards/SSF_Reactor_red.png",
+      "bytes": 1696494,
+      "sha256": "08e6b136b540072c5ff3d7a6b8d4ff2e2d9c61d0193296055f9a4c896a03aa99"
+    },
+    {
+      "path": "Boards/SSF_Reactor_red_first-draft.png",
+      "bytes": 1728799,
+      "sha256": "a2b82b3b14eff9627b61e45371523a1d9f880e721294f951d52f1d836ed9af7a"
+    },
+    {
+      "path": "Boards/SSF_StrategyCenter_blue.png",
+      "bytes": 1612386,
+      "sha256": "1013bc75aeeb6c6d8ba9b77bf7152cdd647143317377efc58aabd756d6c71a4c"
+    },
+    {
+      "path": "Boards/SSF_StrategyCenter_blue_first-draft.png",
+      "bytes": 1577511,
+      "sha256": "9ced9091786b83218cdad56af14c04cf8b18e4f372f101f6fbce8b09144727b9"
+    },
+    {
+      "path": "Boards/SSF_StrategyCenter_blue_second-draft.png",
+      "bytes": 1622261,
+      "sha256": "d7e3c3b3296b5beeebd7a4349ebc99b1cff9e7e768d80713d57232d7193a2989"
+    },
+    {
+      "path": "Boards/SSF_StrategyCenter_red.png",
+      "bytes": 1599945,
+      "sha256": "7f21deeda5e6ee095a048223e1b00369a15c839aab3fc9f91384ed302b7c46b4"
+    },
+    {
+      "path": "Boards/WM01_blue.png",
+      "bytes": 1814676,
+      "sha256": "1ec0b6628baa7b5b3049c99a8c18425111d1e323d4ee42ec174fdf501cfa8817"
+    },
+    {
+      "path": "Boards/WM01_red.png",
+      "bytes": 1784372,
+      "sha256": "753830e0c37ad3eef46158a05bf0c0cc01b3252c4b1c6e40bea233348c6ebd40"
+    },
+    {
+      "path": "Configs/BiZhiMao.json",
+      "bytes": 5545,
+      "sha256": "9bb58ca142f2a7392dbfa4b540e4b7519c5c79289d42e4b1e33e28d5e843b647"
+    },
+    {
+      "path": "Configs/DefaultSoldier.json",
+      "bytes": 5603,
+      "sha256": "483683031804b66b607970c452c8fa028addaba9e1d11516d98a05948bcb0e9f"
+    },
+    {
+      "path": "Configs/ManualOutpost.json",
+      "bytes": 6309,
+      "sha256": "7023db8c4fb6f36f7f152812e16a17bd1168e4843ffc2a0a5ca2c16f7db42d2f"
+    },
+    {
+      "path": "Configs/MissileTurret.json",
+      "bytes": 5809,
+      "sha256": "f0dbb95b7f72c80cdc15e8ad0cb3f2de050dc10a7a42226dc558620e3fe8b1b1"
+    },
+    {
+      "path": "Configs/ResourceFactory.json",
+      "bytes": 5738,
+      "sha256": "3132f2e342238dfa688e29d000f860aa09f3e2653c3dd0d8c52acd8fed8150b9"
+    },
+    {
+      "path": "Configs/SentryTurret.json",
+      "bytes": 5795,
+      "sha256": "5625c304e04c82b03e1e97fd37acdab703b280df5803e7079c83e95c5b9bdf63"
+    },
+    {
+      "path": "Configs/ShieldGenerator.json",
+      "bytes": 6053,
+      "sha256": "38bbd57ecd2fa9a81f960136e0707a072afa842ccd0d471fa4da38c3ab71760c"
+    },
+    {
+      "path": "Configs/SSF_AirBase.json",
+      "bytes": 4973,
+      "sha256": "46fdda8a873e37e6880dde7adbb5a62f9742b6538cac2a5bbf9e093f8d0ee08e"
+    },
+    {
+      "path": "Configs/SSF_CloningCenter.json",
+      "bytes": 4712,
+      "sha256": "8f7162b8a2cac4c3945ef46a0bd78f5e572d868a2d133b22bd23acdb3f2d3a6d"
+    },
+    {
+      "path": "Configs/SSF_CommandCenter.json",
+      "bytes": 4784,
+      "sha256": "7315dc751e6423f43bdd2cce7ea8b847331553d54d6a4579368238672df11a79"
+    },
+    {
+      "path": "Configs/SSF_MilitaryFactory.json",
+      "bytes": 4797,
+      "sha256": "cc7920e4458bd35ba721b0b2fe6e0063b74fdba24a7c49f893ef77c7213fe6be"
+    },
+    {
+      "path": "Configs/SSF_Reactor.json",
+      "bytes": 4753,
+      "sha256": "4f20887211dba951487e57009717598b03512dbb19a9c43da72d1d47d978a6d4"
+    },
+    {
+      "path": "Configs/SSF_StrategyCenter.json",
+      "bytes": 4765,
+      "sha256": "55ca30e3da6476458a96eed5f5e63ac775c22264a3699ddfb4bffa65cd482454"
+    },
+    {
+      "path": "Configs/WM01.json",
+      "bytes": 6047,
+      "sha256": "0b19aeb56c848f7f54f899f1ae54cf35ccb372337a5a022dc75c00612e7f6e82"
+    },
+    {
+      "path": "delivery-check.json",
+      "bytes": 63301,
+      "sha256": "ec498b55fae3e2ec52be1ee9da79a41038426fd93e784e746c4e567c05854ffe"
+    },
+    {
+      "path": "gallery-data.js",
+      "bytes": 66927,
+      "sha256": "0b878ba32bcfc01cbd2731e55e8e28c1ea058a8a923b8d6148e229d669f441bc"
+    },
+    {
+      "path": "gallery.css",
+      "bytes": 8267,
+      "sha256": "4f41ffb71333a7afb1ed7c768bb9f2a803b2d54680ffa594a6b4562108e0a580"
+    },
+    {
+      "path": "gallery.js",
+      "bytes": 7445,
+      "sha256": "fb12457d15a25e0416d8d9ef144b04ff600e58ef04ed1247cdc39c77690422ab"
+    },
+    {
+      "path": "generation-log.json",
+      "bytes": 33299,
+      "sha256": "957ce7c4171bed28146d406c3abc736f684c34ef241b144288e61c05c6679acb"
+    },
+    {
+      "path": "index.html",
+      "bytes": 3313,
+      "sha256": "43ba82f5ab900dd9ff7adbcbbd9763337db821e099f2312e1548f962358a6ae9"
+    },
+    {
+      "path": "Internal/build_reference_gallery.py",
+      "bytes": 8182,
+      "sha256": "3837e8afbe41325abf3b34c7126b7ef1fd40a1c6cf178ba6a9526e13a2bdcfa1"
+    },
+    {
+      "path": "Internal/catalogue.json",
+      "bytes": 34414,
+      "sha256": "b635d8330e858d32ff525d77e7e68ffa8294cc515fd4ac04eb27ccdb23db701e"
+    },
+    {
+      "path": "Internal/check_reference_delivery.py",
+      "bytes": 9314,
+      "sha256": "3a4f2ff42def97e32a0f45be62ed389963179954becf5f0411c103e93ff03a29"
+    },
+    {
+      "path": "Internal/freeze_reference_delivery.py",
+      "bytes": 1985,
+      "sha256": "e877c7f14854f513b069efe8b75cb1202f965663741730d0430f9cd9c3037efe"
+    },
+    {
+      "path": "Internal/record_visual_qa.py",
+      "bytes": 2928,
+      "sha256": "a58bd95e4190c42ed2775d4e7a9173bb59502ddaa4c1117d5a93c4e03187f400"
+    },
+    {
+      "path": "Internal/setup_v3.py",
+      "bytes": 9196,
+      "sha256": "ede7e0c8bfe3b56dee7a3171769b329a991aa222f89daea15ab372fb371bf0f3"
+    },
+    {
+      "path": "Internal/visual_observations.json",
+      "bytes": 6072,
+      "sha256": "48b3caaf58cd3037e9b23ca9e5c68a6688eb3784be608983248be03fbc589b1f"
+    },
+    {
+      "path": "overview.html",
+      "bytes": 3315,
+      "sha256": "d1172735c99f6252938cf6cb502f1bd1e1f933552333c47b9cb2c86aefa92198"
+    },
+    {
+      "path": "palette-source-map.json",
+      "bytes": 2188,
+      "sha256": "adb38f807fbea895c90481649c5cb295e302a702ba689522ae8483205da6ff5c"
+    },
+    {
+      "path": "progress-doc-check.json",
+      "bytes": 1103,
+      "sha256": "569444e65a3102ecd70bee18f9357c2da6362a4cf2017d7200baabb2c15247c3"
+    },
+    {
+      "path": "Prompts/BiZhiMao_blue.txt",
+      "bytes": 2790,
+      "sha256": "73cb9467fc80d0d82e5484a65fbfe009258a517e02b2453d9326372fd65c7623"
+    },
+    {
+      "path": "Prompts/BiZhiMao_red.txt",
+      "bytes": 1710,
+      "sha256": "c740f2588a696c6cb779e98cdbbc019241bdc57c9e2d34f734adeb7782f70a26"
+    },
+    {
+      "path": "Prompts/DefaultSoldier_blue.txt",
+      "bytes": 2768,
+      "sha256": "f68697cb3539d4a6c2a2517d278f8fc231a449364ce63d0cc2446d5e48e2e5c5"
+    },
+    {
+      "path": "Prompts/DefaultSoldier_blue_refined.txt",
+      "bytes": 739,
+      "sha256": "2fe2494d297ddf313c2ca0ae008da72eb688dedd1b7a46cc0c3ecf8253dbc952"
+    },
+    {
+      "path": "Prompts/DefaultSoldier_red.txt",
+      "bytes": 1696,
+      "sha256": "3460c8d2e7e83e0db1c610c2f8422275005431f5cf078f5495a36ac972e65ba6"
+    },
+    {
+      "path": "Prompts/ManualOutpost_blue.txt",
+      "bytes": 2855,
+      "sha256": "cd26b163043522d846d2b0d465d44d971e2cdc5606e3c51a5d38c1dcdb01d8ff"
+    },
+    {
+      "path": "Prompts/ManualOutpost_blue_components.txt",
+      "bytes": 3866,
+      "sha256": "75f1f5d84731ca55d609598921c7bcf4ac7d8f6e0b13ca0067993e1aa1e3a160"
+    },
+    {
+      "path": "Prompts/ManualOutpost_red.txt",
+      "bytes": 1796,
+      "sha256": "a8b0831a871f1e6af701934f75e701e847810b55e6b5b863d52fef1d4f000ed8"
+    },
+    {
+      "path": "Prompts/ManualOutpost_red_components.txt",
+      "bytes": 2457,
+      "sha256": "34289d17c033ac4aa42c6a447a2310d598b9f4a0f0343071ec3901b4b9566554"
+    },
+    {
+      "path": "Prompts/MissileTurret_blue.txt",
+      "bytes": 2881,
+      "sha256": "109706038e33322c4b34661c15fb00e182b44bc24972a7a7a82810a39a1f1c6b"
+    },
+    {
+      "path": "Prompts/MissileTurret_red.txt",
+      "bytes": 1830,
+      "sha256": "b0cd1190e7125e304b33084a8746d5f0c3197f205e3c17fcfdde562a0be4d1e2"
+    },
+    {
+      "path": "Prompts/ResourceFactory_blue.txt",
+      "bytes": 2824,
+      "sha256": "083c29ce269d3b87b5a62ba2f9a302658084b1c3ae1aa54d47db284703448e08"
+    },
+    {
+      "path": "Prompts/ResourceFactory_red.txt",
+      "bytes": 2494,
+      "sha256": "a3e9e662cf750dc1a7279c8e2be15147b71b60c52132c457e7c4a85d00bbeb2b"
+    },
+    {
+      "path": "Prompts/SentryTurret_blue.txt",
+      "bytes": 2786,
+      "sha256": "cf876528a43f561c32f5af7164c2cdf128e0463b9db7533e4da7bc621e912d69"
+    },
+    {
+      "path": "Prompts/SentryTurret_red.txt",
+      "bytes": 2456,
+      "sha256": "ba7d6594075c20eac4ac0ac10f86c5d8cbbe1daec62bdb70c474dd7af72de57c"
+    },
+    {
+      "path": "Prompts/ShieldGenerator_blue.txt",
+      "bytes": 2855,
+      "sha256": "1c8d373579f9cafbe8c4df6b3b1c6369008c9890172679912497134d48426528"
+    },
+    {
+      "path": "Prompts/ShieldGenerator_blue_refined.txt",
+      "bytes": 1308,
+      "sha256": "49910c0771f8ae3942787409d842ed52f64486fba9b5338b480f6d7dcb2febb6"
+    },
+    {
+      "path": "Prompts/ShieldGenerator_red.txt",
+      "bytes": 1827,
+      "sha256": "0f00bc0ce00b5fb1624e09713e87ff11ffef2ec56231ecbe2df5d34c0f4f6a54"
+    },
+    {
+      "path": "Prompts/SSF_AirBase_blue.txt",
+      "bytes": 3017,
+      "sha256": "ff7d2e7b03a6554024991a9d7f99a5d2fc048c4e6ad37e3295cb4c8eab4ffa92"
+    },
+    {
+      "path": "Prompts/SSF_AirBase_red.txt",
+      "bytes": 1739,
+      "sha256": "2d714002207b39567aa9f1ae3076ed4a3bd679143984536c1134938a59613934"
+    },
+    {
+      "path": "Prompts/SSF_CloningCenter_blue.txt",
+      "bytes": 2861,
+      "sha256": "ff76e31e5b0e4b48c4c8a6b1ab20a3b24bebc314c432aa8cbb2d5697ce719b48"
+    },
+    {
+      "path": "Prompts/SSF_CloningCenter_red.txt",
+      "bytes": 1825,
+      "sha256": "353d0f2a72aecafed06b372ff0cac86dac1b045936bacbcd92a55e16cc8f8d22"
+    },
+    {
+      "path": "Prompts/SSF_CloningCenter_red_refined.txt",
+      "bytes": 696,
+      "sha256": "1bfde38f1b405cc8614b8e9470a98318ba300aa976a66a3aeddef93521c2d6f1"
+    },
+    {
+      "path": "Prompts/SSF_CommandCenter_blue.txt",
+      "bytes": 2870,
+      "sha256": "e8748b7e893788604473dea51745a2bae997020bc91643d24fce7f375bea9e1b"
+    },
+    {
+      "path": "Prompts/SSF_CommandCenter_blue_refined.txt",
+      "bytes": 3251,
+      "sha256": "ab451b34a4c5df9947c826ea5e0fa87e9e00219c011d2b92580e89089a10a9bf"
+    },
+    {
+      "path": "Prompts/SSF_CommandCenter_red.txt",
+      "bytes": 1850,
+      "sha256": "ee0f5423f99bcaf9a609601fab4d398d99b0da0e3f993596dfc65d7b03296ce2"
+    },
+    {
+      "path": "Prompts/SSF_CommandCenter_red_fixed_core.txt",
+      "bytes": 1580,
+      "sha256": "4e2db8e9c1df7d254f27fe27e393297839deb71d8cdc39e316345ea6846fcfb0"
+    },
+    {
+      "path": "Prompts/SSF_MilitaryFactory_blue.txt",
+      "bytes": 2815,
+      "sha256": "7a9e552554be2d001d5e59547677774e2598b316920694dd760ad46f2161c32a"
+    },
+    {
+      "path": "Prompts/SSF_MilitaryFactory_red.txt",
+      "bytes": 1889,
+      "sha256": "5b2634cf8b9e429feea0e33d252b2314e3cdcb7a5bc972e746329ad1c0997a36"
+    },
+    {
+      "path": "Prompts/SSF_Reactor_blue.txt",
+      "bytes": 2807,
+      "sha256": "4865ba82c1d5d6ca4f535a95f40e8767fce844a6fbd47b397c217bfd2adbb5a2"
+    },
+    {
+      "path": "Prompts/SSF_Reactor_blue_final.txt",
+      "bytes": 985,
+      "sha256": "b56bd0b7e31682fd02a83e34cb0bd9d2b2f85947f25262e97e29259e0ebfb23e"
+    },
+    {
+      "path": "Prompts/SSF_Reactor_blue_refined.txt",
+      "bytes": 3121,
+      "sha256": "c6b62a8efab522c409390e96f369a3ef65876fdb9b042673672eb09d48112c32"
+    },
+    {
+      "path": "Prompts/SSF_Reactor_red.txt",
+      "bytes": 1842,
+      "sha256": "d586009097bccbb04d81a0a2922c99c4e9e9c118e0e4766ad6c0a7ce623b08f4"
+    },
+    {
+      "path": "Prompts/SSF_Reactor_red_fixed_equipment.txt",
+      "bytes": 1032,
+      "sha256": "38768dfd634d9208bb897d9b71a915b7953d46576ad275c7e09e0e9f657dcb18"
+    },
+    {
+      "path": "Prompts/SSF_StrategyCenter_blue.txt",
+      "bytes": 2846,
+      "sha256": "97bcb50c4e7f56658a820002bf2d442eec7843ef685dee64a57cea99035782ca"
+    },
+    {
+      "path": "Prompts/SSF_StrategyCenter_blue_final.txt",
+      "bytes": 965,
+      "sha256": "0d78bc77b52150d716e1dd4f767ea7a1750c1834cbdf5dbd89f257e2dfd07593"
+    },
+    {
+      "path": "Prompts/SSF_StrategyCenter_blue_refined.txt",
+      "bytes": 3046,
+      "sha256": "6dfd0129d50c5d80a10c464d4cd3847d23a64f7e10c45fd5eafaecff9a73ac4d"
+    },
+    {
+      "path": "Prompts/SSF_StrategyCenter_red.txt",
+      "bytes": 1831,
+      "sha256": "cf5b283d90269867d1c352cd2a9a3b8a3db7d5a5c101a396d3a3b9a7cf605471"
+    },
+    {
+      "path": "Prompts/WM01_blue.txt",
+      "bytes": 3679,
+      "sha256": "f17820ed0c489fdf1b178d3a6c2399ed8e1348ade82e8461322ba679e6d20f22"
+    },
+    {
+      "path": "Prompts/WM01_red.txt",
+      "bytes": 1986,
+      "sha256": "d114c08655a140d37931da16d3f3d9955d25b0800c6a853bdafbac98e1deee76"
+    },
+    {
+      "path": "References/Palette_01.jpg",
+      "bytes": 256542,
+      "sha256": "9712fb32dcd9a4d97d4fc232c3bdba5ef13f4ae543334ba29454b640cc589e7a"
+    },
+    {
+      "path": "References/Palette_02.jpg",
+      "bytes": 276712,
+      "sha256": "701a0af676046b1e0fae04ab5c9f3a675370c7677eff94006a06e9887da40d3e"
+    },
+    {
+      "path": "References/Palette_03.jpg",
+      "bytes": 265658,
+      "sha256": "6d48590d65088035454e1064954926626ff212da804b4756623cf5eb7c094999"
+    },
+    {
+      "path": "References/Palette_04.jpg",
+      "bytes": 225069,
+      "sha256": "4808ece856d2c5a3a08ff2f03e6642d717cf6b7790696debc5d654a42405f388"
+    },
+    {
+      "path": "References/UserFeedback_ShieldTop_A_v2.png",
+      "bytes": 1648647,
+      "sha256": "ed56628456c47ca7630bbeabfc55e4e74f94905820c4ede0a642da5e5533192c"
+    },
+    {
+      "path": "review-manifest.json",
+      "bytes": 90064,
+      "sha256": "cbd3df5f6ee772362188500be268fdae8d4f6fdb557c1cc1b2fcd97d1d53d4c8"
+    },
+    {
+      "path": "REVIEW.md",
+      "bytes": 5825,
+      "sha256": "ef8633ba86f33586011b45ac8c3bf0be9947673c62b3112f3890d7279732d33e"
+    },
+    {
+      "path": "source-capture-added-buildings.json",
+      "bytes": 7793,
+      "sha256": "0f229a3ac4c67946df79ea04adddcabbfa0803298e824d7081e9401eae9b793c"
+    },
+    {
+      "path": "source-capture-turret-front.json",
+      "bytes": 1515,
+      "sha256": "b0b31c5b7ea9597802c0a02969a2349f9e9d82d575e4344e07bdf7585b903c06"
+    },
+    {
+      "path": "source-capture.json",
+      "bytes": 5178,
+      "sha256": "1c9470f3e2a88a1b1ce03d6656c49545cc940c62ee38fc96408a0a375fc8f6b7"
+    },
+    {
+      "path": "Sources/ManualOutpost_Back.png",
+      "bytes": 609202,
+      "sha256": "76523dd47a35cc703af7dc2238e4656e3802c8c64a18ce525e76ea2265fc2698"
+    },
+    {
+      "path": "Sources/ManualOutpost_Front.png",
+      "bytes": 609202,
+      "sha256": "d891fe8abf97ae7e767df542183344e7cf3d2fe79b96049670724418c8eccaf4"
+    },
+    {
+      "path": "Sources/ManualOutpost_Hero.png",
+      "bytes": 609202,
+      "sha256": "51818ef5ee35082134509a53c5b43f9ee7db752b3f802d6433304c6d05755e8b"
+    },
+    {
+      "path": "Sources/ManualOutpost_Left.png",
+      "bytes": 609202,
+      "sha256": "a65d2c5e68455d1d3f2c4b5d1cf18df62ff4815c4534c1f9aae66078f0bec044"
+    },
+    {
+      "path": "Sources/MissileTurret_Back.png",
+      "bytes": 1173227,
+      "sha256": "6242f05e80a515a2dd408f290d62a88390da19ec517f8e6506929ee5ea62af2b"
+    },
+    {
+      "path": "Sources/MissileTurret_Front.png",
+      "bytes": 846093,
+      "sha256": "44bfaab425d33476562658536bb455e7e4c3ecbf7a723674fd519601cc8caf75"
+    },
+    {
+      "path": "Sources/MissileTurret_Hero.png",
+      "bytes": 1624447,
+      "sha256": "ed7f4a03fd95893b43755bc659c95081d57d6ed6f3c1ccba3038c60fb6129181"
+    },
+    {
+      "path": "Sources/MissileTurret_Left.png",
+      "bytes": 1173227,
+      "sha256": "47d306f398804c7daeadb3f71cee5efea137dbd6028c41f77e059215b8fe2c2a"
+    },
+    {
+      "path": "Sources/MissileTurret_Right.png",
+      "bytes": 1164609,
+      "sha256": "3e50cd58cd732d4f767f287c9cdf2e16c50b682a2d50bfd15766e86fa1561b36"
+    },
+    {
+      "path": "Sources/ResourceFactory_Back.png",
+      "bytes": 846093,
+      "sha256": "fb6e72b658befff949fcc36ae5c67c51203603edfb96fdf31acb3c19e32e23f1"
+    },
+    {
+      "path": "Sources/ResourceFactory_Front.png",
+      "bytes": 609202,
+      "sha256": "76d71c4a8fd5f655ee5fa9a1b575d74a029ecb23389820ef0c618f7b1de748eb"
+    },
+    {
+      "path": "Sources/ResourceFactory_Hero.png",
+      "bytes": 1624447,
+      "sha256": "6334b0d78735053bd283c3cc3b79897247fc6e0d5060984425ff159a8776ce46"
+    },
+    {
+      "path": "Sources/ResourceFactory_Left.png",
+      "bytes": 609202,
+      "sha256": "8389a28c25500f030fe99fc018e0909c49a3090654222bcc2771260a1c75551b"
+    },
+    {
+      "path": "Sources/SentryTurret_Back.png",
+      "bytes": 844330,
+      "sha256": "559f69087ccfc23978885da6b6aaa03c89a562816e7890d8dbd02c7c89cc36e4"
+    },
+    {
+      "path": "Sources/SentryTurret_Front.png",
+      "bytes": 609202,
+      "sha256": "f3cb9456529785335b8ad9ffa71aecff666cc61cc5ac6044449ee004b219d8a0"
+    },
+    {
+      "path": "Sources/SentryTurret_Hero.png",
+      "bytes": 846093,
+      "sha256": "23e446acb19a4e714bb31637cc547a0423b5a71dc4de22df4a7d9463d3e47349"
+    },
+    {
+      "path": "Sources/SentryTurret_Left.png",
+      "bytes": 609202,
+      "sha256": "a77bdc03a88f727e0a28d797abd3948f7a69a4b28d161365ad797adbaaf6086e"
+    },
+    {
+      "path": "Sources/SentryTurret_Right.png",
+      "bytes": 609202,
+      "sha256": "d34b32deee0b2b6732f37dbc6f3ab1225c4a0f987361deb37cc141e4941bc6fe"
+    },
+    {
+      "path": "Sources/ShieldGenerator_Back.png",
+      "bytes": 1173227,
+      "sha256": "0b836946f8ea545ea4f9e30397e48866389dbf5f509b572ea1c7b29fe1c43b30"
+    },
+    {
+      "path": "Sources/ShieldGenerator_Front.png",
+      "bytes": 1173227,
+      "sha256": "ba6e84859a62e4253dc8e9a68ca6bc97e85a62ca07652eae5075b90de1fa0aeb"
+    },
+    {
+      "path": "Sources/ShieldGenerator_Hero.png",
+      "bytes": 1173227,
+      "sha256": "4d9dccb26ad16678f95dbfc85b849b1fcc7574cadeb2594bfc3aecefba7566fd"
+    },
+    {
+      "path": "Sources/ShieldGenerator_Left.png",
+      "bytes": 1173227,
+      "sha256": "526f819a0b24d36576208bc12fff5b8c7fb1870b66d310a0d95b0f7489f23cb3"
+    },
+    {
+      "path": "visual_qa.json",
+      "bytes": 19746,
+      "sha256": "bf66e724e8dfa532a274fa6232e447ac80551834fec2aa441d0c860490627e3e"
+    }
+  ]
+}

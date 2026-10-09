@@ -44,6 +44,9 @@ def write(book, sheet, matrix):
 
 
 def main():
+    if (ROOT / 'Data/Excel/GuLiStrikeModels.xlsx').exists():
+        print('Model-ID migration supersedes this historical path-column producer; no source changes.')
+        return
     if (ROOT / 'Data/Excel/GuLiStrikeSecondaryWeapons.xlsx').exists():
         print('Superseded by migrate_secondary_weapon_tables.py; existing unit/field data left intact.')
         return

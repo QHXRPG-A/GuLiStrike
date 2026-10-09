@@ -1,0 +1,95 @@
+{
+  "success": true,
+  "native_build_executed": false,
+  "gameplay_started": false,
+  "material": {
+    "saved": true,
+    "path": "/Game/Commander/UI/M_CommanderUnitRing.M_CommanderUnitRing",
+    "expressions": 12,
+    "radial_width_cm": 20.0,
+    "wpo_connected": true,
+    "instance_transform": "Local to World",
+    "instance_custom_data_floats": 4
+  },
+  "source_sha256": "1c8d7fcc4f3d46d66be08ee4b579ffbb3f0a2c8fc91a6859e895ab16940e581d",
+  "scene": {
+    "saved": true,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "actors": [
+      {
+        "label": "MassRing20_Default150",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_37",
+        "location_cm": [
+          -22400.0,
+          75000.0,
+          1080.441672388798
+        ],
+        "scale": [
+          3.125,
+          3.125,
+          0.004
+        ],
+        "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+        "material": "/Game/Commander/UI/M_CommanderUnitRing.M_CommanderUnitRing",
+        "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+        "editor_only": true
+      },
+      {
+        "label": "MassRing20_Pioneer",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_141",
+        "location_cm": [
+          -20000.0,
+          75000.0,
+          1080.4416723888016
+        ],
+        "scale": [
+          6.510416666666667,
+          6.510416666666667,
+          0.004
+        ],
+        "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+        "material": "/Game/Commander/UI/M_CommanderUnitRing.M_CommanderUnitRing",
+        "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+        "editor_only": true
+      },
+      {
+        "label": "MassRing20_WM01",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_142",
+        "location_cm": [
+          -17600.0,
+          75000.0,
+          1080.4416723888016
+        ],
+        "scale": [
+          13.020833333333334,
+          13.020833333333334,
+          0.004
+        ],
+        "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+        "material": "/Game/Commander/UI/M_CommanderUnitRing.M_CommanderUnitRing",
+        "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+        "editor_only": true
+      },
+      {
+        "label": "MassRing20_BiZhiMao",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_143",
+        "location_cm": [
+          -20000.0,
+          70200.0,
+          1080.4416723887944
+        ],
+        "scale": [
+          33.953216552734375,
+          33.953216552734375,
+          0.004
+        ],
+        "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+        "material": "/Game/Commander/UI/M_CommanderUnitRing.M_CommanderUnitRing",
+        "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+        "editor_only": true
+      }
+    ],
+    "runtime_verified": false,
+    "preview_color": "White: non-instanced review actors use the material's default color"
+  }
+}

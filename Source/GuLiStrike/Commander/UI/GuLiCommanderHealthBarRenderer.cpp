@@ -81,6 +81,7 @@ AGuLiCommanderHealthBarRenderer::AGuLiCommanderHealthBarRenderer()
 	HealthBarInstances->SetVisibleInRayTracing(false);
 	HealthBarInstances->SetReceivesDecals(false);
 	HealthBarInstances->NumCustomDataFloats = GuLiCommanderHealthBars::CustomDataFloatCount;
+	HealthBarInstances->SetHiddenInGame(true);
 
 	PlaneMeshVfxId = GuLiVfxIds::FuelBarPlane;
 	HealthBarVfxId = GuLiVfxIds::UnitHitHealthBar;
@@ -89,6 +90,7 @@ AGuLiCommanderHealthBarRenderer::AGuLiCommanderHealthBarRenderer()
 void AGuLiCommanderHealthBarRenderer::BeginPlay()
 {
 	Super::BeginPlay();
+	if (HealthBarInstances) HealthBarInstances->SetHiddenInGame(true);
 
 	if (GetNetMode() == NM_DedicatedServer)
 	{
@@ -159,6 +161,20 @@ void AGuLiCommanderHealthBarRenderer::InitializeForController(
 int32 AGuLiCommanderHealthBarRenderer::GetAllocatedInstanceCount() const
 {
 	return HealthBarInstances ? HealthBarInstances->GetInstanceCount() : 0;
+}
+
+void AGuLiCommanderHealthBarRenderer::GatherSceneUIBars(TArray<FGuLiSceneUIHealthBar>& Out) const
+{
+	Out.Reset();
+	if (IsHidden()) return;
+	for (int32 Slot = 0; Slot < CachedTransforms.Num(); ++Slot)
+	{
+		if (CachedVisibleValues[Slot] <= 0 || CachedTransforms[Slot].GetScale3D().IsNearlyZero()) continue;
+		auto& Bar = Out.AddDefaulted_GetRef();
+		Bar.Center = CachedTransforms[Slot].GetLocation();
+		Bar.Fraction = FMath::Clamp(CachedHealthFractions[Slot], 0.f, 1.f);
+		Bar.bSelected = CachedSelectedValues[Slot] > 0;
+	}
 }
 
 void AGuLiCommanderHealthBarRenderer::ResolveSoftAssets()

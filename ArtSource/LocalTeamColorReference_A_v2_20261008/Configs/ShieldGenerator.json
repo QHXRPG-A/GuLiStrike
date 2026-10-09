@@ -1,0 +1,109 @@
+{
+  "id": "ShieldGenerator",
+  "name": "护盾发生器",
+  "title": "SHIELD GENERATOR",
+  "category": "Building",
+  "building_type_id": 5,
+  "fixed": [
+    "三个柱体、顶盖、分层基座：奶油白",
+    "柱间凹槽、连接及机构：深灰"
+  ],
+  "team": [
+    "已有上部竖直检修护板",
+    "底座窄腰线"
+  ],
+  "function": [
+    "顶面三处原有功能位置：固定青色 #0D9099",
+    "控制为小面积灯面，无泛光"
+  ],
+  "source": [
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Hero.png",
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Front.png",
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Left.png",
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Back.png"
+  ],
+  "structure": "保留三柱及 Y 形占地；发光不淹没装甲。",
+  "function_hex": "#0D9099",
+  "boards": {
+    "blue": {
+      "path": "Boards/ShieldGenerator_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1584717,
+      "sha256": "9cc7c1913e677c9310e8c252ad46a2d36260219b876eaa2c3781e3c95dccce2c"
+    },
+    "red": {
+      "path": "Boards/ShieldGenerator_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1599983,
+      "sha256": "8b337f103055f726e70819693a58218ba37d4bca20a5ecf40bb6301f65658216"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Buildings/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
+  "source_kind": "StaticMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Hero.png",
+      "sha256": "4d9dccb26ad16678f95dbfc85b849b1fcc7574cadeb2594bfc3aecefba7566fd"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Front.png",
+      "sha256": "ba6e84859a62e4253dc8e9a68ca6bc97e85a62ca07652eae5075b90de1fa0aeb"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Left.png",
+      "sha256": "526f819a0b24d36576208bc12fff5b8c7fb1870b66d310a0d95b0f7489f23cb3"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Back.png",
+      "sha256": "0b836946f8ea545ea4f9e30397e48866389dbf5f509b572ea1c7b29fe1c43b30"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v2_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

@@ -1,4 +1,5 @@
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
+#include "Gameplay/Models/GuLiModelPresentationComponent.h"
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
 #include "Gameplay/Resources/GuLiResourceFactoryActor.h"
@@ -474,6 +475,7 @@ void AGuLiMiningVehiclePawn::OnRep_Presentation()
     VehiclePresentation->SetRelativeLocation(FVector(-17.62378f * PresentationDefinition.Scale, 0,
         -GetCapsuleComponent()->GetScaledCapsuleHalfHeight() - 3.2254f * PresentationDefinition.Scale));
     VehiclePresentation->SetChildActorClass(PresentationDefinition.ActorClass);
+    UGuLiModelPresentationComponent::InstallForPresentationActor(VehiclePresentation->GetChildActor());
     const bool bInitialized = MiningPresentation->InitializePresentation(VehiclePresentation->GetChildActor());
     checkf(bInitialized, TEXT("Mining presentation must provide both collectors, muzzles and StartMiningAt/StopMining."));
     TravelBounds = FBox(ForceInit);

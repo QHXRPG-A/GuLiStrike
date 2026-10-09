@@ -3,6 +3,10 @@ name: ue5-ui-umg-slate
 description: UE5.6/UE5.7 UI development workflow using UMG and Slate integration. Use when requests involve Widget Blueprint setup, Slate host widgets, lifecycle binding, input and focus handling, tooltip behavior, or viewport clamping logic.
 ---
 
+# GuLiStrike Visual Direction
+
+在 GuLiStrike 创建或修改UI外观前，先读[《GuLiStrike 美术规范》](../../../Progress/RequirementDocument/GuLiStrike美术规范.md)，核对“全项目统一色库”、场景UI环境隔离与功能色例外。新建或明确重配色的面板、按钮、图标和卡框按色库选色；保留现有敌我、状态与文字高亮含义以及已审资产配色。卡牌文字样式继续由既有Excel管线维护，本技能不复制色表。这些项目规则仅适用于GuLiStrike。
+
 # Quick Start
 - Identify whether feature belongs to UMG, Slate, or hybrid bridge.
 - Define data source component/subsystem and UI binding point.

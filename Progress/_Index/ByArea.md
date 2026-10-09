@@ -29,10 +29,23 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [十四模型仅配色 Blender 成品 B_v1](../RequirementDocument/20261008-十四模型仅配色Blender成品B_v1.md) | requirement | approved | 2026-10-09 |
+| [十四模型配色参考与三视图 A_v3](../RequirementDocument/20261008-十四模型配色参考与三视图A_v3.md) | requirement | approved | 2026-10-09 |
+| [十三模型配色参考与三视图 A_v2](../RequirementDocument/20261008-十三模型配色参考与三视图A_v2.md) | requirement | superseded | 2026-10-09 |
+| [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-09 |
+| [十四模型仅配色 Blender 成品 B_v1 — 实际成品审核](../DevelopmentDocumentation/20261008-十四模型仅配色Blender成品B_v1.md) | development | verification | 2026-10-09 |
+| [十四模型配色参考与三视图 A_v3 — 参考审核交付](../DevelopmentDocumentation/20261008-十四模型配色参考与三视图A_v3.md) | development | done | 2026-10-09 |
+| [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | development | done | 2026-10-09 |
+| [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-09 |
+| [全项目统一色库与美术技能接入](../Archive/20261008-全项目统一色库与美术技能接入.md) | archive | recorded | 2026-10-08 |
+| [十四模型配色 Blender 成品 B_v1 交付](../Archive/20261008-十四模型配色Blender成品B_v1交付.md) | archive | recorded | 2026-10-08 |
+| [十四模型配色参考 A_v3 与三视图交付](../Archive/20261008-十四模型配色参考A_v3交付.md) | archive | recorded | 2026-10-08 |
+| [十三模型配色参考 A_v2 与三视图交付](../Archive/20261008-十三模型配色参考A_v2交付.md) | archive | recorded | 2026-10-08 |
+| [场景UI源码与18组红蓝模型对照交付](../Archive/20261008-场景UI源码与红蓝模型对照交付.md) | archive | recorded | 2026-10-08 |
 | [SSF建筑美术统一与三档LOD](../RequirementDocument/20261005-SSF建筑美术统一与三档LOD.md) | requirement | approved | 2026-10-07 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-07 |
 | [SSF建筑美术统一与三档LOD](../DevelopmentDocumentation/20261005-SSF建筑美术统一与三档LOD.md) | development | done | 2026-10-07 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-07 |
 | [SSF会话临时文件清理与全项目上传范围](../Archive/20261007-SSF会话临时文件清理与全项目上传范围.md) | archive | recorded | 2026-10-07 |
 | [SSF建筑蓝红正式资源B_v2审核通过](../Archive/20261007-SSF建筑蓝红正式资源B_v2审核通过.md) | archive | recorded | 2026-10-07 |
 | [SSF建筑蓝红正式资源B_v2入库](../Archive/20261007-SSF建筑蓝红正式资源B_v2入库.md) | archive | recorded | 2026-10-07 |
@@ -178,10 +191,28 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
+| [十四模型仅配色 Blender 成品 B_v1](../RequirementDocument/20261008-十四模型仅配色Blender成品B_v1.md) | requirement | approved | 2026-10-09 |
+| [十四模型配色参考与三视图 A_v3](../RequirementDocument/20261008-十四模型配色参考与三视图A_v3.md) | requirement | approved | 2026-10-09 |
+| [十三模型配色参考与三视图 A_v2](../RequirementDocument/20261008-十三模型配色参考与三视图A_v2.md) | requirement | superseded | 2026-10-09 |
+| [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-09 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
+| [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
+| [十四模型仅配色 Blender 成品 B_v1 — 实际成品审核](../DevelopmentDocumentation/20261008-十四模型仅配色Blender成品B_v1.md) | development | verification | 2026-10-09 |
+| [十四模型配色参考与三视图 A_v3 — 参考审核交付](../DevelopmentDocumentation/20261008-十四模型配色参考与三视图A_v3.md) | development | done | 2026-10-09 |
+| [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | development | done | 2026-10-09 |
+| [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-09 |
+| [扫荡者橙区正式导入与自动改色](../Archive/20261009-扫荡者橙区正式导入与自动改色.md) | archive | recorded | 2026-10-09 |
+| [扫荡者原橙区队色Blender候选交付](../Archive/20261009-扫荡者原橙区队色Blender候选交付.md) | archive | recorded | 2026-10-09 |
+| [全项目统一色库与美术技能接入](../Archive/20261008-全项目统一色库与美术技能接入.md) | archive | recorded | 2026-10-08 |
+| [十四模型配色 Blender 成品 B_v1 交付](../Archive/20261008-十四模型配色Blender成品B_v1交付.md) | archive | recorded | 2026-10-08 |
+| [十四模型配色参考 A_v3 与三视图交付](../Archive/20261008-十四模型配色参考A_v3交付.md) | archive | recorded | 2026-10-08 |
+| [十三模型配色参考 A_v2 与三视图交付](../Archive/20261008-十三模型配色参考A_v2交付.md) | archive | recorded | 2026-10-08 |
+| [场景UI源码与18组红蓝模型对照交付](../Archive/20261008-场景UI源码与红蓝模型对照交付.md) | archive | recorded | 2026-10-08 |
 | [SSF建筑美术统一与三档LOD](../RequirementDocument/20261005-SSF建筑美术统一与三档LOD.md) | requirement | approved | 2026-10-07 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-07 |
 | [SSF建筑美术统一与三档LOD](../DevelopmentDocumentation/20261005-SSF建筑美术统一与三档LOD.md) | development | done | 2026-10-07 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-07 |
 | [SSF会话临时文件清理与全项目上传范围](../Archive/20261007-SSF会话临时文件清理与全项目上传范围.md) | archive | recorded | 2026-10-07 |
 | [SSF建筑蓝红正式资源B_v2审核通过](../Archive/20261007-SSF建筑蓝红正式资源B_v2审核通过.md) | archive | recorded | 2026-10-07 |
 | [SSF建筑蓝红正式资源B_v2入库](../Archive/20261007-SSF建筑蓝红正式资源B_v2入库.md) | archive | recorded | 2026-10-07 |
@@ -189,7 +220,6 @@
 | [SSF建筑B_v1正式资源入库且暂不接入玩法](../Archive/20261006-SSF建筑正式资源入库且暂不接入玩法.md) | archive | recorded | 2026-10-06 |
 | [指挥官三档LOD纠正与资源迁移](../RequirementDocument/20261005-指挥官三档LOD纠正与资源迁移.md) | requirement | approved | 2026-10-05 |
 | [彼之矛工程车建造与四足重炮](../RequirementDocument/20261005-彼之矛工程车建造与四足重炮.md) | requirement | approved | 2026-10-05 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-05 |
 | [彼之矛](../Gameplay/彼之矛.md) | gameplay | current | 2026-10-05 |
 | [指挥官三档LOD纠正与资源迁移](../DevelopmentDocumentation/20261005-指挥官三档LOD纠正与资源迁移.md) | development | done | 2026-10-05 |
 | [彼之矛工程车建造与四足重炮](../DevelopmentDocumentation/20261005-彼之矛工程车建造与四足重炮.md) | development | verification | 2026-10-05 |
@@ -396,8 +426,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
+| [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
+| [场景UI源码与18组红蓝模型对照交付](../Archive/20261008-场景UI源码与红蓝模型对照交付.md) | archive | recorded | 2026-10-08 |
 | [彼之矛工程车建造与四足重炮](../RequirementDocument/20261005-彼之矛工程车建造与四足重炮.md) | requirement | approved | 2026-10-05 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-05 |
 | [彼之矛](../Gameplay/彼之矛.md) | gameplay | current | 2026-10-05 |
 | [彼之矛工程车建造与四足重炮](../DevelopmentDocumentation/20261005-彼之矛工程车建造与四足重炮.md) | development | verification | 2026-10-05 |
 | [指挥官部队StateTree接入与特殊任务退役 — 技术方案](../DevelopmentDocumentation/20260921-指挥官部队StateTree接入与特殊任务退役.md) | development | done | 2026-10-05 |
@@ -470,6 +503,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
 | [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | development | done | 2026-10-05 |
 | [F4肉鸽卡牌重选 — 实施记录](../DevelopmentDocumentation/20260929-F4肉鸽卡牌重选.md) | development | done | 2026-10-05 |
 | [重防号导弹解锁与肉鸽卡牌 — 技术方案](../DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md) | development | done | 2026-10-05 |
@@ -480,7 +514,6 @@
 | [飞行物批量启停同步与实际时间网络预算](../RequirementDocument/20261004-飞行物批量启停同步与实际时间网络预算.md) | requirement | approved | 2026-10-04 |
 | [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-04 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-04 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-04 |
 | [先驱号 VAT 导入与 Q 召唤接入 — 实施记录](../DevelopmentDocumentation/20261003-先驱号VAT导入与Q召唤接入.md) | development | done | 2026-10-04 |
 | [先驱号初代开发通过与 GitHub 交付](../Archive/20261004-先驱号初代开发通过与GitHub交付.md) | archive | recorded | 2026-10-04 |
 | [飞行物启停同步与实际时间预算实施验收](../Archive/20261004-飞行物启停同步与实际时间预算实施验收.md) | archive | recorded | 2026-10-04 |
@@ -688,9 +721,20 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
+| [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
+| [Mass单位脚环统一20cm](../RequirementDocument/20261007-Mass单位脚环统一20cm.md) | requirement | approved | 2026-10-09 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
+| [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
+| [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
+| [Mass单位脚环统一20cm — 实施记录](../DevelopmentDocumentation/20261007-Mass单位脚环统一20cm.md) | development | verification | 2026-10-09 |
+| [扫荡者橙区正式导入与自动改色](../Archive/20261009-扫荡者橙区正式导入与自动改色.md) | archive | recorded | 2026-10-09 |
+| [扫荡者原橙区队色Blender候选交付](../Archive/20261009-扫荡者原橙区队色Blender候选交付.md) | archive | recorded | 2026-10-09 |
+| [场景UI源码与18组红蓝模型对照交付](../Archive/20261008-场景UI源码与红蓝模型对照交付.md) | archive | recorded | 2026-10-08 |
+| [Mass脚环20cm正式材质与环境影响核对](../Archive/20261007-Mass脚环20cm正式材质与环境影响核对.md) | archive | recorded | 2026-10-07 |
 | [指挥官三档LOD纠正与资源迁移](../RequirementDocument/20261005-指挥官三档LOD纠正与资源迁移.md) | requirement | approved | 2026-10-05 |
 | [彼之矛工程车建造与四足重炮](../RequirementDocument/20261005-彼之矛工程车建造与四足重炮.md) | requirement | approved | 2026-10-05 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-05 |
 | [彼之矛](../Gameplay/彼之矛.md) | gameplay | current | 2026-10-05 |
 | [指挥官三档LOD纠正与资源迁移](../DevelopmentDocumentation/20261005-指挥官三档LOD纠正与资源迁移.md) | development | done | 2026-10-05 |
 | [彼之矛工程车建造与四足重炮](../DevelopmentDocumentation/20261005-彼之矛工程车建造与四足重炮.md) | development | verification | 2026-10-05 |
@@ -715,7 +759,6 @@
 | [先驱号步态减速与移动点击精度](../RequirementDocument/20261003-先驱号步态减速与移动点击精度.md) | requirement | approved | 2026-10-04 |
 | [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-04 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-04 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-04 |
 | [绿色引导线实时连接优化 — 技术方案](../DevelopmentDocumentation/绿色引导线实时连接优化.md) | development | done | 2026-10-04 |
 | [先驱号步态减速与移动点击精度 — 实施记录](../DevelopmentDocumentation/20261003-先驱号步态减速与移动点击精度.md) | development | done | 2026-10-04 |
 | [先驱号 VAT 导入与 Q 召唤接入 — 实施记录](../DevelopmentDocumentation/20261003-先驱号VAT导入与Q召唤接入.md) | development | done | 2026-10-04 |
@@ -1099,6 +1142,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
+| [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
+| [扫荡者橙区正式导入与自动改色](../Archive/20261009-扫荡者橙区正式导入与自动改色.md) | archive | recorded | 2026-10-09 |
 | [地面机甲辅助瞄准 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md) | development | done | 2026-10-05 |
 | [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-04 |
 | [先驱号 VAT 导入与 Q 召唤接入 — 实施记录](../DevelopmentDocumentation/20261003-先驱号VAT导入与Q召唤接入.md) | development | done | 2026-10-04 |
@@ -1238,6 +1284,13 @@
 | [FireReview双阵营停火靶场与敌方描边静态交付](../Archive/20260921-FireReview双阵营靶场静态交付.md) | archive | recorded | 2026-09-21 |
 | [地面机甲动画空战与下落调参验收](../Archive/20260921-地面机甲动画空战与下落调参验收.md) | archive | recorded | 2026-09-21 |
 | [地面机甲动画与空中战斗阶段实现](../Archive/20260921-地面机甲动画与空中战斗阶段实现.md) | archive | recorded | 2026-09-21 |
+
+## ground_mech
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
+| [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
 
 ## input
 
@@ -1436,14 +1489,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-05 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
 | [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | development | done | 2026-10-05 |
 | [Mass历史插值与三倍速度纠偏](../DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md) | development | done | 2026-10-05 |
 | [玩家地面机甲与Mass单位立体碰撞 — 技术方案与实施记录](../DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md) | development | done | 2026-10-05 |
 | [飞行物批量启停同步与实际时间网络预算](../RequirementDocument/20261004-飞行物批量启停同步与实际时间网络预算.md) | requirement | approved | 2026-10-04 |
 | [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-04 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-04 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-04 |
 | [先驱号初代开发通过与 GitHub 交付](../Archive/20261004-先驱号初代开发通过与GitHub交付.md) | archive | recorded | 2026-10-04 |
 | [飞行物启停同步与实际时间预算实施验收](../Archive/20261004-飞行物启停同步与实际时间预算实施验收.md) | archive | recorded | 2026-10-04 |
 | [星际2风格指挥官操作指令集](../Gameplay/指挥官操作攻略.md) | gameplay | current | 2026-10-03 |
@@ -1866,10 +1919,27 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
+| [十四模型仅配色 Blender 成品 B_v1](../RequirementDocument/20261008-十四模型仅配色Blender成品B_v1.md) | requirement | approved | 2026-10-09 |
+| [十四模型配色参考与三视图 A_v3](../RequirementDocument/20261008-十四模型配色参考与三视图A_v3.md) | requirement | approved | 2026-10-09 |
+| [十三模型配色参考与三视图 A_v2](../RequirementDocument/20261008-十三模型配色参考与三视图A_v2.md) | requirement | superseded | 2026-10-09 |
+| [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-09 |
+| [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
+| [十四模型仅配色 Blender 成品 B_v1 — 实际成品审核](../DevelopmentDocumentation/20261008-十四模型仅配色Blender成品B_v1.md) | development | verification | 2026-10-09 |
+| [十四模型配色参考与三视图 A_v3 — 参考审核交付](../DevelopmentDocumentation/20261008-十四模型配色参考与三视图A_v3.md) | development | done | 2026-10-09 |
+| [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | development | done | 2026-10-09 |
+| [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-09 |
+| [扫荡者橙区正式导入与自动改色](../Archive/20261009-扫荡者橙区正式导入与自动改色.md) | archive | recorded | 2026-10-09 |
+| [扫荡者原橙区队色Blender候选交付](../Archive/20261009-扫荡者原橙区队色Blender候选交付.md) | archive | recorded | 2026-10-09 |
+| [全项目统一色库与美术技能接入](../Archive/20261008-全项目统一色库与美术技能接入.md) | archive | recorded | 2026-10-08 |
+| [十四模型配色 Blender 成品 B_v1 交付](../Archive/20261008-十四模型配色Blender成品B_v1交付.md) | archive | recorded | 2026-10-08 |
+| [十四模型配色参考 A_v3 与三视图交付](../Archive/20261008-十四模型配色参考A_v3交付.md) | archive | recorded | 2026-10-08 |
+| [十三模型配色参考 A_v2 与三视图交付](../Archive/20261008-十三模型配色参考A_v2交付.md) | archive | recorded | 2026-10-08 |
+| [场景UI源码与18组红蓝模型对照交付](../Archive/20261008-场景UI源码与红蓝模型对照交付.md) | archive | recorded | 2026-10-08 |
 | [SSF建筑美术统一与三档LOD](../RequirementDocument/20261005-SSF建筑美术统一与三档LOD.md) | requirement | approved | 2026-10-07 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-07 |
 | [SSF建筑美术统一与三档LOD](../DevelopmentDocumentation/20261005-SSF建筑美术统一与三档LOD.md) | development | done | 2026-10-07 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-07 |
 | [SSF建筑蓝红正式资源B_v2审核通过](../Archive/20261007-SSF建筑蓝红正式资源B_v2审核通过.md) | archive | recorded | 2026-10-07 |
 | [SSF建筑蓝红正式资源B_v2入库](../Archive/20261007-SSF建筑蓝红正式资源B_v2入库.md) | archive | recorded | 2026-10-07 |
 | [SSF建筑蓝红阵营配色Blender审核B_v2](../Archive/20261007-SSF建筑蓝红阵营配色Blender审核B_v2.md) | archive | recorded | 2026-10-07 |
@@ -2009,6 +2079,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
+| [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
 | [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | development | done | 2026-10-05 |
 | [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | done | 2026-10-05 |
 | [飞行物批量启停同步与实际时间网络预算](../RequirementDocument/20261004-飞行物批量启停同步与实际时间网络预算.md) | requirement | approved | 2026-10-04 |
@@ -2183,7 +2255,16 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-05 |
+| [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
+| [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
+| [Mass单位脚环统一20cm](../RequirementDocument/20261007-Mass单位脚环统一20cm.md) | requirement | approved | 2026-10-09 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
+| [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
+| [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
+| [Mass单位脚环统一20cm — 实施记录](../DevelopmentDocumentation/20261007-Mass单位脚环统一20cm.md) | development | verification | 2026-10-09 |
+| [场景UI源码与18组红蓝模型对照交付](../Archive/20261008-场景UI源码与红蓝模型对照交付.md) | archive | recorded | 2026-10-08 |
+| [Mass脚环20cm正式材质与环境影响核对](../Archive/20261007-Mass脚环20cm正式材质与环境影响核对.md) | archive | recorded | 2026-10-07 |
 | [指挥官三档镜头与总览LOD — 实施与交付](../DevelopmentDocumentation/20260930-指挥官三档镜头与总览LOD.md) | development | done | 2026-10-05 |
 | [肉鸽卡牌单行文案与高亮 — 实施记录](../DevelopmentDocumentation/20260929-肉鸽卡牌单行文案与高亮.md) | development | done | 2026-10-05 |
 | [F4肉鸽卡牌重选 — 实施记录](../DevelopmentDocumentation/20260929-F4肉鸽卡牌重选.md) | development | done | 2026-10-05 |
@@ -2194,7 +2275,6 @@
 | [三张视差3D卡牌交互演示 — 技术方案](../DevelopmentDocumentation/20260922-三张视差3D卡牌交互演示.md) | development | done | 2026-10-05 |
 | [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | done | 2026-10-05 |
 | [绿色引导线实时连接优化](../RequirementDocument/绿色引导线实时连接优化.md) | requirement | approved | 2026-10-04 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-04 |
 | [绿色引导线实时连接优化 — 技术方案](../DevelopmentDocumentation/绿色引导线实时连接优化.md) | development | done | 2026-10-04 |
 | [绿色引导线玩家验收通过](../Archive/20261004-绿色引导线玩家验收通过.md) | archive | recorded | 2026-10-04 |
 | [原型Map双编辑器文件占用解除](../Archive/20261004-原型Map双编辑器文件占用解除.md) | archive | recorded | 2026-10-04 |
@@ -2350,12 +2430,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-07 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-07 |
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-09 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-09 |
+| [全项目统一色库与美术技能接入](../Archive/20261008-全项目统一色库与美术技能接入.md) | archive | recorded | 2026-10-08 |
 | [提速单位坡面卡住与子弹提前显示修复](../DevelopmentDocumentation/20260928-提速单位坡面卡住与子弹提前显示修复.md) | development | done | 2026-10-05 |
 | [三张视差3D卡牌交互演示 — 技术方案](../DevelopmentDocumentation/20260922-三张视差3D卡牌交互演示.md) | development | done | 2026-10-05 |
 | [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | done | 2026-10-05 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-04 |
 | [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-10-01 |
 | [机枪枪口命中与弹道照明](../RequirementDocument/20260930-机枪枪口命中与弹道照明.md) | requirement | approved | 2026-09-30 |
 | [机枪枪口命中与弹道照明](../DevelopmentDocumentation/20260930-机枪枪口命中与弹道照明.md) | development | verification | 2026-09-30 |

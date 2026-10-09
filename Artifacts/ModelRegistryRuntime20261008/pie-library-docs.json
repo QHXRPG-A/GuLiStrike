@@ -1,0 +1,40 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "GuLiConstructionReviewLibrary": [
+      [
+        "fund_review",
+        "X.fund_review(world) -> bool\r\nFund Review\r\n\r\nArgs:\r\n    world (World): \r\n\r\nReturns:\r\n    bool:"
+      ],
+      [
+        "join_review_client",
+        "X.join_review_client() -> bool\r\nJoin Review Client\r\n\r\nReturns:\r\n    bool:"
+      ]
+    ],
+    "GuLiTeleportQALibrary": [
+      [
+        "configure_pie",
+        "X.configure_pie(mode, clients) -> bool\r\nTemporary PIE settings only; does not save config or assets. Modes: 0 standalone, 1 listen, 2 dedicated clients.\r\n\r\nArgs:\r\n    mode (int32): \r\n    clients (int32): \r\n\r\nReturns:\r\n    bool:"
+      ]
+    ],
+    "LevelEditorSubsystem": [
+      [
+        "editor_play_simulate",
+        "x.editor_play_simulate() -> None\r\nEditor Play Simulate"
+      ],
+      [
+        "editor_request_begin_play",
+        "x.editor_request_begin_play() -> None\r\nEditor Request Begin Play"
+      ],
+      [
+        "editor_request_end_play",
+        "x.editor_request_end_play() -> None\r\nEditor Request End Play"
+      ],
+      [
+        "is_in_play_in_editor",
+        "x.is_in_play_in_editor() -> bool\r\nIs in Play in Editor\r\n\r\nReturns:\r\n    bool:"
+      ]
+    ]
+  }
+}

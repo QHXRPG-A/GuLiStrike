@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>全套总览 · 配色参考 A_v3</title>
+<link rel="stylesheet" href="gallery.css">
+<script defer src="gallery-data.js"></script><script defer src="gallery.js"></script>
+</head>
+<body data-mode="overview">
+<header class="masthead"><div class="mast-inner">
+<div class="eyebrow">GULISTRIKE · COLOR REFERENCE · 2026.10.08</div>
+<div class="headline"><div><h1>米砂与深浅队色，重做装甲层次。</h1><p class="intro">乳白减少 · 固定米砂 · 深浅队色 · 14 模型 / 28 图板 · 三分之四效果 + 正视／左侧视／后视</p></div><span class="stage">参考设计 A_v3 · 待审核</span></div>
+<div class="palette" id="palette"></div>
+<div class="top-links"><a id="mode-link" href="overview.html">查看全套总览 ↗</a><a href="REVIEW.md">配色与审核说明</a><a href="../LocalTeamColorReference_A_v2_20261008/index.html">旧版 A_v2</a></div>
+<details class="cards-reference"><summary>查看你提供的四张色卡</summary><div id="palette-cards"></div></details>
+</div></header>
+<main>
+<nav class="filterbar" aria-label="筛选模型">
+<div id="filters"><button data-filter="all" aria-pressed="true">全部 14</button><button data-filter="Mass" aria-pressed="false">兵种 3</button><button data-filter="Building" aria-pressed="false">玩法建筑 5</button><button data-filter="SSF" aria-pressed="false">SSF 6</button></div>
+<label class="search"><span>模型</span><input id="search" type="search" placeholder="输入名称查找" aria-label="搜索模型"></label><span id="result-count" aria-live="polite"></span>
+</nav>
+<p class="view-note">点图可放大；蓝红更换浅／深队色区。固定功能区两队一致，护盾顶部三点随队色变化。已补入重防号；前哨按完整矩形组件与半圆环配色。乳白 20–30% 为设计目标，按模型结构调整。彼之矛施工体共用同一设计。</p>
+<div id="gallery" class="gallery"></div><p id="empty" hidden>没有匹配的模型。</p>
+</main>
+<footer><p>当前仅提交二维参考设计。按模型名称与 A_v3 版本逐项审核，通过后再做 Blender 成品 B。</p><p>原模型尺寸、几何与活动件关系为施工依据；参考图表达配色与线条整理，不替代实际成品审核。</p></footer>
+<dialog id="zoom-dialog" aria-labelledby="zoom-title">
+<div class="zoom-head"><div><strong id="zoom-title"></strong><small id="zoom-meta"></small></div>
+<div class="zoom-controls"><button id="zoom-prev" aria-label="上一张">←</button><button id="zoom-blue">蓝方</button><button id="zoom-red">红方</button><button id="zoom-next" aria-label="下一张">→</button><button id="zoom-fit">适应</button><button id="zoom-native">100%</button><button id="zoom-plus" aria-label="放大">＋</button><a id="zoom-original" target="_blank" rel="noopener">原图 ↗</a><button id="zoom-close" aria-label="关闭放大图">关闭 ×</button></div></div>
+<div id="zoom-stage" tabindex="0" aria-label="放大图，可滚动查看"><img id="zoom-image" alt=""></div>
+<div class="zoom-help">← → 切换图板 · B／R 切换队色 · Esc 关闭 · 放大后滚动查看</div>
+</dialog>
+</body></html>

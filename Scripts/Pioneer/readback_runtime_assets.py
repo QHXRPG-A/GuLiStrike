@@ -2,8 +2,11 @@
 import json,math
 from pathlib import Path
 import unreal
+import sys
 
 ROOT=Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
+sys.path.insert(0,str(ROOT/'Scripts'))
+from Models import model_catalog
 OUT=ROOT/'ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports'
 BASE='/Game/GuLiStrike/Robots/RSGMech'
 EDITOR=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem)
@@ -54,8 +57,8 @@ soldiers=table(names[0]);weapons=table(names[1]);mount_rows=table(names[2]);text
 pioneer=soldiers['DefaultSoldier'];sweeper=soldiers['SweeperSummon'];gun=weapons['SoldierA_Strafe']
 assert pioneer['Id']==1 and pioneer['DisplayName']=='先驱号' and pioneer['bSummonOnly'] is False
 for key,value in {'MovementSpeedCmPerSecond':1440,'ModelWidthMeters':6.25,'PresentationScale':1,'MaxHealth':100,'Defense':0}.items():close(pioneer[key],value)
-assert soft_path(pioneer['ModelAsset'])==BASE+'/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT'
-assert soft_path(pioneer['VATDefinition'])==vat.get_path_name()
+assert model_catalog.resource(pioneer['ModelId'])==BASE+'/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT'
+assert model_catalog.definition(pioneer['ModelId'])['VATDefinition']==vat.get_path_name()
 assert sweeper['Id']==5 and sweeper['bSummonOnly'] is True and sweeper['DisplayName']=='扫荡者'
 for key,value in {'MovementSpeedCmPerSecond':720,'PresentationScale':.2,'MaxHealth':100,'Defense':0}.items():close(sweeper[key],value)
 assert 'SM_Sweeper_Rigid' in sweeper['ModelAsset']

@@ -1,0 +1,741 @@
+{
+  "key": "ManualOutpost",
+  "source": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\OutpostMonument\\OutpostMonument_v01.blend",
+  "source_sha256": "e1b40622067a7251f5960614b85fa45057730014e74fc7940e5e2044e9bc874e",
+  "B_approval": "pending",
+  "scope": "palette and authorized consistent cel/three-tone/line rendering only",
+  "topology_modified": false,
+  "vertices_modified": false,
+  "UVs_modified": false,
+  "rig_animation_LODs_modified": false,
+  "UE_modified": false,
+  "teams": [
+    {
+      "team": "Blue",
+      "scene": "Blue_ManualOutpost",
+      "collection": "Bv1_Blue_ManualOutpost_LOD0",
+      "objects": [
+        {
+          "name": "Blue_ManualOutpost_SM_OutpostMonument_v01",
+          "source": "SM_OutpostMonument_v01",
+          "LOD": 0,
+          "signature": "3b52150ef8f9d1ac7ac145fe28916957f1f0ff9d2d58aabae1a10aea5b034bce",
+          "color_area_fractions": {
+            "TeamLight": 0.11511,
+            "Sand": 0.58462,
+            "Cream": 0.2229,
+            "TeamDark": 0.05838,
+            "Gray": 0.01898
+          },
+          "vertices": 13552,
+          "polygons": 27020,
+          "UVs": [
+            "UV0_Concrete4m",
+            "UV1_Lightmap"
+          ]
+        }
+      ],
+      "region_mapping": {
+        "SM_OutpostMonument_v01": [
+          {
+            "source_component": "GS_OP_01_CrownBlade",
+            "role": "TeamLight",
+            "center": [
+              8.4375,
+              8.4375,
+              150.0
+            ],
+            "dimensions": [
+              9.682010650634766,
+              42.71513366699219,
+              300.0
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_02_WestBlade",
+            "role": "Sand",
+            "center": [
+              -11.8125,
+              2.4375009536743164,
+              129.375
+            ],
+            "dimensions": [
+              15.314811706542969,
+              45.06632995605469,
+              258.75
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_03_EastBlade",
+            "role": "Sand",
+            "center": [
+              19.3125,
+              5.250000953674316,
+              108.75
+            ],
+            "dimensions": [
+              11.377941131591797,
+              38.962013244628906,
+              217.5
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_04_BackBlade",
+            "role": "Sand",
+            "center": [
+              -1.125,
+              21.75,
+              118.125
+            ],
+            "dimensions": [
+              31.397315979003906,
+              10.502092361450195,
+              236.25
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_05_OpenCrownSpine",
+            "role": "Cream",
+            "center": [
+              -0.14489245414733887,
+              0.9375,
+              147.1875
+            ],
+            "dimensions": [
+              8.335214614868164,
+              8.625,
+              294.375
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_06_LowerWestDrum",
+            "role": "Sand",
+            "center": [
+              -15.081812858581543,
+              -10.551813125610352,
+              75.9375
+            ],
+            "dimensions": [
+              24.960290908813477,
+              33.445003509521484,
+              151.875
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_07_LowerEastDrum",
+            "role": "Sand",
+            "center": [
+              14.357239723205566,
+              -9.32004451751709,
+              67.5
+            ],
+            "dimensions": [
+              23.406766891479492,
+              32.93762969970703,
+              135.0
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_08_FrontShoulder",
+            "role": "Sand",
+            "center": [
+              -1.1013765335083008,
+              -12.97098159790039,
+              128.4375
+            ],
+            "dimensions": [
+              42.120094299316406,
+              19.8001708984375,
+              106.875
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_09_UpperHalfDrum",
+            "role": "Sand",
+            "center": [
+              -0.7253384590148926,
+              -4.42825984954834,
+              192.1875
+            ],
+            "dimensions": [
+              25.825660705566406,
+              16.268465042114258,
+              106.875
+            ],
+            "faces": 1100
+          },
+          {
+            "source_component": "GS_OP_10_MiddleHalfDrum",
+            "role": "Sand",
+            "center": [
+              -1.8586149215698242,
+              -13.312408447265625,
+              155.625
+            ],
+            "dimensions": [
+              33.454925537109375,
+              14.246360778808594,
+              86.25
+            ],
+            "faces": 1100
+          },
+          {
+            "source_component": "GS_OP_11_LeftUpperPetal",
+            "role": "Sand",
+            "center": [
+              -13.643447875976562,
+              11.575644493103027,
+              135.0
+            ],
+            "dimensions": [
+              18.461231231689453,
+              21.096837997436523,
+              120.0
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_12_RearHalfDrum",
+            "role": "Sand",
+            "center": [
+              2.8041324615478516,
+              12.656206130981445,
+              82.5
+            ],
+            "dimensions": [
+              35.265899658203125,
+              18.932769775390625,
+              165.0
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_13_MonumentCollar",
+            "role": "TeamDark",
+            "center": [
+              -0.10589408874511719,
+              -17.50304412841797,
+              135.0
+            ],
+            "dimensions": [
+              71.03086853027344,
+              36.243682861328125,
+              41.25
+            ],
+            "faces": 3228
+          },
+          {
+            "source_component": "GS_OP_14_CollarRearReturn",
+            "role": "TeamDark",
+            "center": [
+              18.99039077758789,
+              14.735934257507324,
+              127.875
+            ],
+            "dimensions": [
+              25.392623901367188,
+              31.674463272094727,
+              37.5
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_15_WestButtress",
+            "role": "Cream",
+            "center": [
+              -28.6875,
+              1.875,
+              106.875
+            ],
+            "dimensions": [
+              5.277223587036133,
+              21.63085174560547,
+              213.75
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_16_EastButtress",
+            "role": "Cream",
+            "center": [
+              27.75,
+              5.249999046325684,
+              85.3125
+            ],
+            "dimensions": [
+              7.427343368530273,
+              24.104372024536133,
+              170.625
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_17_FrontReveal",
+            "role": "Cream",
+            "center": [
+              -10.3125,
+              -17.8125,
+              102.1875
+            ],
+            "dimensions": [
+              3.9478187561035156,
+              6.5480804443359375,
+              204.375
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_18_LowFloatingPetal",
+            "role": "Cream",
+            "center": [
+              -19.643632888793945,
+              -16.03368377685547,
+              73.3125
+            ],
+            "dimensions": [
+              13.99141788482666,
+              16.419097900390625,
+              79.125
+            ],
+            "faces": 1052
+          },
+          {
+            "source_component": "GS_OP_19_SideFloatingPetal",
+            "role": "Cream",
+            "center": [
+              19.593894958496094,
+              -13.445570945739746,
+              111.5625
+            ],
+            "dimensions": [
+              13.573080062866211,
+              18.484399795532227,
+              95.625
+            ],
+            "faces": 1052
+          },
+          {
+            "source_component": "GS_OP_20_NarrowSpineFin",
+            "role": "Cream",
+            "center": [
+              -3.187499761581421,
+              10.875,
+              136.875
+            ],
+            "dimensions": [
+              12.605953216552734,
+              11.592884063720703,
+              273.75
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_21_InnerLowerColumn",
+            "role": "Gray",
+            "center": [
+              0.375,
+              -7.5,
+              69.375
+            ],
+            "dimensions": [
+              10.125,
+              10.125,
+              138.75
+            ],
+            "faces": 764
+          }
+        ]
+      },
+      "view": {
+        "lo": [
+          -35.6213264465332,
+          -35.62488555908203,
+          0.0
+        ],
+        "hi": [
+          35.40953826904297,
+          30.573165893554688,
+          300.0
+        ],
+        "center": [
+          -0.10589408874511719,
+          -2.525859832763672,
+          150.0
+        ],
+        "ortho": 368.54132080078125
+      }
+    },
+    {
+      "team": "Red",
+      "scene": "Red_ManualOutpost",
+      "collection": "Bv1_Red_ManualOutpost_LOD0",
+      "objects": [
+        {
+          "name": "Red_ManualOutpost_SM_OutpostMonument_v01",
+          "source": "SM_OutpostMonument_v01",
+          "LOD": 0,
+          "signature": "3b52150ef8f9d1ac7ac145fe28916957f1f0ff9d2d58aabae1a10aea5b034bce",
+          "color_area_fractions": {
+            "TeamLight": 0.11511,
+            "Sand": 0.58462,
+            "Cream": 0.2229,
+            "TeamDark": 0.05838,
+            "Gray": 0.01898
+          },
+          "vertices": 13552,
+          "polygons": 27020,
+          "UVs": [
+            "UV0_Concrete4m",
+            "UV1_Lightmap"
+          ]
+        }
+      ],
+      "region_mapping": {
+        "SM_OutpostMonument_v01": [
+          {
+            "source_component": "GS_OP_01_CrownBlade",
+            "role": "TeamLight",
+            "center": [
+              8.4375,
+              8.4375,
+              150.0
+            ],
+            "dimensions": [
+              9.682010650634766,
+              42.71513366699219,
+              300.0
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_02_WestBlade",
+            "role": "Sand",
+            "center": [
+              -11.8125,
+              2.4375009536743164,
+              129.375
+            ],
+            "dimensions": [
+              15.314811706542969,
+              45.06632995605469,
+              258.75
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_03_EastBlade",
+            "role": "Sand",
+            "center": [
+              19.3125,
+              5.250000953674316,
+              108.75
+            ],
+            "dimensions": [
+              11.377941131591797,
+              38.962013244628906,
+              217.5
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_04_BackBlade",
+            "role": "Sand",
+            "center": [
+              -1.125,
+              21.75,
+              118.125
+            ],
+            "dimensions": [
+              31.397315979003906,
+              10.502092361450195,
+              236.25
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_05_OpenCrownSpine",
+            "role": "Cream",
+            "center": [
+              -0.14489245414733887,
+              0.9375,
+              147.1875
+            ],
+            "dimensions": [
+              8.335214614868164,
+              8.625,
+              294.375
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_06_LowerWestDrum",
+            "role": "Sand",
+            "center": [
+              -15.081812858581543,
+              -10.551813125610352,
+              75.9375
+            ],
+            "dimensions": [
+              24.960290908813477,
+              33.445003509521484,
+              151.875
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_07_LowerEastDrum",
+            "role": "Sand",
+            "center": [
+              14.357239723205566,
+              -9.32004451751709,
+              67.5
+            ],
+            "dimensions": [
+              23.406766891479492,
+              32.93762969970703,
+              135.0
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_08_FrontShoulder",
+            "role": "Sand",
+            "center": [
+              -1.1013765335083008,
+              -12.97098159790039,
+              128.4375
+            ],
+            "dimensions": [
+              42.120094299316406,
+              19.8001708984375,
+              106.875
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_09_UpperHalfDrum",
+            "role": "Sand",
+            "center": [
+              -0.7253384590148926,
+              -4.42825984954834,
+              192.1875
+            ],
+            "dimensions": [
+              25.825660705566406,
+              16.268465042114258,
+              106.875
+            ],
+            "faces": 1100
+          },
+          {
+            "source_component": "GS_OP_10_MiddleHalfDrum",
+            "role": "Sand",
+            "center": [
+              -1.8586149215698242,
+              -13.312408447265625,
+              155.625
+            ],
+            "dimensions": [
+              33.454925537109375,
+              14.246360778808594,
+              86.25
+            ],
+            "faces": 1100
+          },
+          {
+            "source_component": "GS_OP_11_LeftUpperPetal",
+            "role": "Sand",
+            "center": [
+              -13.643447875976562,
+              11.575644493103027,
+              135.0
+            ],
+            "dimensions": [
+              18.461231231689453,
+              21.096837997436523,
+              120.0
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_12_RearHalfDrum",
+            "role": "Sand",
+            "center": [
+              2.8041324615478516,
+              12.656206130981445,
+              82.5
+            ],
+            "dimensions": [
+              35.265899658203125,
+              18.932769775390625,
+              165.0
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_13_MonumentCollar",
+            "role": "TeamDark",
+            "center": [
+              -0.10589408874511719,
+              -17.50304412841797,
+              135.0
+            ],
+            "dimensions": [
+              71.03086853027344,
+              36.243682861328125,
+              41.25
+            ],
+            "faces": 3228
+          },
+          {
+            "source_component": "GS_OP_14_CollarRearReturn",
+            "role": "TeamDark",
+            "center": [
+              18.99039077758789,
+              14.735934257507324,
+              127.875
+            ],
+            "dimensions": [
+              25.392623901367188,
+              31.674463272094727,
+              37.5
+            ],
+            "faces": 2204
+          },
+          {
+            "source_component": "GS_OP_15_WestButtress",
+            "role": "Cream",
+            "center": [
+              -28.6875,
+              1.875,
+              106.875
+            ],
+            "dimensions": [
+              5.277223587036133,
+              21.63085174560547,
+              213.75
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_16_EastButtress",
+            "role": "Cream",
+            "center": [
+              27.75,
+              5.249999046325684,
+              85.3125
+            ],
+            "dimensions": [
+              7.427343368530273,
+              24.104372024536133,
+              170.625
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_17_FrontReveal",
+            "role": "Cream",
+            "center": [
+              -10.3125,
+              -17.8125,
+              102.1875
+            ],
+            "dimensions": [
+              3.9478187561035156,
+              6.5480804443359375,
+              204.375
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_18_LowFloatingPetal",
+            "role": "Cream",
+            "center": [
+              -19.643632888793945,
+              -16.03368377685547,
+              73.3125
+            ],
+            "dimensions": [
+              13.99141788482666,
+              16.419097900390625,
+              79.125
+            ],
+            "faces": 1052
+          },
+          {
+            "source_component": "GS_OP_19_SideFloatingPetal",
+            "role": "Cream",
+            "center": [
+              19.593894958496094,
+              -13.445570945739746,
+              111.5625
+            ],
+            "dimensions": [
+              13.573080062866211,
+              18.484399795532227,
+              95.625
+            ],
+            "faces": 1052
+          },
+          {
+            "source_component": "GS_OP_20_NarrowSpineFin",
+            "role": "Cream",
+            "center": [
+              -3.187499761581421,
+              10.875,
+              136.875
+            ],
+            "dimensions": [
+              12.605953216552734,
+              11.592884063720703,
+              273.75
+            ],
+            "faces": 412
+          },
+          {
+            "source_component": "GS_OP_21_InnerLowerColumn",
+            "role": "Gray",
+            "center": [
+              0.375,
+              -7.5,
+              69.375
+            ],
+            "dimensions": [
+              10.125,
+              10.125,
+              138.75
+            ],
+            "faces": 764
+          }
+        ]
+      },
+      "view": {
+        "lo": [
+          -35.6213264465332,
+          -35.62488555908203,
+          0.0
+        ],
+        "hi": [
+          35.40953826904297,
+          30.573165893554688,
+          300.0
+        ],
+        "center": [
+          -0.10589408874511719,
+          -2.525859832763672,
+          150.0
+        ],
+        "ortho": 368.54132080078125
+      }
+    }
+  ],
+  "original_animation_signatures": {}
+}

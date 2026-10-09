@@ -17,7 +17,7 @@ description: 'GuLiStrike (UE5.7, D:\UE5.7\test1) development documentation, vali
 
 ## 美术规范与审核维护
 
-涉及项目美术方向、参考版本、资产例外或美术审核时，先读[《GuLiStrike 美术规范》](../../../Progress/RequirementDocument/GuLiStrike美术规范.md)和[配套变更与验收台账](../../../Progress/DevelopmentDocumentation/GuLiStrike美术规范.md)。规范是当前规则的唯一来源；模型、特效、地编技能仅链接并执行，不各自复制一份。
+涉及项目美术方向、参考版本、资产例外或美术审核时，先读[《GuLiStrike 美术规范》](../../../Progress/RequirementDocument/GuLiStrike美术规范.md)和[配套变更与验收台账](../../../Progress/DevelopmentDocumentation/GuLiStrike美术规范.md)。规范是当前规则的唯一来源；模型、特效、地编、UI与卡牌技能仅链接并执行，不各自复制一份。全项目色表维护在规范“全项目统一色库”，记录功能色和已审资产例外；只更新规则时不自动重做游戏资产。
 
 **美术资产制作不套用下方的代码与功能开发交付流程。** 模型按 [guli-model-production](../guli-model-production/SKILL.md)、特效按 [ue5-vfx-production](../ue5-vfx-production/SKILL.md)、场景美术按 [ue5-scene-building](../ue5-scene-building/SKILL.md) 及项目美术规范执行；贴图、材质等视觉资产按对应制作要求执行。保留各自要求的参考/成品审核、预览、截图或渲染、视觉迭代及引擎效果验证，不能用实体数据核对代替视觉检查。本技能负责维护相关文档与审核记录。
 

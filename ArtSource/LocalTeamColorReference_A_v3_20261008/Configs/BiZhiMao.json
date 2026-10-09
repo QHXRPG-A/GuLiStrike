@@ -1,0 +1,171 @@
+{
+  "id": "BiZhiMao",
+  "name": "彼之矛",
+  "title": "BI ZHI MAO",
+  "category": "Mass",
+  "unit_type_id": 6,
+  "fixed": [
+    "四腿主护甲：乳白 #FEE4D9",
+    "长炮上部装甲及中央固定主壳：米砂 #D5C09C",
+    "原有枪管/机构/支承/电缆/工作面/深槽：深灰 #2C3735，保持各模型既有分件"
+  ],
+  "team": [
+    "浅队色：炮身两侧连续大护板及散热框",
+    "深队色：既有炮口外套、液压护套及四足踝护板"
+  ],
+  "function": [
+    "仅保留原有指示位置，不新增灯"
+  ],
+  "source": [
+    "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Hero.png",
+    "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Front.png",
+    "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Left.png",
+    "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Back.png"
+  ],
+  "structure": "保留四足、长炮比例及开口桁架；施工体沿用同一版本。",
+  "shared_variant": "BiZhiMaoConstruction",
+  "team_primary": [
+    "炮身两侧连续大护板及散热框"
+  ],
+  "team_secondary": [
+    "既有炮口外套、液压护套及四足踝护板"
+  ],
+  "paint_zones": {
+    "fixed_armor": "四腿主护甲",
+    "fixed_secondary": "长炮上部装甲及中央固定主壳",
+    "team_primary": "炮身两侧连续大护板及散热框",
+    "team_secondary": "既有炮口外套、液压护套及四足踝护板",
+    "mechanisms": "炮膛、开口桁架、脚部及关节：深灰"
+  },
+  "team_lights": [],
+  "previous_boards": {
+    "blue": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/BiZhiMao_blue.png",
+    "red": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/BiZhiMao_red.png"
+  },
+  "cream_coverage_target": {
+    "range_percent": [
+      20,
+      30
+    ],
+    "basis": "visible model surfaces; excludes background, outline and cast shadow",
+    "is_measured": false
+  },
+  "boards": {
+    "blue": {
+      "path": "Boards/BiZhiMao_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1744126,
+      "sha256": "b797e0239a573471b8ecc12ee9d22c0ce463434a07761e5cca42dd371ff46c6e"
+    },
+    "red": {
+      "path": "Boards/BiZhiMao_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1803567,
+      "sha256": "8e70646732d3bdffae52377e4977872577757ab2ab4c73926d4be6d80e9d253a"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+  "source_kind": "StaticMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Hero.png",
+      "sha256": "7b8f7598e94076a64d4082c7e54256a7cc0645cb33faae5db46b946b18fd1af4"
+    },
+    {
+      "path": "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Front.png",
+      "sha256": "b339fe92c12592465a7bb9d3a5197e770be5ce0b9b11ad0f4be485d6a8769061"
+    },
+    {
+      "path": "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Left.png",
+      "sha256": "fe5e7e914ff10dc63e0250d021d8495693281c2b4880e4e146ff5b117c01ef39"
+    },
+    {
+      "path": "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Back.png",
+      "sha256": "cfeccc70452df795cd4ce5074d97c227b06cddd92ff62e6d2141c8ddee461862"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v3_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    },
+    "fixed_secondary": {
+      "hex": "#D5C09C",
+      "card": 1,
+      "label": "固定米砂"
+    },
+    "blue_secondary": {
+      "hex": "#274E61",
+      "card": 4,
+      "label": "深蓝灰队色"
+    },
+    "red_secondary": {
+      "hex": "#662249",
+      "card": 2,
+      "label": "深莓队色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "enemy_non_blue_secondary": "#662249",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "paint_contract": {
+    "fixed": {
+      "cream": "#FEE4D9",
+      "sand": "#D5C09C",
+      "mechanisms": "#2C3735"
+    },
+    "team": {
+      "blue": {
+        "primary": "#6AA4BE",
+        "secondary": "#274E61"
+      },
+      "red": {
+        "primary": "#A34053",
+        "secondary": "#662249"
+      }
+    },
+    "team_light": null,
+    "shading": "Three cel-shading levels are separate from the two team base paint colors.",
+    "fixed_function_policy": "Only existing function locations and palette colors; shield top lights are team-controlled."
+  },
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

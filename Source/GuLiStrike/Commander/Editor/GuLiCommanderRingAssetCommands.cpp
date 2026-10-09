@@ -12,9 +12,14 @@
 #include "HAL/IConsoleManager.h"
 #include "Materials/Material.h"
 #include "Materials/MaterialExpressionComment.h"
+#include "Materials/MaterialExpressionConstant.h"
+#include "Materials/MaterialExpressionConstant3Vector.h"
+#include "Materials/MaterialExpressionCustom.h"
 #include "Materials/MaterialExpressionMultiply.h"
 #include "Materials/MaterialExpressionPerInstanceCustomData.h"
 #include "Materials/MaterialExpressionSphereMask.h"
+#include "Materials/MaterialExpressionTextureCoordinate.h"
+#include "Materials/MaterialExpressionTransform.h"
 #include "Materials/MaterialExpressionVertexInterpolator.h"
 #include "MeshDescription.h"
 #include "Misc/PackageName.h"
@@ -42,8 +47,21 @@ namespace GuLiCommanderRingAssetCommands
 	constexpr int32 SegmentCount = 64;
 	constexpr float OuterRadius = 48.0f;
 	constexpr float InnerRadius = 34.0f;
+	constexpr float MeshUVScale = 0.01f;
+	constexpr float RadialWidthCentimeters = 20.0f;
 	constexpr float EmissiveMultiplier = 3.0f;
 	constexpr float OpacityMultiplier = 0.58f;
+	constexpr TCHAR RingLocalDirectionCode[] = TEXT(R"(
+float2 direction = UV - 0.5;
+return float3(direction / max(length(direction), 0.0001), 0.0);
+)");
+	constexpr TCHAR RingWorldWidthCode[] = TEXT(R"(
+float worldScale = length(WorldDirection);
+float nativeWidth = NativeShape.x - NativeShape.y;
+float innerWeight = saturate((NativeShape.x - length(UV - 0.5) * NativeShape.z) / nativeWidth);
+float offsetCm = nativeWidth * worldScale - min(WidthCm, NativeShape.x * worldScale);
+return WorldDirection / max(worldScale, 0.0001) * (offsetCm * innerWeight);
+)");
 	const FName MaterialSlotName(TEXT("CommanderUnitRing"));
 	bool bBuildQueuedOrRunning = false;
 
@@ -186,6 +204,49 @@ namespace GuLiCommanderRingAssetCommands
 		Material->GetEditorOnlyData()->EmissiveColor.UseConstant = false;
 		Material->GetEditorOnlyData()->Opacity.Expression = AlphaInterpolator;
 		Material->GetEditorOnlyData()->Opacity.UseConstant = false;
+
+		// Derive scale from the instance's Local->World vector transform. Only
+		// the inner boundary moves; the outer boundary still matches Mass radius.
+		// Keep the four RGBA instance values and the pixel shader unchanged.
+		auto* UV = AddExpression<UMaterialExpressionTextureCoordinate>(Material, -1050, 500);
+		UV->CoordinateIndex = 0;
+		auto* LocalDirection = AddExpression<UMaterialExpressionCustom>(Material, -800, 500);
+		LocalDirection->Code = RingLocalDirectionCode;
+		LocalDirection->OutputType = CMOT_Float3;
+		LocalDirection->Description = TEXT("Ring local radial direction");
+		LocalDirection->Inputs.Reset();
+		FCustomInput UVInput;
+		UVInput.InputName = TEXT("UV");
+		UVInput.Input.Expression = UV;
+		LocalDirection->Inputs.Add(UVInput);
+		auto* WorldDirection = AddExpression<UMaterialExpressionTransform>(Material, -550, 500);
+		WorldDirection->TransformSourceType = TRANSFORMSOURCE_Local;
+		WorldDirection->TransformType = TRANSFORM_World;
+		WorldDirection->Input.Expression = LocalDirection;
+		auto* NativeShape = AddExpression<UMaterialExpressionConstant3Vector>(Material, -550, 700);
+		NativeShape->Constant = FLinearColor(OuterRadius, InnerRadius, 1.0f / MeshUVScale);
+		auto* Width = AddExpression<UMaterialExpressionConstant>(Material, -550, 850);
+		Width->R = RadialWidthCentimeters;
+		auto* Offset = AddExpression<UMaterialExpressionCustom>(Material, -250, 500);
+		Offset->Code = RingWorldWidthCode;
+		Offset->OutputType = CMOT_Float3;
+		Offset->Description = TEXT("Ring radial width in world centimeters");
+		Offset->Inputs.Reset();
+		Offset->Inputs.Add(UVInput);
+		FCustomInput DirectionInput;
+		DirectionInput.InputName = TEXT("WorldDirection");
+		DirectionInput.Input.Expression = WorldDirection;
+		Offset->Inputs.Add(DirectionInput);
+		FCustomInput ShapeInput;
+		ShapeInput.InputName = TEXT("NativeShape");
+		ShapeInput.Input.Expression = NativeShape;
+		Offset->Inputs.Add(ShapeInput);
+		FCustomInput WidthInput;
+		WidthInput.InputName = TEXT("WidthCm");
+		WidthInput.Input.Expression = Width;
+		Offset->Inputs.Add(WidthInput);
+		Material->GetEditorOnlyData()->WorldPositionOffset.Expression = Offset;
+		Material->GetEditorOnlyData()->WorldPositionOffset.UseConstant = false;
 		Material->PostEditChange();
 		Material->MarkPackageDirty();
 	}
@@ -229,7 +290,7 @@ namespace GuLiCommanderRingAssetCommands
 				BinormalSigns[Instance] = 1.0f;
 				Colors[Instance] = FVector4f(1.0f, 1.0f, 1.0f, 1.0f);
 				const FVector3f Position = Positions[Vertex];
-				UVs.Set(Instance, 0, FVector2f(0.5f + Position.X * 0.01f, 0.5f + Position.Y * 0.01f));
+				UVs.Set(Instance, 0, FVector2f(0.5f + Position.X * MeshUVScale, 0.5f + Position.Y * MeshUVScale));
 				Instances.Add(Instance);
 			}
 			Description.CreateTriangle(PolygonGroup, Instances);
@@ -306,9 +367,9 @@ namespace GuLiCommanderRingAssetCommands
 		if (!Material || Material->BlendMode != BLEND_Translucent || Material->TwoSided
 			|| !Material->bDisableDepthTest || !Material->bUsedWithInstancedStaticMeshes
 			|| !Material->GetShadingModels().HasOnlyShadingModel(MSM_Unlit)
-			|| Material->DitheredLODTransition || Material->GetExpressions().Num() != 6)
+			|| Material->DitheredLODTransition || Material->GetExpressions().Num() != 12)
 		{
-			OutError = TEXT("Ring material must be one-sided Translucent/Unlit, use ISM data, retain no-depth-test, and have six expressions.");
+			OutError = TEXT("Ring material must be one-sided Translucent/Unlit, use ISM data, retain no-depth-test, and have twelve expressions.");
 			return false;
 		}
 		const UMaterialEditorOnlyData* Data = Material->GetEditorOnlyData();
@@ -326,9 +387,36 @@ namespace GuLiCommanderRingAssetCommands
 			|| Emissive->B.IsConnected() || Opacity->B.IsConnected()
 			|| !FMath::IsNearlyEqual(Emissive->ConstB, EmissiveMultiplier)
 			|| !FMath::IsNearlyEqual(Opacity->ConstB, OpacityMultiplier)
-			|| Data->WorldPositionOffset.IsConnected() || Data->OpacityMask.IsConnected())
+			|| Data->OpacityMask.IsConnected())
 		{
-			OutError = TEXT("Ring graph must interpolate vertex-stage CustomData.RGB*3 and CustomData.A*0.58 without a disk mask or WPO.");
+			OutError = TEXT("Ring graph must interpolate vertex-stage CustomData.RGB*3 and CustomData.A*0.58 without a disk mask.");
+			return false;
+		}
+		const auto* Offset = Cast<UMaterialExpressionCustom>(Data->WorldPositionOffset.Expression);
+		if (!Offset || Offset->OutputType != CMOT_Float3 || Offset->Code != RingWorldWidthCode
+			|| Offset->Inputs.Num() != 4 || Offset->Inputs[0].InputName != TEXT("UV")
+			|| Offset->Inputs[1].InputName != TEXT("WorldDirection")
+			|| Offset->Inputs[2].InputName != TEXT("NativeShape") || Offset->Inputs[3].InputName != TEXT("WidthCm"))
+		{
+			OutError = TEXT("Ring WPO must use the fixed world-width vertex shader and its four named inputs.");
+			return false;
+		}
+		const auto* UV = Cast<UMaterialExpressionTextureCoordinate>(Offset->Inputs[0].Input.Expression);
+		const auto* Direction = Cast<UMaterialExpressionTransform>(Offset->Inputs[1].Input.Expression);
+		const auto* Shape = Cast<UMaterialExpressionConstant3Vector>(Offset->Inputs[2].Input.Expression);
+		const auto* Width = Cast<UMaterialExpressionConstant>(Offset->Inputs[3].Input.Expression);
+		const auto* LocalDirection = Direction ? Cast<UMaterialExpressionCustom>(Direction->Input.Expression) : nullptr;
+		if (!UV || UV->CoordinateIndex != 0 || !FMath::IsNearlyEqual(UV->UTiling, 1.0f)
+			|| !FMath::IsNearlyEqual(UV->VTiling, 1.0f) || UV->UnMirrorU || UV->UnMirrorV
+			|| !Direction || Direction->TransformSourceType != TRANSFORMSOURCE_Local || Direction->TransformType != TRANSFORM_World
+			|| !Shape || !FMath::IsNearlyEqual(Shape->Constant.R, OuterRadius)
+			|| !FMath::IsNearlyEqual(Shape->Constant.G, InnerRadius) || !FMath::IsNearlyEqual(Shape->Constant.B, 1.0f / MeshUVScale)
+			|| !Width || !FMath::IsNearlyEqual(Width->R, RadialWidthCentimeters)
+			|| !LocalDirection || LocalDirection->Code != RingLocalDirectionCode || LocalDirection->OutputType != CMOT_Float3
+			|| LocalDirection->Inputs.Num() != 1 || LocalDirection->Inputs[0].InputName != TEXT("UV")
+			|| LocalDirection->Inputs[0].Input.Expression != UV)
+		{
+			OutError = TEXT("Ring WPO must preserve the outer boundary and use a 20 cm radial width from the instance's Local->World transform.");
 			return false;
 		}
 		return true;
@@ -509,7 +597,7 @@ namespace GuLiCommanderRingAssetCommands
 			return;
 		}
 		UE_LOG(LogGuLiStrike, Display,
-			TEXT("Built Commander unit ring: 64 segments, 128 triangles, one +Z surface, radii 34/48 cm; CustomData.RGB*3 and A*0.58. Legacy: %s"),
+			TEXT("Built Commander unit ring: 64 segments, 128 triangles, one +Z surface, native radii 34/48 cm, world radial width 20 cm; CustomData.RGB*3 and A*0.58. Legacy: %s"),
 			LegacyMaterialObjectPath);
 	}
 

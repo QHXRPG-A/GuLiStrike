@@ -1,0 +1,89 @@
+{
+  "success": true,
+  "python_syntax": [
+    {
+      "script": "Scripts\\Models\\import_sweeper_orange_team.py",
+      "sha256": "695994f96039c948295b143630f221e816b019f88be4befd8241fb08ae687985",
+      "syntax": "passed"
+    },
+    {
+      "script": "Scripts\\Models\\promote_sweeper_catalog.py",
+      "sha256": "73e11417dcd9f2b5e23a1149c8b3ffdf47a5842e177b0089f391c5e7909b12af",
+      "syntax": "passed"
+    },
+    {
+      "script": "Scripts\\Models\\validate_model_catalog_in_editor.py",
+      "sha256": "43f2707b5c03c884fe3267cc3bca42e52efe734ebddb58110e1c3ffb0cd67931",
+      "syntax": "passed"
+    },
+    {
+      "script": "Scripts\\Models\\import_sweeper_catalog_in_editor.py",
+      "sha256": "d07fc59de725120eddeca39cbf8ee8140266190df15f5dea5d888ad9640267fe",
+      "syntax": "passed"
+    },
+    {
+      "script": "Scripts\\Models\\capture_sweeper_formal_views.py",
+      "sha256": "490ee77c3e3b8e3c889ccc96c75311eba8396e6bcfb368c5803251adc5611443",
+      "syntax": "passed"
+    },
+    {
+      "script": "Scripts\\Models\\begin_sweeper_runtime_review.py",
+      "sha256": "69c823520f0db59b52485249cc4da71d523883a073cd8431dffcd1feed17ce23",
+      "syntax": "passed"
+    },
+    {
+      "script": "Scripts\\Models\\readback_sweeper_runtime.py",
+      "sha256": "4b1ea6c17217006d55a9324ea8c632ecf807037839f755f930308c7e5b6e4a10",
+      "syntax": "passed"
+    },
+    {
+      "script": "Scripts\\Models\\capture_sweeper_live_batches.py",
+      "sha256": "0d08ab0562872d92c116fec4d4b474953098396608d2643fa114223cb07188ee",
+      "syntax": "passed"
+    },
+    {
+      "script": "Scripts\\Models\\prepare_sweeper_acceptance_scene.py",
+      "sha256": "e5b465d6bfbfe4f28bdbfeea1112ecf7321d42f795499745c6c5260c532f64d2",
+      "syntax": "passed"
+    },
+    {
+      "script": "Scripts\\Models\\readback_sweeper_acceptance_scene.py",
+      "sha256": "3b598e4c45271ad76d42379d52f781ad77c2ff8db32147c23020c852ff9daad9",
+      "syntax": "passed"
+    },
+    {
+      "script": "Scripts\\Models\\review_sweeper_orange_candidate.py",
+      "sha256": "0d278af7331bb394d5187521b073de77f56be9acd033bfcd38d4d443fd7d5d95",
+      "syntax": "passed"
+    },
+    {
+      "script": "Scripts\\Models\\publish_sweeper_ue_delivery.py",
+      "sha256": "8a22a7e764cedbe912363de1d0b0e016ee765496270dd2228cb75cb56c9021fb",
+      "syntax": "passed"
+    }
+  ],
+  "model_id": 1005,
+  "maintained_parameter_keys": [
+    "TeamPrimary",
+    "TeamEnabled"
+  ],
+  "uv_region": {
+    "Name": "ColorRegions_9396",
+    "Id": 9396,
+    "Note": "原UV0橙区精确贴图遮罩；跨色简化面逐像素限制替色；其他原色、黄灯及三档明暗不变",
+    "ModelId": 1005,
+    "PartKey": "Root",
+    "RegionKey": "OriginalOrangeArmor",
+    "DisplayName": "原橙色队色区",
+    "PaintRole": 3,
+    "MaskSource": "/Game/GuLiStrike/Models/TeamColor_v1/SweeperSummon/Textures/T_Sweeper_OrangeTeamMask.T_Sweeper_OrangeTeamMask",
+    "MaskId": 3,
+    "Scope": "Existing"
+  },
+  "canceled_models_disabled": [
+    2004,
+    2007
+  ],
+  "native_source_changed": false,
+  "source_excel_sha256": "fee05654e5ea9a21c0e432cee2f984b82d04208d1e468a34efa09b04cac595a1"
+}

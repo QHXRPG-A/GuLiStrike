@@ -207,6 +207,10 @@ struct FGuLiStrikeShipPartsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Parts")
 	TSoftClassPtr<UObject> ProjectileClass;
 
+	/** ModelId (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Parts")
+	int32 ModelId = 0;
+
 };
 
 /** DataTable DT_GuLiStrikeShip_Tuning 的行结构（源: GuLiStrikeShip.xlsx / Tuning）。 */
@@ -294,6 +298,10 @@ struct FGuLiStrikeShipTuningRow : public FTableRowBase
 	/** HullMeshOffsetX/HullMeshOffsetY/HullMeshOffsetZ (float) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Tuning")
 	FVector HullMeshOffset = FVector::ZeroVector;
+
+	/** HullModelId (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Tuning")
+	int32 HullModelId = 0;
 
 };
 

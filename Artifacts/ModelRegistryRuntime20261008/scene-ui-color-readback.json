@@ -1,0 +1,62 @@
+{
+  "profiles": [
+    {
+      "profile": "ColoredLight",
+      "opaque_ring_rgb": [
+        255,
+        56,
+        48
+      ],
+      "matching_pixels": 88
+    },
+    {
+      "profile": "ColorGrade",
+      "opaque_ring_rgb": [
+        255,
+        56,
+        48
+      ],
+      "matching_pixels": 84
+    },
+    {
+      "profile": "DenseFog",
+      "opaque_ring_rgb": [
+        255,
+        56,
+        48
+      ],
+      "matching_pixels": 81
+    },
+    {
+      "profile": "ExposureBloom",
+      "opaque_ring_rgb": [
+        255,
+        56,
+        48
+      ],
+      "matching_pixels": 90
+    },
+    {
+      "profile": "Night",
+      "opaque_ring_rgb": [
+        255,
+        56,
+        48
+      ],
+      "matching_pixels": 94
+    },
+    {
+      "profile": "None",
+      "opaque_ring_rgb": [
+        255,
+        56,
+        48
+      ],
+      "matching_pixels": 93
+    }
+  ],
+  "success": true,
+  "method": "Same-camera lower enemy-ring ROI (400,195,477,207); opaque FSlate tint #FF3830 remains identical while the world changes",
+  "world_band_width_cm": 20,
+  "band_width_verification": "World inner and outer geometry uses 20 cm radial width; pixel width is not fixed"
+}

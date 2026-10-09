@@ -1,0 +1,36 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "components": [
+      {
+        "name": "Body",
+        "mesh": "<Object '/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SM_RPF_Body.SM_RPF_Body' (0x000001E5248C3800) Class 'StaticMesh'>",
+        "materials": [
+          "<Object '/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Armor.M_RPF_Armor' (0x000001E51BF1B600) Class 'Material'>",
+          "<Object '/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Interior.M_RPF_Interior' (0x000001E51BBC4600) Class 'Material'>",
+          "<Object '/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Details.M_RPF_Details' (0x000001E51BBC3800) Class 'Material'>"
+        ],
+        "cpd": 8
+      },
+      {
+        "name": "Door",
+        "mesh": "<Object '/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door.SK_RPF_Door' (0x000001E51BF65000) Class 'SkeletalMesh'>",
+        "materials": [
+          "<Object '/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Armor.M_RPF_Armor' (0x000001E51BF1A800) Class 'Material'>",
+          "<Object '/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Details.M_RPF_Details' (0x000001E51BBC1C00) Class 'Material'>",
+          "<Object '/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Interior.M_RPF_Interior' (0x000001E51BBC2A00) Class 'Material'>"
+        ],
+        "cpd": 8
+      },
+      {
+        "name": "AccessRamp",
+        "mesh": "<Object '/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/Meshes/SM_RPF_AccessRamp.SM_RPF_AccessRamp' (0x000001E51BC52000) Class 'StaticMesh'>",
+        "materials": [
+          "<Object '/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/OverrideMaterials/Parents/M_RPF_Interior.M_RPF_Interior' (0x000001E51BBC0E00) Class 'Material'>"
+        ],
+        "cpd": 8
+      }
+    ]
+  }
+}

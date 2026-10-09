@@ -1,0 +1,84 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "saved_and_reloaded": true,
+  "actors": [
+    {
+      "label": "ModelRegistry_Sweeper_OwnBlue_20261009",
+      "editor_only": true,
+      "position_cm": [
+        -19500.0,
+        62699.99999389648,
+        1155.441672388809
+      ],
+      "scale": [
+        0.2,
+        0.2,
+        0.2
+      ],
+      "mesh": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "material": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_Sweeper_Cel_Rigid.M_Sweeper_Cel_Rigid",
+      "primary": [
+        0.1441284716129303,
+        0.37123769521713257,
+        0.5149176716804504,
+        1.0
+      ],
+      "enabled": 1.0
+    },
+    {
+      "label": "ModelRegistry_Sweeper_EnemyRed_20261009",
+      "editor_only": true,
+      "position_cm": [
+        -18500.0,
+        62699.99999389648,
+        1155.441672388809
+      ],
+      "scale": [
+        0.2,
+        0.2,
+        0.2
+      ],
+      "mesh": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "material": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_Sweeper_Cel_Rigid.M_Sweeper_Cel_Rigid",
+      "primary": [
+        0.366252601146698,
+        0.05126945674419403,
+        0.08650045841932297,
+        1.0
+      ],
+      "enabled": 1.0
+    },
+    {
+      "label": "ModelRegistry_Sweeper_Camera_20261009",
+      "editor_only": true,
+      "position_cm": [
+        -18300.0,
+        64299.99999389648,
+        3055.441672388809
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "ModelRegistry_Sweeper_Notes_20261009",
+      "editor_only": true,
+      "position_cm": [
+        -19000.0,
+        62199.99999389648,
+        1355.441672388809
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "errors": [],
+  "native_mesh_attributes_exact": true,
+  "runtime_checks": "separate real Q summons and both-client readbacks"
+}

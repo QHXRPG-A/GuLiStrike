@@ -37,6 +37,10 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | assets, commander, data, ground_mech, rendering, ship, ui | — | 用户在Mass地图或新版UE画廊确认扫荡者最终观感；保留其他已核对证据和未验证的长期稳定、飞船运行边界。 | 2026-10-09 |
+| [十四模型仅配色 Blender 成品 B_v1 — 实际成品审核](../DevelopmentDocumentation/20261008-十四模型仅配色Blender成品B_v1.md) | art, assets, rendering | 5/7 (71%) | 用户在当前UE画廊确认最终观感；已放行的本B版本不重复请求导入许可。 | 2026-10-09 |
+| [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | art, assets, building, commander, rendering, ui | 6/9 (67%) | 用户在Mass地图确认全部场景UI操作与最终观感；未覆盖功能和长期性能仍按当前模型目录记录。 | 2026-10-09 |
+| [Mass单位脚环统一20cm — 实施记录](../DevelopmentDocumentation/20261007-Mass单位脚环统一20cm.md) | commander, ui | 4/5 (80%) | 玩家在Mass地图确认当前Slate脚环的20cm宽度、同色选择标记和环境表现。 | 2026-10-09 |
 | [彼之矛工程车建造与四足重炮](../DevelopmentDocumentation/20261005-彼之矛工程车建造与四足重炮.md) | art, assets, building, commander | 9/10 (90%) | 在LVL_CommanderMassPrototype的BiZhiMaoQA区由玩家验证B→7施工、固定底座四向移动和目标炮台跟随；攻击逻辑另行制定。 | 2026-10-05 |
 | [ControlRig 机甲美术统一 — 制作与审核记录](../DevelopmentDocumentation/20261004-ControlRig机甲美术统一.md) | art, assets, rendering | 7/7 (100%) | 指挥官LOD说明已按2026-10-05用户指令勘误，当前总共三档；历史源保留，新的实际版本待审核。 | 2026-10-04 |
 | [机枪枪口命中与弹道照明](../DevelopmentDocumentation/20260930-机枪枪口命中与弹道照明.md) | combat, commander, vfx | — | 玩家在LVL_CommanderMassPrototype验证两种地面兵种照明、全部机枪命中及密集交火清理。 | 2026-09-30 |
@@ -58,8 +62,10 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [十四模型配色参考与三视图 A_v3 — 参考审核交付](../DevelopmentDocumentation/20261008-十四模型配色参考与三视图A_v3.md) | art, assets, rendering | 6/9 (67%) | 最终模型观感沿统一目录的实际UE画廊与Mass地图确认，不重复本旧参考阶段。 | 2026-10-09 |
+| [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | art, assets, rendering | 6/9 (67%) | 最终模型观感沿统一目录的实际UE画廊与Mass地图确认，不重复本旧参考阶段。 | 2026-10-09 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。 | 2026-10-09 |
 | [SSF建筑美术统一与三档LOD](../DevelopmentDocumentation/20261005-SSF建筑美术统一与三档LOD.md) | art, assets, rendering | 11/11 (100%) | 本轮资产制作与交付已验收；后续游戏接入或新版本改造另按用户任务执行。 | 2026-10-07 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。 | 2026-10-07 |
 | [指挥官三档LOD纠正与资源迁移](../DevelopmentDocumentation/20261005-指挥官三档LOD纠正与资源迁移.md) | art, assets, commander, rendering | 12/12 (100%) | — | 2026-10-05 |
 | [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | combat, commander, network, performance, ship, wingman | 7/8 (88%) | 补齐同负载旧版差值、原生60/120Hz和未覆盖的视觉与重连矩阵。 | 2026-10-05 |
 | [指挥官三档镜头与总览LOD — 实施与交付](../DevelopmentDocumentation/20260930-指挥官三档镜头与总览LOD.md) | commander, performance, ui | 8/9 (89%) | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 | 2026-10-05 |

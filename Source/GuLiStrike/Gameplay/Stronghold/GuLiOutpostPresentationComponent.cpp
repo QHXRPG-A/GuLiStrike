@@ -1,4 +1,7 @@
 #include "Gameplay/Stronghold/GuLiOutpostPresentationComponent.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
+#include "Gameplay/Models/GuLiLocalTeamColorSubsystem.h"
+#include "Gameplay/Presentation/GuLiLocalTeamColors.h"
 
 #include "Components/MaterialBillboardComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -10,7 +13,7 @@
 
 UGuLiOutpostPresentationSettings::UGuLiOutpostPresentationSettings()
 {
-	Mesh = TSoftObjectPtr<UStaticMesh>(FSoftObjectPath(TEXT("/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder")));
+	ModelId = GuLiModelIds::ManualOutpost;
 	BodyMaterial = TSoftObjectPtr<UMaterialInterface>(FSoftObjectPath(TEXT("/Game/GuLiStrike/FX/StrongholdOutpost/M_OutpostGlow.M_OutpostGlow")));
 	HaloMaterial = TSoftObjectPtr<UMaterialInterface>(FSoftObjectPath(TEXT("/Game/GuLiStrike/FX/StrongholdOutpost/M_OutpostHalo.M_OutpostHalo")));
 }
@@ -37,7 +40,15 @@ FLinearColor UGuLiOutpostPresentationComponent::OwnerColor(const EGuLiTeam Team)
 
 double UGuLiOutpostPresentationComponent::ServerTime() const
 {
-	return GetWorld()->GetGameState()->GetServerWorldTimeSeconds();
+	const auto* StateObject=GetWorld() ? GetWorld()->GetGameState() : nullptr;
+	return StateObject ? StateObject->GetServerWorldTimeSeconds() : 0.0;
+}
+
+bool UGuLiOutpostPresentationComponent::GetSceneUIHalo(FVector& Center, EGuLiTeam& Team, FVector2D& RadiiCm) const
+{
+	if (!VisualMesh || !VisualMesh->IsVisible() || GetOwner()->IsHidden()) return false;
+	Center=VisualMesh->Bounds.Origin; Team=State.Team; RadiiCm=FVector2D(400,450);
+	return true;
 }
 
 void UGuLiOutpostPresentationComponent::BeginPlay()
@@ -45,6 +56,7 @@ void UGuLiOutpostPresentationComponent::BeginPlay()
 	Super::BeginPlay();
 	if (GetNetMode() == NM_DedicatedServer) return;
 	CreatePresentation();
+	if (!VisualMesh) return;
 	RefreshColor();
 	UpdatePose();
 }
@@ -52,13 +64,15 @@ void UGuLiOutpostPresentationComponent::BeginPlay()
 void UGuLiOutpostPresentationComponent::CreatePresentation()
 {
 	const auto& Config = *GetDefault<UGuLiOutpostPresentationSettings>();
-	UStaticMesh* Mesh = Config.Mesh.LoadSynchronous();
+	UStaticMesh* Mesh = GuLiModels::Load<UStaticMesh>(this,Config.ModelId);
+	if (!Mesh) return;
 	const FBoxSphereBounds Bounds = Mesh->GetBounds();
 	const double Scale = Config.ModelHeightCm / (2.0 * Bounds.BoxExtent.Z);
 	RestMeshLocation = FVector(-Bounds.Origin.X * Scale, -Bounds.Origin.Y * Scale,
 		-500.0 - (Bounds.Origin.Z - Bounds.BoxExtent.Z) * Scale);
 	BodyMaterial = UMaterialInstanceDynamic::Create(Config.BodyMaterial.LoadSynchronous(), this);
 	HaloMaterial = UMaterialInstanceDynamic::Create(Config.HaloMaterial.LoadSynchronous(), this);
+	if (!BodyMaterial || !HaloMaterial) return;
 	BodyMaterial->SetScalarParameterValue(TEXT("GlowIntensity"), Config.GlowIntensity);
 	HaloMaterial->SetScalarParameterValue(TEXT("HaloOpacity"), Config.HaloOpacity);
 
@@ -67,7 +81,8 @@ void UGuLiOutpostPresentationComponent::CreatePresentation()
 	VisualMesh->SetMobility(EComponentMobility::Movable);
 	VisualMesh->SetupAttachment(GetOwner()->GetRootComponent());
 	VisualMesh->SetStaticMesh(Mesh);
-	VisualMesh->SetMaterial(0, BodyMaterial);
+	// Legacy glow remains a compatibility effect. An approved region material owns its fixed paint.
+	if (VisualMesh->GetCustomPrimitiveDataIndexForVectorParameter(TEXT("GuLi_TeamPrimary"))!=8) VisualMesh->SetMaterial(0, BodyMaterial);
 	VisualMesh->SetRelativeScale3D(FVector(Scale));
 	VisualMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	VisualMesh->SetCollisionObjectType(ECC_WorldDynamic);
@@ -75,6 +90,7 @@ void UGuLiOutpostPresentationComponent::CreatePresentation()
 	VisualMesh->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 	VisualMesh->SetCanEverAffectNavigation(false);
 	VisualMesh->RegisterComponent();
+	UGuLiLocalTeamColorSubsystem::Register(this,VisualMesh,Config.ModelId,TEXT("Root"),State.Team);
 
 	Halo = NewObject<UMaterialBillboardComponent>(GetOwner(), TEXT("OutpostHalo"), RF_Transient);
 	GetOwner()->AddInstanceComponent(Halo);
@@ -85,6 +101,7 @@ void UGuLiOutpostPresentationComponent::CreatePresentation()
 	Halo->SetCastShadow(false);
 	Halo->AddElement(HaloMaterial, nullptr, false, 800.0f, 900.0f, nullptr);
 	Halo->RegisterComponent();
+	Halo->SetVisibility(false); // Ownership halo is drawn by the post-scene Slate layer.
 }
 
 void UGuLiOutpostPresentationComponent::ApplyOwnerState(const FGuLiOutpostOwnerState& InState)
@@ -98,13 +115,20 @@ void UGuLiOutpostPresentationComponent::ApplyOwnerState(const FGuLiOutpostOwnerS
 
 void UGuLiOutpostPresentationComponent::RefreshColor()
 {
-	const FLinearColor Color = OwnerColor(State.Team);
+	if (!BodyMaterial || !HaloMaterial) return;
+	UGuLiLocalTeamColorSubsystem::Register(this,VisualMesh,GetDefault<UGuLiOutpostPresentationSettings>()->ModelId,TEXT("Root"),State.Team);
+	const auto ViewTeam=GuLiLocalTeamColors::GetViewTeam(GetWorld()->GetFirstPlayerController());
+	const bool Assigned=GuLiLocalTeamColors::IsAssigned(ViewTeam) && GuLiLocalTeamColors::IsAssigned(State.Team);
+	const FLinearColor Color=Assigned ? OwnerColor(State.Team==ViewTeam ? EGuLiTeam::Blue : EGuLiTeam::Red) : FLinearColor::FromSRGBColor(FColor::FromHex(TEXT("#2C3735")));
+	if (Color==LastGlowColor) return;
+	LastGlowColor=Color;
 	BodyMaterial->SetVectorParameterValue(TEXT("GlowColor"), Color);
 	HaloMaterial->SetVectorParameterValue(TEXT("GlowColor"), Color);
 }
 
 void UGuLiOutpostPresentationComponent::UpdatePose()
 {
+	if (!VisualMesh || !Halo) return;
 	const auto& Config = *GetDefault<UGuLiOutpostPresentationSettings>();
 	const double Now = ServerTime();
 	double Height = 0.0;
@@ -123,13 +147,14 @@ void UGuLiOutpostPresentationComponent::UpdatePose()
 	}
 	VisualMesh->SetRelativeLocation(RestMeshLocation + FVector(0, 0, Height));
 	Halo->SetRelativeLocation(FVector(0, 0, -500.0 + Config.ModelHeightCm * 0.5 + Height));
-	SetComponentTickEnabled(bAnimate);
+	SetComponentTickEnabled(true); // Also refreshes a late local identity/ownership display.
 }
 
 void UGuLiOutpostPresentationComponent::TickComponent(
 	const float DeltaTime, const ELevelTick TickType, FActorComponentTickFunction* TickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, TickFunction);
+	RefreshColor();
 	UpdatePose();
 }
 
@@ -138,8 +163,8 @@ void UGuLiOutpostPresentationComponent::EndPlay(const EEndPlayReason::Type Reaso
 	SetComponentTickEnabled(false);
 	if (GetNetMode() != NM_DedicatedServer)
 	{
-		Halo->DestroyComponent();
-		VisualMesh->DestroyComponent();
+		if (Halo) Halo->DestroyComponent();
+		if (VisualMesh) VisualMesh->DestroyComponent();
 	}
 	Super::EndPlay(Reason);
 }

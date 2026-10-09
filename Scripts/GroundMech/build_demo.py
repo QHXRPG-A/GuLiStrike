@@ -1,7 +1,10 @@
 """Create the requested environment copy and Ground-first player preset."""
 import unreal,json,traceback,hashlib
+import sys
 from pathlib import Path
 ROOT=Path(unreal.Paths.project_dir());OUT=ROOT/'TestResults/GroundMech'
+sys.path.insert(0,str(ROOT/'Scripts'))
+from Models import model_catalog
 SOURCE='/Game/StylizedPineEnvironment/Maps/Demo_Map'
 TARGET='/Game/Maps/LVL_GroundMech_Demo'
 BASE='/Game/GuLiStrike/GroundMech'
@@ -36,7 +39,7 @@ def run():
         a=tag(ACTORS.spawn_actor_from_class(unreal.PlayerStart,p+unreal.Vector(0,0,475),unreal.Rotator(yaw=0)),'GroundMech_Start_'+str(i+1))
         starts.append(list(a.get_actor_location().to_tuple()))
     wm=tag(ACTORS.spawn_actor_from_class(unreal.StaticMeshActor,unreal.Vector()),'GroundMech_WarMachine_SizeReference')
-    wm.static_mesh_component.set_static_mesh(unreal.load_asset('/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel'))
+    wm.static_mesh_component.set_static_mesh(unreal.load_object(None,model_catalog.resource(model_catalog.model_id('WM01'))))
     wm.set_actor_scale3d(unreal.Vector(.2,.2,.2));wm.static_mesh_component.set_collision_enabled(unreal.CollisionEnabled.NO_COLLISION)
     center,extent=wm.get_actor_bounds(False,True);p=ground(14800,-5400)
     wm.set_actor_location(unreal.Vector(p.x-center.x,p.y-center.y,p.z-center.z+extent.z+2),False,False)

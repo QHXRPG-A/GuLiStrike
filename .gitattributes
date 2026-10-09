@@ -44,6 +44,29 @@ TestResults/NetworkLive20261003/events-project.csv filter=lfs diff=lfs merge=lfs
 TestResults/NetworkLive20261003/*.nprof filter=lfs diff=lfs merge=lfs -text
 TestResults/FlightEvents20261004/*.nprof filter=lfs diff=lfs merge=lfs -text
 ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports/*_samples.json filter=lfs diff=lfs merge=lfs -text
+
+# Preserve frozen team-color sources, prompts, manifests and recorded hashes.
+ArtSource/LocalTeamColorReview_20261008/** -text
+ArtSource/LocalTeamColorReference_A_v2_20261008/** -text
+ArtSource/LocalTeamColorReference_A_v3_20261008/** -text
+ArtSource/LocalTeamColorProduction_B_v1_20261008/** -text
+ArtSource/LocalTeamColorUE_B_v2_20261008/** -text
+ArtSource/ModelInterface_B_20261008/** -text
+ArtSource/SweeperTeamColor_v1_20261008/** -text
+Artifacts/MassRingWidth20cm20261007/** -text
+Artifacts/SceneUI20261008/** -text
+Artifacts/ModelRegistryRuntime20261008/** -text
+Artifacts/SessionCloseout20261009/** -text
+
+# Dense native geometry and paint sidecars are authoring inputs, not regular blobs.
+ArtSource/ModelInterface_B_20261008/Masks/*.json filter=lfs diff=lfs merge=lfs -text
+ArtSource/ModelInterface_B_20261008/OriginalGeometry/*.json filter=lfs diff=lfs merge=lfs -text
+ArtSource/ModelInterface_B_20261008/PaintGeometry/*.json filter=lfs diff=lfs merge=lfs -text
+ArtSource/ModelInterface_B_20261008/ResolvedMasks/*.json filter=lfs diff=lfs merge=lfs -text
+ArtSource/ModelInterface_B_20261008/*__source.json filter=lfs diff=lfs merge=lfs -text
+ArtSource/ModelInterface_B_20261008/*__render.json filter=lfs diff=lfs merge=lfs -text
+ArtSource/ModelInterface_B_20261008/diagnostic-*-source.json filter=lfs diff=lfs merge=lfs -text
+ArtSource/ModelInterface_B_20261008/diagnostic-*-render.json filter=lfs diff=lfs merge=lfs -text
 # Preserve the original compiler/profiler logs, including whitespace in diagnostic lines.
 ArtSource/Mechs/RSGMechStyle_20261003/**/*.log -whitespace
 TestResults/FlightEvents20261004/*.log -whitespace

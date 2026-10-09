@@ -288,23 +288,10 @@ def _create_or_load_catalog(preview_material, missile_mesh, sentry_mesh, outpost
         if catalog is None:
             raise BuildingAssetError(f"Unable to create catalog: {CATALOG_PATH}")
 
-    definitions = []
-    rows = (
-        (building_enum.MISSILE_TURRET, "防空炮", missile_mesh),
-        (building_enum.SENTRY_TURRET, "哨戒炮", sentry_mesh),
-        (building_enum.OUTPOST, "据点", outpost_mesh),
-    )
-    for building_type, display_name, mesh in rows:
-        geometry = _mesh_definition_geometry(mesh)
-        definition = definition_class()
-        definition.set_editor_property("type", building_type)
-        definition.set_editor_property("display_name", display_name)
-        definition.set_editor_property("mesh", mesh)
-        definition.set_editor_property("collision_extent", geometry["extent"])
-        definition.set_editor_property("visual_offset", geometry["visual_offset"])
-        definitions.append(definition)
-
-    catalog.set_editor_property("definitions", definitions)
+    # Models owns resource paths; Buildings owns authored collision/offset/scale.
+    # Never rebuild those values from a mesh bounding box or write a legacy Mesh row.
+    if not hasattr(catalog, 'resolve_table') or not catalog.resolve_table(True):
+        raise BuildingAssetError('Compile/import the model-ID tables before rebuilding the resolved building cache')
     catalog.set_editor_property("preview_vfx_id", vfx_id('BuildingPlacement'))
     _set_metadata(catalog, "GuLi.Building.Owner", OWNER)
     _set_metadata(catalog, "GuLi.Building.Schema", 1)

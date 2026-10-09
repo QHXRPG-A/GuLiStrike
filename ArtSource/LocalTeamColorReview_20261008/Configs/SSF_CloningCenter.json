@@ -1,0 +1,41 @@
+{
+  "name": "SSF_CloningCenter",
+  "group": "SSF",
+  "mesh": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CloningCenter/Meshes/SK_Blue_CloningCenter.SK_Blue_CloningCenter",
+  "kind": "SkeletalMesh",
+  "bounds": "Read through the preview component bounds",
+  "approved_palette": "SSF_TeamPalette_B_v2",
+  "version": "LocalTeamColorReview.20261008.v1",
+  "mutable_regions": "复用现有 UV4 队色标记/Accent 分区；主装甲、结构、线稿、平台、灯具和无人机固定",
+  "source_palette_candidates": [],
+  "blue_reference": "#2877DB",
+  "red_reference": "#D7534D",
+  "enemy_non_blue_palette": "#D7534D",
+  "configuration_status": "candidate_pending_region_review",
+  "runtime_enabled": false,
+  "geometry_animation_lod_unchanged": true,
+  "materials": [
+    {
+      "slot": 0,
+      "name": "SSF_Body",
+      "fixed": false,
+      "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CloningCenter/Materials/MI_Blue_CloningCenter_Body.MI_Blue_CloningCenter_Body",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/SSF_CloningCenter/M_Review_M_SSF_ThreeToneLine.M_Review_M_SSF_ThreeToneLine",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/SSF_CloningCenter/MI_Blue_0.MI_Blue_0",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/SSF_CloningCenter/MI_Red_0.MI_Red_0",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/SSF_CloningCenter/MI_Regions_0.MI_Regions_0"
+    },
+    {
+      "slot": 1,
+      "name": "SSF_Display",
+      "fixed": true,
+      "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CloningCenter/Materials/MI_Blue_CloningCenter_Display.MI_Blue_CloningCenter_Display"
+    },
+    {
+      "slot": 2,
+      "name": "SSF_Outline",
+      "fixed": true,
+      "source": "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Materials/M_SSF_Outline.M_SSF_Outline"
+    }
+  ]
+}

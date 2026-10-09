@@ -12,7 +12,7 @@ description: "制作与维护 GuLiStrike 肉鸽卡牌：Excel/公共文本引用
 - 项目为 `D:/UE5.7/test1/GuLiStrike.uproject`。先确认当前工作区；以下项目路径均相对该根目录。移到新工作区时解析新根，不修改另一份项目。
 - 遵守项目 `AGENTS.md` 的搜索边界；源码只查 `Source` 和 `Plugins/**/Source`。不遍历 Intermediate、Saved、Binaries、DerivedDataCache、Content/Assets、Downloads，不读取UE二进制资产内容。
 - WM01唯一对应重防号，Type=1、UnitTypeId=2；旧类名和资源技术路径保持稳定。2026-09-29源表扩展为射速/机动/导弹伤害/导弹仓解锁/整数弹量五类效果，含依赖和互斥；原生编译/加载和数据导入状态从对应Progress记录核对。经典美漫、六层视差沿用。`WarMachineTarotCards` 是历史源目录名，**不代表当前还采用塔罗画风**。
-- 风格按当前用户要求与资产已确认版本执行。项目默认美术规则见 [GuLiStrike美术规范](D:/UE5.7/test1/Progress/RequirementDocument/GuLiStrike美术规范.md)，不能把本批橙白配色、四悬浮盘、特效缩放6套到所有新单位。
+- 风格按当前用户要求与资产已确认版本执行。制作前读取 [GuLiStrike美术规范](D:/UE5.7/test1/Progress/RequirementDocument/GuLiStrike美术规范.md) 的“全项目统一色库”；新建或明确重配色的插画、背景、卡框和装饰从该色库选色，保留已审模型身份配色及文字／敌我功能色例外，本技能不复制色表。不能把本批橙白配色、四悬浮盘、特效缩放6套到所有新单位。
 
 ## 按任务读取
 

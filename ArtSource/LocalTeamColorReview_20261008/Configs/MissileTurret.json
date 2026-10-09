@@ -1,0 +1,225 @@
+{
+  "name": "MissileTurret",
+  "group": "Building",
+  "mesh": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/StaticMeshes/missile_turret.missile_turret",
+  "kind": "StaticMesh",
+  "bounds": "<Struct 'BoxSphereBounds' (0x0000028085B2A340) {origin: {x: 0.000000, y: 24.289810, z: 1760.383118}, box_extent: {x: 1259.731110, y: 1364.374146, z: 1760.383118}, sphere_radius: 2558.786431}>",
+  "definition_id": 1,
+  "display_name": "防空炮",
+  "mesh_scale": {
+    "X": 0.2,
+    "Y": 0.2,
+    "Z": 0.2
+  },
+  "version": "LocalTeamColorReview.20261008.v1",
+  "mutable_regions": "仅 MetalPlate / OrangeMetalPlate 装甲槽；线缆、镜片、危险条纹和结构固定",
+  "source_palette_candidates": [],
+  "blue_reference": "#2877DB",
+  "red_reference": "#D7534D",
+  "enemy_non_blue_palette": "#D7534D",
+  "configuration_status": "candidate_pending_region_review",
+  "runtime_enabled": false,
+  "geometry_animation_lod_unchanged": true,
+  "materials": [
+    {
+      "slot": 0,
+      "name": "Attention",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Attention.Attention"
+    },
+    {
+      "slot": 1,
+      "name": "BackFilter",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/BackFilter.BackFilter"
+    },
+    {
+      "slot": 2,
+      "name": "BackPanel",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/BackPanel.BackPanel"
+    },
+    {
+      "slot": 3,
+      "name": "Bars",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Bars.Bars"
+    },
+    {
+      "slot": 4,
+      "name": "BlueWire",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/BlueWire.BlueWire"
+    },
+    {
+      "slot": 5,
+      "name": "Electronic",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Electronic.Electronic"
+    },
+    {
+      "slot": 6,
+      "name": "FrontBars",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/FrontBars.FrontBars"
+    },
+    {
+      "slot": 7,
+      "name": "GreenWire",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/GreenWire.GreenWire"
+    },
+    {
+      "slot": 8,
+      "name": "Hazard",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Hazard.Hazard"
+    },
+    {
+      "slot": 9,
+      "name": "Iron",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Iron.Iron"
+    },
+    {
+      "slot": 10,
+      "name": "Lens",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Lens.Lens"
+    },
+    {
+      "slot": 11,
+      "name": "Lens2",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Lens2.Lens2"
+    },
+    {
+      "slot": 12,
+      "name": "Lens3",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Lens3.Lens3"
+    },
+    {
+      "slot": 13,
+      "name": "LensAround",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/LensAround.LensAround"
+    },
+    {
+      "slot": 14,
+      "name": "Number",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Number.Number"
+    },
+    {
+      "slot": 15,
+      "name": "Pipe",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Pipe.Pipe"
+    },
+    {
+      "slot": 16,
+      "name": "RedWire",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/RedWire.RedWire"
+    },
+    {
+      "slot": 17,
+      "name": "Rhomboid",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Rhomboid.Rhomboid"
+    },
+    {
+      "slot": 18,
+      "name": "SolarPanel",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/SolarPanel.SolarPanel"
+    },
+    {
+      "slot": 19,
+      "name": "Vent",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Vent.Vent"
+    },
+    {
+      "slot": 20,
+      "name": "controlPanel",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/controlPanel.controlPanel"
+    },
+    {
+      "slot": 21,
+      "name": "glass",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/glass.glass"
+    },
+    {
+      "slot": 22,
+      "name": "AroundMissile",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/AroundMissile.AroundMissile"
+    },
+    {
+      "slot": 23,
+      "name": "BlackMetal",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/BlackMetal.BlackMetal"
+    },
+    {
+      "slot": 24,
+      "name": "BottomBars",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/BottomBars.BottomBars"
+    },
+    {
+      "slot": 25,
+      "name": "GreayMetal",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/GreayMetal.GreayMetal"
+    },
+    {
+      "slot": 26,
+      "name": "LauncherBars",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/LauncherBars.LauncherBars"
+    },
+    {
+      "slot": 27,
+      "name": "MetalPlate",
+      "fixed": false,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/MetalPlate.MetalPlate",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/MissileTurret/M_Review_M_Default.M_Review_M_Default",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/MissileTurret/MI_Blue_27.MI_Blue_27",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/MissileTurret/MI_Red_27.MI_Red_27",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/MissileTurret/MI_Regions_27.MI_Regions_27"
+    },
+    {
+      "slot": 28,
+      "name": "OrangeMetalPlate",
+      "fixed": false,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/OrangeMetalPlate.OrangeMetalPlate",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/MissileTurret/M_Review_M_Default.M_Review_M_Default",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/MissileTurret/MI_Blue_28.MI_Blue_28",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/MissileTurret/MI_Red_28.MI_Red_28",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/MissileTurret/MI_Regions_28.MI_Regions_28"
+    },
+    {
+      "slot": 29,
+      "name": "RustedMetal",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/RustedMetal.RustedMetal"
+    },
+    {
+      "slot": 30,
+      "name": "Wire",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Wire.Wire"
+    },
+    {
+      "slot": 31,
+      "name": "material",
+      "fixed": true,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/material.material"
+    }
+  ]
+}

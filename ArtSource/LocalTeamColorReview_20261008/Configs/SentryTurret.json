@@ -1,0 +1,40 @@
+{
+  "name": "SentryTurret",
+  "group": "Building",
+  "mesh": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
+  "kind": "StaticMesh",
+  "bounds": "<Struct 'BoxSphereBounds' (0x0000028075BA8340) {origin: {x: 0.000000, y: 0.000000, z: 833.616302}, box_extent: {x: 967.896240, y: 1933.390137, z: 837.594452}, sphere_radius: 2318.703305}>",
+  "definition_id": 2,
+  "display_name": "哨戒炮",
+  "mesh_scale": {
+    "X": 0.2,
+    "Y": 0.2,
+    "Z": 0.2
+  },
+  "version": "LocalTeamColorReview.20261008.v1",
+  "mutable_regions": "原绿色彩绘甲片候选；灰色机构和炮口固定",
+  "source_palette_candidates": [
+    "#48907A",
+    "#37775F",
+    "#47816B"
+  ],
+  "blue_reference": "#2877DB",
+  "red_reference": "#D7534D",
+  "enemy_non_blue_palette": "#D7534D",
+  "configuration_status": "candidate_pending_region_review",
+  "runtime_enabled": false,
+  "geometry_animation_lod_unchanged": true,
+  "materials": [
+    {
+      "slot": 0,
+      "name": "Stylized_Turrets_A_mat",
+      "fixed": false,
+      "source": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_mat.Stylized_Turrets_A_mat",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/SentryTurret/M_Review_FBXLegacyPhongSurfaceMaterial.M_Review_FBXLegacyPhongSurfaceMaterial",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/SentryTurret/MI_Blue_0.MI_Blue_0",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/SentryTurret/MI_Red_0.MI_Red_0",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/SentryTurret/MI_Regions_0.MI_Regions_0"
+    }
+  ],
+  "preview_only_repair": "Imported legacy diffuse weights are zero; the isolated parent reads the existing DiffuseColorMap. Original assets are unchanged."
+}

@@ -1,0 +1,69 @@
+{
+  "success": true,
+  "textures": [
+    {
+      "asset": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A.Stylized_Turrets_A",
+      "file": "D:\\UE5.7\\test1\\ArtSource\\LocalTeamColorReview_20261008\\SourceTextures\\Stylized_Turrets_A.png"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Textures/T_RPF_Armor_BaseColor.T_RPF_Armor_BaseColor",
+      "file": "D:\\UE5.7\\test1\\ArtSource\\LocalTeamColorReview_20261008\\SourceTextures\\T_RPF_Armor_BaseColor.png"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Textures/T_RPF_Interior_BaseColor.T_RPF_Interior_BaseColor",
+      "file": "D:\\UE5.7\\test1\\ArtSource\\LocalTeamColorReview_20261008\\SourceTextures\\T_RPF_Interior_BaseColor.png"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Buildings/ShieldGenerator/Textures/T_ShieldGenerator_BaseColor.T_ShieldGenerator_BaseColor",
+      "file": "D:\\UE5.7\\test1\\ArtSource\\LocalTeamColorReview_20261008\\SourceTextures\\T_ShieldGenerator_BaseColor.png"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Buildings/Textures/Outpost/T_OutpostConcrete_BaseColor.T_OutpostConcrete_BaseColor",
+      "file": "D:\\UE5.7\\test1\\ArtSource\\LocalTeamColorReview_20261008\\SourceTextures\\T_OutpostConcrete_BaseColor.png"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BaseColor.T_Pioneer_BaseColor",
+      "file": "D:\\UE5.7\\test1\\ArtSource\\LocalTeamColorReview_20261008\\SourceTextures\\T_Pioneer_BaseColor.png"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Dependencies/Commander/Units/Tactical/Cel/Sweeper/Textures/T_Sweeper_BaseColor.T_Sweeper_BaseColor",
+      "file": "D:\\UE5.7\\test1\\ArtSource\\LocalTeamColorReview_20261008\\SourceTextures\\T_Sweeper_BaseColor.png"
+    },
+    {
+      "asset": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_BaseColor.T_WarMachine_BaseColor",
+      "file": "D:\\UE5.7\\test1\\ArtSource\\LocalTeamColorReview_20261008\\SourceTextures\\T_WarMachine_BaseColor.png"
+    }
+  ],
+  "factory_components": [
+    {
+      "name": "Body",
+      "mesh": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SM_RPF_Body.SM_RPF_Body",
+      "transform": "<Struct 'Transform' (0x0000028161F255C0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+      "materials": [
+        "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Armor.M_RPF_Armor",
+        "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Interior.M_RPF_Interior",
+        "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Details.M_RPF_Details"
+      ]
+    },
+    {
+      "name": "Door",
+      "mesh": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door.SK_RPF_Door",
+      "transform": "<Struct 'Transform' (0x0000028161F25D10) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+      "materials": [
+        "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Armor.M_RPF_Armor",
+        "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Details.M_RPF_Details",
+        "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Interior.M_RPF_Interior"
+      ]
+    },
+    {
+      "name": "AccessRamp",
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "transform": "<Struct 'Transform' (0x0000028161F25EC0) {rotation: {x: -0.000000, y: 0.021547, z: 0.000000, w: 0.999768}, translation: {x: 3199.676863, y: 0.000000, z: 27.006964}, scale3d: {x: 16.014871, y: 36.000000, z: 0.150000}}>",
+      "materials": [
+        "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Interior.M_RPF_Interior"
+      ]
+    }
+  ],
+  "gameplay_started": false,
+  "factory_class": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C"
+}

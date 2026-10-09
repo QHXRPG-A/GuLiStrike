@@ -1,0 +1,40 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "class": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C",
+    "components": [
+      "GuLiTeamOutlineComponent",
+      "SceneComponent",
+      "StaticMeshComponent",
+      "SkeletalMeshComponent",
+      "SceneComponent",
+      "SceneComponent",
+      "RectLightComponent",
+      "RectLightComponent",
+      "RectLightComponent",
+      "RectLightComponent",
+      "RectLightComponent",
+      "RectLightComponent",
+      "GuLiGroundAccessRampComponent",
+      "TimelineComponent"
+    ],
+    "after": [
+      {
+        "part": "Body",
+        "primary": "<Struct 'LinearColor' (0x0000024E1E8E0160) {r: 0.144128, g: 0.371238, b: 0.514918, a: 1.000000}>",
+        "enabled": 1.0
+      },
+      {
+        "part": "Door",
+        "primary": "<Struct 'LinearColor' (0x0000024E1E8E1DE0) {r: 0.144128, g: 0.371238, b: 0.514918, a: 1.000000}>",
+        "enabled": 1.0
+      },
+      {
+        "part": "AccessRamp",
+        "primary": "<Struct 'LinearColor' (0x0000024E1E8E1820) {r: 0.144128, g: 0.371238, b: 0.514918, a: 1.000000}>",
+        "enabled": 1.0
+      }
+    ]
+  }
+}

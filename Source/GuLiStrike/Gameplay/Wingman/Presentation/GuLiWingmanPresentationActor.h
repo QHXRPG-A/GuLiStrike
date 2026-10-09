@@ -155,12 +155,13 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category="Wingman|Presentation")
 	TObjectPtr<USceneComponent> SceneRoot;
-	UPROPERTY(EditDefaultsOnly, Category="Wingman|Presentation")
+	UPROPERTY(VisibleAnywhere, Category="Wingman|Presentation")
 	TObjectPtr<UStaticMesh> OwnerMesh;
-	UPROPERTY(EditDefaultsOnly, Category="Wingman|Presentation")
+	UPROPERTY(VisibleAnywhere, Category="Wingman|Presentation")
 	TObjectPtr<UStaticMesh> RemoteMesh;
-	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Presentation")
+	UPROPERTY(Config, meta=(DeprecatedProperty, DeprecationMessage="Use DefaultModelId in the Models catalogue."))
 	TSoftObjectPtr<UStaticMesh> DefaultPresentationMesh;
+	UPROPERTY(Config, EditAnywhere, Category="Models") int32 DefaultModelId = 6001;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Presentation",
 		meta=(ClampMin="0.0", ClampMax="0.5"))
 	float InterpolationBackTimeSeconds = 0.2f;

@@ -1,0 +1,134 @@
+{
+  "ModelId": 1005,
+  "version": "Sweeper.OrangeTeamColor.B_v1.20261008",
+  "user_decision": "不用出图了，就这橙色的区域作为team colour就好了",
+  "source": "D:\\UE5.7\\test1\\ArtSource\\CommanderLOD_20261005\\SweeperSummon\\SweeperSummon_3Tier.blend",
+  "source_sha256": "5acba9f1de505bafcb005645cdcacb5691f7ae5baef301e9cd547ce60a57fe11",
+  "source_atlas": "D:\\UE5.7\\test1\\ArtSource\\LocalTeamColorReview_20261008\\SourceTextures\\T_Sweeper_BaseColor.png",
+  "source_atlas_sha256": "23a4bb3333674b22a0e741c8f06741ae0edda1fbcd6620037cd8244c93fd53b1",
+  "reference_A": "User waived new drawings and directly selected original orange region",
+  "B_approval": "pending",
+  "formal_ue_import": false,
+  "runtime_verified": false,
+  "team_colors": {
+    "Blue": "#6AA4BE",
+    "Red": "#A34053"
+  },
+  "fixed_regions": "Original texture outside the orange mask, including wheels, gun, cream and yellow lamps",
+  "mask": {
+    "file": "Masks/T_Sweeper_OrangeTeamMask.png",
+    "width": 2048,
+    "height": 2048,
+    "orange_texels": 721615,
+    "fixed_yellow_texels": 18334,
+    "fixed_cream_texels": 234203,
+    "fixed_mechanical_texels": 3205099,
+    "fixed_palette_overlap": 0
+  },
+  "encoding": "New corner Alpha=role/255 preserves source RGB. Precise original-UV mask must also gate team color, especially reduced LODs.",
+  "three_tone": "Preserved original UE thresholds .12/.55 and RGB tones (.43,.52,.66)/(.72,.78,.88)/(1,1,1)",
+  "ink": "Existing Sweeper no additional ink/outline exception retained",
+  "meshes": [
+    {
+      "object": "LOD0_SweeperSummon_0",
+      "lod": 0,
+      "vertices": 3026,
+      "triangles": 5456,
+      "roles": {
+        "0": 4010,
+        "3": 1446
+      },
+      "invariant": {
+        "geometry": "b69af7c90fa0e6ae283cb3e74639be8c5e08675f99bb972b1604e71d166ee383",
+        "uv": "117bdef84d2d707e3c4361ac59daa707e96988e72e317e06c9f773a1b07debe8",
+        "original_colors": "665ebb71b90652910e684da5e6f3ef3d20764670332c7bb3aed7fa33e5acdfc8",
+        "normals": "b0ea172b563f1d86533afd28aeb132d7e317210e9116bc7089df862f01cef406",
+        "weights": "39bef1828a8a410f49438846a14d017d589fe1c64ffb5f173d01abce6a0aec6b",
+        "transform": "edace86c4f73b27153577d7d086d666ad3100f5ef27edccd47169d9dc76cbc24",
+        "modifiers": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "animation": "3074e005b932dfa07d97e942752c71cf43d53759c52edc8dbefe0b366065fc25"
+      },
+      "sidecar": "Masks\\Sweeper_LOD0_ColorRegions.json",
+      "sha256": "4180080056dccb204ae768666afaf3404c8f037a9c6615f2a0e725a7db6fd26e"
+    },
+    {
+      "object": "LOD1_SweeperSummon_0",
+      "lod": 1,
+      "vertices": 840,
+      "triangles": 1355,
+      "roles": {
+        "0": 1003,
+        "3": 352
+      },
+      "invariant": {
+        "geometry": "1121d3e30461aa65f81c374d86bf266513c032e668488d7cf03c33592758c4b4",
+        "uv": "b6fee2e89fb99029920c829a45b583ea5adff6f8080d630b8ffea497372f0f96",
+        "original_colors": "7506509df31f6db36b97b5cb5b7cea1ed781a1881153dc3fcd8128e0065c8cb2",
+        "normals": "873a6e3229bf4dd7ab01c03873e4db1a55a5ab9b1b8f3339170319ec532f2a92",
+        "weights": "5a3a3dcf11e7b6610eb40bd9960060460cc22932e87533bf87ee49d0d5a6e70a",
+        "transform": "c6938bf70218e608d3fdc9d0b54d2f43c30d004decdb4ce89bba47b4a77cad06",
+        "modifiers": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "animation": "96c6532dd0c1c9d3bbb2849c4d2c1668d67fb7c7510c30b215d6fad199fe4fb0"
+      },
+      "sidecar": "Masks\\Sweeper_LOD1_ColorRegions.json",
+      "sha256": "7677893279e94c42408f56f51f175a6fff25351ecf0af6bebdb36177f5d88c22"
+    },
+    {
+      "object": "LOD2_SweeperSummon_0",
+      "lod": 2,
+      "vertices": 155,
+      "triangles": 220,
+      "roles": {
+        "0": 113,
+        "3": 107
+      },
+      "invariant": {
+        "geometry": "13d21bf676ab0b66cb4fe5e7ab4dfea356556e8d88fb142cc5491c693ca85213",
+        "uv": "8e47b0fff709886dc670042c671471c358e620475df4ec9955880f324ba1744f",
+        "original_colors": "050fa24137bfdec74c3b6ab675faab66a211c666de886055adbf84605a2fa1a7",
+        "normals": "a7e348729a33a99e703de35c628febd15f6dc53d7a1365c90b86eb1fbc1d3bbd",
+        "weights": "08f456a35671599792ed024f6ebb1f7b9097e6b79db6190b1f7627eb4c7a5ea2",
+        "transform": "8c360110923e012d04d6846669c5e8af3f4b6a1148985d609f86c0647725b492",
+        "modifiers": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "animation": "d8de1e9b71f77d3b4b9c209fbbdc8bfb94ecbe5d8b10c5f7bf0abe2f112226e2"
+      },
+      "sidecar": "Masks\\Sweeper_LOD2_ColorRegions.json",
+      "sha256": "293e56d7272abf590fb7c41613a9e068809e16b9653a8fa3c5f1e4e6ee99022c"
+    }
+  ],
+  "geometry_uv_normals_weights_transforms_original_colors_unchanged": true,
+  "original_source_file_unchanged": true,
+  "LOD_boundary": "Blender saved LOD1 has 1355 triangles versus UE render LOD1 1363; pre-existing FBX omission. No formal mesh replacement or LOD regeneration.",
+  "excluded_models": [
+    {
+      "ModelId": 2004,
+      "name": "克隆兵营占位"
+    },
+    {
+      "ModelId": 2007,
+      "name": "领地据点占位"
+    }
+  ],
+  "blend": "D:\\UE5.7\\test1\\ArtSource\\SweeperTeamColor_v1_20261008\\Sweeper_OrangeTeamColor_B_v1.blend",
+  "previews": [
+    "Previews\\Blue_Back.png",
+    "Previews\\Blue_Front.png",
+    "Previews\\Blue_Hero.png",
+    "Previews\\Blue_Left.png",
+    "Previews\\Blue_ThreeLOD.png",
+    "Previews\\Mask_Back.png",
+    "Previews\\Mask_Front.png",
+    "Previews\\Mask_Hero.png",
+    "Previews\\Mask_Left.png",
+    "Previews\\Original_Back.png",
+    "Previews\\Original_Blue_Red_Overview.png",
+    "Previews\\Original_Front.png",
+    "Previews\\Original_Hero.png",
+    "Previews\\Original_Left.png",
+    "Previews\\Red_Back.png",
+    "Previews\\Red_Front.png",
+    "Previews\\Red_Hero.png",
+    "Previews\\Red_Left.png"
+  ],
+  "blend_sha256": "6ff9ea43b21702b6a820bafbca0e69e5e715ec5302c28128086af431ba938144"
+}

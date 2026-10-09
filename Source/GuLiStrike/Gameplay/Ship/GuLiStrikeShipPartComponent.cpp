@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GuLiStrikeShipPartComponent.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "GuLiStrikeShip.h"
 #include "GuLiStrike.h"
 #include "Gameplay/Data/GuLiObjectScale.h"
@@ -8,12 +9,21 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/World.h"
+#include "Engine/StaticMesh.h"
+#include "Engine/SkeletalMesh.h"
 #include "GameFramework/Actor.h"
 
 UGuLiStrikeShipPartComponent::UGuLiStrikeShipPartComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 	SetMobility(EComponentMobility::Movable);
+}
+
+bool UGuLiStrikeShipPartComponent::SetModelId(int32 NewModelId)
+{
+	if (NewModelId <= 0) return false;
+	ModelId = NewModelId;
+	return !IsRegistered() || RebuildVisualMesh();
 }
 
 void UGuLiStrikeShipPartComponent::OnRegister()
@@ -52,6 +62,12 @@ bool UGuLiStrikeShipPartComponent::RebuildVisualMesh()
 	if (IsTemplate() || !IsRegistered() || !GetOwner() || !GetWorld()) { return false; }
 	DestroyVisualMesh();
 	UMeshComponent* Visual = nullptr;
+	if (ModelId > 0)
+	{
+		auto* Resource = GuLiModels::Load<UObject>(this, ModelId);
+		StaticMesh = Cast<UStaticMesh>(Resource); SkeletalMesh = Cast<USkeletalMesh>(Resource);
+		VisualType = SkeletalMesh ? EGuLiStrikeShipPartVisualType::SkeletalMesh : EGuLiStrikeShipPartVisualType::StaticMesh;
+	}
 	if (VisualType == EGuLiStrikeShipPartVisualType::StaticMesh && StaticMesh)
 	{
 		UStaticMeshComponent* StaticVisual = NewObject<UStaticMeshComponent>(GetOwner(), NAME_None, RF_Transient);
@@ -102,6 +118,7 @@ USkeletalMeshComponent* UGuLiStrikeShipPartComponent::GetSkeletalVisualComponent
 bool UGuLiStrikeShipPartComponent::SetStaticMesh(UStaticMesh* NewMesh)
 {
 	StaticMesh = NewMesh;
+	ModelId = 0;
 	VisualType = EGuLiStrikeShipPartVisualType::StaticMesh;
 	return !IsRegistered() || RebuildVisualMesh();
 }
@@ -109,6 +126,7 @@ bool UGuLiStrikeShipPartComponent::SetStaticMesh(UStaticMesh* NewMesh)
 bool UGuLiStrikeShipPartComponent::SetPartSkeletalMesh(USkeletalMesh* NewMesh)
 {
 	SkeletalMesh = NewMesh;
+	ModelId = 0;
 	VisualType = EGuLiStrikeShipPartVisualType::SkeletalMesh;
 	return !IsRegistered() || RebuildVisualMesh();
 }

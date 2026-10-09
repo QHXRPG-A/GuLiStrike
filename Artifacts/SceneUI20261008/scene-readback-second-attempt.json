@@ -1,0 +1,10 @@
+{
+  "success": false,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "native_build_executed": false,
+  "gameplay_started": false,
+  "runtime_effect_verified": false,
+  "readback_after_map_reload": false,
+  "actors": [],
+  "error": "Traceback (most recent call last):\n  File \"D:\\UE5.7\\test1\\Scripts\\SceneUI\\prepare_acceptance_scene.py\", line 86, in <module>\n    actor=make('SceneUI_Radius_'+row['Name'],unreal.StaticMeshActor,ground(-28000+i*4500,94000)+unreal.Vector(0,0,7))\n                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\UE5.7\\test1\\Scripts\\SceneUI\\prepare_acceptance_scene.py\", line 39, in ground\n    assert hit and hit.to_tuple()[0],(x,y,'no terrain')\nAssertionError: (-28000, 94000, 'no terrain')\n"
+}

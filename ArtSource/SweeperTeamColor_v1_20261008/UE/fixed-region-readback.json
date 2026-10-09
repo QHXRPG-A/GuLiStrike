@@ -1,0 +1,43 @@
+{
+  "fixed_region_checks": [
+    {
+      "view": "hero",
+      "fixed_interior_pixels": 44257,
+      "blue_red_max_rgb_diff": 1,
+      "original_vs_teams_max_rgb_diff": 1,
+      "exact_rgb_match_ratio": 0.995978037372619
+    },
+    {
+      "view": "front",
+      "fixed_interior_pixels": 21792,
+      "blue_red_max_rgb_diff": 1,
+      "original_vs_teams_max_rgb_diff": 1,
+      "exact_rgb_match_ratio": 0.9960994860499266
+    },
+    {
+      "view": "left",
+      "fixed_interior_pixels": 34551,
+      "blue_red_max_rgb_diff": 1,
+      "original_vs_teams_max_rgb_diff": 1,
+      "exact_rgb_match_ratio": 0.993835200138925
+    },
+    {
+      "view": "back",
+      "fixed_interior_pixels": 25375,
+      "blue_red_max_rgb_diff": 1,
+      "original_vs_teams_max_rgb_diff": 1,
+      "exact_rgb_match_ratio": 0.9997241379310344
+    },
+    {
+      "view": "top",
+      "fixed_interior_pixels": 55078,
+      "blue_red_max_rgb_diff": 1,
+      "original_vs_teams_max_rgb_diff": 1,
+      "exact_rgb_match_ratio": 0.9944623987799122
+    }
+  ],
+  "boundary_exclusion_pixels": 7,
+  "png_quantization_tolerance": 1,
+  "source": "same native UE views; zero/one-byte black mask interiors, nonblack original silhouette, capture atmosphere/bloom/temporal disabled",
+  "success": true
+}

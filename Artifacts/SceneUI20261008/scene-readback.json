@@ -1,0 +1,335 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "native_build_executed": false,
+  "gameplay_started": false,
+  "runtime_effect_verified": false,
+  "readback_after_map_reload": true,
+  "actors": [
+    {
+      "label": "SceneUI_Blue_Pioneer",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position_cm": [
+        -24000.0,
+        79000.0,
+        1073.4416723888016
+      ],
+      "editor_only": false,
+      "unit_id": 1,
+      "team": "<GuLiTeam.BLUE: 2>",
+      "count": 1,
+      "automatic_fire": false,
+      "start_idle": true
+    },
+    {
+      "label": "SceneUI_Blue_WM01",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position_cm": [
+        -24000.0,
+        73000.0,
+        1073.4416723888016
+      ],
+      "editor_only": false,
+      "unit_id": 2,
+      "team": "<GuLiTeam.BLUE: 2>",
+      "count": 1,
+      "automatic_fire": false,
+      "start_idle": true
+    },
+    {
+      "label": "SceneUI_Red_Pioneer",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position_cm": [
+        -14000.0,
+        79000.0,
+        1057.2619611356704
+      ],
+      "editor_only": false,
+      "unit_id": 1,
+      "team": "<GuLiTeam.RED: 1>",
+      "count": 1,
+      "automatic_fire": false,
+      "start_idle": true
+    },
+    {
+      "label": "SceneUI_Red_WM01",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position_cm": [
+        -14000.0,
+        73000.0,
+        1073.4416723888016
+      ],
+      "editor_only": false,
+      "unit_id": 2,
+      "team": "<GuLiTeam.RED: 1>",
+      "count": 1,
+      "automatic_fire": false,
+      "start_idle": true
+    },
+    {
+      "label": "SceneUI_Radius_DefaultSoldier",
+      "class": "/Script/Engine.StaticMeshActor",
+      "position_cm": [
+        -28000.0,
+        67500.0,
+        1080.4416723888016
+      ],
+      "editor_only": true,
+      "component": {
+        "class": "StaticMeshComponent",
+        "visible": true,
+        "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+        "material": "/Game/Commander/UI/M_CommanderUnitRing.M_CommanderUnitRing",
+        "scale": [
+          6.510416666666667,
+          6.510416666666667,
+          0.004
+        ]
+      }
+    },
+    {
+      "label": "SceneUI_Radius_WM01",
+      "class": "/Script/Engine.StaticMeshActor",
+      "position_cm": [
+        -23500.0,
+        67500.0,
+        1080.4416723888016
+      ],
+      "editor_only": true,
+      "component": {
+        "class": "StaticMeshComponent",
+        "visible": true,
+        "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+        "material": "/Game/Commander/UI/M_CommanderUnitRing.M_CommanderUnitRing",
+        "scale": [
+          13.020833333333334,
+          13.020833333333334,
+          0.004
+        ]
+      }
+    },
+    {
+      "label": "SceneUI_Radius_SweeperSummon",
+      "class": "/Script/Engine.StaticMeshActor",
+      "position_cm": [
+        -19000.0,
+        67500.0,
+        1080.4416723888016
+      ],
+      "editor_only": true,
+      "component": {
+        "class": "StaticMeshComponent",
+        "visible": true,
+        "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+        "material": "/Game/Commander/UI/M_CommanderUnitRing.M_CommanderUnitRing",
+        "scale": [
+          3.2291666666666665,
+          3.2291666666666665,
+          0.004
+        ]
+      }
+    },
+    {
+      "label": "SceneUI_Radius_BiZhiMao",
+      "class": "/Script/Engine.StaticMeshActor",
+      "position_cm": [
+        -14500.0,
+        67500.0,
+        1080.4416723888016
+      ],
+      "editor_only": true,
+      "component": {
+        "class": "StaticMeshComponent",
+        "visible": true,
+        "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+        "material": "/Game/Commander/UI/M_CommanderUnitRing.M_CommanderUnitRing",
+        "scale": [
+          33.95321655273438,
+          33.95321655273438,
+          0.004
+        ]
+      }
+    },
+    {
+      "label": "SceneUI_Profile_Night",
+      "class": "/Script/Engine.PostProcessVolume",
+      "position_cm": [
+        -19000.0,
+        76000.0,
+        1073.4416723888016
+      ],
+      "editor_only": false,
+      "enabled": false,
+      "unbound": true,
+      "exposure_bias": -8.0,
+      "bloom_intensity": 0.0
+    },
+    {
+      "label": "SceneUI_Profile_ExposureBloom",
+      "class": "/Script/Engine.PostProcessVolume",
+      "position_cm": [
+        -19000.0,
+        76000.0,
+        1073.4416723888016
+      ],
+      "editor_only": false,
+      "enabled": false,
+      "unbound": true,
+      "exposure_bias": 8.0,
+      "bloom_intensity": 15.0
+    },
+    {
+      "label": "SceneUI_Profile_ColorGrade",
+      "class": "/Script/Engine.PostProcessVolume",
+      "position_cm": [
+        -19000.0,
+        76000.0,
+        1073.4416723888016
+      ],
+      "editor_only": false,
+      "enabled": false,
+      "unbound": true,
+      "exposure_bias": 0.0,
+      "bloom_intensity": 0.675000011920929
+    },
+    {
+      "label": "SceneUI_Profile_DenseFog",
+      "class": "/Script/Engine.ExponentialHeightFog",
+      "position_cm": [
+        -19000.0,
+        76000.0,
+        1073.4416723888016
+      ],
+      "editor_only": false,
+      "component": {
+        "class": "ExponentialHeightFogComponent",
+        "visible": false,
+        "density": 0.15000000596046448
+      }
+    },
+    {
+      "label": "SceneUI_Profile_ColoredLight",
+      "class": "/Script/Engine.PointLight",
+      "position_cm": [
+        -19000.0,
+        76000.0,
+        3273.4416723888016
+      ],
+      "editor_only": false,
+      "component": {
+        "class": "PointLightComponent",
+        "visible": false,
+        "intensity": 100000.0
+      }
+    },
+    {
+      "label": "SceneUI_Background_Dark",
+      "class": "/Script/Engine.StaticMeshActor",
+      "position_cm": [
+        -24000.0,
+        79000.0,
+        1075.4416723888016
+      ],
+      "editor_only": false,
+      "component": {
+        "class": "StaticMeshComponent",
+        "visible": false,
+        "mesh": "/Engine/BasicShapes/Plane.Plane",
+        "material": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/Environment/M_SceneUIBackground_Dark.M_SceneUIBackground_Dark",
+        "scale": [
+          45.0,
+          45.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "label": "SceneUI_Background_Light",
+      "class": "/Script/Engine.StaticMeshActor",
+      "position_cm": [
+        -14000.0,
+        79000.0,
+        1059.2619611356704
+      ],
+      "editor_only": false,
+      "component": {
+        "class": "StaticMeshComponent",
+        "visible": false,
+        "mesh": "/Engine/BasicShapes/Plane.Plane",
+        "material": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/Environment/M_SceneUIBackground_Light.M_SceneUIBackground_Light",
+        "scale": [
+          45.0,
+          45.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "label": "SceneUI_ReviewCamera",
+      "class": "/Script/Engine.CameraActor",
+      "position_cm": [
+        -19000.0,
+        67500.0,
+        16073.441672388803
+      ],
+      "editor_only": true,
+      "component": {
+        "class": "CameraComponent",
+        "visible": true,
+        "ortho_width": 18000.0
+      }
+    },
+    {
+      "label": "SceneUI_Notes",
+      "class": "/Script/Engine.TextRenderActor",
+      "position_cm": [
+        -19000.0,
+        81000.0,
+        1573.4416723888016
+      ],
+      "editor_only": true
+    }
+  ],
+  "radius_references": [
+    {
+      "unit_id": 1,
+      "label": "SceneUI_Radius_DefaultSoldier",
+      "outer_radius_cm": 312.5,
+      "inner_radius_cm": 292.5,
+      "width_cm": 20
+    },
+    {
+      "unit_id": 2,
+      "label": "SceneUI_Radius_WM01",
+      "outer_radius_cm": 625.0,
+      "inner_radius_cm": 605.0,
+      "width_cm": 20
+    },
+    {
+      "unit_id": 5,
+      "label": "SceneUI_Radius_SweeperSummon",
+      "outer_radius_cm": 155.0,
+      "inner_radius_cm": 135.0,
+      "width_cm": 20
+    },
+    {
+      "unit_id": 6,
+      "label": "SceneUI_Radius_BiZhiMao",
+      "outer_radius_cm": 1629.7543945312502,
+      "inner_radius_cm": 1609.7543945312502,
+      "width_cm": 20
+    }
+  ],
+  "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+  "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+  "scenario_center_cm": [
+    -19000.0,
+    76000.0,
+    1073.4416723888016
+  ],
+  "environment_profiles_disabled_by_default": true,
+  "existing_deployments_preserved": true,
+  "model_comparison_resources_runtime_integrated": false,
+  "sweep_entry": "Select Pioneer and press Q",
+  "bi_zhi_mao_entry": "Commander B construction with engineering vehicle"
+}

@@ -1,0 +1,47 @@
+{
+  "updated": "2026-10-08T23:01:03.505587+08:00",
+  "reviewer": "assistant",
+  "user_visual_acceptance": "pending",
+  "source": "actual UE captures, no image repainting",
+  "models": [
+    1001,
+    1002,
+    1006,
+    2001,
+    2002,
+    2003,
+    2005,
+    2006,
+    2008,
+    3001,
+    3002,
+    3003,
+    3004,
+    3005,
+    3006
+  ],
+  "views": [
+    "hero",
+    "front",
+    "left",
+    "back"
+  ],
+  "palettes": [
+    "blue",
+    "red"
+  ],
+  "model_capture_count": 120,
+  "ore_comparison_count": 4,
+  "checks": [
+    "shield top three lamps use team colors",
+    "outpost colors are assigned per whole component",
+    "air base top panels remain mutable",
+    "AA display bounds reflect unchanged 12x import settings",
+    "fixed cream, sand and mechanical areas retain the approved palette",
+    "blue/red ore shadow faces readable in same-camera comparison"
+  ],
+  "geometry_reference": "ArtSource/ModelInterface_B_20261008/blender-saved-readback.json",
+  "source_B_sha256": "c28e175b95f6393a51256392097dd8244e17fc8dee82b85ef78d2c03aa1067e0",
+  "method": "Visual read-through and separate geometry/data evidence; no automated image-difference test",
+  "browser_interaction": "not verified; local access restrictions not bypassed"
+}

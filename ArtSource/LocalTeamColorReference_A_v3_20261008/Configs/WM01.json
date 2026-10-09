@@ -1,0 +1,173 @@
+{
+  "id": "WM01",
+  "name": "重防号",
+  "title": "HEAVY DEFENDER",
+  "category": "Mass",
+  "unit_type_id": 2,
+  "fixed": [
+    "中央主壳、悬浮盘上部护甲及炮组小检修盖：米砂 #D5C09C",
+    "前伸下部护甲、发射口窄框及固定边盖：乳白 #FEE4D9",
+    "炮管、炮膛、关节、支架及盘内机构：深灰 #2C3735"
+  ],
+  "team": [
+    "浅队色：两侧炮组外护板、两组后部导弹舱外侧完整护板",
+    "深队色：四悬浮盘现有外护环带"
+  ],
+  "function": [
+    "仅保留原有小型功能指示位置，不新增灯，不将工作机构染为队色"
+  ],
+  "source": [
+    "ArtSource/CommanderLOD_20261005/WM01/Review/Blender/LOD0_GrayHero.png",
+    "ArtSource/CommanderLOD_20261005/WM01/Review/Blender/LOD0_GrayFront.png",
+    "ArtSource/CommanderLOD_20261005/WM01/Review/Blender/LOD0_GrayLeft.png",
+    "ArtSource/CommanderLOD_20261005/WM01/Review/Blender/LOD0_GrayBack.png"
+  ],
+  "structure": "保留两侧各双炮、中央前伸炮体、两组平行向前上方约45°导弹舱（每舱四口、2×2）及四个厚实悬浮盘；以实际WM01兵种为准，非玩家Ground席位。",
+  "team_primary": [
+    "两侧炮组外护板、两组后部导弹舱外侧完整护板"
+  ],
+  "team_secondary": [
+    "四悬浮盘现有外护环带"
+  ],
+  "paint_zones": {
+    "fixed_armor": "前伸下部护甲、发射口窄框及固定边盖",
+    "fixed_secondary": "中央主壳、悬浮盘上部护甲及炮组小检修盖",
+    "team_primary": "两侧炮组外护板、两组后部导弹舱外侧完整护板",
+    "team_secondary": "四悬浮盘现有外护环带",
+    "mechanisms": "所有炮管、炮膛、关节、支架和盘内机构：深灰"
+  },
+  "team_lights": [],
+  "previous_boards": {
+    "blue": "ArtSource/LocalTeamColorReview_20261008/Renders/WM01_blue.png",
+    "red": "ArtSource/LocalTeamColorReview_20261008/Renders/WM01_red.png"
+  },
+  "previous_label": "旧版 UE 队色对照",
+  "cream_coverage_target": {
+    "range_percent": [
+      20,
+      30
+    ],
+    "basis": "visible model surfaces; excludes background, outline and cast shadow",
+    "is_measured": false
+  },
+  "scope_added_by_user": "2026-10-08：补入，本轮改为14模型／28张图板",
+  "source_identifier_policy": "WM01/WarMachine are stable implementation identifiers. Human-readable name is 重防号; UnitTypeId=2, not the player Ground pawn.",
+  "boards": {
+    "blue": {
+      "path": "Boards/WM01_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1814676,
+      "sha256": "1ec0b6628baa7b5b3049c99a8c18425111d1e323d4ee42ec174fdf501cfa8817"
+    },
+    "red": {
+      "path": "Boards/WM01_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1784372,
+      "sha256": "753830e0c37ad3eef46158a05bf0c0cc01b3252c4b1c6e40bea233348c6ebd40"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+  "source_kind": "StaticMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/CommanderLOD_20261005/WM01/Review/Blender/LOD0_GrayHero.png",
+      "sha256": "fd5a2c3db0c94b4738c15e07648e5be4319669f1ac72328ddd44fa7286f7020b"
+    },
+    {
+      "path": "ArtSource/CommanderLOD_20261005/WM01/Review/Blender/LOD0_GrayFront.png",
+      "sha256": "8e2bbfa57af52984ca8e3addbf586775b8f9044b2182026b930cc716b376289f"
+    },
+    {
+      "path": "ArtSource/CommanderLOD_20261005/WM01/Review/Blender/LOD0_GrayLeft.png",
+      "sha256": "10d78438a240b2010b398496ef1aa446442c4312b66ea3a443f9d2e0a6964de0"
+    },
+    {
+      "path": "ArtSource/CommanderLOD_20261005/WM01/Review/Blender/LOD0_GrayBack.png",
+      "sha256": "aaace1777cd0edb7dd51b17cb7520f68ef9c48629ea01eec24671e47d27515ac"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v3_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    },
+    "fixed_secondary": {
+      "hex": "#D5C09C",
+      "card": 1,
+      "label": "固定米砂"
+    },
+    "blue_secondary": {
+      "hex": "#274E61",
+      "card": 4,
+      "label": "深蓝灰队色"
+    },
+    "red_secondary": {
+      "hex": "#662249",
+      "card": 2,
+      "label": "深莓队色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "enemy_non_blue_secondary": "#662249",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "paint_contract": {
+    "fixed": {
+      "cream": "#FEE4D9",
+      "sand": "#D5C09C",
+      "mechanisms": "#2C3735"
+    },
+    "team": {
+      "blue": {
+        "primary": "#6AA4BE",
+        "secondary": "#274E61"
+      },
+      "red": {
+        "primary": "#A34053",
+        "secondary": "#662249"
+      }
+    },
+    "team_light": null,
+    "shading": "Three cel-shading levels are separate from the two team base paint colors.",
+    "fixed_function_policy": "Only existing function locations and palette colors; shield top lights are team-controlled."
+  },
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

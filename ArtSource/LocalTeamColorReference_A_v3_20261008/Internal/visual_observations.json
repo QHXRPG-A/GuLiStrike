@@ -1,0 +1,133 @@
+{
+  "DefaultSoldier": {
+    "checks": [
+      "六足、双侧枪组、两根天线和后围带作为原结构约束。",
+      "中央壳米砂、腿主甲乳白，完整肩盒浅队色、后环及腿外护板深队色。",
+      "修订蓝方左视肩盒原误留乳白，与红方对应；原有小琥珀指示固定。"
+    ],
+    "revisions": [
+      "DefaultSoldier_blue_first-draft.png"
+    ]
+  },
+  "WM01": {
+    "checks": [
+      "按 WM01/UnitTypeId=2 定位，非玩家 Ground 占位 Pawn。",
+      "两侧各双炮、两组导弹舱各四口（2×2）、中央前伸体与四悬浮盘保留；部分视角盘被遮挡。",
+      "主体和盘上甲米砂，枪管/支架/盘内机构深灰；炮组外甲和舱侧浅队色，盘外护环深队色，前甲及口框乳白。"
+    ],
+    "revisions": []
+  },
+  "BiZhiMao": {
+    "checks": [
+      "长炮、原开口桁架、四足及姿态作为约束，施工体共用此版。",
+      "炮上甲及主壳米砂、腿甲乳白，炮侧护板浅队色，炮口套/踝外甲深队色；内部桁架与机构深灰。"
+    ],
+    "revisions": []
+  },
+  "ShieldGenerator": {
+    "checks": [
+      "保留 Y 型连接顶板和三柱，不增加灯。",
+      "原三个顶部色点在蓝版均蓝、红版均红；红顶不再残留固定蓝/青点，未见大光晕覆盖装甲。",
+      "上部完整大检修盖浅队色，底座窄环深队色；柱下部大面米砂，小护板及固定边乳白。"
+    ],
+    "revisions": [
+      "ShieldGenerator_blue_first-draft.png"
+    ]
+  },
+  "ManualOutpost": {
+    "checks": [
+      "依据最新用户决定按数个完整矩形组件与一个外部半圆环配色，取消原按高度分段。",
+      "最高中央宽矩形在正侧后图保持整件浅队色，前方遮挡部分不另划高度颜色；相邻完整矩形米砂、外围窄件乳白。",
+      "外部半圆环整体深队色，板间槽及支承深灰；蓝红相同整件分配，不增加饰件。"
+    ],
+    "revisions": [
+      "ManualOutpost_blue_height-draft.png",
+      "ManualOutpost_red_height-draft.png"
+    ],
+    "user_correction": "outpost 颜色不应该像鸡尾酒一样垂直分布，它是由中间数个矩形组件和外部一个半圆环组件组成的，应该以组件为单位赋予色彩"
+  },
+  "MissileTurret": {
+    "checks": [
+      "双侧发射仓维持原俯仰，正面每仓五枚弹头，其他视角闭盖与遮挡遵从来源。",
+      "Source Right(+Y)用作正视、Source Back用作左视、Source Left用作后视。",
+      "外侧大甲浅队色，长检修盖/转台环深队色，中箱/基座米砂，发射机构与口内深灰；薄框乳白。"
+    ],
+    "revisions": []
+  },
+  "SentryTurret": {
+    "checks": [
+      "保留单阶梯炮管、四向基座、一根原回线软管。",
+      "侧面原六孔通风分区按2×3核对；孔内和炮管固定深灰。",
+      "完整侧甲浅队色，后盖和转台环深队色，基座米砂，前框与顶盖乳白。"
+    ],
+    "revisions": []
+  },
+  "ResourceFactory": {
+    "checks": [
+      "基于完整 Blueprint 组装图，核对五门板、三个侧柜及闭门、平放坡道状态。",
+      "主墙及坡道米砂，门板/屋顶框乳白；屋顶中央盖和入口侧翼浅队色、侧柜既有横饰带深队色。",
+      "未把旧环境蓝光带入基础涂装。"
+    ],
+    "revisions": []
+  },
+  "SSF_AirBase": {
+    "checks": [
+      "保留扁穹顶、原扇形分板、主压条及相邻雷达塔。",
+      "穹顶两组既有大扇板浅队色，中心盖及端面/下缘深队色；其余穹顶米砂、压条乳白，俯视队色面积增加。",
+      "工作雷达面、支座及线缆固定深灰。"
+    ],
+    "revisions": []
+  },
+  "SSF_CloningCenter": {
+    "checks": [
+      "保留两层成对的四舱、背架、吊线、原侧天线与斜入口。",
+      "四舱罩浅队色、舱框/侧盖/顶口窄框深队色；背架米砂、入口顶盖乳白。",
+      "修订红方顶口内侧误为莓色的问题，口内保持固定深灰，软管不染队色。"
+    ],
+    "revisions": [
+      "SSF_CloningCenter_red_first-draft.png"
+    ]
+  },
+  "SSF_CommandCenter": {
+    "checks": [
+      "保留分层塔冠、中央天线、原支架和侧雷达。",
+      "四视图上部完整主环及下部外护板为浅队色，固定冠米砂/脚护甲乳白，塔心机构深灰。",
+      "蓝方首稿上环与支架对应问题已修订；红方正侧后塔心及两小天线尖串色已恢复固定区。"
+    ],
+    "revisions": [
+      "SSF_CommandCenter_blue_first-draft.png",
+      "SSF_CommandCenter_red_first-draft.png"
+    ]
+  },
+  "SSF_MilitaryFactory": {
+    "checks": [
+      "保留原宽体厂房、屋顶拱架、原门口、墙面和侧雷达。",
+      "原拱架和入口护板浅队色，侧后腰带深队色；大墙面米砂、门板和窄边乳白。",
+      "机构/工作雷达面深灰，原小琥珀功能灯在两队一致，未新增橙色大块。"
+    ],
+    "revisions": []
+  },
+  "SSF_Reactor": {
+    "checks": [
+      "保留容器、四支撑腿、观察口、原软管和上部设备。",
+      "主壳两侧连续大甲浅队色，顶环/窗口窄框深队色；服务板和其余容器米砂，腿外甲乳白。",
+      "修订只改窗口、软管误乳白与紅方顶部额外小色点；最终分节软管/冷却片/顶盒固定深灰，无新增三颗队色小灯。"
+    ],
+    "revisions": [
+      "SSF_Reactor_blue_first-draft.png",
+      "SSF_Reactor_blue_second-draft.png",
+      "SSF_Reactor_red_first-draft.png"
+    ]
+  },
+  "SSF_StrategyCenter": {
+    "checks": [
+      "保留原斜阵列、四天线、侧转轴及底部支撑。",
+      "大腰甲浅队色，外部阵列边框/盖背与上环深队色；固定壳米砂、支撑乳白。",
+      "修订中央工作阵面混入蓝格的问题，最终中央工作格阵固定深灰；外边框为深队色区。"
+    ],
+    "revisions": [
+      "SSF_StrategyCenter_blue_first-draft.png",
+      "SSF_StrategyCenter_blue_second-draft.png"
+    ]
+  }
+}

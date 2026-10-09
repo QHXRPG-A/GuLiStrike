@@ -1,0 +1,39 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "materials": [
+      "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD0.MI_Pioneer_LOD0",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/M_Pioneer_Contour.M_Pioneer_Contour",
+      "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD1.MI_Pioneer_LOD1",
+      "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD2.MI_Pioneer_LOD2"
+    ],
+    "cpd": [
+      -1,
+      -1
+    ],
+    "pvector": [
+      "GuLi_TeamPrimary",
+      "GuLi_TeamSecondary"
+    ],
+    "pscalar": [
+      "UseColorUV1",
+      "LineStrength",
+      "GuLi_TeamEnabled",
+      "GuLi_TeamLightStrength"
+    ],
+    "nodes": [
+      {
+        "node": "MaterialExpressionCustom_0",
+        "code": "float light=dot(normalize(N),normalize(float3(.55,-.35,.76))); float band=light<.12?.42:light<.55?.74:1; return lerp(Color*band,float3(.01764,.013,.01444),saturate(Mask*Lines));",
+        "inputs": "[\"N\", \"Color\", \"Mask\", \"Lines\"]",
+        "sources": [
+          "MaterialExpressionVertexInterpolator_0",
+          "MaterialExpressionMaterialFunctionCall_1",
+          "MaterialExpressionTextureSample_1",
+          "MaterialExpressionScalarParameter_1"
+        ]
+      }
+    ]
+  }
+}

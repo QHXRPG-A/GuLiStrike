@@ -43,10 +43,6 @@ struct FGuLiStrikeBuildingsBuildingsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buildings")
 	FString Description;
 
-	/** Mesh (softobject, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buildings")
-	TSoftObjectPtr<UObject> Mesh;
-
 	/** CollisionExtentX/CollisionExtentY/CollisionExtentZ (float) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buildings")
 	FVector CollisionExtent = FVector::ZeroVector;
@@ -114,5 +110,9 @@ struct FGuLiStrikeBuildingsBuildingsRow : public FTableRowBase
 	/** CompletionUnitTypeId (int, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buildings")
 	int32 CompletionUnitTypeId = 0;
+
+	/** ModelId (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buildings")
+	int32 ModelId = 0;
 
 };

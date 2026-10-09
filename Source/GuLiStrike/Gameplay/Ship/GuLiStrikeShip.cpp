@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GuLiStrikeShip.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
+#include "Engine/StaticMesh.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
 #include "Gameplay/Presentation/GuLiTeamOutlineComponent.h"
@@ -1200,6 +1202,7 @@ bool AGuLiStrikeShip::ApplyPartRow(UGuLiStrikeShipPartComponent* Part) const
 
 	// 通用数值
 	Part->PartMass = Row->PartMass;
+	Part->SetModelId(Row->ModelId);
 	Part->PartDisplayName = FText::FromString(RowName.ToString());
 
 	// 类型专属数值：行里的值写到对应子类实例上
@@ -1238,6 +1241,8 @@ bool AGuLiStrikeShip::ApplyTuningRow()
 	}
 
 	HullMass = Row->HullMass;
+	HullModelId = Row->HullModelId;
+	if (auto* Model = GuLiModels::Load<UStaticMesh>(this, HullModelId)) HullMesh->SetStaticMesh(Model);
 	BaseMaxSpeed = Row->BaseMaxSpeed;
 	BaseAcceleration = Row->BaseAcceleration;
 	NominalThrustRatio = Row->NominalThrustRatio;

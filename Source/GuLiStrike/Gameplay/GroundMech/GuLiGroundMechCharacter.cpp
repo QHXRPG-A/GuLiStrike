@@ -1,4 +1,7 @@
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
+#include "Gameplay/Data/Generated/GuLiStrikeMechTableRows.h"
+#include "Engine/DataTable.h"
 #include "Gameplay/GroundMech/GuLiGroundMechMovementComponent.h"
 #include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
 #include "Gameplay/GroundMech/GuLiGroundMechAbilities.h"
@@ -70,6 +73,15 @@ AGuLiGroundMechCharacter::AGuLiGroundMechCharacter(const FObjectInitializer& Ini
 	Movement->MaxStepHeight = 75.f;
 	Movement->SetWalkableFloorAngle(45.f);
 	Movement->GravityScale = 1.f;
+}
+
+void AGuLiGroundMechCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	const auto* Table = LoadObject<UDataTable>(nullptr, TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Visuals.DT_GuLiStrikeMech_Visuals"));
+	if (Table && Table->GetRowStruct() == FGuLiStrikeMechVisualsRow::StaticStruct())
+		if (const auto* Row = Table->FindRow<FGuLiStrikeMechVisualsRow>(TEXT("Default"),TEXT("Mech visual"))) ModelId = Row->ModelId;
+	if (GetWorld()) GetWorld()->GetSubsystem<UGuLiModelRegistrySubsystem>()->ApplyModelParts(this,ModelId);
 }
 
 void AGuLiGroundMechCharacter::BeginPlay()

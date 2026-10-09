@@ -8,6 +8,7 @@
 #include "Camera/PlayerCameraManager.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
+#include "Gameplay/Presentation/GuLiLocalTeamColors.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
 #include "Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.h"
@@ -95,8 +96,6 @@ namespace GuLiCommanderNativeMiniMap
 	const FLinearColor TerrainHighColor(0.14f, 0.22f, 0.20f, 0.96f);
 	const FLinearColor GridColor(0.10f, 0.58f, 0.66f, 0.18f);
 	const FLinearColor BorderColor(0.09f, 0.78f, 0.9f, 0.76f);
-	const FLinearColor BlueTeamColor(0.08f, 0.82f, 1.0f, 0.98f);
-	const FLinearColor RedTeamColor(1.0f, 0.20f, 0.26f, 0.98f);
 	const FLinearColor NeutralTeamColor(0.68f, 0.72f, 0.74f, 0.9f);
 	const FLinearColor SelectionColor(0.20f, 1.0f, 0.92f, 1.0f);
 	const FLinearColor CameraFrameColor(0.82f, 0.69f, 0.52f, 0.95f);
@@ -132,17 +131,10 @@ namespace GuLiCommanderNativeMiniMap
 		return Transform;
 	}
 
-	FLinearColor GetTeamColor(const EGuLiTeam Team)
+	FLinearColor GetTeamColor(const EGuLiTeam Team, const EGuLiTeam ViewTeam)
 	{
-		switch (Team)
-		{
-		case EGuLiTeam::Blue:
-			return BlueTeamColor;
-		case EGuLiTeam::Red:
-			return RedTeamColor;
-		default:
-			return NeutralTeamColor;
-		}
+		return GuLiLocalTeamColors::IsAssigned(Team) && GuLiLocalTeamColors::IsAssigned(ViewTeam)
+			? GuLiLocalTeamColors::GetUI(Team, ViewTeam) : NeutralTeamColor;
 	}
 
 	FLinearColor ApplyWidgetTint(const FLinearColor& Color, const FWidgetStyle& WidgetStyle)
@@ -898,7 +890,7 @@ int32 UGuLiCommanderMiniMapWidget::PaintMapLayer(bool bTerrain, const FGeometry&
 				ContentBounds,
 				MapPoint - FVector2D(HalfPointSize, HalfPointSize),
 				FVector2D(HalfPointSize * 2.0, HalfPointSize * 2.0),
-				GetTeamColor(Point.Team),
+				GetTeamColor(Point.Team, GuLiLocalTeamColors::GetViewTeam(GetOwningPlayer())),
 				InWidgetStyle);
 		}
 

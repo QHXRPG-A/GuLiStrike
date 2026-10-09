@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Commander/UI/GuLiSceneUITypes.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "GameFramework/Actor.h"
 #include "GuLiCommanderHealthBarRenderer.generated.h"
@@ -42,6 +43,7 @@ public:
 	/** One world-owned batch per local view, shared by the Commander selection HUD and all unit hit feedback. */
 	static AGuLiCommanderHealthBarRenderer* FindOrSpawn(UWorld* World, APlayerController* Controller);
 	void InitializeForController(APlayerController* InController);
+	void GatherSceneUIBars(TArray<FGuLiSceneUIHealthBar>& Out) const;
 
 	/** Read-only local diagnostics for automation/performance capture. */
 	int32 GetAllocatedInstanceCount() const;

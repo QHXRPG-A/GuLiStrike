@@ -36,8 +36,8 @@ PROJECT = unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())
 DEST_PATH = "/Game/GuLiStrike/Data"
 SHIP_BP_PATH = "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip.BP_GuLiStrikeShip"
 MANIFEST_PATH = f"{PROJECT}/Data/Json/manifest.json"
-REPORT = f"{PROJECT}/Data/tmp_import_report.json"
-PROGRESS = f"{PROJECT}/Data/tmp_import_progress.log"
+REPORT = globals().get('GULI_IMPORT_REPORT', f"{PROJECT}/Data/tmp_import_report.json")
+PROGRESS = globals().get('GULI_IMPORT_PROGRESS', f"{PROJECT}/Data/tmp_import_progress.log")
 # Optional caller-supplied table set for a feature-scoped import using the same pipeline.
 TABLE_FILTER = globals().get("GULI_TABLE_FILTER")
 
@@ -50,6 +50,11 @@ WIRING = {
 
 # 由 C++ Config settings 通过软引用接线；成功导入后不应被误报为未接线。
 CONFIG_WIRED_TABLES = {
+    "DT_GuLiStrikeModels_Models",
+    "DT_GuLiStrikeModels_Parts",
+    "DT_GuLiStrikeModels_MaterialParameters",
+    "DT_GuLiStrikeModels_ColorRegions",
+    "DT_GuLiStrikeMech_Visuals",
     "DT_GuLiStrikeRogueCards_Cards",
     "DT_GuLiStrikeVfx_Effects",
     "DT_GuLiStrikeGameTexts_Texts",
@@ -73,6 +78,39 @@ CONFIG_WIRED_TABLES = {
 def mark(msg):
     with open(PROGRESS, "a", encoding="utf-8") as f:
         f.write(str(msg) + "\n")
+
+
+def preflight(manifest, selected):
+    """Reject unloaded native schemas/resources before the first DataTable is changed."""
+    issues = []
+    for table_name in selected:
+        cfg = manifest['tables'][table_name]
+        struct = unreal.find_object(None, cfg['struct'])
+        cls = getattr(unreal, cfg['struct'].rsplit('.', 1)[-1], None)
+        if not struct or cls is None:
+            issues.append(f"{table_name}: native row struct is not loaded; compile and reload the authorized module")
+            continue
+        with open(f'{PROJECT}/Data/Json/{table_name}.json', encoding='utf-8-sig') as source:
+            rows = json.load(source)
+        value = cls()
+        for field in dict.fromkeys(k for row in rows for k in row if k != 'Name'):
+            name = field[1:] if field.startswith('b') and len(field) > 1 and field[1].isupper() else field
+            name = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1_\2', name)
+            name = re.sub(r'([a-z0-9])([A-Z])', r'\1_\2', name).lower()
+            try:
+                value.get_editor_property(name)
+            except Exception:
+                issues.append(f'{table_name}: loaded struct lacks {field}; no tables imported')
+    model_users = {'DT_GuLiStrikeCommander_Soldiers', 'DT_GuLiStrikeBuildings_Buildings',
+                   'DT_GuLiStrikeShip_Parts', 'DT_GuLiStrikeShip_Tuning', 'DT_GuLiStrikeMech_Visuals'}
+    if not issues and (model_users.intersection(selected) or any(n.startswith('DT_GuLiStrikeModels_') for n in selected)):
+        scope = {'__name__': 'model_import_preflight'}
+        with open(f'{PROJECT}/Scripts/Models/validate_model_catalog_in_editor.py', encoding='utf-8') as source:
+            exec(compile(source.read(), 'validate_model_catalog_in_editor.py', 'exec'), scope)
+        issues.extend(scope['report']['errors'])
+    if issues:
+        raise RuntimeError('Import preflight failed before any asset mutation:\n' + '\n'.join(issues[:30]))
+    return {'tables': selected, 'native_schema': 'loaded fields verified', 'models': 'validated when referenced'}
 
 
 def to_cell(value):
@@ -428,12 +466,20 @@ def wire_secondary_wingman_profiles():
 report = {"tables": [], "config_wired": [], "unwired": [], "errors": []}
 try:
     manifest = json.loads(open(MANIFEST_PATH, encoding="utf-8").read())
+    selected = [n for n in manifest['tables'] if TABLE_FILTER is None or n in TABLE_FILTER]
+    if TABLE_FILTER is not None and set(TABLE_FILTER) - set(manifest['tables']):
+        raise RuntimeError('Unknown table filter: ' + str(set(TABLE_FILTER) - set(manifest['tables'])))
+    report['preflight'] = preflight(manifest, selected)
+    if globals().get('GULI_PREFLIGHT_ONLY', False):
+        print(json.dumps({'preflight': report['preflight'], 'asset_mutations': False}))
+        selected = []
     imported_dts = {}
-    for table_name, table_cfg in manifest["tables"].items():
-        if TABLE_FILTER is not None and table_name not in TABLE_FILTER:
-            continue
+    for table_name in selected:
+        table_cfg = manifest['tables'][table_name]
         entry = import_table(table_name, table_cfg)
         report["tables"].append(entry)
+        if not entry.get('imported'):
+            raise RuntimeError(f"{table_name}: {entry.get('err', 'import/readback failed')}")
         prop = WIRING.get(table_name)
         if entry.get("imported") and prop:
             imported_dts[prop] = unreal.load_object(
@@ -470,7 +516,7 @@ try:
     # --- 游戏侧接线（飞船专属）：部件蓝图 PartId（= 资产名去 BP_ 前缀） ---
     ar = unreal.AssetRegistryHelpers.get_asset_registry()
     part_ids = {}
-    for ad in ([] if TABLE_FILTER is not None else ar.get_assets_by_path("/Game/GuLiStrike", recursive=True)):
+    for ad in ([] if TABLE_FILTER is not None or globals().get('GULI_PREFLIGHT_ONLY', False) else ar.get_assets_by_path("/Game/GuLiStrike", recursive=True)):
         asset = ad.get_asset()
         if not isinstance(asset, unreal.Blueprint):
             continue

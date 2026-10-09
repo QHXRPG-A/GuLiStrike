@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "native_build_executed": false,
+  "gameplay_started": false,
+  "cxx_verification": "Source review and signatures checked against local UE 5.7 headers; C++ compilation was not executed",
+  "python_ast_files": [
+    "Scripts/SceneUI/author_color_review.py",
+    "Scripts/SceneUI/build_review_gallery.py",
+    "Scripts/SceneUI/capture_color_review.py",
+    "Scripts/SceneUI/export_review_inputs.py",
+    "Scripts/SceneUI/inspect_review_sources.py",
+    "Scripts/SceneUI/prepare_acceptance_scene.py",
+    "Scripts/SceneUI/readback_review_materials.py",
+    "Scripts/SceneUI/refresh_color_review.py"
+  ],
+  "diff_check_exit_code": 0,
+  "interfaces_checked": [
+    "FSlateDrawElement::MakeCustomVerts default TArray signature",
+    "FSlateVertex::Make FVector2f overload",
+    "FSlateMaterialBrush constructor and external lifetime",
+    "ULocalPlayer::GetProjectionData const signature",
+    "APlayerCameraManager::GetCameraCacheView",
+    "UPrimitiveComponent::SetVisibleInSceneCaptureOnly",
+    "ASceneCapture2D custom projection and ShowOnlyComponent",
+    "PlayerState identity delegate signature",
+    "Ring radius source and 20cm inner/outer clipping",
+    "Per-view selection, routes, health cache and EndPlay unbinding",
+    "Ship manual RT redraw continues when hidden from main pass"
+  ],
+  "limitations": [
+    "Native and UHT compilation not executed",
+    "No runtime or dual-client validation",
+    "GPU and maximum-unit performance not measured"
+  ],
+  "new_text_trailing_whitespace": [],
+  "progress_document_check": {
+    "errors": 0,
+    "warnings": 16,
+    "index_built": true,
+    "edited_ui_child_hash_matches": true,
+    "commander_parent_reconstructed_hash_matches": true,
+    "existing_split_mismatches": [
+      "僚机架构子页及父级历史哈希",
+      "指挥官03数据技能子页历史哈希，正文与HEAD相同"
+    ]
+  }
+}

@@ -1,0 +1,878 @@
+{
+  "models_checked": [
+    {
+      "id": 1001,
+      "name": "DefaultSoldier",
+      "resource": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 1002,
+      "name": "WM01",
+      "resource": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 1003,
+      "name": "ElectromagneticMiner",
+      "resource": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/BP_ElectromagneticMiner_3Tier.BP_ElectromagneticMiner_3Tier_C",
+      "type": "PresentationClass"
+    },
+    {
+      "id": 1004,
+      "name": "ConstructionVehicle",
+      "resource": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier_C",
+      "type": "PresentationClass"
+    },
+    {
+      "id": 1005,
+      "name": "SweeperSummon",
+      "resource": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 1006,
+      "name": "BiZhiMao",
+      "resource": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 2001,
+      "name": "MissileTurret",
+      "resource": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/StaticMeshes/missile_turret.missile_turret",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 2002,
+      "name": "SentryTurret",
+      "resource": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 2003,
+      "name": "ManualOutpost",
+      "resource": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 2004,
+      "name": "BasicBarracks",
+      "resource": "/Engine/BasicShapes/Cube.Cube",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 2005,
+      "name": "ShieldGenerator",
+      "resource": "/Game/GuLiStrike/Buildings/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 2006,
+      "name": "ResourceFactory",
+      "resource": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C",
+      "type": "PresentationClass"
+    },
+    {
+      "id": 2007,
+      "name": "TerritoryStronghold",
+      "resource": "/Engine/BasicShapes/Cylinder.Cylinder",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 2008,
+      "name": "BiZhiMaoConstruction",
+      "resource": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 3001,
+      "name": "SSF_AirBase",
+      "resource": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/AirBase/Meshes/SK_Blue_AirBase.SK_Blue_AirBase",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 3002,
+      "name": "SSF_CloningCenter",
+      "resource": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CloningCenter/Meshes/SK_Blue_CloningCenter.SK_Blue_CloningCenter",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 3003,
+      "name": "SSF_CommandCenter",
+      "resource": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CommandCenter/Meshes/SK_Blue_CommandCenter.SK_Blue_CommandCenter",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 3004,
+      "name": "SSF_MilitaryFactory",
+      "resource": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/MilitaryFactory/Meshes/SK_Blue_MilitaryFactory.SK_Blue_MilitaryFactory",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 3005,
+      "name": "SSF_Reactor",
+      "resource": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/Reactor/Meshes/SK_Blue_Reactor.SK_Blue_Reactor",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 3006,
+      "name": "SSF_StrategyCenter",
+      "resource": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/StrategyCenter/Meshes/SK_Blue_StrategyCenter.SK_Blue_StrategyCenter",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 4001,
+      "name": "GroundMech",
+      "resource": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs.SK_Legs",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 4002,
+      "name": "GroundMech_Armor",
+      "resource": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor.SM_Armor",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 4003,
+      "name": "GroundMech_Shoulder",
+      "resource": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder.SM_Shoulder",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 4004,
+      "name": "GroundMech_Machinegun",
+      "resource": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun.SK_Machinegun",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 5001,
+      "name": "ShipDefaultHull",
+      "resource": "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/StaticMeshes/bsg_virgon_express_carina.bsg_virgon_express_carina",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 5002,
+      "name": "ShipDreadnoughtHull",
+      "resource": "/Game/Assets/Arma/CombatAvatarFly-01/StaticMeshes/SM_Dreadnought_Hull.SM_Dreadnought_Hull",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 5101,
+      "name": "SC_Autocannon",
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Autocannon.SKM_SC_Autocannon",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 5102,
+      "name": "SC_Bottom_Twin_Barrel_Turret",
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Bottom_Twin_Barrel_Turret.SKM_SC_Bottom_Twin_Barrel_Turret",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 5103,
+      "name": "SC_CIWS",
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_CIWS.SKM_SC_CIWS",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 5104,
+      "name": "SC_High_Rate_Fire_Cannon",
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_High_Rate_Fire_Cannon.SKM_SC_High_Rate_Fire_Cannon",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 5105,
+      "name": "SC_Single_Barrel_Turret",
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Single_Barrel_Turret.SKM_SC_Single_Barrel_Turret",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 5106,
+      "name": "SC_Triple_Barrel_Turret",
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Triple_Barrel_Turret.SKM_SC_Triple_Barrel_Turret",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 5107,
+      "name": "SC_Twin_Barrel_Turret",
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Twin_Barrel_Turret.SKM_SC_Twin_Barrel_Turret",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 5108,
+      "name": "SC_Drone_LaunchBay",
+      "resource": "/Game/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay.SM_SC_Drone_LaunchBay",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 5109,
+      "name": "SC_Electronic_JammingDevice",
+      "resource": "/Game/Assets/Ships/ShipComponent/SM_SC_Electronic_JammingDevice.SM_SC_Electronic_JammingDevice",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 5110,
+      "name": "SC_Incendiary_Bomb_LaunchBay",
+      "resource": "/Game/Assets/Ships/ShipComponent/SM_SC_Incendiary_Bomb_LaunchBay.SM_SC_Incendiary_Bomb_LaunchBay",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 5111,
+      "name": "SC_Missile_Bay",
+      "resource": "/Game/Assets/Ships/ShipComponent/SM_SC_Missile_Bay.SM_SC_Missile_Bay",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 5112,
+      "name": "SC_Shield_Generator",
+      "resource": "/Game/Assets/Ships/ShipComponent/SM_SC_Shield_Generator.SM_SC_Shield_Generator",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 5113,
+      "name": "SC_Thor_MissilePod",
+      "resource": "/Game/Assets/Ships/ShipComponent/SM_SC_Thor_MissilePod.SM_SC_Thor_MissilePod",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 5901,
+      "name": "Legacy_Engine_Heavy",
+      "resource": "/Engine/BasicShapes/Cube.Cube",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 5902,
+      "name": "Legacy_Engine_Standard",
+      "resource": "/Engine/BasicShapes/Cube.Cube",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 5903,
+      "name": "Legacy_Weapon_Laser",
+      "resource": "/Engine/BasicShapes/Cube.Cube",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 5904,
+      "name": "Legacy_Weapon_RocketPod",
+      "resource": "/Engine/BasicShapes/Cube.Cube",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 6001,
+      "name": "Wingman",
+      "resource": "/Game/GuLiStrike/Wingman/SM_Wingman_Mass.SM_Wingman_Mass",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7001,
+      "name": "Ore_Blue_01_Full",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_01_Full.SM_Ore_Blue_01_Full",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7002,
+      "name": "Ore_Blue_01_Partial",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_01_Partial.SM_Ore_Blue_01_Partial",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7003,
+      "name": "Ore_Blue_01_Remnant",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_01_Remnant.SM_Ore_Blue_01_Remnant",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7004,
+      "name": "Ore_Blue_02_Full",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_02_Full.SM_Ore_Blue_02_Full",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7005,
+      "name": "Ore_Blue_02_Partial",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_02_Partial.SM_Ore_Blue_02_Partial",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7006,
+      "name": "Ore_Blue_02_Remnant",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_02_Remnant.SM_Ore_Blue_02_Remnant",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7007,
+      "name": "Ore_Blue_03_Full",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_03_Full.SM_Ore_Blue_03_Full",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7008,
+      "name": "Ore_Blue_03_Partial",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_03_Partial.SM_Ore_Blue_03_Partial",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7009,
+      "name": "Ore_Blue_03_Remnant",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_03_Remnant.SM_Ore_Blue_03_Remnant",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7010,
+      "name": "Ore_Blue_04_Full",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_04_Full.SM_Ore_Blue_04_Full",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7011,
+      "name": "Ore_Blue_04_Partial",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_04_Partial.SM_Ore_Blue_04_Partial",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7012,
+      "name": "Ore_Blue_04_Remnant",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_04_Remnant.SM_Ore_Blue_04_Remnant",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7013,
+      "name": "Ore_Red_01_Full",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_01_Full.SM_Ore_Red_01_Full",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7014,
+      "name": "Ore_Red_01_Partial",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_01_Partial.SM_Ore_Red_01_Partial",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7015,
+      "name": "Ore_Red_01_Remnant",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_01_Remnant.SM_Ore_Red_01_Remnant",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7016,
+      "name": "Ore_Red_02_Full",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_02_Full.SM_Ore_Red_02_Full",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7017,
+      "name": "Ore_Red_02_Partial",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_02_Partial.SM_Ore_Red_02_Partial",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7018,
+      "name": "Ore_Red_02_Remnant",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_02_Remnant.SM_Ore_Red_02_Remnant",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7019,
+      "name": "Ore_Red_03_Full",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_03_Full.SM_Ore_Red_03_Full",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7020,
+      "name": "Ore_Red_03_Partial",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_03_Partial.SM_Ore_Red_03_Partial",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7021,
+      "name": "Ore_Red_03_Remnant",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_03_Remnant.SM_Ore_Red_03_Remnant",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7022,
+      "name": "Ore_Red_04_Full",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_04_Full.SM_Ore_Red_04_Full",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7023,
+      "name": "Ore_Red_04_Partial",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_04_Partial.SM_Ore_Red_04_Partial",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 7024,
+      "name": "Ore_Red_04_Remnant",
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_04_Remnant.SM_Ore_Red_04_Remnant",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 8001,
+      "name": "SM_TeslaCollector_Styled",
+      "resource": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 8002,
+      "name": "Weapon_Rocket_Mount_Lvl2",
+      "resource": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 8003,
+      "name": "Side_Winglet_Spike_Lvl1",
+      "resource": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 8004,
+      "name": "Chassis_Transporter_Cockpit_Lvl2",
+      "resource": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 8005,
+      "name": "Cockpit_Freight_Wide",
+      "resource": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 8006,
+      "name": "Top_Turret_2x_Lvl1",
+      "resource": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 8007,
+      "name": "SK_RPF_Door",
+      "resource": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door.SK_RPF_Door",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 8008,
+      "name": "SM_RPF_Body",
+      "resource": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SM_RPF_Body.SM_RPF_Body",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 8009,
+      "name": "ConstructionVehicle_SM_TeslaCollector_Styled",
+      "resource": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 8010,
+      "name": "ConstructionVehicle_Weapon_Rocket_Mount_Lvl2",
+      "resource": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 8011,
+      "name": "ConstructionVehicle_Side_Winglet_Spike_Lvl1",
+      "resource": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 8012,
+      "name": "ConstructionVehicle_Chassis_Transporter_Cockpit_Lvl2",
+      "resource": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+      "type": "SkeletalMesh"
+    },
+    {
+      "id": 8013,
+      "name": "ConstructionVehicle_Cockpit_Freight_Wide",
+      "resource": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 8014,
+      "name": "ConstructionVehicle_Top_Turret_2x_Lvl1",
+      "resource": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 8015,
+      "name": "ResourceFactory_AccessRamp",
+      "resource": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/Meshes/SM_RPF_AccessRamp.SM_RPF_AccessRamp",
+      "type": "StaticMesh"
+    },
+    {
+      "id": 8016,
+      "name": "GroundSeatPlaceholder",
+      "resource": "/Engine/BasicShapes/Cube.Cube",
+      "type": "StaticMesh"
+    }
+  ],
+  "existing_parameters_checked": 2782,
+  "errors": [],
+  "candidate_deferred": [],
+  "candidate_cpd_bindings_checked": 70,
+  "original_resource_parity": [
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": true,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": true,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+      "all_native_attributes": "exact original across all LODs",
+      "fixed_atlas_and_three_tone": "preserved",
+      "team_mask": "/Game/GuLiStrike/Models/TeamColor_v1/SweeperSummon/Textures/T_Sweeper_OrangeTeamMask.T_Sweeper_OrangeTeamMask"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": true,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/StaticMeshes/missile_turret.missile_turret",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": true,
+      "nanite_source_preserved": true
+    },
+    {
+      "resource": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": false,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": false,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/Meshes/SM_RPF_AccessRamp.SM_RPF_AccessRamp",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": false,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/GuLiStrike/Buildings/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": false,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Engine/BasicShapes/Cylinder.Cylinder",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": true,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/AirBase/Meshes/SK_Blue_AirBase.SK_Blue_AirBase",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": false,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CloningCenter/Meshes/SK_Blue_CloningCenter.SK_Blue_CloningCenter",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": false,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CommandCenter/Meshes/SK_Blue_CommandCenter.SK_Blue_CommandCenter",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": false,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/MilitaryFactory/Meshes/SK_Blue_MilitaryFactory.SK_Blue_MilitaryFactory",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": false,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/Reactor/Meshes/SK_Blue_Reactor.SK_Blue_Reactor",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": false,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/StrategyCenter/Meshes/SK_Blue_StrategyCenter.SK_Blue_StrategyCenter",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": false,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/StaticMeshes/bsg_virgon_express_carina.bsg_virgon_express_carina",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Autocannon.SKM_SC_Autocannon",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Bottom_Twin_Barrel_Turret.SKM_SC_Bottom_Twin_Barrel_Turret",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_CIWS.SKM_SC_CIWS",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_High_Rate_Fire_Cannon.SKM_SC_High_Rate_Fire_Cannon",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Single_Barrel_Turret.SKM_SC_Single_Barrel_Turret",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Triple_Barrel_Turret.SKM_SC_Triple_Barrel_Turret",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Twin_Barrel_Turret.SKM_SC_Twin_Barrel_Turret",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay.SM_SC_Drone_LaunchBay",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Ships/ShipComponent/SM_SC_Electronic_JammingDevice.SM_SC_Electronic_JammingDevice",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Ships/ShipComponent/SM_SC_Incendiary_Bomb_LaunchBay.SM_SC_Incendiary_Bomb_LaunchBay",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Ships/ShipComponent/SM_SC_Missile_Bay.SM_SC_Missile_Bay",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Ships/ShipComponent/SM_SC_Shield_Generator.SM_SC_Shield_Generator",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Ships/ShipComponent/SM_SC_Thor_MissilePod.SM_SC_Thor_MissilePod",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/Assets/Arma/CombatAvatarFly-01/StaticMeshes/SM_Dreadnought_Hull.SM_Dreadnought_Hull",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door.SK_RPF_Door",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": false,
+      "nanite_source_preserved": false
+    },
+    {
+      "resource": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SM_RPF_Body.SM_RPF_Body",
+      "source_attributes": "exact color-only paint",
+      "gpu_repacked": true,
+      "nanite_source_preserved": true
+    },
+    {
+      "resource": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs.SK_Legs",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor.SM_Armor",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder.SM_Shoulder",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun.SK_Machinegun",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_04_Remnant.SM_Ore_Red_04_Remnant",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_04_Partial.SM_Ore_Red_04_Partial",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_04_Full.SM_Ore_Red_04_Full",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_03_Remnant.SM_Ore_Red_03_Remnant",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_03_Partial.SM_Ore_Red_03_Partial",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_03_Full.SM_Ore_Red_03_Full",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_02_Remnant.SM_Ore_Red_02_Remnant",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_02_Partial.SM_Ore_Red_02_Partial",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_02_Full.SM_Ore_Red_02_Full",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_01_Remnant.SM_Ore_Red_01_Remnant",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_01_Partial.SM_Ore_Red_01_Partial",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Red/SM_Ore_Red_01_Full.SM_Ore_Red_01_Full",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_04_Remnant.SM_Ore_Blue_04_Remnant",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_04_Partial.SM_Ore_Blue_04_Partial",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_04_Full.SM_Ore_Blue_04_Full",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_03_Remnant.SM_Ore_Blue_03_Remnant",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_03_Partial.SM_Ore_Blue_03_Partial",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_03_Full.SM_Ore_Blue_03_Full",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_02_Remnant.SM_Ore_Blue_02_Remnant",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_02_Partial.SM_Ore_Blue_02_Partial",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_02_Full.SM_Ore_Blue_02_Full",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_01_Remnant.SM_Ore_Blue_01_Remnant",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_01_Partial.SM_Ore_Blue_01_Partial",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Resources/Ores/Meshes/Blue/SM_Ore_Blue_01_Full.SM_Ore_Blue_01_Full",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "resource": "/Game/GuLiStrike/Wingman/SM_Wingman_Mass.SM_Wingman_Mass",
+      "material_slots_and_parameter_names": "unchanged"
+    },
+    {
+      "assembly": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/BP_ElectromagneticMiner_3Tier.BP_ElectromagneticMiner_3Tier_C",
+      "components_transforms_sockets_materials": "unchanged"
+    },
+    {
+      "assembly": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier_C",
+      "components_transforms_sockets_materials": "unchanged"
+    },
+    {
+      "assembly": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C",
+      "components_transforms_sockets_materials": "unchanged"
+    },
+    {
+      "ship": "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip.BP_GuLiStrikeShip_C",
+      "hull_and_part_source_snapshots": "compared"
+    },
+    {
+      "ship": "/Game/GuLiStrike/Ship/BP_CombatAvatarFly01.BP_CombatAvatarFly01_C",
+      "hull_and_part_source_snapshots": "compared"
+    },
+    {
+      "ground": "BP_GroundMech_Light",
+      "components_transforms_sockets_materials": "unchanged"
+    }
+  ],
+  "native_compile": "Succeeded",
+  "new_datatables_import": "passed",
+  "gameplay": "separate actual runtime evidence in Artifacts/ModelRegistryRuntime20261008",
+  "geometry_rig_animation_lod": "existing resource references and assembly snapshots compared; geometry/rig/LOD binary parity not asserted; B source invariants separately documented"
+}

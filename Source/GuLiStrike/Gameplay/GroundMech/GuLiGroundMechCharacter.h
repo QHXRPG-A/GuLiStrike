@@ -25,6 +25,8 @@ class GULISTRIKE_API AGuLiGroundMechCharacter : public ACharacter, public IAbili
 public:
 	AGuLiGroundMechCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	virtual void Tick(float DeltaSeconds) override;
+	virtual void PostInitializeComponents() override;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Models") int32 ModelId = 4001;
 	virtual void PawnClientRestart() override;
 	virtual void NotifyControllerChanged() override;
 	virtual void UnPossessed() override;

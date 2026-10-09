@@ -12,6 +12,8 @@
 #include "Commander/Presentation/GuLiCommanderMiniMapTransform.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
+#include "Commander/UI/GuLiSceneUIWidget.h"
+#include "Gameplay/Presentation/GuLiLocalTeamColors.h"
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
 #include "Gameplay/Data/GuLiGameText.h"
@@ -148,17 +150,10 @@ namespace GuLiCommanderHUD
 		return Transform;
 	}
 
-	FLinearColor GetTeamColor(const EGuLiTeam Team)
+	FLinearColor GetTeamColor(const EGuLiTeam Team, const EGuLiTeam ViewTeam)
 	{
-		switch (Team)
-		{
-		case EGuLiTeam::Red:
-			return FLinearColor(1.0f, 0.06f, 0.04f, 0.95f);
-		case EGuLiTeam::Blue:
-			return FLinearColor(0.04f, 0.32f, 1.0f, 0.95f);
-		default:
-			return FLinearColor(0.55f, 0.55f, 0.55f, 0.8f);
-		}
+		return GuLiLocalTeamColors::IsAssigned(Team) && GuLiLocalTeamColors::IsAssigned(ViewTeam)
+			? GuLiLocalTeamColors::GetUI(Team, ViewTeam) : FLinearColor(.55f,.55f,.55f,1);
 	}
 
 	bool IsAcceptedResult(const EGuLiCommandAckResult Result)
@@ -220,13 +215,13 @@ namespace GuLiCommanderHUD
 		return {TEXT("READY"), FLinearColor(0.65f, 0.78f, 0.9f, 0.95f)};
 	}
 
-	FLinearColor GetSoldierPointColor(const FGuLiSoldierStateItem& Soldier)
+	FLinearColor GetSoldierPointColor(const FGuLiSoldierStateItem& Soldier, const EGuLiTeam ViewTeam)
 	{
 		if (!Soldier.IsAlive())
 		{
 			return FLinearColor(0.38f, 0.06f, 0.04f, 0.8f);
 		}
-		return GetTeamColor(Soldier.Team);
+		return GetTeamColor(Soldier.Team, ViewTeam);
 	}
 }
 
@@ -257,6 +252,7 @@ void AGuLiCommanderHUD::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void AGuLiCommanderHUD::RefreshCommanderRole()
 {
 	const AGuLiCommanderPlayerController* CommanderController = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
+	SceneUI = CommanderController ? CommanderController->GetSceneUIWidget() : nullptr;
 	if (CommanderController && CommanderController->IsCommanderViewActive())
 	{
 		CreateRuntimeHUD();
@@ -321,6 +317,8 @@ void AGuLiCommanderHUD::DrawHUD()
 	}
 
 	const AGuLiCommanderPlayerController* CommanderController = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
+	SceneUI=CommanderController ? CommanderController->GetSceneUIWidget() : nullptr;
+	if (SceneUI.IsValid()) SceneUI->BeginHUDFrame();
 	// 绘制回调只负责 Canvas；角色/UI 生命周期不能依赖 showhud 或视口是否渲染。
 	if (CommanderController && CommanderController->IsCommanderViewActive())
 	{
@@ -346,13 +344,10 @@ void AGuLiCommanderHUD::DrawHUD()
 					for (const auto& Task : Summary.Tasks)
 					{
 						if (FVector(Task.Command.Target).IsNearlyZero()) continue;
-						FVector2D A, B;
-						if (CommanderController->ProjectWorldLocationToScreen(Start, A)
-							&& CommanderController->ProjectWorldLocationToScreen(Task.Command.Target, B))
-						{
-							DrawLine(A.X,A.Y,B.X,B.Y,FLinearColor(.2f,.85f,1,.8f),1.5f);
-							DrawText(FString::FromInt(++Index),FLinearColor::White,B.X,B.Y,GEngine->GetSmallFont());
-						}
+						if (SceneUI.IsValid()) SceneUI->AddWorldLine(Start,Task.Command.Target,FLinearColor(.2f,.85f,1),1.5f);
+						FVector2D B; ++Index;
+						if (CommanderController->ProjectWorldLocationToScreen(Task.Command.Target,B,true))
+							SceneText(FString::FromInt(Index),FLinearColor::White,B.X,B.Y,GEngine->GetSmallFont());
 						Start = Task.Command.Target;
 					}
 				}
@@ -1119,7 +1114,7 @@ void AGuLiCommanderHUD::DrawCohortCards(
 		const float EmptyX = (Canvas->SizeX - EmptyWidth) * 0.5f;
 		const float EmptyY = Canvas->SizeY - EmptyHeight - 14.0f;
 		DrawRect(FLinearColor(0.025f, 0.03f, 0.045f, 0.76f), EmptyX, EmptyY, EmptyWidth, EmptyHeight);
-		DrawRect(GuLiCommanderHUD::GetTeamColor(LocalTeam), EmptyX, EmptyY, EmptyWidth, 3.0f);
+		DrawRect(GuLiCommanderHUD::GetTeamColor(LocalTeam, LocalTeam), EmptyX, EmptyY, EmptyWidth, 3.0f);
 		DrawText(
 			TEXT("NO COHORTS"),
 			FLinearColor(0.52f, 0.62f, 0.68f, 0.9f),
@@ -1140,7 +1135,7 @@ void AGuLiCommanderHUD::DrawCohortCards(
 		+ Gap * static_cast<float>(VisibleCount - 1);
 	const float StartX = (Canvas->SizeX - StripWidth) * 0.5f;
 	const float StartY = Canvas->SizeY - CardHeight - 14.0f;
-	const FLinearColor TeamColor = GuLiCommanderHUD::GetTeamColor(LocalTeam);
+	const FLinearColor TeamColor = GuLiCommanderHUD::GetTeamColor(LocalTeam, LocalTeam);
 	const float PrimaryTextScale = CardWidth < 80.0f ? 0.62f : 0.78f;
 	const float SecondaryTextScale = CardWidth < 80.0f ? 0.58f : 0.72f;
 
@@ -1292,7 +1287,7 @@ void AGuLiCommanderHUD::DrawMiniMap(
 			const float PointSize = !Soldier.IsAlive() ? 2.0f : (bSelected ? 4.5f : 2.5f);
 			const FLinearColor PointColor = bSelected
 				? FLinearColor(1.0f, 0.82f, 0.04f, 1.0f)
-				: GuLiCommanderHUD::GetSoldierPointColor(Soldier);
+				: GuLiCommanderHUD::GetSoldierPointColor(Soldier, GuLiLocalTeamColors::GetViewTeam(PlayerOwner));
 			const float HalfPointSize = PointSize * 0.5f;
 			const float MinimumX = FMath::Max(
 				MapX,
@@ -1409,49 +1404,16 @@ void AGuLiCommanderHUD::DrawSelectionCircle(
 
 	const float Radius = GuLiCommanderProtocol::GetSelectionRadiusCentimeters(
 		Controller.GetSelectionRadiusPreset());
-	FVector2D FirstScreenPoint = FVector2D::ZeroVector;
-	FVector2D PreviousScreenPoint = FVector2D::ZeroVector;
-	bool bHasFirstPoint = false;
-	bool bHasPreviousPoint = false;
 	for (int32 Segment = 0; Segment < GuLiCommanderHUD::SelectionCircleSegments; ++Segment)
 	{
-		const float Angle = 2.0f * PI
-			* static_cast<float>(Segment)
-			/ static_cast<float>(GuLiCommanderHUD::SelectionCircleSegments);
-		const FVector WorldPoint = GroundLocation
-			+ FVector(FMath::Cos(Angle) * Radius, FMath::Sin(Angle) * Radius, 80.0f);
-		FVector2D ScreenPoint;
-		const bool bProjected = Controller.ProjectWorldLocationToScreen(WorldPoint, ScreenPoint, false);
-		if (bProjected && bHasPreviousPoint)
-		{
-			DrawLine(
-				PreviousScreenPoint.X,
-				PreviousScreenPoint.Y,
-				ScreenPoint.X,
-				ScreenPoint.Y,
-				FLinearColor(0.12f, 0.9f, 1.0f, 0.76f),
-				2.0f);
-		}
-		if (bProjected && !bHasFirstPoint)
-		{
-			FirstScreenPoint = ScreenPoint;
-			bHasFirstPoint = true;
-		}
-		PreviousScreenPoint = ScreenPoint;
-		bHasPreviousPoint = bProjected;
+		const double Angle=2.0*PI*Segment/GuLiCommanderHUD::SelectionCircleSegments;
+		const double Next=2.0*PI*(Segment+1)/GuLiCommanderHUD::SelectionCircleSegments;
+		const FVector A=GroundLocation+FVector(FMath::Cos(Angle)*Radius,FMath::Sin(Angle)*Radius,80);
+		const FVector B=GroundLocation+FVector(FMath::Cos(Next)*Radius,FMath::Sin(Next)*Radius,80);
+		if (SceneUI.IsValid()) SceneUI->AddWorldLine(A,B,FLinearColor(.12f,.9f,1),2);
 	}
-
-	if (bHasFirstPoint && bHasPreviousPoint)
-	{
-		DrawLine(
-			PreviousScreenPoint.X,
-			PreviousScreenPoint.Y,
-			FirstScreenPoint.X,
-			FirstScreenPoint.Y,
-			FLinearColor(0.12f, 0.9f, 1.0f, 0.76f),
-			2.0f);
-	}
-	DrawText(FString::Printf(TEXT("范围 %dm  [+] 调整  [7] 框选"), FMath::RoundToInt(Radius / 100.0f)),
+	if (SceneUI.IsValid()) { const auto Cursor=SceneUI->ToPlayerScreen(FVector2D(CursorX,CursorY)); CursorX=Cursor.X; CursorY=Cursor.Y; }
+	SceneText(FString::Printf(TEXT("范围 %dm  [+] 调整  [7] 框选"), FMath::RoundToInt(Radius / 100.0f)),
 		FLinearColor(0.65f, 0.94f, 1.0f, 0.9f),
 		FMath::Clamp(CursorX + 20.0f, 8.0f, FMath::Max(8.0f, Canvas->ClipX - 240.0f)),
 		FMath::Clamp(CursorY + 24.0f, 8.0f, FMath::Max(8.0f, Canvas->ClipY - 28.0f)),
@@ -1466,15 +1428,15 @@ void AGuLiCommanderHUD::DrawSelectionRectangle(const AGuLiCommanderPlayerControl
 	{
 		return;
 	}
+	if (SceneUI.IsValid()) { Start=SceneUI->ToPlayerScreen(Start); End=SceneUI->ToPlayerScreen(End); }
 	const FVector2D Minimum(FMath::Min(Start.X, End.X), FMath::Min(Start.Y, End.Y));
 	const FVector2D Maximum(FMath::Max(Start.X, End.X), FMath::Max(Start.Y, End.Y));
 	const FLinearColor Outline(0.094f, 0.843f, 1.0f, 0.95f);
-	DrawRect(FLinearColor(0.05f, 0.75f, 1.0f, 0.075f), Minimum.X, Minimum.Y,
-		Maximum.X - Minimum.X, Maximum.Y - Minimum.Y);
-	DrawLine(Minimum.X, Minimum.Y, Maximum.X, Minimum.Y, Outline, 1.5f);
-	DrawLine(Maximum.X, Minimum.Y, Maximum.X, Maximum.Y, Outline, 1.5f);
-	DrawLine(Maximum.X, Maximum.Y, Minimum.X, Maximum.Y, Outline, 1.5f);
-	DrawLine(Minimum.X, Maximum.Y, Minimum.X, Minimum.Y, Outline, 1.5f);
+	// The selection interior stays empty; its opaque border carries the UI color.
+	SceneLine(Minimum.X, Minimum.Y, Maximum.X, Minimum.Y, Outline, 1.5f);
+	SceneLine(Maximum.X, Minimum.Y, Maximum.X, Maximum.Y, Outline, 1.5f);
+	SceneLine(Maximum.X, Maximum.Y, Minimum.X, Maximum.Y, Outline, 1.5f);
+	SceneLine(Minimum.X, Maximum.Y, Minimum.X, Minimum.Y, Outline, 1.5f);
 }
 
 void AGuLiCommanderHUD::DrawActiveCommandLine(
@@ -1496,8 +1458,7 @@ void AGuLiCommanderHUD::DrawActiveCommandLine(
 
 	FVector2D StartScreen;
 	FVector2D EndScreen;
-	if (!Controller.ProjectWorldLocationToScreen(Start, StartScreen, false)
-		|| !Controller.ProjectWorldLocationToScreen(End, EndScreen, false))
+	if (!SceneUI.IsValid() || !SceneUI->ProjectWorldLineToScreen(Start,End,StartScreen,EndScreen))
 	{
 		return;
 	}
@@ -1544,7 +1505,7 @@ void AGuLiCommanderHUD::DrawActiveCommandLine(
 			StartScreen,
 			EndScreen,
 			static_cast<float>(DashIndex + 1) / static_cast<float>(DashCount));
-		DrawLine(DashStart.X, DashStart.Y, DashEnd.X, DashEnd.Y, LineColor, 3.0f);
+		SceneLine(DashStart.X, DashStart.Y, DashEnd.X, DashEnd.Y, LineColor, 3.0f);
 	}
 
 	const int32 FlowMarkerCount = FMath::Clamp(FMath::RoundToInt(LineLength / 90.0f), 6, 18);
@@ -1562,15 +1523,15 @@ void AGuLiCommanderHUD::DrawActiveCommandLine(
 			FlowColor.G,
 			FlowColor.B,
 			FlowColor.A * Pulse);
-		DrawLine(Tail.X, Tail.Y, Point.X, Point.Y, MarkerColor, 3.0f);
-		DrawLine(
+		SceneLine(Tail.X, Tail.Y, Point.X, Point.Y, MarkerColor, 3.0f);
+		SceneLine(
 			Point.X,
 			Point.Y,
 			Point.X - MarkerDirection.X * 6.0f + Perpendicular.X * 4.0f,
 			Point.Y - MarkerDirection.Y * 6.0f + Perpendicular.Y * 4.0f,
 			MarkerColor,
 			2.0f);
-		DrawLine(
+		SceneLine(
 			Point.X,
 			Point.Y,
 			Point.X - MarkerDirection.X * 6.0f - Perpendicular.X * 4.0f,
@@ -1589,7 +1550,7 @@ void AGuLiCommanderHUD::DrawActiveCommandLine(
 		const FVector2D CirclePoint = EndScreen + FVector2D(
 			FMath::Cos(Angle) * TargetPulse,
 			FMath::Sin(Angle) * TargetPulse);
-		DrawLine(
+		SceneLine(
 			PreviousCirclePoint.X,
 			PreviousCirclePoint.Y,
 			CirclePoint.X,
@@ -1600,14 +1561,14 @@ void AGuLiCommanderHUD::DrawActiveCommandLine(
 	}
 	if (State == EGuLiCommandLineState::Rejected)
 	{
-		DrawLine(
+		SceneLine(
 			EndScreen.X - 7.0f,
 			EndScreen.Y - 7.0f,
 			EndScreen.X + 7.0f,
 			EndScreen.Y + 7.0f,
 			FlowColor,
 			3.0f);
-		DrawLine(
+		SceneLine(
 			EndScreen.X - 7.0f,
 			EndScreen.Y + 7.0f,
 			EndScreen.X + 7.0f,
@@ -1615,7 +1576,7 @@ void AGuLiCommanderHUD::DrawActiveCommandLine(
 			FlowColor,
 			3.0f);
 	}
-	DrawText(
+	SceneText(
 		StateLabel,
 		FlowColor,
 		EndScreen.X + 14.0f,
@@ -1624,3 +1585,10 @@ void AGuLiCommanderHUD::DrawActiveCommandLine(
 		0.72f,
 		false);
 }
+
+void AGuLiCommanderHUD::SceneLine(float X1, float Y1, float X2, float Y2, FLinearColor Color, float Width)
+{ if (SceneUI.IsValid()) SceneUI->AddScreenLine(X1,Y1,X2,Y2,Color,Width); }
+void AGuLiCommanderHUD::SceneRect(FLinearColor Color, float X, float Y, float W, float H)
+{ if (SceneUI.IsValid()) SceneUI->AddScreenRect(Color,X,Y,W,H); }
+void AGuLiCommanderHUD::SceneText(const FString& Text, FLinearColor Color, float X, float Y, UFont*, float, bool)
+{ if (SceneUI.IsValid()) SceneUI->AddScreenText(Text,Color,X,Y); }

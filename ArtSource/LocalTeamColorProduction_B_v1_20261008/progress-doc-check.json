@@ -1,0 +1,22 @@
+{
+  "build": {
+    "exit_code": 0,
+    "mode": "write",
+    "changed": 6,
+    "paths": [
+      "Progress/_Index/Current.md",
+      "Progress/_Index/Verification.md",
+      "Progress/_Index/ByArea.md",
+      "Progress/_Index/Archive.md",
+      "Progress/_Index/Quality.md",
+      "Progress/_Index/catalog.jsonl"
+    ]
+  },
+  "check": {
+    "exit_code": 0,
+    "errors": 0,
+    "warnings": 16,
+    "output": "errors=0 warnings=16\r\nWARNING oversize Progress/Archive/20260901-ָ�ӹ�ѡ���ƶ�������С��GASɨ���ܹ鵵-0831��0901.md: 88.4KB��������ֵ 80KB\r\nWARNING large_task_list Progress/DevelopmentDocumentation/20260820-DIY�ɴ�.md: 29 ��������\r\nWARNING large_task_list Progress/DevelopmentDocumentation/20260827-Mass˫��ͬ���ܹ��ݰ�.md: 46 ��������\r\nWARNING oversize Progress/DevelopmentDocumentation/20260827-Mass˫��ͬ���ܹ��ݰ�.md: 44.9KB��������ֵ 30KB\r\nWARNING large_task_list Progress/DevelopmentDocumentation/20260902-�Ż���ϵ�������ά����/06-�����������.md: 44 ��������\r\nWARNING oversize Progress/DevelopmentDocumentation/20260904-�Ż��޹��򻤺����������ع�.md: 39.0KB��������ֵ 30KB\r\nWARNING oversize Progress/DevelopmentDocumentation/20260914-ָ�ӹٰ�ģ�ݵ�ռ���뽨����ϵ.md: 31.4KB��������ֵ 30KB\r\nWARNING oversize Progress/DevelopmentDocumentation/20260929-�ط��ŵ�����������뿨��.md: 30.4KB��������ֵ 30KB\r\nWARNING oversize Progress/DevelopmentDocumentation/GuLiStrike�����淶.md: 60.4KB��������ֵ 30KB\r\nWARNING oversize Progress/Gameplay/ս��.md: 35.9KB��������ֵ 30KB\r\nWARNING oversize Progress/Gameplay/�ɴ�.md: 61.8KB��������ֵ 30KB\r\nWARNING oversize Progress/RequirementDocument/20260826-5v5��ս���淨�ݰ�.md: 36.1KB��������ֵ 20KB\r\nWARNING oversize Progress/RequirementDocument/20260827-Mass˫��ͬ���ܹ��ݰ�.md: 24.7KB��������ֵ 20KB\r\nWARNING oversize Progress/RequirementDocument/20260902-�Ż���ϵ�������ά����.md: 27.9KB��������ֵ 20KB\r\nWARNING oversize Progress/RequirementDocument/20260915-�ͻ��������Ż���ѹ�������¼.md: 27.8KB��������ֵ 20KB\r\nWARNING oversize Progress/RequirementDocument/GuLiStrike�����淶.md: 33.0KB��������ֵ 20KB\r\n",
+    "note": "Warnings identify document size/task-list advisories; no schema/index errors."
+  }
+}

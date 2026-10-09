@@ -154,6 +154,9 @@ void UGuLiCommanderWorldReplicationComponent::EnsurePresentationActor()
 
 	for (TActorIterator<AGuLiCommanderPresentationActor> It(GetWorld()); It; ++It)
 	{
+#if WITH_EDITOR
+		if (It->IsEditorOnly()) continue;
+#endif
 		PresentationActor = *It;
 		return;
 	}

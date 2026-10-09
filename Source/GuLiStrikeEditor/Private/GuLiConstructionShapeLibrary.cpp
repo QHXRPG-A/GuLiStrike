@@ -5,6 +5,7 @@
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "Gameplay/Building/GuLiBuildingVisuals.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/BlueprintGeneratedClass.h"
@@ -66,10 +67,8 @@ void DefinitionSources(const FGuLiBuildingDefinition& D, TArray<FSource>& Out)
 		if (D.Mesh) Out.Add({D.Mesh, FTransform(FQuat::Identity, D.VisualOffset, D.MeshScale)});
 		return;
 	}
-	// Resolve the real presentation through its existing gameplay configuration, never the placement cube.
-	const auto* Config = LoadObject<UGuLiResourceEconomyConfig>(nullptr,
-		TEXT("/Game/GuLiStrike/Data/Resources/DA_ResourceEconomy.DA_ResourceEconomy"));
-	auto* Class = Config ? Cast<UBlueprintGeneratedClass>(Config->FactoryPresentationClass.LoadSynchronous()) : nullptr;
+	// The resolved building ModelId owns its actual composed presentation.
+	auto* Class = Cast<UBlueprintGeneratedClass>(D.PresentationClass.Get());
 	if (!Class || !Class->SimpleConstructionScript) return;
 	TArray<FSource> Candidates, Explicit;
 	TFunction<void(USCS_Node*, const FTransform&)> Visit = [&](USCS_Node* Node, const FTransform& Parent)

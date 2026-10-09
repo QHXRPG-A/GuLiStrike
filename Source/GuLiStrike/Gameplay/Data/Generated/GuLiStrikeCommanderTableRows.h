@@ -35,10 +35,6 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	float MaxHealth = 0.0f;
 
-	/** ModelAsset (softobject, Optional) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
-	TSoftObjectPtr<UObject> ModelAsset;
-
 	/** Defense (float, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	float Defense = 0.0f;
@@ -46,10 +42,6 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	/** ActorClass (softclass, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	TSoftClassPtr<UObject> ActorClass;
-
-	/** PresentationClass (softclass, Optional) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
-	TSoftClassPtr<UObject> PresentationClass;
 
 	/** PresentationScale (float, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
@@ -71,10 +63,6 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	TSoftObjectPtr<UObject> StateTreeAsset;
 
-	/** VATDefinition (softobject, Optional) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
-	TSoftObjectPtr<UObject> VATDefinition;
-
 	/** bSummonOnly (bool, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	bool bSummonOnly = false;
@@ -90,6 +78,10 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	/** MassAvoidanceRadiusMeters (float, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	float MassAvoidanceRadiusMeters = 0.0f;
+
+	/** ModelId (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	int32 ModelId = 0;
 
 };
 

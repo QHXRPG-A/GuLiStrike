@@ -1,0 +1,170 @@
+{
+  "id": "DefaultSoldier",
+  "name": "先驱号",
+  "title": "PIONEER",
+  "category": "Mass",
+  "unit_type_id": 1,
+  "fixed": [
+    "六腿主护甲及关节护盖：乳白 #FEE4D9",
+    "中央主壳：米砂 #D5C09C",
+    "原有枪管/机构/支承/电缆/工作面/深槽：深灰 #2C3735，保持各模型既有分件"
+  ],
+  "team": [
+    "浅队色：两侧完整肩部盒形护板",
+    "深队色：后部弧形围带、六腿对应外侧识别护板"
+  ],
+  "function": [
+    "原有小型指示灯：琥珀色，固定不随队色变化"
+  ],
+  "source": [
+    "ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayHero.png",
+    "ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayFront.png",
+    "ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayLeft.png",
+    "ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayBack.png"
+  ],
+  "structure": "保留六足、双枪、两根天线和后部围带，队色集中在完整分件。",
+  "team_primary": [
+    "两侧完整肩部盒形护板"
+  ],
+  "team_secondary": [
+    "后部弧形围带、六腿对应外侧识别护板"
+  ],
+  "paint_zones": {
+    "fixed_armor": "六腿主护甲及关节护盖",
+    "fixed_secondary": "中央主壳",
+    "team_primary": "两侧完整肩部盒形护板",
+    "team_secondary": "后部弧形围带、六腿对应外侧识别护板",
+    "mechanisms": "枪管、关节、底盘与脚部机构：深灰"
+  },
+  "team_lights": [],
+  "previous_boards": {
+    "blue": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png",
+    "red": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_red.png"
+  },
+  "cream_coverage_target": {
+    "range_percent": [
+      20,
+      30
+    ],
+    "basis": "visible model surfaces; excludes background, outline and cast shadow",
+    "is_measured": false
+  },
+  "boards": {
+    "blue": {
+      "path": "Boards/DefaultSoldier_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1863520,
+      "sha256": "84969b5585d5d9b8017acb6b5474568967982152cf3daa351a930a929d764dea"
+    },
+    "red": {
+      "path": "Boards/DefaultSoldier_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1849185,
+      "sha256": "7bbd4097686df5d5e287cb0e09b5f42124ff775fd2ebc221df97ca17d1c89f29"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+  "source_kind": "StaticMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayHero.png",
+      "sha256": "d7e96c634a204cee0ba517f3312279109f94d00734df92af6d305d716f7a0abf"
+    },
+    {
+      "path": "ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayFront.png",
+      "sha256": "5073eb1ea804d30ef37fba48d6e84f1a79cf67ea79916cd0ba3e658a8e9ae6e9"
+    },
+    {
+      "path": "ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayLeft.png",
+      "sha256": "f2b3738798a34f12e4aea9a1dceb0b3c46cefe44ef15451d5e23d95baeeeca19"
+    },
+    {
+      "path": "ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayBack.png",
+      "sha256": "1265c2660b01d4714584f8c5cbb40078b71cfb5bb75e029c36619771f5c129cc"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v3_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    },
+    "fixed_secondary": {
+      "hex": "#D5C09C",
+      "card": 1,
+      "label": "固定米砂"
+    },
+    "blue_secondary": {
+      "hex": "#274E61",
+      "card": 4,
+      "label": "深蓝灰队色"
+    },
+    "red_secondary": {
+      "hex": "#662249",
+      "card": 2,
+      "label": "深莓队色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "enemy_non_blue_secondary": "#662249",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "paint_contract": {
+    "fixed": {
+      "cream": "#FEE4D9",
+      "sand": "#D5C09C",
+      "mechanisms": "#2C3735"
+    },
+    "team": {
+      "blue": {
+        "primary": "#6AA4BE",
+        "secondary": "#274E61"
+      },
+      "red": {
+        "primary": "#A34053",
+        "secondary": "#662249"
+      }
+    },
+    "team_light": null,
+    "shading": "Three cel-shading levels are separate from the two team base paint colors.",
+    "fixed_function_policy": "Only existing function locations and palette colors; shield top lights are team-controlled."
+  },
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

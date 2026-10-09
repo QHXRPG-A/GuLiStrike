@@ -1,0 +1,813 @@
+[
+  {
+    "model": "BiZhiMao",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 205141,
+        "geometry_uv_normal_index_sha1": "449F4161898BB0C7BE5032DB1274872AF1432688",
+        "triangles": 70117,
+        "triangle_surface_sha1": "30E8763B30B733F24AA5BC2711DB876E7FAB75AA",
+        "triangle_geometry_uv_skin_sha1": "F07E512460CD1B723830C650C4AA6258FA83D2D3"
+      },
+      {
+        "lod": 1,
+        "vertices": 38942,
+        "geometry_uv_normal_index_sha1": "7B5C6D1C3FF26A77C272ACBE755EBE638E4430D5",
+        "triangles": 16913,
+        "triangle_surface_sha1": "7E28940F38CB4426AEE94D72B9660EF1AC48F418",
+        "triangle_geometry_uv_skin_sha1": "1372F411EC8522776CA3FD49EC53F566C6AD0FE8"
+      },
+      {
+        "lod": 2,
+        "vertices": 15179,
+        "geometry_uv_normal_index_sha1": "F41415896CF1D93C05447DFC3CB3B8C758D2E854",
+        "triangles": 6125,
+        "triangle_surface_sha1": "0E5753F12F043C18F6A71C346FBF47CE57E57C8E",
+        "triangle_geometry_uv_skin_sha1": "BF6A7751AF5A6EB43F5C0A3AC97FF8BB940E4DEF"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 164415,
+        "geometry_uv_normal_index_sha1": "4F0924851C1E98C315F3C9DD645ED9766465DA28",
+        "triangles": 70117,
+        "triangle_surface_sha1": "2DFDC01E3C8F0068B4748F6C17ABBB0DD32BD824",
+        "triangle_geometry_uv_skin_sha1": "8E32EE4DC134F33133364D1608188C22E17ED204"
+      },
+      {
+        "lod": 1,
+        "vertices": 38953,
+        "geometry_uv_normal_index_sha1": "D7C0864E32C6E790CB6D53D19BCE9081781DDB39",
+        "triangles": 16913,
+        "triangle_surface_sha1": "9951209EE6004B14663CD919B7A23EFF9219298D",
+        "triangle_geometry_uv_skin_sha1": "1372F411EC8522776CA3FD49EC53F566C6AD0FE8"
+      },
+      {
+        "lod": 2,
+        "vertices": 15053,
+        "geometry_uv_normal_index_sha1": "0DA919CA25C768637A17339EE0867F622DF087B6",
+        "triangles": 6125,
+        "triangle_surface_sha1": "9BA697C1420FEFBB7E10FAB7C4F7A5263F744B65",
+        "triangle_geometry_uv_skin_sha1": "BF6A7751AF5A6EB43F5C0A3AC97FF8BB940E4DEF"
+      }
+    ],
+    "build": "<Struct 'MeshBuildSettings' (0x0000020D9E1730C0) {use_mikk_t_space: False, recompute_normals: False, recompute_tangents: False, compute_weighted_normals: True, remove_degenerates: False, build_reversed_index_buffer: True, use_high_precision_tangent_basis: False, use_full_precision_u_vs: True, use_backwards_compatible_f16_trunc_u_vs: False, generate_lightmap_u_vs: False, generate_distance_field_as_if_two_sided: False, support_face_remap: False, min_lightmap_resolution: 64, src_lightmap_index: 0, dst_lightmap_index: 1, build_scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}, distance_field_resolution_scale: 1.000000, distance_field_replacement_mesh: None, max_lumen_mesh_cards: 12}>",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E4B80) {origin: {x: 0.000015, y: -0.000015, z: 750.000002}, box_extent: {x: 899.999969, y: 900.000015, z: 849.999998}, sphere_radius: 1530.522776}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E25C0) {origin: {x: 0.000015, y: -0.000015, z: 749.999996}, box_extent: {x: 899.999985, y: 900.000015, z: 850.000004}, sphere_radius: 1530.522789}>"
+  },
+  {
+    "model": "DefaultSoldier",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 81515,
+        "geometry_uv_normal_index_sha1": "502E045317BB8BB7D19D7F9D0C29136462CA5058",
+        "triangles": 37338,
+        "triangle_surface_sha1": "436F4DBF535DC5B5D1F68178255C9F4DD514F280",
+        "triangle_geometry_uv_skin_sha1": "8E1963A180EAEEB0271F8DB9A9BAFE26159EA959"
+      },
+      {
+        "lod": 1,
+        "vertices": 29843,
+        "geometry_uv_normal_index_sha1": "557EC49D684AF974CBA6E990A0E055D62D6CD41A",
+        "triangles": 15905,
+        "triangle_surface_sha1": "B78C7FD0DED3B41336E5B5F5D4E34ABDBEE5A2A6",
+        "triangle_geometry_uv_skin_sha1": "B616C7515D8B53B83EDDF370F50D4FAF8764A4A5"
+      },
+      {
+        "lod": 2,
+        "vertices": 1543,
+        "geometry_uv_normal_index_sha1": "419A4E11B9C59438E412530BC578DE30191E0E1D",
+        "triangles": 1944,
+        "triangle_surface_sha1": "F87DF4DE75D46C3D91E84E2BD6AE9911CC0ABACF",
+        "triangle_geometry_uv_skin_sha1": "E423793DE0A07907D08FDDAF8475F36CEA58A246"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 75861,
+        "geometry_uv_normal_index_sha1": "20894EFD323B552B1C49C474059AAE0DBCA99BF6",
+        "triangles": 37338,
+        "triangle_surface_sha1": "E88FEE0C3083719118E0AC677AB1DF9BD48155A0",
+        "triangle_geometry_uv_skin_sha1": "8E1963A180EAEEB0271F8DB9A9BAFE26159EA959"
+      },
+      {
+        "lod": 1,
+        "vertices": 29877,
+        "geometry_uv_normal_index_sha1": "679946FA990ACFC62FE7DF401260795B55F06985",
+        "triangles": 15905,
+        "triangle_surface_sha1": "5D281489B61AFFA515A237C313461C866CB6F0B7",
+        "triangle_geometry_uv_skin_sha1": "0CC01967A16E6DE3A09493A11CA1E3142B8B14FA"
+      },
+      {
+        "lod": 2,
+        "vertices": 1543,
+        "geometry_uv_normal_index_sha1": "CC7FA0C0A19CC7A380F4A1C92AAD8ED04303ED52",
+        "triangles": 1944,
+        "triangle_surface_sha1": "C1E1F22677DDA69AB74B2A0392C78F2589E9B173",
+        "triangle_geometry_uv_skin_sha1": "E423793DE0A07907D08FDDAF8475F36CEA58A246"
+      }
+    ],
+    "build": "<Struct 'MeshBuildSettings' (0x0000020D9E17AA00) {use_mikk_t_space: False, recompute_normals: False, recompute_tangents: False, compute_weighted_normals: True, remove_degenerates: False, build_reversed_index_buffer: True, use_high_precision_tangent_basis: False, use_full_precision_u_vs: True, use_backwards_compatible_f16_trunc_u_vs: False, generate_lightmap_u_vs: False, generate_distance_field_as_if_two_sided: False, support_face_remap: False, min_lightmap_resolution: 64, src_lightmap_index: 0, dst_lightmap_index: 1, build_scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}, distance_field_resolution_scale: 1.000000, distance_field_replacement_mesh: None, max_lumen_mesh_cards: 12}>",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E30C0) {origin: {x: 24.767754, y: 0.000000, z: 226.746872}, box_extent: {x: 255.312752, y: 312.500000, z: 226.746902}, sphere_radius: 386.209296}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E56C0) {origin: {x: 24.767754, y: 0.000000, z: 226.746872}, box_extent: {x: 255.312752, y: 312.500000, z: 226.746902}, sphere_radius: 386.209296}>"
+  },
+  {
+    "model": "ManualOutpost",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 24890,
+        "geometry_uv_normal_index_sha1": "1E38C2BD9B4CDA36F78CFE873B4C26C1D7EB76A0",
+        "triangles": 27020,
+        "triangle_surface_sha1": "1C0900C99687780515E062D50031D18C83DD5C98",
+        "triangle_geometry_uv_skin_sha1": "02B4C4F3DEA7F03FB476C1C654FDB1151A56943E"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 24890,
+        "geometry_uv_normal_index_sha1": "9915FB89DEAEA8CAC54ECF638698C66DFF88F843",
+        "triangles": 27020,
+        "triangle_surface_sha1": "1C0900C99687780515E062D50031D18C83DD5C98",
+        "triangle_geometry_uv_skin_sha1": "02B4C4F3DEA7F03FB476C1C654FDB1151A56943E"
+      }
+    ],
+    "build": "<Struct 'MeshBuildSettings' (0x0000020D9E17C940) {use_mikk_t_space: True, recompute_normals: False, recompute_tangents: False, compute_weighted_normals: False, remove_degenerates: True, build_reversed_index_buffer: True, use_high_precision_tangent_basis: False, use_full_precision_u_vs: True, use_backwards_compatible_f16_trunc_u_vs: True, generate_lightmap_u_vs: False, generate_distance_field_as_if_two_sided: False, support_face_remap: False, min_lightmap_resolution: 64, src_lightmap_index: 0, dst_lightmap_index: 2, build_scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}, distance_field_resolution_scale: 1.000000, distance_field_replacement_mesh: None, max_lumen_mesh_cards: 12}>",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294EE880) {origin: {x: -10.589355, y: 252.585938, z: 15000.000000}, box_extent: {x: 3551.543213, y: 3309.902588, z: 15000.000000}, sphere_radius: 15434.077543}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E5840) {origin: {x: -10.589355, y: 252.585938, z: 15000.000000}, box_extent: {x: 3551.543213, y: 3309.902588, z: 15000.000000}, sphere_radius: 15434.077543}>"
+  },
+  {
+    "model": "MissileTurret",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 7429,
+        "geometry_uv_normal_index_sha1": "F5251FA59F6C88904835230EEF5399D974B5A55F",
+        "triangles": 5593,
+        "triangle_surface_sha1": "8F6CC19DD279EC1868ABDCE2E4ADA00AFAF06470",
+        "triangle_geometry_uv_skin_sha1": "D71195D18DEAE28F78EB40C4BB7189B4C1273C73"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 7143,
+        "geometry_uv_normal_index_sha1": "BA7CA89099112A6CC64DA6FCAE5B90BE49BA140D",
+        "triangles": 5355,
+        "triangle_surface_sha1": "F8841D1FA07B239C4564B698FE1D0F2E0874082F",
+        "triangle_geometry_uv_skin_sha1": "6315B45A02F8F8FA0CBD65D0860154B4F0C10A15"
+      }
+    ],
+    "build": "<Struct 'MeshBuildSettings' (0x0000020D9E177B20) {use_mikk_t_space: True, recompute_normals: False, recompute_tangents: True, compute_weighted_normals: False, remove_degenerates: False, build_reversed_index_buffer: False, use_high_precision_tangent_basis: False, use_full_precision_u_vs: False, use_backwards_compatible_f16_trunc_u_vs: False, generate_lightmap_u_vs: True, generate_distance_field_as_if_two_sided: False, support_face_remap: False, min_lightmap_resolution: 64, src_lightmap_index: 0, dst_lightmap_index: 1, build_scale3d: {x: 12.000000, y: 12.000000, z: 12.000000}, distance_field_resolution_scale: 1.000000, distance_field_replacement_mesh: None, max_lumen_mesh_cards: 12}>",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E1D80) {origin: {x: 0.000000, y: 24.289810, z: 1760.383118}, box_extent: {x: 1259.731110, y: 1364.374146, z: 1760.383118}, sphere_radius: 2558.786431}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E3240) {origin: {x: 0.000000, y: 29.239197, z: 1668.020699}, box_extent: {x: 1259.731079, y: 1369.244446, z: 1671.620658}, sphere_radius: 2359.579928}>"
+  },
+  {
+    "model": "ResourceFactory",
+    "part": "Door",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 25433,
+        "geometry_uv_skin_index_sha1": "9A75FF219ECFE5C778A2E5FAB3DF213B4C97141A",
+        "triangles": 10498,
+        "triangle_surface_sha1": "9A44FFE7D022FD6B5CBCE955FAB467ED5413645C",
+        "triangle_geometry_uv_skin_sha1": "C15B0CAAA0C1A3332848BD0F25F8E2E6260B765F"
+      },
+      {
+        "lod": 1,
+        "vertices": 5650,
+        "geometry_uv_skin_index_sha1": "FEE3B7D9887A6C67A57C56DD5B25BEFB28E35A3D",
+        "triangles": 2620,
+        "triangle_surface_sha1": "5B13FA81A50B524AD7EA3064151F0F20236DD65F",
+        "triangle_geometry_uv_skin_sha1": "EA88A097E92C8D6B2CC3B366F28D4863D2D8F493"
+      },
+      {
+        "lod": 2,
+        "vertices": 2809,
+        "geometry_uv_skin_index_sha1": "ADDF17C75E38E4B187DF85ECFDFEFC3E9F2F42C2",
+        "triangles": 1312,
+        "triangle_surface_sha1": "115E3E11BD1258288AFB8C84EBB35137386F27B9",
+        "triangle_geometry_uv_skin_sha1": "2923E6E970CC5103DC32A8DB9680194111FF1407"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 25509,
+        "geometry_uv_skin_index_sha1": "EA46E73BCA5C76AB13EA8927F4A0E1C56CC8FEB3",
+        "triangles": 10498,
+        "triangle_surface_sha1": "FCEEAAF99A73E35460C755C25A5FAECD5188F6E2",
+        "triangle_geometry_uv_skin_sha1": "C15B0CAAA0C1A3332848BD0F25F8E2E6260B765F"
+      },
+      {
+        "lod": 1,
+        "vertices": 5923,
+        "geometry_uv_skin_index_sha1": "AB0F8C808AD3F769F2517D8C3F9281320CBEBE4D",
+        "triangles": 2620,
+        "triangle_surface_sha1": "571830891136318CC715BCB2899F405E32B3D60A",
+        "triangle_geometry_uv_skin_sha1": "EA88A097E92C8D6B2CC3B366F28D4863D2D8F493"
+      },
+      {
+        "lod": 2,
+        "vertices": 2959,
+        "geometry_uv_skin_index_sha1": "6B61903D71418A24447873DA8825EBCC6D2D557F",
+        "triangles": 1312,
+        "triangle_surface_sha1": "AD840A14B6D14A6E9782BA4DAFD653C40B375C80",
+        "triangle_geometry_uv_skin_sha1": "2923E6E970CC5103DC32A8DB9680194111FF1407"
+      }
+    ],
+    "build": "skeletal",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E58C0) {origin: {x: 1154.250000, y: -0.000122, z: 841.305847}, box_extent: {x: 116.750122, y: 1787.500000, z: 716.305847}, sphere_radius: 1929.217693}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E21C0) {origin: {x: 1154.250000, y: -0.000122, z: 841.305847}, box_extent: {x: 116.750122, y: 1787.500000, z: 716.305847}, sphere_radius: 1929.217693}>"
+  },
+  {
+    "model": "ResourceFactory",
+    "part": "Body",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 9396,
+        "geometry_uv_normal_index_sha1": "4CCFC90EBFA69A97FA6EC670072EC218E219E1AE",
+        "triangles": 4094,
+        "triangle_surface_sha1": "3B8E6CE2CD46D14240A7492521E9550A72173E7F",
+        "triangle_geometry_uv_skin_sha1": "212964016E09C73727B0D0EF2F83873366A38E07"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 9158,
+        "geometry_uv_normal_index_sha1": "6C41DF7BD4A3240EB1C233276B62BFB157D5DF3C",
+        "triangles": 3750,
+        "triangle_surface_sha1": "4241D6EE41A5CF085BD02AD2A80F782279429AEA",
+        "triangle_geometry_uv_skin_sha1": "3D4D029CFE36E74DB28E50D23B6ADAF723421B9E"
+      }
+    ],
+    "build": "<Struct 'MeshBuildSettings' (0x0000020D9E17BCC0) {use_mikk_t_space: False, recompute_normals: False, recompute_tangents: False, compute_weighted_normals: True, remove_degenerates: True, build_reversed_index_buffer: True, use_high_precision_tangent_basis: False, use_full_precision_u_vs: True, use_backwards_compatible_f16_trunc_u_vs: False, generate_lightmap_u_vs: True, generate_distance_field_as_if_two_sided: False, support_face_remap: False, min_lightmap_resolution: 64, src_lightmap_index: 0, dst_lightmap_index: 2, build_scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}, distance_field_resolution_scale: 1.000000, distance_field_replacement_mesh: None, max_lumen_mesh_cards: 12}>",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E3EC0) {origin: {x: 0.000000, y: 0.000000, z: 1100.200073}, box_extent: {x: 2400.000244, y: 3000.000244, z: 1100.200073}, sphere_radius: 3820.050057}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294EF680) {origin: {x: 1.415771, y: 0.007080, z: 1100.055784}, box_extent: {x: 2397.689697, y: 3007.868896, z: 1100.974490}, sphere_radius: 3822.677243}>"
+  },
+  {
+    "model": "ResourceFactory",
+    "part": "AccessRamp",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 54,
+        "geometry_uv_normal_index_sha1": "401EE63EE97F56EED0A122831960F685519FEC1D",
+        "triangles": 48,
+        "triangle_surface_sha1": "05218BA8F5FEEE253A4E70BD092B5564C69781D4",
+        "triangle_geometry_uv_skin_sha1": "20EBC7CB31C656A9CE3F1D69A4D1E78C1FC797E2"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 54,
+        "geometry_uv_normal_index_sha1": "401EE63EE97F56EED0A122831960F685519FEC1D",
+        "triangles": 48,
+        "triangle_surface_sha1": "05218BA8F5FEEE253A4E70BD092B5564C69781D4",
+        "triangle_geometry_uv_skin_sha1": "20EBC7CB31C656A9CE3F1D69A4D1E78C1FC797E2"
+      }
+    ],
+    "build": "<Struct 'MeshBuildSettings' (0x0000020D9E17FCD0) {use_mikk_t_space: True, recompute_normals: False, recompute_tangents: True, compute_weighted_normals: False, remove_degenerates: True, build_reversed_index_buffer: True, use_high_precision_tangent_basis: False, use_full_precision_u_vs: False, use_backwards_compatible_f16_trunc_u_vs: True, generate_lightmap_u_vs: False, generate_distance_field_as_if_two_sided: False, support_face_remap: False, min_lightmap_resolution: 64, src_lightmap_index: 0, dst_lightmap_index: 2, build_scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}, distance_field_resolution_scale: 2.000000, distance_field_replacement_mesh: None, max_lumen_mesh_cards: 12}>",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E8100) {origin: {x: 0.000000, y: 0.000000, z: 0.000000}, box_extent: {x: 50.000000, y: 50.000000, z: 50.000000}, sphere_radius: 86.602539}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294EA380) {origin: {x: 0.000000, y: 0.000000, z: 0.000000}, box_extent: {x: 50.000000, y: 50.000000, z: 50.000000}, sphere_radius: 86.602539}>"
+  },
+  {
+    "model": "SSF_AirBase",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 9465,
+        "geometry_uv_skin_index_sha1": "CED0CB73CA31B22F810629D2AA23B1EE906D148F",
+        "triangles": 5916,
+        "triangle_surface_sha1": "FAD2EF5C3D3426C27DC355562E3AED4960567992",
+        "triangle_geometry_uv_skin_sha1": "07B46F6B38BC9FDFE0E702911CF572FE6106229A"
+      },
+      {
+        "lod": 1,
+        "vertices": 8638,
+        "geometry_uv_skin_index_sha1": "234AC2765BE9330CDA1385B55C649EDE46490A19",
+        "triangles": 5239,
+        "triangle_surface_sha1": "879D191EDE081CBE85A3B48EE0F7207776C1F298",
+        "triangle_geometry_uv_skin_sha1": "0F16986CFC9563E308C7AA84334CE280AD1B7CD1"
+      },
+      {
+        "lod": 2,
+        "vertices": 7099,
+        "geometry_uv_skin_index_sha1": "F9BF3C2AB4D90043D07344BD9797F197BB45709B",
+        "triangles": 4128,
+        "triangle_surface_sha1": "88CC5A235FCE22888B4B144A4EE17F955C6C76FE",
+        "triangle_geometry_uv_skin_sha1": "666B1A788364905DBAF7EA0F022A9D0E17D8A3F4"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 9511,
+        "geometry_uv_skin_index_sha1": "1C4A7E15B63A0EB08E6505AA6A0241A180DDA52B",
+        "triangles": 5916,
+        "triangle_surface_sha1": "271ECC8E096F68DC03C8A37A5BD3EDCAFC95E73F",
+        "triangle_geometry_uv_skin_sha1": "07B46F6B38BC9FDFE0E702911CF572FE6106229A"
+      },
+      {
+        "lod": 1,
+        "vertices": 8706,
+        "geometry_uv_skin_index_sha1": "0A6C3293227C89E3F3F49FD9FA25C17650A8DA48",
+        "triangles": 5239,
+        "triangle_surface_sha1": "879D191EDE081CBE85A3B48EE0F7207776C1F298",
+        "triangle_geometry_uv_skin_sha1": "0F16986CFC9563E308C7AA84334CE280AD1B7CD1"
+      },
+      {
+        "lod": 2,
+        "vertices": 7159,
+        "geometry_uv_skin_index_sha1": "92EE13058DCDA9DF9DCE61520F9012F1DA2C71E4",
+        "triangles": 4128,
+        "triangle_surface_sha1": "66F47E9D442E383A1F82E131899AC51342932E8C",
+        "triangle_geometry_uv_skin_sha1": "666B1A788364905DBAF7EA0F022A9D0E17D8A3F4"
+      }
+    ],
+    "build": "skeletal",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294EB100) {origin: {x: -263.687622, y: -143.693237, z: 580.580301}, box_extent: {x: 876.268433, y: 999.131714, z: 590.084616}, sphere_radius: 1454.066849}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E5E80) {origin: {x: -263.687622, y: -143.693237, z: 580.580301}, box_extent: {x: 876.268433, y: 999.131714, z: 590.084616}, sphere_radius: 1454.066849}>"
+  },
+  {
+    "model": "SSF_CloningCenter",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 4825,
+        "geometry_uv_skin_index_sha1": "7EE23EB908250FC87B9081899A275F495A91B6F5",
+        "triangles": 2750,
+        "triangle_surface_sha1": "7E2A28B1BABAD3EEAF8315724589DD86507D88F5",
+        "triangle_geometry_uv_skin_sha1": "7CA0345ED016ABC2660B74F1F7EE4FC70F46E5EE"
+      },
+      {
+        "lod": 1,
+        "vertices": 4540,
+        "geometry_uv_skin_index_sha1": "BCDE3529D5D790AA78628AAA1AD541529B7876C9",
+        "triangles": 2538,
+        "triangle_surface_sha1": "ED45C8FBED1F222B183399BF2C020C8A0B9782AB",
+        "triangle_geometry_uv_skin_sha1": "F3E236EDAE1DA998D808F8415597076245BE784D"
+      },
+      {
+        "lod": 2,
+        "vertices": 3916,
+        "geometry_uv_skin_index_sha1": "FD07C8936ED7B817F95C6F00BB82CB05AE99D438",
+        "triangles": 2170,
+        "triangle_surface_sha1": "6CF644F241E788F4A7239FC8CBDF29FA4C342EB0",
+        "triangle_geometry_uv_skin_sha1": "E808EC38954FEA895264B90C8730D6B97FC478B8"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 4842,
+        "geometry_uv_skin_index_sha1": "5BDC1A486354BFBA24FF974EFC42D5418A99F63D",
+        "triangles": 2750,
+        "triangle_surface_sha1": "E12CD863CF6BFB00D77BFEDF754C8A396A77D662",
+        "triangle_geometry_uv_skin_sha1": "7CA0345ED016ABC2660B74F1F7EE4FC70F46E5EE"
+      },
+      {
+        "lod": 1,
+        "vertices": 4554,
+        "geometry_uv_skin_index_sha1": "AF86521FB0C92C38BC016095F9E510F2A8661BF6",
+        "triangles": 2538,
+        "triangle_surface_sha1": "ED45C8FBED1F222B183399BF2C020C8A0B9782AB",
+        "triangle_geometry_uv_skin_sha1": "F3E236EDAE1DA998D808F8415597076245BE784D"
+      },
+      {
+        "lod": 2,
+        "vertices": 3929,
+        "geometry_uv_skin_index_sha1": "D033EC91A63A3018F1CEA2746846C607CEF46764",
+        "triangles": 2170,
+        "triangle_surface_sha1": "6CF644F241E788F4A7239FC8CBDF29FA4C342EB0",
+        "triangle_geometry_uv_skin_sha1": "E808EC38954FEA895264B90C8730D6B97FC478B8"
+      }
+    ],
+    "build": "skeletal",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x0000020D9E17AAA0) {origin: {x: -0.000015, y: 18.776505, z: 445.102948}, box_extent: {x: 369.586472, y: 439.361618, z: 446.692950}, sphere_radius: 727.438921}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x0000020D9E17F410) {origin: {x: -0.000015, y: 18.776505, z: 445.102948}, box_extent: {x: 369.586472, y: 439.361618, z: 446.692950}, sphere_radius: 727.438921}>"
+  },
+  {
+    "model": "SSF_CommandCenter",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 8326,
+        "geometry_uv_skin_index_sha1": "2FC86983698691B8EE2D15BEAF5F1C0511F54546",
+        "triangles": 5063,
+        "triangle_surface_sha1": "9930BB424C7BC024C26EDC079E463C8333B41CF3",
+        "triangle_geometry_uv_skin_sha1": "92AC3DF10E619A7AB33C1B8562ACD41CA32DA7FD"
+      },
+      {
+        "lod": 1,
+        "vertices": 7879,
+        "geometry_uv_skin_index_sha1": "071154EA14DC76B978167BE7AE27FA6E31D08B60",
+        "triangles": 4576,
+        "triangle_surface_sha1": "5ABA06554D58C289E267EC631B8CECF283B2D7A7",
+        "triangle_geometry_uv_skin_sha1": "3D6D94EEC298C635B247F83116CBB54313F5A8D2"
+      },
+      {
+        "lod": 2,
+        "vertices": 6949,
+        "geometry_uv_skin_index_sha1": "4D1F780124E09611E5E3F1A2C1F102FD11DD1BF5",
+        "triangles": 3999,
+        "triangle_surface_sha1": "3F289E460346DD200346FA74C2FB8FC4AB678CD4",
+        "triangle_geometry_uv_skin_sha1": "3A35A7E4A5C21B7C38D5B86BAC9EB1E29BC7E944"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 8345,
+        "geometry_uv_skin_index_sha1": "C481690CCC95A2BD62A0018ADAB3F056E223ED04",
+        "triangles": 5063,
+        "triangle_surface_sha1": "763A4D2621197AC7CE83417C6A8ED5576AA96C71",
+        "triangle_geometry_uv_skin_sha1": "92AC3DF10E619A7AB33C1B8562ACD41CA32DA7FD"
+      },
+      {
+        "lod": 1,
+        "vertices": 7898,
+        "geometry_uv_skin_index_sha1": "BEBC0BE80683501A7AC78DB38B4DDC4071FDF440",
+        "triangles": 4576,
+        "triangle_surface_sha1": "1DA2281394BC36573F5268F59D3F41E9D0EA6D29",
+        "triangle_geometry_uv_skin_sha1": "3D6D94EEC298C635B247F83116CBB54313F5A8D2"
+      },
+      {
+        "lod": 2,
+        "vertices": 6968,
+        "geometry_uv_skin_index_sha1": "3CA62EE446297B7AE41868313EB740590300CC8F",
+        "triangles": 3999,
+        "triangle_surface_sha1": "8F249DD91E1EB7AF9A5DC26906264AF52E989B4C",
+        "triangle_geometry_uv_skin_sha1": "3A35A7E4A5C21B7C38D5B86BAC9EB1E29BC7E944"
+      }
+    ],
+    "build": "skeletal",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E49C0) {origin: {x: -0.000046, y: -20.921387, z: 754.959805}, box_extent: {x: 470.065079, y: 490.979462, z: 760.271030}, sphere_radius: 1019.820596}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294EA0C0) {origin: {x: -0.000046, y: -20.921387, z: 754.959805}, box_extent: {x: 470.065079, y: 490.979462, z: 760.271030}, sphere_radius: 1019.820596}>"
+  },
+  {
+    "model": "SSF_MilitaryFactory",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 3865,
+        "geometry_uv_skin_index_sha1": "C1D05C3ABD6B54551E0EF46D9AE4BBAF9821F645",
+        "triangles": 2202,
+        "triangle_surface_sha1": "4B3408473F1775079620733B457C37A67889B340",
+        "triangle_geometry_uv_skin_sha1": "A8675BCA0392BC5145FFE93705373CF76DC3C110"
+      },
+      {
+        "lod": 1,
+        "vertices": 3560,
+        "geometry_uv_skin_index_sha1": "87BF64CEAA9448216803DA81FBC326333957EEC9",
+        "triangles": 2044,
+        "triangle_surface_sha1": "61CD111028149403550FA19D26ADD897CAFF65C7",
+        "triangle_geometry_uv_skin_sha1": "B6D3D5DE58C115C4C65A5DA4B719E2E197A0A511"
+      },
+      {
+        "lod": 2,
+        "vertices": 2908,
+        "geometry_uv_skin_index_sha1": "1BCD85A9EAFA1EE54234FF5211F367BFD54A1C7D",
+        "triangles": 1639,
+        "triangle_surface_sha1": "FFF18A86A1B76EBFECA3E3EA8A87D74D10A0D81A",
+        "triangle_geometry_uv_skin_sha1": "8D1D59FB86A48D1F9271BD90A86D3CA1609D6221"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 3868,
+        "geometry_uv_skin_index_sha1": "336F1641ED0989EAE69BD756BDF16DF420D55967",
+        "triangles": 2202,
+        "triangle_surface_sha1": "4B3408473F1775079620733B457C37A67889B340",
+        "triangle_geometry_uv_skin_sha1": "A8675BCA0392BC5145FFE93705373CF76DC3C110"
+      },
+      {
+        "lod": 1,
+        "vertices": 3563,
+        "geometry_uv_skin_index_sha1": "FBAC72EFE350863C6D8D26F3B0BA899AE5047E73",
+        "triangles": 2044,
+        "triangle_surface_sha1": "61CD111028149403550FA19D26ADD897CAFF65C7",
+        "triangle_geometry_uv_skin_sha1": "B6D3D5DE58C115C4C65A5DA4B719E2E197A0A511"
+      },
+      {
+        "lod": 2,
+        "vertices": 2911,
+        "geometry_uv_skin_index_sha1": "3741A2A295727811E5348F37C39232C86AC6183D",
+        "triangles": 1639,
+        "triangle_surface_sha1": "FFF18A86A1B76EBFECA3E3EA8A87D74D10A0D81A",
+        "triangle_geometry_uv_skin_sha1": "8D1D59FB86A48D1F9271BD90A86D3CA1609D6221"
+      }
+    ],
+    "build": "skeletal",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x0000020D9E17CB70) {origin: {x: -0.000031, y: -24.635529, z: 511.531388}, box_extent: {x: 464.162109, y: 613.329742, z: 513.229232}, sphere_radius: 924.675122}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E1FC0) {origin: {x: -0.000031, y: -24.635529, z: 511.531388}, box_extent: {x: 464.162109, y: 613.329742, z: 513.229232}, sphere_radius: 924.675122}>"
+  },
+  {
+    "model": "SSF_Reactor",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 6452,
+        "geometry_uv_skin_index_sha1": "F285F6AF7AFF95C39090514E7213A1711B8A6B13",
+        "triangles": 4040,
+        "triangle_surface_sha1": "F5A60000D5217FF26A621D5B727BD30FDE21C6F2",
+        "triangle_geometry_uv_skin_sha1": "BABD42C9C0FCD5FFED3E691C7EBDC8E1A63F08D7"
+      },
+      {
+        "lod": 1,
+        "vertices": 5559,
+        "geometry_uv_skin_index_sha1": "6D5C9076F971D9990ABB64DCCF6745E68FAA255C",
+        "triangles": 3392,
+        "triangle_surface_sha1": "DC4BDBCA02E6F413CF256F986266E7F911833D7A",
+        "triangle_geometry_uv_skin_sha1": "1CB5471C6B116741F1D05F1ABCECE397D5BBB491"
+      },
+      {
+        "lod": 2,
+        "vertices": 4437,
+        "geometry_uv_skin_index_sha1": "2FC0FB64F683561AA6C52A6C140A5806AD8A509A",
+        "triangles": 2635,
+        "triangle_surface_sha1": "FF7F5B23AED2FAD43F5A2EB388D6D70E5AD70173",
+        "triangle_geometry_uv_skin_sha1": "9B4B3888E4EB8BF278A6DBECF08251369E9546A8"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 6494,
+        "geometry_uv_skin_index_sha1": "6B52D2587D7B6C3A12583E4E4816C9FE4F480DA6",
+        "triangles": 4040,
+        "triangle_surface_sha1": "F5A60000D5217FF26A621D5B727BD30FDE21C6F2",
+        "triangle_geometry_uv_skin_sha1": "BABD42C9C0FCD5FFED3E691C7EBDC8E1A63F08D7"
+      },
+      {
+        "lod": 1,
+        "vertices": 5601,
+        "geometry_uv_skin_index_sha1": "5C98F90495B3F34A7493F0BB778B6FDFA1D50648",
+        "triangles": 3392,
+        "triangle_surface_sha1": "DC4BDBCA02E6F413CF256F986266E7F911833D7A",
+        "triangle_geometry_uv_skin_sha1": "1CB5471C6B116741F1D05F1ABCECE397D5BBB491"
+      },
+      {
+        "lod": 2,
+        "vertices": 4472,
+        "geometry_uv_skin_index_sha1": "6CC7392C97AC41CAEF53296A336B0170005D4CA0",
+        "triangles": 2635,
+        "triangle_surface_sha1": "FF7F5B23AED2FAD43F5A2EB388D6D70E5AD70173",
+        "triangle_geometry_uv_skin_sha1": "9B4B3888E4EB8BF278A6DBECF08251369E9546A8"
+      }
+    ],
+    "build": "skeletal",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294EEF80) {origin: {x: -50.126915, y: -23.158142, z: 228.198332}, box_extent: {x: 270.605568, y: 282.459381, z: 238.718264}, sphere_radius: 458.254389}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E28C0) {origin: {x: -50.126915, y: -23.158142, z: 228.198332}, box_extent: {x: 270.605568, y: 282.459381, z: 238.718264}, sphere_radius: 458.254389}>"
+  },
+  {
+    "model": "SSF_StrategyCenter",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 8246,
+        "geometry_uv_skin_index_sha1": "9FB670DD61A77BA70FE8DD76E2E6B83123430C16",
+        "triangles": 4775,
+        "triangle_surface_sha1": "9A08992B88B81CF0AB07B9DA307850E6925BF3CD",
+        "triangle_geometry_uv_skin_sha1": "D595B5C5A63A08196ED088AD2A0737653853543F"
+      },
+      {
+        "lod": 1,
+        "vertices": 7499,
+        "geometry_uv_skin_index_sha1": "A157EA0BD2D334AE1AF7C0F1C21003B513FC459B",
+        "triangles": 4237,
+        "triangle_surface_sha1": "DA6D55C282011210471E4C7930943EF9EB933EDB",
+        "triangle_geometry_uv_skin_sha1": "B2AFFAA4BA446018F4459C66F50D1D78370A5000"
+      },
+      {
+        "lod": 2,
+        "vertices": 6412,
+        "geometry_uv_skin_index_sha1": "F0DD45F0DB04813F36E2E33DC48B24606638D94B",
+        "triangles": 3582,
+        "triangle_surface_sha1": "79BC30B9C9F26C15A07284E4AC8B42E52D8BD430",
+        "triangle_geometry_uv_skin_sha1": "EE8AB99D6051DAF8C68FDC4B2E4E5149154974EF"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 8246,
+        "geometry_uv_skin_index_sha1": "9FB670DD61A77BA70FE8DD76E2E6B83123430C16",
+        "triangles": 4775,
+        "triangle_surface_sha1": "9A08992B88B81CF0AB07B9DA307850E6925BF3CD",
+        "triangle_geometry_uv_skin_sha1": "D595B5C5A63A08196ED088AD2A0737653853543F"
+      },
+      {
+        "lod": 1,
+        "vertices": 7499,
+        "geometry_uv_skin_index_sha1": "A157EA0BD2D334AE1AF7C0F1C21003B513FC459B",
+        "triangles": 4237,
+        "triangle_surface_sha1": "DA6D55C282011210471E4C7930943EF9EB933EDB",
+        "triangle_geometry_uv_skin_sha1": "B2AFFAA4BA446018F4459C66F50D1D78370A5000"
+      },
+      {
+        "lod": 2,
+        "vertices": 6412,
+        "geometry_uv_skin_index_sha1": "F0DD45F0DB04813F36E2E33DC48B24606638D94B",
+        "triangles": 3582,
+        "triangle_surface_sha1": "79BC30B9C9F26C15A07284E4AC8B42E52D8BD430",
+        "triangle_geometry_uv_skin_sha1": "EE8AB99D6051DAF8C68FDC4B2E4E5149154974EF"
+      }
+    ],
+    "build": "skeletal",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x0000020D9E17E240) {origin: {x: 0.000015, y: -4.037857, z: 570.346443}, box_extent: {x: 409.031479, y: 373.830399, z: 572.527702}, sphere_radius: 796.770913}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294EF9C0) {origin: {x: 0.000015, y: -4.037857, z: 570.346443}, box_extent: {x: 409.031479, y: 373.830399, z: 572.527702}, sphere_radius: 796.770913}>"
+  },
+  {
+    "model": "SentryTurret",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 1610,
+        "geometry_uv_normal_index_sha1": "969B2B18A447566EF30D727CA5B9DD108C1744F1",
+        "triangles": 1444,
+        "triangle_surface_sha1": "99FB83766EAFBB307452FF873555EDA1459115C1",
+        "triangle_geometry_uv_skin_sha1": "4F2BDEDFF2078D7B75E3F574E8B0016EB6055934"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 1618,
+        "geometry_uv_normal_index_sha1": "73BC3DEFAEF838E2B197B1A393BE666D982EC611",
+        "triangles": 1444,
+        "triangle_surface_sha1": "374AD9390DBB6512B907D0F94CB45CCC25A6121B",
+        "triangle_geometry_uv_skin_sha1": "7AC22F784FF7E661AC84B3B8C1E6E552848FB8A7"
+      }
+    ],
+    "build": "<Struct 'MeshBuildSettings' (0x0000020D9E17CC10) {use_mikk_t_space: True, recompute_normals: False, recompute_tangents: True, compute_weighted_normals: False, remove_degenerates: False, build_reversed_index_buffer: False, use_high_precision_tangent_basis: False, use_full_precision_u_vs: False, use_backwards_compatible_f16_trunc_u_vs: False, generate_lightmap_u_vs: True, generate_distance_field_as_if_two_sided: False, support_face_remap: False, min_lightmap_resolution: 64, src_lightmap_index: 0, dst_lightmap_index: 1, build_scale3d: {x: 12.000000, y: 12.000000, z: 12.000000}, distance_field_resolution_scale: 1.000000, distance_field_replacement_mesh: None, max_lumen_mesh_cards: 12}>",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E6D40) {origin: {x: 0.000000, y: 0.000000, z: 833.616302}, box_extent: {x: 967.896240, y: 1933.390137, z: 837.594452}, sphere_radius: 2318.703305}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E2B00) {origin: {x: 0.000000, y: 0.000000, z: 833.616272}, box_extent: {x: 967.896240, y: 1933.390137, z: 837.594421}, sphere_radius: 2135.208663}>"
+  },
+  {
+    "model": "ShieldGenerator",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 17716,
+        "geometry_uv_normal_index_sha1": "FA063348536FC90BED7B535AC86AFFF32EAF7EB8",
+        "triangles": 7492,
+        "triangle_surface_sha1": "5E62F405588B2E1AA1AC72D30F8063507726D020",
+        "triangle_geometry_uv_skin_sha1": "FD18F39C9B87E214F9AC792B52DA198E54B70846"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 16369,
+        "geometry_uv_normal_index_sha1": "0660F8D6C32B3B662580A61F7CBD57E44DA353B6",
+        "triangles": 7492,
+        "triangle_surface_sha1": "AB415F44BEF33F7346AF30155DCFB06561610FDD",
+        "triangle_geometry_uv_skin_sha1": "FD18F39C9B87E214F9AC792B52DA198E54B70846"
+      }
+    ],
+    "build": "<Struct 'MeshBuildSettings' (0x0000020D9E17A640) {use_mikk_t_space: False, recompute_normals: False, recompute_tangents: False, compute_weighted_normals: True, remove_degenerates: True, build_reversed_index_buffer: True, use_high_precision_tangent_basis: False, use_full_precision_u_vs: True, use_backwards_compatible_f16_trunc_u_vs: False, generate_lightmap_u_vs: True, generate_distance_field_as_if_two_sided: False, support_face_remap: False, min_lightmap_resolution: 64, src_lightmap_index: 0, dst_lightmap_index: 1, build_scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}, distance_field_resolution_scale: 1.000000, distance_field_replacement_mesh: None, max_lumen_mesh_cards: 12}>",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E6FC0) {origin: {x: -23.456497, y: -0.000008, z: 250.000000}, box_extent: {x: 152.543503, y: 172.644020, z: 250.000000}, sphere_radius: 316.787360}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E2E40) {origin: {x: -23.456497, y: -0.000008, z: 250.000000}, box_extent: {x: 152.543503, y: 172.644020, z: 250.000000}, sphere_radius: 316.787360}>"
+  },
+  {
+    "model": "WM01",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 70017,
+        "geometry_uv_normal_index_sha1": "ECA88FC60F9ECA7493390E3CEDC0300A5C165941",
+        "triangles": 38843,
+        "triangle_surface_sha1": "D916B400913E61065C8961E508A6AE8100506BB0",
+        "triangle_geometry_uv_skin_sha1": "F203CF69419B2E1E8C1A03DF0A9BB1A731512115"
+      },
+      {
+        "lod": 1,
+        "vertices": 23191,
+        "geometry_uv_normal_index_sha1": "DB18DA01809FC2DE1F78AF36C0A2D7BBB1E993E1",
+        "triangles": 9711,
+        "triangle_surface_sha1": "9B3BD1627B686AE41B0EECE97F3F347E4E3D6B32",
+        "triangle_geometry_uv_skin_sha1": "DD5C8CBB2AB8A588212EDA1DF7310BFB4871EF3B"
+      },
+      {
+        "lod": 2,
+        "vertices": 1879,
+        "geometry_uv_normal_index_sha1": "ADEE22E69F399191B6B4223DFDD9A0066090EC28",
+        "triangles": 776,
+        "triangle_surface_sha1": "21C9B470C62E9278CB888C93C03F29C5221E9BEC",
+        "triangle_geometry_uv_skin_sha1": "3D96CC93B4468A4D2DD03FD1CA088FDE8FA33C7F"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 65108,
+        "geometry_uv_normal_index_sha1": "EC943AA8C105C428337CD7E603195E95DB04867F",
+        "triangles": 38843,
+        "triangle_surface_sha1": "FF5573D9A031D87CB3CAD79068A7A9BE5FAB708B",
+        "triangle_geometry_uv_skin_sha1": "F203CF69419B2E1E8C1A03DF0A9BB1A731512115"
+      },
+      {
+        "lod": 1,
+        "vertices": 21893,
+        "geometry_uv_normal_index_sha1": "52FB4FF27A8C9A40821DFD94BB379B961B0502AF",
+        "triangles": 9711,
+        "triangle_surface_sha1": "4BEA956E2F8AB6CEB22CFA32087299A5F6C7618E",
+        "triangle_geometry_uv_skin_sha1": "660CD3700FC991236189514F5B9DDD094406D481"
+      },
+      {
+        "lod": 2,
+        "vertices": 1873,
+        "geometry_uv_normal_index_sha1": "A0C418F31CD65E5CA1089402A1CFB04409FD2BBC",
+        "triangles": 776,
+        "triangle_surface_sha1": "3106D8A6DCA8BE8C90B4ECD88111470ECC1BF3E8",
+        "triangle_geometry_uv_skin_sha1": "69F1250CDEC676ED731DCB0BD299C7CDBB72D96F"
+      }
+    ],
+    "build": "<Struct 'MeshBuildSettings' (0x0000020D9E17CBC0) {use_mikk_t_space: False, recompute_normals: False, recompute_tangents: False, compute_weighted_normals: True, remove_degenerates: True, build_reversed_index_buffer: True, use_high_precision_tangent_basis: False, use_full_precision_u_vs: True, use_backwards_compatible_f16_trunc_u_vs: False, generate_lightmap_u_vs: False, generate_distance_field_as_if_two_sided: False, support_face_remap: False, min_lightmap_resolution: 64, src_lightmap_index: 0, dst_lightmap_index: 1, build_scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}, distance_field_resolution_scale: 1.000000, distance_field_replacement_mesh: None, max_lumen_mesh_cards: 12}>",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294EAD00) {origin: {x: -143.563965, y: 0.000610, z: 2367.549316}, box_extent: {x: 3556.111572, y: 3497.689453, z: 3719.979980}, sphere_radius: 6222.379937}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294ED580) {origin: {x: -143.564087, y: 0.000122, z: 2385.910697}, box_extent: {x: 3553.508179, y: 3495.085083, z: 3701.618600}, sphere_radius: 6208.463608}>"
+  },
+  {
+    "model": "BiZhiMaoConstruction",
+    "part": "Root",
+    "source": [
+      {
+        "lod": 0,
+        "vertices": 205141,
+        "geometry_uv_normal_index_sha1": "449F4161898BB0C7BE5032DB1274872AF1432688",
+        "triangles": 70117,
+        "triangle_surface_sha1": "30E8763B30B733F24AA5BC2711DB876E7FAB75AA",
+        "triangle_geometry_uv_skin_sha1": "F07E512460CD1B723830C650C4AA6258FA83D2D3"
+      },
+      {
+        "lod": 1,
+        "vertices": 38942,
+        "geometry_uv_normal_index_sha1": "7B5C6D1C3FF26A77C272ACBE755EBE638E4430D5",
+        "triangles": 16913,
+        "triangle_surface_sha1": "7E28940F38CB4426AEE94D72B9660EF1AC48F418",
+        "triangle_geometry_uv_skin_sha1": "1372F411EC8522776CA3FD49EC53F566C6AD0FE8"
+      },
+      {
+        "lod": 2,
+        "vertices": 15179,
+        "geometry_uv_normal_index_sha1": "F41415896CF1D93C05447DFC3CB3B8C758D2E854",
+        "triangles": 6125,
+        "triangle_surface_sha1": "0E5753F12F043C18F6A71C346FBF47CE57E57C8E",
+        "triangle_geometry_uv_skin_sha1": "BF6A7751AF5A6EB43F5C0A3AC97FF8BB940E4DEF"
+      }
+    ],
+    "after": [
+      {
+        "lod": 0,
+        "vertices": 164415,
+        "geometry_uv_normal_index_sha1": "4F0924851C1E98C315F3C9DD645ED9766465DA28",
+        "triangles": 70117,
+        "triangle_surface_sha1": "2DFDC01E3C8F0068B4748F6C17ABBB0DD32BD824",
+        "triangle_geometry_uv_skin_sha1": "8E32EE4DC134F33133364D1608188C22E17ED204"
+      },
+      {
+        "lod": 1,
+        "vertices": 38953,
+        "geometry_uv_normal_index_sha1": "D7C0864E32C6E790CB6D53D19BCE9081781DDB39",
+        "triangles": 16913,
+        "triangle_surface_sha1": "9951209EE6004B14663CD919B7A23EFF9219298D",
+        "triangle_geometry_uv_skin_sha1": "1372F411EC8522776CA3FD49EC53F566C6AD0FE8"
+      },
+      {
+        "lod": 2,
+        "vertices": 15053,
+        "geometry_uv_normal_index_sha1": "0DA919CA25C768637A17339EE0867F622DF087B6",
+        "triangles": 6125,
+        "triangle_surface_sha1": "9BA697C1420FEFBB7E10FAB7C4F7A5263F744B65",
+        "triangle_geometry_uv_skin_sha1": "BF6A7751AF5A6EB43F5C0A3AC97FF8BB940E4DEF"
+      }
+    ],
+    "build": "<Struct 'MeshBuildSettings' (0x0000020D9E17CD50) {use_mikk_t_space: False, recompute_normals: False, recompute_tangents: False, compute_weighted_normals: True, remove_degenerates: False, build_reversed_index_buffer: True, use_high_precision_tangent_basis: False, use_full_precision_u_vs: True, use_backwards_compatible_f16_trunc_u_vs: False, generate_lightmap_u_vs: False, generate_distance_field_as_if_two_sided: False, support_face_remap: False, min_lightmap_resolution: 64, src_lightmap_index: 0, dst_lightmap_index: 1, build_scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}, distance_field_resolution_scale: 1.000000, distance_field_replacement_mesh: None, max_lumen_mesh_cards: 12}>",
+    "before_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E9600) {origin: {x: 153.113144, y: 0.000031, z: 344.363922}, box_extent: {x: 661.391846, y: 460.966461, z: 346.162811}, sphere_radius: 821.127747}>",
+    "after_bounds": "<Struct 'BoxSphereBounds' (0x00000211294E5340) {origin: {x: 153.113144, y: 0.000031, z: 344.363916}, box_extent: {x: 661.391861, y: 460.966461, z: 346.162818}, sphere_radius: 821.127772}>"
+  }
+]

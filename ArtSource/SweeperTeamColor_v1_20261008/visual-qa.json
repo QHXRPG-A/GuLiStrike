@@ -1,0 +1,469 @@
+{
+  "version": "Sweeper.OrangeTeamColor.B_v1.20261008",
+  "checks": [
+    {
+      "view": "Hero",
+      "fixed_interior_pixels": 914483,
+      "blue_vs_original_fixed_max_rgb_error": 0,
+      "red_vs_original_fixed_max_rgb_error": 0,
+      "blue_vs_red_fixed_max_rgb_error": 0,
+      "team_region_pixels": 165517,
+      "blue_red_changed_pixels": 136723
+    },
+    {
+      "view": "Front",
+      "fixed_interior_pixels": 958813,
+      "blue_vs_original_fixed_max_rgb_error": 0,
+      "red_vs_original_fixed_max_rgb_error": 0,
+      "blue_vs_red_fixed_max_rgb_error": 0,
+      "team_region_pixels": 121187,
+      "blue_red_changed_pixels": 103642
+    },
+    {
+      "view": "Left",
+      "fixed_interior_pixels": 999090,
+      "blue_vs_original_fixed_max_rgb_error": 0,
+      "red_vs_original_fixed_max_rgb_error": 0,
+      "blue_vs_red_fixed_max_rgb_error": 0,
+      "team_region_pixels": 80910,
+      "blue_red_changed_pixels": 69002
+    },
+    {
+      "view": "Back",
+      "fixed_interior_pixels": 956499,
+      "blue_vs_original_fixed_max_rgb_error": 0,
+      "red_vs_original_fixed_max_rgb_error": 0,
+      "blue_vs_red_fixed_max_rgb_error": 0,
+      "team_region_pixels": 123501,
+      "blue_red_changed_pixels": 108241
+    }
+  ],
+  "errors": [],
+  "visual_scope": "Original, blue, red and UV-mask renders; identical cameras, poses and tone parameters",
+  "A": "New drawings waived by user; original orange regions explicitly chosen",
+  "B": "released_for_formal_import",
+  "formal_ue_import": true,
+  "runtime_verified": true,
+  "files": [
+    {
+      "file": "blender-saved-readback.json",
+      "sha256": "c556cf5464dae1c364a39e0eebd0154ffea22cf2d7faff75d5db6155733c3d26"
+    },
+    {
+      "file": "blender-source-inspection.json",
+      "sha256": "20f40f147e75fe75c2b7a20bae89dbb394619d7dfa476cad01e5ae6abcefc94f"
+    },
+    {
+      "file": "build-report.json",
+      "sha256": "e1c83322c7874d841808ee4a9610b47124cbbfeff37c064ac95d0b1f579561b9"
+    },
+    {
+      "file": "catalog-import-transport.json",
+      "sha256": "0acc2c040e34e3afb98a68cac2eec2eeb9e0d53e474b5b81a700670a901b9173"
+    },
+    {
+      "file": "catalog-source-update.json",
+      "sha256": "f03900f2494d9fa190ea7e59e11ff890e0bb8de746b4c1b7f664ecb985137fa0"
+    },
+    {
+      "file": "datatable-difference-probe.json",
+      "sha256": "f49d4cd888c11c6a60971aff30a7d84b86bf54c78bf0877825c44478dd7831fb"
+    },
+    {
+      "file": "datatable-import.json",
+      "sha256": "6afd47bf729c839dcd5f2780fd43f4cd1c22e2583ca87ce365d54e9343270082"
+    },
+    {
+      "file": "datatable-saved-readback.json",
+      "sha256": "d03b2d7ff8aeef63595be7c2f97c7b41a8b724254f2299da0f56717d0109f0ab"
+    },
+    {
+      "file": "editor-preflight-transport.json",
+      "sha256": "06553bf56b3683feed4adf2f0ce8daa96631919de46c090d636cec0d66555b17"
+    },
+    {
+      "file": "formal-import-authorization.json",
+      "sha256": "684a038723e5d6e0c7d7876d25482d30572c38dd34cd0aed3caa511d9c6c387a"
+    },
+    {
+      "file": "formal-import-transport.json",
+      "sha256": "1235d22d83632354b2817868877e8ed8e9c31315427d307bd2aeb7304f5a45c9"
+    },
+    {
+      "file": "formal-ue-import.json",
+      "sha256": "4d0f303ac77ce4721db17aad6c2fa7dd23ced1085c732a13277c34c6127ede08"
+    },
+    {
+      "file": "formal-view-transport.json",
+      "sha256": "7c078c41393f5730ba2ff7bed221327099dcc7948a211831e735ec6d06740985"
+    },
+    {
+      "file": "inspection-response.json",
+      "sha256": "4200414ad13a48449f98dec92cd281ed58da60e415fed9a2f405dc55654beff8"
+    },
+    {
+      "file": "interactive-open-readback.json",
+      "sha256": "f24b8bc7095c313e75673f4f2c1697d94b5a207567670e4ff07c6fb219805337"
+    },
+    {
+      "file": "Masks\\Sweeper_LOD0_ColorRegions.json",
+      "sha256": "4180080056dccb204ae768666afaf3404c8f037a9c6615f2a0e725a7db6fd26e"
+    },
+    {
+      "file": "Masks\\Sweeper_LOD1_ColorRegions.json",
+      "sha256": "7677893279e94c42408f56f51f175a6fff25351ecf0af6bebdb36177f5d88c22"
+    },
+    {
+      "file": "Masks\\Sweeper_LOD2_ColorRegions.json",
+      "sha256": "293e56d7272abf590fb7c41613a9e068809e16b9653a8fa3c5f1e4e6ee99022c"
+    },
+    {
+      "file": "Masks\\T_Sweeper_OrangeTeamMask.png",
+      "sha256": "5e313d72ef758e32913dc3af7e2333f1fbf5dfc58ff5ed0b730f0ece81442054"
+    },
+    {
+      "file": "orange-region-probe.json",
+      "sha256": "e161f08ef35fef3a9e92c986dd12f48979292ffdbd3bcc32fc985471db0e0cfb"
+    },
+    {
+      "file": "original-source-readback.json",
+      "sha256": "a86a3e31fb34613c773ea3353aad6227d560979a3379526188920b2b1a869b57"
+    },
+    {
+      "file": "pre-import-inspect.json",
+      "sha256": "9d53c42f36bab039369479f32be129a9f6bd87a1b453a05f51475a30ba89d9a0"
+    },
+    {
+      "file": "pre-import-native-invariants.json",
+      "sha256": "de174bf66d776dd35eeb0e2bfb52649c52cc04b5b635524bf698147de1417036"
+    },
+    {
+      "file": "Previews\\Blue_Back.png",
+      "sha256": "1213604f7fe38c323d0fdde7bbf0904c0fe4be5ac0e2dfbb9b26312fd2ce87a6"
+    },
+    {
+      "file": "Previews\\Blue_Front.png",
+      "sha256": "b8006a3b12e50763287ed402006f5566534590a4c0de286b3c5fa350c648762b"
+    },
+    {
+      "file": "Previews\\Blue_Hero.png",
+      "sha256": "fcaa17e86d2a7f0c811c97eb456adcf679b1142c3322abf508ebf9e840dd99c5"
+    },
+    {
+      "file": "Previews\\Blue_Left.png",
+      "sha256": "98a717ecd20025cb5b6fb35aaafe0a9e510bf5f9ac57b54d1881612eceaf3d9c"
+    },
+    {
+      "file": "Previews\\Blue_ThreeLOD.png",
+      "sha256": "5f93420a135b6aa4cf4f330d58fd6f2e1e4fee150d5b426af42423108fbc40bc"
+    },
+    {
+      "file": "Previews\\Mask_Back.png",
+      "sha256": "3c6bcf42bf96fa076861984db74dd657b927542e9a3bfde065a9827255073feb"
+    },
+    {
+      "file": "Previews\\Mask_Front.png",
+      "sha256": "8d24b936407463d9d5f7e93c2fe56b9e45b4daf93c20ebb312d86119ca79ab0b"
+    },
+    {
+      "file": "Previews\\Mask_Hero.png",
+      "sha256": "a5dac42c8e47504bac38ab4b4591cb31ca660d80bbb87dce6e301726ffd907e0"
+    },
+    {
+      "file": "Previews\\Mask_Left.png",
+      "sha256": "5d31fc6dcd69ccd7f532c08dd7672499bc8caaa339411e5f11583d4318a3cefe"
+    },
+    {
+      "file": "Previews\\Original_Back.png",
+      "sha256": "41084e1b6659d2114b46a9d06811d45f05bf3adb0f429e9337d5f9a2b7958785"
+    },
+    {
+      "file": "Previews\\Original_Blue_Red_Overview.png",
+      "sha256": "5ac1100df018a940bd269623fbdceabba46f5cfc7f55e118559815eb2f23a480"
+    },
+    {
+      "file": "Previews\\Original_Front.png",
+      "sha256": "c091954cd5ba971771175a35ccbf6201e8eb970009365984e597cb91f7b5763b"
+    },
+    {
+      "file": "Previews\\Original_Hero.png",
+      "sha256": "5916c447bac795a701e99492250e20fafcc5c3a8e78501fa8f70662b55e3336e"
+    },
+    {
+      "file": "Previews\\Original_Left.png",
+      "sha256": "be40b17e7350faf08cdfb98f47a589f01ed272ca0749406dd35a3ce859ddbd6b"
+    },
+    {
+      "file": "Previews\\Red_Back.png",
+      "sha256": "882fc992225f95678ac40caf953d7b6838e724934d7dd58ef7d40cca95e46501"
+    },
+    {
+      "file": "Previews\\Red_Front.png",
+      "sha256": "fa74d6e9b9f4044d4f6f5226ea8a6b4995bdc361f6f48953d822a7e9912519a8"
+    },
+    {
+      "file": "Previews\\Red_Hero.png",
+      "sha256": "c644b0f1195227a82b07f8bf219a74d36d273af790bd98d880e53c1ca4c1dfd5"
+    },
+    {
+      "file": "Previews\\Red_Left.png",
+      "sha256": "8b594ae9ddd111631e9422dd357e5917ee9398b750cb3e91be9bef9bb6c3c2e8"
+    },
+    {
+      "file": "runtime-api-probe.json",
+      "sha256": "ab88a4e1371eca9006c34e59623dddc4cd1ad655d090c9c46b32f6570cc9264e"
+    },
+    {
+      "file": "source-capture-transport.json",
+      "sha256": "1fe33c18872949ad3231ea5c9aa765816112f8cf683c403f70a6da5ff089f697"
+    },
+    {
+      "file": "source-views-readback.json",
+      "sha256": "7d93e414205bb7b0b35a0c02e9a8a2ced014e17d66a5254ededd759661c144d5"
+    },
+    {
+      "file": "Sources\\back.png",
+      "sha256": "035b37a1573917849e9d832a54465687e2e9ee859cc09962cda07655a22333d3"
+    },
+    {
+      "file": "Sources\\front.png",
+      "sha256": "4ce1b2d2c967835c982a3bd3fc0ec5ad316963246ac3d52d1de1015c9e3db587"
+    },
+    {
+      "file": "Sources\\hero.png",
+      "sha256": "e7735255bb57acf10cecf9bd9f3787afaf90d229bd955fed60331a1cba25b24f"
+    },
+    {
+      "file": "Sources\\left.png",
+      "sha256": "1a69ad549acff1b05241111a5a1b56e40551764d2cf6f3054d6b02889792e388"
+    },
+    {
+      "file": "Sources\\top.png",
+      "sha256": "e1d8900bd94cf638efc0c1df240de707247f849ce267af96cb6ef9f970be2375"
+    },
+    {
+      "file": "Sweeper_OrangeTeamColor_B_v1.blend",
+      "sha256": "6ff9ea43b21702b6a820bafbca0e69e5e715ec5302c28128086af431ba938144"
+    },
+    {
+      "file": "UE\\acceptance-scene-readback.json",
+      "sha256": "e56353f538630e4dcc2ba71c247d801a6014d36da4890ec7b6d6956af18c5121"
+    },
+    {
+      "file": "UE\\acceptance-scene-save.json",
+      "sha256": "b2bccb291d334b4c36d564142fae4f67c6709c5cbf6ae623a4f62bb480c2b8a8"
+    },
+    {
+      "file": "UE\\delivery-validation.json",
+      "sha256": "21c7c1a6b29d7a80e9589c280e28ce1dba53ec73bbf91762055be30310e50fb2"
+    },
+    {
+      "file": "UE\\final-editor-preflight-transport.json",
+      "sha256": "06553bf56b3683feed4adf2f0ce8daa96631919de46c090d636cec0d66555b17"
+    },
+    {
+      "file": "UE\\fixed-region-initial-diagnostic.json",
+      "sha256": "f119411fd5029e7e6d09fe1cf39138d3cc32b4e524b06d810de8eebed686fca7"
+    },
+    {
+      "file": "UE\\fixed-region-readback.json",
+      "sha256": "d2bc383c645e5c58dcb96e4bc90ed5b66d8ca600f26232c9676faf6f21a75a91"
+    },
+    {
+      "file": "UE\\formal-view-readback.json",
+      "sha256": "7aadda2e640871c6e3bc90c4f058a40cf60504cef00383a7a1cad29230d17742"
+    },
+    {
+      "file": "UE\\Images\\Blue_LOD0_back.png",
+      "sha256": "d332c3e8d72b37b10805240b1cd2d5f439dc0aca815f3df2340d1d4dcd2f0bc1"
+    },
+    {
+      "file": "UE\\Images\\Blue_LOD0_front.png",
+      "sha256": "866945635dae1519f3a3d820644479c5892e86f041c6802760074f978527c737"
+    },
+    {
+      "file": "UE\\Images\\Blue_LOD0_hero.png",
+      "sha256": "cd14869cbb02afb0a113ca817ca619fcbe3cafbc3cd00809f03284062a927729"
+    },
+    {
+      "file": "UE\\Images\\Blue_LOD0_left.png",
+      "sha256": "f735bc8f2f6e4c6d00ca56b2c3e4d109d27ccb12fe269dd5190877448384c145"
+    },
+    {
+      "file": "UE\\Images\\Blue_LOD0_top.png",
+      "sha256": "75913e1321d95b7b4962f1ed23a462df161872be400e4d454004f41438834d75"
+    },
+    {
+      "file": "UE\\Images\\Blue_LOD1_hero.png",
+      "sha256": "74d8707317a0fbc80c865c7bca0f0081039b396ddfbe4ceeb41608cdb30a6a35"
+    },
+    {
+      "file": "UE\\Images\\Blue_LOD2_hero.png",
+      "sha256": "8db50e4f0c4a59c2dfc3a5be0634b312b37c465c5f0f772f98b8d3f5b6a5bf49"
+    },
+    {
+      "file": "UE\\Images\\Live_PlayerTeam1_UnitTeam1_own.png",
+      "sha256": "244e41967b89a81447eb2a9174af1e99f089a96eb78e2f124a0b5559c3406be1"
+    },
+    {
+      "file": "UE\\Images\\Live_PlayerTeam1_UnitTeam2_enemy.png",
+      "sha256": "2e71e97bb03e281e5b79a0744b0510c51c4c8d4815e8e13034c52985c250da5c"
+    },
+    {
+      "file": "UE\\Images\\Live_PlayerTeam2_UnitTeam1_enemy.png",
+      "sha256": "e5fa7f2a2d4924c8dcb7fb193f095558ac051053b73a1ccfea60d21f8993c4f2"
+    },
+    {
+      "file": "UE\\Images\\Live_PlayerTeam2_UnitTeam2_own.png",
+      "sha256": "a2cd98265e09d816c9de0a85d3e47e4b4f7d03ad4040866dcc25d94784134cd5"
+    },
+    {
+      "file": "UE\\Images\\Mask_LOD0_back.png",
+      "sha256": "c71a3e5710f984a6cc8016f719539b4f061bb0ce0b0cf803666fb92953d2a075"
+    },
+    {
+      "file": "UE\\Images\\Mask_LOD0_front.png",
+      "sha256": "daa25e23d4dc04ada92432699b3defb1c693d21a1258662e3bb5ae44fa173f1e"
+    },
+    {
+      "file": "UE\\Images\\Mask_LOD0_hero.png",
+      "sha256": "38f2f48b85f8db4d16c93545832cd5acc81f92f7a671e16ce7c3cad807713c78"
+    },
+    {
+      "file": "UE\\Images\\Mask_LOD0_left.png",
+      "sha256": "1271da1feed53b4260359450d0effd1463af0434b46143f55328c2efbe8bddea"
+    },
+    {
+      "file": "UE\\Images\\Mask_LOD0_top.png",
+      "sha256": "e6cda3629fc391c8f2a0c59ddd0876c515be34d70516ffb92886a954a83690e0"
+    },
+    {
+      "file": "UE\\Images\\Original_LOD0_back.png",
+      "sha256": "3c17f5bc5eb379404359e6f2152dc8e71b3d40c7fdd1476e3144aeccb5db40f1"
+    },
+    {
+      "file": "UE\\Images\\Original_LOD0_front.png",
+      "sha256": "9ac8557e83572e04c8a789a9a95e49730ae95924c2be94aef4388d1ac0fcb7b6"
+    },
+    {
+      "file": "UE\\Images\\Original_LOD0_hero.png",
+      "sha256": "99ece37d8030b670936f519ffb936a09d96ba31c5e8d03d6cfe5d0b024dc3877"
+    },
+    {
+      "file": "UE\\Images\\Original_LOD0_left.png",
+      "sha256": "037e91b6529c6fe558e38fff2267114e0642f4bb5a56ca28b9e2e689cbbe3dab"
+    },
+    {
+      "file": "UE\\Images\\Original_LOD0_top.png",
+      "sha256": "caa613a6778523bcfdc1fcbd822435b10a577ef9a91c468ef84aadd4bcc64d1e"
+    },
+    {
+      "file": "UE\\Images\\Red_LOD0_back.png",
+      "sha256": "e2580e7733710c589a5cb95d30eaa7bba666ee9eeaee71c95065906e4ba11b7f"
+    },
+    {
+      "file": "UE\\Images\\Red_LOD0_front.png",
+      "sha256": "a3d8839215aadcaab19f0cc61b3337036e176dd1b9465f5e00f9eb905120a414"
+    },
+    {
+      "file": "UE\\Images\\Red_LOD0_hero.png",
+      "sha256": "6c183fae15c810ea739fae64ab4b144974a03aed58221bc3243c19bf64bf8417"
+    },
+    {
+      "file": "UE\\Images\\Red_LOD0_left.png",
+      "sha256": "f2f7cade378e05d2a3d1c2cd2e366568ae75cbdaacc971dbcd972c0de96de7d7"
+    },
+    {
+      "file": "UE\\Images\\Red_LOD0_top.png",
+      "sha256": "2051a7c99bc949cf4bd256c771fc57c1ca2497b5c8e2d0766d2936b81e079f80"
+    },
+    {
+      "file": "UE\\Images\\Red_LOD1_hero.png",
+      "sha256": "adecfa3dc1b9d958c63e87eb9cd69cd80a646ef8f93b23a299dc2b3ebc56c406"
+    },
+    {
+      "file": "UE\\Images\\Red_LOD2_hero.png",
+      "sha256": "e37be1e5f0c5e89a9f42d8dfebe2760f98a8fa59bd7c7572ecc5ef993d4a5d3d"
+    },
+    {
+      "file": "UE\\Images\\Unknown_LOD0_hero.png",
+      "sha256": "f1468132f4f6ce843e061f7a657d8c19d3d1e531065d1cdfc504b64244518701"
+    },
+    {
+      "file": "UE\\overview.png",
+      "sha256": "93473ce305bcdf8d1b6799e7cc71e2bb4022f712bb1996801894c0bd759edf20"
+    },
+    {
+      "file": "UE\\q-input-diagnostic.json",
+      "sha256": "484285d64691f8518dfffc0c81be581f15da2b30256b1fdb10f4e3039f837f73"
+    },
+    {
+      "file": "UE\\runtime-actual-batch-captures.json",
+      "sha256": "8ff9a9d31b416ebac3597a7cfc20d894679efac5d51a000869596d07c69b1e0c"
+    },
+    {
+      "file": "UE\\runtime-capture-transport.json",
+      "sha256": "7b545984f3528353fae63fa825b1d428169facb0558feb6fc68df9d71308d26b"
+    },
+    {
+      "file": "UE\\runtime-cpd-reset.json",
+      "sha256": "aa6e2b14f4bc48c77ed46d155cd3427978cc4f6be099c194f8dea90e14ae8541"
+    },
+    {
+      "file": "UE\\runtime-initial.json",
+      "sha256": "50296876b7300ca07995fb7d250eaa07c17a8aa9f02db53c1ea2e038acab8686"
+    },
+    {
+      "file": "UE\\runtime-local-team-readback.json",
+      "sha256": "8a81a25d88f36777eeb1a27cc5fa2207d434c08ca544127fa9b2ea5f68f5df10"
+    },
+    {
+      "file": "UE\\runtime-observer.json",
+      "sha256": "4c5eba386838281c30f16e16fb4b52a144e2ae8d84f471879a00402b679cc12f"
+    },
+    {
+      "file": "UE\\runtime-q-request.json",
+      "sha256": "8c2ffc883f481be93db700c484768f81687da33c1569365c3baf0f144d03c92a"
+    },
+    {
+      "file": "UE\\runtime-q-selection.json",
+      "sha256": "eefc8cae6daf56cea02f6820199d7dcea73520271de53092140114c0b7e4c293"
+    },
+    {
+      "file": "UE\\runtime-restart-transport.json",
+      "sha256": "9462e453620a60d4dfec6ef329b13ed705dcf6acbf23122a60ca5cef269021b7"
+    },
+    {
+      "file": "UE\\runtime-session.json",
+      "sha256": "c717e7b9a2baa024215831497e4fb2d93f90599db3d8e3869bb4e1f666e89901"
+    },
+    {
+      "file": "UE\\runtime-start-transport.json",
+      "sha256": "55261863dc16d0489d19bdda334c51f885e3e59770ca64500fdb0349804408bb"
+    },
+    {
+      "file": "UE\\runtime-summon-readback.json",
+      "sha256": "3fd5f4989fc5a32d82a2b7cd2861bb2fbd726b67710a5a6b70e3d98991218cca"
+    },
+    {
+      "file": "UE\\runtime-tick-recovery.json",
+      "sha256": "17f608fba66bcab8ea42b511d365be48b67595a57ab73cc319b3c9879f60a6f9"
+    },
+    {
+      "file": "UE\\runtime-verify-transport.json",
+      "sha256": "80678e1f0d14c012d8dad4e87a978b62dcb74e54ce80fef81202a558a43bf4f3"
+    },
+    {
+      "file": "UE\\scene-readback-transport.json",
+      "sha256": "19cb1b31fb70a28ff0c9791b7ee0e443752bc02758a61fd756dd5a359e9ccfa5"
+    },
+    {
+      "file": "UE\\scene-save-transport.json",
+      "sha256": "214f17d727b9c2852093ddbe2230e9597d4324dd3868400b1cea3e2bf62ef40f"
+    },
+    {
+      "file": "UE\\source-static-review.json",
+      "sha256": "9aebc907a0ef93707571d801191e195370b29e2cb250838abe9bed991b85bac2"
+    }
+  ]
+}

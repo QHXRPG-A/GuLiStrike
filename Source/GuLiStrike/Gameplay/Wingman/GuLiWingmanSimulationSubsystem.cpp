@@ -1,11 +1,13 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Wingman/GuLiWingmanSimulationSubsystem.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 
 #include "Battle/Relay/GuLiWingmanRelayTypes.h"
 #include "Development/GuLiWingmanQAEvidence.h"
 #include "Engine/World.h"
+#include "Engine/StaticMesh.h"
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
 #include "Gameplay/Wingman/Movement/GuLiWingmanFlightMovementComponent.h"
 #include "Gameplay/Wingman/Movement/GuLiWingmanSteering.h"
@@ -228,8 +230,7 @@ UGuLiWingmanSimulationSubsystem::UGuLiWingmanSimulationSubsystem()
 {
 	MemberBehaviorStateTree = TSoftObjectPtr<UStateTree>(FSoftObjectPath(
 		TEXT("/Game/GuLiStrike/Wingman/ST_WingmanMemberBehavior.ST_WingmanMemberBehavior")));
-	DefaultWingmanMesh = TSoftObjectPtr<UStaticMesh>(FSoftObjectPath(
-		TEXT("/Game/GuLiStrike/Wingman/SM_Wingman_Mass.SM_Wingman_Mass")));
+	DefaultModelId = GuLiModelIds::Wingman;
 }
 
 bool UGuLiWingmanSimulationSubsystem::ShouldCreateSubsystem(UObject* Outer) const
@@ -269,7 +270,7 @@ UStateTree* UGuLiWingmanSimulationSubsystem::ResolveMemberBehaviorStateTree() co
 
 UStaticMesh* UGuLiWingmanSimulationSubsystem::ResolveWingmanMesh() const
 {
-	return DefaultWingmanMesh.IsNull() ? nullptr : DefaultWingmanMesh.LoadSynchronous();
+	return GuLiModels::Load<UStaticMesh>(this, DefaultModelId);
 }
 
 bool UGuLiWingmanSimulationSubsystem::CreateOrResetOwnedGroup(

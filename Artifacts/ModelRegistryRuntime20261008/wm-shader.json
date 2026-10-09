@@ -1,0 +1,28 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "shader": [
+      {
+        "code": "float d=dot(normalize(N),normalize(L)); float3 tones=d<.12?float3(.43,.52,.66):(d<.55?float3(.72,.78,.88):float3(1,1,1)); float3 paint=Base*tones; return lerp(paint,Ink,saturate(Mask));",
+        "inputs": [
+          "Base",
+          "N",
+          "L",
+          "Ink",
+          "Mask"
+        ]
+      },
+      {
+        "code": "float d=dot(normalize(N),normalize(L)); float3 tones=d<.12?float3(.43,.52,.66):(d<.55?float3(.72,.78,.88):float3(1,1,1)); float3 paint=Base*tones; return lerp(paint,Ink,saturate(Mask));",
+        "inputs": [
+          "Base",
+          "N",
+          "L",
+          "Ink",
+          "Mask"
+        ]
+      }
+    ]
+  }
+}

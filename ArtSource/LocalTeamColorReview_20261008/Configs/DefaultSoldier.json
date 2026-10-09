@@ -1,0 +1,59 @@
+{
+  "name": "DefaultSoldier",
+  "group": "Mass",
+  "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+  "kind": "StaticMesh",
+  "bounds": "<Struct 'BoxSphereBounds' (0x0000028085B2C7C0) {origin: {x: 24.767754, y: 0.000000, z: 226.746872}, box_extent: {x: 255.312752, y: 312.500000, z: 226.746902}, sphere_radius: 386.209296}>",
+  "unit_id": 1,
+  "display_name": "先驱号",
+  "version": "LocalTeamColorReview.20261008.v1",
+  "mutable_regions": "现有天蓝及珊瑚装甲色块；灯具、暖白和底盘固定",
+  "source_palette_candidates": [
+    "#87CEEB",
+    "#E97868"
+  ],
+  "blue_reference": "#2877DB",
+  "red_reference": "#D7534D",
+  "enemy_non_blue_palette": "#D7534D",
+  "configuration_status": "candidate_pending_region_review",
+  "runtime_enabled": false,
+  "geometry_animation_lod_unchanged": true,
+  "materials": [
+    {
+      "slot": 0,
+      "name": "Body",
+      "fixed": false,
+      "source": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/MI_Pioneer_LOD0.MI_Pioneer_LOD0",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/DefaultSoldier/M_Review_M_Pioneer_Toon3.M_Review_M_Pioneer_Toon3",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/DefaultSoldier/MI_Blue_0.MI_Blue_0",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/DefaultSoldier/MI_Red_0.MI_Red_0",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/DefaultSoldier/MI_Regions_0.MI_Regions_0"
+    },
+    {
+      "slot": 1,
+      "name": "Contour",
+      "fixed": true,
+      "source": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/M_Pioneer_Contour.M_Pioneer_Contour"
+    },
+    {
+      "slot": 2,
+      "name": "Body_LOD1",
+      "fixed": false,
+      "source": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/MI_Pioneer_LOD1.MI_Pioneer_LOD1",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/DefaultSoldier/M_Review_M_Pioneer_Toon3.M_Review_M_Pioneer_Toon3",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/DefaultSoldier/MI_Blue_2.MI_Blue_2",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/DefaultSoldier/MI_Red_2.MI_Red_2",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/DefaultSoldier/MI_Regions_2.MI_Regions_2"
+    },
+    {
+      "slot": 3,
+      "name": "Body_LOD3",
+      "fixed": false,
+      "source": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/MI_Pioneer_LOD2.MI_Pioneer_LOD2",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/DefaultSoldier/M_Review_M_Pioneer_Toon3.M_Review_M_Pioneer_Toon3",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/DefaultSoldier/MI_Blue_3.MI_Blue_3",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/DefaultSoldier/MI_Red_3.MI_Red_3",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/DefaultSoldier/MI_Regions_3.MI_Regions_3"
+    }
+  ]
+}

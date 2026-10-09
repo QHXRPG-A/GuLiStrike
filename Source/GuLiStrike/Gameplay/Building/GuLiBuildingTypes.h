@@ -84,8 +84,11 @@ struct GULISTRIKE_API FGuLiBuildingDefinition
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building")
 	FText DisplayName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Building", meta=(ToolTip="Resolved ModelId cache; author paths in Models Excel."))
 	TObjectPtr<UStaticMesh> Mesh;
+	/** Resolved visual cache; author resources in Models, not in the building row. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Models") int32 ModelId = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Models") TSubclassOf<AActor> PresentationClass;
 
 	/** Half extent of the baked Scale-1 visual bounds in centimeters. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building", meta = (ClampMin = "1.0"))

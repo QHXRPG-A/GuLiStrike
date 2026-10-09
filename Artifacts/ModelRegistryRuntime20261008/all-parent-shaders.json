@@ -1,0 +1,393 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": [
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Parents/M_BiZhiMao_Toon3_SparseLines.M_BiZhiMao_Toon3_SparseLines",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_1",
+          "code": "float3 c=Palette.rgb; float d=dot(normalize(N),normalize(float3(.35,.55,.76))); float band=d<.12?.42:(d<.55?.74:1); float dist=min(min(D1.x,1-D1.y),D2.x); float edge=1-smoothstep(Width-.0015,Width+.0015,dist); float ink=max(edge,Mask*.35); float3 color=lerp(c*band,float3(0.010960094006488246,0.017641954488384078,0.01599629336550963),saturate(ink*Strength));return lerp(color,color*Tint,TintStrength);",
+          "inputs": "[\"Palette\", \"N\", \"D1\", \"D2\", \"Mask\", \"Strength\", \"Width\", \"Tint\", \"TintStrength\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionVertexInterpolator_1",
+            "MaterialExpressionTextureCoordinate_2",
+            "MaterialExpressionTextureCoordinate_3",
+            "MaterialExpressionTextureSample_1",
+            "MaterialExpressionScalarParameter_3",
+            "MaterialExpressionScalarParameter_4",
+            "MaterialExpressionVectorParameter_1",
+            "MaterialExpressionScalarParameter_5"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMaoConstruction/Materials/Parents/M_BiZhiMao_Toon3_SparseLines.M_BiZhiMao_Toon3_SparseLines",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_1",
+          "code": "float3 c=Palette.rgb; float d=dot(normalize(N),normalize(float3(.35,.55,.76))); float band=d<.12?.42:(d<.55?.74:1); float dist=min(min(D1.x,1-D1.y),D2.x); float edge=1-smoothstep(Width-.0015,Width+.0015,dist); float ink=max(edge,Mask*.35); float3 color=lerp(c*band,float3(0.010960094006488246,0.017641954488384078,0.01599629336550963),saturate(ink*Strength));return lerp(color,color*Tint,TintStrength);",
+          "inputs": "[\"Palette\", \"N\", \"D1\", \"D2\", \"Mask\", \"Strength\", \"Width\", \"Tint\", \"TintStrength\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionVertexInterpolator_1",
+            "MaterialExpressionTextureCoordinate_2",
+            "MaterialExpressionTextureCoordinate_3",
+            "MaterialExpressionTextureSample_1",
+            "MaterialExpressionScalarParameter_3",
+            "MaterialExpressionScalarParameter_4",
+            "MaterialExpressionVectorParameter_1",
+            "MaterialExpressionScalarParameter_5"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3.M_Pioneer_Toon3",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float light=dot(normalize(N),normalize(float3(.55,-.35,.76))); float band=light<.12?.42:light<.55?.74:1; return lerp(Color*band,float3(.01764,.013,.01444),saturate(Mask*Lines));",
+          "inputs": "[\"N\", \"Color\", \"Mask\", \"Lines\"]",
+          "sources": [
+            "MaterialExpressionVertexInterpolator_0",
+            "MaterialExpressionMaterialFunctionCall_1",
+            "MaterialExpressionTextureSample_1",
+            "MaterialExpressionScalarParameter_1"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/ManualOutpost/Materials/Parents/M_OutpostConcrete.M_OutpostConcrete",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);",
+          "inputs": "[\"Palette\", \"N\", \"Lamp\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionMaterialFunctionCall_0"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);",
+          "inputs": "[\"Palette\", \"N\", \"Lamp\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionMaterialFunctionCall_0"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/Materials/Parents/WorldGridMaterial.WorldGridMaterial",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);",
+          "inputs": "[\"Palette\", \"N\", \"Lamp\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionMaterialFunctionCall_0"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/OverrideMaterials/Parents/M_RPF_Interior.M_RPF_Interior",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);",
+          "inputs": "[\"Palette\", \"N\", \"Lamp\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionMaterialFunctionCall_0"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Armor.M_RPF_Armor",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);",
+          "inputs": "[\"Palette\", \"N\", \"Lamp\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionMaterialFunctionCall_0"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Details.M_RPF_Details",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);",
+          "inputs": "[\"Palette\", \"N\", \"Lamp\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionMaterialFunctionCall_0"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Interior.M_RPF_Interior",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);",
+          "inputs": "[\"Palette\", \"N\", \"Lamp\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionMaterialFunctionCall_0"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Armor.M_RPF_Armor",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);",
+          "inputs": "[\"Palette\", \"N\", \"Lamp\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionMaterialFunctionCall_0"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Details.M_RPF_Details",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);",
+          "inputs": "[\"Palette\", \"N\", \"Lamp\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionMaterialFunctionCall_0"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Interior.M_RPF_Interior",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);",
+          "inputs": "[\"Palette\", \"N\", \"Lamp\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionMaterialFunctionCall_0"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/SentryTurret/Materials/Parents/FBXLegacyPhongSurfaceMaterial.FBXLegacyPhongSurfaceMaterial",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);",
+          "inputs": "[\"Palette\", \"N\", \"Lamp\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionMaterialFunctionCall_0"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/ShieldGenerator/Materials/Parents/M_ShieldGenerator_HardSurface.M_ShieldGenerator_HardSurface",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);",
+          "inputs": "[\"Palette\", \"N\", \"Lamp\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionMaterialFunctionCall_0"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_AirBase/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float code=1.0-BT.y; float lod=floor(code+0.001); float teamMask=step(0.2,code-lod); float fade=lod<0.5?1.0:(lod<1.5?0.7:0.0); float3 palette=float3(RG.x,1.0-RG.y,BT.x); palette=lerp(palette,Team,teamMask); float d=dot(normalize(N),normalize(Light)); float band=d<0.38?0.40:(d<0.68?0.72:1.0); float inkMask=saturate(max(Mask.r*0.65,Mask.g)*fade); return lerp(palette*Base*band,Ink,inkMask);",
+          "inputs": "[\"RG\", \"BT\", \"Mask\", \"N\", \"Light\", \"Base\", \"Team\", \"Ink\"]",
+          "sources": [
+            "MaterialExpressionTextureCoordinate_4",
+            "MaterialExpressionTextureCoordinate_6",
+            "MaterialExpressionTextureSampleParameter2D_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionVectorParameter_3",
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionVectorParameter_9",
+            "MaterialExpressionVectorParameter_5"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_CloningCenter/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float code=1.0-BT.y; float lod=floor(code+0.001); float teamMask=step(0.2,code-lod); float fade=lod<0.5?1.0:(lod<1.5?0.7:0.0); float3 palette=float3(RG.x,1.0-RG.y,BT.x); palette=lerp(palette,Team,teamMask); float d=dot(normalize(N),normalize(Light)); float band=d<0.38?0.40:(d<0.68?0.72:1.0); float inkMask=saturate(max(Mask.r*0.65,Mask.g)*fade); return lerp(palette*Base*band,Ink,inkMask);",
+          "inputs": "[\"RG\", \"BT\", \"Mask\", \"N\", \"Light\", \"Base\", \"Team\", \"Ink\"]",
+          "sources": [
+            "MaterialExpressionTextureCoordinate_4",
+            "MaterialExpressionTextureCoordinate_6",
+            "MaterialExpressionTextureSampleParameter2D_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionVectorParameter_3",
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionVectorParameter_9",
+            "MaterialExpressionVectorParameter_5"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_CommandCenter/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float code=1.0-BT.y; float lod=floor(code+0.001); float teamMask=step(0.2,code-lod); float fade=lod<0.5?1.0:(lod<1.5?0.7:0.0); float3 palette=float3(RG.x,1.0-RG.y,BT.x); palette=lerp(palette,Team,teamMask); float d=dot(normalize(N),normalize(Light)); float band=d<0.38?0.40:(d<0.68?0.72:1.0); float inkMask=saturate(max(Mask.r*0.65,Mask.g)*fade); return lerp(palette*Base*band,Ink,inkMask);",
+          "inputs": "[\"RG\", \"BT\", \"Mask\", \"N\", \"Light\", \"Base\", \"Team\", \"Ink\"]",
+          "sources": [
+            "MaterialExpressionTextureCoordinate_4",
+            "MaterialExpressionTextureCoordinate_6",
+            "MaterialExpressionTextureSampleParameter2D_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionVectorParameter_3",
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionVectorParameter_9",
+            "MaterialExpressionVectorParameter_5"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_MilitaryFactory/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float code=1.0-BT.y; float lod=floor(code+0.001); float teamMask=step(0.2,code-lod); float fade=lod<0.5?1.0:(lod<1.5?0.7:0.0); float3 palette=float3(RG.x,1.0-RG.y,BT.x); palette=lerp(palette,Team,teamMask); float d=dot(normalize(N),normalize(Light)); float band=d<0.38?0.40:(d<0.68?0.72:1.0); float inkMask=saturate(max(Mask.r*0.65,Mask.g)*fade); return lerp(palette*Base*band,Ink,inkMask);",
+          "inputs": "[\"RG\", \"BT\", \"Mask\", \"N\", \"Light\", \"Base\", \"Team\", \"Ink\"]",
+          "sources": [
+            "MaterialExpressionTextureCoordinate_4",
+            "MaterialExpressionTextureCoordinate_6",
+            "MaterialExpressionTextureSampleParameter2D_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionVectorParameter_3",
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionVectorParameter_9",
+            "MaterialExpressionVectorParameter_5"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_Reactor/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float code=1.0-BT.y; float lod=floor(code+0.001); float teamMask=step(0.2,code-lod); float fade=lod<0.5?1.0:(lod<1.5?0.7:0.0); float3 palette=float3(RG.x,1.0-RG.y,BT.x); palette=lerp(palette,Team,teamMask); float d=dot(normalize(N),normalize(Light)); float band=d<0.38?0.40:(d<0.68?0.72:1.0); float inkMask=saturate(max(Mask.r*0.65,Mask.g)*fade); return lerp(palette*Base*band,Ink,inkMask);",
+          "inputs": "[\"RG\", \"BT\", \"Mask\", \"N\", \"Light\", \"Base\", \"Team\", \"Ink\"]",
+          "sources": [
+            "MaterialExpressionTextureCoordinate_4",
+            "MaterialExpressionTextureCoordinate_6",
+            "MaterialExpressionTextureSampleParameter2D_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionVectorParameter_3",
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionVectorParameter_9",
+            "MaterialExpressionVectorParameter_5"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_StrategyCenter/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float code=1.0-BT.y; float lod=floor(code+0.001); float teamMask=step(0.2,code-lod); float fade=lod<0.5?1.0:(lod<1.5?0.7:0.0); float3 palette=float3(RG.x,1.0-RG.y,BT.x); palette=lerp(palette,Team,teamMask); float d=dot(normalize(N),normalize(Light)); float band=d<0.38?0.40:(d<0.68?0.72:1.0); float inkMask=saturate(max(Mask.r*0.65,Mask.g)*fade); return lerp(palette*Base*band,Ink,inkMask);",
+          "inputs": "[\"RG\", \"BT\", \"Mask\", \"N\", \"Light\", \"Base\", \"Team\", \"Ink\"]",
+          "sources": [
+            "MaterialExpressionTextureCoordinate_4",
+            "MaterialExpressionTextureCoordinate_6",
+            "MaterialExpressionTextureSampleParameter2D_0",
+            "MaterialExpressionPixelNormalWS_0",
+            "MaterialExpressionVectorParameter_3",
+            "MaterialExpressionMaterialFunctionCall_0",
+            "MaterialExpressionVectorParameter_9",
+            "MaterialExpressionVectorParameter_5"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/WM01/Materials/Parents/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid",
+      "custom": [
+        {
+          "name": "MaterialExpressionCustom_0",
+          "code": "float d=dot(normalize(N),normalize(L)); float3 tones=d<.12?float3(.43,.52,.66):(d<.55?float3(.72,.78,.88):float3(1,1,1)); float3 paint=Base*tones; return lerp(paint,Ink,saturate(Mask));",
+          "inputs": "[\"Base\", \"N\", \"L\", \"Ink\", \"Mask\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_1",
+            "MaterialExpressionVertexInterpolator_0",
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "name": "MaterialExpressionCustom_1",
+          "code": "float d=dot(normalize(N),normalize(L)); float3 tones=d<.12?float3(.43,.52,.66):(d<.55?float3(.72,.78,.88):float3(1,1,1)); float3 paint=Base*tones; return lerp(paint,Ink,saturate(Mask));",
+          "inputs": "[\"Base\", \"N\", \"L\", \"Ink\", \"Mask\"]",
+          "sources": [
+            "MaterialExpressionMaterialFunctionCall_1",
+            "MaterialExpressionVertexInterpolator_0",
+            "MaterialExpressionVectorParameter_3",
+            "MaterialExpressionVectorParameter_2",
+            "MaterialExpressionTextureSample_3"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "errors": [],
+    "summoned_sweepers": 10,
+    "clients": [
+      {
+        "actual_player_team": 2,
+        "batches": [
+          {
+            "actual_unit_team": 1,
+            "relation": "enemy",
+            "instances": 5,
+            "actual": {
+              "primary": [
+                0.366252601146698,
+                0.05126945674419403,
+                0.08650045841932297,
+                1.0
+              ],
+              "enabled": 1.0
+            },
+            "passed": true
+          },
+          {
+            "actual_unit_team": 2,
+            "relation": "own",
+            "instances": 5,
+            "actual": {
+              "primary": [
+                0.1441284716129303,
+                0.3712376654148102,
+                0.5149176716804504,
+                1.0
+              ],
+              "enabled": 1.0
+            },
+            "passed": true
+          }
+        ]
+      },
+      {
+        "actual_player_team": 1,
+        "batches": [
+          {
+            "actual_unit_team": 1,
+            "relation": "own",
+            "instances": 5,
+            "actual": {
+              "primary": [
+                0.1441284716129303,
+                0.3712376654148102,
+                0.5149176716804504,
+                1.0
+              ],
+              "enabled": 1.0
+            },
+            "passed": true
+          },
+          {
+            "actual_unit_team": 2,
+            "relation": "enemy",
+            "instances": 5,
+            "actual": {
+              "primary": [
+                0.366252601146698,
+                0.05126945674419403,
+                0.08650045841932297,
+                1.0
+              ],
+              "enabled": 1.0
+            },
+            "passed": true
+          }
+        ]
+      }
+    ]
+  }
+}

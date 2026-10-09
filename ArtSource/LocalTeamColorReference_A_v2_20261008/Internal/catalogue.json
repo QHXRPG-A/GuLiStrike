@@ -1,0 +1,407 @@
+{
+  "version": "LocalTeamColorReference_A_v2_20261008",
+  "stage": "reference_A",
+  "art_revision": "1.5",
+  "scope_count": 13,
+  "board_count": 26,
+  "approved_models": [],
+  "runtime_enabled": false,
+  "user_basis": [
+    "原计划十个模型出蓝红参考与三视图，审核后施工",
+    "用户提供四张色卡：仅从这些色系中选配",
+    "用户新增防空炮、哨戒炮、矿厂，现共十三个模型"
+  ],
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    }
+  },
+  "palette_cards": [
+    [
+      "#2C3735",
+      "#8E3A2A",
+      "#557B78",
+      "#D5C09C"
+    ],
+    [
+      "#1A182F",
+      "#45184D",
+      "#662249",
+      "#A34053",
+      "#EE9D58",
+      "#EABCBA"
+    ],
+    [
+      "#150017",
+      "#2A104B",
+      "#522C5C",
+      "#835061",
+      "#E3B6B1",
+      "#FEE4D9"
+    ],
+    [
+      "#021716",
+      "#032E30",
+      "#0A6F73",
+      "#0D9099",
+      "#6AA4BE",
+      "#274E61"
+    ]
+  ],
+  "design_limits": [
+    "保留原有轮廓、比例、装配、活动件关系与 LOD；二维生成图只用于颜色设计审批",
+    "浅色主装甲约占暴露装甲70%；队色限定少数连续面板；按图板逐模型审核",
+    "三档明暗表达体积，只保留主要结构线，减少碎纹",
+    "红版由蓝版派生，固定区和功能色保持一致",
+    "所有审核 A 状态均待用户针对具体模型及版本明确决定，B 施工与正式 UE 更新尚未开始"
+  ],
+  "models": [
+    {
+      "id": "DefaultSoldier",
+      "name": "先驱号",
+      "title": "PIONEER",
+      "category": "Mass",
+      "unit_type_id": 1,
+      "fixed": [
+        "中央主壳、腿部主护甲、关节护盖：奶油白",
+        "枪管、关节、底盘与脚部机构：深灰"
+      ],
+      "team": [
+        "两侧肩部盒形护甲",
+        "既有后部弧形围带",
+        "对应腿部识别面板"
+      ],
+      "function": [
+        "原有小型指示灯：琥珀色，固定不随队色变化"
+      ],
+      "source": [
+        "ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayHero.png",
+        "ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayFront.png",
+        "ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayLeft.png",
+        "ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayBack.png"
+      ],
+      "structure": "保留六足、双枪、两根天线和后部围带，队色集中在完整分件。"
+    },
+    {
+      "id": "BiZhiMao",
+      "name": "彼之矛",
+      "title": "BI ZHI MAO",
+      "category": "Mass",
+      "unit_type_id": 6,
+      "fixed": [
+        "主机体、长炮上壳与腿部主护甲：奶油白",
+        "炮膛、开口桁架、脚部及关节：深灰"
+      ],
+      "team": [
+        "既有炮口外套",
+        "侧散热框边护板及相邻现有液压护套",
+        "四足对应踝部外护板"
+      ],
+      "function": [
+        "仅保留原有指示位置，不新增灯"
+      ],
+      "source": [
+        "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Hero.png",
+        "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Front.png",
+        "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Left.png",
+        "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Back.png"
+      ],
+      "structure": "保留四足、长炮比例及开口桁架；施工体沿用同一版本。",
+      "shared_variant": "BiZhiMaoConstruction"
+    },
+    {
+      "id": "ShieldGenerator",
+      "name": "护盾发生器",
+      "title": "SHIELD GENERATOR",
+      "category": "Building",
+      "building_type_id": 5,
+      "fixed": [
+        "三个柱体、顶盖、分层基座：奶油白",
+        "柱间凹槽、连接及机构：深灰"
+      ],
+      "team": [
+        "已有上部竖直检修护板",
+        "底座窄腰线"
+      ],
+      "function": [
+        "顶面三处原有功能位置：固定青色 #0D9099",
+        "控制为小面积灯面，无泛光"
+      ],
+      "source": [
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Hero.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Front.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Left.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Back.png"
+      ],
+      "structure": "保留三柱及 Y 形占地；发光不淹没装甲。",
+      "function_hex": "#0D9099"
+    },
+    {
+      "id": "ManualOutpost",
+      "name": "前哨建筑",
+      "title": "OUTPOST",
+      "category": "Building",
+      "building_type_id": 3,
+      "fixed": [
+        "高窄叠板及平直板面：奶油白",
+        "板间深槽与支承：深灰"
+      ],
+      "team": [
+        "原有腰部围带／围笼"
+      ],
+      "function": [
+        "原模型无新增功能灯"
+      ],
+      "source": [
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Hero.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Front.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Left.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Back.png"
+      ],
+      "structure": "沿用 SM_OutpostPlaceholder 的错落竖板纪念碑造型，保持原有高度序列。"
+    },
+    {
+      "id": "MissileTurret",
+      "name": "防空炮",
+      "title": "AIR DEFENSE",
+      "category": "Building",
+      "building_type_id": 1,
+      "fixed": [
+        "发射仓主体、中部箱体、转台护甲及基座：奶油白",
+        "发射口、转轴、管线与栏杆：深灰"
+      ],
+      "team": [
+        "两侧发射仓已有长条外侧护板",
+        "转台已有窄环带"
+      ],
+      "function": [
+        "仅保留原有小型功能指示位置，不新增灯"
+      ],
+      "source": [
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/MissileTurret_Hero.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/MissileTurret_Right.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/MissileTurret_Back.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/MissileTurret_Left.png"
+      ],
+      "source_view_mapping": {
+        "Hero": "Hero",
+        "Front": "Right (+Y)",
+        "Left": "Back (-X)",
+        "Back": "Left (-Y)"
+      },
+      "structure": "保留双侧发射仓及原俯仰姿态，每侧五枚原有弹头。"
+    },
+    {
+      "id": "SentryTurret",
+      "name": "哨戒炮",
+      "title": "SENTRY TURRET",
+      "category": "Building",
+      "building_type_id": 2,
+      "fixed": [
+        "炮塔装甲和底座装甲：奶油白",
+        "炮管、炮膛、关节、通风槽及回线软管：深灰"
+      ],
+      "team": [
+        "既有两侧散热框护盖",
+        "转台已有窄环带",
+        "既有后部上方检修盖"
+      ],
+      "function": [
+        "仅保留原有功能色，不新增灯"
+      ],
+      "source": [
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Hero.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Right.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Back.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Left.png"
+      ],
+      "source_view_mapping": {
+        "Hero": "Hero",
+        "Front": "Right (+Y)",
+        "Left": "Back (-X)",
+        "Back": "Left (-Y)"
+      },
+      "structure": "保留单炮、原有阶梯炮管和一根后部回线软管，炮管固定深灰。"
+    },
+    {
+      "id": "ResourceFactory",
+      "name": "矿厂",
+      "title": "ORE FACTORY",
+      "category": "Building",
+      "building_type_id": 6,
+      "fixed": [
+        "主墙、屋顶、门组护甲、坡道及侧柜：奶油白",
+        "门缝机构、通风栅格、底部凹槽：深灰"
+      ],
+      "team": [
+        "入口两側既有立柱面板",
+        "侧柜窄横向饰带"
+      ],
+      "function": [
+        "不新增灯，不将环境蓝光作为涂装"
+      ],
+      "source": [
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Hero.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Front.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Left.png",
+        "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Back.png"
+      ],
+      "source_blueprint": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory",
+      "structure": "原 Blueprint 完整门组与坡道入图；门组保持闭合，坡道保持现有平放姿态。"
+    },
+    {
+      "id": "SSF_AirBase",
+      "name": "SSF 空军基地",
+      "title": "AIR BASE",
+      "category": "SSF",
+      "fixed": [
+        "穹顶、宽侧裙及雷达塔主壳：奶油白",
+        "支座、工作雷达面、线缆及凹槽：深灰"
+      ],
+      "team": [
+        "主壳下缘窄连续腰线",
+        "雷达塔既有侧柜盖"
+      ],
+      "function": [
+        "仅原有微小指示位置保留固定功能色"
+      ],
+      "structure": "保留扁圆穹顶、相邻雷达塔及两瓣雷达片；宽侧裙不整面染队色。",
+      "source": [
+        "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_AirBase_Views.png"
+      ]
+    },
+    {
+      "id": "SSF_CloningCenter",
+      "name": "SSF 克隆中心",
+      "title": "CLONING CENTER",
+      "category": "SSF",
+      "fixed": [
+        "竖向背脊、顶盖、入口和主要外壳：奶油白",
+        "连接软管、舱端凹口与机构：深灰"
+      ],
+      "team": [
+        "四处原有舱体外罩",
+        "既有侧翼护盖",
+        "顶盖六边形口边框"
+      ],
+      "function": [
+        "顶盖开口内侧固定深灰，不混入橙色"
+      ],
+      "structure": "保留两层成对舱体、吊线、斜入口、上部开口及侧天线。",
+      "source": [
+        "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_CloningCenter_Views.png"
+      ]
+    },
+    {
+      "id": "SSF_CommandCenter",
+      "name": "SSF 指挥中心",
+      "title": "COMMAND CENTER",
+      "category": "SSF",
+      "fixed": [
+        "主塔装甲、塔冠及放射护甲：奶油白",
+        "塔内机构、雷达工作面及凹槽：深灰"
+      ],
+      "team": [
+        "上部原环带的一条窄腰线",
+        "下部既有支撑护板的有限连续面"
+      ],
+      "function": [
+        "原有小型指示保留功能含义"
+      ],
+      "structure": "保留分层圆塔、塔冠、中央天线、下层支架和侧雷达。",
+      "source": [
+        "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_CommandCenter_Views.png"
+      ]
+    },
+    {
+      "id": "SSF_MilitaryFactory",
+      "name": "SSF 军工厂",
+      "title": "MILITARY FACTORY",
+      "category": "SSF",
+      "fixed": [
+        "主墙、屋顶拱架、入口与门板：奶油白",
+        "机构、散热口、支脚与雷达转轴：深灰"
+      ],
+      "team": [
+        "入口两侧各一块连续立面板",
+        "侧后墙一条窄腰线"
+      ],
+      "function": [
+        "原有门上和侧部小型指示：固定琥珀色"
+      ],
+      "structure": "保留宽体工厂、拱架和门口比例；大侧墙恢复浅色。",
+      "source": [
+        "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_MilitaryFactory_Views.png"
+      ]
+    },
+    {
+      "id": "SSF_Reactor",
+      "name": "SSF 反应堆",
+      "title": "REACTOR",
+      "category": "SSF",
+      "fixed": [
+        "鼓形反应壳及四支撑外护甲：奶油白",
+        "下部冷却片、关节和口内机构：深灰"
+      ],
+      "team": [
+        "上盖已有窄环带",
+        "已有小观察口边框"
+      ],
+      "function": [
+        "原有功能口保持含义，不新增发光带"
+      ],
+      "structure": "保留四支撑、圆鼓反应壳和软管；主壳不整面染队色。",
+      "source": [
+        "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_Reactor_Views.png"
+      ]
+    },
+    {
+      "id": "SSF_StrategyCenter",
+      "name": "SSF 战略中心",
+      "title": "STRATEGY CENTER",
+      "category": "SSF",
+      "fixed": [
+        "主壳、阵列主框与支撑护甲：奶油白",
+        "雷达工作阵面、转轴及凹槽：深灰"
+      ],
+      "team": [
+        "雷达既有窄边框",
+        "主体既有有限横向腰线"
+      ],
+      "function": [
+        "雷达阵面固定深灰，两队一致"
+      ],
+      "structure": "保留斜置阵列、四天线、转轴及底部支撑，雷达工作面不随队色变化。",
+      "source": [
+        "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_StrategyCenter_Views.png"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "methods": [
+      {
+        "name": "cast",
+        "doc": "cast(cls: Type[_T], object: object) -> _T -- cast the given object to this Unreal object type or raise an exception if the cast is not possible"
+      },
+      {
+        "name": "select",
+        "doc": "X.select(controller, soldier_id, add=False) -> bool\r\nSelection uses the real RPC and normal sequence allocation. SoldierId 0 clears selection.\r\n\r\nArgs:\r\n    controller (PlayerController): \r\n    soldier_id (int64): \r\n    add (bool): \r\n\r\nReturns:\r\n    bool:"
+      },
+      {
+        "name": "snapshot",
+        "doc": "X.snapshot(controller) -> str\r\nSnapshot\r\n\r\nArgs:\r\n    controller (PlayerController): \r\n\r\nReturns:\r\n    str:"
+      }
+    ],
+    "customs": [
+      "acquire_editor_element_handle",
+      "action",
+      "call_method",
+      "cast",
+      "get_class",
+      "get_default_object",
+      "get_editor_property",
+      "get_fname",
+      "get_full_name",
+      "get_name",
+      "get_outer",
+      "get_outermost",
+      "get_package",
+      "get_path_name",
+      "get_typed_outer",
+      "get_world",
+      "is_editor_property_overridden",
+      "is_package_external",
+      "modify",
+      "observe",
+      "rename",
+      "replay_last_q",
+      "reset_editor_property",
+      "select",
+      "set_editor_properties",
+      "set_editor_property",
+      "snapshot",
+      "static_class"
+    ]
+  }
+}

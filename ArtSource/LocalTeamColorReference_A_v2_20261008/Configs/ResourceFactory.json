@@ -1,0 +1,108 @@
+{
+  "id": "ResourceFactory",
+  "name": "矿厂",
+  "title": "ORE FACTORY",
+  "category": "Building",
+  "building_type_id": 6,
+  "fixed": [
+    "主墙、屋顶、门组护甲、坡道及侧柜：奶油白",
+    "门缝机构、通风栅格、底部凹槽：深灰"
+  ],
+  "team": [
+    "入口两側既有立柱面板",
+    "侧柜窄横向饰带"
+  ],
+  "function": [
+    "不新增灯，不将环境蓝光作为涂装"
+  ],
+  "source": [
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Hero.png",
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Front.png",
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Left.png",
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Back.png"
+  ],
+  "source_blueprint": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory",
+  "structure": "原 Blueprint 完整门组与坡道入图；门组保持闭合，坡道保持现有平放姿态。",
+  "boards": {
+    "blue": {
+      "path": "Boards/ResourceFactory_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1715341,
+      "sha256": "8ab068f46a752bd0604311ce008c811262afbdf32722dede54b98e4bc1c98957"
+    },
+    "red": {
+      "path": "Boards/ResourceFactory_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1724305,
+      "sha256": "850a21b20feb9302a19e4395f71d199e6ed36cdcd0e94673c8de5e3e5d4fa8c7"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SM_RPF_Body.SM_RPF_Body",
+  "source_kind": "StaticMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Hero.png",
+      "sha256": "6334b0d78735053bd283c3cc3b79897247fc6e0d5060984425ff159a8776ce46"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Front.png",
+      "sha256": "76d71c4a8fd5f655ee5fa9a1b575d74a029ecb23389820ef0c618f7b1de748eb"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Left.png",
+      "sha256": "8389a28c25500f030fe99fc018e0909c49a3090654222bcc2771260a1c75551b"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Back.png",
+      "sha256": "fb6e72b658befff949fcc36ae5c67c51203603edfb96fdf31acb3c19e32e23f1"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v2_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

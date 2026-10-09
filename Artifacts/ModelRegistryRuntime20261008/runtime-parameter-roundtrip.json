@@ -1,0 +1,86 @@
+{
+  "checks": [
+    {
+      "name": "MID scalar actual override",
+      "passed": true,
+      "actual": {
+        "before": 1.0,
+        "after": 0.3499999940395355
+      }
+    },
+    {
+      "name": "MID vector actual override",
+      "passed": true,
+      "actual": [
+        0.07999999821186066,
+        0.11999999731779099,
+        0.1599999964237213,
+        1.0
+      ]
+    },
+    {
+      "name": "Team managed write denied",
+      "passed": true,
+      "actual": null
+    },
+    {
+      "name": "Unknown key write denied",
+      "passed": true,
+      "actual": null
+    },
+    {
+      "name": "Wrong type read denied",
+      "passed": true,
+      "actual": null
+    },
+    {
+      "name": "Factory delayed registered binding Body",
+      "passed": true,
+      "actual": [
+        0.1441284716129303,
+        0.3712376654148102,
+        0.5149176716804504,
+        1.0
+      ]
+    },
+    {
+      "name": "Factory delayed registered binding Door",
+      "passed": true,
+      "actual": [
+        0.1441284716129303,
+        0.3712376654148102,
+        0.5149176716804504,
+        1.0
+      ]
+    },
+    {
+      "name": "Factory delayed registered binding AccessRamp",
+      "passed": true,
+      "actual": [
+        0.1441284716129303,
+        0.3712376654148102,
+        0.5149176716804504,
+        1.0
+      ]
+    },
+    {
+      "name": "CPD reset actual value read",
+      "passed": true,
+      "actual": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "errors": [],
+  "reset_actor": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_170",
+  "expected_primary": [
+    0.1441284716129303,
+    0.3712376654148102,
+    0.5149176716804504,
+    1.0
+  ],
+  "success": true
+}

@@ -67,7 +67,7 @@ def material_report(material, legacy=False):
     if not legacy:
         if "UNLIT" not in report["shading_model"]:
             errors.append("Ring material is not Unlit")
-        require_equal("Ring expression count", report["expression_count"], 6)
+        require_equal("Ring expression count", report["expression_count"], 12)
         require_equal("Ring used textures", len(report["used_textures"]), 0)
     return report
 

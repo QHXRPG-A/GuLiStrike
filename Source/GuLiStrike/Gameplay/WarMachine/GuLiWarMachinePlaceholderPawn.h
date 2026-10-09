@@ -40,6 +40,7 @@ public:
 	bool RequestFire();
 
 protected:
+	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(UInputComponent* IncomingInputComponent) override;
 
 private:

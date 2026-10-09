@@ -22,6 +22,7 @@ public class GuLiStrikeEditor : ModuleRules
 			"AssetRegistry",
 			"GeometryCore", "GeometryAlgorithms", "MeshDescription", "StaticMeshDescription",
 			"AIModule",
+			"MassEntity", // PIE selection reads the local commander's presented transform.
 			"Json",
 			"Landscape",
 			"Foliage", // LandscapeEdit.h exposes foliage integration to editor callers.

@@ -3,6 +3,8 @@
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+#include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "EngineUtils.h"
 #include "Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h"
@@ -78,8 +80,26 @@ bool UGuLiPioneerQALibrary::Observe(APlayerController* Controller, bool bEnabled
 
 FString UGuLiPioneerQALibrary::Snapshot(APlayerController* Controller)
 {
-	auto* PC = Allowed(Controller); if (!PC) return TEXT("{\"success\":false,\"error\":\"Local authority PIE required\"}");
+	auto* PC = Cast<AGuLiCommanderPlayerController>(Controller);
+	if (!PC || !PC->IsLocalController() || !PC->GetWorld()->IsPlayInEditor()
+		|| !PC->GetWorld()->GetMapName().Contains(TEXT("LVL_CommanderMassPrototype")))
+		return TEXT("{\"success\":false,\"error\":\"Local commander PIE required\"}");
 	auto* PS = PC->GetPlayerState<AGuLiBattlePlayerState>();
+	if (!PC->HasAuthority())
+	{
+		auto* Net = PC->GetCommanderNetSyncComponent();
+		if (!PS || !Net) return TEXT("{\"success\":false}");
+		auto Client = MakeShared<FJsonObject>(); Client->SetBoolField(TEXT("success"), true);
+		Client->SetBoolField(TEXT("client_selection_readback"), true);
+		Client->SetBoolField(TEXT("orders_ready"), PC->CanIssueCommanderOrders());
+		Client->SetStringField(TEXT("world"), PC->GetWorld()->GetPathName());
+		Client->SetNumberField(TEXT("selection_revision"), Net->GetSelectionState().SelectionRevision);
+		TArray<TSharedPtr<FJsonValue>> Members;
+		for (const auto& Cohort : Net->GetSelectionState().Cohorts)
+			for (const auto Id : Cohort.MemberIds) Members.Add(MakeShared<FJsonValueNumber>(Id.Value));
+		Client->SetArrayField(TEXT("selected"), Members);
+		FString Json; FJsonSerializer::Serialize(Client, TJsonWriterFactory<>::Create(&Json)); return Json;
+	}
 	auto* Authority = PC->GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
 	const auto* Data = PC->GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 	const auto* Army = PC->GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
@@ -140,15 +160,25 @@ FString UGuLiPioneerQALibrary::Snapshot(APlayerController* Controller)
 
 bool UGuLiPioneerQALibrary::Select(APlayerController* Controller, int64 SoldierId, bool bAdd)
 {
-	auto* PC = Allowed(Controller); if (!PC || !PC->CanIssueCommanderOrders() || SoldierId < 1 || SoldierId > MAX_uint32) return false;
+	// Selection must exercise the real client RPC as well as authority PIE.
+	auto* PC = Cast<AGuLiCommanderPlayerController>(Controller);
+	if (!PC || !PC->IsLocalController() || !PC->GetWorld()->IsPlayInEditor()
+		|| !PC->GetWorld()->GetMapName().Contains(TEXT("LVL_CommanderMassPrototype"))
+		|| !PC->CanIssueCommanderOrders() || SoldierId < 0 || SoldierId > MAX_uint32) return false;
 	auto* A = PC->GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
 	FGuLiSoldierId Id{uint32(SoldierId)}; FTransform Transform;
-	if (!A || !A->TryGetSoldierTransform(Id, Transform)) return false;
+	if (SoldierId != 0 && (!A || !A->TryGetSoldierTransform(Id, Transform)))
+	{
+		bool bFound = false;
+		for (TActorIterator<AGuLiCommanderPresentationActor> It(PC->GetWorld()); It; ++It)
+			if (!It->IsEditorOnly() && It->TryGetPresentedSoldierTransform(Id, Transform)) { bFound = true; break; }
+		if (!bFound) return false;
+	}
 	auto* Net = PC->GetCommanderNetSyncComponent(); FGuLiSelectionRequest Request;
 	Request.Kind = EGuLiSelectionKind::Point; Request.SeedSoldierId = Id;
 	Request.Center = Transform.GetLocation(); Request.RayOrigin = Transform.GetLocation() + FVector(0,0,10000);
 	Request.RayDirection = FVector(0,0,-1); Request.PickHalfAngleRadians = .004f;
-	Request.Modifier = bAdd ? EGuLiSelectionModifier::Add : EGuLiSelectionModifier::Replace;
+	Request.Modifier = SoldierId == 0 ? EGuLiSelectionModifier::Clear : (bAdd ? EGuLiSelectionModifier::Add : EGuLiSelectionModifier::Replace);
 	Request.ClientRequestId = PC->AllocateEditorQASelectionRequestId(); Request.KnownSelectionRevision = Net->GetSelectionState().SelectionRevision;
 	TGuardValue<bool> Guard(GAllowActorScriptExecutionInEditor, false); Net->SubmitOrderedSelection(Request); return true;
 }

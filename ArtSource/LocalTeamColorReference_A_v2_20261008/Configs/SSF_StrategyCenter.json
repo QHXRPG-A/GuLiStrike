@@ -1,0 +1,91 @@
+{
+  "id": "SSF_StrategyCenter",
+  "name": "SSF 战略中心",
+  "title": "STRATEGY CENTER",
+  "category": "SSF",
+  "fixed": [
+    "主壳、阵列主框与支撑护甲：奶油白",
+    "雷达工作阵面、转轴及凹槽：深灰"
+  ],
+  "team": [
+    "雷达既有窄边框",
+    "主体既有有限横向腰线"
+  ],
+  "function": [
+    "雷达阵面固定深灰，两队一致"
+  ],
+  "structure": "保留斜置阵列、四天线、转轴及底部支撑，雷达工作面不随队色变化。",
+  "source": [
+    "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_StrategyCenter_Views.png"
+  ],
+  "boards": {
+    "blue": {
+      "path": "Boards/SSF_StrategyCenter_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1495987,
+      "sha256": "7b899da8b746fb7f357bca3643413d3a288be7e685c9130bedc4e6a0aa999e6d"
+    },
+    "red": {
+      "path": "Boards/SSF_StrategyCenter_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1653832,
+      "sha256": "ce1ba3f327f51fe32fb992c7a91117c0515314542525ff6ab5fe45f9dea6ffd0"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/StrategyCenter/Meshes/SK_Blue_StrategyCenter.SK_Blue_StrategyCenter",
+  "source_kind": "SkeletalMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_StrategyCenter_Views.png",
+      "sha256": "fee38cb18b67ce410895437a772b6546b686ba2ba398ab7de713edcb5a3f7a9c"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v2_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

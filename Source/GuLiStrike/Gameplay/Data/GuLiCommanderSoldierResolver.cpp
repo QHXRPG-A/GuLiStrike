@@ -9,14 +9,13 @@
 #include "Engine/StaticMesh.h"
 #include "GameFramework/Actor.h"
 #include "Gameplay/Presentation/GuLiVATAnimation.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 
 namespace GuLiCommanderSoldierResolverPrivate
 {
 	// FMassMoveTargetFragment stores desired speed in FMassInt16Real (1 cm precision).
 	constexpr float MaximumReasonableMovementSpeed = static_cast<float>(MAX_int16);
 	constexpr float MaximumReasonableCombatValue = 1000000.0f;
-	constexpr TCHAR FallbackModelPath[] =
-		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd");
 
 	void LogWarningOnce(const FName Key, const FString& Message)
 	{
@@ -61,13 +60,16 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::MakeFallbackDefinition()
 	using namespace GuLiCommanderSoldierResolverPrivate;
 
 	FGuLiSoldierDefinition Definition;
-	const TSoftObjectPtr<UStaticMesh> FallbackMesh{ FSoftObjectPath(FallbackModelPath) };
-	Definition.Model = FallbackMesh.LoadSynchronous();
+	Definition.ModelId = GuLiModelIds::DefaultSoldier;
+	Definition.Model = GuLiModels::Load<UStaticMesh>(nullptr, Definition.ModelId);
+	FGuLiStrikeModelsModelsRow Model;
+	if (UGuLiModelRegistrySubsystem::Query(nullptr, Definition.ModelId, Model))
+		Definition.VATDefinition = Cast<UGuLiVATDefinition>(Model.VATDefinition.LoadSynchronous());
 	if (!Definition.Model)
 	{
 		LogWarningOnce(
 			TEXT("FallbackModelMissing"),
-			FString::Printf(TEXT("fallback static mesh '%s' could not be loaded."), FallbackModelPath));
+			TEXT("fallback model ID could not be loaded; compile and import the model catalogue."));
 	}
 	return Definition;
 }
@@ -153,6 +155,9 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 	}
 
 	FGuLiSoldierDefinition Resolved = Fallback;
+	Resolved.ModelId = Row->ModelId;
+	FGuLiStrikeModelsModelsRow ModelDefinition;
+	if (!UGuLiModelRegistrySubsystem::Query(nullptr, Row->ModelId, ModelDefinition)) return Resolved;
 	Resolved.DisplayName = FText::FromString(Row->DisplayName);
 	Resolved.bConstructionOnly = Row->bConstructionOnly;
 	Resolved.FacingPolicy = Row->FacingPolicy == 1
@@ -225,7 +230,8 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 
 	Resolved.StateTreeAsset = Cast<UStateTree>(Row->StateTreeAsset.LoadSynchronous());
 	Resolved.ActorClass = Row->ActorClass.LoadSynchronous();
-	Resolved.PresentationClass = Row->PresentationClass.LoadSynchronous();
+	Resolved.PresentationClass = ModelDefinition.ResourceType == TEXT("PresentationClass")
+		? GuLiModels::LoadClass<AActor>(nullptr, Row->ModelId) : nullptr;
 	if (!FMath::IsFinite(Row->PresentationScale) || Row->PresentationScale <= 0.0f)
 	{
 		bOutEntireDefinitionFromDataTable = false;
@@ -233,8 +239,8 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 	}
 	Resolved.PresentationScale = Row->PresentationScale;
 	Resolved.bSummonOnly = Row->bSummonOnly;
-	Resolved.VATDefinition = Cast<UGuLiVATDefinition>(Row->VATDefinition.LoadSynchronous());
-	if (!Row->VATDefinition.IsNull() && (!Resolved.VATDefinition || !Resolved.VATDefinition->IsValidDefinition()))
+	Resolved.VATDefinition = Cast<UGuLiVATDefinition>(ModelDefinition.VATDefinition.LoadSynchronous());
+	if (!ModelDefinition.VATDefinition.IsNull() && (!Resolved.VATDefinition || !Resolved.VATDefinition->IsValidDefinition()))
 	{
 		bOutEntireDefinitionFromDataTable = false;
 		LogWarningOnce(TEXT("InvalidVATDefinition"), TEXT("Authored VAT definition is missing or invalid."));
@@ -247,7 +253,7 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 			&& Resolved.PresentationClass && Resolved.PresentationClass->IsChildOf(AActor::StaticClass());
 		return Resolved;
 	}
-	UObject* LoadedModel = Row->ModelAsset.LoadSynchronous();
+	UObject* LoadedModel = GuLiModels::Load<UStaticMesh>(nullptr, Row->ModelId);
 	if (UStaticMesh* StaticMesh = Cast<UStaticMesh>(LoadedModel))
 	{
 		Resolved.Model = StaticMesh;
@@ -256,7 +262,7 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 	else
 	{
 		bOutEntireDefinitionFromDataTable = false;
-		const FString SourcePath = Row->ModelAsset.ToSoftObjectPath().ToString();
+		const FString SourcePath = ModelDefinition.ResourcePath.ToSoftObjectPath().ToString();
 		LogWarningOnce(
 			TEXT("InvalidModelType"),
 			FString::Printf(

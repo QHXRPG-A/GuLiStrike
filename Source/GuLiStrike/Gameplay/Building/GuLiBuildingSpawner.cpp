@@ -132,7 +132,7 @@ AActor* GuLiBuildings::Spawn(UWorld& World, int32 DefinitionId, EGuLiTeam Team,
 	UClass* PresentationClass = nullptr;
 	if (Definition.Category == EGuLiBuildingCategory::Factory)
 	{
-		PresentationClass = Config ? Config->FactoryPresentationClass.LoadSynchronous() : nullptr;
+		PresentationClass = Definition.PresentationClass.Get();
 		if (!PresentationClass)
 		{
 			if (OutFailure) *OutFailure = TEXT("Factory presentation/configuration is unavailable.");

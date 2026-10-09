@@ -1,13 +1,14 @@
 #include "GuLiCommanderIslandAuthoringLibrary.h"
 
 #include "Gameplay/Stronghold/GuLiOutpostPresentationComponent.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInterface.h"
 
 FString UGuLiCommanderIslandAuthoringLibrary::ValidateOutpostPresentationAssets()
 {
 	const auto& Config = *GetDefault<UGuLiOutpostPresentationSettings>();
-	UStaticMesh* Mesh = Config.Mesh.LoadSynchronous();
+	UStaticMesh* Mesh = GuLiModels::Load<UStaticMesh>(nullptr,Config.ModelId);
 	UMaterialInterface* Body = Config.BodyMaterial.LoadSynchronous();
 	UMaterialInterface* Halo = Config.HaloMaterial.LoadSynchronous();
 	if (!Mesh || !Body || !Halo) return TEXT("The configured outpost mesh, glow material and halo material are required.");

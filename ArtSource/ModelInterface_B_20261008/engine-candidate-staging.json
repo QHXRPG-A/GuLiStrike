@@ -1,0 +1,386 @@
+{
+  "staged": [
+    {
+      "model": "BiZhiMao",
+      "id": 1006,
+      "bindings": [
+        {
+          "id": 1006,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+          "source": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+          "part": "Root",
+          "lods": [
+            0,
+            1,
+            2
+          ],
+          "slots": [
+            "Body_LOD0",
+            "Body_LOD1",
+            "Body_LOD2"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "DefaultSoldier",
+      "id": 1001,
+      "bindings": [
+        {
+          "id": 1001,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/DefaultSoldier/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+          "source": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+          "part": "Root",
+          "lods": [
+            0,
+            1,
+            2
+          ],
+          "slots": [
+            "Body",
+            "Body_LOD1",
+            "Body_LOD3"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "ManualOutpost",
+      "id": 2003,
+      "bindings": [
+        {
+          "id": 2003,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/ManualOutpost/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+          "source": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+          "part": "Root",
+          "lods": [
+            0
+          ],
+          "slots": [
+            "M_Outpost_FairFacedConcrete"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "MissileTurret",
+      "id": 2001,
+      "bindings": [
+        {
+          "id": 2001,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Meshes/missile_turret.missile_turret",
+          "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/StaticMeshes/missile_turret.missile_turret",
+          "part": "Root",
+          "lods": [
+            0
+          ],
+          "slots": [
+            "Attention",
+            "BackFilter",
+            "BackPanel",
+            "Bars",
+            "BlueWire",
+            "Electronic",
+            "FrontBars",
+            "GreenWire",
+            "Hazard",
+            "Iron",
+            "Lens",
+            "Lens2",
+            "Lens3",
+            "LensAround",
+            "Number",
+            "Pipe",
+            "RedWire",
+            "Rhomboid",
+            "SolarPanel",
+            "Vent",
+            "controlPanel",
+            "AroundMissile",
+            "BlackMetal",
+            "BottomBars",
+            "GreayMetal",
+            "LauncherBars",
+            "MetalPlate",
+            "OrangeMetalPlate",
+            "RustedMetal",
+            "Wire",
+            "material"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "SSF_AirBase",
+      "id": 3001,
+      "bindings": [
+        {
+          "id": 3001,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/SSF_AirBase/Meshes/SK_Blue_AirBase.SK_Blue_AirBase",
+          "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/AirBase/Meshes/SK_Blue_AirBase.SK_Blue_AirBase",
+          "part": "Root",
+          "lods": [
+            0,
+            1,
+            2
+          ],
+          "slots": [
+            "SSF_Body"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "SSF_CloningCenter",
+      "id": 3002,
+      "bindings": [
+        {
+          "id": 3002,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/SSF_CloningCenter/Meshes/SK_Blue_CloningCenter.SK_Blue_CloningCenter",
+          "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CloningCenter/Meshes/SK_Blue_CloningCenter.SK_Blue_CloningCenter",
+          "part": "Root",
+          "lods": [
+            0,
+            1,
+            2
+          ],
+          "slots": [
+            "SSF_Body"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "SSF_CommandCenter",
+      "id": 3003,
+      "bindings": [
+        {
+          "id": 3003,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/SSF_CommandCenter/Meshes/SK_Blue_CommandCenter.SK_Blue_CommandCenter",
+          "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CommandCenter/Meshes/SK_Blue_CommandCenter.SK_Blue_CommandCenter",
+          "part": "Root",
+          "lods": [
+            0,
+            1,
+            2
+          ],
+          "slots": [
+            "SSF_Body"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "SSF_MilitaryFactory",
+      "id": 3004,
+      "bindings": [
+        {
+          "id": 3004,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/SSF_MilitaryFactory/Meshes/SK_Blue_MilitaryFactory.SK_Blue_MilitaryFactory",
+          "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/MilitaryFactory/Meshes/SK_Blue_MilitaryFactory.SK_Blue_MilitaryFactory",
+          "part": "Root",
+          "lods": [
+            0,
+            1,
+            2
+          ],
+          "slots": [
+            "SSF_Body"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "SSF_Reactor",
+      "id": 3005,
+      "bindings": [
+        {
+          "id": 3005,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/SSF_Reactor/Meshes/SK_Blue_Reactor.SK_Blue_Reactor",
+          "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/Reactor/Meshes/SK_Blue_Reactor.SK_Blue_Reactor",
+          "part": "Root",
+          "lods": [
+            0,
+            1,
+            2
+          ],
+          "slots": [
+            "SSF_Body"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "SSF_StrategyCenter",
+      "id": 3006,
+      "bindings": [
+        {
+          "id": 3006,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/SSF_StrategyCenter/Meshes/SK_Blue_StrategyCenter.SK_Blue_StrategyCenter",
+          "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/StrategyCenter/Meshes/SK_Blue_StrategyCenter.SK_Blue_StrategyCenter",
+          "part": "Root",
+          "lods": [
+            0,
+            1,
+            2
+          ],
+          "slots": [
+            "SSF_Body"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "SentryTurret",
+      "id": 2002,
+      "bindings": [
+        {
+          "id": 2002,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/SentryTurret/Meshes/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
+          "source": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
+          "part": "Root",
+          "lods": [
+            0
+          ],
+          "slots": [
+            "Stylized_Turrets_A_mat"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "ShieldGenerator",
+      "id": 2005,
+      "bindings": [
+        {
+          "id": 2005,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
+          "source": "/Game/GuLiStrike/Buildings/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
+          "part": "Root",
+          "lods": [
+            0
+          ],
+          "slots": [
+            "M_ShieldGenerator_HardSurface"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "WM01",
+      "id": 1002,
+      "bindings": [
+        {
+          "id": 1002,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/WM01/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+          "source": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+          "part": "Root",
+          "lods": [
+            0,
+            1,
+            2
+          ],
+          "slots": [
+            "M_WarMachine_Cel"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "BiZhiMaoConstruction",
+      "id": 2008,
+      "bindings": [
+        {
+          "id": 2008,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/BiZhiMaoConstruction/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+          "source": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+          "part": "Root",
+          "lods": [
+            0,
+            1,
+            2
+          ],
+          "slots": [
+            "Body_LOD0",
+            "Body_LOD1",
+            "Body_LOD2"
+          ]
+        }
+      ],
+      "formal_unchanged": true
+    },
+    {
+      "model": "ResourceFactory",
+      "id": 2006,
+      "bindings": [
+        {
+          "id": 8007,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/Door/Meshes/SK_RPF_Door.SK_RPF_Door",
+          "source": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door.SK_RPF_Door",
+          "part": "Door",
+          "lods": [
+            0,
+            1,
+            2
+          ],
+          "slots": [
+            "M_RPF_Armor",
+            "M_RPF_Details",
+            "M_RPF_Interior"
+          ]
+        },
+        {
+          "id": 8008,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/Body/Meshes/SM_RPF_Body.SM_RPF_Body",
+          "source": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SM_RPF_Body.SM_RPF_Body",
+          "part": "Body",
+          "lods": [
+            0
+          ],
+          "slots": [
+            "M_RPF_Armor",
+            "M_RPF_Interior",
+            "M_RPF_Details"
+          ]
+        },
+        {
+          "id": 8015,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/AccessRamp/Meshes/Cube.Cube",
+          "source": "/Engine/BasicShapes/Cube.Cube",
+          "part": "AccessRamp",
+          "lods": [
+            0
+          ],
+          "slots": [
+            "WorldGridMaterial"
+          ]
+        },
+        {
+          "id": 2006,
+          "candidate": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C",
+          "source": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C",
+          "part": "Assembly"
+        }
+      ],
+      "formal_unchanged": true
+    }
+  ],
+  "errors": [],
+  "formal_bindings_changed": false,
+  "approval": "explicit current B_v1 formal import instruction recorded",
+  "native_compile": "caller prerequisite",
+  "next": "Export Excel, verify technical/visual readback, then promote the explicitly authorized B_v1 and retire replaced UE resources"
+}

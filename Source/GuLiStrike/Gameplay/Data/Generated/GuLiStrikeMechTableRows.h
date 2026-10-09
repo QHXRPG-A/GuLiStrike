@@ -192,3 +192,23 @@ struct FGuLiStrikeMechSkillsRow : public FTableRowBase
 	float AimAssistRadiusCentimeters = 0.0f;
 
 };
+
+/** DataTable DT_GuLiStrikeMech_Visuals 的行结构（源: GuLiStrikeMech.xlsx / Visuals）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeMechVisualsRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visuals")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visuals")
+	FString Note;
+
+	/** ModelId (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visuals")
+	int32 ModelId = 0;
+
+};

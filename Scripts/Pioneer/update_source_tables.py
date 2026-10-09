@@ -5,6 +5,8 @@ import sys
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
+if (ROOT/'Data/Excel/GuLiStrikeModels.xlsx').exists():
+    raise RuntimeError('Frozen Pioneer producer predates ModelId. Maintain Soldiers gameplay fields and Models resource bindings separately; this script cannot recreate path columns.')
 CLI=Path('D:/UE5.7/excelize-cli/bin/xlsx.exe')
 OUT=ROOT/'ArtSource/Mechs/RSGMechStyle_20261003/Delivery_UE_v1/Reports'
 OUT.mkdir(parents=True,exist_ok=True)

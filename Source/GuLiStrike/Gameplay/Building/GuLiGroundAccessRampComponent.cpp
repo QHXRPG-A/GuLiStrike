@@ -7,6 +7,7 @@
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 
 UGuLiGroundAccessRampComponent::UGuLiGroundAccessRampComponent()
 {
@@ -29,6 +30,7 @@ void UGuLiGroundAccessRampComponent::FitRamp(const FVector& LowerEdge)
 void UGuLiGroundAccessRampComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	if (auto* Model=GuLiModels::Load<UStaticMesh>(this,GuLiModelIds::ResourceFactory_AccessRamp)) SetStaticMesh(Model);
 	RefreshGroundFit();
 }
 

@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "Gameplay/Building/GuLiConstructionVehiclePawn.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/Data/GuLiCommanderSoldierDefinition.h"
@@ -612,7 +613,7 @@ bool UGuLiResourceWorldSubsystem::GetNodeMiningTarget(const uint32 NodeId, FVect
     const FGuLiOreVisualAsset* Visual = EconomyConfig->FindOreVisual(Node.ResourceType, Node.FamilyIndex,
         static_cast<EGuLiOreVisualStage>(NodeRemaining[NodeId - 1]));
     check(Visual);
-    const UStaticMesh* Mesh = Visual->Mesh.Get();
+    const UStaticMesh* Mesh = GuLiModels::Load<UStaticMesh>(this,Visual->ModelId);
     check(Mesh);
     Target = Node.WorldTransform.TransformPosition(Mesh->GetBounds().Origin);
     return true;

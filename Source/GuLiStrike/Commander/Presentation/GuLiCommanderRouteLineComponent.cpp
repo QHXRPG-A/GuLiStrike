@@ -3,120 +3,18 @@
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
-#include "DynamicMeshBuilder.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
-#include "LocalVertexFactory.h"
-#include "Materials/Material.h"
-#include "Materials/MaterialRenderProxy.h"
-#include "MaterialShared.h"
 #include "PrimitiveSceneProxy.h"
-#include "PrimitiveUniformShaderParametersBuilder.h"
-#include "StaticMeshResources.h"
-#include "SceneManagement.h"
 #include "HAL/IConsoleManager.h"
 #include "GuLiStrike.h"
-#include "Misc/ScopeLock.h"
 
 namespace
 {
 TAutoConsoleVariable<int32> CVarRouteLinesPerFrame(TEXT("guli.Commander.RouteLinesPerFrame"),128,TEXT("Maximum selected route additions per render frame; visible anchors refresh every frame."));
 TAutoConsoleVariable<float> CVarRouteLineBudgetMs(TEXT("guli.Commander.RouteLineBudgetMs"),.5f,TEXT("CPU route addition budget in milliseconds; visible anchors and invalidations update every frame."));
 TAutoConsoleVariable<int32> CVarRouteLineDiagnostics(TEXT("guli.Commander.RouteLineDiagnostics"),0,TEXT("Log route backlog and changed chunk counts once per second."));
-struct FLineChunkUpdate { int32 Index=0; TArray<FVector3f> Positions; TArray<GuLiMoveLatency::FContext> Traces; };
 }
-
-class FGuLiRouteLineSceneProxy final : public FPrimitiveSceneProxy
-{
-	struct FChunkResource
-	{
-		FStaticMeshVertexBuffers Vertices;
-		FDynamicMeshIndexBuffer32 Indices;
-		FLocalVertexFactory Factory;
-		TArray<GuLiMoveLatency::FContext> Traces;
-		explicit FChunkResource(ERHIFeatureLevel::Type Level) : Factory(Level,"GuLiRouteLines") {}
-		~FChunkResource()
-		{
-			Factory.ReleaseResource(); Indices.ReleaseResource();
-			Vertices.PositionVertexBuffer.ReleaseResource(); Vertices.StaticMeshVertexBuffer.ReleaseResource(); Vertices.ColorVertexBuffer.ReleaseResource();
-		}
-	};
-	TMap<int32,TUniquePtr<FChunkResource>> Resources;
-	const FMaterialRenderProxy* Material;
-	FMaterialRelevance MaterialRelevance;
-	mutable TSet<uint64> SubmittedBatches;
-	mutable FCriticalSection TraceMutex;
-public:
-	explicit FGuLiRouteLineSceneProxy(const UGuLiCommanderRouteLineComponent* Component)
-		: FPrimitiveSceneProxy(Component)
-	{
-		const UMaterialInterface* Source=Component->ResolvedOverlayMaterial.Get();
-		Material=Source->GetRenderProxy(); MaterialRelevance=Source->GetRelevance_Concurrent(GetScene().GetShaderPlatform());
-		TArray<FLineChunkUpdate> Initial;
-		for (int32 I=0; I<Component->Chunks.Num(); ++I)
-		{
-			auto& U=Initial.AddDefaulted_GetRef(); U.Index=I;
-			for (const auto& Line : Component->Chunks[I].Lines) if (Line.bVisible)
-			{ U.Positions.Add(FVector3f(Component->GetComponentTransform().InverseTransformPosition(Line.Start))); U.Positions.Add(FVector3f(Component->GetComponentTransform().InverseTransformPosition(Line.End))); if (Line.Trace.Batch) U.Traces.Add(Line.Trace); }
-		}
-		ENQUEUE_RENDER_COMMAND(GuLiInitRouteLines)([this,Initial=MoveTemp(Initial)](FRHICommandListImmediate& RHICmdList) mutable { Update(RHICmdList,MoveTemp(Initial)); });
-	}
-	void Update(FRHICommandListBase& RHICmdList,TArray<FLineChunkUpdate>&& Updates)
-	{
-		check(IsInRenderingThread());
-		for (auto& U : Updates)
-		{
-			Resources.Remove(U.Index);
-			if (U.Positions.IsEmpty()) continue;
-			check(U.Positions.Num()<=256 && U.Positions.Num()%2==0);
-			auto R=MakeUnique<FChunkResource>(GetScene().GetFeatureLevel());
-			R->Traces=MoveTemp(U.Traces);
-			TArray<FDynamicMeshVertex> V; V.Reserve(U.Positions.Num());
-			for (int32 I=0; I<U.Positions.Num(); ++I)
-			{
-				FDynamicMeshVertex Vertex; Vertex.Position=U.Positions[I]; Vertex.Color=FColor::Green;
-				Vertex.SetTangents(FVector3f(1,0,0),FVector3f(0,1,0),FVector3f(0,0,1)); Vertex.TextureCoordinate[0]=FVector2f::ZeroVector;
-				V.Add(Vertex); R->Indices.Indices.Add(I);
-			}
-			R->Vertices.InitFromDynamicVertex(RHICmdList,&R->Factory,V);
-			R->Indices.InitResource(RHICmdList); // InitFromDynamicVertex initializes vertex buffers and factory on this command list.
-			Resources.Add(U.Index,MoveTemp(R));
-		}
-	}
-	virtual SIZE_T GetTypeHash() const override { static size_t Type; return reinterpret_cast<SIZE_T>(&Type); }
-	virtual uint32 GetMemoryFootprint() const override { return sizeof(*this)+GetAllocatedSize(); }
-	virtual bool CanBeOccluded() const override { return false; }
-	virtual FPrimitiveViewRelevance GetViewRelevance(const FSceneView* View) const override
-	{
-		FPrimitiveViewRelevance R; R.bDrawRelevance=IsShown(View); R.bDynamicRelevance=true; R.bRenderInMainPass=ShouldRenderInMainPass();
-		MaterialRelevance.SetPrimitiveViewRelevance(R); return R;
-	}
-	virtual void GetDynamicMeshElements(const TArray<const FSceneView*>& Views,const FSceneViewFamily& Family,uint32 VisibilityMap,FMeshElementCollector& Collector) const override
-	{
-		auto* Green=new FColoredMaterialRenderProxy(Material,FLinearColor(.08f,.94f,.20f)); Collector.RegisterOneFrameMaterialProxy(Green);
-		for (int32 V=0; V<Views.Num(); ++V) if (VisibilityMap&(1u<<V))
-		{
-			auto& Uniform=Collector.AllocateOneFrameResource<FDynamicPrimitiveUniformBuffer>();
-			FPrimitiveUniformShaderParametersBuilder Builder; BuildUniformShaderParameters(Builder); Uniform.Set(Collector.GetRHICommandList(),Builder);
-			for (const auto& Pair : Resources)
-			{
-				const auto& R=*Pair.Value; auto& Mesh=Collector.AllocateMesh(); auto& E=Mesh.Elements[0];
-				Mesh.VertexFactory=&R.Factory; Mesh.MaterialRenderProxy=Green; Mesh.Type=PT_LineList;
-				Mesh.DepthPriorityGroup=SDPG_Foreground; Mesh.bCanApplyViewModeOverrides=false; Mesh.bDisableBackfaceCulling=true;
-				E.IndexBuffer=&R.Indices; E.FirstIndex=0; E.NumPrimitives=R.Indices.Indices.Num()/2;
-				E.MinVertexIndex=0; E.MaxVertexIndex=R.Indices.Indices.Num()-1; E.PrimitiveUniformBufferResource=&Uniform.UniformBuffer;
-				Collector.AddMesh(V,Mesh);
-				if (GuLiMoveLatency::IsEnabled()) for (const auto& Trace : R.Traces)
-				{
-					FScopeLock Lock(&TraceMutex);
-					const uint64 Key=(uint64(Trace.Epoch)<<32)|Trace.Batch;
-					if (!SubmittedBatches.Contains(Key))
-					{ SubmittedBatches.Add(Key); GuLiMoveLatency::Record(TEXT("render-submit"),Trace,1); }
-				}
-			}
-		}
-	}
-};
 
 UGuLiCommanderRouteLineComponent::UGuLiCommanderRouteLineComponent()
 {
@@ -126,45 +24,25 @@ UGuLiCommanderRouteLineComponent::UGuLiCommanderRouteLineComponent()
 }
 void UGuLiCommanderRouteLineComponent::OnRegister()
 {
-	ResolvedOverlayMaterial=nullptr;
-	if (GetNetMode()!=NM_DedicatedServer)
-	{
-		ResolvedOverlayMaterial=OverlayMaterial.LoadSynchronous();
-		const UMaterial* Base=ResolvedOverlayMaterial ? ResolvedOverlayMaterial->GetMaterial() : nullptr;
-		if (!Base || !IsTranslucentBlendMode(Base->BlendMode) || !Base->bDisableDepthTest)
-		{
-			UE_LOG(LogGuLiStrike,Error,TEXT("Commander route overlay requires a translucent material with depth testing disabled: %s"),*OverlayMaterial.ToSoftObjectPath().ToString());
-			ResolvedOverlayMaterial=nullptr;
-		}
-	}
-	Super::OnRegister();
+	Super::OnRegister(); // Material and geometry submission belong to the final Slate layer.
 }
 void UGuLiCommanderRouteLineComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	Presentation=Cast<AGuLiCommanderPresentationActor>(GetOwner());
+	if (!LocalController.IsValid()) { SetComponentTickEnabled(false); return; }
 	if (Presentation.IsValid()) AddTickPrerequisiteActor(Presentation.Get());
 }
+void UGuLiCommanderRouteLineComponent::InitializeForController(AGuLiCommanderPlayerController* Viewer, AGuLiCommanderPresentationActor* Source)
+{ LocalController=Viewer; Presentation=Source; }
 FPrimitiveSceneProxy* UGuLiCommanderRouteLineComponent::CreateSceneProxy()
-{ return GetNetMode()==NM_DedicatedServer || !ResolvedOverlayMaterial ? nullptr : new FGuLiRouteLineSceneProxy(this); }
+{ return nullptr; } // Final Slate layer consumes the same bounded, authoritative endpoint cache.
 void UGuLiCommanderRouteLineComponent::GetUsedMaterials(TArray<UMaterialInterface*>& Out,bool bGetDebugMaterials) const
 { if (ResolvedOverlayMaterial) Out.Add(ResolvedOverlayMaterial.Get()); }
 FBoxSphereBounds UGuLiCommanderRouteLineComponent::CalcBounds(const FTransform& Transform) const
-{ return FBoxSphereBounds(FVector::ZeroVector,FVector(HALF_WORLD_MAX),HALF_WORLD_MAX); }
+{ return FBoxSphereBounds(Transform.GetLocation(),FVector::ZeroVector,0); }
 void UGuLiCommanderRouteLineComponent::SendRenderDynamicData_Concurrent()
 {
 	Super::SendRenderDynamicData_Concurrent();
-	if (!SceneProxy || DirtyChunks.IsEmpty()) return;
-	TArray<FLineChunkUpdate> Updates;
-	for (int32 I : DirtyChunks)
-	{
-		auto& U=Updates.AddDefaulted_GetRef(); U.Index=I;
-		if (Chunks.IsValidIndex(I)) for (const auto& L : Chunks[I].Lines) if (L.bVisible)
-		{ U.Positions.Add(FVector3f(GetComponentTransform().InverseTransformPosition(L.Start))); U.Positions.Add(FVector3f(GetComponentTransform().InverseTransformPosition(L.End))); if (L.Trace.Batch) U.Traces.Add(L.Trace); }
-	}
-	DirtyChunks.Reset(); auto* Proxy=static_cast<FGuLiRouteLineSceneProxy*>(SceneProxy);
-	// Immutable payload; the render queue orders updates before proxy destruction. No UObject is captured.
-	ENQUEUE_RENDER_COMMAND(GuLiUpdateRouteLines)([Proxy,Updates=MoveTemp(Updates)](FRHICommandListImmediate& RHICmdList) mutable { Proxy->Update(RHICmdList,MoveTemp(Updates)); });
 }
 void UGuLiCommanderRouteLineComponent::Unbind()
 {
@@ -181,6 +59,7 @@ void UGuLiCommanderRouteLineComponent::ClearLines()
 {
 	for (int32 I=0; I<Chunks.Num(); ++I) DirtyChunks.Add(I);
 	Chunks.Reset(); Slots.Reset(); FreeSlots.Reset(); Queue.Reset(); Queued.Reset(); AwaitingPresentation.Reset(); QueueCursor=0;
+	SubmittedBatches.Reset();
 	MarkRenderDynamicDataDirty();
 }
 void UGuLiCommanderRouteLineComponent::Hide(FGuLiSoldierId Id)
@@ -239,7 +118,7 @@ void UGuLiCommanderRouteLineComponent::OnRoster(const FGuLiSoldierRosterDelta& D
 void UGuLiCommanderRouteLineComponent::TickComponent(float Dt,ELevelTick Tick,FActorComponentTickFunction* Function)
 {
 	Super::TickComponent(Dt,Tick,Function);
-	auto* PC=Cast<AGuLiCommanderPlayerController>(GetWorld()->GetFirstPlayerController());
+	auto* PC=LocalController.Get();
 	auto* Sync=PC && PC->IsLocalController() ? PC->GetCommanderNetSyncComponent() : nullptr;
 	const bool Active=Sync && PC->IsCommanderViewActive() && Sync->IsSoldierStreamReady();
 	if (!Active) { if (bWasActive) { ClearLines(); Selected.Reset(); } bWasActive=false; return; }
@@ -302,7 +181,8 @@ void UGuLiCommanderRouteLineComponent::TickComponent(float Dt,ELevelTick Tick,FA
 		DirtyChunks.Add(Slot/LinesPerChunk);
 	}
 	if (QueueCursor==Queue.Num()) { Queue.Reset(); QueueCursor=0; }
-	if (!DirtyChunks.IsEmpty()) MarkRenderDynamicDataDirty();
+	// Slate reads the cache on this frame; no render-thread payload is retained.
+	DirtyChunks.Reset();
 	if (CVarRouteLineDiagnostics.GetValueOnGameThread() && Start>=NextDiagnostic)
 	{
 		NextDiagnostic=Start+1;
@@ -324,4 +204,29 @@ int32 UGuLiCommanderRouteLineComponent::CountInvalidDisplayedLines() const
 			|| !Center.Equals(Line.Start,.01);
 	}
 	return Count;
+}
+
+void UGuLiCommanderRouteLineComponent::GatherSceneUILines(TArray<FGuLiSceneUILine>& Out) const
+{
+	Out.Reset(Slots.Num());
+	for (const auto& Pair : Slots)
+	{
+		const auto& Line = Chunks[Pair.Value / LinesPerChunk].Lines[Pair.Value % LinesPerChunk];
+		if (Line.bVisible && CanShow(Pair.Key)) Out.Add({Line.Start, Line.End});
+	}
+}
+
+void UGuLiCommanderRouteLineComponent::RecordSceneUISubmission() const
+{
+	if (!GuLiMoveLatency::IsEnabled()) return;
+	TSet<uint64> ActiveBatches;
+	for (const auto& Pair : Slots)
+	{
+		const auto& Line=Chunks[Pair.Value/LinesPerChunk].Lines[Pair.Value%LinesPerChunk];
+		const uint64 Key=(uint64(Line.Trace.Epoch)<<32)|Line.Trace.Batch;
+		if (Line.bVisible && Line.Trace.Batch) ActiveBatches.Add(Key);
+		if (Line.bVisible && Line.Trace.Batch && !SubmittedBatches.Contains(Key))
+		{ SubmittedBatches.Add(Key); GuLiMoveLatency::Record(TEXT("render-submit"),Line.Trace,1); }
+	}
+	for (auto It=SubmittedBatches.CreateIterator(); It; ++It) if (!ActiveBatches.Contains(*It)) It.RemoveCurrent();
 }

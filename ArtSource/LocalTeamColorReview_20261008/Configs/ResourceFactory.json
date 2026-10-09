@@ -1,0 +1,47 @@
+{
+  "name": "ResourceFactory",
+  "group": "Building",
+  "mesh": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SM_RPF_Body.SM_RPF_Body",
+  "kind": "StaticMesh",
+  "bounds": "<Struct 'BoxSphereBounds' (0x0000028085B21F00) {origin: {x: 0.000000, y: 0.000000, z: 0.000000}, box_extent: {x: 50.000000, y: 50.000000, z: 50.000000}, sphere_radius: 86.602539}>",
+  "definition_id": 6,
+  "display_name": "矿厂",
+  "mesh_scale": {
+    "X": 12.0,
+    "Y": 13.0,
+    "Z": 8.0
+  },
+  "version": "LocalTeamColorReview.20261008.v1",
+  "mutable_regions": "实际工厂蓝图 Body 的 Armor 材质窄条带；门、室内、细部与坡道固定",
+  "source_palette_candidates": [],
+  "blue_reference": "#2877DB",
+  "red_reference": "#D7534D",
+  "enemy_non_blue_palette": "#D7534D",
+  "configuration_status": "candidate_pending_region_review",
+  "runtime_enabled": false,
+  "geometry_animation_lod_unchanged": true,
+  "materials": [
+    {
+      "slot": 0,
+      "name": "M_RPF_Armor",
+      "fixed": false,
+      "source": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Armor.M_RPF_Armor",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/ResourceFactory/M_Review_M_RPF_Armor.M_Review_M_RPF_Armor",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/ResourceFactory/MI_Blue_0.MI_Blue_0",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/ResourceFactory/MI_Red_0.MI_Red_0",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/ResourceFactory/MI_Regions_0.MI_Regions_0"
+    },
+    {
+      "slot": 1,
+      "name": "M_RPF_Interior",
+      "fixed": true,
+      "source": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Interior.M_RPF_Interior"
+    },
+    {
+      "slot": 2,
+      "name": "M_RPF_Details",
+      "fixed": true,
+      "source": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Details.M_RPF_Details"
+    }
+  ]
+}

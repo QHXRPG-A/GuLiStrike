@@ -1,0 +1,109 @@
+{
+  "id": "BiZhiMao",
+  "name": "彼之矛",
+  "title": "BI ZHI MAO",
+  "category": "Mass",
+  "unit_type_id": 6,
+  "fixed": [
+    "主机体、长炮上壳与腿部主护甲：奶油白",
+    "炮膛、开口桁架、脚部及关节：深灰"
+  ],
+  "team": [
+    "既有炮口外套",
+    "侧散热框边护板及相邻现有液压护套",
+    "四足对应踝部外护板"
+  ],
+  "function": [
+    "仅保留原有指示位置，不新增灯"
+  ],
+  "source": [
+    "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Hero.png",
+    "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Front.png",
+    "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Left.png",
+    "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Back.png"
+  ],
+  "structure": "保留四足、长炮比例及开口桁架；施工体沿用同一版本。",
+  "shared_variant": "BiZhiMaoConstruction",
+  "boards": {
+    "blue": {
+      "path": "Boards/BiZhiMao_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1770123,
+      "sha256": "bbfe22b4c833c981ee0db7c6be03a0e32023f080f0a583cbc444986e76305590"
+    },
+    "red": {
+      "path": "Boards/BiZhiMao_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1778586,
+      "sha256": "765fa4e19f2d6b0219fdb93d4ceb1a919789b15797f2851e04287c6e63072383"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+  "source_kind": "StaticMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Hero.png",
+      "sha256": "7b8f7598e94076a64d4082c7e54256a7cc0645cb33faae5db46b946b18fd1af4"
+    },
+    {
+      "path": "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Front.png",
+      "sha256": "b339fe92c12592465a7bb9d3a5197e770be5ce0b9b11ad0f4be485d6a8769061"
+    },
+    {
+      "path": "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Left.png",
+      "sha256": "fe5e7e914ff10dc63e0250d021d8495693281c2b4880e4e146ff5b117c01ef39"
+    },
+    {
+      "path": "ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Back.png",
+      "sha256": "cfeccc70452df795cd4ce5074d97c227b06cddd92ff62e6d2141c8ddee461862"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v2_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

@@ -1,0 +1,48 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "late_join_world": "/Game/Maps/UEDPIE_3_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "pawn": "BP_GroundMech_Light_C",
+    "parts": [
+      {
+        "component": "CharacterMesh0",
+        "resource": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs.SK_Legs",
+        "transform": "<Struct 'Transform' (0x00000190F469BDB0) {rotation: {x: -0.000000, y: 0.000000, z: -0.707107, w: 0.707107}, translation: {x: 0.000000, y: 0.000000, z: -373.124908}, scale3d: {x: 2.051262, y: 2.051262, z: 2.051262}}>",
+        "socket": "None"
+      },
+      {
+        "component": "Armor",
+        "resource": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor.SM_Armor",
+        "transform": "<Struct 'Transform' (0x00000190F469BDB0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+        "socket": "None"
+      },
+      {
+        "component": "Shoulder",
+        "resource": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder.SM_Shoulder",
+        "transform": "<Struct 'Transform' (0x00000190F469BDB0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+        "socket": "Mount_Weapon_L"
+      },
+      {
+        "component": "Machinegun",
+        "resource": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun.SK_Machinegun",
+        "transform": "<Struct 'Transform' (0x00000190F469BDB0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+        "socket": "Mount_Weapon_R"
+      },
+      {
+        "component": "CameraProxyMeshComponent_0",
+        "resource": "/Engine/EditorMeshes/MatineeCam_SM.MatineeCam_SM",
+        "transform": "<Struct 'Transform' (0x00000190F469BDB0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+        "socket": "None"
+      },
+      {
+        "component": "RocketFuelBar",
+        "resource": "/Engine/BasicShapes/Plane.Plane",
+        "transform": "<Struct 'Transform' (0x00000190F469BDB0) {rotation: {x: -0.212631, y: -0.212631, z: 0.674380, w: 0.674380}, translation: {x: -6000.000000, y: 69450.000000, z: 1345.541291}, scale3d: {x: 4.000000, y: 4.000000, z: 4.000000}}>",
+        "socket": "None"
+      }
+    ],
+    "real_factory": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiResourceFactoryActor_165",
+    "real_shield": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_306"
+  }
+}

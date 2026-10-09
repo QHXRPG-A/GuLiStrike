@@ -1,0 +1,8 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "build_settings": "<Struct 'MeshBuildSettings' (0x000001FBEED55C80) {use_mikk_t_space: True, recompute_normals: True, recompute_tangents: True, compute_weighted_normals: False, remove_degenerates: True, build_reversed_index_buffer: True, use_high_precision_tangent_basis: False, use_full_precision_u_vs: False, use_backwards_compatible_f16_trunc_u_vs: False, generate_lightmap_u_vs: True, generate_distance_field_as_if_two_sided: False, support_face_remap: False, min_lightmap_resolution: 64, src_lightmap_index: 0, dst_lightmap_index: 1, build_scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}, distance_field_resolution_scale: 1.000000, distance_field_replacement_mesh: None, max_lumen_mesh_cards: 12}>",
+    "nanite": "<Struct 'MeshNaniteSettings' (0x000001F77C7F3BA0) {enabled: True, explicit_tangents: False, lerp_u_vs: True, separable: False, voxel_ndf: True, voxel_opacity: False, shape_preservation: None, position_precision: -2147483648, normal_precision: -1, tangent_precision: -1, bone_weight_precision: -1, keep_percent_triangles: 1.000000, trim_relative_error: 0.000000, generate_fallback: PlatformDefault, fallback_target: Auto, fallback_percent_triangles: 1.000000, fallback_relative_error: 1.000000, max_edge_length_factor: 0.000000, num_rays: 64, voxel_level: 0, ray_back_up: 0.000000, displacement_uv_channel: 0}>"
+  }
+}

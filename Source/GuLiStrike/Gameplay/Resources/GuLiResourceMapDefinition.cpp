@@ -4,6 +4,7 @@
 
 #include "Misc/SecureHash.h"
 #include "Engine/StaticMesh.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 
 namespace
 {
@@ -38,7 +39,7 @@ namespace
 
 bool FGuLiOreVisualAsset::IsWellFormed() const
 {
-	return FamilyIndex <= 3u && Stage != EGuLiOreVisualStage::Hidden && !Mesh.IsNull();
+	return FamilyIndex <= 3u && Stage != EGuLiOreVisualStage::Hidden && ModelId > 0;
 }
 
 bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
@@ -295,8 +296,12 @@ const FGuLiResourceClusterDefinition* UGuLiResourceMapDefinition::FindCluster(co
 
 UGuLiResourceEconomyConfig::UGuLiResourceEconomyConfig()
 {
-	static const TCHAR* TypeNames[] = { TEXT("Blue"), TEXT("Red") };
-	static const TCHAR* StageNames[] = { TEXT("Remnant"), TEXT("Partial"), TEXT("Full") };
+	using namespace GuLiModelIds;
+	static const int32 OreIds[2][4][3] = {
+		{{Ore_Blue_01_Remnant,Ore_Blue_01_Partial,Ore_Blue_01_Full},{Ore_Blue_02_Remnant,Ore_Blue_02_Partial,Ore_Blue_02_Full},
+		 {Ore_Blue_03_Remnant,Ore_Blue_03_Partial,Ore_Blue_03_Full},{Ore_Blue_04_Remnant,Ore_Blue_04_Partial,Ore_Blue_04_Full}},
+		{{Ore_Red_01_Remnant,Ore_Red_01_Partial,Ore_Red_01_Full},{Ore_Red_02_Remnant,Ore_Red_02_Partial,Ore_Red_02_Full},
+		 {Ore_Red_03_Remnant,Ore_Red_03_Partial,Ore_Red_03_Full},{Ore_Red_04_Remnant,Ore_Red_04_Partial,Ore_Red_04_Full}}};
 	for (int32 TypeIndex = 0; TypeIndex < 2; ++TypeIndex)
 	{
 		for (int32 FamilyIndex = 0; FamilyIndex < 4; ++FamilyIndex)
@@ -307,16 +312,11 @@ UGuLiResourceEconomyConfig::UGuLiResourceEconomyConfig()
 				Entry.ResourceType = static_cast<EGuLiResourceType>(TypeIndex);
 				Entry.FamilyIndex = static_cast<uint8>(FamilyIndex);
 				Entry.Stage = static_cast<EGuLiOreVisualStage>(StageIndex + 1);
-				const FString AssetName = FString::Printf(TEXT("SM_Ore_%s_%02d_%s"),
-					TypeNames[TypeIndex], FamilyIndex + 1, StageNames[StageIndex]);
-				const FString Path = FString::Printf(TEXT("/Game/GuLiStrike/Resources/Ores/Meshes/%s/%s.%s"),
-					TypeNames[TypeIndex], *AssetName, *AssetName);
-				Entry.Mesh = TSoftObjectPtr<UStaticMesh>(FSoftObjectPath(Path));
+				Entry.ModelId = OreIds[TypeIndex][FamilyIndex][StageIndex];
 			}
 		}
 	}
-	FactoryPresentationClass = TSoftClassPtr<AActor>(FSoftObjectPath(
-		TEXT("/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C")));
+	FactoryModelId = GuLiModelIds::ResourceFactory;
 }
 
 bool UGuLiResourceEconomyConfig::ValidateConfig(FString& OutError) const
@@ -328,7 +328,7 @@ bool UGuLiResourceEconomyConfig::ValidateConfig(FString& OutError) const
 		|| FactoryDockOffsetCentimeters < GULI_RESOURCE_FACTORY_DOCK_MIN_OFFSET_CM
 		|| FactoryProcessingRatePerSecond <= 0.0f || PlayerOrderGraceSeconds != 3.0f
 		|| AutoRetrySeconds <= 0.0f || InitialBlueInventory < 0 || InitialRedInventory < 0
-		|| FactoryPresentationClass.IsNull()
+		|| FactoryModelId <= 0
 		|| SentryTurretBlueCost != 10 || MissileTurretBlueCost != 20 || OutpostBlueCost != 40)
 	{
 		OutError = TEXT("Economy values violate the approved mining defaults and building costs.");

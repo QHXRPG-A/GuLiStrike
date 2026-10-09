@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Wingman/Presentation/GuLiWingmanPresentationActor.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 
 #include "Components/SceneComponent.h"
 #include "Engine/StaticMesh.h"
@@ -106,8 +107,7 @@ AGuLiWingmanPresentationActor::AGuLiWingmanPresentationActor()
 	PrimaryActorTick.TickGroup = TG_PostUpdateWork;
 	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
 	SetRootComponent(SceneRoot);
-	DefaultPresentationMesh = TSoftObjectPtr<UStaticMesh>(FSoftObjectPath(
-		TEXT("/Game/GuLiStrike/Wingman/SM_Wingman_Mass.SM_Wingman_Mass")));
+	DefaultModelId = GuLiModelIds::Wingman;
 }
 
 void AGuLiWingmanPresentationActor::BeginPlay()
@@ -205,9 +205,9 @@ bool AGuLiWingmanPresentationActor::EnsureClientResources()
 	{
 		return false;
 	}
-	if (!OwnerMesh && !DefaultPresentationMesh.IsNull())
+	if (!OwnerMesh)
 	{
-		OwnerMesh = DefaultPresentationMesh.LoadSynchronous();
+		OwnerMesh = GuLiModels::Load<UStaticMesh>(this, DefaultModelId);
 	}
 	if (!RemoteMesh)
 	{

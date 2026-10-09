@@ -1,0 +1,555 @@
+{
+  "id": "ManualOutpost",
+  "name": "前哨建筑",
+  "title": "OUTPOST",
+  "category": "Building",
+  "building_type_id": 3,
+  "fixed": [
+    "原外围窄矩形组件：整件乳白 #FEE4D9，从顶到底同一基础色",
+    "相邻中等宽度矩形组件：整件米砂 #D5C09C，从顶到底同一基础色",
+    "原有枪管/机构/支承/电缆/工作面/深槽：深灰 #2C3735，保持各模型既有分件"
+  ],
+  "team": [
+    "浅队色：最高的中央宽矩形组件，整件从顶到底含侧面及背面",
+    "深队色：外部既有半圆环组件及其原端部，整件保持同一基础色"
+  ],
+  "function": [
+    "原模型无新增功能灯"
+  ],
+  "source": [
+    "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/ManualOutpost_Hero.png",
+    "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/ManualOutpost_Front.png",
+    "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/ManualOutpost_Left.png",
+    "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/ManualOutpost_Back.png"
+  ],
+  "structure": "沿用 SM_OutpostPlaceholder 的数个错落矩形组件与外部单个半圆环，保持原有高度序列、厚度、间距和装配。以完整组件着色，严禁按高度分成上中下色带。",
+  "team_primary": [
+    "最高的中央宽矩形组件，整件从顶到底含侧面及背面"
+  ],
+  "team_secondary": [
+    "外部既有半圆环组件及其原端部"
+  ],
+  "paint_zones": {
+    "fixed_armor": "原外围窄矩形组件：整件乳白，从顶到底",
+    "fixed_secondary": "相邻中等宽度矩形组件：整件米砂，从顶到底",
+    "team_primary": "最高的中央宽矩形组件：整件浅队色，从顶到底含侧面及背面",
+    "team_secondary": "外部既有半圆环组件及其原端部：整件深队色",
+    "mechanisms": "板间深槽与支承：深灰"
+  },
+  "component_color_rule": "One base paint per whole existing component, including its front, sides and back; no horizontal height bands or gradients. Cel-shading values are separate.",
+  "superseded_design": "原上段队色／中段米砂／下段乳白的按高度候选已被用户否定，仅保留 height-draft 文件追溯，不进入主画廊。",
+  "team_lights": [],
+  "previous_boards": {
+    "blue": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/ManualOutpost_blue.png",
+    "red": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/ManualOutpost_red.png"
+  },
+  "cream_coverage_target": {
+    "range_percent": [
+      20,
+      30
+    ],
+    "basis": "visible model surfaces; excludes background, outline and cast shadow",
+    "is_measured": false
+  },
+  "boards": {
+    "blue": {
+      "path": "Boards/ManualOutpost_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1388358,
+      "sha256": "c215f435ee3d78db0e21f1a553ad03508bb6b01ec9ad9f0cad2115ba417df435"
+    },
+    "red": {
+      "path": "Boards/ManualOutpost_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1440439,
+      "sha256": "31ee895c0d2cc6891fedb9a589820eaf8116412047ef2c9f83f06d62d32e9294"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+  "source_kind": "StaticMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/ManualOutpost_Hero.png",
+      "sha256": "51818ef5ee35082134509a53c5b43f9ee7db752b3f802d6433304c6d05755e8b"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/ManualOutpost_Front.png",
+      "sha256": "d891fe8abf97ae7e767df542183344e7cf3d2fe79b96049670724418c8eccaf4"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/ManualOutpost_Left.png",
+      "sha256": "a65d2c5e68455d1d3f2c4b5d1cf18df62ff4815c4534c1f9aae66078f0bec044"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/ManualOutpost_Back.png",
+      "sha256": "76523dd47a35cc703af7dc2238e4656e3802c8c64a18ce525e76ea2265fc2698"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v3_20261008",
+  "construction_B": {
+    "status": "review_pending",
+    "approved": false,
+    "authorization": "../production-authorization.json",
+    "native_file": "../Models/ManualOutpost_PaletteOnly_B_v1.blend",
+    "sha256": "1e7e21b208d82969f3546a5bc9653fa38a04e8417363a85679efb821ec6a59d2",
+    "source_sha256": "e1b40622067a7251f5960614b85fa45057730014e74fc7940e5e2044e9bc874e",
+    "role_attribute": "Bv1_ColorRegion (FACE/INT)",
+    "role_ids": [
+      "Cream",
+      "Sand",
+      "Gray",
+      "TeamLight",
+      "TeamDark",
+      "Amber",
+      "Cyan",
+      "TeamLightLamp"
+    ],
+    "palette_source": "original user swatch cards",
+    "native_regions": {
+      "SM_OutpostMonument_v01": [
+        {
+          "source_component": "GS_OP_01_CrownBlade",
+          "role": "TeamLight",
+          "center": [
+            8.4375,
+            8.4375,
+            150.0
+          ],
+          "dimensions": [
+            9.682010650634766,
+            42.71513366699219,
+            300.0
+          ],
+          "faces": 412
+        },
+        {
+          "source_component": "GS_OP_02_WestBlade",
+          "role": "Sand",
+          "center": [
+            -11.8125,
+            2.4375009536743164,
+            129.375
+          ],
+          "dimensions": [
+            15.314811706542969,
+            45.06632995605469,
+            258.75
+          ],
+          "faces": 412
+        },
+        {
+          "source_component": "GS_OP_03_EastBlade",
+          "role": "Sand",
+          "center": [
+            19.3125,
+            5.250000953674316,
+            108.75
+          ],
+          "dimensions": [
+            11.377941131591797,
+            38.962013244628906,
+            217.5
+          ],
+          "faces": 412
+        },
+        {
+          "source_component": "GS_OP_04_BackBlade",
+          "role": "Sand",
+          "center": [
+            -1.125,
+            21.75,
+            118.125
+          ],
+          "dimensions": [
+            31.397315979003906,
+            10.502092361450195,
+            236.25
+          ],
+          "faces": 412
+        },
+        {
+          "source_component": "GS_OP_05_OpenCrownSpine",
+          "role": "Cream",
+          "center": [
+            -0.14489245414733887,
+            0.9375,
+            147.1875
+          ],
+          "dimensions": [
+            8.335214614868164,
+            8.625,
+            294.375
+          ],
+          "faces": 2204
+        },
+        {
+          "source_component": "GS_OP_06_LowerWestDrum",
+          "role": "Sand",
+          "center": [
+            -15.081812858581543,
+            -10.551813125610352,
+            75.9375
+          ],
+          "dimensions": [
+            24.960290908813477,
+            33.445003509521484,
+            151.875
+          ],
+          "faces": 2204
+        },
+        {
+          "source_component": "GS_OP_07_LowerEastDrum",
+          "role": "Sand",
+          "center": [
+            14.357239723205566,
+            -9.32004451751709,
+            67.5
+          ],
+          "dimensions": [
+            23.406766891479492,
+            32.93762969970703,
+            135.0
+          ],
+          "faces": 2204
+        },
+        {
+          "source_component": "GS_OP_08_FrontShoulder",
+          "role": "Sand",
+          "center": [
+            -1.1013765335083008,
+            -12.97098159790039,
+            128.4375
+          ],
+          "dimensions": [
+            42.120094299316406,
+            19.8001708984375,
+            106.875
+          ],
+          "faces": 2204
+        },
+        {
+          "source_component": "GS_OP_09_UpperHalfDrum",
+          "role": "Sand",
+          "center": [
+            -0.7253384590148926,
+            -4.42825984954834,
+            192.1875
+          ],
+          "dimensions": [
+            25.825660705566406,
+            16.268465042114258,
+            106.875
+          ],
+          "faces": 1100
+        },
+        {
+          "source_component": "GS_OP_10_MiddleHalfDrum",
+          "role": "Sand",
+          "center": [
+            -1.8586149215698242,
+            -13.312408447265625,
+            155.625
+          ],
+          "dimensions": [
+            33.454925537109375,
+            14.246360778808594,
+            86.25
+          ],
+          "faces": 1100
+        },
+        {
+          "source_component": "GS_OP_11_LeftUpperPetal",
+          "role": "Sand",
+          "center": [
+            -13.643447875976562,
+            11.575644493103027,
+            135.0
+          ],
+          "dimensions": [
+            18.461231231689453,
+            21.096837997436523,
+            120.0
+          ],
+          "faces": 2204
+        },
+        {
+          "source_component": "GS_OP_12_RearHalfDrum",
+          "role": "Sand",
+          "center": [
+            2.8041324615478516,
+            12.656206130981445,
+            82.5
+          ],
+          "dimensions": [
+            35.265899658203125,
+            18.932769775390625,
+            165.0
+          ],
+          "faces": 2204
+        },
+        {
+          "source_component": "GS_OP_13_MonumentCollar",
+          "role": "TeamDark",
+          "center": [
+            -0.10589408874511719,
+            -17.50304412841797,
+            135.0
+          ],
+          "dimensions": [
+            71.03086853027344,
+            36.243682861328125,
+            41.25
+          ],
+          "faces": 3228
+        },
+        {
+          "source_component": "GS_OP_14_CollarRearReturn",
+          "role": "TeamDark",
+          "center": [
+            18.99039077758789,
+            14.735934257507324,
+            127.875
+          ],
+          "dimensions": [
+            25.392623901367188,
+            31.674463272094727,
+            37.5
+          ],
+          "faces": 2204
+        },
+        {
+          "source_component": "GS_OP_15_WestButtress",
+          "role": "Cream",
+          "center": [
+            -28.6875,
+            1.875,
+            106.875
+          ],
+          "dimensions": [
+            5.277223587036133,
+            21.63085174560547,
+            213.75
+          ],
+          "faces": 412
+        },
+        {
+          "source_component": "GS_OP_16_EastButtress",
+          "role": "Cream",
+          "center": [
+            27.75,
+            5.249999046325684,
+            85.3125
+          ],
+          "dimensions": [
+            7.427343368530273,
+            24.104372024536133,
+            170.625
+          ],
+          "faces": 412
+        },
+        {
+          "source_component": "GS_OP_17_FrontReveal",
+          "role": "Cream",
+          "center": [
+            -10.3125,
+            -17.8125,
+            102.1875
+          ],
+          "dimensions": [
+            3.9478187561035156,
+            6.5480804443359375,
+            204.375
+          ],
+          "faces": 412
+        },
+        {
+          "source_component": "GS_OP_18_LowFloatingPetal",
+          "role": "Cream",
+          "center": [
+            -19.643632888793945,
+            -16.03368377685547,
+            73.3125
+          ],
+          "dimensions": [
+            13.99141788482666,
+            16.419097900390625,
+            79.125
+          ],
+          "faces": 1052
+        },
+        {
+          "source_component": "GS_OP_19_SideFloatingPetal",
+          "role": "Cream",
+          "center": [
+            19.593894958496094,
+            -13.445570945739746,
+            111.5625
+          ],
+          "dimensions": [
+            13.573080062866211,
+            18.484399795532227,
+            95.625
+          ],
+          "faces": 1052
+        },
+        {
+          "source_component": "GS_OP_20_NarrowSpineFin",
+          "role": "Cream",
+          "center": [
+            -3.187499761581421,
+            10.875,
+            136.875
+          ],
+          "dimensions": [
+            12.605953216552734,
+            11.592884063720703,
+            273.75
+          ],
+          "faces": 412
+        },
+        {
+          "source_component": "GS_OP_21_InnerLowerColumn",
+          "role": "Gray",
+          "center": [
+            0.375,
+            -7.5,
+            69.375
+          ],
+          "dimensions": [
+            10.125,
+            10.125,
+            138.75
+          ],
+          "faces": 764
+        }
+      ]
+    },
+    "native_face_role_counts": [
+      {
+        "object": "Blue_ManualOutpost_SM_OutpostMonument_v01",
+        "LOD": 0,
+        "mesh_and_deformation_signature_equal": true,
+        "palette_max_error": 0.0,
+        "role_face_counts": {
+          "Cream": 5956,
+          "Sand": 14456,
+          "Gray": 764,
+          "TeamLight": 412,
+          "TeamDark": 5432,
+          "Amber": 0,
+          "Cyan": 0,
+          "TeamLightLamp": 0
+        }
+      },
+      {
+        "object": "Red_ManualOutpost_SM_OutpostMonument_v01",
+        "LOD": 0,
+        "mesh_and_deformation_signature_equal": true,
+        "palette_max_error": 0.0,
+        "role_face_counts": {
+          "Cream": 5956,
+          "Sand": 14456,
+          "Gray": 764,
+          "TeamLight": 412,
+          "TeamDark": 5432,
+          "Amber": 0,
+          "Cyan": 0,
+          "TeamLightLamp": 0
+        }
+      }
+    ],
+    "style": {
+      "tone_factors": [
+        0.4,
+        0.72,
+        1
+      ],
+      "thresholds": [
+        0.38,
+        0.68
+      ],
+      "interpolation": "CONSTANT",
+      "new_lines": "Freestyle contour/border/major crease on original mesh; no added outline geometry"
+    },
+    "comparison": "../Comparisons/ManualOutpost_A3_B1.png"
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    },
+    "fixed_secondary": {
+      "hex": "#D5C09C",
+      "card": 1,
+      "label": "固定米砂"
+    },
+    "blue_secondary": {
+      "hex": "#274E61",
+      "card": 4,
+      "label": "深蓝灰队色"
+    },
+    "red_secondary": {
+      "hex": "#662249",
+      "card": 2,
+      "label": "深莓队色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "enemy_non_blue_secondary": "#662249",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "paint_contract": {
+    "fixed": {
+      "cream": "#FEE4D9",
+      "sand": "#D5C09C",
+      "mechanisms": "#2C3735"
+    },
+    "team": {
+      "blue": {
+        "primary": "#6AA4BE",
+        "secondary": "#274E61"
+      },
+      "red": {
+        "primary": "#A34053",
+        "secondary": "#662249"
+      }
+    },
+    "team_light": null,
+    "shading": "Three cel-shading levels are separate from the two team base paint colors.",
+    "fixed_function_policy": "Only existing function locations and palette colors; shield top lights are team-controlled."
+  },
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output.",
+  "reference_A_historical_status": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  }
+}

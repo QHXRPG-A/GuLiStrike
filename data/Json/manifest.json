@@ -84,6 +84,66 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeMechSkillsRow",
       "row_key_column": "name"
     },
+    "DT_GuLiStrikeMech_Visuals": {
+      "excel": "GuLiStrikeMech.xlsx",
+      "sheet": "Visuals",
+      "sources": [
+        {
+          "excel": "GuLiStrikeMech.xlsx",
+          "sheet": "Visuals"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeMechVisualsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeModels_Models": {
+      "excel": "GuLiStrikeModels.xlsx",
+      "sheet": "Models",
+      "sources": [
+        {
+          "excel": "GuLiStrikeModels.xlsx",
+          "sheet": "Models"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeModelsModelsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeModels_Parts": {
+      "excel": "GuLiStrikeModels.xlsx",
+      "sheet": "Parts",
+      "sources": [
+        {
+          "excel": "GuLiStrikeModels.xlsx",
+          "sheet": "Parts"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeModelsPartsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeModels_MaterialParameters": {
+      "excel": "GuLiStrikeModels.xlsx",
+      "sheet": "MaterialParameters",
+      "sources": [
+        {
+          "excel": "GuLiStrikeModels.xlsx",
+          "sheet": "MaterialParameters"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeModelsMaterialParametersRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeModels_ColorRegions": {
+      "excel": "GuLiStrikeModels.xlsx",
+      "sheet": "ColorRegions",
+      "sources": [
+        {
+          "excel": "GuLiStrikeModels.xlsx",
+          "sheet": "ColorRegions"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeModelsColorRegionsRow",
+      "row_key_column": "name"
+    },
     "DT_GuLiStrikeRogueCards_Cards": {
       "excel": "GuLiStrikeRogueCards.xlsx",
       "sheet": "Cards",

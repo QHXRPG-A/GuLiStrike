@@ -2,6 +2,7 @@
 
 #include "Gameplay/Resources/GuLiResourceActors.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
+#include "Gameplay/Data/Generated/GuLiModelIds.h"
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -232,7 +233,7 @@ bool FGuLiResourceHISMSwapIndexTest::RunTest(const FString& Parameters)
 	UGuLiResourceEconomyConfig* Config = NewObject<UGuLiResourceEconomyConfig>(Fixture.World);
 	for (FGuLiOreVisualAsset& Visual : Config->OreVisuals)
 	{
-		Visual.Mesh = Cube;
+		Visual.ModelId = GuLiModelIds::ResourceFactory_AccessRamp; // Existing Cube through the catalogue.
 	}
 	UGuLiResourceMapDefinition* Definition = NewObject<UGuLiResourceMapDefinition>(Fixture.World);
 	Definition->Nodes.SetNum(GULI_RESOURCE_NODE_COUNT);

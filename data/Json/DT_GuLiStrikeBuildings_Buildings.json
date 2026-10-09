@@ -7,7 +7,6 @@
     "PlacementType": 1,
     "DisplayName": "防空炮",
     "Description": "防空炮功能建筑",
-    "Mesh": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/StaticMeshes/missile_turret.missile_turret",
     "CollisionExtent": {
       "X": 251.946222,
       "Y": 272.8748292,
@@ -36,7 +35,8 @@
     "TransitFieldId": 0,
     "ShieldRadius": 0.0,
     "ShieldRechargePerSecond": 0.0,
-    "CompletionUnitTypeId": 0
+    "CompletionUnitTypeId": 0,
+    "ModelId": 2001
   },
   {
     "Name": "SentryTurret",
@@ -46,7 +46,6 @@
     "PlacementType": 2,
     "DisplayName": "哨戒炮",
     "Description": "哨戒炮功能建筑",
-    "Mesh": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
     "CollisionExtent": {
       "X": 193.579248,
       "Y": 386.6780274,
@@ -75,7 +74,8 @@
     "TransitFieldId": 0,
     "ShieldRadius": 0.0,
     "ShieldRechargePerSecond": 0.0,
-    "CompletionUnitTypeId": 0
+    "CompletionUnitTypeId": 0,
+    "ModelId": 2002
   },
   {
     "Name": "ManualOutpost",
@@ -85,7 +85,6 @@
     "PlacementType": 3,
     "DisplayName": "前哨建筑",
     "Description": "前哨建筑功能建筑",
-    "Mesh": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
     "CollisionExtent": {
       "X": 710.3086426,
       "Y": 661.9805176,
@@ -114,7 +113,8 @@
     "TransitFieldId": 0,
     "ShieldRadius": 0.0,
     "ShieldRechargePerSecond": 0.0,
-    "CompletionUnitTypeId": 0
+    "CompletionUnitTypeId": 0,
+    "ModelId": 2003
   },
   {
     "Name": "BasicBarracks",
@@ -124,7 +124,6 @@
     "PlacementType": 4,
     "DisplayName": "基础兵营",
     "Description": "基础兵营功能建筑",
-    "Mesh": "/Engine/BasicShapes/Cube.Cube",
     "CollisionExtent": {
       "X": 400.0,
       "Y": 300.0,
@@ -153,7 +152,8 @@
     "TransitFieldId": 0,
     "ShieldRadius": 0.0,
     "ShieldRechargePerSecond": 0.0,
-    "CompletionUnitTypeId": 0
+    "CompletionUnitTypeId": 0,
+    "ModelId": 2004
   },
   {
     "Name": "ShieldGenerator",
@@ -163,7 +163,6 @@
     "PlacementType": 5,
     "DisplayName": "护盾发生器",
     "Description": "护盾发生器功能建筑",
-    "Mesh": "/Game/GuLiStrike/Buildings/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
     "CollisionExtent": {
       "X": 305.087006,
       "Y": 345.28804,
@@ -192,7 +191,8 @@
     "TransitFieldId": 0,
     "ShieldRadius": 4000.0,
     "ShieldRechargePerSecond": 20.0,
-    "CompletionUnitTypeId": 0
+    "CompletionUnitTypeId": 0,
+    "ModelId": 2005
   },
   {
     "Name": "ResourceFactory",
@@ -202,7 +202,6 @@
     "PlacementType": 6,
     "DisplayName": "矿厂",
     "Description": "矿厂功能建筑",
-    "Mesh": "/Engine/BasicShapes/Cube.Cube",
     "CollisionExtent": {
       "X": 600.0,
       "Y": 650.0,
@@ -231,7 +230,8 @@
     "TransitFieldId": 0,
     "ShieldRadius": 0.0,
     "ShieldRechargePerSecond": 0.0,
-    "CompletionUnitTypeId": 0
+    "CompletionUnitTypeId": 0,
+    "ModelId": 2006
   },
   {
     "Name": "TerritoryStronghold",
@@ -241,7 +241,6 @@
     "PlacementType": 0,
     "DisplayName": "地图据点",
     "Description": "地图据点功能建筑",
-    "Mesh": "/Engine/BasicShapes/Cylinder.Cylinder",
     "CollisionExtent": {
       "X": 300.0,
       "Y": 300.0,
@@ -270,7 +269,8 @@
     "TransitFieldId": 2001,
     "ShieldRadius": 0.0,
     "ShieldRechargePerSecond": 0.0,
-    "CompletionUnitTypeId": 0
+    "CompletionUnitTypeId": 0,
+    "ModelId": 2007
   },
   {
     "Name": "BiZhiMaoConstruction",
@@ -280,7 +280,6 @@
     "PlacementType": 7,
     "DisplayName": "彼之矛",
     "Description": "巨型重炮工地：60蓝、30红、1人口；完工展开待机，等待指令。",
-    "Mesh": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
     "CollisionExtent": {
       "X": 1629.010009765625,
       "Y": 921.9329833984375,
@@ -309,6 +308,7 @@
     "TransitFieldId": 0,
     "ShieldRadius": 0.0,
     "ShieldRechargePerSecond": 0.0,
-    "CompletionUnitTypeId": 6
+    "CompletionUnitTypeId": 6,
+    "ModelId": 2008
   }
 ]

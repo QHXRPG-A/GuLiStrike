@@ -7,6 +7,7 @@ The native HUD owns the reproducible widget layout; its WBP remains the project 
 import json
 from pathlib import Path
 import unreal
+from Models.model_catalog import soldier_visual
 
 ROOT = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
 OUTPUT = ROOT / "ArtSource/UI/CommanderHUD"
@@ -49,7 +50,7 @@ def capture_model(row):
     world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
     spawned = []
     try:
-        cls = unreal.load_class(None, row["PresentationClass"])
+        cls = unreal.load_class(None, soldier_visual(row)["presentation_class"])
         if not cls:
             raise RuntimeError("Missing presentation class for " + row["Name"])
         preview = actor_api.spawn_actor_from_class(cls, unreal.Vector(0, 0, 500000))
@@ -185,7 +186,7 @@ def build():
         "game_text_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeGameTexts_Texts",
         "icons": {key: value.get_path_name() for key, value in icons.items()},
         "portraits": {str(key): value.get_path_name() for key, value in portraits.items()},
-        "portrait_sources": {str(row["Id"]): row.get("PresentationClass") for row in soldiers if row["Id"] in (3, 4)},
+        "portrait_sources": {str(row["Id"]): soldier_visual(row)["presentation_class"] for row in soldiers if row["Id"] in (3, 4)},
         "notes": ["SC2 references are analysis only; not imported as game art.",
                   "Vendor textures remain unchanged.", "Chinese uses the existing font fallback."]}
     (OUTPUT / "asset_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")

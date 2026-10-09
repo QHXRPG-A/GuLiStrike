@@ -1,0 +1,16 @@
+{
+  "tables": [
+    "DT_GuLiStrikeBuildings_Buildings",
+    "DT_GuLiStrikeCommander_Soldiers",
+    "DT_GuLiStrikeMech_Visuals",
+    "DT_GuLiStrikeModels_ColorRegions",
+    "DT_GuLiStrikeModels_MaterialParameters",
+    "DT_GuLiStrikeModels_Models",
+    "DT_GuLiStrikeModels_Parts",
+    "DT_GuLiStrikeShip_Parts",
+    "DT_GuLiStrikeShip_Tuning"
+  ],
+  "native_compile": false,
+  "asset_mutations": false,
+  "native_schema_pending": "Import preflight failed before any asset mutation:\nDT_GuLiStrikeMech_Visuals: native row struct is not loaded; compile and reload the authorized module\nDT_GuLiStrikeModels_Models: native row struct is not loaded; compile and reload the authorized module\nDT_GuLiStrikeBuildings_Buildings: loaded struct lacks ModelId; no tables imported\nDT_GuLiStrikeModels_Parts: native row struct is not loaded; compile and reload the authorized module\nDT_GuLiStrikeModels_ColorRegions: native row struct is not loaded; compile and reload the authorized module\nDT_GuLiStrikeModels_MaterialParameters: native row struct is not loaded; compile and reload the authorized module\nDT_GuLiStrikeCommander_Soldiers: loaded struct lacks ModelId; no tables imported\nDT_GuLiStrikeShip_Parts: loaded struct lacks ModelId; no tables imported\nDT_GuLiStrikeShip_Tuning: loaded struct lacks HullModelId; no tables imported"
+}

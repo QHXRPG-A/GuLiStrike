@@ -10,13 +10,14 @@
 #include "Engine/SimpleConstructionScript.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 
 UClass* GuLiBuildingVisuals::ResolveFactoryPresentation(const UObject* Context)
 {
 	const UWorld* World = Context ? Context->GetWorld() : nullptr;
 	const auto* Resources = World ? World->GetSubsystem<UGuLiResourceWorldSubsystem>() : nullptr;
 	const auto* Config = Resources ? Resources->GetEconomyConfig() : nullptr;
-	return Config ? Config->FactoryPresentationClass.LoadSynchronous() : nullptr;
+	return GuLiModels::LoadClass<AActor>(Context, Config ? Config->FactoryModelId : GuLiModelIds::ResourceFactory);
 }
 
 UMeshComponent* GuLiBuildingVisuals::CopyMesh(AActor& Owner, USceneComponent& Parent,
@@ -69,7 +70,7 @@ bool GuLiBuildingVisuals::CreatePreviewMeshes(AActor& Owner, USceneComponent& Pa
 			FTransform(FQuat::Identity, Definition.VisualOffset, Definition.MeshScale), Material)) OutMeshes.Add(Mesh);
 		return !OutMeshes.IsEmpty();
 	}
-	auto* Class = Cast<UBlueprintGeneratedClass>(ResolveFactoryPresentation(&Owner));
+	auto* Class = Cast<UBlueprintGeneratedClass>(Definition.PresentationClass.Get());
 	if (!Class || !Class->SimpleConstructionScript) return false;
 	TFunction<void(USCS_Node*, const FTransform&)> Visit = [&](USCS_Node* Node, const FTransform& ParentTransform)
 	{

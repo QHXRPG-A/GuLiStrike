@@ -1,0 +1,43 @@
+{
+  "fixed_region_checks": [
+    {
+      "view": "hero",
+      "fixed_interior_pixels": 43611,
+      "blue_red_max_rgb_diff": 23,
+      "original_vs_teams_max_rgb_diff": 14,
+      "fixed_pixel_match_ratio": 0.16378895232854096
+    },
+    {
+      "view": "front",
+      "fixed_interior_pixels": 1104746,
+      "blue_red_max_rgb_diff": 44,
+      "original_vs_teams_max_rgb_diff": 44,
+      "fixed_pixel_match_ratio": 0.6116980735843353
+    },
+    {
+      "view": "left",
+      "fixed_interior_pixels": 1126850,
+      "blue_red_max_rgb_diff": 22,
+      "original_vs_teams_max_rgb_diff": 14,
+      "fixed_pixel_match_ratio": 0.7589270976616231
+    },
+    {
+      "view": "back",
+      "fixed_interior_pixels": 1107610,
+      "blue_red_max_rgb_diff": 13,
+      "original_vs_teams_max_rgb_diff": 14,
+      "fixed_pixel_match_ratio": 0.6642220637227905
+    },
+    {
+      "view": "top",
+      "fixed_interior_pixels": 53145,
+      "blue_red_max_rgb_diff": 34,
+      "original_vs_teams_max_rgb_diff": 32,
+      "fixed_pixel_match_ratio": 0.1733935459591683
+    }
+  ],
+  "boundary_exclusion_pixels": 7,
+  "source": "same native UE views; mask black fixed interiors eroded by 7px",
+  "success": false,
+  "status": "initial capture includes atmospheric/background and temporal variation; investigate capture isolation before final pixel comparison"
+}

@@ -1,4 +1,6 @@
 #include "Gameplay/Resources/GuLiResourceFactoryActor.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
+#include "Gameplay/Models/GuLiModelPresentationComponent.h"
 #include "Gameplay/Building/GuLiBuildingConstructionVisualComponent.h"
 #include "Gameplay/Building/GuLiBuildingVisuals.h"
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
@@ -103,7 +105,7 @@ void AGuLiResourceFactoryActor::InitializeFactory(
 	DockPoint = InDockPoint;
 	OnRep_DockPoint();
 	ProcessingRatePerSecond = Config.FactoryProcessingRatePerSecond;
-	PresentationClass = Config.FactoryPresentationClass.LoadSynchronous();
+	PresentationClass = GuLiModels::LoadClass<AActor>(this, Config.FactoryModelId);
 	check(PresentationClass);
 	OnRep_PresentationClass();
 	GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>()->RegisterFactory(*this);
@@ -206,6 +208,7 @@ void AGuLiResourceFactoryActor::OnRep_PresentationClass()
 	Presentation->SetChildActorClass(PresentationClass);
 	AActor* Child = Presentation->GetChildActor();
 	check(Child);
+	UGuLiModelPresentationComponent::InstallForPresentationActor(Child);
 	TInlineComponentArray<USkeletalMeshComponent*> Meshes(Child);
 	for (USkeletalMeshComponent* Mesh : Meshes)
 		if (Mesh->GetFName() == TEXT("Door")) DoorMesh = Mesh;

@@ -1,0 +1,154 @@
+{
+  "id": "SSF_MilitaryFactory",
+  "name": "SSF 军工厂",
+  "title": "MILITARY FACTORY",
+  "category": "SSF",
+  "fixed": [
+    "原门板及入口边框：乳白 #FEE4D9",
+    "完整大墙面：米砂 #D5C09C",
+    "原有枪管/机构/支承/电缆/工作面/深槽：深灰 #2C3735，保持各模型既有分件"
+  ],
+  "team": [
+    "浅队色：现有屋顶拱架护板、入口立面板",
+    "深队色：侧后墙现有腰带"
+  ],
+  "function": [
+    "原有门上和侧部小型指示：固定琥珀色"
+  ],
+  "structure": "保留原宽体厂房、拱架、门口、墙面和雷达；固定大墙米砂，现有拱架及入口护板增加队色。",
+  "source": [
+    "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_MilitaryFactory_Views.png"
+  ],
+  "team_primary": [
+    "现有屋顶拱架护板、入口立面板"
+  ],
+  "team_secondary": [
+    "侧后墙现有腰带"
+  ],
+  "paint_zones": {
+    "fixed_armor": "原门板及入口边框",
+    "fixed_secondary": "完整大墙面",
+    "team_primary": "现有屋顶拱架护板、入口立面板",
+    "team_secondary": "侧后墙现有腰带",
+    "mechanisms": "机构、散热口、支脚与雷达转轴：深灰"
+  },
+  "team_lights": [],
+  "previous_boards": {
+    "blue": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_MilitaryFactory_blue.png",
+    "red": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_MilitaryFactory_red.png"
+  },
+  "cream_coverage_target": {
+    "range_percent": [
+      20,
+      30
+    ],
+    "basis": "visible model surfaces; excludes background, outline and cast shadow",
+    "is_measured": false
+  },
+  "boards": {
+    "blue": {
+      "path": "Boards/SSF_MilitaryFactory_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1626078,
+      "sha256": "4382a955c5e204f288c577c94f9bf1941572eec11a2eb29260df3b510add44ad"
+    },
+    "red": {
+      "path": "Boards/SSF_MilitaryFactory_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1616767,
+      "sha256": "3a71f2a6af2c7f53e03ef8159ee9b6b63a420769c15019bdf3b8ae4210dc5d06"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/MilitaryFactory/Meshes/SK_Blue_MilitaryFactory.SK_Blue_MilitaryFactory",
+  "source_kind": "SkeletalMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_MilitaryFactory_Views.png",
+      "sha256": "3aff9411ef5a08f0366db8c86435a529cd4298ef979688c62bffc5e2626f0c82"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v3_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    },
+    "fixed_secondary": {
+      "hex": "#D5C09C",
+      "card": 1,
+      "label": "固定米砂"
+    },
+    "blue_secondary": {
+      "hex": "#274E61",
+      "card": 4,
+      "label": "深蓝灰队色"
+    },
+    "red_secondary": {
+      "hex": "#662249",
+      "card": 2,
+      "label": "深莓队色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "enemy_non_blue_secondary": "#662249",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "paint_contract": {
+    "fixed": {
+      "cream": "#FEE4D9",
+      "sand": "#D5C09C",
+      "mechanisms": "#2C3735"
+    },
+    "team": {
+      "blue": {
+        "primary": "#6AA4BE",
+        "secondary": "#274E61"
+      },
+      "red": {
+        "primary": "#A34053",
+        "secondary": "#662249"
+      }
+    },
+    "team_light": null,
+    "shading": "Three cel-shading levels are separate from the two team base paint colors.",
+    "fixed_function_policy": "Only existing function locations and palette colors; shield top lights are team-controlled."
+  },
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

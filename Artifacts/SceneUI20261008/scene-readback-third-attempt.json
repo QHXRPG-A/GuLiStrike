@@ -1,0 +1,10 @@
+{
+  "success": false,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "native_build_executed": false,
+  "gameplay_started": false,
+  "runtime_effect_verified": false,
+  "readback_after_map_reload": false,
+  "actors": [],
+  "error": "Traceback (most recent call last):\n  File \"D:/UE5.7/test1/Scripts/SceneUI/prepare_acceptance_scene.py\", line 108, in <module>\n    fog_inscattering_color=unreal.LinearColor(.35,.03,.6,1)).items():fog_component.set_editor_property(key,value)\n                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nException: ExponentialHeightFogComponent: Failed to find property 'fog_inscattering_color' for attribute 'fog_inscattering_color' on 'ExponentialHeightFogComponent'\n"
+}

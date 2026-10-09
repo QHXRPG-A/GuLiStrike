@@ -1,0 +1,571 @@
+{
+  "SSF": {
+    "nodes": [
+      {
+        "name": "\u6750\u8d28\u8f93\u51fa",
+        "type": "OUTPUT_MATERIAL"
+      },
+      {
+        "name": "\u81ea\u53d1\u5149",
+        "type": "EMISSION"
+      },
+      {
+        "name": "\u51e0\u4f55\u6570\u636e",
+        "type": "NEW_GEOMETRY"
+      },
+      {
+        "name": "FixedArtLight",
+        "type": "VECT_MATH",
+        "operation": "DOT_PRODUCT",
+        "values": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.3495458662509918,
+            -0.549286425113678,
+            0.7590138912200928
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          1.0
+        ]
+      },
+      {
+        "name": "Approved_A7_ThreeTone",
+        "type": "VALTORGB",
+        "ramp": [
+          [
+            0.0,
+            [
+              0.4000000059604645,
+              0.4000000059604645,
+              0.4000000059604645,
+              1.0
+            ]
+          ],
+          [
+            0.3799999952316284,
+            [
+              0.7200000286102295,
+              0.7200000286102295,
+              0.7200000286102295,
+              1.0
+            ]
+          ],
+          [
+            0.6800000071525574,
+            [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          ]
+        ],
+        "interpolation": "CONSTANT"
+      },
+      {
+        "name": "UV \u8d34\u56fe",
+        "type": "UVMAP"
+      },
+      {
+        "name": "Portable_BaseColor",
+        "type": "TEX_IMAGE"
+      },
+      {
+        "name": "Approved_PaletteLinear",
+        "type": "VERTEX_COLOR"
+      },
+      {
+        "name": "\u56fe\u50cf\u7eb9\u7406",
+        "type": "TEX_IMAGE"
+      },
+      {
+        "name": "\u5206\u79bb\u989c\u8272",
+        "type": "SEPARATE_COLOR"
+      },
+      {
+        "name": "Base Color",
+        "type": "RGB"
+      },
+      {
+        "name": "Team Color",
+        "type": "RGB"
+      },
+      {
+        "name": "\u77e2\u91cf\u8fd0\u7b97",
+        "type": "VECT_MATH",
+        "operation": "DISTANCE",
+        "values": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.9911022186279297,
+            0.7758223414421082,
+            0.6938719153404236
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          1.0
+        ]
+      },
+      {
+        "name": "\u8fd0\u7b97",
+        "type": "MATH"
+      },
+      {
+        "name": "\u6df7\u5408 (\u65e7\u7248)",
+        "type": "MIX_RGB"
+      },
+      {
+        "name": "\u6df7\u5408 (\u65e7\u7248).001",
+        "type": "MIX_RGB"
+      },
+      {
+        "name": "\u6df7\u5408 (\u65e7\u7248).002",
+        "type": "MIX_RGB"
+      },
+      {
+        "name": "Independent_InternalLineMask",
+        "type": "TEX_IMAGE"
+      },
+      {
+        "name": "\u5206\u79bb\u989c\u8272.001",
+        "type": "SEPARATE_COLOR"
+      },
+      {
+        "name": "SourcePanelLineStrength",
+        "type": "MATH"
+      },
+      {
+        "name": "FullStrengthMechanicalSeams",
+        "type": "MATH"
+      },
+      {
+        "name": "InternalLineStrength",
+        "type": "MATH"
+      },
+      {
+        "name": "\u6df7\u5408 (\u65e7\u7248).003",
+        "type": "MIX_RGB"
+      }
+    ],
+    "links": [
+      [
+        "UV \u8d34\u56fe",
+        "UV",
+        "Portable_BaseColor",
+        "Vector"
+      ],
+      [
+        "UV \u8d34\u56fe",
+        "UV",
+        "\u56fe\u50cf\u7eb9\u7406",
+        "Vector"
+      ],
+      [
+        "\u56fe\u50cf\u7eb9\u7406",
+        "Color",
+        "\u5206\u79bb\u989c\u8272",
+        "Color"
+      ],
+      [
+        "Approved_PaletteLinear",
+        "Color",
+        "\u77e2\u91cf\u8fd0\u7b97",
+        "Vector"
+      ],
+      [
+        "\u77e2\u91cf\u8fd0\u7b97",
+        "Value",
+        "\u8fd0\u7b97",
+        "Value"
+      ],
+      [
+        "\u8fd0\u7b97",
+        "Value",
+        "\u6df7\u5408 (\u65e7\u7248)",
+        "Factor"
+      ],
+      [
+        "Approved_PaletteLinear",
+        "Color",
+        "\u6df7\u5408 (\u65e7\u7248)",
+        "Color1"
+      ],
+      [
+        "Team Color",
+        "Color",
+        "\u6df7\u5408 (\u65e7\u7248)",
+        "Color2"
+      ],
+      [
+        "\u6df7\u5408 (\u65e7\u7248)",
+        "Color",
+        "\u6df7\u5408 (\u65e7\u7248).001",
+        "Color1"
+      ],
+      [
+        "Base Color",
+        "Color",
+        "\u6df7\u5408 (\u65e7\u7248).001",
+        "Color2"
+      ],
+      [
+        "\u6df7\u5408 (\u65e7\u7248).001",
+        "Color",
+        "\u6df7\u5408 (\u65e7\u7248).002",
+        "Color1"
+      ],
+      [
+        "Approved_A7_ThreeTone",
+        "Color",
+        "\u6df7\u5408 (\u65e7\u7248).002",
+        "Color2"
+      ],
+      [
+        "UV \u8d34\u56fe",
+        "UV",
+        "Independent_InternalLineMask",
+        "Vector"
+      ],
+      [
+        "Independent_InternalLineMask",
+        "Color",
+        "\u5206\u79bb\u989c\u8272.001",
+        "Color"
+      ],
+      [
+        "\u5206\u79bb\u989c\u8272.001",
+        "Red",
+        "SourcePanelLineStrength",
+        "Value"
+      ],
+      [
+        "SourcePanelLineStrength",
+        "Value",
+        "FullStrengthMechanicalSeams",
+        "Value"
+      ],
+      [
+        "\u5206\u79bb\u989c\u8272.001",
+        "Green",
+        "FullStrengthMechanicalSeams",
+        "Value"
+      ],
+      [
+        "FullStrengthMechanicalSeams",
+        "Value",
+        "InternalLineStrength",
+        "Value"
+      ],
+      [
+        "InternalLineStrength",
+        "Value",
+        "\u6df7\u5408 (\u65e7\u7248).003",
+        "Factor"
+      ],
+      [
+        "\u6df7\u5408 (\u65e7\u7248).002",
+        "Color",
+        "\u6df7\u5408 (\u65e7\u7248).003",
+        "Color1"
+      ],
+      [
+        "\u6df7\u5408 (\u65e7\u7248).003",
+        "Color",
+        "\u81ea\u53d1\u5149",
+        "Color"
+      ],
+      [
+        "\u51e0\u4f55\u6570\u636e",
+        "Normal",
+        "FixedArtLight",
+        "Vector"
+      ],
+      [
+        "FixedArtLight",
+        "Value",
+        "Approved_A7_ThreeTone",
+        "Factor"
+      ],
+      [
+        "\u81ea\u53d1\u5149",
+        "Emission",
+        "\u6750\u8d28\u8f93\u51fa",
+        "Surface"
+      ]
+    ]
+  },
+  "BiZhiMao": {
+    "nodes": [
+      {
+        "name": "Material Output",
+        "type": "OUTPUT_MATERIAL"
+      },
+      {
+        "name": "Emission",
+        "type": "EMISSION"
+      },
+      {
+        "name": "Geometry",
+        "type": "NEW_GEOMETRY"
+      },
+      {
+        "name": "Vector Math",
+        "type": "VECT_MATH",
+        "operation": "DOT_PRODUCT",
+        "values": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.3495458662509918,
+            -0.549286425113678,
+            0.7590138912200928
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          1.0
+        ]
+      },
+      {
+        "name": "Color Ramp",
+        "type": "VALTORGB",
+        "ramp": [
+          [
+            0.0,
+            [
+              0.41999998688697815,
+              0.41999998688697815,
+              0.41999998688697815,
+              1.0
+            ]
+          ],
+          [
+            0.11999999731779099,
+            [
+              0.7400000095367432,
+              0.7400000095367432,
+              0.7400000095367432,
+              1.0
+            ]
+          ],
+          [
+            0.550000011920929,
+            [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          ]
+        ],
+        "interpolation": "CONSTANT"
+      },
+      {
+        "name": "Image Texture",
+        "type": "TEX_IMAGE"
+      },
+      {
+        "name": "Color Attribute",
+        "type": "VERTEX_COLOR"
+      },
+      {
+        "name": "Image Texture.001",
+        "type": "TEX_IMAGE"
+      },
+      {
+        "name": "Mix (Legacy)",
+        "type": "MIX_RGB"
+      },
+      {
+        "name": "InternalLineStrength",
+        "type": "MATH"
+      },
+      {
+        "name": "Mix (Legacy).001",
+        "type": "MIX_RGB"
+      },
+      {
+        "name": "UV Map",
+        "type": "UVMAP"
+      },
+      {
+        "name": "UV Map.001",
+        "type": "UVMAP"
+      },
+      {
+        "name": "UV Map.002",
+        "type": "UVMAP"
+      },
+      {
+        "name": "Separate XYZ",
+        "type": "SEPXYZ"
+      },
+      {
+        "name": "Separate XYZ.001",
+        "type": "SEPXYZ"
+      },
+      {
+        "name": "Math",
+        "type": "MATH"
+      },
+      {
+        "name": "Math.001",
+        "type": "MATH"
+      },
+      {
+        "name": "StructuralLineWidthMeters",
+        "type": "MAP_RANGE"
+      },
+      {
+        "name": "Math.002",
+        "type": "MATH"
+      },
+      {
+        "name": "Math.003",
+        "type": "MATH"
+      }
+    ],
+    "links": [
+      [
+        "Geometry",
+        "Normal",
+        "Vector Math",
+        "Vector"
+      ],
+      [
+        "Vector Math",
+        "Value",
+        "Color Ramp",
+        "Factor"
+      ],
+      [
+        "Color Attribute",
+        "Color",
+        "Mix (Legacy)",
+        "Color1"
+      ],
+      [
+        "Color Ramp",
+        "Color",
+        "Mix (Legacy)",
+        "Color2"
+      ],
+      [
+        "InternalLineStrength",
+        "Value",
+        "Mix (Legacy).001",
+        "Factor"
+      ],
+      [
+        "Mix (Legacy)",
+        "Color",
+        "Mix (Legacy).001",
+        "Color1"
+      ],
+      [
+        "Mix (Legacy).001",
+        "Color",
+        "Emission",
+        "Color"
+      ],
+      [
+        "Emission",
+        "Emission",
+        "Material Output",
+        "Surface"
+      ],
+      [
+        "UV Map",
+        "UV",
+        "Image Texture.001",
+        "Vector"
+      ],
+      [
+        "UV Map.001",
+        "UV",
+        "Separate XYZ",
+        "Vector"
+      ],
+      [
+        "UV Map.002",
+        "UV",
+        "Separate XYZ.001",
+        "Vector"
+      ],
+      [
+        "Separate XYZ",
+        "X",
+        "Math",
+        "Value"
+      ],
+      [
+        "Separate XYZ",
+        "Y",
+        "Math",
+        "Value"
+      ],
+      [
+        "Math",
+        "Value",
+        "Math.001",
+        "Value"
+      ],
+      [
+        "Separate XYZ.001",
+        "X",
+        "Math.001",
+        "Value"
+      ],
+      [
+        "Math.001",
+        "Value",
+        "StructuralLineWidthMeters",
+        "Value"
+      ],
+      [
+        "Image Texture.001",
+        "Color",
+        "Math.002",
+        "Value"
+      ],
+      [
+        "StructuralLineWidthMeters",
+        "Result",
+        "Math.003",
+        "Value"
+      ],
+      [
+        "Math.002",
+        "Value",
+        "Math.003",
+        "Value"
+      ],
+      [
+        "Math.003",
+        "Value",
+        "InternalLineStrength",
+        "Value"
+      ]
+    ]
+  }
+}

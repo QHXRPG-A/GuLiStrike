@@ -9,7 +9,7 @@
 bool FGuLiBuildingDefinition::IsUsable() const
 {
 	return (GuLiBuildingPlacementPolicy::IsKnownBuildingType(Type) || Category == EGuLiBuildingCategory::Stronghold)
-		&& Mesh != nullptr
+		&& (Mesh != nullptr || (Category == EGuLiBuildingCategory::Factory && PresentationClass))
 		&& !DisplayName.IsEmpty()
 		&& FMath::IsFinite(CollisionExtent.X)
 		&& FMath::IsFinite(CollisionExtent.Y)

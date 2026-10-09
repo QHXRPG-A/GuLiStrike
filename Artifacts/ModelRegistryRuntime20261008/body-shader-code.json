@@ -1,0 +1,15 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": [
+    {
+      "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_AirBase/Materials/Parents/M_SSF_ThreeToneLine",
+      "nodes": [
+        {
+          "code": "float code=1.0-BT.y; float lod=floor(code+0.001); float teamMask=step(0.2,code-lod); float fade=lod<0.5?1.0:(lod<1.5?0.7:0.0); float3 palette=float3(RG.x,1.0-RG.y,BT.x); palette=lerp(palette,Team,teamMask); float d=dot(normalize(N),normalize(Light)); float band=d<0.38?0.40:(d<0.68?0.72:1.0); float inkMask=saturate(max(Mask.r*0.65,Mask.g)*fade); return lerp(palette*Base*band,Ink,inkMask);",
+          "inputs": "[\"RG\", \"BT\", \"Mask\", \"N\", \"Light\", \"Base\", \"Team\", \"Ink\"]"
+        }
+      ]
+    }
+  ]
+}

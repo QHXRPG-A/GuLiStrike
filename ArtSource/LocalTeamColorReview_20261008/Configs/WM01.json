@@ -1,0 +1,39 @@
+{
+  "name": "WM01",
+  "group": "Mass",
+  "mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+  "kind": "StaticMesh",
+  "bounds": "<Struct 'BoxSphereBounds' (0x0000028085B29040) {origin: {x: -143.563965, y: 0.000610, z: 2367.549316}, box_extent: {x: 3556.111572, y: 3497.689453, z: 3719.979980}, sphere_radius: 6222.379937}>",
+  "unit_id": 2,
+  "display_name": "重防号",
+  "version": "LocalTeamColorReview.20261008.v1",
+  "mutable_regions": "橙色装甲及其暗橙分区；机械蓝灰、暖白、黄灯及线稿固定",
+  "source_palette_candidates": [
+    "#DD6038",
+    "#AC452B"
+  ],
+  "blue_reference": "#2877DB",
+  "red_reference": "#D7534D",
+  "enemy_non_blue_palette": "#D7534D",
+  "configuration_status": "candidate_pending_region_review",
+  "runtime_enabled": false,
+  "geometry_animation_lod_unchanged": true,
+  "materials": [
+    {
+      "slot": 0,
+      "name": "M_Tactical_Contour",
+      "fixed": true,
+      "source": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid"
+    },
+    {
+      "slot": 1,
+      "name": "M_WarMachine_Cel",
+      "fixed": false,
+      "source": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/WM01/M_Review_M_WarMachine_Cel_Rigid.M_Review_M_WarMachine_Cel_Rigid",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/WM01/MI_Blue_1.MI_Blue_1",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/WM01/MI_Red_1.MI_Red_1",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/WM01/MI_Regions_1.MI_Regions_1"
+    }
+  ]
+}

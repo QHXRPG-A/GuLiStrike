@@ -18,13 +18,14 @@ class GULISTRIKE_API UGuLiBuildingCatalog : public UDataAsset
 public:
 	const FGuLiBuildingDefinition* FindDefinition(EGuLiBuildingType Type) const;
 	const FGuLiBuildingDefinition* FindById(int32 Id) const;
+	UFUNCTION(BlueprintCallable, Category="Building|Models")
 	bool ResolveTable(bool bForceRefresh = false);
 	bool IsUsable() const;
 
 	static const TCHAR* GetDefaultCatalogObjectPath();
 	static UGuLiBuildingCatalog* LoadDefaultCatalog();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Building", meta=(ToolTip="Resolved cache; edit the Buildings and Models Excel tables."))
 	TArray<FGuLiBuildingDefinition> Definitions;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building")

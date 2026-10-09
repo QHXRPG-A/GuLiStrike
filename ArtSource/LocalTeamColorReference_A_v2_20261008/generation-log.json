@@ -1,0 +1,402 @@
+{
+  "version": "LocalTeamColorReference_A_v2_20261008",
+  "records": [
+    {
+      "request": "BiZhiMao_blue",
+      "prompt": "Prompts/BiZhiMao_blue.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-586526b7-5a1c-4213-9642-927e2bcd774b.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Hero.png",
+        "D:/UE5.7/test1/ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Front.png",
+        "D:/UE5.7/test1/ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Left.png",
+        "D:/UE5.7/test1/ArtSource/CommanderLOD_20261005/BiZhiMao/Review/LOD0_After_Back.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png"
+      ],
+      "selected_destination": "Boards/BiZhiMao_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "BiZhiMao_red",
+      "prompt": "Prompts/BiZhiMao_red.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-2503da72-738b-4aab-b373-53354f727370.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/BiZhiMao_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_02.jpg"
+      ],
+      "selected_destination": "Boards/BiZhiMao_red.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "DefaultSoldier_blue",
+      "prompt": "Prompts/DefaultSoldier_blue.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-7f7d5b73-a28b-4cca-9c64-7a6cd4948491.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayHero.png",
+        "D:/UE5.7/test1/ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayFront.png",
+        "D:/UE5.7/test1/ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayLeft.png",
+        "D:/UE5.7/test1/ArtSource/CommanderLOD_20261005/DefaultSoldier/Review/Blender/LOD0_GrayBack.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_04.jpg"
+      ],
+      "selected_destination": "Boards/DefaultSoldier_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "DefaultSoldier_red",
+      "prompt": "Prompts/DefaultSoldier_red.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-9d2124f8-aff2-40f1-86b2-521bc9527f67.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_02.jpg"
+      ],
+      "selected_destination": "Boards/DefaultSoldier_red.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "ManualOutpost_blue",
+      "prompt": "Prompts/ManualOutpost_blue.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-48374ec7-18d8-4e70-b02d-b9d73a87faf6.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Hero.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Front.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Left.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Back.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png"
+      ],
+      "selected_destination": "Boards/ManualOutpost_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "ManualOutpost_blue_refine",
+      "prompt": "Prompts/ManualOutpost_blue_refine.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-3ecc639d-7b24-4560-af0d-e5da2387a299.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/ManualOutpost_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Front.png"
+      ],
+      "selected_destination": "Boards/ManualOutpost_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "ManualOutpost_red",
+      "prompt": "Prompts/ManualOutpost_red.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-b70ce883-683b-40d9-8964-4540762ac3b8.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/ManualOutpost_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_02.jpg"
+      ],
+      "selected_destination": "Boards/ManualOutpost_red.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "MissileTurret_blue",
+      "prompt": "Prompts/MissileTurret_blue.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-0e85566a-6154-49a6-964b-750f88e1efd5.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/MissileTurret_Hero.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/MissileTurret_Right.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/MissileTurret_Back.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/MissileTurret_Left.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png"
+      ],
+      "selected_destination": "Boards/MissileTurret_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "MissileTurret_blue_refine",
+      "prompt": "Prompts/MissileTurret_blue_refine.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-44f82cdf-5f33-441a-9665-a446c518353a.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/MissileTurret_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/MissileTurret_Hero.png"
+      ],
+      "selected_destination": "Boards/MissileTurret_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "MissileTurret_red",
+      "prompt": "Prompts/MissileTurret_red.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-9c395f41-074d-45c5-b874-c047b13bd8d5.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/MissileTurret_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_02.jpg"
+      ],
+      "selected_destination": "Boards/MissileTurret_red.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "ResourceFactory_blue",
+      "prompt": "Prompts/ResourceFactory_blue.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-17745213-35fe-45cf-beff-f7be9ed252b3.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Hero.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Front.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Left.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ResourceFactory_Back.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png"
+      ],
+      "selected_destination": "Boards/ResourceFactory_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "ResourceFactory_blue_refine",
+      "prompt": "Prompts/ResourceFactory_blue_refine.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-88baeda9-8173-4e00-bbe5-63b5cbb222df.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/ResourceFactory_blue.png"
+      ],
+      "selected_destination": "Boards/ResourceFactory_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "ResourceFactory_red",
+      "prompt": "Prompts/ResourceFactory_red.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-b651529a-9675-4fdf-bcfc-57a504e32f5a.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/ResourceFactory_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_02.jpg"
+      ],
+      "selected_destination": "Boards/ResourceFactory_red.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SentryTurret_blue",
+      "prompt": "Prompts/SentryTurret_blue.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-410da2ee-bf0f-42db-9e84-3f7116e71106.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Hero.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Right.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Back.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Left.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png"
+      ],
+      "selected_destination": "Boards/SentryTurret_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SentryTurret_blue_refine",
+      "prompt": "Prompts/SentryTurret_blue_refine.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-edd9f420-23ee-400e-8ecd-c0485c60aab5.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SentryTurret_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Back.png"
+      ],
+      "selected_destination": "Boards/SentryTurret_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SentryTurret_red",
+      "prompt": "Prompts/SentryTurret_red.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-8c727688-115e-41df-9d41-ba16f1313954.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SentryTurret_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_02.jpg"
+      ],
+      "selected_destination": "Boards/SentryTurret_red.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "ShieldGenerator_blue",
+      "prompt": "Prompts/ShieldGenerator_blue.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-37041a62-3a21-4808-ad1d-9c6362335827.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Hero.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Front.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Left.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ShieldGenerator_Back.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png"
+      ],
+      "selected_destination": "Boards/ShieldGenerator_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "ShieldGenerator_blue_refine",
+      "prompt": "Prompts/ShieldGenerator_blue_refine.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-3eee7542-406a-4a08-838c-b91efe426d5f.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/ShieldGenerator_blue.png"
+      ],
+      "selected_destination": "Boards/ShieldGenerator_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "ShieldGenerator_red",
+      "prompt": "Prompts/ShieldGenerator_red.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-67c8c783-c448-4eef-8bba-71339e1ee5bf.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/ShieldGenerator_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_02.jpg"
+      ],
+      "selected_destination": "Boards/ShieldGenerator_red.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_AirBase_blue",
+      "prompt": "Prompts/SSF_AirBase_blue.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-b3f3664f-f4d2-4787-972a-2e65dbdfa4b4.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_AirBase_Views.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_04.jpg"
+      ],
+      "selected_destination": "Boards/SSF_AirBase_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_AirBase_blue_refine",
+      "prompt": "Prompts/SSF_AirBase_blue_refine.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-9c090927-3e76-4188-8c7b-8b1640677636.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_AirBase_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png"
+      ],
+      "selected_destination": "Boards/SSF_AirBase_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_AirBase_red",
+      "prompt": "Prompts/SSF_AirBase_red.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-d709e4ac-48d7-4e39-a9d5-85b759bf2651.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_AirBase_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_02.jpg"
+      ],
+      "selected_destination": "Boards/SSF_AirBase_red.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_CloningCenter_blue",
+      "prompt": "Prompts/SSF_CloningCenter_blue.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-cc6118b3-74bb-4df0-874f-5f2abf389e01.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_CloningCenter_Views.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_04.jpg"
+      ],
+      "selected_destination": "Boards/SSF_CloningCenter_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_CloningCenter_blue_refine",
+      "prompt": "Prompts/SSF_CloningCenter_blue_refine.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-36abf55a-dddf-4a20-a945-8706f97ecf85.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_CloningCenter_blue.png"
+      ],
+      "selected_destination": "Boards/SSF_CloningCenter_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_CloningCenter_red",
+      "prompt": "Prompts/SSF_CloningCenter_red.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-3e0e8144-1a5e-46d0-855e-281f448be305.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_CloningCenter_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_02.jpg"
+      ],
+      "selected_destination": "Boards/SSF_CloningCenter_red.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_CommandCenter_blue",
+      "prompt": "Prompts/SSF_CommandCenter_blue.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-a4a5ce9d-7f3e-44c6-9783-143b19b7a0b1.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_CommandCenter_Views.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_04.jpg"
+      ],
+      "selected_destination": "Boards/SSF_CommandCenter_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_CommandCenter_red",
+      "prompt": "Prompts/SSF_CommandCenter_red.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-a3410e8c-6487-43c8-9555-793f3d29c202.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_CommandCenter_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_02.jpg"
+      ],
+      "selected_destination": "Boards/SSF_CommandCenter_red.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_MilitaryFactory_blue",
+      "prompt": "Prompts/SSF_MilitaryFactory_blue.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-c1becf51-b36f-4f16-8347-25d997c9e0a5.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_MilitaryFactory_Views.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_04.jpg"
+      ],
+      "selected_destination": "Boards/SSF_MilitaryFactory_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_MilitaryFactory_blue_refine",
+      "prompt": "Prompts/SSF_MilitaryFactory_blue_refine.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-f2652a46-085c-4150-8c59-d54e936d9841.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_MilitaryFactory_blue.png"
+      ],
+      "selected_destination": "Boards/SSF_MilitaryFactory_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_MilitaryFactory_red",
+      "prompt": "Prompts/SSF_MilitaryFactory_red.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-44dc89f0-af79-4547-91c2-a448d1ee6543.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_MilitaryFactory_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_02.jpg"
+      ],
+      "selected_destination": "Boards/SSF_MilitaryFactory_red.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_Reactor_blue",
+      "prompt": "Prompts/SSF_Reactor_blue.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-d446401b-6254-4b78-b0bc-8457c2786e9a.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_Reactor_Views.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_04.jpg"
+      ],
+      "selected_destination": "Boards/SSF_Reactor_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_Reactor_red",
+      "prompt": "Prompts/SSF_Reactor_red.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-19b72199-2d2f-4109-8877-87b6d39669b2.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_Reactor_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_02.jpg"
+      ],
+      "selected_destination": "Boards/SSF_Reactor_red.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_StrategyCenter_blue",
+      "prompt": "Prompts/SSF_StrategyCenter_blue.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-5218dd4b-ea0c-4ed5-8c02-bdb2ff2bf543.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_StrategyCenter_Views.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/DefaultSoldier_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_04.jpg"
+      ],
+      "selected_destination": "Boards/SSF_StrategyCenter_blue.png",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "request": "SSF_StrategyCenter_red",
+      "prompt": "Prompts/SSF_StrategyCenter_red.txt",
+      "source_output": "C:\\Users\\a\\.codex\\generated_images\\01a115b5-8795-7510-a519-326935d4244e\\exec-f1bd9e3f-564b-4d49-b380-7a5a343f6ef0.png",
+      "reference_inputs": [
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_StrategyCenter_blue.png",
+        "D:/UE5.7/test1/ArtSource/LocalTeamColorReference_A_v2_20261008/References/Palette_02.jpg"
+      ],
+      "selected_destination": "Boards/SSF_StrategyCenter_red.png",
+      "tool": "image_gen.imagegen"
+    }
+  ]
+}

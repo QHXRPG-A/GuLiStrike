@@ -1,0 +1,39 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "customs": [
+      {
+        "name": "MaterialExpressionCustom_2",
+        "code": "float d=dot(normalize(N),normalize(L)); float3 tones=d<.12?float3(.43,.52,.66):(d<.55?float3(.72,.78,.88):float3(1,1,1)); float3 paint=Base*tones; return paint;",
+        "inputs": [
+          "Base",
+          "N",
+          "L",
+          "Ink"
+        ],
+        "incoming": [
+          "MaterialExpressionTextureSample_0",
+          "MaterialExpressionVertexInterpolator_0",
+          "MaterialExpressionVectorParameter_1",
+          "MaterialExpressionVectorParameter_0"
+        ]
+      }
+    ],
+    "functions": [
+      "get_input_node_output_name_for_material_expression",
+      "get_inputs_for_material_expression",
+      "get_material_expression_input_names",
+      "get_material_expression_input_types",
+      "get_material_property_input_node",
+      "get_material_property_input_node_output_name"
+    ],
+    "samplers": [
+      "SAMPLERTYPE_GRAYSCALE",
+      "SAMPLERTYPE_LINEAR_GRAYSCALE",
+      "SAMPLERTYPE_VIRTUAL_GRAYSCALE",
+      "SAMPLERTYPE_VIRTUAL_LINEAR_GRAYSCALE"
+    ]
+  }
+}

@@ -3,6 +3,8 @@
 #include "Engine/DataTable.h"
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInterface.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
+#include "GameFramework/Actor.h"
 
 const FGuLiBuildingDefinition* UGuLiBuildingCatalog::FindDefinition(EGuLiBuildingType Type) const
 {
@@ -29,7 +31,9 @@ bool UGuLiBuildingCatalog::ResolveTable(bool bForceRefresh)
 		auto& D = Resolved.AddDefaulted_GetRef();
 		D.DefinitionId = R.Id; D.Type = EGuLiBuildingType(R.PlacementType); D.Category = EGuLiBuildingCategory(R.Category);
 		D.DisplayName = FText::FromString(R.DisplayName); D.Description = FText::FromString(R.Description);
-		D.Mesh = Cast<UStaticMesh>(R.Mesh.LoadSynchronous());
+		D.ModelId = R.ModelId;
+		D.Mesh = GuLiModels::Load<UStaticMesh>(this, R.ModelId);
+		D.PresentationClass = GuLiModels::LoadClass<AActor>(this, R.ModelId);
 		D.CollisionExtent = R.CollisionExtent; D.VisualOffset = R.VisualOffset; D.MeshScale = R.MeshScale;
 		D.MaxHealth = R.MaxHealth; D.MaxShield = R.MaxShield; D.BuildLevel = R.BuildLevel;
 		D.Cost.Blue = R.BlueCost; D.Cost.Red = R.RedCost; D.ConstructionWork = R.ConstructionWork;

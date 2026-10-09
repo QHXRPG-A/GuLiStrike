@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 import unreal
+from Models.model_catalog import ship_part_model, resource
 import migrate_ship_part_visuals as visual_migration
 
 PROJECT = Path('D:/UE5.7/test1')
@@ -72,7 +73,7 @@ def definitions():
     result = []
     for key, label, skeletal, weapon in names:
         source_key = key.removesuffix('_Lv2')
-        mesh = MODELS + ('/Rigged/SKM_SC_' if skeletal else '/SM_SC_') + source_key
+        mesh = resource(ship_part_model('SC_' + key))
         records = [g for g in groups() if any(m['part'] == key for m in g['members'])]
         sockets = list(dict.fromkeys(s for g in records for m in g['members'] if m['part'] == key for s in m['sockets']))
         result.append(dict(key=key, name='BP_SC_' + key, path=DEST + '/BP_SC_' + key,
@@ -180,8 +181,7 @@ def create_parts():
         assert isinstance(cdo, unreal.GuLiStrikeShipPartComponent)
         assert isinstance(cdo, unreal.GuLiStrikeWeaponPart) == row['weapon']
         cdo.set_editor_property('visual_type', unreal.GuLiStrikeShipPartVisualType.SKELETAL_MESH if row['skeletal'] else unreal.GuLiStrikeShipPartVisualType.STATIC_MESH)
-        cdo.set_editor_property('skeletal_mesh', unreal.load_asset(row['mesh']) if row['skeletal'] else None)
-        cdo.set_editor_property('static_mesh', None if row['skeletal'] else unreal.load_asset(row['mesh']))
+        cdo.set_editor_property('model_id', ship_part_model('SC_' + row['key']))
         cdo.set_editor_property('override_materials', [])
         cdo.set_editor_property('compatible_sockets', row['compatible_sockets'])
         cdo.set_editor_property('part_relative_transform', unreal.Transform())
@@ -208,8 +208,10 @@ def validate_parts():
         cdo = unreal.get_default_object(bp.generated_class())
         expected_type = unreal.GuLiStrikeShipPartVisualType.SKELETAL_MESH if row['skeletal'] else unreal.GuLiStrikeShipPartVisualType.STATIC_MESH
         assert cdo.get_editor_property('visual_type') == expected_type, row['path']
-        asset = cdo.get_editor_property('skeletal_mesh' if row['skeletal'] else 'static_mesh')
-        assert path(asset).split('.')[0] == row['mesh'], row['path']
+        mid = ship_part_model('SC_' + row['key'])
+        assert int(cdo.get_editor_property('model_id')) == mid, row['path']
+        asset = unreal.load_object(None, resource(mid))
+        assert path(asset) == row['mesh'], row['path']
         assert [str(s) for s in cdo.get_editor_property('compatible_sockets')] == row['compatible_sockets'], row['path']
         assert not cdo.get_editor_property('override_materials'), row['path']
         assert visual_migration.transform(cdo.get_editor_property('part_relative_transform')) == visual_migration.transform(unreal.Transform()), row['path']

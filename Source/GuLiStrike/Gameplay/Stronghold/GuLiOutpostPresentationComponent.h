@@ -27,7 +27,8 @@ class GULISTRIKE_API UGuLiOutpostPresentationSettings : public UObject
 	GENERATED_BODY()
 public:
 	UGuLiOutpostPresentationSettings();
-	UPROPERTY(Config, EditAnywhere, Category="Outpost") TSoftObjectPtr<UStaticMesh> Mesh;
+	UPROPERTY(Config, meta=(DeprecatedProperty, DeprecationMessage="Author Models.ResourcePath through ModelId.")) TSoftObjectPtr<UStaticMesh> Mesh;
+	UPROPERTY(Config, EditAnywhere, Category="Models") int32 ModelId = 2003;
 	UPROPERTY(Config, EditAnywhere, Category="Outpost") TSoftObjectPtr<UMaterialInterface> BodyMaterial;
 	UPROPERTY(Config, EditAnywhere, Category="Outpost") TSoftObjectPtr<UMaterialInterface> HaloMaterial;
 	UPROPERTY(Config, EditAnywhere, Category="Outpost") float ModelHeightCm = 1000.0f;
@@ -48,6 +49,7 @@ public:
 	void ApplyOwnerState(const FGuLiOutpostOwnerState& InState);
 	static double SampleFloatHeight(double ServerTime, double Epoch, double Amplitude, double Period);
 	static FLinearColor OwnerColor(EGuLiTeam Team);
+	bool GetSceneUIHalo(FVector& Center, EGuLiTeam& Team, FVector2D& RadiiCm) const;
 
 protected:
 	virtual void BeginPlay() override;
@@ -65,4 +67,5 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UMaterialBillboardComponent> Halo;
 	UPROPERTY(Transient) TObjectPtr<UMaterialInstanceDynamic> BodyMaterial;
 	UPROPERTY(Transient) TObjectPtr<UMaterialInstanceDynamic> HaloMaterial;
+	FLinearColor LastGlowColor = FLinearColor::Transparent;
 };

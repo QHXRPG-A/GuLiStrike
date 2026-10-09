@@ -15,6 +15,8 @@ class AGuLiCommanderPresentationActor;
 class AGuLiSoldierStateReplicator;
 class UGuLiCommanderHUDWidget;
 class UGuLiBuildingPlacementComponent;
+class UGuLiSceneUIWidget;
+class UFont;
 enum class EGuLiBuildingFeedbackTone : uint8;
 
 namespace GuLiCommanderHUD
@@ -58,6 +60,10 @@ public:
 	bool PickOverviewIcon(const FVector2D& ScreenPosition, FGuLiCommanderOverviewMarker& Out, bool bInspect = false);
 
 private:
+	void SceneLine(float X1, float Y1, float X2, float Y2, FLinearColor Color, float Width=1);
+	void SceneRect(FLinearColor Color, float X, float Y, float W, float H);
+	void SceneText(const FString& Text, FLinearColor Color, float X, float Y, UFont* Font=nullptr, float Scale=1, bool bScalePosition=false);
+	TWeakObjectPtr<UGuLiSceneUIWidget> SceneUI;
 	void BuildOverviewMarkers();
 	void DrawOverviewMarkers();
 	TArray<FGuLiCommanderOverviewMarker> OverviewMarkers;

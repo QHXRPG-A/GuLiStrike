@@ -1,0 +1,154 @@
+{
+  "id": "SSF_CloningCenter",
+  "name": "SSF 克隆中心",
+  "title": "CLONING CENTER",
+  "category": "SSF",
+  "fixed": [
+    "入口、顶盖及固定边框：乳白 #FEE4D9",
+    "竖向背架和固定主体：米砂 #D5C09C",
+    "原有枪管/机构/支承/电缆/工作面/深槽：深灰 #2C3735，保持各模型既有分件"
+  ],
+  "team": [
+    "浅队色：四舱现有外罩",
+    "深队色：舱框、侧护盖及顶口框"
+  ],
+  "function": [
+    "顶盖开口内侧固定深灰，不混入橙色"
+  ],
+  "structure": "保留两层成对舱体、吊线、斜入口、上部开口及侧天线。",
+  "source": [
+    "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_CloningCenter_Views.png"
+  ],
+  "team_primary": [
+    "四舱现有外罩"
+  ],
+  "team_secondary": [
+    "舱框、侧护盖及顶口框"
+  ],
+  "paint_zones": {
+    "fixed_armor": "入口、顶盖及固定边框",
+    "fixed_secondary": "竖向背架和固定主体",
+    "team_primary": "四舱现有外罩",
+    "team_secondary": "舱框、侧护盖及顶口框",
+    "mechanisms": "连接软管、舱端凹口与机构：深灰"
+  },
+  "team_lights": [],
+  "previous_boards": {
+    "blue": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_CloningCenter_blue.png",
+    "red": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_CloningCenter_red.png"
+  },
+  "cream_coverage_target": {
+    "range_percent": [
+      20,
+      30
+    ],
+    "basis": "visible model surfaces; excludes background, outline and cast shadow",
+    "is_measured": false
+  },
+  "boards": {
+    "blue": {
+      "path": "Boards/SSF_CloningCenter_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1651375,
+      "sha256": "a764f91c231f429cd5f76e19bc6168e3757ed0061df088bcaa3a4f14c3d784e1"
+    },
+    "red": {
+      "path": "Boards/SSF_CloningCenter_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1622876,
+      "sha256": "3ab13a73b78a49b0d163f10d9373fa7e2fee37daba76de0bb3292fabe3dd506a"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CloningCenter/Meshes/SK_Blue_CloningCenter.SK_Blue_CloningCenter",
+  "source_kind": "SkeletalMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_CloningCenter_Views.png",
+      "sha256": "3e9f14fc85c59170ac913928f42552d5f256ec0f0fdca06f4757d43ee9036848"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v3_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    },
+    "fixed_secondary": {
+      "hex": "#D5C09C",
+      "card": 1,
+      "label": "固定米砂"
+    },
+    "blue_secondary": {
+      "hex": "#274E61",
+      "card": 4,
+      "label": "深蓝灰队色"
+    },
+    "red_secondary": {
+      "hex": "#662249",
+      "card": 2,
+      "label": "深莓队色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "enemy_non_blue_secondary": "#662249",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "paint_contract": {
+    "fixed": {
+      "cream": "#FEE4D9",
+      "sand": "#D5C09C",
+      "mechanisms": "#2C3735"
+    },
+    "team": {
+      "blue": {
+        "primary": "#6AA4BE",
+        "secondary": "#274E61"
+      },
+      "red": {
+        "primary": "#A34053",
+        "secondary": "#662249"
+      }
+    },
+    "team_light": null,
+    "shading": "Three cel-shading levels are separate from the two team base paint colors.",
+    "fixed_function_policy": "Only existing function locations and palette colors; shield top lights are team-controlled."
+  },
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

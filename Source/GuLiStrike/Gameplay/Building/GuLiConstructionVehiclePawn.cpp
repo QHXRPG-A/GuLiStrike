@@ -15,6 +15,7 @@
 #include "Gameplay/Units/GuLiEngineeringAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "Gameplay/Models/GuLiModelPresentationComponent.h"
 
 AGuLiConstructionVehiclePawn::AGuLiConstructionVehiclePawn(const FObjectInitializer& Initializer)
 	: Super(Initializer.SetDefaultSubobjectClass<UGuLiExternalCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -64,6 +65,7 @@ void AGuLiConstructionVehiclePawn::OnRep_Definition()
 	Presentation->SetRelativeScale3D(FVector(PresentationScale));
 	Presentation->SetRelativeLocation(FVector(0,0,-130));
 	AActor* Child = Presentation->GetChildActor(); check(Child);
+	UGuLiModelPresentationComponent::InstallForPresentationActor(Child);
 	Child->SetActorEnableCollision(false);
 	TravelBounds = FBox(ForceInit);
 	TInlineComponentArray<UMeshComponent*> Meshes(Child);

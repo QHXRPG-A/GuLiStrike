@@ -1,0 +1,501 @@
+{
+  "key": "SentryTurret",
+  "source": "D:\\UE5.7\\test1\\ArtSource\\LocalTeamColorProduction_B_v1_20261008\\References\\SentryTurret_Original.blend",
+  "source_sha256": "e92eec4c075f972290e8db63b8cfd4b60322bb18421520e7032c4cddd66a6c05",
+  "B_approval": "pending",
+  "scope": "palette and authorized consistent cel/three-tone/line rendering only",
+  "topology_modified": false,
+  "vertices_modified": false,
+  "UVs_modified": false,
+  "rig_animation_LODs_modified": false,
+  "UE_modified": false,
+  "teams": [
+    {
+      "team": "Blue",
+      "scene": "Blue_SentryTurret",
+      "collection": "Bv1_Blue_SentryTurret_LOD0",
+      "objects": [
+        {
+          "name": "Blue_SentryTurret_Stylized_Turrets_A_a",
+          "source": "Stylized_Turrets_A_a",
+          "LOD": 0,
+          "signature": "75d3043e9857cf9671d1c8100f774f542b67a81aed83bdf236d9228a0926bb24",
+          "color_area_fractions": {
+            "TeamLight": 0.18959,
+            "TeamDark": 0.10891,
+            "Cream": 0.21765,
+            "Gray": 0.3229,
+            "Sand": 0.16095
+          },
+          "vertices": 815,
+          "polygons": 1444,
+          "UVs": [
+            "UVmap_0",
+            "LightMapUV"
+          ]
+        }
+      ],
+      "region_mapping": {
+        "Stylized_Turrets_A_a": [
+          {
+            "source_component": 0,
+            "role": "TeamLight",
+            "center": [
+              5.469438552856445,
+              4.096440315246582,
+              12.46899127960205
+            ],
+            "dimensions": [
+              0.9232921600341797,
+              5.628544330596924,
+              3.2611331939697266
+            ],
+            "faces": 48
+          },
+          {
+            "source_component": 1,
+            "role": "TeamLight",
+            "center": [
+              -5.469303131103516,
+              4.096440315246582,
+              12.468990325927734
+            ],
+            "dimensions": [
+              0.9232926368713379,
+              5.628544330596924,
+              3.261134147644043
+            ],
+            "faces": 48
+          },
+          {
+            "source_component": 2,
+            "role": "side armor team-light / rear cover team-dark / front fixed cream",
+            "center": [
+              6.699562072753906e-05,
+              5.839570045471191,
+              10.108756065368652
+            ],
+            "dimensions": [
+              10.685510635375977,
+              12.644248962402344,
+              11.739364624023438
+            ],
+            "faces": 188
+          },
+          {
+            "source_component": 3,
+            "role": "Cream",
+            "center": [
+              6.747245788574219e-05,
+              6.184144973754883,
+              14.780082702636719
+            ],
+            "dimensions": [
+              5.907932758331299,
+              6.558088302612305,
+              3.8640480041503906
+            ],
+            "faces": 26
+          },
+          {
+            "source_component": 4,
+            "role": "Gray",
+            "center": [
+              5.429158687591553,
+              4.13372802734375,
+              12.49190902709961
+            ],
+            "dimensions": [
+              0.0,
+              4.530953884124756,
+              2.2517480850219727
+            ],
+            "faces": 2
+          },
+          {
+            "source_component": 5,
+            "role": "Gray",
+            "center": [
+              -5.429024696350098,
+              4.13372802734375,
+              12.49190902709961
+            ],
+            "dimensions": [
+              0.0,
+              4.530953884124756,
+              2.2517480850219727
+            ],
+            "faces": 2
+          },
+          {
+            "source_component": 6,
+            "role": "fixed sand base / existing upper turntable band team-dark",
+            "center": [
+              0.0,
+              6.282421588897705,
+              2.13885235786438
+            ],
+            "dimensions": [
+              19.35792350769043,
+              19.357929229736328,
+              4.274528980255127
+            ],
+            "faces": 92
+          },
+          {
+            "source_component": 7,
+            "role": "Gray",
+            "center": [
+              5.900480270385742,
+              5.307216644287109,
+              12.45926284790039
+            ],
+            "dimensions": [
+              1.1059627532958984,
+              2.211925983428955,
+              2.042527198791504
+            ],
+            "faces": 94
+          },
+          {
+            "source_component": 8,
+            "role": "Gray",
+            "center": [
+              6.73532485961914e-05,
+              -9.840563774108887,
+              11.967529296875
+            ],
+            "dimensions": [
+              6.639055252075195,
+              18.98667335510254,
+              6.639029502868652
+            ],
+            "faces": 262
+          },
+          {
+            "source_component": 9,
+            "role": "Gray",
+            "center": [
+              -5.900345802307129,
+              5.307216644287109,
+              12.45926284790039
+            ],
+            "dimensions": [
+              1.1059622764587402,
+              2.211925983428955,
+              2.042527198791504
+            ],
+            "faces": 94
+          },
+          {
+            "source_component": 10,
+            "role": "Gray",
+            "center": [
+              3.635484457015991,
+              14.58493709564209,
+              4.059148788452148
+            ],
+            "dimensions": [
+              8.790401458740234,
+              9.497926712036133,
+              8.197860717773438
+            ],
+            "faces": 400
+          },
+          {
+            "source_component": 11,
+            "role": "Gray",
+            "center": [
+              5.900480270385742,
+              2.9418997764587402,
+              12.45926284790039
+            ],
+            "dimensions": [
+              1.1059627532958984,
+              2.2119264602661133,
+              2.042527198791504
+            ],
+            "faces": 94
+          },
+          {
+            "source_component": 12,
+            "role": "Gray",
+            "center": [
+              -5.900345802307129,
+              2.9418997764587402,
+              12.45926284790039
+            ],
+            "dimensions": [
+              1.1059622764587402,
+              2.2119264602661133,
+              2.042527198791504
+            ],
+            "faces": 94
+          }
+        ]
+      },
+      "view": {
+        "lo": [
+          -9.678961753845215,
+          -19.333900451660156,
+          -0.039781492203474045
+        ],
+        "hi": [
+          9.678961753845215,
+          19.333900451660156,
+          16.712106704711914
+        ],
+        "center": [
+          0.0,
+          0.0,
+          8.336162567138672
+        ],
+        "ortho": 44.76042175292969
+      }
+    },
+    {
+      "team": "Red",
+      "scene": "Red_SentryTurret",
+      "collection": "Bv1_Red_SentryTurret_LOD0",
+      "objects": [
+        {
+          "name": "Red_SentryTurret_Stylized_Turrets_A_a",
+          "source": "Stylized_Turrets_A_a",
+          "LOD": 0,
+          "signature": "75d3043e9857cf9671d1c8100f774f542b67a81aed83bdf236d9228a0926bb24",
+          "color_area_fractions": {
+            "TeamLight": 0.18959,
+            "TeamDark": 0.10891,
+            "Cream": 0.21765,
+            "Gray": 0.3229,
+            "Sand": 0.16095
+          },
+          "vertices": 815,
+          "polygons": 1444,
+          "UVs": [
+            "UVmap_0",
+            "LightMapUV"
+          ]
+        }
+      ],
+      "region_mapping": {
+        "Stylized_Turrets_A_a": [
+          {
+            "source_component": 0,
+            "role": "TeamLight",
+            "center": [
+              5.469438552856445,
+              4.096440315246582,
+              12.46899127960205
+            ],
+            "dimensions": [
+              0.9232921600341797,
+              5.628544330596924,
+              3.2611331939697266
+            ],
+            "faces": 48
+          },
+          {
+            "source_component": 1,
+            "role": "TeamLight",
+            "center": [
+              -5.469303131103516,
+              4.096440315246582,
+              12.468990325927734
+            ],
+            "dimensions": [
+              0.9232926368713379,
+              5.628544330596924,
+              3.261134147644043
+            ],
+            "faces": 48
+          },
+          {
+            "source_component": 2,
+            "role": "side armor team-light / rear cover team-dark / front fixed cream",
+            "center": [
+              6.699562072753906e-05,
+              5.839570045471191,
+              10.108756065368652
+            ],
+            "dimensions": [
+              10.685510635375977,
+              12.644248962402344,
+              11.739364624023438
+            ],
+            "faces": 188
+          },
+          {
+            "source_component": 3,
+            "role": "Cream",
+            "center": [
+              6.747245788574219e-05,
+              6.184144973754883,
+              14.780082702636719
+            ],
+            "dimensions": [
+              5.907932758331299,
+              6.558088302612305,
+              3.8640480041503906
+            ],
+            "faces": 26
+          },
+          {
+            "source_component": 4,
+            "role": "Gray",
+            "center": [
+              5.429158687591553,
+              4.13372802734375,
+              12.49190902709961
+            ],
+            "dimensions": [
+              0.0,
+              4.530953884124756,
+              2.2517480850219727
+            ],
+            "faces": 2
+          },
+          {
+            "source_component": 5,
+            "role": "Gray",
+            "center": [
+              -5.429024696350098,
+              4.13372802734375,
+              12.49190902709961
+            ],
+            "dimensions": [
+              0.0,
+              4.530953884124756,
+              2.2517480850219727
+            ],
+            "faces": 2
+          },
+          {
+            "source_component": 6,
+            "role": "fixed sand base / existing upper turntable band team-dark",
+            "center": [
+              0.0,
+              6.282421588897705,
+              2.13885235786438
+            ],
+            "dimensions": [
+              19.35792350769043,
+              19.357929229736328,
+              4.274528980255127
+            ],
+            "faces": 92
+          },
+          {
+            "source_component": 7,
+            "role": "Gray",
+            "center": [
+              5.900480270385742,
+              5.307216644287109,
+              12.45926284790039
+            ],
+            "dimensions": [
+              1.1059627532958984,
+              2.211925983428955,
+              2.042527198791504
+            ],
+            "faces": 94
+          },
+          {
+            "source_component": 8,
+            "role": "Gray",
+            "center": [
+              6.73532485961914e-05,
+              -9.840563774108887,
+              11.967529296875
+            ],
+            "dimensions": [
+              6.639055252075195,
+              18.98667335510254,
+              6.639029502868652
+            ],
+            "faces": 262
+          },
+          {
+            "source_component": 9,
+            "role": "Gray",
+            "center": [
+              -5.900345802307129,
+              5.307216644287109,
+              12.45926284790039
+            ],
+            "dimensions": [
+              1.1059622764587402,
+              2.211925983428955,
+              2.042527198791504
+            ],
+            "faces": 94
+          },
+          {
+            "source_component": 10,
+            "role": "Gray",
+            "center": [
+              3.635484457015991,
+              14.58493709564209,
+              4.059148788452148
+            ],
+            "dimensions": [
+              8.790401458740234,
+              9.497926712036133,
+              8.197860717773438
+            ],
+            "faces": 400
+          },
+          {
+            "source_component": 11,
+            "role": "Gray",
+            "center": [
+              5.900480270385742,
+              2.9418997764587402,
+              12.45926284790039
+            ],
+            "dimensions": [
+              1.1059627532958984,
+              2.2119264602661133,
+              2.042527198791504
+            ],
+            "faces": 94
+          },
+          {
+            "source_component": 12,
+            "role": "Gray",
+            "center": [
+              -5.900345802307129,
+              2.9418997764587402,
+              12.45926284790039
+            ],
+            "dimensions": [
+              1.1059622764587402,
+              2.2119264602661133,
+              2.042527198791504
+            ],
+            "faces": 94
+          }
+        ]
+      },
+      "view": {
+        "lo": [
+          -9.678961753845215,
+          -19.333900451660156,
+          -0.039781492203474045
+        ],
+        "hi": [
+          9.678961753845215,
+          19.333900451660156,
+          16.712106704711914
+        ],
+        "center": [
+          0.0,
+          0.0,
+          8.336162567138672
+        ],
+        "ortho": 44.76042175292969
+      }
+    }
+  ],
+  "original_animation_signatures": {}
+}

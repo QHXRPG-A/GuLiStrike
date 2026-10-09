@@ -142,6 +142,7 @@ class AGuLiStrikeShip : public ACharacter
 	/** 飞船舰体静态网格体；其上的 socket 是部件挂点 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* HullMesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Models", meta=(AllowPrivateAccess="true")) int32 HullModelId = 0;
 
 	/** 跟随在飞船后上方的相机臂 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))

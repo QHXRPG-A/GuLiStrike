@@ -45,15 +45,17 @@ class GULISTRIKE_API UGuLiStrikeShipPartComponent : public USceneComponent
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Models", meta=(ClampMin="0")) int32 ModelId = 0;
+	UFUNCTION(BlueprintCallable, Category="Models") bool SetModelId(int32 NewModelId);
 	/** 安装点和部件行为由本组件管理；网格由独立的视觉子组件显示。 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ship Part|Visual")
 	EGuLiStrikeShipPartVisualType VisualType = EGuLiStrikeShipPartVisualType::StaticMesh;
 
 	/** 保留原 UStaticMeshComponent 的属性名和类型，使旧蓝图的网格引用可以迁移。 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ship Part|Visual", meta=(EditCondition="VisualType == EGuLiStrikeShipPartVisualType::StaticMesh", EditConditionHides))
+	UPROPERTY(BlueprintReadOnly, Category="Ship Part|Legacy", meta=(DeprecatedProperty, DeprecationMessage="Author ModelId in Ship.Parts; resolved compatibility cache only."))
 	TObjectPtr<UStaticMesh> StaticMesh;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ship Part|Visual", meta=(EditCondition="VisualType == EGuLiStrikeShipPartVisualType::SkeletalMesh", EditConditionHides))
+	UPROPERTY(BlueprintReadOnly, Category="Ship Part|Legacy", meta=(DeprecatedProperty, DeprecationMessage="Author ModelId in Ship.Parts; resolved compatibility cache only."))
 	TObjectPtr<USkeletalMesh> SkeletalMesh;
 
 	/** 同样保留旧材质覆盖数组的属性名；空项沿用网格自身的材质。 */

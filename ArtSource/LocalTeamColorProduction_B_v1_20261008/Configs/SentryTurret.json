@@ -1,0 +1,439 @@
+{
+  "id": "SentryTurret",
+  "name": "哨戒炮",
+  "title": "SENTRY TURRET",
+  "category": "Building",
+  "building_type_id": 2,
+  "fixed": [
+    "炮塔正面护框和顶盖、转台护甲：乳白 #FEE4D9",
+    "现有四向基座装甲：米砂 #D5C09C",
+    "原有枪管/机构/支承/电缆/工作面/深槽：深灰 #2C3735，保持各模型既有分件"
+  ],
+  "team": [
+    "浅队色：炮塔两侧连续大护板及六孔通风盖框",
+    "深队色：既有后上检修盖、现有转台窄环"
+  ],
+  "function": [
+    "仅保留原有功能色，不新增灯"
+  ],
+  "source": [
+    "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/SentryTurret_Hero.png",
+    "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/SentryTurret_Right.png",
+    "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/SentryTurret_Back.png",
+    "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/SentryTurret_Left.png"
+  ],
+  "source_view_mapping": {
+    "Hero": "Hero",
+    "Front": "Right (+Y)",
+    "Left": "Back (-X)",
+    "Back": "Left (-Y)"
+  },
+  "structure": "保留单炮、原有阶梯炮管和一根后部回线软管，炮管固定深灰。",
+  "team_primary": [
+    "炮塔两侧连续大护板及六孔通风盖框"
+  ],
+  "team_secondary": [
+    "既有后上检修盖、现有转台窄环"
+  ],
+  "paint_zones": {
+    "fixed_armor": "炮塔正面护框和顶盖、转台护甲",
+    "fixed_secondary": "现有四向基座装甲",
+    "team_primary": "炮塔两侧连续大护板及六孔通风盖框",
+    "team_secondary": "既有后上检修盖、现有转台窄环",
+    "mechanisms": "炮管、炮膛、关节、通风槽及回线软管：深灰"
+  },
+  "team_lights": [],
+  "previous_boards": {
+    "blue": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SentryTurret_blue.png",
+    "red": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SentryTurret_red.png"
+  },
+  "cream_coverage_target": {
+    "range_percent": [
+      20,
+      30
+    ],
+    "basis": "visible model surfaces; excludes background, outline and cast shadow",
+    "is_measured": false
+  },
+  "boards": {
+    "blue": {
+      "path": "Boards/SentryTurret_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1527468,
+      "sha256": "4c5aee84a7f32ea50b8e753b15c47a409b6b4f4a0cbfdfda38c94c2ab62634e8"
+    },
+    "red": {
+      "path": "Boards/SentryTurret_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1524091,
+      "sha256": "d212bd46ddb81cd52c36b1089e5e7ee0a18197ac4056dc829d816ff4250ef290"
+    }
+  },
+  "source_mesh": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
+  "source_kind": "StaticMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/SentryTurret_Hero.png",
+      "sha256": "23e446acb19a4e714bb31637cc547a0423b5a71dc4de22df4a7d9463d3e47349"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/SentryTurret_Right.png",
+      "sha256": "d34b32deee0b2b6732f37dbc6f3ab1225c4a0f987361deb37cc141e4941bc6fe"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/SentryTurret_Back.png",
+      "sha256": "559f69087ccfc23978885da6b6aaa03c89a562816e7890d8dbd02c7c89cc36e4"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/SentryTurret_Left.png",
+      "sha256": "a77bdc03a88f727e0a28d797abd3948f7a69a4b28d161365ad797adbaaf6086e"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v3_20261008",
+  "construction_B": {
+    "status": "review_pending",
+    "approved": false,
+    "authorization": "../production-authorization.json",
+    "native_file": "../Models/SentryTurret_PaletteOnly_B_v1.blend",
+    "sha256": "fd3038e82335f01538ceb08ef2d9d5bf6d08333f96c8043f82098bb49b7d8e19",
+    "source_sha256": "e92eec4c075f972290e8db63b8cfd4b60322bb18421520e7032c4cddd66a6c05",
+    "role_attribute": "Bv1_ColorRegion (FACE/INT)",
+    "role_ids": [
+      "Cream",
+      "Sand",
+      "Gray",
+      "TeamLight",
+      "TeamDark",
+      "Amber",
+      "Cyan",
+      "TeamLightLamp"
+    ],
+    "palette_source": "original user swatch cards",
+    "native_regions": {
+      "Stylized_Turrets_A_a": [
+        {
+          "source_component": 0,
+          "role": "TeamLight",
+          "center": [
+            5.469438552856445,
+            4.096440315246582,
+            12.46899127960205
+          ],
+          "dimensions": [
+            0.9232921600341797,
+            5.628544330596924,
+            3.2611331939697266
+          ],
+          "faces": 48
+        },
+        {
+          "source_component": 1,
+          "role": "TeamLight",
+          "center": [
+            -5.469303131103516,
+            4.096440315246582,
+            12.468990325927734
+          ],
+          "dimensions": [
+            0.9232926368713379,
+            5.628544330596924,
+            3.261134147644043
+          ],
+          "faces": 48
+        },
+        {
+          "source_component": 2,
+          "role": "side armor team-light / rear cover team-dark / front fixed cream",
+          "center": [
+            6.699562072753906e-05,
+            5.839570045471191,
+            10.108756065368652
+          ],
+          "dimensions": [
+            10.685510635375977,
+            12.644248962402344,
+            11.739364624023438
+          ],
+          "faces": 188
+        },
+        {
+          "source_component": 3,
+          "role": "Cream",
+          "center": [
+            6.747245788574219e-05,
+            6.184144973754883,
+            14.780082702636719
+          ],
+          "dimensions": [
+            5.907932758331299,
+            6.558088302612305,
+            3.8640480041503906
+          ],
+          "faces": 26
+        },
+        {
+          "source_component": 4,
+          "role": "Gray",
+          "center": [
+            5.429158687591553,
+            4.13372802734375,
+            12.49190902709961
+          ],
+          "dimensions": [
+            0.0,
+            4.530953884124756,
+            2.2517480850219727
+          ],
+          "faces": 2
+        },
+        {
+          "source_component": 5,
+          "role": "Gray",
+          "center": [
+            -5.429024696350098,
+            4.13372802734375,
+            12.49190902709961
+          ],
+          "dimensions": [
+            0.0,
+            4.530953884124756,
+            2.2517480850219727
+          ],
+          "faces": 2
+        },
+        {
+          "source_component": 6,
+          "role": "fixed sand base / existing upper turntable band team-dark",
+          "center": [
+            0.0,
+            6.282421588897705,
+            2.13885235786438
+          ],
+          "dimensions": [
+            19.35792350769043,
+            19.357929229736328,
+            4.274528980255127
+          ],
+          "faces": 92
+        },
+        {
+          "source_component": 7,
+          "role": "Gray",
+          "center": [
+            5.900480270385742,
+            5.307216644287109,
+            12.45926284790039
+          ],
+          "dimensions": [
+            1.1059627532958984,
+            2.211925983428955,
+            2.042527198791504
+          ],
+          "faces": 94
+        },
+        {
+          "source_component": 8,
+          "role": "Gray",
+          "center": [
+            6.73532485961914e-05,
+            -9.840563774108887,
+            11.967529296875
+          ],
+          "dimensions": [
+            6.639055252075195,
+            18.98667335510254,
+            6.639029502868652
+          ],
+          "faces": 262
+        },
+        {
+          "source_component": 9,
+          "role": "Gray",
+          "center": [
+            -5.900345802307129,
+            5.307216644287109,
+            12.45926284790039
+          ],
+          "dimensions": [
+            1.1059622764587402,
+            2.211925983428955,
+            2.042527198791504
+          ],
+          "faces": 94
+        },
+        {
+          "source_component": 10,
+          "role": "Gray",
+          "center": [
+            3.635484457015991,
+            14.58493709564209,
+            4.059148788452148
+          ],
+          "dimensions": [
+            8.790401458740234,
+            9.497926712036133,
+            8.197860717773438
+          ],
+          "faces": 400
+        },
+        {
+          "source_component": 11,
+          "role": "Gray",
+          "center": [
+            5.900480270385742,
+            2.9418997764587402,
+            12.45926284790039
+          ],
+          "dimensions": [
+            1.1059627532958984,
+            2.2119264602661133,
+            2.042527198791504
+          ],
+          "faces": 94
+        },
+        {
+          "source_component": 12,
+          "role": "Gray",
+          "center": [
+            -5.900345802307129,
+            2.9418997764587402,
+            12.45926284790039
+          ],
+          "dimensions": [
+            1.1059622764587402,
+            2.2119264602661133,
+            2.042527198791504
+          ],
+          "faces": 94
+        }
+      ]
+    },
+    "native_face_role_counts": [
+      {
+        "object": "Blue_SentryTurret_Stylized_Turrets_A_a",
+        "LOD": 0,
+        "mesh_and_deformation_signature_equal": true,
+        "palette_max_error": 0.0,
+        "role_face_counts": {
+          "Cream": 122,
+          "Sand": 68,
+          "Gray": 1042,
+          "TeamLight": 164,
+          "TeamDark": 48,
+          "Amber": 0,
+          "Cyan": 0,
+          "TeamLightLamp": 0
+        }
+      },
+      {
+        "object": "Red_SentryTurret_Stylized_Turrets_A_a",
+        "LOD": 0,
+        "mesh_and_deformation_signature_equal": true,
+        "palette_max_error": 0.0,
+        "role_face_counts": {
+          "Cream": 122,
+          "Sand": 68,
+          "Gray": 1042,
+          "TeamLight": 164,
+          "TeamDark": 48,
+          "Amber": 0,
+          "Cyan": 0,
+          "TeamLightLamp": 0
+        }
+      }
+    ],
+    "style": {
+      "tone_factors": [
+        0.4,
+        0.72,
+        1
+      ],
+      "thresholds": [
+        0.38,
+        0.68
+      ],
+      "interpolation": "CONSTANT",
+      "new_lines": "Freestyle contour/border/major crease on original mesh; no added outline geometry"
+    },
+    "comparison": "../Comparisons/SentryTurret_A3_B1.png"
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    },
+    "fixed_secondary": {
+      "hex": "#D5C09C",
+      "card": 1,
+      "label": "固定米砂"
+    },
+    "blue_secondary": {
+      "hex": "#274E61",
+      "card": 4,
+      "label": "深蓝灰队色"
+    },
+    "red_secondary": {
+      "hex": "#662249",
+      "card": 2,
+      "label": "深莓队色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "enemy_non_blue_secondary": "#662249",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "paint_contract": {
+    "fixed": {
+      "cream": "#FEE4D9",
+      "sand": "#D5C09C",
+      "mechanisms": "#2C3735"
+    },
+    "team": {
+      "blue": {
+        "primary": "#6AA4BE",
+        "secondary": "#274E61"
+      },
+      "red": {
+        "primary": "#A34053",
+        "secondary": "#662249"
+      }
+    },
+    "team_light": null,
+    "shading": "Three cel-shading levels are separate from the two team base paint colors.",
+    "fixed_function_policy": "Only existing function locations and palette colors; shield top lights are team-controlled."
+  },
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output.",
+  "reference_A_historical_status": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  }
+}

@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Ship/UI/GuLiShipWorldHUDComponent.h"
+#include "Commander/UI/GuLiSceneUITypes.h"
 
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Blueprint/UserWidget.h"
@@ -11,6 +12,7 @@
 #include "Containers/StaticArray.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
+#include "Engine/TextureRenderTarget2D.h"
 #include "GameFramework/PlayerController.h"
 #include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
@@ -167,6 +169,8 @@ UWidgetComponent* UGuLiShipWorldHUDComponent::CreateWidgetNode(
 	Node->SetAffectDynamicIndirectLighting(false);
 	Node->SetVisibleInRayTracing(false);
 	Node->SetReceivesDecals(false);
+	// Keep the existing offscreen UMG texture and pose; only the final SceneUI layer displays it.
+	Node->SetVisibleInSceneCaptureOnly(true);
 	Node->SetWidgetSpace(EWidgetSpace::World);
 	Node->SetGeometryMode(EWidgetGeometryMode::Plane);
 	Node->SetBlendMode(EWidgetBlendMode::Transparent);
@@ -178,7 +182,7 @@ UWidgetComponent* UGuLiShipWorldHUDComponent::CreateWidgetNode(
 	Node->SetDrawAtDesiredSize(false);
 	Node->SetDrawSize(DrawSize);
 	Node->SetManuallyRedraw(true);
-	Node->SetTickWhenOffscreen(false);
+	Node->SetTickWhenOffscreen(true); // The main view no longer renders these primitives; manual redraw still owns the cadence.
 	Node->SetTickMode(ETickMode::Disabled);
 	Node->SetWindowFocusable(false);
 	Node->SetOwnerPlayer(Controller->GetLocalPlayer());
@@ -193,6 +197,19 @@ UWidgetComponent* UGuLiShipWorldHUDComponent::CreateWidgetNode(
 		Node->SetMaterial(0, NoDepthMaterial);
 	}
 	return Node;
+}
+
+void UGuLiShipWorldHUDComponent::GatherSceneUIWidgets(TArray<FGuLiSceneUIWorldWidget>& Out) const
+{
+	Out.Reset();
+	if (!ShouldPresent()) return;
+	for (auto* Node : {FlightNode.Get(), CombatNode.Get(), ReticleNode.Get(), AimBoundsNode.Get()})
+	{
+		if (!Node || !Node->IsVisible() || Node->bHiddenInGame || !Node->GetRenderTarget()) continue;
+		auto& Entry = Out.AddDefaulted_GetRef();
+		Entry.Texture = Node->GetRenderTarget(); Entry.Transform = Node->GetComponentTransform();
+		Entry.Size = Node->GetDrawSize(); Entry.Pivot = Node->GetPivot();
+	}
 }
 
 void UGuLiShipWorldHUDComponent::CreateRuntimeWidgets()

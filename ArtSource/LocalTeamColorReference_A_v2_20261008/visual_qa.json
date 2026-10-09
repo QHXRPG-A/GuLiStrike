@@ -1,0 +1,247 @@
+{
+  "version": "LocalTeamColorReference_A_v2_20261008",
+  "stage": "reference_A",
+  "inspection": "assistant_visual_reference_inspection",
+  "user_approval": "pending",
+  "measured_geometry_validation": "not_applicable_to_2d_reference",
+  "color_check": "Base paint palette and zone design checked visually; lighting/shading pixels are not an exact HEX measurement. Config HEX is authoritative for later construction.",
+  "views_check": "Four-view concept layout and corresponding poses reviewed against original views; generated drawing has approximate projection/details. Original mesh dimensions, assembly, animations and LOD remain authoritative.",
+  "prior_versions": "8 first drafts retained; latest selected board hashes listed below. Existing UE and Blender approval history not overwritten.",
+  "models": [
+    {
+      "id": "DefaultSoldier",
+      "name": "先驱号",
+      "boards_reviewed": {
+        "blue": "Boards/DefaultSoldier_blue.png",
+        "red": "Boards/DefaultSoldier_red.png"
+      },
+      "board_sha256": {
+        "blue": "26081f7a3c4356c03cde204718c6306208e15b21fa6a4aee989f803ccb168347",
+        "red": "363905cf64ea11487ebeb9379eb4d7cecbf2a0c0adbfc2c1ff4d5c19338674fd"
+      },
+      "notes": "六足、双炮、天线与后环保持识别结构；浅色主体和腿甲，肩部盖板及后环集中队色，炮管和关节深灰。",
+      "assistant_reference_review": "completed",
+      "fixed_team_and_function_regions": "Reviewed concept paint zoning and blue/red counterpart; no user approval inferred.",
+      "geometry_boundary": "Reference silhouettes compared; exact geometry is deferred to original-source-based Blender B.",
+      "A": "pending",
+      "B": "not_started"
+    },
+    {
+      "id": "BiZhiMao",
+      "name": "彼之矛",
+      "boards_reviewed": {
+        "blue": "Boards/BiZhiMao_blue.png",
+        "red": "Boards/BiZhiMao_red.png"
+      },
+      "board_sha256": {
+        "blue": "bbfe22b4c833c981ee0db7c6be03a0e32023f080f0a583cbc444986e76305590",
+        "red": "765fa4e19f2d6b0219fdb93d4ceb1a919789b15797f2851e04287c6e63072383"
+      },
+      "notes": "四足、长炮与开放支架保持；主体浅色、炮口套圈和现有侧框等为队色，深灰枪口及机构固定。施工体共用此设计。",
+      "assistant_reference_review": "completed",
+      "fixed_team_and_function_regions": "Reviewed concept paint zoning and blue/red counterpart; no user approval inferred.",
+      "geometry_boundary": "Reference silhouettes compared; exact geometry is deferred to original-source-based Blender B.",
+      "A": "pending",
+      "B": "not_started"
+    },
+    {
+      "id": "ShieldGenerator",
+      "name": "护盾发生器",
+      "boards_reviewed": {
+        "blue": "Boards/ShieldGenerator_blue.png",
+        "red": "Boards/ShieldGenerator_red.png"
+      },
+      "board_sha256": {
+        "blue": "9cc7c1913e677c9310e8c252ad46a2d36260219b876eaa2c3781e3c95dccce2c",
+        "red": "8b337f103055f726e70819693a58218ba37d4bca20a5ecf40bb6301f65658216"
+      },
+      "notes": "三柱和Y形底座保持；上部盖板及窄底带为队色，顶部三个功能灯心均为固定青色，奶油白灯框保持。",
+      "assistant_reference_review": "completed",
+      "fixed_team_and_function_regions": "Reviewed concept paint zoning and blue/red counterpart; no user approval inferred.",
+      "geometry_boundary": "Reference silhouettes compared; exact geometry is deferred to original-source-based Blender B.",
+      "A": "pending",
+      "B": "not_started"
+    },
+    {
+      "id": "ManualOutpost",
+      "name": "前哨建筑",
+      "boards_reviewed": {
+        "blue": "Boards/ManualOutpost_blue.png",
+        "red": "Boards/ManualOutpost_red.png"
+      },
+      "board_sha256": {
+        "blue": "4ad8792c1312befe861a05a0cbe9929521a24cc04d114c1000d6a864a4d891f2",
+        "red": "0250a397c9caa53f5ef13fee93421cf37ca283844ad5dc651fcd5ac3af35cc0a"
+      },
+      "notes": "现有堆叠长柱及腰部笼架保持；正视根据原生+X源图修订，主层板浅色、腰部笼架队色。",
+      "assistant_reference_review": "completed",
+      "fixed_team_and_function_regions": "Reviewed concept paint zoning and blue/red counterpart; no user approval inferred.",
+      "geometry_boundary": "Reference silhouettes compared; exact geometry is deferred to original-source-based Blender B.",
+      "A": "pending",
+      "B": "not_started"
+    },
+    {
+      "id": "MissileTurret",
+      "name": "防空炮",
+      "boards_reviewed": {
+        "blue": "Boards/MissileTurret_blue.png",
+        "red": "Boards/MissileTurret_red.png"
+      },
+      "board_sha256": {
+        "blue": "a163da197e2f74f999df7cf1304aa064459757ef6d738992aaf2f795a5d8fe38",
+        "red": "10ff02d0059c659837178d0dc209ee119a5ac4332e60ee0712a08e71fc2e4517"
+      },
+      "notes": "两发射仓、现有俯仰姿态及管线保持；真实+Y正视每仓五个弹头（1+2+2），Hero/后视闭合深灰盖板，队色仅在长外护板及转台窄带。",
+      "assistant_reference_review": "completed",
+      "fixed_team_and_function_regions": "Reviewed concept paint zoning and blue/red counterpart; no user approval inferred.",
+      "geometry_boundary": "Reference silhouettes compared; exact geometry is deferred to original-source-based Blender B.",
+      "A": "pending",
+      "B": "not_started"
+    },
+    {
+      "id": "SentryTurret",
+      "name": "哨戒炮",
+      "boards_reviewed": {
+        "blue": "Boards/SentryTurret_blue.png",
+        "red": "Boards/SentryTurret_red.png"
+      },
+      "board_sha256": {
+        "blue": "ac44541f4fbbd54cdba2cd5d4c8f3d2d2fa97aacfaff01dabbc851cae1b33667",
+        "red": "bbd5f21848ac1f1fcd20dcf168b08672050abe51929fb24304852d77bbd8781d"
+      },
+      "notes": "单阶梯炮管、四向底座及后软管保持；侧盖两列三排六孔，队色盖框与后服务盖，孔内、炮管、根部套筒及软管保持深灰。",
+      "assistant_reference_review": "completed",
+      "fixed_team_and_function_regions": "Reviewed concept paint zoning and blue/red counterpart; no user approval inferred.",
+      "geometry_boundary": "Reference silhouettes compared; exact geometry is deferred to original-source-based Blender B.",
+      "A": "pending",
+      "B": "not_started"
+    },
+    {
+      "id": "ResourceFactory",
+      "name": "矿厂",
+      "boards_reviewed": {
+        "blue": "Boards/ResourceFactory_blue.png",
+        "red": "Boards/ResourceFactory_red.png"
+      },
+      "board_sha256": {
+        "blue": "8ab068f46a752bd0604311ce008c811262afbdf32722dede54b98e4bc1c98957",
+        "red": "850a21b20feb9302a19e4395f71d199e6ed36cdcd0e94673c8de5e3e5d4fa8c7"
+      },
+      "notes": "完整Blueprint的门、坡道及主体装配纳入；浅色屋顶、门板、坡道和侧柜，队色限于前两侧翼及侧柜窄带。",
+      "assistant_reference_review": "completed",
+      "fixed_team_and_function_regions": "Reviewed concept paint zoning and blue/red counterpart; no user approval inferred.",
+      "geometry_boundary": "Reference silhouettes compared; exact geometry is deferred to original-source-based Blender B.",
+      "A": "pending",
+      "B": "not_started"
+    },
+    {
+      "id": "SSF_AirBase",
+      "name": "SSF 空军基地",
+      "boards_reviewed": {
+        "blue": "Boards/SSF_AirBase_blue.png",
+        "red": "Boards/SSF_AirBase_red.png"
+      },
+      "board_sha256": {
+        "blue": "f2cdfb1fed8cefa6edffaebde7f1f8530f30d54df4c586c129bad483044348c3",
+        "red": "b58a8a1877f00f1599a62a2f3e6f9c5393b74ed9e711d459426879ee10357d91"
+      },
+      "notes": "扁圆主体与单雷达塔保持；浅色裙边和上盖占主导，队色收束为下缘窄带及现有侧盖，工作机构深灰。",
+      "assistant_reference_review": "completed",
+      "fixed_team_and_function_regions": "Reviewed concept paint zoning and blue/red counterpart; no user approval inferred.",
+      "geometry_boundary": "Reference silhouettes compared; exact geometry is deferred to original-source-based Blender B.",
+      "A": "pending",
+      "B": "not_started"
+    },
+    {
+      "id": "SSF_CloningCenter",
+      "name": "SSF 克隆中心",
+      "boards_reviewed": {
+        "blue": "Boards/SSF_CloningCenter_blue.png",
+        "red": "Boards/SSF_CloningCenter_red.png"
+      },
+      "board_sha256": {
+        "blue": "1758c5426452e8bf23cbca02eeead8b7570020a9dd3e29773a9905287fb23a2f",
+        "red": "dd9d3d34aa70fd1dd1b731ebf34835598c79e07f7f0e582bd211b7db308e6c25"
+      },
+      "notes": "四舱、背架及悬垂电缆保持；浅色主体与上盖，外舱盖和顶框为队色，顶工作区深灰，取消初稿额外橙块。",
+      "assistant_reference_review": "completed",
+      "fixed_team_and_function_regions": "Reviewed concept paint zoning and blue/red counterpart; no user approval inferred.",
+      "geometry_boundary": "Reference silhouettes compared; exact geometry is deferred to original-source-based Blender B.",
+      "A": "pending",
+      "B": "not_started"
+    },
+    {
+      "id": "SSF_CommandCenter",
+      "name": "SSF 指挥中心",
+      "boards_reviewed": {
+        "blue": "Boards/SSF_CommandCenter_blue.png",
+        "red": "Boards/SSF_CommandCenter_red.png"
+      },
+      "board_sha256": {
+        "blue": "13fdaf6009899a56bf9b13f2cf199f4c909d000dd968a15855401389328497c1",
+        "red": "71a35271817773347849300606087d2f07097e46d482f2df88881de938d36f80"
+      },
+      "notes": "环状层叠塔、天线及支架保持；浅色主装甲，单条上环与部分支架面板为队色，中层机构深灰。",
+      "assistant_reference_review": "completed",
+      "fixed_team_and_function_regions": "Reviewed concept paint zoning and blue/red counterpart; no user approval inferred.",
+      "geometry_boundary": "Reference silhouettes compared; exact geometry is deferred to original-source-based Blender B.",
+      "A": "pending",
+      "B": "not_started"
+    },
+    {
+      "id": "SSF_MilitaryFactory",
+      "name": "SSF 军工厂",
+      "boards_reviewed": {
+        "blue": "Boards/SSF_MilitaryFactory_blue.png",
+        "red": "Boards/SSF_MilitaryFactory_red.png"
+      },
+      "board_sha256": {
+        "blue": "21413ce174653b498c34c45afdc0539a8c2cdc4cc8e833bf78d34923bad36892",
+        "red": "fc5d15e6cb7fc4ced3b630ce1b5566943dfb5d29059addb400486b9dd8dd9a00"
+      },
+      "notes": "宽体厂房和入口结构保持；浅色大墙面、屋顶及门甲，队色仅前盖板和窄腰带，不再使用大片队色墙。",
+      "assistant_reference_review": "completed",
+      "fixed_team_and_function_regions": "Reviewed concept paint zoning and blue/red counterpart; no user approval inferred.",
+      "geometry_boundary": "Reference silhouettes compared; exact geometry is deferred to original-source-based Blender B.",
+      "A": "pending",
+      "B": "not_started"
+    },
+    {
+      "id": "SSF_Reactor",
+      "name": "SSF 反应堆",
+      "boards_reviewed": {
+        "blue": "Boards/SSF_Reactor_blue.png",
+        "red": "Boards/SSF_Reactor_red.png"
+      },
+      "board_sha256": {
+        "blue": "5c03cf8a4356f4c325b80e73297fb9555fd48f489629ed48aebb73557f215a6c",
+        "red": "0680690bbbe2350ff4cfec16491d1ea34b1dce3106a2889ea49cb2e55761a2bc"
+      },
+      "notes": "容器、四腿、散热片、软管及原有背盒保持；浅色容器与腿甲，窄顶环和视窗框为队色，散热片及机构深灰。",
+      "assistant_reference_review": "completed",
+      "fixed_team_and_function_regions": "Reviewed concept paint zoning and blue/red counterpart; no user approval inferred.",
+      "geometry_boundary": "Reference silhouettes compared; exact geometry is deferred to original-source-based Blender B.",
+      "A": "pending",
+      "B": "not_started"
+    },
+    {
+      "id": "SSF_StrategyCenter",
+      "name": "SSF 战略中心",
+      "boards_reviewed": {
+        "blue": "Boards/SSF_StrategyCenter_blue.png",
+        "red": "Boards/SSF_StrategyCenter_red.png"
+      },
+      "board_sha256": {
+        "blue": "7b899da8b746fb7f357bca3643413d3a288be7e685c9130bedc4e6a0aa999e6d",
+        "red": "ce1ba3f327f51fe32fb992c7a91117c0515314542525ff6ab5fe45f9dea6ffd0"
+      },
+      "notes": "倾斜阵列与四天线保持；浅色主体支架，雷达工作栅面两队固定深灰，队色仅窄边框和腰带。",
+      "assistant_reference_review": "completed",
+      "fixed_team_and_function_regions": "Reviewed concept paint zoning and blue/red counterpart; no user approval inferred.",
+      "geometry_boundary": "Reference silhouettes compared; exact geometry is deferred to original-source-based Blender B.",
+      "A": "pending",
+      "B": "not_started"
+    }
+  ],
+  "browser_qa": "Not run: browser security policy rejects file://. No protocol or browser workaround attempted."
+}

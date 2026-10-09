@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "WM_inputs": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "inputs": [
+          "Base",
+          "N",
+          "L",
+          "Ink",
+          "Mask"
+        ],
+        "nodes": [
+          "MaterialExpressionMaterialFunctionCall_1",
+          "MaterialExpressionVertexInterpolator_0",
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "name": "MaterialExpressionCustom_1",
+        "inputs": [
+          "Base",
+          "N",
+          "L",
+          "Ink",
+          "Mask"
+        ],
+        "nodes": [
+          "MaterialExpressionMaterialFunctionCall_1",
+          "MaterialExpressionVertexInterpolator_0",
+          "MaterialExpressionVectorParameter_3",
+          "MaterialExpressionVectorParameter_2",
+          "MaterialExpressionTextureSample_3"
+        ]
+      }
+    ],
+    "function": [
+      "float role=floor(saturate(RoleAlpha)*255.0+0.5);\nfloat primary=step(abs(role-3.0),0.1)+step(abs(role-7.0),0.1);\nfloat secondary=step(abs(role-4.0),0.1);\nfloat3 gray=float3(0.02518686,0.03820437,0.03560131);\nfloat3 team=primary>0.5?Primary.rgb:Secondary.rgb;\n// B_v1 preserves source RGB as data; its face roles select the approved paint.\n// The source RGB is already linear and must never undergo another sRGB decode.\nfloat3 fixedLinear=Base.rgb;\nif(abs(role-0.0)<0.1) fixedLinear=float3(0.9911020971,0.7758222183,0.6938717613);\nelse if(abs(role-1.0)<0.1) fixedLinear=float3(0.6653872983,0.5271151257,0.3324515363);\nelse if(abs(role-2.0)<0.1) fixedLinear=gray;\nelse if(abs(role-5.0)<0.1) fixedLinear=float3(0.8549926081,0.3371636150,0.0975873471);\nelse if(abs(role-6.0)<0.1) fixedLinear=float3(0.0040247170,0.2788942635,0.3185468018);\nreturn (primary+secondary)>0.5?(Enabled>0.5?team:gray):fixedLinear;",
+      "float role=floor(saturate(RoleAlpha)*255.0+0.5);return step(abs(role-7.0),0.1)*step(0.5,Enabled)*max(0.0,Strength);"
+    ]
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "id": "SentryTurret",
+  "name": "哨戒炮",
+  "title": "SENTRY TURRET",
+  "category": "Building",
+  "building_type_id": 2,
+  "fixed": [
+    "炮塔装甲和底座装甲：奶油白",
+    "炮管、炮膛、关节、通风槽及回线软管：深灰"
+  ],
+  "team": [
+    "既有两侧散热框护盖",
+    "转台已有窄环带",
+    "既有后部上方检修盖"
+  ],
+  "function": [
+    "仅保留原有功能色，不新增灯"
+  ],
+  "source": [
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Hero.png",
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Right.png",
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Back.png",
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Left.png"
+  ],
+  "source_view_mapping": {
+    "Hero": "Hero",
+    "Front": "Right (+Y)",
+    "Left": "Back (-X)",
+    "Back": "Left (-Y)"
+  },
+  "structure": "保留单炮、原有阶梯炮管和一根后部回线软管，炮管固定深灰。",
+  "boards": {
+    "blue": {
+      "path": "Boards/SentryTurret_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1552962,
+      "sha256": "ac44541f4fbbd54cdba2cd5d4c8f3d2d2fa97aacfaff01dabbc851cae1b33667"
+    },
+    "red": {
+      "path": "Boards/SentryTurret_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1551601,
+      "sha256": "bbd5f21848ac1f1fcd20dcf168b08672050abe51929fb24304852d77bbd8781d"
+    }
+  },
+  "source_mesh": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
+  "source_kind": "StaticMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Hero.png",
+      "sha256": "23e446acb19a4e714bb31637cc547a0423b5a71dc4de22df4a7d9463d3e47349"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Right.png",
+      "sha256": "d34b32deee0b2b6732f37dbc6f3ab1225c4a0f987361deb37cc141e4941bc6fe"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Back.png",
+      "sha256": "559f69087ccfc23978885da6b6aaa03c89a562816e7890d8dbd02c7c89cc36e4"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/SentryTurret_Left.png",
+      "sha256": "a77bdc03a88f727e0a28d797abd3948f7a69a4b28d161365ad797adbaaf6086e"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v2_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

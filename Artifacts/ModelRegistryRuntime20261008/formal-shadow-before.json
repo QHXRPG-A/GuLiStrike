@@ -1,0 +1,2099 @@
+[
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Instances/MI_BiZhiMao_LOD0.MI_BiZhiMao_LOD0",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Parents/M_BiZhiMao_Toon3_SparseLines.M_BiZhiMao_Toon3_SparseLines",
+    "scalars": [
+      {
+        "name": "InternalLineStrength",
+        "value": 0.30000001192092896
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Instances/MI_BiZhiMao_LOD1.MI_BiZhiMao_LOD1",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Parents/M_BiZhiMao_Toon3_SparseLines.M_BiZhiMao_Toon3_SparseLines",
+    "scalars": [
+      {
+        "name": "InternalLineStrength",
+        "value": 0.2199999988079071
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Instances/MI_BiZhiMao_LOD2.MI_BiZhiMao_LOD2",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Parents/M_BiZhiMao_Toon3_SparseLines.M_BiZhiMao_Toon3_SparseLines",
+    "scalars": [
+      {
+        "name": "InternalLineStrength",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Parents/M_BiZhiMao_Toon3_SparseLines.M_BiZhiMao_Toon3_SparseLines",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_1",
+        "code": "float3 c=Palette.rgb; float d=dot(normalize(N),normalize(float3(.35,.55,.76))); float band=d<.12?.42:(d<.55?.74:1); float dist=min(min(D1.x,1-D1.y),D2.x); float edge=1-smoothstep(Width-.0015,Width+.0015,dist); float ink=max(edge,Mask*.35); float3 color=lerp(c*band,float3(0.010960094006488246,0.017641954488384078,0.01599629336550963),saturate(ink*Strength));return lerp(color,color*Tint,TintStrength);"
+      }
+    ],
+    "scalars": [
+      {
+        "name": "InternalLineHalfWidthMeters",
+        "value": 0.006000000052154064
+      },
+      {
+        "name": "StatusTintStrength",
+        "value": 0.0
+      },
+      {
+        "name": "InternalLineStrength",
+        "value": 0.30000001192092896
+      },
+      {
+        "name": "InternalLineHalfWidthMeters",
+        "value": 0.006000000052154064
+      },
+      {
+        "name": "StatusTintStrength",
+        "value": 0.0
+      }
+    ],
+    "vectors": [
+      {
+        "name": "StatusTint",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMaoConstruction/Materials/Instances/MI_BiZhiMao_LOD0.MI_BiZhiMao_LOD0",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMaoConstruction/Materials/Parents/M_BiZhiMao_Toon3_SparseLines.M_BiZhiMao_Toon3_SparseLines",
+    "scalars": [
+      {
+        "name": "InternalLineStrength",
+        "value": 0.30000001192092896
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMaoConstruction/Materials/Instances/MI_BiZhiMao_LOD1.MI_BiZhiMao_LOD1",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMaoConstruction/Materials/Parents/M_BiZhiMao_Toon3_SparseLines.M_BiZhiMao_Toon3_SparseLines",
+    "scalars": [
+      {
+        "name": "InternalLineStrength",
+        "value": 0.2199999988079071
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMaoConstruction/Materials/Instances/MI_BiZhiMao_LOD2.MI_BiZhiMao_LOD2",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMaoConstruction/Materials/Parents/M_BiZhiMao_Toon3_SparseLines.M_BiZhiMao_Toon3_SparseLines",
+    "scalars": [
+      {
+        "name": "InternalLineStrength",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMaoConstruction/Materials/Parents/M_BiZhiMao_Toon3_SparseLines.M_BiZhiMao_Toon3_SparseLines",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_1",
+        "code": "float3 c=Palette.rgb; float d=dot(normalize(N),normalize(float3(.35,.55,.76))); float band=d<.12?.42:(d<.55?.74:1); float dist=min(min(D1.x,1-D1.y),D2.x); float edge=1-smoothstep(Width-.0015,Width+.0015,dist); float ink=max(edge,Mask*.35); float3 color=lerp(c*band,float3(0.010960094006488246,0.017641954488384078,0.01599629336550963),saturate(ink*Strength));return lerp(color,color*Tint,TintStrength);"
+      }
+    ],
+    "scalars": [
+      {
+        "name": "InternalLineHalfWidthMeters",
+        "value": 0.006000000052154064
+      },
+      {
+        "name": "StatusTintStrength",
+        "value": 0.0
+      },
+      {
+        "name": "InternalLineStrength",
+        "value": 0.30000001192092896
+      },
+      {
+        "name": "InternalLineHalfWidthMeters",
+        "value": 0.006000000052154064
+      },
+      {
+        "name": "StatusTintStrength",
+        "value": 0.0
+      }
+    ],
+    "vectors": [
+      {
+        "name": "StatusTint",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD0.MI_Pioneer_LOD0",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3.M_Pioneer_Toon3",
+    "scalars": [
+      {
+        "name": "LineStrength",
+        "value": 1.0
+      },
+      {
+        "name": "UseColorUV1",
+        "value": 1.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD1.MI_Pioneer_LOD1",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3.M_Pioneer_Toon3",
+    "scalars": [
+      {
+        "name": "LineStrength",
+        "value": 0.8500000238418579
+      },
+      {
+        "name": "UseColorUV1",
+        "value": 1.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD2.MI_Pioneer_LOD2",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3.M_Pioneer_Toon3",
+    "scalars": [
+      {
+        "name": "LineStrength",
+        "value": 0.0
+      },
+      {
+        "name": "UseColorUV1",
+        "value": 1.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3.M_Pioneer_Toon3",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float light=dot(normalize(N),normalize(float3(.55,-.35,.76))); float band=light<.12?.42:light<.55?.74:1; return lerp(Color*band,float3(.01764,.013,.01444),saturate(Mask*Lines));"
+      }
+    ],
+    "scalars": [
+      {
+        "name": "UseColorUV1",
+        "value": 1.0
+      },
+      {
+        "name": "LineStrength",
+        "value": 1.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/ManualOutpost/Materials/Parents/M_OutpostConcrete.M_OutpostConcrete",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);"
+      }
+    ],
+    "scalars": [],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/AroundMissile.AroundMissile",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.8984728455543518
+      }
+    ],
+    "vectors": [
+      {
+        "name": "BaseColorFactor",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Attention.Attention",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/BackFilter.BackFilter",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/BackPanel.BackPanel",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Bars.Bars",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/BlackMetal.BlackMetal",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": [
+      {
+        "name": "BaseColorFactor",
+        "value": [
+          0.032829705625772476,
+          0.032829705625772476,
+          0.032829705625772476,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/BlueWire.BlueWire",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": [
+      {
+        "name": "BaseColorFactor",
+        "value": [
+          0.0017180000431835651,
+          0.01558000035583973,
+          0.13286399841308594,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/BottomBars.BottomBars",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Electronic.Electronic",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/FrontBars.FrontBars",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": [
+      {
+        "name": "BaseColorFactor",
+        "value": [
+          0.11106511205434799,
+          0.030593272298574448,
+          0.030593272298574448,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/GreayMetal.GreayMetal",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": [
+      {
+        "name": "BaseColorFactor",
+        "value": [
+          0.05921480432152748,
+          0.05921480432152748,
+          0.05921480432152748,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/GreenWire.GreenWire",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": [
+      {
+        "name": "BaseColorFactor",
+        "value": [
+          0.007422000169754028,
+          0.1282390058040619,
+          0.009328999556601048,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Hazard.Hazard",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Iron.Iron",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": [
+      {
+        "name": "BaseColorFactor",
+        "value": [
+          0.800000011920929,
+          0.800000011920929,
+          0.800000011920929,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/LauncherBars.LauncherBars",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Lens.Lens",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Lens2.Lens2",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Lens3.Lens3",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/LensAround.LensAround",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/MetalPlate.MetalPlate",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Number.Number",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/OrangeMetalPlate.OrangeMetalPlate",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Pipe.Pipe",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/RedWire.RedWire",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": [
+      {
+        "name": "BaseColorFactor",
+        "value": [
+          0.1282390058040619,
+          0.008623000234365463,
+          0.004401999991387129,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Rhomboid.Rhomboid",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/RustedMetal.RustedMetal",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/SolarPanel.SolarPanel",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Vent.Vent",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Wire.Wire",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/controlPanel.controlPanel",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/material.material",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "scalars": [
+      {
+        "name": "MetallicFactor",
+        "value": 0.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 0.806350827217102
+      }
+    ],
+    "vectors": [
+      {
+        "name": "BaseColorFactor",
+        "value": [
+          0.800000011920929,
+          0.004393000155687332,
+          0.019022999331355095,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default.M_Default",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);"
+      }
+    ],
+    "scalars": [
+      {
+        "name": "AlphaCutoff",
+        "value": 0.0
+      },
+      {
+        "name": "IridescenceIOR",
+        "value": 1.2999999523162842
+      },
+      {
+        "name": "IridescenceTexture_TexCoord",
+        "value": 0.0
+      },
+      {
+        "name": "IridescenceThicknessTexture_Rotation",
+        "value": 0.0
+      },
+      {
+        "name": "IridescenceThicknessTexture_TexCoord",
+        "value": 0.0
+      },
+      {
+        "name": "IridescenceFactor",
+        "value": 0.0
+      },
+      {
+        "name": "IridescenceThicknessMinimum",
+        "value": 100.0
+      },
+      {
+        "name": "BaseColorTexture_Rotation",
+        "value": 0.0
+      },
+      {
+        "name": "BaseColorTexture_TexCoord",
+        "value": 0.0
+      },
+      {
+        "name": "IridescenceThicknessMaximum",
+        "value": 400.0
+      },
+      {
+        "name": "MetallicRoughnessTexture_Rotation",
+        "value": 0.0
+      },
+      {
+        "name": "MetallicRoughnessTexture_TexCoord",
+        "value": 0.0
+      },
+      {
+        "name": "MetallicFactor",
+        "value": 1.0
+      },
+      {
+        "name": "RoughnessFactor",
+        "value": 1.0
+      },
+      {
+        "name": "NormalTexture_Rotation",
+        "value": 0.0
+      },
+      {
+        "name": "NormalTexture_TexCoord",
+        "value": 0.0
+      },
+      {
+        "name": "NormalScale",
+        "value": 1.0
+      },
+      {
+        "name": "OcclusionTexture_Rotation",
+        "value": 0.0
+      },
+      {
+        "name": "OcclusionTexture_TexCoord",
+        "value": 0.0
+      },
+      {
+        "name": "OcclusionStrength",
+        "value": 1.0
+      },
+      {
+        "name": "AnisotropyStrength",
+        "value": 0.0
+      },
+      {
+        "name": "IOR",
+        "value": 1.5
+      },
+      {
+        "name": "SpecularTexture_Rotation",
+        "value": 0.0
+      },
+      {
+        "name": "SpecularTexture_TexCoord",
+        "value": 0.0
+      },
+      {
+        "name": "SpecularFactor",
+        "value": 1.0
+      },
+      {
+        "name": "EmissiveTexture_Rotation",
+        "value": 0.0
+      },
+      {
+        "name": "EmissiveTexture_TexCoord",
+        "value": 0.0
+      },
+      {
+        "name": "EmissiveStrength",
+        "value": 1.0
+      },
+      {
+        "name": "AnisotropyRotation",
+        "value": 0.0
+      },
+      {
+        "name": "AnisotropyTexture_Rotation",
+        "value": 0.0
+      },
+      {
+        "name": "AnisotropyTexture_TexCoord",
+        "value": 0.0
+      },
+      {
+        "name": "IridescenceTexture_Rotation",
+        "value": 0.0
+      }
+    ],
+    "vectors": [
+      {
+        "name": "SpecularTexture_TilingMethod",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "BaseColorTexture_TilingMethod",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "NormalTexture_TilingMethod",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "OcclusionTexture_TilingMethod",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "BaseColorFactor",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "MetallicRoughnessTexture_OffsetScale",
+        "value": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BaseColorTexture_OffsetScale",
+        "value": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "NormalTexture_OffsetScale",
+        "value": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "IridescenceTexture_TilingMethod",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "OcclusionTexture_OffsetScale",
+        "value": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "SpecularTexture_OffsetScale",
+        "value": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "EmissiveTexture_OffsetScale",
+        "value": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "EmissiveFactor",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "name": "MetallicRoughnessTexture_TilingMethod",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "IridescenceThicknessTexture_TilingMethod",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "EmissiveTexture_TilingMethod",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "IridescenceTexture_OffsetScale",
+        "value": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "IridescenceThicknessTexture_OffsetScale",
+        "value": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "AnisotropyTexture_OffsetScale",
+        "value": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "AnisotropyTexture_TilingMethod",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/Materials/Parents/WorldGridMaterial.WorldGridMaterial",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);"
+      }
+    ],
+    "scalars": [],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/OverrideMaterials/Parents/M_RPF_Interior.M_RPF_Interior",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);"
+      }
+    ],
+    "scalars": [],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Armor.M_RPF_Armor",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);"
+      }
+    ],
+    "scalars": [],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Details.M_RPF_Details",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);"
+      }
+    ],
+    "scalars": [],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Interior.M_RPF_Interior",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);"
+      }
+    ],
+    "scalars": [],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Armor.M_RPF_Armor",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);"
+      }
+    ],
+    "scalars": [],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Details.M_RPF_Details",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);"
+      }
+    ],
+    "scalars": [],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Interior.M_RPF_Interior",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);"
+      }
+    ],
+    "scalars": [],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_AirBase/Materials/Instances/MI_Blue_AirBase_Body.MI_Blue_AirBase_Body",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_AirBase/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+    "scalars": [],
+    "vectors": [
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Team Color",
+        "value": [
+          0.9911020994186401,
+          0.7758222222328186,
+          0.6938717365264893,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_AirBase/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float code=1.0-BT.y; float lod=floor(code+0.001); float teamMask=step(0.2,code-lod); float fade=lod<0.5?1.0:(lod<1.5?0.7:0.0); float3 palette=float3(RG.x,1.0-RG.y,BT.x); palette=GuLiPalette; float d=dot(normalize(N),normalize(Light)); float band=d<0.38?0.40:(d<0.68?0.72:1.0); float inkMask=saturate(max(Mask.r*0.65,Mask.g)*fade); return lerp(palette*Base*band,Ink,inkMask);"
+      }
+    ],
+    "scalars": [],
+    "vectors": [
+      {
+        "name": "Art Light Direction",
+        "value": [
+          0.3499999940395355,
+          0.550000011920929,
+          0.7599999904632568,
+          0.0
+        ]
+      },
+      {
+        "name": "Art Light Direction",
+        "value": [
+          0.3499999940395355,
+          0.550000011920929,
+          0.7599999904632568,
+          0.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Ink Color",
+        "value": [
+          0.01032982300966978,
+          0.009134058840572834,
+          0.028426039963960648,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Team Color",
+        "value": [
+          0.8549926280975342,
+          0.33716362714767456,
+          0.09758734703063965,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_CloningCenter/Materials/Instances/MI_Blue_CloningCenter_Body.MI_Blue_CloningCenter_Body",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_CloningCenter/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+    "scalars": [],
+    "vectors": [
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Team Color",
+        "value": [
+          0.8549926280975342,
+          0.33716362714767456,
+          0.09758734703063965,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_CloningCenter/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float code=1.0-BT.y; float lod=floor(code+0.001); float teamMask=step(0.2,code-lod); float fade=lod<0.5?1.0:(lod<1.5?0.7:0.0); float3 palette=float3(RG.x,1.0-RG.y,BT.x); palette=GuLiPalette; float d=dot(normalize(N),normalize(Light)); float band=d<0.38?0.40:(d<0.68?0.72:1.0); float inkMask=saturate(max(Mask.r*0.65,Mask.g)*fade); return lerp(palette*Base*band,Ink,inkMask);"
+      }
+    ],
+    "scalars": [],
+    "vectors": [
+      {
+        "name": "Team Color",
+        "value": [
+          0.8549926280975342,
+          0.33716362714767456,
+          0.09758734703063965,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Ink Color",
+        "value": [
+          0.01032982300966978,
+          0.009134058840572834,
+          0.028426039963960648,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Art Light Direction",
+        "value": [
+          0.3499999940395355,
+          0.550000011920929,
+          0.7599999904632568,
+          0.0
+        ]
+      },
+      {
+        "name": "Art Light Direction",
+        "value": [
+          0.3499999940395355,
+          0.550000011920929,
+          0.7599999904632568,
+          0.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_CommandCenter/Materials/Instances/MI_Blue_CommandCenter_Body.MI_Blue_CommandCenter_Body",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_CommandCenter/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+    "scalars": [],
+    "vectors": [
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Team Color",
+        "value": [
+          0.8549926280975342,
+          0.33716362714767456,
+          0.09758734703063965,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_CommandCenter/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float code=1.0-BT.y; float lod=floor(code+0.001); float teamMask=step(0.2,code-lod); float fade=lod<0.5?1.0:(lod<1.5?0.7:0.0); float3 palette=float3(RG.x,1.0-RG.y,BT.x); palette=GuLiPalette; float d=dot(normalize(N),normalize(Light)); float band=d<0.38?0.40:(d<0.68?0.72:1.0); float inkMask=saturate(max(Mask.r*0.65,Mask.g)*fade); return lerp(palette*Base*band,Ink,inkMask);"
+      }
+    ],
+    "scalars": [],
+    "vectors": [
+      {
+        "name": "Team Color",
+        "value": [
+          0.8549926280975342,
+          0.33716362714767456,
+          0.09758734703063965,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Ink Color",
+        "value": [
+          0.01032982300966978,
+          0.009134058840572834,
+          0.028426039963960648,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Art Light Direction",
+        "value": [
+          0.3499999940395355,
+          0.550000011920929,
+          0.7599999904632568,
+          0.0
+        ]
+      },
+      {
+        "name": "Art Light Direction",
+        "value": [
+          0.3499999940395355,
+          0.550000011920929,
+          0.7599999904632568,
+          0.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_MilitaryFactory/Materials/Instances/MI_Blue_MilitaryFactory_Body.MI_Blue_MilitaryFactory_Body",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_MilitaryFactory/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+    "scalars": [],
+    "vectors": [
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Team Color",
+        "value": [
+          0.9911020994186401,
+          0.7758222222328186,
+          0.6938717365264893,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_MilitaryFactory/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float code=1.0-BT.y; float lod=floor(code+0.001); float teamMask=step(0.2,code-lod); float fade=lod<0.5?1.0:(lod<1.5?0.7:0.0); float3 palette=float3(RG.x,1.0-RG.y,BT.x); palette=GuLiPalette; float d=dot(normalize(N),normalize(Light)); float band=d<0.38?0.40:(d<0.68?0.72:1.0); float inkMask=saturate(max(Mask.r*0.65,Mask.g)*fade); return lerp(palette*Base*band,Ink,inkMask);"
+      }
+    ],
+    "scalars": [],
+    "vectors": [
+      {
+        "name": "Team Color",
+        "value": [
+          0.8549926280975342,
+          0.33716362714767456,
+          0.09758734703063965,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Ink Color",
+        "value": [
+          0.01032982300966978,
+          0.009134058840572834,
+          0.028426039963960648,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Art Light Direction",
+        "value": [
+          0.3499999940395355,
+          0.550000011920929,
+          0.7599999904632568,
+          0.0
+        ]
+      },
+      {
+        "name": "Art Light Direction",
+        "value": [
+          0.3499999940395355,
+          0.550000011920929,
+          0.7599999904632568,
+          0.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_Reactor/Materials/Instances/MI_Blue_Reactor_Body.MI_Blue_Reactor_Body",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_Reactor/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+    "scalars": [],
+    "vectors": [
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Team Color",
+        "value": [
+          0.8549926280975342,
+          0.33716362714767456,
+          0.09758734703063965,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_Reactor/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float code=1.0-BT.y; float lod=floor(code+0.001); float teamMask=step(0.2,code-lod); float fade=lod<0.5?1.0:(lod<1.5?0.7:0.0); float3 palette=float3(RG.x,1.0-RG.y,BT.x); palette=GuLiPalette; float d=dot(normalize(N),normalize(Light)); float band=d<0.38?0.40:(d<0.68?0.72:1.0); float inkMask=saturate(max(Mask.r*0.65,Mask.g)*fade); return lerp(palette*Base*band,Ink,inkMask);"
+      }
+    ],
+    "scalars": [],
+    "vectors": [
+      {
+        "name": "Team Color",
+        "value": [
+          0.8549926280975342,
+          0.33716362714767456,
+          0.09758734703063965,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Ink Color",
+        "value": [
+          0.01032982300966978,
+          0.009134058840572834,
+          0.028426039963960648,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Art Light Direction",
+        "value": [
+          0.3499999940395355,
+          0.550000011920929,
+          0.7599999904632568,
+          0.0
+        ]
+      },
+      {
+        "name": "Art Light Direction",
+        "value": [
+          0.3499999940395355,
+          0.550000011920929,
+          0.7599999904632568,
+          0.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_StrategyCenter/Materials/Instances/MI_Blue_StrategyCenter_Body.MI_Blue_StrategyCenter_Body",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_StrategyCenter/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+    "scalars": [],
+    "vectors": [
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Team Color",
+        "value": [
+          0.8549926280975342,
+          0.33716362714767456,
+          0.09758734703063965,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_StrategyCenter/Materials/Parents/M_SSF_ThreeToneLine.M_SSF_ThreeToneLine",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float code=1.0-BT.y; float lod=floor(code+0.001); float teamMask=step(0.2,code-lod); float fade=lod<0.5?1.0:(lod<1.5?0.7:0.0); float3 palette=float3(RG.x,1.0-RG.y,BT.x); palette=GuLiPalette; float d=dot(normalize(N),normalize(Light)); float band=d<0.38?0.40:(d<0.68?0.72:1.0); float inkMask=saturate(max(Mask.r*0.65,Mask.g)*fade); return lerp(palette*Base*band,Ink,inkMask);"
+      }
+    ],
+    "scalars": [],
+    "vectors": [
+      {
+        "name": "Team Color",
+        "value": [
+          0.8549926280975342,
+          0.33716362714767456,
+          0.09758734703063965,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Ink Color",
+        "value": [
+          0.01032982300966978,
+          0.009134058840572834,
+          0.028426039963960648,
+          1.0
+        ]
+      },
+      {
+        "name": "Base Color",
+        "value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Art Light Direction",
+        "value": [
+          0.3499999940395355,
+          0.550000011920929,
+          0.7599999904632568,
+          0.0
+        ]
+      },
+      {
+        "name": "Art Light Direction",
+        "value": [
+          0.3499999940395355,
+          0.550000011920929,
+          0.7599999904632568,
+          0.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SentryTurret/Materials/Instances/Stylized_Turrets_A_mat.Stylized_Turrets_A_mat",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/SentryTurret/Materials/Parents/FBXLegacyPhongSurfaceMaterial.FBXLegacyPhongSurfaceMaterial",
+    "scalars": [
+      {
+        "name": "Shininess",
+        "value": 1.9999998807907104
+      }
+    ],
+    "vectors": [
+      {
+        "name": "AmbientColor",
+        "value": [
+          0.5882353186607361,
+          0.5882353186607361,
+          0.5882353186607361,
+          1.0
+        ]
+      },
+      {
+        "name": "SpecularColor",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/SentryTurret/Materials/Parents/FBXLegacyPhongSurfaceMaterial.FBXLegacyPhongSurfaceMaterial",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);"
+      }
+    ],
+    "scalars": [
+      {
+        "name": "DiffuseColorMapWeight",
+        "value": 0.0
+      },
+      {
+        "name": "SpecularColorMapWeight",
+        "value": 0.0
+      },
+      {
+        "name": "OpacityMapWeight",
+        "value": 0.0
+      },
+      {
+        "name": "AmbientOcclusionMapWeight",
+        "value": 0.0
+      },
+      {
+        "name": "AmbientOcclusion",
+        "value": 1.0
+      },
+      {
+        "name": "Shininess",
+        "value": 20.0
+      },
+      {
+        "name": "Opacity",
+        "value": 1.0
+      },
+      {
+        "name": "NormalMapWeight",
+        "value": 0.0
+      },
+      {
+        "name": "OpacityMaskMapWeight",
+        "value": 0.0
+      },
+      {
+        "name": "NormalMapWeight",
+        "value": 0.0
+      },
+      {
+        "name": "AmbientColorMapWeight",
+        "value": 0.0
+      },
+      {
+        "name": "EmissiveColorMapWeight",
+        "value": 0.0
+      },
+      {
+        "name": "ShininessMapWeight",
+        "value": 0.0
+      }
+    ],
+    "vectors": [
+      {
+        "name": "DiffuseColor",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "SpecularColor",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "AmbientColor",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "EmissiveColor",
+        "value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/ShieldGenerator/Materials/Parents/M_ShieldGenerator_HardSurface.M_ShieldGenerator_HardSurface",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.40:(d<.68?.72:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band,float3(.025,.030,.028),edge);"
+      }
+    ],
+    "scalars": [],
+    "vectors": []
+  },
+  {
+    "path": "/Game/GuLiStrike/Models/TeamColor_v1/WM01/Materials/Parents/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid",
+    "class": "Material",
+    "custom": [
+      {
+        "name": "MaterialExpressionCustom_0",
+        "code": "float d=dot(normalize(N),normalize(L)); float3 tones=d<.12?float3(.43,.52,.66):(d<.55?float3(.72,.78,.88):float3(1,1,1)); float3 paint=Base*tones; return lerp(paint,Ink,saturate(Mask));"
+      },
+      {
+        "name": "MaterialExpressionCustom_1",
+        "code": "float d=dot(normalize(N),normalize(L)); float3 tones=d<.12?float3(.43,.52,.66):(d<.55?float3(.72,.78,.88):float3(1,1,1)); float3 paint=Base*tones; return lerp(paint,Ink,saturate(Mask));"
+      }
+    ],
+    "scalars": [
+      {
+        "name": "RigidKind",
+        "value": 1.0
+      }
+    ],
+    "vectors": [
+      {
+        "name": "RigidUpperPivot",
+        "value": [
+          -387.3536682128906,
+          0.0,
+          1920.1622314453125,
+          0.0
+        ]
+      },
+      {
+        "name": "RigidLegRoot0",
+        "value": [
+          418.845947265625,
+          642.4403076171875,
+          1627.3221435546875,
+          0.0
+        ]
+      },
+      {
+        "name": "RigidLegEnd2",
+        "value": [
+          -1432.6771240234375,
+          1375.181640625,
+          923.8545532226562,
+          0.0
+        ]
+      },
+      {
+        "name": "RigidLegAxis2",
+        "value": [
+          -0.8537036776542664,
+          -0.5207592248916626,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "RigidLegRoot3",
+        "value": [
+          -985.7050170898438,
+          -642.4403076171875,
+          1419.3992919921875,
+          0.0
+        ]
+      },
+      {
+        "name": "RigidLegEnd3",
+        "value": [
+          -1432.6771240234375,
+          -1375.181640625,
+          923.8545532226562,
+          0.0
+        ]
+      },
+      {
+        "name": "RigidLegAxis3",
+        "value": [
+          0.8537036776542664,
+          -0.5207592248916626,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "InkColor",
+        "value": [
+          0.00800000037997961,
+          0.026000000536441803,
+          0.050999999046325684,
+          1.0
+        ]
+      },
+      {
+        "name": "ArtLightDirection",
+        "value": [
+          0.3499999940395355,
+          -0.550000011920929,
+          0.7599999904632568,
+          0.0
+        ]
+      },
+      {
+        "name": "RigidLegEnd0",
+        "value": [
+          1043.17431640625,
+          1231.429443359375,
+          1131.77734375,
+          0.0
+        ]
+      },
+      {
+        "name": "RigidLegAxis0",
+        "value": [
+          -0.6862204074859619,
+          0.727393627166748,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "RigidLegRoot1",
+        "value": [
+          418.845947265625,
+          -642.4403076171875,
+          1627.3221435546875,
+          0.0
+        ]
+      },
+      {
+        "name": "RigidLegEnd1",
+        "value": [
+          1043.17431640625,
+          -1231.429443359375,
+          1131.77734375,
+          0.0
+        ]
+      },
+      {
+        "name": "RigidLegAxis1",
+        "value": [
+          0.6862204074859619,
+          0.727393627166748,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "RigidLegRoot2",
+        "value": [
+          -985.7050170898438,
+          642.4403076171875,
+          1419.3992919921875,
+          0.0
+        ]
+      }
+    ]
+  }
+]

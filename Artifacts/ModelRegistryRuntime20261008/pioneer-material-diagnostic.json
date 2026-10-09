@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "bounds": "<Struct 'BoxSphereBounds' (0x000001CAC58A2980) {origin: {x: 24.767754, y: 0.000000, z: 226.746872}, box_extent: {x: 255.312752, y: 312.500000, z: 226.746902}, sphere_radius: 386.209296}>",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3.M_Pioneer_Toon3",
+    "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+    "wpo": "<Object '/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3.M_Pioneer_Toon3:MaterialExpressionMaterialFunctionCall_0' (0x000001C79D688700) Class 'MaterialExpressionMaterialFunctionCall'>",
+    "emissive": "<Object '/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3.M_Pioneer_Toon3:MaterialExpressionAdd_0' (0x000001C791FAAA00) Class 'MaterialExpressionAdd'>",
+    "two_sided": false,
+    "used_instanced": true,
+    "expressions": [
+      {
+        "class": "MaterialExpressionCustom",
+        "code": "float light=dot(normalize(N),normalize(float3(.55,-.35,.76))); float band=light<.12?.42:light<.55?.74:1; return lerp(Color*band,float3(.01764,.013,.01444),saturate(Mask*Lines));"
+      }
+    ]
+  }
+}

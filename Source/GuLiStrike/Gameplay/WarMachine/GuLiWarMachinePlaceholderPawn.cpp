@@ -18,6 +18,14 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "InputCoreTypes.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
+
+void AGuLiWarMachinePlaceholderPawn::BeginPlay()
+{
+	Super::BeginPlay();
+	// Native constructor Cube is a bootstrap cache. Ground's fallback visual is a distinct model identity.
+	if (auto* Model=GuLiModels::Load<UStaticMesh>(this,GuLiModelIds::GroundSeatPlaceholder)) BodyMesh->SetStaticMesh(Model);
+}
 
 AGuLiWarMachinePlaceholderPawn::AGuLiWarMachinePlaceholderPawn(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UGuLiExternalCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))

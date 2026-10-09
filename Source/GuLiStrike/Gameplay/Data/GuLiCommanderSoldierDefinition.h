@@ -33,6 +33,8 @@ struct GULISTRIKE_API FGuLiSoldierDefinition
 	/** Stable Soldiers table Id; zero is reserved for invalid definitions. */
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Soldier")
 	uint16 UnitTypeId = 1u;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Models")
+	int32 ModelId = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Units")
 	FText DisplayName;
 

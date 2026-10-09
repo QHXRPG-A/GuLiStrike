@@ -11,6 +11,8 @@ Build production-ready effects with the UE5.7 editor and the project's installed
 
 Before creating or changing project VFX, read [GuLiStrike 美术规范](../../../Progress/RequirementDocument/GuLiStrike美术规范.md), especially the explosion identity, approved references, existing-effect exceptions, and review workflow. It is the single source of visual rules. Preserve evolving fire/smoke shapes, pale-yellow cores, orange-red heat edges, readable smoke, sparse sparks and clear shockwaves; a uniformly scaling ball is not sufficient.
 
+For new or explicitly recolored effects, select base and accent colors from the standard's project-wide palette (全项目统一色库). Check semantic-color and approved asset-specific exceptions; same-family shading and emission follow the standard. Keep the color table in that document rather than duplicating it here.
+
 For dedicated meshes, follow reference approval → Blender reconstruction approval → UE import. For Niagara/material animation, approve references/storyboards, then build a playable candidate in an isolated UE preview; obtain the required visual approval before replacing combat references. Existing explicit approvals and waivers remain valid; do not re-request them. When approval is missing, show the reviewable result and cite this skill and the standard explaining the pause. Record art revisions and review evidence through `gulistrike-progress`. Compilation, particle count and technical installation are separate from user visual approval.
 
 ## Choose The Effect Architecture

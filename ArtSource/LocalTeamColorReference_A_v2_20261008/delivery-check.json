@@ -1,0 +1,274 @@
+{
+  "version": "LocalTeamColorReference_A_v2_20261008",
+  "checked_at": "2026-10-08T09:51:37.501015+08:00",
+  "status": "partial",
+  "checks": [
+    {
+      "name": "selected_boards_and_configs",
+      "status": "passed",
+      "models": 13,
+      "boards": 26,
+      "size": [
+        1536,
+        1024
+      ],
+      "source_records": 34
+    },
+    {
+      "name": "original_palette_copies",
+      "status": "passed",
+      "files": 4
+    },
+    {
+      "name": "generation_provenance",
+      "status": "passed",
+      "requests": 34,
+      "selected_boards": 26,
+      "preserved_first_drafts": 8
+    },
+    {
+      "name": "helper_python_syntax",
+      "status": "passed",
+      "files": 7,
+      "execution": "AST parse only; editor imports not executed"
+    },
+    {
+      "name": "gallery_static_links_and_dom_bindings",
+      "status": "passed",
+      "html_links": 12,
+      "dynamic_board_links": 26,
+      "dynamic_configs": 13,
+      "browser_rendering": "not_run"
+    },
+    {
+      "name": "gallery_javascript_syntax",
+      "status": "passed",
+      "evidence": "node --check gallery.js completed with exit code 0 before delivery inventory"
+    },
+    {
+      "name": "source_capture_report_readback",
+      "status": "passed",
+      "reports": 3,
+      "source_assets_saved": false,
+      "gameplay_started": false
+    }
+  ],
+  "board_inventory": [
+    {
+      "model": "DefaultSoldier",
+      "team": "blue",
+      "path": "Boards/DefaultSoldier_blue.png",
+      "sha256": "26081f7a3c4356c03cde204718c6306208e15b21fa6a4aee989f803ccb168347",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "DefaultSoldier",
+      "team": "red",
+      "path": "Boards/DefaultSoldier_red.png",
+      "sha256": "363905cf64ea11487ebeb9379eb4d7cecbf2a0c0adbfc2c1ff4d5c19338674fd",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "BiZhiMao",
+      "team": "blue",
+      "path": "Boards/BiZhiMao_blue.png",
+      "sha256": "bbfe22b4c833c981ee0db7c6be03a0e32023f080f0a583cbc444986e76305590",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "BiZhiMao",
+      "team": "red",
+      "path": "Boards/BiZhiMao_red.png",
+      "sha256": "765fa4e19f2d6b0219fdb93d4ceb1a919789b15797f2851e04287c6e63072383",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "ShieldGenerator",
+      "team": "blue",
+      "path": "Boards/ShieldGenerator_blue.png",
+      "sha256": "9cc7c1913e677c9310e8c252ad46a2d36260219b876eaa2c3781e3c95dccce2c",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "ShieldGenerator",
+      "team": "red",
+      "path": "Boards/ShieldGenerator_red.png",
+      "sha256": "8b337f103055f726e70819693a58218ba37d4bca20a5ecf40bb6301f65658216",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "ManualOutpost",
+      "team": "blue",
+      "path": "Boards/ManualOutpost_blue.png",
+      "sha256": "4ad8792c1312befe861a05a0cbe9929521a24cc04d114c1000d6a864a4d891f2",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "ManualOutpost",
+      "team": "red",
+      "path": "Boards/ManualOutpost_red.png",
+      "sha256": "0250a397c9caa53f5ef13fee93421cf37ca283844ad5dc651fcd5ac3af35cc0a",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "MissileTurret",
+      "team": "blue",
+      "path": "Boards/MissileTurret_blue.png",
+      "sha256": "a163da197e2f74f999df7cf1304aa064459757ef6d738992aaf2f795a5d8fe38",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "MissileTurret",
+      "team": "red",
+      "path": "Boards/MissileTurret_red.png",
+      "sha256": "10ff02d0059c659837178d0dc209ee119a5ac4332e60ee0712a08e71fc2e4517",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SentryTurret",
+      "team": "blue",
+      "path": "Boards/SentryTurret_blue.png",
+      "sha256": "ac44541f4fbbd54cdba2cd5d4c8f3d2d2fa97aacfaff01dabbc851cae1b33667",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SentryTurret",
+      "team": "red",
+      "path": "Boards/SentryTurret_red.png",
+      "sha256": "bbd5f21848ac1f1fcd20dcf168b08672050abe51929fb24304852d77bbd8781d",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "ResourceFactory",
+      "team": "blue",
+      "path": "Boards/ResourceFactory_blue.png",
+      "sha256": "8ab068f46a752bd0604311ce008c811262afbdf32722dede54b98e4bc1c98957",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "ResourceFactory",
+      "team": "red",
+      "path": "Boards/ResourceFactory_red.png",
+      "sha256": "850a21b20feb9302a19e4395f71d199e6ed36cdcd0e94673c8de5e3e5d4fa8c7",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SSF_AirBase",
+      "team": "blue",
+      "path": "Boards/SSF_AirBase_blue.png",
+      "sha256": "f2cdfb1fed8cefa6edffaebde7f1f8530f30d54df4c586c129bad483044348c3",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SSF_AirBase",
+      "team": "red",
+      "path": "Boards/SSF_AirBase_red.png",
+      "sha256": "b58a8a1877f00f1599a62a2f3e6f9c5393b74ed9e711d459426879ee10357d91",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SSF_CloningCenter",
+      "team": "blue",
+      "path": "Boards/SSF_CloningCenter_blue.png",
+      "sha256": "1758c5426452e8bf23cbca02eeead8b7570020a9dd3e29773a9905287fb23a2f",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SSF_CloningCenter",
+      "team": "red",
+      "path": "Boards/SSF_CloningCenter_red.png",
+      "sha256": "dd9d3d34aa70fd1dd1b731ebf34835598c79e07f7f0e582bd211b7db308e6c25",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SSF_CommandCenter",
+      "team": "blue",
+      "path": "Boards/SSF_CommandCenter_blue.png",
+      "sha256": "13fdaf6009899a56bf9b13f2cf199f4c909d000dd968a15855401389328497c1",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SSF_CommandCenter",
+      "team": "red",
+      "path": "Boards/SSF_CommandCenter_red.png",
+      "sha256": "71a35271817773347849300606087d2f07097e46d482f2df88881de938d36f80",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SSF_MilitaryFactory",
+      "team": "blue",
+      "path": "Boards/SSF_MilitaryFactory_blue.png",
+      "sha256": "21413ce174653b498c34c45afdc0539a8c2cdc4cc8e833bf78d34923bad36892",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SSF_MilitaryFactory",
+      "team": "red",
+      "path": "Boards/SSF_MilitaryFactory_red.png",
+      "sha256": "fc5d15e6cb7fc4ced3b630ce1b5566943dfb5d29059addb400486b9dd8dd9a00",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SSF_Reactor",
+      "team": "blue",
+      "path": "Boards/SSF_Reactor_blue.png",
+      "sha256": "5c03cf8a4356f4c325b80e73297fb9555fd48f489629ed48aebb73557f215a6c",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SSF_Reactor",
+      "team": "red",
+      "path": "Boards/SSF_Reactor_red.png",
+      "sha256": "0680690bbbe2350ff4cfec16491d1ea34b1dce3106a2889ea49cb2e55761a2bc",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SSF_StrategyCenter",
+      "team": "blue",
+      "path": "Boards/SSF_StrategyCenter_blue.png",
+      "sha256": "7b899da8b746fb7f357bca3643413d3a288be7e685c9130bedc4e6a0aa999e6d",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "model": "SSF_StrategyCenter",
+      "team": "red",
+      "path": "Boards/SSF_StrategyCenter_red.png",
+      "sha256": "ce1ba3f327f51fe32fb992c7a91117c0515314542525ff6ab5fe45f9dea6ffd0",
+      "width": 1536,
+      "height": 1024
+    }
+  ],
+  "reference_A_approval": "pending",
+  "construction_B": "not_started",
+  "formal_ue_resource_update": false,
+  "browser_interaction_qa": {
+    "status": "not_run",
+    "reason": "Browser security policy rejected file:// navigation. No alternative browser surface or protocol workaround attempted."
+  },
+  "verification_boundary": "Inventory, source hashes, static gallery structure and prior visual inspection only; no measured geometry, runtime behavior or user visual approval claimed."
+}

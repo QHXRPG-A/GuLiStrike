@@ -1,0 +1,514 @@
+{
+  "success": true,
+  "functions": [
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical",
+      "nodes": [
+        {
+          "node": "MaterialExpressionCustom_3",
+          "type": "MaterialExpressionCustom",
+          "code": "// Embedded in MF_GuLiRigidMechanical by build_mass_rigid_materials.py.\n// UV1 = pivot.xy, UV2 = pivot.z/part; all distances are authored mesh cm.\n// Pose 0..13: legacy; 14..15: upper/leg bank; 16..23: stabilized gun quaternions.\n// Matches BuildVisualFrame / ResolveVisualMuzzle / ResolveVisualNozzle. UE pitch: +X -> +Z.\nstruct RigidMath\n{\n    float3 Pitch(float3 v, float a) { float s,c; sincos(a,s,c); return float3(c*v.x-s*v.z,v.y,s*v.x+c*v.z); }\n    float3 Yaw(float3 v, float a) { float s,c; sincos(a,s,c); return float3(c*v.x-s*v.y,s*v.x+c*v.y,v.z); }\n    float3 Axis(float3 v, float3 axis, float a) { float s,c; sincos(a,s,c); return v*c+cross(axis,v)*s+axis*dot(axis,v)*(1-c); }\n    float3 Quat(float3 v, float4 q) { return v+2*cross(q.xyz,cross(q.xyz,v)+q.w*v); }\n};\nRigidMath r;\nfloat3 p = Position;\nfloat3 n = LocalNormal;\nfloat3 pivot = float3(PivotXY, PivotZPart.x);\nint part = (int)round(PivotZPart.y);\nif (Kind > 0.5 && Kind < 1.5)\n{\n    if (part == 4 || part == 5) p.x -= part == 4 ? V3 : V4;\n    if (part >= 2 && part <= 5)\n    {\n        float pitch = (part == 2 || part == 4) ? V1 : V2;\n        float4 q = (part == 2 || part == 4) ? float4(V16,V17,V18,V19) : float4(V20,V21,V22,V23);\n        // Zero means legacy/editor pose. A visual pose supplies the full stabilized rotation.\n        if (dot(q,q) > 0.5) { p=pivot+r.Quat(p-pivot,q); n=r.Quat(n,q); }\n        else { p = pivot + r.Pitch(p-pivot, pitch); n = r.Pitch(n, pitch); }\n    }\n    bool missilePod = part == 10 || part == 11;\n    if (missilePod && PodVisible < 0.5)\n    {\n        // Degenerate all pod and contour triangles inside the upper body. This\n        // removes silhouette/shadow/hit-overlay coverage without translucency.\n        p = UpperPivot; n = float3(0,0,1);\n    }\n    if ((part >= 1 && part <= 5) || missilePod)\n    {\n        p = UpperPivot+r.Axis(r.Yaw(p-UpperPivot,V0),float3(1,0,0),V14);\n        n = r.Axis(r.Yaw(n,V0),float3(1,0,0),V14);\n    }\n    if (part >= 6 && part <= 9)\n    {\n        float angle=length(float2(V5,V6));\n        float3 axis=float3(V5,V6,0)/max(angle,0.000001);\n        p=pivot+r.Axis(p-pivot,axis,angle); n=r.Axis(n,axis,angle);\n    }\n    if ((part >= 6 && part <= 9) || (part >= 12 && part <= 19))\n    {\n        int leg=part<=9 ? part-6 : (part-12)%4;\n        float3 root=leg==0?LegRoot0:(leg==1?LegRoot1:(leg==2?LegRoot2:LegRoot3));\n        float3 end=leg==0?LegEnd0:(leg==1?LegEnd1:(leg==2?LegEnd2:LegEnd3));\n        float3 axis=leg==0?LegAxis0:(leg==1?LegAxis1:(leg==2?LegAxis2:LegAxis3));\n        float angle=-sign(end.y)*V15;\n        if (dot(axis,axis)>0.5)\n        {\n            if (part>=12 && part<=15) { p=root+r.Axis(p-root,axis,angle); n=r.Axis(n,axis,angle); }\n            else p+=root+r.Axis(end-root,axis,angle)-end;\n        }\n    }\n    // Final rigid body hover uses authored cm; instance scale is applied only by LocalToWorld.\n    p=UpperPivot+r.Pitch(r.Axis(p-UpperPivot,float3(1,0,0),V13),V12)+float3(0,0,V11);\n    n=r.Pitch(r.Axis(n,float3(1,0,0),V13),V12);\n}\nelse if (Kind >= 1.5)\n{\n    if (part == 2) { p=pivot+r.Pitch(p-pivot,V1); n=r.Pitch(n,V1); }\n    if (part >= 6 && part <= 9)\n    {\n        float angle=part==6?V7:(part==7?V8:(part==8?V9:V10));\n        p=pivot+r.Axis(p-pivot,float3(0,1,0),angle); n=r.Axis(n,float3(0,1,0),angle);\n    }\n}\nAnimatedNormal=normalize(n);\nreturn p-Position;\n"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_0",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_1",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_10",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_11",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_12",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_13",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_2",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_3",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_4",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_5",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_6",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_7",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_8",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionInput_9",
+          "type": "MaterialExpressionFunctionInput"
+        },
+        {
+          "node": "MaterialExpressionFunctionOutput_2",
+          "type": "MaterialExpressionFunctionOutput"
+        },
+        {
+          "node": "MaterialExpressionFunctionOutput_3",
+          "type": "MaterialExpressionFunctionOutput"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_0",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_1",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_10",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_11",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_12",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_13",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_14",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_15",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_16",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_17",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_18",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_19",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_2",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_20",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_21",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_22",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_23",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_24",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_25",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_26",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_27",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_3",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_4",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_5",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_6",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_67",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_68",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_69",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_7",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_70",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_71",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_72",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_73",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_74",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_75",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_76",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_77",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_78",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_79",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_8",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_80",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_81",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_82",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_83",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_84",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_85",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_86",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_87",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_88",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_9",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPreSkinnedNormal_4",
+          "type": "MaterialExpressionPreSkinnedNormal"
+        },
+        {
+          "node": "MaterialExpressionPreSkinnedPosition_4",
+          "type": "MaterialExpressionPreSkinnedPosition"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_0",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_1",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_10",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_11",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_12",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_13",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_2",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_3",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_33",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_34",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_35",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_36",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_37",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_38",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_39",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_4",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_40",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_41",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_42",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_43",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_5",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_6",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_7",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_8",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_9",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionTextureCoordinate_8",
+          "type": "MaterialExpressionTextureCoordinate",
+          "uv": 1
+        },
+        {
+          "node": "MaterialExpressionTextureCoordinate_9",
+          "type": "MaterialExpressionTextureCoordinate",
+          "uv": 2
+        },
+        {
+          "node": "MaterialExpressionTransform_3",
+          "type": "MaterialExpressionTransform"
+        },
+        {
+          "node": "MaterialExpressionTransform_4",
+          "type": "MaterialExpressionTransform"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/MF_Pioneer_BoneVAT",
+      "nodes": [
+        {
+          "node": "MaterialExpressionConstant3Vector_0",
+          "type": "MaterialExpressionConstant3Vector"
+        },
+        {
+          "node": "MaterialExpressionConstant3Vector_1",
+          "type": "MaterialExpressionConstant3Vector"
+        },
+        {
+          "node": "MaterialExpressionConstant3Vector_2",
+          "type": "MaterialExpressionConstant3Vector"
+        },
+        {
+          "node": "MaterialExpressionCustom_0",
+          "type": "MaterialExpressionCustom",
+          "code": "// UV2.x selects one of 44 bones; UV2.y = 0 chassis/legs, 1 upper, 2 left gun, 3 right gun.\n// Textures are frame-major RGBA32F nearest samples, identical to UGuLiVATDefinition::SampleBone.\nstruct PioneerMath\n{\n    float3 Quat(float3 v,float4 q) { return v+2*cross(q.xyz,cross(q.xyz,v)+q.w*v); }\n    float3 Pitch(float3 v,float a) { float s,c; sincos(a,s,c); return float3(c*v.x-s*v.z,v.y,s*v.x+c*v.z); }\n    float3 Yaw(float3 v,float a) { float s,c; sincos(a,s,c); return float3(c*v.x-s*v.y,s*v.x+c*v.y,v.z); }\n};\nPioneerMath math;\nfloat bone = floor(BoneUV.x*44);\nfloat first = floor(Frame), second = min(first+1,310), alpha = Frame-first;\nfloat2 uv0=float2((bone+.5)/44,(first+.5)/311), uv1=float2((bone+.5)/44,(second+.5)/311);\nfloat3 t=lerp(Texture2DSampleLevel(BonePosition,BonePositionSampler,uv0,0).xyz,\n              Texture2DSampleLevel(BonePosition,BonePositionSampler,uv1,0).xyz,alpha);\nfloat4 q0=Texture2DSampleLevel(BoneRotation,BoneRotationSampler,uv0,0);\nfloat4 q1=Texture2DSampleLevel(BoneRotation,BoneRotationSampler,uv1,0);\nfloat4 q=normalize(lerp(q0,dot(q0,q1)<0?-q1:q1,alpha));\nfloat3 p=math.Quat(Position,q)+t;\nfloat3 n=math.Quat(LocalNormal,q);\n// Native FBX import flips V on all UV channels, including this integer payload.\nint flag=(int)round(1-BoneUV.y);\nif (flag>=2)\n{\n    float3 referencePivot=flag==2?LeftPivot:RightPivot;\n    float3 pivot=math.Quat(referencePivot,q)+t;\n    float pitch=flag==2?LeftPitch:RightPitch;\n    p=pivot+math.Pitch(p-pivot,pitch); n=math.Pitch(n,pitch);\n}\nif (flag>=1)\n{\n    float2 a=float2((20+.5)/44,(first+.5)/311),b=float2((20+.5)/44,(second+.5)/311);\n    float3 topT=lerp(Texture2DSampleLevel(BonePosition,BonePositionSampler,a,0).xyz,\n                    Texture2DSampleLevel(BonePosition,BonePositionSampler,b,0).xyz,alpha);\n    float4 topQ0=Texture2DSampleLevel(BoneRotation,BoneRotationSampler,a,0);\n    float4 topQ1=Texture2DSampleLevel(BoneRotation,BoneRotationSampler,b,0);\n    float4 topQ=normalize(lerp(topQ0,dot(topQ0,topQ1)<0?-topQ1:topQ1,alpha));\n    float3 pivot=math.Quat(UpperPivot,topQ)+topT;\n    p=pivot+math.Yaw(p-pivot,UpperYaw); n=math.Yaw(n,UpperYaw);\n}\nAnimatedNormal=normalize(n);\nreturn p-Position;\n"
+        },
+        {
+          "node": "MaterialExpressionFunctionOutput_0",
+          "type": "MaterialExpressionFunctionOutput"
+        },
+        {
+          "node": "MaterialExpressionFunctionOutput_1",
+          "type": "MaterialExpressionFunctionOutput"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_0",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_1",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_2",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_3",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_4",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_5",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_6",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPerInstanceCustomData_7",
+          "type": "MaterialExpressionPerInstanceCustomData"
+        },
+        {
+          "node": "MaterialExpressionPreSkinnedNormal_0",
+          "type": "MaterialExpressionPreSkinnedNormal"
+        },
+        {
+          "node": "MaterialExpressionPreSkinnedPosition_0",
+          "type": "MaterialExpressionPreSkinnedPosition"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_0",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_1",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_2",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionPreviousFrameSwitch_3",
+          "type": "MaterialExpressionPreviousFrameSwitch"
+        },
+        {
+          "node": "MaterialExpressionTextureCoordinate_0",
+          "type": "MaterialExpressionTextureCoordinate",
+          "uv": 2
+        },
+        {
+          "node": "MaterialExpressionTextureObject_0",
+          "type": "MaterialExpressionTextureObject",
+          "texture": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition.T_Pioneer_BonePosition"
+        },
+        {
+          "node": "MaterialExpressionTextureObject_1",
+          "type": "MaterialExpressionTextureObject",
+          "texture": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation.T_Pioneer_BoneRotation"
+        },
+        {
+          "node": "MaterialExpressionTransform_0",
+          "type": "MaterialExpressionTransform"
+        },
+        {
+          "node": "MaterialExpressionTransform_1",
+          "type": "MaterialExpressionTransform"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "name": "ManualOutpost",
+  "group": "Building",
+  "mesh": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+  "kind": "StaticMesh",
+  "bounds": "<Struct 'BoxSphereBounds' (0x0000028085B2BEC0) {origin: {x: -10.589355, y: 252.585938, z: 15000.000000}, box_extent: {x: 3551.543213, y: 3309.902588, z: 15000.000000}, sphere_radius: 15434.077543}>",
+  "definition_id": 3,
+  "display_name": "前哨建筑",
+  "mesh_scale": {
+    "X": 0.2,
+    "Y": 0.2,
+    "Z": 0.2
+  },
+  "version": "LocalTeamColorReview.20261008.v1",
+  "mutable_regions": "无现成队色标记：候选为混凝土侧面窄阵营条带，混凝土主体固定",
+  "source_palette_candidates": [],
+  "blue_reference": "#2877DB",
+  "red_reference": "#D7534D",
+  "enemy_non_blue_palette": "#D7534D",
+  "configuration_status": "candidate_pending_region_review",
+  "runtime_enabled": false,
+  "geometry_animation_lod_unchanged": true,
+  "materials": [
+    {
+      "slot": 0,
+      "name": "M_Outpost_FairFacedConcrete",
+      "fixed": false,
+      "source": "/Game/GuLiStrike/Buildings/Materials/M_OutpostConcrete.M_OutpostConcrete",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/ManualOutpost/M_Review_M_OutpostConcrete.M_Review_M_OutpostConcrete",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/ManualOutpost/MI_Blue_0.MI_Blue_0",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/ManualOutpost/MI_Red_0.MI_Red_0",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/ManualOutpost/MI_Regions_0.MI_Regions_0"
+    }
+  ]
+}

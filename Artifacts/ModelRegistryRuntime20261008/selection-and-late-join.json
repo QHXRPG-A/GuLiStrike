@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "selection": {
+      "success": false
+    },
+    "profiles": [
+      {
+        "label": "PostProcessVolume",
+        "name": "PostProcessVolume_2",
+        "priority": 0.0,
+        "unbound": true
+      },
+      {
+        "label": "SceneUI_Profile_Night",
+        "name": "PostProcessVolume_0",
+        "priority": 150.0,
+        "unbound": true
+      },
+      {
+        "label": "SceneUI_Profile_ExposureBloom",
+        "name": "PostProcessVolume_1",
+        "priority": 150.0,
+        "unbound": true
+      },
+      {
+        "label": "SceneUI_Profile_ColorGrade",
+        "name": "PostProcessVolume_3",
+        "priority": 150.0,
+        "unbound": true
+      }
+    ],
+    "presenters": 1,
+    "late_join": true
+  }
+}

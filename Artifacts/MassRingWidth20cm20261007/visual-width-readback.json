@@ -1,0 +1,70 @@
+{
+  "visual_inspection": "Four annuli visible; widths agree with 20 cm within raster precision.",
+  "capture_scope": "Editor ISM rendering with fog disabled and manual exposure; no PIE or environment acceptance.",
+  "samples": [
+    {
+      "actor": "MassRing20_Default150",
+      "radius_cm": 150.0,
+      "center_row_red_spans": [
+        57,
+        57
+      ],
+      "measured_radial_width_cm": [
+        20.039,
+        20.039
+      ],
+      "raster_precision_cm": 0.352,
+      "expected_width_cm": 20.0,
+      "annulus_visible": true,
+      "expected_radial_pixels": 56.889
+    },
+    {
+      "actor": "MassRing20_Pioneer",
+      "radius_cm": 312.5,
+      "center_row_red_spans": [
+        28,
+        28
+      ],
+      "measured_radial_width_cm": [
+        20.508,
+        20.508
+      ],
+      "raster_precision_cm": 0.732,
+      "expected_width_cm": 20.0,
+      "annulus_visible": true,
+      "expected_radial_pixels": 27.307
+    },
+    {
+      "actor": "MassRing20_WM01",
+      "radius_cm": 625.0,
+      "center_row_red_spans": [
+        14,
+        14
+      ],
+      "measured_radial_width_cm": [
+        20.508,
+        20.508
+      ],
+      "raster_precision_cm": 1.465,
+      "expected_width_cm": 20.0,
+      "annulus_visible": true,
+      "expected_radial_pixels": 13.653
+    },
+    {
+      "actor": "MassRing20_BiZhiMao",
+      "radius_cm": 1629.75439453125,
+      "center_row_red_spans": [
+        6,
+        6
+      ],
+      "measured_radial_width_cm": [
+        22.918,
+        22.918
+      ],
+      "raster_precision_cm": 3.82,
+      "expected_width_cm": 20.0,
+      "annulus_visible": true,
+      "expected_radial_pixels": 5.236
+    }
+  ]
+}

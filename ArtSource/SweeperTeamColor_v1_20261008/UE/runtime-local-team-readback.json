@@ -1,0 +1,605 @@
+{
+  "clients": [
+    {
+      "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "actual_player_team": 2,
+      "batches": [
+        {
+          "component": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_0.UnitInstances_Type_5_Team_1",
+          "actual_unit_team": 1,
+          "relation": "enemy",
+          "instances": 5,
+          "visible_poses": [
+            {
+              "index": 0,
+              "position": [
+                -440.0,
+                64480.0,
+                902.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 1,
+              "position": [
+                340.0,
+                64480.0,
+                902.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 2,
+              "position": [
+                100.0,
+                65520.0,
+                902.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 3,
+              "position": [
+                -780.0,
+                64140.0,
+                902.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 4,
+              "position": [
+                -400.0,
+                64140.0,
+                902.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            }
+          ],
+          "mesh": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+          "material": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_Sweeper_Cel_Rigid.M_Sweeper_Cel_Rigid",
+          "animation_stride": 63,
+          "actual": {
+            "primary": [
+              0.366252601146698,
+              0.05126945674419403,
+              0.08650045841932297,
+              1.0
+            ],
+            "enabled": 1.0
+          },
+          "expected": [
+            0.3662525955988395,
+            0.05126945837404324,
+            0.08650046203654976,
+            1
+          ],
+          "passed": true
+        },
+        {
+          "component": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_0.UnitInstances_Type_5_Team_2",
+          "actual_unit_team": 2,
+          "relation": "own",
+          "instances": 5,
+          "visible_poses": [
+            {
+              "index": 0,
+              "position": [
+                -8940.0,
+                62480.0,
+                1060.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 1,
+              "position": [
+                -8160.0,
+                62480.0,
+                1026.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 2,
+              "position": [
+                -8400.0,
+                63520.0,
+                1062.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 3,
+              "position": [
+                -9280.0,
+                62140.0,
+                1064.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 4,
+              "position": [
+                -8900.0,
+                62140.0,
+                1048.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            }
+          ],
+          "mesh": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+          "material": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_Sweeper_Cel_Rigid.M_Sweeper_Cel_Rigid",
+          "animation_stride": 63,
+          "actual": {
+            "primary": [
+              0.1441284716129303,
+              0.3712376654148102,
+              0.5149176716804504,
+              1.0
+            ],
+            "enabled": 1.0
+          },
+          "expected": [
+            0.14412847085805777,
+            0.3712376804741491,
+            0.5149176653765214,
+            1
+          ],
+          "passed": true
+        }
+      ],
+      "refresh_checks": [
+        {
+          "component": "UnitInstances_Type_5_Team_1",
+          "ownership_registration_refresh": true,
+          "actual": {
+            "primary": [
+              0.1441284716129303,
+              0.3712376654148102,
+              0.5149176716804504,
+              1.0
+            ],
+            "enabled": 1.0
+          }
+        },
+        {
+          "component": "UnitInstances_Type_5_Team_2",
+          "ownership_registration_refresh": true,
+          "actual": {
+            "primary": [
+              0.366252601146698,
+              0.05126945674419403,
+              0.08650045841932297,
+              1.0
+            ],
+            "enabled": 1.0
+          }
+        }
+      ],
+      "q_reply": {
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "error": "",
+        "unit_results": [
+          {
+            "succeeded": true,
+            "error": ""
+          }
+        ]
+      }
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "actual_player_team": 1,
+      "batches": [
+        {
+          "component": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_0.UnitInstances_Type_5_Team_1",
+          "actual_unit_team": 1,
+          "relation": "own",
+          "instances": 5,
+          "visible_poses": [
+            {
+              "index": 0,
+              "position": [
+                -440.0,
+                64480.0,
+                902.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 1,
+              "position": [
+                340.0,
+                64480.0,
+                902.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 2,
+              "position": [
+                100.0,
+                65520.0,
+                902.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 3,
+              "position": [
+                -780.0,
+                64140.0,
+                902.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 4,
+              "position": [
+                -400.0,
+                64140.0,
+                902.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            }
+          ],
+          "mesh": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+          "material": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_Sweeper_Cel_Rigid.M_Sweeper_Cel_Rigid",
+          "animation_stride": 63,
+          "actual": {
+            "primary": [
+              0.1441284716129303,
+              0.3712376654148102,
+              0.5149176716804504,
+              1.0
+            ],
+            "enabled": 1.0
+          },
+          "expected": [
+            0.14412847085805777,
+            0.3712376804741491,
+            0.5149176653765214,
+            1
+          ],
+          "passed": true
+        },
+        {
+          "component": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPresentationActor_0.UnitInstances_Type_5_Team_2",
+          "actual_unit_team": 2,
+          "relation": "enemy",
+          "instances": 5,
+          "visible_poses": [
+            {
+              "index": 0,
+              "position": [
+                -8940.0,
+                62480.0,
+                1060.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 1,
+              "position": [
+                -8160.0,
+                62480.0,
+                1026.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 2,
+              "position": [
+                -8400.0,
+                63520.0,
+                1062.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 3,
+              "position": [
+                -9280.0,
+                62140.0,
+                1064.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            },
+            {
+              "index": 4,
+              "position": [
+                -8900.0,
+                62140.0,
+                1048.0
+              ],
+              "scale": [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+              ]
+            }
+          ],
+          "mesh": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+          "material": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_Sweeper_Cel_Rigid.M_Sweeper_Cel_Rigid",
+          "animation_stride": 63,
+          "actual": {
+            "primary": [
+              0.366252601146698,
+              0.05126945674419403,
+              0.08650045841932297,
+              1.0
+            ],
+            "enabled": 1.0
+          },
+          "expected": [
+            0.3662525955988395,
+            0.05126945837404324,
+            0.08650046203654976,
+            1
+          ],
+          "passed": true
+        }
+      ],
+      "refresh_checks": [
+        {
+          "component": "UnitInstances_Type_5_Team_1",
+          "ownership_registration_refresh": true,
+          "actual": {
+            "primary": [
+              0.366252601146698,
+              0.05126945674419403,
+              0.08650045841932297,
+              1.0
+            ],
+            "enabled": 1.0
+          }
+        },
+        {
+          "component": "UnitInstances_Type_5_Team_2",
+          "ownership_registration_refresh": true,
+          "actual": {
+            "primary": [
+              0.1441284716129303,
+              0.3712376654148102,
+              0.5149176716804504,
+              1.0
+            ],
+            "enabled": 1.0
+          }
+        }
+      ],
+      "q_reply": {
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "error": "",
+        "unit_results": [
+          {
+            "succeeded": true,
+            "error": ""
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "source": "actual native Q activation, server summons, client Mass meshes and registry actual CPD reads",
+  "server_summoned_units": [
+    {
+      "id": 276,
+      "team": 1,
+      "type": 5,
+      "health": 100,
+      "phased": false,
+      "locked": false,
+      "cooldown": 0,
+      "shots": 0,
+      "x": -430.5449981689453,
+      "y": 64487.5,
+      "z": 901.9729448180689,
+      "floor": 501
+    },
+    {
+      "id": 277,
+      "team": 1,
+      "type": 5,
+      "health": 100,
+      "phased": false,
+      "locked": false,
+      "cooldown": 0,
+      "shots": 0,
+      "x": 343.7052459716797,
+      "y": 64487.5,
+      "z": 901.7790832519531,
+      "floor": 0
+    },
+    {
+      "id": 278,
+      "team": 1,
+      "type": 5,
+      "health": 100,
+      "phased": false,
+      "locked": false,
+      "cooldown": 0,
+      "shots": 0,
+      "x": 92.95529174804688,
+      "y": 65512.5,
+      "z": 901.7790832519531,
+      "floor": 0
+    },
+    {
+      "id": 279,
+      "team": 1,
+      "type": 5,
+      "health": 100,
+      "phased": false,
+      "locked": false,
+      "cooldown": 0,
+      "shots": 0,
+      "x": -780.5449981689453,
+      "y": 64137.5,
+      "z": 902.1305393748029,
+      "floor": 501
+    },
+    {
+      "id": 280,
+      "team": 1,
+      "type": 5,
+      "health": 100,
+      "phased": false,
+      "locked": false,
+      "cooldown": 0,
+      "shots": 0,
+      "x": -409.91993713378906,
+      "y": 64137.5,
+      "z": 901.9636579684933,
+      "floor": 501
+    },
+    {
+      "id": 281,
+      "team": 2,
+      "type": 5,
+      "health": 100,
+      "phased": false,
+      "locked": false,
+      "cooldown": 0,
+      "shots": 0,
+      "x": -8930.544998168945,
+      "y": 62487.5,
+      "z": 1059.1182482440788,
+      "floor": 0
+    },
+    {
+      "id": 282,
+      "team": 2,
+      "type": 5,
+      "health": 100,
+      "phased": false,
+      "locked": false,
+      "cooldown": 0,
+      "shots": 0,
+      "x": -8156.29475402832,
+      "y": 62487.5,
+      "z": 1025.0419352517317,
+      "floor": 0
+    },
+    {
+      "id": 283,
+      "team": 2,
+      "type": 5,
+      "health": 100,
+      "phased": false,
+      "locked": false,
+      "cooldown": 0,
+      "shots": 0,
+      "x": -8407.044708251953,
+      "y": 63512.5,
+      "z": 1061.758988859561,
+      "floor": 0
+    },
+    {
+      "id": 284,
+      "team": 2,
+      "type": 5,
+      "health": 100,
+      "phased": false,
+      "locked": false,
+      "cooldown": 0,
+      "shots": 0,
+      "x": -9280.544998168945,
+      "y": 62137.5,
+      "z": 1063.2645482104126,
+      "floor": 0
+    },
+    {
+      "id": 285,
+      "team": 2,
+      "type": 5,
+      "health": 100,
+      "phased": false,
+      "locked": false,
+      "cooldown": 0,
+      "shots": 0,
+      "x": -8909.919937133789,
+      "y": 62137.5,
+      "z": 1047.8844763370826,
+      "floor": 0
+    }
+  ],
+  "success": true
+}

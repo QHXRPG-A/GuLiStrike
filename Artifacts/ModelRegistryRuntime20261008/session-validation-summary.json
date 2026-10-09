@@ -1,0 +1,71 @@
+{
+  "updated": "2026-10-08T23:01:03.505587+08:00",
+  "status": "partial",
+  "authorizations": [
+    "编译，然后模型表需要加个“描述”字段，说明这模型是干啥的，然后导入新 DataTable 并验证运行效果",
+    "记得将刚刚开发的美术资源导入至UE的正式资源中，并将旧资源删除",
+    "这些黑块太深了，再浅一些"
+  ],
+  "native_build": {
+    "status": "passed",
+    "seconds": 20.04,
+    "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "log": "Artifacts/ModelRegistryRuntime20261008/NativeBuildBoundsFinal.log"
+  },
+  "evidence": {
+    "datatable_import": "Data/Models/import-live-20261008.json",
+    "binding_migration": "Data/Models/native-binding-migration.json",
+    "editor_catalog": "Data/Models/editor-static-validation.json",
+    "parameter_roundtrip": "Artifacts/ModelRegistryRuntime20261008/runtime-parameter-roundtrip.json",
+    "cpd_recovery": "Artifacts/ModelRegistryRuntime20261008/final-cpd-recovery.json",
+    "ownership": "Artifacts/ModelRegistryRuntime20261008/ownership-color-readback.json",
+    "environment_ring_roi": "Artifacts/ModelRegistryRuntime20261008/scene-ui-color-readback.json",
+    "selection": "Artifacts/ModelRegistryRuntime20261008/final-selection-blue-readback.json",
+    "deselection": "Artifacts/ModelRegistryRuntime20261008/final-selection-clear.json",
+    "aa_render_bounds": "Artifacts/ModelRegistryRuntime20261008/aa-original-scale-restored.json",
+    "ore_saved_materials": "Artifacts/ModelRegistryRuntime20261008/ore-rock-lighter-revision.json",
+    "ore_actual_comparison": "Artifacts/ModelRegistryRuntime20261008/ore-rock-comparison.json",
+    "saved_scenes": "Data/Models/acceptance-scenes-readback.json",
+    "latest_saved_scenes": "Artifacts/ModelRegistryRuntime20261008/final-scenes-after-ore.json"
+  },
+  "runtime_scope": {
+    "commander_clients": 2,
+    "late_join_ground_client": true,
+    "relative_team_colors": "verified in each local client",
+    "ownership_and_unknown_cases": 6,
+    "actual_parameter_roundtrip": "verified",
+    "external_cpd_reset_recovery": "verified",
+    "selected_and_cleared_rpc_ack": "verified",
+    "scene_ui": "6 profiles, opaque enemy ring ROI RGB(255,56,48); not all UI pixels",
+    "ring_width": "20 cm source contract; no physical screen measurement",
+    "latest_ore_crystal_fill": "saved and actual editor rendering; full multi-client PIE not rerun"
+  },
+  "long_session": {
+    "status": "failed",
+    "reason": "Windows available committed memory exhausted",
+    "log": "Artifacts/ModelRegistryRuntime20261008/EditorVerifiedFinal.log",
+    "time_local": "2026-10-08 21:54:51 +08:00",
+    "scope": "server plus 3 clients and accumulated model preview/capture work",
+    "recovery": "Editor reopened; focused verification completed; resources and maps saved",
+    "stability_or_performance_pass_claimed": false
+  },
+  "saved_map_entities": {
+    "Mass": 12,
+    "Ground": 3,
+    "Ship": 17
+  },
+  "not_run": [
+    "actual ship gameplay verification",
+    "browser local gallery interaction"
+  ],
+  "pending": {
+    "region_masks": [
+      1005,
+      2004,
+      2007
+    ],
+    "user_visual_acceptance": true
+  },
+  "automated_tests_added_or_run": false,
+  "source_hash_unchanged": true
+}

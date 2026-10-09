@@ -1,0 +1,92 @@
+{
+  "id": "SSF_CloningCenter",
+  "name": "SSF 克隆中心",
+  "title": "CLONING CENTER",
+  "category": "SSF",
+  "fixed": [
+    "竖向背脊、顶盖、入口和主要外壳：奶油白",
+    "连接软管、舱端凹口与机构：深灰"
+  ],
+  "team": [
+    "四处原有舱体外罩",
+    "既有侧翼护盖",
+    "顶盖六边形口边框"
+  ],
+  "function": [
+    "顶盖开口内侧固定深灰，不混入橙色"
+  ],
+  "structure": "保留两层成对舱体、吊线、斜入口、上部开口及侧天线。",
+  "source": [
+    "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_CloningCenter_Views.png"
+  ],
+  "boards": {
+    "blue": {
+      "path": "Boards/SSF_CloningCenter_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1642136,
+      "sha256": "1758c5426452e8bf23cbca02eeead8b7570020a9dd3e29773a9905287fb23a2f"
+    },
+    "red": {
+      "path": "Boards/SSF_CloningCenter_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1656185,
+      "sha256": "dd9d3d34aa70fd1dd1b731ebf34835598c79e07f7f0e582bd211b7db308e6c25"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CloningCenter/Meshes/SK_Blue_CloningCenter.SK_Blue_CloningCenter",
+  "source_kind": "SkeletalMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_CloningCenter_Views.png",
+      "sha256": "3e9f14fc85c59170ac913928f42552d5f256ec0f0fdca06f4757d43ee9036848"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v2_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

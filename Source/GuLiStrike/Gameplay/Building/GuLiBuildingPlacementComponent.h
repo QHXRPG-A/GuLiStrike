@@ -38,6 +38,7 @@ public:
 	EGuLiBuildingType GetSelectedBuildingType() const { return SelectedBuildingType; }
 
 	UGuLiBuildingCatalog* GetBuildingCatalog() const { return CachedCatalog; }
+	const AGuLiBuildingPlacementPreview* GetSceneUIPreview() const;
 
 	/** Returns true whenever B was consumed, including an eligibility rejection. */
 	bool ToggleBuildMode();

@@ -13,7 +13,7 @@ public:
 	static bool Observe(APlayerController* Controller, bool bEnabled);
 	UFUNCTION(BlueprintPure, Category="GuLiStrike|Editor|Pioneer")
 	static FString Snapshot(APlayerController* Controller);
-	/** Selection uses the real point/radius RPC and the player's normal sequence allocation. */
+	/** Selection uses the real RPC and normal sequence allocation. SoldierId 0 clears selection. */
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Pioneer")
 	static bool Select(APlayerController* Controller, int64 SoldierId, bool bAdd = false);
 	/** Skill/Move/Stop enter the existing HUD/controller path. QDown/QUp enter key input. */

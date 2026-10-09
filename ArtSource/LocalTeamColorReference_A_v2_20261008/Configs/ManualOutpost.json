@@ -1,0 +1,106 @@
+{
+  "id": "ManualOutpost",
+  "name": "前哨建筑",
+  "title": "OUTPOST",
+  "category": "Building",
+  "building_type_id": 3,
+  "fixed": [
+    "高窄叠板及平直板面：奶油白",
+    "板间深槽与支承：深灰"
+  ],
+  "team": [
+    "原有腰部围带／围笼"
+  ],
+  "function": [
+    "原模型无新增功能灯"
+  ],
+  "source": [
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Hero.png",
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Front.png",
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Left.png",
+    "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Back.png"
+  ],
+  "structure": "沿用 SM_OutpostPlaceholder 的错落竖板纪念碑造型，保持原有高度序列。",
+  "boards": {
+    "blue": {
+      "path": "Boards/ManualOutpost_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1496956,
+      "sha256": "4ad8792c1312befe861a05a0cbe9929521a24cc04d114c1000d6a864a4d891f2"
+    },
+    "red": {
+      "path": "Boards/ManualOutpost_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1459913,
+      "sha256": "0250a397c9caa53f5ef13fee93421cf37ca283844ad5dc651fcd5ac3af35cc0a"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+  "source_kind": "StaticMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Hero.png",
+      "sha256": "51818ef5ee35082134509a53c5b43f9ee7db752b3f802d6433304c6d05755e8b"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Front.png",
+      "sha256": "d891fe8abf97ae7e767df542183344e7cf3d2fe79b96049670724418c8eccaf4"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Left.png",
+      "sha256": "a65d2c5e68455d1d3f2c4b5d1cf18df62ff4815c4534c1f9aae66078f0bec044"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v2_20261008/Sources/ManualOutpost_Back.png",
+      "sha256": "76523dd47a35cc703af7dc2238e4656e3802c8c64a18ce525e76ea2265fc2698"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v2_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

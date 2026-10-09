@@ -239,8 +239,9 @@ private:
 	UPROPERTY(Config, EditAnywhere, Category="Wingman|Behavior")
 	TSoftObjectPtr<UStateTree> MemberBehaviorStateTree;
 
-	UPROPERTY(Config, EditAnywhere, Category="Wingman|Presentation")
+	UPROPERTY(Config, meta=(DeprecatedProperty, DeprecationMessage="Use DefaultModelId in the Models catalogue."))
 	TSoftObjectPtr<UStaticMesh> DefaultWingmanMesh;
+	UPROPERTY(Config, EditAnywhere, Category="Models") int32 DefaultModelId = 6001;
 
 #if WITH_DEV_AUTOMATION_TESTS
 	bool bBypassNavigationRequirementForTests = false;

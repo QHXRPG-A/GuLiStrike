@@ -1,0 +1,22 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "mesh": "/Game/GuLiStrike/Buildings/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
+    "parent": "/Game/GuLiStrike/Models/TeamColor_v1/ShieldGenerator/Materials/Parents/M_ShieldGenerator_HardSurface.M_ShieldGenerator_HardSurface",
+    "shading": "<MaterialShadingModel.MSM_UNLIT: 0>",
+    "emissive": "<Object '/Game/GuLiStrike/Models/TeamColor_v1/ShieldGenerator/Materials/Parents/M_ShieldGenerator_HardSurface.M_ShieldGenerator_HardSurface:MaterialExpressionAdd_0' (0x000001E51BF07BC0) Class 'MaterialExpressionAdd'>",
+    "calls": [
+      {
+        "node": "MaterialExpressionMaterialFunctionCall_0",
+        "function": "<Object '/Game/GuLiStrike/Models/TeamColor_v1/Shared/MF_GuLiTeamRegion.MF_GuLiTeamRegion' (0x000001E51BF07080) Class 'MaterialFunction'>",
+        "inputs": [
+          "RoleAlpha",
+          "FixedPalette",
+          "RoleAlpha",
+          "FixedPalette"
+        ]
+      }
+    ]
+  }
+}

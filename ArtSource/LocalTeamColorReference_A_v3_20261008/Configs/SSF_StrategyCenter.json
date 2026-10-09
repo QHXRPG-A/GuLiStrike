@@ -1,0 +1,154 @@
+{
+  "id": "SSF_StrategyCenter",
+  "name": "SSF 战略中心",
+  "title": "STRATEGY CENTER",
+  "category": "SSF",
+  "fixed": [
+    "原支撑护甲及固定窄边框：乳白 #FEE4D9",
+    "主体固定壳体：米砂 #D5C09C",
+    "原有枪管/机构/支承/电缆/工作面/深槽：深灰 #2C3735，保持各模型既有分件"
+  ],
+  "team": [
+    "浅队色：现有主体腰部完整大护板",
+    "深队色：阵列原边框、现有上环"
+  ],
+  "function": [
+    "雷达阵面固定深灰，两队一致"
+  ],
+  "structure": "保留斜置阵列、四天线、转轴及底部支撑，雷达工作面不随队色变化。",
+  "source": [
+    "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_StrategyCenter_Views.png"
+  ],
+  "team_primary": [
+    "现有主体腰部完整大护板"
+  ],
+  "team_secondary": [
+    "阵列原边框、现有上环"
+  ],
+  "paint_zones": {
+    "fixed_armor": "原支撑护甲及固定窄边框",
+    "fixed_secondary": "主体固定壳体",
+    "team_primary": "现有主体腰部完整大护板",
+    "team_secondary": "阵列原边框、现有上环",
+    "mechanisms": "雷达工作阵面、转轴及凹槽：深灰"
+  },
+  "team_lights": [],
+  "previous_boards": {
+    "blue": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_StrategyCenter_blue.png",
+    "red": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_StrategyCenter_red.png"
+  },
+  "cream_coverage_target": {
+    "range_percent": [
+      20,
+      30
+    ],
+    "basis": "visible model surfaces; excludes background, outline and cast shadow",
+    "is_measured": false
+  },
+  "boards": {
+    "blue": {
+      "path": "Boards/SSF_StrategyCenter_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1612386,
+      "sha256": "1013bc75aeeb6c6d8ba9b77bf7152cdd647143317377efc58aabd756d6c71a4c"
+    },
+    "red": {
+      "path": "Boards/SSF_StrategyCenter_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1599945,
+      "sha256": "7f21deeda5e6ee095a048223e1b00369a15c839aab3fc9f91384ed302b7c46b4"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/StrategyCenter/Meshes/SK_Blue_StrategyCenter.SK_Blue_StrategyCenter",
+  "source_kind": "SkeletalMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_StrategyCenter_Views.png",
+      "sha256": "fee38cb18b67ce410895437a772b6546b686ba2ba398ab7de713edcb5a3f7a9c"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v3_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    },
+    "fixed_secondary": {
+      "hex": "#D5C09C",
+      "card": 1,
+      "label": "固定米砂"
+    },
+    "blue_secondary": {
+      "hex": "#274E61",
+      "card": 4,
+      "label": "深蓝灰队色"
+    },
+    "red_secondary": {
+      "hex": "#662249",
+      "card": 2,
+      "label": "深莓队色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "enemy_non_blue_secondary": "#662249",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "paint_contract": {
+    "fixed": {
+      "cream": "#FEE4D9",
+      "sand": "#D5C09C",
+      "mechanisms": "#2C3735"
+    },
+    "team": {
+      "blue": {
+        "primary": "#6AA4BE",
+        "secondary": "#274E61"
+      },
+      "red": {
+        "primary": "#A34053",
+        "secondary": "#662249"
+      }
+    },
+    "team_light": null,
+    "shading": "Three cel-shading levels are separate from the two team base paint colors.",
+    "fixed_function_policy": "Only existing function locations and palette colors; shield top lights are team-controlled."
+  },
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

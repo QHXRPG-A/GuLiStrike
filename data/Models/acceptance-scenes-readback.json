@@ -1,0 +1,1344 @@
+{
+  "maps": [
+    {
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "saved_and_reloaded": true,
+      "actors": [
+        {
+          "label": "ModelRegistry_Mass_DefaultSoldier",
+          "class": "/Script/Engine.StaticMeshActor",
+          "location_cm": [
+            -28024.767753601074,
+            63500.0,
+            1075.4417020936644
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=1001",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "StaticMeshComponent0",
+              "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB810) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -28024.767754, y: 63500.000000, z: 1075.441702}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD0.MI_Pioneer_LOD0",
+                "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/M_Pioneer_Contour.M_Pioneer_Contour",
+                "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD1.MI_Pioneer_LOD1",
+                "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD2.MI_Pioneer_LOD2"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Mass_WM01",
+          "class": "/Script/Engine.StaticMeshActor",
+          "location_cm": [
+            -23471.287182617187,
+            63499.99997558594,
+            1338.583252970474
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=1002",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "StaticMeshComponent0",
+              "mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB810) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -23471.287183, y: 63499.999976, z: 1338.583253}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid",
+                "/Game/GuLiStrike/Models/TeamColor_v1/WM01/Materials/Parents/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Mass_SweeperSummon",
+          "class": "/Script/Engine.StaticMeshActor",
+          "location_cm": [
+            -19000.0,
+            63499.99999389648,
+            1155.441672388809
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=1005",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "StaticMeshComponent0",
+              "mesh": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB810) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -19000.000000, y: 63499.999994, z: 1155.441672}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_Sweeper_Cel_Rigid.M_Sweeper_Cel_Rigid"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Mass_BiZhiMao",
+          "class": "/Script/Engine.StaticMeshActor",
+          "location_cm": [
+            -14500.000030517578,
+            63500.00003051758,
+            1275.4416886012723
+          ],
+          "scale": [
+            2.0,
+            2.0,
+            2.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=1006",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "StaticMeshComponent0",
+              "mesh": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB4B0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -14500.000031, y: 63500.000031, z: 1275.441689}, scale3d: {x: 2.000000, y: 2.000000, z: 2.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Instances/MI_BiZhiMao_LOD0.MI_BiZhiMao_LOD0",
+                "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Materials/M_BiZhiMao_Outline.M_BiZhiMao_Outline",
+                "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Instances/MI_BiZhiMao_LOD1.MI_BiZhiMao_LOD1",
+                "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Instances/MI_BiZhiMao_LOD2.MI_BiZhiMao_LOD2"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Mass_ShieldGenerator",
+          "class": "/Script/Engine.StaticMeshActor",
+          "location_cm": [
+            -27976.543502807617,
+            59500.000007629395,
+            1075.441672388809
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=2005",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "StaticMeshComponent0",
+              "mesh": "/Game/GuLiStrike/Buildings/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFBB70) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -27976.543503, y: 59500.000008, z: 1075.441672}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Models/TeamColor_v1/ShieldGenerator/Materials/Parents/M_ShieldGenerator_HardSurface.M_ShieldGenerator_HardSurface"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Mass_ManualOutpost",
+          "class": "/Script/Engine.StaticMeshActor",
+          "location_cm": [
+            -22989.41064453125,
+            59247.4140625,
+            1075.441672388809
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=2003",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "StaticMeshComponent0",
+              "mesh": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB810) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -22989.410645, y: 59247.414062, z: 1075.441672}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Models/TeamColor_v1/ManualOutpost/Materials/Parents/M_OutpostConcrete.M_OutpostConcrete"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Mass_SSF_AirBase",
+          "class": "/Script/Engine.SkeletalMeshActor",
+          "location_cm": [
+            -17691.75221061554,
+            59577.683402830415,
+            1076.1175623018662
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=3001",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "SkeletalMeshComponent0",
+              "mesh": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/AirBase/Meshes/SK_Blue_AirBase.SK_Blue_AirBase",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB4B0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -17691.752211, y: 59577.683403, z: 1076.117562}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Models/TeamColor_v1/SSF_AirBase/Materials/Instances/MI_Blue_AirBase_Body.MI_Blue_AirBase_Body",
+                "/Game/GuLiStrike/Buildings/SSFStylized/Blue/AirBase/Materials/MI_Blue_AirBase_Display.MI_Blue_AirBase_Display",
+                "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Materials/M_SSF_Outline.M_SSF_Outline"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Mass_Camera",
+          "class": "/Script/Engine.CameraActor",
+          "location_cm": [
+            -28900.0,
+            49500.0,
+            17873.441672388803
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "CameraProxyMeshComponent_0",
+              "mesh": "/Engine/EditorMeshes/MatineeCam_SM.MatineeCam_SM",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB6F0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Engine/EditorMaterials/MatineeCam_mat.MatineeCam_mat"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Mass_Notes",
+          "class": "/Script/Engine.TextRenderActor",
+          "location_cm": [
+            -20500.0,
+            67500.0,
+            1373.4416723888016
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008"
+          ],
+          "editor_only": true,
+          "meshes": []
+        },
+        {
+          "label": "ModelRegistry_Mass_ResourceFactory",
+          "class": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C",
+          "location_cm": [
+            -13159.999975584262,
+            59500.0,
+            1078.438886536118
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=2006",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "Body",
+              "mesh": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SM_RPF_Body.SM_RPF_Body",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFBD20) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Armor.M_RPF_Armor",
+                "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Interior.M_RPF_Interior",
+                "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Details.M_RPF_Details"
+              ]
+            },
+            {
+              "component": "Door",
+              "mesh": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door.SK_RPF_Door",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB030) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Armor.M_RPF_Armor",
+                "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Details.M_RPF_Details",
+                "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Interior.M_RPF_Interior"
+              ]
+            },
+            {
+              "component": "AccessRamp",
+              "mesh": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/Meshes/SM_RPF_AccessRamp.SM_RPF_AccessRamp",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB030) {rotation: {x: -0.000000, y: 0.021547, z: 0.000000, w: 0.999768}, translation: {x: 3199.676863, y: 0.000000, z: 27.006964}, scale3d: {x: 16.014871, y: 36.000000, z: 0.150000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/OverrideMaterials/Parents/M_RPF_Interior.M_RPF_Interior"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Engineer_Blue",
+          "class": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier_C",
+          "location_cm": [
+            -24017.623174184995,
+            70500.0000076294,
+            1072.216273371475
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=1004",
+            "ReviewActualTeam=Blue",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "SkeletalMeshComponent0",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB810) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -24017.623174, y: 70500.000008, z: 1072.216273}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+              ]
+            },
+            {
+              "component": "Cockpit_Freight_Spoiler",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB810) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "Mount_Cockpit",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+              ]
+            },
+            {
+              "component": "Top_Turret_2x_Lvl1",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB810) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "Mount_Top_Turret",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+              ]
+            },
+            {
+              "component": "Weapon_Rocket_Mount_Lvl2",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB810) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "Mount_Weapon_L",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+              ]
+            },
+            {
+              "component": "Weapon_Rocket_Mount_Lvl3",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB810) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "Mount_Weapon_R",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+              ]
+            },
+            {
+              "component": "Collector_L",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB810) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+              ]
+            },
+            {
+              "component": "Collector_R",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB810) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+              ]
+            },
+            {
+              "component": "Side_Winglet_Spike_Lvl3",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB810) {rotation: {x: 0.707107, y: 0.000000, z: 0.000000, w: 0.707107}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "Mount_Side_L",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Engineer_Red",
+          "class": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier_C",
+          "location_cm": [
+            -14017.623174184993,
+            70500.0000076294,
+            1072.216273371475
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=1004",
+            "ReviewActualTeam=Red",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "SkeletalMeshComponent0",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Chassis_Transporter_Cockpit_Lvl2.Chassis_Transporter_Cockpit_Lvl2",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB300) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -14017.623174, y: 70500.000008, z: 1072.216273}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+              ]
+            },
+            {
+              "component": "Cockpit_Freight_Spoiler",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Cockpit_Freight_Wide.Cockpit_Freight_Wide",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB300) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "Mount_Cockpit",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+              ]
+            },
+            {
+              "component": "Top_Turret_2x_Lvl1",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Top_Turret_2x_Lvl1.Top_Turret_2x_Lvl1",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB300) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "Mount_Top_Turret",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+              ]
+            },
+            {
+              "component": "Weapon_Rocket_Mount_Lvl2",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB300) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "Mount_Weapon_L",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+              ]
+            },
+            {
+              "component": "Weapon_Rocket_Mount_Lvl3",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Weapon_Rocket_Mount_Lvl2.Weapon_Rocket_Mount_Lvl2",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB300) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "Mount_Weapon_R",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+              ]
+            },
+            {
+              "component": "Collector_L",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB300) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+              ]
+            },
+            {
+              "component": "Collector_R",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/SM_TeslaCollector_Styled.SM_TeslaCollector_Styled",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB300) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+              ]
+            },
+            {
+              "component": "Side_Winglet_Spike_Lvl3",
+              "mesh": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Meshes/Side_Winglet_Spike_Lvl1.Side_Winglet_Spike_Lvl1",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB300) {rotation: {x: 0.707107, y: 0.000000, z: 0.000000, w: 0.707107}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "Mount_Side_L",
+              "materials": [
+                "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/Dependencies/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+              ]
+            }
+          ]
+        }
+      ],
+      "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+      "existing_player_starts": [
+        {
+          "label": "CommanderPlayerStart_Red",
+          "location_cm": [
+            0.0,
+            69000.0,
+            10000.0
+          ]
+        },
+        {
+          "label": "FlightEventsQA_PlayerStart_1",
+          "location_cm": [
+            6000.0,
+            69000.0,
+            10000.0
+          ]
+        },
+        {
+          "label": "FlightEventsQA_PlayerStart_2",
+          "location_cm": [
+            -6000.0,
+            69000.0,
+            10000.0
+          ]
+        },
+        {
+          "label": "FlightEventsQA_PlayerStart_3",
+          "location_cm": [
+            0.0,
+            75000.0,
+            10000.0
+          ]
+        }
+      ],
+      "native_bindings": "compiled ModelId fields and imported tables; current formal sources read back"
+    },
+    {
+      "map": "/Game/Maps/LVL_GroundMech_Demo",
+      "saved_and_reloaded": true,
+      "actors": [
+        {
+          "label": "ModelRegistry_Ground_Camera",
+          "class": "/Script/Engine.CameraActor",
+          "location_cm": [
+            14900.0,
+            -9500.0,
+            4854.663323987181
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "CameraProxyMeshComponent_0",
+              "mesh": "/Engine/EditorMeshes/MatineeCam_SM.MatineeCam_SM",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFBC90) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Engine/EditorMaterials/MatineeCam_mat.MatineeCam_mat"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ground_Notes",
+          "class": "/Script/Engine.TextRenderActor",
+          "location_cm": [
+            17000.0,
+            -5000.0,
+            954.6633239871808
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008"
+          ],
+          "editor_only": true,
+          "meshes": []
+        },
+        {
+          "label": "ModelRegistry_Ground_Assembly",
+          "class": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+          "location_cm": [
+            18226.285685403243,
+            -6500.0,
+            1035.5852836908261
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=4001",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "CharacterMesh0",
+              "mesh": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs.SK_Legs",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFBC90) {rotation: {x: -0.000000, y: 0.000000, z: -0.707107, w: 0.707107}, translation: {x: 0.000000, y: 0.000000, z: -373.124908}, scale3d: {x: 2.051262, y: 2.051262, z: 2.051262}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Legs_InkCel.M_Legs_InkCel",
+                "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Ink_Backfaces.M_Ink_Backfaces"
+              ]
+            },
+            {
+              "component": "Armor",
+              "mesh": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor.SM_Armor",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFBC90) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Armor_InkCel.M_Armor_InkCel",
+                "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Ink_Backfaces.M_Ink_Backfaces"
+              ]
+            },
+            {
+              "component": "Shoulder",
+              "mesh": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder.SM_Shoulder",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFBC90) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "Mount_Weapon_L",
+              "materials": [
+                "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Shoulder_InkCel.M_Shoulder_InkCel",
+                "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Ink_Backfaces.M_Ink_Backfaces"
+              ]
+            },
+            {
+              "component": "Machinegun",
+              "mesh": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun.SK_Machinegun",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFBDB0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "Mount_Weapon_R",
+              "materials": [
+                "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Machinegun_InkCel.M_Machinegun_InkCel",
+                "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Ink_Backfaces.M_Ink_Backfaces"
+              ]
+            },
+            {
+              "component": "CameraProxyMeshComponent_0",
+              "mesh": "/Engine/EditorMeshes/MatineeCam_SM.MatineeCam_SM",
+              "relative_transform": "<Struct 'Transform' (0x0000020BA8EFB030) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Engine/EditorMaterials/MatineeCam_mat.MatineeCam_mat"
+              ]
+            }
+          ]
+        }
+      ],
+      "game_mode": "/Game/GuLiStrike/GroundMech/BP_GroundMech_DemoMode.BP_GroundMech_DemoMode_C",
+      "existing_player_starts": [
+        {
+          "label": "GroundMech_Start_1",
+          "location_cm": [
+            17000.0,
+            -4300.0,
+            1249.9875424391503
+          ]
+        },
+        {
+          "label": "GroundMech_Start_2",
+          "location_cm": [
+            17000.0,
+            -2000.0,
+            1089.832866025783
+          ]
+        }
+      ],
+      "native_bindings": "compiled ModelId fields and imported tables; current formal sources read back"
+    },
+    {
+      "map": "/Game/Maps/LVL_ShipTest",
+      "saved_and_reloaded": true,
+      "actors": [
+        {
+          "label": "ModelRegistry_Ship_Part_5101",
+          "class": "/Script/Engine.SkeletalMeshActor",
+          "location_cm": [
+            -24000.0,
+            -14000.0,
+            8000.0
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5101",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "SkeletalMeshComponent0",
+              "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Autocannon.SKM_SC_Autocannon",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A975770) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -24000.000000, y: -14000.000000, z: 8000.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Autocannon_Toon.M_SC_Autocannon_Toon",
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Autocannon_Toon.M_SC_Autocannon_Toon"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Part_5102",
+          "class": "/Script/Engine.SkeletalMeshActor",
+          "location_cm": [
+            -20400.0,
+            -14000.0,
+            8000.0
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5102",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "SkeletalMeshComponent0",
+              "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Bottom_Twin_Barrel_Turret.SKM_SC_Bottom_Twin_Barrel_Turret",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A974B10) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -20400.000000, y: -14000.000000, z: 8000.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Bottom_Twin_Barrel_Turret_Toon.M_SC_Bottom_Twin_Barrel_Turret_Toon",
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Bottom_Twin_Barrel_Turret_Toon.M_SC_Bottom_Twin_Barrel_Turret_Toon"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Part_5103",
+          "class": "/Script/Engine.SkeletalMeshActor",
+          "location_cm": [
+            -16800.0,
+            -14000.0,
+            8000.0
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5103",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "SkeletalMeshComponent0",
+              "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_CIWS.SKM_SC_CIWS",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A974B10) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -16800.000000, y: -14000.000000, z: 8000.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_CIWS_Toon.M_SC_CIWS_Toon",
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_CIWS_Toon.M_SC_CIWS_Toon"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Part_5104",
+          "class": "/Script/Engine.SkeletalMeshActor",
+          "location_cm": [
+            -13200.0,
+            -14000.0,
+            8000.0
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5104",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "SkeletalMeshComponent0",
+              "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_High_Rate_Fire_Cannon.SKM_SC_High_Rate_Fire_Cannon",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A975410) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -13200.000000, y: -14000.000000, z: 8000.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_High_Rate_Fire_Cannon_Toon.M_SC_High_Rate_Fire_Cannon_Toon",
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_High_Rate_Fire_Cannon_Toon.M_SC_High_Rate_Fire_Cannon_Toon"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Part_5105",
+          "class": "/Script/Engine.SkeletalMeshActor",
+          "location_cm": [
+            -9600.0,
+            -14000.0,
+            8000.0
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5105",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "SkeletalMeshComponent0",
+              "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Single_Barrel_Turret.SKM_SC_Single_Barrel_Turret",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A9754A0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -9600.000000, y: -14000.000000, z: 8000.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Single_Barrel_Turret_Toon.M_SC_Single_Barrel_Turret_Toon",
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Single_Barrel_Turret_Toon.M_SC_Single_Barrel_Turret_Toon"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Part_5106",
+          "class": "/Script/Engine.SkeletalMeshActor",
+          "location_cm": [
+            -24000.0,
+            -10400.0,
+            8000.0
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5106",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "SkeletalMeshComponent0",
+              "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Triple_Barrel_Turret.SKM_SC_Triple_Barrel_Turret",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A9756E0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -24000.000000, y: -10400.000000, z: 8000.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Triple_Barrel_Turret_Toon.M_SC_Triple_Barrel_Turret_Toon",
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Triple_Barrel_Turret_Toon.M_SC_Triple_Barrel_Turret_Toon"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Part_5107",
+          "class": "/Script/Engine.SkeletalMeshActor",
+          "location_cm": [
+            -20400.0,
+            -10400.0,
+            8000.0
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5107",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "SkeletalMeshComponent0",
+              "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Twin_Barrel_Turret.SKM_SC_Twin_Barrel_Turret",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A9754A0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -20400.000000, y: -10400.000000, z: 8000.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Twin_Barrel_Turret_Toon.M_SC_Twin_Barrel_Turret_Toon",
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Twin_Barrel_Turret_Toon.M_SC_Twin_Barrel_Turret_Toon"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Part_5108",
+          "class": "/Script/Engine.StaticMeshActor",
+          "location_cm": [
+            -16800.0,
+            -10400.0,
+            8000.0
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5108",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "StaticMeshComponent0",
+              "mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay.SM_SC_Drone_LaunchBay",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A974960) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -16800.000000, y: -10400.000000, z: 8000.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Drone_LaunchBay_Toon.M_SC_Drone_LaunchBay_Toon",
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Drone_LaunchBay_Toon.M_SC_Drone_LaunchBay_Toon"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Part_5109",
+          "class": "/Script/Engine.StaticMeshActor",
+          "location_cm": [
+            -13200.0,
+            -10400.0,
+            8000.0
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5109",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "StaticMeshComponent0",
+              "mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Electronic_JammingDevice.SM_SC_Electronic_JammingDevice",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A974960) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -13200.000000, y: -10400.000000, z: 8000.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Electronic_JammingDevice_Toon.M_SC_Electronic_JammingDevice_Toon",
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Electronic_JammingDevice_Toon.M_SC_Electronic_JammingDevice_Toon"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Part_5110",
+          "class": "/Script/Engine.StaticMeshActor",
+          "location_cm": [
+            -9600.0,
+            -10400.0,
+            8000.0
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5110",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "StaticMeshComponent0",
+              "mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Incendiary_Bomb_LaunchBay.SM_SC_Incendiary_Bomb_LaunchBay",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A9748D0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -9600.000000, y: -10400.000000, z: 8000.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Incendiary_Bomb_LaunchBay_Toon.M_SC_Incendiary_Bomb_LaunchBay_Toon",
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Incendiary_Bomb_LaunchBay_Toon.M_SC_Incendiary_Bomb_LaunchBay_Toon"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Part_5111",
+          "class": "/Script/Engine.StaticMeshActor",
+          "location_cm": [
+            -24000.0,
+            -6800.0,
+            8000.0
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5111",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "StaticMeshComponent0",
+              "mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Missile_Bay.SM_SC_Missile_Bay",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A975800) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -24000.000000, y: -6800.000000, z: 8000.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Missile_Bay_Toon.M_SC_Missile_Bay_Toon",
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Missile_Bay_Toon.M_SC_Missile_Bay_Toon"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Part_5112",
+          "class": "/Script/Engine.StaticMeshActor",
+          "location_cm": [
+            -20400.0,
+            -6800.0,
+            8000.0
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5112",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "StaticMeshComponent0",
+              "mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Shield_Generator.SM_SC_Shield_Generator",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A975E30) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -20400.000000, y: -6800.000000, z: 8000.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Shield_Generator_Toon.M_SC_Shield_Generator_Toon",
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Shield_Generator_Toon.M_SC_Shield_Generator_Toon"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Part_5113",
+          "class": "/Script/Engine.StaticMeshActor",
+          "location_cm": [
+            -16800.0,
+            -6800.0,
+            8000.0
+          ],
+          "scale": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5113",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "StaticMeshComponent0",
+              "mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Thor_MissilePod.SM_SC_Thor_MissilePod",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A975E30) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: -16800.000000, y: -6800.000000, z: 8000.000000}, scale3d: {x: 0.200000, y: 0.200000, z: 0.200000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Thor_MissilePod_Toon.M_SC_Thor_MissilePod_Toon",
+                "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Thor_MissilePod_Toon.M_SC_Thor_MissilePod_Toon"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Camera",
+          "class": "/Script/Engine.CameraActor",
+          "location_cm": [
+            -28350.0,
+            -29500.0,
+            29700.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "CameraProxyMeshComponent_0",
+              "mesh": "/Engine/EditorMeshes/MatineeCam_SM.MatineeCam_SM",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A975E30) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Engine/EditorMaterials/MatineeCam_mat.MatineeCam_mat"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Notes",
+          "class": "/Script/Engine.TextRenderActor",
+          "location_cm": [
+            -17500.0,
+            -6250.0,
+            8300.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008"
+          ],
+          "editor_only": true,
+          "meshes": []
+        },
+        {
+          "label": "ModelRegistry_Ship_Hull_5001",
+          "class": "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip.BP_GuLiStrikeShip_C",
+          "location_cm": [
+            -24000.0,
+            -20000.0,
+            8000.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5001",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "Hull Mesh",
+              "mesh": "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/StaticMeshes/bsg_virgon_express_carina.bsg_virgon_express_carina",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A975E30) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 700.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Credits_EVE-Kaneda_NepsterCZ.Credits_EVE-Kaneda_NepsterCZ",
+                "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge.Flattop_bridge",
+                "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge_window.Flattop_bridge_window",
+                "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_engineering_pod.Flattop_engineering_pod",
+                "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_bay.Flattop_hull_bay",
+                "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_structure.Flattop_hull_structure",
+                "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_bottom.Flattop_machinery_bottom",
+                "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_top.Flattop_machinery_top",
+                "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_signal_lights.Flattop_signal_lights"
+              ]
+            },
+            {
+              "component": "CameraProxyMeshComponent_0",
+              "mesh": "/Engine/EditorMeshes/MatineeCam_SM.MatineeCam_SM",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A975E30) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Engine/EditorMaterials/MatineeCam_mat.MatineeCam_mat"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "ModelRegistry_Ship_Hull_5002",
+          "class": "/Game/GuLiStrike/Ship/BP_CombatAvatarFly01.BP_CombatAvatarFly01_C",
+          "location_cm": [
+            -10000.0,
+            -20000.0,
+            8000.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "tags": [
+            "GuLi.ModelRegistry.Review.20261008",
+            "ModelId=5002",
+            "ReviewActualTeam=Unassigned",
+            "FormalSourceOnly"
+          ],
+          "editor_only": true,
+          "meshes": [
+            {
+              "component": "Hull Mesh",
+              "mesh": "/Game/Assets/Arma/CombatAvatarFly-01/StaticMeshes/SM_Dreadnought_Hull.SM_Dreadnought_Hull",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A974960) {rotation: {x: -0.000000, y: 0.000000, z: -0.707107, w: 0.707107}, translation: {x: -7081.000000, y: 0.000000, z: -464.500000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtVengeanceBlue.ScifiDreadnoughtVengeanceBlue"
+              ]
+            },
+            {
+              "component": "CameraProxyMeshComponent_0",
+              "mesh": "/Engine/EditorMeshes/MatineeCam_SM.MatineeCam_SM",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A974960) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Engine/EditorMaterials/MatineeCam_mat.MatineeCam_mat"
+              ]
+            },
+            {
+              "component": "AnimeHull",
+              "mesh": "/Game/GuLiStrike/Ship/Stylized/Meshes/SM_Ship_AnimeHull.SM_Ship_AnimeHull",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A974960) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Pearl.M_SS_Armor_Pearl",
+                "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Blue.M_SS_Armor_Blue",
+                "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Structure_Slate.M_SS_Structure_Slate",
+                "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Recess_Navy.M_SS_Recess_Navy",
+                "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Safety_Amber.M_SS_Safety_Amber",
+                "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Engine_Cyan.M_SS_Engine_Cyan"
+              ]
+            },
+            {
+              "component": "AnimeContour",
+              "mesh": "/Game/GuLiStrike/Ship/Stylized/Meshes/SM_Ship_AnimeContour.SM_Ship_AnimeContour",
+              "relative_transform": "<Struct 'Transform' (0x0000020A1A975DA0) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>",
+              "socket": "None",
+              "materials": [
+                "/Game/GuLiStrike/Ship/Stylized/Materials/M_Ship_Contour.M_Ship_Contour"
+              ]
+            }
+          ]
+        }
+      ],
+      "game_mode": "/Game/GuLiStrike/Ship/BP_ShipGameMode.BP_ShipGameMode_C",
+      "existing_player_starts": [
+        {
+          "label": "PS_ShipSpawn",
+          "location_cm": [
+            -20000.0,
+            20000.0,
+            0.0
+          ]
+        },
+        {
+          "label": "PS_ShipSpawn_Remote",
+          "location_cm": [
+            20000.0,
+            20000.0,
+            0.0
+          ]
+        }
+      ],
+      "native_bindings": "compiled ModelId fields and imported tables; current formal sources read back"
+    }
+  ],
+  "errors": [],
+  "native_compile": true,
+  "new_table_import": true,
+  "runtime_verified": "separate evidence in Artifacts/ModelRegistryRuntime20261008",
+  "formal_model_assets_changed": true,
+  "new_paint_selected": true,
+  "original_map_restored": true
+}

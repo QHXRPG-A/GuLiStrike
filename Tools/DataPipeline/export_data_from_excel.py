@@ -28,7 +28,10 @@
 生成结构命名: F{主干}{sheet}Row（如 FGuLiStrikeShipPartsRow）
 """
 import json
+import csv
+import io
 import math
+import colorsys
 import re
 import sys
 import tempfile
@@ -481,7 +484,8 @@ def gen_header_text(stem, sheets_props):
         for p in props:
             init = f" = {p['default']}" if p["default"] else ""
             lines.append(f"\t/** {p['comment']} */")
-            lines.append(f'\tUPROPERTY(EditAnywhere, BlueprintReadOnly, Category="{sheet}")')
+            display = ', meta=(DisplayName="描述", ToolTip="模型的用途及所属玩法或装配")' if stem == 'GuLiStrikeModels' and sheet == 'Models' and p['prop'] == 'Description' else ''
+            lines.append(f'\tUPROPERTY(EditAnywhere, BlueprintReadOnly, Category="{sheet}"{display})')
             lines.append(f"\t{p['cpp']} {p['prop']}{init};")
             lines.append("")
         lines += ["};", ""]
@@ -538,6 +542,7 @@ def validate_building_references(tables):
         return
     buildings = {row["Id"]: row for row in entry["rows"]}
     soldiers = {row["Id"]: row for row in tables["DT_GuLiStrikeCommander_Soldiers"]["rows"]}
+    models = {row['Id']: row for row in tables.get('DT_GuLiStrikeModels_Models', {}).get('rows', [])}
     fields = {row["Id"]: row for row in tables[SPELL_FIELD_TABLE]["rows"]}
     for row in buildings.values():
         label = f"Buildings/{row['Name']}"
@@ -553,7 +558,7 @@ def validate_building_references(tables):
             raise SheetError(f"{label}: constructible buildings require ConstructionWork")
         if category == 2:
             unit = soldiers.get(row["ProductionUnitId"])
-            if not unit or unit.get("ActorClass") or not unit.get("ModelAsset") \
+            if not unit or unit.get("ActorClass") or models.get(unit.get('ModelId'), {}).get('ResourceType') != 'StaticMesh' \
                     or unit.get("bConstructionOnly") \
                     or row["ProductionSeconds"] <= 0 or row["ProductionCount"] <= 0:
                 raise SheetError(f"{label}: barracks require a Mass unit, positive period and count")
@@ -659,6 +664,95 @@ def validate_projectile_visual_profiles(tables):
             raise SheetError(f"Projectiles/{row['Name']}: 烟宽/尾焰尺寸必须为有限正数，烟宽上限不得小于初始宽")
 
 
+def validate_model_references(tables):
+    """Global model foreign keys and material contracts, before touching any output."""
+    catalog = tables.get('DT_GuLiStrikeModels_Models', {}).get('rows', [])
+    ids = {r['Id'] for r in catalog}
+    if not catalog or len(ids) != len(catalog) or any(i <= 0 for i in ids):
+        raise SheetError('Models 模型 ID 必须为唯一正整数')
+    for row in catalog:
+        if not str(row.get('Description', '')).strip():
+            raise SheetError(f"Models/{row['Name']}: 描述不能为空，需说明模型用途")
+        if not IDENT_RE.fullmatch(row['Name']):
+            raise SheetError(f"Models/{row['Name']}: name 用于稳定 C++ 常量，必须为合法标识符")
+        if row['ResourceType'] not in {'StaticMesh', 'SkeletalMesh', 'PresentationClass'}:
+            raise SheetError(f"Models/{row['Name']}: 无效资源类型")
+        for key in ('ResourcePath', 'CandidateResourcePath'):
+            path = row.get(key, '')
+            if not path and key.startswith('Candidate'): continue
+            if not path.startswith(('/Game/', '/Engine/')) or '.' not in path.rsplit('/', 1)[-1]:
+                raise SheetError(f"Models/{row['Name']}.{key}: 必须为完整 UE 软引用")
+            if (row['ResourceType'] == 'PresentationClass') != path.endswith('_C'):
+                raise SheetError(f"Models/{row['Name']}.{key}: 视觉类必须用 _C，网格不得使用 _C")
+        for key in ('BluePrimaryHex', 'BlueSecondaryHex', 'EnemyPrimaryHex', 'EnemySecondaryHex'):
+            if not re.fullmatch(r'#[0-9A-Fa-f]{6}', row[key]):
+                raise SheetError(f"Models/{row['Name']}.{key}: 必须为 #RRGGBB")
+        if not IDENT_RE.fullmatch(row['Name']) or row['Name'] in {'class','struct','auto','int','float','bool','return','default','namespace','new','delete','const','static'}:
+            raise SheetError(f"Models/{row['Name']}: name 必须可用作稳定 C++ 模型常量，显示名单独填写")
+        if row['bTeamColorEnabled'] and (row['EnemyPrimaryHex'].lower() == row['BluePrimaryHex'].lower()
+                                      or row['EnemySecondaryHex'].lower() == row['BlueSecondaryHex'].lower()):
+            raise SheetError(f"Models/{row['Name']}: 敌方队色不得与蓝方相同")
+        if row['bTeamColorEnabled']:
+            for key in ('EnemyPrimaryHex','EnemySecondaryHex'):
+                value=row[key][1:]
+                rgb=[int(value[i:i+2],16)/255.0 for i in (0,2,4)]
+                hue,saturation,_=colorsys.rgb_to_hsv(*rgb)
+                if 190<=hue*360<=255 and saturation>.2:
+                    raise SheetError(f"Models/{row['Name']}.{key}: 敌方使用非蓝配色，不能配置蓝色系")
+    ledger = PROJECT / 'Data/Models/published-model-ids.json'
+    if ledger.exists():
+        published = json.loads(ledger.read_text(encoding='utf-8'))
+        current = {r['Name']: r['Id'] for r in catalog}
+        for name, identity in published.items():
+            if current.get(name) != identity:
+                raise SheetError(f'Models/{name}: 发布 ID {identity} 不得删除、重排或复用')
+    for table, entry in tables.items():
+        for row in entry['rows']:
+            for key, value in row.items():
+                if key.endswith('ModelId') and value != 0 and value not in ids:
+                    raise SheetError(f"{table}/{row['Name']}.{key}: 悬空模型 ID {value}")
+            if table in ('DT_GuLiStrikeCommander_Soldiers', 'DT_GuLiStrikeBuildings_Buildings', 'DT_GuLiStrikeShip_Parts', 'DT_GuLiStrikeMech_Visuals') and row.get('ModelId', 0) <= 0:
+                raise SheetError(f"{table}/{row['Name']}: 缺少 ModelId")
+    parts = tables['DT_GuLiStrikeModels_Parts']['rows']
+    for table, field in [('DT_GuLiStrikeShip_Tuning','HullModelId')]:
+        if any(r.get(field,0) <= 0 for r in tables[table]['rows']):
+            raise SheetError(f'{table}: 缺少必需模型 ID {field}')
+    part_keys = {(r['ModelId'], r['PartKey']) for r in parts}
+    if len(part_keys) != len(parts): raise SheetError('Parts: 重复部件键')
+    edges = {i: [] for i in ids}
+    for row in parts:
+        if row['ChildModelId']: edges[row['ModelId']].append(row['ChildModelId'])
+    def visit(node, stack):
+        if node in stack: raise SheetError(f'Parts: 子模型循环引用 {stack + [node]}')
+        for child in edges[node]: visit(child, stack + [node])
+    for node in ids: visit(node, [])
+    seen = set()
+    for row in tables['DT_GuLiStrikeModels_MaterialParameters']['rows']:
+        key = tuple(row[k] for k in ('ModelId', 'PartKey', 'MaterialSlotName', 'ParameterKey', 'Scope'))
+        if key in seen: raise SheetError(f'MaterialParameters: 重复绑定 {key}')
+        seen.add(key)
+        if row['ParameterType'] not in {'Vector', 'Scalar'} or row['Driver'] not in {'MID', 'CPD'} or row['Scope'] not in {'Existing', 'Candidate'}:
+            raise SheetError(f'MaterialParameters: 无效参数契约 {key}')
+        if row['PartKey'] != 'Root' and (row['ModelId'], row['PartKey']) not in part_keys:
+            raise SheetError(f'MaterialParameters: 缺失部件 {key}')
+        if row['bTeamManaged'] and row['bRuntimeWritable']:
+            raise SheetError(f'MaterialParameters: 阵营参数不得开放任意写入 {key}')
+        if row['Driver'] == 'CPD':
+            reserved = {'TeamPrimary': (8, 'Vector'), 'TeamSecondary': (12, 'Vector'),
+                        'TeamEnabled': (16, 'Scalar'), 'TeamLightStrength': (17, 'Scalar')}
+            if reserved.get(row['ParameterKey']) != (row['CustomDataIndex'], row['ParameterType']):
+                raise SheetError(f'MaterialParameters: CPD 索引冲突或类型错误 {key}')
+    seen = set()
+    for row in tables['DT_GuLiStrikeModels_ColorRegions']['rows']:
+        key = (row['ModelId'], row['PartKey'], row['RegionKey'])
+        if key in seen: raise SheetError(f'ColorRegions: 重复区域 {key}')
+        seen.add(key)
+        if row['PartKey'] != 'Root' and (row['ModelId'],row['PartKey']) not in part_keys:
+            raise SheetError(f'ColorRegions: 缺失部件 {key}')
+        if row['PaintRole'] not in range(8) or row['MaskId'] != row['PaintRole'] or row['Scope'] not in {'Existing', 'Candidate'}:
+            raise SheetError(f'ColorRegions: 无效区域编码 {key}')
+
+
 def main():
     workbooks = [w for w in sorted(EXCEL_DIR.glob("*.xlsx")) if not w.name.startswith("~$")]
     if not workbooks:
@@ -692,8 +786,8 @@ def main():
                     if FIELD_REFERENCE_COLUMN not in [cell.value for cell in ws[1]]:
                         raise SheetError("缺少“产生的法术场”列（int / Optional，引用 Fields.id）")
                 is_mech = stem == "GuLiStrikeMech"
-                if is_mech and ws.title not in ("升级表", "技能表"):
-                    raise SheetError("机甲表仅接受升级表和技能表")
+                if is_mech and ws.title not in ("升级表", "技能表", "Visuals"):
+                    raise SheetError("机甲表仅接受升级表、技能表和 Visuals")
                 rows, props = export_game_texts(ws) if stem == "GuLiStrikeGameTexts" else \
                     export_sheet(ws, allow_text_id=(is_mech and ws.title == "升级表") or stem == "GuLiStrikeRogueCards")
                 if consolidated and stem != SECONDARY_WORKBOOK:
@@ -704,7 +798,7 @@ def main():
                 identity_stem, identity_sheet = SECONDARY_TABLE_IDENTITIES.get(ws.title, (stem, ws.title)) \
                     if stem == SECONDARY_WORKBOOK else (stem, ws.title)
                 if is_mech:
-                    identity_sheet = {"升级表": "Upgrades", "技能表": "Skills"}[ws.title]
+                    identity_sheet = {"升级表": "Upgrades", "技能表": "Skills", "Visuals": "Visuals"}[ws.title]
                 if stem == "GuLiStrikeCommander" and ws.title == "Camera":
                     identity_sheet = "Camera"
                     if len(rows) != 1 or rows[0]['Name'] != 'Default' or rows[0]['Id'] != 1:
@@ -757,6 +851,7 @@ def main():
             validate_rogue_card_text_styles(tables)
             validate_vfx_references(tables)
             validate_projectile_visual_profiles(tables)
+            validate_model_references(tables)
             if any(name.startswith('DT_GuLiStrikeMech_') for name in tables):
                 if not all(name in tables for name in ('DT_GuLiStrikeMech_Upgrades','DT_GuLiStrikeMech_Skills')):
                     raise SheetError('GuLiStrikeMech.xlsx必须同时包含升级表与技能表')
@@ -806,6 +901,9 @@ def main():
     if failed:
         print("导出失败，JSON、头文件和manifest均未更新", file=sys.stderr)
         sys.exit(1)
+    if '--validate-only' in sys.argv:
+        print(f"Validated {len(tables)} tables; no files written.")
+        return
     headers = {}
     for table, entry in tables.items():
         rows = entry["rows"]
@@ -813,6 +911,16 @@ def main():
             rows.sort(key=lambda row: row["Id"])
         json_path = JSON_DIR / f"{table}.json"
         write_if_changed(json_path, json.dumps(rows, ensure_ascii=False, indent=2))
+        columns = list(rows[0]) if rows else ['Name']
+        def csv_value(value):
+            if isinstance(value,bool): return 'True' if value else 'False'
+            if isinstance(value,dict): return '(X={X},Y={Y},Z={Z})'.format(**value)
+            if isinstance(value,list): return '(' + ','.join(json.dumps(v,ensure_ascii=False) for v in value) + ')'
+            return str(value)
+        csv_buffer=io.StringIO(); csv_writer=csv.writer(csv_buffer,lineterminator='\n')
+        csv_writer.writerow(columns)
+        for row in rows: csv_writer.writerow([csv_value(row.get(c,'')) for c in columns])
+        write_if_changed(json_path.with_suffix('.csv'),csv_buffer.getvalue())
         manifest["tables"][table] = {
             **entry["sources"][0], "sources": entry["sources"],
             "struct": f"/Script/{MODULE}.{entry['stem']}{entry['identity_sheet']}Row",
@@ -833,6 +941,16 @@ def main():
         effect_ids.append(f'\tinline constexpr int32 {row["Name"]} = {row["Id"]};')
     effect_ids.extend(['}', ''])
     write_if_changed(GEN_HEADER_DIR / 'GuLiVfxIds.h', '\n'.join(effect_ids))
+    model_ids = ['// Generated from GuLiStrikeModels.xlsx / Models. Do not edit.', '#pragma once',
+                 '#include "CoreTypes.h"', 'namespace GuLiModelIds', '{']
+    for row in tables['DT_GuLiStrikeModels_Models']['rows']:
+        model_ids.append(f'\tinline constexpr int32 {row["Name"]} = {row["Id"]};')
+    model_ids.extend(['}', ''])
+    write_if_changed(GEN_HEADER_DIR / 'GuLiModelIds.h', '\n'.join(model_ids))
+    # Appending a new ID during export publishes it; validate-only never changes the ledger.
+    ledger_path=PROJECT/'Data/Models/published-model-ids.json'
+    ledger_path.parent.mkdir(parents=True,exist_ok=True)
+    write_if_changed(ledger_path,json.dumps({r['Name']:r['Id'] for r in tables['DT_GuLiStrikeModels_Models']['rows']},ensure_ascii=False,indent=2))
     print(f"manifest: {JSON_DIR / 'manifest.json'}（{len(manifest['tables'])} 表）")
 
 

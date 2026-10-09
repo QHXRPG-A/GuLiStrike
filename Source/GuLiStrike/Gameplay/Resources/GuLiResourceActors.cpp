@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Resources/GuLiResourceActors.h"
+#include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
+#include "Engine/StaticMesh.h"
 #include "Gameplay/Stronghold/GuLiStrongholdCaptureComponent.h"
 #include "Gameplay/Stronghold/GuLiStrongholdFacilitiesComponent.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
@@ -82,7 +84,7 @@ bool AGuLiOreFieldActor::InitializeField(
 	{
 		const int32 ComponentIndex = MakeComponentIndex(
 			Asset.ResourceType, Asset.FamilyIndex, Asset.Stage);
-		UStaticMesh* Mesh = Asset.Mesh.LoadSynchronous();
+		UStaticMesh* Mesh = GuLiModels::Load<UStaticMesh>(this, Asset.ModelId);
 		if (!OreMeshes.IsValidIndex(ComponentIndex) || !Mesh)
 		{
 			OutError = FString::Printf(TEXT("Missing ore mesh for visual key %d/%d/%d."),

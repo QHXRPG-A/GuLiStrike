@@ -12,6 +12,13 @@ REVIEW_PACKAGE = '/Game/GuLiStrike/Commander/LODReview_20261005'
 
 def units():
     rows = json.loads((ROOT / 'Data/Json/DT_GuLiStrikeCommander_Soldiers.json').read_text(encoding='utf8'))
+    # Read-only compatibility views for frozen LOD reports. Source tables contain ModelId only.
+    import sys
+    sys.path.insert(0, str(ROOT/'Scripts'))
+    from Models.model_catalog import soldier_visual
+    for row in rows:
+        visual = soldier_visual(row)
+        row.update(ModelAsset=visual['model_asset'], PresentationClass=visual['presentation_class'], VATDefinition=visual['vat_definition'])
     result = sorted(rows, key=lambda row: row['Id'])
     assert [row['Id'] for row in result] == [1, 2, 3, 4, 5, 6]
     return result

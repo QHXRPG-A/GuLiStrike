@@ -1,0 +1,154 @@
+{
+  "id": "SSF_Reactor",
+  "name": "SSF 反应堆",
+  "title": "REACTOR",
+  "category": "SSF",
+  "fixed": [
+    "四支撑腿外护甲：乳白 #FEE4D9",
+    "容器未分配队色的固定壳体：米砂 #D5C09C",
+    "原有枪管/机构/支承/电缆/工作面/深槽：深灰 #2C3735，保持各模型既有分件"
+  ],
+  "team": [
+    "浅队色：主壳现有两侧连续完整护板",
+    "深队色：原顶环、现有观察口边框"
+  ],
+  "function": [
+    "原有功能口保持含义，不新增发光带"
+  ],
+  "structure": "保留原容器、四支撑、观察口、软管及背盒；主壳指定连续护板改为队色，其余固定米砂。",
+  "source": [
+    "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_Reactor_Views.png"
+  ],
+  "team_primary": [
+    "主壳现有两侧连续完整护板"
+  ],
+  "team_secondary": [
+    "原顶环、现有观察口边框"
+  ],
+  "paint_zones": {
+    "fixed_armor": "四支撑腿外护甲",
+    "fixed_secondary": "容器未分配队色的固定壳体",
+    "team_primary": "主壳现有两侧连续完整护板",
+    "team_secondary": "原顶环、现有观察口边框",
+    "mechanisms": "下部冷却片、关节和口内机构：深灰"
+  },
+  "team_lights": [],
+  "previous_boards": {
+    "blue": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_Reactor_blue.png",
+    "red": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/SSF_Reactor_red.png"
+  },
+  "cream_coverage_target": {
+    "range_percent": [
+      20,
+      30
+    ],
+    "basis": "visible model surfaces; excludes background, outline and cast shadow",
+    "is_measured": false
+  },
+  "boards": {
+    "blue": {
+      "path": "Boards/SSF_Reactor_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1707562,
+      "sha256": "3890cb3ef46e125f08edd774df46bab8357a840198b9dcb650ac61e12b827305"
+    },
+    "red": {
+      "path": "Boards/SSF_Reactor_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1696494,
+      "sha256": "08e6b136b540072c5ff3d7a6b8d4ff2e2d9c61d0193296055f9a4c896a03aa99"
+    }
+  },
+  "source_mesh": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/Reactor/Meshes/SK_Blue_Reactor.SK_Blue_Reactor",
+  "source_kind": "SkeletalMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/Buildings/SSFStyle_20261005/TeamPalette_B_v2_20261007/Sheets/Blue_Reactor_Views.png",
+      "sha256": "3b8bed77464d67a7bcf824734150fa11f581375670d99c5f7a28c9448340af43"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v3_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    },
+    "fixed_secondary": {
+      "hex": "#D5C09C",
+      "card": 1,
+      "label": "固定米砂"
+    },
+    "blue_secondary": {
+      "hex": "#274E61",
+      "card": 4,
+      "label": "深蓝灰队色"
+    },
+    "red_secondary": {
+      "hex": "#662249",
+      "card": 2,
+      "label": "深莓队色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "enemy_non_blue_secondary": "#662249",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "paint_contract": {
+    "fixed": {
+      "cream": "#FEE4D9",
+      "sand": "#D5C09C",
+      "mechanisms": "#2C3735"
+    },
+    "team": {
+      "blue": {
+        "primary": "#6AA4BE",
+        "secondary": "#274E61"
+      },
+      "red": {
+        "primary": "#A34053",
+        "secondary": "#662249"
+      }
+    },
+    "team_light": null,
+    "shading": "Three cel-shading levels are separate from the two team base paint colors.",
+    "fixed_function_policy": "Only existing function locations and palette colors; shield top lights are team-controlled."
+  },
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

@@ -1,0 +1,167 @@
+{
+  "success": true,
+  "workbook": "Data\\Excel\\GuLiStrikeModels.xlsx",
+  "source_sha256_before": "ecd252cbcfffc10596c9df93226f77f991ea8900100a333df2007cd4493f4b88",
+  "source_sha256_after": "fee05654e5ea9a21c0e432cee2f984b82d04208d1e468a34efa09b04cac595a1",
+  "changed": {
+    "Models": [
+      {
+        "id": 1005,
+        "field": "Note",
+        "before": "2026-10-09 用户放行橙区B_v1正式导入；原网格/三档LOD/固定色保留；UV0精确遮罩与CPD8、16驱动本地阵营色",
+        "after": "2026-10-09 用户放行橙区B_v1正式导入；原网格/三档LOD/固定色保留；UV0精确遮罩与CPD8、16驱动本地阵营色"
+      },
+      {
+        "id": 1005,
+        "field": "bTeamColorEnabled",
+        "before": "1",
+        "after": true
+      },
+      {
+        "id": 2004,
+        "field": "Note",
+        "before": "用户取消克隆兵营占位改色制作；保留稳定模型ID、原资源和配色",
+        "after": "用户取消克隆兵营占位改色制作；保留稳定模型ID、原资源和配色"
+      },
+      {
+        "id": 2004,
+        "field": "bTeamColorEnabled",
+        "before": "0",
+        "after": false
+      },
+      {
+        "id": 2007,
+        "field": "Note",
+        "before": "用户取消领地据点占位改色制作；保留稳定模型ID、原资源和配色",
+        "after": "用户取消领地据点占位改色制作；保留稳定模型ID、原资源和配色"
+      },
+      {
+        "id": 2007,
+        "field": "bTeamColorEnabled",
+        "before": "0",
+        "after": false
+      }
+    ],
+    "MaterialParameters": [
+      {
+        "id": 2791,
+        "field": "Scope",
+        "before": "Candidate",
+        "after": "Existing"
+      },
+      {
+        "id": 2791,
+        "field": "Note",
+        "before": "统一材质函数；共享网格，组件 CPD；不占 VAT 实例槽",
+        "after": "扫荡者原橙色UV0精确遮罩；浅队色CPD8–11，其他原底色固定"
+      },
+      {
+        "id": 2793,
+        "field": "Scope",
+        "before": "Candidate",
+        "after": "Existing"
+      },
+      {
+        "id": 2793,
+        "field": "Note",
+        "before": "统一材质函数；共享网格，组件 CPD；不占 VAT 实例槽",
+        "after": "扫荡者统一队色启用CPD16；未知阵营使用中性深灰"
+      }
+    ],
+    "ColorRegions": [
+      {
+        "id": 9396,
+        "field": "RegionKey",
+        "before": "ExistingTeamMask",
+        "after": "OriginalOrangeArmor"
+      },
+      {
+        "id": 9396,
+        "field": "DisplayName",
+        "before": "队色区待原模型标记核对",
+        "after": "原橙色队色区"
+      },
+      {
+        "id": 9396,
+        "field": "MaskSource",
+        "before": "PendingAuthoringMask",
+        "after": "/Game/GuLiStrike/Models/TeamColor_v1/SweeperSummon/Textures/T_Sweeper_OrangeTeamMask.T_Sweeper_OrangeTeamMask"
+      },
+      {
+        "id": 9396,
+        "field": "Scope",
+        "before": "Candidate",
+        "after": "Existing"
+      },
+      {
+        "id": 9396,
+        "field": "Note",
+        "before": "当前无统一材质参数；保留正式外观。禁止把占位声明当作已生效遮罩。",
+        "after": "原UV0橙区精确贴图遮罩；跨色简化面逐像素限制替色；其他原色、黄灯及三档明暗不变"
+      }
+    ]
+  },
+  "deleted_unused_bindings": {
+    "Models": [],
+    "MaterialParameters": [
+      {
+        "row": 2795,
+        "id": 2792
+      },
+      {
+        "row": 2797,
+        "id": 2794
+      },
+      {
+        "row": 2814,
+        "id": 2811
+      },
+      {
+        "row": 2815,
+        "id": 2812
+      },
+      {
+        "row": 2816,
+        "id": 2813
+      },
+      {
+        "row": 2817,
+        "id": 2814
+      },
+      {
+        "row": 2826,
+        "id": 2823
+      },
+      {
+        "row": 2827,
+        "id": 2824
+      },
+      {
+        "row": 2828,
+        "id": 2825
+      },
+      {
+        "row": 2829,
+        "id": 2826
+      }
+    ],
+    "ColorRegions": [
+      {
+        "row": 9400,
+        "id": 9397
+      },
+      {
+        "row": 9401,
+        "id": 9398
+      }
+    ]
+  },
+  "stable_model_ids_preserved": true,
+  "unrelated_rows_exact": true,
+  "counts": {
+    "Models": 84,
+    "Parts": 103,
+    "MaterialParameters": 2844,
+    "ColorRegions": 9402
+  }
+}

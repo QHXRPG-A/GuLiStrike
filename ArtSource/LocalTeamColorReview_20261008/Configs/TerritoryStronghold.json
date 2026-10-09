@@ -1,0 +1,35 @@
+{
+  "name": "TerritoryStronghold",
+  "group": "Building",
+  "mesh": "/Engine/BasicShapes/Cylinder.Cylinder",
+  "kind": "StaticMesh",
+  "bounds": "<Struct 'BoxSphereBounds' (0x0000028085B26A40) {origin: {x: 0.000000, y: 0.000000, z: 0.000000}, box_extent: {x: 50.000000, y: 50.000000, z: 50.000000}, sphere_radius: 70.710678}>",
+  "definition_id": 7,
+  "display_name": "地图据点",
+  "mesh_scale": {
+    "X": 6.0,
+    "Y": 6.0,
+    "Z": 10.0
+  },
+  "version": "LocalTeamColorReview.20261008.v1",
+  "mutable_regions": "当前玩法占位 Cylinder：仅窄阵营条带，未制作新建筑模型",
+  "source_palette_candidates": [],
+  "blue_reference": "#2877DB",
+  "red_reference": "#D7534D",
+  "enemy_non_blue_palette": "#D7534D",
+  "configuration_status": "candidate_pending_region_review",
+  "runtime_enabled": false,
+  "geometry_animation_lod_unchanged": true,
+  "materials": [
+    {
+      "slot": 0,
+      "name": "DefaultMaterial",
+      "fixed": false,
+      "source": "/Engine/EngineMaterials/DefaultMaterial.DefaultMaterial",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/TerritoryStronghold/M_Review_DefaultMaterial.M_Review_DefaultMaterial",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/TerritoryStronghold/MI_Blue_0.MI_Blue_0",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/TerritoryStronghold/MI_Red_0.MI_Red_0",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/TerritoryStronghold/MI_Regions_0.MI_Regions_0"
+    }
+  ]
+}

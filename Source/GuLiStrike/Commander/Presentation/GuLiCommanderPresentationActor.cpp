@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Gameplay/Models/GuLiLocalTeamColorSubsystem.h"
 #include "Commander/Presentation/GuLiCommanderRouteLineComponent.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
@@ -17,6 +18,7 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
+#include "Gameplay/Presentation/GuLiLocalTeamColors.h"
 #include "Gameplay/Presentation/GuLiWarMachineHoverComponent.h"
 #include "Gameplay/Presentation/GuLiWarMachineHoverPreviewComponent.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
@@ -77,25 +79,6 @@ namespace GuLiCommanderPresentation
 	constexpr float MaximumClockRoundTripMilliseconds = 500.0f;
 	constexpr double MaximumForwardClockCorrectionSeconds = 0.025;
 	constexpr float RingHeight = 7.0f;
-	const FLinearColor SelectedColor(1.0f, 0.82f, 0.04f, 0.95f);
-	const FLinearColor RedTeamColor(1.0f, 0.04f, 0.03f, 0.72f);
-	const FLinearColor BlueTeamColor(0.02f, 0.28f, 1.0f, 0.72f);
-	const FLinearColor UnassignedColor(0.5f, 0.5f, 0.5f, 0.55f);
-	const FLinearColor WreckColor(0.22f, 0.0f, 0.0f, 0.88f);
-
-	FLinearColor GetTeamColor(const EGuLiTeam Team)
-	{
-		switch (Team)
-		{
-		case EGuLiTeam::Red:
-			return RedTeamColor;
-		case EGuLiTeam::Blue:
-			return BlueTeamColor;
-		default:
-			return UnassignedColor;
-		}
-	}
-
 	FTransform MakeHiddenTransform()
 	{
 		return FTransform(FQuat::Identity, FVector::ZeroVector, FVector::ZeroVector);
@@ -295,9 +278,10 @@ RouteLines->SetupAttachment(SceneRoot);
 	RingInstances->SetVisibleInRayTracing(false);
 	GuLiCommanderPresentation::DisableUnitDistanceCulling(*RingInstances);
 	RingInstances->NumCustomDataFloats = 4;
+	// RingInstances retain their anchor cache; only the final local-player UI paints them.
+	RingInstances->SetHiddenInGame(true);
 
-	UnitMeshAsset = TSoftObjectPtr<UStaticMesh>(FSoftObjectPath(
-		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd")));
+	// UnitMeshAsset is filled from the Soldier's ModelId at BeginPlay; no authored path here.
 	RingMeshVfxId = GuLiVfxIds::UnitRingMesh;
 	UnitMaterialAsset = TSoftObjectPtr<UMaterialInterface>(FSoftObjectPath(
 		TEXT("/Game/Commander/Units/M_CommanderUnitProxy.M_CommanderUnitProxy")));
@@ -307,6 +291,17 @@ RouteLines->SetupAttachment(SceneRoot);
 void AGuLiCommanderPresentationActor::BeginPlay()
 {
 	Super::BeginPlay();
+#if WITH_EDITOR
+	// Editor-only art fixtures are duplicated into PIE. They must never join
+	// the soldier stream or compete with the world's gameplay presenter.
+	if (IsEditorOnly())
+	{
+		SetActorTickEnabled(false);
+		SetActorHiddenInGame(true);
+		return;
+	}
+#endif
+	if (RingInstances) RingInstances->SetHiddenInGame(true);
 
 	if (GetNetMode() == NM_DedicatedServer)
 	{
@@ -382,7 +377,14 @@ UInstancedStaticMeshComponent* AGuLiCommanderPresentationActor::FindUnitInstance
 UInstancedStaticMeshComponent* AGuLiCommanderPresentationActor::EnsureUnitTeamBatch(
 	const uint16 UnitTypeId, const EGuLiTeam Team)
 {
-	if (auto* Existing = FindUnitInstances(UnitTypeId, Team)) return Existing;
+	if (auto* Existing = FindUnitInstances(UnitTypeId, Team))
+	{
+		// Re-registration is cheap and also handles a LocalPlayer created after the batch.
+		if (const auto* Data=GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
+			if (const auto* Definition=Data->FindSoldierDefinition(UnitTypeId))
+				UGuLiLocalTeamColorSubsystem::Register(this,Existing,Definition->ModelId,TEXT("Root"),Team);
+		return Existing;
+	}
 	const auto* Model = FindUnitInstances(UnitTypeId);
 	if (!Model || !GetWorld() || GetNetMode() == NM_DedicatedServer) return nullptr;
 
@@ -403,6 +405,9 @@ UInstancedStaticMeshComponent* AGuLiCommanderPresentationActor::EnsureUnitTeamBa
 	const uint32 Key = MakeUnitBatchKey(UnitTypeId, Team);
 	UnitInstancesByBatch.Add(Key, Component);
 	UnitInstanceBatchStates.FindOrAdd(Key);
+	if (const auto* Data=GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
+		if (const auto* Definition=Data->FindSoldierDefinition(UnitTypeId))
+			UGuLiLocalTeamColorSubsystem::Register(this,Component,Definition->ModelId,TEXT("Root"),Team);
 	return Component;
 }
 
@@ -2756,8 +2761,8 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			const auto* Handle = SoldierInstanceHandles.Find(Id);
 			const auto* State = Replicator->FindSoldierState(Id);
 			if (!Handle || !State) continue;
-			const auto Color = !State->IsAlive() ? GuLiCommanderPresentation::WreckColor
-				: SelectedSoldiers.Contains(Id) ? GuLiCommanderPresentation::SelectedColor : GuLiCommanderPresentation::GetTeamColor(State->Team);
+			const auto Color = GuLiLocalTeamColors::GetUI(State->Team,
+				GuLiLocalTeamColors::GetViewTeam(GetWorld()->GetFirstPlayerController()));
 			const int32 Index = Handle->RingInstanceIndex;
 			if (!CachedRingColors[Index].Equals(Color, KINDA_SMALL_NUMBER))
 			{
@@ -2790,6 +2795,29 @@ float AGuLiCommanderPresentationActor::GetUnitAvoidanceRadius(const uint16 UnitT
 	const float Radius = Definition->GetMassAvoidanceRadius(DefaultRadius);
 	UnitAvoidanceRadii.Add(UnitTypeId, Radius);
 	return Radius;
+}
+
+void AGuLiCommanderPresentationActor::GatherSceneUIRings(TArray<FGuLiSceneUIRing>& Out, const APlayerController* Viewer) const
+{
+	Out.Reset();
+	if (bNetworkPresentationHidden) return;
+	TSet<FGuLiSoldierId> ViewSelection;
+	if (const auto* Sync=Viewer ? Viewer->FindComponentByClass<UGuLiCommanderNetSyncComponent>() : nullptr)
+		for (const auto& Cohort : Sync->GetSelectionState().Cohorts)
+			for (auto Id : Cohort.MemberIds) ViewSelection.Add(Id);
+	Out.Reserve(SoldierInstanceHandles.Num());
+	for (const auto& Pair : SoldierInstanceHandles)
+	{
+		const int32 Slot = Pair.Value.RingInstanceIndex;
+		if (!CachedRingTransforms.IsValidIndex(Slot)) continue;
+		const auto& Transform = CachedRingTransforms[Slot];
+		if (Transform.GetScale3D().IsNearlyZero()) continue;
+		auto& Ring = Out.AddDefaulted_GetRef();
+		Ring.Center = Transform.GetLocation();
+		Ring.OuterRadiusCm = GetUnitAvoidanceRadius(Pair.Value.RequestedUnitTypeId);
+		Ring.Team = Pair.Value.BatchTeam;
+		Ring.bSelected = ViewSelection.Contains(Pair.Key);
+	}
 }
 
 void AGuLiCommanderPresentationActor::RefreshPredictionCrowding(

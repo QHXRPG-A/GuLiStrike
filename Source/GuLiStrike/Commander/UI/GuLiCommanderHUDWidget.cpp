@@ -41,9 +41,9 @@ namespace GuLiCommanderHUDWidget
 		switch (Team)
 		{
 		case EGuLiTeam::Blue:
-			return FText::FromString(GuLiGameText::Text(TEXT("UI.HUDWidget.093")));
 		case EGuLiTeam::Red:
-			return FText::FromString(GuLiGameText::Text(TEXT("UI.HUDWidget.094")));
+			// The caption describes this view's palette; roster/control still use the true team.
+			return FText::FromString(GuLiGameText::Text(TEXT("UI.HUDWidget.093")));
 		default:
 			return FText::FromString(GuLiGameText::Text(TEXT("UI.HUDWidget.095")));
 		}

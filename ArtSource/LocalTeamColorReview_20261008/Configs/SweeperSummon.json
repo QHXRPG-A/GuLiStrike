@@ -1,0 +1,32 @@
+{
+  "name": "SweeperSummon",
+  "group": "Mass",
+  "mesh": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid",
+  "kind": "StaticMesh",
+  "bounds": "<Struct 'BoxSphereBounds' (0x0000028085B2ED40) {origin: {x: 0.000000, y: 0.000031, z: 570.474365}, box_extent: {x: 855.262024, y: 702.872894, z: 970.474365}, sphere_radius: 1472.183388}>",
+  "unit_id": 5,
+  "display_name": "扫荡者",
+  "version": "LocalTeamColorReview.20261008.v1",
+  "mutable_regions": "橙色侧甲；车轮、机枪、蓝灰机械结构、黄灯固定，保留无线稿例外",
+  "source_palette_candidates": [
+    "#DD6038"
+  ],
+  "blue_reference": "#2877DB",
+  "red_reference": "#D7534D",
+  "enemy_non_blue_palette": "#D7534D",
+  "configuration_status": "candidate_pending_region_review",
+  "runtime_enabled": false,
+  "geometry_animation_lod_unchanged": true,
+  "materials": [
+    {
+      "slot": 0,
+      "name": "Body",
+      "fixed": false,
+      "source": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_Sweeper_Cel_Rigid.M_Sweeper_Cel_Rigid",
+      "derived_parent": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/SweeperSummon/M_Review_M_Sweeper_Cel_Rigid.M_Review_M_Sweeper_Cel_Rigid",
+      "blue": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/SweeperSummon/MI_Blue_0.MI_Blue_0",
+      "red": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/SweeperSummon/MI_Red_0.MI_Red_0",
+      "regions": "/Game/GuLiStrike/Review/LocalTeamColor_20261008/SweeperSummon/MI_Regions_0.MI_Regions_0"
+    }
+  ]
+}

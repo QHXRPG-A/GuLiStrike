@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "validation": {
+      "success": "False",
+      "message": "Initial army authoring: Invalid initial Mass deployment: GuLiCommanderDeploymentPoint_11",
+      "initial_soldier_count": "0",
+      "validated_initial_soldier_count": "0",
+      "issues": "[\"Initial army authoring: Invalid initial Mass deployment: GuLiCommanderDeploymentPoint_11\"]"
+    },
+    "api": [
+      "acquire_editor_element_handle",
+      "bake_current_map",
+      "call_method",
+      "cast",
+      "configure_dedicated_server_pie",
+      "configure_listen_server_pie",
+      "get_class",
+      "get_default_object",
+      "get_editor_property",
+      "get_fname",
+      "get_full_name",
+      "get_initial_army_spawn_layout_json",
+      "get_name",
+      "get_outer",
+      "get_outermost",
+      "get_package",
+      "get_path_name",
+      "get_typed_outer",
+      "get_world",
+      "is_editor_property_overridden",
+      "is_package_external",
+      "modify",
+      "normalize_blueprint_local_component_hierarchy",
+      "prepare_canonical_authoring_and_bake",
+      "rename",
+      "reset_editor_property",
+      "set_editor_properties",
+      "set_editor_property",
+      "static_class",
+      "validate_current_bake"
+    ]
+  }
+}

@@ -15,7 +15,7 @@ class UDecalComponent;
 struct FGuLiBuildingDefinition;
 
 /** Owning-client-only cosmetic ghost. It has no collision, navigation or replication. */
-UCLASS(NotBlueprintable, NotPlaceable, Transient)
+UCLASS(Config=Game, NotBlueprintable, NotPlaceable, Transient)
 class GULISTRIKE_API AGuLiBuildingPlacementPreview : public AActor
 {
 	GENERATED_BODY()
@@ -26,8 +26,12 @@ public:
 	bool Configure(const FGuLiBuildingDefinition& Definition, int32 PreviewVfxId);
 	void SetPlacementTransform(const FVector& GroundLocation, float YawDegrees);
 	void SetPlacementValidity(bool bValid);
+	FVector GetSceneUIFootprintExtent() const { return SceneUIFootprintExtent; }
+	bool IsSceneUIPlacementValid() const { return bLastPlacementValidity; }
+	const TArray<TObjectPtr<UMeshComponent>>& GetSceneUIMeshes() const { return PreviewMeshes; }
 
 private:
+	UPROPERTY(Config) TSoftObjectPtr<UMaterialInterface> SceneUIMaskMaterial;
 	UPROPERTY(VisibleAnywhere, Category = "Building")
 	TObjectPtr<USceneComponent> SceneRoot;
 
@@ -44,5 +48,6 @@ private:
 	TObjectPtr<UMaterialInstanceDynamic> PreviewMaterialInstance;
 
 	bool bHasPlacementValidity = false;
+	FVector SceneUIFootprintExtent = FVector::ZeroVector;
 	bool bLastPlacementValidity = false;
 };

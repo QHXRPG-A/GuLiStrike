@@ -10,8 +10,11 @@ import time
 import traceback
 from pathlib import Path
 import unreal
+import sys
 
 ROOT=Path(unreal.Paths.project_dir())
+sys.path.insert(0,str(ROOT/'Scripts'))
+from Models import model_catalog
 OUT=ROOT/'TestResults/Scale020/DemoReview'
 OUT.mkdir(parents=True,exist_ok=True)
 (OUT/'Previews').mkdir(exist_ok=True)
@@ -127,6 +130,8 @@ def build():
                'ElectromagneticMiner':(17900,-5400),'ConstructionVehicle':(17900,-6400)}
     units=json.loads((ROOT/'Data/Json/DT_GuLiStrikeCommander_Soldiers.json').read_text(encoding='utf-8'))
     for row in units:
+        if row['Name'] not in positions:continue # Summon/construction-only types keep their real entrances.
+        row.update(ModelAsset=model_catalog.soldier_visual(row)['model_asset'],PresentationClass=model_catalog.soldier_visual(row)['presentation_class'])
         xy=positions[row['Name']]
         if row['ModelAsset']:
             mesh_actor(row['Name'],row['ModelAsset'],xy,row['PresentationScale'],yaw=155,clearance=2)
@@ -141,14 +146,14 @@ def build():
     ship=spawn(ship_cls,'Ship',unreal.Vector(12500,-10500,3800),unreal.Rotator(yaw=65))
     ship.set_actor_scale3d(unreal.Vector(1,1,1))
     # Source BP is only a presentation mesh in this fixture; no match/player logic is started.
-    factory_cls=unreal.EditorAssetLibrary.load_blueprint_class('/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory')
+    factory_cls=unreal.load_class(None,model_catalog.resource(model_catalog.model_id('ResourceFactory')))
     factory=spawn(factory_cls,'Factory',unreal.Vector(),unreal.Rotator(yaw=90))
     factory.set_actor_scale3d(unreal.Vector(.2,.2,.2))
     fit(factory,20500,-8500,0)
     rows=json.loads((ROOT/'Data/Json/DT_GuLiStrikeBuildings_Buildings.json').read_text(encoding='utf-8'))
     for row,xy in zip([r for r in rows if r['Name'] in ['MissileTurret','SentryTurret','ManualOutpost']],
                       [(19900,-5500),(19800,-4100),(22000,-5300)]):
-        mesh_actor(row['Name'],row['Mesh'],xy,[row['MeshScale'][c] for c in ['X','Y','Z']],yaw=155)
+        mesh_actor(row['Name'],model_catalog.resource(row['ModelId']),xy,[row['MeshScale'][c] for c in ['X','Y','Z']],yaw=155)
     anchor=ground(17000,-5200)
     write('anchor.json',{'target':vec(anchor),'map':MAP,'folder':FOLDER,'owner_tag':TAG})
     spawn(unreal.CameraActor,'Camera',anchor+unreal.Vector(-4000,0,5000))

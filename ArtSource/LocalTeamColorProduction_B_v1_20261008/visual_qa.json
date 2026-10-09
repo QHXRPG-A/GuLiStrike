@@ -1,0 +1,209 @@
+{
+  "performed_by": "assistant actual image reading",
+  "stage": "B native color candidates",
+  "user_approval": false,
+  "models": [
+    {
+      "id": "DefaultSoldier",
+      "name": "先驱号",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "已纠正前部球形主壳的零散队色串色；主壳整件米砂、肩甲浅队色、后环与腿外护板深队色，枪管和底部机构深灰。保留源六足、两枪和原细节。",
+      "remaining_reference_geometry_differences": "参考绘画的倒角、细线及轮廓不作新几何；以原网格为结构依据。",
+      "comparison": "Comparisons/DefaultSoldier_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    },
+    {
+      "id": "WM01",
+      "name": "重防号",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "两组各四口导弹仓、四个悬浮盘与固定机械分区按原模型核对；盘顶固定米砂、外裙深队色、武器仓外罩浅队色，炮管恢复固定深灰。",
+      "remaining_reference_geometry_differences": "参考绘画的倒角、细线及轮廓不作新几何；以原网格为结构依据。",
+      "comparison": "Comparisons/WM01_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    },
+    {
+      "id": "BiZhiMao",
+      "name": "彼之矛",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "长炮顶甲固定米砂、侧甲浅队色，炮口套圈及踝甲深队色；腿甲乳白，炮口工作面和框架深灰。施工体共用该配色设计，原部署/移动动画保留。",
+      "remaining_reference_geometry_differences": "参考绘画的倒角、细线及轮廓不作新几何；以原网格为结构依据。",
+      "comparison": "Comparisons/BiZhiMao_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    },
+    {
+      "id": "ShieldGenerator",
+      "name": "护盾发生器",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "修正三个顶部色点误归固定区的问题；三件各50面、共150面均为 TeamLightLamp，两队分别 #6AA4BE / #A34053，红版没有蓝/青点。上部大护盖浅队色，检修小盖深队色，下部米砂与乳白固定，底座深队色。",
+      "remaining_reference_geometry_differences": "参考绘画的倒角、细线及轮廓不作新几何；以原网格为结构依据。",
+      "comparison": "Comparisons/ShieldGenerator_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    },
+    {
+      "id": "ManualOutpost",
+      "name": "前哨建筑",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "逐连接组件核对，中央最高板整件浅队色，相邻板整件米砂，外窄板整件乳白，外半圆环整件深队色；同一件从顶到底及背面没有高度分层。原纪念碑轮廓保留。",
+      "remaining_reference_geometry_differences": "参考把部分原曲面板画成直矩形；实际保留原曲面与半圆环，不改轮廓。",
+      "comparison": "Comparisons/ManualOutpost_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    },
+    {
+      "id": "MissileTurret",
+      "name": "防空炮",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "两仓各五弹头、仓侧护板与检修条、基座管线按原 UE 网格核对。外罩浅队色、检修条深队色，中部箱体及基座固定；三视图正面已校正为炮口方向。",
+      "remaining_reference_geometry_differences": "二维参考圆滑化了弹头、边角和底座；实际仍为原 UE 网格，未重做这些形体。",
+      "comparison": "Comparisons/MissileTurret_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    },
+    {
+      "id": "SentryTurret",
+      "name": "哨戒炮",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "原炮管、通风孔、软管和四足底座保留；塔侧浅队色、后盖与转台深队色，正面护框乳白，基座米砂；三视图正面已校正为炮口方向。",
+      "remaining_reference_geometry_differences": "二维参考的圆滑护甲与实际原网格边角不同；仅按现有区域配色。",
+      "comparison": "Comparisons/SentryTurret_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    },
+    {
+      "id": "ResourceFactory",
+      "name": "矿厂",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "屋顶中心盖与入口侧翼浅队色；已纠正整片侧柜门误染深队色，柜门恢复米砂，仅盖板与饰带使用深队色。门板与外框乳白、主墙和原坡道米砂；原 Blueprint 主体、门、AccessRamp 三组件装配和五门板、三侧柜保留。",
+      "remaining_reference_geometry_differences": "二维参考简化了门板交叉加强筋与侧后装配；实际原门板、加强筋、通风和坡道保持。",
+      "comparison": "Comparisons/ResourceFactory_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    },
+    {
+      "id": "SSF_AirBase",
+      "name": "空军基地",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "校正顶部两个对角扇区及中心盖的队色范围；穹顶余区米砂、既有窄压条乳白，支架与雷达工作面深灰，两队固定区一致。",
+      "remaining_reference_geometry_differences": "参考绘画的倒角、细线及轮廓不作新几何；以原网格为结构依据。",
+      "comparison": "Comparisons/SSF_AirBase_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    },
+    {
+      "id": "SSF_CloningCenter",
+      "name": "克隆中心",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "四舱外罩浅队色、侧盖与舱框深队色；软管和中央机构纠正为固定深灰，顶部口深队色、顶盖及入口乳白，背架米砂。",
+      "remaining_reference_geometry_differences": "参考绘画的倒角、细线及轮廓不作新几何；以原网格为结构依据。",
+      "comparison": "Comparisons/SSF_CloningCenter_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    },
+    {
+      "id": "SSF_CommandCenter",
+      "name": "指挥中心",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "校正上环浅队色、次环深队色和塔心固定深灰；外支撑有队色，窄横框乳白，塔冠米砂，补齐四块既有底足外护甲的乳白固定分区，底足机构仍深灰。",
+      "remaining_reference_geometry_differences": "参考绘画的倒角、细线及轮廓不作新几何；以原网格为结构依据。",
+      "comparison": "Comparisons/SSF_CommandCenter_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    },
+    {
+      "id": "SSF_MilitaryFactory",
+      "name": "军工厂",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "校正整块屋顶拱架及入口立面队色、保留侧后深队色腰带；门板乳白、大墙面米砂，雷达和支脚机械为固定深灰。",
+      "remaining_reference_geometry_differences": "参考绘画的倒角、细线及轮廓不作新几何；以原网格为结构依据。",
+      "comparison": "Comparisons/SSF_MilitaryFactory_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    },
+    {
+      "id": "SSF_Reactor",
+      "name": "反应堆",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "校正下部机械裙和外管线为固定深灰；主壳侧甲浅队色、顶环深队色、观察口乳白及固定壳区米砂，腿外甲乳白。",
+      "remaining_reference_geometry_differences": "参考绘画的倒角、细线及轮廓不作新几何；以原网格为结构依据。",
+      "comparison": "Comparisons/SSF_Reactor_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    },
+    {
+      "id": "SSF_StrategyCenter",
+      "name": "战略中心",
+      "views_read": [
+        "Blue Hero/Front/Left/Back",
+        "Red Hero/Front/Left/Back",
+        "A_v3 Blue/Red boards"
+      ],
+      "findings_and_corrections": "腰部连续护板浅队色、阵列框与上环深队色，工作阵列和天线固定深灰，壳体米砂；已将原两侧下部支撑大护甲从米砂纠正为固定乳白。",
+      "remaining_reference_geometry_differences": "参考绘画的倒角、细线及轮廓不作新几何；以原网格为结构依据。",
+      "comparison": "Comparisons/SSF_StrategyCenter_A3_B1.png",
+      "geometry_authority": "original native mesh, not AI-drawn dimensions/details",
+      "B_user_approval": "pending"
+    }
+  ],
+  "general_limits": [
+    "A_v3 is a two-dimensional color design and has drawn details/silhouettes that are not exact engineering views. Original native geometry remains the authority under the user color-only instruction.",
+    "Cream visible-surface 20–30% remains a design target, not a claimed pixel measurement; native mesh-area fractions are reported separately.",
+    "Supplemental Freestyle is visible in final renders (F12); material preview shows three-tone shading and existing source outlines/masks. New exportable outline geometry was not created.",
+    "UE material import, runtime display, animation playback and game performance were not performed."
+  ]
+}

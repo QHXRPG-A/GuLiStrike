@@ -7,6 +7,8 @@
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
 #include "Commander/UI/GuLiCommanderUITheme.h"
+#include "Commander/UI/GuLiSceneUIWidget.h"
+#include "Gameplay/Presentation/GuLiLocalTeamColors.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
@@ -23,7 +25,6 @@
 #include "Engine/LocalPlayer.h"
 #include "Engine/GameViewportClient.h"
 #include "SceneView.h"
-#include "CanvasItem.h"
 
 void AGuLiCommanderHUD::BuildOverviewMarkers()
 {
@@ -147,30 +148,31 @@ void AGuLiCommanderHUD::DrawOverviewMarkers()
 		FSceneViewProjectionData Projection;
 		if (LP->GetProjectionData(LP->ViewportClient->Viewport, Projection)) ViewOrigin = FVector2D(Projection.GetConstrainedViewRect().Min);
 	}
-	// Canvas batches primitives and textures; no per-entity widgets or actor ticks are allocated.
+	// Feed the local player's final Slate batch; picking still uses the same marker cache.
 	for (bool SelectedPass : {false, true}) for (const auto& Marker : OverviewMarkers)
 	{
 		if (Marker.bSelected != SelectedPass) continue;
 		const FVector2D P = Marker.ScreenPosition - ViewOrigin;
 		const float R = Marker.Size * .5f;
 		if (P.X + R < 0 || P.Y + R < 0 || P.X - R > Canvas->SizeX || P.Y - R > Canvas->SizeY) continue;
-		const FLinearColor Color = Marker.Team == EGuLiTeam::Red ? FLinearColor(1,.12f,.08f)
-			: Marker.Team == EGuLiTeam::Blue ? FLinearColor(.08f,.45f,1) : FLinearColor(.65f,.65f,.65f);
+		const FLinearColor Color = GuLiLocalTeamColors::IsAssigned(Marker.Team)
+			? GuLiLocalTeamColors::GetUI(Marker.Team, GuLiLocalTeamColors::GetViewTeam(PlayerOwner))
+			: FLinearColor(.65f,.65f,.65f);
 		auto Shape = [&](float Radius, const FLinearColor& Tint)
 		{
-			if (Marker.bBuilding) DrawRect(Tint, P.X-Radius, P.Y-Radius, Radius*2, Radius*2);
-			else { FCanvasNGonItem Circle(P, FVector2D(Radius), 16, Tint); Circle.BlendMode = SE_BLEND_Translucent; Canvas->DrawItem(Circle); }
+			if (Marker.bBuilding) SceneRect(Tint, P.X-Radius, P.Y-Radius, Radius*2, Radius*2);
+			else if (SceneUI.IsValid()) SceneUI->AddScreenDisc(P, Radius, Tint);
 		};
 		Shape(R + (Marker.bSelected ? 2.f : 1.f)*DPI, Marker.bSelected ? FLinearColor::White : FLinearColor(.015f,.02f,.025f));
 		Shape(R, Color);
-		if (UTexture2D* Icon = Marker.Icon.Get())
-			DrawTexture(Icon, P.X-R+2*DPI, P.Y-R+2*DPI, Marker.Size-4*DPI, Marker.Size-4*DPI, 0,0,1,1, FLinearColor::White);
+		if (UTexture2D* Icon = Marker.Icon.Get(); Icon && SceneUI.IsValid())
+			SceneUI->AddScreenImage(Icon, P-FVector2D(R-2*DPI), FVector2D(Marker.Size-4*DPI));
 		if (Marker.BarOpacity > 0)
 		{
 			const float W = FMath::Max(Marker.Size, 22*DPI), H = 3*DPI;
 			const float X = P.X-W*.5f, Y = P.Y+R+3*DPI;
-			DrawRect(FLinearColor(0,0,0,Marker.BarOpacity), X-DPI,Y-DPI,W+2*DPI,H+2*DPI);
-			DrawRect(FLinearColor(.15f,.9f,.35f,Marker.BarOpacity), X,Y,W*Marker.HealthFraction,H);
+			SceneRect(FLinearColor::Black, X-DPI,Y-DPI,W+2*DPI,H+2*DPI);
+			SceneRect(FLinearColor(.15f,.9f,.35f), X,Y,W*Marker.HealthFraction,H);
 		}
 	}
 }

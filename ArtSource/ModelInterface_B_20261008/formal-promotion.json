@@ -1,0 +1,575 @@
+{
+  "authorization": "记得将刚刚开发的美术资源导入至UE的正式资源中，并将旧资源删除",
+  "source_sha256": "c28e175b95f6393a51256392097dd8244e17fc8dee82b85ef78d2c03aa1067e0",
+  "models": [
+    {
+      "name": "BiZhiMao",
+      "id": 1006
+    },
+    {
+      "name": "DefaultSoldier",
+      "id": 1001
+    },
+    {
+      "name": "ManualOutpost",
+      "id": 2003
+    },
+    {
+      "name": "MissileTurret",
+      "id": 2001
+    },
+    {
+      "name": "SSF_AirBase",
+      "id": 3001
+    },
+    {
+      "name": "SSF_CloningCenter",
+      "id": 3002
+    },
+    {
+      "name": "SSF_CommandCenter",
+      "id": 3003
+    },
+    {
+      "name": "SSF_MilitaryFactory",
+      "id": 3004
+    },
+    {
+      "name": "SSF_Reactor",
+      "id": 3005
+    },
+    {
+      "name": "SSF_StrategyCenter",
+      "id": 3006
+    },
+    {
+      "name": "SentryTurret",
+      "id": 2002
+    },
+    {
+      "name": "ShieldGenerator",
+      "id": 2005
+    },
+    {
+      "name": "WM01",
+      "id": 1002
+    },
+    {
+      "name": "BiZhiMaoConstruction",
+      "id": 2008
+    },
+    {
+      "name": "ResourceFactory",
+      "id": 2006
+    }
+  ],
+  "replacements": [
+    {
+      "id": 1006,
+      "source": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/BiZhiMao/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT",
+      "old_object_deleted": true
+    },
+    {
+      "id": 1001,
+      "source": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/DefaultSoldier/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "formal": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "old_object_deleted": true
+    },
+    {
+      "id": 2003,
+      "source": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/ManualOutpost/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+      "formal": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+      "old_object_deleted": true
+    },
+    {
+      "id": 2001,
+      "source": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/StaticMeshes/missile_turret.missile_turret",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Meshes/missile_turret.missile_turret",
+      "formal": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/StaticMeshes/missile_turret.missile_turret",
+      "old_object_deleted": true
+    },
+    {
+      "id": 3001,
+      "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/AirBase/Meshes/SK_Blue_AirBase.SK_Blue_AirBase",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/SSF_AirBase/Meshes/SK_Blue_AirBase.SK_Blue_AirBase",
+      "formal": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/AirBase/Meshes/SK_Blue_AirBase.SK_Blue_AirBase",
+      "old_object_deleted": true
+    },
+    {
+      "id": 3002,
+      "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CloningCenter/Meshes/SK_Blue_CloningCenter.SK_Blue_CloningCenter",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/SSF_CloningCenter/Meshes/SK_Blue_CloningCenter.SK_Blue_CloningCenter",
+      "formal": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CloningCenter/Meshes/SK_Blue_CloningCenter.SK_Blue_CloningCenter",
+      "old_object_deleted": true
+    },
+    {
+      "id": 3003,
+      "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CommandCenter/Meshes/SK_Blue_CommandCenter.SK_Blue_CommandCenter",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/SSF_CommandCenter/Meshes/SK_Blue_CommandCenter.SK_Blue_CommandCenter",
+      "formal": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CommandCenter/Meshes/SK_Blue_CommandCenter.SK_Blue_CommandCenter",
+      "old_object_deleted": true
+    },
+    {
+      "id": 3004,
+      "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/MilitaryFactory/Meshes/SK_Blue_MilitaryFactory.SK_Blue_MilitaryFactory",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/SSF_MilitaryFactory/Meshes/SK_Blue_MilitaryFactory.SK_Blue_MilitaryFactory",
+      "formal": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/MilitaryFactory/Meshes/SK_Blue_MilitaryFactory.SK_Blue_MilitaryFactory",
+      "old_object_deleted": true
+    },
+    {
+      "id": 3005,
+      "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/Reactor/Meshes/SK_Blue_Reactor.SK_Blue_Reactor",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/SSF_Reactor/Meshes/SK_Blue_Reactor.SK_Blue_Reactor",
+      "formal": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/Reactor/Meshes/SK_Blue_Reactor.SK_Blue_Reactor",
+      "old_object_deleted": true
+    },
+    {
+      "id": 3006,
+      "source": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/StrategyCenter/Meshes/SK_Blue_StrategyCenter.SK_Blue_StrategyCenter",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/SSF_StrategyCenter/Meshes/SK_Blue_StrategyCenter.SK_Blue_StrategyCenter",
+      "formal": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/StrategyCenter/Meshes/SK_Blue_StrategyCenter.SK_Blue_StrategyCenter",
+      "old_object_deleted": true
+    },
+    {
+      "id": 2002,
+      "source": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/SentryTurret/Meshes/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
+      "formal": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
+      "old_object_deleted": true
+    },
+    {
+      "id": 2005,
+      "source": "/Game/GuLiStrike/Buildings/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
+      "formal": "/Game/GuLiStrike/Buildings/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
+      "old_object_deleted": true
+    },
+    {
+      "id": 1002,
+      "source": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/WM01/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "formal": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "old_object_deleted": true
+    },
+    {
+      "id": 2008,
+      "source": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/BiZhiMaoConstruction/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+      "formal": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_Construction.SM_BiZhiMao_Construction",
+      "old_object_deleted": true
+    },
+    {
+      "id": 8007,
+      "source": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door.SK_RPF_Door",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/Door/Meshes/SK_RPF_Door.SK_RPF_Door",
+      "formal": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door.SK_RPF_Door",
+      "old_object_deleted": true
+    },
+    {
+      "id": 8008,
+      "source": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SM_RPF_Body.SM_RPF_Body",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/Body/Meshes/SM_RPF_Body.SM_RPF_Body",
+      "formal": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SM_RPF_Body.SM_RPF_Body",
+      "old_object_deleted": true
+    },
+    {
+      "id": 8015,
+      "source": "/Engine/BasicShapes/Cube.Cube",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/AccessRamp/Meshes/Cube.Cube",
+      "formal": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/Meshes/SM_RPF_AccessRamp.SM_RPF_AccessRamp",
+      "old_object_deleted": false
+    },
+    {
+      "id": 2006,
+      "source": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C",
+      "candidate": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C",
+      "formal": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C",
+      "old_object_deleted": true
+    }
+  ],
+  "moved_materials": [
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/BiZhiMao/Materials/Instances/MI_BiZhiMao_LOD0",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Instances/MI_BiZhiMao_LOD0"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/BiZhiMao/Materials/Instances/MI_BiZhiMao_LOD1",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Instances/MI_BiZhiMao_LOD1"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/BiZhiMao/Materials/Instances/MI_BiZhiMao_LOD2",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Instances/MI_BiZhiMao_LOD2"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/BiZhiMao/Materials/Parents/M_BiZhiMao_Toon3_SparseLines",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMao/Materials/Parents/M_BiZhiMao_Toon3_SparseLines"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/BiZhiMaoConstruction/Materials/Instances/MI_BiZhiMao_LOD0",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMaoConstruction/Materials/Instances/MI_BiZhiMao_LOD0"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/BiZhiMaoConstruction/Materials/Instances/MI_BiZhiMao_LOD1",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMaoConstruction/Materials/Instances/MI_BiZhiMao_LOD1"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/BiZhiMaoConstruction/Materials/Instances/MI_BiZhiMao_LOD2",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMaoConstruction/Materials/Instances/MI_BiZhiMao_LOD2"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/BiZhiMaoConstruction/Materials/Parents/M_BiZhiMao_Toon3_SparseLines",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/BiZhiMaoConstruction/Materials/Parents/M_BiZhiMao_Toon3_SparseLines"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD0",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD0"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD1",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD1"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD2",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Instances/MI_Pioneer_LOD2"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/ManualOutpost/Materials/Parents/M_OutpostConcrete",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/ManualOutpost/Materials/Parents/M_OutpostConcrete"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/AroundMissile",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/AroundMissile"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/Attention",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Attention"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/BackFilter",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/BackFilter"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/BackPanel",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/BackPanel"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/Bars",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Bars"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/BlackMetal",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/BlackMetal"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/BlueWire",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/BlueWire"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/BottomBars",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/BottomBars"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/Electronic",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Electronic"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/FrontBars",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/FrontBars"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/GreayMetal",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/GreayMetal"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/GreenWire",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/GreenWire"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/Hazard",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Hazard"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/Iron",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Iron"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/LauncherBars",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/LauncherBars"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/Lens",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Lens"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/Lens2",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Lens2"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/Lens3",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Lens3"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/LensAround",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/LensAround"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/MetalPlate",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/MetalPlate"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/Number",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Number"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/OrangeMetalPlate",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/OrangeMetalPlate"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/Pipe",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Pipe"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/RedWire",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/RedWire"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/Rhomboid",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Rhomboid"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/RustedMetal",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/RustedMetal"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/SolarPanel",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/SolarPanel"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/Vent",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Vent"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/Wire",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/Wire"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/controlPanel",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/controlPanel"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Instances/material",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Instances/material"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/MissileTurret/Materials/Parents/M_Default",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/MissileTurret/Materials/Parents/M_Default"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/AccessRamp/Materials/Parents/WorldGridMaterial",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/Materials/Parents/WorldGridMaterial"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/AccessRamp/OverrideMaterials/Parents/M_RPF_Interior",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/OverrideMaterials/Parents/M_RPF_Interior"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/Body/Materials/Parents/M_RPF_Armor",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Armor"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/Body/Materials/Parents/M_RPF_Details",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Details"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/Body/Materials/Parents/M_RPF_Interior",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Body/Materials/Parents/M_RPF_Interior"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/Door/Materials/Parents/M_RPF_Armor",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Armor"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/Door/Materials/Parents/M_RPF_Details",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Details"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/ResourceFactory/Door/Materials/Parents/M_RPF_Interior",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Door/Materials/Parents/M_RPF_Interior"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SSF_AirBase/Materials/Instances/MI_Blue_AirBase_Body",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_AirBase/Materials/Instances/MI_Blue_AirBase_Body"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SSF_AirBase/Materials/Parents/M_SSF_ThreeToneLine",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_AirBase/Materials/Parents/M_SSF_ThreeToneLine"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SSF_CloningCenter/Materials/Instances/MI_Blue_CloningCenter_Body",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_CloningCenter/Materials/Instances/MI_Blue_CloningCenter_Body"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SSF_CloningCenter/Materials/Parents/M_SSF_ThreeToneLine",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_CloningCenter/Materials/Parents/M_SSF_ThreeToneLine"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SSF_CommandCenter/Materials/Instances/MI_Blue_CommandCenter_Body",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_CommandCenter/Materials/Instances/MI_Blue_CommandCenter_Body"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SSF_CommandCenter/Materials/Parents/M_SSF_ThreeToneLine",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_CommandCenter/Materials/Parents/M_SSF_ThreeToneLine"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SSF_MilitaryFactory/Materials/Instances/MI_Blue_MilitaryFactory_Body",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_MilitaryFactory/Materials/Instances/MI_Blue_MilitaryFactory_Body"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SSF_MilitaryFactory/Materials/Parents/M_SSF_ThreeToneLine",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_MilitaryFactory/Materials/Parents/M_SSF_ThreeToneLine"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SSF_Reactor/Materials/Instances/MI_Blue_Reactor_Body",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_Reactor/Materials/Instances/MI_Blue_Reactor_Body"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SSF_Reactor/Materials/Parents/M_SSF_ThreeToneLine",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_Reactor/Materials/Parents/M_SSF_ThreeToneLine"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SSF_StrategyCenter/Materials/Instances/MI_Blue_StrategyCenter_Body",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_StrategyCenter/Materials/Instances/MI_Blue_StrategyCenter_Body"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SSF_StrategyCenter/Materials/Parents/M_SSF_ThreeToneLine",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SSF_StrategyCenter/Materials/Parents/M_SSF_ThreeToneLine"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SentryTurret/Materials/Instances/Stylized_Turrets_A_mat",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SentryTurret/Materials/Instances/Stylized_Turrets_A_mat"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/SentryTurret/Materials/Parents/FBXLegacyPhongSurfaceMaterial",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/SentryTurret/Materials/Parents/FBXLegacyPhongSurfaceMaterial"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/Shared/MF_GuLiTeamRegion",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/Shared/MF_GuLiTeamRegion"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/ShieldGenerator/Materials/Parents/M_ShieldGenerator_HardSurface",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/ShieldGenerator/Materials/Parents/M_ShieldGenerator_HardSurface"
+    },
+    {
+      "source": "/Game/GuLiStrike/Review/ModelInterface/WM01/Materials/Parents/M_WarMachine_Cel_Rigid",
+      "target": "/Game/GuLiStrike/Models/TeamColor_v1/WM01/Materials/Parents/M_WarMachine_Cel_Rigid"
+    }
+  ],
+  "retired": [
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/AirBase/Meshes/SK_Red_AirBase.SK_Red_AirBase",
+      "replacement": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/AirBase/Meshes/SK_Blue_AirBase.SK_Blue_AirBase",
+      "kind": "old_red_mesh"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/CloningCenter/Meshes/SK_Red_CloningCenter.SK_Red_CloningCenter",
+      "replacement": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CloningCenter/Meshes/SK_Blue_CloningCenter.SK_Blue_CloningCenter",
+      "kind": "old_red_mesh"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/CommandCenter/Meshes/SK_Red_CommandCenter.SK_Red_CommandCenter",
+      "replacement": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/CommandCenter/Meshes/SK_Blue_CommandCenter.SK_Blue_CommandCenter",
+      "kind": "old_red_mesh"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/MilitaryFactory/Meshes/SK_Red_MilitaryFactory.SK_Red_MilitaryFactory",
+      "replacement": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/MilitaryFactory/Meshes/SK_Blue_MilitaryFactory.SK_Blue_MilitaryFactory",
+      "kind": "old_red_mesh"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/Reactor/Meshes/SK_Red_Reactor.SK_Red_Reactor",
+      "replacement": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/Reactor/Meshes/SK_Blue_Reactor.SK_Blue_Reactor",
+      "kind": "old_red_mesh"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/StrategyCenter/Meshes/SK_Red_StrategyCenter.SK_Red_StrategyCenter",
+      "replacement": "/Game/GuLiStrike/Buildings/SSFStylized/Blue/StrategyCenter/Meshes/SK_Blue_StrategyCenter.SK_Blue_StrategyCenter",
+      "kind": "old_red_mesh"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/AirBase/Materials/MI_Red_AirBase_Body.MI_Red_AirBase_Body",
+      "kind": "unused_old_material"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/AirBase/Materials/MI_Red_AirBase_Display.MI_Red_AirBase_Display",
+      "kind": "unused_old_material"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/CloningCenter/Materials/MI_Red_CloningCenter_Body.MI_Red_CloningCenter_Body",
+      "kind": "unused_old_material"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/CloningCenter/Materials/MI_Red_CloningCenter_Display.MI_Red_CloningCenter_Display",
+      "kind": "unused_old_material"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/CommandCenter/Materials/MI_Red_CommandCenter_Body.MI_Red_CommandCenter_Body",
+      "kind": "unused_old_material"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/CommandCenter/Materials/MI_Red_CommandCenter_Display.MI_Red_CommandCenter_Display",
+      "kind": "unused_old_material"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/MilitaryFactory/Materials/MI_Red_MilitaryFactory_Body.MI_Red_MilitaryFactory_Body",
+      "kind": "unused_old_material"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/MilitaryFactory/Materials/MI_Red_MilitaryFactory_Display.MI_Red_MilitaryFactory_Display",
+      "kind": "unused_old_material"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/Reactor/Materials/MI_Red_Reactor_Body.MI_Red_Reactor_Body",
+      "kind": "unused_old_material"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/Reactor/Materials/MI_Red_Reactor_Display.MI_Red_Reactor_Display",
+      "kind": "unused_old_material"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/StrategyCenter/Materials/MI_Red_StrategyCenter_Body.MI_Red_StrategyCenter_Body",
+      "kind": "unused_old_material"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Red/StrategyCenter/Materials/MI_Red_StrategyCenter_Display.MI_Red_StrategyCenter_Display",
+      "kind": "unused_old_material"
+    }
+  ],
+  "shared_retained": [
+    {
+      "path": "/Engine/BasicShapes/Cube.Cube",
+      "reason": "Shared engine mesh; only this assembly receives a painted copy"
+    },
+    {
+      "path": "/Game/GuLiStrike/Buildings/SSFStylized/Shared/Materials/M_SSF_Outline.M_SSF_Outline",
+      "reason": "Still referenced by fixed display/outline, shared material, or source code"
+    }
+  ],
+  "errors": [],
+  "tables_imported": true,
+  "success": true,
+  "additional_old_paint_cleanup": {
+    "report": "Artifacts/ModelRegistryRuntime20261008/retired-old-paint-readback.json",
+    "deleted_count": 20,
+    "success": true
+  },
+  "final_refresh": "2026-10-08T23:01:03.505587+08:00"
+}

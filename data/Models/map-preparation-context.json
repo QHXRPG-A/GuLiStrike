@@ -1,0 +1,338 @@
+{
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "game_world": "None",
+  "dirty_maps": [
+    "/Game/Maps/LVL_CommanderMassPrototype"
+  ],
+  "stage_python_apis": {
+    "get_material_property_input_node": true,
+    "get_material_property_input_node_output_name": true
+  },
+  "actors": [
+    {
+      "label": "CommanderPlayerStart_Red",
+      "class": "/Script/Engine.PlayerStart",
+      "location": [
+        0.0,
+        69000.0,
+        10000.0
+      ],
+      "tags": []
+    },
+    {
+      "label": "PioneerQA_Single",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        0.0,
+        65000.0,
+        901.7790832519531
+      ],
+      "tags": [
+        "FlightEventsQAOrigin",
+        "FlightEventsQA_Count500",
+        "FlightEventsQA_Duration30",
+        "FlightEventsQA_Commander_Ground_Ship_Wingman"
+      ]
+    },
+    {
+      "label": "PioneerQA_Multi_A",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -2300.0,
+        65000.0,
+        902.8101841762227
+      ],
+      "tags": []
+    },
+    {
+      "label": "PioneerQA_Multi_B",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -2300.0,
+        67000.0,
+        902.8744151862275
+      ],
+      "tags": []
+    },
+    {
+      "label": "PioneerQA_SizeReference_WM01",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        0.0,
+        63000.0,
+        901.7790832519531
+      ],
+      "tags": []
+    },
+    {
+      "label": "PioneerQA_Blocked",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -45000.0,
+        60000.0,
+        1073.7790832519531
+      ],
+      "tags": []
+    },
+    {
+      "label": "PioneerQA_Target_InRange",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        5600.0,
+        65000.0,
+        901.7790832519531
+      ],
+      "tags": []
+    },
+    {
+      "label": "PioneerQA_Target_OutOfRange",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        6900.0,
+        63800.0,
+        901.7790832519531
+      ],
+      "tags": []
+    },
+    {
+      "label": "FlightEventsQA_PlayerStart_1",
+      "class": "/Script/Engine.PlayerStart",
+      "location": [
+        6000.0,
+        69000.0,
+        10000.0
+      ],
+      "tags": [
+        "FlightEventsQAPlayerStart"
+      ]
+    },
+    {
+      "label": "FlightEventsQA_PlayerStart_2",
+      "class": "/Script/Engine.PlayerStart",
+      "location": [
+        -6000.0,
+        69000.0,
+        10000.0
+      ],
+      "tags": [
+        "FlightEventsQAPlayerStart"
+      ]
+    },
+    {
+      "label": "FlightEventsQA_PlayerStart_3",
+      "class": "/Script/Engine.PlayerStart",
+      "location": [
+        0.0,
+        75000.0,
+        10000.0
+      ],
+      "tags": [
+        "FlightEventsQAPlayerStart"
+      ]
+    },
+    {
+      "label": "SceneUI_Blue_Pioneer",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -24000.0,
+        79000.0,
+        1073.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Blue_WM01",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -24000.0,
+        73000.0,
+        1073.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Red_Pioneer",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -14000.0,
+        79000.0,
+        1057.2619611356704
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Red_WM01",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        -14000.0,
+        73000.0,
+        1073.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Radius_DefaultSoldier",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        -28000.0,
+        67500.0,
+        1080.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Radius_WM01",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        -23500.0,
+        67500.0,
+        1080.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Radius_SweeperSummon",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        -19000.0,
+        67500.0,
+        1080.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Radius_BiZhiMao",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        -14500.0,
+        67500.0,
+        1080.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Profile_Night",
+      "class": "/Script/Engine.PostProcessVolume",
+      "location": [
+        -19000.0,
+        76000.0,
+        1073.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Profile_ExposureBloom",
+      "class": "/Script/Engine.PostProcessVolume",
+      "location": [
+        -19000.0,
+        76000.0,
+        1073.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Profile_ColorGrade",
+      "class": "/Script/Engine.PostProcessVolume",
+      "location": [
+        -19000.0,
+        76000.0,
+        1073.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Profile_DenseFog",
+      "class": "/Script/Engine.ExponentialHeightFog",
+      "location": [
+        -19000.0,
+        76000.0,
+        1073.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Profile_ColoredLight",
+      "class": "/Script/Engine.PointLight",
+      "location": [
+        -19000.0,
+        76000.0,
+        3273.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Background_Dark",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        -24000.0,
+        79000.0,
+        1075.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Background_Light",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        -14000.0,
+        79000.0,
+        1059.2619611356704
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_ReviewCamera",
+      "class": "/Script/Engine.CameraActor",
+      "location": [
+        -19000.0,
+        67500.0,
+        16073.441672388803
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    },
+    {
+      "label": "SceneUI_Notes",
+      "class": "/Script/Engine.TextRenderActor",
+      "location": [
+        -19000.0,
+        81000.0,
+        1573.4416723888016
+      ],
+      "tags": [
+        "SceneUIEnvironmentReview20261008"
+      ]
+    }
+  ]
+}

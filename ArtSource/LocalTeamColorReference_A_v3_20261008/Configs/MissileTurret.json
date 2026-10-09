@@ -1,0 +1,176 @@
+{
+  "id": "MissileTurret",
+  "name": "防空炮",
+  "title": "AIR DEFENSE",
+  "category": "Building",
+  "building_type_id": 1,
+  "fixed": [
+    "发射仓内侧及边框、转台主护甲：乳白 #FEE4D9",
+    "中部箱体、现有基座护甲：米砂 #D5C09C",
+    "原有枪管/机构/支承/电缆/工作面/深槽：深灰 #2C3735，保持各模型既有分件"
+  ],
+  "team": [
+    "浅队色：两侧发射仓外侧完整大护板",
+    "深队色：大护板中的既有长检修盖、现有转台环带"
+  ],
+  "function": [
+    "仅保留原有小型功能指示位置，不新增灯"
+  ],
+  "source": [
+    "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/MissileTurret_Hero.png",
+    "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/MissileTurret_Right.png",
+    "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/MissileTurret_Back.png",
+    "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/MissileTurret_Left.png"
+  ],
+  "source_view_mapping": {
+    "Hero": "Hero",
+    "Front": "Right (+Y)",
+    "Left": "Back (-X)",
+    "Back": "Left (-Y)"
+  },
+  "structure": "保留双侧发射仓及原俯仰姿态，每侧五枚原有弹头。",
+  "team_primary": [
+    "两侧发射仓外侧完整大护板"
+  ],
+  "team_secondary": [
+    "大护板中的既有长检修盖、现有转台环带"
+  ],
+  "paint_zones": {
+    "fixed_armor": "发射仓内侧及边框、转台主护甲",
+    "fixed_secondary": "中部箱体、现有基座护甲",
+    "team_primary": "两侧发射仓外侧完整大护板",
+    "team_secondary": "大护板中的既有长检修盖、现有转台环带",
+    "mechanisms": "发射口、转轴、管线与栏杆：深灰"
+  },
+  "team_lights": [],
+  "previous_boards": {
+    "blue": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/MissileTurret_blue.png",
+    "red": "ArtSource/LocalTeamColorReference_A_v2_20261008/Boards/MissileTurret_red.png"
+  },
+  "cream_coverage_target": {
+    "range_percent": [
+      20,
+      30
+    ],
+    "basis": "visible model surfaces; excludes background, outline and cast shadow",
+    "is_measured": false
+  },
+  "boards": {
+    "blue": {
+      "path": "Boards/MissileTurret_blue.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1709647,
+      "sha256": "d31715c5d1ee3812785c14949e16d501b84beb428c4b38c0229a362f7d0f8305"
+    },
+    "red": {
+      "path": "Boards/MissileTurret_red.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1717405,
+      "sha256": "389f271c1d290d11c20f35bff34fa630a5ad224f13fe01c310400039e60acbea"
+    }
+  },
+  "source_mesh": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/StaticMeshes/missile_turret.missile_turret",
+  "source_kind": "StaticMesh",
+  "source_references": [
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/MissileTurret_Hero.png",
+      "sha256": "ed7f4a03fd95893b43755bc659c95081d57d6ed6f3c1ccba3038c60fb6129181"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/MissileTurret_Right.png",
+      "sha256": "3e50cd58cd732d4f767f287c9cdf2e16c50b682a2d50bfd15766e86fa1561b36"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/MissileTurret_Back.png",
+      "sha256": "6242f05e80a515a2dd408f290d62a88390da19ec517f8e6506929ee5ea62af2b"
+    },
+    {
+      "path": "ArtSource/LocalTeamColorReference_A_v3_20261008/Sources/MissileTurret_Left.png",
+      "sha256": "47d306f398804c7daeadb3f71cee5efea137dbd6028c41f77e059215b8fe2c2a"
+    }
+  ],
+  "reference_version": "LocalTeamColorReference_A_v3_20261008",
+  "approval_A": {
+    "status": "pending",
+    "user_decision": null,
+    "approved_variant_hashes": null
+  },
+  "construction_B": {
+    "status": "not_started",
+    "approved": false
+  },
+  "runtime_enabled": false,
+  "palette": {
+    "fixed_armor": {
+      "hex": "#FEE4D9",
+      "card": 3,
+      "label": "奶油白"
+    },
+    "mechanisms": {
+      "hex": "#2C3735",
+      "card": 1,
+      "label": "深灰"
+    },
+    "blue": {
+      "hex": "#6AA4BE",
+      "card": 4,
+      "label": "蓝灰"
+    },
+    "red": {
+      "hex": "#A34053",
+      "card": 2,
+      "label": "莓红"
+    },
+    "function_amber": {
+      "hex": "#EE9D58",
+      "card": 2,
+      "label": "少量功能琥珀"
+    },
+    "function_cyan": {
+      "hex": "#0D9099",
+      "card": 4,
+      "label": "少量功能青色"
+    },
+    "fixed_secondary": {
+      "hex": "#D5C09C",
+      "card": 1,
+      "label": "固定米砂"
+    },
+    "blue_secondary": {
+      "hex": "#274E61",
+      "card": 4,
+      "label": "深蓝灰队色"
+    },
+    "red_secondary": {
+      "hex": "#662249",
+      "card": 2,
+      "label": "深莓队色"
+    }
+  },
+  "enemy_non_blue": "#A34053",
+  "enemy_non_blue_secondary": "#662249",
+  "paint_region_mode": "existing_parts_or_region_masks_after_A_approval",
+  "paint_contract": {
+    "fixed": {
+      "cream": "#FEE4D9",
+      "sand": "#D5C09C",
+      "mechanisms": "#2C3735"
+    },
+    "team": {
+      "blue": {
+        "primary": "#6AA4BE",
+        "secondary": "#274E61"
+      },
+      "red": {
+        "primary": "#A34053",
+        "secondary": "#662249"
+      }
+    },
+    "team_light": null,
+    "shading": "Three cel-shading levels are separate from the two team base paint colors.",
+    "fixed_function_policy": "Only existing function locations and palette colors; shield top lights are team-controlled."
+  },
+  "geometry_contract": "Existing source mesh/source views remain authoritative for geometry, assembly, animations and LOD. Generated sheets are 2D color references, not measured manufacturing drawings or Blender output."
+}

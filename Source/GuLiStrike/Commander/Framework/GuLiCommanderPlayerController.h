@@ -16,6 +16,7 @@ class UInputAction;
 class UEnhancedInputLocalPlayerSubsystem;
 class UGuLiTeleportInputComponent;
 class UGuLiRogueCardPresentation;
+class UGuLiSceneUIWidget;
 class SWidget;
 namespace GuLiOrderNetworkProbe { struct FRun; }
 
@@ -102,6 +103,8 @@ class AGuLiCommanderPlayerController : public AGuLiBattlePlayerController
 public:
 	AGuLiCommanderPlayerController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	bool CanUseGroundMechFireInput() const;
+	UGuLiSceneUIWidget* GetSceneUIWidget() const { return SceneUIWidget; }
+	UPROPERTY(Transient) TObjectPtr<UGuLiSceneUIWidget> SceneUIWidget;
 
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

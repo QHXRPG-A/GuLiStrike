@@ -1268,3 +1268,7 @@ void UGuLiBuildingPlacementComponent::TestOnly_ResetServerRequestState()
 	ServerRequestTimes.Reset();
 }
 #endif
+const AGuLiBuildingPlacementPreview* UGuLiBuildingPlacementComponent::GetSceneUIPreview() const
+{
+	return PreviewActor.Get();
+}

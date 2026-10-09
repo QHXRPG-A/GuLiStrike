@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
+#include "Commander/UI/GuLiSceneUIWidget.h"
+#include "Commander/UI/GuLiSceneUISubsystem.h"
 #include "Gameplay/Cards/GuLiRogueCardPresentation.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
@@ -138,6 +140,14 @@ AGuLiCommanderPlayerController::AGuLiCommanderPlayerController(const FObjectInit
 void AGuLiCommanderPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	if (IsLocalController() && GetLocalPlayer())
+	{
+		SceneUIWidget = UGuLiSceneUISubsystem::ForController(this);
+		if (SceneUIWidget)
+		{
+			SceneUIWidget->SetModalHidden(bRogueCardModal);
+		}
+	}
 	if (NetSyncComponent)
 	{
 		MoveReadyHandle = NetSyncComponent->OnMoveReadyToSend.AddUObject(this, &ThisClass::HandleMoveReadyToSend);
@@ -162,6 +172,7 @@ void AGuLiCommanderPlayerController::SetRogueCardModal(bool bActive)
 		FlushPressedKeys(); RestoreCommanderCursor();
 	}
 	bRogueCardModal=bActive;
+	if (SceneUIWidget) SceneUIWidget->SetModalHidden(bActive);
 	if (auto* HUD=Cast<AGuLiCommanderHUD>(GetHUD())) HUD->SetRogueCardHidden(bActive);
 	if (bActive) { bShowMouseCursor=true; DefaultMouseCursor=EMouseCursor::Default; }
 	else { bCommanderInputModeInitialized=false; UpdateCommanderInputMode(); UWidgetBlueprintLibrary::SetFocusToGameViewport(); }
@@ -169,6 +180,7 @@ void AGuLiCommanderPlayerController::SetRogueCardModal(bool bActive)
 
 void AGuLiCommanderPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	if (SceneUIWidget) { SceneUIWidget->RemoveFromParent(); SceneUIWidget = nullptr; }
 	if (BattleInputSubsystem.IsValid())
 	{
 		BattleInputSubsystem->RemoveMappingContext(BattleCommandMappings);
@@ -268,6 +280,11 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
 void AGuLiCommanderPlayerController::PlayerTick(const float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
+	if (!SceneUIWidget && IsLocalController() && GetLocalPlayer())
+	{
+		SceneUIWidget=UGuLiSceneUISubsystem::ForController(this);
+		if (SceneUIWidget) SceneUIWidget->SetModalHidden(bRogueCardModal);
+	}
 
 	UpdateCommanderInputMode();
 	if (bRogueCardModal) return;
