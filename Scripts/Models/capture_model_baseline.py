@@ -69,7 +69,7 @@ for path in ['/Game/GuLiStrike/Ship/BP_GuLiStrikeShip.BP_GuLiStrikeShip_C', '/Ga
         part = unreal.get_default_object(pc)
         pm = part.get_editor_property('skeletal_mesh') or part.get_editor_property('static_mesh')
         stats = {}
-        for key in ['part_mass', 'thrust', 'damage', 'fire_rate', 'projectile_class', 'muzzle_offset']:
+        for key in ['part_mass', 'thrust', 'muzzle_offset']:
             try:
                 value = part.get_editor_property(key)
                 stats[key] = value.get_path_name() if hasattr(value, 'get_path_name') else str(value)

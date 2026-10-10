@@ -54,7 +54,6 @@ def main():
                    'transform': value(a.get_actor_transform())} for a in actors]
     blueprints = {}
     for path in ['/Game/GuLiStrike/Ship/BP_GuLiStrikeShip', '/Game/GuLiStrike/Ship/BP_CombatAvatarFly01',
-                 '/Game/GuLiStrike/Ship/BP_ShipProjectile',
                  '/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2',
                  '/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle',
                  '/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory']:

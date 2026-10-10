@@ -2,7 +2,6 @@
 #include "Serialization/BitReader.h"
 #include "Serialization/BitWriter.h"
 #include "UObject/CoreNet.h"
-#include "Gameplay/GuLiStrikeProjectile.h"
 
 bool FGuLiFlightEvent::Serialize(FArchive& Ar)
 {
@@ -52,22 +51,10 @@ bool FGuLiFlightEvent::Serialize(FArchive& Ar)
 		if (Ar.IsLoading()) ImpactVfxId = static_cast<int32>(Vfx);
 		if (Vfx>MAX_int32 || !Success) Ar.SetError();
 	}
-	bool HasShip = State.Phase!=EGuLiCombatEffectPhase::Finished && !ShipVisualClass.IsNull();
-	Ar.SerializeBits(&HasShip, 1);
-	if (HasShip)
-	{
-		FString Path = ShipVisualClass.ToSoftObjectPath().ToString();
-		Ar << Path;
-		if (Path.Len() > 256) Ar.SetError();
-		if (Ar.IsLoading()) ShipVisualClass = TSoftClassPtr<AGuLiStrikeProjectile>(FSoftObjectPath(Path));
-		FVector3f Scale(VisualScale); Ar << Scale;
-		if (Ar.IsLoading()) VisualScale = FVector(Scale);
-		if (VisualScale.ContainsNaN() || VisualScale.GetAbsMax()>1000) Ar.SetError();
-		Ar << Gravity << Bounciness << Friction << StopSpeed << MaximumSpeed;
-		Ar.SerializeBits(&bBounce, 1);
-		if (!FMath::IsFinite(Gravity) || !FMath::IsFinite(Bounciness) || !FMath::IsFinite(Friction)
-			|| !FMath::IsFinite(StopSpeed) || !FMath::IsFinite(MaximumSpeed)) Ar.SetError();
-	}
+	// Preserve the record layout for current logical flight producers.
+	bool Reserved = false;
+	Ar.SerializeBits(&Reserved, 1);
+	if (Reserved) Ar.SetError();
 	return !Ar.IsError();
 }
 

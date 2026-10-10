@@ -531,12 +531,6 @@
           "exclusive_ms": 0.4605000000000002
         },
         {
-          "timer": "GuLiShipProjectile_WingmanSnapshot",
-          "calls": 125,
-          "inclusive_ms": 0.4440000000000007,
-          "exclusive_ms": 0.4440000000000007
-        },
-        {
           "timer": "WaitForTasks",
           "calls": 11,
           "inclusive_ms": 0.43720000000000003,
@@ -3026,12 +3020,6 @@
           "exclusive_ms": 0.6330000000000003
         },
         {
-          "timer": "GuLiShipProjectile_WingmanSnapshot",
-          "calls": 125,
-          "inclusive_ms": 0.5986,
-          "exclusive_ms": 0.5986
-        },
-        {
           "timer": "GuLiCommanderPresentation_RebuildLocalInstances",
           "calls": 2,
           "inclusive_ms": 2.418,
@@ -5365,12 +5353,6 @@
       "accounting_ok": true,
       "top_gt": [
         {
-          "timer": "BP_ShipProjectile_C",
-          "calls": 1000,
-          "inclusive_ms": 31.900899999999986,
-          "exclusive_ms": 13.115099999999995
-        },
-        {
           "timer": "UWorld_Tick",
           "calls": 4,
           "inclusive_ms": 111.2394,
@@ -5501,12 +5483,6 @@
           "calls": 4,
           "inclusive_ms": 1.561,
           "exclusive_ms": 1.2056000000000018
-        },
-        {
-          "timer": "GuLiShipProjectile_WingmanSnapshot",
-          "calls": 250,
-          "inclusive_ms": 1.044499999999999,
-          "exclusive_ms": 1.044499999999999
         },
         {
           "timer": "UActorComponent::CreatePhysicsState",
@@ -5732,12 +5708,6 @@
           "name": "GameThread",
           "exclusive_ms": 143.45829999999933,
           "top_timers": [
-            {
-              "timer": "BP_ShipProjectile_C",
-              "calls": 1000,
-              "inclusive_ms": 31.900899999999986,
-              "exclusive_ms": 13.115099999999995
-            },
             {
               "timer": "UWorld_Tick",
               "calls": 4,

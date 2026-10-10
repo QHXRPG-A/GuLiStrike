@@ -17,7 +17,6 @@ try:
         ("/Game/Variant_TwinStick/Blueprints/BP_TwinStickCharacter", "/Game/GuLiStrike/Blueprints", "BP_TwinStickCharacter"),
         ("/Game/Variant_TwinStick/Blueprints/BP_TwinStickPlayerController", "/Game/GuLiStrike/Blueprints", "BP_TwinStickPlayerController"),
         ("/Game/Variant_TwinStick/Blueprints/BP_TwinStickGameMode", "/Game/GuLiStrike/Blueprints", "BP_TwinStickGameMode"),
-        ("/Game/Variant_TwinStick/Blueprints/BP_TwinStickProjectile", "/Game/GuLiStrike/Blueprints", "BP_TwinStickProjectile"),
         ("/Game/Variant_TwinStick/Blueprints/BP_TwinStickAoEAttack", "/Game/GuLiStrike/Blueprints", "BP_TwinStickAoEAttack"),
         ("/Game/Variant_TwinStick/Blueprints/BP_TwinStickPickup", "/Game/GuLiStrike/Blueprints", "BP_TwinStickPickup"),
         ("/Game/Variant_TwinStick/Blueprints/BP_AssetGuideline_StateTree", "/Game/GuLiStrike/Blueprints", "BP_AssetGuideline_StateTree"),

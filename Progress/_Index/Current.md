@@ -16,7 +16,6 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | combat, performance, presentation, ui | 2/11 (18%) | 先测量UI与避障的准备/计算/提交/等待边界，再实现单项可回退候选；源码构建与运行对照按届时用户授权安排。 | 2026-10-10 |
 | [实时势力范围与阵营覆盖](../RequirementDocument/20260916-实时势力范围与阵营覆盖.md) | building, commander, map, ui | — | 围绕现有据点与Territory梳理势力源、扩散规则、刷新方式及覆盖渲染，形成技术方案。 | 2026-09-16 |
 | [首版 Demo 3v3、Ship 战略机动与高频选牌](../RequirementDocument/20260909-Demo3v3与Ship战略机动及高频选牌.md) | combat, commander, economy, ship, ui | — | 细化战略机动的调用与支付方式、出入口和僚机随行规则，以及三线选牌频率、单次强化幅度和 Ship 卡牌内容规划。 | 2026-09-09 |
 | [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | building, combat, commander, economy, ship | — | 细化维护及断供恢复、战略机动支付与采集加工参数，以及三线经验曲线、Ship 高频选牌和强力牌费用。 | 2026-09-09 |
@@ -25,10 +24,10 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | assets, network, ship, ui | 25/26 (96%) | 用户手动加 7 个 socket（教程见下，坐标已定稿） | 2026-10-10 |
 | [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | building, combat, network, vfx | 6/6 (100%) | 跟踪既有导弹夹具和挂点断言失配；地面弹丸、配色与5Hz专项留待后续安排。 | 2026-09-21 |
 | [游戏内 GM 分页浮层面板 — 技术方案](../DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md) | combat, commander, network, ui | 5/6 (83%) | 重启源码版 Editor，完成三分辨率、Commander/Ground/Air、Standalone/Listen/客户端的人工 PIE 验收。 | 2026-09-10 |
 | [地图战略点标注与数据导出工具 — 技术方案](../DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md) | assets, building, commander, data-pipeline, map-authoring | 15/22 (68%) | M2 完整验收（实现完成，交互矩阵待验收） | 2026-09-07 |
-| [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | assets, network, ship, ui | 28/29 (97%) | 用户手动加 7 个 socket（教程见下，坐标已定稿） | 2026-09-05 |
 
 ## 阻塞中
 
@@ -38,6 +37,8 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | commander, navigation, resources | 4/4 (100%) | 本轮容量调整已编译；重新开启独立服务端PIE，核对自动增援后的Crowd容量及工程车避让。 | 2026-10-11 |
+| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | combat, performance, presentation, ui | 10/11 (91%) | 玩家按原地图网络诊断入口验收保留功能；本轮四候选停止推进，不自动继续P95实验。初始化StateTree异常与压力网络积压另列待确认。 | 2026-10-10 |
 | [客户端表现管线技能与枪口批量化 — 技术方案](../DevelopmentDocumentation/20261010-客户端表现管线技能与枪口批量化.md) | combat, performance, presentation, vfx | 8/9 (89%) | 玩家打开LVL_CommanderMassPrototype验收枪口外观与实战行为；压力枪口收益需上游可靠事件积压解除后复测，不在本轮改动网络。 | 2026-10-10 |
 | [命中特效事件批量承载与生命周期优化 — 技术方案](../DevelopmentDocumentation/20261009-命中特效事件批量承载与生命周期优化.md) | combat, performance, presentation, vfx | 11/12 (92%) | 玩家直接打开LVL_CommanderMassPrototype的PIE验收视觉及玩法效果；FPS对照暂缓。 | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | combat, data-pipeline, network, performance, presentation, vfx, wingman | 16/19 (84%) | 玩家直接打开LVL_CommanderMassPrototype的PIE验收视觉及玩法效果；FPS对照暂缓。 | 2026-10-10 |
@@ -45,7 +46,7 @@
 | [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | commander, performance, ui | 8/11 (73%) | 用户自行打开编辑器，在LVL_CommanderMassPrototype的NetworkHUD_Entry按原流程验证指标。 | 2026-10-10 |
 | [PIE游戏线程耗时与避障候选查询优化 — 技术方案](../DevelopmentDocumentation/20261009-PIE游戏线程耗时与避障候选查询优化.md) | combat, commander, navigation, performance, ui | 8/9 (89%) | 保留避障交叉/停止/改令/环境边缘的玩家反馈；查询已达预算，追加性能优先按截帧报告处理命中特效和Ship生命周期。 | 2026-10-09 |
 | [场景UI来源注册与绘制缓存优化 — 技术方案](../DevelopmentDocumentation/20261009-场景UI来源注册与绘制缓存优化.md) | building, commander, performance, ship, ui | 10/11 (91%) | 保留四叶缓存后裁剪/建造预览/HUD期限/Ship面板的玩家反馈；区分场景UI与全局Slate成本，性能按截帧热点继续推进。 | 2026-10-09 |
-| [非Mass飞行弹丸六项性能优化 — 分析与开发方案](../DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md) | combat, network, performance, presentation, vfx | 13/14 (93%) | 按最慢帧验证Ship服务器Actor复用及完整复位，保持物理移动/判定路径；复用可靠飞行批次解码/应用容量，随后做同负载收益对照。 | 2026-10-09 |
+| [非Mass飞行弹丸六项性能优化 — 分析与开发方案](../DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md) | combat, network, performance, presentation, vfx | 12/13 (92%) | 核对剩余飞行物的事件吞吐、客户端表现及新代码加载边界。 | 2026-10-09 |
 | [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | building, combat, commander, performance, resources, vfx | 11/12 (92%) | 按截帧证据给命中特效补真正新建/复用/完成计数，比较空闲池与稳定槽位批次；新组合继续正式使用，保留细节玩家反馈。 | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | assets, commander, data, ground_mech, rendering, ship, ui | — | 用户在Mass地图或新版UE画廊确认扫荡者最终观感；保留其他已核对证据和未验证的长期稳定、飞船运行边界。 | 2026-10-09 |
 | [十四模型仅配色 Blender 成品 B_v1 — 实际成品审核](../DevelopmentDocumentation/20261008-十四模型仅配色Blender成品B_v1.md) | art, assets, rendering | 5/7 (71%) | 用户在当前UE画廊确认最终观感；已放行的本B版本不重复请求导入许可。 | 2026-10-09 |
@@ -60,7 +61,6 @@
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | building, commander, data, economy, map | 18/20 (90%) | 在已加载屋顶修复的原型地图验证据点出口、赠品清场与矿厂正常入厂；原包围和边界未验证项继续保留。 | 2026-09-24 |
 | [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | combat, commander, network, ship, ui, vfx, wingman | 8/8 (100%) | 在已加载新代码的 /Game/Maps/LVL_CommanderMassPrototype 的 TeleportGround 观察点验收落位与回源。 | 2026-09-24 |
 | [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | combat, input, network, vfx | 8/9 (89%) | 用户审核FireReview的枪口、弹道及缓冲后坐；批准后将已验证配置接到正式BP_GroundMech_Light。 | 2026-09-20 |
-| [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | commander, navigation, resources | 4/4 (100%) | 后续确认旧BuildingWorld测试更新范围，补密集狭路及大规模性能观察。 | 2026-09-15 |
 | [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | combat, commander, data, wingman | 8/8 (100%) | 本次归并已交付；前次4项现有回归适配仍等待用户范围确认。 | 2026-09-14 |
 | [地图资源密度涂绘与导出 — 技术方案与实施记录](../DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md) | data-pipeline, map-authoring, outpost, resource | 8/9 (89%) | 保存并重启旧 Editor，在隔离验证地图执行人工验收矩阵并记录证据。 | 2026-09-10 |
 | [指挥官双机甲骨骼与武器挂点 — 技术方案](../DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md) | assets, combat, commander, network, vfx | 7/12 (58%) | 完成主体、武器、四足/六足 FK 和 IK 控制，保留辅助结构 | 2026-09-07 |
@@ -77,7 +77,7 @@
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。 | 2026-10-09 |
 | [SSF建筑美术统一与三档LOD](../DevelopmentDocumentation/20261005-SSF建筑美术统一与三档LOD.md) | art, assets, rendering | 11/11 (100%) | 本轮资产制作与交付已验收；后续游戏接入或新版本改造另按用户任务执行。 | 2026-10-07 |
 | [指挥官三档LOD纠正与资源迁移](../DevelopmentDocumentation/20261005-指挥官三档LOD纠正与资源迁移.md) | art, assets, commander, rendering | 12/12 (100%) | — | 2026-10-05 |
-| [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | combat, commander, network, performance, ship, wingman | 7/8 (88%) | 补齐同负载旧版差值、原生60/120Hz和未覆盖的视觉与重连矩阵。 | 2026-10-05 |
+| [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | combat, commander, network, performance, ship, wingman | 6/7 (86%) | 补齐同负载旧版差值、原生60/120Hz和未覆盖的视觉与重连矩阵。 | 2026-10-05 |
 | [指挥官三档镜头与总览LOD — 实施与交付](../DevelopmentDocumentation/20260930-指挥官三档镜头与总览LOD.md) | commander, performance, ui | 8/9 (89%) | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 | 2026-10-05 |
 | [指挥官统一三级LOD — 实施与接入约定](../DevelopmentDocumentation/20260929-指挥官统一三级LOD.md) | commander, performance | 8/10 (80%) | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 原100台完整人数、多World和性能验证仍独立待定。 | 2026-10-05 |
 | [肉鸽卡牌单行文案与高亮 — 实施记录](../DevelopmentDocumentation/20260929-肉鸽卡牌单行文案与高亮.md) | commander, ui | 6/7 (86%) | 在LVL_CommanderMassPrototype重新进入游戏按F4，复验单位、属性、黄色粗体和不同窗口比例的单行显示。 | 2026-10-05 |

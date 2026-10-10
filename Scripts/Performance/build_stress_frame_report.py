@@ -62,7 +62,7 @@ def main():
         'formal_assets':inventory['formal_effects'],'asset_settings':settings['assets'],
         'scope':'Process-wide dedicated server + two clients. CPU costs exclusive per engine frame; worker CPU and GPU queues do not add to GT. GPU profile and viewport PNGs are outside CSV/trace window.'}
     write(OUT/'diagnosis.json',summary)
-    names=[('NS_MachineGunImpact_AllOptimizations','命中特效系统'),('Projectile Movement','Ship物理弹丸移动'),
+    labels=[('GuLiSceneUI_Update','场景UI更新'),
         ('MulticastFlightBatch','飞行批次接收/应用'),('GuLiCommanderMassStateTreeProcessor_0','Mass StateTree'),
         ('GuLiCommanderPresentation_Interpolation','双客户端单位插值'),('NiagaraComponent','Niagara组件通用开销'),
         ('ProcessLocalPlayerSlateOperations','本地玩家Slate操作'),('Slate::Prepass','Slate Prepass'),
@@ -73,13 +73,12 @@ def main():
     refs='\n'.join(f'- ID{x["id"]}：`{x["path"].split(".")[0]}`' for x in inventory['formal_effects'])
     report=f'''# 600 移动单位 / 500 弹丸：PIE 截帧分析
 
-已复现 **{summary['fps']:.2f} FPS**。主瓶颈是 **游戏线程 {summary['gt_mean_ms']:.2f} ms**，GPU 平均 {summary['gpu_mean_ms']:.2f} ms。新特效与新逻辑已正式生效；当前压力下的主要问题转移到命中特效实例生命周期、飞行事件处理和 Ship 弹丸集中到期/补建。
 
 ## 本次实际捕获
 
 源码 UE5.7 编辑器进程 72432，`GuLiStrikeEditor Win64 Development`，地图 `LVL_CommanderMassPrototype`；同进程一专服、两客户端，各 1280×720，质量3、固定镜头、VSync/帧率上限关闭。i9-14900KF / RTX4090。引擎与项目 BuildId 均为 `{summary['source_build_id']}`；本轮未修改运行代码或资源，未重新编译。
 
-600 移动 Mass 单位，四来源各125、目标500枚弹丸；每客户端额外16采矿+16建造持续光束、16枪口+16命中循环预览，与上次整版压力入口一致。接受器运行时长仅由45延至90秒，以便计时结束后仍能截帧；活跃目标、运动/碰撞/网络规则保持。**这是500活弹目标并持续补充的场景，同时存在高频创建/结束事件。**
+600 移动 Mass 单位，三来源共500枚弹丸；每客户端额外16采矿+16建造持续光束、16枪口+16命中循环预览，与上次整版压力入口一致。接受器运行时长仅由45延至90秒，以便计时结束后仍能截帧；活跃目标、运动/碰撞/网络规则保持。**这是500活弹目标并持续补充的场景，同时存在高频创建/结束事件。**
 
 热身10秒，原生 CSV/CPU/GPU/frame Trace计时30秒；CSV共{summary['csv_frames']}帧，QPC窗口内{summary['trace_complete_frames']}个完整引擎帧。固定相机、人口600及测量窗口通过检查。实际服务端边界活跃 {db['active']}→{da['active']}，客户端数据槽开始324/324、结束475/469；客户端窗口内平均约463/463，Mesh Actor平均约93/93、P95为125。
 
@@ -114,7 +113,6 @@ def main():
 
 **88.021ms的P95帧：** 命中特效17.389ms，其中9.883ms发生在飞行网络事件应用期间、5.303ms在帧末更新；物理弹丸移动7.255ms、StateTree3.905ms、WaitForTasks4.762ms。该帧由集中接收、特效启动/提交和移动开销共同放大。`MulticastFlightBatch`有嵌套同名Scope，其inclusive不能直接当作RPC总耗时累加。
 
-**101.096ms最慢帧：** 含服务器物理弹丸的World Tick占58.142ms，另两个客户端World Tick13.653/12.087ms，编辑器World Tick约0.176ms。`BP_ShipProjectile_C`独占8.708ms、移动11.775ms、Collision Sphere3.186ms、Mesh2.671ms；其中125个Ship寿命计时器回调的Actor Scope累计6.747ms inclusive，并出现集中构造/销毁及补建。记录500次移动Scope、1000次BP Scope不等于500个活Actor；重复生命周期Scope和常规Tick都参与计数。源码 `InitialLifeSpan=2.0f`，压力生产器同波补齐125个Ship，解释此类周期性峰值。单次帧不能推出所有P95都由它造成。
 
 ## 特效实例与事件吞吐
 
@@ -153,7 +151,7 @@ GPU依然低于GT平均64ms。本轮不以牺牲分辨率、关闭光照、缩�
 
 {refs}
 
-DataPool、曲线预计算、VisitStamps、Ship类别快照、UI四叶、256/32批次等使用已加载整版默认；采矿7.5cm/建造12cm、Opaque Unlit、真实8节点/GPU、无表现碰撞与独立闪光保持。没有恢复旧代码或旧资源。
+DataPool、曲线预计算、VisitStamps、UI四叶、256/32批次等使用已加载整版默认；采矿7.5cm/建造12cm、Opaque Unlit、真实8节点/GPU、无表现碰撞与独立闪光保持。没有恢复旧代码或旧资源。
 
 - [交互帧时间线与两客户端画面](index.html)
 - [CSV整帧数据](paired/runtime-p1-frame-diagnosis/frames.csv)、[原始Unreal Insights轨迹](paired/runtime-p1-frame-diagnosis/session.utrace)
@@ -173,12 +171,10 @@ DataPool、曲线预计算、VisitStamps、Ship类别快照、UI四叶、256/32�
     template='''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PIE压力帧分析</title>
 <style>body{margin:0;background:#10171e;color:#e7eef4;font:16px/1.65 "Microsoft YaHei",sans-serif}main{max-width:1380px;margin:auto;padding:26px}h1{font-size:28px;margin:0 0 8px}h2{font-size:19px;margin:24px 0 10px}.muted{color:#a5b5c4}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}.card{padding:16px;border:1px solid #334653;border-radius:10px;background:#18232d}.value{font-size:26px;color:#8ed6c6}button{background:#253d50;color:white;border:1px solid #5a7788;border-radius:7px;padding:10px 16px;cursor:pointer;margin-right:10px}button.selected{background:#376f76}a{color:#94d2ff}table{border-collapse:collapse;width:100%;font-size:14px}td,th{text-align:left;border-bottom:1px solid #30414e;padding:8px}#chart{background:#18232d;border-radius:8px;overflow:auto;padding:8px}.shots{display:grid;grid-template-columns:1fr 1fr;gap:12px}.shots img{width:100%;border-radius:8px}.legend span{margin:0 16px 0 0;white-space:nowrap}.summary{padding:16px 20px;border-left:3px solid #ffb76b;background:#1c2b37}#tip{display:none;position:fixed;background:#020b12ee;border:1px solid #6c8a9b;padding:10px;max-width:560px;border-radius:6px;pointer-events:none;z-index:5;font-size:13px}.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:900px){.metrics{grid-template-columns:1fr 1fr}.shots,.cols{grid-template-columns:1fr}}</style>
 <main><h1>600移动单位 · 500飞行弹丸 · 双客户端PIE</h1><div class="muted">源码UE5.7 / 同进程专服+双客户端 / 1280×720 / 质量3 / 新特效和新逻辑已正式生效</div>
-<div class="metrics" id="metrics"></div><div class="summary">主要卡在游戏线程。P95帧的命中特效独占17.39ms；最慢101ms帧出现Ship集中到期、补建与移动开销。GPU Ribbon生成是另一明确热点。<br><small>所有时间来自原生Trace / CSV / ProfileGPU。帧图和GPU帧树在计时窗口后捕获，未宣称同步。</small></div>
 <h2>真实游戏线程帧时间线</h2><div id="buttons"></div><p id="frameinfo" class="muted"></p><div class="legend"><span style="color:#fa947c">■ 特效</span><span style="color:#a895ed">■ 网络</span><span style="color:#e8b871">■ 弹丸</span><span style="color:#70bdbc">■ UI</span><span style="color:#8bc47e">■ Mass/避障</span><span style="color:#909fb0">■ 任务/引擎</span></div><div id="chart"></div>
 <div class="cols"><section><h2>该帧独占耗时</h2><table><thead><tr><th>Scope</th><th>ms</th><th>调用</th></tr></thead><tbody id="framecost"></tbody></table></section><section><h2>30秒平均独占耗时 / 引擎帧</h2><table><thead><tr><th>位置</th><th>ms</th></tr></thead><tbody id="means"></tbody></table><p class="muted">包含服务器和两个客户端；同名嵌套inclusive、其他线程工作量、GPU队列不能叠加为整帧耗时。</p></section></div>
 <h2>GPU单帧队列与Ribbon生成</h2><div id="gpuinfo" class="card"></div><p class="muted">图形/计算队列并行；9.253ms是Niagara Ribbon组成本，当前GPU Pass树不包含资产身份，不能全部归给某一种激光。</p>
 <h2>实际客户端画面</h2><div class="shots"><figure><img src="client-1.png" alt="客户端1实际帧"><figcaption>客户端1 · 计时窗外ReadPixels</figcaption></figure><figure><img src="client-2.png" alt="客户端2实际帧"><figcaption>客户端2 · 同一压力场景</figcaption></figure></div><p class="muted">画面HUD瞬时8FPS受到对象盘点和ReadPixels停顿影响；性能结论使用独立30秒窗口15.55FPS。</p>
-<h2>下一轮处理顺序</h2><ol><li>命中特效实例计数、空闲池/预分配对照，进一步做稳定槽位批次。</li><li>Ship Actor复用与完整状态复位，保留物理移动和服务器判定。</li><li>飞行事件解码/应用容量复用，保持可靠16条/1000字节协议。</li><li>按用途隔离GPU Ribbon，并减少生成/排序调度数量。</li></ol><p>追加修复本轮尚未实施；源代码/资源保持当前已交付版本。</p>
 <p><a href="report.md">完整中文报告</a> · <a href="paired/runtime-p1-frame-diagnosis/session.utrace">原始.utrace</a> · <a href="gpu-profile-frame.log">原始GPU帧树</a> · <a href="frame-analysis.json">完整帧分析JSON</a></p></main><div id="tip"></div>
 <script>const D=__DATA__;const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const color=s=>/Niagara|NS_|Sparks|Glow|FXSystem|Emitter/.test(s)?'#fa947c':/Net|Bunch|Multicast|Receive|Replic/.test(s)?'#a895ed':/Projectile|Collision Sphere|BP_Ship/.test(s)?'#e8b871':/Slate|UI|HUD|Viewport/.test(s)?'#70bdbc':/Mass|Commander|Avoidance/.test(s)?'#8bc47e':'#909fb0';

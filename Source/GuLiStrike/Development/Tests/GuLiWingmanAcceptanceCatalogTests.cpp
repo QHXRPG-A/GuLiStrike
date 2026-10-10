@@ -49,7 +49,7 @@ bool FGuLiWingmanAcceptanceCatalogShapeTest::RunTest(const FString& Parameters)
 	(void)Parameters;
 	const TArray<FGuLiWingmanAcceptanceRoleDefinition>& Roles =
 		FGuLiWingmanAcceptanceCatalogV2::GetRoles();
-	TestEqual(TEXT("Catalog V2 defines exactly 22 formal roles"), Roles.Num(), 22);
+	TestEqual(TEXT("Catalog V2 defines exactly 21 formal roles"), Roles.Num(), 21);
 	TestEqual(TEXT("Portable SHA-256 matches the public abc vector"),
 		FGuLiWingmanAcceptanceCatalogV2::ComputeSha256Hex(TEXT("abc")),
 		FString(TEXT("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad")));

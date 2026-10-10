@@ -35,7 +35,7 @@ def prepare_tick(delta):
                    if s.get_outer().get_path_name() == server.get_path_name())
     started = ready and fixture.start_load(500, 30)
     result = {'started': bool(started), 'wingman': rows, 'requested_flights': 500,
-              'duration_game_seconds': 30, 'reason': '' if started else 'No live four-domain source; start a fresh mixed PIE'}
+              'duration_game_seconds': 30, 'reason': '' if started else 'No live three-domain source; start a fresh mixed PIE'}
     Path('D:/UE5.7/test1/TestResults/FlightEvents20261004/prepared_sources.json').write_text(
         json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
     unreal.log('Flight acceptance prepared: ' + json.dumps(result, ensure_ascii=False))

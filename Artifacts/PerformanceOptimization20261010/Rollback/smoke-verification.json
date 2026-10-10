@@ -1,0 +1,112 @@
+{
+  "checks": [
+    {
+      "scene": "dense200",
+      "native_worlds": 3,
+      "network_samples_per_world": [
+        6,
+        6,
+        6
+      ],
+      "capture_errors": [],
+      "setup_error_count": 98,
+      "setup_error_examples": [
+        "StateTree root selection failed"
+      ],
+      "moving_units_displaced": 149,
+      "feedback": [
+        {
+          "received_shots": 1764,
+          "muzzle_accepted": 1764,
+          "muzzle_born": 1754,
+          "muzzle_expired": 0
+        },
+        {
+          "received_shots": 1764,
+          "muzzle_accepted": 1764,
+          "muzzle_born": 1754,
+          "muzzle_expired": 0
+        }
+      ],
+      "frame_ms": 27.69950934065934,
+      "game_thread_ms": 27.63211043956044,
+      "gpu_ms": 13.453739560439558,
+      "scope": "5-second post-rollback integration smoke; not paired performance evidence"
+    },
+    {
+      "scene": "stress",
+      "native_worlds": 3,
+      "network_samples_per_world": [
+        7,
+        7,
+        7
+      ],
+      "capture_errors": [],
+      "setup_error_count": 51,
+      "setup_error_examples": [
+        "StateTree root selection failed",
+        "[2026.10.10-14.46.50:581][184]LogNet: Error: Flight load missing live source domain 3; populate Commander, Ground, Ship and Wingman first"
+      ],
+      "moving_units_displaced": 477,
+      "feedback": [
+        {
+          "received_shots": 1087,
+          "muzzle_accepted": 0,
+          "muzzle_born": 0,
+          "muzzle_expired": 0
+        },
+        {
+          "received_shots": 594,
+          "muzzle_accepted": 0,
+          "muzzle_born": 0,
+          "muzzle_expired": 0
+        }
+      ],
+      "frame_ms": 70.8351,
+      "game_thread_ms": 70.84888194444444,
+      "gpu_ms": 26.207623611111114,
+      "scope": "5-second post-rollback integration smoke; not paired performance evidence"
+    }
+  ],
+  "capture_checks_passed": true,
+  "overall_verification": "partial",
+  "setup_errors_unresolved": true,
+  "setup_error_note": "Dense200 initialization logged 98 Mass StateTree root selection errors; stress logged 50 plus one live flight-source readiness retry. Prior build4 stress baseline result.json also contains 51-149 setup errors, all capture errors zero. This does not prove the new dense200 startup errors are harmless or caused by rollback; no full behavior pass claimed.",
+  "controls_restored": true,
+  "preserved_controls": {
+    "gs.Muzzles.BatchMode": 2.0,
+    "guli.stronghold.TeamUnitCap": 300.0,
+    "guli.stronghold.CaptureSeconds": 20.0,
+    "r.GPUCsvStatsEnabled": 0.0,
+    "t.IdleWhenNotForeground": 0.0,
+    "Slate.bAllowThrottling": 1.0,
+    "r.VSync": 0.0,
+    "t.MaxFPS": 0.0,
+    "gs.Flights.DataPool": 1.0,
+    "gs.Effects.ThreeTierLOD": 1.0,
+    "gs.Effects.BoundsCull": 1.0,
+    "gs.Effects.OffscreenLifecycle": 1.0,
+    "gs.Units.Offscreen5Hz": 1.0,
+    "gs.Flights.OffscreenPresentation": 1.0,
+    "gs.Impacts.BatchMode": 2.0,
+    "gs.WingmanFlight.Presentation": 1.0,
+    "gs.WingmanFlight.Warnings": 1.0,
+    "gs.Avoidance.QueryOptimizations": 1.0,
+    "gs.SceneUI.ProjectionCache": 1.0,
+    "gs.Avoidance.SparseCells": 1.0,
+    "gs.Avoidance.VerifyPrefix": 0.0,
+    "guli.Commander.MoveLatencyDiagnostics": 0.0,
+    "sg.ViewDistanceQuality": 3.0,
+    "sg.AntiAliasingQuality": 3.0,
+    "sg.ShadowQuality": 3.0,
+    "sg.GlobalIlluminationQuality": 3.0,
+    "sg.ReflectionQuality": 3.0,
+    "sg.PostProcessQuality": 3.0,
+    "sg.TextureQuality": 3.0,
+    "sg.EffectsQuality": 3.0,
+    "sg.FoliageQuality": 3.0,
+    "sg.ShadingQuality": 3.0,
+    "r.ScreenPercentage": 0.0,
+    "r.DynamicRes.OperationMode": 0.0
+  }
+}

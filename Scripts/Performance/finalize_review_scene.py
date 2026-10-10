@@ -51,8 +51,8 @@ guides=[
      'Look away >0.15s / look back: latest beams recover, scan phase retained.\n'
      'Use existing build menu; dedicated server + two clients. Fund if needed.'),
     ('PerfReview_FlightGuide',unreal.Vector(0,65000,1600),
-     'FOUR-SOURCE FLIGHT LOAD (server): gs.Flights.Load 500 45\n'
-     'Requires Commander, Ground, Ship and deployed Wingman; 125 per source.\n'
+     'THREE-SOURCE FLIGHT LOAD (server): gs.Flights.Load 500 45\n'
+     'Requires Commander, Ground and deployed Wingman; 167/167/166 flights.\n'
      'gs.Flights.Stop stops replenishment; existing recipes finish normally.\n'
      'Use Scripts/Performance/run_four_stage_review.py for fixed paired captures.'),
 ]

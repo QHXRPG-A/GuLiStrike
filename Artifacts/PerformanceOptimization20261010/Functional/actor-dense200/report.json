@@ -1,0 +1,58 @@
+{
+  "scene": "dense200",
+  "checks": {
+    "orders_accepted": true,
+    "stale_request_rejected": true,
+    "cancel_accepted": true,
+    "cancel_stopped": true,
+    "both_deaths_committed": true,
+    "dead_actors_removed": true,
+    "no_runtime_errors": true
+  },
+  "passed": true,
+  "orders": [
+    {
+      "success": true,
+      "accepted": true,
+      "requested_id": 990001,
+      "state": "<GuLiMiningTaskState.PLAYER_MOVING: 5>",
+      "position": [
+        -1000.9882219177258,
+        70014.69326054977,
+        1032.2880626028928
+      ]
+    },
+    {
+      "success": true,
+      "accepted": true,
+      "requested_id": 990002,
+      "state": "<GuLiMiningTaskState.PLAYER_MOVING: 5>",
+      "position": [
+        -1471.8103758745317,
+        70005.33438345173,
+        1032.2880626028928
+      ]
+    }
+  ],
+  "cancel": {
+    "success": true,
+    "accepted": true,
+    "state": "<GuLiMiningTaskState.IDLE: 0>",
+    "speed": 0.0
+  },
+  "deaths": {
+    "success": true,
+    "rows": [
+      {
+        "name": "GuLiMiningVehiclePawn_0",
+        "alive": false
+      },
+      {
+        "name": "GuLiConstructionVehiclePawn_0",
+        "alive": false
+      }
+    ]
+  },
+  "errors": [],
+  "scope": "Authority API, live Actor StateTree execution and real combat ledger death; no navigation/business-fixture assertions bypassed."
+}

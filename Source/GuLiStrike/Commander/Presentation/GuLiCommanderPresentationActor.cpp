@@ -1759,6 +1759,7 @@ bool AGuLiCommanderPresentationActor::EvaluateAuthoritativeTransform(
 	const double RenderServerTimeSeconds,
 	FTransform& OutTransform) const
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_PurePoseSample);
 	if (Soldier.Samples.IsEmpty())
 	{
 		if (Soldier.bHasAuthoritativeTransform)

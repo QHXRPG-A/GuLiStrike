@@ -1,4 +1,5 @@
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Gameplay/Data/GuLiGameText.h"
 #include "Commander/Orders/GuLiUnitTaskSettings.h"
 #include "Commander/Behavior/GuLiCommanderBehaviorSchema.h"
@@ -719,6 +720,7 @@ bool UGuLiUnitTaskSubsystem::RunWorkAction(FGuLiUnitTaskState& State, EGuLiComma
 
 void UGuLiUnitTaskSubsystem::CommitBehaviorRequests()
 {
+	FGuLiPerformanceScope Timing(GetWorld(), TEXT("StateTree.CommitMs"));
 	check(IsInGameThread());
 	const double Now = GetWorld()->GetTimeSeconds();
 	TArray<FBehaviorRequest> Requests = MoveTemp(BehaviorRequests);
@@ -767,6 +769,7 @@ void UGuLiUnitTaskSubsystem::CommitBehaviorRequests()
 void UGuLiUnitTaskSubsystem::Tick(float DeltaTime)
 {
 	Accumulator += DeltaTime; if (Accumulator < .1) return;
+	FGuLiPerformanceScope Timing(GetWorld(), TEXT("StateTree.ScheduleMs"));
 	const float BehaviorDelta = float(Accumulator); Accumulator = 0;
 	TickMoveBatches();
 	for (auto It = States.CreateIterator(); It; ++It)

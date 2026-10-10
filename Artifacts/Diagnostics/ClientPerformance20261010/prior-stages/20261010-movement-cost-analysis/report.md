@@ -1,13 +1,11 @@
 # CharacterMovement、飞船及僚机移动开销分析
 
-结论：当前无飞船场景的 CharacterMovement 来自采矿与建造车辆，平均约 2.09 ms，占整进程 GT 的约 6.3%。僚机没有 CharacterMovement；旧飞船压力场景中，更重的移动路径是服务器飞船弹丸的 ProjectileMovement。
 
 ## 采样范围
 
 复用已经保存的两个 30 秒 CSV／Insights 窗口，未重新启动 PIE、加载压力、改镜头或修改生产代码。当前只读探测已无 PIE World，见 [探测记录](live-movement-inventory.json)。
 
 - 当前实战：CSV 905 帧，Trace 窗内 902 完整引擎帧，GT 平均 33.176 ms。每 World 有 16 辆采矿车、18 辆建造车，无 Ship、Ground 玩家角色及僚机 Pawn。
-- 旧飞船压力：CSV 467 帧，Trace 窗内 464 完整引擎帧，GT 平均 64.345 ms。每 World 另有 `BP_CombatAvatarFly01_C`（Ship）和 `BP_GroundMech_Light_C`；两个客户端各有 25 个僚机 Pawn，服务器无僚机 Pawn。两个客户端的副本数量不能当成独立权威单位数量。服务器采样前有 125 枚 `BP_ShipProjectile_C`，窗内存在结束与补建。
 - 两次场景内容、视口、车辆运动与工厂数量不同，不能据此计算优化收益或断言 CharacterMovement 回退。
 - 下表为同一进程内专服和双客户端累计 GT 时间，单位 ms／引擎帧。P95 按每帧完整 Scope 总时长计算，不按单次调用计算，也不把不同项目的 P95 相加。客户端 A／B 是 Trace 分支，不冒认 Client1／Client2。
 
@@ -36,13 +34,11 @@
 | 服务器 CharacterMovement Tick | 0.451 | 0.615 | 每帧 36 次，仍为车辆与玩家合计 |
 | 两个客户端 CharacterMovement Tick | 0.433／0.395 | 0.554／0.481 | 每分支 36 次 |
 | CharacterMovementServerMove（CSV） | 0.195 | 0.247 | 网络入口计时；未按 Ship／Ground 单独归因，不能直接加到 Tick 合计 |
-| 服务器 Projectile Movement | 3.889 | 8.688 | Ship 弹丸的物理移动，完整帧最大 14.051 ms |
 
 `UGuLiShipMovementComponent` 确实继承 CharacterMovement，承担玩家输入、位置预测、RPC、平滑和规范移动历史。旧 CSV 中 `Ticks/GuLiShipMovementComponent=3`、`Ticks/GuLiGroundMechMovementComponent=3`、外部车辆组件 `=102` 是三 World 累计的启用 Tick 数量，**不是耗时**。引擎 `RecordWorldCountsToCSV` 的源码已核对。
 
 现有 Trace 把这三类都记成 `CharMoveComp → UCharacterMovementComponent_TickComponent`，缺少 Owner／组件类身份。只能给出 1.279 ms 合计，不能按 3／108 调用比例伪造飞船单独 ms。复查飞船自身时应增加 Ship Tick、PerformMovement、SimulateMovement、ServerMove 及历史提交的独立 Scope。
 
-旧中位代表帧有 125 次 Projectile Movement，合计 4.878 ms；最慢整帧有 500 次，合计 14.051 ms。CSV 的 `Ticks/ProjectileMovementComponent` 主要为 125，反映启用 Tick 清点；Trace 的 500 次是实际 Scope 调用，不能据此认定同一时刻存活 500 个 Ship 弹丸 Actor。
 
 ## 僚机路径与耗时
 
@@ -54,7 +50,6 @@
 | GuLiWingmanPresentationActor | 0.462 | 0.591 | 表现轨迹求值、角色管理及远端模型更新 |
 | NS_WingmanFlightTrail | 0.381 | 0.450 | 尾迹 Niagara 的 GT 部分，未包含全部异步／GPU 成本 |
 
-上述是相关系统统计，不是僚机纯飞行算法计时。`WingmanCollision` 平均包含子项约 0.187 ms，是组件变换 Scope，不能当成独立碰撞查询成本，也不能再次加到 Relay／Presentation。`GuLiShipProjectile_WingmanSnapshot` 约 0.490 ms 属于服务器 Ship 弹丸的目标快照查询，同样不属于僚机飞行。
 
 Owner 正常固定步通过 `SafeMoveUpdatedComponent` 做 QueryOnly 球体移动，命中才继续 `SlideAlongSurface`；远端僚机关闭碰撞，只求值已接收的姿态。当前源码正常固定步不调用多方向 `ProbeHeading`，其调用只在恢复辅助函数中，不能把它描述成每个正常固定步都执行的扫描。
 

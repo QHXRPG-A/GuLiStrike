@@ -24,10 +24,9 @@ private:
 	bool SpawnFlight(int32 Domain,int32 Ordinal);
 	bool SpawnWingmanGroundFlight(int32 Ordinal);
 	TArray<FGuLiCombatTargetSnapshot> Sources;
-	TArray<FGuid> Flights[4];
+	TArray<FGuid> Flights[3];
 	FGuLiTargetHandle EnemyTarget;
 	FVector Origin = FVector::ZeroVector;
-	UPROPERTY() TSubclassOf<class AGuLiStrikeProjectile> ShipClass;
 	UPROPERTY() TObjectPtr<class UGuLiProjectileEffectDefinition> CurveDefinition;
 	UPROPERTY() TObjectPtr<class UGuLiGroundWarningStyle> GroundWarningStyle;
 	FGuLiSpellFieldConfig GroundField;

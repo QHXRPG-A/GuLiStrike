@@ -48,7 +48,7 @@ struct GULISTRIKE_API FGuLiDamageRequest
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Damage")
 	FGuLiTargetHandle Source;
 
-	/** Optional for a Ship projectile; required by Wingman weapon validators before ledger submission. */
+	/** Required by Wingman weapon validators before ledger submission. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Damage")
 	FGuLiWingmanHandle Emitter;
 

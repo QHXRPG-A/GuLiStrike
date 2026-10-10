@@ -903,7 +903,7 @@ void UGuLiShipMovementComponent::PerformMovement(const float DeltaTime)
 	Super::PerformMovement(DeltaTime);
 	if (HasValidData())
 	{
-		// 原 Ship 在 CMC 位移之后的 Actor Tick 转向；现在放进同一次 SavedMove，仍只积分一次。
+		// 原转向在 CMC 位移之后执行；现在放进同一次 SavedMove，仍只积分一次。
 		IntegrateFlightRotation(DeltaTime, WorldThrustIntent);
 		RecordCanonicalMoveAfterAuthoritySimulation();
 	}

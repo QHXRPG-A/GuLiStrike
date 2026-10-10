@@ -141,9 +141,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category="Ship Part")
 	void ContributeStats(UPARAM(ref) FGuLiStrikeShipStats& OutStats);
 
-	/** 响应开火输入（C++ 默认不响应；武器子类重写为出弹）——行为属于组件，装上即拥有 */
-	UFUNCTION(BlueprintNativeEvent, Category="Ship Part")
-	void Fire(AActor* Instigator);
 
 protected:
 	virtual void OnRegister() override;

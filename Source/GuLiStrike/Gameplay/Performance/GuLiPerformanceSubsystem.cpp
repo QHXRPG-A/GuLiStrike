@@ -8,8 +8,20 @@ bool UGuLiPerformanceSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 	const auto* World = Cast<UWorld>(Outer);
 	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld();
 }
-void UGuLiPerformanceSubsystem::BeginCapture() { Counters.Reset(); FirstFrame = LastFrame = GFrameCounter; bCapturing = true; }
-void UGuLiPerformanceSubsystem::EndCapture() { LastFrame=GFrameCounter; bCapturing=false; }
+void UGuLiPerformanceSubsystem::BeginCapture()
+{
+	Counters.Reset(); ConnectionSamples.Reset(); NetworkSamples.Reset(); DroppedNetworkSamples = 0;
+	FirstFrame = LastFrame = GFrameCounter; bCapturing = true; CaptureNetworkSample();
+}
+void UGuLiPerformanceSubsystem::EndCapture()
+{
+	if (bCapturing) CaptureNetworkSample();
+	LastFrame=GFrameCounter; bCapturing=false;
+}
+void UGuLiPerformanceSubsystem::Tick(float)
+{ if (bCapturing && FPlatformTime::Seconds() - LastNetworkSample >= 1.0) CaptureNetworkSample(); }
+TStatId UGuLiPerformanceSubsystem::GetStatId() const
+{ RETURN_QUICK_DECLARE_CYCLE_STAT(GuLiPerformanceCapture, STATGROUP_Tickables); }
 void UGuLiPerformanceSubsystem::Record(const FName Name, const double Value, const UObject* LocalPlayer)
 {
 	if (!bCapturing || !FMath::IsFinite(Value)) return;
@@ -42,6 +54,13 @@ FString UGuLiPerformanceSubsystem::GetCaptureJson() const
 		Values->SetObjectField(Pair.Key, V);
 	}
 	Root->SetObjectField(TEXT("counters"), Values);
+	Root->SetArrayField(TEXT("network_samples"), NetworkSamples);
+	Root->SetNumberField(TEXT("network_samples_dropped"), DroppedNetworkSamples);
+	Root->SetStringField(TEXT("network_counter_basis"), TEXT("Cumulative application counters; UE connection deltas per wall second; decimal KB. Never add both ends of a connection."));
+	Root->SetStringField(TEXT("flight_record_byte_basis"), TEXT("Record body + 2-byte length, excluding 1-byte batch header. Produced/enqueued record bytes are measured only while capturing, after muzzle attachment; RPC bytes count submission, not delivery."));
+#if PLATFORM_WINDOWS
+	Root->SetNumberField(TEXT("network_wall_seconds_qpc_offset"), 16777216.0);
+#endif
 	FString Json; const auto Writer = TJsonWriterFactory<>::Create(&Json); FJsonSerializer::Serialize(Root, Writer); return Json;
 }
 FGuLiPerformanceScope::FGuLiPerformanceScope(UWorld* World, FName InName, const UObject* Player) : Name(InName), LocalPlayer(Player)

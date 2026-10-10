@@ -66,6 +66,7 @@ public:
 	FString GetProtocolSnapshot() const;
 #endif
 	uint64 Accepted=0,Born=0,Duplicates=0,Expired=0,Culled=0,OffscreenRecycled=0,Fallbacks=0,Published=0;
+	uint64 PoseUnresolved=0,TooOld=0,AdmissionLate=0;
 	uint64 PoseQueries=0,LifeUploads=0,PoseUploads=0,UnknownBounds=0;
 private:
 	bool Admit(FGuLiMuzzleSlot& Slot);

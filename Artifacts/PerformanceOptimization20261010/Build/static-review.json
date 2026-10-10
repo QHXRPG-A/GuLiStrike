@@ -1,0 +1,23 @@
+{
+  "reviewed_build": "Build/verification-build4.json",
+  "scope": "Static ownership and protocol review; runtime results recorded separately",
+  "checks": {
+    "no_new_rpc_or_reliability_changes": true,
+    "flight_ready_check_once_and_original_8_16_1000_limits": true,
+    "group_remove_paths_centralized_and_compaction_rebuilds_stable_id_map": true,
+    "state_tree_read_scope_start_or_tick_and_commit_outside_scope": true,
+    "both_actor_and_mass_paths_covered": true,
+    "workers_use_frozen_numeric_input_and_private_output": true,
+    "worker_metrics_join_then_record_on_caller": true,
+    "ui_original_triangle_order_and_60000_vertex_boundaries": true,
+    "avoidance_original_phase_force_and_sequential_fragment_submission": true,
+    "no_cross_frame_tasks": true
+  },
+  "notes": [
+    "GroupIndex=0 reverts lookup strategy; index maintenance and duplicate-membership guard remain shared in both comparison arms.",
+    "CPU-time phase counters are sums of measured worker elapsed intervals, not OS CPU cycle accounting. Trace all-thread and GT exports are kept separate.",
+    "DispatchWaitMs includes scheduling/join overhead and time not spent running this batch on the caller; it is not a pure blocked-wait measurement.",
+    "Production record-byte accounting runs only during active capture and is separately timed. Bootstrap bytes occurring before capture are not reconstructed.",
+    "Soldier IDs allocate monotonically within authority World; World recreation resets IDs and owns new group/read caches. Integer-wrap forced reuse is not simulated by these fixtures."
+  ]
+}

@@ -674,7 +674,12 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyShots(const TArray<FGuLiCombat
 		if (Cue.MatchEpoch != Epoch || !Cue.ShotId.IsValid() || Cue.Start.ContainsNaN() || Cue.End.ContainsNaN()
 			|| !FMath::IsFinite(Cue.ServerTime) || Now - Cue.ServerTime > 0.35f || Cue.ServerTime - Now > 0.5f
 			|| SeenShots.Contains(Cue.ShotId))
-		{ ++Counters.DroppedShots; continue; }
+		{
+			++Counters.DroppedShots;
+			Counters.ShotsTooOld += FMath::IsFinite(Cue.ServerTime) && Now - Cue.ServerTime > 0.35f ? 1 : 0;
+			Counters.ShotsFromFuture += FMath::IsFinite(Cue.ServerTime) && Cue.ServerTime - Now > 0.5f ? 1 : 0;
+			continue;
+		}
 		SeenShots.Add(Cue.ShotId); ShotOrder.Add(Cue.ShotId);
 		if (const auto* Provider = MuzzleProviders.Find(Cue.Source.Kind);
 			Provider && Provider->Owner.IsValid() && Provider->Observe) Provider->Observe(Cue);
@@ -929,7 +934,7 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 	const bool bEnabled = CVarGuLiCombatEffectVisuals.GetValueOnGameThread() != 0;
 	const bool bClusterEnabled = bEnabled && CVarGuLiMissileClusterEnabled.GetValueOnGameThread() != 0;
 	int32 PredictionCount = 0;
-	int32 PredictionCountBySource[4] = {};
+	int32 PredictionCountBySource[3] = {};
 	auto* Capture = GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>();
 	if (Capture && Capture->IsCapturing())
 	{
@@ -957,7 +962,6 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 				case EGuLiTargetKind::CommanderSoldier: ++PredictionCountBySource[0]; break;
 				case EGuLiTargetKind::GroundActor: ++PredictionCountBySource[1]; break;
 				case EGuLiTargetKind::Wingman: ++PredictionCountBySource[2]; break;
-				case EGuLiTargetKind::Ship: ++PredictionCountBySource[3]; break;
 				default: break;
 				}
 			}
@@ -967,27 +971,17 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
             if (HasTarget) TargetLocation = TargetPose.GetLocation();
             if (ClientFlights.Find(Visual.FlightHandle))
             {
-                ClientFlights.Advance(Visual.FlightHandle, Visual.FlightRecipe, GetWorld(), Visual.FlightActor,
-                    Now, HasTarget ? &TargetLocation : nullptr);
+                ClientFlights.Advance(Visual.FlightHandle, Visual.FlightRecipe, Now, HasTarget ? &TargetLocation : nullptr);
                 const auto* Slot = ClientFlights.Find(Visual.FlightHandle);
                 Visual.Prediction = Slot->Prediction; Visual.RenderLocation = Slot->DisplayLocation;
-                if (Visual.FlightActor) Visual.FlightActor->ApplyPrediction(Visual.Prediction, Visual.RenderLocation, false);
             }
             else if (Visual.FlightActor)
             {
-                Visual.FlightActor->AdvanceFlight(Now, HasTarget ? &TargetLocation : nullptr, false);
+                Visual.FlightActor->AdvanceFlight(Now, HasTarget ? &TargetLocation : nullptr);
                 Visual.Prediction = Visual.FlightActor->GetPrediction();
                 Visual.RenderLocation = Visual.FlightActor->GetDisplayLocation(Now);
             }
             Visual.bHasPrediction = true;
-            if (Visual.FlightActor)
-            {
-                const FBox Bounds=Visual.FlightActor->GetDisplayBounds(Visual.RenderLocation,Visual.Prediction.Velocity);
-                const bool Visible=bEnabled && (!Bounds.IsValid || IsVisibleBounds(Bounds));
-                if (Visible || !GuLiClientPresentation::OffscreenFlightsEnabled())
-                    Visual.FlightActor->ApplyPrediction(Visual.Prediction,Visual.RenderLocation,true);
-                Visual.FlightActor->ShowFlight(Visible);
-            }
         }
 
 		if (Visual.State.Kind == EGuLiCombatEffectKind::Projectile)
@@ -1141,7 +1135,6 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 		Capture->Record(TEXT("Flight.Predictions.Commander"), PredictionCountBySource[0]);
 		Capture->Record(TEXT("Flight.Predictions.Ground"), PredictionCountBySource[1]);
 		Capture->Record(TEXT("Flight.Predictions.Wingman"), PredictionCountBySource[2]);
-		Capture->Record(TEXT("Flight.Predictions.Ship"), PredictionCountBySource[3]);
 	}
 }
 
@@ -1204,6 +1197,8 @@ FGuLiCombatEffectVisualCounters UGuLiCombatEffectPresentationSubsystem::GetCount
 		Result.MuzzleActive=MuzzleBatches->GetActiveCount(); Result.MuzzleComponents=MuzzleBatches->GetComponentCount();
 		Result.ComponentCount+=Result.MuzzleComponents; Result.MuzzleAccepted=MuzzleBatches->Accepted; Result.MuzzleBorn=MuzzleBatches->Born;
 		Result.MuzzleDuplicates=MuzzleBatches->Duplicates; Result.MuzzleExpired=MuzzleBatches->Expired;
+		Result.MuzzlePoseUnresolved=MuzzleBatches->PoseUnresolved; Result.MuzzleTooOld=MuzzleBatches->TooOld;
+		Result.MuzzleAdmissionLate=MuzzleBatches->AdmissionLate;
 		Result.MuzzleOffscreenRecycled=MuzzleBatches->OffscreenRecycled; Result.MuzzleBatchPublished=MuzzleBatches->Published;
 		Result.MuzzleBatchFallbacks=MuzzleBatches->Fallbacks; Result.MuzzlePoseQueries=MuzzleBatches->PoseQueries;
 		Result.MuzzleLifeUploads=MuzzleBatches->LifeUploads; Result.MuzzlePoseUploads=MuzzleBatches->PoseUploads;

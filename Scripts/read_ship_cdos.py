@@ -51,12 +51,8 @@ try:
             if entry["is_engine"]:
                 entry["thrust"] = float(cdo.get_editor_property("thrust"))
             if entry["is_weapon"]:
-                entry["damage"] = float(cdo.get_editor_property("damage"))
-                entry["fire_rate"] = float(cdo.get_editor_property("fire_rate"))
                 mo = cdo.get_editor_property("muzzle_offset")
                 entry["muzzle_offset"] = [round(mo.x, 2), round(mo.y, 2), round(mo.z, 2)]
-                pc = cdo.get_editor_property("projectile_class")
-                entry["projectile_class"] = str(pc.get_path_name()) if pc else None
             parts.append(entry)
         except Exception as e:  # noqa: BLE001
             out["errors"].append(f"{ad.package_name}: {e!r}")

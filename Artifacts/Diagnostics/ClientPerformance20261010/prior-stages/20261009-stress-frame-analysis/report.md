@@ -1,6 +1,5 @@
 # 600 移动单位 / 500 弹丸：PIE 截帧分析
 
-已复现 **15.55 FPS**。主瓶颈是 **游戏线程 64.34 ms**，GPU 平均 16.22 ms。新特效与新逻辑已正式生效；当前压力下的主要问题转移到命中特效实例生命周期、飞行事件处理和 Ship 弹丸集中到期/补建。
 
 ## 本次实际捕获
 
@@ -26,7 +25,6 @@
 | 位置 | 平均独占 ms/帧 | 占整帧 |
 |---|---:|---:|
 | 命中特效系统 | 8.174 | 12.7% |
-| Ship物理弹丸移动 | 3.019 | 4.7% |
 | 飞行批次接收/应用 | 2.500 | 3.9% |
 | Mass StateTree | 1.993 | 3.1% |
 | 双客户端单位插值 | 2.087 | 3.2% |
@@ -55,7 +53,6 @@
 
 **88.021ms的P95帧：** 命中特效17.389ms，其中9.883ms发生在飞行网络事件应用期间、5.303ms在帧末更新；物理弹丸移动7.255ms、StateTree3.905ms、WaitForTasks4.762ms。该帧由集中接收、特效启动/提交和移动开销共同放大。`MulticastFlightBatch`有嵌套同名Scope，其inclusive不能直接当作RPC总耗时累加。
 
-**101.096ms最慢帧：** 含服务器物理弹丸的World Tick占58.142ms，另两个客户端World Tick13.653/12.087ms，编辑器World Tick约0.176ms。`BP_ShipProjectile_C`独占8.708ms、移动11.775ms、Collision Sphere3.186ms、Mesh2.671ms；其中125个Ship寿命计时器回调的Actor Scope累计6.747ms inclusive，并出现集中构造/销毁及补建。记录500次移动Scope、1000次BP Scope不等于500个活Actor；重复生命周期Scope和常规Tick都参与计数。源码 `InitialLifeSpan=2.0f`，压力生产器同波补齐125个Ship，解释此类周期性峰值。单次帧不能推出所有P95都由它造成。
 
 ## 特效实例与事件吞吐
 
@@ -99,7 +96,6 @@ GPU依然低于GT平均64ms。本轮不以牺牲分辨率、关闭光照、缩�
 - ID45：`/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_GPU_All`
 - ID52：`/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations`
 
-DataPool、曲线预计算、VisitStamps、Ship类别快照、UI四叶、256/32批次等使用已加载整版默认；采矿7.5cm/建造12cm、Opaque Unlit、真实8节点/GPU、无表现碰撞与独立闪光保持。没有恢复旧代码或旧资源。
 
 - [交互帧时间线与两客户端画面](index.html)
 - [CSV整帧数据](paired/runtime-p1-frame-diagnosis/frames.csv)、[原始Unreal Insights轨迹](paired/runtime-p1-frame-diagnosis/session.utrace)

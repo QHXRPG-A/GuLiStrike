@@ -9,6 +9,7 @@
 #include "MassExecutionContext.h"
 #include "MassSubsystemBase.h"
 #include "StateTree.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 
 namespace
 {
@@ -65,6 +66,7 @@ void UGuLiCommanderMassStateTreeProcessor::ConfigureQueries(const TSharedRef<FMa
 
 void UGuLiCommanderMassStateTreeProcessor::Execute(FMassEntityManager&, FMassExecutionContext& Context)
 {
+	FGuLiPerformanceScope Timing(Context.GetWorld(), TEXT("StateTree.MassMs"));
 	Query.ForEachEntityChunk(Context, [](FMassExecutionContext& Chunk)
 	{
 		auto& Storage = Chunk.GetMutableSubsystemChecked<UMassStateTreeSubsystem>();

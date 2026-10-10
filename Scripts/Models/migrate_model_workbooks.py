@@ -240,9 +240,9 @@ def main():
         stats = p['stats']
         muzzle = [float(v) for v in re.findall(r'[XYZ]=([-+\d.eE]+)', stats.get('muzzle_offset', ''))] or [0, 0, 0]
         values = dict(id=len(grid) - 2, name=p['part_id'], Note='现有活跃部件 CDO 数值与资源迁移；socket 和部件类保持', PartId=p['part_id'],
-                      Type='Weapon' if 'damage' in stats else 'Module', PartMass=float(stats.get('part_mass', 10)),
-                      Thrust=float(stats.get('thrust', 0)), Damage=float(stats.get('damage', 0)), FireRate=float(stats.get('fire_rate', 0)),
-                      MuzzleX=muzzle[0], MuzzleY=muzzle[1], MuzzleZ=muzzle[2], ProjectileClass=stats.get('projectile_class', '').replace('None', ''),
+                      Type='Weapon' if 'muzzle_offset' in stats else 'Engine' if 'thrust' in stats else 'Module', PartMass=float(stats.get('part_mass', 10)),
+                      Thrust=float(stats.get('thrust', 0)),
+                      MuzzleX=muzzle[0], MuzzleY=muzzle[1], MuzzleZ=muzzle[2],
                       ModelId=ship_refs[p['part_id']])
         grid.append([values.get(k, '') for k in grid[0]])
     write(ship_book, 'Parts', grid)

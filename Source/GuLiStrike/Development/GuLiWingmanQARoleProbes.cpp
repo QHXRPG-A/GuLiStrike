@@ -3,7 +3,6 @@
 #include "Development/GuLiWingmanQARoleProbes.h"
 
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
-#include "Battle/Combat/GuLiShipProjectileLedgerBridge.h"
 #include "Battle/Combat/GuLiWingmanReplenishmentController.h"
 #include "Battle/Relay/GuLiWingmanRelayAuthorityRegistry.h"
 #include "Engine/Engine.h"
@@ -908,7 +907,6 @@ namespace GuLiWingmanQARoleProbePrivate
 {
 	bool RunMirroredCombat(bool bAB, FGuLiWingmanQARoleProbeResult& Out);
 	bool RunFireReplay(FGuLiWingmanQARoleProbeResult& Out);
-	bool RunProjectileReplay(FGuLiWingmanQARoleProbeResult& Out);
 	bool RunConcurrentDuplicate(FGuLiWingmanQARoleProbeResult& Out);
 	bool RunCorrectionReverse(FGuLiWingmanQARoleProbeResult& Out);
 	bool RunDeathBeforePose(FGuLiWingmanQARoleProbeResult& Out);
@@ -922,7 +920,6 @@ bool GuLiWingmanQARoleProbes::Supports(const FName RoleId)
 		TEXT("S3C-AB"),
 		TEXT("S3C-BA"),
 		TEXT("S4-Idempotency-FireProposalReplay"),
-		TEXT("S4-Idempotency-ProjectileOverlapReplay"),
 		TEXT("S4-Idempotency-Concurrent"),
 		TEXT("S6-CorrectionReverse"),
 		TEXT("S6-DeathBeforePose"),
@@ -966,10 +963,6 @@ FGuLiWingmanQARoleProbeResult GuLiWingmanQARoleProbes::Run(const FName RoleId)
 	else if (RoleId == TEXT("S4-Idempotency-FireProposalReplay"))
 	{
 		RunFireReplay(Out);
-	}
-	else if (RoleId == TEXT("S4-Idempotency-ProjectileOverlapReplay"))
-	{
-		RunProjectileReplay(Out);
 	}
 	else if (RoleId == TEXT("S4-Idempotency-Concurrent"))
 	{
@@ -1297,63 +1290,6 @@ namespace GuLiWingmanQARoleProbePrivate
 		Pass(Out, TEXT("FIRE_PROPOSAL_REPLAY_SINGLE_COMMIT"),
 			EGuLiWingmanQALogStream::WingmanRelay,
 			TEXT("first FireIntent accepted; same emitter/sequence replay rejected Duplicate"));
-		return true;
-	}
-
-	bool RunProjectileReplay(FGuLiWingmanQARoleProbeResult& Out)
-	{
-		FTransientWorld WorldFixture;
-		UGuLiDamageLedgerSubsystem* Ledger = nullptr;
-		UObject* Lifetime = nullptr;
-		if (!InitializeLedger(WorldFixture, Out, Ledger, Lifetime))
-		{
-			return false;
-		}
-		FGuLiTargetHandle Source;
-		Source.Kind = EGuLiTargetKind::Ship;
-		Source.AuthorityId = FGuid(51u, 52u, 53u, 54u);
-		Source.Generation = 1u;
-		FGuLiWingmanHandle Wingman;
-		Wingman.Flight.Group = MakeGroup(51u);
-		Wingman.Flight.FlightIndex = 0u;
-		Wingman.MemberIndex = 0u;
-		Wingman.EntityGeneration = 1u;
-		const TSharedRef<FVirtualTargetState> SourceState = MakeShared<FVirtualTargetState>();
-		SourceState->Handle = Source;
-		SourceState->Team = EGuLiTeam::Red;
-		const TSharedRef<FVirtualTargetState> TargetState = MakeShared<FVirtualTargetState>();
-		TargetState->Handle = GuLiCombatTargets::MakeWingmanTargetHandle(Wingman);
-		TargetState->Team = EGuLiTeam::Blue;
-		TargetState->Location = FVector(400.0, 0.0, 0.0);
-		if (!RegisterVirtualTarget(*Ledger, *Lifetime, SourceState)
-			|| !RegisterVirtualTarget(*Ledger, *Lifetime, TargetState))
-		{
-			SetError(Out, TEXT("Could not register projectile replay targets."));
-			return false;
-		}
-
-		FGuLiShipProjectileLedgerContext Context;
-		Context.MatchEpoch = MatchEpoch;
-		Context.ShotId = FGuid(0x50524f4au, 51u, 1u, 1u);
-		Context.DamageEventId = FGuid(0x50524f4au, 51u, 2u, 2u);
-		Context.Source = Source;
-		Context.Damage = 25.0f;
-		const FGuLiShipProjectileLedgerImpact First =
-			GuLiShipProjectileLedger::CommitServerWingmanSweepImpact(
-				*WorldFixture.World, Context, FVector::ZeroVector, FVector(1000.0, 0.0, 0.0), 10.0f);
-		const FGuLiShipProjectileLedgerImpact Replay =
-			GuLiShipProjectileLedger::CommitServerWingmanSweepImpact(
-				*WorldFixture.World, Context, FVector::ZeroVector, FVector(1000.0, 0.0, 0.0), 10.0f);
-		if (First.Status != EGuLiShipProjectileLedgerImpactStatus::Committed
-			|| Replay.Status != EGuLiShipProjectileLedgerImpactStatus::Duplicate
-			|| Ledger->GetCommitCount() != 1u || !FMath::IsNearlyEqual(TargetState->Health, 75.0f))
-		{
-			SetError(Out, TEXT("Repeated physical overlap did not reuse one immutable projectile event."));
-			return false;
-		}
-		Pass(Out, TEXT("PROJECTILE_OVERLAP_REPLAY_SINGLE_COMMIT"),
-			EGuLiWingmanQALogStream::BattleCombat,
-			TEXT("two segment-overlap callbacks reused one DamageEventId and one health mutation"));
 		return true;
 	}
 

@@ -80,8 +80,6 @@ def compile_manifest():
     for path,row in FX['blueprints'].items():
         if '/Rollback/' in path:
             continue
-        if row['kind'] == 'GuLiStrikeProjectile':
-            add(path,None,'net_cull_distance_squared',row['properties']['net_cull_distance_squared'],factor=.04,space='world_cm_squared')
         for name,c in row['components'].items():
             p,cls = c['properties'],c['class']
             if cls == 'CapsuleComponent':

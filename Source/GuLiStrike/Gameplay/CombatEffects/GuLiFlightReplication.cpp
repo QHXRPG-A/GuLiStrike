@@ -1,6 +1,7 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Engine/ActorChannel.h"
 #include "Engine/NetConnection.h"
 #include "Engine/NetDriver.h"
@@ -91,6 +92,23 @@ void UGuLiCombatEffectReplicationComponent::FlushFlightStreams()
 {
 	auto* Driver = GetWorld()->GetNetDriver();
 	if (!Driver) { PendingFlights.Reset(); return; }
+	const auto* Capture = GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>();
+	const bool bMeasureBytes = Capture && Capture->IsCapturing();
+	uint64 PendingRecordBytes = 0;
+	auto MeasureRecordBytes = [&](const FGuLiFlightEvent& Event) -> uint64
+	{
+		TArray<uint8> Record; uint16 Bits = 0;
+		if (!GuLiFlightWire::EncodeRecord(Event, Record, Bits)) { ++FlightByteAccountingFailures; return 0; }
+		return uint64(Record.Num()) + 2;
+	};
+	if (bMeasureBytes)
+	{
+		// Muzzle metadata is attached after PublishFlight. Measure the finalized
+		// recipe once here, before fan-out, without changing or storing wire data.
+		FGuLiPerformanceScope Accounting(GetWorld(), TEXT("Network.FlightRecordAccountingMs"));
+		for (const auto& Event : PendingFlights) PendingRecordBytes += MeasureRecordBytes(Event);
+		ProducedFlightRecordBytes += PendingRecordBytes;
+	}
 	const float Now = GetWorld()->GetTimeSeconds();
 	for (auto It=FlightPeers.CreateIterator(); It; ++It)
 		if (!It.Key().IsValid() || It.Key()->GetConnectionState()!=USOCK_Open
@@ -106,24 +124,26 @@ void UGuLiCombatEffectReplicationComponent::FlushFlightStreams()
 		{
 			Peer = &FlightPeers.Add(Connection);
 			Peer->Channel = ActorChannel;
+			Peer->Stats.ChannelSerial = ++NextPeerSerial;
 			for (const auto& Pair : ActiveFlights)
 			{
 				FGuLiFlightEvent Bootstrap = Pair.Value;
 				if (Runtime.IsValid()) Runtime->QueryEffect(Pair.Key, Bootstrap.State);
-				// QueryEffect clears its output on a miss; external Ship/logical
-				// missile producers maintain the separate registry instead.
+				// QueryEffect clears its output on a miss; logical missile
+				// producers maintain the separate registry instead.
 				if (!Bootstrap.State.EffectId.IsValid()) Bootstrap.State = Pair.Value.State;
 				if (Bootstrap.State.EndTime <= Now) continue;
 				Bootstrap.bBootstrap = true; Bootstrap.bHasMuzzle = false;
 				if (Bootstrap.State.Kind == EGuLiCombatEffectKind::LinearProjectile)
 				{
-					if (Bootstrap.ShipVisualClass.IsNull())
-						Bootstrap.State.Location = FVector(Bootstrap.State.LaunchLocation)+FVector(Bootstrap.State.Velocity)*(Now-Bootstrap.State.StartTime);
+					Bootstrap.State.Location = FVector(Bootstrap.State.LaunchLocation)+FVector(Bootstrap.State.Velocity)*(Now-Bootstrap.State.StartTime);
 					Bootstrap.State.LaunchLocation = Bootstrap.State.Location;
 					Bootstrap.State.StartTime = Bootstrap.State.ActivationTime = Now;
 				}
 				if (Bootstrap.State.Kind == EGuLiCombatEffectKind::LinearProjectile) Bootstrap.State.SampleTime = Now;
+				if (bMeasureBytes) Peer->Stats.BootstrapRecordBytes += MeasureRecordBytes(Bootstrap);
 				Peer->Queue.Add(MoveTemp(Bootstrap)); ++BootstrapFlights;
+				++Peer->Stats.BootstrapEvents;
 			}
 			TArray<FGuLiCombatEffectState> Fields;
 			if (Runtime.IsValid()) Runtime->BuildActiveSnapshot(Fields, true);
@@ -136,16 +156,24 @@ void UGuLiCombatEffectReplicationComponent::FlushFlightStreams()
 			}
 		}
 		Peer->Queue.Append(PendingFlights);
+		Peer->Stats.EnqueuedEvents += PendingFlights.Num();
+		Peer->Stats.EnqueuedRecordBytes += PendingRecordBytes;
+		++Peer->Stats.FlushCalls;
 		// Backpressure leaves reliable events here until the connection has credit.
 		// Neither ForceSend nor cosmetic burst debt bypasses the transport budget.
-		for (int32 Batch=0; Batch<8 && Peer->Cursor<Peer->Queue.Num() && Connection->IsNetReady(); ++Batch)
+		int32 Batch = 0;
+		for (; Batch<8 && Peer->Cursor<Peer->Queue.Num(); ++Batch)
 		{
+			// Observe the existing readiness check exactly once; never alter its credit.
+			if (!Connection->IsNetReady()) { ++Peer->Stats.BudgetDeferrals; break; }
 			struct FParameters { TArray<uint8> Payload; } Parameters;
 			const int32 Count = GuLiFlightWire::EncodeBatch(MakeArrayView(Peer->Queue).Slice(Peer->Cursor,Peer->Queue.Num()-Peer->Cursor),Parameters.Payload);
 			if (!Count) { UE_LOG(LogNet, Error, TEXT("Unable to encode accepted flight event")); break; }
 			SendToConnection(Connection,FindFunctionChecked(GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastFlightBatch)),&Parameters);
 			Peer->Cursor += Count; SentFlightBytes += Parameters.Payload.Num(); ++SentFlightBatches;
+			Peer->Stats.SentEvents += Count; Peer->Stats.SentBytes += Parameters.Payload.Num(); ++Peer->Stats.SentBatches;
 		}
+		if (Batch == 8 && Peer->Cursor < Peer->Queue.Num()) ++Peer->Stats.BatchLimitHits;
 		if (Peer->Cursor == Peer->Queue.Num()) { Peer->Queue.Reset(); Peer->Cursor = 0; }
 		else if (Peer->Cursor >= 256) { Peer->Queue.RemoveAt(0,Peer->Cursor,EAllowShrinking::No); Peer->Cursor = 0; }
 	}
@@ -164,12 +192,15 @@ void UGuLiCombatEffectReplicationComponent::MulticastFlightBatch_Implementation(
 	TArray<FGuLiFlightEvent> Events;
 	if (!GuLiFlightWire::DecodeBatch(Payload, Events)) { UE_LOG(LogNet, Warning, TEXT("Rejected invalid flight batch")); return; }
 	FlightReceiveCounters.PayloadBytes += Payload.Num();
+	++FlightReceiveCounters.Batches;
 	FlightReceiveCounters.Events += Events.Num();
 	if (const auto* State = GetWorld()->GetGameState())
 	{
 		const double ServerNow = State->GetServerWorldTimeSeconds();
 		for (const FGuLiFlightEvent& Event : Events)
 		{
+			FlightReceiveCounters.BootstrapEvents += Event.bBootstrap ? 1 : 0;
+			FlightReceiveCounters.StaleEpochEvents += !IsCurrentEpoch(Event.State.MatchEpoch) ? 1 : 0;
 			// Bootstrap is an active-state reconstruction, not a freshly produced event.
 			// Keep signed age: the client's estimated server clock can be ahead/behind.
 			if (!Event.bBootstrap && IsCurrentEpoch(Event.State.MatchEpoch)
@@ -177,6 +208,10 @@ void UGuLiCombatEffectReplicationComponent::MulticastFlightBatch_Implementation(
 			{
 				++FlightReceiveCounters.AgeSamples;
 				FlightReceiveCounters.AgeMilliseconds += (ServerNow - Event.State.SampleTime) * 1000.0;
+				constexpr double Bounds[] = {0,16,33,50,100,200,500,1000,2000,5000,10000};
+				const double Age = (ServerNow - Event.State.SampleTime) * 1000.0;
+				int32 Bucket = 0; while (Bucket < UE_ARRAY_COUNT(Bounds) && Age > Bounds[Bucket]) ++Bucket;
+				++FlightReceiveCounters.AgeBuckets[Bucket];
 			}
 		}
 	}
@@ -190,6 +225,7 @@ FGuLiFlightPeerStats UGuLiCombatEffectReplicationComponent::GetFlightPeerStats(U
 	if (!Connection || !GetOwner() || !GetOwner()->HasAuthority()) return Result;
 	const FPeerStream* Peer = FlightPeers.Find(Connection);
 	if (!Peer) return Result;
+	Result = Peer->Stats;
 	Result.bAvailable = true;
 	Result.QueuedEvents = FMath::Max(0, Peer->Queue.Num() - Peer->Cursor);
 	if (Result.QueuedEvents > 0 && GetWorld())
@@ -204,16 +240,15 @@ FGuLiFlightPeerStats UGuLiCombatEffectReplicationComponent::GetFlightPeerStats(U
 FString UGuLiCombatEffectReplicationComponent::GetFlightDiagnostics() const
 {
 	int32 Queued = 0; for (const auto& Pair : FlightPeers) Queued += Pair.Value.Queue.Num()-Pair.Value.Cursor;
-	int32 Commander=0,Ground=0,Ship=0,Wingman=0;
+	int32 Commander=0,Ground=0,Wingman=0;
 	for (const auto& Pair : ActiveFlights)
 		switch (Pair.Value.State.Source.Kind)
 		{
 		case EGuLiTargetKind::CommanderSoldier: ++Commander; break;
 		case EGuLiTargetKind::GroundActor: ++Ground; break;
-		case EGuLiTargetKind::Ship: ++Ship; break;
 		case EGuLiTargetKind::Wingman: ++Wingman; break;
 		default: break;
 		}
-	return FString::Printf(TEXT("active=%d created=%llu ended=%llu payloadBytes=%llu batches=%llu bootstrap=%llu queued=%d policy=events_only domains=%d/%d/%d/%d"),
-		ActiveFlights.Num(),CreatedFlights,EndedFlights,SentFlightBytes,SentFlightBatches,BootstrapFlights,Queued,Commander,Ground,Ship,Wingman);
+	return FString::Printf(TEXT("active=%d created=%llu ended=%llu payloadBytes=%llu batches=%llu bootstrap=%llu queued=%d policy=events_only domains=%d/%d/%d"),
+		ActiveFlights.Num(),CreatedFlights,EndedFlights,SentFlightBytes,SentFlightBatches,BootstrapFlights,Queued,Commander,Ground,Wingman);
 }

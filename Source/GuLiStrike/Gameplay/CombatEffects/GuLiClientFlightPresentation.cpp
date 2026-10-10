@@ -6,8 +6,6 @@
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "EngineUtils.h"
 #include "GameFramework/Pawn.h"
-#include "Gameplay/GuLiStrikeProjectile.h"
-#include "Components/StaticMeshComponent.h"
 #include "HAL/IConsoleManager.h"
 
 static TAutoConsoleVariable<int32> CVarGuLiClientFlightDataPool(TEXT("gs.Flights.DataPool"), 1,
@@ -82,26 +80,22 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightE
 	{
 		if (Finished)
 		{
-			if (Visual->FlightActor) { Visual->FlightActor->SetActorLocation(State.Location); Visual->FlightActor->ShowFlight(false); }
+			if (Visual->FlightActor) Visual->FlightActor->ResetForPool();
 		}
 		else if (!Visual->FlightRecipe.State.EffectId.IsValid())
 		{
 			Visual->FlightRecipe = Event;
 			ResolveFlightConfiguration(*Visual);
 			const bool bDataPool = CVarGuLiClientFlightDataPool.GetValueOnGameThread() != 0;
-			bool bMesh = false;
-			if (UClass* Class = Event.ShipVisualClass.LoadSynchronous())
-				if (const auto* Template = Class->GetDefaultObject<AGuLiStrikeProjectile>())
-					if (const auto* Mesh = Template->GetFlightMesh()) bMesh = Mesh->GetStaticMesh() != nullptr;
 			if (bDataPool)
 			{
 				const auto* Settings = GetDefault<UGuLiCombatEffectSettings>();
 				const int32 Growth = ClientFlights.GetCapacity() == 0 ? Settings->ClientFlightPoolInitialCapacity : Settings->ClientFlightPoolGrowthSize;
-				const auto Kind = bMesh ? EGuLiClientFlightRenderKind::Mesh : State.Kind == EGuLiCombatEffectKind::LinearProjectile
+				const auto Kind = State.Kind == EGuLiCombatEffectKind::LinearProjectile
 					? EGuLiClientFlightRenderKind::Laser : EGuLiClientFlightRenderKind::Niagara;
 				Visual->FlightHandle = ClientFlights.Acquire(Event, Kind, Growth);
 			}
-			if (bMesh || !bDataPool) Visual->FlightActor = AcquireFlightActor(Event);
+			if (!bDataPool) Visual->FlightActor = AcquireFlightActor(Event);
 		}
 	}
 }

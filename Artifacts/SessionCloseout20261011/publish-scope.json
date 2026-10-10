@@ -1,0 +1,44 @@
+{
+  "excluded_concurrent_work": "Mass避障简化与转向提速",
+  "excluded_paths": [
+    "Progress/DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md",
+    "Progress/RequirementDocument/20261011-Mass避障简化与转向提速.md",
+    "Scripts/Performance/run_mass_avoidance_review.py",
+    "Scripts/Performance/run_snapshot_parallel_review.py",
+    "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp",
+    "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h",
+    "Source/GuLiStrike/Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.cpp",
+    "Source/GuLiStrike/Commander/Mass/GuLiMassMovementTuning.cpp",
+    "Source/GuLiStrike/Commander/Mass/GuLiMassMovementTuning.h",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.cpp",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.cpp",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h",
+    "Source/GuLiStrike/Commander/Mass/Navigation/Tests/GuLiCommanderAvoidancePolicyTests.cpp",
+    "Source/GuLiStrike/Commander/Mass/Navigation/Tests/GuLiCommanderNavigationPolicyTests.cpp",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderMechanicalPresentation.cpp",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiMechanicalAnimation.cpp",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiMechanicalAnimation.h",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiMechanicalTurnPresentation.cpp",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiMechanicalTurnPresentation.h",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiVATAnimation.cpp",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiVATAnimation.h",
+    "Source/GuLiStrike/Gameplay/Presentation/Tests/GuLiMechanicalAnimationTests.cpp"
+  ],
+  "overlapping_staged_sources": [
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.cpp",
+      "sha256": "CB31473F9F70A31B0C4D674DE9D39EDAB10703A12321083E250D974E6C5EAE39",
+      "source": "Verified pre-concurrent-work backup; working file retained."
+    },
+    {
+      "path": "Scripts/Performance/run_snapshot_parallel_review.py",
+      "sha256": "35438F3749AB176B9AEBF4F6CFFBB7003B4B6B03CCF6CCB5D997CECE06950F2D",
+      "source": "Verified pre-concurrent-work backup; working file retained."
+    }
+  ],
+  "staged_files_before_this_manifest": 521,
+  "raw_per_run_captures": "Retained locally; scoped .gitignore directories excluded from GitHub.",
+  "published_progress_errors": 0,
+  "published_progress_warnings": 17
+}

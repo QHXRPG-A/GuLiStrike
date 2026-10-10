@@ -200,11 +200,6 @@ void UGuLiStrikeShipPartComponent::ContributeStats_Implementation(FGuLiStrikeShi
 	OutStats.PartMassSum += PartMass;
 }
 
-void UGuLiStrikeShipPartComponent::Fire_Implementation(AActor* Instigator)
-{
-	// 非武器部件不响应开火输入；蓝图子类可重写实现自己的行为
-}
-
 void UGuLiStrikeShipPartComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
 {
 	DestroyVisualMesh();

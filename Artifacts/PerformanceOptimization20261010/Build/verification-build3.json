@@ -1,0 +1,42 @@
+{
+  "target": "GuLiStrikeEditor Win64 Development",
+  "engine": "D:/UnrealEngine-5.7",
+  "exit_code": 0,
+  "build_ids_match": true,
+  "build_ids": {
+    "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\GuLiMapAuthoring\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\Tripo3DUEBridge-UE5.7-Win64\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\UnrealMCP\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\UnrealMCPython\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\VibeUE\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+  },
+  "source_hashes": {
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderMassStateTreeProcessor.cpp": "cf721ce531d8e103f69cf1c2d5259c9ff154f877bab5d92de9c253b25587a1a9",
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeComponent.cpp": "7e7c3f404c1e8f62cc37ec2f2ef0f3f0e351f32cb39613903c847ac4d3e5daa0",
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeNodes.cpp": "406eea0289420d0fa1c917a6a4a202ea957a14b5f5c3695e9c5e2d7909a6a59f",
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h": "5fc543baada9d227d6509d30bdb9323be83d3ceca0c6b12ca3e0388825b50e7e",
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderStateDispatch.cpp": "3ce31edee831a7e56c6dfe6689804073d3e3949749e306a841ead4685aad9f58",
+    "Source/GuLiStrike/Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.cpp": "ef14dba6b71b1b8d5d6ac9b2541d88a084030a153fae434a31cf4fa56225a0d4",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.cpp": "eb08971d092653d4c8bbce67793d5712c63294ff1e02c5b12764080a61dc7284",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h": "4d6d04c342572bc82f626b3d7aa948a9f49f5400fa33153306469f868c8ecb39",
+    "Source/GuLiStrike/Commander/Network/GuLiCommanderStateStream.h": "e9af732e9a7bec60dbfff1c41ed299b6b9086b1642caf5e48ce033026c2e6e3a",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskOperations.cpp": "a90e68d66c02bca4e8478290c8225b09ef0f92171772f0e6d2f75e70431a68b0",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.cpp": "b69df4857156772fcaa7417e3bf686e15f7b48aabeb3a6b3ab1c75bd1bcda525",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.h": "6f4075e2ab373ce25e80a34e3026922170aad902c380e4b9b95c6db50d0b185d",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp": "9ea5687fb3990bdd953a6be6029f5e1d93fdcf510e1367e26736dc3a6042b927",
+    "Source/GuLiStrike/Commander/UI/GuLiSceneUIWidget.cpp": "9157abbb4aadb691d7b8cea8ed84ab2b3df4ae6889ee414028a2b3ef6cb7ec12",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiClientFlightPool.cpp": "92d4f5fb7af57e0c719b79f23e70b047d0d085a84493f16c71b6b3e4e767b9cf",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h": "8a7139d763a1a6ba970d075ba8ed8e0d4976dc33446ed0a30315d6fafbce6347",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiFlightReplication.cpp": "8df590a4ffe30b5aa2af712d9850d32601e422fc88ae0acf82bbc814324a0436",
+    "Source/GuLiStrike/Gameplay/Performance/GuLiPerformanceSubsystem.cpp": "e7dcb46106071af8485027c80ac9d4c4deae08c9c7c488444cce76b49bb88e4d",
+    "Source/GuLiStrike/Gameplay/Performance/GuLiPerformanceSubsystem.h": "2ae6401d2360dd00b9049c286484e6132ed60ab7f3659d5eba3577d699245497",
+    "Source/GuLiStrike/Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.cpp": "88b56a65de28c5a3540c4b40ce2c7899dc3d0262cf5a2c53b60a734f85e193bf",
+    "Source/GuLiStrike/Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.h": "45fbb4b393c4c370bf8aa58544d99b06fa86fd3255aa63da8c48ebe8e75cde8b",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskReadSnapshot.cpp": "cfbe7cfe52fa6e97beb1eddfe6e8d4f124c6745eabfab111c316b253d8b0ce5c",
+    "Source/GuLiStrike/Gameplay/Performance/GuLiPerformanceNetworkCapture.cpp": "0fdaa5d836a17741f0f9ac54c26b8f6eb1c39ecfdf26e9c1424de11ce3d19368"
+  },
+  "build_log": "build-editor-3.log"
+}

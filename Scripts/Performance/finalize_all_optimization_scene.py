@@ -56,10 +56,10 @@ guides = [
      'Commander selection: move across screen edge / near plane, inspect rings/routes.\n'
      'Ship: unpossess/repossess/respawn, inspect current panels and late identity.'),
     ('PerfReview_FlightGuide',(0,65000,1600),
-     'FOUR-SOURCE SERVER LOAD: gs.Flights.Load 500 45\n'
-     'Commander/Ground/Ship/deployed Wingman, 125 per source.\n'
+     'THREE-SOURCE SERVER LOAD: gs.Flights.Load 500 45\n'
+     'Commander/Ground/deployed Wingman, 167/167/166 flights.\n'
      'gs.Flights.Stop stops replenishment; accepted recipes finish normally.\n'
-     'Curve cache, visit stamps, 256 laser / 32 missile batches and Ship domain snapshots active.\n'
+     'Curve cache, visit stamps, 256 laser / 32 missile batches and remaining flight source counters active.\n'
      'Scripts/Performance/run_whole_optimization_review.py captures whole builds.')]
 for label,position,text in guides:
     actor = next((a for a in actors if a.get_actor_label() == label),None)

@@ -14,9 +14,7 @@
 #include "GuLiStrikeGameMode.h"
 #include "GuLiStrikeAoEAttack.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "GuLiStrikeProjectile.h"
 #include "Engine/World.h"
-#include "TimerManager.h"
 
 AGuLiStrikeCharacter::AGuLiStrikeCharacter()
 {
@@ -66,14 +64,6 @@ void AGuLiStrikeCharacter::BeginPlay()
 	
 	// update the items count
 	UpdateItems();
-}
-
-void AGuLiStrikeCharacter::EndPlay(EEndPlayReason::Type EndPlayReason)
-{
-	Super::EndPlay(EndPlayReason);
-
-	/** Clear the autofire timer */
-	GetWorld()->GetTimerManager().ClearTimer(AutoFireTimer);
 }
 
 void AGuLiStrikeCharacter::NotifyControllerChanged()
@@ -136,7 +126,6 @@ void AGuLiStrikeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 		EnhancedInputComponent->BindAction(StickAimAction, ETriggerEvent::Triggered, this, &AGuLiStrikeCharacter::StickAim);
 		EnhancedInputComponent->BindAction(MouseAimAction, ETriggerEvent::Triggered, this, &AGuLiStrikeCharacter::MouseAim);
 		EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Triggered, this, &AGuLiStrikeCharacter::Dash);
-		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Triggered, this, &AGuLiStrikeCharacter::Shoot);
 		EnhancedInputComponent->BindAction(AoEAction, ETriggerEvent::Triggered, this, &AGuLiStrikeCharacter::AoEAttack);
 
 	}
@@ -179,12 +168,6 @@ void AGuLiStrikeCharacter::Dash(const FInputActionValue& Value)
 	DoDash();
 }
 
-void AGuLiStrikeCharacter::Shoot(const FInputActionValue& Value)
-{
-	// route the input
-	DoShoot();
-}
-
 void AGuLiStrikeCharacter::AoEAttack(const FInputActionValue& Value)
 {
 	// route the input
@@ -222,18 +205,7 @@ void AGuLiStrikeCharacter::DoAim(float AxisX, float AxisY)
 		PlayerController->SetShowMouseCursor(false);
 	}
 
-	// are we on autofire cooldown?
-	if (!bAutoFireActive)
-	{
-		// set ourselves on cooldown
-		bAutoFireActive = true;
 
-		// fire a projectile
-		DoShoot();
-
-		// schedule autofire cooldown reset
-		GetWorld()->GetTimerManager().SetTimer(AutoFireTimer, this, &AGuLiStrikeCharacter::ResetAutoFire, AutoFireDelay, false);
-	}
 }
 
 void AGuLiStrikeCharacter::DoDash()
@@ -296,14 +268,6 @@ void AGuLiStrikeCharacter::DoDash()
 
 void AGuLiStrikeCharacter::DoShoot()
 {
-	// get the actor transform
-	FTransform ProjectileTransform = GetActorTransform();
-
-	// apply the projectile spawn offset
-	FVector ProjectileLocation = ProjectileTransform.GetLocation() + ProjectileTransform.GetRotation().RotateVector(FVector::ForwardVector * ProjectileOffset);
-	ProjectileTransform.SetLocation(ProjectileLocation);
-
-	AGuLiStrikeProjectile* Projectile = GetWorld()->SpawnActor<AGuLiStrikeProjectile>(ProjectileClass, ProjectileTransform);
 }
 
 void AGuLiStrikeCharacter::DoAoEAttack()
@@ -361,10 +325,4 @@ void AGuLiStrikeCharacter::UpdateItems()
 	{
 		GM->ItemUsed(Items);
 	}
-}
-
-void AGuLiStrikeCharacter::ResetAutoFire()
-{
-	// reset the autofire flag
-	bAutoFireActive = false;
 }

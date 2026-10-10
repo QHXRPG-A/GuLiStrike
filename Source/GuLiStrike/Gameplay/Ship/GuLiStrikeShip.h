@@ -221,9 +221,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* ZoomAction;
 
-	/** 开火输入 */
-	UPROPERTY(EditAnywhere, Category="Input")
-	UInputAction* FireAction;
 
 	/** 僚机主动导弹齐射输入；缺省为空时不影响现有飞船武器输入。 */
 	UPROPERTY(EditAnywhere, Category="Input")
@@ -522,9 +519,6 @@ protected:
 	/** 处理加力松开 */
 	void BoostEnd(const FInputActionValue& Value);
 
-	/** 处理开火输入 */
-	void Fire(const FInputActionValue& Value);
-	void StopFire(const FInputActionValue& Value);
 	void WingmanMissilePressed(const FInputActionValue& Value);
 	void WingmanMissileReleased(const FInputActionValue& Value);
 
@@ -567,10 +561,6 @@ public:
 	/** 循环切换指定基类（如引擎）的全部已装部件到目录中的下一个 */
 	UFUNCTION(BlueprintCallable, Category="Ship")
 	void CycleParts(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass);
-
-	/** 服务器本地执行一次武器冷却检查；客户端调用不会开火，不是 RPC。 */
-	UFUNCTION(BlueprintCallable, Category="Ship")
-	void FireInstalledWeapons();
 
 	/** 重算飞行数值并应用到移动组件 */
 	UFUNCTION(BlueprintCallable, Category="Ship")
@@ -623,10 +613,6 @@ public:
 	UFUNCTION(BlueprintPure, Category="Ship|Network")
 	UGuLiShipMovementComponent* GetShipMovement() const;
 
-	/** 武器部件执行前的服务器资格检查；不能在客户端当成授权。 */
-	bool CanExecuteServerWeapon(const UGuLiStrikeShipPartComponent* Part) const;
-	/** 服务器以胶囊权威变换和原始网格基准组合炮口父变换，排除 Listen Server 的视觉平滑偏移。 */
-	bool GetServerPartTransform(const UGuLiStrikeShipPartComponent* Part, FTransform& OutTransform) const;
 
 private:
 	UFUNCTION()
@@ -645,10 +631,6 @@ private:
 	// 批量循环只允许引擎/武器两类，候选及最终装配均由服务器当前目录决定。
 	UFUNCTION(Server, Reliable)
 	void ServerRequestCycleParts(bool bEngines, uint32 ExpectedRevision, uint32 ExpectedBarrier);
-
-	// 只在按下/松开时调用；连续出弹在服务器 Tick 内依照每个武器原有冷却执行。
-	UFUNCTION(Server, Reliable)
-	void ServerSetFiring(bool bRequested, uint32 ExpectedConfigRevision, uint32 ExpectedBarrier);
 
 	/** Explicit request is the sole firing path; the server-side predicted GA callback never fires. */
 	UFUNCTION(Server, Reliable)
@@ -679,7 +661,6 @@ private:
 	void ApplyReplicatedLoadout();
 	void UpdateShipInputContext();
 	void RemoveShipInputContext();
-	void SetFiringIntent(bool bRequested);
 	void InitializeShipCapabilities();
 	void PublishGroupAbilityConfig();
 	void RefreshLocalOwnedWingmanGroup();
@@ -729,8 +710,6 @@ private:
 	uint32 AppliedLoadoutRevision = 0u;
 	bool bEditingLoadout = false;
 	bool bLoadoutDirty = false;
-	bool bLocalFireHeld = false;
-	bool bServerFiring = false;
 	bool bEndingShipPlay = false;
 	bool bShipDeathHandled = false;
 	FGuid ShipInstanceId;

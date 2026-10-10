@@ -123,7 +123,7 @@ void AGuLiBattleGameState::InitializeServerMatchState()
 		OnRep_MatchEpoch();
 	}
 	// All public combat domains share this epoch, including a Commander-only match.
-	// Do not rely on a Wingman/Ship projectile being launched to initialize the ledger.
+	// Initialize the ledger before any combat producer is activated.
 	if (GetWorld())
 	{
 		if (auto* Ledger = GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>()) Ledger->BeginServerEpoch(MatchEpoch);

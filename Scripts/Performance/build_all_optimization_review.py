@@ -57,8 +57,7 @@ def build_results():
         def metrics(r):
             c=r['csv'];return f'{1000/c["FrameTime"]["mean"]:.2f} / {c["FrameTime"]["mean"]:.2f} / {c["GameThreadTime"]["mean"]:.2f} / {c["GPUTime"]["mean"]:.2f}'
         lines.append(f'| {x["pair"]} | {metrics(x)} | {metrics(y)} | {x["csv"]["FrameTime"]["p95"]:.2f} → {y["csv"]["FrameTime"]["p95"]:.2f} |')
-    lines += ['', '同进程一专服两客户端，600个移动单位、四来源各125/总500枚服务器弹丸，每客户端32条采矿/建造光束及32个枪口/命中预览。每轮热身10秒、采集30秒，质量3、镜头与服务器人口保持，真实World/LocalPlayer和接纳活跃量已保存。CSV和Trace覆盖整个编辑器进程。', '',
-              '**限制：客户端实际接纳量与事件积压不同。** 追加前存在更多可靠事件积压、部分Ship弹尚未接纳；整合版客户端实际显示更多弹丸和命中特效。因此以上是相同服务器压力入口下的整版结果，不能作为相同客户端绘制工作量的纯算法加速倍数。', '',
+    lines += ['', '同进程一专服两客户端，600个移动单位、三来源总500枚服务器弹丸，每客户端32条采矿/建造光束及32个枪口/命中预览。每轮热身10秒、采集30秒，质量3、镜头与服务器人口保持，真实World/LocalPlayer和接纳活跃量已保存。CSV和Trace覆盖整个编辑器进程。', '',
               f'GPU平均 {a["GPUTime"]["mean_of_three_means"]:.2f} → {b["GPUTime"]["mean_of_three_means"]:.2f} ms（+{result["changes_percent"]["GPUTime"]:.1f}%）。启用GPU光束转移了工作且新版本实际命中特效量增加，不能将总GPU差异只归给光束。当前仍主要受GT限制。Frame P95没有改善，整帧流畅性目标尚未全部达到。', '',
               f'整进程物理工作集均值 {a["PhysicalUsedMB"]["mean_of_three_means"]:.0f} → {b["PhysicalUsedMB"]["mean_of_three_means"]:.0f} MB，虚拟使用 {a["VirtualUsedMB"]["mean_of_three_means"]:.0f} → {b["VirtualUsedMB"]["mean_of_three_means"]:.0f} MB。不同编辑器进程驻留时间、资产缓存及接纳特效量不同；原始值保留，不能据此直接认定数据池节省MB或出现内存泄漏。', '',
               '## 全部追加项已应用', '',
@@ -72,14 +71,13 @@ def build_results():
               '| Ship服务器漏点 | 目标目录维护类别索引，仅获取新鲜Wingman快照并复用工作数组，保留ProjectileMovement和原结算顺序。 |', '',
               '正式Excel管线切换ID36/45/5/52及池ID4/38，基础缩放保持。原80节点CPU及原碰撞副本保留供可播放比较，不覆盖商城资源。服务器碰撞/伤害及每批16条/1000字节可靠启停协议保持。', '',
               '## 分项证据与仍然耗时的原因', '',
-              '- Ship Actor Tick：同一窗口导出归一化约20.85 → 1.06ms/引擎帧；其中新Wingman快照Scope约0.50ms，已消除逐弹全目录扫描。',
               '- 两种光束GT系统独占约1.82 → 0.146ms/帧，当前真实8节点+无Spark碰撞+GPU组合收益，不归给Opaque单独变化。',
               '- 当前压力轨迹命中系统独占约7.96ms、Niagara组件约1.81ms，实际接纳的短寿命命中特效比追加前多。ProjectileMovement约3.15ms，Slate本地操作约2.52ms；同步等待单独记录，不当作可直接删除的业务CPU成本。',
               '- 避障查询三轮均值1.25/1.29/1.32ms，活动批次P95为1.85/1.95/1.99ms，满足本轮600单位预算。UI来源发现稳态0；每客户端Update约0.17–0.24ms，Paint约0.16–0.20ms。整版比较同时改变多项，不提供独立拆叶加速倍数。',
               '- 原16/8节点独立对照经回读发现主Beam实际80，旧节点降幅结论作废；现有四份CPU候选已修正并保存，组合版测量前已确认全部Beam RI为8。', '',
               '## 验证与玩家入口', '',
               '源码UE5.7 GuLiStrikeEditor Win64 Development构建成功，BuildId与源码引擎一致。已有优化回归21/21、Actor回退1/1、Ship查询回退3/3通过。采矿、施工暂停/恢复/完成，HUD空提交/F+2/重挂载，Ship控制/重生以及中途加入均有真实运行回读。', '',
-              'Map：`/Game/Maps/LVL_CommanderMassPrototype`。24个默认停用预览Actor、3个指南及1个观察相机；四个All入口为 `gs.Perf.Review start PR_Mining_All__Actor`、`PR_Construction_All__Actor`、`PR_Flash_AllMuzzle__Actor`、`PR_Flash_AllImpact__Actor`；`gs.Perf.Review stop`停止当前客户端全部预览。真实施工区域(15000,72000,902)，四来源区域(0,65000,902)，服务器 `gs.Flights.Load 500 45`。', '',
+              'Map：`/Game/Maps/LVL_CommanderMassPrototype`。24个默认停用预览Actor、3个指南及1个观察相机；四个All入口为 `gs.Perf.Review start PR_Mining_All__Actor`、`PR_Construction_All__Actor`、`PR_Flash_AllMuzzle__Actor`、`PR_Flash_AllImpact__Actor`；`gs.Perf.Review stop`停止当前客户端全部预览。真实施工区域(15000,72000,902)，三来源区域(0,65000,902)，服务器 `gs.Flights.Load 500 45`。', '',
               '[可播放开始/峰值/停止对照](visual-review/index.html) · [全部数据](whole-build-comparison.json) · [已有回归](final-tests/results.json) · [生命周期](runtime-lifecycle-final-review.json) · [正式引用](formal-reference-final-readback.json) · [保存地图实体](final-saved-scene-readback.json)', '',
               '本轮“直接应用所有优化”是正式接入授权；新8节点/GPU/去表现碰撞组合与先前视觉确认的80节点CPU/保留火花碰撞版本不同。技术验证、性能结果与玩家视觉确认分别记录，当前新组合的玩家视觉反馈待记录。']
     (OUT/'whole-build-results.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')

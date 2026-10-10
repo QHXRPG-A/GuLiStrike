@@ -1,5 +1,4 @@
 #include "Gameplay/CombatEffects/GuLiClientFlightPool.h"
-#include "Engine/World.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 
 void FGuLiClientFlightPool::BeginEpoch(const uint32 NewEpoch)
@@ -33,7 +32,7 @@ FGuLiClientFlightHandle FGuLiClientFlightPool::Acquire(const FGuLiFlightEvent& R
 	if (Slot.Generation > 1) ++ReusedAcquisitions;
 	Slot.Prediction = Recipe.State; Slot.PredictionTime = Recipe.State.SampleTime;
 	Slot.CurveCoefficients.Initialize(Recipe.State);
-	Slot.DisplayLocation = Recipe.State.Location; Slot.bStopped = false; Slot.Kind = Kind;
+	Slot.DisplayLocation = Recipe.State.Location; Slot.Kind = Kind;
 	Slot.ActiveIndex = Active[uint8(Kind)].Add(Index);
 	return {Index, Slot.Generation, Epoch};
 }
@@ -63,27 +62,27 @@ void FGuLiClientFlightPool::Release(const FGuLiClientFlightHandle Handle)
 }
 
 void FGuLiClientFlightPool::Advance(const FGuLiClientFlightHandle Handle, const FGuLiFlightEvent& Recipe,
-	UWorld* World, const AActor* IgnoreActor, const float ServerTime, const FVector* TargetPosition)
+	const float ServerTime, const FVector* TargetPosition)
 {
 	if (auto* Slot = Find(Handle))
 	{
 		const auto* Coefficients = GuLiCombatEffects::ShouldPrecomputeCurves() ? &Slot->CurveCoefficients : nullptr;
-		GuLiClientFlight::Advance(Slot->Prediction, Slot->PredictionTime, Slot->bStopped,
-			Recipe, World, IgnoreActor, ServerTime, TargetPosition, Coefficients);
+		GuLiClientFlight::Advance(Slot->Prediction, Slot->PredictionTime, Recipe, ServerTime, TargetPosition, Coefficients);
 		Slot->DisplayLocation = GuLiClientFlight::DisplayLocation(Slot->Prediction, Slot->PredictionTime,
-			Slot->bStopped, Recipe, ServerTime, Coefficients);
+			ServerTime, Coefficients);
 	}
 }
 
-void GuLiClientFlight::Advance(FGuLiCombatEffectState& Prediction, double& PredictionTime, bool& bStopped,
-	const FGuLiFlightEvent& Recipe, UWorld* World, const AActor* IgnoreActor,
-	const float ServerTime, const FVector* TargetPosition, const FGuLiProjectileCurveCoefficients* Coefficients)
+void GuLiClientFlight::Advance(FGuLiCombatEffectState& Prediction, double& PredictionTime,
+	const FGuLiFlightEvent& Recipe, const float ServerTime, const FVector* TargetPosition,
+	const FGuLiProjectileCurveCoefficients* Coefficients)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiClientFlightPrediction);
-	if (!Recipe.State.EffectId.IsValid() || bStopped) return;
+	if (!Recipe.State.EffectId.IsValid()) return;
 	const double Until = FMath::Min(double(ServerTime), double(Recipe.State.EndTime));
-	if (Recipe.ShipVisualClass.IsNull() && Prediction.Kind == EGuLiCombatEffectKind::LinearProjectile)
+	if (Prediction.Kind == EGuLiCombatEffectKind::LinearProjectile)
 	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiClientFlightPureLinear);
 		Prediction.Location = FVector(Recipe.State.LaunchLocation) + FVector(Recipe.State.Velocity)
 			* FMath::Max(0.0, Until - Recipe.State.StartTime);
 		PredictionTime = Until;
@@ -91,48 +90,24 @@ void GuLiClientFlight::Advance(FGuLiCombatEffectState& Prediction, double& Predi
 	else
 	{
 		if (TargetPosition && !Prediction.bFixedPoint) Prediction.LastTargetLocation = *TargetPosition;
-		while (PredictionTime + 1.0 / 30.0 <= Until + UE_SMALL_NUMBER && !bStopped)
+		while (PredictionTime + 1.0 / 30.0 <= Until + UE_SMALL_NUMBER)
 		{
+			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiClientFlightPureHoming);
 			const float Step = 1.f / 30.f;
 			PredictionTime += Step;
-			if (Recipe.ShipVisualClass.IsNull())
-				GuLiCombatEffects::AdvanceProjectile(Prediction, float(PredictionTime - Prediction.StartTime), Step, Coefficients);
-			else
-			{
-				const FVector Previous = Prediction.Location;
-				FVector Velocity = Prediction.Velocity;
-				Velocity.Z += Recipe.Gravity * Step;
-				if (Recipe.MaximumSpeed > 0) Velocity = Velocity.GetClampedToMaxSize(Recipe.MaximumSpeed);
-				FVector Next = Previous + Velocity * Step;
-				FHitResult Hit;
-				FCollisionQueryParams Query(SCENE_QUERY_STAT(GuLiLocalFlightBounce), false, IgnoreActor);
-				if (World && World->SweepSingleByObjectType(Hit, Previous, Next, FQuat::Identity,
-					FCollisionObjectQueryParams(ECC_WorldStatic),
-					FCollisionShape::MakeSphere(FMath::Max(1.f, Prediction.Motion.SweepRadius)), Query))
-				{
-					Next = Hit.Location + Hit.Normal * .5f;
-					if (Recipe.bBounce)
-					{
-						const FVector NormalPart = Hit.Normal * FVector::DotProduct(Velocity, Hit.Normal);
-						Velocity = (Velocity - NormalPart) * (1 - FMath::Clamp(Recipe.Friction, 0.f, 1.f))
-							- NormalPart * Recipe.Bounciness;
-						bStopped = Velocity.Size() < Recipe.StopSpeed;
-					}
-					else bStopped = true;
-				}
-				Prediction.Location = Next; Prediction.Velocity = Velocity;
-			}
+			GuLiCombatEffects::AdvanceProjectile(Prediction, float(PredictionTime - Prediction.StartTime), Step, Coefficients);
 		}
 	}
 	Prediction.SampleTime = PredictionTime;
 }
 
 FVector GuLiClientFlight::DisplayLocation(const FGuLiCombatEffectState& Prediction, const double PredictionTime,
-	const bool bStopped, const FGuLiFlightEvent& Recipe, const float ServerTime, const FGuLiProjectileCurveCoefficients* Coefficients)
+	const float ServerTime, const FGuLiProjectileCurveCoefficients* Coefficients)
 {
-	if (bStopped || (Prediction.Kind == EGuLiCombatEffectKind::LinearProjectile && Recipe.ShipVisualClass.IsNull())) return Prediction.Location;
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiClientFlightPureDisplay);
+	if (Prediction.Kind == EGuLiCombatEffectKind::LinearProjectile) return Prediction.Location;
 	const double Residual = FMath::Clamp(double(ServerTime) - PredictionTime, 0.0, 1.0 / 30.0);
-	if (Recipe.ShipVisualClass.IsNull() && ServerTime - Prediction.StartTime <= Prediction.Motion.LiftSeconds)
+	if (ServerTime - Prediction.StartTime <= Prediction.Motion.LiftSeconds)
 		return GuLiCombatEffects::LiftPosition(Prediction, FMath::Max(0.f, ServerTime - Prediction.StartTime), Coefficients);
 	return FVector(Prediction.Location) + FVector(Prediction.Velocity) * Residual;
 }

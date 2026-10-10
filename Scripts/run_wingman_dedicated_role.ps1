@@ -7,7 +7,6 @@ param(
         'S3C-AB',
         'S3C-BA',
         'S4-Idempotency-FireProposalReplay',
-        'S4-Idempotency-ProjectileOverlapReplay',
         'S4-Idempotency-Concurrent',
         'S6-CorrectionReverse',
         'S6-DeathBeforePose',

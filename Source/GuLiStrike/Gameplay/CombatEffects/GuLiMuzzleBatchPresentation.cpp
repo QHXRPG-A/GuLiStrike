@@ -124,10 +124,15 @@ void UGuLiMuzzleBatchPresentation::BeginFrame(uint64 Frame,double LocalSeconds,f
 	for (const int32 I:Pool.ActiveIndices())
 	{
 		auto& Slot=Slots[I]; FTransform Pose; float RenderTime=ServerSeconds; ++PoseQueries;
-		if (!Resolve(Slot.Cue,Pose,RenderTime) || Pose.ContainsNaN() || ServerSeconds-Slot.Cue.ServerTime>2)
-		{ ++Expired; Retired.Add(I); continue; }
+		const bool bPoseUnresolved = !Resolve(Slot.Cue,Pose,RenderTime) || Pose.ContainsNaN();
+		if (bPoseUnresolved || ServerSeconds-Slot.Cue.ServerTime>2)
+		{
+			++Expired;
+			if (bPoseUnresolved) ++PoseUnresolved; else ++TooOld;
+			Retired.Add(I); continue;
+		}
 		const float AuthAge=RenderTime-Slot.Cue.MechanicalPoseTimeSeconds;
-		if (!Slot.bAdmitted && AuthAge>0.20f) { ++Expired; Retired.Add(I); continue; }
+		if (!Slot.bAdmitted && AuthAge>0.20f) { ++Expired; ++AdmissionLate; Retired.Add(I); continue; }
 		if (!Pose.Equals(Slot.Pose)) { Slot.Pose=Pose; ++PoseRevision; }
 		Slot.Scale=GuLiVfx::Scale(this,GuLiVfxIds::GroundMachineGunMuzzle,
 			FVector(Slot.Cue.Source.Kind==EGuLiTargetKind::CommanderSoldier && Slot.Cue.UnitTypeId==2 ? 2.f : 1.f));

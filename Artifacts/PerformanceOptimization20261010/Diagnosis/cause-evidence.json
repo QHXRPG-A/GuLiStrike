@@ -1,0 +1,399 @@
+{
+  "scope": "Cause diagnosis only; original 198 valid formal windows and default-adoption decisions unchanged.",
+  "complete_diagnostic_windows": 18,
+  "frame_scope_deltas": [
+    {
+      "block": "AAA2",
+      "paths": [
+        "Artifacts\\PerformanceOptimization20261010\\Diagnosis\\Paired\\switchback-dense200-onscreen-AAA2-r1-baseline",
+        "Artifacts\\PerformanceOptimization20261010\\Diagnosis\\Paired\\switchback-dense200-onscreen-AAA2-r2-baseline",
+        "Artifacts\\PerformanceOptimization20261010\\Diagnosis\\Paired\\switchback-dense200-onscreen-AAA2-r3-baseline"
+      ],
+      "timers": {
+        "VehiclePresentation": {
+          "three_windows": [
+            {
+              "calls_per_frame": 32.75234521575985,
+              "inclusive_ms_per_frame": 0.4897523452157599,
+              "exclusive_ms_per_frame": 0.010118198874296436
+            },
+            {
+              "calls_per_frame": 83.05813953488372,
+              "inclusive_ms_per_frame": 1.232748062015504,
+              "exclusive_ms_per_frame": 0.02423255813953488
+            },
+            {
+              "calls_per_frame": 54.88512241054614,
+              "inclusive_ms_per_frame": 0.8291996233521658,
+              "exclusive_ms_per_frame": 0.01735216572504708
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 0.5732720777315412
+        },
+        "Slate::DrawWindows": {
+          "three_windows": [
+            {
+              "calls_per_frame": 1.00187617260788,
+              "inclusive_ms_per_frame": 7.121482176360225,
+              "exclusive_ms_per_frame": 0.08533208255159475
+            },
+            {
+              "calls_per_frame": 1.001937984496124,
+              "inclusive_ms_per_frame": 7.814178294573645,
+              "exclusive_ms_per_frame": 0.09745736434108526
+            },
+            {
+              "calls_per_frame": 1.0037664783427496,
+              "inclusive_ms_per_frame": 7.156273069679849,
+              "exclusive_ms_per_frame": 0.08686440677966102
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 0.6753006715536074
+        },
+        "GuLiSceneUI_Paint": {
+          "three_windows": [
+            {
+              "calls_per_frame": 8.01500938086304,
+              "inclusive_ms_per_frame": 2.2190562851782367,
+              "exclusive_ms_per_frame": 2.2190562851782367
+            },
+            {
+              "calls_per_frame": 8.015503875968992,
+              "inclusive_ms_per_frame": 2.328744186046512,
+              "exclusive_ms_per_frame": 2.328744186046512
+            },
+            {
+              "calls_per_frame": 8.018832391713747,
+              "inclusive_ms_per_frame": 2.161455743879473,
+              "exclusive_ms_per_frame": 2.161455743879473
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 0.13848817151765713
+        },
+        "UCharacterMovementComponent_TickComponent": {
+          "three_windows": [
+            {
+              "calls_per_frame": 102.25515947467167,
+              "inclusive_ms_per_frame": 1.6289324577861164,
+              "exclusive_ms_per_frame": 1.2454803001876174
+            },
+            {
+              "calls_per_frame": 102.32945736434108,
+              "inclusive_ms_per_frame": 2.3033313953488372,
+              "exclusive_ms_per_frame": 1.375577519379845
+            },
+            {
+              "calls_per_frame": 102.38418079096046,
+              "inclusive_ms_per_frame": 2.021177024482109,
+              "exclusive_ms_per_frame": 1.3654952919020715
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 0.47827665421472454
+        },
+        "DeferredRenderUpdates_GameThread": {
+          "three_windows": [
+            {
+              "calls_per_frame": 3.0056285178236397,
+              "inclusive_ms_per_frame": 1.0201651031894936,
+              "exclusive_ms_per_frame": 0.27248030018761726
+            },
+            {
+              "calls_per_frame": 3.005813953488372,
+              "inclusive_ms_per_frame": 1.0117674418604652,
+              "exclusive_ms_per_frame": 0.2577286821705426
+            },
+            {
+              "calls_per_frame": 3.0112994350282487,
+              "inclusive_ms_per_frame": 0.9716892655367232,
+              "exclusive_ms_per_frame": 0.2580922787193974
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 0.015840257497356847
+        },
+        "ProcessUntilTasksComplete": {
+          "three_windows": [
+            {
+              "calls_per_frame": 20.048780487804876,
+              "inclusive_ms_per_frame": 6.112688555347092,
+              "exclusive_ms_per_frame": 0.9207729831144466
+            },
+            {
+              "calls_per_frame": 20.063953488372093,
+              "inclusive_ms_per_frame": 6.375240310077519,
+              "exclusive_ms_per_frame": 1.0384922480620153
+            },
+            {
+              "calls_per_frame": 20.07532956685499,
+              "inclusive_ms_per_frame": 6.245634651600753,
+              "exclusive_ms_per_frame": 0.9535197740112994
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 0.19607870660359694
+        },
+        "WinPumpMessages": {
+          "three_windows": [
+            {
+              "calls_per_frame": 1.00375234521576,
+              "inclusive_ms_per_frame": 0.0030469043151969983,
+              "exclusive_ms_per_frame": 0.0030469043151969983
+            },
+            {
+              "calls_per_frame": 1.003875968992248,
+              "inclusive_ms_per_frame": 0.0030755813953488374,
+              "exclusive_ms_per_frame": 0.0030755813953488374
+            },
+            {
+              "calls_per_frame": 1.0037664783427496,
+              "inclusive_ms_per_frame": 0.0029962335216572504,
+              "exclusive_ms_per_frame": 0.0029962335216572504
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 5.401247692171304e-05
+        },
+        "GuLiCommanderMassStateTreeProcessor_0": {
+          "three_windows": [
+            {
+              "calls_per_frame": 0.2776735459662289,
+              "inclusive_ms_per_frame": 0.4354427767354596,
+              "exclusive_ms_per_frame": 0.4354427767354596
+            },
+            {
+              "calls_per_frame": 0.32751937984496127,
+              "inclusive_ms_per_frame": 0.43375193798449607,
+              "exclusive_ms_per_frame": 0.43375193798449607
+            },
+            {
+              "calls_per_frame": 0.2749529190207156,
+              "inclusive_ms_per_frame": 0.44045386064030134,
+              "exclusive_ms_per_frame": 0.44045386064030134
+            }
+          ],
+          "middle_minus_mean_flanks_ms": -0.004196380703384406
+        }
+      }
+    },
+    {
+      "block": "ABA2",
+      "paths": [
+        "Artifacts\\PerformanceOptimization20261010\\Diagnosis\\Paired\\switchback-dense200-onscreen-ABA2-r1-baseline",
+        "Artifacts\\PerformanceOptimization20261010\\Diagnosis\\Paired\\switchback-dense200-onscreen-ABA2-r2-combined",
+        "Artifacts\\PerformanceOptimization20261010\\Diagnosis\\Paired\\switchback-dense200-onscreen-ABA2-r3-baseline"
+      ],
+      "timers": {
+        "VehiclePresentation": {
+          "three_windows": [
+            {
+              "calls_per_frame": 36.518450184501845,
+              "inclusive_ms_per_frame": 0.5356051660516605,
+              "exclusive_ms_per_frame": 0.011297047970479705
+            },
+            {
+              "calls_per_frame": 81.40269749518305,
+              "inclusive_ms_per_frame": 1.1678959537572253,
+              "exclusive_ms_per_frame": 0.02326782273603083
+            },
+            {
+              "calls_per_frame": 55.10780669144982,
+              "inclusive_ms_per_frame": 0.8170278810408922,
+              "exclusive_ms_per_frame": 0.016408921933085505
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 0.49157943021094896
+        },
+        "Slate::DrawWindows": {
+          "three_windows": [
+            {
+              "calls_per_frame": 1.0018450184501846,
+              "inclusive_ms_per_frame": 6.899621771217712,
+              "exclusive_ms_per_frame": 0.08001476014760146
+            },
+            {
+              "calls_per_frame": 1.001926782273603,
+              "inclusive_ms_per_frame": 7.691005780346821,
+              "exclusive_ms_per_frame": 0.0985606936416185
+            },
+            {
+              "calls_per_frame": 1.0018587360594795,
+              "inclusive_ms_per_frame": 7.029557620817844,
+              "exclusive_ms_per_frame": 0.08452788104089219
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 0.7264160843290428
+        },
+        "GuLiSceneUI_Paint": {
+          "three_windows": [
+            {
+              "calls_per_frame": 8.014760147601477,
+              "inclusive_ms_per_frame": 2.1883837638376384,
+              "exclusive_ms_per_frame": 2.1883837638376384
+            },
+            {
+              "calls_per_frame": 8.015414258188825,
+              "inclusive_ms_per_frame": 2.3933063583815026,
+              "exclusive_ms_per_frame": 2.3933063583815026
+            },
+            {
+              "calls_per_frame": 8.014869888475836,
+              "inclusive_ms_per_frame": 2.17778624535316,
+              "exclusive_ms_per_frame": 2.17778624535316
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 0.21022135378610374
+        },
+        "UCharacterMovementComponent_TickComponent": {
+          "three_windows": [
+            {
+              "calls_per_frame": 102.37638376383764,
+              "inclusive_ms_per_frame": 1.689828413284133,
+              "exclusive_ms_per_frame": 1.2665590405904057
+            },
+            {
+              "calls_per_frame": 102.39306358381504,
+              "inclusive_ms_per_frame": 2.242447013487476,
+              "exclusive_ms_per_frame": 1.3619672447013487
+            },
+            {
+              "calls_per_frame": 102.25278810408922,
+              "inclusive_ms_per_frame": 1.9837862453531598,
+              "exclusive_ms_per_frame": 1.3447936802973979
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 0.40563968416882945
+        },
+        "DeferredRenderUpdates_GameThread": {
+          "three_windows": [
+            {
+              "calls_per_frame": 3.0055350553505535,
+              "inclusive_ms_per_frame": 1.011051660516605,
+              "exclusive_ms_per_frame": 0.2655793357933579
+            },
+            {
+              "calls_per_frame": 3.0115606936416186,
+              "inclusive_ms_per_frame": 1.0177822736030828,
+              "exclusive_ms_per_frame": 0.2581868978805395
+            },
+            {
+              "calls_per_frame": 3.0055762081784385,
+              "inclusive_ms_per_frame": 0.964197026022305,
+              "exclusive_ms_per_frame": 0.2532973977695167
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 0.03015793033362779
+        },
+        "ProcessUntilTasksComplete": {
+          "three_windows": [
+            {
+              "calls_per_frame": 20.068265682656826,
+              "inclusive_ms_per_frame": 6.137761992619926,
+              "exclusive_ms_per_frame": 0.9181771217712177
+            },
+            {
+              "calls_per_frame": 20.077071290944122,
+              "inclusive_ms_per_frame": 6.41509633911368,
+              "exclusive_ms_per_frame": 1.035631984585742
+            },
+            {
+              "calls_per_frame": 20.044609665427508,
+              "inclusive_ms_per_frame": 6.164210037174722,
+              "exclusive_ms_per_frame": 0.9364832713754647
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 0.2641103242163565
+        },
+        "WinPumpMessages": {
+          "three_windows": [
+            {
+              "calls_per_frame": 1.003690036900369,
+              "inclusive_ms_per_frame": 0.0028690036900369,
+              "exclusive_ms_per_frame": 0.0028690036900369
+            },
+            {
+              "calls_per_frame": 1.0038535645472062,
+              "inclusive_ms_per_frame": 0.00289980732177264,
+              "exclusive_ms_per_frame": 0.00289980732177264
+            },
+            {
+              "calls_per_frame": 1.003717472118959,
+              "inclusive_ms_per_frame": 0.0028438661710037173,
+              "exclusive_ms_per_frame": 0.0028438661710037173
+            }
+          ],
+          "middle_minus_mean_flanks_ms": 4.337239125233117e-05
+        },
+        "GuLiCommanderMassStateTreeProcessor_0": {
+          "three_windows": [
+            {
+              "calls_per_frame": 0.27490774907749077,
+              "inclusive_ms_per_frame": 0.43705350553505534,
+              "exclusive_ms_per_frame": 0.43705350553505534
+            },
+            {
+              "calls_per_frame": 0.3236994219653179,
+              "inclusive_ms_per_frame": 0.3826917148362235,
+              "exclusive_ms_per_frame": 0.3826917148362235
+            },
+            {
+              "calls_per_frame": 0.2825278810408922,
+              "inclusive_ms_per_frame": 0.43563382899628256,
+              "exclusive_ms_per_frame": 0.43563382899628256
+            }
+          ],
+          "middle_minus_mean_flanks_ms": -0.05365195242944548
+        }
+      }
+    }
+  ],
+  "ambient_actor_inventory": [
+    {
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "time_seconds": 34.278205901384354,
+      "mining_vehicles": 16,
+      "construction_vehicles": 18
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "time_seconds": 33.00864949077368,
+      "mining_vehicles": 16,
+      "construction_vehicles": 18
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "time_seconds": 32.49116180092096,
+      "mining_vehicles": 16,
+      "construction_vehicles": 18
+    }
+  ],
+  "network": {
+    "server_connection_mean_KBps_range": [
+      71.18862432547176,
+      86.02823967341091
+    ],
+    "budgets": [
+      250000
+    ],
+    "flight_budget_block_fraction_max": 0.0,
+    "flight_batch_cap_fraction_max": 0.19601328903654486,
+    "flight_head_end_ms_max": 0,
+    "flight_queue_growth_events_per_second_range": [
+      -11.06587590250223,
+      0.0
+    ],
+    "queue_conservation_error_max": 0,
+    "loss_rates_max": 0.0
+  },
+  "capture_errors": [],
+  "build4_native_source_hashes_still_match": true,
+  "native_source_mismatches": [],
+  "production_configs_unchanged": true,
+  "controls_restored_exactly": true,
+  "end_worlds": {
+    "success": true,
+    "pie_worlds": 0
+  },
+  "notes": [
+    "VehiclePresentation is an inclusive child of CharacterMovement; do not add both.",
+    "Slate DrawWindows includes SceneUI Paint; do not add both.",
+    "Scope deltas above use equal flanks for readability; analysis.json uses measured time interpolation.",
+    "The transform peak is reproduced in AAA with all optimization flags off. This proves a confound, not a complete causal explanation for all previous P95 differences."
+  ]
+}

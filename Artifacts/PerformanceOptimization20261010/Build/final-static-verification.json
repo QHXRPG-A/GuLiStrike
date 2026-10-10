@@ -1,0 +1,63 @@
+{
+  "checked_at": "2026-10-10T21:50:05.175093+08:00",
+  "build_manifest": "verification-build4.json",
+  "source_files_verified": 27,
+  "source_mismatches": [],
+  "source_matches_built_revision": true,
+  "source_hashes": {
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderMassStateTreeProcessor.cpp": "cf721ce531d8e103f69cf1c2d5259c9ff154f877bab5d92de9c253b25587a1a9",
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeComponent.cpp": "7e7c3f404c1e8f62cc37ec2f2ef0f3f0e351f32cb39613903c847ac4d3e5daa0",
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeNodes.cpp": "406eea0289420d0fa1c917a6a4a202ea957a14b5f5c3695e9c5e2d7909a6a59f",
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h": "5fc543baada9d227d6509d30bdb9323be83d3ceca0c6b12ca3e0388825b50e7e",
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderStateDispatch.cpp": "3ce31edee831a7e56c6dfe6689804073d3e3949749e306a841ead4685aad9f58",
+    "Source/GuLiStrike/Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.cpp": "ef14dba6b71b1b8d5d6ac9b2541d88a084030a153fae434a31cf4fa56225a0d4",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.cpp": "eb08971d092653d4c8bbce67793d5712c63294ff1e02c5b12764080a61dc7284",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h": "4d6d04c342572bc82f626b3d7aa948a9f49f5400fa33153306469f868c8ecb39",
+    "Source/GuLiStrike/Commander/Network/GuLiCommanderStateStream.h": "e9af732e9a7bec60dbfff1c41ed299b6b9086b1642caf5e48ce033026c2e6e3a",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskOperations.cpp": "a90e68d66c02bca4e8478290c8225b09ef0f92171772f0e6d2f75e70431a68b0",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.cpp": "b69df4857156772fcaa7417e3bf686e15f7b48aabeb3a6b3ab1c75bd1bcda525",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.h": "6f4075e2ab373ce25e80a34e3026922170aad902c380e4b9b95c6db50d0b185d",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp": "9ea5687fb3990bdd953a6be6029f5e1d93fdcf510e1367e26736dc3a6042b927",
+    "Source/GuLiStrike/Commander/UI/GuLiSceneUIWidget.cpp": "a3e64f6dd5e6bdfe69e41045031062b99a7e481ec3f25e680524767978df331c",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiClientFlightPool.cpp": "92d4f5fb7af57e0c719b79f23e70b047d0d085a84493f16c71b6b3e4e767b9cf",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h": "2331484014a07bf8b3be89e020a4fae30d313b38d7f8f84e93f0c61bdd18aea8",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiFlightReplication.cpp": "235230b796a092de70ea8f4e196ad41c6179e37f6e75069d2037311d0bb9ef2b",
+    "Source/GuLiStrike/Gameplay/Performance/GuLiPerformanceSubsystem.cpp": "531f6bb8fd00d1c6b6d7f4c79de0ec069c78424102c1cc5c87d9069ffa1f1909",
+    "Source/GuLiStrike/Gameplay/Performance/GuLiPerformanceSubsystem.h": "2ae6401d2360dd00b9049c286484e6132ed60ab7f3659d5eba3577d699245497",
+    "Source/GuLiStrike/Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.cpp": "1f11e3cf4b90bd3b1ab148c0a4e0ec09ff658e44b0031db4d03fde48b985cd41",
+    "Source/GuLiStrike/Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.h": "45fbb4b393c4c370bf8aa58544d99b06fa86fd3255aa63da8c48ebe8e75cde8b",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskReadSnapshot.cpp": "cfbe7cfe52fa6e97beb1eddfe6e8d4f124c6745eabfab111c316b253d8b0ce5c",
+    "Source/GuLiStrike/Gameplay/Performance/GuLiPerformanceNetworkCapture.cpp": "5c78360700fb622d235635df58044c4fca227c8a94af2debf0bbe8275a1ffc00",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h": "f27d7ee8c3146f031cc1d23368e0ab89a4a9d371d271ac70dd591a7757527b24",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMuzzleBatchPresentation.h": "b647f5899c388ae84202f8c70b48131add9d7fea756117e0b1385e7678b241ad",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMuzzleBatchPresentation.cpp": "b34be83da094ff9950c0d30237bfd0fcc9a6344cd71159e4278b5aa9c80accf9",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp": "7353ed5d1ec88b4e916cdb21ca9c7155a2de915ce391b127d7b38eb80fe074da"
+  },
+  "module_build_ids": {
+    "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\GuLiMapAuthoring\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\Tripo3DUEBridge-UE5.7-Win64\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\UnrealMCP\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\UnrealMCPython\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\VibeUE\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+  },
+  "module_build_ids_match": true,
+  "candidate_source_defaults": {
+    "gs.StateTree.GroupIndex": 0,
+    "gs.StateTree.ConditionSnapshot": 0,
+    "gs.SceneUI.ParallelGeometry": 0,
+    "gs.Avoidance.ParallelCandidates": 0
+  },
+  "python_scripts_compiled": [
+    "run_muzzle_batch_review.py",
+    "run_snapshot_parallel_review.py",
+    "analyze_snapshot_parallel_review.py",
+    "render_snapshot_parallel_report.py",
+    "author_snapshot_review_entry.py"
+  ],
+  "diff_check_exit_code": 0,
+  "diff_check_stdout": "",
+  "production_config_changes": []
+}

@@ -4,13 +4,19 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-10-11 | [会话变更编译、地图收尾与临时文件清理](../Archive/20261011-会话变更编译地图收尾与临时文件清理.md) | commander, navigation, combat, presentation, performance | partial | 用户授权后源码Editor构建退出0，8份BuildId一致；原地图遗留对象与说明清理并保存读回，66个临时文件约268 MB已删除。未追加PIE或效果验收。 |
+| 2026-10-11 | [地面避障容量耗尽导致专服退出的诊断与调整](../Archive/20261011-地面避障容量耗尽导致专服退出的诊断与调整.md) | commander, navigation, performance | partial | 专服新增Mass障碍时耗尽共享Crowd的1024个注册槽，触发致命断言；配置及原生默认提高至8192，未重跑验证。 |
+| 2026-10-10 | [遗留发射路径清理与地图保存阻塞恢复](../Archive/20261010-遗留发射路径清理与地图保存阻塞恢复.md) | ship, combat, network, performance | partial | 遗留发射实现、绑定资产和文本已清理；关闭任务启动的额外编辑器后，原地图保存及客户端PIE入口恢复。 |
+| 2026-10-10 | [未通过性能候选回退与CPU及GPU瓶颈核对](../Archive/20261010-未通过性能候选回退与CPU及GPU瓶颈核对.md) | presentation, combat, ui, performance | partial | 按用户决定移除四项未通过的新候选和共用重构，保留网络观测及此前已采用优化；源码构建成功、地图入口更新，原始CPU/GPU计时补成不重复的游戏线程账目。 |
+| 2026-10-10 | [组合P95同局切换与车辆负载混杂定位](../Archive/20261010-组合P95同局切换与车辆负载混杂定位.md) | presentation, combat, ui, performance | partial | 新增18段同局ABA/BAB/AAA诊断，确认200单位之外的车辆模型变换阶段峰值在全关时也出现；目标查询仍变快，剩余Slate和线程调度原因未锁定，四项默认关闭。 |
+| 2026-10-10 | [快照性能优化实施、网络采样与采用判定](../Archive/20261010-快照性能优化实施网络采样与采用判定.md) | presentation, combat, ui, performance | partial | 完成原生网络采样、四项候选与源码build4，保留211份完整捕获及198份有效正式窗口；四项新候选均未通过完整默认采用门槛，旧优化保持开启。原地图入口已保存读回，设置恢复且编辑器关闭。 |
 | 2026-10-10 | [PIE性能基线、多线程方案与会话临时文件清理](../Archive/20261010-PIE性能基线多线程方案与会话清理.md) | presentation, combat, ui, performance | partial | 新增性能基线与快照多线程需求/开发文档，保存18份配对统计、屏外计数和技术/视觉证据；核验后清理2377个临时文件约21.466 GiB。并行实现与大规模屏外收益尚未验证。 |
 | 2026-10-10 | [网络指标HUD仅编译交付](../Archive/20261010-网络指标HUD仅编译交付.md) | commander, ui, performance | partial | 用户授权仅编译；网络HUD源码Editor构建成功，8份模块BuildId一致，保存地图并关闭占用DLL的编辑器后未重新打开。 |
 | 2026-10-10 | [客户端表现专属技能与枪口批量化交付](../Archive/20261010-客户端表现专属技能与枪口批量化交付.md) | presentation, combat, vfx, performance | partial | 新建项目客户端表现技能，ID52三档CPU批量资源及默认2正式接入。14项相关技术检查和18份CPU窗口完成，200单位26.4至34.0FPS；压力真实枪口因上游积压未接纳，收益未证实，玩家视觉待验。 |
 | 2026-10-10 | [左上角网络指标与飞行事件积压显示](../Archive/20261010-左上角网络指标与飞行事件积压显示.md) | commander, ui, performance | partial | 现有HUD增加每秒客户端连接流量、可靠待确认和飞行事件队列数据；240行文本表及原地图说明入口已保存读回，用户决定稍后统一编译。 |
 | 2026-10-10 | [约200单位移动交火与场景UI性能截帧](../Archive/20261010-约200单位移动交火与场景UI性能截帧.md) | performance, ui, combat, vfx, commander | partial | 约200单位移动交火补采30秒，整帧40.61ms、GPU16.31ms；Client1场景UI约1.6ms CPU、描边截帧2.22ms GPU。最差GT69.69ms中战斗表现集中更新26.32ms，枪口Niagara为主要长帧来源。 |
 | 2026-10-10 | [Slate分窗Prepass布局与绘制补采](../Archive/20261010-Slate分窗Prepass布局与绘制补采.md) | performance, ui | partial | 源码版Live Coding加载编辑器诊断后完成双客户端30秒分窗补采。编辑器主窗口扣除Client1视口为2.141ms，Client1与Client2视口UI为1.053与1.138ms，Slate合计4.791ms；编辑器占Slate约45%，占本次GT约8%。 |
-| 2026-10-10 | [车辆CharacterMovement与飞船僚机移动开销拆分](../Archive/20261010-车辆CharacterMovement与飞船僚机移动开销拆分.md) | performance, combat, wingman, presentation | partial | 复用无飞船实战及旧飞船压力Trace；当前车辆CharacterMovement平均2.088ms，三World每帧102次。僚机使用自定义Pawn运动而无CharacterMovement；旧服务器Ship弹丸物理移动平均3.889ms、P95为8.688ms。 |
+| 2026-10-10 | [车辆CharacterMovement与飞船僚机移动开销拆分](../Archive/20261010-车辆CharacterMovement与飞船僚机移动开销拆分.md) | performance, combat, wingman, presentation | partial | 剩余飞行物与表现管线记录；旧独立投射路径描述已清理。 |
 | 2026-10-10 | [Slate物理窗口与客户端游戏UI耗时拆分](../Archive/20261010-Slate物理窗口与客户端游戏UI耗时拆分.md) | performance, ui | partial | 复用Client1实战30秒Trace并按902完整帧拆分绘制。编辑器主窗口扣除Client1视口为1.138ms，Client1/2游戏UI为0.965/0.690ms；1.962ms布局Prepass缺少分窗计时，不能认定大部分Slate耗时属于编辑器。 |
 | 2026-10-10 | [服务器StateTree条件查询与集中调度瓶颈分析](../Archive/20261010-服务器StateTree条件查询与集中调度瓶颈分析.md) | performance, commander | partial | 复用实战30秒Trace与CSV，Mass StateTree摊销1.558ms/引擎帧，执行帧平均5.447ms、P95 7.034ms；条件检查占已记录内部成本61.64%，发现重复事实读取和推进组线性查找。 |
 | 2026-10-10 | [Client1实战PIE截帧与游戏线程瓶颈分析](../Archive/20261010-Client1实战PIE截帧与游戏线程瓶颈分析.md) | performance, commander, combat, presentation, ui, vfx | partial | 解除用户现有PIE调试暂停并采集Client1所在进程30秒；平均30.11FPS，GT33.18ms、GPU12.97ms。主要成本为同进程服务器/双客户端Tick与Slate，慢帧包含StateTree峰值和渲染资源分配等待。 |
@@ -59,7 +65,7 @@
 | 2026-10-04 | [原型Map双编辑器文件占用解除](../Archive/20261004-原型Map双编辑器文件占用解除.md) | commander, ui | partial | 玩家PIE被导航保存门禁取消，查明任务重开实例锁住Map；正常退出空闲干净的重复实例后文件锁释放，保留玩家编辑器及新DLL。 |
 | 2026-10-04 | [绿色引导线地形遮挡修复编译加载](../Archive/20261004-绿色引导线地形遮挡修复编译加载.md) | commander, ui | partial | 用户回复编译后，源码Editor目标构建退出0，8份BuildId一致，新DLL及覆盖材质配置已加载；跨坡实体回读通过，实际显示待玩家确认。 |
 | 2026-10-04 | [绿色引导线地形遮挡修复静态交付](../Archive/20261004-绿色引导线地形遮挡修复静态交付.md) | commander, ui | partial | 玩家截图确认坡地遮挡后改接禁用深度测试的独立材质；静态检查及原型Map跨坡说明、观察实体保存回读通过，新原生代码尚未编译。 |
-| 2026-10-04 | [飞行物启停同步与实际时间预算实施验收](../Archive/20261004-飞行物启停同步与实际时间预算实施验收.md) | commander, combat, network, ship, wingman, performance | partial | 实际时间连接预算和四来源飞行启停通道已编译重载，500枚峰值、补建、池回收及17项回归通过；完整性能目标保留待验证。 |
+| 2026-10-04 | [飞行物启停同步与实际时间预算实施验收](../Archive/20261004-飞行物启停同步与实际时间预算实施验收.md) | commander, combat, network, ship, wingman, performance | partial | 实际时间连接预算和历史混合来源飞行启停通道已编译重载，500枚峰值、补建、池回收及17项回归通过；完整性能目标保留待验证。 |
 | 2026-10-03 | [当前PIE网络预算与全场单位延迟诊断](../Archive/20261003-当前PIE网络预算与全场单位延迟诊断.md) | commander, network, combat, performance | partial | 当前专服加双客户端PIE采样确认状态姿态发送积压，地面弹丸快照占53.4%下行；120Hz预算截断与35Hz实际运行高度吻合，未实施修复或单变量复测。 |
 | 2026-10-03 | [绿色引导线源码Editor编译加载](../Archive/20261003-绿色引导线源码Editor编译加载.md) | commander, ui | partial | 用户授权后源码Editor目标构建退出0，8份BuildId一致；重开编辑器确认新GuLiStrike DLL及原型Map的5个验收实体，运行效果待玩家确认。 |
 | 2026-10-03 | [绿色引导线模型中心实时连接交付](../Archive/20261003-绿色引导线模型中心实时连接交付.md) | commander, ui | partial | 活动绿线新增模型中心逐帧跟随与缺失表现恢复，静态检查及原型Map的5个实体保存回读通过；编译和玩家效果验收尚未执行。 |

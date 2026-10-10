@@ -1,0 +1,21 @@
+{
+	"passed": false,
+	"checks":
+	{
+		"oldest_available_site_selected_before_nearer_new_site": false,
+		"creation_order_does_not_reserve_a_position": false,
+		"unreachable_site_rejected": true,
+		"enemy_site_rejected": true
+	},
+	"stage": 1,
+	"fixture": "authored map; test vehicles teleported between work boundaries; cargo/rates set only by opt-in probe; production scheduler and business components",
+	"errors": [
+		"oldest_available_site_selected_before_nearer_new_site",
+		"creation_order_does_not_reserve_a_position",
+		"fixture site unreachable"
+	],
+	"miner_state": 0,
+	"cargo": 0,
+	"builder_error": "",
+	"builder_location": "X=19714.285 Y=51428.570 Z=1032.127"
+}

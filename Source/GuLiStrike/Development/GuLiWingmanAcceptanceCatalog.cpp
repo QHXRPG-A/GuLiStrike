@@ -120,8 +120,6 @@ const TArray<FGuLiWingmanAcceptanceRoleDefinition>& FGuLiWingmanAcceptanceCatalo
 			TEXT("COMBAT_BARRIER_RELEASE_BA"), TEXT("MIRRORED_LEDGER_SINGLE_COMMIT")}),
 		Role(TEXT("S4-Idempotency-FireProposalReplay"), {
 			TEXT("FIRE_PROPOSAL_REPLAY_SINGLE_COMMIT")}),
-		Role(TEXT("S4-Idempotency-ProjectileOverlapReplay"), {
-			TEXT("PROJECTILE_OVERLAP_REPLAY_SINGLE_COMMIT")}),
 		Role(TEXT("S4-Idempotency-Concurrent"), {
 			TEXT("CONCURRENT_DUPLICATE_SINGLE_COMMIT")}),
 		Role(TEXT("S6-CorrectionReverse"), {

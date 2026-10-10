@@ -1,4 +1,4 @@
-﻿Log file open, 10/04/26 01:36:09
+Log file open, 10/04/26 01:36:09
 LogWindows: Failed to load 'aqProf.dll' (GetLastError=126)
 LogWindows: File 'aqProf.dll' does not exist
 LogProfilingDebugging: Loading WinPixEventRuntime.dll for PIX profiling (from ../../../Engine/Binaries/ThirdParty/Windows/WinPixEventRuntime/x64).
@@ -1686,8 +1686,6 @@ FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carin
   Either change the default mode to 'custom' or check the input pins in the parameter map get node in the graph.
 [2026.10.03-17.36.45:761][395]LogNiagaraEditor: Niagara graph NiagaraGraph /Niagara/Modules/Update/Material/DynamicMaterialParameters.DynamicMaterialParameters:NiagaraScriptSource_3.NiagaraGraph_0: The default value declaration for the variable 'Module.Index1Float3Write' is not consistent between the graph and the metadata.
   Either change the default mode to 'custom' or check the input pins in the parameter map get node in the graph.
-[2026.10.03-17.37.18:616][334]Cmd: Automation RunTests GuLiStrike.Combat.ShipProjectile.
-[2026.10.03-17.37.18:616][334]Automation: RunTests='GuLiStrike.Combat.ShipProjectile.' Queued.
 [2026.10.03-17.37.18:635][334]LogEngineAutomationLatentCommand: FWaitForInteractiveFrameRate: Starting wait for framerate of >= 10 FPS
 [2026.10.03-17.37.23:697][630]LogEngineAutomationLatentCommand: FWaitForInteractiveFrameRate: Hit 45.44 FPS for 5 seconds after 5 seconds of waiting
 [2026.10.03-17.37.23:697][630]LogAutomationCommandLine: Display: Ready to start automation
@@ -1698,17 +1696,12 @@ FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carin
 [2026.10.03-17.37.28:756][925]LogAutomationWorker: Set 5241 tests to 9A8396DE4600F1737F8310BCBD33D073
 [2026.10.03-17.37.28:756][925]LogAutomationController: Received RequestTestsReplyCompleteMessage from DA5BAA4A40725269F85AA38455F1E8A7
 [2026.10.03-17.37.28:758][925]LogAutomationController: 5241 tests available on DA5BAA4A40725269F85AA38455F1E8A7
-[2026.10.03-17.37.28:777][925]LogAutomationCommandLine: Display: Found 3 automation tests based on 'GuLiStrike.Combat.ShipProjectile.'
-[2026.10.03-17.37.28:777][925]LogAutomationCommandLine: Display: 	GuLiStrike.Combat.ShipProjectile.AcceptedWingmanSegmentSphereSweep
-[2026.10.03-17.37.28:777][925]LogAutomationCommandLine: Display: 	GuLiStrike.Combat.ShipProjectile.AuthorityAndRuleRejections
-[2026.10.03-17.37.28:777][925]LogAutomationCommandLine: Display: 	GuLiStrike.Combat.ShipProjectile.UnifiedTargetAndIdempotentLedger
 [2026.10.03-17.37.28:777][925]LogAutomationController: Sending StopTests to DA5BAA4A40725269F85AA38455F1E8A7
 [2026.10.03-17.37.28:777][925]LogAutomationController: Sending StopTestSession to DA5BAA4A40725269F85AA38455F1E8A7
 [2026.10.03-17.37.28:779][925]LogAutomationController: Sending StartTestSession to DA5BAA4A40725269F85AA38455F1E8A7
 [2026.10.03-17.37.28:779][925]LogAutomationController: Display: Clearing ../../../../UE5.7/test1/Saved/Automation/Logs/ and ../../../../UE5.7/test1/Saved/Automation/Tmp/
 [2026.10.03-17.37.28:779][925]AutomationTestingLog: -----Test Run 6----
 [2026.10.03-17.37.28:780][925]LogAutomationController: Sending RunTest AcceptedWingmanSegmentSphereSweep to DA5BAA4A40725269F85AA38455F1E8A7
-[2026.10.03-17.37.28:780][925]LogAutomationController: Display: Test Started. Name={AcceptedWingmanSegmentSphereSweep} Path={GuLiStrike.Combat.ShipProjectile.AcceptedWingmanSegmentSphereSweep}
 [2026.10.03-17.37.28:786][926]LogAutomationWorker: Received StopTests from 9A8396DE4600F1737F8310BCBD33D073
 [2026.10.03-17.37.28:786][926]LogAutomationWorker: Received StopTestSession from 9A8396DE4600F1737F8310BCBD33D073
 [2026.10.03-17.37.28:786][926]LogAutomationWorker: Received StartTestSession from 9A8396DE4600F1737F8310BCBD33D073
@@ -1716,27 +1709,16 @@ FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carin
 [2026.10.03-17.37.28:787][926]LogChaosDD: Creating Chaos Debug Draw Scene for world Untitled
 [2026.10.03-17.37.28:796][926]LogWorld: UWorld::CleanupWorld for Untitled, bSessionEnded=true, bCleanupResources=true
 [2026.10.03-17.37.28:796][926]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
-[2026.10.03-17.37.28:803][927]LogAutomationController: Display: Test Completed. Result={成功} Name={AcceptedWingmanSegmentSphereSweep} Path={GuLiStrike.Combat.ShipProjectile.AcceptedWingmanSegmentSphereSweep}
-[2026.10.03-17.37.28:803][927]LogAutomationController: BeginEvents: GuLiStrike.Combat.ShipProjectile.AcceptedWingmanSegmentSphereSweep
-[2026.10.03-17.37.28:803][927]LogAutomationController: EndEvents: GuLiStrike.Combat.ShipProjectile.AcceptedWingmanSegmentSphereSweep
 [2026.10.03-17.37.28:804][927]LogAutomationController: Sending RunTest AuthorityAndRuleRejections to DA5BAA4A40725269F85AA38455F1E8A7
-[2026.10.03-17.37.28:805][928]LogAutomationController: Display: Test Started. Name={AuthorityAndRuleRejections} Path={GuLiStrike.Combat.ShipProjectile.AuthorityAndRuleRejections}
 [2026.10.03-17.37.28:811][928]LogAutomationWorker: Received RunTests AuthorityAndRuleRejections from 9A8396DE4600F1737F8310BCBD33D073
 [2026.10.03-17.37.28:812][928]LogChaosDD: Creating Chaos Debug Draw Scene for world Untitled
 [2026.10.03-17.37.28:843][928]LogWorld: UWorld::CleanupWorld for Untitled, bSessionEnded=true, bCleanupResources=true
 [2026.10.03-17.37.28:844][928]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
-[2026.10.03-17.37.28:851][929]LogAutomationController: Display: Test Completed. Result={成功} Name={AuthorityAndRuleRejections} Path={GuLiStrike.Combat.ShipProjectile.AuthorityAndRuleRejections}
-[2026.10.03-17.37.28:851][929]LogAutomationController: BeginEvents: GuLiStrike.Combat.ShipProjectile.AuthorityAndRuleRejections
-[2026.10.03-17.37.28:851][929]LogAutomationController: EndEvents: GuLiStrike.Combat.ShipProjectile.AuthorityAndRuleRejections
 [2026.10.03-17.37.28:852][929]LogAutomationController: Sending RunTest UnifiedTargetAndIdempotentLedger to DA5BAA4A40725269F85AA38455F1E8A7
-[2026.10.03-17.37.28:852][929]LogAutomationController: Display: Test Started. Name={UnifiedTargetAndIdempotentLedger} Path={GuLiStrike.Combat.ShipProjectile.UnifiedTargetAndIdempotentLedger}
 [2026.10.03-17.37.28:859][930]LogAutomationWorker: Received RunTests UnifiedTargetAndIdempotentLedger from 9A8396DE4600F1737F8310BCBD33D073
 [2026.10.03-17.37.28:860][930]LogChaosDD: Creating Chaos Debug Draw Scene for world Untitled
 [2026.10.03-17.37.28:889][930]LogWorld: UWorld::CleanupWorld for Untitled, bSessionEnded=true, bCleanupResources=true
 [2026.10.03-17.37.28:889][930]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
-[2026.10.03-17.37.28:896][931]LogAutomationController: Display: Test Completed. Result={成功} Name={UnifiedTargetAndIdempotentLedger} Path={GuLiStrike.Combat.ShipProjectile.UnifiedTargetAndIdempotentLedger}
-[2026.10.03-17.37.28:896][931]LogAutomationController: BeginEvents: GuLiStrike.Combat.ShipProjectile.UnifiedTargetAndIdempotentLedger
-[2026.10.03-17.37.28:896][931]LogAutomationController: EndEvents: GuLiStrike.Combat.ShipProjectile.UnifiedTargetAndIdempotentLedger
 [2026.10.03-17.37.28:897][931]LogAutomationController: Sending StopTestSession to DA5BAA4A40725269F85AA38455F1E8A7
 [2026.10.03-17.37.28:897][932]LogAutomationCommandLine: Display: ...Automation Test Queue Empty 3 tests performed.
 [2026.10.03-17.37.28:904][932]LogAutomationWorker: Received StopTestSession from 9A8396DE4600F1737F8310BCBD33D073

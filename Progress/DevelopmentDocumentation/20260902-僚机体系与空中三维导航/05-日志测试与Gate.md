@@ -162,7 +162,6 @@ Fire序列另必须记录`FIRE_DEDUPE_HIT, FIRE_SEQUENCE_RESERVED, FIRE_REJECTED
 | S3C-AB | Wingman互射AB消息顺序 |
 | S3C-BA | Wingman互射BA消息顺序 |
 | S4-Idempotency-FireProposalReplay | FireIntent重复 |
-| S4-Idempotency-ProjectileOverlapReplay | ProjectileOverlap重复 |
 | S4-Idempotency-Concurrent | 并发重复 |
 | S6-CorrectionReverse | Rebase乱序 |
 | S6-DeathBeforePose | Death覆盖晚到Accepted Pose |

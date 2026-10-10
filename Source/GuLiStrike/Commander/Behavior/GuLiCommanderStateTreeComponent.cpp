@@ -2,6 +2,7 @@
 #include "Commander/Behavior/GuLiCommanderBehaviorSchema.h"
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Engine/World.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 
 UGuLiCommanderStateTreeComponent::UGuLiCommanderStateTreeComponent()
 {
@@ -27,6 +28,7 @@ void UGuLiCommanderStateTreeComponent::Configure(FGuLiTaskUnitId InUnit, UStateT
 void UGuLiCommanderStateTreeComponent::AdvanceBehavior(float DeltaSeconds)
 {
 	if (!GetOwner() || !GetOwner()->HasAuthority()) return;
+	FGuLiPerformanceScope Timing(GetWorld(), TEXT("StateTree.ActorMs"));
 	if (!bStartAttempted)
 	{
 		bStartAttempted = true;

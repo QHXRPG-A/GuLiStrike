@@ -14,9 +14,13 @@ class UNetConnection;
 struct FGuLiFlightReceiveCounters
 {
 	uint64 PayloadBytes = 0;
+	uint64 Batches = 0;
 	uint64 Events = 0;
 	uint64 AgeSamples = 0;
 	double AgeMilliseconds = 0.0;
+	uint64 BootstrapEvents = 0, StaleEpochEvents = 0;
+	// Cumulative histogram: <= 0/16/33/50/100/200/500/1000/2000/5000/10000 ms, then overflow.
+	uint64 AgeBuckets[12] = {};
 };
 
 /** Authority application queue for one peer, before RPC submission. */
@@ -25,6 +29,12 @@ struct FGuLiFlightPeerStats
 	bool bAvailable = false;
 	int32 QueuedEvents = 0;
 	double HeadEventAgeMilliseconds = 0.0;
+	uint64 EnqueuedEvents = 0, BootstrapEvents = 0, SentEvents = 0, SentBytes = 0, SentBatches = 0;
+	// Record body + two-byte bit length, excluding the one-byte batch header.
+	// Measured only during a native performance capture to avoid idle encoding work.
+	uint64 EnqueuedRecordBytes = 0, BootstrapRecordBytes = 0;
+	uint64 FlushCalls = 0, BudgetDeferrals = 0, BatchLimitHits = 0;
+	uint32 ChannelSerial = 0;
 };
 
 USTRUCT()
@@ -62,6 +72,11 @@ public:
 	UFUNCTION(BlueprintPure, Category="Network|Flight") FString GetFlightDiagnostics() const;
 	const FGuLiFlightReceiveCounters& GetFlightReceiveCounters() const { return FlightReceiveCounters; }
 	FGuLiFlightPeerStats GetFlightPeerStats(UNetConnection* Connection) const;
+	uint64 GetCreatedFlightCount() const { return CreatedFlights; }
+	uint64 GetEndedFlightCount() const { return EndedFlights; }
+	uint64 GetProducedFlightRecordBytes() const { return ProducedFlightRecordBytes; }
+	uint64 GetFlightByteAccountingFailures() const { return FlightByteAccountingFailures; }
+	int32 GetActiveFlightCount() const { return ActiveFlights.Num(); }
 
 private:
 	UFUNCTION(NetMulticast, Reliable) void MulticastRogueUpgrade(const FGuLiRogueUpgradeCue& Cue);
@@ -85,9 +100,11 @@ private:
 	TArray<FGuLiWingmanFeedbackCue> WingmanFeedbackQueue;
 	UPROPERTY(Transient) TMap<FGuid, FGuLiFlightEvent> ActiveFlights;
 	UPROPERTY(Transient) TArray<FGuLiFlightEvent> PendingFlights;
-	struct FPeerStream { TWeakObjectPtr<class UActorChannel> Channel; TArray<FGuLiFlightEvent> Queue; int32 Cursor = 0; };
+	struct FPeerStream { TWeakObjectPtr<class UActorChannel> Channel; TArray<FGuLiFlightEvent> Queue; int32 Cursor = 0; FGuLiFlightPeerStats Stats; };
 	TMap<TWeakObjectPtr<class UNetConnection>, FPeerStream> FlightPeers;
+	uint32 NextPeerSerial = 0;
 	uint64 CreatedFlights = 0, EndedFlights = 0, SentFlightBytes = 0, SentFlightBatches = 0, BootstrapFlights = 0;
+	uint64 ProducedFlightRecordBytes = 0, FlightByteAccountingFailures = 0;
 	FGuLiFlightReceiveCounters FlightReceiveCounters;
 	double NextFlightDiagnosticTime = 0;
 };

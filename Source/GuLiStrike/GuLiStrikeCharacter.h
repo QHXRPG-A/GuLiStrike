@@ -13,12 +13,11 @@ struct FInputActionValue;
 class APlayerController;
 class UInputAction;
 class AGuLiStrikeAoEAttack;
-class AGuLiStrikeProjectile;
 
 /**
  *  A player-controlled character for a Twin Stick Shooter game
  *  Automatically rotates to face the aim direction.
- *  Fires projectiles and spawns AoE attacks.
+ *  Spawns AoE attacks.
  */
 UCLASS(abstract)
 class AGuLiStrikeCharacter : public ACharacter
@@ -51,9 +50,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* DashAction;
 
-	/** Shooting input action */
-	UPROPERTY(EditAnywhere, Category="Input")
-	UInputAction* ShootAction;
 
 	/** AoE attack input action */
 	UPROPERTY(EditAnywhere, Category="Input")
@@ -79,13 +75,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Dash|VFX", meta = (ClampMin = 0.0, ClampMax = 1.0))
 	float DashTrailOpacity = 0.55f;
 
-	/** Type of projectile to spawn when shooting */
-	UPROPERTY(EditAnywhere, Category="Projectile")
-	TSubclassOf<AGuLiStrikeProjectile> ProjectileClass;
 
-	/** Distance ahead of the character that the projectile will be spawned at */
-	UPROPERTY(EditAnywhere, Category="Projectile", meta = (ClampMin = 0, ClampMax = 1000, Units = "cm"))
-	float ProjectileOffset = 20.0f;
 
 	/** Type of AoE attack actor to spawn */
 	UPROPERTY(EditAnywhere, Category="AoE")
@@ -122,15 +112,8 @@ protected:
 	/** Last held move input */
 	FVector2D LastMoveInput;
 
-	/** If true, the player is auto firing while stick aiming */
-	bool bAutoFireActive = false;
 
-	/** Time to wait between autofire attempts */
-	UPROPERTY(EditAnywhere, Category="Aim", meta = (ClampMin = 0, ClampMax = 5, Units = "s"))
-	float AutoFireDelay = 0.2f;
 
-	/** Timer to handle stick autofire */
-	FTimerHandle AutoFireTimer;
 
 public:
 	
@@ -142,8 +125,6 @@ protected:
 	/** Gameplay Initialization */
 	virtual void BeginPlay() override;
 
-	/** Gameplay cleanup */
-	virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
 
 	/** Possessed by controller initialization */
 	virtual void NotifyControllerChanged() override;
@@ -170,8 +151,6 @@ protected:
 	/** Performs a dash */
 	void Dash(const FInputActionValue& Value);
 
-	/** Shoots projectiles */
-	void Shoot(const FInputActionValue& Value);
 
 	/** Performs an AoE Attack */
 	void AoEAttack(const FInputActionValue& Value);
@@ -219,6 +198,4 @@ protected:
 	/** Updates the items counter on the Game Mode */
 	void UpdateItems();
 
-	/** Resets stick the aim autofire flag after the autofire timer has expired */
-	void ResetAutoFire();
 };

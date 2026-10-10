@@ -9,7 +9,6 @@ import unreal, json, os, traceback
 out = {"steps": []}
 RENAMES = [
     # (old_package, new_dir, new_name)
-    ("/Game/GuLiStrike/Blueprints/BP_TwinStickProjectile", "/Game/GuLiStrike/Blueprints", "BP_GuLiStrikeProjectile"),
     ("/Game/GuLiStrike/Blueprints/BP_TwinStickAoEAttack", "/Game/GuLiStrike/Blueprints", "BP_GuLiStrikeAoEAttack"),
     ("/Game/GuLiStrike/Blueprints/BP_TwinStickPickup", "/Game/GuLiStrike/Blueprints", "BP_GuLiStrikePickup"),
     ("/Game/GuLiStrike/Blueprints/BP_TwinStickCharacter", "/Game/GuLiStrike/Blueprints", "BP_GuLiStrikeCharacter"),

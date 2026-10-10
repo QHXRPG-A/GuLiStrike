@@ -1,0 +1,22 @@
+{
+  "crash_local_time": "2026-10-10 23:57:52",
+  "process_mode": "UnrealEditor.exe -game -Multiprocess -server",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "assertion": "ActiveAgents.Num() < MaxAgents",
+  "capacity": 1024,
+  "first_bad_transition": "Registering a new Mass obstacle after ActiveAgents reached configured capacity.",
+  "entry": "UGuLiMassCrowdObstacleSubsystem::Tick -> UGuLiGroundCrowdManager::SetGroundObstacles",
+  "snapshot": "BuildGroundAvoidanceSnapshot includes every Soldier.IsPresent(); removed IDs are unregistered before additions.",
+  "shared_capacity": "Mass obstacle registrations and engineering CrowdFollowing registrations share ActiveAgents.",
+  "source_unchanged_before_triage": true,
+  "exact_mass_and_vehicle_counts": "Not logged; cannot derive a separate count from the assertion.",
+  "config_before": "MaxAgents=1024\nMaxAgentRadius=625.0\nMaxAvoidedAgents=32\nMaxAvoidedWalls=16\nbResolveCollisions=False",
+  "runtime_retest": false,
+  "build_run": true,
+  "config_after": 8192,
+  "native_default_after": 8192,
+  "remaining_limit": 8192,
+  "next_load": "New standalone server process reads config; currently running editor CDO remains unchanged.",
+  "build_exit_code": 0,
+  "build_result": "Artifacts/SessionCloseout20261011/build-result.json"
+}

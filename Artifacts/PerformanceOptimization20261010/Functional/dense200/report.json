@@ -1,0 +1,453 @@
+{
+  "scene": "dense200",
+  "checks": {
+    "no_runtime_errors": true,
+    "geometry_checked": true,
+    "geometry_equal": true,
+    "candidate_prefix_checked": true,
+    "candidate_prefix_equal": true,
+    "group_reads_checked": true,
+    "condition_reads_checked": true,
+    "stopped_population": true,
+    "replacement_moves": true,
+    "hud_remounted": true,
+    "hud_expired": true,
+    "clipped_lines_visible": true
+  },
+  "passed": true,
+  "probes": [
+    {
+      "name": "stop",
+      "alive": 200,
+      "moving": 0,
+      "forced_avoidance_solves": 1218
+    },
+    {
+      "name": "replace_reverse",
+      "alive": 200,
+      "moving": 200,
+      "forced_avoidance_solves": 1714
+    },
+    {
+      "name": "replace_forward",
+      "alive": 200,
+      "moving": 200,
+      "forced_avoidance_solves": 2185
+    },
+    {
+      "name": "hud_rect",
+      "success": true,
+      "rows": [
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": false,
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "hud_shapes": 1,
+            "hud_expired": false,
+            "rings": 235,
+            "health_bars": 76,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 2655,
+            "cached_vertices": 67542,
+            "surface_resources": 0
+          }
+        },
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": false,
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "hud_shapes": 1,
+            "hud_expired": false,
+            "rings": 235,
+            "health_bars": 76,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 2783,
+            "cached_vertices": 67542,
+            "surface_resources": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "hud_empty",
+      "success": true,
+      "rows": [
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": false,
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": false,
+            "rings": 235,
+            "health_bars": 76,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 2660,
+            "cached_vertices": 67425,
+            "surface_resources": 0
+          }
+        },
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": false,
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": false,
+            "rings": 235,
+            "health_bars": 76,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 2788,
+            "cached_vertices": 67425,
+            "surface_resources": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "hud_remount",
+      "success": true,
+      "rows": [
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": false,
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": true,
+            "rings": 235,
+            "health_bars": 76,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 2667,
+            "cached_vertices": 0,
+            "surface_resources": 0
+          }
+        },
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": false,
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": true,
+            "rings": 235,
+            "health_bars": 76,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 2795,
+            "cached_vertices": 0,
+            "surface_resources": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "hud_expiry",
+      "success": true,
+      "stats": [
+        {
+          "hud_shapes": 0,
+          "hud_expired": true,
+          "rings": 235,
+          "health_bars": 78,
+          "route_lines": 0,
+          "world_panels": 0,
+          "content_revision": 2708,
+          "cached_vertices": 65748,
+          "surface_resources": 0
+        },
+        {
+          "hud_shapes": 0,
+          "hud_expired": true,
+          "rings": 235,
+          "health_bars": 78,
+          "route_lines": 0,
+          "world_panels": 0,
+          "content_revision": 2836,
+          "cached_vertices": 65748,
+          "surface_resources": 0
+        }
+      ]
+    },
+    {
+      "name": "cross_screen",
+      "success": true,
+      "rows": [
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": true,
+          "a": [
+            -0.0,
+            360.0
+          ],
+          "b": [
+            1280.0,
+            359.9999
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": true,
+            "rings": 235,
+            "health_bars": 78,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 2712,
+            "cached_vertices": 65679,
+            "surface_resources": 0
+          }
+        },
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": true,
+          "a": [
+            -0.0,
+            360.0
+          ],
+          "b": [
+            1280.0,
+            359.9999
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": true,
+            "rings": 235,
+            "health_bars": 78,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 2840,
+            "cached_vertices": 65679,
+            "surface_resources": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "near_plane",
+      "success": true,
+      "rows": [
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": true,
+          "a": [
+            640.0,
+            360.0
+          ],
+          "b": [
+            640.0,
+            360.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": true,
+            "rings": 235,
+            "health_bars": 71,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 2716,
+            "cached_vertices": 65328,
+            "surface_resources": 0
+          }
+        },
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": true,
+          "a": [
+            640.0,
+            360.0
+          ],
+          "b": [
+            640.0,
+            360.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": true,
+            "rings": 235,
+            "health_bars": 71,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 2844,
+            "cached_vertices": 65328,
+            "surface_resources": 0
+          }
+        }
+      ]
+    }
+  ],
+  "counters": {
+    "Impact.AcceptMs": 13.64760473370552,
+    "Mining.VisibilityMs": 137.4203823506832,
+    "Flight.Records": 660067,
+    "Flight.ActorActive": 0,
+    "Flight.DataActive": 660067,
+    "Laser.ArrayUploads": 30448,
+    "Laser.UploadMs": 57.69343301653862,
+    "Muzzle.LifecycleMs": 207.73085951805115,
+    "Muzzle.Active": 192498,
+    "Muzzle.Components": 804,
+    "Muzzle.AcceptedTotal": 4779946,
+    "Muzzle.BornTotal": 4330752,
+    "Muzzle.PublishedTotal": 4337068,
+    "Muzzle.FallbacksTotal": 0,
+    "Muzzle.PoseQueriesTotal": 131140390,
+    "Muzzle.LifeUploadsTotal": 217445,
+    "Muzzle.PoseUploadsTotal": 435458,
+    "Muzzle.OffscreenTotal": 489202,
+    "Muzzle.PublishMs": 37.34641149640083,
+    "Impact.LifecycleMs": 21.16386592388153,
+    "Impact.Active": 135545,
+    "Impact.Components": 818,
+    "Impact.AcceptedTotal": 2335064,
+    "Impact.PublishedTotal": 2335064,
+    "Impact.FallbacksTotal": 0,
+    "Impact.UnknownBoundsTotal": 0,
+    "Impact.PublishMs": 18.737591803073883,
+    "WingmanFlight.Active": 0,
+    "WingmanFlight.Components": 0,
+    "WingmanFlight.UploadsTotal": 0,
+    "WingmanFlight.OffscreenDropsTotal": 0,
+    "WingmanFlight.PublishMs": 2.1485909819602966,
+    "Flight.PredictorCalls": 653115,
+    "Flight.Predictions.Commander": 653115,
+    "Flight.Predictions.Ground": 0,
+    "Flight.Predictions.Wingman": 0,
+    "Flight.PresentationMs": 735.8290553092957,
+    "Units.Visible": 95345,
+    "Units.Updated": 110287,
+    "Units.Skipped": 71313,
+    "Units.PresentationMs": 270.9166668355465,
+    "SceneUI.SourcesMs": 5.109529942274094,
+    "SceneUI.OutlineListMs": 35.87911278009415,
+    "SceneUI.OutlineCaptureMs": 147.31549471616745,
+    "SceneUI.PlacementCaptureMs": 1.8319487571716309,
+    "SceneUI.WorldPanelsMs": 1.6432516276836395,
+    "SceneUI.UpdateMs": 235.39599776268005,
+    "SceneUI.PrepareMs": 110.70455610752106,
+    "SceneUI.SubmitMs": 94.95357796549797,
+    "SceneUI.PaintMs": 1648.034606128931,
+    "SceneUI.PartitionMs": 4.256408661603928,
+    "SceneUI.ComputeCpuMs": 559.5581009984016,
+    "SceneUI.DispatchJoinMs": 146.14392817020416,
+    "SceneUI.DispatchWaitMs": 43.39645430445671,
+    "SceneUI.MergeMs": 161.17608547210693,
+    "SceneUI.Batches": 7276,
+    "SceneUI.Commands": 2393678,
+    "SceneUI.VerifiedBuilds": 908,
+    "SceneUI.GeometryMismatches": 0,
+    "Muzzle.AcceptMs": 1.9321665167808533,
+    "Avoidance.GridMs": 59.46258828043938,
+    "Avoidance.PrepareMs": 68.84897872805595,
+    "Avoidance.ComputeCpuMs": 723.7729802727699,
+    "Avoidance.DispatchJoinMs": 639.6482437849045,
+    "Avoidance.DispatchWaitMs": 1.7244890332221985,
+    "Avoidance.MergeMs": 1.567848026752472,
+    "Avoidance.Batches": 527,
+    "Avoidance.BucketVisits": 3138955,
+    "Avoidance.ExactCandidates": 2580264,
+    "Avoidance.Solves": 28448,
+    "Avoidance.Forced": 1626,
+    "Avoidance.CellLookups": 0,
+    "Avoidance.CellHits": 2935232,
+    "Avoidance.SparseComparisons": 6108850,
+    "Avoidance.EnvironmentDuplicates": 315209,
+    "Avoidance.UniqueVisits": 2823746,
+    "Avoidance.Retained": 341376,
+    "Avoidance.Consumed": 341376,
+    "Avoidance.VerifiedPrefixes": 28448,
+    "Avoidance.PrefixMismatches": 0,
+    "Avoidance.QueryReachSumCm": 225717100.0,
+    "Avoidance.RadiusLE150": 0,
+    "Avoidance.RadiusLE300": 0,
+    "Avoidance.RadiusGT300": 28448,
+    "Avoidance.SpeedLE800": 0,
+    "Avoidance.SpeedLE1600": 28448,
+    "Avoidance.SpeedGT1600": 0,
+    "Avoidance.QueryMs": 649.6854089200497,
+    "Avoidance.SolveMs": 7.462110370397568,
+    "Avoidance.SubmitMs": 2.8677061200141907,
+    "Avoidance.TotalMs": 729.0893942117691,
+    "Network.FlightRecordAccountingMs": 7.330622524023056,
+    "StateTree.GroupLookups": 366600,
+    "StateTree.IndexedLookups": 366600,
+    "StateTree.VerifiedLookups": 366600,
+    "StateTree.AdvanceGroups": 16,
+    "StateTree.AdvanceMembers": 400,
+    "StateTree.Reads": 511174,
+    "StateTree.CacheHits": 280194,
+    "StateTree.Conditions": 366347,
+    "StateTree.VerifiedReads": 379058,
+    "StateTree.ActorMs": 86.02026477456093,
+    "StateTree.MassMs": 211.63872629404068,
+    "StateTree.CommitMs": 18.916115164756775,
+    "StateTree.ScheduleMs": 324.1177871823311,
+    "Projectile.Commander5HzSteps": 84,
+    "Projectile.CommanderActivePerStep": 65174,
+    "Projectile.SnapshotMs": 8.818306028842926,
+    "Projectile.GridMs": 1.524306833744049,
+    "Projectile.CandidatesMs": 18.434830009937286,
+    "Projectile.NarrowPhaseMs": 33.92847999930382,
+    "Projectile.WorldSweepMs": 50.91718211770058,
+    "Projectile.SettleMs": 19.730854779481888
+  },
+  "errors": [],
+  "scope": "Functional shadow verification with deliberate actions; never a performance sample."
+}

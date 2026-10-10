@@ -162,7 +162,6 @@ def create_parts():
         if unreal.EditorAssetLibrary.does_asset_exist(row['path']):
             existing = unreal.load_asset(row['path'])
             assert unreal.EditorAssetLibrary.get_metadata_tag(existing, TAG) == OWNER, ('Existing user asset', row['path'])
-    projectile = unreal.load_asset('/Game/GuLiStrike/Ship/BP_ShipProjectile').generated_class()
     result = {}
     for row in rows:
         bp = unreal.load_asset(row['path']) if unreal.EditorAssetLibrary.does_asset_exist(row['path']) else None
@@ -189,7 +188,6 @@ def create_parts():
         cdo.set_editor_property('part_id', unreal.Name('None'))
         muzzle_names = [s['name'] for s in visual_migration.mesh_snapshot(unreal.load_asset(row['mesh']))['sockets']]
         if row['weapon']:
-            cdo.set_editor_property('projectile_class', projectile)
             cdo.set_editor_property('muzzle_socket_name', muzzle_names[0] if muzzle_names else unreal.Name('None'))
         result[row['path']] = dict(compile=compile_save(row['path']), mesh=row['mesh'], sockets=row['compatible_sockets'],
                                    muzzle_sockets=muzzle_names, groups=[g['id'] for g in row['groups']])

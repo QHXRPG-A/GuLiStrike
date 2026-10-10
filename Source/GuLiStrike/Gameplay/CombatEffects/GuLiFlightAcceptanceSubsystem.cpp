@@ -5,7 +5,6 @@
 #include "Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 #include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
-#include "Gameplay/GuLiStrikeProjectile.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "HAL/IConsoleManager.h"
@@ -34,27 +33,26 @@ bool UGuLiFlightAcceptanceSubsystem::StartLoad(int32 FlightCount,float Duration)
 	if (!Ledger || !Ledger->GetMatchEpoch()) return false;
 	TArray<FGuLiCombatTargetSnapshot> All, SourceOnly; Ledger->GetTargetSnapshots(All);
 	Ledger->GetSourceOnlySnapshots(SourceOnly); All.Append(SourceOnly);
-	Sources.SetNum(4);
-	const EGuLiTargetKind Kinds[] = {EGuLiTargetKind::CommanderSoldier,EGuLiTargetKind::GroundActor,EGuLiTargetKind::Ship,EGuLiTargetKind::Wingman};
-	for (int32 Domain=0; Domain<4; ++Domain)
+	Sources.SetNum(3);
+	const EGuLiTargetKind Kinds[] = {EGuLiTargetKind::CommanderSoldier,EGuLiTargetKind::GroundActor,EGuLiTargetKind::Wingman};
+	for (int32 Domain=0; Domain<3; ++Domain)
 	{
 		const auto* Source = All.FindByPredicate([&](const auto& Item){ return Item.Handle.Kind==Kinds[Domain] && Item.bAlive; });
-		if (!Source) { UE_LOG(LogNet,Error,TEXT("Flight load missing live source domain %d; populate Commander, Ground, Ship and Wingman first"),Domain); return false; }
+		if (!Source) { UE_LOG(LogNet,Error,TEXT("Flight load missing live source domain %d; populate Commander, Ground and Wingman first"),Domain); return false; }
 		Sources[Domain]=*Source;
 	}
-	const auto* Target = All.FindByPredicate([&](const auto& Item){ return Item.bAlive && Item.Handle.Kind==EGuLiTargetKind::Ship && Item.Team!=Sources[3].Team; });
-	if (!Target) Target = All.FindByPredicate([&](const auto& Item){ return Item.bAlive && Item.Team!=Sources[3].Team && Item.Handle!=Sources[3].Handle; });
+	const auto* Target = All.FindByPredicate([&](const auto& Item){ return Item.bAlive && Item.Handle.Kind==EGuLiTargetKind::Ship && Item.Team!=Sources[2].Team; });
+	if (!Target) Target = All.FindByPredicate([&](const auto& Item){ return Item.bAlive && Item.Team!=Sources[2].Team && Item.Handle!=Sources[2].Handle; });
 	if (!Target) return false;
 	EnemyTarget=Target->Handle;
-	ShipClass=LoadClass<AGuLiStrikeProjectile>(nullptr,TEXT("/Game/GuLiStrike/Ship/BP_ShipProjectile.BP_ShipProjectile_C"));
 	if (const auto* Catalog=GetDefault<UGuLiCombatEffectSettings>()->Catalog.LoadSynchronous())
 		for (const auto& Mount : Catalog->Mounts) if (auto* Definition=Mount.Projectile.LoadSynchronous()) { CurveDefinition=Definition; break; }
-	if (!ShipClass || !CurveDefinition || !Sources[2].CollisionActor.IsValid()) return false;
+	if (!CurveDefinition) return false;
 	Origin=Marker->GetActorLocation()+FVector(0,0,3500);
 	Desired=FlightCount; FinishTime=GetWorld()->GetTimeSeconds()+Duration; NextRefill=0; Serial=0; Peak=0;
 	for (auto& Domain : Flights) Domain.Reset();
 	bRunning=true; bWingmanGround=false; Accepted=Completed=Rejected=0;
-	UE_LOG(LogNet,Display,TEXT("Flight acceptance started: requested=%d duration=%.1fs; four server producers, no production cap change"),Desired,Duration);
+	UE_LOG(LogNet,Display,TEXT("Flight acceptance started: requested=%d duration=%.1fs; three server producers, no production cap change"),Desired,Duration);
 	return true;
 #endif
 }
@@ -87,7 +85,7 @@ bool UGuLiFlightAcceptanceSubsystem::StartWingmanGroundLoad(int32 FlightCount,fl
 	GroundField=*Field; GroundField.Damage=.001f;
 	GroundWarningStyle=WarningStyle ? WarningStyle : CurveDefinition->GroundWarningStyle.LoadSynchronous();
 	if (GroundWarningStyle && !GroundWarningStyle->IsValidStyle()) return false;
-	Sources.SetNum(4); Sources[3]=*Source;
+	Sources.SetNum(3); Sources[2]=*Source;
 	Origin=Marker->GetActorLocation();
 	Desired=FlightCount; FinishTime=GetWorld()->GetTimeSeconds()+Duration;
 	NextRefill=0; Serial=Peak=Accepted=Completed=Rejected=0;
@@ -102,7 +100,7 @@ bool UGuLiFlightAcceptanceSubsystem::StartWingmanGroundLoad(int32 FlightCount,fl
 void UGuLiFlightAcceptanceSubsystem::StopLoad()
 {
 	if (bRunning) UE_LOG(LogNet,Display,TEXT("Flight acceptance stopped: requested=%d peakFixture=%d; existing flights finish under normal authority rules"),Desired,Peak);
-	bRunning=false; Sources.Reset(); CurveDefinition=nullptr; ShipClass=nullptr; GroundWarningStyle=nullptr;
+	bRunning=false; Sources.Reset(); CurveDefinition=nullptr; GroundWarningStyle=nullptr;
 	for (auto& Domain : Flights) Domain.Reset();
 }
 
@@ -119,30 +117,30 @@ void UGuLiFlightAcceptanceSubsystem::Tick(float DeltaSeconds)
 	{
 		const auto* Source=All.FindByPredicate([](const auto& S){return S.bAlive && S.Handle.Kind==EGuLiTargetKind::Wingman;});
 		if (!Source) return;
-		Sources[3]=*Source;
-		Completed+=Flights[3].RemoveAll([&](const FGuid& Id){return !UGuLiCombatEffectReplicationComponent::IsFlightActive(GetWorld(),Id);});
-		for (int32 Count=Flights[3].Num();Count<Desired;++Count)
+		Sources[2]=*Source;
+		Completed+=Flights[2].RemoveAll([&](const FGuid& Id){return !UGuLiCombatEffectReplicationComponent::IsFlightActive(GetWorld(),Id);});
+		for (int32 Count=Flights[2].Num();Count<Desired;++Count)
 			if (!SpawnWingmanGroundFlight(Serial++)) { ++Rejected; break; }
-		Peak=FMath::Max(Peak,Flights[3].Num());
+		Peak=FMath::Max(Peak,Flights[2].Num());
 		return;
 	}
 	// A normal respawn changes the source identity. Replenishment uses the new
 	// real producer; accepted flights retain their original frozen source lease.
-	for (int32 Domain=0; Domain<4; ++Domain)
+	for (int32 Domain=0; Domain<3; ++Domain)
 		if (const auto* Current=All.FindByPredicate([&](const auto& Item){ return Item.bAlive && Item.Handle.Kind==Sources[Domain].Handle.Kind; })) Sources[Domain]=*Current;
 	FGuLiCombatTargetSnapshot Target;
-	if (!Ledger->TryGetTargetSnapshot(EnemyTarget,Target) || !Target.bAlive || Target.Team==Sources[3].Team)
+	if (!Ledger->TryGetTargetSnapshot(EnemyTarget,Target) || !Target.bAlive || Target.Team==Sources[2].Team)
 	{
-		const auto* Replacement=All.FindByPredicate([&](const auto& Item){ return Item.bAlive && Item.Handle.Kind==EGuLiTargetKind::Ship && Item.Team!=Sources[3].Team; });
-		if (!Replacement) Replacement=All.FindByPredicate([&](const auto& Item){ return Item.bAlive && Item.Team!=Sources[3].Team; });
+		const auto* Replacement=All.FindByPredicate([&](const auto& Item){ return Item.bAlive && Item.Handle.Kind==EGuLiTargetKind::Ship && Item.Team!=Sources[2].Team; });
+		if (!Replacement) Replacement=All.FindByPredicate([&](const auto& Item){ return Item.bAlive && Item.Team!=Sources[2].Team; });
 		if (Replacement) EnemyTarget=Replacement->Handle;
 	}
 	int32 Total=0;
-	for (int32 Domain=0; Domain<4; ++Domain)
+	for (int32 Domain=0; Domain<3; ++Domain)
 	{
 		auto& Ids=Flights[Domain];
 		Ids.RemoveAll([&](const FGuid& Id){ return !UGuLiCombatEffectReplicationComponent::IsFlightActive(GetWorld(),Id); });
-		const int32 Goal=Desired/4+(Domain<Desired%4 ? 1 : 0);
+		const int32 Goal=Desired/3+(Domain<Desired%3 ? 1 : 0);
 		for (int32 Count=Ids.Num(); Count<Goal; ++Count) if (!SpawnFlight(Domain,Serial++)) break;
 		Total+=Ids.Num();
 	}
@@ -155,7 +153,7 @@ bool UGuLiFlightAcceptanceSubsystem::SpawnWingmanGroundFlight(int32 Ordinal)
 	Request.ExecutorId=TEXT("WingmanGroundMissile"); Request.Projectile=CurveDefinition;
 	Request.Motion=GroundMotion; Request.FrozenField=GroundField; Request.GroundWarningStyle=GroundWarningStyle;
 	Request.Context.MatchEpoch=GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>()->GetMatchEpoch();
-	Request.Context.Source=Sources[3].Handle; Request.Context.ShotId=FGuid::NewGuid();
+	Request.Context.Source=Sources[2].Handle; Request.Context.ShotId=FGuid::NewGuid();
 	Request.Context.RootEventId=Request.Context.ShotId; Request.Context.Damage=GroundField.Damage;
 	Request.Context.EffectConfigId=GroundField.ConfigId; Request.Context.WeaponBinding.SlotId=TEXT("WingmanGroundAcceptance");
 	// Frozen real ground landing points; repeated cells exercise the existing warning merge key.
@@ -165,26 +163,18 @@ bool UGuLiFlightAcceptanceSubsystem::SpawnWingmanGroundFlight(int32 Ordinal)
 	Request.TargetLocation=Landing; Request.MaximumTravelDistance=20000;
 	const FGuid Id=GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>()->LaunchPointProjectile(Request);
 	if (!Id.IsValid()) return false;
-	Flights[3].Add(Id); ++Accepted; return true;
+	Flights[2].Add(Id); ++Accepted; return true;
 }
 
 bool UGuLiFlightAcceptanceSubsystem::SpawnFlight(int32 Domain,int32 Ordinal)
 {
 	const FVector Position=Origin+FVector((Ordinal%20)*90,(Ordinal/20%20)*90,Domain*120);
-	if (Domain==2)
-	{
-		auto* Source=Sources[Domain].CollisionActor.Get(); if (!Source) return false;
-		const FTransform Transform(FRotator(0,0,0),Position);
-		auto* Projectile=GetWorld()->SpawnActorDeferred<AGuLiStrikeProjectile>(ShipClass,Transform,Source,nullptr,ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-		if (!Projectile) return false;
-		if (!Projectile->ConfigureServerDamageLedger(*Source,.001f)) { Projectile->Destroy(); return false; }
-		Projectile->FinishSpawning(Transform); Flights[Domain].Add(Projectile->GetFlightId()); return true;
-	}
+
 	FGuLiCombatEffectContext Context;
 	Context.MatchEpoch=GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>()->GetMatchEpoch();
 	Context.Source=Sources[Domain].Handle; Context.ShotId=FGuid::NewGuid(); Context.RootEventId=Context.ShotId;
 	Context.Damage=.001f; Context.WeaponBinding.SlotId=TEXT("NetworkAcceptance");
-	if (Domain==3)
+	if (Domain==2)
 	{
 		Context.Target=EnemyTarget;
 		const FGuid Id=GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>()->LaunchProjectile(CurveDefinition,Context,FTransform(FRotator(0,0,0),Position));
@@ -215,13 +205,13 @@ namespace
 		if (auto* Fixture=World->GetSubsystem<UGuLiFlightAcceptanceSubsystem>()) Fixture->StartWingmanGroundLoad(Count,Seconds);
 	}
 	FAutoConsoleCommandWithWorldAndArgs GroundLoadCommand(TEXT("gs.WingmanGround.Load"),TEXT("Real ground-missile load: [125|250|500] [45 seconds]. Requires a live Wingman and saved QA marker."),FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&GroundLoad));
-	FAutoConsoleCommandWithWorldAndArgs LoadCommand(TEXT("gs.Flights.Load"),TEXT("Explicit server-only four-source load: [500] [30 seconds]. Requires saved map marker and live sources."),FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&Load));
+	FAutoConsoleCommandWithWorldAndArgs LoadCommand(TEXT("gs.Flights.Load"),TEXT("Explicit server-only three-source load: [500] [30 seconds]. Requires saved map marker and live sources."),FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&Load));
 	FAutoConsoleCommandWithWorld StopCommand(TEXT("gs.Flights.Stop"),TEXT("Stop acceptance replenishment; existing flights retain authority lifetime."),FConsoleCommandWithWorldDelegate::CreateStatic(&Stop));
 }
 #endif
 
 FString UGuLiFlightAcceptanceSubsystem::GetLoadStatsJson() const
 {
- return FString::Printf(TEXT("{\"running\":%s,\"groundMissile\":%s,\"desired\":%d,\"peak\":%d,\"accepted\":%d,\"completed\":%d,\"rejected\":%d,\"domains\":[%d,%d,%d,%d]}"),
- bRunning ? TEXT("true"):TEXT("false"),bWingmanGround ? TEXT("true"):TEXT("false"), Desired, Peak,Accepted,Completed,Rejected,Flights[0].Num(),Flights[1].Num(),Flights[2].Num(),Flights[3].Num());
+ return FString::Printf(TEXT("{\"running\":%s,\"groundMissile\":%s,\"desired\":%d,\"peak\":%d,\"accepted\":%d,\"completed\":%d,\"rejected\":%d,\"domains\":[%d,%d,%d]}"),
+ bRunning ? TEXT("true"):TEXT("false"),bWingmanGround ? TEXT("true"):TEXT("false"), Desired, Peak,Accepted,Completed,Rejected,Flights[0].Num(),Flights[1].Num(),Flights[2].Num());
 }

@@ -63,6 +63,9 @@ struct GULISTRIKE_API FGuLiCombatEffectVisualCounters
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 ReceivedShots = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 WrittenShots = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 DroppedShots = 0;
+	/** Subsets of DroppedShots, classified at receipt using the estimated server clock. */
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 ShotsTooOld = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 ShotsFromFuture = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 ReceivedStates = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 RejectedStates = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 BurstsPlayed = 0;
@@ -77,6 +80,9 @@ struct GULISTRIKE_API FGuLiCombatEffectVisualCounters
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 MuzzleBorn = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 MuzzleDuplicates = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 MuzzleExpired = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 MuzzlePoseUnresolved = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 MuzzleTooOld = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 MuzzleAdmissionLate = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 MuzzleOffscreenRecycled = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 MuzzleBatchPublished = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 MuzzleBatchFallbacks = 0;

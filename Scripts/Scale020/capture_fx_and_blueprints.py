@@ -10,7 +10,7 @@ OUT = ROOT / 'TestResults/Scale020/fx-blueprint-baseline.json'
 def capture():
     if OUT.exists():
         return {'already_captured': True}
-    names = ['GuLiStrikeShip', 'GuLiStrikeProjectile', 'GuLiStrikeCharacter', 'GuLiStrikeNPC', 'GuLiStrikeAoEAttack', 'GuLiStrikePickup']
+    names = ['GuLiStrikeShip', 'GuLiStrikeCharacter', 'GuLiStrikeNPC', 'GuLiStrikeAoEAttack', 'GuLiStrikePickup']
     classes = tuple(getattr(unreal, n) for n in names)
     bps = {}
     registry = unreal.AssetRegistryHelpers.get_asset_registry()

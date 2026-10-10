@@ -4,15 +4,17 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | planned | partial | 先测量UI与避障的准备/计算/提交/等待边界，再实现单项可回退候选；源码构建与运行对照按届时用户授权安排。 | 2026-10-10 |
+| [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | verification | partial | 本轮容量调整已编译；重新开启独立服务端PIE，核对自动增援后的Crowd容量及工程车避让。 | 2026-10-11 |
+| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | verification | partial | 玩家按原地图网络诊断入口验收保留功能；本轮四候选停止推进，不自动继续P95实验。初始化StateTree异常与压力网络积压另列待确认。 | 2026-10-10 |
 | [客户端表现管线技能与枪口批量化 — 技术方案](../DevelopmentDocumentation/20261010-客户端表现管线技能与枪口批量化.md) | verification | partial | 玩家打开LVL_CommanderMassPrototype验收枪口外观与实战行为；压力枪口收益需上游可靠事件积压解除后复测，不在本轮改动网络。 | 2026-10-10 |
 | [命中特效事件批量承载与生命周期优化 — 技术方案](../DevelopmentDocumentation/20261009-命中特效事件批量承载与生命周期优化.md) | verification | partial | 玩家直接打开LVL_CommanderMassPrototype的PIE验收视觉及玩法效果；FPS对照暂缓。 | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | verification | partial | 玩家直接打开LVL_CommanderMassPrototype的PIE验收视觉及玩法效果；FPS对照暂缓。 | 2026-10-10 |
 | [客户端视野裁剪与特效三档LOD优化 — 技术方案](../DevelopmentDocumentation/20261009-客户端视野裁剪与特效三档LOD优化.md) | verification | partial | 玩家直接打开LVL_CommanderMassPrototype的PIE验收视觉及玩法效果；FPS对照暂缓。 | 2026-10-10 |
 | [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | verification | partial | 用户自行打开编辑器，在LVL_CommanderMassPrototype的NetworkHUD_Entry按原流程验证指标。 | 2026-10-10 |
+| [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | in_progress | partial | 用户手动加 7 个 socket（教程见下，坐标已定稿） | 2026-10-10 |
 | [PIE游戏线程耗时与避障候选查询优化 — 技术方案](../DevelopmentDocumentation/20261009-PIE游戏线程耗时与避障候选查询优化.md) | verification | partial | 保留避障交叉/停止/改令/环境边缘的玩家反馈；查询已达预算，追加性能优先按截帧报告处理命中特效和Ship生命周期。 | 2026-10-09 |
 | [场景UI来源注册与绘制缓存优化 — 技术方案](../DevelopmentDocumentation/20261009-场景UI来源注册与绘制缓存优化.md) | verification | partial | 保留四叶缓存后裁剪/建造预览/HUD期限/Ship面板的玩家反馈；区分场景UI与全局Slate成本，性能按截帧热点继续推进。 | 2026-10-09 |
-| [非Mass飞行弹丸六项性能优化 — 分析与开发方案](../DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md) | verification | partial | 按最慢帧验证Ship服务器Actor复用及完整复位，保持物理移动/判定路径；复用可靠飞行批次解码/应用容量，随后做同负载收益对照。 | 2026-10-09 |
+| [非Mass飞行弹丸六项性能优化 — 分析与开发方案](../DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md) | verification | partial | 核对剩余飞行物的事件吞吐、客户端表现及新代码加载边界。 | 2026-10-09 |
 | [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | verification | partial | 按截帧证据给命中特效补真正新建/复用/完成计数，比较空闲池与稳定槽位批次；新组合继续正式使用，保留细节玩家反馈。 | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | verification | partial | 用户在Mass地图或新版UE画廊确认扫荡者最终观感；保留其他已核对证据和未验证的长期稳定、飞船运行边界。 | 2026-10-09 |
 | [十四模型仅配色 Blender 成品 B_v1 — 实际成品审核](../DevelopmentDocumentation/20261008-十四模型仅配色Blender成品B_v1.md) | verification | partial | 用户在当前UE画廊确认最终观感；已放行的本B版本不重复请求导入许可。 | 2026-10-09 |
@@ -76,7 +78,6 @@
 | [Ship第二批三组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship第二批三组件贴图与框线制作.md) | done | partial | 查看实际交付总览；现有舰体bottom_mid_0缺失和六个组件未配兼容槽位留作独立玩法工作。 | 2026-09-17 |
 | [Ship三组件风格样板制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship三组件风格样板制作.md) | done | partial | 查看实际交付总览；现有舰体bottom_mid_0缺失和六个组件未配兼容槽位留作独立玩法工作。 | 2026-09-17 |
 | [GPU渲染降耗 — 技术方案与实施](../DevelopmentDocumentation/20260916-GPU渲染降耗.md) | done | partial | 继续归因未下降的ShadowDepths；后续实机游玩关注FXAA远距闪烁和快速转镜头下的Lumen收敛。 | 2026-09-16 |
-| [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | verification | partial | 后续确认旧BuildingWorld测试更新范围，补密集狭路及大规模性能观察。 | 2026-09-15 |
 | [指挥官10Hz权威循环与移动容量压测 — 技术方案](../DevelopmentDocumentation/20260915-指挥官10Hz权威循环与移动容量压测.md) | done | partial | 后续先解决初始名册分片与姿态带宽预算，再以打包分机、长时多轮条件复测部署容量。 | 2026-09-15 |
 | [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | done | partial | 后续另行处理既有失败断言；独立GPU计时与强制扩容未纳入本次实测。 | 2026-09-14 |
 | [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | verification | partial | 本次归并已交付；前次4项现有回归适配仍等待用户范围确认。 | 2026-09-14 |
@@ -97,7 +98,6 @@
 | [指挥官 WM01 第二兵种与多 ISM 表现 — 技术方案](../DevelopmentDocumentation/20260904-指挥官WM01第二兵种与多ISM表现.md) | verification | partial | 在最终 WM01 资产和数据上运行获准的聚焦测试（本轮按要求停在测试阶段） | 2026-09-05 |
 | [僚机无规则护航盘旋技能重构 — 开发文档](../DevelopmentDocumentation/20260904-僚机无规则护航盘旋技能重构.md) | verification | partial | 向用户说明拟新增测试及文件，取得明确测试许可 | 2026-09-05 |
 | [WM01 程序化六足行走动画 — Blender 到 UE 完整管线教程](../DevelopmentDocumentation/20260826-WM01程序化六足行走动画-Blender到UE管线教程.md) | done | partial | — | 2026-09-05 |
-| [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | in_progress | partial | 用户手动加 7 个 socket（教程见下，坐标已定稿） | 2026-09-05 |
 | [飞船世界空间环绕 HUD 与技能准星 — 技术方案](../DevelopmentDocumentation/20260904-飞船世界空间环绕HUD与技能准星.md) | done | partial | — | 2026-09-04 |
 | [飞船 GAS 与僚机技能归属 — 开发文档](../DevelopmentDocumentation/20260902-飞船GAS与僚机技能归属.md) | done | partial | — | 2026-09-03 |
 | [移动命令自由扩散与静态寻路线 — 技术方案](../DevelopmentDocumentation/20260901-移动命令自由扩散与静态寻路线.md) | done | partial | — | 2026-09-01 |

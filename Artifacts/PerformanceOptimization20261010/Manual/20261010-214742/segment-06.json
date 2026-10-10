@@ -1,0 +1,2226 @@
+[
+  {
+    "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "engine_frames": 33,
+    "capturing": false,
+    "counters": {
+      "Mining.VisibilityMs": {
+        "total": 0.5324259400367737,
+        "calls": 465,
+        "mean_per_engine_frame": 0.01613411939505375,
+        "p95_active_frame": 0.05628913640975952,
+        "stored_active_frames": 29
+      },
+      "Flight.Records": {
+        "total": 26566,
+        "calls": 32,
+        "mean_per_engine_frame": 805.030303030303,
+        "p95_active_frame": 886,
+        "stored_active_frames": 32
+      },
+      "Flight.ActorActive": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Flight.DataActive": {
+        "total": 26566,
+        "calls": 32,
+        "mean_per_engine_frame": 805.030303030303,
+        "p95_active_frame": 886,
+        "stored_active_frames": 32
+      },
+      "Laser.ArrayUploads": {
+        "total": 1408,
+        "calls": 128,
+        "mean_per_engine_frame": 42.666666666666664,
+        "p95_active_frame": 44,
+        "stored_active_frames": 32
+      },
+      "Laser.UploadMs": {
+        "total": 2.6106201112270355,
+        "calls": 128,
+        "mean_per_engine_frame": 0.0791097003402132,
+        "p95_active_frame": 0.08880347013473511,
+        "stored_active_frames": 32
+      },
+      "Muzzle.LifecycleMs": {
+        "total": 12.77749240398407,
+        "calls": 32,
+        "mean_per_engine_frame": 0.38719673951466876,
+        "p95_active_frame": 0.6611011922359467,
+        "stored_active_frames": 32
+      },
+      "Muzzle.Active": {
+        "total": 10668,
+        "calls": 32,
+        "mean_per_engine_frame": 323.27272727272725,
+        "p95_active_frame": 524,
+        "stored_active_frames": 32
+      },
+      "Muzzle.Components": {
+        "total": 32,
+        "calls": 32,
+        "mean_per_engine_frame": 0.9696969696969697,
+        "p95_active_frame": 1,
+        "stored_active_frames": 32
+      },
+      "Muzzle.AcceptedTotal": {
+        "total": 908392,
+        "calls": 32,
+        "mean_per_engine_frame": 27527.030303030304,
+        "p95_active_frame": 28516,
+        "stored_active_frames": 32
+      },
+      "Muzzle.BornTotal": {
+        "total": 650860,
+        "calls": 32,
+        "mean_per_engine_frame": 19723.030303030304,
+        "p95_active_frame": 20526,
+        "stored_active_frames": 32
+      },
+      "Muzzle.PublishedTotal": {
+        "total": 651256,
+        "calls": 32,
+        "mean_per_engine_frame": 19735.030303030304,
+        "p95_active_frame": 20526,
+        "stored_active_frames": 32
+      },
+      "Muzzle.FallbacksTotal": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Muzzle.PoseQueriesTotal": {
+        "total": 18294194,
+        "calls": 32,
+        "mean_per_engine_frame": 554369.5151515151,
+        "p95_active_frame": 577023,
+        "stored_active_frames": 32
+      },
+      "Muzzle.LifeUploadsTotal": {
+        "total": 30183,
+        "calls": 32,
+        "mean_per_engine_frame": 914.6363636363636,
+        "p95_active_frame": 952,
+        "stored_active_frames": 32
+      },
+      "Muzzle.PoseUploadsTotal": {
+        "total": 54960,
+        "calls": 32,
+        "mean_per_engine_frame": 1665.4545454545455,
+        "p95_active_frame": 1732,
+        "stored_active_frames": 32
+      },
+      "Muzzle.OffscreenTotal": {
+        "total": 261888,
+        "calls": 32,
+        "mean_per_engine_frame": 7936,
+        "p95_active_frame": 8184,
+        "stored_active_frames": 32
+      },
+      "Muzzle.PublishMs": {
+        "total": 1.6669072210788727,
+        "calls": 32,
+        "mean_per_engine_frame": 0.050512340032693115,
+        "p95_active_frame": 0.18979981541633606,
+        "stored_active_frames": 32
+      },
+      "Impact.LifecycleMs": {
+        "total": 1.1317096650600433,
+        "calls": 32,
+        "mean_per_engine_frame": 0.03429423227454677,
+        "p95_active_frame": 0.038798898458480835,
+        "stored_active_frames": 32
+      },
+      "Impact.Active": {
+        "total": 6151,
+        "calls": 32,
+        "mean_per_engine_frame": 186.3939393939394,
+        "p95_active_frame": 215,
+        "stored_active_frames": 32
+      },
+      "Impact.Components": {
+        "total": 32,
+        "calls": 32,
+        "mean_per_engine_frame": 0.9696969696969697,
+        "p95_active_frame": 1,
+        "stored_active_frames": 32
+      },
+      "Impact.AcceptedTotal": {
+        "total": 350132,
+        "calls": 32,
+        "mean_per_engine_frame": 10610.060606060606,
+        "p95_active_frame": 11028,
+        "stored_active_frames": 32
+      },
+      "Impact.PublishedTotal": {
+        "total": 350132,
+        "calls": 32,
+        "mean_per_engine_frame": 10610.060606060606,
+        "p95_active_frame": 11028,
+        "stored_active_frames": 32
+      },
+      "Impact.FallbacksTotal": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Impact.UnknownBoundsTotal": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Impact.PublishMs": {
+        "total": 0.7256045937538147,
+        "calls": 32,
+        "mean_per_engine_frame": 0.02198801799253984,
+        "p95_active_frame": 0.07490068674087524,
+        "stored_active_frames": 32
+      },
+      "WingmanFlight.Active": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "WingmanFlight.Components": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "WingmanFlight.UploadsTotal": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "WingmanFlight.OffscreenDropsTotal": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "WingmanFlight.PublishMs": {
+        "total": 0.07419660687446594,
+        "calls": 32,
+        "mean_per_engine_frame": 0.002248382026498968,
+        "p95_active_frame": 0.0028014183044433594,
+        "stored_active_frames": 32
+      },
+      "Flight.PredictorCalls": {
+        "total": 26372,
+        "calls": 32,
+        "mean_per_engine_frame": 799.1515151515151,
+        "p95_active_frame": 886,
+        "stored_active_frames": 32
+      },
+      "Flight.Predictions.Commander": {
+        "total": 26372,
+        "calls": 32,
+        "mean_per_engine_frame": 799.1515151515151,
+        "p95_active_frame": 886,
+        "stored_active_frames": 32
+      },
+      "Flight.Predictions.Ground": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Flight.Predictions.Wingman": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Flight.PresentationMs": {
+        "total": 34.08689796924591,
+        "calls": 32,
+        "mean_per_engine_frame": 1.0329363020983608,
+        "p95_active_frame": 1.4660991728305817,
+        "stored_active_frames": 32
+      },
+      "Units.Visible": {
+        "total": 3097,
+        "calls": 32,
+        "mean_per_engine_frame": 93.84848484848484,
+        "p95_active_frame": 100,
+        "stored_active_frames": 32
+      },
+      "Units.Updated": {
+        "total": 3960,
+        "calls": 32,
+        "mean_per_engine_frame": 120,
+        "p95_active_frame": 200,
+        "stored_active_frames": 32
+      },
+      "Units.Skipped": {
+        "total": 2440,
+        "calls": 32,
+        "mean_per_engine_frame": 73.93939393939394,
+        "p95_active_frame": 103,
+        "stored_active_frames": 32
+      },
+      "Units.PresentationMs": {
+        "total": 10.284096002578735,
+        "calls": 32,
+        "mean_per_engine_frame": 0.3116392728054162,
+        "p95_active_frame": 0.42720139026641846,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.SourcesMs": {
+        "total": 0.19530951976776123,
+        "calls": 32,
+        "mean_per_engine_frame": 0.0059184702959927645,
+        "p95_active_frame": 0.02230331301689148,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.OutlineCaptureMs": {
+        "total": 4.724998027086258,
+        "calls": 32,
+        "mean_per_engine_frame": 0.14318175839655328,
+        "p95_active_frame": 0.3882981836795807,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.PlacementCaptureMs": {
+        "total": 0.0330023467540741,
+        "calls": 32,
+        "mean_per_engine_frame": 0.0010000711137598212,
+        "p95_active_frame": 0.001601874828338623,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.WorldPanelsMs": {
+        "total": 0.04906952381134033,
+        "calls": 32,
+        "mean_per_engine_frame": 0.001486955267010313,
+        "p95_active_frame": 0.0021010637283325195,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.UpdateMs": {
+        "total": 7.3447152972221375,
+        "calls": 32,
+        "mean_per_engine_frame": 0.22256713021885266,
+        "p95_active_frame": 0.4820004105567932,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.PrepareMs": {
+        "total": 3.5015232861042023,
+        "calls": 128,
+        "mean_per_engine_frame": 0.1061067662455819,
+        "p95_active_frame": 0.12530013918876648,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.SubmitMs": {
+        "total": 3.492705523967743,
+        "calls": 128,
+        "mean_per_engine_frame": 0.10583956133235585,
+        "p95_active_frame": 0.1493990421295166,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.PaintMs": {
+        "total": 25.784790515899658,
+        "calls": 128,
+        "mean_per_engine_frame": 0.7813572883605957,
+        "p95_active_frame": 0.937294214963913,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.PartitionMs": {
+        "total": 0.0009909272193908691,
+        "calls": 32,
+        "mean_per_engine_frame": 3.0028097557299066e-05,
+        "p95_active_frame": 0.00010058283805847168,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.ComputeCpuMs": {
+        "total": 17.218902707099915,
+        "calls": 32,
+        "mean_per_engine_frame": 0.5217849305181792,
+        "p95_active_frame": 0.6471015512943268,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.DispatchJoinMs": {
+        "total": 17.22150668501854,
+        "calls": 32,
+        "mean_per_engine_frame": 0.5218638389399557,
+        "p95_active_frame": 0.6472021341323853,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.DispatchWaitMs": {
+        "total": 0.002603977918624878,
+        "calls": 32,
+        "mean_per_engine_frame": 7.890842177651145e-05,
+        "p95_active_frame": 0.00020116567611694336,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.MergeMs": {
+        "total": 0.20229071378707886,
+        "calls": 32,
+        "mean_per_engine_frame": 0.006130021629911481,
+        "p95_active_frame": 0.011499971151351929,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.Batches": {
+        "total": 32,
+        "calls": 32,
+        "mean_per_engine_frame": 0.9696969696969697,
+        "p95_active_frame": 1,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.Commands": {
+        "total": 84220,
+        "calls": 32,
+        "mean_per_engine_frame": 2552.121212121212,
+        "p95_active_frame": 2643,
+        "stored_active_frames": 32
+      },
+      "Muzzle.AcceptMs": {
+        "total": 0.056218355894088745,
+        "calls": 268,
+        "mean_per_engine_frame": 0.0017035865422451134,
+        "p95_active_frame": 0.0158064067363739,
+        "stored_active_frames": 8
+      },
+      "Impact.AcceptMs": {
+        "total": 0.46232715249061584,
+        "calls": 194,
+        "mean_per_engine_frame": 0.014009913711836844,
+        "p95_active_frame": 0.07510185241699219,
+        "stored_active_frames": 8
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_265/SceneUI.OutlineListMs": {
+        "total": 1.798391342163086,
+        "calls": 8,
+        "mean_per_engine_frame": 0.05449670733827533,
+        "p95_active_frame": 0.3850981593132019,
+        "stored_active_frames": 8
+      }
+    },
+    "network_samples": [
+      {
+        "wall_seconds": 17380517.8831255,
+        "world_seconds": 112.73402147740126,
+        "engine_frame": 224195,
+        "net_mode": 3,
+        "process_physical_bytes": 11336880128,
+        "match_id": "46D6E61348D6D49FF208EEAAEFC3804D",
+        "estimated_server_seconds": 114.59160738438368,
+        "pie_clock_estimate_error_ms": 14.78581503033638,
+        "flights": {
+          "created": 0,
+          "ended": 0,
+          "produced_record_bytes": 0,
+          "byte_accounting_failures": 0,
+          "active": 0,
+          "received_bytes": 3943249,
+          "received_batches": 4913,
+          "received_record_bytes": 3938336,
+          "received_events": 55642,
+          "received_bootstrap": 0,
+          "received_stale_epoch": 0,
+          "age_samples": 55642,
+          "age_sum_ms": 5340838.47746253,
+          "age_histogram": [
+            160,
+            7863,
+            4106,
+            4218,
+            16385,
+            16133,
+            6777,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "visuals": {
+          "received_shots": 28248,
+          "dropped_shots": 0,
+          "shots_too_old": 0,
+          "shots_from_future": 0,
+          "muzzle_accepted": 28248,
+          "muzzle_born": 20034,
+          "muzzle_expired": 66,
+          "muzzle_pose_unresolved": 66,
+          "muzzle_too_old": 0,
+          "muzzle_admission_late": 0,
+          "muzzle_active": 352,
+          "flight_data_active": 854
+        },
+        "connections": [
+          {
+            "connection": "/Engine/Transient.GuLiIpConnection_529",
+            "player_guid": "8BAFA08E4AA2A2F6622C1BB72799D476",
+            "rtt_ms": 40.10714340209961,
+            "rates_valid": false,
+            "interval_seconds": 0,
+            "budget_bytes_per_second": 250000,
+            "queued_bits_raw": -200000,
+            "send_buffer_bits": 0,
+            "bandwidth_debt_bits": 0,
+            "unacked_reliable_bunches": 0,
+            "unit_stream": {
+              "generation": 0,
+              "receive_generation": 1,
+              "state_bytes": 0,
+              "pose_bytes": 0,
+              "charged_bytes": 0,
+              "observed_bytes": 0,
+              "budget_deferrals": 0,
+              "window_deferrals": 0,
+              "pose_merges": 0,
+              "received_state_bytes": 169783,
+              "received_pose_bytes": 2601647,
+              "received_state_blocks": 604,
+              "received_pose_blocks": 6564,
+              "pending_states": 0,
+              "pending_poses": 0,
+              "inflight_batches": 0,
+              "oldest_state_wait_ms": 0,
+              "oldest_pose_wait_ms": 0,
+              "max_sent_sample_gap_ms": 0,
+              "max_received_sample_gap_ms": 200.00457763671875
+            }
+          }
+        ]
+      },
+      {
+        "wall_seconds": 17380518.8923028,
+        "world_seconds": 113.77262747660279,
+        "engine_frame": 224217,
+        "net_mode": 3,
+        "process_physical_bytes": 11383111680,
+        "match_id": "46D6E61348D6D49FF208EEAAEFC3804D",
+        "estimated_server_seconds": 115.62990427389741,
+        "pie_clock_estimate_error_ms": 14.476705342531204,
+        "flights": {
+          "created": 0,
+          "ended": 0,
+          "produced_record_bytes": 0,
+          "byte_accounting_failures": 0,
+          "active": 0,
+          "received_bytes": 3980340,
+          "received_batches": 4960,
+          "received_record_bytes": 3975380,
+          "received_events": 56167,
+          "received_bootstrap": 0,
+          "received_stale_epoch": 0,
+          "age_samples": 56167,
+          "age_sum_ms": 5391583.787318319,
+          "age_histogram": [
+            160,
+            8027,
+            4106,
+            4228,
+            16509,
+            16272,
+            6865,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "visuals": {
+          "received_shots": 28512,
+          "dropped_shots": 0,
+          "shots_too_old": 0,
+          "shots_from_future": 0,
+          "muzzle_accepted": 28512,
+          "muzzle_born": 20432,
+          "muzzle_expired": 66,
+          "muzzle_pose_unresolved": 66,
+          "muzzle_too_old": 0,
+          "muzzle_admission_late": 0,
+          "muzzle_active": 490,
+          "flight_data_active": 855
+        },
+        "connections": [
+          {
+            "connection": "/Engine/Transient.GuLiIpConnection_529",
+            "player_guid": "8BAFA08E4AA2A2F6622C1BB72799D476",
+            "rtt_ms": 40.75,
+            "rates_valid": true,
+            "interval_seconds": 1.0091773010790348,
+            "receive_bytes_per_second": 89897.97917868044,
+            "send_bytes_per_second": 1830.2036698855063,
+            "receive_packets_per_second": 117.91783254811871,
+            "send_packets_per_second": 21.79993542906396,
+            "receive_lost_per_second": 0,
+            "send_lost_per_second": 0,
+            "budget_bytes_per_second": 250000,
+            "queued_bits_raw": -200000,
+            "send_buffer_bits": 751,
+            "bandwidth_debt_bits": 0,
+            "unacked_reliable_bunches": 0,
+            "unit_stream": {
+              "generation": 0,
+              "receive_generation": 1,
+              "state_bytes": 0,
+              "pose_bytes": 0,
+              "charged_bytes": 0,
+              "observed_bytes": 0,
+              "budget_deferrals": 0,
+              "window_deferrals": 0,
+              "pose_merges": 0,
+              "received_state_bytes": 180266,
+              "received_pose_bytes": 2633590,
+              "received_state_blocks": 622,
+              "received_pose_blocks": 6626,
+              "pending_states": 0,
+              "pending_poses": 0,
+              "inflight_batches": 0,
+              "oldest_state_wait_ms": 0,
+              "oldest_pose_wait_ms": 0,
+              "max_sent_sample_gap_ms": 0,
+              "max_received_sample_gap_ms": 200.00457763671875
+            }
+          }
+        ]
+      },
+      {
+        "wall_seconds": 17380519.3327132,
+        "world_seconds": 114.18017997965217,
+        "engine_frame": 224227,
+        "net_mode": 3,
+        "process_physical_bytes": 11382849536,
+        "match_id": "46D6E61348D6D49FF208EEAAEFC3804D",
+        "estimated_server_seconds": 116.03654780611396,
+        "pie_clock_estimate_error_ms": 13.567734509706497,
+        "flights": {
+          "created": 0,
+          "ended": 0,
+          "produced_record_bytes": 0,
+          "byte_accounting_failures": 0,
+          "active": 0,
+          "received_bytes": 3983153,
+          "received_batches": 4965,
+          "received_record_bytes": 3978188,
+          "received_events": 56226,
+          "received_bootstrap": 0,
+          "received_stale_epoch": 0,
+          "age_samples": 56226,
+          "age_sum_ms": 5398442.711874843,
+          "age_histogram": [
+            160,
+            8031,
+            4107,
+            4232,
+            16528,
+            16294,
+            6874,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "visuals": {
+          "received_shots": 28516,
+          "dropped_shots": 0,
+          "shots_too_old": 0,
+          "shots_from_future": 0,
+          "muzzle_accepted": 28516,
+          "muzzle_born": 20526,
+          "muzzle_expired": 66,
+          "muzzle_pose_unresolved": 66,
+          "muzzle_too_old": 0,
+          "muzzle_admission_late": 0,
+          "muzzle_active": 266,
+          "flight_data_active": 806
+        },
+        "connections": [
+          {
+            "connection": "/Engine/Transient.GuLiIpConnection_529",
+            "player_guid": "8BAFA08E4AA2A2F6622C1BB72799D476",
+            "rtt_ms": 40.75,
+            "rates_valid": true,
+            "interval_seconds": 0.44041040167212486,
+            "receive_bytes_per_second": 47510.23118563268,
+            "send_bytes_per_second": 1902.770681206279,
+            "receive_packets_per_second": 65.84767273864212,
+            "send_packets_per_second": 22.706094047807625,
+            "receive_lost_per_second": 0,
+            "send_lost_per_second": 0,
+            "budget_bytes_per_second": 250000,
+            "queued_bits_raw": -200000,
+            "send_buffer_bits": 0,
+            "bandwidth_debt_bits": 0,
+            "unacked_reliable_bunches": 0,
+            "unit_stream": {
+              "generation": 0,
+              "receive_generation": 1,
+              "state_bytes": 0,
+              "pose_bytes": 0,
+              "charged_bytes": 0,
+              "observed_bytes": 0,
+              "budget_deferrals": 0,
+              "window_deferrals": 0,
+              "pose_merges": 0,
+              "received_state_bytes": 182536,
+              "received_pose_bytes": 2645560,
+              "received_state_blocks": 625,
+              "received_pose_blocks": 6650,
+              "pending_states": 0,
+              "pending_poses": 0,
+              "inflight_batches": 0,
+              "oldest_state_wait_ms": 0,
+              "oldest_pose_wait_ms": 0,
+              "max_sent_sample_gap_ms": 0,
+              "max_received_sample_gap_ms": 200.00457763671875
+            }
+          }
+        ]
+      }
+    ],
+    "network_samples_dropped": 0,
+    "network_counter_basis": "Cumulative application counters; UE connection deltas per wall second; decimal KB. Never add both ends of a connection.",
+    "flight_record_byte_basis": "Record body + 2-byte length, excluding 1-byte batch header. Produced/enqueued record bytes are measured only while capturing, after muzzle attachment; RPC bytes count submission, not delivery.",
+    "network_wall_seconds_qpc_offset": 16777216
+  },
+  {
+    "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "engine_frames": 33,
+    "capturing": false,
+    "counters": {
+      "Mining.VisibilityMs": {
+        "total": 0.6313100457191467,
+        "calls": 465,
+        "mean_per_engine_frame": 0.019130607446034748,
+        "p95_active_frame": 0.06930902600288391,
+        "stored_active_frames": 29
+      },
+      "Flight.Records": {
+        "total": 26566,
+        "calls": 32,
+        "mean_per_engine_frame": 805.030303030303,
+        "p95_active_frame": 886,
+        "stored_active_frames": 32
+      },
+      "Flight.ActorActive": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Flight.DataActive": {
+        "total": 26566,
+        "calls": 32,
+        "mean_per_engine_frame": 805.030303030303,
+        "p95_active_frame": 886,
+        "stored_active_frames": 32
+      },
+      "Laser.ArrayUploads": {
+        "total": 1408,
+        "calls": 128,
+        "mean_per_engine_frame": 42.666666666666664,
+        "p95_active_frame": 44,
+        "stored_active_frames": 32
+      },
+      "Laser.UploadMs": {
+        "total": 2.7299225330352783,
+        "calls": 128,
+        "mean_per_engine_frame": 0.08272492524349329,
+        "p95_active_frame": 0.09090080857276917,
+        "stored_active_frames": 32
+      },
+      "Muzzle.LifecycleMs": {
+        "total": 12.547098100185394,
+        "calls": 32,
+        "mean_per_engine_frame": 0.38021509394501196,
+        "p95_active_frame": 0.6478987634181976,
+        "stored_active_frames": 32
+      },
+      "Muzzle.Active": {
+        "total": 10668,
+        "calls": 32,
+        "mean_per_engine_frame": 323.27272727272725,
+        "p95_active_frame": 524,
+        "stored_active_frames": 32
+      },
+      "Muzzle.Components": {
+        "total": 32,
+        "calls": 32,
+        "mean_per_engine_frame": 0.9696969696969697,
+        "p95_active_frame": 1,
+        "stored_active_frames": 32
+      },
+      "Muzzle.AcceptedTotal": {
+        "total": 908392,
+        "calls": 32,
+        "mean_per_engine_frame": 27527.030303030304,
+        "p95_active_frame": 28516,
+        "stored_active_frames": 32
+      },
+      "Muzzle.BornTotal": {
+        "total": 638860,
+        "calls": 32,
+        "mean_per_engine_frame": 19359.39393939394,
+        "p95_active_frame": 20151,
+        "stored_active_frames": 32
+      },
+      "Muzzle.PublishedTotal": {
+        "total": 639256,
+        "calls": 32,
+        "mean_per_engine_frame": 19371.39393939394,
+        "p95_active_frame": 20151,
+        "stored_active_frames": 32
+      },
+      "Muzzle.FallbacksTotal": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Muzzle.PoseQueriesTotal": {
+        "total": 17833874,
+        "calls": 32,
+        "mean_per_engine_frame": 540420.4242424242,
+        "p95_active_frame": 562638,
+        "stored_active_frames": 32
+      },
+      "Muzzle.LifeUploadsTotal": {
+        "total": 29479,
+        "calls": 32,
+        "mean_per_engine_frame": 893.3030303030303,
+        "p95_active_frame": 930,
+        "stored_active_frames": 32
+      },
+      "Muzzle.PoseUploadsTotal": {
+        "total": 53808,
+        "calls": 32,
+        "mean_per_engine_frame": 1630.5454545454545,
+        "p95_active_frame": 1696,
+        "stored_active_frames": 32
+      },
+      "Muzzle.OffscreenTotal": {
+        "total": 283808,
+        "calls": 32,
+        "mean_per_engine_frame": 8600.242424242424,
+        "p95_active_frame": 8869,
+        "stored_active_frames": 32
+      },
+      "Muzzle.PublishMs": {
+        "total": 1.7970018088817596,
+        "calls": 32,
+        "mean_per_engine_frame": 0.054454600269144234,
+        "p95_active_frame": 0.19830092787742615,
+        "stored_active_frames": 32
+      },
+      "Impact.LifecycleMs": {
+        "total": 1.0762065649032593,
+        "calls": 32,
+        "mean_per_engine_frame": 0.03261232014858362,
+        "p95_active_frame": 0.04480034112930298,
+        "stored_active_frames": 32
+      },
+      "Impact.Active": {
+        "total": 6151,
+        "calls": 32,
+        "mean_per_engine_frame": 186.3939393939394,
+        "p95_active_frame": 215,
+        "stored_active_frames": 32
+      },
+      "Impact.Components": {
+        "total": 32,
+        "calls": 32,
+        "mean_per_engine_frame": 0.9696969696969697,
+        "p95_active_frame": 1,
+        "stored_active_frames": 32
+      },
+      "Impact.AcceptedTotal": {
+        "total": 343508,
+        "calls": 32,
+        "mean_per_engine_frame": 10409.333333333334,
+        "p95_active_frame": 10821,
+        "stored_active_frames": 32
+      },
+      "Impact.PublishedTotal": {
+        "total": 343508,
+        "calls": 32,
+        "mean_per_engine_frame": 10409.333333333334,
+        "p95_active_frame": 10821,
+        "stored_active_frames": 32
+      },
+      "Impact.FallbacksTotal": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Impact.UnknownBoundsTotal": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Impact.PublishMs": {
+        "total": 0.7776990532875061,
+        "calls": 32,
+        "mean_per_engine_frame": 0.023566637978409275,
+        "p95_active_frame": 0.07389858365058899,
+        "stored_active_frames": 32
+      },
+      "WingmanFlight.Active": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "WingmanFlight.Components": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "WingmanFlight.UploadsTotal": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "WingmanFlight.OffscreenDropsTotal": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "WingmanFlight.PublishMs": {
+        "total": 0.08139386773109436,
+        "calls": 32,
+        "mean_per_engine_frame": 0.0024664808403361926,
+        "p95_active_frame": 0.002998858690261841,
+        "stored_active_frames": 32
+      },
+      "Flight.PredictorCalls": {
+        "total": 26372,
+        "calls": 32,
+        "mean_per_engine_frame": 799.1515151515151,
+        "p95_active_frame": 886,
+        "stored_active_frames": 32
+      },
+      "Flight.Predictions.Commander": {
+        "total": 26372,
+        "calls": 32,
+        "mean_per_engine_frame": 799.1515151515151,
+        "p95_active_frame": 886,
+        "stored_active_frames": 32
+      },
+      "Flight.Predictions.Ground": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Flight.Predictions.Wingman": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Flight.PresentationMs": {
+        "total": 34.090299159288406,
+        "calls": 32,
+        "mean_per_engine_frame": 1.033039368463285,
+        "p95_active_frame": 1.5361979603767395,
+        "stored_active_frames": 32
+      },
+      "Units.Visible": {
+        "total": 3097,
+        "calls": 32,
+        "mean_per_engine_frame": 93.84848484848484,
+        "p95_active_frame": 100,
+        "stored_active_frames": 32
+      },
+      "Units.Updated": {
+        "total": 3976,
+        "calls": 32,
+        "mean_per_engine_frame": 120.48484848484848,
+        "p95_active_frame": 190,
+        "stored_active_frames": 32
+      },
+      "Units.Skipped": {
+        "total": 2424,
+        "calls": 32,
+        "mean_per_engine_frame": 73.45454545454545,
+        "p95_active_frame": 107,
+        "stored_active_frames": 32
+      },
+      "Units.PresentationMs": {
+        "total": 10.390900075435638,
+        "calls": 32,
+        "mean_per_engine_frame": 0.31487575986168603,
+        "p95_active_frame": 0.42270123958587646,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.SourcesMs": {
+        "total": 0.2294890582561493,
+        "calls": 32,
+        "mean_per_engine_frame": 0.006954213886549978,
+        "p95_active_frame": 0.02460181713104248,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.OutlineCaptureMs": {
+        "total": 6.17552176117897,
+        "calls": 32,
+        "mean_per_engine_frame": 0.18713702306602942,
+        "p95_active_frame": 0.3493987023830414,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.PlacementCaptureMs": {
+        "total": 0.05120411515235901,
+        "calls": 32,
+        "mean_per_engine_frame": 0.001551639853101788,
+        "p95_active_frame": 0.0018030405044555664,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.WorldPanelsMs": {
+        "total": 0.05130097270011902,
+        "calls": 32,
+        "mean_per_engine_frame": 0.0015545749303066368,
+        "p95_active_frame": 0.0021010637283325195,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.UpdateMs": {
+        "total": 9.239904582500458,
+        "calls": 32,
+        "mean_per_engine_frame": 0.27999710856061993,
+        "p95_active_frame": 0.4394017159938812,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.PrepareMs": {
+        "total": 4.453092813491821,
+        "calls": 128,
+        "mean_per_engine_frame": 0.13494220646944913,
+        "p95_active_frame": 0.19440427422523499,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.SubmitMs": {
+        "total": 3.1078048050403595,
+        "calls": 128,
+        "mean_per_engine_frame": 0.0941759031830412,
+        "p95_active_frame": 0.10989606380462646,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.PaintMs": {
+        "total": 27.06751599907875,
+        "calls": 128,
+        "mean_per_engine_frame": 0.8202277575478409,
+        "p95_active_frame": 0.9638033807277679,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.PartitionMs": {
+        "total": 0.0005923211574554443,
+        "calls": 32,
+        "mean_per_engine_frame": 1.7949125983498313e-05,
+        "p95_active_frame": 0.00010058283805847168,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.ComputeCpuMs": {
+        "total": 17.75941625237465,
+        "calls": 32,
+        "mean_per_engine_frame": 0.5381641288598379,
+        "p95_active_frame": 0.6610006093978882,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.DispatchJoinMs": {
+        "total": 17.762411385774612,
+        "calls": 32,
+        "mean_per_engine_frame": 0.5382548904780186,
+        "p95_active_frame": 0.6611011922359467,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.DispatchWaitMs": {
+        "total": 0.002995133399963379,
+        "calls": 32,
+        "mean_per_engine_frame": 9.076161818070845e-05,
+        "p95_active_frame": 0.00020116567611694336,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.MergeMs": {
+        "total": 0.246293842792511,
+        "calls": 32,
+        "mean_per_engine_frame": 0.007463449781591242,
+        "p95_active_frame": 0.011201947927474976,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.Batches": {
+        "total": 32,
+        "calls": 32,
+        "mean_per_engine_frame": 0.9696969696969697,
+        "p95_active_frame": 1,
+        "stored_active_frames": 32
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.Commands": {
+        "total": 84220,
+        "calls": 32,
+        "mean_per_engine_frame": 2552.121212121212,
+        "p95_active_frame": 2643,
+        "stored_active_frames": 32
+      },
+      "Muzzle.AcceptMs": {
+        "total": 0.06650760769844055,
+        "calls": 268,
+        "mean_per_engine_frame": 0.0020153820514678955,
+        "p95_active_frame": 0.019215047359466553,
+        "stored_active_frames": 8
+      },
+      "Impact.AcceptMs": {
+        "total": 0.6853081285953522,
+        "calls": 194,
+        "mean_per_engine_frame": 0.020766912987737945,
+        "p95_active_frame": 0.17951428890228271,
+        "stored_active_frames": 8
+      },
+      "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_264/SceneUI.OutlineListMs": {
+        "total": 1.6324035823345184,
+        "calls": 8,
+        "mean_per_engine_frame": 0.04946677522225813,
+        "p95_active_frame": 0.28410181403160095,
+        "stored_active_frames": 8
+      }
+    },
+    "network_samples": [
+      {
+        "wall_seconds": 17380517.8834211,
+        "world_seconds": 113.30631656572223,
+        "engine_frame": 224195,
+        "net_mode": 3,
+        "process_physical_bytes": 11336880128,
+        "match_id": "46D6E61348D6D49FF208EEAAEFC3804D",
+        "estimated_server_seconds": 114.59121770784259,
+        "pie_clock_estimate_error_ms": 14.396138489246368,
+        "flights": {
+          "created": 0,
+          "ended": 0,
+          "produced_record_bytes": 0,
+          "byte_accounting_failures": 0,
+          "active": 0,
+          "received_bytes": 3943249,
+          "received_batches": 4913,
+          "received_record_bytes": 3938336,
+          "received_events": 55642,
+          "received_bootstrap": 0,
+          "received_stale_epoch": 0,
+          "age_samples": 55642,
+          "age_sum_ms": 5409515.903688967,
+          "age_histogram": [
+            82,
+            5651,
+            6373,
+            4582,
+            15531,
+            16430,
+            6993,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "visuals": {
+          "received_shots": 28248,
+          "dropped_shots": 0,
+          "shots_too_old": 0,
+          "shots_from_future": 0,
+          "muzzle_accepted": 28248,
+          "muzzle_born": 19659,
+          "muzzle_expired": 20,
+          "muzzle_pose_unresolved": 20,
+          "muzzle_too_old": 0,
+          "muzzle_admission_late": 0,
+          "muzzle_active": 352,
+          "flight_data_active": 854
+        },
+        "connections": [
+          {
+            "connection": "/Engine/Transient.GuLiIpConnection_528",
+            "player_guid": "FAA109DE4BE64C3185DC94974D270B5D",
+            "rtt_ms": 38.42856979370117,
+            "rates_valid": false,
+            "interval_seconds": 0,
+            "budget_bytes_per_second": 250000,
+            "queued_bits_raw": -200000,
+            "send_buffer_bits": 0,
+            "bandwidth_debt_bits": 0,
+            "unacked_reliable_bunches": 0,
+            "unit_stream": {
+              "generation": 0,
+              "receive_generation": 1,
+              "state_bytes": 0,
+              "pose_bytes": 0,
+              "charged_bytes": 0,
+              "observed_bytes": 0,
+              "budget_deferrals": 0,
+              "window_deferrals": 0,
+              "pose_merges": 0,
+              "received_state_bytes": 169963,
+              "received_pose_bytes": 2602105,
+              "received_state_blocks": 602,
+              "received_pose_blocks": 6512,
+              "pending_states": 0,
+              "pending_poses": 0,
+              "inflight_batches": 0,
+              "oldest_state_wait_ms": 0,
+              "oldest_pose_wait_ms": 0,
+              "max_sent_sample_gap_ms": 0,
+              "max_received_sample_gap_ms": 200.00457763671875
+            }
+          }
+        ]
+      },
+      {
+        "wall_seconds": 17380518.8883032,
+        "world_seconds": 114.34492256492376,
+        "engine_frame": 224217,
+        "net_mode": 3,
+        "process_physical_bytes": 11383111680,
+        "match_id": "46D6E61348D6D49FF208EEAAEFC3804D",
+        "estimated_server_seconds": 115.62959530204535,
+        "pie_clock_estimate_error_ms": 14.167733490467072,
+        "flights": {
+          "created": 0,
+          "ended": 0,
+          "produced_record_bytes": 0,
+          "byte_accounting_failures": 0,
+          "active": 0,
+          "received_bytes": 3980340,
+          "received_batches": 4960,
+          "received_record_bytes": 3975380,
+          "received_events": 56167,
+          "received_bootstrap": 0,
+          "received_stale_epoch": 0,
+          "age_samples": 56167,
+          "age_sum_ms": 5460072.434909642,
+          "age_histogram": [
+            82,
+            5815,
+            6373,
+            4593,
+            15654,
+            16570,
+            7080,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "visuals": {
+          "received_shots": 28512,
+          "dropped_shots": 0,
+          "shots_too_old": 0,
+          "shots_from_future": 0,
+          "muzzle_accepted": 28512,
+          "muzzle_born": 20057,
+          "muzzle_expired": 20,
+          "muzzle_pose_unresolved": 20,
+          "muzzle_too_old": 0,
+          "muzzle_admission_late": 0,
+          "muzzle_active": 490,
+          "flight_data_active": 855
+        },
+        "connections": [
+          {
+            "connection": "/Engine/Transient.GuLiIpConnection_528",
+            "player_guid": "FAA109DE4BE64C3185DC94974D270B5D",
+            "rtt_ms": 38.46428680419922,
+            "rates_valid": true,
+            "interval_seconds": 1.004882100969553,
+            "receive_bytes_per_second": 90718.10505137268,
+            "send_bytes_per_second": 1819.1188779621687,
+            "receive_packets_per_second": 115.4364277043827,
+            "send_packets_per_second": 21.893115599107063,
+            "receive_lost_per_second": 0,
+            "send_lost_per_second": 0,
+            "budget_bytes_per_second": 250000,
+            "queued_bits_raw": -200000,
+            "send_buffer_bits": 743,
+            "bandwidth_debt_bits": 0,
+            "unacked_reliable_bunches": 0,
+            "unit_stream": {
+              "generation": 0,
+              "receive_generation": 1,
+              "state_bytes": 0,
+              "pose_bytes": 0,
+              "charged_bytes": 0,
+              "observed_bytes": 0,
+              "budget_deferrals": 0,
+              "window_deferrals": 0,
+              "pose_merges": 0,
+              "received_state_bytes": 180450,
+              "received_pose_bytes": 2634525,
+              "received_state_blocks": 620,
+              "received_pose_blocks": 6574,
+              "pending_states": 0,
+              "pending_poses": 0,
+              "inflight_batches": 0,
+              "oldest_state_wait_ms": 0,
+              "oldest_pose_wait_ms": 0,
+              "max_sent_sample_gap_ms": 0,
+              "max_received_sample_gap_ms": 200.00457763671875
+            }
+          }
+        ]
+      },
+      {
+        "wall_seconds": 17380519.3330364,
+        "world_seconds": 114.75247506797314,
+        "engine_frame": 224227,
+        "net_mode": 3,
+        "process_physical_bytes": 11382849536,
+        "match_id": "46D6E61348D6D49FF208EEAAEFC3804D",
+        "estimated_server_seconds": 116.036326572299,
+        "pie_clock_estimate_error_ms": 13.34650069475174,
+        "flights": {
+          "created": 0,
+          "ended": 0,
+          "produced_record_bytes": 0,
+          "byte_accounting_failures": 0,
+          "active": 0,
+          "received_bytes": 3983153,
+          "received_batches": 4965,
+          "received_record_bytes": 3978188,
+          "received_events": 56226,
+          "received_bootstrap": 0,
+          "received_stale_epoch": 0,
+          "age_samples": 56226,
+          "age_sum_ms": 5466915.533624589,
+          "age_histogram": [
+            82,
+            5819,
+            6374,
+            4598,
+            15672,
+            16592,
+            7089,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "visuals": {
+          "received_shots": 28516,
+          "dropped_shots": 0,
+          "shots_too_old": 0,
+          "shots_from_future": 0,
+          "muzzle_accepted": 28516,
+          "muzzle_born": 20151,
+          "muzzle_expired": 20,
+          "muzzle_pose_unresolved": 20,
+          "muzzle_too_old": 0,
+          "muzzle_admission_late": 0,
+          "muzzle_active": 266,
+          "flight_data_active": 806
+        },
+        "connections": [
+          {
+            "connection": "/Engine/Transient.GuLiIpConnection_528",
+            "player_guid": "FAA109DE4BE64C3185DC94974D270B5D",
+            "rtt_ms": 38.85714340209961,
+            "rates_valid": true,
+            "interval_seconds": 0.4447331987321377,
+            "receive_bytes_per_second": 47217.07320223619,
+            "send_bytes_per_second": 1868.5360174797977,
+            "receive_packets_per_second": 65.20763478569691,
+            "send_packets_per_second": 22.48539130541273,
+            "receive_lost_per_second": 0,
+            "send_lost_per_second": 0,
+            "budget_bytes_per_second": 250000,
+            "queued_bits_raw": -200000,
+            "send_buffer_bits": 0,
+            "bandwidth_debt_bits": 0,
+            "unacked_reliable_bunches": 0,
+            "unit_stream": {
+              "generation": 0,
+              "receive_generation": 1,
+              "state_bytes": 0,
+              "pose_bytes": 0,
+              "charged_bytes": 0,
+              "observed_bytes": 0,
+              "budget_deferrals": 0,
+              "window_deferrals": 0,
+              "pose_merges": 0,
+              "received_state_bytes": 182720,
+              "received_pose_bytes": 2646607,
+              "received_state_blocks": 623,
+              "received_pose_blocks": 6598,
+              "pending_states": 0,
+              "pending_poses": 0,
+              "inflight_batches": 0,
+              "oldest_state_wait_ms": 0,
+              "oldest_pose_wait_ms": 0,
+              "max_sent_sample_gap_ms": 0,
+              "max_received_sample_gap_ms": 200.00457763671875
+            }
+          }
+        ]
+      }
+    ],
+    "network_samples_dropped": 0,
+    "network_counter_basis": "Cumulative application counters; UE connection deltas per wall second; decimal KB. Never add both ends of a connection.",
+    "flight_record_byte_basis": "Record body + 2-byte length, excluding 1-byte batch header. Produced/enqueued record bytes are measured only while capturing, after muzzle attachment; RPC bytes count submission, not delivery.",
+    "network_wall_seconds_qpc_offset": 16777216
+  },
+  {
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "engine_frames": 33,
+    "capturing": false,
+    "counters": {
+      "Avoidance.GridMs": {
+        "total": 4.158690571784973,
+        "calls": 32,
+        "mean_per_engine_frame": 0.12602092641772647,
+        "p95_active_frame": 0.26930123567581177,
+        "stored_active_frames": 32
+      },
+      "Avoidance.PrepareMs": {
+        "total": 4.827801138162613,
+        "calls": 32,
+        "mean_per_engine_frame": 0.14629700418674585,
+        "p95_active_frame": 0.3102011978626251,
+        "stored_active_frames": 32
+      },
+      "Avoidance.ComputeCpuMs": {
+        "total": 12.420784682035446,
+        "calls": 32,
+        "mean_per_engine_frame": 0.3763874146071347,
+        "p95_active_frame": 0.7735975086688995,
+        "stored_active_frames": 32
+      },
+      "Avoidance.DispatchJoinMs": {
+        "total": 12.427300214767456,
+        "calls": 32,
+        "mean_per_engine_frame": 0.3765848549929532,
+        "p95_active_frame": 0.773899257183075,
+        "stored_active_frames": 32
+      },
+      "Avoidance.DispatchWaitMs": {
+        "total": 0.006515532732009888,
+        "calls": 32,
+        "mean_per_engine_frame": 0.00019744038581848145,
+        "p95_active_frame": 0.0004023313522338867,
+        "stored_active_frames": 32
+      },
+      "Avoidance.MergeMs": {
+        "total": 0.09280815720558167,
+        "calls": 32,
+        "mean_per_engine_frame": 0.0028123684001691413,
+        "p95_active_frame": 0.004101544618606567,
+        "stored_active_frames": 32
+      },
+      "Avoidance.Batches": {
+        "total": 32,
+        "calls": 32,
+        "mean_per_engine_frame": 0.9696969696969697,
+        "p95_active_frame": 1,
+        "stored_active_frames": 32
+      },
+      "Avoidance.BucketVisits": {
+        "total": 315922,
+        "calls": 32,
+        "mean_per_engine_frame": 9573.39393939394,
+        "p95_active_frame": 14722,
+        "stored_active_frames": 32
+      },
+      "Avoidance.ExactCandidates": {
+        "total": 279141,
+        "calls": 32,
+        "mean_per_engine_frame": 8458.818181818182,
+        "p95_active_frame": 12962,
+        "stored_active_frames": 32
+      },
+      "Avoidance.Solves": {
+        "total": 2964,
+        "calls": 32,
+        "mean_per_engine_frame": 89.81818181818181,
+        "p95_active_frame": 140,
+        "stored_active_frames": 32
+      },
+      "Avoidance.Forced": {
+        "total": 401,
+        "calls": 32,
+        "mean_per_engine_frame": 12.151515151515152,
+        "p95_active_frame": 50,
+        "stored_active_frames": 32
+      },
+      "Avoidance.CellLookups": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Avoidance.CellHits": {
+        "total": 289767,
+        "calls": 32,
+        "mean_per_engine_frame": 8780.818181818182,
+        "p95_active_frame": 13668,
+        "stored_active_frames": 32
+      },
+      "Avoidance.SparseComparisons": {
+        "total": 589807,
+        "calls": 32,
+        "mean_per_engine_frame": 17872.939393939392,
+        "p95_active_frame": 27653,
+        "stored_active_frames": 32
+      },
+      "Avoidance.EnvironmentDuplicates": {
+        "total": 17472,
+        "calls": 32,
+        "mean_per_engine_frame": 529.4545454545455,
+        "p95_active_frame": 957,
+        "stored_active_frames": 32
+      },
+      "Avoidance.UniqueVisits": {
+        "total": 298450,
+        "calls": 32,
+        "mean_per_engine_frame": 9043.939393939394,
+        "p95_active_frame": 13972,
+        "stored_active_frames": 32
+      },
+      "Avoidance.Retained": {
+        "total": 35568,
+        "calls": 32,
+        "mean_per_engine_frame": 1077.8181818181818,
+        "p95_active_frame": 1680,
+        "stored_active_frames": 32
+      },
+      "Avoidance.Consumed": {
+        "total": 35568,
+        "calls": 32,
+        "mean_per_engine_frame": 1077.8181818181818,
+        "p95_active_frame": 1680,
+        "stored_active_frames": 32
+      },
+      "Avoidance.VerifiedPrefixes": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Avoidance.PrefixMismatches": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Avoidance.QueryReachSumCm": {
+        "total": 23517487.5,
+        "calls": 32,
+        "mean_per_engine_frame": 712651.1363636364,
+        "p95_active_frame": 1110812.5,
+        "stored_active_frames": 32
+      },
+      "Avoidance.RadiusLE150": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Avoidance.RadiusLE300": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Avoidance.RadiusGT300": {
+        "total": 2964,
+        "calls": 32,
+        "mean_per_engine_frame": 89.81818181818181,
+        "p95_active_frame": 140,
+        "stored_active_frames": 32
+      },
+      "Avoidance.SpeedLE800": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Avoidance.SpeedLE1600": {
+        "total": 2964,
+        "calls": 32,
+        "mean_per_engine_frame": 89.81818181818181,
+        "p95_active_frame": 140,
+        "stored_active_frames": 32
+      },
+      "Avoidance.SpeedGT1600": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Avoidance.QueryMs": {
+        "total": 13.15990462899208,
+        "calls": 32,
+        "mean_per_engine_frame": 0.39878498875733576,
+        "p95_active_frame": 0.8260011672973633,
+        "stored_active_frames": 32
+      },
+      "Avoidance.SolveMs": {
+        "total": 0.8160024881362915,
+        "calls": 32,
+        "mean_per_engine_frame": 0.024727348125342167,
+        "p95_active_frame": 0.05910173058509827,
+        "stored_active_frames": 32
+      },
+      "Avoidance.SubmitMs": {
+        "total": 0.1448020339012146,
+        "calls": 32,
+        "mean_per_engine_frame": 0.004387940421248927,
+        "p95_active_frame": 0.00799819827079773,
+        "stored_active_frames": 32
+      },
+      "Avoidance.TotalMs": {
+        "total": 18.99019256234169,
+        "calls": 32,
+        "mean_per_engine_frame": 0.5754603806770209,
+        "p95_active_frame": 1.028798520565033,
+        "stored_active_frames": 32
+      },
+      "Network.FlightRecordAccountingMs": {
+        "total": 0.4554055631160736,
+        "calls": 29,
+        "mean_per_engine_frame": 0.013800168579274958,
+        "p95_active_frame": 0.12199953198432922,
+        "stored_active_frames": 29
+      },
+      "StateTree.GroupLookups": {
+        "total": 22000,
+        "calls": 32,
+        "mean_per_engine_frame": 666.6666666666666,
+        "p95_active_frame": 2000,
+        "stored_active_frames": 32
+      },
+      "StateTree.IndexedLookups": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "StateTree.VerifiedLookups": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "StateTree.AdvanceGroups": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "StateTree.AdvanceMembers": {
+        "total": 0,
+        "calls": 32,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 32
+      },
+      "Projectile.Commander5HzSteps": {
+        "total": 8,
+        "calls": 8,
+        "mean_per_engine_frame": 0.24242424242424243,
+        "p95_active_frame": 1,
+        "stored_active_frames": 8
+      },
+      "Projectile.CommanderActivePerStep": {
+        "total": 6879,
+        "calls": 8,
+        "mean_per_engine_frame": 208.45454545454547,
+        "p95_active_frame": 1002,
+        "stored_active_frames": 8
+      },
+      "Projectile.SnapshotMs": {
+        "total": 0.7697008550167084,
+        "calls": 8,
+        "mean_per_engine_frame": 0.02332426833383965,
+        "p95_active_frame": 0.11419877409934998,
+        "stored_active_frames": 8
+      },
+      "Projectile.GridMs": {
+        "total": 0.1309998333454132,
+        "calls": 8,
+        "mean_per_engine_frame": 0.003969691919557976,
+        "p95_active_frame": 0.017698854207992554,
+        "stored_active_frames": 8
+      },
+      "Projectile.CandidatesMs": {
+        "total": 1.876968890428543,
+        "calls": 6875,
+        "mean_per_engine_frame": 0.056877845164501305,
+        "p95_active_frame": 0.26247650384902954,
+        "stored_active_frames": 8
+      },
+      "Projectile.NarrowPhaseMs": {
+        "total": 3.3902525901794434,
+        "calls": 6875,
+        "mean_per_engine_frame": 0.10273492697513464,
+        "p95_active_frame": 0.535920262336731,
+        "stored_active_frames": 8
+      },
+      "Projectile.WorldSweepMs": {
+        "total": 5.088672041893005,
+        "calls": 6875,
+        "mean_per_engine_frame": 0.15420218308766684,
+        "p95_active_frame": 0.713840126991272,
+        "stored_active_frames": 8
+      },
+      "Projectile.SettleMs": {
+        "total": 1.9822865724563599,
+        "calls": 355,
+        "mean_per_engine_frame": 0.06006929007443515,
+        "p95_active_frame": 0.4588775336742401,
+        "stored_active_frames": 8
+      },
+      "StateTree.Reads": {
+        "total": 51886,
+        "calls": 394,
+        "mean_per_engine_frame": 1572.3030303030303,
+        "p95_active_frame": 5666,
+        "stored_active_frames": 11
+      },
+      "StateTree.CacheHits": {
+        "total": 0,
+        "calls": 394,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 11
+      },
+      "StateTree.Conditions": {
+        "total": 26358,
+        "calls": 394,
+        "mean_per_engine_frame": 798.7272727272727,
+        "p95_active_frame": 2450,
+        "stored_active_frames": 11
+      },
+      "StateTree.VerifiedReads": {
+        "total": 0,
+        "calls": 394,
+        "mean_per_engine_frame": 0,
+        "p95_active_frame": 0,
+        "stored_active_frames": 11
+      },
+      "StateTree.ActorMs": {
+        "total": 6.549980491399765,
+        "calls": 379,
+        "mean_per_engine_frame": 0.1984842573151444,
+        "p95_active_frame": 0.6970204412937164,
+        "stored_active_frames": 11
+      },
+      "StateTree.MassMs": {
+        "total": 15.896700322628021,
+        "calls": 15,
+        "mean_per_engine_frame": 0.4817181915947885,
+        "p95_active_frame": 1.5424005687236786,
+        "stored_active_frames": 11
+      },
+      "StateTree.CommitMs": {
+        "total": 2.190105617046356,
+        "calls": 15,
+        "mean_per_engine_frame": 0.06636683688019261,
+        "p95_active_frame": 0.4709996283054352,
+        "stored_active_frames": 11
+      },
+      "StateTree.ScheduleMs": {
+        "total": 25.192301720380783,
+        "calls": 11,
+        "mean_per_engine_frame": 0.7634030824357813,
+        "p95_active_frame": 2.6322975754737854,
+        "stored_active_frames": 11
+      }
+    },
+    "network_samples": [
+      {
+        "wall_seconds": 17380517.8835516,
+        "world_seconds": 114.57682156935334,
+        "engine_frame": 224195,
+        "net_mode": 1,
+        "process_physical_bytes": 11336880128,
+        "match_id": "46D6E61348D6D49FF208EEAAEFC3804D",
+        "estimated_server_seconds": 114.57682156935334,
+        "flights": {
+          "created": 28248,
+          "ended": 27394,
+          "produced_record_bytes": 3539667,
+          "byte_accounting_failures": 0,
+          "active": 854,
+          "received_bytes": 0,
+          "received_batches": 0,
+          "received_record_bytes": 0,
+          "received_events": 0,
+          "received_bootstrap": 0,
+          "received_stale_epoch": 0,
+          "age_samples": 0,
+          "age_sum_ms": 0,
+          "age_histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "connections": [
+          {
+            "connection": "/Engine/Transient.GuLiIpConnection_530",
+            "player_guid": "FAA109DE4BE64C3185DC94974D270B5D",
+            "rtt_ms": 39.25,
+            "rates_valid": false,
+            "interval_seconds": 0,
+            "budget_bytes_per_second": 250000,
+            "queued_bits_raw": -200000,
+            "send_buffer_bits": 0,
+            "bandwidth_debt_bits": 0,
+            "unacked_reliable_bunches": 0,
+            "flight_peer": {
+              "channel_serial": 1,
+              "queued_events": 0,
+              "head_event_age_ms": 0,
+              "enqueued_events": 55642,
+              "enqueued_record_bytes": 3539667,
+              "bootstrap_events": 0,
+              "bootstrap_record_bytes": 0,
+              "sent_events": 55642,
+              "sent_bytes": 3943249,
+              "sent_record_bytes": 3938336,
+              "sent_batches": 4913,
+              "flush_calls": 2264,
+              "budget_deferrals": 0,
+              "batch_limit_hits": 343
+            },
+            "unit_stream": {
+              "generation": 1,
+              "receive_generation": 0,
+              "state_bytes": 169963,
+              "pose_bytes": 2602105,
+              "charged_bytes": 3682660,
+              "observed_bytes": 2963999,
+              "budget_deferrals": 10,
+              "window_deferrals": 6,
+              "pose_merges": 62,
+              "received_state_bytes": 0,
+              "received_pose_bytes": 0,
+              "received_state_blocks": 0,
+              "received_pose_blocks": 0,
+              "pending_states": 0,
+              "pending_poses": 0,
+              "inflight_batches": 0,
+              "oldest_state_wait_ms": 0,
+              "oldest_pose_wait_ms": 0,
+              "max_sent_sample_gap_ms": 200.00457763671875,
+              "max_received_sample_gap_ms": 0
+            }
+          },
+          {
+            "connection": "/Engine/Transient.GuLiIpConnection_531",
+            "player_guid": "8BAFA08E4AA2A2F6622C1BB72799D476",
+            "rtt_ms": 40.17856979370117,
+            "rates_valid": false,
+            "interval_seconds": 0,
+            "budget_bytes_per_second": 250000,
+            "queued_bits_raw": -200000,
+            "send_buffer_bits": 0,
+            "bandwidth_debt_bits": 0,
+            "unacked_reliable_bunches": 0,
+            "flight_peer": {
+              "channel_serial": 2,
+              "queued_events": 0,
+              "head_event_age_ms": 0,
+              "enqueued_events": 55642,
+              "enqueued_record_bytes": 3539667,
+              "bootstrap_events": 0,
+              "bootstrap_record_bytes": 0,
+              "sent_events": 55642,
+              "sent_bytes": 3943249,
+              "sent_record_bytes": 3938336,
+              "sent_batches": 4913,
+              "flush_calls": 2260,
+              "budget_deferrals": 0,
+              "batch_limit_hits": 343
+            },
+            "unit_stream": {
+              "generation": 1,
+              "receive_generation": 0,
+              "state_bytes": 169783,
+              "pose_bytes": 2601647,
+              "charged_bytes": 3688934,
+              "observed_bytes": 2971012,
+              "budget_deferrals": 11,
+              "window_deferrals": 6,
+              "pose_merges": 159,
+              "received_state_bytes": 0,
+              "received_pose_bytes": 0,
+              "received_state_blocks": 0,
+              "received_pose_blocks": 0,
+              "pending_states": 0,
+              "pending_poses": 0,
+              "inflight_batches": 0,
+              "oldest_state_wait_ms": 0,
+              "oldest_pose_wait_ms": 0,
+              "max_sent_sample_gap_ms": 200.00457763671875,
+              "max_received_sample_gap_ms": 0
+            }
+          }
+        ]
+      },
+      {
+        "wall_seconds": 17380518.9273593,
+        "world_seconds": 115.66207487136126,
+        "engine_frame": 224218,
+        "net_mode": 1,
+        "process_physical_bytes": 11383111680,
+        "match_id": "46D6E61348D6D49FF208EEAAEFC3804D",
+        "estimated_server_seconds": 115.66207487136126,
+        "flights": {
+          "created": 28514,
+          "ended": 27678,
+          "produced_record_bytes": 3577917,
+          "byte_accounting_failures": 0,
+          "active": 836,
+          "received_bytes": 0,
+          "received_batches": 0,
+          "received_record_bytes": 0,
+          "received_events": 0,
+          "received_bootstrap": 0,
+          "received_stale_epoch": 0,
+          "age_samples": 0,
+          "age_sum_ms": 0,
+          "age_histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "connections": [
+          {
+            "connection": "/Engine/Transient.GuLiIpConnection_530",
+            "player_guid": "FAA109DE4BE64C3185DC94974D270B5D",
+            "rtt_ms": 39.71428680419922,
+            "rates_valid": true,
+            "interval_seconds": 1.0438077002763748,
+            "receive_bytes_per_second": 1903.6073401967535,
+            "send_bytes_per_second": 92231.54798964362,
+            "receive_packets_per_second": 22.992740898199337,
+            "send_packets_per_second": 116.8797662325133,
+            "receive_lost_per_second": 0,
+            "send_lost_per_second": 0,
+            "budget_bytes_per_second": 250000,
+            "queued_bits_raw": -159112,
+            "send_buffer_bits": 3350,
+            "bandwidth_debt_bits": 0,
+            "unacked_reliable_bunches": 4,
+            "flight_peer": {
+              "channel_serial": 1,
+              "queued_events": 0,
+              "head_event_age_ms": 0,
+              "enqueued_events": 56192,
+              "enqueued_record_bytes": 3577917,
+              "bootstrap_events": 0,
+              "bootstrap_record_bytes": 0,
+              "sent_events": 56192,
+              "sent_bytes": 3981548,
+              "sent_record_bytes": 3976586,
+              "sent_batches": 4962,
+              "flush_calls": 2286,
+              "budget_deferrals": 0,
+              "batch_limit_hits": 346
+            },
+            "unit_stream": {
+              "generation": 1,
+              "receive_generation": 0,
+              "state_bytes": 181444,
+              "pose_bytes": 2637530,
+              "charged_bytes": 3740702,
+              "observed_bytes": 3013753,
+              "budget_deferrals": 14,
+              "window_deferrals": 6,
+              "pose_merges": 62,
+              "received_state_bytes": 0,
+              "received_pose_bytes": 0,
+              "received_state_blocks": 0,
+              "received_pose_blocks": 0,
+              "pending_states": 0,
+              "pending_poses": 0,
+              "inflight_batches": 1,
+              "oldest_state_wait_ms": 0,
+              "oldest_pose_wait_ms": 0,
+              "max_sent_sample_gap_ms": 200.00457763671875,
+              "max_received_sample_gap_ms": 0
+            }
+          },
+          {
+            "connection": "/Engine/Transient.GuLiIpConnection_531",
+            "player_guid": "8BAFA08E4AA2A2F6622C1BB72799D476",
+            "rtt_ms": 39.25,
+            "rates_valid": true,
+            "interval_seconds": 1.0438077002763748,
+            "receive_bytes_per_second": 1922.7679576119197,
+            "send_bytes_per_second": 91790.85378909479,
+            "receive_packets_per_second": 22.992740898199337,
+            "send_packets_per_second": 119.75385884478823,
+            "receive_lost_per_second": 0,
+            "send_lost_per_second": 0,
+            "budget_bytes_per_second": 250000,
+            "queued_bits_raw": -159288,
+            "send_buffer_bits": 3350,
+            "bandwidth_debt_bits": 0,
+            "unacked_reliable_bunches": 4,
+            "flight_peer": {
+              "channel_serial": 2,
+              "queued_events": 0,
+              "head_event_age_ms": 0,
+              "enqueued_events": 56192,
+              "enqueued_record_bytes": 3577917,
+              "bootstrap_events": 0,
+              "bootstrap_record_bytes": 0,
+              "sent_events": 56192,
+              "sent_bytes": 3981548,
+              "sent_record_bytes": 3976586,
+              "sent_batches": 4962,
+              "flush_calls": 2282,
+              "budget_deferrals": 0,
+              "batch_limit_hits": 346
+            },
+            "unit_stream": {
+              "generation": 1,
+              "receive_generation": 0,
+              "state_bytes": 181260,
+              "pose_bytes": 2636563,
+              "charged_bytes": 3746463,
+              "observed_bytes": 3020413,
+              "budget_deferrals": 15,
+              "window_deferrals": 6,
+              "pose_merges": 159,
+              "received_state_bytes": 0,
+              "received_pose_bytes": 0,
+              "received_state_blocks": 0,
+              "received_pose_blocks": 0,
+              "pending_states": 0,
+              "pending_poses": 0,
+              "inflight_batches": 1,
+              "oldest_state_wait_ms": 0,
+              "oldest_pose_wait_ms": 0,
+              "max_sent_sample_gap_ms": 200.00457763671875,
+              "max_received_sample_gap_ms": 0
+            }
+          }
+        ]
+      },
+      {
+        "wall_seconds": 17380519.3331487,
+        "world_seconds": 116.02298007160425,
+        "engine_frame": 224227,
+        "net_mode": 1,
+        "process_physical_bytes": 11382849536,
+        "match_id": "46D6E61348D6D49FF208EEAAEFC3804D",
+        "estimated_server_seconds": 116.02298007160425,
+        "flights": {
+          "created": 28516,
+          "ended": 27749,
+          "produced_record_bytes": 3579519,
+          "byte_accounting_failures": 0,
+          "active": 767,
+          "received_bytes": 0,
+          "received_batches": 0,
+          "received_record_bytes": 0,
+          "received_events": 0,
+          "received_bootstrap": 0,
+          "received_stale_epoch": 0,
+          "age_samples": 0,
+          "age_sum_ms": 0,
+          "age_histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "connections": [
+          {
+            "connection": "/Engine/Transient.GuLiIpConnection_530",
+            "player_guid": "FAA109DE4BE64C3185DC94974D270B5D",
+            "rtt_ms": 39.78571319580078,
+            "rates_valid": true,
+            "interval_seconds": 0.40578939765691757,
+            "receive_bytes_per_second": 1451.491841336824,
+            "send_bytes_per_second": 39153.314728623875,
+            "receive_packets_per_second": 19.714659984201344,
+            "send_packets_per_second": 56.67964745457887,
+            "receive_lost_per_second": 0,
+            "send_lost_per_second": 0,
+            "budget_bytes_per_second": 250000,
+            "queued_bits_raw": -200000,
+            "send_buffer_bits": 0,
+            "bandwidth_debt_bits": 0,
+            "unacked_reliable_bunches": 3,
+            "flight_peer": {
+              "channel_serial": 1,
+              "queued_events": 0,
+              "head_event_age_ms": 0,
+              "enqueued_events": 56226,
+              "enqueued_record_bytes": 3579519,
+              "bootstrap_events": 0,
+              "bootstrap_record_bytes": 0,
+              "sent_events": 56226,
+              "sent_bytes": 3983153,
+              "sent_record_bytes": 3978188,
+              "sent_batches": 4965,
+              "flush_calls": 2293,
+              "budget_deferrals": 0,
+              "batch_limit_hits": 346
+            },
+            "unit_stream": {
+              "generation": 1,
+              "receive_generation": 0,
+              "state_bytes": 182720,
+              "pose_bytes": 2646607,
+              "charged_bytes": 3753615,
+              "observed_bytes": 3024722,
+              "budget_deferrals": 15,
+              "window_deferrals": 6,
+              "pose_merges": 62,
+              "received_state_bytes": 0,
+              "received_pose_bytes": 0,
+              "received_state_blocks": 0,
+              "received_pose_blocks": 0,
+              "pending_states": 0,
+              "pending_poses": 0,
+              "inflight_batches": 0,
+              "oldest_state_wait_ms": 0,
+              "oldest_pose_wait_ms": 0,
+              "max_sent_sample_gap_ms": 200.00457763671875,
+              "max_received_sample_gap_ms": 0
+            }
+          },
+          {
+            "connection": "/Engine/Transient.GuLiIpConnection_531",
+            "player_guid": "8BAFA08E4AA2A2F6622C1BB72799D476",
+            "rtt_ms": 39.25,
+            "rates_valid": true,
+            "interval_seconds": 0.40578939765691757,
+            "receive_bytes_per_second": 1463.81350382695,
+            "send_bytes_per_second": 39022.70510622854,
+            "receive_packets_per_second": 19.714659984201344,
+            "send_packets_per_second": 56.67964745457887,
+            "receive_lost_per_second": 0,
+            "send_lost_per_second": 0,
+            "budget_bytes_per_second": 250000,
+            "queued_bits_raw": -200000,
+            "send_buffer_bits": 0,
+            "bandwidth_debt_bits": 0,
+            "unacked_reliable_bunches": 3,
+            "flight_peer": {
+              "channel_serial": 2,
+              "queued_events": 0,
+              "head_event_age_ms": 0,
+              "enqueued_events": 56226,
+              "enqueued_record_bytes": 3579519,
+              "bootstrap_events": 0,
+              "bootstrap_record_bytes": 0,
+              "sent_events": 56226,
+              "sent_bytes": 3983153,
+              "sent_record_bytes": 3978188,
+              "sent_batches": 4965,
+              "flush_calls": 2289,
+              "budget_deferrals": 0,
+              "batch_limit_hits": 346
+            },
+            "unit_stream": {
+              "generation": 1,
+              "receive_generation": 0,
+              "state_bytes": 182536,
+              "pose_bytes": 2645560,
+              "charged_bytes": 3759296,
+              "observed_bytes": 3031325,
+              "budget_deferrals": 16,
+              "window_deferrals": 6,
+              "pose_merges": 159,
+              "received_state_bytes": 0,
+              "received_pose_bytes": 0,
+              "received_state_blocks": 0,
+              "received_pose_blocks": 0,
+              "pending_states": 0,
+              "pending_poses": 0,
+              "inflight_batches": 0,
+              "oldest_state_wait_ms": 0,
+              "oldest_pose_wait_ms": 0,
+              "max_sent_sample_gap_ms": 200.00457763671875,
+              "max_received_sample_gap_ms": 0
+            }
+          }
+        ]
+      }
+    ],
+    "network_samples_dropped": 0,
+    "network_counter_basis": "Cumulative application counters; UE connection deltas per wall second; decimal KB. Never add both ends of a connection.",
+    "flight_record_byte_basis": "Record body + 2-byte length, excluding 1-byte batch header. Produced/enqueued record bytes are measured only while capturing, after muzzle attachment; RPC bytes count submission, not delivery.",
+    "network_wall_seconds_qpc_offset": 16777216
+  }
+]

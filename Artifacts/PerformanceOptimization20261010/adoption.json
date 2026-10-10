@@ -1,0 +1,598 @@
+{
+  "candidates": {
+    "gs.StateTree.GroupIndex": {
+      "candidate": "group",
+      "main_screening_passed_both_loads": false,
+      "additional_view_p95_check": null,
+      "isolation_passed_both_loads": null,
+      "recommended_default": 0,
+      "reason": "存在未通过门槛的负载或视角，保持候选关闭",
+      "current_implementation": "removed"
+    },
+    "gs.StateTree.ConditionSnapshot": {
+      "candidate": "snapshot",
+      "main_screening_passed_both_loads": true,
+      "additional_view_p95_check": false,
+      "isolation_passed_both_loads": null,
+      "recommended_default": 0,
+      "reason": "存在未通过门槛的负载或视角，保持候选关闭",
+      "current_implementation": "removed"
+    },
+    "gs.SceneUI.ParallelGeometry": {
+      "candidate": "ui_balanced",
+      "main_screening_passed_both_loads": false,
+      "additional_view_p95_check": false,
+      "isolation_passed_both_loads": null,
+      "recommended_default": 0,
+      "reason": "存在未通过门槛的负载或视角，保持候选关闭",
+      "current_implementation": "removed"
+    },
+    "gs.Avoidance.ParallelCandidates": {
+      "candidate": "avoidance",
+      "main_screening_passed_both_loads": true,
+      "additional_view_p95_check": null,
+      "isolation_passed_both_loads": false,
+      "recommended_default": 0,
+      "reason": "存在未通过门槛的负载或视角，保持候选关闭",
+      "current_implementation": "removed"
+    }
+  },
+  "view_groups": [
+    {
+      "scene": "dense200",
+      "candidate": "ui_balanced",
+      "view": "full",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        0.15140000000000242,
+        -0.1314999999999955,
+        -2.777700000000003
+      ],
+      "gt_p95_deltas_ms": [
+        -0.29639999999999844,
+        -0.6798999999999964,
+        -3.0827000000000027
+      ],
+      "median_target_saved_ms": 0.95845953313767,
+      "frame_p95_reference_ms": 0.42249999999999943,
+      "gt_p95_reference_ms": 0.808099999999996,
+      "paths": [
+        [
+          "views-dense200-full-ui_balanced-r1-baseline-retry-202315",
+          "views-dense200-full-ui_balanced-r1-ui_balanced-retry-202404"
+        ],
+        [
+          "views-dense200-full-ui_balanced-r2-baseline",
+          "views-dense200-full-ui_balanced-r2-ui_balanced-retry-202453"
+        ],
+        [
+          "views-dense200-full-ui_balanced-r3-baseline",
+          "views-dense200-full-ui_balanced-r3-ui_balanced"
+        ]
+      ],
+      "p95_within_reference": true
+    },
+    {
+      "scene": "dense200",
+      "candidate": "ui_balanced",
+      "view": "mixed",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        0.6278000000000006,
+        -1.1723,
+        0.8500000000000014
+      ],
+      "gt_p95_deltas_ms": [
+        0.06040000000000134,
+        -0.9620999999999995,
+        1.0094999999999956
+      ],
+      "median_target_saved_ms": 0.37765135742043054,
+      "frame_p95_reference_ms": 0.42249999999999943,
+      "gt_p95_reference_ms": 0.808099999999996,
+      "paths": [
+        [
+          "views-dense200-mixed-ui_balanced-r1-baseline",
+          "views-dense200-mixed-ui_balanced-r1-ui_balanced"
+        ],
+        [
+          "views-dense200-mixed-ui_balanced-r2-baseline",
+          "views-dense200-mixed-ui_balanced-r2-ui_balanced"
+        ],
+        [
+          "views-dense200-mixed-ui_balanced-r3-baseline",
+          "views-dense200-mixed-ui_balanced-r3-ui_balanced"
+        ]
+      ],
+      "p95_within_reference": false
+    },
+    {
+      "scene": "dense200",
+      "candidate": "ui_balanced",
+      "view": "offscreen",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        -0.3714000000000013,
+        2.1637999999999984,
+        -2.0975000000000037
+      ],
+      "gt_p95_deltas_ms": [
+        -0.4129000000000005,
+        2.4873999999999974,
+        -2.315299999999997
+      ],
+      "median_target_saved_ms": -0.06826529352605842,
+      "frame_p95_reference_ms": 0.42249999999999943,
+      "gt_p95_reference_ms": 0.808099999999996,
+      "paths": [
+        [
+          "views-dense200-offscreen-ui_balanced-r1-baseline",
+          "views-dense200-offscreen-ui_balanced-r1-ui_balanced"
+        ],
+        [
+          "views-dense200-offscreen-ui_balanced-r2-baseline",
+          "views-dense200-offscreen-ui_balanced-r2-ui_balanced"
+        ],
+        [
+          "views-dense200-offscreen-ui_balanced-r3-baseline",
+          "views-dense200-offscreen-ui_balanced-r3-ui_balanced"
+        ]
+      ],
+      "p95_within_reference": false
+    },
+    {
+      "scene": "dense200",
+      "candidate": "ui_balanced",
+      "view": "asymmetric",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        -1.5493000000000023,
+        -2.705300000000001,
+        -0.8029999999999973
+      ],
+      "gt_p95_deltas_ms": [
+        -1.4389000000000038,
+        -2.2271,
+        -0.9551000000000016
+      ],
+      "median_target_saved_ms": 0.37960615970179534,
+      "frame_p95_reference_ms": 0.42249999999999943,
+      "gt_p95_reference_ms": 0.808099999999996,
+      "paths": [
+        [
+          "views-dense200-asymmetric-ui_balanced-r1-baseline",
+          "views-dense200-asymmetric-ui_balanced-r1-ui_balanced"
+        ],
+        [
+          "views-dense200-asymmetric-ui_balanced-r2-baseline",
+          "views-dense200-asymmetric-ui_balanced-r2-ui_balanced"
+        ],
+        [
+          "views-dense200-asymmetric-ui_balanced-r3-baseline",
+          "views-dense200-asymmetric-ui_balanced-r3-ui_balanced"
+        ]
+      ],
+      "p95_within_reference": true
+    },
+    {
+      "scene": "dense200",
+      "candidate": "snapshot",
+      "view": "full",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        0.5116000000000014,
+        -0.7953000000000046,
+        -0.3702000000000041
+      ],
+      "gt_p95_deltas_ms": [
+        0.7734999999999985,
+        -0.24439999999999884,
+        -0.7379000000000033
+      ],
+      "median_target_saved_ms": 0.08998124133550489,
+      "frame_p95_reference_ms": 0.42249999999999943,
+      "gt_p95_reference_ms": 0.808099999999996,
+      "paths": [
+        [
+          "views-dense200-full-snapshot-r1-baseline",
+          "views-dense200-full-snapshot-r1-snapshot"
+        ],
+        [
+          "views-dense200-full-snapshot-r2-baseline",
+          "views-dense200-full-snapshot-r2-snapshot"
+        ],
+        [
+          "views-dense200-full-snapshot-r3-baseline",
+          "views-dense200-full-snapshot-r3-snapshot"
+        ]
+      ],
+      "p95_within_reference": false
+    },
+    {
+      "scene": "dense200",
+      "candidate": "snapshot",
+      "view": "mixed",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        -1.8633000000000024,
+        0.3691000000000031,
+        0.011000000000002785
+      ],
+      "gt_p95_deltas_ms": [
+        -2.186,
+        0.37659999999999627,
+        -0.44200000000000017
+      ],
+      "median_target_saved_ms": 0.05333931496179678,
+      "frame_p95_reference_ms": 0.42249999999999943,
+      "gt_p95_reference_ms": 0.808099999999996,
+      "paths": [
+        [
+          "views-dense200-mixed-snapshot-r1-baseline",
+          "views-dense200-mixed-snapshot-r1-snapshot"
+        ],
+        [
+          "views-dense200-mixed-snapshot-r2-baseline",
+          "views-dense200-mixed-snapshot-r2-snapshot"
+        ],
+        [
+          "views-dense200-mixed-snapshot-r3-baseline",
+          "views-dense200-mixed-snapshot-r3-snapshot"
+        ]
+      ],
+      "p95_within_reference": true
+    },
+    {
+      "scene": "dense200",
+      "candidate": "snapshot",
+      "view": "offscreen",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        -0.07550000000000523,
+        0.3442000000000007,
+        1.5215000000000032
+      ],
+      "gt_p95_deltas_ms": [
+        -0.5523999999999987,
+        1.0380000000000038,
+        1.2021000000000015
+      ],
+      "median_target_saved_ms": 0.06270812749104526,
+      "frame_p95_reference_ms": 0.42249999999999943,
+      "gt_p95_reference_ms": 0.808099999999996,
+      "paths": [
+        [
+          "views-dense200-offscreen-snapshot-r1-baseline",
+          "views-dense200-offscreen-snapshot-r1-snapshot"
+        ],
+        [
+          "views-dense200-offscreen-snapshot-r2-baseline",
+          "views-dense200-offscreen-snapshot-r2-snapshot"
+        ],
+        [
+          "views-dense200-offscreen-snapshot-r3-baseline",
+          "views-dense200-offscreen-snapshot-r3-snapshot"
+        ]
+      ],
+      "p95_within_reference": false
+    },
+    {
+      "scene": "dense200",
+      "candidate": "snapshot",
+      "view": "asymmetric",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        -0.1676000000000002,
+        -0.730000000000004,
+        0.8828000000000031
+      ],
+      "gt_p95_deltas_ms": [
+        -0.4811999999999941,
+        -0.9058999999999955,
+        1.1613000000000042
+      ],
+      "median_target_saved_ms": 0.0899099334833825,
+      "frame_p95_reference_ms": 0.42249999999999943,
+      "gt_p95_reference_ms": 0.808099999999996,
+      "paths": [
+        [
+          "views-dense200-asymmetric-snapshot-r1-baseline",
+          "views-dense200-asymmetric-snapshot-r1-snapshot"
+        ],
+        [
+          "views-dense200-asymmetric-snapshot-r2-baseline",
+          "views-dense200-asymmetric-snapshot-r2-snapshot"
+        ],
+        [
+          "views-dense200-asymmetric-snapshot-r3-baseline",
+          "views-dense200-asymmetric-snapshot-r3-snapshot"
+        ]
+      ],
+      "p95_within_reference": false
+    },
+    {
+      "scene": "stress",
+      "candidate": "ui_balanced",
+      "view": "full",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        -4.871500000000012,
+        -8.701800000000006,
+        15.299599999999998
+      ],
+      "gt_p95_deltas_ms": [
+        -4.601700000000008,
+        -6.753900000000002,
+        10.740200000000002
+      ],
+      "median_target_saved_ms": 2.3736189454585546,
+      "frame_p95_reference_ms": 4.900999999999996,
+      "gt_p95_reference_ms": 5.620699999999999,
+      "paths": [
+        [
+          "views-stress-full-ui_balanced-r1-baseline",
+          "views-stress-full-ui_balanced-r1-ui_balanced"
+        ],
+        [
+          "views-stress-full-ui_balanced-r2-baseline",
+          "views-stress-full-ui_balanced-r2-ui_balanced"
+        ],
+        [
+          "views-stress-full-ui_balanced-r3-baseline",
+          "views-stress-full-ui_balanced-r3-ui_balanced"
+        ]
+      ],
+      "p95_within_reference": false
+    },
+    {
+      "scene": "stress",
+      "candidate": "ui_balanced",
+      "view": "mixed",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        -4.809900000000013,
+        0.7657000000000096,
+        -2.605699999999999
+      ],
+      "gt_p95_deltas_ms": [
+        -4.380899999999997,
+        -0.11910000000000309,
+        -3.306699999999992
+      ],
+      "median_target_saved_ms": 0.640437784602848,
+      "frame_p95_reference_ms": 4.900999999999996,
+      "gt_p95_reference_ms": 5.620699999999999,
+      "paths": [
+        [
+          "views-stress-mixed-ui_balanced-r1-baseline",
+          "views-stress-mixed-ui_balanced-r1-ui_balanced"
+        ],
+        [
+          "views-stress-mixed-ui_balanced-r2-baseline",
+          "views-stress-mixed-ui_balanced-r2-ui_balanced"
+        ],
+        [
+          "views-stress-mixed-ui_balanced-r3-baseline",
+          "views-stress-mixed-ui_balanced-r3-ui_balanced"
+        ]
+      ],
+      "p95_within_reference": true
+    },
+    {
+      "scene": "stress",
+      "candidate": "ui_balanced",
+      "view": "offscreen",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        -2.370999999999995,
+        0.9274999999999949,
+        0.9131
+      ],
+      "gt_p95_deltas_ms": [
+        -3.9221000000000004,
+        1.278800000000004,
+        0.05870000000000175
+      ],
+      "median_target_saved_ms": -0.051812135670169235,
+      "frame_p95_reference_ms": 4.900999999999996,
+      "gt_p95_reference_ms": 5.620699999999999,
+      "paths": [
+        [
+          "views-stress-offscreen-ui_balanced-r1-baseline",
+          "views-stress-offscreen-ui_balanced-r1-ui_balanced"
+        ],
+        [
+          "views-stress-offscreen-ui_balanced-r2-baseline",
+          "views-stress-offscreen-ui_balanced-r2-ui_balanced"
+        ],
+        [
+          "views-stress-offscreen-ui_balanced-r3-baseline",
+          "views-stress-offscreen-ui_balanced-r3-ui_balanced"
+        ]
+      ],
+      "p95_within_reference": true
+    },
+    {
+      "scene": "stress",
+      "candidate": "ui_balanced",
+      "view": "asymmetric",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        -1.453099999999992,
+        1.756600000000006,
+        2.424599999999998
+      ],
+      "gt_p95_deltas_ms": [
+        -3.0422999999999973,
+        2.0715000000000003,
+        2.4146999999999963
+      ],
+      "median_target_saved_ms": 1.2025249224173278,
+      "frame_p95_reference_ms": 4.900999999999996,
+      "gt_p95_reference_ms": 5.620699999999999,
+      "paths": [
+        [
+          "views-stress-asymmetric-ui_balanced-r1-baseline",
+          "views-stress-asymmetric-ui_balanced-r1-ui_balanced"
+        ],
+        [
+          "views-stress-asymmetric-ui_balanced-r2-baseline",
+          "views-stress-asymmetric-ui_balanced-r2-ui_balanced"
+        ],
+        [
+          "views-stress-asymmetric-ui_balanced-r3-baseline",
+          "views-stress-asymmetric-ui_balanced-r3-ui_balanced"
+        ]
+      ],
+      "p95_within_reference": true
+    },
+    {
+      "scene": "stress",
+      "candidate": "snapshot",
+      "view": "full",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        -5.014300000000006,
+        0.5411000000000001,
+        1.3440000000000083
+      ],
+      "gt_p95_deltas_ms": [
+        -2.9895000000000067,
+        1.1119000000000057,
+        2.1584000000000003
+      ],
+      "median_target_saved_ms": 0.5250059505658626,
+      "frame_p95_reference_ms": 4.900999999999996,
+      "gt_p95_reference_ms": 5.620699999999999,
+      "paths": [
+        [
+          "views-stress-full-snapshot-r1-baseline",
+          "views-stress-full-snapshot-r1-snapshot"
+        ],
+        [
+          "views-stress-full-snapshot-r2-baseline",
+          "views-stress-full-snapshot-r2-snapshot"
+        ],
+        [
+          "views-stress-full-snapshot-r3-baseline",
+          "views-stress-full-snapshot-r3-snapshot"
+        ]
+      ],
+      "p95_within_reference": true
+    },
+    {
+      "scene": "stress",
+      "candidate": "snapshot",
+      "view": "mixed",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        5.213899999999995,
+        -2.999600000000001,
+        -2.967099999999988
+      ],
+      "gt_p95_deltas_ms": [
+        4.917000000000002,
+        -4.587900000000005,
+        -3.7156999999999982
+      ],
+      "median_target_saved_ms": 0.1776300754879654,
+      "frame_p95_reference_ms": 4.900999999999996,
+      "gt_p95_reference_ms": 5.620699999999999,
+      "paths": [
+        [
+          "views-stress-mixed-snapshot-r1-baseline",
+          "views-stress-mixed-snapshot-r1-snapshot"
+        ],
+        [
+          "views-stress-mixed-snapshot-r2-baseline",
+          "views-stress-mixed-snapshot-r2-snapshot"
+        ],
+        [
+          "views-stress-mixed-snapshot-r3-baseline",
+          "views-stress-mixed-snapshot-r3-snapshot"
+        ]
+      ],
+      "p95_within_reference": false
+    },
+    {
+      "scene": "stress",
+      "candidate": "snapshot",
+      "view": "offscreen",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        -5.041799999999995,
+        2.6754999999999995,
+        4.324399999999997
+      ],
+      "gt_p95_deltas_ms": [
+        -4.246300000000005,
+        2.4694000000000074,
+        5.713499999999996
+      ],
+      "median_target_saved_ms": 0.3589305094129074,
+      "frame_p95_reference_ms": 4.900999999999996,
+      "gt_p95_reference_ms": 5.620699999999999,
+      "paths": [
+        [
+          "views-stress-offscreen-snapshot-r1-baseline",
+          "views-stress-offscreen-snapshot-r1-snapshot"
+        ],
+        [
+          "views-stress-offscreen-snapshot-r2-baseline",
+          "views-stress-offscreen-snapshot-r2-snapshot"
+        ],
+        [
+          "views-stress-offscreen-snapshot-r3-baseline",
+          "views-stress-offscreen-snapshot-r3-snapshot"
+        ]
+      ],
+      "p95_within_reference": false
+    },
+    {
+      "scene": "stress",
+      "candidate": "snapshot",
+      "view": "asymmetric",
+      "pairs": 3,
+      "frame_p95_deltas_ms": [
+        2.0474000000000103,
+        -4.644099999999995,
+        1.0792000000000002
+      ],
+      "gt_p95_deltas_ms": [
+        3.9510999999999967,
+        -5.388199999999998,
+        2.4594000000000023
+      ],
+      "median_target_saved_ms": 0.27098488796061293,
+      "frame_p95_reference_ms": 4.900999999999996,
+      "gt_p95_reference_ms": 5.620699999999999,
+      "paths": [
+        [
+          "views-stress-asymmetric-snapshot-r1-baseline",
+          "views-stress-asymmetric-snapshot-r1-snapshot"
+        ],
+        [
+          "views-stress-asymmetric-snapshot-r2-baseline",
+          "views-stress-asymmetric-snapshot-r2-snapshot"
+        ],
+        [
+          "views-stress-asymmetric-snapshot-r3-baseline",
+          "views-stress-asymmetric-snapshot-r3-snapshot"
+        ]
+      ],
+      "p95_within_reference": true
+    }
+  ],
+  "observed_final_runtime_defaults": {
+    "gs.StateTree.GroupIndex": 0.0,
+    "gs.StateTree.ConditionSnapshot": 0.0,
+    "gs.SceneUI.ParallelGeometry": 0.0,
+    "gs.Avoidance.ParallelCandidates": 0.0
+  },
+  "view_reference_limit": "视角追加检查沿用同 build4 原镜头 A/A 工程范围，未为每个视角另采 A/A；不是因果或统计置信结论。",
+  "existing_optimizations": "此前已采用的枪口/冲击批处理、数据池、LOD、裁剪、降频、投影缓存和避障查询优化保持原值。",
+  "actual_defaults_evidence": "最终以 cleanup-evidence.json 的恢复读回与 Build/final-static-verification.json 的源码默认值为准。",
+  "current_implementation": "rolled_back_by_user_request",
+  "current_evidence": "Rollback/README.md",
+  "historical_metrics_note": "Original screening and recommended_default fields describe build4; the four runtime CVar implementations were subsequently removed."
+}

@@ -39,7 +39,6 @@
 #include "GuLiStrikeEnginePart.h"
 #include "GuLiStrikeWeaponPart.h"
 #include "GuLiStrike.h"
-#include "GuLiStrikeProjectile.h"
 #include "Gameplay/Tuning/GuLiRuntimeTuningSubsystem.h"
 #include "Gameplay/Wingman/Combat/GuLiWingmanTargetAcquisition.h"
 #include "Gameplay/Wingman/Presentation/GuLiWingmanPresentationActor.h"
@@ -287,7 +286,6 @@ void AGuLiStrikeShip::NotifyControllerChanged()
 		// 当帧短暂解除并重新占有也必须推进身份屏障，不能等 Tick 才发现连接变化。
 		Movement->SetAppliedLoadoutRevision(AppliedLoadoutRevision);
 	}
-	bServerFiring = false;
 	UpdateShipInputContext();
 	if (ShipAim)
 	{
@@ -320,11 +318,6 @@ void AGuLiStrikeShip::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		// 屏障期间清空输入，按住的键在新配置就绪后重新采样；不会产生逐帧移动之外的 RPC。
 		EnhancedInputComponent->BindAction(BoostAction, ETriggerEvent::Triggered, this, &AGuLiStrikeShip::BoostStart);
 		EnhancedInputComponent->BindAction(BoostAction, ETriggerEvent::Completed, this, &AGuLiStrikeShip::BoostEnd);
-		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Started, this, &AGuLiStrikeShip::Fire);
-		// SetFiringIntent 仅在有效意图变动时发 RPC；持键跨换装屏障后可恢复，稳态每帧不会重发。
-		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &AGuLiStrikeShip::Fire);
-		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AGuLiStrikeShip::StopFire);
-		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Canceled, this, &AGuLiStrikeShip::StopFire);
 		if (WingmanMissileAction)
 		{
 			EnhancedInputComponent->BindAction(WingmanMissileAction, ETriggerEvent::Started,
@@ -481,18 +474,6 @@ void AGuLiStrikeShip::Tick(float DeltaTime)
 		NextLoadoutRetryTime = GetWorld()->GetTimeSeconds() + 1.0;
 		ApplyReplicatedLoadout();
 	}
-	if (HasAuthority() && bServerFiring)
-	{
-		if (CanAcceptServerIntent())
-		{
-			FireInstalledWeapons();
-		}
-		else
-		{
-			// 失去占有、配置切代、公共断线或比赛结束均停止持续射击。
-			bServerFiring = false;
-		}
-	}
 }
 
 void AGuLiStrikeShip::ResolveCameraArmCollision()
@@ -627,16 +608,6 @@ void AGuLiStrikeShip::BoostEnd(const FInputActionValue& Value)
 	{
 		GetShipMovement()->SetBoostInput(false);
 	}
-}
-
-void AGuLiStrikeShip::Fire(const FInputActionValue& Value)
-{
-	SetFiringIntent(true);
-}
-
-void AGuLiStrikeShip::StopFire(const FInputActionValue& Value)
-{
-	SetFiringIntent(false);
 }
 
 void AGuLiStrikeShip::WingmanMissilePressed(const FInputActionValue& Value)
@@ -1059,33 +1030,6 @@ bool AGuLiStrikeShip::CyclePartAtSocket(UClass* PartClass, FName SocketName)
 	return InstallPartLocally(Candidates[NextIndex], SocketName);
 }
 
-void AGuLiStrikeShip::FireInstalledWeapons()
-{
-	if (!CanAcceptServerIntent())
-	{
-		return;
-	}
-	// Fire 是可重写的蓝图事件；回调热换装不得使迭代器失效，也不能继续旧配置的这一轮开火。
-	const TArray<FGuLiStrikeInstalledPart> PartsSnapshot = InstalledParts;
-	const uint32 LoadoutRevision = LoadoutState.Revision;
-	const uint32 MovementBarrier = GetShipMovement()->GetMovementBarrierGeneration();
-	for (const FGuLiStrikeInstalledPart& Entry : PartsSnapshot)
-	{
-		if (!CanAcceptServerIntent() || LoadoutState.Revision != LoadoutRevision
-			|| GetShipMovement()->GetMovementBarrierGeneration() != MovementBarrier)
-		{
-			break;
-		}
-		if (UGuLiStrikeShipPartComponent* Part = Entry.Part.Get())
-		{
-			if (GetPartAt(Entry.SocketName) == Part && CanExecuteServerWeapon(Part))
-			{
-				Part->Fire(this);
-			}
-		}
-	}
-}
-
 void AGuLiStrikeShip::RecomputeStats()
 {
 	if (bEditingLoadout || !bRuntimeStatsInitialized || bEndingShipPlay)
@@ -1213,13 +1157,7 @@ bool AGuLiStrikeShip::ApplyPartRow(UGuLiStrikeShipPartComponent* Part) const
 
 	if (UGuLiStrikeWeaponPart* Weapon = Cast<UGuLiStrikeWeaponPart>(Part))
 	{
-		Weapon->Damage = Row->Damage;
-		Weapon->FireRate = Row->FireRate;
 		Weapon->MuzzleOffset = Row->Muzzle;
-		if (UClass* LoadedClass = Row->ProjectileClass.LoadSynchronous())
-		{
-			Weapon->ProjectileClass = LoadedClass;
-		}
 	}
 
 	return true;
@@ -1334,23 +1272,6 @@ bool AGuLiStrikeShip::CanAcceptServerIntent() const
 		&& BattleGS && BattleGS->IsMatchInProgress() && IsShipReady();
 }
 
-bool AGuLiStrikeShip::CanExecuteServerWeapon(const UGuLiStrikeShipPartComponent* Part) const
-{
-	return CanAcceptServerIntent() && Part && Part->GetOwner() == this
-		&& Part->GetAttachParent() == HullMesh && HullMesh->DoesSocketExist(Part->GetAttachSocketName())
-		&& InstalledParts.ContainsByPredicate([Part](const FGuLiStrikeInstalledPart& Entry) { return Entry.Part.Get() == Part; });
-}
-
-bool AGuLiStrikeShip::GetServerPartTransform(const UGuLiStrikeShipPartComponent* Part, FTransform& OutTransform) const
-{
-	if (!CanExecuteServerWeapon(Part) || !GetMesh()) { return false; }
-	const FTransform MeshBase(GetBaseRotationOffset(), GetBaseTranslationOffset(), GetMesh()->GetRelativeScale3D());
-	OutTransform = Part->GetRelativeTransform()
-		* HullMesh->GetSocketTransform(Part->GetAttachSocketName(), RTS_Component)
-		* HullMesh->GetRelativeTransform() * MeshBase * GetActorTransform();
-	return true;
-}
-
 bool AGuLiStrikeShip::IsKnownPartClass(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass) const
 {
 	return PartClass && !PartClass->HasAnyClassFlags(CLASS_Abstract | CLASS_Deprecated | CLASS_NewerVersionExists)
@@ -1413,7 +1334,6 @@ void AGuLiStrikeShip::PublishLoadout()
 	bLoadoutDirty = false;
 	AppliedLoadoutRevision = LoadoutState.Revision;
 	GetShipMovement()->SetAppliedLoadoutRevision(AppliedLoadoutRevision);
-	bServerFiring = false;
 	RecomputeStats();
 	ForceNetUpdate();
 }
@@ -1493,34 +1413,6 @@ void AGuLiStrikeShip::ServerRequestCycleParts_Implementation(bool bEngines, uint
 	CycleParts(bEngines ? UGuLiStrikeEnginePart::StaticClass() : UGuLiStrikeWeaponPart::StaticClass());
 }
 
-void AGuLiStrikeShip::SetFiringIntent(bool bRequested)
-{
-	if (!GetShipMovement()) { bLocalFireHeld = false; bServerFiring = false; return; }
-	if (bRequested && !CanUseShipControls()) { return; }
-	if (bLocalFireHeld == bRequested) { return; }
-	bLocalFireHeld = bRequested;
-	if (HasAuthority())
-	{
-		ServerSetFiring_Implementation(bRequested, GetShipMovement()->GetMovementConfigRevision(), GetShipMovement()->GetMovementBarrierGeneration());
-	}
-	else
-	{
-		ServerSetFiring(bRequested, GetShipMovement()->GetMovementConfigRevision(), GetShipMovement()->GetMovementBarrierGeneration());
-	}
-}
-
-void AGuLiStrikeShip::ServerSetFiring_Implementation(bool bRequested, uint32 ExpectedConfigRevision, uint32 ExpectedBarrier)
-{
-	// 停火必须能在就绪被撤销后执行；旧配置的迟到开火不能重启新配置下的武器。
-	if (!bRequested)
-	{
-		bServerFiring = false;
-		return;
-	}
-	bServerFiring = CanAcceptServerIntent() && ExpectedConfigRevision == GetShipMovement()->GetMovementConfigRevision()
-		&& ExpectedBarrier == GetShipMovement()->GetMovementBarrierGeneration();
-}
-
 void AGuLiStrikeShip::RemoveShipInputContext()
 {
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = InstalledInputSubsystem.Get())
@@ -1540,7 +1432,6 @@ void AGuLiStrikeShip::UpdateShipInputContext()
 		? ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(OwningPC->GetLocalPlayer()) : nullptr;
 	if (InstalledInputSubsystem.Get() != DesiredSubsystem)
 	{
-		SetFiringIntent(false);
 		if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->ClearFlightInput(); }
 		RemoveShipInputContext();
 		if (DesiredSubsystem && ShipMappingContext)
@@ -1558,7 +1449,6 @@ void AGuLiStrikeShip::UpdateShipInputContext()
 	}
 	if (!CanUseShipControls())
 	{
-		SetFiringIntent(false);
 		if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->ClearFlightInput(); }
 	}
 }
@@ -2521,8 +2411,6 @@ void AGuLiStrikeShip::HandleShipDeath()
 	bShipDeathHandled = true;
 	WingmanMissileRequestResults.Reset();
 	WingmanMissileRequestOrder.Reset();
-	bServerFiring = false;
-	bLocalFireHeld = false;
 	ActiveMissileInputBinding = FGuLiWeaponBindingKey{};
 	if (ShipAim)
 	{
@@ -2554,8 +2442,6 @@ void AGuLiStrikeShip::HandleShipDeath()
 
 void AGuLiStrikeShip::UnPossessed()
 {
-	bServerFiring = false;
-	bLocalFireHeld = false;
 	ActiveMissileInputBinding = FGuLiWeaponBindingKey{};
 	if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->ClearFlightInput(); }
 	if (HangarCapability) { HangarCapability->SetActiveAbilityInputEnabled(false); }
@@ -2574,8 +2460,6 @@ void AGuLiStrikeShip::UnPossessed()
 void AGuLiStrikeShip::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	bEndingShipPlay = true;
-	bServerFiring = false;
-	bLocalFireHeld = false;
 	ActiveMissileInputBinding = FGuLiWeaponBindingKey{};
 	if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->ClearFlightInput(); }
 	if (HangarCapability)

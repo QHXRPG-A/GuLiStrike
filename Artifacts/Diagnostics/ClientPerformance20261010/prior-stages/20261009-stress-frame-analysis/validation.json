@@ -5,14 +5,6 @@
   "python_syntax": "five scripts passed py_compile",
   "source_audit": [
     {
-      "path": "Source/GuLiStrike/Gameplay/GuLiStrikeProjectile.h",
-      "matches_loaded_build_source": true
-    },
-    {
-      "path": "Source/GuLiStrike/Gameplay/GuLiStrikeProjectile.cpp",
-      "matches_loaded_build_source": true
-    },
-    {
       "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectAuthoringLibrary.h",
       "matches_loaded_build_source": true
     },
@@ -81,19 +73,7 @@
       "matches_loaded_build_source": true
     },
     {
-      "path": "Source/GuLiStrike/Battle/Combat/GuLiShipProjectileLedgerBridge.h",
-      "matches_loaded_build_source": true
-    },
-    {
-      "path": "Source/GuLiStrike/Battle/Combat/GuLiShipProjectileLedgerBridge.cpp",
-      "matches_loaded_build_source": true
-    },
-    {
       "path": "Source/GuLiStrike/Gameplay/CombatEffects/Tests/GuLiCombatEffectRuntimeTests.cpp",
-      "matches_loaded_build_source": true
-    },
-    {
-      "path": "Source/GuLiStrike/Battle/Combat/Tests/GuLiShipProjectileLedgerBridgeTests.cpp",
       "matches_loaded_build_source": true
     },
     {
@@ -139,7 +119,6 @@
         "gs.Flights.DataPool": 1,
         "gs.Flights.PrecomputeCurves": 1,
         "gs.Projectiles.VisitStamps": 1,
-        "gs.Projectiles.ShipWingmanSnapshotIndex": 1,
         "gs.LaserPool.BatchSize": 256,
         "gs.MissileCluster.BatchSize": 32,
         "gs.SceneUI.SplitLeaves": 1,

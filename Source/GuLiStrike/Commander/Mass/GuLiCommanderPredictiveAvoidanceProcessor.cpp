@@ -128,6 +128,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 		return;
 	}
 
+	FGuLiPerformanceScope TotalTiming(World, TEXT("Avoidance.TotalMs"));
 	auto& Agents = Workspace->Agents;
 	auto& PolicyAgents = Workspace->PolicyAgents;
 	auto& AgentIndexByEntity = Workspace->AgentIndexByEntity;
@@ -351,6 +352,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 		}
 	}
 
+	FGuLiPerformanceScope SubmitTiming(World, TEXT("Avoidance.SubmitMs"));
 	ReceiverQuery.ForEachEntityChunk(
 		Context,
 		[&Agents, &AgentIndexByEntity, MaximumBucketOccupancy](FMassExecutionContext& ChunkContext)

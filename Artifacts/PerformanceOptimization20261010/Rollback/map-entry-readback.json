@@ -1,0 +1,44 @@
+{
+  "success": true,
+  "saved": true,
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "default_inactive": true,
+  "related_entities": [
+    {
+      "label": "PerfSnapshotNetwork_Entry",
+      "class": "Note",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_70",
+      "position_cm": [
+        -10800.0,
+        65000.0,
+        1300.0
+      ],
+      "editor_only": true,
+      "text": "网络诊断与回退基线（默认不运行）\n同进程专服＋双客户端，200单位或600单位＋四来源500飞行物；250000 B/s，1280×720。\n项目终端：python Scripts/Performance/run_snapshot_parallel_review.py --phase inspect --scenes dense200\n压力场景替换为 stress。终端 front/back/split/mixed 切视角，stop/reverse/forward 改令，空行回车结束并恢复。\n左上角查看 FPS、延迟、收发吞吐、连接预算和飞行队列；不要把同一连接两端相加。\n四项未通过的新优化已从代码回退；保留原生网络采集、投影缓存、既有避障查询优化与表现批处理。\n回退记录与当前构建：Artifacts/PerformanceOptimization20261010/Rollback/README.md。历史配对报告保留。\n截帧已定位车辆模型与Slate波动，但组合P95未获稳定收益，按用户决定结束该轮候选。网络协议和可靠性保持。\n本Note与观察相机仅作编辑器入口；保存地图不代表玩家验收。"
+    },
+    {
+      "label": "PerfSnapshotNetwork_Dense200_View",
+      "class": "CameraActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_32",
+      "position_cm": [
+        -10800.0,
+        61000.0,
+        15500.0
+      ],
+      "editor_only": true,
+      "auto_activate_player_index": -1
+    },
+    {
+      "label": "PerfSnapshotNetwork_Stress_View",
+      "class": "CameraActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_33",
+      "position_cm": [
+        15000.0,
+        58000.0,
+        16000.0
+      ],
+      "editor_only": true,
+      "auto_activate_player_index": -1
+    }
+  ]
+}

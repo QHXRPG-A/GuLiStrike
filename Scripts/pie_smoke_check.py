@@ -35,10 +35,7 @@ try:
             if isinstance(c, unreal.GuLiStrikeEnginePart):
                 info["thrust"] = c.get_editor_property("thrust")
             if isinstance(c, unreal.GuLiStrikeWeaponPart):
-                info["damage"] = c.get_editor_property("damage")
-                info["fire_rate"] = c.get_editor_property("fire_rate")
                 info["muzzle_offset"] = str(c.get_editor_property("muzzle_offset"))
-                info["projectile_class"] = str(c.get_editor_property("projectile_class"))
             parts.append(info)
         result["parts"] = parts
 except Exception as e:  # noqa: BLE001

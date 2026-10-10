@@ -11,6 +11,7 @@
 #include "GuLiCommanderNetSyncComponent.generated.h"
 
 class AGuLiBattlePlayerState;
+class FJsonObject;
 class AGuLiSoldierStateReplicator;
 class UGuLiBattleAuthoritySubsystem;
 struct FGuLiSoldierRosterDelta;
@@ -60,6 +61,8 @@ class GULISTRIKE_API UGuLiCommanderNetSyncComponent : public UGuLiPlayerNetSyncC
 
 public:
 	UGuLiCommanderNetSyncComponent();
+	/** Local, read-only capture; no diagnostic RPC or reflected state. */
+	TSharedRef<FJsonObject> GetStreamCaptureSnapshot() const;
 	UFUNCTION(Server, Reliable) void ServerRequestRogueCards(FGuid Request);
 	UFUNCTION(Server, Reliable) void ServerRerollRogueCards(FGuid Request, FGuid Session);
 	UFUNCTION(Server, Reliable) void ServerConfirmRogueCard(FGuid Session, const FString& CardId);

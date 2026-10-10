@@ -1,0 +1,38 @@
+{
+  "algorithms_match_preimplementation_except_passive_scopes": {
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderMassStateTreeProcessor.cpp": true,
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeComponent.cpp": true,
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeNodes.cpp": true,
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskOperations.cpp": true,
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.cpp": true,
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.h": true,
+    "Source/GuLiStrike/Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.cpp": true,
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.cpp": true,
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h": true,
+    "Source/GuLiStrike/Commander/UI/GuLiSceneUIWidget.cpp": true,
+    "Source/GuLiStrike/Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.cpp": true,
+    "Source/GuLiStrike/Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.h": true
+  },
+  "telemetry_and_config_unchanged": {
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h": true,
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderStateDispatch.cpp": true,
+    "Source/GuLiStrike/Commander/Network/GuLiCommanderStateStream.h": true,
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp": true,
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiClientFlightPool.cpp": true,
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp": true,
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h": true,
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h": true,
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiFlightReplication.cpp": true,
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMuzzleBatchPresentation.cpp": true,
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMuzzleBatchPresentation.h": true,
+    "Source/GuLiStrike/Gameplay/Performance/GuLiPerformanceSubsystem.cpp": true,
+    "Source/GuLiStrike/Gameplay/Performance/GuLiPerformanceSubsystem.h": true,
+    "Source/GuLiStrike/Gameplay/Performance/GuLiPerformanceNetworkCapture.cpp": true,
+    "Config/DefaultEngine.ini": true,
+    "Config/DefaultGame.ini": true
+  },
+  "snapshot_cpp_removed": true,
+  "scripts_parse": true,
+  "candidate_symbols_removed": true,
+  "validation_note": "Initial comparison incorrectly stripped a pre-existing timing scope; comparison corrected to remove added scope lines only, runtime code unchanged."
+}

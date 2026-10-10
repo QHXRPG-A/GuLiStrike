@@ -40,7 +40,6 @@ Dedicated Server + 四个同进程客户端，真实席位为 Commander、Ground
 - 两次负载结束后，原四客户端活跃池归零，容量保留；再次启动峰值 500，没有继续扩容。[复用](pool_reuse_ground_fire.json)、[最终回收](mixed_runtime_complete.json)。
 - 真实 Ground 武器从服务器入口开火 59 次，每个客户端对应机甲各播放 59 次表现。[开火](ground_authority_fire_verified.json)。Python 最初直接调用客户端 `SetFireHeld` 没有发出实际请求，未据此认定客户端输入 RPC 通过。
 - 来源 Ship 销毁后，已发射的数据飞行物继续存在并正常结束；客户端池在销毁后两秒仍有 377 枚，最后归零。[来源死亡](source_death_result.json)、[最终烟测](final_smoke_complete.json)。报告中的 GUID 交集覆盖全部效果，含非飞行法术场；飞行数量以池计数为准。
-- 保存碰撞挡板后，原生 Ship 物理弹丸的反向速度峰值 24；四个客户端独立预测的反向网格各峰值 31，没有客户端物理弹丸。[真实反弹](bounce_probe.json)。预测数量无需逐帧完全相同，结束位置仍由服务器决定。
 - 17 项唯一原生回归最终通过，含截断批次拒绝、条数/字节限制、重复创建、结束墓碑、Epoch 回绕、补建时间推进、池复用、非复制 Actor、伤害去重、目标丢失及导弹 Epoch 隔离。[结果](regression_final_summary.json)。
 
 首次回归有一项旧表断言失败，期待半径 160cm 和 ID 1 扫荡者。回读现表后只更新测试基准为 300cm、扫荡者 ID 5，复测通过；未改游戏数值。旧导弹 RPC 合约测试改查统一可靠批次。最初加单位时还触发过原 Crowd 1024 代理容量断言，该会话不是合格性能样本，也没有扩大其容量。

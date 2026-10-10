@@ -138,6 +138,7 @@ struct FDiagnostics
 	uint64 StateBytes = 0, PoseBytes = 0, ChargedBytes = 0, ObservedBytes = 0;
 	uint64 BudgetDeferrals = 0, WindowDeferrals = 0, PoseMerges = 0;
 	uint64 ReceivedPoseBytes = 0, ReceivedPoseBlocks = 0;
+	uint64 ReceivedStateBytes = 0, ReceivedStateBlocks = 0;
 	double NextLogTime = 0, MaxSampleGap = 0, MaxReceivedSampleGap = 0;
 	TMap<FGuLiSoldierId, float> LastSentSampleTimes;
 	TMap<FGuLiSoldierId, float> LastReceivedSampleTimes;

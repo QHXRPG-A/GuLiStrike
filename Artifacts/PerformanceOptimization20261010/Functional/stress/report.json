@@ -1,0 +1,458 @@
+{
+  "scene": "stress",
+  "checks": {
+    "no_runtime_errors": true,
+    "geometry_checked": true,
+    "geometry_equal": true,
+    "candidate_prefix_checked": true,
+    "candidate_prefix_equal": true,
+    "group_reads_checked": true,
+    "condition_reads_checked": true,
+    "stopped_population": true,
+    "replacement_moves": true,
+    "hud_remounted": true,
+    "hud_expired": true,
+    "clipped_lines_visible": true
+  },
+  "passed": true,
+  "probes": [
+    {
+      "name": "stop",
+      "alive": 600,
+      "moving": 0,
+      "forced_avoidance_solves": 3219
+    },
+    {
+      "name": "replace_reverse",
+      "alive": 600,
+      "moving": 600,
+      "forced_avoidance_solves": 4491
+    },
+    {
+      "name": "replace_forward",
+      "alive": 600,
+      "moving": 600,
+      "forced_avoidance_solves": 5903
+    },
+    {
+      "name": "hud_rect",
+      "success": true,
+      "rows": [
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": false,
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "hud_shapes": 1,
+            "hud_expired": false,
+            "rings": 636,
+            "health_bars": 128,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 1539,
+            "cached_vertices": 179706,
+            "surface_resources": 0
+          }
+        },
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": false,
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "hud_shapes": 1,
+            "hud_expired": false,
+            "rings": 636,
+            "health_bars": 128,
+            "route_lines": 0,
+            "world_panels": 2,
+            "content_revision": 1541,
+            "cached_vertices": 179697,
+            "surface_resources": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "hud_empty",
+      "success": true,
+      "rows": [
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": false,
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": false,
+            "rings": 636,
+            "health_bars": 131,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 1544,
+            "cached_vertices": 178860,
+            "surface_resources": 0
+          }
+        },
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": false,
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": false,
+            "rings": 636,
+            "health_bars": 131,
+            "route_lines": 0,
+            "world_panels": 2,
+            "content_revision": 1546,
+            "cached_vertices": 178830,
+            "surface_resources": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "hud_remount",
+      "success": true,
+      "rows": [
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": false,
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": true,
+            "rings": 636,
+            "health_bars": 131,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 1550,
+            "cached_vertices": 0,
+            "surface_resources": 0
+          }
+        },
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": false,
+          "a": [
+            0.0,
+            0.0
+          ],
+          "b": [
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": true,
+            "rings": 636,
+            "health_bars": 131,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 1552,
+            "cached_vertices": 0,
+            "surface_resources": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "hud_expiry",
+      "success": true,
+      "stats": [
+        {
+          "hud_shapes": 0,
+          "hud_expired": true,
+          "rings": 636,
+          "health_bars": 132,
+          "route_lines": 0,
+          "world_panels": 0,
+          "content_revision": 1570,
+          "cached_vertices": 173061,
+          "surface_resources": 0
+        },
+        {
+          "hud_shapes": 0,
+          "hud_expired": true,
+          "rings": 636,
+          "health_bars": 132,
+          "route_lines": 0,
+          "world_panels": 2,
+          "content_revision": 1573,
+          "cached_vertices": 173049,
+          "surface_resources": 2
+        }
+      ]
+    },
+    {
+      "name": "cross_screen",
+      "success": true,
+      "rows": [
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": true,
+          "a": [
+            -0.0,
+            360.0
+          ],
+          "b": [
+            1280.0,
+            360.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": true,
+            "rings": 636,
+            "health_bars": 132,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 1574,
+            "cached_vertices": 172419,
+            "surface_resources": 0
+          }
+        },
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": true,
+          "a": [
+            -0.0,
+            360.0
+          ],
+          "b": [
+            1280.0,
+            360.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": true,
+            "rings": 636,
+            "health_bars": 132,
+            "route_lines": 0,
+            "world_panels": 2,
+            "content_revision": 1577,
+            "cached_vertices": 172413,
+            "surface_resources": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "near_plane",
+      "success": true,
+      "rows": [
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": true,
+          "a": [
+            640.0,
+            360.0
+          ],
+          "b": [
+            640.0,
+            360.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": true,
+            "rings": 636,
+            "health_bars": 130,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 1577,
+            "cached_vertices": 171798,
+            "surface_resources": 0
+          }
+        },
+        {
+          "success": true,
+          "in_viewport": true,
+          "line_visible": true,
+          "a": [
+            640.0,
+            360.0
+          ],
+          "b": [
+            640.0,
+            360.0
+          ],
+          "stats": {
+            "hud_shapes": 0,
+            "hud_expired": true,
+            "rings": 636,
+            "health_bars": 130,
+            "route_lines": 0,
+            "world_panels": 2,
+            "content_revision": 1580,
+            "cached_vertices": 171777,
+            "surface_resources": 2
+          }
+        }
+      ]
+    }
+  ],
+  "counters": {
+    "Mining.VisibilityMs": 1.28849595785141,
+    "Flight.Records": 252110,
+    "Flight.ActorActive": 0,
+    "Flight.DataActive": 51262,
+    "GroundWarning.UpsertMs": 0.07828325033187866,
+    "WingmanFlight.SubmitMs": 0.09470805525779724,
+    "Muzzle.LifecycleMs": 0.21145865321159363,
+    "Muzzle.Active": 0,
+    "Muzzle.Components": 0,
+    "Muzzle.AcceptedTotal": 423108,
+    "Muzzle.BornTotal": 284700,
+    "Muzzle.PublishedTotal": 284700,
+    "Muzzle.FallbacksTotal": 0,
+    "Muzzle.PoseQueriesTotal": 4690761,
+    "Muzzle.LifeUploadsTotal": 10293,
+    "Muzzle.PoseUploadsTotal": 15768,
+    "Muzzle.OffscreenTotal": 74460,
+    "Muzzle.PublishMs": 3.6856383085250854,
+    "Impact.LifecycleMs": 0.08017569780349731,
+    "Impact.Active": 0,
+    "Impact.Components": 0,
+    "Impact.AcceptedTotal": 22119,
+    "Impact.PublishedTotal": 22119,
+    "Impact.FallbacksTotal": 0,
+    "Impact.UnknownBoundsTotal": 0,
+    "Impact.PublishMs": 1.8277205526828766,
+    "Missile.ArrayUploads": 25052,
+    "Missile.UploadMs": 30.848920345306396,
+    "WingmanFlight.Active": 189,
+    "WingmanFlight.Components": 57,
+    "WingmanFlight.UploadsTotal": 234948,
+    "WingmanFlight.OffscreenDropsTotal": 0,
+    "WingmanFlight.PublishMs": 2.1994374692440033,
+    "Flight.PredictorCalls": 50779,
+    "Flight.Predictions.Commander": 2799,
+    "Flight.Predictions.Ground": 2636,
+    "Flight.Predictions.Wingman": 45344,
+    "Flight.PresentationMs": 764.3771134316921,
+    "GroundWarning.Entries": 84,
+    "GroundWarning.Circles": 84,
+    "GroundWarning.UpdateMs": 0.23840367794036865,
+    "Units.Visible": 154639,
+    "Units.Updated": 190480,
+    "Units.Skipped": 72320,
+    "Units.PresentationMs": 405.7236723601818,
+    "SceneUI.SourcesMs": 7.721249014139175,
+    "SceneUI.OutlineCaptureMs": 113.87219652533531,
+    "SceneUI.PlacementCaptureMs": 0.6787031888961792,
+    "SceneUI.WorldPanelsMs": 2.4692676961421967,
+    "SceneUI.UpdateMs": 172.27968201041222,
+    "SceneUI.PrepareMs": 65.75348600745201,
+    "SceneUI.SubmitMs": 173.36450517177582,
+    "SceneUI.PaintMs": 2230.3441017866135,
+    "SceneUI.PartitionMs": 1.8355213105678558,
+    "SceneUI.ComputeCpuMs": 851.2225821614265,
+    "SceneUI.DispatchJoinMs": 171.0151992738247,
+    "SceneUI.DispatchWaitMs": 58.67155268788338,
+    "SceneUI.MergeMs": 275.9155221283436,
+    "SceneUI.Batches": 3516,
+    "SceneUI.Commands": 1371016,
+    "SceneUI.VerifiedBuilds": 438,
+    "SceneUI.GeometryMismatches": 0,
+    "SceneUI.OutlineListMs": 57.62368068099022,
+    "Avoidance.GridMs": 40.38587585091591,
+    "Avoidance.PrepareMs": 48.02553355693817,
+    "Avoidance.ComputeCpuMs": 4248.026307672262,
+    "Avoidance.DispatchJoinMs": 748.736310750246,
+    "Avoidance.DispatchWaitMs": 95.87643295526505,
+    "Avoidance.MergeMs": 3.649834543466568,
+    "Avoidance.Batches": 1311,
+    "Avoidance.BucketVisits": 29904234,
+    "Avoidance.ExactCandidates": 23389542,
+    "Avoidance.Solves": 80400,
+    "Avoidance.Forced": 4614,
+    "Avoidance.CellLookups": 0,
+    "Avoidance.CellHits": 22619757,
+    "Avoidance.SparseComparisons": 34478108,
+    "Avoidance.EnvironmentDuplicates": 925293,
+    "Avoidance.UniqueVisits": 28978941,
+    "Avoidance.Retained": 964430,
+    "Avoidance.Consumed": 964430,
+    "Avoidance.VerifiedPrefixes": 80400,
+    "Avoidance.PrefixMismatches": 0,
+    "Avoidance.QueryReachSumCm": 637923750.0,
+    "Avoidance.RadiusLE150": 0,
+    "Avoidance.RadiusLE300": 0,
+    "Avoidance.RadiusGT300": 80400,
+    "Avoidance.SpeedLE800": 0,
+    "Avoidance.SpeedLE1600": 80400,
+    "Avoidance.SpeedGT1600": 0,
+    "Avoidance.QueryMs": 757.1279928088188,
+    "Avoidance.SolveMs": 21.242283284664154,
+    "Avoidance.SubmitMs": 3.452591598033905,
+    "Avoidance.TotalMs": 830.1431983709335,
+    "Network.FlightRecordAccountingMs": 35.54252162575722,
+    "StateTree.GroupLookups": 593892,
+    "StateTree.IndexedLookups": 593892,
+    "StateTree.VerifiedLookups": 593892,
+    "StateTree.AdvanceGroups": 36,
+    "StateTree.AdvanceMembers": 900,
+    "Projectile.Other30HzSteps": 524,
+    "Projectile.OtherActivePerStep": 52527,
+    "Projectile.SnapshotMs": 109.95914787054062,
+    "Projectile.GridMs": 21.94410189986229,
+    "Projectile.CandidatesMs": 159.81930866837502,
+    "Projectile.NarrowPhaseMs": 306.1874024569988,
+    "Projectile.WorldSweepMs": 250.28185918927193,
+    "Projectile.SettleMs": 125.73802098631859,
+    "Projectile.Commander5HzSteps": 88,
+    "Projectile.CommanderActivePerStep": 193949,
+    "StateTree.Reads": 764606,
+    "StateTree.CacheHits": 368086,
+    "StateTree.Conditions": 523758,
+    "StateTree.VerifiedReads": 537214,
+    "StateTree.ActorMs": 66.58744812011719,
+    "StateTree.MassMs": 397.61750772595406,
+    "StateTree.CommitMs": 24.66098591685295,
+    "StateTree.ScheduleMs": 496.83530628681183
+  },
+  "errors": [],
+  "scope": "Functional shadow verification with deliberate actions; never a performance sample."
+}

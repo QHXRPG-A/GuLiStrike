@@ -1,0 +1,80 @@
+[
+  {
+    "run": "switchback-dense200-onscreen-AAA2-r1-baseline",
+    "frames": 533,
+    "scope": "DrawWindows = Prepass + two game UI roots identified by SceneUI widgets + window(s) containing SLevelEditor after subtracting embedded game UI + remaining drawing. No per-client identity inferred.",
+    "mean": {
+      "engine_ms": 28.07503358348968,
+      "draw_ms": 7.107272232645403,
+      "game_ui_ms": 3.154779549718574,
+      "editor_window_excluding_game_ui_ms": 1.0825461538461538,
+      "remaining_draw_ms": 1.1138439024390245,
+      "prepass_ms": 1.756102626641651
+    }
+  },
+  {
+    "run": "switchback-dense200-onscreen-AAA2-r2-baseline",
+    "frames": 516,
+    "scope": "DrawWindows = Prepass + two game UI roots identified by SceneUI widgets + window(s) containing SLevelEditor after subtracting embedded game UI + remaining drawing. No per-client identity inferred.",
+    "mean": {
+      "engine_ms": 28.994052325581396,
+      "draw_ms": 7.799798062015504,
+      "game_ui_ms": 3.366571705426357,
+      "editor_window_excluding_game_ui_ms": 1.282291472868217,
+      "remaining_draw_ms": 1.1980071705426356,
+      "prepass_ms": 1.9529277131782945
+    }
+  },
+  {
+    "run": "switchback-dense200-onscreen-AAA2-r3-baseline",
+    "frames": 531,
+    "scope": "DrawWindows = Prepass + two game UI roots identified by SceneUI widgets + window(s) containing SLevelEditor after subtracting embedded game UI + remaining drawing. No per-client identity inferred.",
+    "mean": {
+      "engine_ms": 28.140382109227872,
+      "draw_ms": 7.1345062146892655,
+      "game_ui_ms": 3.108459322033898,
+      "editor_window_excluding_game_ui_ms": 1.1435035781544256,
+      "remaining_draw_ms": 1.128431638418079,
+      "prepass_ms": 1.7541116760828626
+    }
+  },
+  {
+    "run": "switchback-dense200-onscreen-ABA2-r1-baseline",
+    "frames": 542,
+    "scope": "DrawWindows = Prepass + two game UI roots identified by SceneUI widgets + window(s) containing SLevelEditor after subtracting embedded game UI + remaining drawing. No per-client identity inferred.",
+    "mean": {
+      "engine_ms": 27.580239298892987,
+      "draw_ms": 6.886776014760147,
+      "game_ui_ms": 3.0783367158671586,
+      "editor_window_excluding_game_ui_ms": 1.030520848708487,
+      "remaining_draw_ms": 1.109320664206642,
+      "prepass_ms": 1.6685977859778598
+    }
+  },
+  {
+    "run": "switchback-dense200-onscreen-ABA2-r2-combined",
+    "frames": 519,
+    "scope": "DrawWindows = Prepass + two game UI roots identified by SceneUI widgets + window(s) containing SLevelEditor after subtracting embedded game UI + remaining drawing. No per-client identity inferred.",
+    "mean": {
+      "engine_ms": 28.798395375722546,
+      "draw_ms": 7.672206165703275,
+      "game_ui_ms": 3.41267591522158,
+      "editor_window_excluding_game_ui_ms": 1.223479190751445,
+      "remaining_draw_ms": 1.208358766859345,
+      "prepass_ms": 1.8276922928709056
+    }
+  },
+  {
+    "run": "switchback-dense200-onscreen-ABA2-r3-baseline",
+    "frames": 538,
+    "scope": "DrawWindows = Prepass + two game UI roots identified by SceneUI widgets + window(s) containing SLevelEditor after subtracting embedded game UI + remaining drawing. No per-client identity inferred.",
+    "mean": {
+      "engine_ms": 27.814147583643123,
+      "draw_ms": 7.0163843866171005,
+      "game_ui_ms": 3.09137936802974,
+      "editor_window_excluding_game_ui_ms": 1.1055598513011153,
+      "remaining_draw_ms": 1.1422769516728626,
+      "prepass_ms": 1.677168215613383
+    }
+  }
+]

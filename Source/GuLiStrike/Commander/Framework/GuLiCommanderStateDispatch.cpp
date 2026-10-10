@@ -94,6 +94,8 @@ void UGuLiCommanderNetSyncComponent::ClientReceiveStateBatch_Implementation(cons
 		return;
 	}
 	ReceivedStateBatches.Add(Batch);
+	StreamDiagnostics.ReceivedStateBytes += Batch.Data.Num() + 2;
+	++StreamDiagnostics.ReceivedStateBlocks;
 	ApplyPendingStateBatches();
 }
 

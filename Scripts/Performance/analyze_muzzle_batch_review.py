@@ -152,7 +152,7 @@ def case(directory, with_frames=False):
     frame_ok = (server_b['native_population']['alive'] == server_a['native_population']['alive']
                 == expected and r['movement_units_displaced'] > 0 and fixed_views)
     if r['scene'] == 'stress':
-        frame_ok = frame_ok and all(w.get('load', {}).get('domains') == [125]*4
+        frame_ok = frame_ok and all(w.get('load', {}).get('domains') == [167,167,166]
                                    for w in (server_b, server_a))
     clients = []
     for b, a in zip(before[1:], after[1:]):
@@ -322,7 +322,7 @@ def report(cases):
                      f"{virt['mean_of_three_means']:.0f}/{virt['mean_of_three_p95']:.0f} |")
     selected = next(c for c in cases if c['name'] == 'stress-r1-mode2')
     lines += ['', '## 压力场景的实际负载与截帧瓶颈', '',
-              f"额外入口保持四来源各125枚；正常交火弹丸也在运行。服务器计数起/止："
+              f"额外入口保持三来源各125枚；正常交火弹丸也在运行。服务器计数起/止："
               f"`{selected['flight_network_before'][0]}` → `{selected['flight_network_after'][0]}`。", '',
               '代表性压力样本GT独占时间（不能与含子项的World/父Scope重复相加）：', '',
               '| Scope | 平均 ms/引擎帧 | 最大单次 ms |', '|---|---:|---:|']

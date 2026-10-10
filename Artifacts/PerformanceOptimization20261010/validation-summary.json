@@ -1,0 +1,129 @@
+{
+  "completed_captures": 211,
+  "completed_by_phase": {
+    "aa": 12,
+    "aa_final": 12,
+    "combined": 12,
+    "selected": 12,
+    "single": 54,
+    "smoke": 9,
+    "views": 100
+  },
+  "formal_30_second_captures": 202,
+  "eligible_formal_captures": 198,
+  "formal_measured_duration_seconds_min_max": [
+    30.03981590003241,
+    30.207892399979755
+  ],
+  "excluded_calibration_captures": [
+    "views-dense200-full-ui_balanced-r1-baseline-retry-201553",
+    "views-dense200-full-ui_balanced-r1-baseline-retry-202051",
+    "views-dense200-full-ui_balanced-r1-ui_balanced",
+    "views-dense200-full-ui_balanced-r1-ui_balanced-retry-202140"
+  ],
+  "view_pairs_completed": 48,
+  "all_observed_connection_budgets_250000": true,
+  "max_queue_conservation_error": 0,
+  "formal_capture_errors": {},
+  "failed_or_partial_windows_without_result": "保留在原目录和 Build/interruption.json；未伪造完成结果。",
+  "functional": {
+    "dense200": {
+      "passed": true,
+      "checks": {
+        "no_runtime_errors": true,
+        "geometry_checked": true,
+        "geometry_equal": true,
+        "candidate_prefix_checked": true,
+        "candidate_prefix_equal": true,
+        "group_reads_checked": true,
+        "condition_reads_checked": true,
+        "stopped_population": true,
+        "replacement_moves": true,
+        "hud_remounted": true,
+        "hud_expired": true,
+        "clipped_lines_visible": true
+      },
+      "errors": [],
+      "path": "Functional\\dense200\\report.json"
+    },
+    "stress": {
+      "passed": true,
+      "checks": {
+        "no_runtime_errors": true,
+        "geometry_checked": true,
+        "geometry_equal": true,
+        "candidate_prefix_checked": true,
+        "candidate_prefix_equal": true,
+        "group_reads_checked": true,
+        "condition_reads_checked": true,
+        "stopped_population": true,
+        "replacement_moves": true,
+        "hud_remounted": true,
+        "hud_expired": true,
+        "clipped_lines_visible": true
+      },
+      "errors": [],
+      "path": "Functional\\stress\\report.json"
+    },
+    "actor-dense200": {
+      "passed": true,
+      "checks": {
+        "orders_accepted": true,
+        "stale_request_rejected": true,
+        "cancel_accepted": true,
+        "cancel_stopped": true,
+        "both_deaths_committed": true,
+        "dead_actors_removed": true,
+        "no_runtime_errors": true
+      },
+      "errors": [],
+      "path": "Functional\\actor-dense200\\report.json"
+    },
+    "move-continuity": {
+      "passed": false,
+      "checks": {},
+      "errors": [
+        "Soldier fixture spawn failed"
+      ],
+      "path": "Functional\\move-continuity\\report.json"
+    },
+    "move-continuity-baseline": {
+      "passed": false,
+      "checks": {},
+      "errors": [
+        "Soldier fixture spawn failed"
+      ],
+      "path": "Functional\\move-continuity-baseline\\report.json"
+    },
+    "business": {
+      "passed": false,
+      "checks": {
+        "oldest_available_site_selected_before_nearer_new_site": false,
+        "creation_order_does_not_reserve_a_position": false,
+        "unreachable_site_rejected": true,
+        "enemy_site_rejected": true
+      },
+      "errors": [
+        "oldest_available_site_selected_before_nearer_new_site",
+        "creation_order_does_not_reserve_a_position",
+        "fixture site unreachable"
+      ],
+      "path": "Functional\\business\\report.json"
+    },
+    "business-baseline": {
+      "passed": false,
+      "checks": {
+        "oldest_available_site_selected_before_nearer_new_site": false,
+        "creation_order_does_not_reserve_a_position": false,
+        "unreachable_site_rejected": true,
+        "enemy_site_rejected": true
+      },
+      "errors": [
+        "oldest_available_site_selected_before_nearer_new_site",
+        "creation_order_does_not_reserve_a_position",
+        "fixture site unreachable"
+      ],
+      "path": "Functional\\business-baseline\\report.json"
+    }
+  }
+}

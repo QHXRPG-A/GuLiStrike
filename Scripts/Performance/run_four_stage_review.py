@@ -97,7 +97,7 @@ def launch(case,variant,start_flight_load=True):
                     started=run("w=unreal.EditorLevelLibrary.get_pie_worlds(True)[0]\nf=next(s for s in unreal.ObjectIterator(unreal.GuLiFlightAcceptanceSubsystem) if s.get_outer()==w)\nunreal.MCPythonHelper.submit_result(json.dumps({'success':True,'started':f.start_load(500,45)}))")
                     if started['started']:break
                 time.sleep(.5)
-            else:raise RuntimeError('No live four-domain load source after setup')
+            else:raise RuntimeError('No live three-domain load source after setup')
         result("w=unreal.EditorLevelLibrary.get_pie_worlds(True)[0]\nfor a in unreal.GameplayStatics.get_all_actors_of_class(w,unreal.Actor):\n p=a.get_component_by_class(unreal.GuLiBuildingProductionComponent)\n if p:p.set_component_tick_enabled(False)")
     else:
         result(f"variant={variant!r}\ncase={case!r}\n"+"for w in unreal.EditorLevelLibrary.get_pie_worlds(True)[1:]:\n for role,y in [('Mining',-20500),('Construction',-18500)]:\n  if case=='flash':continue\n  label='PerfReview_'+role+'_'+variant\n  a=next(x for x in unreal.GameplayStatics.get_all_actors_of_class(w,unreal.GuLiPerformanceReviewActor) if x.get_actor_label()==label)\n  a.set_actor_location(unreal.Vector(-16000,y,1500),False,True)\n  a.set_editor_property('EffectCount',16)\n  a.start_comparison()\n if case=='flash':\n  label='PerfReview_Flash_'+variant\n  a=next(x for x in unreal.GameplayStatics.get_all_actors_of_class(w,unreal.GuLiPerformanceReviewActor) if x.get_actor_label()==label)\n  a.set_actor_location(unreal.Vector(-14900,-19500,1500),False,True);a.set_editor_property('EffectCount',32);a.start_comparison()\n")

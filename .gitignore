@@ -155,6 +155,10 @@ Artifacts/**/*.r8
 Artifacts/**/*.jsonl
 Artifacts/**/*.nprof
 Artifacts/**/insights/events.csv
+# Raw per-run performance captures stay local; publish paired summaries and final reports.
+Artifacts/PerformanceOptimization20261010/Paired/
+Artifacts/PerformanceOptimization20261010/Diagnosis/Paired/
+Artifacts/PerformanceOptimization20261010/Rollback/Paired/
 Artifacts/Map*/**/terrain/*.png
 
 # Live editor control scratch files and local command notes

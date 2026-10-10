@@ -82,7 +82,7 @@ def snapshot():
         cdo = unreal.get_default_object(bp.generated_class())
         fields = {}
         for key in ['part_id','compatible_sockets','part_relative_transform','part_mass','part_display_name',
-                    'damage','fire_rate','projectile_class','muzzle_offset','thrust']:
+                    'muzzle_offset','thrust']:
             try:
                 value = cdo.get_editor_property(key)
             except Exception:
@@ -90,7 +90,6 @@ def snapshot():
             if key == 'part_relative_transform':value=transform(value)
             elif key == 'muzzle_offset':value=xyz(value)
             elif key == 'compatible_sockets':value=[str(v) for v in value]
-            elif key == 'projectile_class':value=asset_path(value)
             elif not isinstance(value,(str,float,int,bool)):value=str(value)
             fields[key]=value
         visual = {'static_mesh':asset_path(cdo.get_editor_property('static_mesh')),
@@ -136,7 +135,6 @@ def decoded_field(name, value):
                                 rotation=unreal.Quat(*value['rotation']).rotator(),
                                 scale=unreal.Vector(*value['scale']))
     if name == 'muzzle_offset':return unreal.Vector(*value)
-    if name == 'projectile_class':return unreal.load_class(None, value) if value else None
     return value
 
 
@@ -191,7 +189,6 @@ def validate(compile_blueprints=True):
             if key=='part_relative_transform':actual=transform(actual)
             elif key=='muzzle_offset':actual=xyz(actual)
             elif key=='compatible_sockets':actual=[str(v) for v in actual]
-            elif key=='projectile_class':actual=asset_path(actual)
             elif not isinstance(actual,(float,int,bool,str)):actual=str(actual)
             assert actual==expected,(path,key,actual,expected)
         for key,expected in before['visual'].items():

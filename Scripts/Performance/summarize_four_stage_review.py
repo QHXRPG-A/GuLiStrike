@@ -100,7 +100,7 @@ def publish_report(report):
             lines.append(f"| {pair['pair']} / {row['world']} | {b['mean_per_engine_frame']:.3f} / {b['p95_active_frame']:.3f} | {c['mean_per_engine_frame']:.3f} / {c['p95_active_frame']:.3f} | {row['mean_change_percent']:+.2f}% / {row['p95_change_percent']:+.2f}% |")
     mean_change=statistics.median(x['summed_mean_change_percent'] for x in details['flight'])
     lines+=['',f'两个客户端平均相加后，中位下降 {-mean_change:.2f}%。P95 分开统计，下降未达到 10%，不能判定整个平均/P95 目标通过。整帧平均约 64 ms，差异在波动范围内，仍受其他工作限制。',
-        '', '原生入口 `gs.Flights.Load 500 45` 保持专服四来源各 125 枚，客户端窗口平均实际预测约 409–414 枚，来源比例和差异见结构化结果。数据池只保留 Ship 网格 Actor：窗口平均 Actor 活跃约 460 → 90–93，Actor 容量 768 → 128，数据容量 768；容量减少不等于操作系统工作集下降。',
+        '', '原生入口 `gs.Flights.Load 500 45` 保持专服三来源各 125 枚，客户端窗口平均实际预测约 409–414 枚，来源比例和差异见结构化结果。数据池只保留 Ship 网格 Actor：窗口平均 Actor 活跃约 460 → 90–93，Actor 容量 768 → 128，数据容量 768；容量减少不等于操作系统工作集下降。',
         '', '## 特效分项','', '| 候选 | GT 系统独占平均变化 | 所有 CPU 线程的系统工作量变化 |','|---|---:|---:|']
     for case,row in details['vfx_cpu'].items():
         lines.append(f"| {labels[case]} | {row['median_gt_change_percent']:+.2f}% | {row['median_all_cpu_change_percent']:+.2f}% |")
@@ -118,7 +118,7 @@ def publish_report(report):
         '', '`all_cpu_vfx` 是 CPU 工作量，不能与 GT 延迟相加；Inclusive 与子项不相加，两个客户端 P95 不相加。注册表/模板/服务器域索引的收益不能由局部回退对照推算。',
         '', '## 构建、验证与保存入口','',
         '源码引擎 `D:/UnrealEngine-5.7`，目标 `GuLiStrikeEditor Win64 Development`，最后构建退出 0；编辑器实际加载该源码引擎与项目 DLL，BuildId 均为 `dd3ee083-a0fd-45c8-814e-67fe5ef95e31`。已有相关回归：数据池路径14项及 Actor 路径1项通过；未新增测试框架。',
-        '', 'Map `/Game/Maps/LVL_CommanderMassPrototype` 已最后保存并回读20个关闭状态的候选 Actor、3个指南和1个观察相机，以及原生四来源标记。光束行在 `(-16000,-20500/-18500,1500)`，相机 `(-8000,-30000,12500)`；实际建造/导航区域 `(15000,72000,902)`，四来源标记 `(0,65000,902)`。客户端控制台可用 `gs.Perf.Review start PR_Mining_Opaque__Actor`、`gs.Perf.Review start PR_Construction_Opaque__Actor`，`gs.Perf.Review stop` 关闭该客户端全部预览。',
+        '', 'Map `/Game/Maps/LVL_CommanderMassPrototype` 已最后保存并回读20个关闭状态的候选 Actor、3个指南和1个观察相机，以及原生三来源标记。光束行在 `(-16000,-20500/-18500,1500)`，相机 `(-8000,-30000,12500)`；实际建造/导航区域 `(15000,72000,902)`，三来源标记 `(0,65000,902)`。客户端控制台可用 `gs.Perf.Review start PR_Mining_Opaque__Actor`、`gs.Perf.Review start PR_Construction_Opaque__Actor`，`gs.Perf.Review stop` 关闭该客户端全部预览。',
         '', '采矿 5→7.5 cm，建造 8→12 cm；两个系统独立，原曲线、组件缩放、绿色/紫色及 Spark 保留，Opaque+Unlit 光束按原透明曲线收束宽度至0。制作脚本写绝对值，重跑不叠乘。'+
         ('正式 ID36/45/5/52 已切换至各自项目资源，基础缩放1/1/2/1及重防号动态倍率保留；原生目录、DataTable 全52行、蓝图双枪口绑定和 Cook 依赖均已回读。用户决定：“认可，切换这四项引用”。'
          if adopted else '正式 ID36/45/5/52 仍引用原资源，基础缩放1/1/2/1及重防号动态倍率保留；只修正了 ID36 的旧建造共用注释。'),

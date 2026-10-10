@@ -5,24 +5,6 @@
     "success": true,
     "world_object": "<Object '/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype' (0x0000018EA9D4B600) Class 'World'>",
     "levels": [],
-    "projectile": {
-      "class": "/Game/GuLiStrike/Ship/BP_ShipProjectile.BP_ShipProjectile_C",
-      "replicates": true,
-      "components": [
-        {
-          "class": "SphereComponent",
-          "name": "Collision Sphere"
-        },
-        {
-          "class": "StaticMeshComponent",
-          "name": "Mesh"
-        },
-        {
-          "class": "ProjectileMovementComponent",
-          "name": "Projectile Movement"
-        }
-      ]
-    },
     "actors": [
       {
         "name": "PlayerStart_0",

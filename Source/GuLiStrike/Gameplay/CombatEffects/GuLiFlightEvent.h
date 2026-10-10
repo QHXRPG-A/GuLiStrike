@@ -3,7 +3,6 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectTypes.h"
 #include "GuLiFlightEvent.generated.h"
 
-class AGuLiStrikeProjectile;
 struct FGuLiLogicalMissileState;
 
 /** Immutable launch recipe or authoritative terminal. No damage and no per-frame update payload. */
@@ -13,14 +12,6 @@ struct GULISTRIKE_API FGuLiFlightEvent
 	GENERATED_BODY()
 	UPROPERTY() FGuLiCombatEffectState State;
 	UPROPERTY() FGuLiCombatShotCue Muzzle;
-	UPROPERTY() TSoftClassPtr<AGuLiStrikeProjectile> ShipVisualClass;
-	UPROPERTY() FVector VisualScale = FVector::OneVector;
-	UPROPERTY() float Gravity = 0;
-	UPROPERTY() float Bounciness = 0.6f;
-	UPROPERTY() float Friction = 0.2f;
-	UPROPERTY() float StopSpeed = 5;
-	UPROPERTY() float MaximumSpeed = 0;
-	UPROPERTY() bool bBounce = false;
 	UPROPERTY() bool bBootstrap = false;
 	UPROPERTY() bool bHasMuzzle = false;
 	UPROPERTY() int32 ImpactVfxId = 0;
