@@ -762,6 +762,7 @@
 | [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | development | verification | 2026-10-11 |
+| [Mass会话GitHub交付与临时文件清理受阻](../Archive/20261011-Mass会话GitHub交付与临时文件清理受阻.md) | archive | recorded | 2026-10-11 |
 | [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | archive | recorded | 2026-10-11 |
 | [Mass避障简化、转向提速与网络固定对照](../Archive/20261011-Mass避障简化转向提速与网络对照.md) | archive | recorded | 2026-10-11 |
 | [会话变更编译、地图收尾与临时文件清理](../Archive/20261011-会话变更编译地图收尾与临时文件清理.md) | archive | recorded | 2026-10-11 |
@@ -1477,6 +1478,7 @@
 | [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | development | verification | 2026-10-11 |
+| [Mass会话GitHub交付与临时文件清理受阻](../Archive/20261011-Mass会话GitHub交付与临时文件清理受阻.md) | archive | recorded | 2026-10-11 |
 | [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | archive | recorded | 2026-10-11 |
 | [Mass避障简化、转向提速与网络固定对照](../Archive/20261011-Mass避障简化转向提速与网络对照.md) | archive | recorded | 2026-10-11 |
 | [会话变更编译、地图收尾与临时文件清理](../Archive/20261011-会话变更编译地图收尾与临时文件清理.md) | archive | recorded | 2026-10-11 |
@@ -1835,6 +1837,7 @@
 | [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
 | [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-11 |
+| [Mass会话GitHub交付与临时文件清理受阻](../Archive/20261011-Mass会话GitHub交付与临时文件清理受阻.md) | archive | recorded | 2026-10-11 |
 | [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | archive | recorded | 2026-10-11 |
 | [Mass避障简化、转向提速与网络固定对照](../Archive/20261011-Mass避障简化转向提速与网络对照.md) | archive | recorded | 2026-10-11 |
 | [会话变更编译、地图收尾与临时文件清理](../Archive/20261011-会话变更编译地图收尾与临时文件清理.md) | archive | recorded | 2026-10-11 |
@@ -1999,6 +2002,7 @@
 | [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
 | [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-11 |
+| [Mass会话GitHub交付与临时文件清理受阻](../Archive/20261011-Mass会话GitHub交付与临时文件清理受阻.md) | archive | recorded | 2026-10-11 |
 | [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | archive | recorded | 2026-10-11 |
 | [Mass避障简化、转向提速与网络固定对照](../Archive/20261011-Mass避障简化转向提速与网络对照.md) | archive | recorded | 2026-10-11 |
 | [会话变更编译、地图收尾与临时文件清理](../Archive/20261011-会话变更编译地图收尾与临时文件清理.md) | archive | recorded | 2026-10-11 |

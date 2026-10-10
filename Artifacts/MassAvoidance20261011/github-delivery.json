@@ -1,0 +1,38 @@
+{
+  "schema": "github-delivery/v1",
+  "verified_at": "2026-10-11T02:42:37.263442+08:00",
+  "repository": "https://github.com/QHXRPG-A/GuLiStrike",
+  "branch": "main",
+  "project_commit": "40b03777b92de947a687b9860d33631732ac6eab",
+  "project_commit_url": "https://github.com/QHXRPG-A/GuLiStrike/commit/40b03777b92de947a687b9860d33631732ac6eab",
+  "base_commit": "c9abb7b7b9a576893d721313a423171401951e84",
+  "project_push_exit_code": 0,
+  "remote_project_commit_verified": "40b03777b92de947a687b9860d33631732ac6eab",
+  "project_files_changed": 104,
+  "lfs_map_uploaded": true,
+  "map_bytes": 98057018,
+  "transport": {
+    "git": "Existing configured HTTPS proxy 127.0.0.1:7890",
+    "lfs": "Storage hosts bypassed proxy for successful retry; process-local overrides only",
+    "initial_push": "Failed due to closed proxy connection, no quota error",
+    "retry": "Succeeded"
+  },
+  "validation": {
+    "git_diff_check": "passed",
+    "python_script_syntax": 12,
+    "current_build_source_hashes_match": 20,
+    "progress_errors": 0,
+    "existing_progress_warnings": 17,
+    "new_build_or_pie_run": false
+  },
+  "cleanup": {
+    "status": "deletion_blocked",
+    "deleted_files": 0,
+    "pending_files": 87,
+    "pending_bytes": 85424704,
+    "manifest": "Artifacts/MassAvoidance20261011/cleanup-manifest.json",
+    "original_traces_preserved": 53,
+    "stale_git_lock": "Empty stale index.lock reversibly renamed, preserved under .git, no active Git process at rename."
+  },
+  "note": "This verifies the project-change commit. A following documentation commit records this receipt and the cleanup limitation."
+}
