@@ -1,9 +1,13 @@
+#include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Commander/UI/GuLiSceneUISourceRegistry.h"
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Gameplay/Models/GuLiLocalTeamColorSubsystem.h"
 #include "Commander/Presentation/GuLiCommanderRouteLineComponent.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
+#include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
 
 #include "GuLiStrike.h"
@@ -291,6 +295,7 @@ RouteLines->SetupAttachment(SceneRoot);
 void AGuLiCommanderPresentationActor::BeginPlay()
 {
 	Super::BeginPlay();
+	if (auto* Registry = GetWorld()->GetSubsystem<UGuLiSceneUISourceRegistry>()) Registry->RegisterSource(this, EGuLiSceneUISourceKind::Presentation);
 #if WITH_EDITOR
 	// Editor-only art fixtures are duplicated into PIE. They must never join
 	// the soldier stream or compete with the world's gameplay presenter.
@@ -825,7 +830,7 @@ bool AGuLiCommanderPresentationActor::TryGetPresentedSoldierTransform(
 	const FGuLiSoldierId SoldierId,
 	FTransform& OutTransform) const
 {
-	const FGuLiCommanderPresentedSoldier* Soldier = PresentedSoldiers.Find(SoldierId);
+	const FGuLiCommanderPresentedSoldier* Soldier = GetQuerySoldier(SoldierId);
 	if (!SoldierId.IsValid() || !Soldier || !Soldier->bHasPresentedTransform)
 	{
 		return false;
@@ -939,6 +944,7 @@ void AGuLiCommanderPresentationActor::BeginPredictedMove(
 			}
 #endif
 			FGuLiCommanderPredictedMove& Prediction = PredictedMoves.FindOrAdd(SoldierId);
+			DemandPoses.Remove(SoldierId);
 			Prediction = FGuLiCommanderPredictedMove{};
 			Prediction.CohortId = Cohort.CohortId;
 			Prediction.FrozenMemberIndex = static_cast<uint8>(MemberIndex);
@@ -979,6 +985,7 @@ void AGuLiCommanderPresentationActor::ResolvePredictedMove(const FGuLiCommandAck
 		{
 			continue;
 		}
+		DemandPoses.Remove(Pair.Key);
 
 		bool bAccepted = Ack.Result == EGuLiCommandAckResult::Accepted
 			&& Ack.BatchOrderId != 0u;
@@ -1619,6 +1626,7 @@ void AGuLiCommanderPresentationActor::InsertPoseSample(
 #endif
 	FGuLiCommanderPresentedSoldier& Soldier = PresentedSoldiers.FindOrAdd(SoldierId);
 	if (Soldier.DisplacementFrameFloor != 0 && int32(Sample.FrameSequence - Soldier.DisplacementFrameFloor) < 0) return;
+	++Soldier.PoseRevision;
 	const int32 ExistingBeforeCorrection = Soldier.Samples.IndexOfByPredicate(
 		[&Sample](const FGuLiCommanderBufferedSoldierPose& Existing)
 		{
@@ -1827,13 +1835,15 @@ bool AGuLiCommanderPresentationActor::EvaluateAuthoritativeTransform(
 void AGuLiCommanderPresentationActor::ApplyPrediction(
 	const FGuLiSoldierId SoldierId,
 	const double LocalNowSeconds,
-	FTransform& InOutTransform)
+	FTransform& InOutTransform, const bool bUpdateState)
 {
 	FGuLiCommanderPredictedMove* Prediction = PredictedMoves.Find(SoldierId);
 	if (!Prediction)
 	{
 		return;
 	}
+	FGuLiCommanderPredictedMove QueryPrediction;
+	if (!bUpdateState) { QueryPrediction = *Prediction; Prediction = &QueryPrediction; }
 
 	const float BaseYaw = InOutTransform.Rotator().Yaw;
 	if (!Prediction->bResolving)
@@ -1853,7 +1863,14 @@ void AGuLiCommanderPresentationActor::ApplyPrediction(
 
 		if (ElapsedSeconds >= static_cast<double>(PredictionDurationSeconds))
 		{
-			BeginPredictionResolution(*Prediction, LocalNowSeconds);
+			if (bUpdateState) BeginPredictionResolution(*Prediction, LocalNowSeconds);
+			else
+			{
+				Prediction->bResolving = true;
+				Prediction->ResolveStartTimeSeconds = LocalNowSeconds;
+				Prediction->ResolveStartOffset = Prediction->LastAppliedOffset;
+				Prediction->ResolveStartYawOffsetDegrees = Prediction->LastAppliedYawOffsetDegrees;
+			}
 		}
 	}
 
@@ -1875,13 +1892,13 @@ void AGuLiCommanderPresentationActor::ApplyPrediction(
 		AppliedYawOffsetDegrees = Prediction->ResolveStartYawOffsetDegrees * Remaining;
 		if (ResolveAlpha >= 1.0f)
 		{
-			PredictedMoves.Remove(SoldierId);
+			if (bUpdateState) PredictedMoves.Remove(SoldierId);
 			return;
 		}
 	}
 
 #if !UE_BUILD_SHIPPING
-	if (bPredictionTraceActive && SoldierId == PredictionTraceSoldier)
+	if (bUpdateState && bPredictionTraceActive && SoldierId == PredictionTraceSoldier)
 	{
 		PredictionTraceRequestedOffset = AppliedOffset;
 	}
@@ -2113,6 +2130,7 @@ void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
 	}
 #endif
 	PredictedMoves.Reset();
+	DemandPoses.Reset();
 	WreckExpireTimes.Reset();
 	for (TPair<FGuLiSoldierId, FGuLiCommanderPresentedSoldier>& Pair : PresentedSoldiers)
 	{
@@ -2131,6 +2149,12 @@ void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
 		Pair.Value.SmoothedPoseReceiptIntervalSeconds = 0.0;
 		Pair.Value.SmoothedPoseReceiptJitterSeconds = 0.0;
 		Pair.Value.bRenderClockInitialized = false;
+		Pair.Value.LastRenderClockLocalTime = 0;
+		Pair.Value.LastPresentationLocalTime = -1;
+		Pair.Value.NextPresentationLocalTime = 0;
+		Pair.Value.bMainViewVisible = true;
+		Pair.Value.bPresentationStateDirty = true;
+		++Pair.Value.PoseRevision;
 		Pair.Value.LastUntaggedHardSnapDelta = FVector::ZeroVector;
 		Pair.Value.LastHardSnapPriorSampleDelta = FVector::ZeroVector;
 		Pair.Value.LastHardSnapSampleVelocity = FVector::ZeroVector;
@@ -2157,6 +2181,7 @@ void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
 	{
 		TArray<FGuLiSoldierId> ResetIds; PresentedSoldiers.GetKeys(ResetIds);
 		OnVisualStatesChanged.Broadcast(ResetIds);
+		UGuLiSceneUISourceRegistry::Notify(this, EGuLiSceneUIChange::Membership);
 	}
 }
 
@@ -2234,6 +2259,13 @@ void AGuLiCommanderPresentationActor::HandleRosterDelta(const FGuLiSoldierRoster
 	for (const auto Id : Delta.Removed) PendingRemovedIds.Add(Id);
 	for (const auto& Pair : Delta.Changed)
 	{
+		if (auto* Soldier = PresentedSoldiers.Find(Pair.Key))
+		{
+			++Soldier->PoseRevision;
+			Soldier->bPresentationStateDirty |= EnumHasAnyFlags(Pair.Value,
+				EGuLiSoldierStateChange::Type | EGuLiSoldierStateChange::Team | EGuLiSoldierStateChange::Life
+				| EGuLiSoldierStateChange::Phase | EGuLiSoldierStateChange::Displacement | EGuLiSoldierStateChange::Order);
+		}
 		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange(uint8(EGuLiSoldierStateChange::All) & ~uint8(EGuLiSoldierStateChange::Order)))) PendingStateIds.Add(Pair.Key);
 		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Team | EGuLiSoldierStateChange::Health | EGuLiSoldierStateChange::Life | EGuLiSoldierStateChange::Phase)) PendingMirrorStates.Add(Pair.Key);
 		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Displacement)) PendingMirrorTransforms.Add(Pair.Key);
@@ -2249,6 +2281,7 @@ void AGuLiCommanderPresentationActor::HandleRosterDelta(const FGuLiSoldierRoster
 
 void AGuLiCommanderPresentationActor::HandleSelectionChanged(const FGuLiCommanderSelectionState& Selection)
 {
+	UGuLiSceneUISourceRegistry::Notify(this);
 	TSet<FGuLiSoldierId> Next;
 	for (const auto& Cohort : Selection.Cohorts)
 		for (const auto Id : Cohort.MemberIds) if (Id.IsValid()) Next.Add(Id);
@@ -2383,7 +2416,7 @@ void AGuLiCommanderPresentationActor::EnsureStableInstancePool(AGuLiSoldierState
 		if (auto* Live = MirrorLiveTokens.Find(Id)) **Live = false;
 		if (const auto* Entity = ClientMirrorEntities.Find(Id)) Retired.Add(*Entity);
 		ClientMirrorEntities.Remove(Id); MirrorLiveTokens.Remove(Id); PendingMirrorStates.Remove(Id); PendingMirrorTransforms.Remove(Id);
-		SoldierInstanceHandles.Remove(Id); PresentedSoldiers.Remove(Id); WreckExpireTimes.Remove(Id);
+		SoldierInstanceHandles.Remove(Id); PresentedSoldiers.Remove(Id); DemandPoses.Remove(Id); WreckExpireTimes.Remove(Id);
 		PredictedMoves.Remove(Id); PendingDestructionIds.Remove(Id); DirtyRingColorIds.Remove(Id);
 		PendingStateIds.Remove(Id); RetryPoolIds.Remove(Id);
 		if (!Replicator.ContainsSoldier(Id)) PendingPoolIds.Remove(Id);
@@ -2458,6 +2491,7 @@ void AGuLiCommanderPresentationActor::MaintainInstancePool(AGuLiSoldierStateRepl
 
 void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSeconds)
 {
+	FGuLiPerformanceScope FrameTiming(GetWorld(),TEXT("Units.PresentationMs"));
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_RebuildLocalInstances);
 	CSV_SCOPED_TIMING_STAT(GuLiCommanderPresentation, RebuildLocalInstances);
 
@@ -2507,7 +2541,8 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	const float CorrectionMultiplier = FMath::IsFinite(MaximumCorrectionSpeedMultiplier)
 		? FMath::Clamp(MaximumCorrectionSpeedMultiplier, 1.0f, 3.0f) : 3.0f;
 	const auto* MovementGameState = GetWorld()->GetGameState<AGuLiCommanderGameState>();
-	const double DisplayedStepSeconds = FMath::IsFinite(DeltaSeconds) ? FMath::Max(0.0f, DeltaSeconds) : 0.0f;
+	auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>();
+	int32 VisibleUnits = 0, UpdatedUnits = 0, SkippedUnits = 0;
 	FVector HoverCamera = FVector::ZeroVector; FRotator HoverView;
 	if (const auto* PC = FindLocalController()) PC->GetPlayerViewPoint(HoverCamera, HoverView);
 	if (HoverEffects) HoverEffects->BeginFrame(LocalNowSeconds, HoverCamera);
@@ -2562,7 +2597,28 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			}
 		}
 		const double RenderServerTimeSeconds = Soldier.RenderServerTimeSeconds;
-		if (bServerClockInitialized
+		Soldier.LastRenderClockLocalTime = LocalNowSeconds;
+		FVector BoundsPosition = Soldier.PresentedTransform.GetLocation();
+		float BoundsYaw = Soldier.PresentedTransform.Rotator().Yaw;
+		if (!Soldier.Samples.IsEmpty())
+		{
+			const auto& Latest = Soldier.Samples.Last();
+			BoundsPosition = Latest.Location + Latest.Velocity * FMath::Clamp(RenderServerTimeSeconds - Latest.ServerTimeSeconds, 0.0, double(MaximumExtrapolationSeconds));
+			BoundsYaw = Latest.FacingYawDegrees;
+		}
+		FGuLiCommanderLODQuery VisibilityQuery;
+		VisibilityQuery.Bounds = GetUnitModelBoundsCentimeters(InstanceHandle->BatchUnitTypeId)
+			.TransformBy(FTransform(FRotator(0, BoundsYaw, 0), BoundsPosition))
+			.ExpandBy(float(StandardMoveSpeed * GuLiClientPresentation::OffscreenUnitInterval) + 150.f);
+		const bool bVisible = !LOD || LOD->Evaluate(VisibilityQuery).bVisible;
+		const bool bReentered = bVisible && !Soldier.bMainViewVisible;
+		Soldier.bMainViewVisible = bVisible;
+		VisibleUnits += bVisible;
+		const bool bUpdatePresentation = bVisible || !GuLiClientPresentation::OffscreenUnitsEnabled()
+			|| bResetMechanical || Soldier.bPresentationStateDirty || LocalNowSeconds >= Soldier.NextPresentationLocalTime;
+		const float PresentationDt = Soldier.LastPresentationLocalTime < 0 ? DeltaSeconds
+			: float(FMath::Max(0.0, LocalNowSeconds - Soldier.LastPresentationLocalTime));
+		if (bUpdatePresentation && bServerClockInitialized
 			&& EvaluateAuthoritativeTransform(
 				Soldier,
 				RenderServerTimeSeconds,
@@ -2580,7 +2636,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			ApplyPrediction(ReliableState.SoldierId, LocalNowSeconds, PresentedTransform);
 			if (Contacts)
 				Contacts->ApplyContactPresentation(ReliableState.SoldierId, PresentedTransform);
-			if (Soldier.bHasPresentedTransform && !Soldier.bResetPresentationOnNextPose)
+			if (Soldier.bHasPresentedTransform && !Soldier.bResetPresentationOnNextPose && !bReentered)
 			{
 				// Continue from the last displayed position towards the history-evaluated
 				// target. Small steps pass through exactly; large corrections catch up
@@ -2592,7 +2648,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 				const float UnitMoveSpeed = MovementGameState
 					? MovementGameState->GetEffectiveUnitMoveSpeedCmPerSecond(ReliableState.Team, ReliableState.UnitTypeId)
 					: StandardMoveSpeed;
-				const double MaximumDisplayedStep = static_cast<double>(UnitMoveSpeed) * CorrectionMultiplier * DisplayedStepSeconds;
+				const double MaximumDisplayedStep = static_cast<double>(UnitMoveSpeed) * CorrectionMultiplier * PresentationDt;
 				PresentedTransform.SetLocation(PreviousLocation
 					+ DisplayedDelta.GetClampedToMaxSize(MaximumDisplayedStep));
 			}
@@ -2612,9 +2668,19 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			continue;
 		}
 		const float ModelScale = GetUnitPresentationScale(InstanceHandle->BatchUnitTypeId);
-		UpdateMechanicalPresentation(ReliableState.SoldierId, Soldier, PreviousMechanicalRoot,
-			DeltaSeconds, bResetMechanical, bAlive && !ReliableState.bPhased);
-		if (HoverEffects && bAlive && !ReliableState.bPhased)
+		if (bUpdatePresentation)
+		{
+			++UpdatedUnits;
+			UpdateMechanicalPresentation(ReliableState.SoldierId, Soldier, PreviousMechanicalRoot,
+				PresentationDt, bResetMechanical || bReentered, bAlive && !ReliableState.bPhased);
+			Soldier.LastPresentationLocalTime = LocalNowSeconds;
+			Soldier.bPresentationStateDirty = false;
+			const double Interval = GuLiClientPresentation::OffscreenUnitInterval;
+			const double Phase = double(GetTypeHash(ReliableState.SoldierId) & 1023u) / 1024.0 * Interval;
+			Soldier.NextPresentationLocalTime = (FMath::FloorToDouble((LocalNowSeconds - Phase) / Interval) + 1) * Interval + Phase;
+		}
+		else ++SkippedUnits;
+		if (HoverEffects && bVisible && bAlive && !ReliableState.bPhased)
 		{
 			const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 			const auto* Def = Data ? Data->FindSoldierDefinition(InstanceHandle->BatchUnitTypeId) : nullptr;
@@ -2694,10 +2760,20 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 
 	}
 	if (HoverEffects) HoverEffects->EndFrame();
+	CSV_CUSTOM_STAT(GuLiCommanderPresentation, UnitsVisible, VisibleUnits, ECsvCustomStatOp::Set);
+	CSV_CUSTOM_STAT(GuLiCommanderPresentation, UnitsUpdated, UpdatedUnits, ECsvCustomStatOp::Set);
+	CSV_CUSTOM_STAT(GuLiCommanderPresentation, UnitsSkipped, SkippedUnits, ECsvCustomStatOp::Set);
+	if (auto* Capture=GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>())
+	{
+		Capture->Record(TEXT("Units.Visible"),VisibleUnits);
+		Capture->Record(TEXT("Units.Updated"),UpdatedUnits);
+		Capture->Record(TEXT("Units.Skipped"),SkippedUnits);
+	}
 	if (!PendingVisualChangeIds.IsEmpty())
 	{
 		const auto Changed = PendingVisualChangeIds.Array(); PendingVisualChangeIds.Reset();
 		OnVisualStatesChanged.Broadcast(Changed);
+		UGuLiSceneUISourceRegistry::Notify(this, EGuLiSceneUIChange::Membership);
 	}
 	UpdatePhasedInstances(DesiredPhasedTransforms);
 	UpdateHitFlashInstances(DesiredHitTransforms, DesiredHitStartTimes);
@@ -2737,6 +2813,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_InstanceSubmit);
+		const bool bRingPoseChanged = !DirtyRingTransformSlots.IsEmpty();
 		auto SubmitSlots = [](UInstancedStaticMeshComponent* Component, const TArray<FTransform>& Transforms, TArray<int32>& Slots)
 		{
 			if (!Component || Slots.IsEmpty()) return;
@@ -2774,6 +2851,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			}
 		}
 		DirtyRingColorIds.Reset();
+		if (bRingPoseChanged) UGuLiSceneUISourceRegistry::Notify(this, EGuLiSceneUIChange::Pose);
 	}
 
 	if (bNetworkPresentationHidden)

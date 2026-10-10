@@ -1,4 +1,8 @@
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
+#include "HAL/IConsoleManager.h"
+#include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
+
+static TAutoConsoleVariable<int32> CVarWorldEffectBounds(TEXT("gs.Effects.BoundsCull"),1,TEXT("0 conservatively admits world-effect bounds for a runtime comparison."));
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
 
 #include "CoreGlobals.h"
@@ -184,6 +188,54 @@ bool UGuLiCommanderLODSubsystem::ShouldRenderWorldEffect(const FVector& Location
 			|| FVector::DistSquared(View.Position, Location) <= FMath::Square(NonCommanderMaximumDistance)) return true;
 	}
 	return false;
+}
+
+bool UGuLiCommanderLODSubsystem::ShouldRenderWorldEffectBounds(const FBox& Bounds,
+	const double NonCommanderMaximumDistance)
+{
+	FGuLiCommanderLODQuery Query; Query.Bounds=Bounds;
+	return EvaluateWorldEffectBounds(Query,NonCommanderMaximumDistance).bVisible;
+}
+
+FGuLiCommanderLODDecision UGuLiCommanderLODSubsystem::EvaluateWorldEffectBounds(
+	const FGuLiCommanderLODQuery& Query, const double NonCommanderMaximumDistance)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderLODWorldEffects);
+	EnsureViews(); ++QueryCount;
+	FGuLiCommanderLODDecision Result;
+	if (!CVarWorldEffectBounds.GetValueOnGameThread())
+	{ Result.bVisible=true; Result.TargetLevel=EGuLiCommanderLODLevel::Full; Result.bCanTransition=true; return Result; }
+	if (!Query.Bounds.IsValid || Query.Bounds.Min.ContainsNaN() || Query.Bounds.Max.ContainsNaN()
+		|| Query.Bounds.Min.X>Query.Bounds.Max.X || Query.Bounds.Min.Y>Query.Bounds.Max.Y || Query.Bounds.Min.Z>Query.Bounds.Max.Z
+		|| !FMath::IsFinite(NonCommanderMaximumDistance))
+	{ Result.Reason=EGuLiCommanderLODReason::InvalidBounds; return Result; }
+	if (Views.IsEmpty()) return Result;
+	Result.Reason=EGuLiCommanderLODReason::OutsideFrustum;
+	bool Overview=false;
+	for (const auto& View : Views)
+	{
+		if (View.CameraLevel.IsSet() && View.CameraLevel.GetValue()==EGuLiCommanderLODLevel::Minimal) { Overview=true; continue; }
+		if (!View.Frustum.IntersectBox(Query.Bounds.GetCenter(),Query.Bounds.GetExtent())) continue;
+		const double Distance=FMath::Sqrt(Query.Bounds.ComputeSquaredDistanceToPoint(View.Position));
+		if (!View.CameraLevel.IsSet() && NonCommanderMaximumDistance>0 && Distance>NonCommanderMaximumDistance) continue;
+		const float Screen=float(Query.Bounds.GetExtent().Size()/FMath::Max(1.,Distance))*View.ProjectionScale;
+		if (!FMath::IsFinite(Distance) || !FMath::IsFinite(Screen)) continue;
+		Result.bVisible=true; Result.bCommanderView|=View.CameraLevel.IsSet();
+		Result.DistanceCentimeters=FMath::Min(Result.DistanceCentimeters,Distance); Result.ScreenFraction=FMath::Max(Result.ScreenFraction,Screen);
+		const auto Level=View.CameraLevel.IsSet() ? View.CameraLevel.GetValue() : EffectiveSettings.Classify(Distance,Screen,Query.CurrentLevel);
+		if (uint8(Level)<uint8(Result.TargetLevel)) Result.TargetLevel=Level;
+	}
+	Result.bOverviewOnly=Overview && !Result.bVisible;
+	if (Result.bVisible)
+	{
+		if (!GuLiClientPresentation::ThreeTierEffectsEnabled()) Result.TargetLevel=EGuLiCommanderLODLevel::Full;
+		const double Now=GetWorld()->GetTimeSeconds();
+		Result.bCanTransition=!Query.CurrentLevel.IsSet() || !FMath::IsFinite(Query.LastChangeWorldSeconds)
+			|| Now<Query.LastChangeWorldSeconds || Now-Query.LastChangeWorldSeconds>=EffectiveSettings.MinimumResidenceSeconds;
+		Result.Reason=!Result.bCanTransition && Query.CurrentLevel.IsSet() && Query.CurrentLevel.GetValue()!=Result.TargetLevel
+			? EGuLiCommanderLODReason::MinimumResidence : Result.bCommanderView ? EGuLiCommanderLODReason::CameraTier : EGuLiCommanderLODReason::DistanceAndScreen;
+	}
+	return Result;
 }
 
 float UGuLiCommanderLODSubsystem::GetContinuousEffectDistanceFade(const FVector& Location,

@@ -1,6 +1,7 @@
+#include "Battle/Combat/GuLiCombatDamageLedger.h"
+#include "Commander/UI/GuLiSceneUISourceRegistry.h"
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackComponent.h"
 #include "Gameplay/Ship/GuLiStrikeShip.h"
@@ -151,6 +152,7 @@ bool UGuLiCombatHealthComponent::ConfigureServerTarget(
 	UnregisterFromLedger();
 	TargetHandle = NewHandle;
 	Team = NewTeam;
+	OnRep_TargetIdentity();
 	RegisterWithLedger();
 	GetOwner()->ForceNetUpdate();
 	return true;
@@ -235,6 +237,11 @@ bool UGuLiCombatHealthComponent::ApplyServerDamage(
 	return true;
 }
 
+void UGuLiCombatHealthComponent::OnRep_TargetIdentity()
+{
+	UGuLiSceneUISourceRegistry::Notify(GetOwner(), EGuLiSceneUIChange::Membership);
+}
+
 void UGuLiCombatHealthComponent::OnRep_HealthState()
 {
 	OnHealthChanged.Broadcast(HealthState.Health, HealthState.MaxHealth);
@@ -270,6 +277,7 @@ void UGuLiCombatHealthComponent::UnregisterFromLedger()
 
 void UGuLiCombatHealthComponent::BroadcastHealthState(const bool bWasDead)
 {
+	UGuLiSceneUISourceRegistry::Notify(GetOwner(), bWasDead != HealthState.bDead ? EGuLiSceneUIChange::Membership : EGuLiSceneUIChange::Content);
 	OnHealthChanged.Broadcast(HealthState.Health, HealthState.MaxHealth);
 	if (!bWasDead && HealthState.bDead)
 	{
@@ -282,6 +290,7 @@ void UGuLiDamageLedgerSubsystem::Deinitialize()
 	DamageBarriers.Reset();
 	RetainedEffectSources.Reset();
 	TargetAdapters.Reset();
+	TargetDomains.Reset();
 	SourceAdapters.Reset();
 	ResultsByEvent.Reset();
 	EventOrder.Reset();
@@ -438,6 +447,7 @@ bool UGuLiDamageLedgerSubsystem::RegisterTarget(
 		}
 	}
 	TargetAdapters.Add(Handle, MoveTemp(Adapter));
+	TargetDomains.FindOrAdd(Handle.Kind).Add(Handle);
 	return true;
 }
 
@@ -484,6 +494,7 @@ void UGuLiDamageLedgerSubsystem::UnregisterTarget(
 		if (!ExpectedOwner || Existing->LifetimeOwner.Get() == ExpectedOwner)
 		{
 			TargetAdapters.Remove(Handle);
+			if (auto* Domain = TargetDomains.Find(Handle.Kind)) Domain->Remove(Handle);
 		}
 	}
 }
@@ -499,6 +510,7 @@ bool UGuLiDamageLedgerSubsystem::TryGetTargetSnapshot(
 		if (Adapter && !Adapter->LifetimeOwner.IsValid())
 		{
 			TargetAdapters.Remove(Handle);
+			if (auto* Domain = TargetDomains.Find(Handle.Kind)) Domain->Remove(Handle);
 		}
 		return false;
 	}
@@ -506,23 +518,40 @@ bool UGuLiDamageLedgerSubsystem::TryGetTargetSnapshot(
 }
 
 void UGuLiDamageLedgerSubsystem::GetTargetSnapshots(
-	TArray<FGuLiCombatTargetSnapshot>& OutSnapshots)
+	TArray<FGuLiCombatTargetSnapshot>& OutSnapshots, const EGuLiTargetKind Kind)
 {
 	OutSnapshots.Reset();
 	if (!IsAuthorityWorld())
 	{
 		return;
 	}
-	PruneInvalidTargets();
-	OutSnapshots.Reserve(TargetAdapters.Num());
-	for (const TPair<FGuLiTargetHandle, FGuLiCombatTargetAdapter>& Pair : TargetAdapters)
+	if (Kind != EGuLiTargetKind::None)
 	{
-		FGuLiCombatTargetSnapshot Snapshot;
-		if (Pair.Value.IsBound() && Pair.Value.ReadSnapshot(Snapshot)
-			&& Snapshot.Handle == Pair.Key && Snapshot.Handle.IsValid()
-			&& !Snapshot.Location.ContainsNaN())
+		if (auto* Domain = TargetDomains.Find(Kind))
 		{
-			OutSnapshots.Add(MoveTemp(Snapshot));
+			OutSnapshots.Reserve(Domain->Num());
+			for (auto It = Domain->CreateIterator(); It; ++It)
+			{
+				const FGuLiTargetHandle Handle = *It;
+				const auto* Adapter = TargetAdapters.Find(Handle);
+				if (!Adapter || !Adapter->IsBound())
+				{ TargetAdapters.Remove(Handle); It.RemoveCurrent(); continue; }
+				FGuLiCombatTargetSnapshot Snapshot;
+				if (Adapter->ReadSnapshot(Snapshot) && Snapshot.Handle == Handle && Snapshot.Handle.IsValid()
+					&& !Snapshot.Location.ContainsNaN()) OutSnapshots.Add(MoveTemp(Snapshot));
+			}
+		}
+	}
+	else
+	{
+		PruneInvalidTargets();
+		OutSnapshots.Reserve(TargetAdapters.Num());
+		for (const TPair<FGuLiTargetHandle, FGuLiCombatTargetAdapter>& Pair : TargetAdapters)
+		{
+			FGuLiCombatTargetSnapshot Snapshot;
+			if (Pair.Value.IsBound() && Pair.Value.ReadSnapshot(Snapshot)
+				&& Snapshot.Handle == Pair.Key && Snapshot.Handle.IsValid()
+				&& !Snapshot.Location.ContainsNaN()) OutSnapshots.Add(MoveTemp(Snapshot));
 		}
 	}
 	OutSnapshots.Sort([](const FGuLiCombatTargetSnapshot& Lhs, const FGuLiCombatTargetSnapshot& Rhs)
@@ -888,6 +917,7 @@ void UGuLiDamageLedgerSubsystem::PruneInvalidTargets()
 	{
 		if (!Iterator.Value().IsBound())
 		{
+			if (auto* Domain = TargetDomains.Find(Iterator.Key().Kind)) Domain->Remove(Iterator.Key());
 			Iterator.RemoveCurrent();
 		}
 	}

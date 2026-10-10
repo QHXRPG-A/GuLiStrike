@@ -1,5 +1,6 @@
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Components/DecalComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/GameStateBase.h"
@@ -47,6 +48,7 @@ TStatId UGuLiGroundWarningSubsystem::GetStatId() const
 
 bool UGuLiGroundWarningSubsystem::UpsertWarning(const FGuid WarningId, const FGuLiGroundWarningParams& Params)
 {
+	FGuLiPerformanceScope Timing(GetWorld(),TEXT("GroundWarning.UpsertMs"));
 	if (!WarningId.IsValid() || !GetWorld() || GetWorld()->GetNetMode() == NM_DedicatedServer) return false;
 	if (Params.Location.ContainsNaN() || Params.Location.GetAbsMax() > 10000000 || !FMath::IsFinite(Params.Radius)
 		|| Params.Radius <= 0 || Params.Radius > 100000 || !Params.Style || !Params.Style->IsValidStyle()
@@ -116,6 +118,7 @@ void UGuLiGroundWarningSubsystem::RemoveWarning(const FGuid WarningId)
 
 void UGuLiGroundWarningSubsystem::Tick(float DeltaTime)
 {
+	FGuLiPerformanceScope Timing(GetWorld(),TEXT("GroundWarning.UpdateMs"));
 	const double Now = ServerTime();
 	TArray<FGuid> Expired;
 	for (const auto& Pair : Entries) if (Now >= Pair.Value.ExpireServerSeconds) Expired.Add(Pair.Key);
@@ -125,6 +128,11 @@ void UGuLiGroundWarningSubsystem::Tick(float DeltaTime)
 		if (Circle.References == 0 || !Circle.Decal || !Circle.Material) continue;
 		Circle.Decal->SetVisibility(Now >= Circle.Params.StartServerSeconds);
 		Circle.Material->SetScalarParameterValue(TEXT("Age"), FMath::Max(0.0, Now - Circle.Params.StartServerSeconds));
+	}
+	if (auto* Capture=GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>())
+	{
+		Capture->Record(TEXT("GroundWarning.Entries"),Entries.Num());
+		Capture->Record(TEXT("GroundWarning.Circles"),GetActiveCircleCount());
 	}
 }
 

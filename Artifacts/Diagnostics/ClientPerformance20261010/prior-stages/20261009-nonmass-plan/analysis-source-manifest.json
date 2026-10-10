@@ -1,0 +1,253 @@
+{
+  "schema": "guli-flight-optimization-analysis/v1",
+  "captured_at": "2026-10-09T09:20:22.809588+08:00",
+  "client_timezone": "Asia/Shanghai",
+  "allocation": {
+    "development": "DEV-20261009-003",
+    "work": "WORK-20261009-003",
+    "archive": "ARC-20261009-006"
+  },
+  "scope": "static source analysis and documentation; no implementation or new runtime capture",
+  "sources": [
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiFlightVisualActor.cpp",
+      "bytes": 4827,
+      "lines": 103,
+      "sha256": "9a5aacc8023c41c13beee9fc759facf8441a973ee4583ca932027e80061e68d8"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiFlightVisualActor.h",
+      "bytes": 961,
+      "lines": 28,
+      "sha256": "d168a9e9fc22116b8bd64b17e04173520fc77689c6b8319cd87cd902b7510664"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiClientFlightPresentation.cpp",
+      "bytes": 3404,
+      "lines": 68,
+      "sha256": "bc795d45bcb37cacad619eb68ba74957aa2db9e81695712621b749061614c4f7"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp",
+      "bytes": 44780,
+      "lines": 909,
+      "sha256": "6f8e837f7d814c21e2f5c88444bda6a264ef215975f542e9e4c8105c87ebe40c"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h",
+      "bytes": 12110,
+      "lines": 249,
+      "sha256": "02a4f6df156df2cd314d8d6544d82cf6919faaf66f6c405afa52e7f86a477579"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.cpp",
+      "bytes": 3868,
+      "lines": 80,
+      "sha256": "3b226d25632bb7e8fdba0876af4371e376af7d9ef982522b0ea9a5d2201849f9"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.cpp",
+      "bytes": 18940,
+      "lines": 361,
+      "sha256": "5f01fcf4c838294b3c426a18f1116b0300fda3b43637c61051c194e204353b65"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp",
+      "bytes": 12650,
+      "lines": 217,
+      "sha256": "152db777e3147b9b5a3f12600f8f23a0c36f240fa1c5c6c28279dc3d0d54ee92"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMechanicalMuzzlePresentation.cpp",
+      "bytes": 4047,
+      "lines": 77,
+      "sha256": "22bddc1b137f595c419b4220145eeac61e31c0eb684d203ab4147afc31e3c9b0"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.cpp",
+      "bytes": 20030,
+      "lines": 361,
+      "sha256": "049d15a7ddd808a604d9ae97b1370250d62b878b74af2eedc791f1ca537081c8"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.h",
+      "bytes": 3390,
+      "lines": 85,
+      "sha256": "db48356e957a4c90e4108ab1a14ba883ebf38e7cdbc5dd5a77aa4ec0f5973fee"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.cpp",
+      "bytes": 17810,
+      "lines": 327,
+      "sha256": "1abc2d7f1370ac9368934f4ca60ad5f1363373d56529e11c3a132892eb1ee1dd"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h",
+      "bytes": 5132,
+      "lines": 120,
+      "sha256": "8cddfcee16c12419a005ade50f717cc1e3f1e0604080a784b12f48823b6dabfb"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.cpp",
+      "bytes": 47854,
+      "lines": 903,
+      "sha256": "f345ea13bf9a5de376b08dcb6f52014cdef3189cb98de8d1ebfe8c149ab73080"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiFlightReplication.cpp",
+      "bytes": 9399,
+      "lines": 185,
+      "sha256": "397c5a9541db5cfa5bfe47b36f0a998012dfa8a37e8e434c4d840a12e8d20557"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiFlightEvent.cpp",
+      "bytes": 5251,
+      "lines": 114,
+      "sha256": "ecde334267157791b07e09e852a8c10ce08f3a822d261bce9f5ce79cb3da2e18"
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiLogicalMissileSubsystem.cpp",
+      "bytes": 14583,
+      "lines": 388,
+      "sha256": "17f0da1830cb643199f5984989bb5325926d8ee9aa96c8d222304002b5bb520c"
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiCombatDamageLedger.cpp",
+      "bytes": 28738,
+      "lines": 894,
+      "sha256": "706a0a04073123d1148ff2307de6be0ffc74c8dded456c9ab6214a4bac0d01cf"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GuLiStrikeProjectile.cpp",
+      "bytes": 9811,
+      "lines": 227,
+      "sha256": "72c7cea3c8a17612bd846029a6d601305e8c2142c264d0e045f7160a79e22644"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODSubsystem.cpp",
+      "bytes": 11032,
+      "lines": 268,
+      "sha256": "18da59a1c8097cf06f271ece5c15ff3707b5fa856351947fd06ab1069ee2e3b0"
+    },
+    {
+      "path": "Source/GuLiStrike/GuLiStrike.Build.cs",
+      "bytes": 2705,
+      "lines": 101,
+      "sha256": "5d6a4058d128f0ca3db09f5ffa40eca53d7517fae1941aebf21ab76aee57350a"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md",
+      "bytes": 7249,
+      "lines": 69,
+      "sha256": "915e68aca67229e44a137e64064ac7295007eec19f4d440d2c4dffed85024d65"
+    },
+    {
+      "path": "Progress/RequirementDocument/20261004-飞行物批量启停同步与实际时间网络预算.md",
+      "bytes": 3579,
+      "lines": 49,
+      "sha256": "8f99dfee196207f5339e5aa476e6dbed218fe373560f5869467ac20290b7d6b5"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260906-非Mass大规模弹道与特效架构.md",
+      "bytes": 16186,
+      "lines": 237,
+      "sha256": "68a496ac36429ff6ec19b1f215a45420eb6151c47a01c8d757b43cbdd4e8ea50"
+    }
+  ],
+  "baseline_document_diagnostics": {
+    "errors": [],
+    "warnings": [
+      {
+        "path": "Progress/Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+        "code": "oversize",
+        "message": "88.4KB，建议阈值 80KB"
+      },
+      {
+        "path": "Progress/DevelopmentDocumentation/20260820-DIY飞船.md",
+        "code": "large_task_list",
+        "message": "29 个任务项"
+      },
+      {
+        "path": "Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md",
+        "code": "large_task_list",
+        "message": "46 个任务项"
+      },
+      {
+        "path": "Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md",
+        "code": "oversize",
+        "message": "44.9KB，建议阈值 30KB"
+      },
+      {
+        "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/06-任务风险与结果.md",
+        "code": "large_task_list",
+        "message": "44 个任务项"
+      },
+      {
+        "path": "Progress/DevelopmentDocumentation/20260904-僚机无规则护航盘旋技能重构.md",
+        "code": "oversize",
+        "message": "39.0KB，建议阈值 30KB"
+      },
+      {
+        "path": "Progress/DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md",
+        "code": "oversize",
+        "message": "31.4KB，建议阈值 30KB"
+      },
+      {
+        "path": "Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md",
+        "code": "oversize",
+        "message": "30.4KB，建议阈值 30KB"
+      },
+      {
+        "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+        "code": "oversize",
+        "message": "70.0KB，建议阈值 30KB"
+      },
+      {
+        "path": "Progress/Gameplay/战斗.md",
+        "code": "oversize",
+        "message": "35.9KB，建议阈值 30KB"
+      },
+      {
+        "path": "Progress/Gameplay/飞船.md",
+        "code": "oversize",
+        "message": "61.8KB，建议阈值 30KB"
+      },
+      {
+        "path": "Progress/RequirementDocument/20260826-5v5大战场玩法草案.md",
+        "code": "oversize",
+        "message": "36.1KB，建议阈值 20KB"
+      },
+      {
+        "path": "Progress/RequirementDocument/20260827-Mass双端同步架构草案.md",
+        "code": "oversize",
+        "message": "24.7KB，建议阈值 20KB"
+      },
+      {
+        "path": "Progress/RequirementDocument/20260902-僚机体系与空中三维导航.md",
+        "code": "oversize",
+        "message": "27.9KB，建议阈值 20KB"
+      },
+      {
+        "path": "Progress/RequirementDocument/20260915-客户端性能优化与压测问题记录.md",
+        "code": "oversize",
+        "message": "27.8KB，建议阈值 20KB"
+      },
+      {
+        "path": "Progress/RequirementDocument/GuLiStrike美术规范.md",
+        "code": "oversize",
+        "message": "41.6KB，建议阈值 20KB"
+      }
+    ]
+  },
+  "performance_references": [
+    "outputs/performance/20261009-084351-baseline-repeat/frames.csv",
+    "outputs/performance/20261009-084725-confirmed/trace-summary.json",
+    "outputs/performance/20261009-084725-confirmed/csv-summary.json",
+    "outputs/performance/20261009-084725-confirmed/stats-average.txt"
+  ],
+  "allocation_repair": {
+    "original_archive_id": "ARC-20261009-003",
+    "final_archive_id": "ARC-20261009-006",
+    "reason": "Other concurrent Progress additions reused ARC-20261009-003 after the initial inventory; only this newly created archive metadata was repaired. Development and work IDs are unchanged."
+  }
+}

@@ -10,6 +10,7 @@ struct FGuLiRuntimeCombatEffect
 {
 	GENERATED_BODY()
 	UPROPERTY() FGuLiCombatEffectState State;
+	FGuLiProjectileCurveCoefficients CurveCoefficients;
 	UPROPERTY() FGuLiCombatEffectContext Context;
 	UPROPERTY() TObjectPtr<UGuLiProjectileEffectDefinition> Projectile;
 	UPROPERTY() TObjectPtr<UGuLiGroundWarningStyle> GroundWarningStyle;

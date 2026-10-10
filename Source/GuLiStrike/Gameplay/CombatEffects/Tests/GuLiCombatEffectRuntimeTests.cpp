@@ -290,10 +290,30 @@ bool FGuLiCombatEffectMathTest::RunTest(const FString& Parameters)
 	A.LaunchLocation = FVector(100, 200, 50); A.Location = A.LaunchLocation;
 	A.LastTargetLocation = FVector(6000, 0, 50); A.LaunchDirection = FVector::ForwardVector;
 	FGuLiCombatEffectState B = A;
+	FGuLiCombatEffectState Cached = A;
+	FGuLiProjectileCurveCoefficients Coefficients; Coefficients.Initialize(Cached);
 	for (int32 Step = 1; Step < 45; ++Step)
 	{
 		AdvanceProjectile(A, Step / 30.0f, 1 / 30.0f); AdvanceProjectile(B, Step / 30.0f, 1 / 30.0f);
+		AdvanceProjectile(Cached, Step / 30.0f, 1 / 30.0f, &Coefficients);
 		TestTrue(TEXT("same seed and input reproduce every flight sample"), FVector(A.Location).Equals(B.Location, 0.001));
+		TestTrue(TEXT("frozen coefficients preserve trajectory and velocity"), FVector(A.Location).Equals(Cached.Location, 0.001) && FVector(A.Velocity).Equals(Cached.Velocity, 0.001));
+	}
+	// Exercise the curved branch and both launch-normalization fallbacks in this existing case.
+	for (int32 Seed : {0, -421, 142}) for (bool bZeroDirection : {false, true})
+	{
+		FGuLiCombatEffectState Original;
+		Original.RandomSeed = Seed; Original.LastTargetLocation = FVector(6000,2000,50);
+		Original.LaunchDirection = bZeroDirection ? FVector::ZeroVector : FVector(1,2,.3);
+		Original.Motion.VerticalCurve = 300; Original.Motion.LongitudinalCurve = 200;
+		auto Frozen = Original; FGuLiProjectileCurveCoefficients Curve; Curve.Initialize(Frozen);
+		for (int32 Step = 1; Step < 128; ++Step)
+		{
+			Original.LastTargetLocation = Frozen.LastTargetLocation = FVector(6000,2000+Step*3,50);
+			AdvanceProjectile(Original, Step / 30.f, 1 / 30.f);
+			AdvanceProjectile(Frozen, Step / 30.f, 1 / 30.f, &Curve);
+			TestTrue(TEXT("cached seeded curves retain moving-target samples"), FVector(Original.Location).Equals(Frozen.Location,.001) && FVector(Original.Velocity).Equals(Frozen.Velocity,.001));
+		}
 	}
 	B.RandomSeed = 421;
 	TestFalse(TEXT("different seeds vary the lift"), LiftPosition(A, 0.25f).Equals(LiftPosition(B, 0.25f)));
@@ -635,8 +655,9 @@ bool FGuLiFlightBatchLifecycleTest::RunTest(const FString& Parameters)
 	auto* Visuals=F.World->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>();
 	if (!TestNotNull(TEXT("local presentation exists"),Visuals)) return false;
 	Visuals->ApplyFlightEvent(Event); Visuals->ApplyFlightEvent(Event);
-	TestEqual(TEXT("duplicate launch acquires only one pool entry"),Visuals->GetCounters().ClientFlightActorActive,1);
-	const int32 Capacity=Visuals->GetCounters().ClientFlightActorCapacity;
+	TestEqual(TEXT("duplicate launch acquires only one prediction entry"),
+		Visuals->GetCounters().ClientFlightActorActive+Visuals->GetCounters().ClientFlightDataActive,1);
+	const int32 Capacity=Visuals->GetCounters().ClientFlightActorCapacity+Visuals->GetCounters().ClientFlightDataCapacity;
 	Event.State.Phase=EGuLiCombatEffectPhase::Finished; Event.State.Sequence=2;
 	Visuals->ApplyFlightEvent(Event); Visuals->ApplyFlightEvent(Event);
 	Event.State.Phase=EGuLiCombatEffectPhase::Active; Event.State.Sequence=3;
@@ -646,12 +667,15 @@ bool FGuLiFlightBatchLifecycleTest::RunTest(const FString& Parameters)
 	Event.State.EffectId=FGuid::NewGuid(); Event.State.MatchEpoch=7;
 	Event.State.Source=GuLiCombatTargets::MakeCommanderSoldierTargetHandle(7,1);
 	Visuals->BeginEpoch(7);
-	TestEqual(TEXT("epoch reset returns retained terminal trail to pool"),Visuals->GetCounters().ClientFlightActorActive,0);
+	TestEqual(TEXT("epoch reset returns retained terminal trail to pool"),
+		Visuals->GetCounters().ClientFlightActorActive+Visuals->GetCounters().ClientFlightDataActive,0);
 	Visuals->ApplyFlightEvent(Event);
-	TestEqual(TEXT("wrapped opaque epoch accepts new match"),Visuals->GetCounters().ClientFlightActorActive,1);
+	TestEqual(TEXT("wrapped opaque epoch accepts new match"),
+		Visuals->GetCounters().ClientFlightActorActive+Visuals->GetCounters().ClientFlightDataActive,1);
 	Event.State.MatchEpoch=MAX_uint32; Visuals->ApplyFlightEvent(Event);
 	TestEqual(TEXT("retired epoch cannot replace current match"),Visuals->GetEffectStates()[0].MatchEpoch,7u);
-	TestEqual(TEXT("pool reused across epoch reset"),Visuals->GetCounters().ClientFlightActorCapacity,Capacity);
+	TestEqual(TEXT("pool reused across epoch reset"),
+		Visuals->GetCounters().ClientFlightActorCapacity+Visuals->GetCounters().ClientFlightDataCapacity,Capacity);
 	Event.State.MatchEpoch=7; Event.State.StartTime=3; Event.State.SampleTime=3;
 	Event.State.Location=Event.State.LaunchLocation=FVector(300,0,0); Event.bBootstrap=true;
 	auto* Actor=F.World->SpawnActor<AGuLiFlightVisualActor>();

@@ -8,6 +8,24 @@
 #include "GuLiCombatEffectReplicationComponent.generated.h"
 
 class UGuLiCombatEffectRuntimeSubsystem;
+class UNetConnection;
+
+/** Local decode counters; payload bytes are a subset of connection traffic, not wire totals. */
+struct FGuLiFlightReceiveCounters
+{
+	uint64 PayloadBytes = 0;
+	uint64 Events = 0;
+	uint64 AgeSamples = 0;
+	double AgeMilliseconds = 0.0;
+};
+
+/** Authority application queue for one peer, before RPC submission. */
+struct FGuLiFlightPeerStats
+{
+	bool bAvailable = false;
+	int32 QueuedEvents = 0;
+	double HeadEventAgeMilliseconds = 0.0;
+};
 
 USTRUCT()
 struct FGuLiWingmanFeedbackCue
@@ -42,6 +60,8 @@ public:
 	static void AttachFlightMuzzle(UWorld* World, const FGuLiCombatShotCue& Cue);
 	static bool IsFlightActive(UWorld* World, const FGuid& Id);
 	UFUNCTION(BlueprintPure, Category="Network|Flight") FString GetFlightDiagnostics() const;
+	const FGuLiFlightReceiveCounters& GetFlightReceiveCounters() const { return FlightReceiveCounters; }
+	FGuLiFlightPeerStats GetFlightPeerStats(UNetConnection* Connection) const;
 
 private:
 	UFUNCTION(NetMulticast, Reliable) void MulticastRogueUpgrade(const FGuLiRogueUpgradeCue& Cue);
@@ -68,5 +88,6 @@ private:
 	struct FPeerStream { TWeakObjectPtr<class UActorChannel> Channel; TArray<FGuLiFlightEvent> Queue; int32 Cursor = 0; };
 	TMap<TWeakObjectPtr<class UNetConnection>, FPeerStream> FlightPeers;
 	uint64 CreatedFlights = 0, EndedFlights = 0, SentFlightBytes = 0, SentFlightBatches = 0, BootstrapFlights = 0;
+	FGuLiFlightReceiveCounters FlightReceiveCounters;
 	double NextFlightDiagnosticTime = 0;
 };

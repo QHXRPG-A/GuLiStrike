@@ -65,6 +65,7 @@ private:
 
 	/** Previous authoritative transform sample for Actor-less Mass target sweeps. */
 	FVector PreviousServerSweepLocation = FVector::ZeroVector;
+	TArray<FGuLiCombatTargetSnapshot> WingmanSweepWorkspace;
 	bool bHasPreviousServerSweepLocation = false;
 	void PublishServerLaunch();
 	void FinishFlight(EGuLiCombatEffectEndReason Reason, const FVector& Location);

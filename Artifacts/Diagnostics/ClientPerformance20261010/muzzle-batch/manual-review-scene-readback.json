@@ -1,0 +1,178 @@
+{
+  "success": true,
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "entities": [
+    {
+      "label": "MuzzleReview_Old_Normal",
+      "name": "GuLiPerformanceReviewActor_9",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -21500.0,
+        -18000.0,
+        1700.0
+      ],
+      "rotation": "<Struct 'Rotator' (0x00000197270D6270) {pitch: 30.000000, yaw: 0.000000, roll: 0.000000}>",
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations.NS_MachineGunMuzzle_AllOptimizations",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "catalog_muzzles": true,
+      "mode": 0,
+      "heavy": false,
+      "tick_enabled": false,
+      "events_per_second": 20.0,
+      "follow_velocity": [
+        600.0,
+        150.0,
+        0.0
+      ],
+      "active_seconds": 2.4000000953674316,
+      "cycle_seconds": 4.0
+    },
+    {
+      "label": "MuzzleReview_Batch_Normal",
+      "name": "GuLiPerformanceReviewActor_10",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -18000.0,
+        -18000.0,
+        1700.0
+      ],
+      "rotation": "<Struct 'Rotator' (0x00000197270D7580) {pitch: 30.000000, yaw: 0.000000, roll: 0.000000}>",
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch.NS_MachineGunMuzzle_Batch",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "catalog_muzzles": true,
+      "mode": 2,
+      "heavy": false,
+      "tick_enabled": false,
+      "events_per_second": 20.0,
+      "follow_velocity": [
+        600.0,
+        150.0,
+        0.0
+      ],
+      "active_seconds": 2.4000000953674316,
+      "cycle_seconds": 4.0
+    },
+    {
+      "label": "MuzzleReview_Old_Heavy",
+      "name": "GuLiPerformanceReviewActor_11",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -21500.0,
+        -14500.0,
+        1700.0
+      ],
+      "rotation": "<Struct 'Rotator' (0x00000197270D4F10) {pitch: -30.000000, yaw: 0.000000, roll: 0.000000}>",
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations.NS_MachineGunMuzzle_AllOptimizations",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "catalog_muzzles": true,
+      "mode": 0,
+      "heavy": true,
+      "tick_enabled": false,
+      "events_per_second": 20.0,
+      "follow_velocity": [
+        600.0,
+        150.0,
+        0.0
+      ],
+      "active_seconds": 2.4000000953674316,
+      "cycle_seconds": 4.0
+    },
+    {
+      "label": "MuzzleReview_Batch_Heavy",
+      "name": "GuLiPerformanceReviewActor_12",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -18000.0,
+        -14500.0,
+        1700.0
+      ],
+      "rotation": "<Struct 'Rotator' (0x00000197270B3350) {pitch: -30.000000, yaw: 0.000000, roll: 0.000000}>",
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch.NS_MachineGunMuzzle_Batch",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "catalog_muzzles": true,
+      "mode": 2,
+      "heavy": true,
+      "tick_enabled": false,
+      "events_per_second": 20.0,
+      "follow_velocity": [
+        600.0,
+        150.0,
+        0.0
+      ],
+      "active_seconds": 2.4000000953674316,
+      "cycle_seconds": 4.0
+    },
+    {
+      "label": "MuzzleReview_Camera_Near",
+      "name": "CameraActor_29",
+      "class": "CameraActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -19750.0,
+        -21100.0,
+        3700.0
+      ],
+      "rotation": "<Struct 'Rotator' (0x00000197270B3030) {pitch: -19.316353, yaw: 90.000000, roll: 0.000000}>"
+    },
+    {
+      "label": "MuzzleReview_Camera_Middle",
+      "name": "CameraActor_30",
+      "class": "CameraActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -19750.0,
+        -27000.0,
+        7000.0
+      ],
+      "rotation": "<Struct 'Rotator' (0x00000197270B1EB0) {pitch: -24.943905, yaw: 90.000000, roll: 0.000000}>"
+    },
+    {
+      "label": "MuzzleReview_Camera_Far",
+      "name": "CameraActor_31",
+      "class": "CameraActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -19750.0,
+        -33000.0,
+        7000.0
+      ],
+      "rotation": "<Struct 'Rotator' (0x00000197270B1FF0) {pitch: -16.620757, yaw: 90.000000, roll: 0.000000}>"
+    },
+    {
+      "label": "MuzzleReview_Guide",
+      "name": "TextRenderActor_41",
+      "class": "TextRenderActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -22500.0,
+        -20100.0,
+        2300.0
+      ],
+      "rotation": "<Struct 'Rotator' (0x00000197270B2130) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>"
+    }
+  ],
+  "technical_entity_readback": true,
+  "player_visual_approval": false,
+  "entry": "Scripts/Performance/muzzle_player_review.py -> guli_muzzle_review_view(\"near\")"
+}

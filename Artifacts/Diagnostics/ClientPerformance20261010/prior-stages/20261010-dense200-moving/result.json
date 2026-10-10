@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "case": "dense200-moving-client1",
+  "pair": 1,
+  "variant": "current-production-moving",
+  "capture_seconds": 30.000144199933857,
+  "csv": {
+    "FrameTime": {
+      "mean": 40.61026666666667,
+      "p95": 57.053,
+      "n": 741
+    },
+    "GameThreadTime": {
+      "mean": 40.61587314439946,
+      "p95": 55.7138,
+      "n": 741
+    },
+    "GPUTime": {
+      "mean": 16.309893927125508,
+      "p95": 17.5397,
+      "n": 741
+    },
+    "PhysicalUsedMB": {
+      "mean": 10176.451492577598,
+      "p95": 10882.1836,
+      "n": 741
+    },
+    "VirtualUsedMB": {
+      "mean": 19427.085523886642,
+      "p95": 19431.0312,
+      "n": 741
+    }
+  },
+  "target_world": "UEDPIE_1",
+  "actual_views": [
+    [
+      1505,
+      1115
+    ],
+    [
+      640,
+      484
+    ]
+  ],
+  "scope": "Approximate 200-unit native battle. Both teams receive accepted normal move tasks; movement, avoidance, collision, prediction and firing remain enabled. Runtime health50000, factory production/capture disabled only to stabilize population. Source UE5.7 dedicated+two clients+editor in one process. Engine CSV/GT/GPU are process-wide; project counters retain World identity. ReadPixels, inventory and ProfileGPU are outside measurement. Current optimization controls and quality retained. Natural arrivals, combat stops and deaths are not suppressed. Diagnosis, not a paired FPS comparison."
+}

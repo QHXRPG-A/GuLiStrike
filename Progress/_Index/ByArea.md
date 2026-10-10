@@ -430,7 +430,12 @@
 |---|---|---|---|
 | [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
+| [场景UI来源注册与绘制缓存优化 — 技术方案](../DevelopmentDocumentation/20261009-场景UI来源注册与绘制缓存优化.md) | development | verification | 2026-10-09 |
+| [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | development | verification | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
+| [四项PIE全部优化应用与整版对照](../Archive/20261009-四项PIE全部优化应用与整版对照.md) | archive | recorded | 2026-10-09 |
+| [四项特效视觉确认与正式引用切换](../Archive/20261009-四项特效视觉确认与正式引用切换.md) | archive | recorded | 2026-10-09 |
+| [四项PIE性能优化实施与对照交付](../Archive/20261009-四项PIE性能优化实施与对照交付.md) | archive | recorded | 2026-10-09 |
 | [场景UI源码与18组红蓝模型对照交付](../Archive/20261008-场景UI源码与红蓝模型对照交付.md) | archive | recorded | 2026-10-08 |
 | [彼之矛工程车建造与四足重炮](../RequirementDocument/20261005-彼之矛工程车建造与四足重炮.md) | requirement | approved | 2026-10-05 |
 | [彼之矛](../Gameplay/彼之矛.md) | gameplay | current | 2026-10-05 |
@@ -505,7 +510,33 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [PIE性能基线与快照多线程优化](../RequirementDocument/20261010-PIE性能基线与快照多线程优化.md) | requirement | approved | 2026-10-10 |
+| [客户端表现管线技能与枪口批量化](../RequirementDocument/20261010-客户端表现管线技能与枪口批量化.md) | requirement | approved | 2026-10-10 |
+| [命中特效事件批量承载与生命周期优化](../RequirementDocument/20261009-命中特效事件批量承载与生命周期优化.md) | requirement | approved | 2026-10-10 |
+| [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
+| [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
+| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | planned | 2026-10-10 |
+| [客户端表现管线技能与枪口批量化 — 技术方案](../DevelopmentDocumentation/20261010-客户端表现管线技能与枪口批量化.md) | development | verification | 2026-10-10 |
+| [命中特效事件批量承载与生命周期优化 — 技术方案](../DevelopmentDocumentation/20261009-命中特效事件批量承载与生命周期优化.md) | development | verification | 2026-10-10 |
+| [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
+| [客户端视野裁剪与特效三档LOD优化 — 技术方案](../DevelopmentDocumentation/20261009-客户端视野裁剪与特效三档LOD优化.md) | development | verification | 2026-10-10 |
+| [PIE性能基线、多线程方案与会话临时文件清理](../Archive/20261010-PIE性能基线多线程方案与会话清理.md) | archive | recorded | 2026-10-10 |
+| [客户端表现专属技能与枪口批量化交付](../Archive/20261010-客户端表现专属技能与枪口批量化交付.md) | archive | recorded | 2026-10-10 |
+| [约200单位移动交火与场景UI性能截帧](../Archive/20261010-约200单位移动交火与场景UI性能截帧.md) | archive | recorded | 2026-10-10 |
+| [车辆CharacterMovement与飞船僚机移动开销拆分](../Archive/20261010-车辆CharacterMovement与飞船僚机移动开销拆分.md) | archive | recorded | 2026-10-10 |
+| [Client1实战PIE截帧与游戏线程瓶颈分析](../Archive/20261010-Client1实战PIE截帧与游戏线程瓶颈分析.md) | archive | recorded | 2026-10-10 |
+| [三项客户端优化正式接入与PIE验收交付](../Archive/20261010-三项客户端优化正式接入与PIE验收交付.md) | archive | recorded | 2026-10-10 |
+| [三项客户端优化手动PIE审核入口交付](../Archive/20261010-三项客户端优化手动PIE审核入口交付.md) | archive | recorded | 2026-10-10 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
+| [PIE游戏线程耗时与避障候选查询优化 — 技术方案](../DevelopmentDocumentation/20261009-PIE游戏线程耗时与避障候选查询优化.md) | development | verification | 2026-10-09 |
+| [非Mass飞行弹丸六项性能优化 — 分析与开发方案](../DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md) | development | verification | 2026-10-09 |
+| [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | development | verification | 2026-10-09 |
+| [600移动单位500弹丸PIE截帧耗时分析](../Archive/20261009-600移动单位500弹丸PIE截帧耗时分析.md) | archive | recorded | 2026-10-09 |
+| [四项PIE全部优化应用与整版对照](../Archive/20261009-四项PIE全部优化应用与整版对照.md) | archive | recorded | 2026-10-09 |
+| [四项特效视觉确认与正式引用切换](../Archive/20261009-四项特效视觉确认与正式引用切换.md) | archive | recorded | 2026-10-09 |
+| [四项PIE性能优化实施与对照交付](../Archive/20261009-四项PIE性能优化实施与对照交付.md) | archive | recorded | 2026-10-09 |
+| [非Mass飞行弹丸六项优化分析与开发文档交付](../Archive/20261009-非Mass飞行弹丸六项优化分析交付.md) | archive | recorded | 2026-10-09 |
+| [PIE耗时与避障候选查询分析](../Archive/20261009-PIE耗时与避障候选查询分析.md) | archive | recorded | 2026-10-09 |
 | [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | development | done | 2026-10-05 |
 | [F4肉鸽卡牌重选 — 实施记录](../DevelopmentDocumentation/20260929-F4肉鸽卡牌重选.md) | development | done | 2026-10-05 |
 | [重防号导弹解锁与肉鸽卡牌 — 技术方案](../DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md) | development | done | 2026-10-05 |
@@ -723,14 +754,32 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
+| [游戏左上角帧率与延迟显示](../RequirementDocument/20260923-游戏左上角帧率与延迟显示.md) | requirement | approved | 2026-10-10 |
+| [客户端视野裁剪与特效三档LOD优化 — 技术方案](../DevelopmentDocumentation/20261009-客户端视野裁剪与特效三档LOD优化.md) | development | verification | 2026-10-10 |
+| [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | development | verification | 2026-10-10 |
+| [网络指标HUD仅编译交付](../Archive/20261010-网络指标HUD仅编译交付.md) | archive | recorded | 2026-10-10 |
+| [左上角网络指标与飞行事件积压显示](../Archive/20261010-左上角网络指标与飞行事件积压显示.md) | archive | recorded | 2026-10-10 |
+| [约200单位移动交火与场景UI性能截帧](../Archive/20261010-约200单位移动交火与场景UI性能截帧.md) | archive | recorded | 2026-10-10 |
+| [服务器StateTree条件查询与集中调度瓶颈分析](../Archive/20261010-服务器StateTree条件查询与集中调度瓶颈分析.md) | archive | recorded | 2026-10-10 |
+| [Client1实战PIE截帧与游戏线程瓶颈分析](../Archive/20261010-Client1实战PIE截帧与游戏线程瓶颈分析.md) | archive | recorded | 2026-10-10 |
+| [三项客户端优化正式接入与PIE验收交付](../Archive/20261010-三项客户端优化正式接入与PIE验收交付.md) | archive | recorded | 2026-10-10 |
+| [三项客户端优化手动PIE审核入口交付](../Archive/20261010-三项客户端优化手动PIE审核入口交付.md) | archive | recorded | 2026-10-10 |
 | [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
 | [Mass单位脚环统一20cm](../RequirementDocument/20261007-Mass单位脚环统一20cm.md) | requirement | approved | 2026-10-09 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
+| [PIE游戏线程耗时与避障候选查询优化 — 技术方案](../DevelopmentDocumentation/20261009-PIE游戏线程耗时与避障候选查询优化.md) | development | verification | 2026-10-09 |
+| [场景UI来源注册与绘制缓存优化 — 技术方案](../DevelopmentDocumentation/20261009-场景UI来源注册与绘制缓存优化.md) | development | verification | 2026-10-09 |
+| [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | development | verification | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
 | [Mass单位脚环统一20cm — 实施记录](../DevelopmentDocumentation/20261007-Mass单位脚环统一20cm.md) | development | verification | 2026-10-09 |
+| [600移动单位500弹丸PIE截帧耗时分析](../Archive/20261009-600移动单位500弹丸PIE截帧耗时分析.md) | archive | recorded | 2026-10-09 |
+| [四项PIE全部优化应用与整版对照](../Archive/20261009-四项PIE全部优化应用与整版对照.md) | archive | recorded | 2026-10-09 |
+| [四项PIE性能优化实施与对照交付](../Archive/20261009-四项PIE性能优化实施与对照交付.md) | archive | recorded | 2026-10-09 |
+| [PIE耗时与避障候选查询分析](../Archive/20261009-PIE耗时与避障候选查询分析.md) | archive | recorded | 2026-10-09 |
 | [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [扫荡者橙区正式导入与自动改色](../Archive/20261009-扫荡者橙区正式导入与自动改色.md) | archive | recorded | 2026-10-09 |
 | [扫荡者原橙区队色Blender候选交付](../Archive/20261009-扫荡者原橙区队色Blender候选交付.md) | archive | recorded | 2026-10-09 |
@@ -751,7 +800,6 @@
 | [Mass无骨骼动画与远距离持续显示](../DevelopmentDocumentation/20260929-Mass无骨骼动画与远距离持续显示.md) | development | done | 2026-10-05 |
 | [提速单位坡面卡住与子弹提前显示修复](../DevelopmentDocumentation/20260928-提速单位坡面卡住与子弹提前显示修复.md) | development | done | 2026-10-05 |
 | [Mass历史插值与三倍速度纠偏](../DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md) | development | done | 2026-10-05 |
-| [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | development | done | 2026-10-05 |
 | [指挥官部队StateTree接入与特殊任务退役 — 技术方案](../DevelopmentDocumentation/20260921-指挥官部队StateTree接入与特殊任务退役.md) | development | done | 2026-10-05 |
 | [指挥官三档LOD审核放行与正式资源切换](../Archive/20261005-指挥官三档LOD审核放行与正式资源切换.md) | archive | recorded | 2026-10-05 |
 | [指挥官三档LOD纠正与候选资源交付](../Archive/20261005-指挥官三档LOD纠正与候选资源交付.md) | archive | recorded | 2026-10-05 |
@@ -904,7 +952,6 @@
 | [Mass即时移动与随机站位交付](../Archive/20260924-Mass即时移动与随机站位交付.md) | archive | recorded | 2026-09-24 |
 | [Mass三阶段耗时与百人响应实测](../Archive/20260924-Mass三阶段耗时与百人响应实测.md) | archive | recorded | 2026-09-24 |
 | [Mass历史插值与三倍速度纠偏](../RequirementDocument/20260923-Mass历史插值与三倍速度纠偏.md) | requirement | approved | 2026-09-23 |
-| [游戏左上角帧率与延迟显示](../RequirementDocument/20260923-游戏左上角帧率与延迟显示.md) | requirement | approved | 2026-09-23 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-23 |
 | [Mass首条绿线延迟现场诊断](../Archive/20260923-Mass首条绿线延迟现场诊断.md) | archive | recorded | 2026-09-23 |
 | [Mass验证场景PIE阻塞修复](../Archive/20260923-Mass验证场景PIE阻塞修复.md) | archive | recorded | 2026-09-23 |
@@ -1190,6 +1237,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
+| [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
 | [指挥官小兵表现层两阶段性能优化 — 技术方案](../DevelopmentDocumentation/20260829-指挥官小兵表现层两阶段性能优化.md) | development | done | 2026-09-21 |
 | [指挥官 3C、Soldier 数据化与运行时 GM 调参 — 开发文档](../DevelopmentDocumentation/20260828-指挥官3C与运行时GM调参.md) | development | done | 2026-09-21 |
 | [GuLiStrike：Mass 双端同步架构草案 — 技术方案](../DevelopmentDocumentation/20260827-Mass双端同步架构草案.md) | development | done | 2026-09-21 |
@@ -1414,6 +1463,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [PIE游戏线程耗时与避障候选查询优化 — 技术方案](../DevelopmentDocumentation/20261009-PIE游戏线程耗时与避障候选查询优化.md) | development | verification | 2026-10-09 |
+| [四项PIE全部优化应用与整版对照](../Archive/20261009-四项PIE全部优化应用与整版对照.md) | archive | recorded | 2026-10-09 |
+| [四项PIE性能优化实施与对照交付](../Archive/20261009-四项PIE性能优化实施与对照交付.md) | archive | recorded | 2026-10-09 |
+| [PIE耗时与避障候选查询分析](../Archive/20261009-PIE耗时与避障候选查询分析.md) | archive | recorded | 2026-10-09 |
 | [导航内存优化与对局容量预算](../DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md) | development | done | 2026-10-05 |
 | [玩家地面机甲与Mass单位立体碰撞 — 技术方案与实施记录](../DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md) | development | done | 2026-10-05 |
 | [不可达移动指令拒绝与原状态保留](../RequirementDocument/不可达移动指令拒绝与原状态保留.md) | requirement | approved | 2026-10-02 |
@@ -1494,8 +1547,15 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
+| [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
+| [非Mass飞行弹丸六项性能优化 — 分析与开发方案](../DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md) | development | verification | 2026-10-09 |
+| [600移动单位500弹丸PIE截帧耗时分析](../Archive/20261009-600移动单位500弹丸PIE截帧耗时分析.md) | archive | recorded | 2026-10-09 |
+| [四项PIE全部优化应用与整版对照](../Archive/20261009-四项PIE全部优化应用与整版对照.md) | archive | recorded | 2026-10-09 |
+| [四项PIE性能优化实施与对照交付](../Archive/20261009-四项PIE性能优化实施与对照交付.md) | archive | recorded | 2026-10-09 |
+| [非Mass飞行弹丸六项优化分析与开发文档交付](../Archive/20261009-非Mass飞行弹丸六项优化分析交付.md) | archive | recorded | 2026-10-09 |
 | [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | development | done | 2026-10-05 |
 | [Mass历史插值与三倍速度纠偏](../DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md) | development | done | 2026-10-05 |
 | [玩家地面机甲与Mass单位立体碰撞 — 技术方案与实施记录](../DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md) | development | done | 2026-10-05 |
@@ -1754,6 +1814,40 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [PIE性能基线与快照多线程优化](../RequirementDocument/20261010-PIE性能基线与快照多线程优化.md) | requirement | approved | 2026-10-10 |
+| [客户端表现管线技能与枪口批量化](../RequirementDocument/20261010-客户端表现管线技能与枪口批量化.md) | requirement | approved | 2026-10-10 |
+| [命中特效事件批量承载与生命周期优化](../RequirementDocument/20261009-命中特效事件批量承载与生命周期优化.md) | requirement | approved | 2026-10-10 |
+| [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
+| [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
+| [游戏左上角帧率与延迟显示](../RequirementDocument/20260923-游戏左上角帧率与延迟显示.md) | requirement | approved | 2026-10-10 |
+| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | planned | 2026-10-10 |
+| [客户端表现管线技能与枪口批量化 — 技术方案](../DevelopmentDocumentation/20261010-客户端表现管线技能与枪口批量化.md) | development | verification | 2026-10-10 |
+| [命中特效事件批量承载与生命周期优化 — 技术方案](../DevelopmentDocumentation/20261009-命中特效事件批量承载与生命周期优化.md) | development | verification | 2026-10-10 |
+| [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
+| [客户端视野裁剪与特效三档LOD优化 — 技术方案](../DevelopmentDocumentation/20261009-客户端视野裁剪与特效三档LOD优化.md) | development | verification | 2026-10-10 |
+| [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | development | verification | 2026-10-10 |
+| [PIE性能基线、多线程方案与会话临时文件清理](../Archive/20261010-PIE性能基线多线程方案与会话清理.md) | archive | recorded | 2026-10-10 |
+| [网络指标HUD仅编译交付](../Archive/20261010-网络指标HUD仅编译交付.md) | archive | recorded | 2026-10-10 |
+| [客户端表现专属技能与枪口批量化交付](../Archive/20261010-客户端表现专属技能与枪口批量化交付.md) | archive | recorded | 2026-10-10 |
+| [左上角网络指标与飞行事件积压显示](../Archive/20261010-左上角网络指标与飞行事件积压显示.md) | archive | recorded | 2026-10-10 |
+| [约200单位移动交火与场景UI性能截帧](../Archive/20261010-约200单位移动交火与场景UI性能截帧.md) | archive | recorded | 2026-10-10 |
+| [Slate分窗Prepass布局与绘制补采](../Archive/20261010-Slate分窗Prepass布局与绘制补采.md) | archive | recorded | 2026-10-10 |
+| [车辆CharacterMovement与飞船僚机移动开销拆分](../Archive/20261010-车辆CharacterMovement与飞船僚机移动开销拆分.md) | archive | recorded | 2026-10-10 |
+| [Slate物理窗口与客户端游戏UI耗时拆分](../Archive/20261010-Slate物理窗口与客户端游戏UI耗时拆分.md) | archive | recorded | 2026-10-10 |
+| [服务器StateTree条件查询与集中调度瓶颈分析](../Archive/20261010-服务器StateTree条件查询与集中调度瓶颈分析.md) | archive | recorded | 2026-10-10 |
+| [Client1实战PIE截帧与游戏线程瓶颈分析](../Archive/20261010-Client1实战PIE截帧与游戏线程瓶颈分析.md) | archive | recorded | 2026-10-10 |
+| [三项客户端优化正式接入与PIE验收交付](../Archive/20261010-三项客户端优化正式接入与PIE验收交付.md) | archive | recorded | 2026-10-10 |
+| [三项客户端优化手动PIE审核入口交付](../Archive/20261010-三项客户端优化手动PIE审核入口交付.md) | archive | recorded | 2026-10-10 |
+| [PIE游戏线程耗时与避障候选查询优化 — 技术方案](../DevelopmentDocumentation/20261009-PIE游戏线程耗时与避障候选查询优化.md) | development | verification | 2026-10-09 |
+| [场景UI来源注册与绘制缓存优化 — 技术方案](../DevelopmentDocumentation/20261009-场景UI来源注册与绘制缓存优化.md) | development | verification | 2026-10-09 |
+| [非Mass飞行弹丸六项性能优化 — 分析与开发方案](../DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md) | development | verification | 2026-10-09 |
+| [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | development | verification | 2026-10-09 |
+| [600移动单位500弹丸PIE截帧耗时分析](../Archive/20261009-600移动单位500弹丸PIE截帧耗时分析.md) | archive | recorded | 2026-10-09 |
+| [四项PIE全部优化应用与整版对照](../Archive/20261009-四项PIE全部优化应用与整版对照.md) | archive | recorded | 2026-10-09 |
+| [四项特效视觉确认与正式引用切换](../Archive/20261009-四项特效视觉确认与正式引用切换.md) | archive | recorded | 2026-10-09 |
+| [四项PIE性能优化实施与对照交付](../Archive/20261009-四项PIE性能优化实施与对照交付.md) | archive | recorded | 2026-10-09 |
+| [非Mass飞行弹丸六项优化分析与开发文档交付](../Archive/20261009-非Mass飞行弹丸六项优化分析交付.md) | archive | recorded | 2026-10-09 |
+| [PIE耗时与避障候选查询分析](../Archive/20261009-PIE耗时与避障候选查询分析.md) | archive | recorded | 2026-10-09 |
 | [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | development | done | 2026-10-05 |
 | [指挥官三档镜头与总览LOD — 实施与交付](../DevelopmentDocumentation/20260930-指挥官三档镜头与总览LOD.md) | development | done | 2026-10-05 |
 | [指挥官统一三级LOD — 实施与接入约定](../DevelopmentDocumentation/20260929-指挥官统一三级LOD.md) | development | done | 2026-10-05 |
@@ -1761,7 +1855,6 @@
 | [重防号悬浮与GPU引擎喷流](../DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md) | development | done | 2026-10-05 |
 | [Mass无骨骼动画与远距离持续显示](../DevelopmentDocumentation/20260929-Mass无骨骼动画与远距离持续显示.md) | development | done | 2026-10-05 |
 | [Mass历史插值与三倍速度纠偏](../DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md) | development | done | 2026-10-05 |
-| [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | development | done | 2026-10-05 |
 | [导航内存优化与对局容量预算](../DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md) | development | done | 2026-10-05 |
 | [玩家地面机甲与Mass单位立体碰撞 — 技术方案与实施记录](../DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md) | development | done | 2026-10-05 |
 | [飞行物批量启停同步与实际时间网络预算](../RequirementDocument/20261004-飞行物批量启停同步与实际时间网络预算.md) | requirement | approved | 2026-10-04 |
@@ -1816,7 +1909,6 @@
 | [Mass即时移动与随机站位交付](../Archive/20260924-Mass即时移动与随机站位交付.md) | archive | recorded | 2026-09-24 |
 | [Mass三阶段耗时与百人响应实测](../Archive/20260924-Mass三阶段耗时与百人响应实测.md) | archive | recorded | 2026-09-24 |
 | [Mass历史插值与三倍速度纠偏](../RequirementDocument/20260923-Mass历史插值与三倍速度纠偏.md) | requirement | approved | 2026-09-23 |
-| [游戏左上角帧率与延迟显示](../RequirementDocument/20260923-游戏左上角帧率与延迟显示.md) | requirement | approved | 2026-09-23 |
 | [导航内存优化与对局容量预算](../RequirementDocument/20260922-导航内存优化与对局容量预算.md) | requirement | approved | 2026-09-23 |
 | [Mass首条绿线延迟现场诊断](../Archive/20260923-Mass首条绿线延迟现场诊断.md) | archive | recorded | 2026-09-23 |
 | [Mass验证场景PIE阻塞修复](../Archive/20260923-Mass验证场景PIE阻塞修复.md) | archive | recorded | 2026-09-23 |
@@ -1876,6 +1968,25 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [PIE性能基线与快照多线程优化](../RequirementDocument/20261010-PIE性能基线与快照多线程优化.md) | requirement | approved | 2026-10-10 |
+| [客户端表现管线技能与枪口批量化](../RequirementDocument/20261010-客户端表现管线技能与枪口批量化.md) | requirement | approved | 2026-10-10 |
+| [命中特效事件批量承载与生命周期优化](../RequirementDocument/20261009-命中特效事件批量承载与生命周期优化.md) | requirement | approved | 2026-10-10 |
+| [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
+| [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
+| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | planned | 2026-10-10 |
+| [客户端表现管线技能与枪口批量化 — 技术方案](../DevelopmentDocumentation/20261010-客户端表现管线技能与枪口批量化.md) | development | verification | 2026-10-10 |
+| [命中特效事件批量承载与生命周期优化 — 技术方案](../DevelopmentDocumentation/20261009-命中特效事件批量承载与生命周期优化.md) | development | verification | 2026-10-10 |
+| [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
+| [客户端视野裁剪与特效三档LOD优化 — 技术方案](../DevelopmentDocumentation/20261009-客户端视野裁剪与特效三档LOD优化.md) | development | verification | 2026-10-10 |
+| [PIE性能基线、多线程方案与会话临时文件清理](../Archive/20261010-PIE性能基线多线程方案与会话清理.md) | archive | recorded | 2026-10-10 |
+| [客户端表现专属技能与枪口批量化交付](../Archive/20261010-客户端表现专属技能与枪口批量化交付.md) | archive | recorded | 2026-10-10 |
+| [车辆CharacterMovement与飞船僚机移动开销拆分](../Archive/20261010-车辆CharacterMovement与飞船僚机移动开销拆分.md) | archive | recorded | 2026-10-10 |
+| [Client1实战PIE截帧与游戏线程瓶颈分析](../Archive/20261010-Client1实战PIE截帧与游戏线程瓶颈分析.md) | archive | recorded | 2026-10-10 |
+| [三项客户端优化正式接入与PIE验收交付](../Archive/20261010-三项客户端优化正式接入与PIE验收交付.md) | archive | recorded | 2026-10-10 |
+| [三项客户端优化手动PIE审核入口交付](../Archive/20261010-三项客户端优化手动PIE审核入口交付.md) | archive | recorded | 2026-10-10 |
+| [非Mass飞行弹丸六项性能优化 — 分析与开发方案](../DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md) | development | verification | 2026-10-09 |
+| [四项PIE性能优化实施与对照交付](../Archive/20261009-四项PIE性能优化实施与对照交付.md) | archive | recorded | 2026-10-09 |
+| [非Mass飞行弹丸六项优化分析与开发文档交付](../Archive/20261009-非Mass飞行弹丸六项优化分析交付.md) | archive | recorded | 2026-10-09 |
 | [重防号悬浮与GPU引擎喷流](../DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md) | development | done | 2026-10-05 |
 | [Mass无骨骼动画与远距离持续显示](../DevelopmentDocumentation/20260929-Mass无骨骼动画与远距离持续显示.md) | development | done | 2026-10-05 |
 | [三张视差3D卡牌交互演示 — 技术方案](../DevelopmentDocumentation/20260922-三张视差3D卡牌交互演示.md) | development | done | 2026-10-05 |
@@ -2048,6 +2159,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | development | verification | 2026-10-09 |
+| [四项PIE全部优化应用与整版对照](../Archive/20261009-四项PIE全部优化应用与整版对照.md) | archive | recorded | 2026-10-09 |
+| [四项特效视觉确认与正式引用切换](../Archive/20261009-四项特效视觉确认与正式引用切换.md) | archive | recorded | 2026-10-09 |
+| [四项PIE性能优化实施与对照交付](../Archive/20261009-四项PIE性能优化实施与对照交付.md) | archive | recorded | 2026-10-09 |
 | [指挥官部队StateTree接入与特殊任务退役 — 技术方案](../DevelopmentDocumentation/20260921-指挥官部队StateTree接入与特殊任务退役.md) | development | done | 2026-10-05 |
 | [指挥官海岛与7×7据点改造](../RequirementDocument/20261001-指挥官海岛与7x7据点改造.md) | requirement | approved | 2026-10-02 |
 | [指挥官海岛与7×7据点改造 — 技术方案](../DevelopmentDocumentation/20261001-指挥官海岛与7x7据点改造.md) | development | done | 2026-10-02 |
@@ -2086,7 +2201,11 @@
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
 | [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
+| [场景UI来源注册与绘制缓存优化 — 技术方案](../DevelopmentDocumentation/20261009-场景UI来源注册与绘制缓存优化.md) | development | verification | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
+| [600移动单位500弹丸PIE截帧耗时分析](../Archive/20261009-600移动单位500弹丸PIE截帧耗时分析.md) | archive | recorded | 2026-10-09 |
+| [四项PIE全部优化应用与整版对照](../Archive/20261009-四项PIE全部优化应用与整版对照.md) | archive | recorded | 2026-10-09 |
+| [四项PIE性能优化实施与对照交付](../Archive/20261009-四项PIE性能优化实施与对照交付.md) | archive | recorded | 2026-10-09 |
 | [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | development | done | 2026-10-05 |
 | [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | done | 2026-10-05 |
@@ -2262,14 +2381,35 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [PIE性能基线与快照多线程优化](../RequirementDocument/20261010-PIE性能基线与快照多线程优化.md) | requirement | approved | 2026-10-10 |
+| [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
+| [游戏左上角帧率与延迟显示](../RequirementDocument/20260923-游戏左上角帧率与延迟显示.md) | requirement | approved | 2026-10-10 |
+| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | planned | 2026-10-10 |
+| [客户端视野裁剪与特效三档LOD优化 — 技术方案](../DevelopmentDocumentation/20261009-客户端视野裁剪与特效三档LOD优化.md) | development | verification | 2026-10-10 |
+| [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | development | verification | 2026-10-10 |
+| [PIE性能基线、多线程方案与会话临时文件清理](../Archive/20261010-PIE性能基线多线程方案与会话清理.md) | archive | recorded | 2026-10-10 |
+| [网络指标HUD仅编译交付](../Archive/20261010-网络指标HUD仅编译交付.md) | archive | recorded | 2026-10-10 |
+| [左上角网络指标与飞行事件积压显示](../Archive/20261010-左上角网络指标与飞行事件积压显示.md) | archive | recorded | 2026-10-10 |
+| [约200单位移动交火与场景UI性能截帧](../Archive/20261010-约200单位移动交火与场景UI性能截帧.md) | archive | recorded | 2026-10-10 |
+| [Slate分窗Prepass布局与绘制补采](../Archive/20261010-Slate分窗Prepass布局与绘制补采.md) | archive | recorded | 2026-10-10 |
+| [Slate物理窗口与客户端游戏UI耗时拆分](../Archive/20261010-Slate物理窗口与客户端游戏UI耗时拆分.md) | archive | recorded | 2026-10-10 |
+| [Client1实战PIE截帧与游戏线程瓶颈分析](../Archive/20261010-Client1实战PIE截帧与游戏线程瓶颈分析.md) | archive | recorded | 2026-10-10 |
+| [三项客户端优化正式接入与PIE验收交付](../Archive/20261010-三项客户端优化正式接入与PIE验收交付.md) | archive | recorded | 2026-10-10 |
+| [三项客户端优化手动PIE审核入口交付](../Archive/20261010-三项客户端优化手动PIE审核入口交付.md) | archive | recorded | 2026-10-10 |
 | [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
 | [Mass单位脚环统一20cm](../RequirementDocument/20261007-Mass单位脚环统一20cm.md) | requirement | approved | 2026-10-09 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
+| [PIE游戏线程耗时与避障候选查询优化 — 技术方案](../DevelopmentDocumentation/20261009-PIE游戏线程耗时与避障候选查询优化.md) | development | verification | 2026-10-09 |
+| [场景UI来源注册与绘制缓存优化 — 技术方案](../DevelopmentDocumentation/20261009-场景UI来源注册与绘制缓存优化.md) | development | verification | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
 | [Mass单位脚环统一20cm — 实施记录](../DevelopmentDocumentation/20261007-Mass单位脚环统一20cm.md) | development | verification | 2026-10-09 |
+| [600移动单位500弹丸PIE截帧耗时分析](../Archive/20261009-600移动单位500弹丸PIE截帧耗时分析.md) | archive | recorded | 2026-10-09 |
+| [四项PIE全部优化应用与整版对照](../Archive/20261009-四项PIE全部优化应用与整版对照.md) | archive | recorded | 2026-10-09 |
+| [四项PIE性能优化实施与对照交付](../Archive/20261009-四项PIE性能优化实施与对照交付.md) | archive | recorded | 2026-10-09 |
+| [PIE耗时与避障候选查询分析](../Archive/20261009-PIE耗时与避障候选查询分析.md) | archive | recorded | 2026-10-09 |
 | [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [场景UI源码与18组红蓝模型对照交付](../Archive/20261008-场景UI源码与红蓝模型对照交付.md) | archive | recorded | 2026-10-08 |
 | [Mass脚环20cm正式材质与环境影响核对](../Archive/20261007-Mass脚环20cm正式材质与环境影响核对.md) | archive | recorded | 2026-10-07 |
@@ -2279,7 +2419,6 @@
 | [重防号导弹解锁与肉鸽卡牌 — 技术方案](../DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md) | development | done | 2026-10-05 |
 | [Mass无骨骼动画与远距离持续显示](../DevelopmentDocumentation/20260929-Mass无骨骼动画与远距离持续显示.md) | development | done | 2026-10-05 |
 | [重防号能力卡 — 六层视差与可编辑文案交付](../DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md) | development | done | 2026-10-05 |
-| [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | development | done | 2026-10-05 |
 | [三张视差3D卡牌交互演示 — 技术方案](../DevelopmentDocumentation/20260922-三张视差3D卡牌交互演示.md) | development | done | 2026-10-05 |
 | [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | done | 2026-10-05 |
 | [绿色引导线实时连接优化](../RequirementDocument/绿色引导线实时连接优化.md) | requirement | approved | 2026-10-04 |
@@ -2346,7 +2485,6 @@
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-24 |
 | [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | development | verification | 2026-09-24 |
 | [尼亚加拉辉光与HUDuiPRO资源迁入](../Archive/20260924-尼亚加拉辉光与HUDuiPRO资源迁入.md) | archive | recorded | 2026-09-24 |
-| [游戏左上角帧率与延迟显示](../RequirementDocument/20260923-游戏左上角帧率与延迟显示.md) | requirement | approved | 2026-09-23 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-23 |
 | [客户端连续纠偏与性能HUD交付](../Archive/20260923-客户端连续纠偏与性能HUD交付.md) | archive | recorded | 2026-09-23 |
 | [三张视差3D卡牌交互演示](../RequirementDocument/20260922-三张视差3D卡牌交互演示.md) | requirement | approved | 2026-09-22 |
@@ -2438,9 +2576,29 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [客户端表现管线技能与枪口批量化](../RequirementDocument/20261010-客户端表现管线技能与枪口批量化.md) | requirement | approved | 2026-10-10 |
+| [命中特效事件批量承载与生命周期优化](../RequirementDocument/20261009-命中特效事件批量承载与生命周期优化.md) | requirement | approved | 2026-10-10 |
+| [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
+| [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
+| [客户端表现管线技能与枪口批量化 — 技术方案](../DevelopmentDocumentation/20261010-客户端表现管线技能与枪口批量化.md) | development | verification | 2026-10-10 |
+| [命中特效事件批量承载与生命周期优化 — 技术方案](../DevelopmentDocumentation/20261009-命中特效事件批量承载与生命周期优化.md) | development | verification | 2026-10-10 |
+| [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
+| [客户端视野裁剪与特效三档LOD优化 — 技术方案](../DevelopmentDocumentation/20261009-客户端视野裁剪与特效三档LOD优化.md) | development | verification | 2026-10-10 |
+| [客户端表现专属技能与枪口批量化交付](../Archive/20261010-客户端表现专属技能与枪口批量化交付.md) | archive | recorded | 2026-10-10 |
+| [约200单位移动交火与场景UI性能截帧](../Archive/20261010-约200单位移动交火与场景UI性能截帧.md) | archive | recorded | 2026-10-10 |
+| [Client1实战PIE截帧与游戏线程瓶颈分析](../Archive/20261010-Client1实战PIE截帧与游戏线程瓶颈分析.md) | archive | recorded | 2026-10-10 |
+| [三项客户端优化正式接入与PIE验收交付](../Archive/20261010-三项客户端优化正式接入与PIE验收交付.md) | archive | recorded | 2026-10-10 |
+| [三项客户端优化手动PIE审核入口交付](../Archive/20261010-三项客户端优化手动PIE审核入口交付.md) | archive | recorded | 2026-10-10 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-09 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
+| [非Mass飞行弹丸六项性能优化 — 分析与开发方案](../DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md) | development | verification | 2026-10-09 |
+| [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | development | verification | 2026-10-09 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-09 |
+| [600移动单位500弹丸PIE截帧耗时分析](../Archive/20261009-600移动单位500弹丸PIE截帧耗时分析.md) | archive | recorded | 2026-10-09 |
+| [四项PIE全部优化应用与整版对照](../Archive/20261009-四项PIE全部优化应用与整版对照.md) | archive | recorded | 2026-10-09 |
+| [四项特效视觉确认与正式引用切换](../Archive/20261009-四项特效视觉确认与正式引用切换.md) | archive | recorded | 2026-10-09 |
+| [四项PIE性能优化实施与对照交付](../Archive/20261009-四项PIE性能优化实施与对照交付.md) | archive | recorded | 2026-10-09 |
+| [非Mass飞行弹丸六项优化分析与开发文档交付](../Archive/20261009-非Mass飞行弹丸六项优化分析交付.md) | archive | recorded | 2026-10-09 |
 | [全项目统一色库与美术技能接入](../Archive/20261008-全项目统一色库与美术技能接入.md) | archive | recorded | 2026-10-08 |
 | [提速单位坡面卡住与子弹提前显示修复](../DevelopmentDocumentation/20260928-提速单位坡面卡住与子弹提前显示修复.md) | development | done | 2026-10-05 |
 | [三张视差3D卡牌交互演示 — 技术方案](../DevelopmentDocumentation/20260922-三张视差3D卡牌交互演示.md) | development | done | 2026-10-05 |
@@ -2541,6 +2699,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
+| [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
+| [车辆CharacterMovement与飞船僚机移动开销拆分](../Archive/20261010-车辆CharacterMovement与飞船僚机移动开销拆分.md) | archive | recorded | 2026-10-10 |
+| [三项客户端优化正式接入与PIE验收交付](../Archive/20261010-三项客户端优化正式接入与PIE验收交付.md) | archive | recorded | 2026-10-10 |
 | [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | development | done | 2026-10-05 |
 | [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | done | 2026-10-05 |
 | [飞行物批量启停同步与实际时间网络预算](../RequirementDocument/20261004-飞行物批量启停同步与实际时间网络预算.md) | requirement | approved | 2026-10-04 |

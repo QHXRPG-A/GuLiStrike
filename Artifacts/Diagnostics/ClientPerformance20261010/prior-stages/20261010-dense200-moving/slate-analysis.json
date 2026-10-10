@@ -1,0 +1,95 @@
+{
+  "frames": 738,
+  "identity": {
+    "/Engine/Transient.UnrealEdEngine_0:GameInstance_10": "Client1",
+    "/Engine/Transient.UnrealEdEngine_0:GameInstance_11": "Client2"
+  },
+  "stats": {
+    "Client1.DrawWindow": {
+      "mean_ms": 2.019561111111111,
+      "p95_ms": 2.4469000000000003,
+      "n": 738
+    },
+    "Client1.DrawWindowCount": {
+      "mean_ms": 1.0,
+      "p95_ms": 1.0,
+      "n": 738
+    },
+    "Client1.SceneWidgetPaint": {
+      "mean_ms": 1.3192242547425475,
+      "p95_ms": 1.5673,
+      "n": 738
+    },
+    "Client1.SceneWidgetTick": {
+      "mean_ms": 0.3068452574525745,
+      "p95_ms": 0.5082,
+      "n": 738
+    },
+    "Client1.SceneWidgetTickPaint": {
+      "mean_ms": 1.6260695121951219,
+      "p95_ms": 1.9603000000000002,
+      "n": 738
+    },
+    "Client2.DrawWindow": {
+      "mean_ms": 1.89275189701897,
+      "p95_ms": 2.3965,
+      "n": 738
+    },
+    "Client2.DrawWindowCount": {
+      "mean_ms": 1.0,
+      "p95_ms": 1.0,
+      "n": 738
+    },
+    "Client2.SceneWidgetPaint": {
+      "mean_ms": 1.262389566395664,
+      "p95_ms": 1.5993,
+      "n": 738
+    },
+    "Client2.SceneWidgetTick": {
+      "mean_ms": 0.26608455284552845,
+      "p95_ms": 0.4725,
+      "n": 738
+    },
+    "Client2.SceneWidgetTickPaint": {
+      "mean_ms": 1.5284741192411924,
+      "p95_ms": 1.9216,
+      "n": 738
+    },
+    "DrawWindowsIncludingPrepass": {
+      "mean_ms": 8.339299051490514,
+      "p95_ms": 10.043899999999999,
+      "n": 738
+    },
+    "Editor.DrawWindow": {
+      "mean_ms": 1.237347425474255,
+      "p95_ms": 1.8635,
+      "n": 738
+    },
+    "Editor.DrawWindowCount": {
+      "mean_ms": 1.0,
+      "p95_ms": 1.0,
+      "n": 738
+    },
+    "GT": {
+      "mean_ms": 40.54341639566396,
+      "p95_ms": 57.0531,
+      "n": 738
+    },
+    "LocalPlayerSlateOperations": {
+      "mean_ms": 2.8465149051490517,
+      "p95_ms": 3.1866,
+      "n": 738
+    },
+    "PrepassAllWindows": {
+      "mean_ms": 2.1255237127371274,
+      "p95_ms": 2.5055,
+      "n": 738
+    },
+    "SlateTimeWidgets": {
+      "mean_ms": 8.352812059620597,
+      "p95_ms": 10.0561,
+      "n": 738
+    }
+  },
+  "scope": "DrawWindow includes game UI Paint and widget Tick. Prepass is all windows and remains unattributed; no new per-window Prepass callback was loaded. These nested totals must not be added together. LocalPlayerSlateOperations is outside the main Slate tick and is not editor-window-only."
+}

@@ -1,0 +1,167 @@
+[
+  {
+    "cell": "A233",
+    "value": "UI.Performance.NetThroughput",
+    "type": "string"
+  },
+  {
+    "cell": "B233",
+    "value": "当前客户端连接实际累计字节差/真实秒；收+发合计；1KB=1000B，不是配置上限",
+    "type": "string"
+  },
+  {
+    "cell": "C233",
+    "value": "网络 收 {0} KB/s | 发 {1} KB/s | 合计 {2} KB/s",
+    "type": "string"
+  },
+  {
+    "cell": "A234",
+    "value": "UI.Performance.NetPackets",
+    "type": "string"
+  },
+  {
+    "cell": "B234",
+    "value": "当前连接包速率；丢包为UE计数差/秒，并非丢包百分比",
+    "type": "string"
+  },
+  {
+    "cell": "C234",
+    "value": "包 收 {0}/s 发 {1}/s | 丢包 收 {2}/s 发 {3}/s",
+    "type": "string"
+  },
+  {
+    "cell": "A235",
+    "value": "UI.Performance.NetTransport",
+    "type": "string"
+  },
+  {
+    "cell": "B235",
+    "value": "本端发送额度、所有通道可靠bunch待ACK数；欠账=max(QueuedBits,0)/8，非应用队列大小",
+    "type": "string"
+  },
+  {
+    "cell": "C235",
+    "value": "本端额度 {0} KB/s | 可靠待确认 {1} 块 | 欠账 {2} KB",
+    "type": "string"
+  },
+  {
+    "cell": "A236",
+    "value": "UI.Performance.NetFlightReceive",
+    "type": "string"
+  },
+  {
+    "cell": "B236",
+    "value": "解码飞行事件速率及应用载荷；不等于画面播放量；年龄用估计服务器时间，排除bootstrap，可能含时钟误差",
+    "type": "string"
+  },
+  {
+    "cell": "C236",
+    "value": "飞行事件 收 {0}/s | 载荷 {1} KB/s | 平均估龄 {2} ms",
+    "type": "string"
+  },
+  {
+    "cell": "A237",
+    "value": "UI.Performance.NetPIETransport",
+    "type": "string"
+  },
+  {
+    "cell": "B237",
+    "value": "同进程PIE匹配此客户端的服务器连接：下行发送额度、可靠待ACK块数和发送欠账",
+    "type": "string"
+  },
+  {
+    "cell": "C237",
+    "value": "PIE下行额度 {0} KB/s | 可靠待确认 {1} 块 | 欠账 {2} KB",
+    "type": "string"
+  },
+  {
+    "cell": "A238",
+    "value": "UI.Performance.NetPIEFlightQueue",
+    "type": "string"
+  },
+  {
+    "cell": "B238",
+    "value": "同进程PIE中此客户端的飞行应用队列；队首样本时间至服务器当前时间，不等于纯排队时间",
+    "type": "string"
+  },
+  {
+    "cell": "C238",
+    "value": "PIE本连接 飞行待发 {0} 条 | 队首事件年龄 {1} ms",
+    "type": "string"
+  },
+  {
+    "cell": "A239",
+    "value": "UI.Performance.NetPending",
+    "type": "string"
+  },
+  {
+    "cell": "B239",
+    "value": "新建或重连后先等待完整采样区间；未知值不能显示成零",
+    "type": "string"
+  },
+  {
+    "cell": "C239",
+    "value": "网络 收 -- KB/s | 发 -- KB/s | 合计 -- KB/s",
+    "type": "string"
+  },
+  {
+    "cell": "A240",
+    "value": "UI.Performance.NetLocal",
+    "type": "string"
+  },
+  {
+    "cell": "B240",
+    "value": "本面板按客户端ServerConnection统计，本地/服务端视口不显示其他客户端汇总",
+    "type": "string"
+  },
+  {
+    "cell": "C240",
+    "value": "网络：本地视口（无客户端到服务器连接）",
+    "type": "string"
+  },
+  {
+    "cell": "A241",
+    "value": "UI.Performance.NetFlightPending",
+    "type": "string"
+  },
+  {
+    "cell": "B241",
+    "value": "未得到连续两次飞行计数采样",
+    "type": "string"
+  },
+  {
+    "cell": "C241",
+    "value": "飞行事件 收 --/s | 载荷 -- KB/s | 平均估龄 -- ms",
+    "type": "string"
+  },
+  {
+    "cell": "A242",
+    "value": "UI.Performance.NetPIEQueuePending",
+    "type": "string"
+  },
+  {
+    "cell": "B242",
+    "value": "尚未建立此客户端的服务端飞行事件通道",
+    "type": "string"
+  },
+  {
+    "cell": "C242",
+    "value": "PIE本连接 飞行待发 --（等待通道）",
+    "type": "string"
+  },
+  {
+    "cell": "A243",
+    "value": "UI.Performance.NetPIEUnavailable",
+    "type": "string"
+  },
+  {
+    "cell": "B243",
+    "value": "跨进程PIE或身份尚未匹配时，不产生额外RPC取得服务端信息",
+    "type": "string"
+  },
+  {
+    "cell": "C243",
+    "value": "PIE服务端队列 --（需同进程服务端）",
+    "type": "string"
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "structure": "passed quick_validate.py with Python UTF-8 mode",
+  "manifest_utf8": true,
+  "implicit_invocation": true,
+  "routes": [
+    {
+      "case": "命中维护",
+      "pipeline_owner": "identity/F+1/input/pool/diagnostics",
+      "visual_owner": "ue5-vfx-production",
+      "review": "passed"
+    },
+    {
+      "case": "枪口适配",
+      "pipeline_owner": "complete pose keys, birth/follow, dedicated channel and fallback",
+      "visual_owner": "ue5-vfx-production",
+      "review": "passed"
+    },
+    {
+      "case": "场景UI开发",
+      "pipeline_owner": "source registration/revisions/projection/capture/lifecycle",
+      "visual_owner": "ue5-ui-umg-slate",
+      "review": "passed, no forced Niagara migration"
+    }
+  ],
+  "scope": "Structural and manual routing review; not a live automatic skill-invocation test"
+}

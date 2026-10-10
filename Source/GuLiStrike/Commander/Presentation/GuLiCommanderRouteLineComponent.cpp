@@ -1,4 +1,5 @@
 #include "Commander/Presentation/GuLiCommanderRouteLineComponent.h"
+#include "Commander/UI/GuLiSceneUISourceRegistry.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
@@ -57,6 +58,7 @@ void UGuLiCommanderRouteLineComponent::EndPlay(const EEndPlayReason::Type Reason
 }
 void UGuLiCommanderRouteLineComponent::ClearLines()
 {
+	UGuLiSceneUISourceRegistry::Notify(this);
 	for (int32 I=0; I<Chunks.Num(); ++I) DirtyChunks.Add(I);
 	Chunks.Reset(); Slots.Reset(); FreeSlots.Reset(); Queue.Reset(); Queued.Reset(); AwaitingPresentation.Reset(); QueueCursor=0;
 	SubmittedBatches.Reset();
@@ -91,6 +93,7 @@ void UGuLiCommanderRouteLineComponent::Enqueue(FGuLiSoldierId Id)
 }
 void UGuLiCommanderRouteLineComponent::OnSelection(const FGuLiCommanderSelectionState& Selection)
 {
+	UGuLiSceneUISourceRegistry::Notify(this);
 	TSet<FGuLiSoldierId> NewSelection;
 	for (const auto& C : Selection.Cohorts) for (auto Id : C.MemberIds) NewSelection.Add(Id);
 	for (auto Id : Selected) if (!NewSelection.Contains(Id)) { Hide(Id); Queued.Remove(Id); AwaitingPresentation.Remove(Id); }
@@ -98,6 +101,7 @@ void UGuLiCommanderRouteLineComponent::OnSelection(const FGuLiCommanderSelection
 }
 void UGuLiCommanderRouteLineComponent::OnEndpoints(TConstArrayView<FGuLiSoldierId> Ids,bool bReset)
 {
+	UGuLiSceneUISourceRegistry::Notify(this);
 	if (bReset) { ClearLines(); for (auto Id : Selected) Enqueue(Id); }
 	else for (auto Id : Ids)
 	{
@@ -110,6 +114,7 @@ void UGuLiCommanderRouteLineComponent::OnEndpoints(TConstArrayView<FGuLiSoldierI
 }
 void UGuLiCommanderRouteLineComponent::OnRoster(const FGuLiSoldierRosterDelta& Delta)
 {
+	UGuLiSceneUISourceRegistry::Notify(this);
 	if (Delta.bReset) ClearLines();
 	for (auto Id : Delta.Removed) { Hide(Id); Queued.Remove(Id); AwaitingPresentation.Remove(Id); }
 	for (auto Id : Delta.Added) Enqueue(Id);

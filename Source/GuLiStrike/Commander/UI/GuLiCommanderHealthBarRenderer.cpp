@@ -167,7 +167,7 @@ void AGuLiCommanderHealthBarRenderer::GatherSceneUIBars(TArray<FGuLiSceneUIHealt
 {
 	Out.Reset();
 	if (IsHidden()) return;
-	for (int32 Slot = 0; Slot < CachedTransforms.Num(); ++Slot)
+	for (const int32 Slot : SceneUIVisibleSlots)
 	{
 		if (CachedVisibleValues[Slot] <= 0 || CachedTransforms[Slot].GetScale3D().IsNearlyZero()) continue;
 		auto& Bar = Out.AddDefaulted_GetRef();
@@ -564,6 +564,13 @@ float AGuLiCommanderHealthBarRenderer::ResolveSoldierHeightOffset(
 void AGuLiCommanderHealthBarRenderer::WriteInstance(int32 Index, const FTransform& Transform, float Health, float Selected, float Visible)
 {
 	if (!HealthBarInstances || !CachedTransforms.IsValidIndex(Index)) return;
+	const bool WasVisible=CachedVisibleValues[Index]>0 && !CachedTransforms[Index].GetScale3D().IsNearlyZero();
+	const bool IsVisible=Visible>0 && !Transform.GetScale3D().IsNearlyZero();
+	if (WasVisible != IsVisible)
+	{
+		if (IsVisible) { SceneUIVisibleSlots.AddUnique(Index); SceneUIVisibleSlots.Sort(); }
+		else SceneUIVisibleSlots.Remove(Index);
+	}
 	if (!CachedTransforms[Index].Equals(Transform, 0.01f)
 		&& HealthBarInstances->UpdateInstanceTransform(Index, Transform, true, false, false)) CachedTransforms[Index] = Transform;
 	const float Values[] = {Health, Selected, Visible};

@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 
 #include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
 #include "CollisionQueryParams.h"
@@ -8,6 +9,10 @@
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Subsystems/SubsystemCollection.h"
 #include "NiagaraSystem.h"
+#include "HAL/IConsoleManager.h"
+
+static TAutoConsoleVariable<int32> CVarProjectileVisitStamps(TEXT("gs.Projectiles.VisitStamps"), 1,
+	TEXT("Deduplicate grid candidates with reusable visitation generations; 0 restores TSet."));
 
 namespace
 {
@@ -61,9 +66,10 @@ void UGuLiProjectilePoolSubsystem::Clear()
 		const uint32 Generation = Slots[Index].Generation;
 		Slots[Index] = {}; Slots[Index].Generation = Generation;
 	}
-	ActiveSlots.Reset(); FreeSlots.Reset(Slots.Num()); ById.Reset(); StepHandles.Reset();
+	ActiveSlots.Reset(); DomainSlots[0].Reset(); DomainSlots[1].Reset(); FreeSlots.Reset(Slots.Num()); ById.Reset(); StepHandles.Reset();
 	for (int32 Index = Slots.Num() - 1; Index >= 0; --Index) FreeSlots.Add(Index);
 	WingmanHistory = {}; GroundHistory = {}; Targets.Reset(); Snapshots.Reset(); SpatialGrid.Reset(); Candidates.Reset();
+	OrderedCandidates.Reset(); CandidateVisits.Reset(); CandidateGeneration = 0;
 	NextGroundStepTime = 0; Stats = {}; Stats.Capacity = Slots.Num();
 }
 
@@ -110,11 +116,15 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::Launch(const FGuLiPooled
 	const int32 Index = FreeSlots.Pop(EAllowShrinking::No);
 	FSlot& Slot = Slots[Index];
 	Slot.Generation = Slot.Generation == MAX_uint32 ? 1 : Slot.Generation + 1;
-	Slot.ActiveIndex = ActiveSlots.Add(Index); Slot.SourceLease = Lease; Slot.Context = R.Context; Slot.SweepRadius = R.SweepRadius;
+	Slot.ActiveIndex = ActiveSlots.Add(Index);
+	Slot.SourceLease = Lease; Slot.Context = R.Context; Slot.SweepRadius = R.SweepRadius;
 	FGuLiCombatEffectState& State = Slot.State;
 	State = {}; State.Kind = EGuLiCombatEffectKind::LinearProjectile;
 	State.EffectId = R.Context.ShotId; State.MatchEpoch = Epoch; State.Sequence = 1;
 	State.Source = (bGround || bPlayer) ? R.Context.Source : GuLiCombatTargets::MakeWingmanTargetHandle(R.Context.Emitter);
+	// Classify only after freezing the source identity; recycled slots have no
+	// previous source and Commander bullets must retain their independent 5 Hz domain.
+	DomainSlots[State.Source.Kind == EGuLiTargetKind::CommanderSoldier ? 1 : 0].Add(Index);
 	State.PlayerBulletVfxId = R.PlayerBulletVfxId;
 	State.Target = R.Context.Target;
 	FGuLiCombatTargetSnapshot Target;
@@ -162,11 +172,23 @@ bool UGuLiProjectilePoolSubsystem::Retire(const FGuLiProjectilePoolHandle Handle
 	const FVector& Position, const float Time, const FGuLiTargetHandle* HitTarget)
 {
 	if (!Matches(Handle)) return false;
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiProjectilePool_Settle);
+	FGuLiPerformanceScope Timing(GetWorld(), TEXT("Projectile.SettleMs"));
 	const FSlot Copy = Slots[Handle.Slot];
 	// Detach before any damage/event callback. Re-entrant allocation cannot reuse this generation.
 	ById.Remove(Copy.State.EffectId);
+	auto& RemovedDomain = DomainSlots[Copy.State.Source.Kind == EGuLiTargetKind::CommanderSoldier ? 1 : 0];
+	RemovedDomain.RemoveSingle(Handle.Slot);
 	ActiveSlots.RemoveAtSwap(Copy.ActiveIndex, 1, EAllowShrinking::No);
-	if (ActiveSlots.IsValidIndex(Copy.ActiveIndex)) Slots[ActiveSlots[Copy.ActiveIndex]].ActiveIndex = Copy.ActiveIndex;
+	if (ActiveSlots.IsValidIndex(Copy.ActiveIndex))
+	{
+		const int32 Moved = ActiveSlots[Copy.ActiveIndex]; Slots[Moved].ActiveIndex = Copy.ActiveIndex;
+		auto& MovedDomain = DomainSlots[Slots[Moved].State.Source.Kind == EGuLiTargetKind::CommanderSoldier ? 1 : 0];
+		MovedDomain.RemoveSingle(Moved);
+		int32 At = 0;
+		while (At < MovedDomain.Num() && Slots[MovedDomain[At]].ActiveIndex < Copy.ActiveIndex) ++At;
+		MovedDomain.Insert(Moved, At);
+	}
 	Slots[Handle.Slot] = {}; Slots[Handle.Slot].Generation = Copy.Generation; FreeSlots.Add(Handle.Slot);
 	Stats.Active = ActiveSlots.Num(); ++Stats.Recycled;
 	if (HitTarget)
@@ -199,7 +221,14 @@ bool UGuLiProjectilePoolSubsystem::Retire(const FGuLiProjectilePoolHandle Handle
 
 void UGuLiProjectilePoolSubsystem::BuildSpatialIndex(const float Now, const FSimulationHistory& History)
 {
-	Ledger->GetTargetSnapshots(Snapshots); Targets.Reset(Snapshots.Num()); SpatialGrid.Reset();
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiProjectilePool_Snapshot);
+		FGuLiPerformanceScope Timing(GetWorld(), TEXT("Projectile.SnapshotMs"));
+		Ledger->GetTargetSnapshots(Snapshots);
+	}
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiProjectilePool_BuildGrid);
+	FGuLiPerformanceScope GridTiming(GetWorld(), TEXT("Projectile.GridMs"));
+	Targets.Reset(Snapshots.Num()); SpatialGrid.Reset();
 	for (const auto& Snapshot : Snapshots)
 	{
 		if (!Snapshot.bAlive || Snapshot.Location.ContainsNaN() || !FMath::IsFinite(Snapshot.CollisionRadius) || Snapshot.CollisionRadius < 0) continue;
@@ -222,10 +251,8 @@ void UGuLiProjectilePoolSubsystem::Step(const float Now)
 	TGuardValue<bool> Guard(bStepping, true);
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiProjectilePool);
 	const double Started = FPlatformTime::Seconds(); const uint32 StepEpoch = Epoch;
-	const bool bHasWingman = ActiveSlots.ContainsByPredicate([this](int32 Index)
-		{ return Slots[Index].State.Source.Kind != EGuLiTargetKind::CommanderSoldier; });
-	const bool bHasGround = ActiveSlots.ContainsByPredicate([this](int32 Index)
-		{ return Slots[Index].State.Source.Kind == EGuLiTargetKind::CommanderSoldier; });
+	const bool bHasWingman = !DomainSlots[0].IsEmpty();
+	const bool bHasGround = !DomainSlots[1].IsEmpty();
 	if (bHasWingman) StepDomain(Now, false, WingmanHistory);
 	else WingmanHistory = {};
 	if (Epoch != StepEpoch) return;
@@ -241,19 +268,23 @@ void UGuLiProjectilePoolSubsystem::Step(const float Now)
 void UGuLiProjectilePoolSubsystem::StepDomain(const float Now, const bool bGround, FSimulationHistory& History)
 {
 	const uint32 StepEpoch = Epoch;
+	if (auto* Capture = GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>(); Capture && Capture->IsCapturing())
+	{
+		Capture->Record(bGround ? TEXT("Projectile.Commander5HzSteps") : TEXT("Projectile.Other30HzSteps"), 1);
+		Capture->Record(bGround ? TEXT("Projectile.CommanderActivePerStep") : TEXT("Projectile.OtherActivePerStep"), DomainSlots[bGround ? 1 : 0].Num());
+	}
 	// Separate histories preserve the complete 200-ms relative target sweep for ground bullets.
 	BuildSpatialIndex(Now, History);
 	FCollisionQueryParams WorldParams(SCENE_QUERY_STAT(GuLiPooledLaser), false);
 	// Build the ignore set once per simulation step, not once per projectile.
 	for (const auto& Target : Snapshots) if (Target.CollisionActor.IsValid()) WorldParams.AddIgnoredActor(Target.CollisionActor.Get());
-	TArray<FGuLiCombatTargetSnapshot> SourceOnly;
+	SourceOnly.Reset();
 	Ledger->GetSourceOnlySnapshots(SourceOnly);
 	for (const auto& Source : SourceOnly) if (Source.CollisionActor.IsValid()) WorldParams.AddIgnoredActor(Source.CollisionActor.Get());
 	FCollisionObjectQueryParams Objects; Objects.AddObjectTypesToQuery(ECC_WorldStatic); Objects.AddObjectTypesToQuery(ECC_WorldDynamic);
 	StepHandles.Reset(ActiveSlots.Num());
-	for (const int32 Index : ActiveSlots)
+	for (const int32 Index : DomainSlots[bGround ? 1 : 0])
 	{
-		if ((Slots[Index].State.Source.Kind == EGuLiTargetKind::CommanderSoldier) != bGround) continue;
 		auto& Handle = StepHandles.AddDefaulted_GetRef(); Handle.Slot = Index; Handle.Generation = Slots[Index].Generation; Handle.MatchEpoch = Epoch;
 	}
 	// StepHandles is separate from the active list, which can change during damage callbacks.
@@ -267,14 +298,43 @@ void UGuLiProjectilePoolSubsystem::StepDomain(const float Now, const bool bGroun
 		const FVector Start = State.Location;
 		const FVector End = FVector(State.LaunchLocation) + FVector(State.Velocity) * (EndTime - State.StartTime);
 		const FBox Box = FBox(Start.ComponentMin(End), Start.ComponentMax(End)).ExpandBy(Copy.SweepRadius);
-		const FIntVector Min = ProjectileGridCell(Box.Min), Max = ProjectileGridCell(Box.Max); Candidates.Reset();
+		const FIntVector Min = ProjectileGridCell(Box.Min), Max = ProjectileGridCell(Box.Max);
+		const bool bVisitStamps = CVarProjectileVisitStamps.GetValueOnGameThread() != 0;
+		OrderedCandidates.Reset(); Candidates.Reset();
+		if (bVisitStamps)
+		{
+			CandidateVisits.SetNumZeroed(Targets.Num(), EAllowShrinking::No);
+			if (++CandidateGeneration == 0)
+			{
+				for (auto& Visit : CandidateVisits) Visit = 0;
+				++CandidateGeneration;
+			}
+		}
+		{
+			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiProjectilePool_Candidates);
+			FGuLiPerformanceScope Timing(GetWorld(), TEXT("Projectile.CandidatesMs"));
 		for (int32 X = Min.X; X <= Max.X; ++X) for (int32 Y = Min.Y; Y <= Max.Y; ++Y) for (int32 Z = Min.Z; Z <= Max.Z; ++Z)
-			if (const auto* CellTargets = SpatialGrid.Find(FIntVector(X, Y, Z))) for (const int32 Index : *CellTargets) Candidates.Add(Index);
+			if (const auto* CellTargets = SpatialGrid.Find(FIntVector(X, Y, Z))) for (const int32 Index : *CellTargets)
+			{
+				if (bVisitStamps)
+				{
+					if (CandidateVisits[Index] == CandidateGeneration) continue;
+					CandidateVisits[Index] = CandidateGeneration;
+					OrderedCandidates.Add(Index);
+				}
+				else Candidates.Add(Index);
+			}
+			// Retain the TSet's exact iteration order when the local rollback is selected.
+			if (!bVisitStamps) for (const int32 Index : Candidates) OrderedCandidates.Add(Index);
+		}
 		double FirstAlpha = 2; int32 FirstTarget = INDEX_NONE;
 		const float SnapshotSpan = Now - History.PreviousTime;
 		const float StartAlpha = SnapshotSpan > UE_SMALL_NUMBER ? FMath::Clamp((State.SampleTime - History.PreviousTime) / SnapshotSpan, 0.0f, 1.0f) : 1;
 		const float EndAlpha = SnapshotSpan > UE_SMALL_NUMBER ? FMath::Clamp((EndTime - History.PreviousTime) / SnapshotSpan, 0.0f, 1.0f) : 1;
-		for (const int32 Index : Candidates)
+		{
+		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiProjectilePool_NarrowPhase);
+		FGuLiPerformanceScope Timing(GetWorld(), TEXT("Projectile.NarrowPhaseMs"));
+		for (const int32 Index : OrderedCandidates)
 		{
 			const auto& Candidate = Targets[Index]; const auto& Target = Candidate.Snapshot;
 			if (!Target.bAlive || Target.Team == State.SourceTeam || Target.Team == EGuLiTeam::Unassigned
@@ -291,9 +351,15 @@ void UGuLiProjectilePoolSubsystem::StepDomain(const float Now, const bool bGroun
 				{ FirstAlpha = Alpha; FirstTarget = Index; }
 			}
 		}
+		}
 		FHitResult Hit;
-		const bool bBlocked = GetWorld()->SweepSingleByObjectType(Hit, Start, End, FQuat::Identity, Objects,
-			FCollisionShape::MakeSphere(FMath::Max(1.0f, Copy.SweepRadius)), WorldParams) && Hit.Time <= FirstAlpha;
+		bool bBlocked = false;
+		{
+			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiProjectilePool_WorldSweep);
+			FGuLiPerformanceScope Timing(GetWorld(), TEXT("Projectile.WorldSweepMs"));
+			bBlocked = GetWorld()->SweepSingleByObjectType(Hit, Start, End, FQuat::Identity, Objects,
+				FCollisionShape::MakeSphere(FMath::Max(1.0f, Copy.SweepRadius)), WorldParams) && Hit.Time <= FirstAlpha;
+		}
 		if (bBlocked)
 		{
 			Retire(Handle, EGuLiCombatEffectEndReason::Blocked, FMath::Lerp(Start, End, Hit.Time),

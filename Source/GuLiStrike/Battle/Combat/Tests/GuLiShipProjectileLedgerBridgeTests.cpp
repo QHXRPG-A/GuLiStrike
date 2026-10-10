@@ -168,6 +168,24 @@ bool FGuLiShipProjectileWingmanSweepTest::RunTest(const FString& Parameters)
 		return false;
 	}
 
+	TArray<FGuLiCombatTargetSnapshot> WingmanWork;
+	TArray<FGuLiCombatTargetSnapshot> FullDirectory;
+	Ledger->GetTargetSnapshots(FullDirectory);
+	FullDirectory.RemoveAll([](const auto& Snapshot) { return Snapshot.Handle.Kind != EGuLiTargetKind::Wingman; });
+	Ledger->GetTargetSnapshots(WingmanWork, EGuLiTargetKind::Wingman);
+	TestTrue(TEXT("The indexed domain contains only the two Accepted Wingmen in the original stable order"),
+		WingmanWork.Num() == 2 && FullDirectory.Num() == 2
+			&& WingmanWork[0].Handle == FullDirectory[0].Handle && WingmanWork[1].Handle == FullDirectory[1].Handle);
+	Near->Location = FVector(450,0,0);
+	Ledger->GetTargetSnapshots(WingmanWork, EGuLiTargetKind::Wingman);
+	const auto* UpdatedNear = WingmanWork.FindByPredicate([&](const auto& Snapshot) { return Snapshot.Handle == Near->Handle; });
+	TestTrue(TEXT("A domain query reads fresh poses rather than a previous frame snapshot"),
+		WingmanWork.Num() == 2 && UpdatedNear && UpdatedNear->Location.Equals(Near->Location));
+	Near->Location = FVector(400,0,0);
+	Ledger->UnregisterTarget(Far->Handle);
+	Ledger->GetTargetSnapshots(WingmanWork, EGuLiTargetKind::Wingman);
+	TestEqual(TEXT("Domain membership drops an unregistered generation"), WingmanWork.Num(), 1);
+	TestTrue(TEXT("A re-registered target rejoins the domain"), RegisterVirtualWingman(*Ledger, *Source, Far));
 	FGuLiShipProjectileLedgerContext Context;
 	if (!TestTrue(TEXT("The physical Ship shot captures one immutable ledger identity"),
 		GuLiShipProjectileLedger::BuildServerLaunchContext(*Source, 25.0f, Context)))
@@ -180,7 +198,7 @@ bool FGuLiShipProjectileWingmanSweepTest::RunTest(const FString& Parameters)
 			Context,
 			FVector::ZeroVector,
 			FVector(1000.0, 0.0, 0.0),
-			10.0f);
+			10.0f, &WingmanWork);
 	TestTrue(TEXT("The earliest time-of-impact wins regardless of registration order"),
 		Impact.Target == Near->Handle);
 	TestEqual(TEXT("The Actor-less Wingman hit commits through the unified ledger"),

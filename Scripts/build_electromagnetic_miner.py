@@ -62,8 +62,8 @@ def build_beam():
     for p in settings.rapid_iteration_parameters:
         if p.setting_path.endswith('.Color.Color'):
             assert unreal.NiagaraService.set_parameter(FX,p.setting_path,'(R=0.25,G=18,B=0.8,A=1)')
-    # Authored baseline is 5 cm; set 25 cm deterministically so reruns never compound.
-    assert unreal.NiagaraService.set_parameter(FX,'Constants.Beam.BeamWidth.Beam Width','25.0')
+    # Baseline stays at its measured 5 cm. tool_laser_candidates.py publishes the 7.5 cm opaque candidate.
+    assert unreal.NiagaraService.set_parameter(FX,'Constants.Beam.BeamWidth.Beam Width','5.0')
     # Beam001 is a second noisy lightning ribbon. Keep the primary laser and endpoint sparks.
     assert unreal.NiagaraService.enable_emitter(FX,'Beam001',False)
     assert unreal.NiagaraService.enable_emitter(FX,'Spark001',False)

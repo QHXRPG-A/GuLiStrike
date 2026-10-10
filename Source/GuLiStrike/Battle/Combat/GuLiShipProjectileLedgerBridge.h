@@ -86,5 +86,6 @@ namespace GuLiShipProjectileLedger
 		const FGuLiShipProjectileLedgerContext& Context,
 		const FVector& SegmentStart,
 		const FVector& SegmentEnd,
-		float ProjectileRadius);
+		float ProjectileRadius,
+		TArray<FGuLiCombatTargetSnapshot>* Workspace = nullptr);
 }

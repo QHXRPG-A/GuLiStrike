@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations",
+    "materials": [
+      {
+        "emitter": "Glow",
+        "override_blend_mode": false,
+        "blend_mode": "<BlendMode.BLEND_ADDITIVE: 3>",
+        "override_shading_model": false,
+        "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>"
+      },
+      {
+        "emitter": "Flash",
+        "override_blend_mode": true,
+        "blend_mode": "<BlendMode.BLEND_TRANSLUCENT: 2>",
+        "override_shading_model": false,
+        "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>"
+      },
+      {
+        "emitter": "RIbbonTrailFollower",
+        "override_blend_mode": true,
+        "blend_mode": "<BlendMode.BLEND_TRANSLUCENT: 2>",
+        "override_shading_model": false,
+        "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>"
+      },
+      {
+        "emitter": "Sparks",
+        "override_blend_mode": true,
+        "blend_mode": "<BlendMode.BLEND_TRANSLUCENT: 2>",
+        "override_shading_model": false,
+        "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>"
+      },
+      {
+        "emitter": "Debris",
+        "override_blend_mode": true,
+        "blend_mode": "<BlendMode.BLEND_TRANSLUCENT: 2>",
+        "override_shading_model": false,
+        "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>"
+      }
+    ],
+    "ribbons": [],
+    "object_traversal_available": false
+  }
+}

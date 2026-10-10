@@ -1,0 +1,109 @@
+{
+  "decision": "Adopt source default gs.Muzzles.BatchMode=2; keep 0 immediate rollback and 1 F+1 isolation.",
+  "basis": {
+    "mode0_to_2": {
+      "baseline_mode": 0,
+      "candidate_mode": 2,
+      "pairs": [
+        {
+          "round": 1,
+          "old_ms": 36.8335506127451,
+          "new_ms": 29.308815024390245,
+          "saved_ms": 7.524735588354854,
+          "frame_reduction_percent": 20.429025883133722,
+          "fps_increase_percent": 25.673967310151944,
+          "muzzle_gain_eligible": true
+        },
+        {
+          "round": 2,
+          "old_ms": 39.20599009126467,
+          "new_ms": 28.32393864278982,
+          "saved_ms": 10.882051448474847,
+          "frame_reduction_percent": 27.756093962028096,
+          "fps_increase_percent": 38.41997959999463,
+          "muzzle_gain_eligible": true
+        },
+        {
+          "round": 3,
+          "old_ms": 37.62002678347935,
+          "new_ms": 30.651009683995923,
+          "saved_ms": 6.969017099483423,
+          "frame_reduction_percent": 18.52475315765547,
+          "fps_increase_percent": 22.736664049022238,
+          "muzzle_gain_eligible": true
+        }
+      ],
+      "old_mean_ms": 37.8865224958297,
+      "new_mean_ms": 29.427921117058663,
+      "old_fps_from_mean": 26.39461038183363,
+      "new_fps_from_mean": 33.981333442555815,
+      "frame_reduction_percent": 22.326148776790234,
+      "fps_increase_percent": 28.743455390968098,
+      "within_mode_mean_range_ms": 2.372439478519567,
+      "gain_confirmed": true,
+      "adoption_limit": null
+    },
+    "mode1_to_2": {
+      "baseline_mode": 1,
+      "candidate_mode": 2,
+      "pairs": [
+        {
+          "round": 1,
+          "old_ms": 36.864377205882356,
+          "new_ms": 29.308815024390245,
+          "saved_ms": 7.55556218149211,
+          "frame_reduction_percent": 20.495564428758307,
+          "fps_increase_percent": 25.779145882235465,
+          "muzzle_gain_eligible": true
+        },
+        {
+          "round": 2,
+          "old_ms": 42.1708904628331,
+          "new_ms": 28.32393864278982,
+          "saved_ms": 13.84695182004328,
+          "frame_reduction_percent": 32.835331832148896,
+          "fps_increase_percent": 48.887804745927085,
+          "muzzle_gain_eligible": true
+        },
+        {
+          "round": 3,
+          "old_ms": 37.5696675,
+          "new_ms": 30.651009683995923,
+          "saved_ms": 6.918657816004078,
+          "frame_reduction_percent": 18.415541782487367,
+          "fps_increase_percent": 22.572365110753843,
+          "muzzle_gain_eligible": true
+        }
+      ],
+      "old_mean_ms": 38.868311722905155,
+      "new_mean_ms": 29.427921117058663,
+      "old_fps_from_mean": 25.727899043546532,
+      "new_fps_from_mean": 33.981333442555815,
+      "frame_reduction_percent": 24.288141643886362,
+      "fps_increase_percent": 32.079706100524106,
+      "within_mode_mean_range_ms": 5.306513256950744,
+      "gain_confirmed": true,
+      "adoption_limit": null
+    }
+  },
+  "runtime_checks": {
+    "F_plus_1": true,
+    "heavy_scale_once": true,
+    "follower_identity": true,
+    "per_event_world_render": true,
+    "unbounded_pool_growth": true,
+    "World_isolation": true,
+    "slot_reuse": true,
+    "source_loss": true,
+    "same_tier_F1_fallback": true,
+    "offscreen_idle": true,
+    "idle_wake_no_replay": true,
+    "moving_follow": true,
+    "mode_switch_no_replay": true,
+    "epoch_reset": true
+  },
+  "pressure_limit": "Three pressure rounds captured and all CPU windows parsed. Actual native muzzle acceptance/birth is zero due to upstream flight event backlog; no pressure muzzle gain claimed. Normal bandwidth and reliable packet contract preserved.",
+  "trajectory_limit": "Native movement and combat are kept active. Third batch recapture has more movement and feedback than its single pair; per-1000 resource self cost is also reported.",
+  "player_visual_approval": false,
+  "authorization": "Latest user plan explicitly specifies adoption after functional/input and confirmed performance checks."
+}

@@ -319,6 +319,7 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::LaunchProjectile(UGuLiProjectileEffectD
 	State.StartTime = State.SampleTime = State.ActivationTime = GetWorld()->GetTimeSeconds();
 	State.EndTime = State.StartTime + State.Motion.MaximumLifetime; State.Sequence = 1;
 	Instance.LastCorrection = State.StartTime;
+	Instance.CurveCoefficients.Initialize(State);
 	const FGuid Id = State.EffectId;
 	Effects.Add(Id, MoveTemp(Instance)); ++Counters.ProjectilesLaunched;
 	Publish(Id, true); return Id;
@@ -537,6 +538,7 @@ bool UGuLiCombatEffectRuntimeSubsystem::PreparePointProjectile(
     State.StartTime = State.SampleTime = GetWorld()->GetTimeSeconds();
     State.EndTime = State.StartTime + State.Motion.MaximumLifetime; State.Sequence = 1;
     State.RandomSeed = static_cast<int32>(State.EffectId.A ^ State.EffectId.B);
+    Instance.CurveCoefficients.Initialize(State);
     return true;
 }
 
@@ -729,7 +731,8 @@ void UGuLiCombatEffectRuntimeSubsystem::StepProjectile(const FGuid& Id, float De
 	const bool bTargetAlive = !State.bFixedPoint && Ledger->TryGetTargetSnapshot(State.Target, Target) && Target.bAlive;
 	if (bTargetAlive) State.LastTargetLocation = Target.Location;
 	const FVector Previous = State.Location;
-	GuLiCombatEffects::AdvanceProjectile(State, Now - State.StartTime, DeltaTime);
+	GuLiCombatEffects::AdvanceProjectile(State, Now - State.StartTime, DeltaTime,
+		GuLiCombatEffects::ShouldPrecomputeCurves() ? &Instance.CurveCoefficients : nullptr);
 	State.SampleTime = Now; ++State.Sequence;
 	FHitResult Hit;
 	FCollisionQueryParams Params(SCENE_QUERY_STAT(GuLiCombatProjectile), false);

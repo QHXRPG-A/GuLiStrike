@@ -126,8 +126,9 @@ void AGuLiStrikeProjectile::Tick(const float DeltaSeconds)
 			*GetWorld(),
 			DamageLedgerContext,
 			PreviousServerSweepLocation,
-			CurrentLocation,
-			ProjectileRadius);
+		CurrentLocation,
+		ProjectileRadius,
+		&WingmanSweepWorkspace);
 	PreviousServerSweepLocation = CurrentLocation;
 	if (LedgerImpact.HasResolvedTarget())
 	{

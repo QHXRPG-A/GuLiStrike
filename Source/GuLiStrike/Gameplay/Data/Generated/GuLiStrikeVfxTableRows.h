@@ -35,4 +35,24 @@ struct FGuLiStrikeVfxEffectsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
 	FVector Scale = FVector::ZeroVector;
 
+	/** ReducedResourcePath (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	TSoftObjectPtr<UObject> ReducedResourcePath;
+
+	/** MinimalResourcePath (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	TSoftObjectPtr<UObject> MinimalResourcePath;
+
+	/** BatchResourcePath (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	TSoftObjectPtr<UObject> BatchResourcePath;
+
+	/** ReducedBatchResourcePath (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	TSoftObjectPtr<UObject> ReducedBatchResourcePath;
+
+	/** MinimalBatchResourcePath (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	TSoftObjectPtr<UObject> MinimalBatchResourcePath;
+
 };

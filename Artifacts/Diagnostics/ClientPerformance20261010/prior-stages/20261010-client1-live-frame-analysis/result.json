@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "case": "live-client1",
+  "pair": 1,
+  "variant": "current-production",
+  "capture_seconds": 30.000512200058438,
+  "csv": {
+    "FrameTime": {
+      "mean": 33.210413038674034,
+      "p95": 40.8619,
+      "n": 905
+    },
+    "GameThreadTime": {
+      "mean": 33.17607005524862,
+      "p95": 40.8035,
+      "n": 905
+    },
+    "GPUTime": {
+      "mean": 12.9727008839779,
+      "p95": 14.5927,
+      "n": 905
+    },
+    "PhysicalUsedMB": {
+      "mean": 9055.103946187844,
+      "p95": 9102.4648,
+      "n": 905
+    },
+    "VirtualUsedMB": {
+      "mean": 17733.206257900554,
+      "p95": 17843.2383,
+      "n": 905
+    }
+  },
+  "target_world": "UEDPIE_1",
+  "scope": "Unmodified user gameplay. One process contains dedicated server, Client1 (UEDPIE_1) 1505x1115, Client2 640x484 and editor. Engine CSV/GT/GPU are process-wide; project counters retain World identity. Measurement camera and viewport stayed identical from context-before to context-after. Screenshot/ProfileGPU are outside the window. This is a diagnosis, not a paired FPS comparison.",
+  "actual_views": [
+    [
+      1505,
+      1115
+    ],
+    [
+      640,
+      484
+    ]
+  ]
+}

@@ -2,6 +2,7 @@
 
 #include "Gameplay/Ship/UI/GuLiShipWorldHUDComponent.h"
 #include "Commander/UI/GuLiSceneUITypes.h"
+#include "Commander/UI/GuLiSceneUISourceRegistry.h"
 
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Blueprint/UserWidget.h"
@@ -101,11 +102,13 @@ void UGuLiShipWorldHUDComponent::TickComponent(
 	}
 
 	SetStatusVisible(UpdateStatusViewportLayout());
+	bSceneUIPoseChanged = false;
 	if (!UpdateNodeTransforms())
 	{
 		HideWorldNodes();
 	}
 	RefreshDataIfDue(false);
+	if (bSceneUIPoseChanged) UGuLiSceneUISourceRegistry::Notify(GetOwner(), EGuLiSceneUIChange::Pose);
 }
 
 void UGuLiShipWorldHUDComponent::HandleOwnerControllerChanged()
@@ -260,6 +263,7 @@ void UGuLiShipWorldHUDComponent::CreateRuntimeWidgets()
 		TEXT("ShipWorldHUD_AimBounds"), AimBoundsClass, GuLiShipWorldHUD::InitialAimBoundsDrawSize, 0);
 	ReticleNode = CreateWidgetNode(
 		TEXT("ShipWorldHUD_Reticle"), ReticleClass, GuLiShipWorldHUD::ReticleDrawSize, 2);
+	UGuLiSceneUISourceRegistry::Notify(GetOwner(), EGuLiSceneUIChange::Membership);
 
 	bHasStatusSnapshot = false;
 	bHasFlightSnapshot = false;
@@ -271,6 +275,7 @@ void UGuLiShipWorldHUDComponent::CreateRuntimeWidgets()
 
 void UGuLiShipWorldHUDComponent::DestroyRuntimeWidgets()
 {
+	const bool bHadNodes = StatusWidget || FlightNode || CombatNode || ReticleNode || AimBoundsNode;
 	BindAimComponent(nullptr);
 	SetComponentTickEnabled(false);
 
@@ -294,6 +299,7 @@ void UGuLiShipWorldHUDComponent::DestroyRuntimeWidgets()
 	DestroyNode(CombatNode);
 	DestroyNode(ReticleNode);
 	DestroyNode(AimBoundsNode);
+	if (bHadNodes) UGuLiSceneUISourceRegistry::Notify(GetOwner(), EGuLiSceneUIChange::Membership);
 	LocalController.Reset();
 	HullMesh.Reset();
 	bHasStatusSnapshot = false;
@@ -692,7 +698,7 @@ bool UGuLiShipWorldHUDComponent::SetNodeTransform(
 	const FVector& PlaneOrigin,
 	const FVector& CameraForward,
 	const FRotator& CameraRotation,
-	const float CentimetersPerPixel) const
+	const float CentimetersPerPixel)
 {
 	FVector RayOrigin;
 	FVector RayDirection;
@@ -712,9 +718,11 @@ bool UGuLiShipWorldHUDComponent::SetNodeTransform(
 		return false;
 	}
 
+	const FTransform Before = Node.GetComponentTransform();
 	Node.SetWorldLocation(RayOrigin + RayDirection * RayDistance);
 	Node.SetWorldRotation(GuLiShipReticle::CalculateScreenFacingWidgetRotation(CameraRotation));
 	Node.SetWorldScale3D(FVector(CentimetersPerPixel));
+	bSceneUIPoseChanged |= !Before.Equals(Node.GetComponentTransform(), 0);
 	return true;
 }
 

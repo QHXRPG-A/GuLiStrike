@@ -7,6 +7,8 @@
 #include "GuLiVfxRegistrySubsystem.generated.h"
 
 class AActor;
+class UNiagaraSystem;
+enum class EGuLiCommanderLODLevel : uint8;
 UCLASS(Config=Game, DefaultConfig)
 class GULISTRIKE_API UGuLiVfxRegistrySettings : public UObject
 {
@@ -27,6 +29,14 @@ public:
 	/** Set LoadIfNeeded=false after an asynchronous load to avoid introducing a synchronous load. */
 	UFUNCTION(BlueprintCallable, Category="VFX", meta=(DeterminesOutputType="ExpectedClass"))
 	UObject* LoadResource(int32 VfxId, TSubclassOf<UObject> ExpectedClass, bool LoadIfNeeded = true);
+	/** Missing detail falls towards full; a missing batch never silently becomes a single-shot system. */
+	UNiagaraSystem* LoadNiagaraForLOD(int32 VfxId, EGuLiCommanderLODLevel Level, bool bBatch=false, bool bLoadIfNeeded=true, int32* OutFallbacks=nullptr);
+	static float NiagaraFloat(const UNiagaraSystem* System, FName Name, float DefaultValue);
+#if WITH_EDITOR
+	/** PIE-only candidate override. Never mutates the source table or changes the base scale. */
+	UFUNCTION(BlueprintCallable,Category="VFX|Acceptance")
+	bool ApplyReviewDefinition(const FGuLiStrikeVfxEffectsRow& Candidate);
+#endif
 	/** Blueprint resources are registered by their generated _C path so they remain loadable after Cook. */
 	UFUNCTION(BlueprintCallable, Category="VFX", meta=(DeterminesOutputType="ExpectedBaseClass"))
 	TSubclassOf<AActor> LoadActorClass(int32 VfxId, TSubclassOf<AActor> ExpectedBaseClass);

@@ -1,4 +1,7 @@
 #include "Commander/UI/GuLiSceneUIWidget.h"
+#include "Commander/UI/GuLiSceneUISourceRegistry.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Commander/UI/GuLiSceneUITypes.h"
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
@@ -35,8 +38,13 @@
 #include "Rendering/SlateRenderer.h"
 #include "Framework/Application/SlateApplication.h"
 #include "Widgets/SLeafWidget.h"
+#include "Widgets/SOverlay.h"
 #include "SlateMaterialBrush.h"
 #include "GuLiStrike.h"
+#include "HAL/IConsoleManager.h"
+
+static TAutoConsoleVariable<int32> CVarSceneUIProjectionCache(TEXT("gs.SceneUI.ProjectionCache"),1,TEXT("0 rebuilds the leaf geometry every paint for comparison."));
+static TAutoConsoleVariable<int32> CVarSceneUISplitLeaves(TEXT("gs.SceneUI.SplitLeaves"),1,TEXT("Separate world geometry, HUD, render targets and world panels. Resolved when the widget is constructed."));
 
 struct FGuLiSceneUIWidgetData
 {
@@ -50,15 +58,34 @@ struct FGuLiSceneUIWidgetData
 		float Width = 1;
 		TWeakObjectPtr<UTexture2D> Texture;
 		FString Text;
+		bool operator==(const FShape& R) const { return Kind==R.Kind && A==R.A && B==R.B && WorldA==R.WorldA && WorldB==R.WorldB && Color==R.Color && Width==R.Width && Texture==R.Texture && Text==R.Text; }
 	};
 	struct FBatch { TArray<FSlateVertex> Vertices; TArray<SlateIndex> Indices; };
-	TArray<FShape> HUDShapes;
+	struct FGeometryCache
+	{
+		uint64 CachedRevision = 0;
+		FMatrix CachedMatrix = FMatrix::Identity;
+		FIntRect CachedRect, CachedViewRect;
+		FVector2D CachedSize = FVector2D::ZeroVector;
+		FSlateRenderTransform CachedTransform;
+		TArray<TSharedPtr<FBatch>> Batches;
+	};
+	TArray<FShape> HUDShapes, PendingHUDShapes;
+	uint64 ContentRevision = 1, WorldRevision = 1, HUDRevision = 1, SurfaceRevision = 1;
+	FGeometryCache GeometryCaches[5];
+	bool bPendingHUD = false;
+	struct FHalo { FVector Center; FVector2D Radii; EGuLiTeam Team;
+		bool operator==(const FHalo& R) const { return Center==R.Center && Radii==R.Radii && Team==R.Team; } };
+	FTransform PlacementTransform; FVector PlacementExtent = FVector::ZeroVector;
+	TArray<TPair<FVector, FVector>> PlacementLocalLines;
+	bool bPlacementValid = false, bOverview = false;
+	TArray<FGuLiSceneUIRing> ActorRings;
+	TArray<FHalo> Halos;
 	uint64 HUDFrame = MAX_uint64;
 	TArray<FGuLiSceneUIRing> Rings;
 	TArray<FGuLiSceneUIHealthBar> Bars;
 	TArray<FGuLiSceneUILine> Routes;
 	TArray<FGuLiSceneUIWorldWidget> WorldWidgets;
-	TArray<TSharedPtr<FBatch>> Batches;
 	TSharedPtr<FSlateMaterialBrush> OutlineBrush;
 	TSharedPtr<FSlateMaterialBrush> PlacementBrush;
 	TMap<TWeakObjectPtr<UTexture>, TSharedPtr<FSlateMaterialBrush>> SurfaceBrushes;
@@ -67,17 +94,30 @@ struct FGuLiSceneUIWidgetData
 class SGuLiSceneUI final : public SLeafWidget
 {
 public:
-	SLATE_BEGIN_ARGS(SGuLiSceneUI) {} SLATE_ARGUMENT(TWeakObjectPtr<UGuLiSceneUIWidget>, Owner) SLATE_END_ARGS()
-	void Construct(const FArguments& Args) { Owner = Args._Owner; }
+	SLATE_BEGIN_ARGS(SGuLiSceneUI) : _Part(EGuLiSceneUIPaintPart::Combined) {}
+		SLATE_ARGUMENT(TWeakObjectPtr<UGuLiSceneUIWidget>, Owner)
+		SLATE_ARGUMENT(EGuLiSceneUIPaintPart, Part)
+	SLATE_END_ARGS()
+	void Construct(const FArguments& Args) { Owner = Args._Owner; Part = Args._Part; }
 	virtual FVector2D ComputeDesiredSize(float) const override { return FVector2D::ZeroVector; }
 	virtual int32 OnPaint(const FPaintArgs&, const FGeometry& Geometry, const FSlateRect&,
 		FSlateWindowElementList& Elements, int32 Layer, const FWidgetStyle&, bool) const override
 	{
-		if (auto* Widget = Owner.Get()) Widget->PaintSceneUI(Geometry, Elements, Layer);
+		if (auto* Widget = Owner.Get()) Widget->PaintSceneUI(Geometry, Elements, Layer, Part);
 		return Layer + 2;
 	}
 private:
 	TWeakObjectPtr<UGuLiSceneUIWidget> Owner;
+	EGuLiSceneUIPaintPart Part = EGuLiSceneUIPaintPart::Combined;
+};
+
+/** SPanel paints children with the same base layer, preserving the original 0/1/2 ordering. */
+class SGuLiSceneUIPanel final : public SOverlay
+{
+public:
+	virtual int32 OnPaint(const FPaintArgs& Args, const FGeometry& Geometry, const FSlateRect& Culling,
+		FSlateWindowElementList& Elements, int32 Layer, const FWidgetStyle& Style, bool bEnabled) const override
+	{ return SPanel::OnPaint(Args, Geometry, Culling, Elements, Layer, Style, bEnabled); }
 };
 
 namespace
@@ -103,17 +143,18 @@ struct FViewBatch
 {
 	const FGeometry& Geometry;
 	FSlateWindowElementList& Elements;
-	FGuLiSceneUIWidgetData& Data;
+	FGuLiSceneUIWidgetData::FGeometryCache& Data;
 	FSceneViewProjectionData Projection;
 	FMatrix Matrix;
 	FConvexVolume Frustum;
 	FVector2D Scale, Inset;
 	FIntRect Rect;
 	int32 BatchIndex = 0, Layer;
+	bool bBuild = true, bFullyContained = false;
 	FSlateResourceHandle White;
 
 	FViewBatch(const FGeometry& InGeometry, FSlateWindowElementList& InElements,
-		FGuLiSceneUIWidgetData& InData, const FSceneViewProjectionData& InProjection, int32 InLayer)
+		FGuLiSceneUIWidgetData::FGeometryCache& InData, uint64 Revision, const FSceneViewProjectionData& InProjection, int32 InLayer)
 		: Geometry(InGeometry), Elements(InElements), Data(InData), Projection(InProjection), Layer(InLayer)
 	{
 		Matrix = Projection.ComputeViewProjectionMatrix();
@@ -123,7 +164,16 @@ struct FViewBatch
 		Scale = Geometry.GetLocalSize() / FVector2D(FMath::Max(1, ViewRect.Width()), FMath::Max(1, ViewRect.Height()));
 		Inset = FVector2D(Rect.Min - ViewRect.Min);
 		White = FSlateApplication::Get().GetRenderer()->GetResourceHandle(*FCoreStyle::Get().GetBrush("WhiteBrush"));
-		for (auto& Batch : Data.Batches) { Batch->Vertices.Reset(); Batch->Indices.Reset(); }
+		bBuild = !CVarSceneUIProjectionCache.GetValueOnGameThread() || Data.CachedRevision != Revision || !Data.CachedMatrix.Equals(Matrix, 0)
+			|| Data.CachedRect != Rect || Data.CachedViewRect != ViewRect || Data.CachedSize != Geometry.GetLocalSize()
+			|| !(Data.CachedTransform == Geometry.GetAccumulatedRenderTransform());
+		if (bBuild)
+		{
+			for (auto& Batch : Data.Batches) { Batch->Vertices.Reset(); Batch->Indices.Reset(); }
+			Data.CachedRevision = Revision; Data.CachedMatrix = Matrix;
+			Data.CachedRect = Rect; Data.CachedViewRect = ViewRect; Data.CachedSize = Geometry.GetLocalSize();
+			Data.CachedTransform = Geometry.GetAccumulatedRenderTransform();
+		}
 	}
 
 	FVector2D ToPixels(const FVector4& P) const
@@ -137,7 +187,7 @@ struct FViewBatch
 	}
 	void Triangle(const FVector2D& A, const FVector2D& B, const FVector2D& C, const FLinearColor& Color)
 	{
-		if (Color.A <= 0) return;
+		if (!bBuild || Color.A <= 0) return;
 		if (BatchIndex >= Data.Batches.Num()) Data.Batches.Add(MakeShared<FGuLiSceneUIWidgetData::FBatch>());
 		if (Data.Batches[BatchIndex]->Vertices.Num() + 3 > 60000)
 		{
@@ -154,6 +204,13 @@ struct FViewBatch
 	}
 	void WorldTriangle(const FVector& A, const FVector& B, const FVector& C, const FLinearColor& Color)
 	{
+		if (!bBuild) return;
+		if (bFullyContained)
+		{
+			const auto P = Matrix.TransformFVector4(FVector4(A,1)), Q = Matrix.TransformFVector4(FVector4(B,1)), R = Matrix.TransformFVector4(FVector4(C,1));
+			if (P.W > .00001 && Q.W > .00001 && R.W > .00001) Triangle(ToPixels(P), ToPixels(Q), ToPixels(R), Color);
+			return;
+		}
 		TArray<FVector4, TInlineAllocator<16>> Points, Output;
 		for (const auto& P : {A, B, C}) Points.Add(Matrix.TransformFVector4(FVector4(P, 1)));
 		for (int32 Plane = 0; Plane < 6 && !Points.IsEmpty(); ++Plane)
@@ -186,17 +243,24 @@ struct FViewBatch
 	}
 	void WorldLine(const FVector& A, const FVector& B, float Width, const FLinearColor& Color)
 	{
+		if (!bBuild) return;
 		FVector4 P,Q;
 		if (ClipLine(Matrix,A,B,P,Q)) Line(ToPixels(P),ToPixels(Q),Width,Color);
 	}
 	void Box(FVector2D Position, FVector2D Size, FLinearColor Color)
 	{
+		if (!bBuild || Position.X + Size.X < Inset.X || Position.Y + Size.Y < Inset.Y
+			|| Position.X > Inset.X + Rect.Width() || Position.Y > Inset.Y + Rect.Height()) return;
 		Triangle(Position, Position + FVector2D(Size.X, 0), Position + Size, Color);
 		Triangle(Position, Position + Size, Position + FVector2D(0, Size.Y), Color);
 	}
 	void Ring(const FGuLiSceneUIRing& R, const FLinearColor& Color)
 	{
-		if (Color.A <= 0 || R.OuterRadiusCm <= 0 || !Frustum.IntersectSphere(R.Center, R.OuterRadiusCm + 50)) return;
+		if (!bBuild || Color.A <= 0 || R.OuterRadiusCm <= 0) return;
+		bool bInside = false;
+		// Selected ticks extend 50 cm beyond the ring, with a ten-centimeter half width.
+		if (!Frustum.IntersectSphere(R.Center, R.OuterRadiusCm + 60, bInside)) return;
+		TGuardValue<bool> Contained(bFullyContained, bInside);
 		static const TArray<FVector> Directions = []
 		{
 			TArray<FVector> Result;
@@ -205,11 +269,24 @@ struct FViewBatch
 			return Result;
 		}();
 		const float Inner = FMath::Max(0.f, R.OuterRadiusCm - GuLiSceneUI::RingWidthCm);
-		for (int32 I=0; I<Directions.Num(); ++I)
+		if (bInside)
 		{
-			const FVector A = Directions[I], B = Directions[(I + 1) % Directions.Num()];
-			WorldTriangle(R.Center+A*Inner, R.Center+A*R.OuterRadiusCm, R.Center+B*R.OuterRadiusCm, Color);
-			WorldTriangle(R.Center+A*Inner, R.Center+B*R.OuterRadiusCm, R.Center+B*Inner, Color);
+			FVector2D InnerPoints[GuLiSceneUI::RingSegments], OuterPoints[GuLiSceneUI::RingSegments];
+			for (int32 I=0; I<Directions.Num(); ++I)
+			{
+				const auto A=Matrix.TransformFVector4(FVector4(R.Center+Directions[I]*Inner,1));
+				const auto B=Matrix.TransformFVector4(FVector4(R.Center+Directions[I]*R.OuterRadiusCm,1));
+				if (A.W<=.00001 || B.W<=.00001) return;
+				InnerPoints[I]=ToPixels(A); OuterPoints[I]=ToPixels(B);
+			}
+			for (int32 I=0; I<Directions.Num(); ++I)
+			{ const int32 J=(I+1)%Directions.Num(); Triangle(InnerPoints[I],OuterPoints[I],OuterPoints[J],Color); Triangle(InnerPoints[I],OuterPoints[J],InnerPoints[J],Color); }
+		}
+		else for (int32 I=0; I<Directions.Num(); ++I)
+		{
+			const FVector A=Directions[I], B=Directions[(I+1)%Directions.Num()];
+			WorldTriangle(R.Center+A*Inner,R.Center+A*R.OuterRadiusCm,R.Center+B*R.OuterRadiusCm,Color);
+			WorldTriangle(R.Center+A*Inner,R.Center+B*R.OuterRadiusCm,R.Center+B*Inner,Color);
 		}
 		if (R.bSelected) for (int32 I : {0, 16, 32, 48})
 		{
@@ -292,14 +369,37 @@ void UGuLiSceneUIWidget::InitializeForController(APlayerController* Controller)
 
 TSharedRef<SWidget> UGuLiSceneUIWidget::RebuildWidget()
 {
-	SceneSlate = SNew(SGuLiSceneUI).Owner(this);
+	for (auto& Leaf : PaintLeaves) Leaf.Reset();
+	if (CVarSceneUISplitLeaves.GetValueOnGameThread())
+	{
+		auto Panel = SNew(SGuLiSceneUIPanel);
+		for (auto Part : {EGuLiSceneUIPaintPart::Background, EGuLiSceneUIPaintPart::World, EGuLiSceneUIPaintPart::HUD, EGuLiSceneUIPaintPart::Panels})
+		{
+			auto Leaf = SNew(SGuLiSceneUI).Owner(this).Part(Part);
+			PaintLeaves[uint8(Part)] = Leaf;
+			Panel->AddSlot()[Leaf];
+		}
+		SceneSlate = Panel;
+	}
+	else
+	{
+		SceneSlate = SNew(SGuLiSceneUI).Owner(this);
+		PaintLeaves[uint8(EGuLiSceneUIPaintPart::Combined)] = SceneSlate;
+	}
 	return SceneSlate.ToSharedRef();
+}
+
+void UGuLiSceneUIWidget::InvalidatePaintPart(EGuLiSceneUIPaintPart Part)
+{
+	if (auto Leaf = PaintLeaves[uint8(Part)].Pin()) Leaf->Invalidate(EInvalidateWidgetReason::Paint);
+	if (auto Combined = PaintLeaves[0].Pin()) Combined->Invalidate(EInvalidateWidgetReason::Paint);
 }
 
 void UGuLiSceneUIWidget::ReleaseSlateResources(bool bReleaseChildren)
 {
 	Super::ReleaseSlateResources(bReleaseChildren);
 	SceneSlate.Reset();
+	for (auto& Leaf : PaintLeaves) Leaf.Reset();
 }
 
 void UGuLiSceneUIWidget::SetModalHidden(bool bHidden)
@@ -310,28 +410,42 @@ void UGuLiSceneUIWidget::SetModalHidden(bool bHidden)
 
 void UGuLiSceneUIWidget::HandleIdentityChanged()
 {
-	OutlineListRefreshRemaining = 0;
-	Data->HUDShapes.Reset();
+	OutlineMembershipRevision = 0; RingContentRevision = 0;
+	Data->HUDShapes.Reset(); Data->PendingHUDShapes.Reset(); ++Data->ContentRevision;
+	++Data->HUDRevision; ++Data->WorldRevision; ++Data->SurfaceRevision;
+	for (auto Part : {EGuLiSceneUIPaintPart::Background,EGuLiSceneUIPaintPart::World,EGuLiSceneUIPaintPart::HUD,EGuLiSceneUIPaintPart::Panels}) InvalidatePaintPart(Part);
 }
 
 void UGuLiSceneUIWidget::RefreshSources()
 {
+	FGuLiPerformanceScope Timing(GetWorld(), TEXT("SceneUI.SourcesMs"), LocalController.IsValid() ? LocalController->GetLocalPlayer() : nullptr);
 	if (!LocalController.IsValid() || !GetWorld()) return;
-	if (!Presentation.IsValid()) for (TActorIterator<AGuLiCommanderPresentationActor> It(GetWorld()); It; ++It) { Presentation = *It; break; }
+	auto* Registry = GetWorld()->GetSubsystem<UGuLiSceneUISourceRegistry>();
+	if (Registry && (SourceMembershipRevision != Registry->GetMembershipRevision()))
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSceneUI_SourceSnapshot);
+		TArray<FGuLiSceneUISource> Sources; Registry->GetSnapshot(Sources);
+		ActorRingSources.Reset(); OutpostHaloSources.Reset(); OutlineActorSources.Reset();
+		for (const auto& Source : Sources)
+		{
+			switch (Source.Kind)
+			{
+			case EGuLiSceneUISourceKind::PawnRing: if (auto* Actor = Cast<AActor>(Source.Object.Get())) ActorRingSources.Add(Actor); break;
+			case EGuLiSceneUISourceKind::OutpostHalo: if (auto* Halo = Cast<UGuLiOutpostPresentationComponent>(Source.Object.Get())) OutpostHaloSources.Add(Halo); break;
+			case EGuLiSceneUISourceKind::Presentation: if (!Presentation.IsValid()) Presentation = Cast<AGuLiCommanderPresentationActor>(Source.Object.Get()); break;
+			case EGuLiSceneUISourceKind::OutlineActor: if (auto* Actor = Cast<AActor>(Source.Object.Get())) OutlineActorSources.Add(Actor); break;
+			}
+		}
+		SourceMembershipRevision = Registry->GetMembershipRevision();
+		++Data->ContentRevision;
+	}
 	if (Presentation.IsValid() && !RouteData && Cast<AGuLiCommanderPlayerController>(LocalController.Get()))
 	{
 		RouteData=NewObject<UGuLiCommanderRouteLineComponent>(LocalController.Get(),NAME_None,RF_Transient);
 		RouteData->InitializeForController(Cast<AGuLiCommanderPlayerController>(LocalController.Get()),Presentation.Get());
-		LocalController->AddInstanceComponent(RouteData);
-		RouteData->RegisterComponent();
+		LocalController->AddInstanceComponent(RouteData); RouteData->RegisterComponent();
 	}
-	HealthBars = AGuLiCommanderHealthBarRenderer::FindOrSpawn(GetWorld(), LocalController.Get());
-	ActorRingSources.Reset();
-	OutpostHaloSources.Reset();
-	for (TActorIterator<AActor> It(GetWorld()); It; ++It)
-		if (auto* Halo=It->FindComponentByClass<UGuLiOutpostPresentationComponent>()) OutpostHaloSources.Add(Halo);
-	for (TActorIterator<APawn> It(GetWorld()); It; ++It)
-		if (It->FindComponentByClass<UGuLiEngineeringTravelComponent>() || It->GetPlayerState<AGuLiBattlePlayerState>()) ActorRingSources.Add(*It);
+	if (!HealthBars.IsValid()) HealthBars = AGuLiCommanderHealthBarRenderer::FindOrSpawn(GetWorld(), LocalController.Get());
 	auto* Identity = LocalController->GetPlayerState<AGuLiBattlePlayerState>();
 	if (BoundIdentity.Get() != Identity)
 	{
@@ -345,12 +459,88 @@ void UGuLiSceneUIWidget::RefreshSources()
 void UGuLiSceneUIWidget::NativeTick(const FGeometry& Geometry, float DeltaSeconds)
 {
 	Super::NativeTick(Geometry, DeltaSeconds);
-	SourceRefreshRemaining -= DeltaSeconds;
-	if (SourceRefreshRemaining <= 0) { RefreshSources(); SourceRefreshRemaining = .1f; }
-	RefreshOutline(DeltaSeconds);
-	RefreshPlacement();
-	RefreshWorldWidgets();
-	if (SceneSlate) SceneSlate->Invalidate(EInvalidateWidgetReason::Paint);
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSceneUI_Update);
+	FGuLiPerformanceScope Timing(GetWorld(), TEXT("SceneUI.UpdateMs"), LocalController.IsValid() ? LocalController->GetLocalPlayer() : nullptr);
+	if (Data->HUDFrame != MAX_uint64 && GFrameCounter - Data->HUDFrame >= 2)
+	{ Data->HUDShapes.Reset(); Data->HUDFrame = MAX_uint64; ++Data->ContentRevision; ++Data->HUDRevision; InvalidatePaintPart(EGuLiSceneUIPaintPart::HUD); }
+	const uint64 Before = Data->ContentRevision;
+	RefreshSources();
+	auto* Registry = GetWorld()->GetSubsystem<UGuLiSceneUISourceRegistry>();
+	const uint64 PresentationRevision = Registry ? Registry->GetSourceRevision(Presentation.Get()) : 0;
+	if (Registry && (RingContentRevision != PresentationRevision || RingPoseRevision != SourceMembershipRevision))
+	{
+		if (Presentation.IsValid()) Presentation->GatherSceneUIRings(Data->Rings, LocalController.Get()); else Data->Rings.Reset();
+		RingContentRevision = PresentationRevision; RingPoseRevision = SourceMembershipRevision;
+		++Data->ContentRevision;
+	}
+	RefreshOutline(DeltaSeconds); RefreshPlacement(); RefreshWorldWidgets();
+	auto* PC = LocalController.Get();
+	TArray<FGuLiSceneUIRing> ActorRings;
+	for (const auto& Source : ActorRingSources) if (const auto* Actor = Source.Get())
+	{
+		const auto* Pawn = Cast<APawn>(Actor);
+		if (!Actor->FindComponentByClass<UGuLiEngineeringTravelComponent>() && (!Pawn || !Pawn->GetPlayerState<AGuLiBattlePlayerState>())) continue;
+		FGuLiSceneUIRing Ring; Ring.Team = GuLiLocalTeamColors::GetActorTeam(Actor);
+		if (const auto* Vehicle=Cast<IGuLiEngineeringVehicle>(Actor))
+			if (const auto* Sync=PC ? PC->FindComponentByClass<UGuLiCommanderNetSyncComponent>() : nullptr) Ring.bSelected=Sync->GetSelectionState().ActorIds.Contains(Vehicle->GetStableActorId());
+		if (const auto* Capsule=Actor->FindComponentByClass<UCapsuleComponent>())
+		{ Ring.Center=Capsule->GetComponentLocation()-FVector(0,0,Capsule->GetScaledCapsuleHalfHeight()-5); Ring.OuterRadiusCm=Capsule->GetScaledCapsuleRadius(); }
+		else { FVector Center,Extent; Actor->GetActorBounds(false,Center,Extent); Ring.Center=FVector(Center.X,Center.Y,Center.Z-Extent.Z+5); Ring.OuterRadiusCm=FMath::Max(Extent.X,Extent.Y); }
+		if (!Actor->IsHidden() && Ring.OuterRadiusCm>0) ActorRings.Add(Ring);
+	}
+	if (ActorRings != Data->ActorRings) { Data->ActorRings = MoveTemp(ActorRings); ++Data->ContentRevision; }
+	TArray<FGuLiSceneUIWidgetData::FHalo> Halos;
+	for (const auto& Source : OutpostHaloSources) if (const auto* Halo=Source.Get())
+	{ FGuLiSceneUIWidgetData::FHalo H; if (Halo->GetSceneUIHalo(H.Center,H.Team,H.Radii)) Halos.Add(H); }
+	if (Halos != Data->Halos) { Data->Halos=MoveTemp(Halos); ++Data->ContentRevision; }
+	TArray<FGuLiSceneUIHealthBar> Bars; if (HealthBars.IsValid()) HealthBars->GatherSceneUIBars(Bars);
+	if (Bars != Data->Bars) { Data->Bars=MoveTemp(Bars); ++Data->ContentRevision; }
+	TArray<FGuLiSceneUILine> Routes; if (RouteData) RouteData->GatherSceneUILines(Routes);
+	if (Routes != Data->Routes) { Data->Routes=MoveTemp(Routes); ++Data->ContentRevision; }
+	const auto* Camera=PC ? Cast<AGuLiCommanderCameraPawn>(PC->GetViewTarget()) : nullptr;
+	const bool Overview=Camera && Camera->IsOverviewPresentation();
+	if (Overview != Data->bOverview) { Data->bOverview=Overview; ++Data->ContentRevision; }
+	const auto* Placement=PC ? PC->FindComponentByClass<UGuLiBuildingPlacementComponent>() : nullptr;
+	const auto* Preview=Placement && Placement->IsBuildModeActive() ? Placement->GetSceneUIPreview() : nullptr;
+	if (Preview && Preview->IsHidden()) Preview=nullptr;
+	const FTransform T=Preview ? Preview->GetActorTransform() : FTransform::Identity;
+	const FVector E=Preview ? Preview->GetSceneUIFootprintExtent() : FVector::ZeroVector;
+	const bool Valid=Preview && Preview->IsSceneUIPlacementValid();
+	if (Data->PlacementExtent != E)
+	{
+		Data->PlacementLocalLines.Reset();
+		if (Preview) for (int32 Axis=0; Axis<2; ++Axis)
+		{
+			const double Extent=Axis==0 ? E.X : E.Y, Other=Axis==0 ? E.Y : E.X;
+			const int32 Count=FMath::Min(64,FMath::CeilToInt(Extent/100.0));
+			for (int32 I=-Count; I<=Count; ++I)
+			{
+				const double Along=FMath::Clamp(I*100.0,-Extent,Extent);
+				Data->PlacementLocalLines.Emplace(Axis==0 ? FVector(Along,-Other,7) : FVector(-Other,Along,7),
+					Axis==0 ? FVector(Along,Other,7) : FVector(Other,Along,7));
+			}
+		}
+	}
+	if (!Data->PlacementTransform.Equals(T,0) || Data->PlacementExtent!=E || Data->bPlacementValid!=Valid)
+	{ Data->PlacementTransform=T; Data->PlacementExtent=E; Data->bPlacementValid=Valid; ++Data->ContentRevision; }
+
+	if (Before != Data->ContentRevision) ++Data->WorldRevision;
+	const auto& Cache = Data->GeometryCaches[PaintLeaves[0].IsValid() ? 0 : uint8(EGuLiSceneUIPaintPart::World)];
+	if (SceneSlate && (Before != Data->ContentRevision || !Cache.CachedMatrix.Equals(FMatrix::Identity, 0)))
+	{
+		// Camera changes are checked independently from content revisions.
+		const auto* Player = LocalController.IsValid() ? LocalController->GetLocalPlayer() : nullptr;
+		FSceneViewProjectionData Projection;
+		const bool CameraChanged = Player && Player->ViewportClient && Player->ViewportClient->Viewport
+			&& Player->GetProjectionData(Player->ViewportClient->Viewport, Projection)
+			&& (!Cache.CachedMatrix.Equals(Projection.ComputeViewProjectionMatrix(), 0) || Cache.CachedRect != Projection.GetConstrainedViewRect()
+				|| Cache.CachedViewRect != Projection.GetViewRect() || Cache.CachedSize != Geometry.GetLocalSize()
+				|| !(Cache.CachedTransform == Geometry.GetAccumulatedRenderTransform()));
+		if (Before != Data->ContentRevision || CameraChanged) InvalidatePaintPart(EGuLiSceneUIPaintPart::World);
+		if (CameraChanged)
+			for (auto Part : {EGuLiSceneUIPaintPart::Background,EGuLiSceneUIPaintPart::HUD,EGuLiSceneUIPaintPart::Panels}) InvalidatePaintPart(Part);
+		if (Before != Data->ContentRevision) InvalidatePaintPart(EGuLiSceneUIPaintPart::Background);
+	}
 }
 
 void UGuLiSceneUIWidget::DestroyOutlineCapture()
@@ -371,7 +561,13 @@ void UGuLiSceneUIWidget::NativeDestruct()
 	if (RouteData) RouteData->DestroyComponent();
 	RouteData=nullptr;
 	LocalController.Reset(); Presentation.Reset(); HealthBars.Reset();
-	Data->HUDShapes.Reset(); Data->Batches.Reset();
+	Data->HUDShapes.Reset(); Data->PendingHUDShapes.Reset();
+	for (auto& Cache : Data->GeometryCaches) Cache.Batches.Reset();
+	Data->HUDFrame = MAX_uint64; Data->bPendingHUD = false;
+	// A reused Widget must consume the registry snapshot even when the World
+	// membership has not changed while its Slate resources were detached.
+	SourceMembershipRevision = 0; RingContentRevision = 0; RingPoseRevision = 0;
+	OutlineMembershipRevision = 0; ++Data->ContentRevision;
 	ActorRingSources.Reset();
 	OutpostHaloSources.Reset();
 	Data->SurfaceBrushes.Reset(); Data->WorldWidgets.Reset(); SurfaceInstances.Reset();
@@ -380,6 +576,7 @@ void UGuLiSceneUIWidget::NativeDestruct()
 
 void UGuLiSceneUIWidget::RefreshOutline(float DeltaSeconds)
 {
+	FGuLiPerformanceScope Timing(GetWorld(), TEXT("SceneUI.OutlineCaptureMs"), LocalController.IsValid() ? LocalController->GetLocalPlayer() : nullptr);
 	auto* PC = LocalController.Get();
 	if (!PC || !PC->PlayerCameraManager || bModalHidden) return;
 	const EGuLiTeam Team = GuLiLocalTeamColors::GetViewTeam(PC);
@@ -406,14 +603,16 @@ void UGuLiSceneUIWidget::RefreshOutline(float DeltaSeconds)
 		OutlineCapture = GetWorld()->SpawnActor<ASceneCapture2D>(ASceneCapture2D::StaticClass(), FTransform::Identity, Params);
 		if (!OutlineCapture) { DestroyOutlineCapture(); return; }
 		ConfigureMaskCapture(*OutlineCapture->GetCaptureComponent2D(),OutlineTarget);
-		OutlineListRefreshRemaining = 0;
+		OutlineMembershipRevision = 0;
 	}
 	if (OutlineTarget->SizeX != Rect.Width() || OutlineTarget->SizeY != Rect.Height())
 		OutlineTarget->ResizeTarget(Rect.Width(), Rect.Height());
 	auto* Capture = OutlineCapture->GetCaptureComponent2D();
-	OutlineListRefreshRemaining -= DeltaSeconds;
-	if (OutlineListRefreshRemaining <= 0)
+	const auto* SourceRegistry = GetWorld()->GetSubsystem<UGuLiSceneUISourceRegistry>();
+	const uint64 Membership = SourceRegistry ? SourceRegistry->GetMembershipRevision() : 0;
+	if (OutlineMembershipRevision != Membership || OutlineMembershipRevision == 0)
 	{
+		FGuLiPerformanceScope ListTiming(GetWorld(), TEXT("SceneUI.OutlineListMs"), PC->GetLocalPlayer());
 		Capture->ClearShowOnlyComponents();
 		if (Presentation.IsValid())
 		{
@@ -421,16 +620,14 @@ void UGuLiSceneUIWidget::RefreshOutline(float DeltaSeconds)
 			for (auto* Batch : Batches)
 				if (GuLiLocalTeamColors::IsEnemy(EGuLiTeam(Batch->CustomDepthStencilValue), Team)) Capture->ShowOnlyComponent(Batch);
 		}
-		if (const auto* Registry = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>())
-			for (const auto& Weak : Registry->GetActors())
+		for (const auto& Weak : OutlineActorSources)
 			{
 				auto* Actor = Weak.Get();
-				if (!Actor || Actor->IsHidden() || UGuLiExternalUnitControlComponent::IsActorPhased(Actor)
-					|| !GuLiLocalTeamColors::IsEnemy(GuLiLocalTeamColors::GetActorTeam(Actor), Team)) continue;
+				if (!Actor || !GuLiLocalTeamColors::IsEnemy(GuLiLocalTeamColors::GetActorTeam(Actor), Team)) continue;
 				TInlineComponentArray<UMeshComponent*> Meshes(Actor);
-				for (auto* Mesh : Meshes) if (Mesh->IsVisible()) Capture->ShowOnlyComponent(Mesh);
+				for (auto* Mesh : Meshes) if (Mesh->IsRegistered()) Capture->ShowOnlyComponent(Mesh);
 			}
-		OutlineListRefreshRemaining = .1f;
+		OutlineMembershipRevision = Membership;
 	}
 	const auto& POV = PC->PlayerCameraManager->GetCameraCacheView();
 	OutlineCapture->SetActorLocationAndRotation(POV.Location, POV.Rotation);
@@ -443,11 +640,13 @@ void UGuLiSceneUIWidget::DestroyPlacementCapture()
 {
 	if (IsValid(PlacementCapture)) PlacementCapture->Destroy();
 	PlacementCapture=nullptr; PlacementTarget=nullptr; PlacementMaterialInstance=nullptr;
+	PlacementListSource.Reset(); PlacementMeshes.Reset();
 	Data->PlacementBrush.Reset();
 }
 
 void UGuLiSceneUIWidget::RefreshPlacement()
 {
+	FGuLiPerformanceScope Timing(GetWorld(), TEXT("SceneUI.PlacementCaptureMs"), LocalController.IsValid() ? LocalController->GetLocalPlayer() : nullptr);
 	auto* PC=LocalController.Get();
 	const auto* Placement=PC ? PC->FindComponentByClass<UGuLiBuildingPlacementComponent>() : nullptr;
 	const auto* Preview=Placement && Placement->IsBuildModeActive() ? Placement->GetSceneUIPreview() : nullptr;
@@ -477,8 +676,15 @@ void UGuLiSceneUIWidget::RefreshPlacement()
 		PlacementTarget->ResizeTarget(Rect.Width(),Rect.Height());
 	PlacementMaterialInstance->SetVectorParameterValue(TEXT("TintColor"),Preview->IsSceneUIPlacementValid()
 		? FLinearColor(.04f,1,.12f) : FLinearColor(1,.03f,.02f));
-	auto* Capture=PlacementCapture->GetCaptureComponent2D(); Capture->ClearShowOnlyComponents();
-	for (UMeshComponent* Mesh : Preview->GetSceneUIMeshes()) if (Mesh) Capture->ShowOnlyComponent(Mesh);
+	auto* Capture=PlacementCapture->GetCaptureComponent2D();
+	const auto Meshes = Preview->GetSceneUIMeshes();
+	bool Changed = PlacementListSource.Get() != Preview || PlacementMeshes.Num() != Meshes.Num();
+	for (int32 I=0; !Changed && I<Meshes.Num(); ++I) Changed = PlacementMeshes[I].Get() != Meshes[I];
+	if (Changed)
+	{
+		Capture->ClearShowOnlyComponents(); PlacementMeshes.Reset(); PlacementListSource = const_cast<AGuLiBuildingPlacementPreview*>(Preview);
+		for (UMeshComponent* Mesh : Meshes) if (Mesh) { Capture->ShowOnlyComponent(Mesh); PlacementMeshes.Add(Mesh); }
+	}
 	const auto& POV=PC->PlayerCameraManager->GetCameraCacheView();
 	PlacementCapture->SetActorLocationAndRotation(POV.Location,POV.Rotation);
 	Capture->FOVAngle=POV.FOV; Capture->ProjectionType=POV.ProjectionMode; Capture->OrthoWidth=POV.OrthoWidth;
@@ -500,51 +706,60 @@ UMaterialInstanceDynamic* UGuLiSceneUIWidget::GetSurfaceInstance(UTexture* Textu
 
 void UGuLiSceneUIWidget::RefreshWorldWidgets()
 {
-	Data->WorldWidgets.Reset();
+	FGuLiPerformanceScope Timing(GetWorld(), TEXT("SceneUI.WorldPanelsMs"), LocalController.IsValid() ? LocalController->GetLocalPlayer() : nullptr);
+	TArray<FGuLiSceneUIWorldWidget> Previous = MoveTemp(Data->WorldWidgets); Data->WorldWidgets.Reset();
 	auto* PC=LocalController.Get();
 	const APawn* Pawn=PC ? PC->GetPawn() : nullptr;
 	const auto* Source=Pawn && !bModalHidden ? Pawn->FindComponentByClass<UGuLiShipWorldHUDComponent>() : nullptr;
-	TSet<UTexture*> ActiveTextures;
 	if (Source) Source->GatherSceneUIWidgets(Data->WorldWidgets);
 	for (const auto& W : Data->WorldWidgets) if (auto* Texture=W.Texture.Get())
-	{ ActiveTextures.Add(Texture); GetSurfaceInstance(Texture); }
-	if (!bModalHidden && Data->HUDFrame!=MAX_uint64 && GFrameCounter-Data->HUDFrame<=1)
-		for (const auto& S : Data->HUDShapes) if (auto* Texture=S.Texture.Get()) ActiveTextures.Add(Texture);
-	for (auto It=SurfaceInstances.CreateIterator(); It; ++It) if (!ActiveTextures.Contains(It.Key().Get()))
-	{ Data->SurfaceBrushes.Remove(It.Key().Get()); It.RemoveCurrent(); }
+		GetSurfaceInstance(Texture);
+	if (Previous != Data->WorldWidgets) { ++Data->ContentRevision; ++Data->SurfaceRevision; InvalidatePaintPart(EGuLiSceneUIPaintPart::Panels); }
+	// Surface instances are released after Slate resources during NativeDestruct.
 }
 
-void UGuLiSceneUIWidget::BeginHUDFrame() { Data->HUDShapes.Reset(); Data->HUDFrame = GFrameCounter; }
+void UGuLiSceneUIWidget::BeginHUDFrame() { Data->PendingHUDShapes.Reset(); Data->bPendingHUD = true; }
+void UGuLiSceneUIWidget::EndHUDFrame()
+{
+	if (!Data->bPendingHUD) return;
+	Data->bPendingHUD = false;
+	if (Data->HUDShapes != Data->PendingHUDShapes)
+	{
+		Swap(Data->HUDShapes, Data->PendingHUDShapes); ++Data->ContentRevision; ++Data->HUDRevision;
+		InvalidatePaintPart(EGuLiSceneUIPaintPart::HUD);
+	}
+	Data->HUDFrame = GFrameCounter;
+}
 void UGuLiSceneUIWidget::AddScreenLine(float X1, float Y1, float X2, float Y2, FLinearColor Color, float Width)
 {
 	if (Color.A <= 0) return;
-	auto& S = Data->HUDShapes.AddDefaulted_GetRef(); S.A={X1,Y1}; S.B={X2,Y2}; S.Color=Opaque(Color); S.Width=Width;
+	auto& S = Data->PendingHUDShapes.AddDefaulted_GetRef(); S.A={X1,Y1}; S.B={X2,Y2}; S.Color=Opaque(Color); S.Width=Width;
 }
 void UGuLiSceneUIWidget::AddScreenRect(FLinearColor Color, float X, float Y, float W, float H)
 {
 	if (Color.A <= 0 || W<=0 || H<=0) return;
-	auto& S=Data->HUDShapes.AddDefaulted_GetRef(); S.Kind=FGuLiSceneUIWidgetData::EShape::Rect; S.A={X,Y}; S.B={W,H}; S.Color=Opaque(Color);
+	auto& S=Data->PendingHUDShapes.AddDefaulted_GetRef(); S.Kind=FGuLiSceneUIWidgetData::EShape::Rect; S.A={X,Y}; S.B={W,H}; S.Color=Opaque(Color);
 }
 void UGuLiSceneUIWidget::AddScreenDisc(FVector2D Center, float Radius, FLinearColor Color)
 {
 	if (Color.A<=0) return;
-	auto& S=Data->HUDShapes.AddDefaulted_GetRef(); S.Kind=FGuLiSceneUIWidgetData::EShape::Disc; S.A=Center; S.Width=Radius; S.Color=Opaque(Color);
+	auto& S=Data->PendingHUDShapes.AddDefaulted_GetRef(); S.Kind=FGuLiSceneUIWidgetData::EShape::Disc; S.A=Center; S.Width=Radius; S.Color=Opaque(Color);
 }
 void UGuLiSceneUIWidget::AddScreenImage(UTexture2D* Texture, FVector2D Position, FVector2D Size)
 {
 	if (!Texture || !GetSurfaceInstance(Texture)) return;
-	auto& S=Data->HUDShapes.AddDefaulted_GetRef(); S.Kind=FGuLiSceneUIWidgetData::EShape::Image; S.Texture=Texture; S.A=Position; S.B=Size;
+	auto& S=Data->PendingHUDShapes.AddDefaulted_GetRef(); S.Kind=FGuLiSceneUIWidgetData::EShape::Image; S.Texture=Texture; S.A=Position; S.B=Size;
 }
 void UGuLiSceneUIWidget::AddScreenText(const FString& Text, FLinearColor Color, float X, float Y)
 {
 	if (Color.A<=0) return;
-	auto& S=Data->HUDShapes.AddDefaulted_GetRef(); S.Kind=FGuLiSceneUIWidgetData::EShape::Text; S.Text=Text; S.Color=Opaque(Color); S.A={X,Y};
+	auto& S=Data->PendingHUDShapes.AddDefaulted_GetRef(); S.Kind=FGuLiSceneUIWidgetData::EShape::Text; S.Text=Text; S.Color=Opaque(Color); S.A={X,Y};
 }
 
 void UGuLiSceneUIWidget::AddWorldLine(const FVector& Start, const FVector& End, FLinearColor Color, float Width)
 {
 	if (Color.A<=0) return;
-	auto& S=Data->HUDShapes.AddDefaulted_GetRef(); S.Kind=FGuLiSceneUIWidgetData::EShape::WorldLine;
+	auto& S=Data->PendingHUDShapes.AddDefaulted_GetRef(); S.Kind=FGuLiSceneUIWidgetData::EShape::WorldLine;
 	S.WorldA=Start; S.WorldB=End; S.Color=Opaque(Color); S.Width=Width;
 }
 
@@ -570,72 +785,66 @@ FVector2D UGuLiSceneUIWidget::ToPlayerScreen(const FVector2D& ViewportPosition) 
 		? ViewportPosition-FVector2D(Projection.GetConstrainedViewRect().Min) : ViewportPosition;
 }
 
-void UGuLiSceneUIWidget::PaintSceneUI(const FGeometry& Geometry, FSlateWindowElementList& Elements, int32 Layer) const
+void UGuLiSceneUIWidget::PaintSceneUI(const FGeometry& Geometry, FSlateWindowElementList& Elements, int32 Layer, EGuLiSceneUIPaintPart Part) const
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSceneUI_Paint);
+	FGuLiPerformanceScope Timing(GetWorld(), TEXT("SceneUI.PaintMs"), LocalController.IsValid() ? LocalController->GetLocalPlayer() : nullptr);
 	auto* PC=LocalController.Get();
 	if (!PC || !PC->PlayerCameraManager || bModalHidden || Geometry.GetLocalSize().X<=0 || Geometry.GetLocalSize().Y<=0) return;
 	const auto* Player=PC->GetLocalPlayer(); FSceneViewProjectionData Projection;
 	if (!Player || !Player->ViewportClient || !Player->ViewportClient->Viewport
 		|| !Player->GetProjectionData(Player->ViewportClient->Viewport, Projection)) return;
-	FViewBatch View(Geometry, Elements, *Data, Projection, Layer+1);
+	const bool Combined = Part == EGuLiSceneUIPaintPart::Combined;
+	const bool Background = Combined || Part == EGuLiSceneUIPaintPart::Background;
+	const bool World = Combined || Part == EGuLiSceneUIPaintPart::World;
+	const bool HUD = Combined || Part == EGuLiSceneUIPaintPart::HUD;
+	const bool Panels = Combined || Part == EGuLiSceneUIPaintPart::Panels;
+	const uint64 Revision = Combined ? Data->ContentRevision : HUD ? Data->HUDRevision : Panels ? Data->SurfaceRevision : Data->WorldRevision;
+	FViewBatch View(Geometry, Elements, Data->GeometryCaches[uint8(Part)], Revision, Projection, Layer+1);
 	const auto* Camera=Cast<AGuLiCommanderCameraPawn>(PC->GetViewTarget());
 	const bool bOverview=Camera && Camera->IsOverviewPresentation();
 	Elements.PushClip(FSlateClippingZone(Geometry));
-	if (Data->OutlineBrush && !bOverview && GuLiLocalTeamColors::IsAssigned(GuLiLocalTeamColors::GetViewTeam(PC)))
+	if (Background && Data->OutlineBrush && !bOverview && GuLiLocalTeamColors::IsAssigned(GuLiLocalTeamColors::GetViewTeam(PC)))
 	{
 		const FVector2D Size(View.Rect.Width(), View.Rect.Height());
 		FSlateDrawElement::MakeBox(Elements, Layer, Geometry.ToPaintGeometry(FVector2f(Size*View.Scale),
 			FSlateLayoutTransform(FVector2f(View.Inset*View.Scale))), Data->OutlineBrush.Get());
 	}
-	if (Data->PlacementBrush)
+	if (Background && Data->PlacementBrush)
 	{
 		const FVector2D Size(View.Rect.Width(), View.Rect.Height());
 		FSlateDrawElement::MakeBox(Elements,Layer,Geometry.ToPaintGeometry(FVector2f(Size*View.Scale),
 			FSlateLayoutTransform(FVector2f(View.Inset*View.Scale))),Data->PlacementBrush.Get());
 	}
-	if (!bOverview && Presentation.IsValid())
+	if (World && !bOverview && Presentation.IsValid())
 	{
-		Presentation->GatherSceneUIRings(Data->Rings,PC);
+
 		const EGuLiTeam Team=GuLiLocalTeamColors::GetViewTeam(PC);
 		for (bool SelectedPass : {false, true}) for (const auto& Ring : Data->Rings)
 			if (Ring.bSelected==SelectedPass) View.Ring(Ring, GuLiLocalTeamColors::GetUI(Ring.Team, Team));
 		if (const auto* Commander=Cast<AGuLiCommanderPlayerController>(PC); Commander && Commander->IsCommanderViewActive()) if (const auto* Routes=RouteData.Get())
 		{
-			Routes->GatherSceneUILines(Data->Routes);
+
 			for (const auto& Line : Data->Routes) View.WorldLine(Line.Start, Line.End, 1.5f, FLinearColor(.08f,.94f,.20f,1));
 		}
 	}
-	if (!bOverview)
+	if (World && !bOverview)
 	{
 		const auto ViewTeam=GuLiLocalTeamColors::GetViewTeam(PC);
 		const FRotationMatrix CameraAxes(PC->PlayerCameraManager->GetCameraRotation());
-		for (const auto& Source : OutpostHaloSources) if (const auto* Halo=Source.Get())
+		static const TArray<FVector2D> HaloDirections=[] { TArray<FVector2D> R; for (int32 I=0; I<48; ++I) { const double A=I*2.0*PI/48; R.Add({FMath::Cos(A),FMath::Sin(A)}); } return R; }();
+		for (const auto& Halo : Data->Halos)
 		{
-			FVector Center; EGuLiTeam Team; FVector2D Radii;
-			if (!Halo->GetSceneUIHalo(Center,Team,Radii)) continue;
-			const FLinearColor Color=GuLiLocalTeamColors::GetUI(Team,ViewTeam);
-			if (Color.A<=0) continue;
-			const FVector Right=CameraAxes.GetScaledAxis(EAxis::Y)*Radii.X, Up=CameraAxes.GetScaledAxis(EAxis::Z)*Radii.Y;
+			const FLinearColor Color=GuLiLocalTeamColors::GetUI(Halo.Team,ViewTeam);
+			const FVector Right=CameraAxes.GetScaledAxis(EAxis::Y)*Halo.Radii.X, Up=CameraAxes.GetScaledAxis(EAxis::Z)*Halo.Radii.Y;
 			for (int32 I=0; I<48; ++I)
-			{
-				const double A=I*2.0*PI/48, B=(I+1)*2.0*PI/48;
-				View.WorldLine(Center+Right*FMath::Cos(A)+Up*FMath::Sin(A),Center+Right*FMath::Cos(B)+Up*FMath::Sin(B),2.f,Color);
-			}
+			{ const auto A=HaloDirections[I], B=HaloDirections[(I+1)%48]; View.WorldLine(Halo.Center+Right*A.X+Up*A.Y,Halo.Center+Right*B.X+Up*B.Y,2.f,Color); }
 		}
-		for (const auto& Source : ActorRingSources) if (const auto* Actor=Source.Get())
-		{
-			FGuLiSceneUIRing Ring; Ring.Team=GuLiLocalTeamColors::GetActorTeam(Actor);
-			if (const auto* Vehicle=Cast<IGuLiEngineeringVehicle>(Actor))
-				if (const auto* Sync=PC->FindComponentByClass<UGuLiCommanderNetSyncComponent>()) Ring.bSelected=Sync->GetSelectionState().ActorIds.Contains(Vehicle->GetStableActorId());
-			if (const auto* Capsule=Actor->FindComponentByClass<UCapsuleComponent>())
-			{ Ring.Center=Capsule->GetComponentLocation()-FVector(0,0,Capsule->GetScaledCapsuleHalfHeight()-5); Ring.OuterRadiusCm=Capsule->GetScaledCapsuleRadius(); }
-			else { FVector Center,Extent; Actor->GetActorBounds(false,Center,Extent); Ring.Center=FVector(Center.X,Center.Y,Center.Z-Extent.Z+5); Ring.OuterRadiusCm=FMath::Max(Extent.X,Extent.Y); }
-			if (!Actor->IsHidden() && Ring.OuterRadiusCm>0) View.Ring(Ring,GuLiLocalTeamColors::GetUI(Ring.Team,ViewTeam));
-		}
+		for (const auto& Ring : Data->ActorRings) View.Ring(Ring,GuLiLocalTeamColors::GetUI(Ring.Team,ViewTeam));
 	}
-	if (!bOverview && HealthBars.IsValid())
+	if (World && !bOverview && HealthBars.IsValid())
 	{
-		HealthBars->GatherSceneUIBars(Data->Bars);
+
 		for (const auto& Bar : Data->Bars)
 		{
 			FVector2D P; if (!View.Project(Bar.Center, P)) continue;
@@ -645,25 +854,10 @@ void UGuLiSceneUIWidget::PaintSceneUI(const FGeometry& Geometry, FSlateWindowEle
 			View.Box(P,FVector2D(84*Bar.Fraction,12),FLinearColor(.15f,.9f,.35f));
 		}
 	}
-	if (const auto* Placement=PC->FindComponentByClass<UGuLiBuildingPlacementComponent>(); Placement && Placement->IsBuildModeActive())
-		if (const auto* Preview=Placement->GetSceneUIPreview(); Preview && !Preview->IsHidden())
-		{
-			const FVector E=Preview->GetSceneUIFootprintExtent(); const FTransform T=Preview->GetActorTransform();
-			const FLinearColor Color=Preview->IsSceneUIPlacementValid() ? FLinearColor(.04f,1,.12f) : FLinearColor(1,.03f,.02f);
-			for (int32 Axis=0; Axis<2; ++Axis)
-			{
-				const double Extent=Axis==0 ? E.X : E.Y, Other=Axis==0 ? E.Y : E.X;
-				const int32 Count=FMath::Min(64,FMath::CeilToInt(Extent/100.0));
-				for (int32 I=-Count; I<=Count; ++I)
-				{
-					const double Along=FMath::Clamp(I*100.0,-Extent,Extent);
-					const FVector A=Axis==0 ? FVector(Along,-Other,7) : FVector(-Other,Along,7);
-					const FVector B=Axis==0 ? FVector(Along,Other,7) : FVector(Other,Along,7);
-					View.WorldLine(T.TransformPosition(A),T.TransformPosition(B),1,Color);
-				}
-			}
-		}
-	if (Data->HUDFrame!=MAX_uint64 && GFrameCounter-Data->HUDFrame<=1) for (const auto& S : Data->HUDShapes)
+	if (World && View.bBuild) for (const auto& Line : Data->PlacementLocalLines)
+		View.WorldLine(Data->PlacementTransform.TransformPosition(Line.Key),Data->PlacementTransform.TransformPosition(Line.Value),1,
+			Data->bPlacementValid ? FLinearColor(.04f,1,.12f) : FLinearColor(1,.03f,.02f));
+	if (HUD && Data->HUDFrame!=MAX_uint64 && GFrameCounter-Data->HUDFrame<=1) for (const auto& S : Data->HUDShapes)
 	{
 		switch (S.Kind)
 		{
@@ -671,8 +865,12 @@ void UGuLiSceneUIWidget::PaintSceneUI(const FGeometry& Geometry, FSlateWindowEle
 		case FGuLiSceneUIWidgetData::EShape::WorldLine: View.WorldLine(S.WorldA,S.WorldB,S.Width,S.Color); break;
 		case FGuLiSceneUIWidgetData::EShape::Rect: View.Box(S.A+View.Inset,S.B,S.Color); break;
 		case FGuLiSceneUIWidgetData::EShape::Disc:
-			for (int32 I=0; I<32; ++I) { const double A=I*PI/16, B=(I+1)*PI/16;
-				View.Triangle(S.A+View.Inset,S.A+View.Inset+FVector2D(FMath::Cos(A),FMath::Sin(A))*S.Width,S.A+View.Inset+FVector2D(FMath::Cos(B),FMath::Sin(B))*S.Width,S.Color); } break;
+		{
+			static const TArray<FVector2D> Directions=[] { TArray<FVector2D> R; for (int32 I=0; I<=32; ++I) { const double A=I*PI/16; R.Add({FMath::Cos(A),FMath::Sin(A)}); } return R; }();
+			if (View.bBuild) for (int32 I=0; I<32; ++I)
+				View.Triangle(S.A+View.Inset,S.A+View.Inset+Directions[I]*S.Width,S.A+View.Inset+Directions[I+1]*S.Width,S.Color);
+			break;
+		}
 		case FGuLiSceneUIWidgetData::EShape::Image:
 			if (const auto* Brush=Data->SurfaceBrushes.Find(S.Texture.Get()); Brush && Brush->IsValid()) {
 				FSlateDrawElement::MakeBox(Elements,Layer+2,Geometry.ToPaintGeometry(FVector2f(S.B*View.Scale),
@@ -682,11 +880,19 @@ void UGuLiSceneUIWidget::PaintSceneUI(const FGeometry& Geometry, FSlateWindowEle
 				S.Text,FCoreStyle::GetDefaultFontStyle("Regular",10),ESlateDrawEffect::None,S.Color); break;
 		}
 	}
-	View.Submit();
-	if (const auto* Commander=Cast<AGuLiCommanderPlayerController>(PC); Commander && Commander->IsCommanderViewActive())
+	if (World || HUD) View.Submit();
+	if (const auto* Commander=Cast<AGuLiCommanderPlayerController>(PC); World && Commander && Commander->IsCommanderViewActive())
 		if (!Data->Routes.IsEmpty() && RouteData && !bOverview) RouteData->RecordSceneUISubmission();
-	for (const auto& W : Data->WorldWidgets)
+	if (Panels) for (const auto& W : Data->WorldWidgets)
 		if (const auto* Brush=Data->SurfaceBrushes.Find(W.Texture.Get()); Brush && Brush->IsValid())
 			View.WidgetSurface(W,FSlateApplication::Get().GetRenderer()->GetResourceHandle(**Brush));
 	Elements.PopClip();
+}
+
+FString UGuLiSceneUIWidget::GetFrameStatsJson() const
+{
+ if (!Data) return TEXT("{}");
+ int32 Vertices=0; for (const auto& Cache:Data->GeometryCaches) for (const auto& B:Cache.Batches) Vertices+=B->Vertices.Num();
+ return FString::Printf(TEXT("{\"hud_shapes\":%d,\"hud_expired\":%s,\"rings\":%d,\"health_bars\":%d,\"route_lines\":%d,\"world_panels\":%d,\"content_revision\":%llu,\"cached_vertices\":%d,\"surface_resources\":%d}"),
+ Data->HUDShapes.Num(), Data->HUDFrame==MAX_uint64 ? TEXT("true"):TEXT("false"), Data->Rings.Num()+Data->ActorRings.Num(),Data->Bars.Num(),Data->Routes.Num(),Data->WorldWidgets.Num(),Data->ContentRevision,Vertices,SurfaceInstances.Num());
 }

@@ -1,4 +1,5 @@
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
+#include "Commander/UI/GuLiSceneUISourceRegistry.h"
 #include "Gameplay/Units/GuLiEngineeringAIController.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/Stronghold/GuLiStrongholdTransitPresentationComponent.h"
@@ -29,6 +30,7 @@ UGuLiEngineeringTravelComponent::UGuLiEngineeringTravelComponent()
 void UGuLiEngineeringTravelComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	if (auto* Registry = GetWorld()->GetSubsystem<UGuLiSceneUISourceRegistry>()) Registry->RegisterSource(GetOwner(), EGuLiSceneUISourceKind::PawnRing);
 	Control = GetOwner()->FindComponentByClass<UGuLiExternalUnitControlComponent>();
 	check(Control && Cast<IGuLiEngineeringVehicle>(GetOwner()));
 	if (GetOwner()->HasAuthority()) SetComponentTickEnabled(true);

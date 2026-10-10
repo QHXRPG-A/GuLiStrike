@@ -17,10 +17,12 @@ public:
 	virtual void Deinitialize() override;
 
 	FGuLiCommanderLODDecision Evaluate(const FGuLiCommanderLODQuery& Query);
+	FGuLiCommanderLODDecision EvaluateWorldEffectBounds(const FGuLiCommanderLODQuery& Query, double NonCommanderMaximumDistance);
 	/** World-effect admission: commander LOD0/1 allow, LOD2 suppresses. Other views use the
 	 * caller's distance limit (<= 0 means unlimited). Any eligible local view wins;
 	 * registered visual components remain hidden per overview view by its own mask. */
 	bool ShouldRenderWorldEffect(const FVector& Location, double NonCommanderMaximumDistance);
+	bool ShouldRenderWorldEffectBounds(const FBox& Bounds, double NonCommanderMaximumDistance);
 	/** Continuous FX opacity: commander near/tactical views retain full visibility;
 	 * overview contributes none. Other local views fade over the supplied cm range.
 	 * The most visible local view wins; overview retains its per-view component mask. */

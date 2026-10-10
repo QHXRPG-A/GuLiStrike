@@ -19,7 +19,7 @@ from commander_editor_python import call_editor
 SNAPSHOT = '''
 import unreal, json, collections
 es = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem)
-worlds = [w for w in unreal.ObjectIterator(unreal.World) if 'UEDPIE_' in w.get_path_name()]
+worlds = unreal.EditorLevelLibrary.get_pie_worlds(True)
 rows = []
 for w in worlds:
     actors = unreal.GameplayStatics.get_all_actors_of_class(w, unreal.Actor)
@@ -35,6 +35,8 @@ for w in worlds:
         'actor_count': len(actors), 'classes': dict(collections.Counter(a.get_class().get_name() for a in actors)),
         'controllers': [{'name': pc.get_name(), 'local': pc.is_local_player_controller(),
             'viewport': list(pc.get_viewport_size()),
+            'view_target': pc.get_view_target().get_actor_label() if pc.get_view_target() else None,
+            'auto_manage_camera': pc.get_editor_property('bAutoManageActiveCameraTarget'),
             'camera_location': list(pc.player_camera_manager.get_camera_location().to_tuple()) if pc.player_camera_manager else None,
             'camera_rotation': list(pc.player_camera_manager.get_camera_rotation().to_tuple()) if pc.player_camera_manager else None}
             for pc in controllers],
@@ -46,8 +48,8 @@ keys = ['t.MaxFPS', 't.IdleWhenNotForeground', 'r.VSync', 'r.ScreenPercentage',
     'sg.' + s + 'Quality' for s in ['ViewDistance', 'AntiAliasing', 'Shadow', 'GlobalIllumination',
     'Reflection', 'PostProcess', 'Texture', 'Effects', 'Foliage', 'Shading']]
 settings = {}
-for clsname, props in [('LevelEditorPlaySettings', ['play_number_of_clients', 'run_under_one_process',
-    'play_net_mode', 'launch_separate_server', 'play_net_dedicated']),
+for clsname, props in [('LevelEditorPlaySettings', ['PlayNumberOfClients', 'RunUnderOneProcess',
+    'PlayNetMode', 'bLaunchSeparateServer', 'NewWindowWidth', 'NewWindowHeight']),
     ('EditorPerformanceSettings', ['bThrottleCPUWhenNotForeground'])]:
     cls = unreal.load_class(None, '/Script/UnrealEd.' + clsname)
     obj = unreal.get_default_object(cls) if cls else None

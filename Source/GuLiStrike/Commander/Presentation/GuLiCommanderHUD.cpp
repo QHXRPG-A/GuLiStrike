@@ -1,6 +1,7 @@
+#include "Commander/Presentation/GuLiCommanderHUD.h"
+#include "Misc/ScopeExit.h"
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "Commander/Presentation/GuLiCommanderHUD.h"
 
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
@@ -309,6 +310,10 @@ void AGuLiCommanderHUD::DestroyRuntimeHUD()
 
 void AGuLiCommanderHUD::DrawHUD()
 {
+	const AGuLiCommanderPlayerController* CommanderController = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
+	SceneUI=CommanderController ? CommanderController->GetSceneUIWidget() : nullptr;
+	if (SceneUI.IsValid()) SceneUI->BeginHUDFrame();
+	ON_SCOPE_EXIT { if (SceneUI.IsValid()) SceneUI->EndHUDFrame(); };
 	if (bRogueCardHidden) return;
 	Super::DrawHUD();
 	if (!Canvas)
@@ -316,9 +321,6 @@ void AGuLiCommanderHUD::DrawHUD()
 		return;
 	}
 
-	const AGuLiCommanderPlayerController* CommanderController = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
-	SceneUI=CommanderController ? CommanderController->GetSceneUIWidget() : nullptr;
-	if (SceneUI.IsValid()) SceneUI->BeginHUDFrame();
 	// 绘制回调只负责 Canvas；角色/UI 生命周期不能依赖 showhud 或视口是否渲染。
 	if (CommanderController && CommanderController->IsCommanderViewActive())
 	{
@@ -378,7 +380,7 @@ void AGuLiCommanderHUD::DrawPerformanceStats()
 	}
 
 	// Real elapsed time and engine frames keep pause/time dilation out of FPS.
-	// Each local HUD caches its own text; no RPC, actor scan, or extra timer.
+	// Each local HUD caches its own text; network samples refresh once per second.
 	const double Now = FPlatformTime::Seconds();
 	const bool bFirstSample = PerformanceStatsText.IsEmpty();
 	const double Elapsed = Now - PerformanceSampleWallSeconds;
@@ -426,16 +428,21 @@ void AGuLiCommanderHUD::DrawPerformanceStats()
 	}
 
 	RefreshCameraGroundDistance(Now);
-	float TextWidth = 0.0f, TextHeight = 0.0f;
-	Canvas->StrLen(Font, PerformanceStatsText, TextWidth, TextHeight);
-	float CameraTextWidth = 0.0f, CameraTextHeight = 0.0f;
-	if (!CameraDistanceText.IsEmpty())
+	NetworkStats.Refresh(PlayerOwner, Now);
+	TArray<const FString*, TInlineAllocator<10>> Lines;
+	Lines.Add(&PerformanceStatsText);
+	if (!CameraDistanceText.IsEmpty()) Lines.Add(&CameraDistanceText);
+	for (const FString& Line : NetworkStats.GetLines()) Lines.Add(&Line);
+	float TextWidth = 0.0f, LineHeight = 0.0f;
+	for (const FString* Line : Lines)
 	{
-		Canvas->StrLen(Font, CameraDistanceText, CameraTextWidth, CameraTextHeight);
+		float Width = 0.0f, Height = 0.0f;
+		Canvas->StrLen(Font, *Line, Width, Height);
+		TextWidth = FMath::Max(TextWidth, Width);
+		LineHeight = FMath::Max(LineHeight, Height);
 	}
-	const float PanelWidth = FMath::Max(TextWidth, CameraTextWidth) + 20.0f;
-	const float PanelHeight = TextHeight + 12.0f
-		+ (CameraDistanceText.IsEmpty() ? 0.0f : CameraTextHeight + 4.0f);
+	const float PanelWidth = TextWidth + 20.0f;
+	const float PanelHeight = (LineHeight + 4.0f) * Lines.Num() + 8.0f;
 	const float DPIScale = GetDefault<UUserInterfaceSettings>()->GetDPIScaleBasedOnSize(
 		FIntPoint(Canvas->SizeX, Canvas->SizeY));
 	const float X = FMath::Min(16.0f * DPIScale, Canvas->ClipX * 0.05f);
@@ -446,12 +453,10 @@ void AGuLiCommanderHUD::DrawPerformanceStats()
 			(Canvas->ClipY - Y) / FMath::Max(1.0f, PanelHeight)));
 	DrawRect(FLinearColor(0.01f, 0.025f, 0.04f, 0.78f), X, Y,
 		PanelWidth * Scale, PanelHeight * Scale);
-	DrawText(PerformanceStatsText, FLinearColor(0.9f, 0.95f, 1.0f),
-		X + 10.0f * Scale, Y + 6.0f * Scale, Font, Scale, false);
-	if (!CameraDistanceText.IsEmpty())
+	for (int32 Index = 0; Index < Lines.Num(); ++Index)
 	{
-		DrawText(CameraDistanceText, FLinearColor(0.9f, 0.95f, 1.0f),
-			X + 10.0f * Scale, Y + (TextHeight + 10.0f) * Scale, Font, Scale, false);
+		DrawText(*Lines[Index], FLinearColor(0.9f, 0.95f, 1.0f),
+			X + 10.0f * Scale, Y + (6.0f + Index * (LineHeight + 4.0f)) * Scale, Font, Scale, false);
 	}
 }
 

@@ -1,10 +1,13 @@
 #include "Gameplay/Building/GuLiConstructionPresentationComponent.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "Gameplay/Building/GuLiBuildingConstructionVisualComponent.h"
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
+#include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Components/SceneComponent.h"
 #include "GameFramework/GameStateBase.h"
@@ -56,7 +59,7 @@ void UGuLiConstructionPresentationComponent::SetConstructionAuthority(UGuLiBuild
 
 void UGuLiConstructionPresentationComponent::OnRep_State()
 {
-	SelectedSpan = {};
+	SelectedSpan = {}; Visibility={}; NextVisibilityCheck=0; SetComponentTickInterval(0);
 	HideBeams();
 	SetComponentTickEnabled(State.bActive && GetOwner()->GetNetMode() != NM_DedicatedServer);
 }
@@ -122,6 +125,13 @@ void UGuLiConstructionPresentationComponent::HideBeams()
 	bShowing = false;
 }
 
+FString UGuLiConstructionPresentationComponent::GetPresentationDiagnosticsJson() const
+{
+ return FString::Printf(TEXT("{\"state\":%d,\"active\":%s,\"showing\":%s,\"tick_enabled\":%s,\"tick_interval\":%.3f,\"building_instance\":%u,\"scan_started_at\":%.6f}"),
+  int32(Visibility.State),State.bActive ? TEXT("true") : TEXT("false"),bShowing ? TEXT("true") : TEXT("false"),
+  IsComponentTickEnabled() ? TEXT("true") : TEXT("false"),GetComponentTickInterval(),State.BuildingInstance,State.ScanStartedAt);
+}
+
 void UGuLiConstructionPresentationComponent::TickComponent(float Dt, ELevelTick TickType, FActorComponentTickFunction* Function)
 {
 	Super::TickComponent(Dt, TickType, Function);
@@ -138,6 +148,25 @@ void UGuLiConstructionPresentationComponent::TickComponent(float Dt, ELevelTick 
 	for (int32 Side = 0; Side < 2; ++Side)
 		if (!Pivots[Side].IsValid() || !Muzzles[Side].IsValid() || !Beams[Side].IsValid() || !Beams[Side]->GetAsset())
 		{ if (bShowing) HideBeams(); return; }
+	const double LocalNow=GetWorld()->GetTimeSeconds();
+	if (LocalNow>=NextVisibilityCheck)
+	{
+		FGuLiPerformanceScope Timing(GetWorld(),TEXT("Construction.VisibilityMs"));
+		NextVisibilityCheck=LocalNow+FGuLiPersistentEffectVisibility::CheckSeconds;
+		FBox Bounds=State.Building->GetComponentsBoundingBox(true);
+		for (const auto& Muzzle : Muzzles) Bounds+=Muzzle->GetComponentLocation();
+		for (const auto& Beam : Beams) if (Beam.IsValid() && Beam->Bounds.GetBox().IsValid) Bounds+=Beam->Bounds.GetBox();
+		auto* LOD=GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>();
+		FGuLiCommanderLODDecision Decision; Decision.bVisible=true; Decision.TargetLevel=EGuLiCommanderLODLevel::Full;
+		if (LOD) Decision=LOD->EvaluateWorldEffectBounds(Visibility.DetailQuery(Bounds.ExpandBy(500.f)),20000);
+		Visibility.ApplyDetail(Decision,LocalNow);
+		for (const auto& Beam : Beams) GuLiClientPresentation::ApplyEndpointDetail(Beam.Get(),Visibility.DetailLevel.Get(EGuLiCommanderLODLevel::Full));
+		Visibility.Update(true,Decision.bVisible,LocalNow);
+	}
+	if (Visibility.State==EGuLiPersistentEffectVisibility::Suspended)
+	{ if (bShowing) HideBeams(); SetComponentTickInterval(FGuLiPersistentEffectVisibility::CheckSeconds); return; }
+	SetComponentTickInterval(0);
+	FGuLiPerformanceScope EndpointTiming(GetWorld(),TEXT("Construction.EndpointsMs"));
 	if (SelectedSpan.Contour == INDEX_NONE || SelectedSpan.Revision != Visual->GetShapeRevision())
 		if (!Visual->FindNearestConstructionSpan(GetOwner()->GetActorLocation(), SelectedSpan)) { HideBeams(); return; }
 	const auto* GameState = GetWorld()->GetGameState();

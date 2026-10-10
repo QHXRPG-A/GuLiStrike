@@ -7,6 +7,7 @@ class UNiagaraSystem;
 class UNiagaraScript;
 class UNiagaraDataChannelAsset;
 class UStaticMesh;
+class UNiagaraComponent;
 
 /** Small editor bridge for NDC graph pins not exposed by the installed VibeUE 4.0 API. No runtime authoring. */
 UCLASS()
@@ -25,6 +26,35 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool WireGunfireReader(UNiagaraSystem* System, UNiagaraDataChannelAsset* Channel,
 		UNiagaraScript* EmitterSpawnScript, UNiagaraScript* EmitterUpdateScript, UNiagaraScript* ParticleSpawnScript, FString& Error);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool ConfigureImpactChannel(UNiagaraDataChannelAsset* Channel, FString& Error);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool ConfigureMuzzleChannel(UNiagaraDataChannelAsset* Channel, FString& Error);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool WireMuzzleRender(UNiagaraSystem* System,FName EmitterName,UNiagaraScript* Module,FString& Error);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool WireImpactReader(UNiagaraSystem* System, UNiagaraDataChannelAsset* Channel,
+		UNiagaraScript* Bind, UNiagaraScript* Spawn, UNiagaraScript* Init, int32 MinimumCount, int32 MaximumCount, FString& Error);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool WireImpactLifecycle(UNiagaraSystem* System, UNiagaraScript* Update, FString& Error);
+	/** Copy particle-module dependencies into the owned batch and substitute per-event inputs; retain the location-event producer/follower. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool PrepareImpactBatchSystem(UNiagaraSystem* System, FString& Error);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool MoveClientEffectModule(UNiagaraSystem* System, FName EmitterName, UNiagaraScript* Module, FString Usage, int32 Index, FString& Error);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool ConfigureToolLaserEndpointLOD(UNiagaraSystem* System, FString& Error);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool WireWingmanMeshReader(UNiagaraSystem* System, UNiagaraScript* Module, bool bTrail, FString& Error);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool ConfigureWingmanMeshSystem(UNiagaraSystem* System, FString& Error);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static FString GetWingmanCoreBaseline(UNiagaraSystem* System);
+	/** CPU particle/identity readback for owned impact consumers, outside performance capture windows. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static FString InspectImpactBatchComponent(UNiagaraComponent* Component);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static FString GetImpactCompiledSource(UNiagaraSystem* System);
 	/** Fixes VibeUE dynamic pin order for the project's supported VFX folders, including Construction. Does not save. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool FinalizeScratchPins(UNiagaraSystem* System);
@@ -34,6 +64,9 @@ public:
 	/** Bind project-owned laser particle slots to User arrays. Editor-only; does not save. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool WireLaserPoolReader(UNiagaraSystem* System, UNiagaraScript* ParticleUpdateScript, bool bMuzzle, FString& Error);
+	/** Only the owned small-batch copy. Binds burst capacity to User.LaserSlotCount; does not save. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool BindLaserPoolCapacity(UNiagaraSystem* System, FString& Error);
 	/** Binds the task-owned upgrade pool to per-unit positions/age/scale/color arrays. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool WireRogueUpgradePoolReader(UNiagaraSystem* System, UNiagaraScript* ParticleUpdateScript, FString& Error);
@@ -51,6 +84,16 @@ public:
 	/** Read actual VM and GPU shader diagnostics, beyond the service's readiness-only check. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static FString GetWarMachineHoverCompileDiagnostics(UNiagaraSystem* System);
+	/** Only frozen tool-laser GPU review copies. Never saves or alters production emitters. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool ConfigureToolLaserGPUCandidate(UNiagaraSystem* System, FString& Error);
+	/** Read-only graph overrides and curve data for the machine-gun source/review copies.
+	 * This complements the service's module-default pins when auditing complete pre-spawn bounds. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static FString GetMachineGunBoundsInputs(UNiagaraSystem* System);
+	/** Authored pre-spawn envelope only; retains the original dynamic simulation bounds. Does not save. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool ConfigureMachineGunBoundsEnvelope(UNiagaraSystem* System, FVector Extent, FString& Error);
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static FString GetRogueUpgradeCompileDiagnostics(UNiagaraSystem* System);
 	/** Project explosion refraction meshes already multiply Engine.Owner.Scale. Prevent LocalSpace applying it twice.

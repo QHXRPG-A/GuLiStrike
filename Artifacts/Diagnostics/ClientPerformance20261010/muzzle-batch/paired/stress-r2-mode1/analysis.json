@@ -1,0 +1,361 @@
+{
+  "name": "stress-r2-mode1",
+  "scene": "stress",
+  "round": 2,
+  "mode": 1,
+  "frame_comparison_eligible": true,
+  "muzzle_gain_eligible": false,
+  "csv": {
+    "FrameTime": {
+      "mean": 86.10305457142857,
+      "p95": 121.5469,
+      "n": 350
+    },
+    "GameThreadTime": {
+      "mean": 86.10283314285715,
+      "p95": 122.3383,
+      "n": 350
+    },
+    "GPUTime": {
+      "mean": 26.623109714285714,
+      "p95": 35.178,
+      "n": 350
+    },
+    "PhysicalUsedMB": {
+      "mean": 11373.96059942857,
+      "p95": 11431.9727,
+      "n": 350
+    },
+    "VirtualUsedMB": {
+      "mean": 19854.63689742857,
+      "p95": 19923.4727,
+      "n": 350
+    }
+  },
+  "clients": [
+    {
+      "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "delta": {
+        "muzzle_accepted": 0,
+        "muzzle_born": 0,
+        "muzzle_duplicates": 0,
+        "muzzle_expired": 0,
+        "muzzle_offscreen_recycled": 0,
+        "muzzle_batch_published": 0,
+        "muzzle_batch_fallbacks": 0,
+        "muzzle_pose_queries": 0,
+        "muzzle_life_uploads": 0,
+        "muzzle_pose_uploads": 0
+      },
+      "components_end": 0,
+      "active_slots_end": 0,
+      "ui_before": [
+        {
+          "hud_shapes": 0,
+          "hud_expired": false,
+          "rings": 636,
+          "health_bars": 172,
+          "route_lines": 0,
+          "world_panels": 0,
+          "content_revision": 860,
+          "cached_vertices": 232128,
+          "surface_resources": 0
+        }
+      ],
+      "ui_after": [
+        {
+          "hud_shapes": 0,
+          "hud_expired": false,
+          "rings": 635,
+          "health_bars": 144,
+          "route_lines": 0,
+          "world_panels": 0,
+          "content_revision": 2092,
+          "cached_vertices": 218202,
+          "surface_resources": 0
+        }
+      ]
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "delta": {
+        "muzzle_accepted": 0,
+        "muzzle_born": 0,
+        "muzzle_duplicates": 0,
+        "muzzle_expired": 0,
+        "muzzle_offscreen_recycled": 0,
+        "muzzle_batch_published": 0,
+        "muzzle_batch_fallbacks": 0,
+        "muzzle_pose_queries": 0,
+        "muzzle_life_uploads": 0,
+        "muzzle_pose_uploads": 0
+      },
+      "components_end": 0,
+      "active_slots_end": 0,
+      "ui_before": [
+        {
+          "hud_shapes": 0,
+          "hud_expired": false,
+          "rings": 636,
+          "health_bars": 172,
+          "route_lines": 0,
+          "world_panels": 2,
+          "content_revision": 840,
+          "cached_vertices": 232128,
+          "surface_resources": 2
+        },
+        {
+          "hud_shapes": 0,
+          "hud_expired": true,
+          "rings": 0,
+          "health_bars": 0,
+          "route_lines": 0,
+          "world_panels": 0,
+          "content_revision": 5,
+          "cached_vertices": 0,
+          "surface_resources": 0
+        }
+      ],
+      "ui_after": [
+        {
+          "hud_shapes": 0,
+          "hud_expired": false,
+          "rings": 635,
+          "health_bars": 144,
+          "route_lines": 0,
+          "world_panels": 2,
+          "content_revision": 2076,
+          "cached_vertices": 218202,
+          "surface_resources": 2
+        }
+      ]
+    }
+  ],
+  "moved_over_10cm": 478,
+  "moving_before": 594,
+  "moving_after": 574,
+  "load_before": {
+    "running": true,
+    "groundMissile": false,
+    "desired": 500,
+    "peak": 500,
+    "accepted": 0,
+    "completed": 0,
+    "rejected": 0,
+    "domains": [
+      125,
+      125,
+      125,
+      125
+    ]
+  },
+  "load_after": {
+    "running": true,
+    "groundMissile": false,
+    "desired": 500,
+    "peak": 500,
+    "accepted": 0,
+    "completed": 0,
+    "rejected": 0,
+    "domains": [
+      125,
+      125,
+      125,
+      125
+    ]
+  },
+  "flight_network_before": [
+    "active=2156 created=16897 ended=14741 payloadBytes=1709019 batches=1911 bootstrap=0 queued=42504 policy=events_only domains=1779/125/125/127"
+  ],
+  "flight_network_after": [
+    "active=2684 created=76174 ended=73490 payloadBytes=5933931 batches=6761 bootstrap=0 queued=223305 policy=events_only domains=2295/125/125/139"
+  ],
+  "explanation": "No actual muzzle feedback was accepted/born. Frame/workload data remains usable, but zero-event samples cannot prove muzzle gains.",
+  "cpu_eligible": true,
+  "cpu": {
+    "frames": 347,
+    "owner_scopes": [
+      {
+        "timer": "GuLiMuzzles_Publish",
+        "calls": 696,
+        "inclusive_ms_per_frame": 0.018806916426512967,
+        "exclusive_ms_per_frame": 0.018806916426512967,
+        "max_call_ms": 0.02
+      },
+      {
+        "timer": "GuLiMuzzles_Lifecycle",
+        "calls": 696,
+        "inclusive_ms_per_frame": 0.00611527377521614,
+        "exclusive_ms_per_frame": 0.00611527377521614,
+        "max_call_ms": 0.031
+      }
+    ],
+    "asset_scopes": [],
+    "muzzle_asset_gt_self_ms_per_frame": 0,
+    "preview_asset_gt_self_ms_per_frame": 0.05057348703170029,
+    "muzzle_asset_all_cpu_self_ms_per_frame": 0,
+    "parent_presentation": [
+      {
+        "timer": "GuLiCombatEffects_Presentation",
+        "calls": 696,
+        "inclusive_ms_per_frame": 3.658899135446686,
+        "exclusive_ms_per_frame": 2.419873198847262,
+        "max_call_ms": 5.2059999999999995
+      }
+    ],
+    "top_gt": [
+      {
+        "timer": "GuLiSceneUI_Paint",
+        "calls": 2784,
+        "inclusive_ms_per_frame": 8.264541786743516,
+        "exclusive_ms_per_frame": 8.264541786743516,
+        "max_call_ms": 6.77
+      },
+      {
+        "timer": "GuLiCommander_PredictiveAvoidanceCandidateQuery",
+        "calls": 349,
+        "inclusive_ms_per_frame": 5.811328530259367,
+        "exclusive_ms_per_frame": 5.811328530259367,
+        "max_call_ms": 12.246
+      },
+      {
+        "timer": "UWorld_Tick",
+        "calls": 1394,
+        "inclusive_ms_per_frame": 62.62050720461096,
+        "exclusive_ms_per_frame": 5.7236541786743516,
+        "max_call_ms": 111.413
+      },
+      {
+        "timer": "Projectile Movement",
+        "calls": 48250,
+        "inclusive_ms_per_frame": 5.173778097982709,
+        "exclusive_ms_per_frame": 4.0975072046109515,
+        "max_call_ms": 1.856
+      },
+      {
+        "timer": "CombatEffectReplication",
+        "calls": 629,
+        "inclusive_ms_per_frame": 3.7540806916426517,
+        "exclusive_ms_per_frame": 3.4908126801152735,
+        "max_call_ms": 33.456
+      },
+      {
+        "timer": "ProcessLocalPlayerSlateOperations",
+        "calls": 348,
+        "inclusive_ms_per_frame": 3.28671469740634,
+        "exclusive_ms_per_frame": 3.28671469740634,
+        "max_call_ms": 7.746
+      },
+      {
+        "timer": "GuLiCommanderMassStateTreeProcessor_0",
+        "calls": 200,
+        "inclusive_ms_per_frame": 2.5450259365994237,
+        "exclusive_ms_per_frame": 2.5450259365994237,
+        "max_call_ms": 7.414
+      },
+      {
+        "timer": "GuLiCombatEffects_Presentation",
+        "calls": 696,
+        "inclusive_ms_per_frame": 3.658899135446686,
+        "exclusive_ms_per_frame": 2.419873198847262,
+        "max_call_ms": 5.2059999999999995
+      },
+      {
+        "timer": "BP_CombatAvatarFly01_C",
+        "calls": 1045,
+        "inclusive_ms_per_frame": 2.382135446685879,
+        "exclusive_ms_per_frame": 2.382135446685879,
+        "max_call_ms": 16.990000000000002
+      },
+      {
+        "timer": "Slate::AddCustomVertsElement",
+        "calls": 696,
+        "inclusive_ms_per_frame": 2.227080691642651,
+        "exclusive_ms_per_frame": 2.227080691642651,
+        "max_call_ms": 2.175
+      },
+      {
+        "timer": "GuLiProjectilePool_WorldSweep",
+        "calls": 470329,
+        "inclusive_ms_per_frame": 2.0392536023054757,
+        "exclusive_ms_per_frame": 2.0392536023054757,
+        "max_call_ms": 0.48700000000000004
+      },
+      {
+        "timer": "GuLiProjectilePool_NarrowPhase",
+        "calls": 470329,
+        "inclusive_ms_per_frame": 2.0384668587896253,
+        "exclusive_ms_per_frame": 2.0384668587896253,
+        "max_call_ms": 0.34099999999999997
+      },
+      {
+        "timer": "GuLiCommander_ManualAvoidanceRefresh",
+        "calls": 301,
+        "inclusive_ms_per_frame": 1.9778674351585015,
+        "exclusive_ms_per_frame": 1.9778674351585015,
+        "max_call_ms": 3.435
+      },
+      {
+        "timer": "ProcessUntilTasksComplete",
+        "calls": 7313,
+        "inclusive_ms_per_frame": 25.939567723342943,
+        "exclusive_ms_per_frame": 1.9622247838616715,
+        "max_call_ms": 38.743
+      },
+      {
+        "timer": "GuLiCommanderPresentation_Interpolation",
+        "calls": 696,
+        "inclusive_ms_per_frame": 1.667262247838617,
+        "exclusive_ms_per_frame": 1.5927319884726225,
+        "max_call_ms": 1.627
+      },
+      {
+        "timer": "NS_WM01_Explosion_2A",
+        "calls": 178952,
+        "inclusive_ms_per_frame": 1.5584351585014407,
+        "exclusive_ms_per_frame": 1.543377521613833,
+        "max_call_ms": 0.781
+      },
+      {
+        "timer": "GuLiProjectilePool_Candidates",
+        "calls": 470329,
+        "inclusive_ms_per_frame": 1.51157060518732,
+        "exclusive_ms_per_frame": 1.51157060518732,
+        "max_call_ms": 0.348
+      },
+      {
+        "timer": "GuLiCombatEffects_Runtime",
+        "calls": 348,
+        "inclusive_ms_per_frame": 9.64800288184438,
+        "exclusive_ms_per_frame": 1.4546051873198846,
+        "max_call_ms": 34.915
+      },
+      {
+        "timer": "UCharacterMovementComponent_TickComponent",
+        "calls": 37619,
+        "inclusive_ms_per_frame": 1.431129682997118,
+        "exclusive_ms_per_frame": 1.3823083573487032,
+        "max_call_ms": 0.732
+      },
+      {
+        "timer": "Slate_PaintSlowPath",
+        "calls": 1044,
+        "inclusive_ms_per_frame": 10.749092219020172,
+        "exclusive_ms_per_frame": 1.3226541786743515,
+        "max_call_ms": 7.911
+      }
+    ],
+    "asset_gt_self_ms_per_1000_born": null,
+    "event_normalization": "Both client Worlds; actual born-counter delta from snapshots immediately outside the window. Minor boundary events make per-1000 cost approximate.",
+    "frame_distribution": {
+      "selected_gt_union_ms": {
+        "mean": 0.02484668587896254,
+        "median": 0.0237,
+        "p95": 0.0327,
+        "maximum": 0.0544,
+        "n": 347
+      },
+      "scope": "Union of GuLiMuzzles owner and real muzzle asset-labelled GT scopes, excluding preview assets. Nested scopes counted once; this is an attributed subset, not a complete end-to-end latency measurement."
+    }
+  }
+}

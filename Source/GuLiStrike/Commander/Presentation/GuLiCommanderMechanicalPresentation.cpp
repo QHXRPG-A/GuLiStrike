@@ -9,11 +9,41 @@
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "Gameplay/Building/GuLiConstructedUnitComponent.h"
 #include "EngineUtils.h"
+#include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
+#include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
+
+const FGuLiCommanderPresentedSoldier* AGuLiCommanderPresentationActor::GetQuerySoldier(FGuLiSoldierId Id) const
+{
+	const auto* Source = PresentedSoldiers.Find(Id);
+	if (!Source || Source->bMainViewVisible || !GuLiClientPresentation::OffscreenUnitsEnabled() || !GetWorld()) return Source;
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_DemandPose);
+	const double Now = GetWorld()->GetTimeSeconds();
+	const double RenderTime = Source->RenderServerTimeSeconds + FMath::Clamp(Now - Source->LastRenderClockLocalTime, 0.0, .25);
+	auto& Cached = DemandPoses.FindOrAdd(Id);
+	if (Cached.Frame == GFrameCounter && Cached.Revision == Source->PoseRevision && Cached.RenderTime == RenderTime) return &Cached.Soldier;
+	Cached.Frame = GFrameCounter; Cached.Revision = Source->PoseRevision; Cached.RenderTime = RenderTime;
+	Cached.Soldier = *Source;
+	auto& Pose = Cached.Soldier;
+	Pose.RenderServerTimeSeconds = RenderTime;
+	FTransform Current;
+	if (!EvaluateAuthoritativeTransform(Pose, RenderTime, Current)) return Source;
+	Pose.AuthoritativeTransform = Current;
+	// Query evaluation cannot consume prediction/recoil queues or write an ISM instance.
+	const_cast<AGuLiCommanderPresentationActor*>(this)->ApplyPrediction(Id, Now, Current, false);
+	if (auto* Contacts = GetWorld()->GetSubsystem<UGuLiGroundMassContactSubsystem>()) Contacts->ApplyContactPresentation(Id, Current);
+	const FTransform Before = Pose.PresentedTransform;
+	Pose.PresentedTransform = Current; Pose.bHasPresentedTransform = true;
+	const_cast<AGuLiCommanderPresentationActor*>(this)->UpdateMechanicalPresentation(Id, Pose, Before,
+		float(FMath::Max(0.0, Now - Source->LastPresentationLocalTime)), !Source->bHasPresentedTransform,
+		Source->LastLifeState == EGuLiSoldierLifeState::Alive, false);
+	return &Pose;
+}
 
 bool AGuLiCommanderPresentationActor::TryGetPresentedVisualTransform(FGuLiSoldierId Id, FTransform& Out) const
 {
 	if (!TryGetPresentedSoldierTransform(Id, Out)) return false;
-	const auto* Soldier = PresentedSoldiers.Find(Id);
+	const auto* Soldier = GetQuerySoldier(Id);
 	const auto* Handle = SoldierInstanceHandles.Find(Id);
 	const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 	const auto* Def = Handle && Data ? Data->FindSoldierDefinition(Handle->BatchUnitTypeId) : nullptr;
@@ -46,13 +76,13 @@ bool AGuLiCommanderPresentationActor::TryGetPresentedSoldierModelCenter(
 }
 
 void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierId Id,
-	FGuLiCommanderPresentedSoldier& Soldier, const FTransform& Before, float Dt, bool bReset, bool bAlive)
+	FGuLiCommanderPresentedSoldier& Soldier, const FTransform& Before, float Dt, bool bReset, bool bAlive, bool bWriteInstances)
 {
 	const auto* Handle = SoldierInstanceHandles.Find(Id);
 	const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 	const auto* Definition = Handle && Data ? Data->FindSoldierDefinition(Handle->BatchUnitTypeId) : nullptr;
 	if (!Definition) return;
-	if (Definition->bConstructionOnly && !Soldier.bConstructionVisualHandled)
+	if (bWriteInstances && Definition->bConstructionOnly && !Soldier.bConstructionVisualHandled)
 	{
 		// The Mass pose may precede the site's component RepNotify. Retire the exact
 		// matching completed site before drawing the new ID, avoiding a duplicate frame.
@@ -113,7 +143,7 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 			Soldier.MechanicalPose.bInitialized = true;
 		}
 		else GuLiVATAnimation::Step(D, FVector::ZeroVector, Soldier.PresentedTransform.Rotator().Yaw, bAlive, Dt, Soldier.VATPlayback);
-		if (auto* Component = FindUnitInstances(Handle->BatchUnitTypeId, Handle->BatchTeam))
+		if (auto* Component = bWriteInstances ? FindUnitInstances(Handle->BatchUnitTypeId, Handle->BatchTeam) : nullptr)
 			GuLiVATAnimation::WriteInstance(*Component,Handle->UnitInstanceIndex,D,Soldier.VATPlayback,Soldier.PreviousVATPlayback,
 				Soldier.MechanicalPose,Soldier.PresentedTransform.Rotator().Yaw,bReset,VATVelocity);
 
@@ -191,7 +221,7 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 	}
 	else Soldier.PendingRecoil.Reset();
 	if (bResetPose) Soldier.PreviousMechanicalFrame = Soldier.MechanicalFrame;
-	if (auto* Component = FindUnitInstances(Handle->BatchUnitTypeId, Handle->BatchTeam))
+	if (auto* Component = bWriteInstances ? FindUnitInstances(Handle->BatchUnitTypeId, Handle->BatchTeam) : nullptr)
 		GuLiMechanicalAnimation::WriteInstance(*Component, Handle->UnitInstanceIndex,
 			Soldier.MechanicalFrame, Soldier.PreviousMechanicalFrame);
 }
@@ -204,6 +234,7 @@ void AGuLiCommanderPresentationActor::ObserveMechanicalShot(const FGuLiCombatSho
 		if (Soldier->PendingRecoil.Num() >= 16) Soldier->PendingRecoil.RemoveAt(0);
 		Soldier->PendingRecoil.Add({Cue.MechanicalPoseTimeSeconds, Cue.RecoilFromCentimeters, Cue.MuzzleIndex});
 		Soldier->PendingRecoil.Sort([](const auto& A, const auto& B) { return A.ServerTime < B.ServerTime; });
+		++Soldier->PoseRevision;
 	}
 }
 
@@ -211,7 +242,7 @@ bool AGuLiCommanderPresentationActor::ResolveMechanicalMuzzle(const FGuLiCombatS
 	FTransform& Out, float& RenderTime) const
 {
 	const FGuLiSoldierId Id(Cue.Source.LocalId);
-	const auto* Soldier = PresentedSoldiers.Find(Id);
+	const auto* Soldier = GetQuerySoldier(Id);
 	const auto* Handle = SoldierInstanceHandles.Find(Id);
 	const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 	const auto* Definition = Handle && Data ? Data->FindSoldierDefinition(Handle->BatchUnitTypeId) : nullptr;
@@ -231,7 +262,7 @@ bool AGuLiCommanderPresentationActor::ResolveMechanicalLaunchOffset(const FGuLiT
 	FName Slot, const FVector& LaunchLocation, FVector& OutOffset) const
 {
 	const FGuLiSoldierId Id(Source.LocalId);
-	const auto* Soldier = PresentedSoldiers.Find(Id);
+	const auto* Soldier = GetQuerySoldier(Id);
 	const auto* Handle = SoldierInstanceHandles.Find(Id);
 	const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 	const auto* Definition = Handle && Handle->BatchUnitTypeId == 2 && Data ? Data->FindSoldierDefinition(2) : nullptr;

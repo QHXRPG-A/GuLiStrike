@@ -1,0 +1,761 @@
+{
+  "adoption_eligible": true,
+  "fixed_camera_valid": true,
+  "population_valid": true,
+  "population_before": {
+    "success": true,
+    "ready": true,
+    "alive": 600,
+    "moving": 600,
+    "blocked": 0,
+    "pending_plans": 0,
+    "forced_avoidance_solves": 1075,
+    "avoidance_solves": 66624,
+    "requested": 600,
+    "rejected_completed_plans": 0
+  },
+  "population_after": {
+    "success": true,
+    "ready": true,
+    "alive": 600,
+    "moving": 576,
+    "blocked": 0,
+    "pending_plans": 0,
+    "forced_avoidance_solves": 1100,
+    "avoidance_solves": 243786,
+    "requested": 600,
+    "rejected_completed_plans": 0
+  },
+  "case": "runtime",
+  "pair": 1,
+  "variant": "frame-diagnosis",
+  "setup": {
+    "success": true,
+    "paused_producers": 0,
+    "population": {
+      "success": true,
+      "ready": true,
+      "alive": 600,
+      "moving": 600,
+      "blocked": 0,
+      "pending_plans": 0,
+      "forced_avoidance_solves": 800,
+      "avoidance_solves": 3101,
+      "requested": 600,
+      "rejected_completed_plans": 0
+    },
+    "whole_effects": {
+      "success": true,
+      "fixtures": [
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "role": "Mining",
+          "id": 36,
+          "path": "/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_GPU_All.NS_MiningLaser_Optimized_GPU_All",
+          "count": 16,
+          "scale": "<Struct 'Vector' (0x000002676E843C50) {x: 1.000000, y: 1.000000, z: 1.000000}>"
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "role": "Construction",
+          "id": 45,
+          "path": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_GPU_All.NS_ConstructionLaser_Optimized_GPU_All",
+          "count": 16,
+          "scale": "<Struct 'Vector' (0x00000265AAF76E20) {x: 1.000000, y: 1.000000, z: 1.000000}>"
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "role": "Muzzle",
+          "id": 52,
+          "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations.NS_MachineGunMuzzle_AllOptimizations",
+          "count": 16,
+          "scale": "<Struct 'Vector' (0x000002676E844C50) {x: 1.000000, y: 1.000000, z: 1.000000}>"
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "role": "Impact",
+          "id": 5,
+          "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations.NS_MachineGunImpact_AllOptimizations",
+          "count": 16,
+          "scale": "<Struct 'Vector' (0x00000265AAF7F160) {x: 2.000000, y: 2.000000, z: 2.000000}>"
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "role": "Mining",
+          "id": 36,
+          "path": "/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_GPU_All.NS_MiningLaser_Optimized_GPU_All",
+          "count": 16,
+          "scale": "<Struct 'Vector' (0x00000265AAF7F1D0) {x: 1.000000, y: 1.000000, z: 1.000000}>"
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "role": "Construction",
+          "id": 45,
+          "path": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_GPU_All.NS_ConstructionLaser_Optimized_GPU_All",
+          "count": 16,
+          "scale": "<Struct 'Vector' (0x00000265AAF7DF70) {x: 1.000000, y: 1.000000, z: 1.000000}>"
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "role": "Muzzle",
+          "id": 52,
+          "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations.NS_MachineGunMuzzle_AllOptimizations",
+          "count": 16,
+          "scale": "<Struct 'Vector' (0x0000026646FC9250) {x: 1.000000, y: 1.000000, z: 1.000000}>"
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "role": "Impact",
+          "id": 5,
+          "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations.NS_MachineGunImpact_AllOptimizations",
+          "count": 16,
+          "scale": "<Struct 'Vector' (0x000002661CFD4B90) {x: 2.000000, y: 2.000000, z: 2.000000}>"
+        }
+      ]
+    },
+    "acceptance_producer_seconds": 90,
+    "duration_reason": "Keep 500-pressure producer running for post-window frame/inventory capture; simulation rules unchanged."
+  },
+  "warmup_seconds": 10,
+  "capture_seconds": 30,
+  "csv": {
+    "FrameTime": {
+      "mean": 64.32787344753747,
+      "p95": 88.0202,
+      "n": 467
+    },
+    "GameThreadTime": {
+      "mean": 64.34498501070664,
+      "p95": 87.6761,
+      "n": 467
+    },
+    "GPUTime": {
+      "mean": 16.21705010706638,
+      "p95": 22.8127,
+      "n": 467
+    },
+    "PhysicalUsedMB": {
+      "mean": 6438.380728479658,
+      "p95": 6533.1484,
+      "n": 467
+    },
+    "VirtualUsedMB": {
+      "mean": 18280.934027623127,
+      "p95": 18369.1758,
+      "n": 467
+    }
+  },
+  "counters": {
+    "success": true,
+    "worlds": [
+      {
+        "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "profile": {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "engine_frames": 469,
+          "capturing": false,
+          "counters": {
+            "Avoidance.GridMs": {
+              "total": 84.07271653413773,
+              "calls": 468,
+              "mean_per_engine_frame": 0.1792595235269461,
+              "p95_active_frame": 0.22419914603233337,
+              "stored_active_frames": 468
+            },
+            "Avoidance.BucketVisits": {
+              "total": 18959249,
+              "calls": 468,
+              "mean_per_engine_frame": 40424.837953091686,
+              "p95_active_frame": 65110,
+              "stored_active_frames": 468
+            },
+            "Avoidance.ExactCandidates": {
+              "total": 11545970,
+              "calls": 468,
+              "mean_per_engine_frame": 24618.272921108743,
+              "p95_active_frame": 38561,
+              "stored_active_frames": 468
+            },
+            "Avoidance.Solves": {
+              "total": 175610,
+              "calls": 468,
+              "mean_per_engine_frame": 374.43496801705754,
+              "p95_active_frame": 596,
+              "stored_active_frames": 468
+            },
+            "Avoidance.Forced": {
+              "total": 25,
+              "calls": 468,
+              "mean_per_engine_frame": 0.053304904051172705,
+              "p95_active_frame": 0,
+              "stored_active_frames": 468
+            },
+            "Avoidance.CellLookups": {
+              "total": 0,
+              "calls": 468,
+              "mean_per_engine_frame": 0,
+              "p95_active_frame": 0,
+              "stored_active_frames": 468
+            },
+            "Avoidance.CellHits": {
+              "total": 14492118,
+              "calls": 468,
+              "mean_per_engine_frame": 30900.038379530917,
+              "p95_active_frame": 48362,
+              "stored_active_frames": 468
+            },
+            "Avoidance.SparseComparisons": {
+              "total": 38338440,
+              "calls": 468,
+              "mean_per_engine_frame": 81745.07462686567,
+              "p95_active_frame": 130317,
+              "stored_active_frames": 468
+            },
+            "Avoidance.EnvironmentDuplicates": {
+              "total": 1300208,
+              "calls": 468,
+              "mean_per_engine_frame": 2772.2985074626868,
+              "p95_active_frame": 4328,
+              "stored_active_frames": 468
+            },
+            "Avoidance.UniqueVisits": {
+              "total": 17659041,
+              "calls": 468,
+              "mean_per_engine_frame": 37652.539445629,
+              "p95_active_frame": 60772,
+              "stored_active_frames": 468
+            },
+            "Avoidance.Retained": {
+              "total": 2053106,
+              "calls": 468,
+              "mean_per_engine_frame": 4377.62473347548,
+              "p95_active_frame": 6903,
+              "stored_active_frames": 468
+            },
+            "Avoidance.Consumed": {
+              "total": 2053106,
+              "calls": 468,
+              "mean_per_engine_frame": 4377.62473347548,
+              "p95_active_frame": 6903,
+              "stored_active_frames": 468
+            },
+            "Avoidance.VerifiedPrefixes": {
+              "total": 0,
+              "calls": 468,
+              "mean_per_engine_frame": 0,
+              "p95_active_frame": 0,
+              "stored_active_frames": 468
+            },
+            "Avoidance.PrefixMismatches": {
+              "total": 0,
+              "calls": 468,
+              "mean_per_engine_frame": 0,
+              "p95_active_frame": 0,
+              "stored_active_frames": 468
+            },
+            "Avoidance.QueryReachSumCm": {
+              "total": 1394131351.512207,
+              "calls": 468,
+              "mean_per_engine_frame": 2972561.517083597,
+              "p95_active_frame": 4728887.5,
+              "stored_active_frames": 468
+            },
+            "Avoidance.RadiusLE150": {
+              "total": 0,
+              "calls": 468,
+              "mean_per_engine_frame": 0,
+              "p95_active_frame": 0,
+              "stored_active_frames": 468
+            },
+            "Avoidance.RadiusLE300": {
+              "total": 0,
+              "calls": 468,
+              "mean_per_engine_frame": 0,
+              "p95_active_frame": 0,
+              "stored_active_frames": 468
+            },
+            "Avoidance.RadiusGT300": {
+              "total": 175610,
+              "calls": 468,
+              "mean_per_engine_frame": 374.43496801705754,
+              "p95_active_frame": 596,
+              "stored_active_frames": 468
+            },
+            "Avoidance.SpeedLE800": {
+              "total": 0,
+              "calls": 468,
+              "mean_per_engine_frame": 0,
+              "p95_active_frame": 0,
+              "stored_active_frames": 468
+            },
+            "Avoidance.SpeedLE1600": {
+              "total": 175610,
+              "calls": 468,
+              "mean_per_engine_frame": 374.43496801705754,
+              "p95_active_frame": 596,
+              "stored_active_frames": 468
+            },
+            "Avoidance.SpeedGT1600": {
+              "total": 0,
+              "calls": 468,
+              "mean_per_engine_frame": 0,
+              "p95_active_frame": 0,
+              "stored_active_frames": 468
+            },
+            "Avoidance.QueryMs": {
+              "total": 573.700275272131,
+              "calls": 468,
+              "mean_per_engine_frame": 1.2232415251004924,
+              "p95_active_frame": 1.9259005784988403,
+              "stored_active_frames": 468
+            },
+            "Avoidance.SolveMs": {
+              "total": 49.15675148367882,
+              "calls": 468,
+              "mean_per_engine_frame": 0.10481183685219364,
+              "p95_active_frame": 0.17559900879859924,
+              "stored_active_frames": 468
+            },
+            "Projectile.ShipWingmanSnapshotMs": {
+              "total": 205.35030215978622,
+              "calls": 59375,
+              "mean_per_engine_frame": 0.43784712614026916,
+              "p95_active_frame": 0.5768947303295135,
+              "stored_active_frames": 468
+            },
+            "Projectile.Other30HzSteps": {
+              "total": 903,
+              "calls": 903,
+              "mean_per_engine_frame": 1.9253731343283582,
+              "p95_active_frame": 3,
+              "stored_active_frames": 468
+            },
+            "Projectile.OtherActivePerStep": {
+              "total": 93330,
+              "calls": 903,
+              "mean_per_engine_frame": 198.99786780383795,
+              "p95_active_frame": 333,
+              "stored_active_frames": 468
+            },
+            "Projectile.SnapshotMs": {
+              "total": 239.04654383659363,
+              "calls": 1053,
+              "mean_per_engine_frame": 0.5096941233189629,
+              "p95_active_frame": 0.849701464176178,
+              "stored_active_frames": 468
+            },
+            "Projectile.GridMs": {
+              "total": 45.8376407623291,
+              "calls": 1053,
+              "mean_per_engine_frame": 0.09773484171072302,
+              "p95_active_frame": 0.16280263662338257,
+              "stored_active_frames": 468
+            },
+            "Projectile.CandidatesMs": {
+              "total": 11.256542056798935,
+              "calls": 112080,
+              "mean_per_engine_frame": 0.0240011557714263,
+              "p95_active_frame": 0.043194741010665894,
+              "stored_active_frames": 468
+            },
+            "Projectile.NarrowPhaseMs": {
+              "total": 18.49495619535446,
+              "calls": 112080,
+              "mean_per_engine_frame": 0.03943487461696047,
+              "p95_active_frame": 0.06587803363800049,
+              "stored_active_frames": 468
+            },
+            "Projectile.WorldSweepMs": {
+              "total": 111.79716512560844,
+              "calls": 112080,
+              "mean_per_engine_frame": 0.2383734864085468,
+              "p95_active_frame": 0.42583420872688293,
+              "stored_active_frames": 468
+            },
+            "Projectile.SettleMs": {
+              "total": 47.927096486091614,
+              "calls": 23192,
+              "mean_per_engine_frame": 0.10218997118569641,
+              "p95_active_frame": 0.20969286561012268,
+              "stored_active_frames": 468
+            },
+            "Projectile.Commander5HzSteps": {
+              "total": 150,
+              "calls": 150,
+              "mean_per_engine_frame": 0.31982942430703626,
+              "p95_active_frame": 1,
+              "stored_active_frames": 150
+            },
+            "Projectile.CommanderActivePerStep": {
+              "total": 18750,
+              "calls": 150,
+              "mean_per_engine_frame": 39.97867803837953,
+              "p95_active_frame": 125,
+              "stored_active_frames": 150
+            }
+          }
+        },
+        "load": {
+          "running": true,
+          "desired": 500,
+          "peak": 500,
+          "domains": [
+            125,
+            125,
+            125,
+            125
+          ]
+        },
+        "flight_delivery": "active=500 created=34552 ended=34052 payloadBytes=8654752 batches=10084 bootstrap=0 queued=1912 policy=events_only domains=125/125/125/125",
+        "ui": []
+      },
+      {
+        "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "profile": {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "engine_frames": 469,
+          "capturing": false,
+          "counters": {
+            "Mining.VisibilityMs": {
+              "total": 1.2707635760307312,
+              "calls": 9648,
+              "mean_per_engine_frame": 0.0027095172196817297,
+              "p95_active_frame": 0.0036954879760742188,
+              "stored_active_frames": 462
+            },
+            "Flight.Records": {
+              "total": 217225,
+              "calls": 468,
+              "mean_per_engine_frame": 463.1663113006397,
+              "p95_active_frame": 536,
+              "stored_active_frames": 468
+            },
+            "Flight.ActorActive": {
+              "total": 43745,
+              "calls": 468,
+              "mean_per_engine_frame": 93.27292110874201,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Flight.DataActive": {
+              "total": 217172,
+              "calls": 468,
+              "mean_per_engine_frame": 463.0533049040512,
+              "p95_active_frame": 535,
+              "stored_active_frames": 468
+            },
+            "Flight.PredictorCalls": {
+              "total": 193810,
+              "calls": 468,
+              "mean_per_engine_frame": 413.2409381663113,
+              "p95_active_frame": 492,
+              "stored_active_frames": 468
+            },
+            "Flight.Predictions.Commander": {
+              "total": 51297,
+              "calls": 468,
+              "mean_per_engine_frame": 109.37526652452026,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Flight.Predictions.Ground": {
+              "total": 42771,
+              "calls": 468,
+              "mean_per_engine_frame": 91.19616204690831,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Flight.Predictions.Wingman": {
+              "total": 55997,
+              "calls": 468,
+              "mean_per_engine_frame": 119.39658848614073,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Flight.Predictions.Ship": {
+              "total": 43745,
+              "calls": 468,
+              "mean_per_engine_frame": 93.27292110874201,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Flight.PresentationMs": {
+              "total": 610.0386902689934,
+              "calls": 468,
+              "mean_per_engine_frame": 1.3007221540916702,
+              "p95_active_frame": 2.690602093935013,
+              "stored_active_frames": 468
+            },
+            "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_17/SceneUI.SourcesMs": {
+              "total": 0.8304528892040253,
+              "calls": 468,
+              "mean_per_engine_frame": 0.0017706884631215891,
+              "p95_active_frame": 0.0021010637283325195,
+              "stored_active_frames": 468
+            },
+            "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_17/SceneUI.OutlineCaptureMs": {
+              "total": 57.467516511678696,
+              "calls": 468,
+              "mean_per_engine_frame": 0.12253201814856865,
+              "p95_active_frame": 0.13979896903038025,
+              "stored_active_frames": 468
+            },
+            "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_17/SceneUI.PlacementCaptureMs": {
+              "total": 0.7984638214111328,
+              "calls": 468,
+              "mean_per_engine_frame": 0.0017024814955461254,
+              "p95_active_frame": 0.0021979212760925293,
+              "stored_active_frames": 468
+            },
+            "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_17/SceneUI.WorldPanelsMs": {
+              "total": 2.084791660308838,
+              "calls": 468,
+              "mean_per_engine_frame": 0.004445184776777906,
+              "p95_active_frame": 0.00509992241859436,
+              "stored_active_frames": 468
+            },
+            "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_17/SceneUI.UpdateMs": {
+              "total": 112.06001415848732,
+              "calls": 468,
+              "mean_per_engine_frame": 0.23893393210764888,
+              "p95_active_frame": 0.26629865169525146,
+              "stored_active_frames": 468
+            },
+            "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_17/SceneUI.PaintMs": {
+              "total": 75.21788030862808,
+              "calls": 1872,
+              "mean_per_engine_frame": 0.1603792757113605,
+              "p95_active_frame": 0.1783035695552826,
+              "stored_active_frames": 468
+            }
+          }
+        },
+        "registry": {
+          "sources": 419,
+          "discovery_iterations": 0,
+          "membership_revision": 677,
+          "content_revision": 679,
+          "pose_revision": 40979
+        },
+        "flight": {
+          "client_flight_actor_capacity": 128,
+          "client_flight_actor_active": 125,
+          "client_flight_data_capacity": 768,
+          "client_flight_data_active": 475,
+          "client_flight_data_reuses": 33342,
+          "client_flight_data_releases": 33475,
+          "client_flight_data_epoch": 2499067298,
+          "pose_cache_hits": 260727,
+          "pose_cache_misses": 1257,
+          "niagara_array_uploads": 0,
+          "component_count": 325,
+          "last_update_milliseconds": 0.7708999910391867
+        },
+        "flight_by_source": {
+          "<GuLiTargetKind.SHIP: 1>": 125,
+          "<GuLiTargetKind.GROUND_ACTOR: 4>": 125,
+          "<GuLiTargetKind.WINGMAN: 3>": 100,
+          "<GuLiTargetKind.COMMANDER_SOLDIER: 2>": 125
+        },
+        "ui": [
+          {
+            "hud_shapes": 0,
+            "hud_expired": false,
+            "rings": 636,
+            "health_bars": 0,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 1636,
+            "cached_vertices": 7968,
+            "surface_resources": 0
+          }
+        ]
+      },
+      {
+        "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "profile": {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "engine_frames": 469,
+          "capturing": false,
+          "counters": {
+            "Mining.VisibilityMs": {
+              "total": 1.5195980668067932,
+              "calls": 9646,
+              "mean_per_engine_frame": 0.003240081165899346,
+              "p95_active_frame": 0.0036992132663726807,
+              "stored_active_frames": 468
+            },
+            "Flight.Records": {
+              "total": 217037,
+              "calls": 468,
+              "mean_per_engine_frame": 462.76545842217485,
+              "p95_active_frame": 537,
+              "stored_active_frames": 468
+            },
+            "Flight.ActorActive": {
+              "total": 43459,
+              "calls": 468,
+              "mean_per_engine_frame": 92.66311300639659,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Flight.DataActive": {
+              "total": 216984,
+              "calls": 468,
+              "mean_per_engine_frame": 462.65245202558634,
+              "p95_active_frame": 537,
+              "stored_active_frames": 468
+            },
+            "Flight.PredictorCalls": {
+              "total": 193622,
+              "calls": 468,
+              "mean_per_engine_frame": 412.8400852878465,
+              "p95_active_frame": 493,
+              "stored_active_frames": 468
+            },
+            "Flight.Predictions.Commander": {
+              "total": 51106,
+              "calls": 468,
+              "mean_per_engine_frame": 108.9680170575693,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Flight.Predictions.Ground": {
+              "total": 43082,
+              "calls": 468,
+              "mean_per_engine_frame": 91.8592750533049,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Flight.Predictions.Wingman": {
+              "total": 55975,
+              "calls": 468,
+              "mean_per_engine_frame": 119.3496801705757,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Flight.Predictions.Ship": {
+              "total": 43459,
+              "calls": 468,
+              "mean_per_engine_frame": 92.66311300639659,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Flight.PresentationMs": {
+              "total": 631.0777962207794,
+              "calls": 468,
+              "mean_per_engine_frame": 1.3455816550549669,
+              "p95_active_frame": 2.6209987699985504,
+              "stored_active_frames": 468
+            },
+            "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_18/SceneUI.SourcesMs": {
+              "total": 0.28663501143455505,
+              "calls": 468,
+              "mean_per_engine_frame": 0.00061116207128903,
+              "p95_active_frame": 0.0009015202522277832,
+              "stored_active_frames": 468
+            },
+            "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_18/SceneUI.OutlineCaptureMs": {
+              "total": 32.755784690380096,
+              "calls": 468,
+              "mean_per_engine_frame": 0.06984175840166332,
+              "p95_active_frame": 0.08359923958778381,
+              "stored_active_frames": 468
+            },
+            "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_18/SceneUI.PlacementCaptureMs": {
+              "total": 0.3338158130645752,
+              "calls": 468,
+              "mean_per_engine_frame": 0.0007117607954468554,
+              "p95_active_frame": 0.0010989606380462646,
+              "stored_active_frames": 468
+            },
+            "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_18/SceneUI.WorldPanelsMs": {
+              "total": 3.1868815422058105,
+              "calls": 468,
+              "mean_per_engine_frame": 0.006795056593189361,
+              "p95_active_frame": 0.007800757884979248,
+              "stored_active_frames": 468
+            },
+            "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_18/SceneUI.UpdateMs": {
+              "total": 80.1423117518425,
+              "calls": 468,
+              "mean_per_engine_frame": 0.1708791295348454,
+              "p95_active_frame": 0.20549818873405457,
+              "stored_active_frames": 468
+            },
+            "/Engine/Transient.UnrealEdEngine_0:LocalPlayer_18/SceneUI.PaintMs": {
+              "total": 90.54785221815109,
+              "calls": 1872,
+              "mean_per_engine_frame": 0.1930657829811324,
+              "p95_active_frame": 0.22650137543678284,
+              "stored_active_frames": 468
+            }
+          }
+        },
+        "registry": {
+          "sources": 419,
+          "discovery_iterations": 0,
+          "membership_revision": 678,
+          "content_revision": 680,
+          "pose_revision": 40764
+        },
+        "flight": {
+          "client_flight_actor_capacity": 128,
+          "client_flight_actor_active": 125,
+          "client_flight_data_capacity": 768,
+          "client_flight_data_active": 469,
+          "client_flight_data_reuses": 33336,
+          "client_flight_data_releases": 33475,
+          "client_flight_data_epoch": 2499067298,
+          "pose_cache_hits": 260533,
+          "pose_cache_misses": 1257,
+          "niagara_array_uploads": 22,
+          "component_count": 238,
+          "last_update_milliseconds": 1.3642000267282128
+        },
+        "flight_by_source": {
+          "<GuLiTargetKind.SHIP: 1>": 125,
+          "<GuLiTargetKind.COMMANDER_SOLDIER: 2>": 125,
+          "<GuLiTargetKind.WINGMAN: 3>": 94,
+          "<GuLiTargetKind.GROUND_ACTOR: 4>": 125
+        },
+        "ui": [
+          {
+            "hud_shapes": 0,
+            "hud_expired": false,
+            "rings": 636,
+            "health_bars": 0,
+            "route_lines": 0,
+            "world_panels": 2,
+            "content_revision": 1621,
+            "cached_vertices": 7968,
+            "surface_resources": 2
+          },
+          {
+            "hud_shapes": 0,
+            "hud_expired": true,
+            "rings": 0,
+            "health_bars": 0,
+            "route_lines": 0,
+            "world_panels": 0,
+            "content_revision": 5,
+            "cached_vertices": 0,
+            "surface_resources": 0
+          }
+        ]
+      }
+    ]
+  },
+  "actual_views": [
+    [
+      1280,
+      720
+    ],
+    [
+      1280,
+      720
+    ]
+  ],
+  "scope": "Loaded final formal assets and defaults. Same process dedicated server + two 1280x720 clients; 600 moving units, four producers x125 flights, 32 tool beams +32 flash previews/client; 10s warmup/30s unperturbed timing. Producer90s for post-window captures.",
+  "source_directory": "runtime-p1-frame-diagnosis"
+}

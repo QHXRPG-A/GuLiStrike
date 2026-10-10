@@ -7,9 +7,11 @@
 #include "MassProcessor.h"
 #include "GuLiCommanderPredictiveAvoidanceProcessor.generated.h"
 
+namespace GuLiCommanderPredictiveAvoidancePrivate { struct FWorkspace; }
+
 /**
  * Commander-only predictive avoidance. It snapshots participants into a project-owned
- * 1500 cm grid at 30 Hz and solves one SoldierId phase per step, yielding 10 Hz per Soldier.
+ * radius-sized grid (300 cm minimum) at 30 Hz and solves one SoldierId phase per step.
  * Instant separation remains owned by the authority subsystem's symmetric manual solver.
  */
 UCLASS()
@@ -19,6 +21,7 @@ class GULISTRIKE_API UGuLiCommanderPredictiveAvoidanceProcessor final : public U
 
 public:
 	UGuLiCommanderPredictiveAvoidanceProcessor();
+	virtual ~UGuLiCommanderPredictiveAvoidanceProcessor() override;
 
 protected:
 	virtual void ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager) override;
@@ -33,4 +36,5 @@ private:
 	FMassEntityQuery ReceiverQuery;
 	double FixedStepAccumulatorSeconds = 0.0;
 	uint64 NextSolveSequence = 0u;
+	TUniquePtr<GuLiCommanderPredictiveAvoidancePrivate::FWorkspace> Workspace;
 };

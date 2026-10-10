@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "case": "dense200-client1",
+  "pair": 1,
+  "variant": "current-production",
+  "capture_seconds": 30.00032580003608,
+  "csv": {
+    "FrameTime": {
+      "mean": 42.54890240452617,
+      "p95": 62.4926,
+      "n": 707
+    },
+    "GameThreadTime": {
+      "mean": 42.53476548797737,
+      "p95": 59.8837,
+      "n": 707
+    },
+    "GPUTime": {
+      "mean": 14.863274823196607,
+      "p95": 17.5749,
+      "n": 707
+    },
+    "PhysicalUsedMB": {
+      "mean": 10179.000677934937,
+      "p95": 10258.6016,
+      "n": 707
+    },
+    "VirtualUsedMB": {
+      "mean": 18550.346696181045,
+      "p95": 18686.75,
+      "n": 707
+    }
+  },
+  "target_world": "UEDPIE_1",
+  "actual_views": [
+    [
+      1505,
+      1115
+    ],
+    [
+      640,
+      484
+    ]
+  ],
+  "scope": "User requested ~200 visible units/~100 enemy outlines and sustained native firing. Real authority spawns, unchanged weapons; runtime health50000, production/capture disabled to stabilize population. Source UE5.7 dedicated+two clients+editor in one process. Engine CSV/GT/GPU are process-wide; project counters retain World identity. ReadPixels, inventory and ProfileGPU are outside measurement. No optimization control or quality was disabled; this is diagnosis, not a paired FPS comparison."
+}

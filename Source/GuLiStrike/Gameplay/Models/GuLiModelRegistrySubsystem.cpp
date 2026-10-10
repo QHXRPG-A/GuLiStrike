@@ -1,4 +1,5 @@
 #include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
+#include "Commander/UI/GuLiSceneUISourceRegistry.h"
 #include "Engine/DataTable.h"
 #include "Engine/World.h"
 #include "Engine/StaticMesh.h"
@@ -165,20 +166,22 @@ bool UGuLiModelRegistrySubsystem::ApplyModelParts(AActor* Actor, int32 Id)
 	FGuLiStrikeModelsModelsRow Definition;
 	if (!Actor || !GetModelDefinition(Id,Definition)) return false;
 	bool Success = true;
+	bool Changed = false;
 	for (const auto& Part : GetModelParts(Id))
 	{
 		auto* Component = FindPart(Actor, Part.ComponentPath);
 		UObject* Resource = LoadModelResource(Part.ChildModelId ? Part.ChildModelId : Id, UObject::StaticClass());
 		if (auto* Static = Cast<UStaticMeshComponent>(Component); Static && Cast<UStaticMesh>(Resource))
 		{
-			if (Static->GetStaticMesh() != Resource) Static->SetStaticMesh(Cast<UStaticMesh>(Resource));
+			if (Static->GetStaticMesh() != Resource) { Static->SetStaticMesh(Cast<UStaticMesh>(Resource)); Changed = true; }
 		}
 		else if (auto* Skeletal = Cast<USkeletalMeshComponent>(Component); Skeletal && Cast<USkeletalMesh>(Resource))
 		{
-			if (Skeletal->GetSkeletalMeshAsset() != Resource) Skeletal->SetSkeletalMeshAsset(Cast<USkeletalMesh>(Resource));
+			if (Skeletal->GetSkeletalMeshAsset() != Resource) { Skeletal->SetSkeletalMeshAsset(Cast<USkeletalMesh>(Resource)); Changed = true; }
 		}
 		else Success = false;
 	}
+	if (Changed) UGuLiSceneUISourceRegistry::Notify(Actor, EGuLiSceneUIChange::Membership);
 	return Success;
 }
 int32 UGuLiModelRegistrySubsystem::FindModelIdForResource(const UObject* Resource)

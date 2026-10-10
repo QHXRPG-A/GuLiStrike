@@ -1,0 +1,160 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations",
+    "emitters": [
+      {
+        "name": "Glow",
+        "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x0000026620AC35C0) {emitter_name: \"Glow\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          {
+            "type": "Sprite",
+            "enabled": true,
+            "material": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_FlashGroundA.MI_FlashGroundA",
+            "mesh": "",
+            "shape": "",
+            "sort": "None",
+            "renderer_name": "NiagaraSpriteRendererProperties_1",
+            "material_chain": [
+              {
+                "path": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_FlashGroundA.MI_FlashGroundA",
+                "class": "MaterialInstanceConstant",
+                "base_property_overrides": "<Struct 'MaterialInstanceBasePropertyOverrides' (0x000002641EEED4C8) {}>"
+              },
+              {
+                "path": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/M_CircleRainbow11a.M_CircleRainbow11a",
+                "class": "Material",
+                "blend_mode": "<BlendMode.BLEND_ADDITIVE: 3>",
+                "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+                "two_sided": "True"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Flash",
+        "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x0000026620AC2C60) {emitter_name: \"Flash\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          {
+            "type": "Sprite",
+            "enabled": true,
+            "material": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_Flash31b.MI_Flash31b",
+            "mesh": "",
+            "shape": "",
+            "sort": "ViewDistance",
+            "renderer_name": "NiagaraSpriteRendererProperties_0",
+            "material_chain": [
+              {
+                "path": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_Flash31b.MI_Flash31b",
+                "class": "MaterialInstanceConstant",
+                "base_property_overrides": "<Struct 'MaterialInstanceBasePropertyOverrides' (0x000002641EEECCC8) {}>"
+              },
+              {
+                "path": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/M_CircleRainbow11a.M_CircleRainbow11a",
+                "class": "Material",
+                "blend_mode": "<BlendMode.BLEND_ADDITIVE: 3>",
+                "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+                "two_sided": "True"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "RibbonCore",
+        "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x0000026620AC7BC0) {emitter_name: \"RibbonCore\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-400.000000,-400.000000,-400.000000) Max(400.000000,400.000000,400.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": []
+      },
+      {
+        "name": "RIbbonTrailFollower",
+        "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x0000026620AC03C0) {emitter_name: \"RIbbonTrailFollower\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          {
+            "type": "Ribbon",
+            "enabled": true,
+            "material": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_Trail75b.MI_Trail75b",
+            "mesh": "",
+            "shape": "Plane",
+            "sort": "",
+            "renderer_name": "NiagaraRibbonRendererProperties_1",
+            "material_chain": [
+              {
+                "path": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_Trail75b.MI_Trail75b",
+                "class": "MaterialInstanceConstant",
+                "base_property_overrides": "<Struct 'MaterialInstanceBasePropertyOverrides' (0x000002641EEEE4C8) {}>"
+              },
+              {
+                "path": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/M_CircleRainbow11a.M_CircleRainbow11a",
+                "class": "Material",
+                "blend_mode": "<BlendMode.BLEND_ADDITIVE: 3>",
+                "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+                "two_sided": "True"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Sparks",
+        "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x0000026620AC4880) {emitter_name: \"Sparks\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-400.000000,-400.000000,-400.000000) Max(400.000000,400.000000,400.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          {
+            "type": "Sprite",
+            "enabled": true,
+            "material": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_Flash30b.MI_Flash30b",
+            "mesh": "",
+            "shape": "",
+            "sort": "None",
+            "renderer_name": "NiagaraSpriteRendererProperties_1",
+            "material_chain": [
+              {
+                "path": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_Flash30b.MI_Flash30b",
+                "class": "MaterialInstanceConstant",
+                "base_property_overrides": "<Struct 'MaterialInstanceBasePropertyOverrides' (0x000002641EEEC4C8) {}>"
+              },
+              {
+                "path": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/M_CircleRainbow11a.M_CircleRainbow11a",
+                "class": "Material",
+                "blend_mode": "<BlendMode.BLEND_ADDITIVE: 3>",
+                "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+                "two_sided": "True"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Debris",
+        "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x0000026620ACF280) {emitter_name: \"Debris\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-400.000000,-400.000000,-400.000000) Max(400.000000,400.000000,400.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          {
+            "type": "Sprite",
+            "enabled": true,
+            "material": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_Snow4b.MI_Snow4b",
+            "mesh": "",
+            "shape": "",
+            "sort": "None",
+            "renderer_name": "NiagaraSpriteRendererProperties_1",
+            "material_chain": [
+              {
+                "path": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_Snow4b.MI_Snow4b",
+                "class": "MaterialInstanceConstant",
+                "base_property_overrides": "<Struct 'MaterialInstanceBasePropertyOverrides' (0x000002641EEEDCC8) {}>"
+              },
+              {
+                "path": "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/M_CircleRainbow11a.M_CircleRainbow11a",
+                "class": "Material",
+                "blend_mode": "<BlendMode.BLEND_ADDITIVE: 3>",
+                "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+                "two_sided": "True"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

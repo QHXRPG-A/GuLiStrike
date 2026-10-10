@@ -1,0 +1,1071 @@
+{
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "reviews": [
+    {
+      "label": "PerfReview_Mining_Source",
+      "name": "PR_Mining_Source__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x0000026732571C00) Class 'NiagaraSystem'>",
+      "location": [
+        -16000.0,
+        -20500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Mining_Source__Actor",
+      "stop": "gs.Perf.Review stop PR_Mining_Source__Actor"
+    },
+    {
+      "label": "PerfReview_Mining_Wide",
+      "name": "PR_Mining_Wide__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_WideAdditive.NS_MiningLaser_Optimized_WideAdditive' (0x0000026465626200) Class 'NiagaraSystem'>",
+      "location": [
+        -13700.0,
+        -20500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Mining_Wide__Actor",
+      "stop": "gs.Perf.Review stop PR_Mining_Wide__Actor"
+    },
+    {
+      "label": "PerfReview_Mining_Opaque",
+      "name": "PR_Mining_Opaque__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized.NS_MiningLaser_Optimized' (0x000002672C8CEE00) Class 'NiagaraSystem'>",
+      "location": [
+        -11400.0,
+        -20500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Mining_Opaque__Actor",
+      "stop": "gs.Perf.Review stop PR_Mining_Opaque__Actor"
+    },
+    {
+      "label": "PerfReview_Mining_Nodes16",
+      "name": "PR_Mining_Nodes16__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_Nodes16.NS_MiningLaser_Optimized_Nodes16' (0x000002672C8C2A00) Class 'NiagaraSystem'>",
+      "location": [
+        -9100.0,
+        -20500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Mining_Nodes16__Actor",
+      "stop": "gs.Perf.Review stop PR_Mining_Nodes16__Actor"
+    },
+    {
+      "label": "PerfReview_Mining_Nodes8",
+      "name": "PR_Mining_Nodes8__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_Nodes8.NS_MiningLaser_Optimized_Nodes8' (0x000002674A700000) Class 'NiagaraSystem'>",
+      "location": [
+        -6800.0,
+        -20500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Mining_Nodes8__Actor",
+      "stop": "gs.Perf.Review stop PR_Mining_Nodes8__Actor"
+    },
+    {
+      "label": "PerfReview_Mining_NoCollision",
+      "name": "PR_Mining_NoCollision__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_NoPresentationCollision.NS_MiningLaser_Optimized_NoPresentationCollision' (0x0000026465620E00) Class 'NiagaraSystem'>",
+      "location": [
+        -4500.0,
+        -20500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Mining_NoCollision__Actor",
+      "stop": "gs.Perf.Review stop PR_Mining_NoCollision__Actor"
+    },
+    {
+      "label": "PerfReview_Mining_GPU",
+      "name": "PR_Mining_GPU__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_GPU.NS_MiningLaser_Optimized_GPU' (0x0000026465627000) Class 'NiagaraSystem'>",
+      "location": [
+        -2200.0,
+        -20500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Mining_GPU__Actor",
+      "stop": "gs.Perf.Review stop PR_Mining_GPU__Actor"
+    },
+    {
+      "label": "PerfReview_Mining_NoSolver",
+      "name": "PR_Mining_NoSolver__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_NoSolver.NS_MiningLaser_Optimized_NoSolver' (0x0000026646E7B600) Class 'NiagaraSystem'>",
+      "location": [
+        100.0,
+        -20500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Mining_NoSolver__Actor",
+      "stop": "gs.Perf.Review stop PR_Mining_NoSolver__Actor"
+    },
+    {
+      "label": "PerfReview_Construction_Source",
+      "name": "PR_Construction_Source__Actor",
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x0000026647FF2A00) Class 'NiagaraSystem'>",
+      "location": [
+        -16000.0,
+        -18500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Construction_Source__Actor",
+      "stop": "gs.Perf.Review stop PR_Construction_Source__Actor"
+    },
+    {
+      "label": "PerfReview_Construction_Wide",
+      "name": "PR_Construction_Wide__Actor",
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_WideAdditive.NS_ConstructionLaser_Optimized_WideAdditive' (0x0000026646E76200) Class 'NiagaraSystem'>",
+      "location": [
+        -13700.0,
+        -18500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Construction_Wide__Actor",
+      "stop": "gs.Perf.Review stop PR_Construction_Wide__Actor"
+    },
+    {
+      "label": "PerfReview_Construction_Opaque",
+      "name": "PR_Construction_Opaque__Actor",
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized.NS_ConstructionLaser_Optimized' (0x000002674A70B600) Class 'NiagaraSystem'>",
+      "location": [
+        -11400.0,
+        -18500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Construction_Opaque__Actor",
+      "stop": "gs.Perf.Review stop PR_Construction_Opaque__Actor"
+    },
+    {
+      "label": "PerfReview_Construction_Nodes16",
+      "name": "PR_Construction_Nodes16__Actor",
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_Nodes16.NS_ConstructionLaser_Optimized_Nodes16' (0x000002674A701C00) Class 'NiagaraSystem'>",
+      "location": [
+        -9100.0,
+        -18500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Construction_Nodes16__Actor",
+      "stop": "gs.Perf.Review stop PR_Construction_Nodes16__Actor"
+    },
+    {
+      "label": "PerfReview_Construction_Nodes8",
+      "name": "PR_Construction_Nodes8__Actor",
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_Nodes8.NS_ConstructionLaser_Optimized_Nodes8' (0x000002674A702A00) Class 'NiagaraSystem'>",
+      "location": [
+        -6800.0,
+        -18500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Construction_Nodes8__Actor",
+      "stop": "gs.Perf.Review stop PR_Construction_Nodes8__Actor"
+    },
+    {
+      "label": "PerfReview_Construction_NoCollision",
+      "name": "PR_Construction_NoCollision__Actor",
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_NoPresentationCollision.NS_ConstructionLaser_Optimized_NoPresentationCollision' (0x0000026646E70000) Class 'NiagaraSystem'>",
+      "location": [
+        -4500.0,
+        -18500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Construction_NoCollision__Actor",
+      "stop": "gs.Perf.Review stop PR_Construction_NoCollision__Actor"
+    },
+    {
+      "label": "PerfReview_Construction_GPU",
+      "name": "PR_Construction_GPU__Actor",
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_GPU.NS_ConstructionLaser_Optimized_GPU' (0x0000026646E77E00) Class 'NiagaraSystem'>",
+      "location": [
+        -2200.0,
+        -18500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Construction_GPU__Actor",
+      "stop": "gs.Perf.Review stop PR_Construction_GPU__Actor"
+    },
+    {
+      "label": "PerfReview_Construction_NoSolver",
+      "name": "PR_Construction_NoSolver__Actor",
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_NoSolver.NS_ConstructionLaser_Optimized_NoSolver' (0x0000026646E78C00) Class 'NiagaraSystem'>",
+      "location": [
+        100.0,
+        -18500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Construction_NoSolver__Actor",
+      "stop": "gs.Perf.Review stop PR_Construction_NoSolver__Actor"
+    },
+    {
+      "label": "PerfReview_Flash_Source",
+      "name": "PR_Flash_Source__Actor",
+      "system": "<Object '/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Flash_1.NS_Flash_1' (0x000002641F5C0000) Class 'NiagaraSystem'>",
+      "location": [
+        -16000.0,
+        -23000.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Flash_Source__Actor",
+      "stop": "gs.Perf.Review stop PR_Flash_Source__Actor"
+    },
+    {
+      "label": "PerfReview_Flash_Muzzle",
+      "name": "PR_Flash_Muzzle__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Optimized.NS_MachineGunMuzzle_Optimized' (0x000002672C8C6200) Class 'NiagaraSystem'>",
+      "location": [
+        -13700.0,
+        -23000.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Flash_Muzzle__Actor",
+      "stop": "gs.Perf.Review stop PR_Flash_Muzzle__Actor"
+    },
+    {
+      "label": "PerfReview_Flash_Impact",
+      "name": "PR_Flash_Impact__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Optimized.NS_MachineGunImpact_Optimized' (0x000002672C8CE000) Class 'NiagaraSystem'>",
+      "location": [
+        -11400.0,
+        -23000.0,
+        1500.0
+      ],
+      "base_scale": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Flash_Impact__Actor",
+      "stop": "gs.Perf.Review stop PR_Flash_Impact__Actor"
+    },
+    {
+      "label": "PerfReview_Flash_MuzzleNoCollision",
+      "name": "PR_Flash_MuzzleNoCollision__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Optimized_NoCollision.NS_MachineGunMuzzle_Optimized_NoCollision' (0x0000026646E77000) Class 'NiagaraSystem'>",
+      "location": [
+        -9100.0,
+        -23000.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Flash_MuzzleNoCollision__Actor",
+      "stop": "gs.Perf.Review stop PR_Flash_MuzzleNoCollision__Actor"
+    },
+    {
+      "label": "PerfReview_Mining_All",
+      "name": "PR_Mining_All__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_GPU_All.NS_MiningLaser_Optimized_GPU_All' (0x000002660AFAE000) Class 'NiagaraSystem'>",
+      "location": [
+        -4800.0,
+        -20500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Mining_All__Actor",
+      "stop": "gs.Perf.Review stop PR_Mining_All__Actor"
+    },
+    {
+      "label": "PerfReview_Construction_All",
+      "name": "PR_Construction_All__Actor",
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_GPU_All.NS_ConstructionLaser_Optimized_GPU_All' (0x000002660775C400) Class 'NiagaraSystem'>",
+      "location": [
+        -4800.0,
+        -18500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Construction_All__Actor",
+      "stop": "gs.Perf.Review stop PR_Construction_All__Actor"
+    },
+    {
+      "label": "PerfReview_Flash_AllMuzzle",
+      "name": "PR_Flash_AllMuzzle__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations.NS_MachineGunMuzzle_AllOptimizations' (0x0000026626E7D200) Class 'NiagaraSystem'>",
+      "location": [
+        -11200.0,
+        -16500.0,
+        1500.0
+      ],
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Flash_AllMuzzle__Actor",
+      "stop": "gs.Perf.Review stop PR_Flash_AllMuzzle__Actor"
+    },
+    {
+      "label": "PerfReview_Flash_AllImpact",
+      "name": "PR_Flash_AllImpact__Actor",
+      "system": "<Object '/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations.NS_MachineGunImpact_AllOptimizations' (0x0000026626E70E00) Class 'NiagaraSystem'>",
+      "location": [
+        -9600.0,
+        -16500.0,
+        1500.0
+      ],
+      "base_scale": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "tick_enabled": false,
+      "effect_count": 1,
+      "start": "gs.Perf.Review start PR_Flash_AllImpact__Actor",
+      "stop": "gs.Perf.Review stop PR_Flash_AllImpact__Actor"
+    }
+  ],
+  "entities": [
+    {
+      "name": "PR_Mining_Source__Actor",
+      "label": "PerfReview_Mining_Source",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -16000.0,
+        -20500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green' (0x0000026732571C00) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Mining_Wide__Actor",
+      "label": "PerfReview_Mining_Wide",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -13700.0,
+        -20500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_WideAdditive.NS_MiningLaser_Optimized_WideAdditive' (0x0000026465626200) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Mining_Opaque__Actor",
+      "label": "PerfReview_Mining_Opaque",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -11400.0,
+        -20500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized.NS_MiningLaser_Optimized' (0x000002672C8CEE00) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Mining_Nodes16__Actor",
+      "label": "PerfReview_Mining_Nodes16",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -9100.0,
+        -20500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_Nodes16.NS_MiningLaser_Optimized_Nodes16' (0x000002672C8C2A00) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Mining_Nodes8__Actor",
+      "label": "PerfReview_Mining_Nodes8",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -6800.0,
+        -20500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_Nodes8.NS_MiningLaser_Optimized_Nodes8' (0x000002674A700000) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Mining_NoCollision__Actor",
+      "label": "PerfReview_Mining_NoCollision",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -4500.0,
+        -20500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_NoPresentationCollision.NS_MiningLaser_Optimized_NoPresentationCollision' (0x0000026465620E00) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Mining_GPU__Actor",
+      "label": "PerfReview_Mining_GPU",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -2200.0,
+        -20500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_GPU.NS_MiningLaser_Optimized_GPU' (0x0000026465627000) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Mining_NoSolver__Actor",
+      "label": "PerfReview_Mining_NoSolver",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        100.0,
+        -20500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_NoSolver.NS_MiningLaser_Optimized_NoSolver' (0x0000026646E7B600) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Construction_Source__Actor",
+      "label": "PerfReview_Construction_Source",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -16000.0,
+        -18500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple.NS_ConstructionLaser_Purple' (0x0000026647FF2A00) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Construction_Wide__Actor",
+      "label": "PerfReview_Construction_Wide",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -13700.0,
+        -18500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_WideAdditive.NS_ConstructionLaser_Optimized_WideAdditive' (0x0000026646E76200) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Construction_Opaque__Actor",
+      "label": "PerfReview_Construction_Opaque",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -11400.0,
+        -18500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized.NS_ConstructionLaser_Optimized' (0x000002674A70B600) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Construction_Nodes16__Actor",
+      "label": "PerfReview_Construction_Nodes16",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -9100.0,
+        -18500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_Nodes16.NS_ConstructionLaser_Optimized_Nodes16' (0x000002674A701C00) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Construction_Nodes8__Actor",
+      "label": "PerfReview_Construction_Nodes8",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -6800.0,
+        -18500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_Nodes8.NS_ConstructionLaser_Optimized_Nodes8' (0x000002674A702A00) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Construction_NoCollision__Actor",
+      "label": "PerfReview_Construction_NoCollision",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -4500.0,
+        -18500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_NoPresentationCollision.NS_ConstructionLaser_Optimized_NoPresentationCollision' (0x0000026646E70000) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Construction_GPU__Actor",
+      "label": "PerfReview_Construction_GPU",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -2200.0,
+        -18500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_GPU.NS_ConstructionLaser_Optimized_GPU' (0x0000026646E77E00) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Construction_NoSolver__Actor",
+      "label": "PerfReview_Construction_NoSolver",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        100.0,
+        -18500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_NoSolver.NS_ConstructionLaser_Optimized_NoSolver' (0x0000026646E78C00) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Flash_Source__Actor",
+      "label": "PerfReview_Flash_Source",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -16000.0,
+        -23000.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Flash_1.NS_Flash_1' (0x000002641F5C0000) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": false,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Flash_Muzzle__Actor",
+      "label": "PerfReview_Flash_Muzzle",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -13700.0,
+        -23000.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Optimized.NS_MachineGunMuzzle_Optimized' (0x000002672C8C6200) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": false,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Flash_Impact__Actor",
+      "label": "PerfReview_Flash_Impact",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -11400.0,
+        -23000.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Optimized.NS_MachineGunImpact_Optimized' (0x000002672C8CE000) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "b_laser": false,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Flash_MuzzleNoCollision__Actor",
+      "label": "PerfReview_Flash_MuzzleNoCollision",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -9100.0,
+        -23000.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Optimized_NoCollision.NS_MachineGunMuzzle_Optimized_NoCollision' (0x0000026646E77000) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": false,
+      "effect_count": 1
+    },
+    {
+      "name": "CameraActor_24",
+      "label": "PerfReview_Camera",
+      "class": "CameraActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -8000.0,
+        -30000.0,
+        12500.0
+      ],
+      "rotation": [
+        0.0,
+        90.0,
+        55.0
+      ],
+      "fov": 90.0
+    },
+    {
+      "name": "TextRenderActor_37",
+      "label": "PerfReview_VisualGuide",
+      "class": "TextRenderActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -16000.0,
+        -21500.0,
+        2000.0
+      ],
+      "text": "ALL OPTIMIZATIONS: production ID36/45/5/52 and pool ID4/38 applied.\nMining 7.5cm / construction 12cm; Opaque+Unlit, actual 8 nodes, Beam GPU.\nSpark/debris presentation collision disabled; server hit rules retained.\ngs.Perf.Review start PR_Mining_All__Actor\ngs.Perf.Review start PR_Construction_All__Actor\ngs.Perf.Review start PR_Flash_AllMuzzle__Actor (or AllImpact)\ngs.Perf.Review stop"
+    },
+    {
+      "name": "TextRenderActor_38",
+      "label": "PerfReview_LifecycleGuide",
+      "class": "TextRenderActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        15000.0,
+        72000.0,
+        1800.0
+      ],
+      "text": "LIFECYCLE REGION: use existing construction menu, factory type6 and red builder.\nLook away >0.15s / return: latest beam recovers; scan phase retained.\nCommander selection: move across screen edge / near plane, inspect rings/routes.\nShip: unpossess/repossess/respawn, inspect current panels and late identity."
+    },
+    {
+      "name": "TextRenderActor_39",
+      "label": "PerfReview_FlightGuide",
+      "class": "TextRenderActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        0.0,
+        65000.0,
+        1600.0
+      ],
+      "text": "FOUR-SOURCE SERVER LOAD: gs.Flights.Load 500 45\nCommander/Ground/Ship/deployed Wingman, 125 per source.\ngs.Flights.Stop stops replenishment; accepted recipes finish normally.\nCurve cache, visit stamps, 256 laser / 32 missile batches and Ship domain snapshots active.\nScripts/Performance/run_whole_optimization_review.py captures whole builds."
+    },
+    {
+      "name": "PR_Mining_All__Actor",
+      "label": "PerfReview_Mining_All",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -4800.0,
+        -20500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_GPU_All.NS_MiningLaser_Optimized_GPU_All' (0x000002660AFAE000) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Construction_All__Actor",
+      "label": "PerfReview_Construction_All",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -4800.0,
+        -18500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_GPU_All.NS_ConstructionLaser_Optimized_GPU_All' (0x000002660775C400) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": true,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Flash_AllMuzzle__Actor",
+      "label": "PerfReview_Flash_AllMuzzle",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -11200.0,
+        -16500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations.NS_MachineGunMuzzle_AllOptimizations' (0x0000026626E7D200) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "b_laser": false,
+      "effect_count": 1
+    },
+    {
+      "name": "PR_Flash_AllImpact__Actor",
+      "label": "PerfReview_Flash_AllImpact",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -9600.0,
+        -16500.0,
+        1500.0
+      ],
+      "system": "<Object '/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations.NS_MachineGunImpact_AllOptimizations' (0x0000026626E70E00) Class 'NiagaraSystem'>",
+      "tick_enabled": false,
+      "base_scale": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "b_laser": false,
+      "effect_count": 1
+    }
+  ],
+  "production_references": [
+    {
+      "id": 4,
+      "path": "/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool_SmallBatches.NS_WingmanLaserPool_SmallBatches",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "id": 5,
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations.NS_MachineGunImpact_AllOptimizations",
+      "base_scale": [
+        2.0,
+        2.0,
+        2.0
+      ]
+    },
+    {
+      "id": 36,
+      "path": "/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_GPU_All.NS_MiningLaser_Optimized_GPU_All",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "id": 38,
+      "path": "/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool_SmallBatches.NS_WingmanLaserPool_SmallBatches",
+      "base_scale": [
+        0.3,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "id": 45,
+      "path": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_GPU_All.NS_ConstructionLaser_Optimized_GPU_All",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "id": 52,
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations.NS_MachineGunMuzzle_AllOptimizations",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "authorization": "直接应用所有优化，并补齐整版对照",
+  "flight_marker": {
+    "name": "GuLiCommanderDeploymentPoint_0",
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "location": [
+      0.0,
+      65000.0,
+      901.7790832519531
+    ],
+    "tags": [
+      "FlightEventsQAOrigin",
+      "FlightEventsQA_Count500",
+      "FlightEventsQA_Duration30",
+      "FlightEventsQA_Commander_Ground_Ship_Wingman"
+    ]
+  },
+  "visual_acceptance": "Previous Opaque/independent copies approved. New combined visual feedback has not been recorded; directly applied under latest authorization.",
+  "scope": "Saved fixture/entity/reference confirmation follows completed source checks, source build and authorized runtime comparisons."
+}

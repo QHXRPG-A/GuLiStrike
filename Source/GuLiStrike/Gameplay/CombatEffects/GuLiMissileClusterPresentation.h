@@ -61,6 +61,12 @@ private:
 		TArray<FBoundsSample> RecentBounds;
 		FBox Bounds = FBox(ForceInit);
 		FRetiringBatch Retiring;
+		TSet<int32> DirtySlots;
+		TWeakObjectPtr<UNiagaraComponent> UploadedComponent;
+		uint64 DataRevision = 1, UploadedRevision = 0;
+		double UploadedTime = -1000;
+		float UploadedWeight = -1, VisualScale = 1;
+		FBox UploadedBounds = FBox(ForceInit);
 		// Freeze the initial occupied prefix until this batch is empty. Later shots
 		// use free slots inside it or a new batch, never restart another shot's tail.
 		int32 Capacity = 0, Occupied = 0, Quality = -1;

@@ -1,0 +1,155 @@
+{
+  "success": true,
+  "progress_errors": [],
+  "existing_progress_warnings": 16,
+  "python_syntax": "five scripts passed py_compile",
+  "source_audit": [
+    {
+      "path": "Source/GuLiStrike/Gameplay/GuLiStrikeProjectile.h",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GuLiStrikeProjectile.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectAuthoringLibrary.h",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectAuthoringLibrary.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiClientFlightPool.h",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiClientFlightPool.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.h",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiFlightVisualActor.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiFlightVisualActor.h",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiMissileClusterPresentation.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiCombatDamageLedger.h",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiCombatDamageLedger.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiShipProjectileLedgerBridge.h",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiShipProjectileLedgerBridge.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/Tests/GuLiCombatEffectRuntimeTests.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/Tests/GuLiShipProjectileLedgerBridgeTests.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/GuLiSceneUIWidget.cpp",
+      "matches_loaded_build_source": true
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/GuLiSceneUIWidget.h",
+      "matches_loaded_build_source": true
+    }
+  ],
+  "files": {
+    "Scripts\\Performance\\capture_stress_frame_analysis.py": "cd8bfcfb84186c22d753a3f1970532e76b1e4e28b42120c3b616f8786e6a9d23",
+    "Scripts\\Performance\\analyze_stress_frames.py": "1e3aba9f6a9e6f4f3ea4930259ebe8cca7d4e3a78a50760b4274a784a840c7ec",
+    "Scripts\\Performance\\read_stress_asset_settings.py": "43f184b237cebb9e1bdd13aff38b49480c6603f7f7f8cf2150728e0362c905a5",
+    "Scripts\\Performance\\build_stress_frame_report.py": "7a080ee33b32140197893a572890dea435cdd89ac467c030483a35c24dffe9b1",
+    "Scripts\\Performance\\update_stress_frame_progress.py": "7e7fd611a0ca23e3f42b2ab5e4a3cd8e7cd805d5bb7b28a249a08fcfa3c45a4f"
+  },
+  "frame_accounting": [
+    {
+      "name": "median",
+      "tick_ms": 63.5738,
+      "exclusive_ms": 63.57379999999999
+    },
+    {
+      "name": "p95",
+      "tick_ms": 88.021,
+      "exclusive_ms": 88.02100000000003
+    },
+    {
+      "name": "worst",
+      "tick_ms": 101.0962,
+      "exclusive_ms": 101.09619999999993
+    }
+  ],
+  "runtime_controls": {
+    "success": true,
+    "message": "Python command executed successfully.",
+    "result": {
+      "success": true,
+      "worlds": 0,
+      "values": {
+        "gs.Flights.DataPool": 1,
+        "gs.Flights.PrecomputeCurves": 1,
+        "gs.Projectiles.VisitStamps": 1,
+        "gs.Projectiles.ShipWingmanSnapshotIndex": 1,
+        "gs.LaserPool.BatchSize": 256,
+        "gs.MissileCluster.BatchSize": 32,
+        "gs.SceneUI.SplitLeaves": 1,
+        "gs.SceneUI.ProjectionCache": 1,
+        "gs.Avoidance.QueryOptimizations": 1,
+        "gs.Avoidance.SparseCells": 1,
+        "gs.Effects.BoundsCull": 1
+      }
+    }
+  },
+  "viewer": "Median/P95/worst frame switching inspected, no browser console errors. Actual PNGs visually inspected.",
+  "scope": "Profiling/report only. No production code or asset change, no compilation, no added gameplay tests. Previous saved validation map retained."
+}

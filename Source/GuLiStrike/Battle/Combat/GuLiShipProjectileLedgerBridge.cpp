@@ -4,6 +4,12 @@
 
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
+#include "HAL/IConsoleManager.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
+
+static TAutoConsoleVariable<int32> CVarShipWingmanSnapshotIndex(TEXT("gs.Projectiles.ShipWingmanSnapshotIndex"), 1,
+	TEXT("Read only fresh Wingman snapshots for Ship sphere sweeps; 0 restores the whole-directory query."));
 
 namespace
 {
@@ -236,7 +242,7 @@ FGuLiShipProjectileLedgerImpact GuLiShipProjectileLedger::CommitServerWingmanSwe
 	const FGuLiShipProjectileLedgerContext& Context,
 	const FVector& SegmentStart,
 	const FVector& SegmentEnd,
-	const float ProjectileRadius)
+	const float ProjectileRadius, TArray<FGuLiCombatTargetSnapshot>* Workspace)
 {
 	FGuLiShipProjectileLedgerImpact Outcome;
 	if (World.GetNetMode() == NM_Client || !Context.IsWellFormed()
@@ -253,8 +259,13 @@ FGuLiShipProjectileLedgerImpact GuLiShipProjectileLedger::CommitServerWingmanSwe
 		return Outcome;
 	}
 
-	TArray<FGuLiCombatTargetSnapshot> Snapshots;
-	Ledger->GetTargetSnapshots(Snapshots);
+	TArray<FGuLiCombatTargetSnapshot> LocalSnapshots;
+	TArray<FGuLiCombatTargetSnapshot>& Snapshots = Workspace ? *Workspace : LocalSnapshots;
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiShipProjectile_WingmanSnapshot);
+		FGuLiPerformanceScope Timing(&World, TEXT("Projectile.ShipWingmanSnapshotMs"));
+		Ledger->GetTargetSnapshots(Snapshots, CVarShipWingmanSnapshotIndex.GetValueOnGameThread() ? EGuLiTargetKind::Wingman : EGuLiTargetKind::None);
+	}
 	const FGuLiCombatTargetSnapshot* BestTarget = nullptr;
 	double BestTime = TNumericLimits<double>::Max();
 	for (const FGuLiCombatTargetSnapshot& Snapshot : Snapshots)

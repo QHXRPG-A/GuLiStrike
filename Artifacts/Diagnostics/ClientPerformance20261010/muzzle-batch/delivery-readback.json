@@ -1,0 +1,159 @@
+{
+  "success": true,
+  "current_mode": 2.0,
+  "official_id52_row": {
+    "Name": "GroundMachineGunMuzzle",
+    "Id": 52,
+    "Note": "指挥官机械机枪枪口；保持基础尺寸，重防号在调用处乘2",
+    "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations.NS_MachineGunMuzzle_AllOptimizations",
+    "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+    "ReducedResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations_Reduced.NS_MachineGunMuzzle_AllOptimizations_Reduced",
+    "MinimalResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations_Minimal.NS_MachineGunMuzzle_AllOptimizations_Minimal",
+    "BatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch.NS_MachineGunMuzzle_Batch",
+    "ReducedBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch_Reduced.NS_MachineGunMuzzle_Batch_Reduced",
+    "MinimalBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch_Minimal.NS_MachineGunMuzzle_Batch_Minimal"
+  },
+  "muzzle_channel": "/Game/GuLiStrike/FX/CommanderWeapons/NDC_CommanderMuzzles.NDC_CommanderMuzzles",
+  "impact_channel_unchanged": "/Game/GuLiStrike/FX/CommanderWeapons/NDC_CommanderImpacts.NDC_CommanderImpacts",
+  "systems": [
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch",
+      "input_version": 1.0,
+      "maximum_lifetime": 1.25,
+      "emitters": [
+        "Glow",
+        "Flash",
+        "RibbonCore",
+        "RIbbonTrailFollower",
+        "Sparks",
+        "Debris"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch_Reduced",
+      "input_version": 1.0,
+      "maximum_lifetime": 1.25,
+      "emitters": [
+        "Glow",
+        "Flash",
+        "RibbonCore",
+        "RIbbonTrailFollower",
+        "Sparks",
+        "Debris"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch_Minimal",
+      "input_version": 1.0,
+      "maximum_lifetime": 1.25,
+      "emitters": [
+        "Glow",
+        "Flash",
+        "RibbonCore",
+        "RIbbonTrailFollower",
+        "Sparks",
+        "Debris"
+      ]
+    }
+  ],
+  "saved_review_entities": [
+    {
+      "label": "MuzzleReview_Old_Normal",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -21500.0,
+        -18000.0,
+        1700.0
+      ],
+      "mode": 0,
+      "heavy": false,
+      "tick_enabled": false,
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations.NS_MachineGunMuzzle_AllOptimizations"
+    },
+    {
+      "label": "MuzzleReview_Batch_Normal",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -18000.0,
+        -18000.0,
+        1700.0
+      ],
+      "mode": 2,
+      "heavy": false,
+      "tick_enabled": false,
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch.NS_MachineGunMuzzle_Batch"
+    },
+    {
+      "label": "MuzzleReview_Old_Heavy",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -21500.0,
+        -14500.0,
+        1700.0
+      ],
+      "mode": 0,
+      "heavy": true,
+      "tick_enabled": false,
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations.NS_MachineGunMuzzle_AllOptimizations"
+    },
+    {
+      "label": "MuzzleReview_Batch_Heavy",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -18000.0,
+        -14500.0,
+        1700.0
+      ],
+      "mode": 2,
+      "heavy": true,
+      "tick_enabled": false,
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch.NS_MachineGunMuzzle_Batch"
+    },
+    {
+      "label": "MuzzleReview_Camera_Near",
+      "class": "CameraActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -19750.0,
+        -21100.0,
+        3700.0
+      ]
+    },
+    {
+      "label": "MuzzleReview_Camera_Middle",
+      "class": "CameraActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -19750.0,
+        -27000.0,
+        7000.0
+      ]
+    },
+    {
+      "label": "MuzzleReview_Camera_Far",
+      "class": "CameraActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -19750.0,
+        -33000.0,
+        7000.0
+      ]
+    },
+    {
+      "label": "MuzzleReview_Guide",
+      "class": "TextRenderActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -22500.0,
+        -20100.0,
+        2300.0
+      ]
+    }
+  ],
+  "player_visual_approval": false,
+  "scope": "Saved resources, certified input version and map entities read back after final build and visual preview."
+}

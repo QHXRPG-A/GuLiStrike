@@ -16,6 +16,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | combat, performance, presentation, ui | 2/11 (18%) | 先测量UI与避障的准备/计算/提交/等待边界，再实现单项可回退候选；源码构建与运行对照按届时用户授权安排。 | 2026-10-10 |
 | [实时势力范围与阵营覆盖](../RequirementDocument/20260916-实时势力范围与阵营覆盖.md) | building, commander, map, ui | — | 围绕现有据点与Territory梳理势力源、扩散规则、刷新方式及覆盖渲染，形成技术方案。 | 2026-09-16 |
 | [首版 Demo 3v3、Ship 战略机动与高频选牌](../RequirementDocument/20260909-Demo3v3与Ship战略机动及高频选牌.md) | combat, commander, economy, ship, ui | — | 细化战略机动的调用与支付方式、出入口和僚机随行规则，以及三线选牌频率、单次强化幅度和 Ship 卡牌内容规划。 | 2026-09-09 |
 | [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | building, combat, commander, economy, ship | — | 细化维护及断供恢复、战略机动支付与采集加工参数，以及三线经验曲线、Ship 高频选牌和强力牌费用。 | 2026-09-09 |
@@ -37,6 +38,15 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [客户端表现管线技能与枪口批量化 — 技术方案](../DevelopmentDocumentation/20261010-客户端表现管线技能与枪口批量化.md) | combat, performance, presentation, vfx | 8/9 (89%) | 玩家打开LVL_CommanderMassPrototype验收枪口外观与实战行为；压力枪口收益需上游可靠事件积压解除后复测，不在本轮改动网络。 | 2026-10-10 |
+| [命中特效事件批量承载与生命周期优化 — 技术方案](../DevelopmentDocumentation/20261009-命中特效事件批量承载与生命周期优化.md) | combat, performance, presentation, vfx | 11/12 (92%) | 玩家直接打开LVL_CommanderMassPrototype的PIE验收视觉及玩法效果；FPS对照暂缓。 | 2026-10-10 |
+| [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | combat, data-pipeline, network, performance, presentation, vfx, wingman | 16/19 (84%) | 玩家直接打开LVL_CommanderMassPrototype的PIE验收视觉及玩法效果；FPS对照暂缓。 | 2026-10-10 |
+| [客户端视野裁剪与特效三档LOD优化 — 技术方案](../DevelopmentDocumentation/20261009-客户端视野裁剪与特效三档LOD优化.md) | combat, commander, performance, presentation, ui, vfx | 14/16 (88%) | 玩家直接打开LVL_CommanderMassPrototype的PIE验收视觉及玩法效果；FPS对照暂缓。 | 2026-10-10 |
+| [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | commander, performance, ui | 8/11 (73%) | 用户自行打开编辑器，在LVL_CommanderMassPrototype的NetworkHUD_Entry按原流程验证指标。 | 2026-10-10 |
+| [PIE游戏线程耗时与避障候选查询优化 — 技术方案](../DevelopmentDocumentation/20261009-PIE游戏线程耗时与避障候选查询优化.md) | combat, commander, navigation, performance, ui | 8/9 (89%) | 保留避障交叉/停止/改令/环境边缘的玩家反馈；查询已达预算，追加性能优先按截帧报告处理命中特效和Ship生命周期。 | 2026-10-09 |
+| [场景UI来源注册与绘制缓存优化 — 技术方案](../DevelopmentDocumentation/20261009-场景UI来源注册与绘制缓存优化.md) | building, commander, performance, ship, ui | 10/11 (91%) | 保留四叶缓存后裁剪/建造预览/HUD期限/Ship面板的玩家反馈；区分场景UI与全局Slate成本，性能按截帧热点继续推进。 | 2026-10-09 |
+| [非Mass飞行弹丸六项性能优化 — 分析与开发方案](../DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md) | combat, network, performance, presentation, vfx | 13/14 (93%) | 按最慢帧验证Ship服务器Actor复用及完整复位，保持物理移动/判定路径；复用可靠飞行批次解码/应用容量，随后做同负载收益对照。 | 2026-10-09 |
+| [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | building, combat, commander, performance, resources, vfx | 11/12 (92%) | 按截帧证据给命中特效补真正新建/复用/完成计数，比较空闲池与稳定槽位批次；新组合继续正式使用，保留细节玩家反馈。 | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | assets, commander, data, ground_mech, rendering, ship, ui | — | 用户在Mass地图或新版UE画廊确认扫荡者最终观感；保留其他已核对证据和未验证的长期稳定、飞船运行边界。 | 2026-10-09 |
 | [十四模型仅配色 Blender 成品 B_v1 — 实际成品审核](../DevelopmentDocumentation/20261008-十四模型仅配色Blender成品B_v1.md) | art, assets, rendering | 5/7 (71%) | 用户在当前UE画廊确认最终观感；已放行的本B版本不重复请求导入许可。 | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | art, assets, building, commander, rendering, ui | 6/9 (67%) | 用户在Mass地图确认全部场景UI操作与最终观感；未覆盖功能和长期性能仍按当前模型目录记录。 | 2026-10-09 |
@@ -78,7 +88,6 @@
 | [提速单位坡面卡住与子弹提前显示修复](../DevelopmentDocumentation/20260928-提速单位坡面卡住与子弹提前显示修复.md) | combat, commander, vfx | — | 在LVL_CommanderMassPrototype通过F4叠加五张机动卡，框选重防号上坡并观察交战弹道，完成玩家效果验收。 | 2026-10-05 |
 | [重防号能力卡 — 六层视差与可编辑文案交付](../DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md) | assets, rendering, ui | 7/9 (78%) | 用户在LVL_WarMachineTarotReview核验三张新牌面、极限偏转与既有两次点击流程。 | 2026-10-05 |
 | [Mass历史插值与三倍速度纠偏](../DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md) | commander, movement, network, performance | 13/15 (87%) | 定位位置队列长等待中引擎补额、保守预留与命令状态屏障的占比；独立追查导航单步跳点，保留晚加入/重连及紧急状态专项验收。 | 2026-10-05 |
-| [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | commander, performance, ui | 3/4 (75%) | 由玩家核对原地图左上角显示、窗口适配和RTT；不自动启动PIE。 | 2026-10-05 |
 | [导航内存优化与对局容量预算](../DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md) | navigation, performance | 11/13 (85%) | 玩家核对连续纠偏与HUD；服务端异常XY位移、姿态供给及专服容量测量继续后续处理。 | 2026-10-05 |
 | [三张视差3D卡牌交互演示 — 技术方案](../DevelopmentDocumentation/20260922-三张视差3D卡牌交互演示.md) | presentation, ui, vfx | 9/10 (90%) | 在 LVL_CardRevealDemo 体验两次点击流程、±12° 悬停以及窗口失焦回正，确认视觉与手感。 | 2026-10-05 |
 | [指挥官部队StateTree接入与特殊任务退役 — 技术方案](../DevelopmentDocumentation/20260921-指挥官部队StateTree接入与特殊任务退役.md) | building, commander, resources | 10/13 (77%) | 在LVL_CommanderMassPrototype补齐矿位、施工、改令及通道异常矩阵，再完成新逻辑10/30台负载与30分钟性能验收，并收集玩家效果反馈。 | 2026-10-05 |

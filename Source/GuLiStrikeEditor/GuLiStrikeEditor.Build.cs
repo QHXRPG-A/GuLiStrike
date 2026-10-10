@@ -24,6 +24,7 @@ public class GuLiStrikeEditor : ModuleRules
 			"AIModule",
 			"MassEntity", // PIE selection reads the local commander's presented transform.
 			"Json",
+			"Slate", "SlateCore", // Opt-in per-window Prepass diagnostics; no engine changes.
 			"Landscape",
 			"Foliage", // LandscapeEdit.h exposes foliage integration to editor callers.
 			"NavigationSystem",

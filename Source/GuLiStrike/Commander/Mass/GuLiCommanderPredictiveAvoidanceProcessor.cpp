@@ -1,6 +1,7 @@
+#include "Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.h"
 
 #include "Avoidance/MassAvoidanceFragments.h"
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
@@ -40,7 +41,17 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 		bool bForced = false;
 		bool bSolved = false;
 	};
+	struct FWorkspace
+	{
+		TArray<FProcessorAgent> Agents;
+		TArray<FAgentSnapshot> PolicyAgents;
+		TMap<FMassEntityHandle, int32> AgentIndexByEntity;
+		FAvoidanceSpatialGrid SpatialGrid;
+		FCandidateQueryScratch QueryScratch;
+	};
 }
+
+UGuLiCommanderPredictiveAvoidanceProcessor::~UGuLiCommanderPredictiveAvoidanceProcessor() = default;
 
 UGuLiCommanderPredictiveAvoidanceProcessor::UGuLiCommanderPredictiveAvoidanceProcessor()
 	: ObstacleQuery(*this)
@@ -92,6 +103,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::InitializeInternal(
 {
 	Super::InitializeInternal(Owner, EntityManager);
 	World = Owner.GetWorld();
+	Workspace = MakeUnique<GuLiCommanderPredictiveAvoidancePrivate::FWorkspace>();
 	FixedStepAccumulatorSeconds = 0.0;
 	NextSolveSequence = 0u;
 }
@@ -116,16 +128,20 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 		return;
 	}
 
-	TArray<FProcessorAgent> Agents;
-	Agents.Reserve(512);
-	TMap<FMassEntityHandle, int32> AgentIndexByEntity;
-	FAvoidanceSpatialGrid SpatialGrid;
+	auto& Agents = Workspace->Agents;
+	auto& PolicyAgents = Workspace->PolicyAgents;
+	auto& AgentIndexByEntity = Workspace->AgentIndexByEntity;
+	auto& SpatialGrid = Workspace->SpatialGrid;
+	Agents.Reset();
+	PolicyAgents.Reset();
+	AgentIndexByEntity.Reset();
 	float GridCellSize = SpatialCellSizeCentimeters;
 	float MaximumAgentRadius = 0.0f;
 	float MaximumAgentSpeed = 0.0f;
 	int32 MaximumBucketOccupancy = 0;
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_PredictiveAvoidanceBuildGrid);
+		FGuLiPerformanceScope Timing(World, TEXT("Avoidance.GridMs"));
 		ObstacleQuery.ForEachEntityChunk(Context, [&Agents, &AgentIndexByEntity](FMassExecutionContext& ChunkContext)
 		{
 			const TConstArrayView<FTransformFragment> Transforms =
@@ -174,7 +190,6 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 			}
 		}
 
-		TArray<FAgentSnapshot> PolicyAgents;
 		PolicyAgents.Reserve(Agents.Num());
 		for (const FProcessorAgent& Entry : Agents)
 		{
@@ -246,17 +261,20 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 			}
 		});
 
-	TArray<FAgentSnapshot> PolicyAgents;
-	PolicyAgents.Reserve(Agents.Num());
-	for (const FProcessorAgent& Entry : Agents)
+	for (int32 Index = 0; Index < Agents.Num(); ++Index)
 	{
-		PolicyAgents.Add(Entry.Agent);
+		const FProcessorAgent& Entry = Agents[Index];
+		PolicyAgents[Index] = Entry.Agent;
 		if (Entry.Agent.bParticipates && !Entry.Agent.bEnvironment)
 			MaximumAgentSpeed = FMath::Max(MaximumAgentSpeed, Entry.Agent.MaximumSpeed);
 	}
 
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_PredictiveAvoidanceCandidateQuery);
+		FGuLiPerformanceScope Timing(World, TEXT("Avoidance.QueryMs"));
+		uint64 Visits = 0, Exact = 0, Solves = 0, Forced = 0;
+		uint64 CellLookups=0,CellHits=0,SparseComparisons=0,Duplicates=0,Unique=0,Retained=0,Consumed=0,Verified=0,Mismatches=0;
+		uint64 RadiusBins[3]={},SpeedBins[3]={}; double QueryReachSum=0;
 		for (int32 AgentIndex = 0; AgentIndex < Agents.Num(); ++AgentIndex)
 		{
 			FProcessorAgent& Entry = Agents[AgentIndex];
@@ -284,14 +302,39 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 				FMath::Max(DetectionDistanceCentimeters, Entry.Agent.Radius + MaximumAgentRadius
 					+ (Entry.Agent.MaximumSpeed + MaximumAgentSpeed) * Entry.Parameters.PredictiveAvoidanceTime
 					+ Entry.Parameters.PredictiveAvoidanceDistance),
-				MaximumHeightDifferenceCentimeters, GridCellSize, Entry.Parameters.PredictiveAvoidanceTime);
+				MaximumHeightDifferenceCentimeters, GridCellSize, Entry.Parameters.PredictiveAvoidanceTime,
+				&Workspace->QueryScratch);
+			Visits += Metrics.BucketEntriesVisited; Exact += Metrics.ExactCandidates; ++Solves; Forced += Entry.bForced ? 1 : 0;
+			CellLookups+=Metrics.CellLookups; CellHits+=Metrics.CellHits; Duplicates+=Metrics.EnvironmentDuplicates; Unique+=Metrics.UniqueVisits;
+			SparseComparisons+=Metrics.SparseComparisons;
+			Retained+=Metrics.RetainedCandidates; Consumed+=Metrics.ConsumedCandidates; Verified+=Metrics.VerifiedPrefixes; Mismatches+=Metrics.PrefixMismatches;
+			++RadiusBins[Entry.Agent.Radius<=150.f ? 0 : Entry.Agent.Radius<=300.f ? 1 : 2];
+			++SpeedBins[Entry.Agent.MaximumSpeed<=800.f ? 0 : Entry.Agent.MaximumSpeed<=1600.f ? 1 : 2];
+			QueryReachSum+=FMath::Max(DetectionDistanceCentimeters,Entry.Agent.Radius+MaximumAgentRadius
+				+(Entry.Agent.MaximumSpeed+MaximumAgentSpeed)*Entry.Parameters.PredictiveAvoidanceTime+Entry.Parameters.PredictiveAvoidanceDistance);
 			Entry.CandidateCount = Metrics.ExactCandidates;
 			Entry.bSolved = true;
+		}
+		if (auto* Capture = World->GetSubsystem<UGuLiPerformanceSubsystem>())
+		{
+			Capture->Record(TEXT("Avoidance.BucketVisits"), double(Visits));
+			Capture->Record(TEXT("Avoidance.ExactCandidates"), double(Exact));
+			Capture->Record(TEXT("Avoidance.Solves"), double(Solves));
+			Capture->Record(TEXT("Avoidance.Forced"), double(Forced));
+			Capture->Record(TEXT("Avoidance.CellLookups"),double(CellLookups)); Capture->Record(TEXT("Avoidance.CellHits"),double(CellHits));
+			Capture->Record(TEXT("Avoidance.SparseComparisons"),double(SparseComparisons));
+			Capture->Record(TEXT("Avoidance.EnvironmentDuplicates"),double(Duplicates)); Capture->Record(TEXT("Avoidance.UniqueVisits"),double(Unique));
+			Capture->Record(TEXT("Avoidance.Retained"),double(Retained)); Capture->Record(TEXT("Avoidance.Consumed"),double(Consumed));
+			Capture->Record(TEXT("Avoidance.VerifiedPrefixes"),double(Verified)); Capture->Record(TEXT("Avoidance.PrefixMismatches"),double(Mismatches));
+			Capture->Record(TEXT("Avoidance.QueryReachSumCm"),QueryReachSum);
+			Capture->Record(TEXT("Avoidance.RadiusLE150"),double(RadiusBins[0])); Capture->Record(TEXT("Avoidance.RadiusLE300"),double(RadiusBins[1])); Capture->Record(TEXT("Avoidance.RadiusGT300"),double(RadiusBins[2]));
+			Capture->Record(TEXT("Avoidance.SpeedLE800"),double(SpeedBins[0])); Capture->Record(TEXT("Avoidance.SpeedLE1600"),double(SpeedBins[1])); Capture->Record(TEXT("Avoidance.SpeedGT1600"),double(SpeedBins[2]));
 		}
 	}
 
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_PredictiveAvoidanceSolve);
+		FGuLiPerformanceScope Timing(World, TEXT("Avoidance.SolveMs"));
 		for (FProcessorAgent& Entry : Agents)
 		{
 			if (!Entry.bSolved)

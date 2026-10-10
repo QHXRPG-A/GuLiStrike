@@ -86,6 +86,12 @@ struct FGuLiCommanderPresentedSoldier
 	double SmoothedPoseReceiptIntervalSeconds = 0.0;
 	double SmoothedPoseReceiptJitterSeconds = 0.0;
 	double RenderServerTimeSeconds = 0.0;
+	double LastRenderClockLocalTime = 0.0;
+	double LastPresentationLocalTime = -1.0;
+	double NextPresentationLocalTime = 0.0;
+	uint32 PoseRevision = 0;
+	bool bMainViewVisible = true;
+	bool bPresentationStateDirty = true;
 	FVector LastUntaggedHardSnapDelta = FVector::ZeroVector;
 	FVector LastHardSnapPriorSampleDelta = FVector::ZeroVector;
 	FVector LastHardSnapSampleVelocity = FVector::ZeroVector;
@@ -359,7 +365,16 @@ private:
 		const TMap<uint16,TArray<float>>& StartTimes);
 	void ConfigureUnitInstanceComponent(UInstancedStaticMeshComponent& Component) const;
 	void UpdateMechanicalPresentation(FGuLiSoldierId Id, FGuLiCommanderPresentedSoldier& Soldier,
-		const FTransform& PreviousPose, float DeltaSeconds, bool bReset, bool bAlive);
+		const FTransform& PreviousPose, float DeltaSeconds, bool bReset, bool bAlive, bool bWriteInstances = true);
+	const FGuLiCommanderPresentedSoldier* GetQuerySoldier(FGuLiSoldierId Id) const;
+	struct FDemandPose
+	{
+		FGuLiCommanderPresentedSoldier Soldier;
+		uint64 Frame = MAX_uint64;
+		uint32 Revision = 0;
+		double RenderTime = -1;
+	};
+	mutable TMap<FGuLiSoldierId, FDemandPose> DemandPoses;
 	void ObserveMechanicalShot(const FGuLiCombatShotCue& Cue);
 	bool ResolveMechanicalMuzzle(const FGuLiCombatShotCue& Cue, FTransform& Out, float& RenderTime) const;
 	bool ResolveMechanicalLaunchOffset(const FGuLiTargetHandle& Source, FName Slot,
@@ -392,7 +407,7 @@ private:
 	void ApplyPrediction(
 		FGuLiSoldierId SoldierId,
 		double LocalNowSeconds,
-		FTransform& InOutTransform);
+		FTransform& InOutTransform, bool bUpdateState = true);
 	void BeginPredictionResolution(FGuLiCommanderPredictedMove& Prediction, double LocalNowSeconds);
 	// 本地创建仅含身份/生命/变换的 Mass 镜像；Dedicated Server 不创建，不接入客户端移动模拟。
 	bool EnsureClientMirrorArchetype();

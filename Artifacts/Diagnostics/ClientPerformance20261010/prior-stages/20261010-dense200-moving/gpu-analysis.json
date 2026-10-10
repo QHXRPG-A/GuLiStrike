@@ -1,0 +1,671 @@
+{
+  "queues": [
+    {
+      "frame": 76972,
+      "queue": "Compute 0",
+      "event": "<root>",
+      "depth": 1,
+      "inclusive_ms": 2.51,
+      "exclusive_ms": 0.008,
+      "draws": 0,
+      "dispatches": 186,
+      "parents": []
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "<root>",
+      "depth": 1,
+      "inclusive_ms": 16.829,
+      "exclusive_ms": 0.01,
+      "draws": 3091,
+      "dispatches": 1140,
+      "parents": []
+    }
+  ],
+  "outline_captures": [
+    {
+      "frame": 76972,
+      "queue": "Compute 0",
+      "event": "Dense200_Client1_SceneCapture_SceneCapture2D_0",
+      "depth": 7,
+      "inclusive_ms": 0.026,
+      "exclusive_ms": 0.002,
+      "draws": 0,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Compute 0",
+      "event": "RenderGraphExecute - Dense200_Client1_SceneCapture_SceneCapture2D_0",
+      "depth": 13,
+      "inclusive_ms": 0.021,
+      "exclusive_ms": 0.005,
+      "draws": 0,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "Dense200_Client1_SceneCapture_SceneCapture2D_0",
+        "SceneRender"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Compute 0",
+      "event": "Dense200_Client2_SceneCapture_SceneCapture2D_0",
+      "depth": 7,
+      "inclusive_ms": 0.038,
+      "exclusive_ms": 0.002,
+      "draws": 0,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Compute 0",
+      "event": "RenderGraphExecute - Dense200_Client2_SceneCapture_SceneCapture2D_0",
+      "depth": 13,
+      "inclusive_ms": 0.031,
+      "exclusive_ms": 0.007,
+      "draws": 0,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "Dense200_Client2_SceneCapture_SceneCapture2D_0",
+        "SceneRender"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "Dense200_Client1_SceneCapture_SceneCapture2D_0",
+      "depth": 7,
+      "inclusive_ms": 2.224,
+      "exclusive_ms": 0.002,
+      "draws": 68,
+      "dispatches": 210,
+      "parents": [
+        "<root>",
+        "Frame 76936"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "RenderGraphExecute - Dense200_Client1_SceneCapture_SceneCapture2D_0",
+      "depth": 13,
+      "inclusive_ms": 2.194,
+      "exclusive_ms": 0.047,
+      "draws": 68,
+      "dispatches": 209,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "Dense200_Client1_SceneCapture_SceneCapture2D_0",
+        "SceneRender"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "Dense200_Client2_SceneCapture_SceneCapture2D_0",
+      "depth": 7,
+      "inclusive_ms": 2.306,
+      "exclusive_ms": 0.002,
+      "draws": 126,
+      "dispatches": 216,
+      "parents": [
+        "<root>",
+        "Frame 76936"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "RenderGraphExecute - Dense200_Client2_SceneCapture_SceneCapture2D_0",
+      "depth": 13,
+      "inclusive_ms": 2.272,
+      "exclusive_ms": 0.047,
+      "draws": 126,
+      "dispatches": 215,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "Dense200_Client2_SceneCapture_SceneCapture2D_0",
+        "SceneRender"
+      ]
+    }
+  ],
+  "slate": [
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "RenderGraphExecute - Slate",
+      "depth": 7,
+      "inclusive_ms": 0.733,
+      "exclusive_ms": 0.032,
+      "draws": 397,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "SlateUI Title = GuLiStrike - 虚幻编辑器",
+      "depth": 10,
+      "inclusive_ms": 0.083,
+      "exclusive_ms": 0.001,
+      "draws": 177,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "RenderGraphExecute - Slate"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "SlateUI Title = GuLiStrike 预览 [NetMode: Client 1]  （64-bit/PC D3D SM6）",
+      "depth": 10,
+      "inclusive_ms": 0.576,
+      "exclusive_ms": 0.01,
+      "draws": 111,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "RenderGraphExecute - Slate"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "SlateUI Title = GuLiStrike 预览 [NetMode: Client 2]  （64-bit/PC D3D SM6）",
+      "depth": 10,
+      "inclusive_ms": 0.042,
+      "exclusive_ms": 0.009,
+      "draws": 109,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "RenderGraphExecute - Slate"
+      ]
+    }
+  ],
+  "ribbons": [],
+  "top_exclusive": [
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "CustomDepth",
+      "depth": 19,
+      "inclusive_ms": 0.427,
+      "exclusive_ms": 0.427,
+      "draws": 10,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies",
+        "Scene",
+        "CustomDepth"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "CustomDepth",
+      "depth": 19,
+      "inclusive_ms": 0.427,
+      "exclusive_ms": 0.427,
+      "draws": 10,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies",
+        "Scene",
+        "CustomDepth"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "ParallelDraw (Index: 1, Num: 8)",
+      "depth": 22,
+      "inclusive_ms": 0.322,
+      "exclusive_ms": 0.322,
+      "draws": 5,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies",
+        "Scene",
+        "RenderVelocities(Opaque)",
+        "VelocityParallel"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "ParallelDraw (Index: 1, Num: 8)",
+      "depth": 22,
+      "inclusive_ms": 0.317,
+      "exclusive_ms": 0.317,
+      "draws": 5,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies",
+        "Scene",
+        "RenderVelocities(Opaque)",
+        "VelocityParallel"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "CanvasBatchedElements",
+      "depth": 19,
+      "inclusive_ms": 0.288,
+      "exclusive_ms": 0.288,
+      "draws": 1,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "RenderGraphExecute - Slate",
+        "SlateUI Title = GuLiStrike 预览 [NetMode: Client 1]  （64-bit/PC D3D SM6）",
+        "DrawDebugCanvas",
+        "CanvasFlush"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "ElementBatch",
+      "depth": 13,
+      "inclusive_ms": 0.276,
+      "exclusive_ms": 0.269,
+      "draws": 110,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "RenderGraphExecute - Slate",
+        "SlateUI Title = GuLiStrike 预览 [NetMode: Client 1]  （64-bit/PC D3D SM6）"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "ParallelDraw (Index: 0, Num: 1)",
+      "depth": 25,
+      "inclusive_ms": 0.258,
+      "exclusive_ms": 0.258,
+      "draws": 15,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "Dense200_Client2_SceneCapture_SceneCapture2D_0",
+        "SceneRender",
+        "RenderGraphExecute - Dense200_Client2_SceneCapture_SceneCapture2D_0",
+        "Scene",
+        "RenderVelocities(Opaque)",
+        "VelocityParallel"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "ParallelDraw (Index: 0, Num: 1)",
+      "depth": 25,
+      "inclusive_ms": 0.25,
+      "exclusive_ms": 0.25,
+      "draws": 15,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "Dense200_Client2_SceneCapture_SceneCapture2D_0",
+        "SceneRender",
+        "RenderGraphExecute - Dense200_Client2_SceneCapture_SceneCapture2D_0",
+        "Scene",
+        "BasePass",
+        "BasePassParallel"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "CustomDepth",
+      "depth": 22,
+      "inclusive_ms": 0.24,
+      "exclusive_ms": 0.24,
+      "draws": 5,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "Dense200_Client2_SceneCapture_SceneCapture2D_0",
+        "SceneRender",
+        "RenderGraphExecute - Dense200_Client2_SceneCapture_SceneCapture2D_0",
+        "Scene",
+        "CustomDepth"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "ParallelDraw (Index: 0, Num: 1)",
+      "depth": 25,
+      "inclusive_ms": 0.231,
+      "exclusive_ms": 0.231,
+      "draws": 5,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "Dense200_Client1_SceneCapture_SceneCapture2D_0",
+        "SceneRender",
+        "RenderGraphExecute - Dense200_Client1_SceneCapture_SceneCapture2D_0",
+        "Scene",
+        "BasePass",
+        "BasePassParallel"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "ParallelDraw (Index: 0, Num: 8)",
+      "depth": 22,
+      "inclusive_ms": 0.225,
+      "exclusive_ms": 0.225,
+      "draws": 5,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies",
+        "Scene",
+        "RenderVelocities(Opaque)",
+        "VelocityParallel"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "ParallelDraw (Index: 0, Num: 1)",
+      "depth": 25,
+      "inclusive_ms": 0.222,
+      "exclusive_ms": 0.222,
+      "draws": 5,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "Dense200_Client1_SceneCapture_SceneCapture2D_0",
+        "SceneRender",
+        "RenderGraphExecute - Dense200_Client1_SceneCapture_SceneCapture2D_0",
+        "Scene",
+        "RenderVelocities(Opaque)",
+        "VelocityParallel"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "ParallelDraw (Index: 4, Num: 8)",
+      "depth": 22,
+      "inclusive_ms": 0.217,
+      "exclusive_ms": 0.217,
+      "draws": 5,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies",
+        "Scene",
+        "BasePass",
+        "BasePassParallel"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "ParallelDraw (Index: 0, Num: 8)",
+      "depth": 22,
+      "inclusive_ms": 0.206,
+      "exclusive_ms": 0.206,
+      "draws": 5,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies",
+        "Scene",
+        "RenderVelocities(Opaque)",
+        "VelocityParallel"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "CustomDepth",
+      "depth": 22,
+      "inclusive_ms": 0.193,
+      "exclusive_ms": 0.193,
+      "draws": 5,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "Dense200_Client1_SceneCapture_SceneCapture2D_0",
+        "SceneRender",
+        "RenderGraphExecute - Dense200_Client1_SceneCapture_SceneCapture2D_0",
+        "Scene",
+        "CustomDepth"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "Scene",
+      "depth": 13,
+      "inclusive_ms": 5.413,
+      "exclusive_ms": 0.182,
+      "draws": 1266,
+      "dispatches": 304,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "ParallelDraw (Index: 4, Num: 8)",
+      "depth": 22,
+      "inclusive_ms": 0.178,
+      "exclusive_ms": 0.178,
+      "draws": 5,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies",
+        "Scene",
+        "BasePass",
+        "BasePassParallel"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "Build",
+      "depth": 22,
+      "inclusive_ms": 0.177,
+      "exclusive_ms": 0.177,
+      "draws": 0,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies",
+        "Scene",
+        "RayTracingDynamicGeometry",
+        "RayTracingDynamicUpdateBuild"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "Scene",
+      "depth": 13,
+      "inclusive_ms": 5.065,
+      "exclusive_ms": 0.174,
+      "draws": 1230,
+      "dispatches": 306,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "Build",
+      "depth": 22,
+      "inclusive_ms": 0.169,
+      "exclusive_ms": 0.169,
+      "draws": 0,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies",
+        "Scene",
+        "RayTracingDynamicGeometry",
+        "RayTracingDynamicUpdateBuild"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "SceneRender - ViewFamilies",
+      "depth": 7,
+      "inclusive_ms": 5.455,
+      "exclusive_ms": 0.157,
+      "draws": 1230,
+      "dispatches": 343,
+      "parents": [
+        "<root>",
+        "Frame 76936"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "ParallelDraw (Index: 3, Num: 8)",
+      "depth": 22,
+      "inclusive_ms": 0.151,
+      "exclusive_ms": 0.151,
+      "draws": 5,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies",
+        "Scene",
+        "RenderVelocities(Opaque)",
+        "VelocityParallel"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "ParallelDraw (Index: 5, Num: 8)",
+      "depth": 22,
+      "inclusive_ms": 0.149,
+      "exclusive_ms": 0.149,
+      "draws": 5,
+      "dispatches": 0,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies",
+        "Scene",
+        "BasePass",
+        "BasePassParallel"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Graphics 0",
+      "event": "SceneRender - ViewFamilies",
+      "depth": 7,
+      "inclusive_ms": 5.838,
+      "exclusive_ms": 0.14,
+      "draws": 1266,
+      "dispatches": 342,
+      "parents": [
+        "<root>",
+        "Frame 76936"
+      ]
+    },
+    {
+      "frame": 76972,
+      "queue": "Compute 0",
+      "event": "Batched lights",
+      "depth": 25,
+      "inclusive_ms": 0.136,
+      "exclusive_ms": 0.136,
+      "draws": 0,
+      "dispatches": 1,
+      "parents": [
+        "<root>",
+        "Frame 76936",
+        "SceneRender - ViewFamilies",
+        "RenderGraphExecute - /ViewFamilies",
+        "Scene",
+        "LumenSceneLighting",
+        "DirectLighting",
+        "Lights"
+      ]
+    }
+  ],
+  "scope": "Separate GPU queues can overlap. Threshold0.2% may hide tiny leaf events. Capture labels identify transient World capture components, not exclusive draw cost. Native GPU frame and scene PNG are after the 30s timing window."
+}

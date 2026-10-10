@@ -1,0 +1,256 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "read_only": true,
+    "systems": {
+      "/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green": {
+        "widths": [
+          {
+            "path": "Constants.Beam.BeamWidth.Beam Width",
+            "value": "5.000000"
+          },
+          {
+            "path": "Constants.Beam.ScaleBeamWidth.Beam Width Scale",
+            "value": "1.000000"
+          },
+          {
+            "path": "Constants.Beam.ScaleBeamWidth.Beam Width Scale",
+            "value": "1.000000"
+          },
+          {
+            "path": "Constants.Beam001.BeamWidth.Beam Width",
+            "value": "1.000000"
+          },
+          {
+            "path": "Constants.Beam001.ScaleBeamWidth.Beam Width Scale",
+            "value": "1.000000"
+          },
+          {
+            "path": "Constants.Beam001.ScaleBeamWidth.Beam Width Scale",
+            "value": "1.000000"
+          }
+        ],
+        "info": "<Struct 'NiagaraSystemSummary' (0x00000119CE9110E0) {system_path: \"/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green\", system_name: \"NS_MiningLaser_Green\", emitter_count: 4, emitter_names: (\"Beam\",\"Beam001\",\"Spark\",\"Spark001\"), user_parameter_count: 1, user_parameter_names: (\"User.Beam End\"), has_gpu_emitters: False}>"
+      },
+      "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple": {
+        "widths": [
+          {
+            "path": "Constants.Beam.BeamWidth.Beam Width",
+            "value": "8.000000"
+          },
+          {
+            "path": "Constants.Beam.ScaleBeamWidth.Beam Width Scale",
+            "value": "1.000000"
+          },
+          {
+            "path": "Constants.Beam.ScaleBeamWidth.Beam Width Scale",
+            "value": "1.000000"
+          },
+          {
+            "path": "Constants.Beam001.BeamWidth.Beam Width",
+            "value": "2.500000"
+          },
+          {
+            "path": "Constants.Beam001.ScaleBeamWidth.Beam Width Scale",
+            "value": "1.000000"
+          },
+          {
+            "path": "Constants.Beam001.ScaleBeamWidth.Beam Width Scale",
+            "value": "1.000000"
+          }
+        ],
+        "info": "<Struct 'NiagaraSystemSummary' (0x00000117F41339C0) {system_path: \"/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Purple\", system_name: \"NS_ConstructionLaser_Purple\", emitter_count: 4, emitter_names: (\"Beam\",\"Beam001\",\"Spark\",\"Spark001\"), user_parameter_count: 1, user_parameter_names: (\"User.Beam End\"), has_gpu_emitters: False}>"
+      }
+    },
+    "api": {
+      "NiagaraEmitterService": {
+        "get_renderer_details": "X.get_renderer_details(system_path, emitter_name, renderer_index) -> NiagaraRendererDetailedInfo or None\r\nGet detailed renderer information including material and texture bindings.\r\n\r\nArgs:\r\n    system_path (str): Full path to the Niagara system\r\n    emitter_name (str): Name of the emitter\r\n    renderer_index (int32): Index of the renderer\r\n\r\nReturns:\r\n    NiagaraRendererDetailedInfo or None: True if found Example: info = unreal.NiagaraEmitterService.get_renderer_details(\"/Game/VFX/NS_Fire\", \"Sparks\", 0)  # info struct or None\r\n\r\n    out_info (NiagaraRendererDetailedInfo): Detailed renderer information",
+        "list_renderers": "X.list_renderers(system_path, emitter_name) -> Array[NiagaraRendererInfo_Custom]\r\nList all renderers in an emitter.\r\n\r\nArgs:\r\n    system_path (str): Full path to the Niagara system\r\n    emitter_name (str): Name of the emitter\r\n\r\nReturns:\r\n    Array[NiagaraRendererInfo_Custom]: Array of renderer information Example: renderers = unreal.NiagaraEmitterService.list_renderers(\"/Game/VFX/NS_Fire\", \"Sparks\")",
+        "set_renderer_property": "X.set_renderer_property(system_path, emitter_name, renderer_index, property_name, value) -> bool\r\nSet a renderer property.\r\n\r\nArgs:\r\n    system_path (str): Full path to the Niagara system\r\n    emitter_name (str): Name of the emitter\r\n    renderer_index (int32): Index of the renderer\r\n    property_name (str): Name of the property\r\n    value (str): New value as string\r\n\r\nReturns:\r\n    bool: True if successful Example: unreal.NiagaraEmitterService.set_renderer_property(\"/Game/VFX/NS_Fire\", \"Sparks\", 0, \"Material\", \"/Game/Materials/M_Particle\")",
+        "get_module_input": "X.get_module_input(system_path, emitter_name, module_name, input_name) -> str\r\nGet a module input value.\r\n\r\nArgs:\r\n    system_path (str): Full path to the Niagara system\r\n    emitter_name (str): Name of the emitter\r\n    module_name (str): Name of the module\r\n    input_name (str): Name of the input parameter\r\n\r\nReturns:\r\n    str: Value as string (empty if not found) Example: value = unreal.NiagaraEmitterService.get_module_input(\"/Game/VFX/NS_Fire\", \"Sparks\", \"Scale Sprite Size\", \"Scale Factor\")",
+        "set_module_input": "X.set_module_input(system_path, emitter_name, module_name, input_name, value) -> bool\r\nSet a module input value.\r\n\r\nArgs:\r\n    system_path (str): Full path to the Niagara system\r\n    emitter_name (str): Name of the emitter\r\n    module_name (str): Name of the module\r\n    input_name (str): Name of the input parameter\r\n    value (str): New value as string\r\n\r\nReturns:\r\n    bool: True if successful Example: unreal.NiagaraEmitterService.set_module_input(\"/Game/VFX/NS_Fire\", \"Sparks\", \"Scale Sprite Size\", \"Scale Factor\", \"(X=2,Y=2)\")"
+      },
+      "NiagaraService": {
+        "get_all_editable_settings": "X.get_all_editable_settings(system_path) -> NiagaraSystemEditableSettings or None\r\nGet ALL editable settings on a Niagara system in one call.\nThis includes user parameters and all rapid iteration parameters from all emitters.\nUse this to discover what can be modified, then use set_parameter() or\nset_rapid_iteration_param() to change values.\r\n\r\nArgs:\r\n    system_path (str): Full path to the Niagara system\r\n\r\nReturns:\r\n    NiagaraSystemEditableSettings or None: True if successful Example: settings = unreal.NiagaraService.get_all_editable_settings(\"/Game/VFX/NS_TeslaCoil\")  # settings struct or None print(f\"Found {settings.total_settings_count} editable settings\") # List user parameters for p in settings.user_parameters: print(f\"  {p.setting_path} ({p.value_type}): {p.current_value}\") # Find color settings for p in settings.rapid_iteration_parameters: if \"Color\" in p.setting_path: print(f\"  [{p.emitter_name}] {p.display_name}: {p.current_value}\")\r\n\r\n    out_settings (NiagaraSystemEditableSettings): All editable settings organized by category",
+        "set_parameter": "X.set_parameter(system_path, parameter_name, value) -> bool\r\nSet a parameter value on a Niagara System.\r\n\r\nArgs:\r\n    system_path (str): Full path to the system\r\n    parameter_name (str): Full parameter name (e.g., \"User.SpawnRate\")\r\n    value (str): New value as string\r\n\r\nReturns:\r\n    bool: True if successful Example: unreal.NiagaraService.set_parameter(\"/Game/VFX/NS_Fire\", \"User.SpawnRate\", \"100.0\")"
+      },
+      "MaterialNodeService": {
+        "export_material_graph": "X.export_material_graph(material_path) -> str\r\nExport the complete material graph as a JSON string for analysis or recreation.\nMaps to action=\"export_graph\"\n\nReturns material settings, all expressions (type, position, properties),\nall connections, and material output connections — everything needed to\nrecreate the material from scratch.\r\n\r\nArgs:\r\n    material_path (str): Full path to the material\r\n\r\nReturns:\r\n    str: JSON string of complete graph, or empty string on failure Example: json_str = unreal.MaterialNodeService.export_material_graph(\"/Game/M_Landscape\")"
+      },
+      "EditorService": {},
+      "WidgetService": {
+        "is_pie_running": "X.is_pie_running() -> bool\r\nCheck if Play-In-Editor is currently running.\nMaps to action=\"is_pie_running\"\r\n\r\nReturns:\r\n    bool:",
+        "start_pie": "X.start_pie() -> bool\r\nStart Play-In-Editor if it is not already running.\nMaps to action=\"start_pie\"\r\n\r\nReturns:\r\n    bool:"
+      },
+      "GuLiCommanderQALibrary": {}
+    },
+    "review_actors": [
+      {
+        "label": "StateTreeReview_Entry",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DAB7120) {x: 0.000000, y: 69000.000000, z: 1399.977112}>"
+      },
+      {
+        "label": "StateTreeReview_MiningFactory",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DAB7170) {x: 0.000000, y: 72600.000000, z: 1399.977112}>"
+      },
+      {
+        "label": "StateTreeReview_Construction",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DAB71C0) {x: 1800.000000, y: 69000.000000, z: 1399.977112}>"
+      },
+      {
+        "label": "StateTreeReview_StrongholdAdvance",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DAB71C0) {x: 10000.000000, y: 11000.000000, z: 1399.977112}>"
+      },
+      {
+        "label": "ConstructionReview_Placement",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DAB7210) {x: 2200.000000, y: 69000.000000, z: 1399.977112}>"
+      },
+      {
+        "label": "ConstructionReview_Progress",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DAB7260) {x: 2600.000000, y: 69000.000000, z: 1399.977112}>"
+      },
+      {
+        "label": "ConstructionReview_Mining",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DAB72B0) {x: 1800.000000, y: 72600.000000, z: 1399.977112}>"
+      },
+      {
+        "label": "ConstructionReview_Type1",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DAB73A0) {x: -6500.000000, y: 76000.000000, z: -1260.000000}>"
+      },
+      {
+        "label": "ConstructionReview_Type2",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DAB73F0) {x: -3800.000000, y: 76000.000000, z: -1260.000000}>"
+      },
+      {
+        "label": "ConstructionReview_Type3",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DAB7440) {x: -500.000000, y: 76000.000000, z: -1260.000000}>"
+      },
+      {
+        "label": "ConstructionReview_Type4",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DAB7710) {x: 3000.000000, y: 76000.000000, z: -1260.000000}>"
+      },
+      {
+        "label": "ConstructionReview_Type5",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DAD9780) {x: 5700.000000, y: 76000.000000, z: -1260.000000}>"
+      },
+      {
+        "label": "ConstructionReview_Type6",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DAD8F10) {x: 9200.000000, y: 76000.000000, z: -1260.000000}>"
+      },
+      {
+        "label": "StateTreeReview_Control",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x000001181DADA900) {x: -1800.000000, y: 72500.000000, z: -1266.046292}>"
+      },
+      {
+        "label": "WarMachineTurn_ReviewCamera",
+        "class": "CameraActor",
+        "location": "<Struct 'Vector' (0x000001181DAED280) {x: 12400.000000, y: -28500.000000, z: 16000.000000}>"
+      },
+      {
+        "label": "MachineGunReview_Ground",
+        "class": "StaticMeshActor",
+        "location": "<Struct 'Vector' (0x000001181DAEF350) {x: -8500.000000, y: -10000.000000, z: 960.000000}>"
+      },
+      {
+        "label": "MachineGunReview_MuzzleBefore",
+        "class": "NiagaraActor",
+        "location": "<Struct 'Vector' (0x000001181DAEFE90) {x: -10000.000000, y: -12000.000000, z: 1467.170000}>"
+      },
+      {
+        "label": "MachineGunReview_MuzzleWM01After",
+        "class": "NiagaraActor",
+        "location": "<Struct 'Vector' (0x000001181DAEFE90) {x: -8200.000000, y: -12000.000000, z: 1467.170000}>"
+      },
+      {
+        "label": "MachineGunReview_MuzzleSweeperAfter",
+        "class": "NiagaraActor",
+        "location": "<Struct 'Vector' (0x000001181DAEFE90) {x: -6400.000000, y: -12000.000000, z: 1117.620000}>"
+      },
+      {
+        "label": "MachineGunReview_ImpactBefore",
+        "class": "NiagaraActor",
+        "location": "<Struct 'Vector' (0x000001181DAEFF80) {x: -10000.000000, y: -9800.000000, z: 1100.000000}>"
+      },
+      {
+        "label": "MachineGunReview_ImpactAfter",
+        "class": "NiagaraActor",
+        "location": "<Struct 'Vector' (0x0000011703495AF0) {x: -8200.000000, y: -9800.000000, z: 1100.000000}>"
+      },
+      {
+        "label": "MachineGunReview_TracerBefore",
+        "class": "NiagaraActor",
+        "location": "<Struct 'Vector' (0x0000011703495B90) {x: -10000.000000, y: -7600.000000, z: 1000.000000}>"
+      },
+      {
+        "label": "MachineGunReview_TracerAfter",
+        "class": "NiagaraActor",
+        "location": "<Struct 'Vector' (0x0000011703495BE0) {x: -7500.000000, y: -7600.000000, z: 1000.000000}>"
+      },
+      {
+        "label": "MachineGunReview_Camera",
+        "class": "CameraActor",
+        "location": "<Struct 'Vector' (0x0000011703495C30) {x: -8500.000000, y: -16500.000000, z: 8800.000000}>"
+      },
+      {
+        "label": "MachineGunReview_Instructions",
+        "class": "Note",
+        "location": "<Struct 'Vector' (0x0000011703495C80) {x: -11200.000000, y: -13000.000000, z: 1300.000000}>"
+      },
+      {
+        "label": "CombatIsland_ReviewCamera",
+        "class": "CameraActor",
+        "location": "<Struct 'Vector' (0x0000011703495CD0) {x: 0.000000, y: -175000.000000, z: 160000.000000}>"
+      },
+      {
+        "label": "FlightEventsQA_PlayerStart_1",
+        "class": "PlayerStart",
+        "location": "<Struct 'Vector' (0x0000011703495D20) {x: 6000.000000, y: 69000.000000, z: 10000.000000}>"
+      },
+      {
+        "label": "FlightEventsQA_PlayerStart_2",
+        "class": "PlayerStart",
+        "location": "<Struct 'Vector' (0x0000011703495D70) {x: -6000.000000, y: 69000.000000, z: 10000.000000}>"
+      },
+      {
+        "label": "FlightEventsQA_PlayerStart_3",
+        "class": "PlayerStart",
+        "location": "<Struct 'Vector' (0x0000011703495DC0) {x: 0.000000, y: 75000.000000, z: 10000.000000}>"
+      },
+      {
+        "label": "FlightEventsQA_BounceWall",
+        "class": "StaticMeshActor",
+        "location": "<Struct 'Vector' (0x0000011703495E10) {x: 2200.000000, y: 66000.000000, z: 4600.000000}>"
+      },
+      {
+        "label": "BiZhiMaoQA_Notes_Review",
+        "class": "TextRenderActor",
+        "location": "<Struct 'Vector' (0x0000011703495E60) {x: 15000.000000, y: 72200.000000, z: 1127.340269}>"
+      },
+      {
+        "label": "CommanderLOD_ReviewFloor",
+        "class": "StaticMeshActor",
+        "location": "<Struct 'Vector' (0x0000011703495EB0) {x: 54000.000000, y: -53250.000000, z: 560.000000}>"
+      },
+      {
+        "label": "SceneUI_ReviewCamera",
+        "class": "CameraActor",
+        "location": "<Struct 'Vector' (0x0000011703495F00) {x: -19000.000000, y: 67500.000000, z: 16073.441672}>"
+      }
+    ]
+  }
+}

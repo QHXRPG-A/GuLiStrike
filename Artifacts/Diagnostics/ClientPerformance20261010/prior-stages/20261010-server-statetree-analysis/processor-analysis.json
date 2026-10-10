@@ -1,0 +1,65 @@
+{
+  "trace_interval_seconds": [
+    695.6372962000314,
+    725.6378084000899
+  ],
+  "engine_frames": 902,
+  "processor_calls": 310,
+  "per_call": {
+    "n": 310,
+    "mean_ms": 4.533130967741935,
+    "p50_ms": 5.066,
+    "p95_ms": 6.919899999999999,
+    "max_ms": 7.866,
+    "total_ms": 1405.2706
+  },
+  "active_engine_frame_count": 258,
+  "calls_per_active_frame": {
+    "3": 8,
+    "1": 214,
+    "2": 36
+  },
+  "per_active_frame": {
+    "n": 258,
+    "mean_ms": 5.44678527131783,
+    "p50_ms": 5.146999999999999,
+    "p95_ms": 7.0342,
+    "max_ms": 7.911099999999999,
+    "total_ms": 1405.2706
+  },
+  "mean_ms_per_engine_frame": 1.5579496674057651,
+  "first_call": {
+    "n": 258,
+    "mean_ms": 5.43694496124031,
+    "p50_ms": 5.130199999999999,
+    "p95_ms": 7.0342,
+    "max_ms": 7.866,
+    "total_ms": 1402.7318
+  },
+  "additional_same_frame_calls": {
+    "n": 52,
+    "mean_ms": 0.04882307692307693,
+    "p50_ms": 0.0314,
+    "p95_ms": 0.0791,
+    "max_ms": 0.325,
+    "total_ms": 2.5388
+  },
+  "additional_call_fraction_percent": 0.18066271364390601,
+  "active_frame_engine_ms": {
+    "n": 258,
+    "mean_ms": 37.65541976744186,
+    "p50_ms": 37.0238,
+    "p95_ms": 44.005700000000004,
+    "max_ms": 54.4454,
+    "total_ms": 9715.0983
+  },
+  "inactive_frame_engine_ms": {
+    "n": 644,
+    "mean_ms": 31.417939440993788,
+    "p50_ms": 30.9622,
+    "p95_ms": 36.5968,
+    "max_ms": 60.5454,
+    "total_ms": 20233.153
+  },
+  "scope_note": "Grouping by engine frame; extra calls can include immediate rounds or admission wakes. No delta-time or caller identity was recorded."
+}

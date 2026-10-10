@@ -76,7 +76,7 @@ private:
 		const FVector& PlaneOrigin,
 		const FVector& CameraForward,
 		const FRotator& CameraRotation,
-		float CentimetersPerPixel) const;
+		float CentimetersPerPixel);
 	void SetNodeVisible(UWidgetComponent* Node, bool bVisible) const;
 	void SetStatusVisible(bool bVisible) const;
 	void HideWorldNodes() const;
@@ -144,5 +144,6 @@ private:
 	bool bHasStatusSnapshot = false;
 	bool bHasFlightSnapshot = false;
 	bool bHasCombatSnapshot = false;
+	bool bSceneUIPoseChanged = false;
 	bool bLoggedMissingAssets = false;
 };

@@ -1,0 +1,61 @@
+{
+  "success": true,
+  "production_references_applied": true,
+  "protocol_checks": {
+    "nondefault_inputs_f_plus_one_dedup_world_isolation": "passed",
+    "offscreen_retire_no_replay_slot_reuse": "passed",
+    "empty_frames_idle_wake_no_stale_rows": "passed",
+    "reset_before_publish_rejects_old_epoch": "passed",
+    "three_lod_resources_world_once_max_three_components": "passed",
+    "missing_batch_resource_single_fallback": "passed",
+    "saved_ground_profile_warning_trigger_stop_cleanup": "passed",
+    "uncertified_metadata_same_tier_single_f_plus_one": "passed"
+  },
+  "impact_resources": {
+    "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch": {
+      "version": 1,
+      "lifetime": 1.25
+    },
+    "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch_Reduced": {
+      "version": 1,
+      "lifetime": 1.25
+    },
+    "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch_Minimal": {
+      "version": 1,
+      "lifetime": 1.25
+    }
+  },
+  "materials": [
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/M_WingmanGroundCore_Opaque",
+      "blend": "Opaque",
+      "shading": "Unlit",
+      "compiled": true
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/M_WingmanGroundTail_Opaque",
+      "blend": "Opaque",
+      "shading": "Unlit",
+      "compiled": true
+    }
+  ],
+  "wingman_vfx_id": 53,
+  "shared_id_2_and_wm01_preserved": true,
+  "controls": {
+    "gs.Effects.BoundsCull": 1,
+    "gs.Effects.OffscreenLifecycle": 1,
+    "gs.Effects.ThreeTierLOD": 1,
+    "gs.Units.Offscreen5Hz": 1,
+    "gs.Flights.OffscreenPresentation": 1,
+    "gs.Impacts.BatchMode": 2,
+    "gs.WingmanFlight.Presentation": 1,
+    "gs.WingmanFlight.Warnings": 1
+  },
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "saved_entities": 14,
+  "preview_actors_default_stopped": true,
+  "pie_worlds": 0,
+  "visual_and_gameplay_acceptance": "pending_user_pie",
+  "performance": "deferred_by_user",
+  "build_receipt": "build30-loaded-receipt.json"
+}

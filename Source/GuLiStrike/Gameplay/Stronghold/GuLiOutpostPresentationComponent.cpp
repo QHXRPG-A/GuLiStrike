@@ -1,4 +1,5 @@
 #include "Gameplay/Stronghold/GuLiOutpostPresentationComponent.h"
+#include "Commander/UI/GuLiSceneUISourceRegistry.h"
 #include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "Gameplay/Models/GuLiLocalTeamColorSubsystem.h"
 #include "Gameplay/Presentation/GuLiLocalTeamColors.h"
@@ -51,9 +52,22 @@ bool UGuLiOutpostPresentationComponent::GetSceneUIHalo(FVector& Center, EGuLiTea
 	return true;
 }
 
+void UGuLiOutpostPresentationComponent::OnRegister()
+{
+	Super::OnRegister();
+	if (GetWorld()) if (auto* R = GetWorld()->GetSubsystem<UGuLiSceneUISourceRegistry>())
+		R->RegisterSource(this, EGuLiSceneUISourceKind::OutpostHalo);
+}
+void UGuLiOutpostPresentationComponent::OnUnregister()
+{
+	if (GetWorld()) if (auto* R = GetWorld()->GetSubsystem<UGuLiSceneUISourceRegistry>()) R->UnregisterSource(this);
+	Super::OnUnregister();
+}
+
 void UGuLiOutpostPresentationComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	if (auto* Registry = GetWorld()->GetSubsystem<UGuLiSceneUISourceRegistry>()) Registry->RegisterSource(this, EGuLiSceneUISourceKind::OutpostHalo);
 	if (GetNetMode() == NM_DedicatedServer) return;
 	CreatePresentation();
 	if (!VisualMesh) return;
@@ -101,11 +115,13 @@ void UGuLiOutpostPresentationComponent::CreatePresentation()
 	Halo->SetCastShadow(false);
 	Halo->AddElement(HaloMaterial, nullptr, false, 800.0f, 900.0f, nullptr);
 	Halo->RegisterComponent();
+	UGuLiSceneUISourceRegistry::Notify(GetOwner(), EGuLiSceneUIChange::Membership);
 	Halo->SetVisibility(false); // Ownership halo is drawn by the post-scene Slate layer.
 }
 
 void UGuLiOutpostPresentationComponent::ApplyOwnerState(const FGuLiOutpostOwnerState& InState)
 {
+	UGuLiSceneUISourceRegistry::Notify(this, EGuLiSceneUIChange::Membership);
 	State = InState;
 	// State can arrive before BeginPlay; component initialization consumes that snapshot.
 	if (!HasBegunPlay() || GetNetMode() == NM_DedicatedServer) return;
@@ -156,6 +172,7 @@ void UGuLiOutpostPresentationComponent::TickComponent(
 	Super::TickComponent(DeltaTime, TickType, TickFunction);
 	RefreshColor();
 	UpdatePose();
+	UGuLiSceneUISourceRegistry::Notify(this, EGuLiSceneUIChange::Pose);
 }
 
 void UGuLiOutpostPresentationComponent::EndPlay(const EEndPlayReason::Type Reason)
@@ -166,5 +183,6 @@ void UGuLiOutpostPresentationComponent::EndPlay(const EEndPlayReason::Type Reaso
 		if (Halo) Halo->DestroyComponent();
 		if (VisualMesh) VisualMesh->DestroyComponent();
 	}
+	if (auto* Registry = GetWorld()->GetSubsystem<UGuLiSceneUISourceRegistry>()) Registry->UnregisterSource(this);
 	Super::EndPlay(Reason);
 }

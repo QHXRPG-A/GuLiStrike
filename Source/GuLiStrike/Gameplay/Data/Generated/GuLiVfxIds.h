@@ -55,4 +55,5 @@ namespace GuLiVfxIds
 	inline constexpr int32 WM01MissileClusterLite = 50;
 	inline constexpr int32 WM01MissileClusterMinimal = 51;
 	inline constexpr int32 GroundMachineGunMuzzle = 52;
+	inline constexpr int32 WingmanGroundFlightBatch = 53;
 }

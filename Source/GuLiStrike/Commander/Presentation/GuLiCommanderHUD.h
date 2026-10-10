@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "Commander/UI/GuLiCommanderOverviewMarker.h"
+#include "Commander/Presentation/GuLiNetworkOverlayStats.h"
 #include "GameFramework/HUD.h"
 #include "GuLiCommanderHUD.generated.h"
 
@@ -106,6 +107,7 @@ private:
 	FString PerformanceStatsText;
 	double CameraDistanceSampleWallSeconds = -1.0;
 	FString CameraDistanceText;
+	FGuLiNetworkOverlayStats NetworkStats;
 
 	mutable TWeakObjectPtr<AGuLiSoldierStateReplicator> CachedSoldierStateReplicator;
 	mutable TWeakObjectPtr<AGuLiCommanderPresentationActor> CachedPresentationActor;

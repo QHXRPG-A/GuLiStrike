@@ -1,0 +1,2483 @@
+{
+  "kind": "median",
+  "trace_seconds": [
+    791.437218,
+    791.511341
+  ],
+  "engine_tick_ms": 74.1227,
+  "gt_accounted_ms": 74.12270000000012,
+  "accounting_ok": true,
+  "top_gt": [
+    {
+      "timer": "BP_CombatAvatarFly01_C",
+      "calls": 3,
+      "inclusive_ms": 13.965300000000001,
+      "exclusive_ms": 13.965300000000001
+    },
+    {
+      "timer": "GuLiSceneUI_Paint",
+      "calls": 8,
+      "inclusive_ms": 6.9489,
+      "exclusive_ms": 6.9489
+    },
+    {
+      "timer": "GuLiCommander_PredictiveAvoidanceCandidateQuery",
+      "calls": 1,
+      "inclusive_ms": 5.6869,
+      "exclusive_ms": 5.6869
+    },
+    {
+      "timer": "UWorld_Tick",
+      "calls": 4,
+      "inclusive_ms": 51.163399999999996,
+      "exclusive_ms": 3.264700000000014
+    },
+    {
+      "timer": "WingmanRelay",
+      "calls": 5,
+      "inclusive_ms": 2.5327,
+      "exclusive_ms": 2.3075999999999905
+    },
+    {
+      "timer": "ProcessLocalPlayerSlateOperations",
+      "calls": 1,
+      "inclusive_ms": 2.2401,
+      "exclusive_ms": 2.2401
+    },
+    {
+      "timer": "GuLiCombatEffects_Presentation",
+      "calls": 2,
+      "inclusive_ms": 3.8813,
+      "exclusive_ms": 2.0697000000000036
+    },
+    {
+      "timer": "FPackageName::DoesPackageExistEx",
+      "calls": 125,
+      "inclusive_ms": 1.9803999999999975,
+      "exclusive_ms": 1.9803999999999975
+    },
+    {
+      "timer": "Slate::AddCustomVertsElement",
+      "calls": 2,
+      "inclusive_ms": 1.8824999999999998,
+      "exclusive_ms": 1.8824999999999998
+    },
+    {
+      "timer": "ProcessUntilTasksComplete",
+      "calls": 21,
+      "inclusive_ms": 33.858799999999995,
+      "exclusive_ms": 1.7891000000000843
+    },
+    {
+      "timer": "GuLiCommanderPresentation_Interpolation",
+      "calls": 2,
+      "inclusive_ms": 1.5061,
+      "exclusive_ms": 1.4417000000000069
+    },
+    {
+      "timer": "NS_WM01_Explosion_2A",
+      "calls": 506,
+      "inclusive_ms": 1.252400000000006,
+      "exclusive_ms": 1.2423000000000053
+    },
+    {
+      "timer": "UCharacterMovementComponent_TickComponent",
+      "calls": 108,
+      "inclusive_ms": 1.2466,
+      "exclusive_ms": 1.2148999999999999
+    },
+    {
+      "timer": "GuLiCombatEffects_Runtime",
+      "calls": 1,
+      "inclusive_ms": 2.4812,
+      "exclusive_ms": 1.0592
+    },
+    {
+      "timer": "Slate::Prepass",
+      "calls": 1,
+      "inclusive_ms": 0.9842,
+      "exclusive_ms": 0.9832
+    },
+    {
+      "timer": "Projectile Movement",
+      "calls": 125,
+      "inclusive_ms": 1.6287000000000003,
+      "exclusive_ms": 0.9104999999999999
+    },
+    {
+      "timer": "Slate_PaintSlowPath",
+      "calls": 3,
+      "inclusive_ms": 8.488900000000001,
+      "exclusive_ms": 0.9038000000000016
+    },
+    {
+      "timer": "ClientReceivePublicPoseFrame",
+      "calls": 6,
+      "inclusive_ms": 1.7738,
+      "exclusive_ms": 0.8920000000000001
+    },
+    {
+      "timer": "CombatEffectReplication",
+      "calls": 2,
+      "inclusive_ms": 1.0142,
+      "exclusive_ms": 0.8726
+    },
+    {
+      "timer": "GuLiClientFlightPrediction",
+      "calls": 276,
+      "inclusive_ms": 0.7909000000000006,
+      "exclusive_ms": 0.7909000000000006
+    },
+    {
+      "timer": "UMassEntityEditorSubsystem::Tick",
+      "calls": 1,
+      "inclusive_ms": 4.9176,
+      "exclusive_ms": 0.700500000000009
+    },
+    {
+      "timer": "Collision Sphere",
+      "calls": 625,
+      "inclusive_ms": 0.7256999999999981,
+      "exclusive_ms": 0.6765999999999966
+    },
+    {
+      "timer": "Sync actor label to column",
+      "calls": 1,
+      "inclusive_ms": 2.5825,
+      "exclusive_ms": 0.602100000000001
+    },
+    {
+      "timer": "USkinnedMeshComponent_TickComponent",
+      "calls": 255,
+      "inclusive_ms": 0.928099999999999,
+      "exclusive_ms": 0.5458999999999993
+    },
+    {
+      "timer": "ClientReceiveEncodedPoseBlock",
+      "calls": 114,
+      "inclusive_ms": 1.3405,
+      "exclusive_ms": 0.4605000000000002
+    },
+    {
+      "timer": "GuLiShipProjectile_WingmanSnapshot",
+      "calls": 125,
+      "inclusive_ms": 0.4440000000000007,
+      "exclusive_ms": 0.4440000000000007
+    },
+    {
+      "timer": "WaitForTasks",
+      "calls": 11,
+      "inclusive_ms": 0.43720000000000003,
+      "exclusive_ms": 0.43720000000000003
+    },
+    {
+      "timer": "Presentation",
+      "calls": 98,
+      "inclusive_ms": 0.49510000000000015,
+      "exclusive_ms": 0.4320000000000001
+    },
+    {
+      "timer": "GameNetDriver",
+      "calls": 3,
+      "inclusive_ms": 0.5756,
+      "exclusive_ms": 0.40049999999999997
+    },
+    {
+      "timer": "GuLiMissileCluster",
+      "calls": 2,
+      "inclusive_ms": 0.8300000000000001,
+      "exclusive_ms": 0.3918000000000007
+    },
+    {
+      "timer": "GuLiSceneUI_Update",
+      "calls": 2,
+      "inclusive_ms": 0.40959999999999996,
+      "exclusive_ms": 0.38470000000000004
+    },
+    {
+      "timer": "GuLiProjectilePool_Snapshot",
+      "calls": 2,
+      "inclusive_ms": 0.3842,
+      "exclusive_ms": 0.3842
+    },
+    {
+      "timer": "GuLiCommanderPresentation_RebuildLocalInstances",
+      "calls": 2,
+      "inclusive_ms": 2.0018000000000002,
+      "exclusive_ms": 0.3788
+    },
+    {
+      "timer": "EvaluateCanExecute",
+      "calls": 66,
+      "inclusive_ms": 2.2076000000000002,
+      "exclusive_ms": 0.37540000000000007
+    },
+    {
+      "timer": "DeferredRenderUpdates_GameThread",
+      "calls": 3,
+      "inclusive_ms": 2.3520999999999996,
+      "exclusive_ms": 0.37230000000000907
+    },
+    {
+      "timer": "MassDeferredCommand_Execute",
+      "calls": 5,
+      "inclusive_ms": 0.48050000000000004,
+      "exclusive_ms": 0.35640000000000366
+    },
+    {
+      "timer": "Tick_Engine",
+      "calls": 1,
+      "inclusive_ms": 59.492200000000004,
+      "exclusive_ms": 0.33880000000000565
+    },
+    {
+      "timer": "NS_WingmanBombardment_01",
+      "calls": 48,
+      "inclusive_ms": 0.3354000000000001,
+      "exclusive_ms": 0.3308000000000001
+    },
+    {
+      "timer": "NS_WingmanFlightTrail",
+      "calls": 54,
+      "inclusive_ms": 0.3269,
+      "exclusive_ms": 0.32220000000000004
+    },
+    {
+      "timer": "GuLiProjectilePool_NarrowPhase",
+      "calls": 239,
+      "inclusive_ms": 0.2953000000000001,
+      "exclusive_ms": 0.2953000000000001
+    }
+  ],
+  "muzzle_gt": [
+    {
+      "timer": "GuLiMuzzles_Publish",
+      "calls": 2,
+      "inclusive_ms": 0.017,
+      "exclusive_ms": 0.017
+    },
+    {
+      "timer": "GuLiMuzzles_Lifecycle",
+      "calls": 2,
+      "inclusive_ms": 0.0053,
+      "exclusive_ms": 0.0053
+    }
+  ],
+  "threads": [
+    {
+      "name": "GPU0-Graphics0",
+      "exclusive_ms": 46.61969999996675,
+      "top_timers": [
+        {
+          "timer": "ParallelDraw",
+          "calls": 84,
+          "inclusive_ms": 11.5842,
+          "exclusive_ms": 11.5842
+        },
+        {
+          "timer": "Frame",
+          "calls": 2,
+          "inclusive_ms": 46.61799999996674,
+          "exclusive_ms": 9.787800000041976
+        },
+        {
+          "timer": "RenderGraphExecute",
+          "calls": 10,
+          "inclusive_ms": 35.973500000091036,
+          "exclusive_ms": 5.284700000072775
+        },
+        {
+          "timer": "CustomDepth",
+          "calls": 4,
+          "inclusive_ms": 2.905,
+          "exclusive_ms": 2.905
+        },
+        {
+          "timer": "NiagaraRenderRibbonsAggregation",
+          "calls": 85,
+          "inclusive_ms": 2.588999999999999,
+          "exclusive_ms": 1.8725000000000003
+        },
+        {
+          "timer": "SlateUI Title = %s",
+          "calls": 3,
+          "inclusive_ms": 1.7942999999999998,
+          "exclusive_ms": 1.5046
+        },
+        {
+          "timer": "Scene",
+          "calls": 4,
+          "inclusive_ms": 28.485600000018263,
+          "exclusive_ms": 0.9906000000668698
+        },
+        {
+          "timer": "NiagaraRenderRibbonsGenIndiciesGPU",
+          "calls": 128,
+          "inclusive_ms": 0.7984999999999991,
+          "exclusive_ms": 0.7984999999999991
+        }
+      ]
+    },
+    {
+      "name": "GPU0-Compute0",
+      "exclusive_ms": 64.42299999992478,
+      "top_timers": [
+        {
+          "timer": "RenderGraphExecute",
+          "calls": 9,
+          "inclusive_ms": 49.96110000000712,
+          "exclusive_ms": 27.737299999992427
+        },
+        {
+          "timer": "ContrastAdaptiveShading",
+          "calls": 2,
+          "inclusive_ms": 11.557400000020046,
+          "exclusive_ms": 11.557400000020046
+        },
+        {
+          "timer": "SceneRender",
+          "calls": 5,
+          "inclusive_ms": 33.00389999999918,
+          "exclusive_ms": 10.734099999992054
+        },
+        {
+          "timer": "LumenScreenProbeGather",
+          "calls": 2,
+          "inclusive_ms": 4.866,
+          "exclusive_ms": 4.271
+        },
+        {
+          "timer": "Frame",
+          "calls": 2,
+          "inclusive_ms": 64.42099999992479,
+          "exclusive_ms": 3.7226999999256094
+        },
+        {
+          "timer": "RayTracingDynamicGeometryUpdate",
+          "calls": 2,
+          "inclusive_ms": 3.542,
+          "exclusive_ms": 3.542
+        },
+        {
+          "timer": "UpdateRadianceCaches",
+          "calls": 2,
+          "inclusive_ms": 0.5182,
+          "exclusive_ms": 0.5182
+        },
+        {
+          "timer": "Scene",
+          "calls": 4,
+          "inclusive_ms": 22.2228000000147,
+          "exclusive_ms": 0.46029999999970306
+        }
+      ]
+    },
+    {
+      "name": "GameThread",
+      "exclusive_ms": 74.12270000000012,
+      "top_timers": [
+        {
+          "timer": "BP_CombatAvatarFly01_C",
+          "calls": 3,
+          "inclusive_ms": 13.965300000000001,
+          "exclusive_ms": 13.965300000000001
+        },
+        {
+          "timer": "GuLiSceneUI_Paint",
+          "calls": 8,
+          "inclusive_ms": 6.9489,
+          "exclusive_ms": 6.9489
+        },
+        {
+          "timer": "GuLiCommander_PredictiveAvoidanceCandidateQuery",
+          "calls": 1,
+          "inclusive_ms": 5.6869,
+          "exclusive_ms": 5.6869
+        },
+        {
+          "timer": "UWorld_Tick",
+          "calls": 4,
+          "inclusive_ms": 51.163399999999996,
+          "exclusive_ms": 3.264700000000014
+        },
+        {
+          "timer": "WingmanRelay",
+          "calls": 5,
+          "inclusive_ms": 2.5327,
+          "exclusive_ms": 2.3075999999999905
+        },
+        {
+          "timer": "ProcessLocalPlayerSlateOperations",
+          "calls": 1,
+          "inclusive_ms": 2.2401,
+          "exclusive_ms": 2.2401
+        },
+        {
+          "timer": "GuLiCombatEffects_Presentation",
+          "calls": 2,
+          "inclusive_ms": 3.8813,
+          "exclusive_ms": 2.0697000000000036
+        },
+        {
+          "timer": "FPackageName::DoesPackageExistEx",
+          "calls": 125,
+          "inclusive_ms": 1.9803999999999975,
+          "exclusive_ms": 1.9803999999999975
+        }
+      ]
+    },
+    {
+      "name": "RHIThread",
+      "exclusive_ms": 73.76790000002993,
+      "top_timers": [
+        {
+          "timer": "WaitForTasks",
+          "calls": 56,
+          "inclusive_ms": 52.0365000000299,
+          "exclusive_ms": 52.0365000000299
+        },
+        {
+          "timer": "DeleteRHIResources",
+          "calls": 32,
+          "inclusive_ms": 3.9530000000000016,
+          "exclusive_ms": 3.9530000000000016
+        },
+        {
+          "timer": "SceneRender",
+          "calls": 158,
+          "inclusive_ms": 13.044400000000003,
+          "exclusive_ms": 2.4272000000000338
+        },
+        {
+          "timer": "NiagaraRenderRibbonsAggregation",
+          "calls": 128,
+          "inclusive_ms": 3.2174,
+          "exclusive_ms": 2.2123999999999993
+        },
+        {
+          "timer": "RenderGraphExecute",
+          "calls": 78,
+          "inclusive_ms": 10.132300000000004,
+          "exclusive_ms": 1.3465000000000003
+        },
+        {
+          "timer": "BuildAccelerationStructure_BottomLevel",
+          "calls": 1,
+          "inclusive_ms": 0.9832000000000001,
+          "exclusive_ms": 0.9335000000000053
+        },
+        {
+          "timer": "D3D12_Present",
+          "calls": 3,
+          "inclusive_ms": 0.8835,
+          "exclusive_ms": 0.8835
+        },
+        {
+          "timer": "RHI_SubmitToGPU",
+          "calls": 32,
+          "inclusive_ms": 4.940799999999999,
+          "exclusive_ms": 0.8176000000000002
+        }
+      ]
+    },
+    {
+      "name": "RenderThread 0",
+      "exclusive_ms": 74.11810000000365,
+      "top_timers": [
+        {
+          "timer": "WaitForTasks",
+          "calls": 70,
+          "inclusive_ms": 45.47089999999999,
+          "exclusive_ms": 45.47089999999999
+        },
+        {
+          "timer": "FTaskBase::WaitImpl_StateChangeEvent_WaitFor",
+          "calls": 10,
+          "inclusive_ms": 5.005800000041001,
+          "exclusive_ms": 5.005800000041001
+        },
+        {
+          "timer": "Upload_Multiple",
+          "calls": 3,
+          "inclusive_ms": 1.4564,
+          "exclusive_ms": 1.4398999999999997
+        },
+        {
+          "timer": "WorldTick",
+          "calls": 4,
+          "inclusive_ms": 44.5791,
+          "exclusive_ms": 1.1524000000000194
+        },
+        {
+          "timer": "RayTracing_GatherDynamicRayTracingInstances_Finish",
+          "calls": 2,
+          "inclusive_ms": 1.4751,
+          "exclusive_ms": 1.1395999999999962
+        },
+        {
+          "timer": "RayTracing_GatherDynamicRayTracingInstances_RenderThread",
+          "calls": 2,
+          "inclusive_ms": 1.8992000000212168,
+          "exclusive_ms": 0.9694000000212202
+        },
+        {
+          "timer": "UpdateAllPrimitiveSceneInfos",
+          "calls": 8,
+          "inclusive_ms": 2.4806,
+          "exclusive_ms": 0.9647999999999999
+        },
+        {
+          "timer": "D3D12RHI::AllocatePoolResource",
+          "calls": 466,
+          "inclusive_ms": 1.060499999999994,
+          "exclusive_ms": 0.9527999999999975
+        }
+      ]
+    },
+    {
+      "name": "Foreground Worker #0",
+      "exclusive_ms": 21.108700000008447,
+      "top_timers": [
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 224,
+          "inclusive_ms": 2.6896,
+          "exclusive_ms": 2.6896
+        },
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 25,
+          "inclusive_ms": 2.5563999999999996,
+          "exclusive_ms": 2.5107999999999997
+        },
+        {
+          "timer": "Slate::MergeRenderBatches",
+          "calls": 8,
+          "inclusive_ms": 2.8781000001173034,
+          "exclusive_ms": 1.4264000000586514
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 295,
+          "inclusive_ms": 18.41610000000353,
+          "exclusive_ms": 1.4232999999596028
+        },
+        {
+          "timer": "FRDGBuilder::ProcessAsyncSetupQueue",
+          "calls": 7,
+          "inclusive_ms": 1.1551,
+          "exclusive_ms": 1.1551
+        },
+        {
+          "timer": "UE::RHI::GPUProfiler::ProcessEvents",
+          "calls": 1,
+          "inclusive_ms": 1.0909,
+          "exclusive_ms": 1.0909
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 23,
+          "inclusive_ms": 0.7345000000000003,
+          "exclusive_ms": 0.6561999999999999
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 156,
+          "inclusive_ms": 0.6515999999999997,
+          "exclusive_ms": 0.6515999999999997
+        }
+      ]
+    },
+    {
+      "name": "Foreground Worker #1",
+      "exclusive_ms": 19.472699999922387,
+      "top_timers": [
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 214,
+          "inclusive_ms": 3.1340999999999997,
+          "exclusive_ms": 3.1340999999999997
+        },
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 17,
+          "inclusive_ms": 2.4389000000000003,
+          "exclusive_ms": 2.4076
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 286,
+          "inclusive_ms": 16.332399999983053,
+          "exclusive_ms": 2.054799999997474
+        },
+        {
+          "timer": "MeshDrawCommandPassSetupTask",
+          "calls": 3,
+          "inclusive_ms": 0.7589,
+          "exclusive_ms": 0.7589
+        },
+        {
+          "timer": "DynamicPrimitive",
+          "calls": 57,
+          "inclusive_ms": 0.7563,
+          "exclusive_ms": 0.6676
+        },
+        {
+          "timer": "NS_WM01_Explosion_2A",
+          "calls": 21,
+          "inclusive_ms": 4.509,
+          "exclusive_ms": 0.5469000000000005
+        },
+        {
+          "timer": "RayTracing_GatherDynamicRayTracingInstances",
+          "calls": 2,
+          "inclusive_ms": 0.5277999999999999,
+          "exclusive_ms": 0.5277999999999999
+        },
+        {
+          "timer": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "calls": 106,
+          "inclusive_ms": 0.4883999999999999,
+          "exclusive_ms": 0.4883999999999999
+        }
+      ]
+    },
+    {
+      "name": "Foreground Worker (Standby #1)",
+      "exclusive_ms": 0.3003,
+      "top_timers": [
+        {
+          "timer": "RayTracingDynamicGeometryUpdate",
+          "calls": 1,
+          "inclusive_ms": 0.25970000000000004,
+          "exclusive_ms": 0.13530000000000006
+        },
+        {
+          "timer": "SortDispatchCommands",
+          "calls": 1,
+          "inclusive_ms": 0.12439999999999998,
+          "exclusive_ms": 0.12439999999999998
+        },
+        {
+          "timer": "RayTracingDynamicGeometry",
+          "calls": 1,
+          "inclusive_ms": 0.2784,
+          "exclusive_ms": 0.01449999999999994
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 1,
+          "inclusive_ms": 0.2985,
+          "exclusive_ms": 0.00930000000000003
+        },
+        {
+          "timer": "Scene",
+          "calls": 1,
+          "inclusive_ms": 0.28400000000000003,
+          "exclusive_ms": 0.005600000000000049
+        },
+        {
+          "timer": "Build",
+          "calls": 1,
+          "inclusive_ms": 0.0042,
+          "exclusive_ms": 0.0042
+        },
+        {
+          "timer": "RenderGraphExecute",
+          "calls": 1,
+          "inclusive_ms": 0.28640000000000004,
+          "exclusive_ms": 0.0024000000000000132
+        },
+        {
+          "timer": "ParallelExecute (Await)",
+          "calls": 1,
+          "inclusive_ms": 0.28919999999999996,
+          "exclusive_ms": 0.0023999999999999577
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #0",
+      "exclusive_ms": 6.186999999997475,
+      "top_timers": [
+        {
+          "timer": "MeshDrawCommandPassSetupTask",
+          "calls": 1,
+          "inclusive_ms": 2.0442,
+          "exclusive_ms": 2.0442
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 16,
+          "inclusive_ms": 1.2017,
+          "exclusive_ms": 1.1321
+        },
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 16,
+          "inclusive_ms": 1.0914000000000001,
+          "exclusive_ms": 1.0030000000000001
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 23,
+          "inclusive_ms": 0.5568000000000002,
+          "exclusive_ms": 0.5568000000000002
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 3,
+          "inclusive_ms": 0.253,
+          "exclusive_ms": 0.253
+        },
+        {
+          "timer": "RHI_Finalize",
+          "calls": 2,
+          "inclusive_ms": 0.2089,
+          "exclusive_ms": 0.2089
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 38,
+          "inclusive_ms": 0.18320000000000006,
+          "exclusive_ms": 0.18320000000000006
+        },
+        {
+          "timer": "ParallelMdcDispatchDraw",
+          "calls": 5,
+          "inclusive_ms": 0.20039999999999997,
+          "exclusive_ms": 0.1664
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #1",
+      "exclusive_ms": 4.939599999919499,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 12,
+          "inclusive_ms": 2.4587,
+          "exclusive_ms": 2.3337
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 12,
+          "inclusive_ms": 0.5023,
+          "exclusive_ms": 0.4539
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 24,
+          "inclusive_ms": 0.4374000000000001,
+          "exclusive_ms": 0.4374000000000001
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 63,
+          "inclusive_ms": 0.24090000000000006,
+          "exclusive_ms": 0.24090000000000006
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 3,
+          "inclusive_ms": 0.2165999999775682,
+          "exclusive_ms": 0.2165999999775682
+        },
+        {
+          "timer": "EditorPrimitives",
+          "calls": 1,
+          "inclusive_ms": 0.13870000000000002,
+          "exclusive_ms": 0.1312
+        },
+        {
+          "timer": "MainPass",
+          "calls": 3,
+          "inclusive_ms": 0.2615,
+          "exclusive_ms": 0.1174
+        },
+        {
+          "timer": "Nanite::DrawGeometry",
+          "calls": 3,
+          "inclusive_ms": 0.36230000000000007,
+          "exclusive_ms": 0.10080000000000003
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #2",
+      "exclusive_ms": 6.454099999990338,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 15,
+          "inclusive_ms": 2.0584,
+          "exclusive_ms": 1.8416
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 11,
+          "inclusive_ms": 0.9817000000000001,
+          "exclusive_ms": 0.9153
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 35,
+          "inclusive_ms": 0.8612000000000001,
+          "exclusive_ms": 0.8612000000000001
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 63,
+          "inclusive_ms": 0.49360000000000015,
+          "exclusive_ms": 0.49360000000000015
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 4,
+          "inclusive_ms": 0.3066,
+          "exclusive_ms": 0.3066
+        },
+        {
+          "timer": "MeshDrawCommandPassSetupTask",
+          "calls": 1,
+          "inclusive_ms": 0.2729999999928623,
+          "exclusive_ms": 0.2729999999928623
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 46,
+          "inclusive_ms": 5.592899999990337,
+          "exclusive_ms": 0.19489999999747554
+        },
+        {
+          "timer": "FRDGBuilder::CollectBarriers",
+          "calls": 1,
+          "inclusive_ms": 0.1485,
+          "exclusive_ms": 0.1485
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #3",
+      "exclusive_ms": 4.586399999982472,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 15,
+          "inclusive_ms": 2.0650000000000004,
+          "exclusive_ms": 1.9664
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 10,
+          "inclusive_ms": 0.9038999999999998,
+          "exclusive_ms": 0.865
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 27,
+          "inclusive_ms": 0.4827999999999999,
+          "exclusive_ms": 0.4827999999999999
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 5,
+          "inclusive_ms": 0.18029999992678203,
+          "exclusive_ms": 0.17969999992678204
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 35,
+          "inclusive_ms": 0.16250000000000003,
+          "exclusive_ms": 0.16250000000000003
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 25,
+          "inclusive_ms": 4.103599999982471,
+          "exclusive_ms": 0.1263000000683141
+        },
+        {
+          "timer": "NS_WingmanFlightTrail",
+          "calls": 2,
+          "inclusive_ms": 0.21639999999999998,
+          "exclusive_ms": 0.09659999999999996
+        },
+        {
+          "timer": "NiagaraGpuComputeDispatch",
+          "calls": 1,
+          "inclusive_ms": 0.07669999999999999,
+          "exclusive_ms": 0.07669999999999999
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #4",
+      "exclusive_ms": 5.277799999917556,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 14,
+          "inclusive_ms": 1.8490000000000002,
+          "exclusive_ms": 1.6003
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 14,
+          "inclusive_ms": 1.0538,
+          "exclusive_ms": 0.9964
+        },
+        {
+          "timer": "MeshDrawCommandPassSetupTask",
+          "calls": 1,
+          "inclusive_ms": 0.5669999999327047,
+          "exclusive_ms": 0.5669999999327047
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 32,
+          "inclusive_ms": 0.36560000000000004,
+          "exclusive_ms": 0.36560000000000004
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 45,
+          "inclusive_ms": 0.36349999999999993,
+          "exclusive_ms": 0.36349999999999993
+        },
+        {
+          "timer": "GPU",
+          "calls": 1,
+          "inclusive_ms": 0.146,
+          "exclusive_ms": 0.146
+        },
+        {
+          "timer": "Distortion",
+          "calls": 13,
+          "inclusive_ms": 0.2463,
+          "exclusive_ms": 0.1407
+        },
+        {
+          "timer": "NiagaraGpuComputeDispatch",
+          "calls": 2,
+          "inclusive_ms": 0.1404,
+          "exclusive_ms": 0.1404
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #5",
+      "exclusive_ms": 10.053300000000002,
+      "top_timers": [
+        {
+          "timer": "DynamicPrimitive",
+          "calls": 102,
+          "inclusive_ms": 2.5023999999999997,
+          "exclusive_ms": 2.1898000000000004
+        },
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 16,
+          "inclusive_ms": 2.1235999999999997,
+          "exclusive_ms": 2.0702
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 36,
+          "inclusive_ms": 0.8651999999999999,
+          "exclusive_ms": 0.8651999999999999
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 8,
+          "inclusive_ms": 0.6010000000000001,
+          "exclusive_ms": 0.6005
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 12,
+          "inclusive_ms": 0.6007,
+          "exclusive_ms": 0.5451000000000001
+        },
+        {
+          "timer": "PostPass",
+          "calls": 7,
+          "inclusive_ms": 0.6834,
+          "exclusive_ms": 0.2864999999999999
+        },
+        {
+          "timer": "AsyncUpdateUniformBuffers",
+          "calls": 1,
+          "inclusive_ms": 0.3776,
+          "exclusive_ms": 0.27220000000000194
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 75,
+          "inclusive_ms": 0.2706,
+          "exclusive_ms": 0.2706
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #6",
+      "exclusive_ms": 6.1499999999999995,
+      "top_timers": [
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 23,
+          "inclusive_ms": 1.4132000000000002,
+          "exclusive_ms": 1.3419000000000008
+        },
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 23,
+          "inclusive_ms": 0.7765999999999998,
+          "exclusive_ms": 0.7403
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 152,
+          "inclusive_ms": 0.5947999999999997,
+          "exclusive_ms": 0.5947999999999997
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 37,
+          "inclusive_ms": 0.45259999999999995,
+          "exclusive_ms": 0.45259999999999995
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 2,
+          "inclusive_ms": 0.40249999999999997,
+          "exclusive_ms": 0.40190000000000003
+        },
+        {
+          "timer": "Oodle.Encode",
+          "calls": 2,
+          "inclusive_ms": 0.29069999999999996,
+          "exclusive_ms": 0.29069999999999996
+        },
+        {
+          "timer": "Distortion",
+          "calls": 23,
+          "inclusive_ms": 0.3042,
+          "exclusive_ms": 0.2505
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 43,
+          "inclusive_ms": 5.3779,
+          "exclusive_ms": 0.17629999999999985
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #8",
+      "exclusive_ms": 6.248699999997621,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 10,
+          "inclusive_ms": 2.5917999999999997,
+          "exclusive_ms": 2.5393000000000003
+        },
+        {
+          "timer": "MeshDrawCommandPassSetupTask",
+          "calls": 1,
+          "inclusive_ms": 0.7617,
+          "exclusive_ms": 0.7617
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 28,
+          "inclusive_ms": 0.6840999999999999,
+          "exclusive_ms": 0.6840999999999999
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 6,
+          "inclusive_ms": 0.3329999999293068,
+          "exclusive_ms": 0.3329999999293068
+        },
+        {
+          "timer": "UpdateRadianceCaches",
+          "calls": 1,
+          "inclusive_ms": 0.2907,
+          "exclusive_ms": 0.2901000000000001
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 5,
+          "inclusive_ms": 0.2328,
+          "exclusive_ms": 0.2131
+        },
+        {
+          "timer": "MainPass",
+          "calls": 3,
+          "inclusive_ms": 0.2435,
+          "exclusive_ms": 0.21239999999999998
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 60,
+          "inclusive_ms": 0.2073,
+          "exclusive_ms": 0.2073
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #9",
+      "exclusive_ms": 11.189000000007793,
+      "top_timers": [
+        {
+          "timer": "DynamicPrimitive",
+          "calls": 115,
+          "inclusive_ms": 4.502200000048044,
+          "exclusive_ms": 3.8137000000480428
+        },
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 7,
+          "inclusive_ms": 2.0761,
+          "exclusive_ms": 2.0473999999999997
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 35,
+          "inclusive_ms": 0.7286,
+          "exclusive_ms": 0.7286
+        },
+        {
+          "timer": "D3D12RHI::AllocatePoolResource",
+          "calls": 30,
+          "inclusive_ms": 0.5783,
+          "exclusive_ms": 0.5612
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 8,
+          "inclusive_ms": 0.5365000000000001,
+          "exclusive_ms": 0.536
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 53,
+          "inclusive_ms": 10.460400000007793,
+          "exclusive_ms": 0.43999999995974987
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 77,
+          "inclusive_ms": 0.37820000000000015,
+          "exclusive_ms": 0.37820000000000015
+        },
+        {
+          "timer": "MeshDrawCommandPassSetupTask",
+          "calls": 1,
+          "inclusive_ms": 0.34400000000000003,
+          "exclusive_ms": 0.34400000000000003
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #10",
+      "exclusive_ms": 5.7316,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 15,
+          "inclusive_ms": 1.8132,
+          "exclusive_ms": 1.7517
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 14,
+          "inclusive_ms": 0.9496000000000001,
+          "exclusive_ms": 0.8717
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 23,
+          "inclusive_ms": 0.6113000000000001,
+          "exclusive_ms": 0.6113000000000001
+        },
+        {
+          "timer": "IndividualQueries",
+          "calls": 1,
+          "inclusive_ms": 0.43970000000000004,
+          "exclusive_ms": 0.43970000000000004
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 86,
+          "inclusive_ms": 0.32330000000000014,
+          "exclusive_ms": 0.32330000000000014
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 6,
+          "inclusive_ms": 0.26930000000000004,
+          "exclusive_ms": 0.26930000000000004
+        },
+        {
+          "timer": "Distortion",
+          "calls": 13,
+          "inclusive_ms": 0.24789999999999998,
+          "exclusive_ms": 0.1756
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 25,
+          "inclusive_ms": 5.120299999999999,
+          "exclusive_ms": 0.13509999999999994
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #12",
+      "exclusive_ms": 4.446099999959749,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 12,
+          "inclusive_ms": 1.8122,
+          "exclusive_ms": 1.6105
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 12,
+          "inclusive_ms": 0.8111999999999999,
+          "exclusive_ms": 0.7573
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 38,
+          "inclusive_ms": 0.30960000000000004,
+          "exclusive_ms": 0.30960000000000004
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 33,
+          "inclusive_ms": 4.2472999999597505,
+          "exclusive_ms": 0.2953999999646533
+        },
+        {
+          "timer": "Distortion",
+          "calls": 12,
+          "inclusive_ms": 0.31699999999999995,
+          "exclusive_ms": 0.263
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 4,
+          "inclusive_ms": 0.2553000000026703,
+          "exclusive_ms": 0.2548000000026703
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 19,
+          "inclusive_ms": 0.1988,
+          "exclusive_ms": 0.1988
+        },
+        {
+          "timer": "ComputeViewRelevance",
+          "calls": 3,
+          "inclusive_ms": 0.1615,
+          "exclusive_ms": 0.1615
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #14",
+      "exclusive_ms": 5.515399999992644,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 12,
+          "inclusive_ms": 1.8941999999999999,
+          "exclusive_ms": 1.8111
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 12,
+          "inclusive_ms": 1.2413,
+          "exclusive_ms": 1.1213999999999997
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 6,
+          "inclusive_ms": 0.49989999992440287,
+          "exclusive_ms": 0.4993999999244028
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 26,
+          "inclusive_ms": 0.314,
+          "exclusive_ms": 0.314
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 29,
+          "inclusive_ms": 5.201399999992644,
+          "exclusive_ms": 0.2391000000758156
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 28,
+          "inclusive_ms": 0.22050000000000006,
+          "exclusive_ms": 0.22050000000000006
+        },
+        {
+          "timer": "Nanite::ShadeBinning",
+          "calls": 2,
+          "inclusive_ms": 0.09509999999999999,
+          "exclusive_ms": 0.09509999999999999
+        },
+        {
+          "timer": "PrePass %s %s",
+          "calls": 1,
+          "inclusive_ms": 0.1001,
+          "exclusive_ms": 0.09319999999999999
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #13",
+      "exclusive_ms": 5.1246,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 16,
+          "inclusive_ms": 2.3804999999999996,
+          "exclusive_ms": 2.3145999999999995
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 16,
+          "inclusive_ms": 0.8775999999999999,
+          "exclusive_ms": 0.8017
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 20,
+          "inclusive_ms": 0.4809,
+          "exclusive_ms": 0.4809
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 52,
+          "inclusive_ms": 0.2121,
+          "exclusive_ms": 0.2121
+        },
+        {
+          "timer": "GPU",
+          "calls": 1,
+          "inclusive_ms": 0.1424,
+          "exclusive_ms": 0.1424
+        },
+        {
+          "timer": "NiagaraGpuComputeDispatch",
+          "calls": 1,
+          "inclusive_ms": 0.1406,
+          "exclusive_ms": 0.1384
+        },
+        {
+          "timer": "ComputeViewRelevance",
+          "calls": 1,
+          "inclusive_ms": 0.115,
+          "exclusive_ms": 0.115
+        },
+        {
+          "timer": "Bloom",
+          "calls": 1,
+          "inclusive_ms": 0.1009,
+          "exclusive_ms": 0.10060000000000001
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #15",
+      "exclusive_ms": 5.2471,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 20,
+          "inclusive_ms": 2.2074999999999996,
+          "exclusive_ms": 2.1612999999999998
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 20,
+          "inclusive_ms": 0.8531000000000001,
+          "exclusive_ms": 0.7607999999999999
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 27,
+          "inclusive_ms": 0.4278,
+          "exclusive_ms": 0.4278
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 9,
+          "inclusive_ms": 0.3862999999999999,
+          "exclusive_ms": 0.3862999999999999
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 114,
+          "inclusive_ms": 0.37050000000000005,
+          "exclusive_ms": 0.37050000000000005
+        },
+        {
+          "timer": "Distortion",
+          "calls": 16,
+          "inclusive_ms": 0.2748,
+          "exclusive_ms": 0.20729999999999996
+        },
+        {
+          "timer": "FPrimitiveSceneInfo_CacheMeshDrawCommand",
+          "calls": 4,
+          "inclusive_ms": 0.11399999999999999,
+          "exclusive_ms": 0.11399999999999999
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 27,
+          "inclusive_ms": 4.7817,
+          "exclusive_ms": 0.09360000000000006
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #16",
+      "exclusive_ms": 6.109699999967324,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 9,
+          "inclusive_ms": 1.7563999999999997,
+          "exclusive_ms": 1.7201
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 9,
+          "inclusive_ms": 1.5667999999999997,
+          "exclusive_ms": 1.5064
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 24,
+          "inclusive_ms": 0.4796000000000001,
+          "exclusive_ms": 0.4796000000000001
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 91,
+          "inclusive_ms": 0.3325000000000001,
+          "exclusive_ms": 0.3325000000000001
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 4,
+          "inclusive_ms": 0.2575000000077198,
+          "exclusive_ms": 0.25700000000771983
+        },
+        {
+          "timer": "FPrimitiveSceneInfo_CacheMeshDrawCommand",
+          "calls": 37,
+          "inclusive_ms": 0.25329999999999997,
+          "exclusive_ms": 0.25329999999999997
+        },
+        {
+          "timer": "FScene_DeletePrimitiveSceneInfo",
+          "calls": 1,
+          "inclusive_ms": 0.1819,
+          "exclusive_ms": 0.1819
+        },
+        {
+          "timer": "CreateDynamicShadows",
+          "calls": 1,
+          "inclusive_ms": 0.16899999999999998,
+          "exclusive_ms": 0.16899999999999998
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #17",
+      "exclusive_ms": 4.8707000000490615,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 8,
+          "inclusive_ms": 2.0576,
+          "exclusive_ms": 2.0250999999999997
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 8,
+          "inclusive_ms": 0.4845,
+          "exclusive_ms": 0.44800000000000006
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 20,
+          "inclusive_ms": 0.3805999999999999,
+          "exclusive_ms": 0.3805999999999999
+        },
+        {
+          "timer": "IndividualQueries",
+          "calls": 1,
+          "inclusive_ms": 0.31799999999293505,
+          "exclusive_ms": 0.31799999999293505
+        },
+        {
+          "timer": "Nanite::EmitDepthTargets",
+          "calls": 1,
+          "inclusive_ms": 0.11649999999999999,
+          "exclusive_ms": 0.11569999999999997
+        },
+        {
+          "timer": "NiagaraGpuComputeDispatch",
+          "calls": 1,
+          "inclusive_ms": 0.1146,
+          "exclusive_ms": 0.1146
+        },
+        {
+          "timer": "Submit",
+          "calls": 1,
+          "inclusive_ms": 0.1114,
+          "exclusive_ms": 0.1112
+        },
+        {
+          "timer": "Bloom",
+          "calls": 1,
+          "inclusive_ms": 0.1111,
+          "exclusive_ms": 0.11019999999999999
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #18",
+      "exclusive_ms": 3.7919,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 13,
+          "inclusive_ms": 2.1820000000000004,
+          "exclusive_ms": 2.1336000000000004
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 11,
+          "inclusive_ms": 0.5104000000000001,
+          "exclusive_ms": 0.45830000000000004
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 15,
+          "inclusive_ms": 0.3812,
+          "exclusive_ms": 0.3812
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 5,
+          "inclusive_ms": 0.2771,
+          "exclusive_ms": 0.2771
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 37,
+          "inclusive_ms": 0.14289999999999997,
+          "exclusive_ms": 0.14289999999999997
+        },
+        {
+          "timer": "Distortion",
+          "calls": 9,
+          "inclusive_ms": 0.1437,
+          "exclusive_ms": 0.10130000000000002
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 23,
+          "inclusive_ms": 3.4106999999999994,
+          "exclusive_ms": 0.08459999999999981
+        },
+        {
+          "timer": "FPrimitiveSceneInfo_CacheMeshDrawCommand",
+          "calls": 1,
+          "inclusive_ms": 0.045000000000000005,
+          "exclusive_ms": 0.045000000000000005
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #19",
+      "exclusive_ms": 5.131799999944747,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 20,
+          "inclusive_ms": 1.9175000000000004,
+          "exclusive_ms": 1.7890000000000004
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 16,
+          "inclusive_ms": 1.2648,
+          "exclusive_ms": 1.1702
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 28,
+          "inclusive_ms": 0.4069999999999999,
+          "exclusive_ms": 0.4069999999999999
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 45,
+          "inclusive_ms": 0.25630000000000003,
+          "exclusive_ms": 0.25630000000000003
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 2,
+          "inclusive_ms": 0.1949000000028158,
+          "exclusive_ms": 0.1943000000028158
+        },
+        {
+          "timer": "PostPass",
+          "calls": 3,
+          "inclusive_ms": 0.2163,
+          "exclusive_ms": 0.17879999999999996
+        },
+        {
+          "timer": "Distortion",
+          "calls": 9,
+          "inclusive_ms": 0.1656,
+          "exclusive_ms": 0.13240000000000002
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 34,
+          "inclusive_ms": 4.724799999944747,
+          "exclusive_ms": 0.1192999999520297
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #20",
+      "exclusive_ms": 5.580599999957152,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 11,
+          "inclusive_ms": 2.3949000000000003,
+          "exclusive_ms": 2.3319
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 10,
+          "inclusive_ms": 0.6653,
+          "exclusive_ms": 0.6134999999999999
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 35,
+          "inclusive_ms": 0.40510000000000007,
+          "exclusive_ms": 0.40510000000000007
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 5,
+          "inclusive_ms": 0.3855,
+          "exclusive_ms": 0.38480000000000003
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 32,
+          "inclusive_ms": 0.18719999999999998,
+          "exclusive_ms": 0.18719999999999998
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 27,
+          "inclusive_ms": 5.168699999972519,
+          "exclusive_ms": 0.16730000001017192
+        },
+        {
+          "timer": "RHI_Finalize",
+          "calls": 9,
+          "inclusive_ms": 0.22780000000000003,
+          "exclusive_ms": 0.15240000000000004
+        },
+        {
+          "timer": "%s",
+          "calls": 12,
+          "inclusive_ms": 0.15869999999999995,
+          "exclusive_ms": 0.1361
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #22",
+      "exclusive_ms": 7.7949,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 10,
+          "inclusive_ms": 2.5017,
+          "exclusive_ms": 2.4522000000000004
+        },
+        {
+          "timer": "DynamicPrimitive",
+          "calls": 54,
+          "inclusive_ms": 2.0123999999999995,
+          "exclusive_ms": 1.7396999999999996
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 10,
+          "inclusive_ms": 0.6485,
+          "exclusive_ms": 0.5845
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 28,
+          "inclusive_ms": 0.35980000000000006,
+          "exclusive_ms": 0.35980000000000006
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 5,
+          "inclusive_ms": 0.2606,
+          "exclusive_ms": 0.2606
+        },
+        {
+          "timer": "PostPass",
+          "calls": 6,
+          "inclusive_ms": 0.2616,
+          "exclusive_ms": 0.22310000000000002
+        },
+        {
+          "timer": "D3D12RHI::AllocatePoolResource",
+          "calls": 11,
+          "inclusive_ms": 0.22119999999999998,
+          "exclusive_ms": 0.2141
+        },
+        {
+          "timer": "Distortion",
+          "calls": 7,
+          "inclusive_ms": 0.6035,
+          "exclusive_ms": 0.21169999999999994
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #23",
+      "exclusive_ms": 5.284599999959895,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 8,
+          "inclusive_ms": 1.0294999999999999,
+          "exclusive_ms": 0.9894
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 68,
+          "inclusive_ms": 0.7308999999999999,
+          "exclusive_ms": 0.7308999999999999
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 9,
+          "inclusive_ms": 0.48950000002048905,
+          "exclusive_ms": 0.48860000002048903
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 26,
+          "inclusive_ms": 0.42280000000000006,
+          "exclusive_ms": 0.42280000000000006
+        },
+        {
+          "timer": "NE_Cloud_01",
+          "calls": 4,
+          "inclusive_ms": 0.364,
+          "exclusive_ms": 0.19429999999999997
+        },
+        {
+          "timer": "Scene",
+          "calls": 15,
+          "inclusive_ms": 1.1062000000179641,
+          "exclusive_ms": 0.18889999999999996
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 8,
+          "inclusive_ms": 0.19860000000000003,
+          "exclusive_ms": 0.15550000000000003
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 33,
+          "inclusive_ms": 4.861799999959894,
+          "exclusive_ms": 0.11359999994698049
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #24",
+      "exclusive_ms": 11.031499999939552,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 14,
+          "inclusive_ms": 2.5197999999999996,
+          "exclusive_ms": 2.3269
+        },
+        {
+          "timer": "DynamicPrimitive",
+          "calls": 81,
+          "inclusive_ms": 2.5101999999999993,
+          "exclusive_ms": 2.0894999999999992
+        },
+        {
+          "timer": "MeshDrawCommandPassSetupTask",
+          "calls": 1,
+          "inclusive_ms": 1.8827,
+          "exclusive_ms": 1.8827
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 42,
+          "inclusive_ms": 0.9244999999999999,
+          "exclusive_ms": 0.9244999999999999
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 14,
+          "inclusive_ms": 0.6162000000000001,
+          "exclusive_ms": 0.5492
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 8,
+          "inclusive_ms": 0.49759999997734994,
+          "exclusive_ms": 0.49759999997734994
+        },
+        {
+          "timer": "Batched",
+          "calls": 1,
+          "inclusive_ms": 0.5204,
+          "exclusive_ms": 0.4332
+        },
+        {
+          "timer": "D3D12RHI::AllocatePoolResource",
+          "calls": 20,
+          "inclusive_ms": 0.3576999999999999,
+          "exclusive_ms": 0.34719999999999995
+        }
+      ]
+    },
+    {
+      "name": "RHIInterruptThread",
+      "exclusive_ms": 2.7904,
+      "top_timers": [
+        {
+          "timer": "InterruptQueue_Process",
+          "calls": 205,
+          "inclusive_ms": 2.7904000000000013,
+          "exclusive_ms": 1.8734000000000026
+        },
+        {
+          "timer": "SetEventOnCompletion",
+          "calls": 83,
+          "inclusive_ms": 0.8989999999999997,
+          "exclusive_ms": 0.8989999999999997
+        },
+        {
+          "timer": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "calls": 9,
+          "inclusive_ms": 0.018000000000000002,
+          "exclusive_ms": 0.018000000000000002
+        }
+      ]
+    },
+    {
+      "name": "RHISubmissionThread",
+      "exclusive_ms": 5.773400000000002,
+      "top_timers": [
+        {
+          "timer": "FD3D12Queue::ExecuteCommandLists",
+          "calls": 149,
+          "inclusive_ms": 3.8138999999999994,
+          "exclusive_ms": 3.8138999999999994
+        },
+        {
+          "timer": "SubmissionQueue_Process",
+          "calls": 76,
+          "inclusive_ms": 5.773400000000001,
+          "exclusive_ms": 1.0191000000000021
+        },
+        {
+          "timer": "ExecuteCommandList",
+          "calls": 365,
+          "inclusive_ms": 0.929199999999998,
+          "exclusive_ms": 0.929199999999998
+        },
+        {
+          "timer": "CalibrateClocks",
+          "calls": 2,
+          "inclusive_ms": 0.0112,
+          "exclusive_ms": 0.0112
+        }
+      ]
+    },
+    {
+      "name": "AudioMixerRenderThread(1)",
+      "exclusive_ms": 0.0312,
+      "top_timers": [
+        {
+          "timer": "AudioMixerThreadCommands::PumpCommandQueue",
+          "calls": 4,
+          "inclusive_ms": 0.0114,
+          "exclusive_ms": 0.0114
+        },
+        {
+          "timer": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "calls": 3,
+          "inclusive_ms": 0.0091,
+          "exclusive_ms": 0.0091
+        },
+        {
+          "timer": "FTaskBase::TryRetractAndExecute",
+          "calls": 3,
+          "inclusive_ms": 0.0066,
+          "exclusive_ms": 0.0063
+        },
+        {
+          "timer": "QuartzClockManager::TickClocks",
+          "calls": 4,
+          "inclusive_ms": 0.0021,
+          "exclusive_ms": 0.0021
+        },
+        {
+          "timer": "QuartzClockManager::Update",
+          "calls": 4,
+          "inclusive_ms": 0.0036,
+          "exclusive_ms": 0.0014999999999999998
+        },
+        {
+          "timer": "FMixerSubmix::SendAudioToRegisteredAudioBuses",
+          "calls": 4,
+          "inclusive_ms": 0.0005,
+          "exclusive_ms": 0.0005
+        },
+        {
+          "timer": "SuccessfulTaskRetraction",
+          "calls": 3,
+          "inclusive_ms": 0.0003,
+          "exclusive_ms": 0.0003
+        }
+      ]
+    },
+    {
+      "name": "AudioMixerRenderThread(8)",
+      "exclusive_ms": 0.0256,
+      "top_timers": [
+        {
+          "timer": "AudioMixerThreadCommands::PumpCommandQueue",
+          "calls": 3,
+          "inclusive_ms": 0.0095,
+          "exclusive_ms": 0.0095
+        },
+        {
+          "timer": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "calls": 3,
+          "inclusive_ms": 0.0089,
+          "exclusive_ms": 0.0089
+        },
+        {
+          "timer": "FTaskBase::TryRetractAndExecute",
+          "calls": 2,
+          "inclusive_ms": 0.004399999999999999,
+          "exclusive_ms": 0.0040999999999999995
+        },
+        {
+          "timer": "QuartzClockManager::TickClocks",
+          "calls": 3,
+          "inclusive_ms": 0.0013,
+          "exclusive_ms": 0.0013
+        },
+        {
+          "timer": "QuartzClockManager::Update",
+          "calls": 3,
+          "inclusive_ms": 0.0024,
+          "exclusive_ms": 0.0010999999999999998
+        },
+        {
+          "timer": "FMixerSubmix::SendAudioToRegisteredAudioBuses",
+          "calls": 3,
+          "inclusive_ms": 0.00039999999999999996,
+          "exclusive_ms": 0.00039999999999999996
+        },
+        {
+          "timer": "SuccessfulTaskRetraction",
+          "calls": 2,
+          "inclusive_ms": 0.0003,
+          "exclusive_ms": 0.0003
+        }
+      ]
+    },
+    {
+      "name": "AudioMixerRenderThread(9)",
+      "exclusive_ms": 0.0183,
+      "top_timers": [
+        {
+          "timer": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "calls": 3,
+          "inclusive_ms": 0.0071,
+          "exclusive_ms": 0.0071
+        },
+        {
+          "timer": "AudioMixerThreadCommands::PumpCommandQueue",
+          "calls": 3,
+          "inclusive_ms": 0.0041,
+          "exclusive_ms": 0.0041
+        },
+        {
+          "timer": "FTaskBase::TryRetractAndExecute",
+          "calls": 3,
+          "inclusive_ms": 0.0043,
+          "exclusive_ms": 0.0040999999999999995
+        },
+        {
+          "timer": "QuartzClockManager::TickClocks",
+          "calls": 3,
+          "inclusive_ms": 0.0012,
+          "exclusive_ms": 0.0012
+        },
+        {
+          "timer": "QuartzClockManager::Update",
+          "calls": 3,
+          "inclusive_ms": 0.0022,
+          "exclusive_ms": 0.001
+        },
+        {
+          "timer": "FMixerSubmix::SendAudioToRegisteredAudioBuses",
+          "calls": 3,
+          "inclusive_ms": 0.0006,
+          "exclusive_ms": 0.0006
+        },
+        {
+          "timer": "SuccessfulTaskRetraction",
+          "calls": 2,
+          "inclusive_ms": 0.00019999999999999998,
+          "exclusive_ms": 0.00019999999999999998
+        }
+      ]
+    },
+    {
+      "name": "ShaderCompilingThread",
+      "exclusive_ms": 0.0056,
+      "top_timers": [
+        {
+          "timer": "FShaderCompileThreadRunnable::PullTasksFromQueue",
+          "calls": 1,
+          "inclusive_ms": 0.0043,
+          "exclusive_ms": 0.0043
+        },
+        {
+          "timer": "ShaderCompiler.WriteNewTasks",
+          "calls": 1,
+          "inclusive_ms": 0.0007999999999999999,
+          "exclusive_ms": 0.0007999999999999999
+        },
+        {
+          "timer": "FShaderCompileThreadRunnable::LaunchWorkersIfNeeded",
+          "calls": 1,
+          "inclusive_ms": 0.00039999999999999996,
+          "exclusive_ms": 0.00039999999999999996
+        },
+        {
+          "timer": "ShaderCompiler.ReadAvailableResults",
+          "calls": 1,
+          "inclusive_ms": 9.999999999999999e-05,
+          "exclusive_ms": 9.999999999999999e-05
+        }
+      ]
+    },
+    {
+      "name": "StallDetectorThread",
+      "exclusive_ms": 0.0367,
+      "top_timers": [
+        {
+          "timer": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "calls": 13,
+          "inclusive_ms": 0.0367,
+          "exclusive_ms": 0.0367
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #7",
+      "exclusive_ms": 7.451799999946981,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 16,
+          "inclusive_ms": 2.5237999999999996,
+          "exclusive_ms": 2.462100000000001
+        },
+        {
+          "timer": "DynamicPrimitive",
+          "calls": 38,
+          "inclusive_ms": 2.0127,
+          "exclusive_ms": 1.7207000000000006
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 40,
+          "inclusive_ms": 0.6159999999999999,
+          "exclusive_ms": 0.6159999999999999
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 6,
+          "inclusive_ms": 0.5220999999823267,
+          "exclusive_ms": 0.5220999999823267
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 11,
+          "inclusive_ms": 0.454,
+          "exclusive_ms": 0.4073
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 81,
+          "inclusive_ms": 0.32449999999999996,
+          "exclusive_ms": 0.32449999999999996
+        },
+        {
+          "timer": "D3D12RHI::AllocatePoolResource",
+          "calls": 12,
+          "inclusive_ms": 0.2477,
+          "exclusive_ms": 0.2387
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 40,
+          "inclusive_ms": 6.828900000005123,
+          "exclusive_ms": 0.18259999997222767
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #11",
+      "exclusive_ms": 53.55169999997058,
+      "top_timers": [
+        {
+          "timer": "ExecuteBackgroundTask",
+          "calls": 1,
+          "inclusive_ms": 51.1186,
+          "exclusive_ms": 50.7355
+        },
+        {
+          "timer": "MeshDrawCommandPassSetupTask",
+          "calls": 2,
+          "inclusive_ms": 0.5794999999857245,
+          "exclusive_ms": 0.5794999999857245
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 29,
+          "inclusive_ms": 0.45069999999999993,
+          "exclusive_ms": 0.45069999999999993
+        },
+        {
+          "timer": "Oversubscription",
+          "calls": 2,
+          "inclusive_ms": 0.2683,
+          "exclusive_ms": 0.2642
+        },
+        {
+          "timer": "Scene",
+          "calls": 8,
+          "inclusive_ms": 0.7284,
+          "exclusive_ms": 0.242
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 3,
+          "inclusive_ms": 0.1182,
+          "exclusive_ms": 0.1182
+        },
+        {
+          "timer": "GPU",
+          "calls": 1,
+          "inclusive_ms": 0.1171,
+          "exclusive_ms": 0.1171
+        },
+        {
+          "timer": "FPrimitiveSceneInfo_CacheMeshDrawCommand",
+          "calls": 47,
+          "inclusive_ms": 0.09479999999999998,
+          "exclusive_ms": 0.09479999999999998
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #21",
+      "exclusive_ms": 4.9062,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 20,
+          "inclusive_ms": 2.2089000000000003,
+          "exclusive_ms": 2.1552000000000002
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 20,
+          "inclusive_ms": 1.0768,
+          "exclusive_ms": 0.9852000000000003
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 18,
+          "inclusive_ms": 0.40130000000000005,
+          "exclusive_ms": 0.40130000000000005
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 97,
+          "inclusive_ms": 0.2747000000000002,
+          "exclusive_ms": 0.2747000000000002
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 7,
+          "inclusive_ms": 0.2636,
+          "exclusive_ms": 0.2636
+        },
+        {
+          "timer": "Distortion",
+          "calls": 17,
+          "inclusive_ms": 0.2738,
+          "exclusive_ms": 0.189
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 25,
+          "inclusive_ms": 4.5049,
+          "exclusive_ms": 0.05999999999999976
+        },
+        {
+          "timer": "NiagaraGpuComputeDispatch",
+          "calls": 1,
+          "inclusive_ms": 0.0406,
+          "exclusive_ms": 0.0406
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #25",
+      "exclusive_ms": 10.780499999959604,
+      "top_timers": [
+        {
+          "timer": "DynamicPrimitive",
+          "calls": 131,
+          "inclusive_ms": 3.9324000000000026,
+          "exclusive_ms": 3.3000000000000007
+        },
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 20,
+          "inclusive_ms": 2.5765,
+          "exclusive_ms": 2.5392
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 28,
+          "inclusive_ms": 0.5882999999999999,
+          "exclusive_ms": 0.5882999999999999
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 9,
+          "inclusive_ms": 0.55,
+          "exclusive_ms": 0.55
+        },
+        {
+          "timer": "D3D12RHI::AllocatePoolResource",
+          "calls": 26,
+          "inclusive_ms": 0.5398000000000001,
+          "exclusive_ms": 0.5226000000000001
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 19,
+          "inclusive_ms": 0.5561,
+          "exclusive_ms": 0.47659999999999997
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 110,
+          "inclusive_ms": 0.3330000000000003,
+          "exclusive_ms": 0.3330000000000003
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 60,
+          "inclusive_ms": 10.192199999959605,
+          "exclusive_ms": 0.25259999996465327
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #26",
+      "exclusive_ms": 4.6895999999999995,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 20,
+          "inclusive_ms": 1.9599,
+          "exclusive_ms": 1.9180000000000004
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 16,
+          "inclusive_ms": 1.03,
+          "exclusive_ms": 0.9659000000000001
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 16,
+          "inclusive_ms": 0.40809999999999996,
+          "exclusive_ms": 0.40809999999999996
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 101,
+          "inclusive_ms": 0.38210000000000016,
+          "exclusive_ms": 0.38210000000000016
+        },
+        {
+          "timer": "Distortion",
+          "calls": 11,
+          "inclusive_ms": 0.2247,
+          "exclusive_ms": 0.1653
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 22,
+          "inclusive_ms": 4.281500000000001,
+          "exclusive_ms": 0.10919999999999969
+        },
+        {
+          "timer": "%s",
+          "calls": 12,
+          "inclusive_ms": 0.054400000000000004,
+          "exclusive_ms": 0.05
+        },
+        {
+          "timer": "NS_WM01_Explosion_2A",
+          "calls": 20,
+          "inclusive_ms": 3.2597000000000005,
+          "exclusive_ms": 0.04509999999999997
+        }
+      ]
+    },
+    {
+      "name": "Background Worker #27",
+      "exclusive_ms": 6.5465,
+      "top_timers": [
+        {
+          "timer": "Explosion_Flipbook",
+          "calls": 20,
+          "inclusive_ms": 1.7024999999999997,
+          "exclusive_ms": 1.6493000000000002
+        },
+        {
+          "timer": "OmnidirectionalBurst",
+          "calls": 18,
+          "inclusive_ms": 0.8823,
+          "exclusive_ms": 0.8011
+        },
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 37,
+          "inclusive_ms": 0.5572999999999998,
+          "exclusive_ms": 0.5572999999999998
+        },
+        {
+          "timer": "MeshDrawCommandPassSetupTask",
+          "calls": 1,
+          "inclusive_ms": 0.4122,
+          "exclusive_ms": 0.4122
+        },
+        {
+          "timer": "ParallelDraw",
+          "calls": 9,
+          "inclusive_ms": 0.40080000000000005,
+          "exclusive_ms": 0.40080000000000005
+        },
+        {
+          "timer": "VectorVM_Experimental",
+          "calls": 113,
+          "inclusive_ms": 0.36310000000000026,
+          "exclusive_ms": 0.36310000000000026
+        },
+        {
+          "timer": "GPU",
+          "calls": 3,
+          "inclusive_ms": 0.1935,
+          "exclusive_ms": 0.1935
+        },
+        {
+          "timer": "ExecuteForegroundTask",
+          "calls": 49,
+          "inclusive_ms": 5.928900000000001,
+          "exclusive_ms": 0.14439999999999995
+        }
+      ]
+    },
+    {
+      "name": "Background Worker (Standby #0)",
+      "exclusive_ms": 0.0031,
+      "top_timers": [
+        {
+          "timer": "TaskWorkerIsLookingForWork",
+          "calls": 2,
+          "inclusive_ms": 0.0031,
+          "exclusive_ms": 0.0031
+        }
+      ]
+    },
+    {
+      "name": "UnnamedThread",
+      "exclusive_ms": 0.0778,
+      "top_timers": [
+        {
+          "timer": "FXAudio2VoiceCallback_OnBufferEnd",
+          "calls": 10,
+          "inclusive_ms": 0.0778,
+          "exclusive_ms": 0.0661
+        },
+        {
+          "timer": "FMixerPlatformXAudio2_SubmitBuffer",
+          "calls": 10,
+          "inclusive_ms": 0.011700000000000002,
+          "exclusive_ms": 0.011700000000000002
+        }
+      ]
+    }
+  ],
+  "scope": "One actual engine frame. Thread and GPU spans overlap; do not add them to GT or infer server/client identity from anonymous UWorld order."
+}

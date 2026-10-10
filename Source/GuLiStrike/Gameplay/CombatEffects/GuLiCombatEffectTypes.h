@@ -240,13 +240,23 @@ struct GULISTRIKE_API FGuLiCombatEffectCounters
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") double LastStepMilliseconds = 0.0;
 };
 
+/** Frozen per launch; process-local and deliberately absent from the network state. */
+struct GULISTRIKE_API FGuLiProjectileCurveCoefficients
+{
+	float Height = 0, Side = 0, Phase = 0, Frequency = 0, Vertical = 0, Longitudinal = 0;
+	FVector LiftForward = FVector::ForwardVector, LiftRight = FVector::RightVector;
+	FVector CurveForward = FVector::ZeroVector;
+	void Initialize(const FGuLiCombatEffectState& State);
+};
+
 namespace GuLiCombatEffects
 {
 	// Server swept collision cadence; clients advance flight independently.
 	inline constexpr float GroundProjectileStepSeconds = 0.2f;
-	GULISTRIKE_API FVector LiftPosition(const FGuLiCombatEffectState& State, float Age);
+	GULISTRIKE_API bool ShouldPrecomputeCurves();
+	GULISTRIKE_API FVector LiftPosition(const FGuLiCombatEffectState& State, float Age, const FGuLiProjectileCurveCoefficients* Coefficients = nullptr);
 	/** Pure, fixed-step, seed-stable flight. Caller owns target refresh and authoritative swept collision. */
-	GULISTRIKE_API FVector AdvanceProjectile(FGuLiCombatEffectState& State, float NewAge, float DeltaSeconds);
+	GULISTRIKE_API FVector AdvanceProjectile(FGuLiCombatEffectState& State, float NewAge, float DeltaSeconds, const FGuLiProjectileCurveCoefficients* Coefficients = nullptr);
 	GULISTRIKE_API bool IntersectsSphere(const FVector& Center, float Radius, const FGuLiCombatTargetSnapshot& Target);
 	/** Number of scheduled pulses due by Now, with the periodic interval [Activation, End). */
 	GULISTRIKE_API int32 PulsesDue(EGuLiSpellFieldTiming Timing, double Activation, double Duration, double Interval, double Now);

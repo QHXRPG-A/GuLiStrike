@@ -17,8 +17,8 @@ class UTexture2D;
 class UTexture;
 class UGuLiCommanderRouteLineComponent;
 class UGuLiOutpostPresentationComponent;
-class SGuLiSceneUI;
 struct FGuLiSceneUIWidgetData;
+enum class EGuLiSceneUIPaintPart : uint8 { Combined, Background, World, HUD, Panels };
 
 /** One non-interactive, post-scene Slate batch for each local player's viewport. */
 UCLASS(Config=Game, NotBlueprintable)
@@ -30,6 +30,8 @@ public:
 	void InitializeForController(APlayerController* Controller);
 	void SetModalHidden(bool bHidden);
 	void BeginHUDFrame();
+	void EndHUDFrame();
+	UFUNCTION(BlueprintPure, Category="Scene UI|Diagnostics") FString GetFrameStatsJson() const;
 	void AddScreenLine(float X1, float Y1, float X2, float Y2, FLinearColor Color, float Width=1);
 	void AddScreenRect(FLinearColor Color, float X, float Y, float W, float H);
 	void AddScreenDisc(FVector2D Center, float Radius, FLinearColor Color);
@@ -38,7 +40,8 @@ public:
 	void AddWorldLine(const FVector& Start, const FVector& End, FLinearColor Color, float Width=1);
 	bool ProjectWorldLineToScreen(const FVector& Start, const FVector& End, FVector2D& A, FVector2D& B) const;
 	FVector2D ToPlayerScreen(const FVector2D& ViewportPosition) const;
-	void PaintSceneUI(const FGeometry& Geometry, FSlateWindowElementList& Elements, int32 Layer) const;
+	void PaintSceneUI(const FGeometry& Geometry, FSlateWindowElementList& Elements, int32 Layer,
+		EGuLiSceneUIPaintPart Part = EGuLiSceneUIPaintPart::Combined) const;
 
 protected:
 	virtual TSharedRef<SWidget> RebuildWidget() override;
@@ -71,9 +74,16 @@ private:
 	TWeakObjectPtr<AGuLiBattlePlayerState> BoundIdentity;
 	TArray<TWeakObjectPtr<AActor>> ActorRingSources;
 	TArray<TWeakObjectPtr<UGuLiOutpostPresentationComponent>> OutpostHaloSources;
-	TSharedPtr<SGuLiSceneUI> SceneSlate;
+	TSharedPtr<SWidget> SceneSlate;
+	TWeakPtr<SWidget> PaintLeaves[5];
+	void InvalidatePaintPart(EGuLiSceneUIPaintPart Part);
 	TSharedPtr<FGuLiSceneUIWidgetData> Data;
-	float SourceRefreshRemaining = 0;
+	uint64 SourceMembershipRevision = 0;
+	uint64 OutlineMembershipRevision = 0;
+	uint64 RingContentRevision = 0, RingPoseRevision = 0;
+	TArray<TWeakObjectPtr<AActor>> OutlineActorSources;
+	TWeakObjectPtr<AActor> PlacementListSource;
+	TArray<TWeakObjectPtr<class UMeshComponent>> PlacementMeshes;
 	float OutlineListRefreshRemaining = 0;
 	bool bModalHidden = false;
 };

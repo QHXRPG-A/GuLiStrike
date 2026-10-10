@@ -1,0 +1,57 @@
+{
+  "success": true,
+  "tables": 27,
+  "changed": {
+    "json": [
+      "Data\\Json\\DT_GuLiStrikeVfx_Effects.json"
+    ],
+    "headers": []
+  },
+  "vfx_rows": 52,
+  "target_rows": [
+    {
+      "Name": "MachineGunImpact",
+      "Id": 5,
+      "Note": "指挥官、僚机、玩家地面机甲机枪命中单位或地形",
+      "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Optimized.NS_MachineGunImpact_Optimized",
+      "Scale": {
+        "X": 2.0,
+        "Y": 2.0,
+        "Z": 2.0
+      }
+    },
+    {
+      "Name": "MiningLaser",
+      "Id": 36,
+      "Note": "采矿激光；建造使用独立 ID 45",
+      "ResourcePath": "/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized.NS_MiningLaser_Optimized",
+      "Scale": {
+        "X": 1.0,
+        "Y": 1.0,
+        "Z": 1.0
+      }
+    },
+    {
+      "Name": "BuildingConstructionLaser",
+      "Id": 45,
+      "Note": "建造车左右紫色激光、蓝白落点火花",
+      "ResourcePath": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized.NS_ConstructionLaser_Optimized",
+      "Scale": {
+        "X": 1.0,
+        "Y": 1.0,
+        "Z": 1.0
+      }
+    },
+    {
+      "Name": "GroundMachineGunMuzzle",
+      "Id": 52,
+      "Note": "指挥官机械机枪枪口；保持基础尺寸，重防号在调用处乘2",
+      "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Optimized.NS_MachineGunMuzzle_Optimized",
+      "Scale": {
+        "X": 1.0,
+        "Y": 1.0,
+        "Z": 1.0
+      }
+    }
+  ]
+}

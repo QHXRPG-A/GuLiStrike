@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiMissileClusterPresentation.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
 #include "Engine/World.h"
@@ -16,6 +17,8 @@ CSV_DEFINE_CATEGORY(GuLiMissileCluster, true);
 namespace
 {
 	TAutoConsoleVariable<int32> FullTrailBudget(TEXT("gs.MissileCluster.FullTrails"), 512, TEXT("Full trails, including fading slots and quality handoffs."));
+	TAutoConsoleVariable<int32> MissileBatchSize(TEXT("gs.MissileCluster.BatchSize"), 32,
+		TEXT("Slots allocated by new batches, 8..64. Existing batches and their history keep their frozen capacity."));
 	TAutoConsoleVariable<int32> ParticleBudget(TEXT("gs.MissileCluster.Particles"), 65536, TEXT("GPU capacity budget; bodies/flames are the minimum. Lower budgets drain existing history before reclaiming it."));
 	TAutoConsoleVariable<float> MaximumDistance(TEXT("gs.MissileCluster.Distance"), 20000.f, TEXT("Non-commander view distance in cm; commander near/tactical views use camera tiers. Includes 2.4 seconds of historical smoke."));
 	TAutoConsoleVariable<float> MinimumScreenFraction(TEXT("gs.MissileCluster.MinScreenFraction"), .001f, TEXT("Cull below this projected history-bound fraction."));
@@ -56,7 +59,7 @@ void UGuLiMissileClusterPresentation::ReleaseComponent(TWeakObjectPtr<UNiagaraCo
 void UGuLiMissileClusterPresentation::Release(FBatch& Batch)
 {
 	ReleaseComponent(Batch.Component); ReleaseComponent(Batch.Retiring.Component);
-	Batch.Retiring = {}; Batch.Quality = -1; Batch.QualitySince = -1000;
+	Batch.Retiring = {}; Batch.Quality = -1; Batch.QualitySince = -1000; Batch.UploadedComponent.Reset();
 }
 
 void UGuLiMissileClusterPresentation::Reset()
@@ -117,7 +120,7 @@ int32 UGuLiMissileClusterPresentation::Acquire(const FGuid& Id, const FVector& P
 		if (!Batch.Slots.ContainsByPredicate([](const FSlot& S) { return S.bAllocated; }) && !Batch.Retiring.Component.IsValid())
 		{ EmptyBatch = B; continue; }
 		if (Batch.Cell != Cell || Batch.Definition.Get() != Definition) continue;
-		const int32 Limit = Batch.Capacity > 0 ? Batch.Capacity : MissilesPerBatch;
+		const int32 Limit = Batch.Capacity > 0 ? Batch.Capacity : Batch.Slots.Num();
 		for (int32 I = 0; I < Limit; ++I) if (!Batch.Slots[I].bAllocated) { SlotIndex = I; break; }
 		if (SlotIndex != INDEX_NONE) { BatchIndex = B; break; }
 	}
@@ -126,9 +129,11 @@ int32 UGuLiMissileClusterPresentation::Acquire(const FGuid& Id, const FVector& P
 		BatchIndex = EmptyBatch != INDEX_NONE ? EmptyBatch : Batches.AddDefaulted();
 		auto& Batch = Batches[BatchIndex]; Release(Batch); Batch.Cell = Cell; Batch.RecentBounds.Reset();
 		Batch.Definition = Definition; Batch.Visual = Visual;
-		Batch.Capacity = 0; Batch.RetryAt = 0; Batch.Slots.SetNum(MissilesPerBatch);
-		Batch.Positions.Init(FVector::ZeroVector, MissilesPerBatch); Batch.Directions.Init(FVector::ForwardVector, MissilesPerBatch);
-		Batch.Sizes.Init(FVector2D::ZeroVector, MissilesPerBatch); Batch.Meta.Init(FLinearColor::Transparent, MissilesPerBatch);
+		const int32 SlotCount = FMath::Clamp(MissileBatchSize.GetValueOnGameThread(), 8, MissilesPerBatch);
+		Batch.Capacity = 0; Batch.RetryAt = 0; Batch.Slots.SetNum(SlotCount);
+		Batch.VisualScale = GuLiVfx::Scale(this, GuLiVfxIds::MissileFlight).X * 1.5f;
+		Batch.Positions.Init(FVector::ZeroVector, SlotCount); Batch.Directions.Init(FVector::ForwardVector, SlotCount);
+		Batch.Sizes.Init(FVector2D::ZeroVector, SlotCount); Batch.Meta.Init(FLinearColor::Transparent, SlotCount);
 		SlotIndex = 0;
 	}
 	auto& Slot = Batches[BatchIndex].Slots[SlotIndex];
@@ -136,7 +141,7 @@ int32 UGuLiMissileClusterPresentation::Acquire(const FGuid& Id, const FVector& P
 	Slot = {}; Slot.Id = Id; Slot.Generation = Generation; Slot.bAllocated = true;
 	Slot.Position = Position; Slot.LastSeen = FrameTime;
 	const int32 Index = BatchIndex * MissilesPerBatch + SlotIndex;
-	SlotById.Add(Id, Index); return Index;
+	SlotById.Add(Id, Index); Batches[BatchIndex].DirtySlots.Add(SlotIndex); ++Batches[BatchIndex].DataRevision; return Index;
 }
 
 bool UGuLiMissileClusterPresentation::Submit(const FGuid& Id, const FVector& Position, const FVector& Direction,
@@ -155,9 +160,12 @@ bool UGuLiMissileClusterPresentation::Submit(const FGuid& Id, const FVector& Pos
 	const int32 Index = Acquire(Id, Position, Definition, *Visual); auto& Batch = Batches[Index / MissilesPerBatch];
 	auto& Slot = Batch.Slots[Index % MissilesPerBatch];
 	if (Slot.FinishedAt >= 0) return false;
+const FVector NewDirection = Direction.GetSafeNormal(UE_SMALL_NUMBER, Slot.Direction);
+	const bool Changed = Slot.Position != Position || Slot.Direction != NewDirection || FrameTime - Slot.LastSeen > .20;
 	if (FrameTime - Slot.LastSeen > .20 || FVector::DistSquared(Slot.Position, Position) > FMath::Square(600.0))
 		Slot.Generation = (Slot.Generation % 1000000) + 1;
-	Slot.Position = Position; Slot.Direction = Direction.GetSafeNormal(UE_SMALL_NUMBER, Slot.Direction);
+	Slot.Position = Position; Slot.Direction = NewDirection;
+	if (Changed) { Batch.DirtySlots.Add(Index % MissilesPerBatch); ++Batch.DataRevision; }
 	Slot.LastSeen = FrameTime; Slot.bSubmitted = true;
 	return FrameTime >= Batch.RetryAt;
 }
@@ -165,7 +173,9 @@ bool UGuLiMissileClusterPresentation::Submit(const FGuid& Id, const FVector& Pos
 void UGuLiMissileClusterPresentation::Finish(const FGuid& Id, const FVector& ImpactPosition, bool bImmediate)
 {
 	const auto* Index = SlotById.Find(Id); if (!Index) return;
-	auto& Slot = Batches[*Index / MissilesPerBatch].Slots[*Index % MissilesPerBatch];
+	auto& Batch = Batches[*Index / MissilesPerBatch];
+	auto& Slot = Batch.Slots[*Index % MissilesPerBatch];
+	Batch.DirtySlots.Add(*Index % MissilesPerBatch); ++Batch.DataRevision;
 	if (bImmediate)
 	{ Slot.bAllocated = false; Slot.Generation = (Slot.Generation % 1000000) + 1; SlotById.Remove(Id); return; }
 	if (Slot.FinishedAt < 0)
@@ -178,30 +188,41 @@ void UGuLiMissileClusterPresentation::Finish(const FGuid& Id, const FVector& Imp
 void UGuLiMissileClusterPresentation::Upload(FBatch& Batch)
 {
 	auto* Component = Batch.Component.Get(); if (!Component) return;
-	// Preserve the v2 body scale; exhaust dimensions are independently table-authored centimeters.
-	const float VisualScale = GuLiVfx::Scale(this, GuLiVfxIds::MissileFlight).X * 1.5f;
-	for (int32 I = 0; I < MissilesPerBatch; ++I)
+	const bool NewComponent = Batch.UploadedComponent.Get() != Component;
+	if (NewComponent) for (int32 I=0; I<Batch.Slots.Num(); ++I) Batch.DirtySlots.Add(I);
+	if (NewComponent || Batch.UploadedTime != FrameTime)
+	{ Component->SetVariableFloat(TEXT("User.MissileTime"), float(FrameTime)); Batch.UploadedTime=FrameTime; }
+	const float Weight=FMath::Clamp(float((FrameTime-Batch.QualitySince)/HandoffSeconds),0.f,1.f);
+	if (NewComponent || Weight!=Batch.UploadedWeight)
+	{ Component->SetVariableFloat(TEXT("User.MissileTrailWeight"),Weight); Batch.UploadedWeight=Weight; }
+	if (NewComponent || Batch.UploadedRevision != Batch.DataRevision)
 	{
-		const auto& Slot = Batch.Slots[I]; Batch.Positions[I] = Slot.Position; Batch.Directions[I] = Slot.Direction;
-		Batch.Sizes[I] = FVector2D(35 * VisualScale, 325 * VisualScale);
-		const float State = !Slot.bAllocated ? 0.f : Slot.FinishedAt < 0 ? 1.f : 2.f;
-		Batch.Meta[I] = FLinearColor(float(Slot.Generation), State, float(Slot.FinishedAt), TrailLifetime);
+		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMissileCluster_Upload);
+		FGuLiPerformanceScope Timing(GetWorld(), TEXT("Missile.UploadMs"));
+		for (const int32 I : Batch.DirtySlots)
+		{
+			const auto& Slot=Batch.Slots[I]; Batch.Positions[I]=Slot.Position; Batch.Directions[I]=Slot.Direction;
+			Batch.Sizes[I]=FVector2D(35*Batch.VisualScale,325*Batch.VisualScale);
+			const float State=!Slot.bAllocated ? 0.f : Slot.FinishedAt<0 ? 1.f : 2.f;
+			Batch.Meta[I]=FLinearColor(float(Slot.Generation),State,float(Slot.FinishedAt),TrailLifetime);
+		}
+		using Arrays=UNiagaraDataInterfaceArrayFunctionLibrary;
+		Arrays::SetNiagaraArrayPosition(Component,TEXT("User.LaserPositions"),Batch.Positions);
+		Arrays::SetNiagaraArrayVector(Component,TEXT("User.LaserDirections"),Batch.Directions);
+		Arrays::SetNiagaraArrayVector2D(Component,TEXT("User.LaserSizes"),Batch.Sizes);
+		Arrays::SetNiagaraArrayColor(Component,TEXT("User.LaserColors"),Batch.Meta);
+		Batch.DirtySlots.Reset(); Batch.UploadedRevision=Batch.DataRevision;
+		if (auto* Capture=GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>()) Capture->Record(TEXT("Missile.ArrayUploads"),4);
 	}
-	using Arrays = UNiagaraDataInterfaceArrayFunctionLibrary;
-	Component->SetVariableFloat(TEXT("User.MissileTime"), float(FrameTime));
-	Component->SetVariableFloat(TEXT("User.MissileSmokeInitialWidth"), Batch.Visual.SmokeInitialWidthCentimeters);
-	Component->SetVariableFloat(TEXT("User.MissileSmokeMaximumWidth"), Batch.Visual.SmokeMaximumWidthCentimeters);
-	Component->SetVariableFloat(TEXT("User.MissileFlameWidth"), Batch.Visual.FlameWidthCentimeters);
-	Component->SetVariableFloat(TEXT("User.MissileFlameLength"), Batch.Visual.FlameLengthCentimeters);
-	Component->SetVariableFloat(TEXT("User.MissileTrailWeight"), FMath::Clamp(float((FrameTime - Batch.QualitySince) / HandoffSeconds), 0.f, 1.f));
-	Arrays::SetNiagaraArrayPosition(Component, TEXT("User.LaserPositions"), Batch.Positions);
-	Arrays::SetNiagaraArrayVector(Component, TEXT("User.LaserDirections"), Batch.Directions);
-	Arrays::SetNiagaraArrayVector2D(Component, TEXT("User.LaserSizes"), Batch.Sizes);
-	Arrays::SetNiagaraArrayColor(Component, TEXT("User.LaserColors"), Batch.Meta);
-	Component->SetSystemFixedBounds(Batch.Bounds);
-	Component->SetEmitterFixedBounds(TEXT("Body"), Batch.Bounds);
-	Component->SetEmitterFixedBounds(TEXT("Flame"), Batch.Bounds);
-	if (Batch.Quality > 0) Component->SetEmitterFixedBounds(TEXT("History"), Batch.Bounds);
+	if (NewComponent || Batch.UploadedBounds != Batch.Bounds)
+	{
+		Component->SetSystemFixedBounds(Batch.Bounds);
+		Component->SetEmitterFixedBounds(TEXT("Body"),Batch.Bounds);
+		Component->SetEmitterFixedBounds(TEXT("Flame"),Batch.Bounds);
+		if (Batch.Quality>0) Component->SetEmitterFixedBounds(TEXT("History"),Batch.Bounds);
+		Batch.UploadedBounds=Batch.Bounds;
+	}
+	Batch.UploadedComponent=Component;
 }
 
 bool UGuLiMissileClusterPresentation::StartBatch(FBatch& Batch, int32 Quality)
@@ -214,6 +235,11 @@ bool UGuLiMissileClusterPresentation::StartBatch(FBatch& Batch, int32 Quality)
 	if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(Component);
 	Batch.Quality = Quality; Batch.QualitySince = FrameTime;
 	Component->SetCastShadow(false);
+	Batch.UploadedComponent.Reset();
+	Component->SetVariableFloat(TEXT("User.MissileSmokeInitialWidth"),Batch.Visual.SmokeInitialWidthCentimeters);
+	Component->SetVariableFloat(TEXT("User.MissileSmokeMaximumWidth"),Batch.Visual.SmokeMaximumWidthCentimeters);
+	Component->SetVariableFloat(TEXT("User.MissileFlameWidth"),Batch.Visual.FlameWidthCentimeters);
+	Component->SetVariableFloat(TEXT("User.MissileFlameLength"),Batch.Visual.FlameLengthCentimeters);
 	Component->SetVariableInt(TEXT("User.MissileSlotCount"), Batch.Capacity);
 	Component->SetVariableInt(TEXT("User.MissileHistoryCount"), Batch.Capacity * Lanes[Quality]);
 	Component->SetVariableFloat(TEXT("User.MissileHeads"), 1);
@@ -256,12 +282,14 @@ void UGuLiMissileClusterPresentation::EndFrame()
 		auto& Batch = Batches[B]; FBox Current(ForceInit); Batch.Occupied = 0;
 		if (Batch.Retiring.Component.IsValid() && FrameTime >= Batch.Retiring.ReleaseTime)
 		{ ReleaseComponent(Batch.Retiring.Component); Batch.Retiring = {}; }
-		for (auto& Slot : Batch.Slots)
+		for (int32 I=0; I<Batch.Slots.Num(); ++I)
 		{
+			auto& Slot=Batch.Slots[I];
 			if (!Slot.bAllocated) continue;
-			if (!Slot.bSubmitted && Slot.FinishedAt < 0) Slot.FinishedAt = FrameTime;
+			if (!Slot.bSubmitted && Slot.FinishedAt < 0)
+			{ Slot.FinishedAt=FrameTime; Batch.DirtySlots.Add(I); ++Batch.DataRevision; }
 			if (Slot.FinishedAt >= 0 && FrameTime - Slot.FinishedAt > TrailLifetime + .05)
-			{ SlotById.Remove(Slot.Id); Slot.bAllocated = false; continue; }
+			{ SlotById.Remove(Slot.Id); Slot.bAllocated = false; Batch.DirtySlots.Add(I); ++Batch.DataRevision; continue; }
 			++Batch.Occupied; Current += Slot.Position; if (Slot.FinishedAt < 0) ++ActiveMissiles;
 		}
 		Batch.RecentBounds.RemoveAll([this](const FBoundsSample& S) { return FrameTime - S.Time > TrailLifetime + .1; });
@@ -272,7 +300,7 @@ void UGuLiMissileClusterPresentation::EndFrame()
 		}
 		Batch.Bounds = Current; for (const auto& Sample : Batch.RecentBounds) Batch.Bounds += Sample.Bounds;
 		// Include exhaust offset, sprite half-width/overlap and <=27 cm drift around historical heads.
-		const float BodyLength = 325.f * GuLiVfx::Scale(this, GuLiVfxIds::MissileFlight).X * 1.5f;
+		const float BodyLength = 325.f * Batch.VisualScale;
 		const float Extent = FMath::Max(210.f, BodyLength * .5f + Batch.Visual.FlameLengthCentimeters
 			+ FMath::Max(Batch.Visual.FlameWidthCentimeters, Batch.Visual.SmokeMaximumWidthCentimeters) * .62f + 27.f);
 		if (Batch.Bounds.IsValid) Batch.Bounds = Batch.Bounds.ExpandBy(Extent);

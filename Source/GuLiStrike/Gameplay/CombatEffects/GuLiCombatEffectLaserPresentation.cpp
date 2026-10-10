@@ -1,4 +1,8 @@
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
+#include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
 #include "Engine/World.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
@@ -12,10 +16,12 @@
 #include "NiagaraDataInterfaceArrayFunctionLibrary.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraSystem.h"
+#include "HAL/IConsoleManager.h"
 
 namespace
 {
-	constexpr int32 LaserBlockSize = 1024;
+	TAutoConsoleVariable<int32> CVarLaserBatchSize(TEXT("gs.LaserPool.BatchSize"), 256,
+		TEXT("Particle slots per new laser pool; resolved only while the pool is empty. 1024 restores the old capacity."));
 	constexpr int32 MaximumGroundTracerLights = 6;
 	struct FGroundTracerLightCandidate
 	{
@@ -36,6 +42,7 @@ int32 UGuLiCombatEffectPresentationSubsystem::AllocateLaserSlot(const int32 VfxI
 {
 	const FVector BaseScale = GuLiVfx::Scale(this, VfxId);
 	if (!UGuLiVfxRegistrySubsystem::IsValidScale(BaseScale)) return INDEX_NONE;
+	if (LaserBlocks.IsEmpty()) LaserBlockSize = FMath::Clamp(CVarLaserBatchSize.GetValueOnGameThread(), 32, 1024);
 	auto& FreeSlots = FreeLaserSlots.FindOrAdd(VfxId);
 	if (FreeSlots.IsEmpty())
 	{
@@ -49,6 +56,7 @@ int32 UGuLiCombatEffectPresentationSubsystem::AllocateLaserSlot(const int32 VfxI
 		Block.LightPositions.Init(FVector::ZeroVector, LaserBlockSize);
 		Block.LightColors.Init(FLinearColor::Transparent, LaserBlockSize);
 		Block.LightRadii.Init(0.0f, LaserBlockSize); Block.LightEnabled.Init(false, LaserBlockSize);
+		Block.UploadedRows.SetNum(LaserBlockSize);
 		for (int32 Index = First + LaserBlockSize - 1; Index >= First; --Index) FreeSlots.Add(Index);
 	}
 	return FreeSlots.Pop(EAllowShrinking::No);
@@ -84,10 +92,13 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 	for (const auto& Pair : FreeLaserSlots) Counters.LaserActive -= Pair.Value.Num();
 	for (auto& Block : LaserBlocks)
 	{
-		Block.Colors.Init(FLinearColor::Transparent, LaserBlockSize); Block.MuzzleColors.Init(FLinearColor::Transparent, LaserBlockSize);
-		Block.Sizes.Init(FVector2D::ZeroVector, LaserBlockSize); Block.MuzzleSizes.Init(FVector2D::ZeroVector, LaserBlockSize);
-		Block.LightColors.Init(FLinearColor::Transparent, LaserBlockSize);
-		Block.LightRadii.Init(0.0f, LaserBlockSize); Block.LightEnabled.Init(false, LaserBlockSize);
+		for (const int32 I : Block.PreviousUsedSlots)
+		{
+			Block.Colors[I]=Block.MuzzleColors[I]=Block.LightColors[I]=FLinearColor::Transparent;
+			Block.Sizes[I]=Block.MuzzleSizes[I]=FVector2D::ZeroVector;
+			Block.LightPositions[I]=FVector::ZeroVector; Block.LightRadii[I]=0; Block.LightEnabled[I]=false;
+		}
+		Block.UsedSlots.Reset();
 		Block.LightCount = 0;
 		Block.Bounds = FBox(ForceInit); Block.bVisible = false;
 	}
@@ -103,30 +114,40 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 		if (LocalTeam != EGuLiTeam::Unassigned) break;
 	}
 	const float LocalNow = GetWorld()->GetTimeSeconds();
-	if (bEnabled && Catalog) for (auto& Pair : Visuals)
+	if (bEnabled && Catalog) for (const auto& Id : LaserVisualIds)
 	{
-		auto& Visual = Pair.Value; const auto& State = Visual.State;
+		auto* Entry = Visuals.Find(Id); if (!Entry) continue;
+		auto& Visual = *Entry; const auto& State = Visual.State;
 		if (!GuLiFlightWire::IsFlight(State.Kind) || Visual.LaserSlot == INDEX_NONE) continue;
 		const bool bFinished = State.Phase == EGuLiCombatEffectPhase::Finished;
 		const bool bGround = State.Source.Kind == EGuLiTargetKind::CommanderSoldier;
 		const float RenderTime = Now;
 		const bool bReachedTerminal = bFinished;
 		const float Age = FMath::Clamp(RenderTime - State.StartTime, 0.0f, State.EndTime - State.StartTime);
-		const FVector PredictedHead = Visual.FlightActor ? Visual.FlightActor->GetDisplayLocation(Now)
+		const FVector PredictedHead = Visual.bHasPrediction ? Visual.RenderLocation
             : FVector(State.LaunchLocation)+FVector(State.Velocity)*Age;
         const FVector Head = bReachedTerminal ? FVector(State.Location) : PredictedHead
             + (bGround ? EvaluateLaunchVisualOffset(Visual,TEXT("BasicAttack"),RenderTime) : FVector::ZeroVector);
 		Visual.RenderLocation = Head;
-		const bool bBoltVisible = IsVisibleLocation(Head);
-		FVector Muzzle = State.LaunchLocation;
-		FGuLiCombatShotCue Cue; Cue.Source = State.Source; Cue.MuzzleOffset = State.MuzzleOffset;
-		const bool bMuzzleVisible = !bGround && LocalNow < Visual.LaserMuzzleUntil && ResolveMuzzlePosition(Cue, Muzzle) && IsVisibleLocation(Muzzle);
-		if (!bBoltVisible && !bMuzzleVisible) continue;
 		auto& Block = LaserBlocks[Visual.LaserSlot / LaserBlockSize]; const int32 Index = Visual.LaserSlot % LaserBlockSize;
-		const FVector Direction = Visual.FlightActor ? FVector(Visual.FlightActor->GetPrediction().Velocity).GetSafeNormal() : FVector(State.LaunchDirection).GetSafeNormal();
+		const FVector Direction = Visual.bHasPrediction ? FVector(Visual.Prediction.Velocity).GetSafeNormal() : FVector(State.LaunchDirection).GetSafeNormal();
 		const float AuthoredLength = Catalog->LaserLength * Block.BaseScale.X;
 		const float Length = FMath::Min(AuthoredLength, bGround ? float(FVector(State.Velocity).Size()) * Age
 			: static_cast<float>(FVector::Distance(Head, State.LaunchLocation)));
+		FBox EffectBounds(ForceInit); EffectBounds += Head; EffectBounds += Head-Direction*Length;
+		const float Radius=FMath::Max(Catalog->LaserCoreWidth*3.f*Block.BaseScale.Y, bGround ? Catalog->TracerLightRadius*Block.BaseScale.Z : 0.f);
+		FGuLiCommanderLODQuery DetailQuery; DetailQuery.Bounds=EffectBounds.ExpandBy(FMath::Max(1.f,Radius));
+		DetailQuery.CurrentLevel=Visual.FlightDetailLevel; DetailQuery.LastChangeWorldSeconds=Visual.FlightDetailChangedAt;
+		FGuLiCommanderLODDecision Detail; Detail.bVisible=true; Detail.TargetLevel=EGuLiCommanderLODLevel::Full;
+		if (auto* LOD=GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>()) Detail=LOD->EvaluateWorldEffectBounds(DetailQuery,20000);
+		if (Visual.FlightDetailChangedAt<0 || (Detail.bCanTransition && Visual.FlightDetailLevel!=Detail.TargetLevel))
+		{ Visual.FlightDetailLevel=Detail.TargetLevel; Visual.FlightDetailChangedAt=LocalNow; }
+		const bool bBoltVisible=Detail.bVisible;
+		FVector Muzzle = State.LaunchLocation;
+		FGuLiCombatShotCue Cue; Cue.Source = State.Source; Cue.MuzzleOffset = State.MuzzleOffset;
+		const bool bMuzzleVisible = !bGround && LocalNow < Visual.LaserMuzzleUntil && ResolveMuzzlePosition(Cue, Muzzle) && IsVisibleBounds(FBox(Muzzle-FVector(Catalog->LaserCoreWidth*3.f*Block.BaseScale.Y+30.f), Muzzle+FVector(Catalog->LaserCoreWidth*3.f*Block.BaseScale.Y+30.f)));
+		if (!bBoltVisible && !bMuzzleVisible) continue;
+		Block.UsedSlots.Add(Index);
 		FLinearColor Tint = LocalTeam == EGuLiTeam::Unassigned ? FLinearColor::White
 			: (State.SourceTeam == LocalTeam
 				? (bGround ? Catalog->FriendlyGroundMachineGunTint : Catalog->FriendlyLaserTint)
@@ -145,7 +166,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 			Block.Colors[Index] = Tint; Block.Bounds += Head; Block.Bounds += Head - Direction * Length;
 			++Counters.LaserVisible;
 			const float LightRadius = Catalog->TracerLightRadius * Block.BaseScale.Z;
-			if (bGround && LightBudget > 0 && Length > UE_KINDA_SMALL_NUMBER && Fade > 0.0f
+			if (bGround && Visual.FlightDetailLevel!=EGuLiCommanderLODLevel::Minimal && LightBudget > 0 && Length > UE_KINDA_SMALL_NUMBER && Fade > 0.0f
 				&& FMath::IsFinite(LightRadius) && LightRadius > 0.0f
 				&& FMath::IsFinite(LightTint.R) && FMath::IsFinite(LightTint.G) && FMath::IsFinite(LightTint.B)
 				&& FMath::IsFinite(LightTint.A) && LightTint.A > 0.0f)
@@ -181,6 +202,16 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 	}
 	for (auto& Block : LaserBlocks)
 	{
+		bool Dirty = false;
+		auto CompareRow = [&](const int32 I)
+		{
+			const FGuLiLaserUploadedRow Row{Block.Positions[I],Block.Directions[I],Block.MuzzlePositions[I],Block.LightPositions[I],
+				Block.Sizes[I],Block.MuzzleSizes[I],Block.Colors[I],Block.MuzzleColors[I],Block.LightColors[I],Block.LightRadii[I],Block.LightEnabled[I]};
+			if (!(Row==Block.UploadedRows[I])) { Dirty=true; Block.UploadedRows[I]=Row; }
+		};
+		for (const int32 I : Block.PreviousUsedSlots) CompareRow(I);
+		for (const int32 I : Block.UsedSlots) CompareRow(I);
+		Swap(Block.PreviousUsedSlots,Block.UsedSlots);
 		if (!Block.bVisible)
 		{
 			if (IsValid(Block.Component)) { Block.Component->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Block.Component); Block.Component->ReleaseToPool(); Block.Component = nullptr; }
@@ -195,9 +226,15 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 			Block.Component = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), System, FVector::ZeroVector,
 				FRotator::ZeroRotator, FVector::OneVector, false, false, ENCPoolMethod::ManualRelease, false);
 			if (!Block.Component) continue;
+			Block.Component->SetVariableInt(TEXT("User.LaserSlotCount"), LaserBlockSize);
 			if (auto* Overview = GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(Block.Component);
 			Block.Component->SetCastShadow(false); bActivate = true;
 		}
+		Counters.GroundMachineGunLights += Block.LightCount;
+		if (Dirty || bActivate)
+		{
+		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLaserPool_Upload);
+		FGuLiPerformanceScope Timing(GetWorld(), TEXT("Laser.UploadMs"));
 		using Arrays = UNiagaraDataInterfaceArrayFunctionLibrary;
 		Arrays::SetNiagaraArrayPosition(Block.Component, TEXT("User.LaserPositions"), Block.Positions);
 		Arrays::SetNiagaraArrayVector(Block.Component, TEXT("User.LaserDirections"), Block.Directions);
@@ -207,11 +244,14 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 		Arrays::SetNiagaraArrayColor(Block.Component, TEXT("User.LaserLightColors"), Block.LightColors);
 		Arrays::SetNiagaraArrayFloat(Block.Component, TEXT("User.LaserLightRadii"), Block.LightRadii);
 		Arrays::SetNiagaraArrayBool(Block.Component, TEXT("User.LaserLightEnabled"), Block.LightEnabled);
-		Counters.GroundMachineGunLights += Block.LightCount;
 		Arrays::SetNiagaraArrayPosition(Block.Component, TEXT("User.MuzzlePositions"), Block.MuzzlePositions);
 		Arrays::SetNiagaraArrayVector2D(Block.Component, TEXT("User.MuzzleSizes"), Block.MuzzleSizes);
 		Arrays::SetNiagaraArrayColor(Block.Component, TEXT("User.MuzzleColors"), Block.MuzzleColors);
-		Block.Component->SetSystemFixedBounds(Block.Bounds.ExpandBy(FMath::Max(Catalog->LaserCoreWidth * 3.0f * Block.BaseScale.Y, 20.0f)));
+		Counters.NiagaraArrayUploads += 11;
+		if (auto* Capture=GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>()) Capture->Record(TEXT("Laser.ArrayUploads"),11);
+		}
+		const auto Bounds=Block.Bounds.ExpandBy(FMath::Max(Catalog->LaserCoreWidth*3.f*Block.BaseScale.Y,20.f));
+		if (bActivate || Block.UploadedBounds!=Bounds) { Block.Component->SetSystemFixedBounds(Bounds); Block.UploadedBounds=Bounds; }
 		if (bActivate) Block.Component->Activate(true);
 	}
 }

@@ -334,6 +334,7 @@ protected:
 private:
 	UFUNCTION()
 	void OnRep_HealthState();
+	UFUNCTION() void OnRep_TargetIdentity();
 
 	void RegisterWithLedger();
 	void UnregisterFromLedger();
@@ -345,10 +346,10 @@ private:
 	UPROPERTY(ReplicatedUsing = OnRep_HealthState)
 	FGuLiCombatHealthState HealthState;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing = OnRep_TargetIdentity)
 	FGuLiTargetHandle TargetHandle;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing = OnRep_TargetIdentity)
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
 };
 
@@ -374,7 +375,7 @@ public:
 
 	bool TryGetTargetSnapshot(const FGuLiTargetHandle& Handle, FGuLiCombatTargetSnapshot& OutSnapshot);
 	/** Authority-only stable snapshot of the current target directory for server target acquisition. */
-	void GetTargetSnapshots(TArray<FGuLiCombatTargetSnapshot>& OutSnapshots);
+	void GetTargetSnapshots(TArray<FGuLiCombatTargetSnapshot>& OutSnapshots, EGuLiTargetKind Kind = EGuLiTargetKind::None);
 	/** Optional barriers absorb before target damage; no building/resource types enter the ledger. */
 	void RegisterDamageBarrier(UObject& Owner, uint32 StableOrder, TFunction<float(const FGuLiCombatTargetSnapshot&, float)> Absorb);
 	void UnregisterDamageBarrier(const UObject& Owner);
@@ -422,6 +423,8 @@ private:
 	void PruneInvalidTargets();
 
 	TMap<FGuLiTargetHandle, FGuLiCombatTargetAdapter> TargetAdapters;
+	/** Live directory membership by domain; snapshots are still read freshly for every caller. */
+	TMap<EGuLiTargetKind, TSet<FGuLiTargetHandle>> TargetDomains;
 	TMap<FGuLiTargetHandle, FGuLiCombatSourceAdapter> SourceAdapters;
 	struct FDamageBarrier
 	{

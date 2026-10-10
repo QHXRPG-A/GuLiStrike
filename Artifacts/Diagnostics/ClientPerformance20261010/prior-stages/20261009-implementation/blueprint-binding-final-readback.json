@@ -1,0 +1,44 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "rows": [
+      {
+        "path": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2",
+        "has_binding": true,
+        "bindings": "((ComponentName=\"MiningLaser_L\",VfxId=36),(ComponentName=\"MiningLaser_R\",VfxId=36))",
+        "beams": [
+          {
+            "Asset": "None",
+            "RelativeScale3D": "(X=1.000000,Y=1.000000,Z=1.000000)",
+            "bAbsoluteScale": "False"
+          },
+          {
+            "Asset": "None",
+            "RelativeScale3D": "(X=1.000000,Y=1.000000,Z=1.000000)",
+            "bAbsoluteScale": "False"
+          }
+        ]
+      },
+      {
+        "path": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle",
+        "has_binding": true,
+        "bindings": "((ComponentName=\"MiningLaser_L\",VfxId=45),(ComponentName=\"MiningLaser_R\",VfxId=45))",
+        "beams": [
+          {
+            "Asset": "None",
+            "RelativeScale3D": "(X=1.000000,Y=1.000000,Z=1.000000)",
+            "bAbsoluteScale": "False"
+          },
+          {
+            "Asset": "None",
+            "RelativeScale3D": "(X=1.000000,Y=1.000000,Z=1.000000)",
+            "bAbsoluteScale": "False"
+          }
+        ]
+      }
+    ]
+  }
+}

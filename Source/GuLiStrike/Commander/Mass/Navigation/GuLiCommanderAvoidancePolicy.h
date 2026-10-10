@@ -20,7 +20,7 @@ namespace GuLiCommanderAvoidancePolicy
 	inline constexpr float SpatialCellSizeCentimeters = 300.0f;
 	inline constexpr float DetectionDistanceCentimeters = 1200.0f;
 	inline constexpr float MaximumHeightDifferenceCentimeters = 300.0f;
-	inline constexpr int32 MaximumNearestCandidates = 24;
+	inline constexpr int32 MaximumNearestCandidates = 12;
 	inline constexpr int32 MaximumColliders = 12;
 
 	/** The unique phases crossed by one render-frame update, plus their solve sequence numbers. */
@@ -61,6 +61,8 @@ namespace GuLiCommanderAvoidancePolicy
 	{
 		uint64 BucketEntriesVisited = 0u;
 		uint64 ExactCandidates = 0u;
+		uint64 CellLookups = 0u, CellHits = 0u, SparseComparisons = 0u, EnvironmentDuplicates = 0u, UniqueVisits = 0u;
+		uint64 RetainedCandidates = 0u, ConsumedCandidates = 0u, VerifiedPrefixes = 0u, PrefixMismatches = 0u;
 	};
 
 	/** Predictive-only subset of Epic's moving avoidance parameters. */
@@ -76,8 +78,33 @@ namespace GuLiCommanderAvoidancePolicy
 	};
 
 	using FAvoidanceBucket = TArray<int32, TInlineAllocator<8>>;
-	using FAvoidanceSpatialGrid = TMap<FIntPoint, FAvoidanceBucket>;
-	using FNearestCandidateList = TArray<FNearestCandidate, TInlineAllocator<MaximumNearestCandidates>>;
+	/** Ordered nonempty cells retain the original X/Y and bucket traversal order.
+	 * Bucket pointers are rebuilt after all map insertions and live until the next rebuild. */
+	struct GULISTRIKE_API FAvoidanceSpatialGrid : TMap<FIntPoint, FAvoidanceBucket>
+	{
+		FAvoidanceSpatialGrid() = default;
+		FAvoidanceSpatialGrid(const FAvoidanceSpatialGrid&) = delete;
+		FAvoidanceSpatialGrid& operator=(const FAvoidanceSpatialGrid&) = delete;
+		struct FCell { FIntPoint Key; const FAvoidanceBucket* Bucket; };
+		struct FRow { int32 X, Begin, End; };
+		TArray<FCell> OrderedCells;
+		TArray<FRow> OrderedRows;
+		void Reset();
+		void RebuildOrderedCells();
+		void GatherOrderedBuckets(FIntPoint Minimum, FIntPoint Maximum,
+			TArray<const FAvoidanceBucket*, TInlineAllocator<64>>& Out, uint64& Comparisons) const;
+	};
+	using FNearestCandidateList = TArray<FNearestCandidate, TInlineAllocator<24>>;
+
+	/** Environment colliders span cells; ordinary agents occur in exactly one bucket. */
+	struct GULISTRIKE_API FCandidateQueryScratch
+	{
+		TArray<uint32> EnvironmentMarks;
+		TArray<const FAvoidanceBucket*, TInlineAllocator<64>> Buckets;
+		uint32 Generation = 0;
+		void BeginQuery(int32 Count);
+		bool VisitEnvironment(int32 Index);
+	};
 
 	/** Advances at 30 Hz, caps hitch catch-up at three steps, and merges repeated phases in one mask. */
 	GULISTRIKE_API FPhaseAdvanceResult AdvancePhases(
@@ -104,7 +131,7 @@ namespace GuLiCommanderAvoidancePolicy
 		FAvoidanceSpatialGrid& InOutGrid,
 		float CellSize = SpatialCellSizeCentimeters);
 
-	/** Retains 24 local threats, ordered by overlap, collision time, then distance and stable key. */
+	/** Retains twelve consumed threats, including up to two environment priority slots. */
 	GULISTRIKE_API FCandidateQueryMetrics SelectNearestCandidates(
 		int32 AgentIndex,
 		TConstArrayView<FAgentSnapshot> Agents,
@@ -113,7 +140,8 @@ namespace GuLiCommanderAvoidancePolicy
 		float DetectionDistance = DetectionDistanceCentimeters,
 		float MaximumHeightDifference = MaximumHeightDifferenceCentimeters,
 		float CellSize = SpatialCellSizeCentimeters,
-		float TimeHorizon = 2.5f);
+		float TimeHorizon = 2.5f,
+		FCandidateQueryScratch* Scratch = nullptr);
 
 	/** Copies only CPA-related values; separation stiffness and distance are intentionally ignored. */
 	GULISTRIKE_API FPredictiveParameters MakePredictiveParameters(

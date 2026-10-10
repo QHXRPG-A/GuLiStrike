@@ -52,6 +52,8 @@ public:
 	bool GetSceneUIHalo(FVector& Center, EGuLiTeam& Team, FVector2D& RadiiCm) const;
 
 protected:
+	virtual void OnRegister() override;
+	virtual void OnUnregister() override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* TickFunction) override;

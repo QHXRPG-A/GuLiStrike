@@ -1,0 +1,101 @@
+{
+  "success": true,
+  "approval": "认可，切换这四项引用",
+  "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeVfx_Effects.DT_GuLiStrikeVfx_Effects",
+  "all_52_rows_match_source": true,
+  "rows": [
+    {
+      "id": 5,
+      "row_name": "MachineGunImpact",
+      "resource_path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Optimized.NS_MachineGunImpact_Optimized",
+      "base_scale": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "cook_dependency_present": true
+    },
+    {
+      "id": 36,
+      "row_name": "MiningLaser",
+      "resource_path": "/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized.NS_MiningLaser_Optimized",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cook_dependency_present": true
+    },
+    {
+      "id": 45,
+      "row_name": "BuildingConstructionLaser",
+      "resource_path": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized.NS_ConstructionLaser_Optimized",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cook_dependency_present": true
+    },
+    {
+      "id": 52,
+      "row_name": "GroundMachineGunMuzzle",
+      "resource_path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Optimized.NS_MachineGunMuzzle_Optimized",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cook_dependency_present": true
+    }
+  ],
+  "blueprints": [
+    {
+      "path": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2",
+      "changed": false,
+      "compiled": false,
+      "bindings": "((ComponentName=\"MiningLaser_L\",VfxId=36),(ComponentName=\"MiningLaser_R\",VfxId=36))",
+      "components": [
+        {
+          "name": "MiningLaser_L",
+          "Asset": "None",
+          "RelativeScale3D": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "bAbsoluteScale": "False"
+        },
+        {
+          "name": "MiningLaser_R",
+          "Asset": "None",
+          "RelativeScale3D": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "bAbsoluteScale": "False"
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle",
+      "changed": false,
+      "compiled": false,
+      "bindings": "((ComponentName=\"MiningLaser_L\",VfxId=45),(ComponentName=\"MiningLaser_R\",VfxId=45))",
+      "components": [
+        {
+          "name": "MiningLaser_L",
+          "Asset": "None",
+          "RelativeScale3D": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "bAbsoluteScale": "False"
+        },
+        {
+          "name": "MiningLaser_R",
+          "Asset": "None",
+          "RelativeScale3D": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "bAbsoluteScale": "False"
+        }
+      ]
+    }
+  ],
+  "impact_consumer": {
+    "catalog": "/Game/GuLiStrike/FX/CommanderWeapons/DA_CommanderCombatEffects.DA_CommanderCombatEffects",
+    "vfx_id": 5,
+    "maximum_lifetime": 3
+  },
+  "pie_worlds": 0,
+  "scope": "Approved reference publication and static native/consumer readback."
+}

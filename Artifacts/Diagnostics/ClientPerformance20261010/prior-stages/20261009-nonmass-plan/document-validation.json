@@ -1,0 +1,161 @@
+{
+  "schema": "guli-document-validation/v1",
+  "checked_at": "2026-10-09T09:31:50.561971+08:00",
+  "client_timezone": "Asia/Shanghai",
+  "scope": "source analysis and documentation only; optimization implementation and runtime verification not_run",
+  "status": "passed",
+  "documents": [
+    {
+      "path": "Progress/DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md",
+      "bytes": 30322,
+      "sha256": "36fa505a64d422ece403aa7a07ffb15499a855d28281e146cbca5dc689d62d1c",
+      "tasks": 18,
+      "id": "DEV-20261009-003",
+      "status": "planned",
+      "verification": "not_run",
+      "encoding": "utf-8",
+      "contains_replacement_character": false
+    },
+    {
+      "path": "Progress/Archive/20261009-非Mass飞行弹丸六项优化分析交付.md",
+      "bytes": 4130,
+      "sha256": "0acbd1854ad76edd0a303ecae3063cc744f75402bdca6185b03f6f6df053bd4a",
+      "tasks": 0,
+      "id": "ARC-20261009-006",
+      "status": "recorded",
+      "verification": "partial",
+      "encoding": "utf-8",
+      "contains_replacement_character": false
+    }
+  ],
+  "checks": {
+    "index_build": {
+      "command": "python .agents/skills/gulistrike-progress/scripts/progress_docs.py build",
+      "exit_code": 0,
+      "result": {
+        "mode": "write",
+        "changed": 2,
+        "paths": [
+          "Progress/_Index/Quality.md",
+          "Progress/_Index/catalog.jsonl"
+        ]
+      }
+    },
+    "document_check": {
+      "command": "python .agents/skills/gulistrike-progress/scripts/progress_docs.py check --json",
+      "exit_code": 0,
+      "result": {
+        "errors": [],
+        "warnings": [
+          {
+            "path": "Progress/Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+            "code": "oversize",
+            "message": "88.4KB，建议阈值 80KB"
+          },
+          {
+            "path": "Progress/DevelopmentDocumentation/20260820-DIY飞船.md",
+            "code": "large_task_list",
+            "message": "29 个任务项"
+          },
+          {
+            "path": "Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md",
+            "code": "large_task_list",
+            "message": "46 个任务项"
+          },
+          {
+            "path": "Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md",
+            "code": "oversize",
+            "message": "44.9KB，建议阈值 30KB"
+          },
+          {
+            "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/06-任务风险与结果.md",
+            "code": "large_task_list",
+            "message": "44 个任务项"
+          },
+          {
+            "path": "Progress/DevelopmentDocumentation/20260904-僚机无规则护航盘旋技能重构.md",
+            "code": "oversize",
+            "message": "39.0KB，建议阈值 30KB"
+          },
+          {
+            "path": "Progress/DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md",
+            "code": "oversize",
+            "message": "31.4KB，建议阈值 30KB"
+          },
+          {
+            "path": "Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md",
+            "code": "oversize",
+            "message": "30.4KB，建议阈值 30KB"
+          },
+          {
+            "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+            "code": "oversize",
+            "message": "70.0KB，建议阈值 30KB"
+          },
+          {
+            "path": "Progress/Gameplay/战斗.md",
+            "code": "oversize",
+            "message": "35.9KB，建议阈值 30KB"
+          },
+          {
+            "path": "Progress/Gameplay/飞船.md",
+            "code": "oversize",
+            "message": "61.8KB，建议阈值 30KB"
+          },
+          {
+            "path": "Progress/RequirementDocument/20260826-5v5大战场玩法草案.md",
+            "code": "oversize",
+            "message": "36.1KB，建议阈值 20KB"
+          },
+          {
+            "path": "Progress/RequirementDocument/20260827-Mass双端同步架构草案.md",
+            "code": "oversize",
+            "message": "24.7KB，建议阈值 20KB"
+          },
+          {
+            "path": "Progress/RequirementDocument/20260902-僚机体系与空中三维导航.md",
+            "code": "oversize",
+            "message": "27.9KB，建议阈值 20KB"
+          },
+          {
+            "path": "Progress/RequirementDocument/20260915-客户端性能优化与压测问题记录.md",
+            "code": "oversize",
+            "message": "27.8KB，建议阈值 20KB"
+          },
+          {
+            "path": "Progress/RequirementDocument/GuLiStrike美术规范.md",
+            "code": "oversize",
+            "message": "41.6KB，建议阈值 20KB"
+          }
+        ]
+      }
+    },
+    "index_consistency": {
+      "command": "python .agents/skills/gulistrike-progress/scripts/progress_docs.py build --check",
+      "exit_code": 0,
+      "result": {
+        "mode": "check",
+        "changed": 0,
+        "paths": []
+      }
+    }
+  },
+  "source_snapshot_unchanged": true,
+  "changed_source_paths": [],
+  "own_document_issues": [],
+  "baseline_error_count": 0,
+  "baseline_warning_count": 16,
+  "final_error_count": 0,
+  "final_warning_count": 16,
+  "new_other_document_warnings": [],
+  "allocation_repair": {
+    "original_archive_id": "ARC-20261009-003",
+    "final_archive_id": "ARC-20261009-006",
+    "reason": "Other concurrent Progress additions reused ARC-20261009-003 after the initial inventory; only this newly created archive metadata was repaired. Development and work IDs are unchanged."
+  },
+  "engine_api_reference": {
+    "path": "D:\\UnrealEngine-5.7\\Engine\\Plugins\\FX\\Niagara\\Source\\Niagara\\Classes\\NiagaraDataInterfaceArrayFunctionLibrary.h",
+    "sha256": "bbe20a91f183bf4552e5cf58eecb39618b21f0279fe07a1dce51e5308cccdf81",
+    "verified": "UE5.7 Niagara array whole-buffer and single-index setter declarations; no claim of partial GPU transfer"
+  }
+}

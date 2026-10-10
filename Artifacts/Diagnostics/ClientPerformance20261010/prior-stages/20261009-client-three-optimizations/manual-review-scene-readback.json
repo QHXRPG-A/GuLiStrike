@@ -1,0 +1,252 @@
+{
+  "success": true,
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "entities": [
+    {
+      "name": "GuLiPerformanceReviewActor_0",
+      "label": "PerfReview_Client3_Mining",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -17000.0,
+        -20500.0,
+        1500.0
+      ],
+      "system": "/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_GPU_All_ThreeTier.NS_MiningLaser_Optimized_GPU_All_ThreeTier",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "policy_id": 36,
+      "catalog": false,
+      "tick_enabled": false,
+      "count": 1
+    },
+    {
+      "name": "GuLiPerformanceReviewActor_1",
+      "label": "PerfReview_Client3_Construction",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -17000.0,
+        -18300.0,
+        1500.0
+      ],
+      "system": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_GPU_All_ThreeTier.NS_ConstructionLaser_Optimized_GPU_All_ThreeTier",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "policy_id": 45,
+      "catalog": false,
+      "tick_enabled": false,
+      "count": 1
+    },
+    {
+      "name": "GuLiPerformanceReviewActor_2",
+      "label": "PerfReview_Client3_Muzzle_Full",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -14500.0,
+        -20500.0,
+        1500.0
+      ],
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations.NS_MachineGunMuzzle_AllOptimizations",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "policy_id": 0,
+      "catalog": false,
+      "tick_enabled": false,
+      "count": 1
+    },
+    {
+      "name": "GuLiPerformanceReviewActor_3",
+      "label": "PerfReview_Client3_Muzzle_Reduced",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -14500.0,
+        -19400.0,
+        1500.0
+      ],
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations_Reduced.NS_MachineGunMuzzle_AllOptimizations_Reduced",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "policy_id": 0,
+      "catalog": false,
+      "tick_enabled": false,
+      "count": 1
+    },
+    {
+      "name": "GuLiPerformanceReviewActor_4",
+      "label": "PerfReview_Client3_Muzzle_Minimal",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -14500.0,
+        -18300.0,
+        1500.0
+      ],
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations_Minimal.NS_MachineGunMuzzle_AllOptimizations_Minimal",
+      "base_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "policy_id": 0,
+      "catalog": false,
+      "tick_enabled": false,
+      "count": 1
+    },
+    {
+      "name": "GuLiPerformanceReviewActor_5",
+      "label": "PerfReview_Client3_Impact_Full",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -12000.0,
+        -20500.0,
+        1500.0
+      ],
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations.NS_MachineGunImpact_AllOptimizations",
+      "base_scale": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "policy_id": 0,
+      "catalog": false,
+      "tick_enabled": false,
+      "count": 1
+    },
+    {
+      "name": "GuLiPerformanceReviewActor_6",
+      "label": "PerfReview_Client3_Impact_Reduced",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -12000.0,
+        -19400.0,
+        1500.0
+      ],
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations_Reduced.NS_MachineGunImpact_AllOptimizations_Reduced",
+      "base_scale": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "policy_id": 0,
+      "catalog": false,
+      "tick_enabled": false,
+      "count": 1
+    },
+    {
+      "name": "GuLiPerformanceReviewActor_7",
+      "label": "PerfReview_Client3_Impact_Minimal",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -12000.0,
+        -18300.0,
+        1500.0
+      ],
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations_Minimal.NS_MachineGunImpact_AllOptimizations_Minimal",
+      "base_scale": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "policy_id": 0,
+      "catalog": false,
+      "tick_enabled": false,
+      "count": 1
+    },
+    {
+      "name": "GuLiPerformanceReviewActor_8",
+      "label": "PerfReview_Client3_CatalogImpacts",
+      "class": "GuLiPerformanceReviewActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -12000.0,
+        -16800.0,
+        1500.0
+      ],
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch.NS_MachineGunImpact_Batch",
+      "base_scale": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "policy_id": 0,
+      "catalog": true,
+      "tick_enabled": false,
+      "count": 1
+    },
+    {
+      "name": "CameraActor_25",
+      "label": "ClientThreeReview_Camera_Near",
+      "class": "CameraActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -14800.0,
+        -25400.0,
+        5600.0
+      ]
+    },
+    {
+      "name": "CameraActor_26",
+      "label": "ClientThreeReview_Camera_Middle",
+      "class": "CameraActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -14800.0,
+        -29000.0,
+        7600.0
+      ]
+    },
+    {
+      "name": "CameraActor_27",
+      "label": "ClientThreeReview_Camera_Far",
+      "class": "CameraActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -14800.0,
+        -33800.0,
+        7600.0
+      ]
+    },
+    {
+      "name": "CameraActor_28",
+      "label": "ClientThreeReview_Camera_Wingman",
+      "class": "CameraActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -6000.0,
+        53000.0,
+        13901.779083251953
+      ]
+    },
+    {
+      "name": "TextRenderActor_40",
+      "label": "ClientThreeReview_Guide",
+      "class": "TextRenderActor",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "location": [
+        -17500.0,
+        -22200.0,
+        2100.0
+      ]
+    }
+  ],
+  "runtime_and_visual_acceptance": false
+}

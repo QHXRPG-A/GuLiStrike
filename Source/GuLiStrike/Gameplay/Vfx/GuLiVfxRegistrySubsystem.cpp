@@ -1,6 +1,8 @@
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
+#include "NiagaraSystem.h"
+#include "Commander/Presentation/GuLiCommanderLODPolicy.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogGuLiVfx, Log, All);
 
@@ -32,7 +34,9 @@ FVector UGuLiVfxRegistrySubsystem::ComposeScale(FVector BaseScale, FVector Dynam
 
 bool UGuLiVfxRegistrySubsystem::SameDefinition(const FGuLiStrikeVfxEffectsRow& A, const FGuLiStrikeVfxEffectsRow& B)
 {
-	return A.ResourcePath.ToSoftObjectPath() == B.ResourcePath.ToSoftObjectPath() && A.Scale == B.Scale;
+	return A.ResourcePath.ToSoftObjectPath() == B.ResourcePath.ToSoftObjectPath() && A.Scale == B.Scale
+		&& A.ReducedResourcePath==B.ReducedResourcePath && A.MinimalResourcePath==B.MinimalResourcePath
+		&& A.BatchResourcePath==B.BatchResourcePath && A.ReducedBatchResourcePath==B.ReducedBatchResourcePath && A.MinimalBatchResourcePath==B.MinimalBatchResourcePath;
 }
 
 bool UGuLiVfxRegistrySubsystem::ValidateDefinitions(const TArray<FGuLiStrikeVfxEffectsRow>& Rows, FString& Error)
@@ -88,6 +92,16 @@ bool UGuLiVfxRegistrySubsystem::GetDefinition(int32 VfxId, FGuLiStrikeVfxEffects
 	}
 	return false;
 }
+
+#if WITH_EDITOR
+bool UGuLiVfxRegistrySubsystem::ApplyReviewDefinition(const FGuLiStrikeVfxEffectsRow& Candidate)
+{
+	FGuLiStrikeVfxEffectsRow Current;
+	if (!GetWorld() || GetWorld()->WorldType!=EWorldType::PIE || GetWorld()->GetNetMode()==NM_DedicatedServer
+		|| !GetDefinition(Candidate.Id,Current) || Candidate.ResourcePath.IsNull() || Candidate.Scale!=Current.Scale) return false;
+	Definitions.Add(Candidate.Id,Candidate); return true;
+}
+#endif
 
 bool UGuLiVfxRegistrySubsystem::GetDefinitionWithoutWorld(int32 VfxId, FGuLiStrikeVfxEffectsRow& Definition)
 {
@@ -162,6 +176,35 @@ void UGuLiVfxRegistrySubsystem::Deinitialize()
 {
 	Resources.Reset(); Definitions.Reset(); Catalog = nullptr; ReportedFailures.Reset(); bCatalogAttempted = false;
 	Super::Deinitialize();
+}
+
+UNiagaraSystem* UGuLiVfxRegistrySubsystem::LoadNiagaraForLOD(int32 VfxId, EGuLiCommanderLODLevel Level,
+	bool bBatch, bool bLoadIfNeeded, int32* OutFallbacks)
+{
+	if (OutFallbacks) *OutFallbacks=0;
+	if (!GetWorld() || GetWorld()->GetNetMode()==NM_DedicatedServer) return nullptr;
+	FGuLiStrikeVfxEffectsRow Row; if (!GetDefinition(VfxId,Row)) return nullptr;
+	const TSoftObjectPtr<UObject> Paths[3]={bBatch ? Row.BatchResourcePath : Row.ResourcePath,
+		bBatch ? Row.ReducedBatchResourcePath : Row.ReducedResourcePath, bBatch ? Row.MinimalBatchResourcePath : Row.MinimalResourcePath};
+	for (int32 Index=FMath::Clamp(int32(Level),0,2); Index>=0; --Index)
+	{
+		const auto Path=Paths[Index].ToSoftObjectPath();
+		UObject* Object=Path.IsNull() ? nullptr : Resources.FindRef(Path);
+		if (!Object && !Path.IsNull()) Object=bLoadIfNeeded ? Path.TryLoad() : Path.ResolveObject();
+		if (auto* System=Cast<UNiagaraSystem>(Object)) { Resources.Add(Path,System); return System; }
+		if (OutFallbacks) ++*OutFallbacks;
+	}
+	return nullptr;
+}
+
+float UGuLiVfxRegistrySubsystem::NiagaraFloat(const UNiagaraSystem* System, FName Name, float DefaultValue)
+{
+	if (!System) return DefaultValue;
+	const FNiagaraVariable Var(FNiagaraTypeDefinition::GetFloatDef(),Name);
+	const auto& Store=System->GetExposedParameters();
+	if (Store.IndexOf(Var)==INDEX_NONE) return DefaultValue;
+	const float Value=Store.GetParameterValue<float>(Var);
+	return FMath::IsFinite(Value) ? Value : DefaultValue;
 }
 
 FVector GuLiVfx::Scale(const UObject* Context, int32 VfxId, const FVector& DynamicScale)

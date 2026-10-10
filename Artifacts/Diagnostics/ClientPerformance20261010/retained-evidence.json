@@ -1,0 +1,2254 @@
+{
+  "files": [
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/performance-report.md",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/performance-report.md",
+      "bytes": 8732,
+      "sha256": "3ec3c06475e37d4eb0ce4af9ae806facded9957ac1eb211314d4963135050f0c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/manual-review-guide.md",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/manual-review-guide.md",
+      "bytes": 3025,
+      "sha256": "5f960b2d4b4a4f85b67efff4aac6248dbc544f1fe232c726aa6e2ce159677115"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/performance-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/performance-analysis.json",
+      "bytes": 1817509,
+      "sha256": "185ad77527c3abc51c57f5a62fb2cb67dfcf59ff06cefa3ec425597f01368442"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/trace-window-summaries.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/trace-window-summaries.json",
+      "bytes": 3337105,
+      "sha256": "c675df89af1b05a67aea8932fdb5434d12d58c3e10930d957b899e1d91710663"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/adoption-decision.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/adoption-decision.json",
+      "bytes": 4141,
+      "sha256": "2cb33c70087b93e8c58639bafe6d157150e08837f360da5e0aa0195b82037793"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/runtime-contract-validation.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/runtime-contract-validation.json",
+      "bytes": 4974,
+      "sha256": "bffc51ca57bf75d7c61804bd5e3102e8ca7ce62adab1cdf1e465da120f6ffde2"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/delivery-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/delivery-readback.json",
+      "bytes": 5385,
+      "sha256": "5ac473e1a05c165743d87bf955a5c80f0145f32af15ae04fe8c8db269a0d0d91"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/final-validation-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/final-validation-receipt.json",
+      "bytes": 1568,
+      "sha256": "c9138b496a7d50d8fb0cfacf0e4b517ae335f754bc3c17649f63ca8b72036745"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/skill-validation.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/skill-validation.json",
+      "bytes": 868,
+      "sha256": "0130cad0b4f1548ad9ce28ec8253e69c326440980774dc5816a60be9108431ac"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/muzzle-batch-build.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/muzzle-batch-build.json",
+      "bytes": 11079,
+      "sha256": "eba7ab26f2881e5eb3912372966481c10d4166d6b4a55b81224f2e1d4710d175"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/muzzle-certification-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/muzzle-certification-readback.json",
+      "bytes": 973,
+      "sha256": "2f3bdf436968058866ae7573bb9bc50b518ac63e259690f5d3430846917dd022"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/muzzle-import-report.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/muzzle-import-report.json",
+      "bytes": 5563,
+      "sha256": "735584fbbc8f31ffabdb2303adcc2ea795061d6aa9158c8eb0e9853193209cad"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/formal-muzzle-cells.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/formal-muzzle-cells.json",
+      "bytes": 512,
+      "sha256": "e49340f8e8964f244b5ceb0abe32204bc197844531bbad06165fcd6f522ed071"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/formal-muzzle-references.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/formal-muzzle-references.json",
+      "bytes": 957,
+      "sha256": "956ec5895d259982711c153b98c0b8e605ddaa4c4863955ff275a3836f601c38"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/ribbon-renderer-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/ribbon-renderer-readback.json",
+      "bytes": 1472,
+      "sha256": "645f4d27717007699d9a79cd77c425107b1d0be18e1d2b6eee0f70fcb1031df3"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/build-adoption-exit.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/build-adoption-exit.json",
+      "bytes": 269,
+      "sha256": "da9570f6a4d79d1974714e3dea05f2bce6cfa03d49386b536e163263d97e901a"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/build-adoption-loaded-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/build-adoption-loaded-receipt.json",
+      "bytes": 1105,
+      "sha256": "ff017ed2a88b9d337bdd0bf18e8ab0671af22a03aa8df6305422635c45105c04"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/performance-build-loaded-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/performance-build-loaded-receipt.json",
+      "bytes": 872,
+      "sha256": "a754387f8d4852a985c85c3fae7bdfd9b048be862fa23fc2d39c81e7783d4564"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/exclusion-notes.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/exclusion-notes.json",
+      "bytes": 1249,
+      "sha256": "88527a9a4fcc1a004c4171344d1a7c0ccf1cc4f3a47a9467791f878adcf3f825"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/manual-review-scene-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/manual-review-scene-readback.json",
+      "bytes": 5569,
+      "sha256": "aad35a4c0349996b3e3e0f5da402c82a5c71c1eef1def81dc61a448e1117caad"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/build-adoption.log",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/build-adoption.txt",
+      "bytes": 5035,
+      "sha256": "9de6cfb396ad8aef3a5d100ce9e316b4be210218e34f950bb2cbc981792ea9b6"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/gpu-supplement/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/gpu-supplement/summary.json",
+      "bytes": 2538615,
+      "sha256": "7e48563dba2ff8f7d1c53889d595776635d90dcd64eeace6b2dcb5cc8074a8e4"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/visual/old-new-moving-follow.gif",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/visual/old-new-moving-follow.gif",
+      "bytes": 7964679,
+      "sha256": "9a2e0b3bd132f72d10d0585716aeea9e2bb037dc645dc55fae7821295f50b7aa"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/visual/start.png",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/visual/start.png",
+      "bytes": 387730,
+      "sha256": "0d51a4b9a53561faadbaa17f0862785c68f7bb994b36270706fbc9b10970cfd4"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/visual/peak.png",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/visual/peak.png",
+      "bytes": 407327,
+      "sha256": "5ab32e1c6804c73aed532f17dc928975be45e31b968c2b49b8f0332f3bd3aefe"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/visual/stop.png",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/visual/stop.png",
+      "bytes": 389898,
+      "sha256": "0e59a88c8a3f0c74d2cc588afe3fd87e51292c17f9f06b1c81a3574804a93ef5"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/visual/visual-evidence.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/visual/visual-evidence.json",
+      "bytes": 492944,
+      "sha256": "35d8cf002000312baa1c5fd4da1690f60816a8a69cce29287c5d445f583c4e48"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/result.json",
+      "bytes": 38248,
+      "sha256": "a91ab44cffb886f8ac9788e0181039d993d7f66d50dde26cc70c4a5aa8241f81"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/analysis.json",
+      "bytes": 241004,
+      "sha256": "b6854805f9a2dcbe15802fc72ec04a3bfaa053f6e7016e385ff6c8ce919fad97"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/counters-before.json",
+      "bytes": 43851,
+      "sha256": "289cb39f587919b665d03c29f29fe69c0c9122ddd01b0e44f2c512a4f84680e9"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/counters-after.json",
+      "bytes": 76815,
+      "sha256": "465fb25dda1088e00f5b73bf874092289d09c6d57062fcadacaca476253d6264"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/context-before.json",
+      "bytes": 15129,
+      "sha256": "53ef6eea5e994258399f747bafa5629456a3b9ea2d0fc779023693db2a4cb829"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/context-after.json",
+      "bytes": 15127,
+      "sha256": "f2e28d9e997106c04df595d222f8037404d13a56698de3f60bb25fac6d80b89a"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/clock.json",
+      "bytes": 124,
+      "sha256": "a508bbc35028a47946bb473a43680e6bcd129faa9f5ce24b00e5f3c042c7b50b"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/frames.csv",
+      "bytes": 2185139,
+      "sha256": "400d8fa4ebfd6d5cf09332802ba50235cfc4e38163e236bf532e520e81d67d81"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/client1.png",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/client1.png",
+      "bytes": 995484,
+      "sha256": "6572d5da8a99c310fe2e7e5339f316f0f1d4a159fd722042fbce4cf863c41217"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 399,
+      "sha256": "6bab882161f17bf646e8fc5c3b44d3c1e9ec166d3e77920ce16914794355088e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/insights-windowed/summary.json",
+      "bytes": 175291,
+      "sha256": "d747c8dfe681ef170bcfbf742e023688479183ee67c05ded583454e1c9ac3f2d"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/selected-frames/frame-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/selected-frames/frame-analysis.json",
+      "bytes": 215354,
+      "sha256": "cfc84282fdec1826ee082dd5d1199c1c39bb020bb3d0d92ad55e079658e1f9e1"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/selected-frames/median-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/selected-frames/median-analysis.json",
+      "bytes": 67615,
+      "sha256": "c57f8842d8a94e4e48bb4c3cd81c3a9a520def3f5c5411a3739dcb9835d9f64e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/selected-frames/p95-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/selected-frames/p95-analysis.json",
+      "bytes": 67019,
+      "sha256": "ffc7c9fcd4f3d5794094a278f7c280ac166cff33a09a477257c8c119e70258b7"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/selected-frames/worst-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/selected-frames/worst-analysis.json",
+      "bytes": 66086,
+      "sha256": "dd55938008f59eccc321d9a965b59822d234123cae98c14d5f8fd198bc8dcc28"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/insights-windowed/all-timers.csv",
+      "bytes": 207366,
+      "sha256": "27001128554504f9aac95aa21897f0e42d90f0e2b5c2d2eda759b1cc6b57b50d"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/insights-windowed/gpu-timers.csv",
+      "bytes": 21545,
+      "sha256": "fdd69e185b9dd463d648afb747268faae7d8ba718e2bf343b2a03fbe8b321b59"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode0/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode0/insights-windowed/gt-timers.csv",
+      "bytes": 122055,
+      "sha256": "1c54d85cc5b7ec711d4cbc639cca84d93e45672b7d50a74c0b1100e0f338c3ea"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/result.json",
+      "bytes": 38277,
+      "sha256": "459988162d89f8a969f474754a4e31b64848f9d5f12ae2e5ca31e01cc1629dfd"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/analysis.json",
+      "bytes": 243575,
+      "sha256": "e7d27f92d7c881a5679de81a7f40cd4b424891458c3e1c46c7e7575acce010ec"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/counters-before.json",
+      "bytes": 43835,
+      "sha256": "9159e6ce234e1298134ff318dc6491c4f45b95346cc004156aab3871455884a1"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/counters-after.json",
+      "bytes": 76790,
+      "sha256": "8e3e986badca9dcdacaa9f940467bb9c606e7c139b537b1b84cf0d88a93be144"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/context-before.json",
+      "bytes": 15129,
+      "sha256": "b16424f1b24fbd4ea372251a2bcb46ea69976845359996f130fc6a8dcf62e217"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/context-after.json",
+      "bytes": 15129,
+      "sha256": "2cbc2b6f77616c53eb5d05329e8200c5eeabb0631e29bcf2e9f430933681ad0a"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/clock.json",
+      "bytes": 124,
+      "sha256": "3593af98014ba2cabb97ab8de4b77f3f544f59007d8c20796e8669e55974b8ba"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/frames.csv",
+      "bytes": 2178784,
+      "sha256": "f86c330353a40155d46d1af7d5792b0d0b5b1d5d38645879633e809c85737129"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/client1.png",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/client1.png",
+      "bytes": 992551,
+      "sha256": "1db8b92355c4e2b5a15c50be1d27b202038dc3367b492a09b93f7f146e1e4957"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 401,
+      "sha256": "2094f2ba2621fbe77a2d0e2d7aeb10546f0a2f225fa1c7b184ce735d2a09e41e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/insights-windowed/summary.json",
+      "bytes": 174563,
+      "sha256": "a561cb8c5c231b22b09d7249b1b034d7aafab981ac5345fb439e90f27026f2ad"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/selected-frames/frame-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/selected-frames/frame-analysis.json",
+      "bytes": 217729,
+      "sha256": "fcbe446952c319d7b7af5b655d6ce86d248eb419aaef60187e6b74089efb695d"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/selected-frames/median-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/selected-frames/median-analysis.json",
+      "bytes": 67294,
+      "sha256": "e33dc949ec695272a161267a678078abc054d4a0d26df07e5faba1142721fe73"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/selected-frames/p95-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/selected-frames/p95-analysis.json",
+      "bytes": 67638,
+      "sha256": "10eeebc519fde3581ede9247439580901f32f461b687a8991709ddad3e2d2cbd"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/selected-frames/worst-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/selected-frames/worst-analysis.json",
+      "bytes": 67995,
+      "sha256": "5d606e8a0b79d3a8975a560ca99c42787d8de2e3609d4fd91d93b414190a54d6"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/insights-windowed/all-timers.csv",
+      "bytes": 206946,
+      "sha256": "bfb9df7467f77cd4503f8b253b9a93880e7c1d7cac0adba58061b8a1a1070fa9"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/insights-windowed/gpu-timers.csv",
+      "bytes": 21557,
+      "sha256": "675915d4be58ac2114c3faa91a0744e77d1c69c5685290f019e05a9417f9a47d"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode1/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode1/insights-windowed/gt-timers.csv",
+      "bytes": 121947,
+      "sha256": "d40c54ea6ce80103000a6140e00d04b90469f8365f2ec28b66aa247c3de53e27"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/result.json",
+      "bytes": 38278,
+      "sha256": "7332dbd39b9290a57dcf6525b1ecc92da9ecd97b67955d6437b76060103e52a6"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/analysis.json",
+      "bytes": 242571,
+      "sha256": "63e846ae969e4950c2c29b780fa5bb30a91e593fb84b2aae4c2d0d8103c83214"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/counters-before.json",
+      "bytes": 43835,
+      "sha256": "8b8b5b273372f7d5f912f7e74b89b3db13f4c7ce718d5c19c1330d88fb60de6e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/counters-after.json",
+      "bytes": 77142,
+      "sha256": "28f558f159751d556302e101b184dd36143d7da290df9f7825f354fca5619893"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/context-before.json",
+      "bytes": 15128,
+      "sha256": "6d93866fd25af7958670b30501780cc95c17445719cef85c8de93780c2591cec"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/context-after.json",
+      "bytes": 15126,
+      "sha256": "3dd34d40beb8cb12f3994a765f122944e13e1c5f3c8e5cf7c5600849a7bc0fe1"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/clock.json",
+      "bytes": 123,
+      "sha256": "dd403d631986007353762df6d528fd987825decf801a91a4da5fc3428db0a1da"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/frames.csv",
+      "bytes": 2729015,
+      "sha256": "a6b6c44a15294b7323647803862007165c4e2590e1cfbcaa4c6454424a9d253d"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/client1.png",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/client1.png",
+      "bytes": 1014317,
+      "sha256": "3e4998959d9835a98496478a96f6a27c5cafaa6b9892c0be4f5092b66f80e6c5"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 369,
+      "sha256": "b7683705955405522665c28a0f8ff5c7ddf25d38255345d49ec7798013afab92"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/insights-windowed/summary.json",
+      "bytes": 169592,
+      "sha256": "5eaa2efaac40129eea4c7110185153d39fff6d48e7f417341d75c32da2711a44"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/selected-frames/frame-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/selected-frames/frame-analysis.json",
+      "bytes": 216917,
+      "sha256": "cbde1cf987afeb4ec42d56b12656a323850469b67ee1221b727697446057b0ba"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/selected-frames/median-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/selected-frames/median-analysis.json",
+      "bytes": 67863,
+      "sha256": "6ea877ae21a3cee808259f1e356b15b21592ba2ef30faaa23f29ffe45dd4ddcb"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/selected-frames/p95-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/selected-frames/p95-analysis.json",
+      "bytes": 66013,
+      "sha256": "b89c4096f733f2d3b78530dc784ad198ff1bac37c1189231a75655722c0d12c1"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/selected-frames/worst-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/selected-frames/worst-analysis.json",
+      "bytes": 68323,
+      "sha256": "b66b75e4055394d9df191a686129b3dd4c22d5a19301a4a20c3dfae90aa22a48"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/insights-windowed/all-timers.csv",
+      "bytes": 205355,
+      "sha256": "aa11a9f28ac1e22ec72b2337db2ed2380a0f3b2149a8fec6edbf1b53b9376045"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/insights-windowed/gpu-timers.csv",
+      "bytes": 21559,
+      "sha256": "a6e3326cae1f45987a2beb1b12d43fc28c89e4765e542f65cead06d73e9e9703"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r1-mode2/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r1-mode2/insights-windowed/gt-timers.csv",
+      "bytes": 118942,
+      "sha256": "0944eec2dc78aa9f9173365acfb6ec79704fe83f33fb2373b22b874e1a69ee00"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode0/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode0/result.json",
+      "bytes": 38261,
+      "sha256": "3ab7699a7ce3351c9f4f1b21a1caf883cd3de8c19fe95120fa07370087d7766c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode0/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode0/analysis.json",
+      "bytes": 11070,
+      "sha256": "e7d7fa0d41236e33e2c3f28a759982a0dd45621ad86237eba836fe89364241ed"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode0/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode0/counters-before.json",
+      "bytes": 43822,
+      "sha256": "879aff4e547fc6f5cb1cdb78c310882df49c60fe2c8b158eae0b39ff6e301814"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode0/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode0/counters-after.json",
+      "bytes": 76807,
+      "sha256": "a6ae5bbe7e79218c28ae60bea60b3cb4ec674825bf44f5cfac921f04c0af651c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode0/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode0/context-before.json",
+      "bytes": 15128,
+      "sha256": "aed8b2c379065cd00b9ef634c99746505eb2b5c85e8449cca6639ab89b1cc46b"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode0/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode0/context-after.json",
+      "bytes": 15126,
+      "sha256": "4a8ec96884ddd08265bbc8b963380f23d2b8353369e569576f90cebe427e2845"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode0/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode0/clock.json",
+      "bytes": 124,
+      "sha256": "bc284a56f24cfe14a6ed0d86a2e6430f70860bf0a9e40377c6f281b57a9d201f"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode0/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode0/frames.csv",
+      "bytes": 2050904,
+      "sha256": "29cc815cd8ba22840568d0ec51e7af6cb21cea2852897c622c9a47d257e29fcb"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode0/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode0/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 399,
+      "sha256": "1ba36944fb3bbd7def8817f76cef73c9a2c87083d659e10cb4ab262129b72017"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode0/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode0/insights-windowed/summary.json",
+      "bytes": 175265,
+      "sha256": "2e66daed860a3ff94b6b2119a3d695e12837d212dd77eec193119e74d7f9fd64"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode0/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode0/insights-windowed/all-timers.csv",
+      "bytes": 207170,
+      "sha256": "e64b57e76dd144e67762544d74ef8245a4bb7a49626e2f1e55d70b209bb147d8"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode0/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode0/insights-windowed/gpu-timers.csv",
+      "bytes": 21547,
+      "sha256": "711fd5381c426f9ce0fb219997444ed7019dcb95b89af5854c37c11b8a0c6234"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode0/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode0/insights-windowed/gt-timers.csv",
+      "bytes": 122068,
+      "sha256": "52afb0676e1177e2fb58a78ebd5bf0d051c628b317f76d608bf90223992acf6c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode1/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode1/result.json",
+      "bytes": 38276,
+      "sha256": "535c0499cac615149a987edb4861c346b760eb51bab30223cf3fa8922bb8fd71"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode1/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode1/analysis.json",
+      "bytes": 11283,
+      "sha256": "9bedd6e0ecbd1e187c7cec1c8a3054bdf895f4a7434ff349469b795e15b9b4ba"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode1/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode1/counters-before.json",
+      "bytes": 44446,
+      "sha256": "c8ed2459d58f5c1c2724b17606f8911b0b8661a20bccff5a1ce2c40dcd0c0cf5"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode1/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode1/counters-after.json",
+      "bytes": 77424,
+      "sha256": "4e08b0741ba4f01ebb4fae57f991ee774f6c6b7e1f117a178830d98abf4cf552"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode1/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode1/context-before.json",
+      "bytes": 15128,
+      "sha256": "2f85238d9253fff19d720845be47e1c221d311ef7e1fce0dbb51fb6bb27394d1"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode1/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode1/context-after.json",
+      "bytes": 15127,
+      "sha256": "8d3df099ecce7a5346a31db13f34e2d5cb762957c941a438abd4174766dc5008"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode1/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode1/clock.json",
+      "bytes": 124,
+      "sha256": "47997e0e3f346302e338ce1a2ea20a89be78aa09b1f3d321a7951c6ea563545c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode1/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode1/frames.csv",
+      "bytes": 1909283,
+      "sha256": "1be90a2458bd80f924c8e44379664eaef6a0174750a5f06d953abf5ea90db100"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode1/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode1/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 399,
+      "sha256": "1999cba77402719fcb7452a4047251d0ce57b774e39025dc26e5ceddffbcb897"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode1/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode1/insights-windowed/summary.json",
+      "bytes": 175349,
+      "sha256": "5c765e768fcead735ff9b89f6b29640271e52a0b9c589bd1d1a5b90cb709b015"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode1/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode1/insights-windowed/all-timers.csv",
+      "bytes": 207480,
+      "sha256": "33f1b71e0bcacf02fcb40783c0f5b2c98f2137736e4c9cba44cad3686f09635e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode1/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode1/insights-windowed/gpu-timers.csv",
+      "bytes": 21543,
+      "sha256": "891b16b4e8aabb79e2e970648b1557a5ee6362a8c6bee05c73a89904f217adea"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode1/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode1/insights-windowed/gt-timers.csv",
+      "bytes": 122255,
+      "sha256": "35ce97a24b4a1e3c59faef65628f9c9016dd9044f4fcb5f9f3e960c451e565d3"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode2/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode2/result.json",
+      "bytes": 38239,
+      "sha256": "aa14f09cca96b6a778298cb48ccb7a9fb405a41991f8d9fad4ab426ba701dfd9"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode2/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode2/analysis.json",
+      "bytes": 11281,
+      "sha256": "2abe462a65111ca78abe8ee555dce8a29ad37fa6e952cf8d5b9ca59a78963d93"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode2/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode2/counters-before.json",
+      "bytes": 43838,
+      "sha256": "9ca333a90628dffaab1866d029dd0f3e435456470e3b5ab836de56d5802908a3"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode2/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode2/counters-after.json",
+      "bytes": 77427,
+      "sha256": "ddfda1264fd0bc953281ce4d0a0957207f263ae8bebf20d0cd33a39ad9d89bfc"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode2/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode2/context-before.json",
+      "bytes": 15128,
+      "sha256": "99cbd8674467b1db0fc01dc228728f1de3f96d9c6a9674fce94de390fef46031"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode2/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode2/context-after.json",
+      "bytes": 15128,
+      "sha256": "7b202a6e3d55cafcd30ed36e5138f6743b7c4b6b53870b69693674d0961d6698"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode2/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode2/clock.json",
+      "bytes": 124,
+      "sha256": "ea72010be8f25d7332b075cb53d892985a73333ad903647b27b752865c7a224b"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode2/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode2/frames.csv",
+      "bytes": 2814578,
+      "sha256": "67269c134ba483c00fd9fb09e00931166fddd60949a9061bc5dd8c24aed3637c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode2/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode2/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 391,
+      "sha256": "5f969cfa5dfbdbbb55ecb450b9c8b87f93057f40b71da71b410348689dc6116e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode2/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode2/insights-windowed/summary.json",
+      "bytes": 157879,
+      "sha256": "4322b42c813af8ed6951c9b47bdca80b93b527f53e60a1979e6ba72d14970358"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode2/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode2/insights-windowed/all-timers.csv",
+      "bytes": 198752,
+      "sha256": "5499974b669d7970d745f40bfa9bec263610ee6ded8099951b71207a710d82b4"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode2/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode2/insights-windowed/gpu-timers.csv",
+      "bytes": 21569,
+      "sha256": "5bf708794847826528c9ce41aa6ecc28742cfd737d7f2f37cb1724f70f2d5d95"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r2-mode2/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r2-mode2/insights-windowed/gt-timers.csv",
+      "bytes": 112226,
+      "sha256": "0620f1ea11603944e9d60d2cd8763cc283903d2087219692c55c225482ab76cc"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode0/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode0/result.json",
+      "bytes": 38268,
+      "sha256": "c8a4b798956cef4a2857048f382786a085bb81d2bef0da604bdd3b6e366cd053"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode0/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode0/analysis.json",
+      "bytes": 11348,
+      "sha256": "7206760f33c7c154703ac8ff53e7d9c92eef8aa66c61f86a0fed870d47fb8d6e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode0/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode0/counters-before.json",
+      "bytes": 43837,
+      "sha256": "52f8c689b8ece1a81e42e3981f0097857c0b961253eeb2b3e214a05e0cc59e91"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode0/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode0/counters-after.json",
+      "bytes": 77107,
+      "sha256": "cd985740d2addacad3d9551dc923b9f800017b09a89cecf4bd5fb39354baa617"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode0/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode0/context-before.json",
+      "bytes": 15129,
+      "sha256": "b2cd96126fe5ed7679377e79f8fec73310a00cc10613b61d7355d20111d6b33e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode0/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode0/context-after.json",
+      "bytes": 15129,
+      "sha256": "f226c06f5a05a55c64ae9d90a80d7fc1a0aee20223092b614a21c164731ceaaa"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode0/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode0/clock.json",
+      "bytes": 123,
+      "sha256": "8976c9dbb566b617ff43f40fbbe2a4c5f9f4f48bcd7a0857256d8f257f943618"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode0/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode0/frames.csv",
+      "bytes": 2126207,
+      "sha256": "08be00f7c4dadf3a741cd6718809df0039c1d0da6b933a291bcb8441a7ad03cf"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode0/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode0/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 401,
+      "sha256": "417fdd1e8730e37bbced438e0cdb435e37eb03af9c5e23b69a981bda1c56eb18"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode0/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode0/insights-windowed/summary.json",
+      "bytes": 162625,
+      "sha256": "b6066827d806fef2358f57c17ff260ebcade451f5e54203d89844bfc917fd4ab"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode0/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode0/insights-windowed/all-timers.csv",
+      "bytes": 200034,
+      "sha256": "7b98aa9bc7fe181cfd2b4d233095853e94afeda8495344dd52ad42d101b4c36c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode0/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode0/insights-windowed/gpu-timers.csv",
+      "bytes": 21543,
+      "sha256": "8991f59b018cdf207834d07d81e97127e42b83a77bd9e9a47611c95656a57271"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode0/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode0/insights-windowed/gt-timers.csv",
+      "bytes": 114841,
+      "sha256": "74b8139a5f847b11d42f0b13b79a2767211f57c4584c51facf034c599099f524"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode1/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode1/result.json",
+      "bytes": 38225,
+      "sha256": "e17061cb51d80c572a3c817ab013133abfd6cbb2e96b5536e10e74b4fa8c7639"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode1/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode1/analysis.json",
+      "bytes": 10999,
+      "sha256": "2592a8f895b7599cd34083214e91250c23b4fab082e31ac86279bdda39e03cc2"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode1/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode1/counters-before.json",
+      "bytes": 43818,
+      "sha256": "9a3b151b97b3adf53fdb1a2a5e09d9b96a1fe243aa46904806aaaf56ce48df03"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode1/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode1/counters-after.json",
+      "bytes": 76815,
+      "sha256": "03061ba66b846524be6b8cbc8569f7d36bb0baa17f96b4ae51a6cf23fca9ddc5"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode1/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode1/context-before.json",
+      "bytes": 15128,
+      "sha256": "0c281e6a462558a22b7f47290a5875cc0f49b155e693760c1aeaad91c1f57a16"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode1/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode1/context-after.json",
+      "bytes": 15127,
+      "sha256": "992421cbc852d45de0b94d4527b224bf101e2258979819934eb3b910469c6951"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode1/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode1/clock.json",
+      "bytes": 123,
+      "sha256": "53424ad7d366c2750b1308c5044652ba685ef70a50ca33fcaecded52e1eba869"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode1/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode1/frames.csv",
+      "bytes": 2139327,
+      "sha256": "283690ac05b3aebc695a9deb6e08f0bce06964d5738ec8f28a4045ce115e525b"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode1/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode1/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 401,
+      "sha256": "599bf7925cd1a915063836047499d03a4edb92af9d70bf2c5de87c78a9bcf835"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode1/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode1/insights-windowed/summary.json",
+      "bytes": 175157,
+      "sha256": "31d954c5e1248e852136db00c7a45ef64172c439e46a6a0cdf0e74c17f49bd69"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode1/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode1/insights-windowed/all-timers.csv",
+      "bytes": 206790,
+      "sha256": "c2cbc31486b8ba1f46fa76909f30534f7d4706ce4577c170c70d46f8df615d5e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode1/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode1/insights-windowed/gpu-timers.csv",
+      "bytes": 21553,
+      "sha256": "a665d3b2bfc0367f37900252a2b36dbbd0823ce09c75a977d646e95654d42f35"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode1/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode1/insights-windowed/gt-timers.csv",
+      "bytes": 121915,
+      "sha256": "971170fb1d74a72ff6d63308e4d313a88f8788ad9f7c15c154b9d209ab3c2c9f"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode2/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode2/result.json",
+      "bytes": 38287,
+      "sha256": "f4df3a039bbcd9497b0cf03c845aabbacc571fbcebb58629aeb32de0e0df766b"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode2/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode2/analysis.json",
+      "bytes": 12457,
+      "sha256": "2fa1d141029feb55ecf67d6bd2812a5c09492cc0efaec8059531e49759b2eb5e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode2/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode2/counters-before.json",
+      "bytes": 44755,
+      "sha256": "2731a52a750baa6868fc893f140512db0713ada2da692b4b5c1322169e41e88c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode2/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode2/counters-after.json",
+      "bytes": 78189,
+      "sha256": "617045bff3eb8b5725545db4ab648fdc15304739cd8da1ec29155687c8cc2719"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode2/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode2/context-before.json",
+      "bytes": 15128,
+      "sha256": "b15757e41ac1bcc8abfa7e2a27bc793abee796b65faa31bf702a3585c6743559"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode2/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode2/context-after.json",
+      "bytes": 15127,
+      "sha256": "c4e5a6caeb8013faddba669b362fbcd6879f4459857e6604b9e3add6cb6d471b"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode2/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode2/clock.json",
+      "bytes": 124,
+      "sha256": "05e5e866ca2269d34d77c930d6498d092be1154f6c0778572838e70d1db7bd62"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode2/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode2/frames.csv",
+      "bytes": 2605293,
+      "sha256": "83c87a0e5d707e97b22acc133740af5e5349392242b2abf64d41e2877b7d5f06"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode2/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode2/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 390,
+      "sha256": "8790c9f523017be828e718eaa2892d71e92da8879224575ddd9b511ad6c34819"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode2/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode2/insights-windowed/summary.json",
+      "bytes": 175100,
+      "sha256": "7f38e25d97a25de3f66c8f2d86956e856d826c8c98ab47884279ca5221a2ce5d"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode2/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode2/insights-windowed/all-timers.csv",
+      "bytes": 207158,
+      "sha256": "7f0b7b038598e508c555175a3cda6e2746a8c3e3b13d7a7045c2400df8f0b8d9"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode2/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode2/insights-windowed/gpu-timers.csv",
+      "bytes": 21672,
+      "sha256": "798f08e9eeefb0142333e94ebd699ecbb39703733a1ee0fc7141f959931a7919"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/dense200-r3-mode2/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/dense200-r3-mode2/insights-windowed/gt-timers.csv",
+      "bytes": 118474,
+      "sha256": "86187867f2ff0c620eb255646d921c162127f90a4c298a7a092e2228f0fdf078"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/result.json",
+      "bytes": 113557,
+      "sha256": "103af6f90bdc14f731e0fc43105ec7a10dba40475565ffe9d4fb0e01805732b2"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/analysis.json",
+      "bytes": 244550,
+      "sha256": "49b2f0aea9d818ea8e8aeb395b5ea5eadf0cfed3f64f95448c3247e30eb3bcb5"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/counters-before.json",
+      "bytes": 121954,
+      "sha256": "3bb06f95df402c2d7356238621b321163dacf9110cb8a0b67f75a429b1a668d7"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/counters-after.json",
+      "bytes": 157423,
+      "sha256": "79277a4737c8f8f823117a076d786fe52086f750a5b9d945ccc9eb73e210ae37"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/context-before.json",
+      "bytes": 15545,
+      "sha256": "b4ade85ed76af3cbd28cd1b255b590ae40e83654db359ad842eccb0ea535405b"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/context-after.json",
+      "bytes": 15604,
+      "sha256": "04dc6fe491824d5b3315b56699b68144e014d68767e774d7eadb9b19ef966dcd"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/clock.json",
+      "bytes": 124,
+      "sha256": "fdea393687ccb5b222b4a9d1d18da69cb84a245f2a09793017c4925d9956f23a"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/frames.csv",
+      "bytes": 1072955,
+      "sha256": "5b2850dff4527c166a605e1a373c8f8cbc603c5cf680c6e999fb70354d69cde4"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/client1.png",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/client1.png",
+      "bytes": 1125591,
+      "sha256": "70c1caa4b8cbb80430d3cac82ea97d9cd6e5d989b7811f6f953a3af42963cbbc"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 383,
+      "sha256": "6f44b825448885065abcbbd2b39889a92bfacdd932183a8170f8bd83b3750762"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/insights-windowed/summary.json",
+      "bytes": 188140,
+      "sha256": "126c395590a80945bdc2cffa54a56637083c19f7f7954078d1794335b6b8a254"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/selected-frames/frame-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/selected-frames/frame-analysis.json",
+      "bytes": 218857,
+      "sha256": "34f9bd81ef7db2199816a47448cc867d46ba9f542b3d7a816448230a89388c8f"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/selected-frames/median-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/selected-frames/median-analysis.json",
+      "bytes": 67613,
+      "sha256": "76c86c21a9339df0e388cc7f6de3e47e81fc6060a24933fb062293c0d9affbce"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/selected-frames/p95-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/selected-frames/p95-analysis.json",
+      "bytes": 68200,
+      "sha256": "11e1d9233ab18c73b536ea854cb3dd7c35749218ef7fe31449f0184fd7a85168"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/selected-frames/worst-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/selected-frames/worst-analysis.json",
+      "bytes": 68362,
+      "sha256": "22b95d27ddb9f4029e08a2e114f0e8869d67ba00d92a23691b6a645bac51e058"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/insights-windowed/all-timers.csv",
+      "bytes": 219786,
+      "sha256": "381962dd3294cdacf81249aa35848ee2f5cfbc8dd43db782d12fe64d825c8c82"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/insights-windowed/gpu-timers.csv",
+      "bytes": 22298,
+      "sha256": "497b3464114de8eb947e356b94b6da613fe193f444dd047a1dc63e72f1643473"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode0/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode0/insights-windowed/gt-timers.csv",
+      "bytes": 127788,
+      "sha256": "ab3abacb7906d7f2374e9a0a6f323784ff848a61f34d421f5e7c28d6043be92a"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/result.json",
+      "bytes": 113720,
+      "sha256": "6834e9007d7e5fc395ea1e4708ed0bbb686159b5bee419d232ce95d1d0d20edf"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/analysis.json",
+      "bytes": 247946,
+      "sha256": "9c3c86cb265e349c116ea829f514713bf41b74a58d793baa5622713900b02f5c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/counters-before.json",
+      "bytes": 121930,
+      "sha256": "d004fc59b3694042c205c9bdb9d4486e5e92c1dc7b408732521b4b5ca6a26067"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/counters-after.json",
+      "bytes": 157642,
+      "sha256": "b0e2e9421c2e6fbe499ba87b5a0427d3bb9fb5402fa9f1b0cdcec5f3ad1587dd"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/context-before.json",
+      "bytes": 14748,
+      "sha256": "5aff358d043d5ffcbef9eaec8f50965353562b0fef98f0215a39ac678159e4c4"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/context-after.json",
+      "bytes": 14747,
+      "sha256": "6675b63b15d0533847b710cd26e52ff8822194f19a2e85fe5bb7838bf8eee2cd"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/clock.json",
+      "bytes": 124,
+      "sha256": "84f40460256c188a30054adb3fb1f16777653de0a6ad0819266660fcad61ab2c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/frames.csv",
+      "bytes": 1122921,
+      "sha256": "917ab4dba7e5573298b927eeffd3842d618b3def30f11d653a520c633e7a4cd9"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/client1.png",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/client1.png",
+      "bytes": 1120780,
+      "sha256": "fd476a537acbc2effd12fb085dbeb06ae329f1b42b196864d31eecc9c80a5d77"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 411,
+      "sha256": "f28c75c97a0a189fb5f4598a959e27708d5ce394c834f082a0ae78f3cb54f894"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/insights-windowed/summary.json",
+      "bytes": 166000,
+      "sha256": "fe9bece975da48cacba1ce83e68aebdff8abfe6b7dce4f05b5eb13e0fef4b587"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/selected-frames/frame-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/selected-frames/frame-analysis.json",
+      "bytes": 221799,
+      "sha256": "e7dd82ae3e364f39c3e9893418a9b915bc0e6d779dda312c9e3dfc9a6fc3b898"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/selected-frames/median-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/selected-frames/median-analysis.json",
+      "bytes": 69464,
+      "sha256": "5ca255d2fa9f18122e7d65f52cad10020674fba497e708612789e2d3525c8555"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/selected-frames/p95-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/selected-frames/p95-analysis.json",
+      "bytes": 69274,
+      "sha256": "f85c30981875dc1d04404b5cbcf15e8561e1aa60ea3afb1be64a4d2a7423089e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/selected-frames/worst-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/selected-frames/worst-analysis.json",
+      "bytes": 68175,
+      "sha256": "e9877ef77a015e4cc6a78dad25fc73e364ef6a79fa543f1f792af889d195bdf0"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/insights-windowed/all-timers.csv",
+      "bytes": 201085,
+      "sha256": "57b6a8ea37229388fa30f5e31bda91893f4220a76c2be4c9075723a226768875"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/insights-windowed/gpu-timers.csv",
+      "bytes": 21444,
+      "sha256": "61858feca1cf685674492f3cc951873f66340e641ef01df76a28701ef9da021e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode1/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode1/insights-windowed/gt-timers.csv",
+      "bytes": 114210,
+      "sha256": "18e6a333e66187cde86ca1c51677c324ebfc49901b7c86121b8c8406efd1bc73"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/result.json",
+      "bytes": 113685,
+      "sha256": "59b8b8287cdee91a934553e8a3d17b63c3f1c5c732fa28d8d87919f6d30e105a"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/analysis.json",
+      "bytes": 245299,
+      "sha256": "7153b81030e996940f41bed5c299b39b50f8bf2801e4e7de1bbbc3888742e7f6"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/counters-before.json",
+      "bytes": 121690,
+      "sha256": "a722479bb6494df2a557fc7581c2bc427e8e2634a4c41bb8649cedbf1c754bfa"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/counters-after.json",
+      "bytes": 157542,
+      "sha256": "0ac410437368e23a012011318065e53ce071ddc7309beb36ca829db4f574e3f6"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/context-before.json",
+      "bytes": 15546,
+      "sha256": "2460da3667d6ad780d305e1ed8c4f1ef6d1d33a176110604d763e5dc99360f6a"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/context-after.json",
+      "bytes": 15545,
+      "sha256": "c203d580cd6fa1baeca9c718c9a1410728e4c648e2f8064260a5dfdec51c9104"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/clock.json",
+      "bytes": 124,
+      "sha256": "0b82be9e3798ab7ca29a3fdf0ca36670d4829caf5ad88fc1322be4725089cc74"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/frames.csv",
+      "bytes": 1139753,
+      "sha256": "4bfcded61daa13ed694b45aa50ad30ba7eab1a13f5c5b88309372a7152b8c738"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/client1.png",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/client1.png",
+      "bytes": 1103043,
+      "sha256": "e47185e1574fdca2f06d3b3b4e8ba9e4b052087d26f7147251fcac0ef12c9321"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 409,
+      "sha256": "4a79165a27661279d958e8b72b0ba792d256d387ede6f39cc2c68b34c1331ab6"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/insights-windowed/summary.json",
+      "bytes": 175357,
+      "sha256": "ebf23c83ad9b8b3a1f4503363e8ecf53d61559a55adcac7657dc16f613091059"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/selected-frames/frame-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/selected-frames/frame-analysis.json",
+      "bytes": 219897,
+      "sha256": "f6b04b68f0eaa19c8fb4f02f597e73bac23413a2022e70a47009c9cee4e1d96b"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/selected-frames/median-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/selected-frames/median-analysis.json",
+      "bytes": 68544,
+      "sha256": "d76801fe6738627fa0231111a5f6d605df4b2ec42263698bb7534d5cbc5cc260"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/selected-frames/p95-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/selected-frames/p95-analysis.json",
+      "bytes": 68226,
+      "sha256": "7341739095858eca27d4e7a2c389b891a638d614ac6e011116e4374923b33691"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/selected-frames/worst-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/selected-frames/worst-analysis.json",
+      "bytes": 68409,
+      "sha256": "ed35ddbeebe17fdfb8aa0e641b73d5f8d3484fd50710842ef7ce3d8a7951ef85"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/insights-windowed/all-timers.csv",
+      "bytes": 213229,
+      "sha256": "a6549bab4ee95a235923f40b9cd239d61dacbb68b3b1a05fd88ded80e3848f52"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/insights-windowed/gpu-timers.csv",
+      "bytes": 22300,
+      "sha256": "f368fa909e38abe34644c6d9627a02b45ed9d95d5c7aa045705794c5fcf66c83"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r1-mode2/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r1-mode2/insights-windowed/gt-timers.csv",
+      "bytes": 120233,
+      "sha256": "f1a666f6dedd124a37a37194aed7703046161de66ae7f27f8cae7a344f3bce1e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode0/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode0/result.json",
+      "bytes": 113522,
+      "sha256": "8c2530c6e35dda028b4353e83da9faed6cd6cdf6942a00dc891e8e96049598dc"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode0/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode0/analysis.json",
+      "bytes": 10976,
+      "sha256": "6dc051c245f2beca080cd3569157b3db3e84803d386a8dfe7e6249e87cf61619"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode0/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode0/counters-before.json",
+      "bytes": 121988,
+      "sha256": "1b302eaf8c9123fc989d8b02198256b5bc788abff00a366de1cdf8f51eeb36aa"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode0/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode0/counters-after.json",
+      "bytes": 157192,
+      "sha256": "c1e640131838590374901c38e6d55481d816561aa2beefcf947689ecebbe81c1"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode0/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode0/context-before.json",
+      "bytes": 15547,
+      "sha256": "240d05b079ba1e0e0c6b5baf7ccb9e2aa071652dc15fb4bbf04e85656b0f6c73"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode0/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode0/context-after.json",
+      "bytes": 15547,
+      "sha256": "72d1785a5d0f2c36ed3045d81d45da306f3d362eae67ba71e3ca2cde49c1119e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode0/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode0/clock.json",
+      "bytes": 124,
+      "sha256": "cc875db642e7c606635b0a827ea37fd30b652213d7a54b7aaeb6d66464bc74c9"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode0/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode0/frames.csv",
+      "bytes": 1086000,
+      "sha256": "cfd6b077701a7b2c92fbf627681d85fad578a5a73465bb51426e4b03114cabe7"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode0/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode0/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 397,
+      "sha256": "db40d797d69fb7d18f40c00c49d1b57a97d2e8566d7443240df7009045b565b1"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode0/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode0/insights-windowed/summary.json",
+      "bytes": 186210,
+      "sha256": "a3f8ad436963568399d3c210b74b56390d9b67fe084401e05e9d4e697ded9903"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode0/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode0/insights-windowed/all-timers.csv",
+      "bytes": 213574,
+      "sha256": "dd3cb1ef4e59adddfea9e4d4f613b6561f7003175a7c08d2c586f337f19f11d3"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode0/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode0/insights-windowed/gpu-timers.csv",
+      "bytes": 21442,
+      "sha256": "ab08a33f8f78768f964806e65732c1b3eebf45c969c05debbd06cf3a2113bd89"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode0/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode0/insights-windowed/gt-timers.csv",
+      "bytes": 125670,
+      "sha256": "e28f70f469427c942e59d1cafad9d1ab28d6bb1bf616dc8e4608947b0a0f0fe5"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode1/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode1/result.json",
+      "bytes": 110352,
+      "sha256": "adc3fac3dbdac0bcfd2107f82f2e800898a7c52f14cc4203c16e7aea0607368f"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode1/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode1/analysis.json",
+      "bytes": 10915,
+      "sha256": "f2f67f02499db63a473781e2a1d8db56d623bf824a016488b6ab7e19732332ea"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode1/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode1/counters-before.json",
+      "bytes": 121969,
+      "sha256": "1530d5db0e0734625528d8c9c7928e9f11a14416f08eb3e2f9f32e29dbaed319"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode1/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode1/counters-after.json",
+      "bytes": 155919,
+      "sha256": "30f7bd1c1b39c08c0f5c212289d6629209c7c960b50ee5868f042e5c8fc002d4"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode1/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode1/context-before.json",
+      "bytes": 15546,
+      "sha256": "e0a37074b320db500b3a497be90a4eceb18bd3b1b05720e15f56dd42a5bb21b6"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode1/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode1/context-after.json",
+      "bytes": 15605,
+      "sha256": "3a06d8ce7c47a4fe633a27a1deb611e5f9a48d40777992535f2c09059130b04b"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode1/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode1/clock.json",
+      "bytes": 124,
+      "sha256": "f825f41856f370f2664a2d912b21bb0f223255827acbb3a96422d02b4316b17f"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode1/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode1/frames.csv",
+      "bytes": 998510,
+      "sha256": "6610940da0d86397e7f010a1fe3ded88b79b8765180dfd2a8fb8818e75bf7e8f"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode1/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode1/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 368,
+      "sha256": "3e334c5b22d95890eddab0cb9647808e707e4fde336896bd8a29aa76584febcb"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode1/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode1/insights-windowed/summary.json",
+      "bytes": 178860,
+      "sha256": "af0c06a6d91a5f332320c3d9fd3de0e315c6ad0a6b5314466ab81194664093ce"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode1/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode1/insights-windowed/all-timers.csv",
+      "bytes": 209647,
+      "sha256": "5b53e8ad9c4401a4740502898363d92cd23938928da586538e08873df4bc32b6"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode1/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode1/insights-windowed/gpu-timers.csv",
+      "bytes": 21442,
+      "sha256": "049696b2d699c79df20b86bbb0a46c76e8f82dbd592a83f5b5e7e072d4b21f30"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode1/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode1/insights-windowed/gt-timers.csv",
+      "bytes": 121549,
+      "sha256": "e1a9fc15b5a16dedb9f463ff2f67ae367b2cbbe8c44ff409226a993d4b39c277"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode2/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode2/result.json",
+      "bytes": 113001,
+      "sha256": "09d00478f19c71d8bd0827ea4cda45703c3de9de1ee68a4958a8cc19898410a1"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode2/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode2/analysis.json",
+      "bytes": 10616,
+      "sha256": "ed1041c36a7eee8506c32faa779394605e2581ef3c6b26481d4cd589ff6e9c3c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode2/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode2/counters-before.json",
+      "bytes": 121659,
+      "sha256": "918fb2120a1d7ce633c922601ba961e2731cd178b821b60dd4025eabc135e96a"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode2/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode2/counters-after.json",
+      "bytes": 157455,
+      "sha256": "25077c9569c612dca309505986dbae0f41eda288e968a38a89f5cd4673c8bd18"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode2/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode2/context-before.json",
+      "bytes": 15546,
+      "sha256": "c0cd889f1636e6c795072f22be239196f0a7c77d86f7ed6055d6af744a46ab1d"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode2/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode2/context-after.json",
+      "bytes": 15604,
+      "sha256": "046086048719f3af2506d5096d32f91629ba1bacb0d081aaf9feb9ccf9808938"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode2/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode2/clock.json",
+      "bytes": 123,
+      "sha256": "d2af2d5ade006114d77634961f17bccd38772ba24e16e754e28b319dda9af9be"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode2/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode2/frames.csv",
+      "bytes": 1118374,
+      "sha256": "b28979e986888cb91f914f1d1a6506befb148ac4b501154aaa6b2c439c37bd7b"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode2/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode2/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 396,
+      "sha256": "7c5a40b4b57be108ed103603a9c2ea9e18993ada814080fac318c33d5a22c2d1"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode2/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode2/insights-windowed/summary.json",
+      "bytes": 175799,
+      "sha256": "2ae6828624bcac62973c2e17c923b7f477b55487cf80f07f1246ee8e74650018"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode2/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode2/insights-windowed/all-timers.csv",
+      "bytes": 207065,
+      "sha256": "8a81248b20fa1373d30e40e1dce181a60127c8b0e1a87d278f1120f7262f7040"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode2/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode2/insights-windowed/gpu-timers.csv",
+      "bytes": 21444,
+      "sha256": "0cfc21b9ae6603a6d6ee1282437d101dccee1bfd43b0946613cf84cd08eb6153"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r2-mode2/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r2-mode2/insights-windowed/gt-timers.csv",
+      "bytes": 119611,
+      "sha256": "fc4efc4cc58de7b2079dcb0c755f22f95fdf9a824c4f801914439e45096c4659"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode0/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode0/result.json",
+      "bytes": 111279,
+      "sha256": "200e03ec9a6396691892cad6cd14bb2571c1d821e3c66a583d0b02ead81fc119"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode0/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode0/analysis.json",
+      "bytes": 11228,
+      "sha256": "5e4edf168089abab7506abd4f3aea8ae6476d0a5ffba2419cde9b4ead08184dc"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode0/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode0/counters-before.json",
+      "bytes": 121954,
+      "sha256": "954e1807b5104454c4d65c05f53efd88803b949c3784d882725062b8e6d7c782"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode0/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode0/counters-after.json",
+      "bytes": 157600,
+      "sha256": "604becba1a27a6ad449764c41dd3f0479f759f6c618e54bee2980b0a07e54aa5"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode0/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode0/context-before.json",
+      "bytes": 15548,
+      "sha256": "7dbd4044df80f4c5c25c006a3b7a3677f02b7cef6e1458f5cb3aada48a2c5779"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode0/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode0/context-after.json",
+      "bytes": 15546,
+      "sha256": "e1870a3f9dcef16a90a959dc5aa87ea1291b728c7cda478616cd965c5a87c293"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode0/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode0/clock.json",
+      "bytes": 123,
+      "sha256": "909ac653a3b9c6890e00e73822a608d8e917f243d09b8989778e7c9fb46d362a"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode0/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode0/frames.csv",
+      "bytes": 1109185,
+      "sha256": "6a3f515287ea9c86fefd7513ad72f706ed22579f3040e7c2985d0d096d5c6fe2"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode0/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode0/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 382,
+      "sha256": "52f669a3758b4262a72fb6f4cec2858cbccfde68e5afc9fcb7f9a71729fd00fc"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode0/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode0/insights-windowed/summary.json",
+      "bytes": 172744,
+      "sha256": "96ea2fc5b94fe06048b9789e0b44bc2147faaf65f5a92b7d9339d480230e7661"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode0/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode0/insights-windowed/all-timers.csv",
+      "bytes": 206262,
+      "sha256": "0aec124307fab5964a5100b75ea9393717e882cc9328574396386a41a492b94c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode0/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode0/insights-windowed/gpu-timers.csv",
+      "bytes": 21444,
+      "sha256": "dbba44bdd2f9f57fae84628c58cc850f54f12af046c3f00a4cb952a6d87c2558"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode0/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode0/insights-windowed/gt-timers.csv",
+      "bytes": 118001,
+      "sha256": "a47d855ca2ce706ed13e6b95a35607f730aabb86301fea2532289d19a02190ac"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode1/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode1/result.json",
+      "bytes": 111735,
+      "sha256": "8217341620024c9fe7199c35f32b21b02a60f29f1046040c505bbafa1b6ec660"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode1/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode1/analysis.json",
+      "bytes": 10920,
+      "sha256": "6fb8bc5bf49c15276147ec5041059b3dcc1b237864b4ccbc33dc4ac2d9e22a2f"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode1/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode1/counters-before.json",
+      "bytes": 121966,
+      "sha256": "6f1727b6bcc2841950fb19cff752687d46c1098e90fe430a528c4aa9876608fd"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode1/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode1/counters-after.json",
+      "bytes": 157288,
+      "sha256": "573ef8e0f1edd9c506c434a3356cb625d9a21e3694cf4b39a05bd473df12029a"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode1/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode1/context-before.json",
+      "bytes": 15548,
+      "sha256": "95e9b763f2460eb9295b3e3a297bce418967808d09a4a2b475a229c16d9bcd8c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode1/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode1/context-after.json",
+      "bytes": 15545,
+      "sha256": "2f8c6d190259d64593e88a89387f3ec3b7080b6a60be2aca8caeb5ee67c786f5"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode1/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode1/clock.json",
+      "bytes": 124,
+      "sha256": "bb4c6f178f5da3b7c99c1c257ae312c65c546a8d3fe8c30873a6b48d0d0daa5e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode1/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode1/frames.csv",
+      "bytes": 1010867,
+      "sha256": "d02b750a5868e691c01c3770528d451d1bcb8b1607e4b45747597743ebe85000"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode1/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode1/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 382,
+      "sha256": "16526a50741afbcbe26fd1846b488e617cb040310769eaf3f0b41c776a266d0c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode1/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode1/insights-windowed/summary.json",
+      "bytes": 184983,
+      "sha256": "5f8dc7b1fc27c403b4f23b43b9199ab8358f3faa51d630ce26c5e757f33c27cd"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode1/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode1/insights-windowed/all-timers.csv",
+      "bytes": 213265,
+      "sha256": "e9b3070fb9876896469f72bf43e6d6f1be0a792d3699b8d98ba5850938ad3937"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode1/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode1/insights-windowed/gpu-timers.csv",
+      "bytes": 21565,
+      "sha256": "f86243e376c80b94844adb53b2c38c8147e118319ca5ce58d19864df307a59d8"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode1/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode1/insights-windowed/gt-timers.csv",
+      "bytes": 125125,
+      "sha256": "f7536f5cee7f6e9dee32dc770a30cb0847c03261afef4258e5a1be764449bcfd"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode2/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode2/result.json",
+      "bytes": 112095,
+      "sha256": "71553286fd5022ca4f1988b505416fe24abb275775a9b01e8659c3e0cd5c647b"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode2/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode2/analysis.json",
+      "bytes": 10649,
+      "sha256": "a7e3c7804ec9430e0a0d19685a8172e7bd99d63471d22b452411e2df3e9185a9"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode2/counters-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode2/counters-before.json",
+      "bytes": 121720,
+      "sha256": "d9f6e72fdb22b70492a9c51c5cd91c202692c9c940a0ab9968c79880eb28602e"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode2/counters-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode2/counters-after.json",
+      "bytes": 157489,
+      "sha256": "3cce6af3dc4fa2b4155602b3288f44368dad66266c1a431cc4caf13ff925b31c"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode2/context-before.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode2/context-before.json",
+      "bytes": 15546,
+      "sha256": "e892e13966c8e31e8ee60c33052769b8b3c9af8387e68de53d3e3efe24c82242"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode2/context-after.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode2/context-after.json",
+      "bytes": 15545,
+      "sha256": "997c81755460a4e611b412a4a9504d058b205687349587620d948113c626d040"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode2/clock.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode2/clock.json",
+      "bytes": 124,
+      "sha256": "8ea60840b5f12724822a737b41f830d4d8da580f557784c7fc90cd301d8283ba"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode2/frames.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode2/frames.csv",
+      "bytes": 1066238,
+      "sha256": "15a9c20ceb843b9f0186cff4ffb954f84467d7e497995ca21391caaaec1bd096"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode2/insights-windowed/muzzle-frame-distribution.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode2/insights-windowed/muzzle-frame-distribution.json",
+      "bytes": 397,
+      "sha256": "0ae32b8feacd20eaed46febce1126a4fcbd38bc93ed6be65b4f9d7381b56bffb"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode2/insights-windowed/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode2/insights-windowed/summary.json",
+      "bytes": 173666,
+      "sha256": "c8611c008e3156a70bca85c4106e6c3697056723ef8759f12c2f788bdea54544"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode2/insights-windowed/all-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode2/insights-windowed/all-timers.csv",
+      "bytes": 206713,
+      "sha256": "db906fabf06e0f05e79441230131244ea4b030b72f016797d2d42cb3c6239d09"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode2/insights-windowed/gpu-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode2/insights-windowed/gpu-timers.csv",
+      "bytes": 21442,
+      "sha256": "0713ad8fc8106600c349b2d87c7b307bea22c3371e9d5035c30a5130a4c141fc"
+    },
+    {
+      "source": "outputs/performance/20261010-muzzle-batch/paired/stress-r3-mode2/insights-windowed/gt-timers.csv",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/muzzle-batch/paired/stress-r3-mode2/insights-windowed/gt-timers.csv",
+      "bytes": 118579,
+      "sha256": "4208edf4a4db88521245f3b681c4272b61a77d7c228384f4fea1c63ac9b21b54"
+    },
+    {
+      "source": "outputs/performance/20261009-084155-baseline/game-event-summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-084155-baseline/game-event-summary.json",
+      "bytes": 312,
+      "sha256": "673a08946e636802e31c123e30286bf463ba7ad15c3e8f0e361399bb119e83b2"
+    },
+    {
+      "source": "outputs/performance/20261009-084351-baseline-repeat/csv-summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-084351-baseline-repeat/csv-summary.json",
+      "bytes": 77680,
+      "sha256": "d7ff6204203c223fa1bdaab632ca013273e6c96b1c89e898af7eab9e7f6884eb"
+    },
+    {
+      "source": "outputs/performance/20261009-084725-confirmed/csv-summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-084725-confirmed/csv-summary.json",
+      "bytes": 79883,
+      "sha256": "fd0e09242c83472931837491a009d29a2cb3a475508cf55840881e8f991b76a8"
+    },
+    {
+      "source": "outputs/performance/20261009-084725-confirmed/trace-summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-084725-confirmed/trace-summary.json",
+      "bytes": 19834,
+      "sha256": "303750e0350cf7904d1da1a17d52109a2388c93571f0e8917d6a74f826d39189"
+    },
+    {
+      "source": "outputs/performance/20261009-all-optimizations/final-saved-scene-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-all-optimizations/final-saved-scene-readback.json",
+      "bytes": 35373,
+      "sha256": "e50f28eb80f35ec22a6c94a85f2f210e3af6e83ae319b4d42dce903976393efd"
+    },
+    {
+      "source": "outputs/performance/20261009-all-optimizations/formal-reference-final-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-all-optimizations/formal-reference-final-readback.json",
+      "bytes": 3835,
+      "sha256": "9814b4c013c171cea26d1ff300566d53e6c12a3b6ea14ddebf21851613246949"
+    },
+    {
+      "source": "outputs/performance/20261009-all-optimizations/prepared-scene-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-all-optimizations/prepared-scene-readback.json",
+      "bytes": 1731,
+      "sha256": "bb5d5219cd6f8d9a8b406955ea69634678da34c5741bb5cb43ecc2ae9a80c820"
+    },
+    {
+      "source": "outputs/performance/20261009-all-optimizations/source-build-final-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-all-optimizations/source-build-final-receipt.json",
+      "bytes": 239,
+      "sha256": "1a9f9be875506f3ceb5c5122623fa0f82541bf20a28995718fc3c899ee0e0d87"
+    },
+    {
+      "source": "outputs/performance/20261009-all-optimizations/source-build-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-all-optimizations/source-build-receipt.json",
+      "bytes": 299,
+      "sha256": "0a6efb684247c8694ef000462b5893370bf53bf151848d406589522ee6732706"
+    },
+    {
+      "source": "outputs/performance/20261009-all-optimizations/source-loaded-final-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-all-optimizations/source-loaded-final-readback.json",
+      "bytes": 121,
+      "sha256": "38f598cb673efd3200e765c324a3305df4016a93aa4ddf72e401a891e04297dd"
+    },
+    {
+      "source": "outputs/performance/20261009-all-optimizations/source-loaded-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-all-optimizations/source-loaded-readback.json",
+      "bytes": 447,
+      "sha256": "7cde1a793aa87a33cd87155d1dbd3de39783df02a6a54c66e4189f49196d00fc"
+    },
+    {
+      "source": "outputs/performance/20261009-all-optimizations/whole-build-results.md",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-all-optimizations/whole-build-results.md",
+      "bytes": 6011,
+      "sha256": "238c212804139244be60ee0964aaf10b6c948b413a9e96b5b01bae5a35fc4d00"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/applied-functional-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/applied-functional-receipt.json",
+      "bytes": 4459279,
+      "sha256": "50b6c51b794f79482fb6de5ff30f559bed73fbec26057591f02e3b6df091bdd2"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/build28-loaded-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/build28-loaded-receipt.json",
+      "bytes": 764,
+      "sha256": "74a04c99270f4e70345354777293a537c189f92d0b8044d3f397eaf7bc2e7ffa"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/build29-loaded-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/build29-loaded-receipt.json",
+      "bytes": 781,
+      "sha256": "30226bed44370f55a774acc23bf03e43d75665acb8c77633932427684d60f440"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/build30-loaded-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/build30-loaded-receipt.json",
+      "bytes": 782,
+      "sha256": "1961d5e1a20a4c42a4c931b3311a046a4c1bf4b9ffd914805d591701a5a6205d"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/client-three-delivery-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/client-three-delivery-readback.json",
+      "bytes": 2059,
+      "sha256": "0c6a295ac5f724829eb08504dc0e34720684ad398952a32df545ff41db245f97"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/client-three-formal-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/client-three-formal-readback.json",
+      "bytes": 36085,
+      "sha256": "8f5ee07e4d1a192abf461319ac3265a02ef52ec3276859066ee2db856572a5b4"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/impact-build-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/impact-build-receipt.json",
+      "bytes": 466,
+      "sha256": "77d5f3acc191fa9a44a7ede82247dafc5ca5b4628c7f6875feb313a22294d851"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/impact-build24-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/impact-build24-receipt.json",
+      "bytes": 651,
+      "sha256": "53f8f8f7ab79ba512c1823de81db0dd9de338ce54cd724fe31a5a713761df35b"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/impact-build25-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/impact-build25-receipt.json",
+      "bytes": 651,
+      "sha256": "3316d73a31cab06324415c27df017d62eddf47325bac6602c63c6212b8b5c780"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/impact-build26-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/impact-build26-receipt.json",
+      "bytes": 466,
+      "sha256": "77d5f3acc191fa9a44a7ede82247dafc5ca5b4628c7f6875feb313a22294d851"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/impact-build27-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/impact-build27-receipt.json",
+      "bytes": 466,
+      "sha256": "77d5f3acc191fa9a44a7ede82247dafc5ca5b4628c7f6875feb313a22294d851"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/impact-build28-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/impact-build28-receipt.json",
+      "bytes": 466,
+      "sha256": "77d5f3acc191fa9a44a7ede82247dafc5ca5b4628c7f6875feb313a22294d851"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/impact-runtime-600-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/impact-runtime-600-receipt.json",
+      "bytes": 2102717,
+      "sha256": "fb3a74b5d6e602483527c2bccb448ac281b35a972835f5903de1713121144987"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/impact-runtime-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/impact-runtime-receipt.json",
+      "bytes": 1146625,
+      "sha256": "442484a546acab2eaa653d83de6d393fb58b025b0788a527a9f75a2de6cdb390"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/impact-vm-build26-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/impact-vm-build26-receipt.json",
+      "bytes": 262,
+      "sha256": "666f7a8d09262ec68701af992dd6ca6627538ab3bcfe9a5cd99818a5ea6d10bd"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/lod-build-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/lod-build-receipt.json",
+      "bytes": 710,
+      "sha256": "3cb5d668843324feec88d88fc944fe5fc0bf0897e900d39f6e726f9cd553b539"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/manual-review-arm-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/manual-review-arm-receipt.json",
+      "bytes": 270,
+      "sha256": "8d8f1802968e0dac0baeb930a1ab03b937d743ae0ec80b7048aa4fa968828bcf"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/manual-review-guide.md",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/manual-review-guide.md",
+      "bytes": 3289,
+      "sha256": "2d5afbeaa7b8d45666d79229a44cae5821db3992469c776e03ff810e9abcbb02"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/manual-review-ready-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/manual-review-ready-receipt.json",
+      "bytes": 281,
+      "sha256": "d06c93d2253f580bd1dd932e3975ea1c433d5cf2527906ae2cc2326f25cf9086"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/manual-review-restore-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/manual-review-restore-receipt.json",
+      "bytes": 295,
+      "sha256": "8b6555ed9f808773cfb4411ead5d9353c4bb6fde3c8a838a46d5aac09a22733a"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/manual-review-scene-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/manual-review-scene-readback.json",
+      "bytes": 7360,
+      "sha256": "8957e28ae8ed853bb718e13bf75d5b4a647e899e70f87b1d43be123e7feb174d"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/manual-review-scene-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/manual-review-scene-receipt.json",
+      "bytes": 202,
+      "sha256": "d7e5f4d24ba787039e5b6871b4c1731bb4fa3cc8e7d2885629ce602162e24623"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/schema-import-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/schema-import-readback.json",
+      "bytes": 120,
+      "sha256": "39602678a21c68a9fc2acfddc5f913f94e114529eab8ad84bfbe8e1a1d7ee079"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/source-vfx-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/source-vfx-readback.json",
+      "bytes": 939632,
+      "sha256": "371754c856e6d1e19a7c916b1b32fd68ac303a563a151d07789964d612bc9ef5"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/wingman-build-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/wingman-build-receipt.json",
+      "bytes": 505,
+      "sha256": "748aa3a26d6d4bdd8f2adee4ca8c6981de5a62d03e6f7bc5964fff7e06cae1fe"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/wingman-runtime-250-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/wingman-runtime-250-receipt.json",
+      "bytes": 123562,
+      "sha256": "547f4cc5e1afda750b9ceda5cebbf89d26d582185de8a0ccfa77eb105e6aa00e"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/wingman-runtime-500-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/wingman-runtime-500-receipt.json",
+      "bytes": 240861,
+      "sha256": "81995ed8aeab8b8fe8ecac20ca63baf1d8cdb2add4926f33cfd1c943d17c114f"
+    },
+    {
+      "source": "outputs/performance/20261009-client-three-optimizations/wingman-runtime-receipt.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-client-three-optimizations/wingman-runtime-receipt.json",
+      "bytes": 36726,
+      "sha256": "dac5303a677943708c7d8106bdabcf0f9a9e5e21402be26ad899acbb47c01cf1"
+    },
+    {
+      "source": "outputs/performance/20261009-hit-vfx-options/native-geometry-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-hit-vfx-options/native-geometry-readback.json",
+      "bytes": 1597,
+      "sha256": "d5292f7d583a58a16b6797570dfc81900f207d02a9a9fa333179ec4620c56c57"
+    },
+    {
+      "source": "outputs/performance/20261009-hit-vfx-options/native-renderer-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-hit-vfx-options/native-renderer-readback.json",
+      "bytes": 9313,
+      "sha256": "0976b5fcbb5099f248c97ef535c5d9a53f579b1d1f397d73ab4e719f586422f5"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/asset-paired-results.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/asset-paired-results.json",
+      "bytes": 687826,
+      "sha256": "d429a6a7745cd4c32031032690c1a1d13f0f30dd62fe7b581df813eec367d1e5"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/blueprint-binding-final-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/blueprint-binding-final-readback.json",
+      "bytes": 1459,
+      "sha256": "5d07de31b85f4750db503962c5e078b31de699221fd061b63e6c91d9fccbe990"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/final-saved-scene-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/final-saved-scene-readback.json",
+      "bytes": 29556,
+      "sha256": "43b15b32fcfcb652219f2559151666891b3e813b9a6b665b2391811da55033da"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/flash-bounds-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/flash-bounds-readback.json",
+      "bytes": 1679,
+      "sha256": "52954cbc303eb5f6543577f440033c11a7e9c38947626285e105c4bc97a34dea"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/formal-reference-export-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/formal-reference-export-readback.json",
+      "bytes": 1590,
+      "sha256": "9ac3e0b918c4195dddf975376cf3ea77d67af05c0032c7ad2d317466edfc2d1f"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/formal-reference-final-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/formal-reference-final-readback.json",
+      "bytes": 3117,
+      "sha256": "cb1a22e6bb7dffe1887084cd7909fa714a5dda10b3757c72fe442a478537c322"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/handoff-validation-final.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/handoff-validation-final.json",
+      "bytes": 824,
+      "sha256": "386e23151f41c377be2fe442422947bf73d5aeb212f37059305603528a93a3be"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/implementation-results.md",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/implementation-results.md",
+      "bytes": 9808,
+      "sha256": "5734fb9b0582e339745c07b845e5fbcc0e432cec619426a2f5f5666031068cd2"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/initial-editor-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/initial-editor-readback.json",
+      "bytes": 15325,
+      "sha256": "629a7a99b06d58495c970b175f003c964494ccbf607ba389e60748c3ab62d989"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/laser-collision-final-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/laser-collision-final-readback.json",
+      "bytes": 5934,
+      "sha256": "f3a85b407a080f740c264d9e13395d96953131888bf5cee79a27efae4a5512a4"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/measured-stage-results.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/measured-stage-results.json",
+      "bytes": 70324,
+      "sha256": "da0355c50e7d74a5afd8a5a4c4f9dd8734ba37c78cead73ecb537a6d9d2151c2"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/paired-results.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/paired-results.json",
+      "bytes": 44053,
+      "sha256": "488a327f788632b62e38dbc9207a86bfe52f0abf17a7d2be908fd2a7fb4bb1bc"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/progress-validation-final.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/progress-validation-final.json",
+      "bytes": 2875,
+      "sha256": "f725f93ed79316c2836e556dde1f078dd801d4683619093f14e5529846da6700"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/progress-validation-formal-publication.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/progress-validation-formal-publication.json",
+      "bytes": 2875,
+      "sha256": "f725f93ed79316c2836e556dde1f078dd801d4683619093f14e5529846da6700"
+    },
+    {
+      "source": "outputs/performance/20261009-implementation/runtime-flight-paired-results.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-implementation/runtime-flight-paired-results.json",
+      "bytes": 310655,
+      "sha256": "dec7c74c1ce39924d8c169b69c05729fa5234d8564aa8ff8ef4850da0aa04385"
+    },
+    {
+      "source": "outputs/performance/20261009-nonmass-plan/analysis-source-manifest.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-nonmass-plan/analysis-source-manifest.json",
+      "bytes": 9706,
+      "sha256": "8a3e5d0f0c830bc78ef925fabf0cfa6fdfcbf674b994041011c3fc8100729444"
+    },
+    {
+      "source": "outputs/performance/20261009-nonmass-plan/document-validation.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-nonmass-plan/document-validation.json",
+      "bytes": 6252,
+      "sha256": "bad4fda67475e9f6e3a53378c39f9ff4a4a99f3a927b3ca8c75fd8c135f86aef"
+    },
+    {
+      "source": "outputs/performance/20261009-stress-frame-analysis/capture-result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-stress-frame-analysis/capture-result.json",
+      "bytes": 28764,
+      "sha256": "150d933f4fb49ef686f7339322d8d5e50f39be56d7b2b5ae6953cbb8d422ff62"
+    },
+    {
+      "source": "outputs/performance/20261009-stress-frame-analysis/frame-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-stress-frame-analysis/frame-analysis.json",
+      "bytes": 279310,
+      "sha256": "ad3f166d4a454d45a24b45f6ac7be5302e1666c0ee12afc350d373315df3bdf3"
+    },
+    {
+      "source": "outputs/performance/20261009-stress-frame-analysis/pool-settings-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-stress-frame-analysis/pool-settings-readback.json",
+      "bytes": 2078,
+      "sha256": "c042ebc5b371994215f0fc9cddbc18f9e09a9b5a9c35ef396cceef6158bda0a5"
+    },
+    {
+      "source": "outputs/performance/20261009-stress-frame-analysis/report.md",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-stress-frame-analysis/report.md",
+      "bytes": 11354,
+      "sha256": "4f1a772d86ca27bf0d17653c3723d288689751c6a872c57e350b1e361e4238d4"
+    },
+    {
+      "source": "outputs/performance/20261009-stress-frame-analysis/validation.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261009-stress-frame-analysis/validation.json",
+      "bytes": 5711,
+      "sha256": "e5841bd50e517c58609e80631b47495d9cd3a4ed6fbd4de2c517583e547d9261"
+    },
+    {
+      "source": "outputs/performance/20261010-client1-live-frame-analysis/frame-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-client1-live-frame-analysis/frame-analysis.json",
+      "bytes": 277906,
+      "sha256": "2c8c61a181b812138e6d023e0f29d0fc9b976441623474713cc9e63c319a1488"
+    },
+    {
+      "source": "outputs/performance/20261010-client1-live-frame-analysis/report.md",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-client1-live-frame-analysis/report.md",
+      "bytes": 6563,
+      "sha256": "9a6f5837950fe519aeb4227917ba608f4fb5b8b686ad4f91013a333bb133060a"
+    },
+    {
+      "source": "outputs/performance/20261010-client1-live-frame-analysis/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-client1-live-frame-analysis/result.json",
+      "bytes": 1214,
+      "sha256": "d983f19cb0aff9128bd0965326b4c26b7aeca08fbc55d7e1957ddb70d00aaaf7"
+    },
+    {
+      "source": "outputs/performance/20261010-dense200-live/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-dense200-live/result.json",
+      "bytes": 1328,
+      "sha256": "8ed8ec770e1c1c52f726c782147f0ccf8c023e6564a476788dfa7a6cdc55dfab"
+    },
+    {
+      "source": "outputs/performance/20261010-dense200-moving/frame-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-dense200-moving/frame-analysis.json",
+      "bytes": 279012,
+      "sha256": "7dc8f0a0c68d3a6d74e585b34d9768b455b836a1120b8eaf8aecb65343a03395"
+    },
+    {
+      "source": "outputs/performance/20261010-dense200-moving/gpu-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-dense200-moving/gpu-analysis.json",
+      "bytes": 16926,
+      "sha256": "684683818307c26fbda8c4858895e20386c837f202e6df33f09271469250385b"
+    },
+    {
+      "source": "outputs/performance/20261010-dense200-moving/report.md",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-dense200-moving/report.md",
+      "bytes": 8364,
+      "sha256": "67f01cd8c94872074f1b41be1845f6d6dbd5cf0ab2c3656f9588e671e97f0892"
+    },
+    {
+      "source": "outputs/performance/20261010-dense200-moving/result.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-dense200-moving/result.json",
+      "bytes": 1442,
+      "sha256": "75ccbebb6bf1cf2f5f912d9f77682b7bca9349aa11d00c7aa5343b7b79a018fa"
+    },
+    {
+      "source": "outputs/performance/20261010-dense200-moving/slate-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-dense200-moving/slate-analysis.json",
+      "bytes": 2503,
+      "sha256": "002d84b1e3aa71fe2ea335cc3731e112e1f45dff4e4f16c7a3a2a3b33f3d1f0b"
+    },
+    {
+      "source": "outputs/performance/20261010-movement-cost-analysis/movement-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-movement-cost-analysis/movement-analysis.json",
+      "bytes": 12191,
+      "sha256": "0ac82f7f1b65cee87bcc2926d187c89b0ca2d54577bff5148191abc060a2c7a1"
+    },
+    {
+      "source": "outputs/performance/20261010-movement-cost-analysis/report.md",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-movement-cost-analysis/report.md",
+      "bytes": 9734,
+      "sha256": "64965b1646e3d47d297c02e22a8080f47e119311e8102dc13ebf945eafdbc358"
+    },
+    {
+      "source": "outputs/performance/20261010-server-statetree-analysis/analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-server-statetree-analysis/analysis.json",
+      "bytes": 26838,
+      "sha256": "ccc3b668a3fa19cdb6e5a569c49aa1fcd2d61950dce146b72101a5282f79d58f"
+    },
+    {
+      "source": "outputs/performance/20261010-server-statetree-analysis/editor-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-server-statetree-analysis/editor-readback.json",
+      "bytes": 326,
+      "sha256": "dfe2b0dee411ff61183358bd093bd7f96599b472df6b3cc1bf04af7cd038cbfe"
+    },
+    {
+      "source": "outputs/performance/20261010-server-statetree-analysis/hierarchy-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-server-statetree-analysis/hierarchy-readback.json",
+      "bytes": 351565,
+      "sha256": "a65ba555769744c581fc5622166c36ba4da65a13e72ff63775efe5dc79d58bf4"
+    },
+    {
+      "source": "outputs/performance/20261010-server-statetree-analysis/processor-analysis.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-server-statetree-analysis/processor-analysis.json",
+      "bytes": 1646,
+      "sha256": "712324ed0d8df88b8b82a22de69020aa3731c3d5beabefe7d53bd5a85a9abe55"
+    },
+    {
+      "source": "outputs/performance/20261010-server-statetree-analysis/report.md",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-server-statetree-analysis/report.md",
+      "bytes": 9846,
+      "sha256": "cc051297db780f67dc0a06da3dcd97dcd5e34e576e407922e98b8b23284aabe3"
+    },
+    {
+      "source": "outputs/performance/20261010-server-statetree-analysis/runtime-readback.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-server-statetree-analysis/runtime-readback.json",
+      "bytes": 297,
+      "sha256": "f0451ee37d426278de9a4a2cd9097ef5b55f3745352122e147168df72680de0a"
+    },
+    {
+      "source": "outputs/performance/20261010-slate-prepass-live/report.md",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-slate-prepass-live/report.md",
+      "bytes": 5515,
+      "sha256": "908f064ef9095927eb4de7c940d1005d9ff987fdd3f670fe0c80c3e0e971bd1a"
+    },
+    {
+      "source": "outputs/performance/20261010-slate-window-attribution/report.md",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-slate-window-attribution/report.md",
+      "bytes": 5046,
+      "sha256": "d4a93e62810671d387709bc8129740c80fdd3a3037d9809823989c4e0d38793a"
+    },
+    {
+      "source": "outputs/performance/20261010-slate-window-attribution/summary.json",
+      "archive": "Artifacts/Diagnostics/ClientPerformance20261010/prior-stages/20261010-slate-window-attribution/summary.json",
+      "bytes": 7580,
+      "sha256": "328c6f8de1a4963f2cb3f90fef750aa98de5e9780bd9456143887c3020956101"
+    }
+  ]
+}

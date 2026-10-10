@@ -5,6 +5,12 @@
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 #include "Engine/PackageMapClient.h"
 #include "NiagaraSystem.h"
+#include "HAL/IConsoleManager.h"
+
+static TAutoConsoleVariable<int32> CVarFlightCurveCoefficients(TEXT("gs.Flights.PrecomputeCurves"), 1,
+	TEXT("Freeze seed-stable curve coefficients at launch; 0 retains original per-step evaluation."));
+
+bool GuLiCombatEffects::ShouldPrecomputeCurves() { return CVarFlightCurveCoefficients.GetValueOnGameThread() != 0; }
 
 UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_GuLi_CombatEffectMissileWeapon, "Weapon.Missile");
 
@@ -261,50 +267,67 @@ bool FGuLiCombatShotCue::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOut
 	return true;
 }
 
-FVector GuLiCombatEffects::LiftPosition(const FGuLiCombatEffectState& State, const float Age)
+void FGuLiProjectileCurveCoefficients::Initialize(const FGuLiCombatEffectState& State)
 {
 	FRandomStream Random(State.RandomSeed);
-	const float Height = Random.FRandRange(State.Motion.MinimumLiftHeight, State.Motion.MaximumLiftHeight);
-	const float Side = Random.FRandRange(-State.Motion.LateralOffset, State.Motion.LateralOffset);
+	Height = Random.FRandRange(State.Motion.MinimumLiftHeight, State.Motion.MaximumLiftHeight);
+	Side = Random.FRandRange(-State.Motion.LateralOffset, State.Motion.LateralOffset);
+	if (State.Motion.VerticalCurve > 0 || State.Motion.LongitudinalCurve > 0)
+	{
+		Phase = Random.FRandRange(-PI, PI);
+		Frequency = Random.FRandRange(1.7f, 3.8f);
+		Vertical = Random.FRandRange(0.35f, 1.0f) * State.Motion.VerticalCurve;
+		Longitudinal = Random.FRandRange(-1.0f, 1.0f) * State.Motion.LongitudinalCurve;
+	}
+	LiftForward = FVector(State.LaunchDirection).GetSafeNormal2D(UE_SMALL_NUMBER, FVector::ForwardVector);
+	LiftRight = FVector::CrossProduct(FVector::UpVector, LiftForward);
+	CurveForward = FVector(State.LaunchDirection).GetSafeNormal2D();
+}
+
+FVector GuLiCombatEffects::LiftPosition(const FGuLiCombatEffectState& State, const float Age, const FGuLiProjectileCurveCoefficients* Coefficients)
+{
+	FRandomStream Random(State.RandomSeed);
+	const float Height = Coefficients ? Coefficients->Height : Random.FRandRange(State.Motion.MinimumLiftHeight, State.Motion.MaximumLiftHeight);
+	const float Side = Coefficients ? Coefficients->Side : Random.FRandRange(-State.Motion.LateralOffset, State.Motion.LateralOffset);
 	const float Alpha = FMath::Clamp(Age / State.Motion.LiftSeconds, 0.0f, 1.0f);
-	const FVector Forward = FVector(State.LaunchDirection).GetSafeNormal2D(UE_SMALL_NUMBER, FVector::ForwardVector);
-	const FVector Right = FVector::CrossProduct(FVector::UpVector, Forward);
+	const FVector Forward = Coefficients ? Coefficients->LiftForward : FVector(State.LaunchDirection).GetSafeNormal2D(UE_SMALL_NUMBER, FVector::ForwardVector);
+	const FVector Right = Coefficients ? Coefficients->LiftRight : FVector::CrossProduct(FVector::UpVector, Forward);
 	return FVector(State.LaunchLocation) + FVector::UpVector * Height * Alpha
 		+ Forward * State.Motion.Speed * State.Motion.LiftSeconds * 0.3f * Alpha
 		+ Right * Side * FMath::Sin(Alpha * HALF_PI);
 }
 
-FVector GuLiCombatEffects::AdvanceProjectile(FGuLiCombatEffectState& State, const float NewAge, const float DeltaSeconds)
+FVector GuLiCombatEffects::AdvanceProjectile(FGuLiCombatEffectState& State, const float NewAge, const float DeltaSeconds, const FGuLiProjectileCurveCoefficients* Coefficients)
 {
 	const FVector Previous = State.Location;
 	if (DeltaSeconds <= 0 || !FMath::IsFinite(DeltaSeconds)) return Previous;
 	if (State.Motion.LiftSeconds > 0 && NewAge <= State.Motion.LiftSeconds)
 	{
-		State.Location = LiftPosition(State, NewAge);
+		State.Location = LiftPosition(State, NewAge, Coefficients);
 		State.Velocity = (FVector(State.Location) - Previous) / DeltaSeconds;
 		return State.Location;
 	}
 	const FVector ToTarget = FVector(State.LastTargetLocation) - Previous;
 	const double Distance = ToTarget.Size();
 	FRandomStream Random(State.RandomSeed);
-	Random.FRand(); // Keep the random stream positions shared with LiftPosition.
-	const float Side = Random.FRandRange(-State.Motion.LateralOffset, State.Motion.LateralOffset);
+	if (!Coefficients) Random.FRand(); // Preserve the original sequence in the rollback path.
+	const float Side = Coefficients ? Coefficients->Side : Random.FRandRange(-State.Motion.LateralOffset, State.Motion.LateralOffset);
 	const FVector Right = FVector::CrossProduct(FVector::UpVector, ToTarget.GetSafeNormal2D()).GetSafeNormal();
 	const float Envelope = FMath::Clamp(static_cast<float>(Distance) / State.Motion.ConvergenceDistance, 0.0f, 1.0f);
 	FVector Curve = Right * Side * Envelope * FMath::Sin(NewAge * 3.0f);
 	if (State.Motion.VerticalCurve > 0 || State.Motion.LongitudinalCurve > 0)
 	{
-		const float Phase = Random.FRandRange(-PI, PI);
-		const float Frequency = Random.FRandRange(1.7f, 3.8f);
-		const float Vertical = Random.FRandRange(0.35f, 1.0f) * State.Motion.VerticalCurve;
-		const float Longitudinal = Random.FRandRange(-1.0f, 1.0f) * State.Motion.LongitudinalCurve;
+		const float Phase = Coefficients ? Coefficients->Phase : Random.FRandRange(-PI, PI);
+		const float Frequency = Coefficients ? Coefficients->Frequency : Random.FRandRange(1.7f, 3.8f);
+		const float Vertical = Coefficients ? Coefficients->Vertical : Random.FRandRange(0.35f, 1.0f) * State.Motion.VerticalCurve;
+		const float Longitudinal = Coefficients ? Coefficients->Longitudinal : Random.FRandRange(-1.0f, 1.0f) * State.Motion.LongitudinalCurve;
 		const float SmoothEnvelope = Envelope * Envelope * (3.0f - 2.0f * Envelope);
 		const float Departure = FMath::Clamp((NewAge - State.Motion.LiftSeconds) / 0.3f, 0.0f, 1.0f);
 		// Offsets vanish with zero slope near impact. Each missile owns its height,
 		// frequency, phase and fore/aft bend; none is driven by client frame randomness.
 		Curve = (Right * Side * FMath::Sin(NewAge * Frequency + Phase)
 			+ FVector::UpVector * Vertical * (0.6f + 0.4f * FMath::Sin(NewAge * Frequency * 0.73f - Phase))
-			+ FVector(State.LaunchDirection).GetSafeNormal2D() * Longitudinal * FMath::Sin(NewAge * Frequency * 0.61f + Phase))
+			+ (Coefficients ? Coefficients->CurveForward : FVector(State.LaunchDirection).GetSafeNormal2D()) * Longitudinal * FMath::Sin(NewAge * Frequency * 0.61f + Phase))
 			* SmoothEnvelope * Departure;
 	}
 	const FVector Desired = (ToTarget + Curve).GetSafeNormal();

@@ -1,0 +1,7 @@
+{
+  "dense200-r1-mode2-initial": "20% expiry before presentation; throughput mismatch; already replaced.",
+  "dense200-r2-mode1-initial": "1550 expired / 8184 accepted; exclude and recapture.",
+  "stress-initial": "Reliable flight events accumulate upstream and actual muzzle acceptance drops to zero. Configured 250000 B/s is a per-client budget, not measured traffic. A transient 1000000 B/s preflight also produced zero acceptance; the existing maximum eight batches per FlushFlightStreams additionally limits service rate. Final pressure pairs use the original 250000 B/s budget and unchanged packet contract in all modes. Their frame/workload data is retained, but they cannot prove muzzle batching gains.",
+  "correction": "Earlier bandwidth-only diagnosis and intention to obtain accepted muzzles by raising the budget were disproved by stress-link-preflight.json. No measured server-total egress above 250 KB/s was established.",
+  "cpu-trace-incomplete": "dense200-r3-mode2 and stress-r1-mode2 original CSV was valid, but Trace CPU transport stalled before the declared window (zero eligible GT frames). Preserve originals separately and recapture both after a normal editor restart; same runtime DLL, settings and native workload."
+}

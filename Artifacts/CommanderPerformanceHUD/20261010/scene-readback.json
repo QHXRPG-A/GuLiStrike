@@ -1,0 +1,32 @@
+{
+  "success": true,
+  "compile": "not_run",
+  "runtime": "not_run",
+  "text_table": {
+    "path": "/Game/GuLiStrike/Data/DT_GuLiStrikeGameTexts_Texts",
+    "rows": 240,
+    "added": 11,
+    "full_readback_matches_source": true,
+    "saved": true,
+    "method": "DataTableService.AddRow in place"
+  },
+  "preexisting_dirty_maps": [
+    "/Game/Maps/LVL_CommanderMassPrototype"
+  ],
+  "scene": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "entry_actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_69",
+    "label": "NetworkHUD_Entry",
+    "location": [
+      1500.0,
+      69000.0,
+      1399.977111816406
+    ],
+    "instructions": "网络HUD验证（2026-10-10）：先编译并加载本次原生代码，再按原流程进入指挥官客户端。\n左上角每秒显示本客户端连接的收/发/合计KB/s、包/丢包速率、本端发送额度、可靠待确认块数和发送欠账。1KB=1000B。\n飞行事件：解码条数/s、应用载荷KB/s、平均估计年龄；它不是实际播放数量，估龄可能含服务器时钟误差。\n同进程PIE额外显示当前客户端对应服务端的下行额度、可靠待确认数、欠账、飞行应用待发条数和队首事件年龄。跨进程为不可用。\n对比安静场景与大量单位移动/交火：关注收发速率是否接近发送额度，以及飞行待发条数/队首年龄是否持续增长。\n单机/本地服务端视口不冒充客户端流量；未完成采样或没有新年龄样本显示--。框选、移动、S停止与切角色应保持正常。\n本次仅静态检查和场景准备；编译、运行显示与玩家验收单独记录。",
+    "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+    "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+    "hud": "/Script/GuLiStrike.GuLiCommanderHUD",
+    "saved": true,
+    "entity_readback": true
+  }
+}

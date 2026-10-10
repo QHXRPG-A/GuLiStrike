@@ -1,0 +1,434 @@
+{
+  "current_no_ship": {
+    "csv": {
+      "numeric_frames": 905,
+      "metrics": {
+        "Exclusive/GameThread/CharacterMovement": {
+          "frames": 905,
+          "mean": 2.0804686187845305,
+          "median": 2.0384,
+          "p95": 2.6553,
+          "max": 3.5826,
+          "nonzero_frames": 905
+        },
+        "Ticks/GuLiExternalCharacterMovementComponent": {
+          "frames": 905,
+          "mean": 102.0,
+          "median": 102.0,
+          "p95": 102.0,
+          "max": 102.0,
+          "nonzero_frames": 905
+        },
+        "Ticks/GuLiWingmanRelayComponent": {
+          "frames": 905,
+          "mean": 4.0,
+          "median": 4.0,
+          "p95": 4.0,
+          "max": 4.0,
+          "nonzero_frames": 905
+        },
+        "FrameTime": {
+          "frames": 905,
+          "mean": 33.210413038674034,
+          "median": 32.4778,
+          "p95": 40.8619,
+          "max": 60.5454,
+          "nonzero_frames": 905
+        },
+        "GameThreadTime": {
+          "frames": 905,
+          "mean": 33.17607005524862,
+          "median": 32.4466,
+          "p95": 40.8035,
+          "max": 53.1614,
+          "nonzero_frames": 905
+        }
+      },
+      "units": "Ticks/* and ActorCount/* are counts, not milliseconds; server RPC custom-stat units not inferred."
+    },
+    "trace": {
+      "complete_frames": 902,
+      "world_count_distribution": {
+        "4": 902
+      },
+      "timers_ms_per_engine_frame": {
+        "UCharacterMovementComponent_TickComponent": {
+          "frames": 902,
+          "mean": 2.087710088691796,
+          "median": 2.04555,
+          "p95": 2.6627,
+          "max": 3.5957,
+          "nonzero_frames": 902
+        },
+        "WingmanRelay": {
+          "frames": 902,
+          "mean": 0.0173009977827051,
+          "median": 0.0176,
+          "p95": 0.0224,
+          "max": 0.1465,
+          "nonzero_frames": 902
+        },
+        "GuLiWingmanPresentationActor": {
+          "frames": 902,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "max": 0,
+          "nonzero_frames": 0
+        },
+        "NS_WingmanFlightTrail": {
+          "frames": 902,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "max": 0,
+          "nonzero_frames": 0
+        },
+        "Projectile Movement": {
+          "frames": 902,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "max": 0,
+          "nonzero_frames": 0
+        }
+      },
+      "character_movement_by_world_order": {
+        "1": {
+          "calls": {
+            "frames": 902,
+            "mean": 0.0,
+            "median": 0.0,
+            "p95": 0,
+            "max": 0,
+            "nonzero_frames": 0
+          },
+          "inclusive_ms": {
+            "frames": 902,
+            "mean": 0.0,
+            "median": 0.0,
+            "p95": 0,
+            "max": 0,
+            "nonzero_frames": 0
+          }
+        },
+        "2": {
+          "calls": {
+            "frames": 902,
+            "mean": 34.0,
+            "median": 34.0,
+            "p95": 34,
+            "max": 34,
+            "nonzero_frames": 902
+          },
+          "inclusive_ms": {
+            "frames": 902,
+            "mean": 0.8401439024390244,
+            "median": 0.78425,
+            "p95": 1.2426,
+            "max": 2.1881,
+            "nonzero_frames": 902
+          }
+        },
+        "3": {
+          "calls": {
+            "frames": 902,
+            "mean": 34.0,
+            "median": 34.0,
+            "p95": 34,
+            "max": 34,
+            "nonzero_frames": 902
+          },
+          "inclusive_ms": {
+            "frames": 902,
+            "mean": 0.6483169623059867,
+            "median": 0.6274,
+            "p95": 0.9072,
+            "max": 1.3609,
+            "nonzero_frames": 902
+          }
+        },
+        "4": {
+          "calls": {
+            "frames": 902,
+            "mean": 34.0,
+            "median": 34.0,
+            "p95": 34,
+            "max": 34,
+            "nonzero_frames": 902
+          },
+          "inclusive_ms": {
+            "frames": 902,
+            "mean": 0.5992492239467849,
+            "median": 0.5855,
+            "p95": 0.7577,
+            "max": 1.2276,
+            "nonzero_frames": 902
+          }
+        }
+      },
+      "identity_boundary": "World order is descriptive; authority verified from representative descendants. Client A/B not assigned to Client1/2.",
+      "aggregation": "Inclusive scope durations; child timers cannot be added to their parents. All values aggregate this same-process server plus two clients."
+    }
+  },
+  "previous_ship_stress": {
+    "csv": {
+      "numeric_frames": 467,
+      "metrics": {
+        "CharacterMovement/GameThread/CharacterMovementServerMove": {
+          "frames": 467,
+          "mean": 0.19491884368308351,
+          "median": 0.1884,
+          "p95": 0.2472,
+          "max": 0.469,
+          "nonzero_frames": 467
+        },
+        "Exclusive/GameThread/CharacterMovement": {
+          "frames": 467,
+          "mean": 1.2704550321199144,
+          "median": 1.2437,
+          "p95": 1.4911,
+          "max": 1.7074,
+          "nonzero_frames": 467
+        },
+        "Exclusive/GameThread/ProjectileMovement": {
+          "frames": 467,
+          "mean": 3.8477216274089936,
+          "median": 2.3538,
+          "p95": 8.5885,
+          "max": 13.5273,
+          "nonzero_frames": 467
+        },
+        "ActorCount/GuLiWingmanPawn": {
+          "frames": 467,
+          "mean": 50.0,
+          "median": 50.0,
+          "p95": 50.0,
+          "max": 50.0,
+          "nonzero_frames": 467
+        },
+        "ReplicationRPCs/ServerMovePacked": {
+          "frames": 467,
+          "mean": 0.18113404710920772,
+          "median": 0.0,
+          "p95": 0.0,
+          "max": 84.5896,
+          "nonzero_frames": 1
+        },
+        "Ticks/ProjectileMovementComponent": {
+          "frames": 467,
+          "mean": 123.12633832976445,
+          "median": 125.0,
+          "p95": 125.0,
+          "max": 125.0,
+          "nonzero_frames": 460
+        },
+        "Ticks/GuLiGroundMechCharacter": {
+          "frames": 467,
+          "mean": 3.0,
+          "median": 3.0,
+          "p95": 3.0,
+          "max": 3.0,
+          "nonzero_frames": 467
+        },
+        "Ticks/GuLiExternalCharacterMovementComponent": {
+          "frames": 467,
+          "mean": 102.0,
+          "median": 102.0,
+          "p95": 102.0,
+          "max": 102.0,
+          "nonzero_frames": 467
+        },
+        "Ticks/GuLiGroundMechMovementComponent": {
+          "frames": 467,
+          "mean": 3.0,
+          "median": 3.0,
+          "p95": 3.0,
+          "max": 3.0,
+          "nonzero_frames": 467
+        },
+        "Ticks/GuLiGroundMechRocketComponent": {
+          "frames": 467,
+          "mean": 3.0,
+          "median": 3.0,
+          "p95": 3.0,
+          "max": 3.0,
+          "nonzero_frames": 467
+        },
+        "Ticks/GuLiGroundMechWeaponComponent": {
+          "frames": 467,
+          "mean": 3.0,
+          "median": 3.0,
+          "p95": 3.0,
+          "max": 3.0,
+          "nonzero_frames": 467
+        },
+        "Ticks/GuLiShipMovementComponent": {
+          "frames": 467,
+          "mean": 3.0,
+          "median": 3.0,
+          "p95": 3.0,
+          "max": 3.0,
+          "nonzero_frames": 467
+        },
+        "Ticks/GuLiWingmanRelayComponent": {
+          "frames": 467,
+          "mean": 4.0,
+          "median": 4.0,
+          "p95": 4.0,
+          "max": 4.0,
+          "nonzero_frames": 467
+        },
+        "Ticks/GuLiWingmanPresentationActor": {
+          "frames": 467,
+          "mean": 2.0,
+          "median": 2.0,
+          "p95": 2.0,
+          "max": 2.0,
+          "nonzero_frames": 467
+        },
+        "FrameTime": {
+          "frames": 467,
+          "mean": 64.32787344753747,
+          "median": 63.5169,
+          "p95": 88.0202,
+          "max": 101.0996,
+          "nonzero_frames": 467
+        },
+        "GameThreadTime": {
+          "frames": 467,
+          "mean": 64.34498501070664,
+          "median": 63.6986,
+          "p95": 87.6761,
+          "max": 101.5549,
+          "nonzero_frames": 467
+        }
+      },
+      "units": "Ticks/* and ActorCount/* are counts, not milliseconds; server RPC custom-stat units not inferred."
+    },
+    "trace": {
+      "complete_frames": 464,
+      "world_count_distribution": {
+        "4": 464
+      },
+      "timers_ms_per_engine_frame": {
+        "UCharacterMovementComponent_TickComponent": {
+          "frames": 464,
+          "mean": 1.2792461206896553,
+          "median": 1.2525499999999998,
+          "p95": 1.5094,
+          "max": 1.7169,
+          "nonzero_frames": 464
+        },
+        "WingmanRelay": {
+          "frames": 464,
+          "mean": 0.8101657327586207,
+          "median": 0.83145,
+          "p95": 1.0745,
+          "max": 1.4929000000000001,
+          "nonzero_frames": 464
+        },
+        "GuLiWingmanPresentationActor": {
+          "frames": 464,
+          "mean": 0.46193146551724135,
+          "median": 0.45830000000000004,
+          "p95": 0.5911,
+          "max": 0.9404999999999999,
+          "nonzero_frames": 464
+        },
+        "NS_WingmanFlightTrail": {
+          "frames": 464,
+          "mean": 0.3809060344827586,
+          "median": 0.36885,
+          "p95": 0.4499,
+          "max": 0.6587,
+          "nonzero_frames": 464
+        },
+        "Projectile Movement": {
+          "frames": 464,
+          "mean": 3.88916099137931,
+          "median": 2.36665,
+          "p95": 8.6875,
+          "max": 14.050699999999999,
+          "nonzero_frames": 464
+        }
+      },
+      "character_movement_by_world_order": {
+        "1": {
+          "calls": {
+            "frames": 464,
+            "mean": 0.0,
+            "median": 0.0,
+            "p95": 0,
+            "max": 0,
+            "nonzero_frames": 0
+          },
+          "inclusive_ms": {
+            "frames": 464,
+            "mean": 0.0,
+            "median": 0.0,
+            "p95": 0,
+            "max": 0,
+            "nonzero_frames": 0
+          }
+        },
+        "2": {
+          "calls": {
+            "frames": 464,
+            "mean": 36.0,
+            "median": 36.0,
+            "p95": 36,
+            "max": 36,
+            "nonzero_frames": 464
+          },
+          "inclusive_ms": {
+            "frames": 464,
+            "mean": 0.45118706896551725,
+            "median": 0.42045,
+            "p95": 0.6147,
+            "max": 0.7689,
+            "nonzero_frames": 464
+          }
+        },
+        "3": {
+          "calls": {
+            "frames": 464,
+            "mean": 36.0,
+            "median": 36.0,
+            "p95": 36,
+            "max": 36,
+            "nonzero_frames": 464
+          },
+          "inclusive_ms": {
+            "frames": 464,
+            "mean": 0.4327120689655172,
+            "median": 0.41775,
+            "p95": 0.5535,
+            "max": 0.754,
+            "nonzero_frames": 464
+          }
+        },
+        "4": {
+          "calls": {
+            "frames": 464,
+            "mean": 36.0,
+            "median": 36.0,
+            "p95": 36,
+            "max": 36,
+            "nonzero_frames": 464
+          },
+          "inclusive_ms": {
+            "frames": 464,
+            "mean": 0.3953469827586207,
+            "median": 0.38555,
+            "p95": 0.4814,
+            "max": 0.7488,
+            "nonzero_frames": 464
+          }
+        }
+      },
+      "identity_boundary": "World order is descriptive; authority verified from representative descendants. Client A/B not assigned to Client1/2.",
+      "aggregation": "Inclusive scope durations; child timers cannot be added to their parents. All values aggregate this same-process server plus two clients."
+    }
+  }
+}

@@ -1,0 +1,236 @@
+{
+  "success": true,
+  "complete_frames": 902,
+  "window_seconds": 30.000512200058438,
+  "metrics_ms_per_engine_frame": {
+    "engine_gt_ms": {
+      "mean": 33.20205243902439,
+      "p50": 32.471900000000005,
+      "p95": 40.861200000000004,
+      "max": 60.5454
+    },
+    "slate_ms": {
+      "mean": 5.255453215077606,
+      "p50": 5.0523,
+      "p95": 6.5947000000000005,
+      "max": 8.171100000000001
+    },
+    "prepass_shared_ms": {
+      "mean": 1.9624050997782705,
+      "p50": 1.9299,
+      "p95": 2.1839,
+      "max": 3.0957
+    },
+    "editor_window_ms": {
+      "mean": 2.140728603104213,
+      "p50": 2.02775,
+      "p95": 2.9748,
+      "max": 4.1457999999999995
+    },
+    "client2_window_ms": {
+      "mean": 0.7730073170731707,
+      "p50": 0.68555,
+      "p95": 1.2496,
+      "max": 1.5793000000000001
+    },
+    "editor_outside_client1_viewport_ms": {
+      "mean": 1.137610975609756,
+      "p50": 1.0728499999999999,
+      "p95": 1.4973,
+      "max": 2.9524000000000004
+    },
+    "client1_viewport_ms": {
+      "mean": 1.0031176274944567,
+      "p50": 0.8826,
+      "p95": 1.5999,
+      "max": 2.5141999999999998
+    },
+    "client1_game_ui_ms": {
+      "mean": 0.9654701773835921,
+      "p50": 0.8454999999999999,
+      "p95": 1.5518999999999998,
+      "max": 2.447
+    },
+    "client2_viewport_ms": {
+      "mean": 0.7148380266075388,
+      "p50": 0.6295999999999999,
+      "p95": 1.1892,
+      "max": 1.5161
+    },
+    "client2_game_ui_ms": {
+      "mean": 0.6897259423503326,
+      "p50": 0.60615,
+      "p95": 1.1640000000000001,
+      "max": 1.4868
+    },
+    "common_outside_window_paint_ms": {
+      "mean": 0.3793121951219512,
+      "p50": 0.3755999999999997,
+      "p95": 0.5123999999999995,
+      "max": 0.8977000000000022
+    },
+    "other_window_viewport_common_ms": {
+      "mean": 0.5002410199556541,
+      "p50": 0.4920999999999997,
+      "p95": 0.6407000000000006,
+      "max": 1.0459000000000014
+    },
+    "client1_scene_update_ms": {
+      "mean": 0.30082993348115294,
+      "p50": 0.18589999999999998,
+      "p95": 0.7753,
+      "max": 1.3924
+    },
+    "client1_scene_paint_ms": {
+      "mean": 0.4198577605321508,
+      "p50": 0.40455,
+      "p95": 0.6386999999999999,
+      "max": 0.9324
+    },
+    "client1_hud_update_ms": {
+      "mean": 0.0013177383592017737,
+      "p50": 0.0012,
+      "p95": 0.0022,
+      "max": 0.009099999999999999
+    },
+    "client1_hud_paint_ms": {
+      "mean": 0.22090254988913524,
+      "p50": 0.22594999999999998,
+      "p95": 0.34230000000000005,
+      "max": 0.6595000000000001
+    },
+    "client1_minimap_update_ms": {
+      "mean": 0.000953880266075388,
+      "p50": 0.0009,
+      "p95": 0.0014,
+      "max": 0.009000000000000001
+    },
+    "client1_minimap_paint_ms": {
+      "mean": 0.05988791574279379,
+      "p50": 0.0095,
+      "p95": 0.1454,
+      "max": 0.4191
+    },
+    "client2_scene_update_ms": {
+      "mean": 0.32298780487804873,
+      "p50": 0.22399999999999998,
+      "p95": 0.7318,
+      "max": 1.0118
+    },
+    "client2_scene_paint_ms": {
+      "mean": 0.15083913525498893,
+      "p50": 0.1467,
+      "p95": 0.1792,
+      "max": 0.31
+    },
+    "client2_hud_update_ms": {
+      "mean": 0.0012475609756097562,
+      "p50": 0.0012,
+      "p95": 0.0018,
+      "max": 0.0212
+    },
+    "client2_hud_paint_ms": {
+      "mean": 0.19449356984478935,
+      "p50": 0.1654,
+      "p95": 0.2806,
+      "max": 0.4168
+    },
+    "client2_minimap_update_ms": {
+      "mean": 0.0010059866962305987,
+      "p50": 0.0009,
+      "p95": 0.0013,
+      "max": 0.0224
+    },
+    "client2_minimap_paint_ms": {
+      "mean": 0.05852161862527717,
+      "p50": 0.00895,
+      "p95": 0.128,
+      "max": 0.1883
+    }
+  },
+  "physical_windows": [
+    {
+      "label": "Editor main window with embedded Client1",
+      "game_instance": "GameInstance_1",
+      "identity": "SLevelEditor descendant and GameInstance_1 UObject Tick/Paint paths"
+    },
+    {
+      "label": "Independent Client2 PIE window",
+      "game_instance": "GameInstance_2",
+      "identity": "SPIEViewport subtree and GameInstance_2 UObject Tick/Paint paths"
+    }
+  ],
+  "identity_examples": [
+    {
+      "instance": "GameInstance_2",
+      "is_editor": false,
+      "window_ms": 0.7029,
+      "viewport_ms": 0.6428,
+      "game_ui_ms": 0.6174999999999999,
+      "outside_viewport_ms": 0.06009999999999993,
+      "widget_ms": {
+        "scene_update": 0.2352,
+        "scene_paint": 0.2117,
+        "hud_update": 0.0014,
+        "hud_paint": 0.14750000000000002,
+        "minimap_update": 0.001,
+        "minimap_paint": 0.009000000000000001
+      },
+      "identity_scopes": [
+        "GuLiSceneUIWidget /Engine/Transient.UnrealEdEngine_0:GameInstance_2.GuLiSceneUIWidget_1_Tick",
+        "GuLiSceneUIWidget /Engine/Transient.UnrealEdEngine_0:GameInstance_2.GuLiSceneUIWidget_1_Paint"
+      ],
+      "start": 695.703806,
+      "end": 695.704509
+    },
+    {
+      "instance": "GameInstance_1",
+      "is_editor": true,
+      "window_ms": 3.1597999999999997,
+      "viewport_ms": 1.2926000000000002,
+      "game_ui_ms": 1.2455999999999998,
+      "outside_viewport_ms": 1.8671999999999995,
+      "widget_ms": {
+        "scene_update": 0.3178,
+        "scene_paint": 0.6568999999999999,
+        "hud_update": 0.002,
+        "hud_paint": 0.2385,
+        "minimap_update": 0.0012,
+        "minimap_paint": 0.011600000000000001
+      },
+      "identity_scopes": [
+        "GuLiSceneUIWidget /Engine/Transient.UnrealEdEngine_0:GameInstance_1.GuLiSceneUIWidget_1_Tick",
+        "GuLiSceneUIWidget /Engine/Transient.UnrealEdEngine_0:GameInstance_1.GuLiSceneUIWidget_1_Paint"
+      ],
+      "start": 695.704518,
+      "end": 695.707678
+    }
+  ],
+  "native_counter_crosscheck": [
+    {
+      "label": "Client1",
+      "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "native_scene_update_ms": 0.2941271341637353,
+      "native_scene_paint_ms": 0.4057001178435858,
+      "trace_widget_scene_update_ms": 0.30082993348115294,
+      "trace_widget_scene_paint_ms": 0.4198577605321508,
+      "scope_note": "UObject Tick/Paint wrapper includes dispatch and instrumentation overhead; native scope is narrower."
+    },
+    {
+      "label": "Client2",
+      "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "native_scene_update_ms": 0.3118466853436844,
+      "native_scene_paint_ms": 0.13954802030357866,
+      "trace_widget_scene_update_ms": 0.32298780487804873,
+      "trace_widget_scene_paint_ms": 0.15083913525498893,
+      "scope_note": "UObject Tick/Paint wrapper includes dispatch and instrumentation overhead; native scope is narrower."
+    }
+  ],
+  "limitations": [
+    "Slate::Prepass has one scope covering all visible windows. Its per-window layout time is absent from the original capture.",
+    "Pure editor paint excludes the entire Client1 SViewport_OnPaint subtree. Main-window common costs outside that viewport remain in the editor-window category.",
+    "Paint: Game UI includes widget Tick during paint, scene UI, Commander HUD and minimap; child scopes must not be added again.",
+    "P95 columns are separate metric percentiles and cannot be added to make total P95.",
+    "Source is the existing 30-second PIE capture. Current PIE has ended; no game session was launched or game/quality settings changed."
+  ]
+}

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Gameplay/Building/GuLiConstructionShape.h"
+#include "Gameplay/Vfx/GuLiPersistentEffectVisibility.h"
 #include "GuLiConstructionPresentationComponent.generated.h"
 
 class UGuLiBuildingLifecycleComponent;
@@ -33,6 +34,7 @@ public:
 	void SetConstructionAuthority(UGuLiBuildingLifecycleComponent* Building);
 	void InitializePresentation(AActor* Actor);
 	void HideBeams();
+	UFUNCTION(BlueprintPure, Category="Construction|Diagnostics") FString GetPresentationDiagnosticsJson() const;
 private:
 	UPROPERTY(ReplicatedUsing=OnRep_State) FGuLiConstructionPresentationState State;
 	UFUNCTION() void OnRep_State();
@@ -43,4 +45,6 @@ private:
 	FRotator TravelRotations[2];
 	FGuLiConstructionSpan SelectedSpan;
 	bool bShowing = false;
+	FGuLiPersistentEffectVisibility Visibility;
+	double NextVisibilityCheck = 0;
 };

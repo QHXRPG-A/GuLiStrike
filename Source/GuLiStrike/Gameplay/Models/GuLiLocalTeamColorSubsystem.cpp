@@ -6,6 +6,7 @@
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
 #include "Components/MeshComponent.h"
+#include "Commander/UI/GuLiSceneUISourceRegistry.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/InstancedStaticMeshComponent.h"
@@ -51,18 +52,20 @@ void UGuLiLocalTeamColorSubsystem::RegisterModelComponent(UMeshComponent* C, int
 	FGuLiStrikeModelsModelsRow D;
 	if (!Registry->GetModelDefinition(Id,D) || !D.bTeamColorEnabled) { Entries.Remove(C); return; }
 	if (auto* Existing = Entries.Find(C); Existing && Existing->ModelId == Id && Existing->PartKey == Part && Existing->ExplicitTeam == Team && Existing->bCandidate == Candidate) return;
+	UGuLiSceneUISourceRegistry::Notify(C->GetOwner(), EGuLiSceneUIChange::Membership);
 	auto& E = Entries.FindOrAdd(C); E = {}; E.Component=C; E.ModelId=Id; E.PartKey=Part; E.ExplicitTeam=Team; E.Definition=D; E.bCandidate=Candidate;
 	E.Bindings = Registry->GetMaterialParameters(Id,Candidate).FilterByPredicate([&](const auto& B)
 	{ return B.bTeamManaged && (B.PartKey == Part || (B.Driver == TEXT("CPD") && B.PartKey == TEXT("Root") && B.MaterialSlotName == TEXT("*"))); });
 	Refresh(E,GuLiLocalTeamColors::GetViewTeam(GetLocalPlayer()->GetPlayerController(GetWorld())));
 }
-void UGuLiLocalTeamColorSubsystem::UnregisterModelComponent(UMeshComponent* C) { Entries.Remove(C); }
+void UGuLiLocalTeamColorSubsystem::UnregisterModelComponent(UMeshComponent* C) { if (Entries.Remove(C) && C) UGuLiSceneUISourceRegistry::Notify(C->GetOwner(), EGuLiSceneUIChange::Membership); }
 void UGuLiLocalTeamColorSubsystem::Refresh(FEntry& E, EGuLiTeam View)
 {
 	auto* C = E.Component.Get(); if (!C) return;
 	const EGuLiTeam Team = GuLiLocalTeamColors::IsAssigned(E.ExplicitTeam) ? E.ExplicitTeam : GuLiLocalTeamColors::GetActorTeam(C->GetOwner());
 	uint32 Hash=0; for (int32 I=0; I<C->GetNumMaterials(); ++I) Hash=HashCombine(Hash,PointerHash(C->GetMaterial(I)));
 	if (!E.bDirty && E.LastTeam == Team && E.MaterialHash == Hash && E.PrimitiveDataHash == TeamPrimitiveDataHash(C)) return;
+	if (E.LastTeam != Team) UGuLiSceneUISourceRegistry::Notify(C->GetOwner(), EGuLiSceneUIChange::Membership);
 	const bool Assigned = GuLiLocalTeamColors::IsAssigned(Team) && GuLiLocalTeamColors::IsAssigned(View);
 	const bool Friendly = Assigned && Team == View;
 	FLinearColor Primary = FLinearColor::FromSRGBColor(FColor::FromHex(TEXT("#2C3735")));

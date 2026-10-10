@@ -1,0 +1,207 @@
+{
+  "success": true,
+  "checks": {
+    "F_plus_1": true,
+    "heavy_scale_once": true,
+    "follower_identity": true,
+    "per_event_world_render": true,
+    "unbounded_pool_growth": true,
+    "World_isolation": true,
+    "slot_reuse": true,
+    "source_loss": true,
+    "same_tier_F1_fallback": true,
+    "offscreen_idle": true,
+    "idle_wake_no_replay": true,
+    "moving_follow": true,
+    "mode_switch_no_replay": true,
+    "epoch_reset": true
+  },
+  "evidence": {
+    "F_plus_1": {
+      "samples": 7976
+    },
+    "heavy_scale_once": {
+      "scales": [
+        1,
+        2
+      ]
+    },
+    "follower_identity": {
+      "samples": 1270
+    },
+    "per_event_world_render": {
+      "samples": 1270
+    },
+    "unbounded_pool_growth": {
+      "accepted": 600,
+      "capacity": 1280,
+      "observed_live": 600
+    },
+    "World_isolation": {
+      "other_client_review_slots": 0
+    },
+    "slot_reuse": {
+      "reused_sampled": 470
+    },
+    "source_loss": {
+      "before": [
+        {
+          "shot": "47534D5A00061A810000000000000001",
+          "slot": 735,
+          "generation": 17,
+          "epoch": 6,
+          "mode": 2,
+          "group": 0,
+          "accepted_frame": 1430,
+          "published_frame": 1430,
+          "born_frame": 1431,
+          "born_at": 37.60664423182607,
+          "position": [
+            -10700,
+            65000,
+            1600
+          ],
+          "scale": 1
+        }
+      ]
+    },
+    "same_tier_F1_fallback": {
+      "slots": [
+        {
+          "shot": "47534D5A00061A820000000000000001",
+          "slot": 866,
+          "generation": 4,
+          "epoch": 6,
+          "mode": 1,
+          "group": -1,
+          "accepted_frame": 1445,
+          "published_frame": 1445,
+          "born_frame": 1446,
+          "born_at": 38.08478293195367,
+          "position": [
+            -10600,
+            65000,
+            1600
+          ],
+          "scale": 2
+        }
+      ]
+    },
+    "offscreen_idle": {
+      "components": 0,
+      "offscreen_recycled": 535
+    },
+    "idle_wake_no_replay": {
+      "new_slot": [
+        {
+          "shot": "47534D5A0007A1210000000000000001",
+          "slot": 205,
+          "generation": 17,
+          "epoch": 6,
+          "mode": 2,
+          "group": 0,
+          "accepted_frame": 1516,
+          "published_frame": 1516,
+          "born_frame": 1517,
+          "born_at": 39.73063783347607,
+          "position": [
+            -10595.043260231614,
+            65029.987639933825,
+            1600
+          ],
+          "scale": 1
+        }
+      ],
+      "old_slots": 0
+    },
+    "moving_follow": {
+      "before": [
+        {
+          "shot": "47534D5A0007A1210000000000000001",
+          "slot": 205,
+          "generation": 17,
+          "epoch": 6,
+          "mode": 2,
+          "group": 0,
+          "accepted_frame": 1516,
+          "published_frame": 1516,
+          "born_frame": 1517,
+          "born_at": 39.73063783347607,
+          "position": [
+            -10595.043260231614,
+            65029.987639933825,
+            1600
+          ],
+          "scale": 1
+        }
+      ],
+      "after": [
+        {
+          "shot": "47534D5A0007A1210000000000000001",
+          "slot": 205,
+          "generation": 17,
+          "epoch": 6,
+          "mode": 2,
+          "group": 0,
+          "accepted_frame": 1516,
+          "published_frame": 1516,
+          "born_frame": 1517,
+          "born_at": 39.73063783347607,
+          "position": [
+            -10487.54622116685,
+            65060.701079666615,
+            1600
+          ],
+          "scale": 1
+        }
+      ]
+    },
+    "mode_switch_no_replay": {
+      "old_slots": 0,
+      "duplicate_accepted": 0
+    },
+    "epoch_reset": {
+      "old": [
+        {
+          "shot": "47534D5A000927C10000000000000001",
+          "slot": 866,
+          "generation": 6,
+          "epoch": 6,
+          "mode": 2,
+          "group": 0,
+          "accepted_frame": 1537,
+          "published_frame": 1537,
+          "born_frame": 1538,
+          "born_at": 40.26992993056774,
+          "position": [
+            -10700,
+            65000,
+            1600
+          ],
+          "scale": 1
+        }
+      ],
+      "new": [
+        {
+          "shot": "47534D5A000927C10000000000000001",
+          "slot": 0,
+          "generation": 24,
+          "epoch": 7,
+          "mode": 2,
+          "group": 0,
+          "accepted_frame": 1547,
+          "published_frame": 1547,
+          "born_frame": 1548,
+          "born_at": 40.51856403052807,
+          "position": [
+            -10700,
+            65000,
+            1600
+          ],
+          "scale": 1
+        }
+      ]
+    }
+  },
+  "scope": "Client-local synthetic inputs plus real moving combat; no measurements in these windows."
+}

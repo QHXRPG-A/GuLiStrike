@@ -1,0 +1,1786 @@
+{
+  "avoidance": [
+    {
+      "pair": 1,
+      "baseline": {
+        "total": 3690.4974058270454,
+        "calls": 438,
+        "mean_per_engine_frame": 8.406600013273453,
+        "p95_active_frame": 11.498499661684036,
+        "stored_active_frames": 438
+      },
+      "candidate": {
+        "total": 593.9899981021881,
+        "calls": 471,
+        "mean_per_engine_frame": 1.2584533858097207,
+        "p95_active_frame": 1.829400658607483,
+        "stored_active_frames": 471
+      },
+      "mean_change_percent": -85.03017410341032,
+      "mean_target_met": true,
+      "p95_target_met": true
+    },
+    {
+      "pair": 2,
+      "baseline": {
+        "total": 3678.940400481224,
+        "calls": 446,
+        "mean_per_engine_frame": 8.230291723671643,
+        "p95_active_frame": 10.919000953435898,
+        "stored_active_frames": 446
+      },
+      "candidate": {
+        "total": 724.6605157852173,
+        "calls": 477,
+        "mean_per_engine_frame": 1.5160261836510822,
+        "p95_active_frame": 2.1515004336833954,
+        "stored_active_frames": 477
+      },
+      "mean_change_percent": -81.57992165343609,
+      "mean_target_met": true,
+      "p95_target_met": true
+    },
+    {
+      "pair": 3,
+      "baseline": {
+        "total": 3551.916692405939,
+        "calls": 449,
+        "mean_per_engine_frame": 7.893148205346531,
+        "p95_active_frame": 10.454699397087097,
+        "stored_active_frames": 449
+      },
+      "candidate": {
+        "total": 713.1400406360626,
+        "calls": 474,
+        "mean_per_engine_frame": 1.5013474539706582,
+        "p95_active_frame": 2.1935999393463135,
+        "stored_active_frames": 474
+      },
+      "mean_change_percent": -80.97910472587225,
+      "mean_target_met": true,
+      "p95_target_met": true
+    }
+  ],
+  "flight": [
+    {
+      "pair": 1,
+      "clients": [
+        {
+          "world": 1,
+          "baseline": {
+            "total": 653.7156477570534,
+            "calls": 468,
+            "mean_per_engine_frame": 1.3938499952175978,
+            "p95_active_frame": 2.6482008397579193,
+            "stored_active_frames": 468
+          },
+          "candidate": {
+            "total": 529.8873633146286,
+            "calls": 471,
+            "mean_per_engine_frame": 1.122642718886925,
+            "p95_active_frame": 2.5669001042842865,
+            "stored_active_frames": 471
+          },
+          "mean_change_percent": -19.457422051239725,
+          "p95_change_percent": -3.070036617051475,
+          "baseline_predictions": {
+            "Commander": {
+              "total": 50584,
+              "calls": 468,
+              "mean_per_engine_frame": 107.85501066098081,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Ground": {
+              "total": 43514,
+              "calls": 468,
+              "mean_per_engine_frame": 92.78038379530916,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Wingman": {
+              "total": 55396,
+              "calls": 468,
+              "mean_per_engine_frame": 118.11513859275053,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Ship": {
+              "total": 42919,
+              "calls": 468,
+              "mean_per_engine_frame": 91.51172707889125,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            }
+          },
+          "candidate_predictions": {
+            "Commander": {
+              "total": 50913,
+              "calls": 471,
+              "mean_per_engine_frame": 107.86652542372882,
+              "p95_active_frame": 125,
+              "stored_active_frames": 471
+            },
+            "Ground": {
+              "total": 44173,
+              "calls": 471,
+              "mean_per_engine_frame": 93.58686440677967,
+              "p95_active_frame": 125,
+              "stored_active_frames": 471
+            },
+            "Wingman": {
+              "total": 56172,
+              "calls": 471,
+              "mean_per_engine_frame": 119.00847457627118,
+              "p95_active_frame": 125,
+              "stored_active_frames": 471
+            },
+            "Ship": {
+              "total": 44075,
+              "calls": 471,
+              "mean_per_engine_frame": 93.3792372881356,
+              "p95_active_frame": 125,
+              "stored_active_frames": 471
+            }
+          },
+          "baseline_actor_active": {
+            "total": 215863,
+            "calls": 468,
+            "mean_per_engine_frame": 460.26226012793177,
+            "p95_active_frame": 538,
+            "stored_active_frames": 468
+          },
+          "candidate_actor_active": {
+            "total": 44075,
+            "calls": 471,
+            "mean_per_engine_frame": 93.3792372881356,
+            "p95_active_frame": 125,
+            "stored_active_frames": 471
+          },
+          "candidate_data_active": {
+            "total": 218757,
+            "calls": 471,
+            "mean_per_engine_frame": 463.46822033898303,
+            "p95_active_frame": 539,
+            "stored_active_frames": 471
+          },
+          "baseline_snapshot": {
+            "client_flight_actor_capacity": 768,
+            "client_flight_actor_active": 484,
+            "client_flight_data_capacity": 0,
+            "client_flight_data_active": 0,
+            "client_flight_data_reuses": 0,
+            "client_flight_data_releases": 0,
+            "client_flight_data_epoch": 4114830469,
+            "pose_cache_hits": 258988,
+            "pose_cache_misses": 1257,
+            "niagara_array_uploads": 0,
+            "component_count": 49,
+            "last_update_milliseconds": 0.7627999875694513
+          },
+          "candidate_snapshot": {
+            "client_flight_actor_capacity": 128,
+            "client_flight_actor_active": 125,
+            "client_flight_data_capacity": 768,
+            "client_flight_data_active": 418,
+            "client_flight_data_reuses": 33323,
+            "client_flight_data_releases": 33502,
+            "client_flight_data_epoch": 317474300,
+            "pose_cache_hits": 261297,
+            "pose_cache_misses": 1260,
+            "niagara_array_uploads": 0,
+            "component_count": 25,
+            "last_update_milliseconds": 0.6469999789260328
+          }
+        },
+        {
+          "world": 2,
+          "baseline": {
+            "total": 625.7388964295387,
+            "calls": 468,
+            "mean_per_engine_frame": 1.3341980734105303,
+            "p95_active_frame": 2.801898866891861,
+            "stored_active_frames": 468
+          },
+          "candidate": {
+            "total": 539.3462255597115,
+            "calls": 471,
+            "mean_per_engine_frame": 1.142682681270575,
+            "p95_active_frame": 2.708498388528824,
+            "stored_active_frames": 471
+          },
+          "mean_change_percent": -14.35434482755593,
+          "p95_change_percent": -3.3334707211129966,
+          "baseline_predictions": {
+            "Commander": {
+              "total": 50584,
+              "calls": 468,
+              "mean_per_engine_frame": 107.85501066098081,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Ground": {
+              "total": 43514,
+              "calls": 468,
+              "mean_per_engine_frame": 92.78038379530916,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Wingman": {
+              "total": 55396,
+              "calls": 468,
+              "mean_per_engine_frame": 118.11513859275053,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Ship": {
+              "total": 42919,
+              "calls": 468,
+              "mean_per_engine_frame": 91.51172707889125,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            }
+          },
+          "candidate_predictions": {
+            "Commander": {
+              "total": 50913,
+              "calls": 471,
+              "mean_per_engine_frame": 107.86652542372882,
+              "p95_active_frame": 125,
+              "stored_active_frames": 471
+            },
+            "Ground": {
+              "total": 44173,
+              "calls": 471,
+              "mean_per_engine_frame": 93.58686440677967,
+              "p95_active_frame": 125,
+              "stored_active_frames": 471
+            },
+            "Wingman": {
+              "total": 56172,
+              "calls": 471,
+              "mean_per_engine_frame": 119.00847457627118,
+              "p95_active_frame": 125,
+              "stored_active_frames": 471
+            },
+            "Ship": {
+              "total": 44075,
+              "calls": 471,
+              "mean_per_engine_frame": 93.3792372881356,
+              "p95_active_frame": 125,
+              "stored_active_frames": 471
+            }
+          },
+          "baseline_actor_active": {
+            "total": 215863,
+            "calls": 468,
+            "mean_per_engine_frame": 460.26226012793177,
+            "p95_active_frame": 538,
+            "stored_active_frames": 468
+          },
+          "candidate_actor_active": {
+            "total": 44075,
+            "calls": 471,
+            "mean_per_engine_frame": 93.3792372881356,
+            "p95_active_frame": 125,
+            "stored_active_frames": 471
+          },
+          "candidate_data_active": {
+            "total": 218757,
+            "calls": 471,
+            "mean_per_engine_frame": 463.46822033898303,
+            "p95_active_frame": 539,
+            "stored_active_frames": 471
+          },
+          "baseline_snapshot": {
+            "client_flight_actor_capacity": 768,
+            "client_flight_actor_active": 484,
+            "client_flight_data_capacity": 0,
+            "client_flight_data_active": 0,
+            "client_flight_data_reuses": 0,
+            "client_flight_data_releases": 0,
+            "client_flight_data_epoch": 4114830469,
+            "pose_cache_hits": 259113,
+            "pose_cache_misses": 1257,
+            "niagara_array_uploads": 22,
+            "component_count": 49,
+            "last_update_milliseconds": 0.6877999985590577
+          },
+          "candidate_snapshot": {
+            "client_flight_actor_capacity": 128,
+            "client_flight_actor_active": 125,
+            "client_flight_data_capacity": 768,
+            "client_flight_data_active": 418,
+            "client_flight_data_reuses": 33323,
+            "client_flight_data_releases": 33502,
+            "client_flight_data_epoch": 317474300,
+            "pose_cache_hits": 261297,
+            "pose_cache_misses": 1260,
+            "niagara_array_uploads": 22,
+            "component_count": 25,
+            "last_update_milliseconds": 0.6478999857790768
+          }
+        }
+      ],
+      "summed_mean_change_percent": -16.961675778070905
+    },
+    {
+      "pair": 2,
+      "clients": [
+        {
+          "world": 1,
+          "baseline": {
+            "total": 642.7966840565205,
+            "calls": 468,
+            "mean_per_engine_frame": 1.3705686227217921,
+            "p95_active_frame": 2.6970990002155304,
+            "stored_active_frames": 468
+          },
+          "candidate": {
+            "total": 531.7345559597015,
+            "calls": 470,
+            "mean_per_engine_frame": 1.1289481018252687,
+            "p95_active_frame": 2.543799579143524,
+            "stored_active_frames": 470
+          },
+          "mean_change_percent": -17.62921731103786,
+          "p95_change_percent": -5.683863330925409,
+          "baseline_predictions": {
+            "Commander": {
+              "total": 50893,
+              "calls": 468,
+              "mean_per_engine_frame": 108.5138592750533,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Ground": {
+              "total": 43030,
+              "calls": 468,
+              "mean_per_engine_frame": 91.74840085287846,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Wingman": {
+              "total": 55901,
+              "calls": 468,
+              "mean_per_engine_frame": 119.19189765458422,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Ship": {
+              "total": 42128,
+              "calls": 468,
+              "mean_per_engine_frame": 89.82515991471216,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            }
+          },
+          "candidate_predictions": {
+            "Commander": {
+              "total": 51189,
+              "calls": 470,
+              "mean_per_engine_frame": 108.68152866242038,
+              "p95_active_frame": 125,
+              "stored_active_frames": 470
+            },
+            "Ground": {
+              "total": 43317,
+              "calls": 470,
+              "mean_per_engine_frame": 91.96815286624204,
+              "p95_active_frame": 125,
+              "stored_active_frames": 470
+            },
+            "Wingman": {
+              "total": 56047,
+              "calls": 470,
+              "mean_per_engine_frame": 118.99575371549894,
+              "p95_active_frame": 125,
+              "stored_active_frames": 470
+            },
+            "Ship": {
+              "total": 43951,
+              "calls": 470,
+              "mean_per_engine_frame": 93.31422505307856,
+              "p95_active_frame": 125,
+              "stored_active_frames": 470
+            }
+          },
+          "baseline_actor_active": {
+            "total": 215495,
+            "calls": 468,
+            "mean_per_engine_frame": 459.4776119402985,
+            "p95_active_frame": 531,
+            "stored_active_frames": 468
+          },
+          "candidate_actor_active": {
+            "total": 43951,
+            "calls": 470,
+            "mean_per_engine_frame": 93.31422505307856,
+            "p95_active_frame": 125,
+            "stored_active_frames": 470
+          },
+          "candidate_data_active": {
+            "total": 217852,
+            "calls": 470,
+            "mean_per_engine_frame": 462.5307855626327,
+            "p95_active_frame": 536,
+            "stored_active_frames": 470
+          },
+          "baseline_snapshot": {
+            "client_flight_actor_capacity": 768,
+            "client_flight_actor_active": 263,
+            "client_flight_data_capacity": 0,
+            "client_flight_data_active": 0,
+            "client_flight_data_reuses": 0,
+            "client_flight_data_releases": 0,
+            "client_flight_data_epoch": 1309593447,
+            "pose_cache_hits": 255292,
+            "pose_cache_misses": 1241,
+            "niagara_array_uploads": 0,
+            "component_count": 164,
+            "last_update_milliseconds": 0.5135999526828527
+          },
+          "candidate_snapshot": {
+            "client_flight_actor_capacity": 128,
+            "client_flight_actor_active": 125,
+            "client_flight_data_capacity": 768,
+            "client_flight_data_active": 422,
+            "client_flight_data_reuses": 33349,
+            "client_flight_data_releases": 33535,
+            "client_flight_data_epoch": 813670444,
+            "pose_cache_hits": 261684,
+            "pose_cache_misses": 1247,
+            "niagara_array_uploads": 0,
+            "component_count": 164,
+            "last_update_milliseconds": 0.882500025909394
+          }
+        },
+        {
+          "world": 2,
+          "baseline": {
+            "total": 621.6635517776012,
+            "calls": 468,
+            "mean_per_engine_frame": 1.325508639184651,
+            "p95_active_frame": 2.6893988251686096,
+            "stored_active_frames": 468
+          },
+          "candidate": {
+            "total": 530.3879305720329,
+            "calls": 470,
+            "mean_per_engine_frame": 1.126089024569072,
+            "p95_active_frame": 2.7038007974624634,
+            "stored_active_frames": 470
+          },
+          "mean_change_percent": -15.044761589652577,
+          "p95_change_percent": 0.5355089828653847,
+          "baseline_predictions": {
+            "Commander": {
+              "total": 50893,
+              "calls": 468,
+              "mean_per_engine_frame": 108.5138592750533,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Ground": {
+              "total": 43030,
+              "calls": 468,
+              "mean_per_engine_frame": 91.74840085287846,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Wingman": {
+              "total": 55901,
+              "calls": 468,
+              "mean_per_engine_frame": 119.19189765458422,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            },
+            "Ship": {
+              "total": 42128,
+              "calls": 468,
+              "mean_per_engine_frame": 89.82515991471216,
+              "p95_active_frame": 125,
+              "stored_active_frames": 468
+            }
+          },
+          "candidate_predictions": {
+            "Commander": {
+              "total": 51189,
+              "calls": 470,
+              "mean_per_engine_frame": 108.68152866242038,
+              "p95_active_frame": 125,
+              "stored_active_frames": 470
+            },
+            "Ground": {
+              "total": 43317,
+              "calls": 470,
+              "mean_per_engine_frame": 91.96815286624204,
+              "p95_active_frame": 125,
+              "stored_active_frames": 470
+            },
+            "Wingman": {
+              "total": 56047,
+              "calls": 470,
+              "mean_per_engine_frame": 118.99575371549894,
+              "p95_active_frame": 125,
+              "stored_active_frames": 470
+            },
+            "Ship": {
+              "total": 43951,
+              "calls": 470,
+              "mean_per_engine_frame": 93.31422505307856,
+              "p95_active_frame": 125,
+              "stored_active_frames": 470
+            }
+          },
+          "baseline_actor_active": {
+            "total": 215495,
+            "calls": 468,
+            "mean_per_engine_frame": 459.4776119402985,
+            "p95_active_frame": 531,
+            "stored_active_frames": 468
+          },
+          "candidate_actor_active": {
+            "total": 43951,
+            "calls": 470,
+            "mean_per_engine_frame": 93.31422505307856,
+            "p95_active_frame": 125,
+            "stored_active_frames": 470
+          },
+          "candidate_data_active": {
+            "total": 217852,
+            "calls": 470,
+            "mean_per_engine_frame": 462.5307855626327,
+            "p95_active_frame": 536,
+            "stored_active_frames": 470
+          },
+          "baseline_snapshot": {
+            "client_flight_actor_capacity": 768,
+            "client_flight_actor_active": 263,
+            "client_flight_data_capacity": 0,
+            "client_flight_data_active": 0,
+            "client_flight_data_reuses": 0,
+            "client_flight_data_releases": 0,
+            "client_flight_data_epoch": 1309593447,
+            "pose_cache_hits": 255292,
+            "pose_cache_misses": 1241,
+            "niagara_array_uploads": 22,
+            "component_count": 137,
+            "last_update_milliseconds": 0.8972999639809132
+          },
+          "candidate_snapshot": {
+            "client_flight_actor_capacity": 128,
+            "client_flight_actor_active": 125,
+            "client_flight_data_capacity": 768,
+            "client_flight_data_active": 422,
+            "client_flight_data_reuses": 33349,
+            "client_flight_data_releases": 33535,
+            "client_flight_data_epoch": 813670444,
+            "pose_cache_hits": 261684,
+            "pose_cache_misses": 1247,
+            "niagara_array_uploads": 22,
+            "component_count": 150,
+            "last_update_milliseconds": 0.554499973077327
+          }
+        }
+      ],
+      "summed_mean_change_percent": -16.35858666751393
+    },
+    {
+      "pair": 3,
+      "clients": [
+        {
+          "world": 1,
+          "baseline": {
+            "total": 636.4600919187069,
+            "calls": 467,
+            "mean_per_engine_frame": 1.3599574613647583,
+            "p95_active_frame": 2.6061981916427612,
+            "stored_active_frames": 467
+          },
+          "candidate": {
+            "total": 529.2919315397739,
+            "calls": 469,
+            "mean_per_engine_frame": 1.1261530458293063,
+            "p95_active_frame": 2.6265010237693787,
+            "stored_active_frames": 469
+          },
+          "mean_change_percent": -17.19203888192372,
+          "p95_change_percent": 0.7790210349973403,
+          "baseline_predictions": {
+            "Commander": {
+              "total": 50657,
+              "calls": 467,
+              "mean_per_engine_frame": 108.24145299145299,
+              "p95_active_frame": 125,
+              "stored_active_frames": 467
+            },
+            "Ground": {
+              "total": 43773,
+              "calls": 467,
+              "mean_per_engine_frame": 93.53205128205128,
+              "p95_active_frame": 125,
+              "stored_active_frames": 467
+            },
+            "Wingman": {
+              "total": 55385,
+              "calls": 467,
+              "mean_per_engine_frame": 118.34401709401709,
+              "p95_active_frame": 125,
+              "stored_active_frames": 467
+            },
+            "Ship": {
+              "total": 42788,
+              "calls": 467,
+              "mean_per_engine_frame": 91.42735042735043,
+              "p95_active_frame": 125,
+              "stored_active_frames": 467
+            }
+          },
+          "candidate_predictions": {
+            "Commander": {
+              "total": 50936,
+              "calls": 469,
+              "mean_per_engine_frame": 108.37446808510639,
+              "p95_active_frame": 125,
+              "stored_active_frames": 469
+            },
+            "Ground": {
+              "total": 43319,
+              "calls": 469,
+              "mean_per_engine_frame": 92.16808510638297,
+              "p95_active_frame": 125,
+              "stored_active_frames": 469
+            },
+            "Wingman": {
+              "total": 55721,
+              "calls": 469,
+              "mean_per_engine_frame": 118.55531914893616,
+              "p95_active_frame": 125,
+              "stored_active_frames": 469
+            },
+            "Ship": {
+              "total": 42603,
+              "calls": 469,
+              "mean_per_engine_frame": 90.64468085106382,
+              "p95_active_frame": 125,
+              "stored_active_frames": 469
+            }
+          },
+          "baseline_actor_active": {
+            "total": 216000,
+            "calls": 467,
+            "mean_per_engine_frame": 461.53846153846155,
+            "p95_active_frame": 534,
+            "stored_active_frames": 467
+          },
+          "candidate_actor_active": {
+            "total": 42603,
+            "calls": 469,
+            "mean_per_engine_frame": 90.64468085106382,
+            "p95_active_frame": 125,
+            "stored_active_frames": 469
+          },
+          "candidate_data_active": {
+            "total": 216255,
+            "calls": 469,
+            "mean_per_engine_frame": 460.1170212765957,
+            "p95_active_frame": 538,
+            "stored_active_frames": 469
+          },
+          "baseline_snapshot": {
+            "client_flight_actor_capacity": 768,
+            "client_flight_actor_active": 459,
+            "client_flight_data_capacity": 0,
+            "client_flight_data_active": 0,
+            "client_flight_data_reuses": 0,
+            "client_flight_data_releases": 0,
+            "client_flight_data_epoch": 1806595790,
+            "pose_cache_hits": 258511,
+            "pose_cache_misses": 1243,
+            "niagara_array_uploads": 0,
+            "component_count": 81,
+            "last_update_milliseconds": 0.734600005671382
+          },
+          "candidate_snapshot": {
+            "client_flight_actor_capacity": 128,
+            "client_flight_actor_active": 125,
+            "client_flight_data_capacity": 768,
+            "client_flight_data_active": 417,
+            "client_flight_data_reuses": 33437,
+            "client_flight_data_releases": 33631,
+            "client_flight_data_epoch": 2303036558,
+            "pose_cache_hits": 259561,
+            "pose_cache_misses": 1256,
+            "niagara_array_uploads": 0,
+            "component_count": 176,
+            "last_update_milliseconds": 0.47289999201893806
+          }
+        },
+        {
+          "world": 2,
+          "baseline": {
+            "total": 609.7117774188519,
+            "calls": 467,
+            "mean_per_engine_frame": 1.3028029432026749,
+            "p95_active_frame": 2.6130974292755127,
+            "stored_active_frames": 467
+          },
+          "candidate": {
+            "total": 538.2046326994896,
+            "calls": 469,
+            "mean_per_engine_frame": 1.145116239786148,
+            "p95_active_frame": 2.6795007288455963,
+            "stored_active_frames": 469
+          },
+          "mean_change_percent": -12.10364961479794,
+          "p95_change_percent": 2.541171975684575,
+          "baseline_predictions": {
+            "Commander": {
+              "total": 50657,
+              "calls": 467,
+              "mean_per_engine_frame": 108.24145299145299,
+              "p95_active_frame": 125,
+              "stored_active_frames": 467
+            },
+            "Ground": {
+              "total": 43773,
+              "calls": 467,
+              "mean_per_engine_frame": 93.53205128205128,
+              "p95_active_frame": 125,
+              "stored_active_frames": 467
+            },
+            "Wingman": {
+              "total": 55385,
+              "calls": 467,
+              "mean_per_engine_frame": 118.34401709401709,
+              "p95_active_frame": 125,
+              "stored_active_frames": 467
+            },
+            "Ship": {
+              "total": 42788,
+              "calls": 467,
+              "mean_per_engine_frame": 91.42735042735043,
+              "p95_active_frame": 125,
+              "stored_active_frames": 467
+            }
+          },
+          "candidate_predictions": {
+            "Commander": {
+              "total": 50936,
+              "calls": 469,
+              "mean_per_engine_frame": 108.37446808510639,
+              "p95_active_frame": 125,
+              "stored_active_frames": 469
+            },
+            "Ground": {
+              "total": 43319,
+              "calls": 469,
+              "mean_per_engine_frame": 92.16808510638297,
+              "p95_active_frame": 125,
+              "stored_active_frames": 469
+            },
+            "Wingman": {
+              "total": 55843,
+              "calls": 469,
+              "mean_per_engine_frame": 118.81489361702128,
+              "p95_active_frame": 125,
+              "stored_active_frames": 469
+            },
+            "Ship": {
+              "total": 42603,
+              "calls": 469,
+              "mean_per_engine_frame": 90.64468085106382,
+              "p95_active_frame": 125,
+              "stored_active_frames": 469
+            }
+          },
+          "baseline_actor_active": {
+            "total": 216000,
+            "calls": 467,
+            "mean_per_engine_frame": 461.53846153846155,
+            "p95_active_frame": 534,
+            "stored_active_frames": 467
+          },
+          "candidate_actor_active": {
+            "total": 42603,
+            "calls": 469,
+            "mean_per_engine_frame": 90.64468085106382,
+            "p95_active_frame": 125,
+            "stored_active_frames": 469
+          },
+          "candidate_data_active": {
+            "total": 216377,
+            "calls": 469,
+            "mean_per_engine_frame": 460.37659574468086,
+            "p95_active_frame": 538,
+            "stored_active_frames": 469
+          },
+          "baseline_snapshot": {
+            "client_flight_actor_capacity": 768,
+            "client_flight_actor_active": 459,
+            "client_flight_data_capacity": 0,
+            "client_flight_data_active": 0,
+            "client_flight_data_reuses": 0,
+            "client_flight_data_releases": 0,
+            "client_flight_data_epoch": 1806595790,
+            "pose_cache_hits": 258511,
+            "pose_cache_misses": 1243,
+            "niagara_array_uploads": 22,
+            "component_count": 81,
+            "last_update_milliseconds": 0.7056999602355063
+          },
+          "candidate_snapshot": {
+            "client_flight_actor_capacity": 128,
+            "client_flight_actor_active": 125,
+            "client_flight_data_capacity": 768,
+            "client_flight_data_active": 417,
+            "client_flight_data_reuses": 33437,
+            "client_flight_data_releases": 33631,
+            "client_flight_data_epoch": 2303036558,
+            "pose_cache_hits": 259808,
+            "pose_cache_misses": 1256,
+            "niagara_array_uploads": 22,
+            "component_count": 123,
+            "last_update_milliseconds": 1.2312000035308301
+          }
+        }
+      ],
+      "summed_mean_change_percent": -14.702453825002593
+    }
+  ],
+  "scene_ui": [
+    {
+      "pair": 1,
+      "world": 1,
+      "registry": {
+        "sources": 419,
+        "discovery_iterations": 0,
+        "membership_revision": 677,
+        "content_revision": 679,
+        "pose_revision": 41425
+      },
+      "scopes": {
+        "SourcesMs": {
+          "total": 1.1661797761917114,
+          "calls": 471,
+          "mean_per_engine_frame": 0.002470719864812948,
+          "p95_active_frame": 0.0024996697902679443,
+          "stored_active_frames": 471
+        },
+        "OutlineCaptureMs": {
+          "total": 60.51602214574814,
+          "calls": 471,
+          "mean_per_engine_frame": 0.1282119113257376,
+          "p95_active_frame": 0.1774020493030548,
+          "stored_active_frames": 471
+        },
+        "PlacementCaptureMs": {
+          "total": 0.8771754801273346,
+          "calls": 471,
+          "mean_per_engine_frame": 0.0018584226273884207,
+          "p95_active_frame": 0.0027008354663848877,
+          "stored_active_frames": 471
+        },
+        "WorldPanelsMs": {
+          "total": 2.3853853344917297,
+          "calls": 471,
+          "mean_per_engine_frame": 0.005053782488329936,
+          "p95_active_frame": 0.00650063157081604,
+          "stored_active_frames": 471
+        },
+        "UpdateMs": {
+          "total": 123.33140522241592,
+          "calls": 471,
+          "mean_per_engine_frame": 0.2612953500474914,
+          "p95_active_frame": 0.36600232124328613,
+          "stored_active_frames": 471
+        },
+        "PaintMs": {
+          "total": 78.9010263979435,
+          "calls": 471,
+          "mean_per_engine_frame": 0.16716319152106673,
+          "p95_active_frame": 0.22109970450401306,
+          "stored_active_frames": 471
+        }
+      }
+    },
+    {
+      "pair": 1,
+      "world": 2,
+      "registry": {
+        "sources": 419,
+        "discovery_iterations": 0,
+        "membership_revision": 678,
+        "content_revision": 680,
+        "pose_revision": 41196
+      },
+      "scopes": {
+        "SourcesMs": {
+          "total": 0.3836899995803833,
+          "calls": 471,
+          "mean_per_engine_frame": 0.000812902541483863,
+          "p95_active_frame": 0.001300126314163208,
+          "stored_active_frames": 471
+        },
+        "OutlineCaptureMs": {
+          "total": 39.372965693473816,
+          "calls": 471,
+          "mean_per_engine_frame": 0.08341730019803774,
+          "p95_active_frame": 0.1288987696170807,
+          "stored_active_frames": 471
+        },
+        "PlacementCaptureMs": {
+          "total": 0.4923902451992035,
+          "calls": 471,
+          "mean_per_engine_frame": 0.0010431996720322108,
+          "p95_active_frame": 0.001601874828338623,
+          "stored_active_frames": 471
+        },
+        "WorldPanelsMs": {
+          "total": 3.759250044822693,
+          "calls": 471,
+          "mean_per_engine_frame": 0.007964512806827738,
+          "p95_active_frame": 0.010602176189422607,
+          "stored_active_frames": 471
+        },
+        "UpdateMs": {
+          "total": 95.47355771064758,
+          "calls": 471,
+          "mean_per_engine_frame": 0.2022744866751008,
+          "p95_active_frame": 0.32610073685646057,
+          "stored_active_frames": 471
+        },
+        "PaintMs": {
+          "total": 96.06343135237694,
+          "calls": 471,
+          "mean_per_engine_frame": 0.2035242189669003,
+          "p95_active_frame": 0.2579018473625183,
+          "stored_active_frames": 471
+        }
+      }
+    },
+    {
+      "pair": 2,
+      "world": 1,
+      "registry": {
+        "sources": 419,
+        "discovery_iterations": 0,
+        "membership_revision": 677,
+        "content_revision": 679,
+        "pose_revision": 41330
+      },
+      "scopes": {
+        "SourcesMs": {
+          "total": 1.019056886434555,
+          "calls": 477,
+          "mean_per_engine_frame": 0.002131918172457228,
+          "p95_active_frame": 0.0024996697902679443,
+          "stored_active_frames": 477
+        },
+        "OutlineCaptureMs": {
+          "total": 59.15402248501778,
+          "calls": 477,
+          "mean_per_engine_frame": 0.12375318511509995,
+          "p95_active_frame": 0.1685991883277893,
+          "stored_active_frames": 477
+        },
+        "PlacementCaptureMs": {
+          "total": 0.8766353130340576,
+          "calls": 477,
+          "mean_per_engine_frame": 0.0018339650900294092,
+          "p95_active_frame": 0.0027008354663848877,
+          "stored_active_frames": 477
+        },
+        "WorldPanelsMs": {
+          "total": 2.3769959807395935,
+          "calls": 477,
+          "mean_per_engine_frame": 0.00497279493878576,
+          "p95_active_frame": 0.006400048732757568,
+          "stored_active_frames": 477
+        },
+        "UpdateMs": {
+          "total": 120.50145864486694,
+          "calls": 477,
+          "mean_per_engine_frame": 0.25209510176750405,
+          "p95_active_frame": 0.3424994647502899,
+          "stored_active_frames": 477
+        },
+        "PaintMs": {
+          "total": 78.64707708358765,
+          "calls": 477,
+          "mean_per_engine_frame": 0.16453363406608293,
+          "p95_active_frame": 0.2127029001712799,
+          "stored_active_frames": 477
+        }
+      }
+    },
+    {
+      "pair": 2,
+      "world": 2,
+      "registry": {
+        "sources": 419,
+        "discovery_iterations": 0,
+        "membership_revision": 678,
+        "content_revision": 680,
+        "pose_revision": 41114
+      },
+      "scopes": {
+        "SourcesMs": {
+          "total": 0.35709142684936523,
+          "calls": 477,
+          "mean_per_engine_frame": 0.000747053194245534,
+          "p95_active_frame": 0.0012032687664031982,
+          "stored_active_frames": 477
+        },
+        "OutlineCaptureMs": {
+          "total": 37.34205290675163,
+          "calls": 477,
+          "mean_per_engine_frame": 0.07812144959571471,
+          "p95_active_frame": 0.11330097913742065,
+          "stored_active_frames": 477
+        },
+        "PlacementCaptureMs": {
+          "total": 0.4296936094760895,
+          "calls": 477,
+          "mean_per_engine_frame": 0.0008989406055985136,
+          "p95_active_frame": 0.0015012919902801514,
+          "stored_active_frames": 477
+        },
+        "WorldPanelsMs": {
+          "total": 3.6222003400325775,
+          "calls": 477,
+          "mean_per_engine_frame": 0.007577824979147651,
+          "p95_active_frame": 0.009700655937194824,
+          "stored_active_frames": 477
+        },
+        "UpdateMs": {
+          "total": 93.75273063778877,
+          "calls": 477,
+          "mean_per_engine_frame": 0.19613541974432797,
+          "p95_active_frame": 0.26980042457580566,
+          "stored_active_frames": 477
+        },
+        "PaintMs": {
+          "total": 95.42723000049591,
+          "calls": 477,
+          "mean_per_engine_frame": 0.19963855648639312,
+          "p95_active_frame": 0.2490021288394928,
+          "stored_active_frames": 477
+        }
+      }
+    },
+    {
+      "pair": 3,
+      "world": 1,
+      "registry": {
+        "sources": 419,
+        "discovery_iterations": 0,
+        "membership_revision": 677,
+        "content_revision": 679,
+        "pose_revision": 41180
+      },
+      "scopes": {
+        "SourcesMs": {
+          "total": 0.9505152702331543,
+          "calls": 474,
+          "mean_per_engine_frame": 0.0020010847794382195,
+          "p95_active_frame": 0.002600252628326416,
+          "stored_active_frames": 474
+        },
+        "OutlineCaptureMs": {
+          "total": 60.58618798851967,
+          "calls": 474,
+          "mean_per_engine_frame": 0.1275498694495151,
+          "p95_active_frame": 0.17799809575080872,
+          "stored_active_frames": 474
+        },
+        "PlacementCaptureMs": {
+          "total": 0.9430982172489166,
+          "calls": 474,
+          "mean_per_engine_frame": 0.0019854699310503507,
+          "p95_active_frame": 0.002898275852203369,
+          "stored_active_frames": 474
+        },
+        "WorldPanelsMs": {
+          "total": 2.3781992495059967,
+          "calls": 474,
+          "mean_per_engine_frame": 0.005006735262117888,
+          "p95_active_frame": 0.00650063157081604,
+          "stored_active_frames": 474
+        },
+        "UpdateMs": {
+          "total": 124.07539412379265,
+          "calls": 474,
+          "mean_per_engine_frame": 0.26121135605008977,
+          "p95_active_frame": 0.35930052399635315,
+          "stored_active_frames": 474
+        },
+        "PaintMs": {
+          "total": 80.41463419795036,
+          "calls": 474,
+          "mean_per_engine_frame": 0.16929396673252708,
+          "p95_active_frame": 0.23229792714118958,
+          "stored_active_frames": 474
+        }
+      }
+    },
+    {
+      "pair": 3,
+      "world": 2,
+      "registry": {
+        "sources": 419,
+        "discovery_iterations": 0,
+        "membership_revision": 678,
+        "content_revision": 680,
+        "pose_revision": 40960
+      },
+      "scopes": {
+        "SourcesMs": {
+          "total": 0.401865690946579,
+          "calls": 474,
+          "mean_per_engine_frame": 0.0008460330335717453,
+          "p95_active_frame": 0.001300126314163208,
+          "stored_active_frames": 474
+        },
+        "OutlineCaptureMs": {
+          "total": 38.541216403245926,
+          "calls": 474,
+          "mean_per_engine_frame": 0.08113940295420195,
+          "p95_active_frame": 0.12470036745071411,
+          "stored_active_frames": 474
+        },
+        "PlacementCaptureMs": {
+          "total": 0.4725120961666107,
+          "calls": 474,
+          "mean_per_engine_frame": 0.0009947623077191804,
+          "p95_active_frame": 0.0015981495380401611,
+          "stored_active_frames": 474
+        },
+        "WorldPanelsMs": {
+          "total": 3.7338100373744965,
+          "calls": 474,
+          "mean_per_engine_frame": 0.007860652710262098,
+          "p95_active_frame": 0.010300427675247192,
+          "stored_active_frames": 474
+        },
+        "UpdateMs": {
+          "total": 93.15003082156181,
+          "calls": 474,
+          "mean_per_engine_frame": 0.1961053280453933,
+          "p95_active_frame": 0.28090178966522217,
+          "stored_active_frames": 474
+        },
+        "PaintMs": {
+          "total": 94.90141272544861,
+          "calls": 474,
+          "mean_per_engine_frame": 0.1997924478430497,
+          "p95_active_frame": 0.2769008278846741,
+          "stored_active_frames": 474
+        }
+      }
+    }
+  ],
+  "server_collision": [
+    {
+      "pair": 1,
+      "candidate": {
+        "SnapshotMs": {
+          "total": 85.08284762501717,
+          "calls": 1056,
+          "mean_per_engine_frame": 0.18026027039198553,
+          "p95_active_frame": 0.3116019070148468,
+          "stored_active_frames": 471
+        },
+        "GridMs": {
+          "total": 19.136369228363037,
+          "calls": 1056,
+          "mean_per_engine_frame": 0.040543155144836945,
+          "p95_active_frame": 0.0663958489894867,
+          "stored_active_frames": 471
+        },
+        "CandidatesMs": {
+          "total": 40.56280106306076,
+          "calls": 112320,
+          "mean_per_engine_frame": 0.08593813784546771,
+          "p95_active_frame": 0.15496835112571716,
+          "stored_active_frames": 471
+        },
+        "NarrowPhaseMs": {
+          "total": 30.380893498659134,
+          "calls": 112320,
+          "mean_per_engine_frame": 0.06436629978529478,
+          "p95_active_frame": 0.11181831359863281,
+          "stored_active_frames": 471
+        },
+        "WorldSweepMs": {
+          "total": 101.4159843325615,
+          "calls": 112320,
+          "mean_per_engine_frame": 0.21486437358593535,
+          "p95_active_frame": 0.38937851786613464,
+          "stored_active_frames": 471
+        },
+        "SettleMs": {
+          "total": 44.76085305213928,
+          "calls": 23382,
+          "mean_per_engine_frame": 0.09483231578843068,
+          "p95_active_frame": 0.18930435180664062,
+          "stored_active_frames": 471
+        }
+      }
+    },
+    {
+      "pair": 2,
+      "candidate": {
+        "SnapshotMs": {
+          "total": 84.94240045547485,
+          "calls": 1054,
+          "mean_per_engine_frame": 0.1803447992685241,
+          "p95_active_frame": 0.3178007900714874,
+          "stored_active_frames": 470
+        },
+        "GridMs": {
+          "total": 19.388284534215927,
+          "calls": 1054,
+          "mean_per_engine_frame": 0.04116408605990643,
+          "p95_active_frame": 0.06929785013198853,
+          "stored_active_frames": 470
+        },
+        "CandidatesMs": {
+          "total": 39.488501846790314,
+          "calls": 112047,
+          "mean_per_engine_frame": 0.08383970668108347,
+          "p95_active_frame": 0.1535862684249878,
+          "stored_active_frames": 470
+        },
+        "NarrowPhaseMs": {
+          "total": 29.761049896478653,
+          "calls": 112047,
+          "mean_per_engine_frame": 0.06318694245536868,
+          "p95_active_frame": 0.10908767580986023,
+          "stored_active_frames": 470
+        },
+        "WorldSweepMs": {
+          "total": 106.59751668572426,
+          "calls": 112047,
+          "mean_per_engine_frame": 0.22632169147712156,
+          "p95_active_frame": 0.4129968583583832,
+          "stored_active_frames": 470
+        },
+        "SettleMs": {
+          "total": 45.74938863515854,
+          "calls": 23326,
+          "mean_per_engine_frame": 0.09713245994725804,
+          "p95_active_frame": 0.19989535212516785,
+          "stored_active_frames": 470
+        }
+      }
+    },
+    {
+      "pair": 3,
+      "candidate": {
+        "SnapshotMs": {
+          "total": 84.27553996443748,
+          "calls": 1056,
+          "mean_per_engine_frame": 0.17930965949880315,
+          "p95_active_frame": 0.3120005130767822,
+          "stored_active_frames": 469
+        },
+        "GridMs": {
+          "total": 19.024338573217392,
+          "calls": 1056,
+          "mean_per_engine_frame": 0.040477316113228495,
+          "p95_active_frame": 0.06650015711784363,
+          "stored_active_frames": 469
+        },
+        "CandidatesMs": {
+          "total": 40.98641499876976,
+          "calls": 112200,
+          "mean_per_engine_frame": 0.08720513829525481,
+          "p95_active_frame": 0.1622997224330902,
+          "stored_active_frames": 469
+        },
+        "NarrowPhaseMs": {
+          "total": 30.072029680013657,
+          "calls": 112200,
+          "mean_per_engine_frame": 0.06398304187236949,
+          "p95_active_frame": 0.11071190237998962,
+          "stored_active_frames": 469
+        },
+        "WorldSweepMs": {
+          "total": 106.04172572493553,
+          "calls": 112200,
+          "mean_per_engine_frame": 0.22562069303177773,
+          "p95_active_frame": 0.42702630162239075,
+          "stored_active_frames": 469
+        },
+        "SettleMs": {
+          "total": 43.81237551569939,
+          "calls": 23409,
+          "mean_per_engine_frame": 0.09321782024616891,
+          "p95_active_frame": 0.18488988280296326,
+          "stored_active_frames": 469
+        }
+      }
+    }
+  ],
+  "vfx_cpu": {
+    "width": {
+      "pairs": [
+        {
+          "pair": 1,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5583093042749372,
+            "all_cpu_system_work_ms_per_engine_frame": 1.6997812238055323,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "width-p1-Source"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.4432183600713013,
+            "all_cpu_system_work_ms_per_engine_frame": 1.5802789661319072,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "width-p1-Wide"
+          },
+          "gt_change_percent": -7.385629020368734,
+          "all_cpu_change_percent": -7.0304493307720595
+        },
+        {
+          "pair": 2,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.57110841283608,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7132506504770166,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "width-p2-Source"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.566974662162162,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7066469594594593,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "width-p2-Wide"
+          },
+          "gt_change_percent": -0.2631104664798878,
+          "all_cpu_change_percent": -0.38544803795746985
+        },
+        {
+          "pair": 3,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5945073800738006,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7460747232472325,
+            "window_method": "Host QPC window; start/stop bridge frames excluded.",
+            "directory": "width-p3-Source-retry-143915"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5951659028414298,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7430925756186983,
+            "window_method": "Host QPC window; start/stop bridge frames excluded.",
+            "directory": "width-p3-Wide-retry-144003"
+          },
+          "gt_change_percent": 0.04129944933830565,
+          "all_cpu_change_percent": -0.1707915239153146
+        }
+      ],
+      "median_gt_change_percent": -0.2631104664798878,
+      "median_all_cpu_change_percent": -0.38544803795746985
+    },
+    "opaque": {
+      "pairs": [
+        {
+          "pair": 1,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5584601386481804,
+            "all_cpu_system_work_ms_per_engine_frame": 1.6977928942807625,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "opaque-p1-Wide"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5694827890556047,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7087687555163285,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "opaque-p1-Opaque"
+          },
+          "gt_change_percent": 0.7072783020928286,
+          "all_cpu_change_percent": 0.6464782172513228
+        },
+        {
+          "pair": 2,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5714241348713398,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7130638864241348,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "opaque-p2-Wide"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5219078341013825,
+            "all_cpu_system_work_ms_per_engine_frame": 1.6647972350230413,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "opaque-p2-Opaque"
+          },
+          "gt_change_percent": -3.1510462179589305,
+          "all_cpu_change_percent": -2.817562834848253
+        },
+        {
+          "pair": 3,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.6044807520143243,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7486884512085945,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "opaque-p3-Wide"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5914533213644524,
+            "all_cpu_system_work_ms_per_engine_frame": 1.733807001795332,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "opaque-p3-Opaque"
+          },
+          "gt_change_percent": -0.8119406003167517,
+          "all_cpu_change_percent": -0.8510063300856907
+        }
+      ],
+      "median_gt_change_percent": -0.8119406003167517,
+      "median_all_cpu_change_percent": -0.8510063300856907
+    },
+    "nodes16": {
+      "pairs": [
+        {
+          "pair": 1,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5810791628753411,
+            "all_cpu_system_work_ms_per_engine_frame": 1.724628753412193,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "nodes16-p1-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.581835902085222,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7249836808703536,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "nodes16-p1-Nodes16"
+          },
+          "gt_change_percent": 0.047862196128400925,
+          "all_cpu_change_percent": 0.020579933939890438
+        },
+        {
+          "pair": 2,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5950689655172414,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7406869328493648,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "nodes16-p2-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.4879115710253998,
+            "all_cpu_system_work_ms_per_engine_frame": 1.632074317968015,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "nodes16-p2-Nodes16"
+          },
+          "gt_change_percent": -6.7180414645640845,
+          "all_cpu_change_percent": -6.239640961948256
+        },
+        {
+          "pair": 3,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.570913043478261,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7131920289855072,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "nodes16-p3-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.570424074074074,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7138888888888888,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "nodes16-p3-Nodes16"
+          },
+          "gt_change_percent": -0.031126446254736706,
+          "all_cpu_change_percent": 0.040676111702109274
+        }
+      ],
+      "median_gt_change_percent": -0.031126446254736706,
+      "median_all_cpu_change_percent": 0.020579933939890438
+    },
+    "nodes8": {
+      "pairs": [
+        {
+          "pair": 1,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5685570902394108,
+            "all_cpu_system_work_ms_per_engine_frame": 1.712063535911602,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "nodes8-p1-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5122808022922636,
+            "all_cpu_system_work_ms_per_engine_frame": 1.6541432664756448,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "nodes8-p1-Nodes8"
+          },
+          "gt_change_percent": -3.5877742861471273,
+          "all_cpu_change_percent": -3.3830677554333444
+        },
+        {
+          "pair": 2,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.6041470037453185,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7477294007490638,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "nodes8-p2-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5720639481000926,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7160481927710844,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "nodes8-p2-Nodes8"
+          },
+          "gt_change_percent": -2.0000072044718653,
+          "all_cpu_change_percent": -1.8127067018727905
+        },
+        {
+          "pair": 3,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5780833333333335,
+            "all_cpu_system_work_ms_per_engine_frame": 1.724761235955056,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "nodes8-p3-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5109941634241244,
+            "all_cpu_system_work_ms_per_engine_frame": 1.65229766536965,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "nodes8-p3-Nodes8"
+          },
+          "gt_change_percent": -4.251307170673857,
+          "all_cpu_change_percent": -4.201368228529356
+        }
+      ],
+      "median_gt_change_percent": -3.5877742861471273,
+      "median_all_cpu_change_percent": -3.3830677554333444
+    },
+    "collision": {
+      "pairs": [
+        {
+          "pair": 1,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.477550049554014,
+            "all_cpu_system_work_ms_per_engine_frame": 1.620262636273538,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "collision-p1-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 0.2756420634920635,
+            "all_cpu_system_work_ms_per_engine_frame": 0.42190873015873015,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "collision-p1-NoCollision"
+          },
+          "gt_change_percent": -81.3446547157395,
+          "all_cpu_change_percent": -73.960472783037
+        },
+        {
+          "pair": 2,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.6065930122757317,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7500509915014164,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "collision-p2-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 0.27591260634184067,
+            "all_cpu_system_work_ms_per_engine_frame": 0.42258004640371233,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "collision-p2-NoCollision"
+          },
+          "gt_change_percent": -82.82622890591242,
+          "all_cpu_change_percent": -75.85327236430011
+        },
+        {
+          "pair": 3,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5702881679389313,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7135104961832062,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "collision-p3-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 0.2805016393442623,
+            "all_cpu_system_work_ms_per_engine_frame": 0.42640327868852457,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "collision-p3-NoCollision"
+          },
+          "gt_change_percent": -82.13693224776492,
+          "all_cpu_change_percent": -75.11522225055958
+        }
+      ],
+      "median_gt_change_percent": -82.13693224776492,
+      "median_all_cpu_change_percent": -75.11522225055958
+    },
+    "solver": {
+      "pairs": [
+        {
+          "pair": 1,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5777910305343512,
+            "all_cpu_system_work_ms_per_engine_frame": 1.721780534351145,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "solver-p1-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.4773930399181168,
+            "all_cpu_system_work_ms_per_engine_frame": 1.6186724667349028,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "solver-p1-NoSolver"
+          },
+          "gt_change_percent": -6.363199477831527,
+          "all_cpu_change_percent": -5.988455878036659
+        },
+        {
+          "pair": 2,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.6187960396039605,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7629564356435643,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "solver-p2-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5605485391140435,
+            "all_cpu_system_work_ms_per_engine_frame": 1.701353440150801,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "solver-p2-NoSolver"
+          },
+          "gt_change_percent": -3.5981988505585427,
+          "all_cpu_change_percent": -3.4943004970100278
+        },
+        {
+          "pair": 3,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5722742574257424,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7139524752475248,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "solver-p3-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.571664739884393,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7129682080924855,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "solver-p3-NoSolver"
+          },
+          "gt_change_percent": -0.03876661711343932,
+          "all_cpu_change_percent": -0.057426747197131256
+        }
+      ],
+      "median_gt_change_percent": -3.5981988505585427,
+      "median_all_cpu_change_percent": -3.4943004970100278
+    },
+    "gpu": {
+      "pairs": [
+        {
+          "pair": 1,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.57102876984127,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7139920634920636,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "gpu-p1-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.528116570327553,
+            "all_cpu_system_work_ms_per_engine_frame": 1.686140655105973,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "gpu-p1-GPU"
+          },
+          "gt_change_percent": -2.731471271404695,
+          "all_cpu_change_percent": -1.6249438360494195
+        },
+        {
+          "pair": 2,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.6234929292929294,
+            "all_cpu_system_work_ms_per_engine_frame": 1.7738777777777777,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "gpu-p2-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5127845691382766,
+            "all_cpu_system_work_ms_per_engine_frame": 1.6735050100200402,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "gpu-p2-GPU"
+          },
+          "gt_change_percent": -6.819146431568934,
+          "all_cpu_change_percent": -5.658381260262435
+        },
+        {
+          "pair": 3,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5207262396694214,
+            "all_cpu_system_work_ms_per_engine_frame": 1.6665402892561982,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "gpu-p3-Opaque"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 1.5925849056603774,
+            "all_cpu_system_work_ms_per_engine_frame": 1.754950347567031,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "gpu-p3-GPU"
+          },
+          "gt_change_percent": 4.7252861242518485,
+          "all_cpu_change_percent": 5.305005758384129
+        }
+      ],
+      "median_gt_change_percent": -2.731471271404695,
+      "median_all_cpu_change_percent": -1.6249438360494195
+    },
+    "flash": {
+      "pairs": [
+        {
+          "pair": 1,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 0.10504344262295082,
+            "all_cpu_system_work_ms_per_engine_frame": 0.18359016393442623,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "flash-p1-Source"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 0.06760826446280992,
+            "all_cpu_system_work_ms_per_engine_frame": 0.14170165289256198,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "flash-p1-MuzzleNoCollision"
+          },
+          "gt_change_percent": -35.637805869056436,
+          "all_cpu_change_percent": -22.81631550632841
+        },
+        {
+          "pair": 2,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 0.10761716171617161,
+            "all_cpu_system_work_ms_per_engine_frame": 0.18620379537953796,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "flash-p2-Source"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 0.06593376413570275,
+            "all_cpu_system_work_ms_per_engine_frame": 0.1394919224555735,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "flash-p2-MuzzleNoCollision"
+          },
+          "gt_change_percent": -38.73303933661085,
+          "all_cpu_change_percent": -25.086423629954457
+        },
+        {
+          "pair": 3,
+          "baseline": {
+            "gt_system_exclusive_ms_per_engine_frame": 0.1037936507936508,
+            "all_cpu_system_work_ms_per_engine_frame": 0.1829873015873016,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "flash-p3-Source"
+          },
+          "candidate": {
+            "gt_system_exclusive_ms_per_engine_frame": 0.06908654670094258,
+            "all_cpu_system_work_ms_per_engine_frame": 0.1444147386461011,
+            "window_method": "Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.",
+            "directory": "flash-p3-MuzzleNoCollision"
+          },
+          "gt_change_percent": -33.43856182658843,
+          "all_cpu_change_percent": -21.07936594867915
+        }
+      ],
+      "median_gt_change_percent": -35.637805869056436,
+      "median_all_cpu_change_percent": -22.81631550632841
+    }
+  },
+  "scope": "Native means are per engine frame in each World; native P95 is active frame/batch P95. Means may be summed across Worlds, P95s may not. Trace exclusive scopes and all-thread work are kept separate."
+}

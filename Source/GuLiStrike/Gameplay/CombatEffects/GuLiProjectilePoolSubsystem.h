@@ -105,6 +105,8 @@ private:
 	TArray<FSlot> Slots;
 	TArray<int32> FreeSlots;
 	TArray<int32> ActiveSlots;
+	TArray<int32> DomainSlots[2];
+	TArray<FGuLiCombatTargetSnapshot> SourceOnly;
 	TArray<FGuLiProjectilePoolHandle> StepHandles;
 	TMap<FGuid, FGuLiProjectilePoolHandle> ById;
 	FSimulationHistory WingmanHistory;
@@ -113,6 +115,9 @@ private:
 	TArray<FTargetMotion> Targets;
 	TMap<FIntVector, TArray<int32>> SpatialGrid;
 	TSet<int32> Candidates;
+	TArray<int32> OrderedCandidates;
+	TArray<uint32> CandidateVisits;
+	uint32 CandidateGeneration = 0;
 	FGuLiProjectilePoolStats Stats;
 	uint32 Epoch = 0;
 	float NextGroundStepTime = 0;

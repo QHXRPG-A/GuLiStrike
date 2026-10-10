@@ -163,8 +163,42 @@ void UGuLiCombatEffectReplicationComponent::MulticastFlightBatch_Implementation(
 	if (GetOwner()->HasAuthority()) return;
 	TArray<FGuLiFlightEvent> Events;
 	if (!GuLiFlightWire::DecodeBatch(Payload, Events)) { UE_LOG(LogNet, Warning, TEXT("Rejected invalid flight batch")); return; }
+	FlightReceiveCounters.PayloadBytes += Payload.Num();
+	FlightReceiveCounters.Events += Events.Num();
+	if (const auto* State = GetWorld()->GetGameState())
+	{
+		const double ServerNow = State->GetServerWorldTimeSeconds();
+		for (const FGuLiFlightEvent& Event : Events)
+		{
+			// Bootstrap is an active-state reconstruction, not a freshly produced event.
+			// Keep signed age: the client's estimated server clock can be ahead/behind.
+			if (!Event.bBootstrap && IsCurrentEpoch(Event.State.MatchEpoch)
+				&& FMath::IsFinite(ServerNow) && FMath::IsFinite(Event.State.SampleTime))
+			{
+				++FlightReceiveCounters.AgeSamples;
+				FlightReceiveCounters.AgeMilliseconds += (ServerNow - Event.State.SampleTime) * 1000.0;
+			}
+		}
+	}
 	if (auto* Visuals = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>())
 		for (const auto& Event : Events) Visuals->ApplyFlightEvent(Event);
+}
+
+FGuLiFlightPeerStats UGuLiCombatEffectReplicationComponent::GetFlightPeerStats(UNetConnection* Connection) const
+{
+	FGuLiFlightPeerStats Result;
+	if (!Connection || !GetOwner() || !GetOwner()->HasAuthority()) return Result;
+	const FPeerStream* Peer = FlightPeers.Find(Connection);
+	if (!Peer) return Result;
+	Result.bAvailable = true;
+	Result.QueuedEvents = FMath::Max(0, Peer->Queue.Num() - Peer->Cursor);
+	if (Result.QueuedEvents > 0 && GetWorld())
+	{
+		// Event age is not time spent in this queue; it also includes producer delay.
+		Result.HeadEventAgeMilliseconds = FMath::Max(0.0,
+			(GetWorld()->GetTimeSeconds() - static_cast<double>(Peer->Queue[Peer->Cursor].State.SampleTime)) * 1000.0);
+	}
+	return Result;
 }
 
 FString UGuLiCombatEffectReplicationComponent::GetFlightDiagnostics() const

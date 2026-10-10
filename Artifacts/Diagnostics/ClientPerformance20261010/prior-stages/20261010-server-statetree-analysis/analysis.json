@@ -1,0 +1,909 @@
+{
+  "source_capture": "D:\\UE5.7\\test1\\outputs\\performance\\20261010-client1-live-frame-analysis",
+  "source_scope": "Unmodified user gameplay. One process contains dedicated server, Client1 (UEDPIE_1) 1505x1115, Client2 640x484 and editor. Engine CSV/GT/GPU are process-wide; project counters retain World identity. Measurement camera and viewport stayed identical from context-before to context-after. Screenshot/ProfileGPU are outside the window. This is a diagnosis, not a paired FPS comparison.",
+  "processor": {
+    "trace_interval_seconds": [
+      695.6372962000314,
+      725.6378084000899
+    ],
+    "engine_frames": 902,
+    "processor_calls": 310,
+    "per_call": {
+      "n": 310,
+      "mean_ms": 4.533130967741935,
+      "p50_ms": 5.066,
+      "p95_ms": 6.919899999999999,
+      "max_ms": 7.866,
+      "total_ms": 1405.2706
+    },
+    "active_engine_frame_count": 258,
+    "calls_per_active_frame": {
+      "3": 8,
+      "1": 214,
+      "2": 36
+    },
+    "per_active_frame": {
+      "n": 258,
+      "mean_ms": 5.44678527131783,
+      "p50_ms": 5.146999999999999,
+      "p95_ms": 7.0342,
+      "max_ms": 7.911099999999999,
+      "total_ms": 1405.2706
+    },
+    "mean_ms_per_engine_frame": 1.5579496674057651,
+    "first_call": {
+      "n": 258,
+      "mean_ms": 5.43694496124031,
+      "p50_ms": 5.130199999999999,
+      "p95_ms": 7.0342,
+      "max_ms": 7.866,
+      "total_ms": 1402.7318
+    },
+    "additional_same_frame_calls": {
+      "n": 52,
+      "mean_ms": 0.04882307692307693,
+      "p50_ms": 0.0314,
+      "p95_ms": 0.0791,
+      "max_ms": 0.325,
+      "total_ms": 2.5388
+    },
+    "additional_call_fraction_percent": 0.18066271364390601,
+    "active_frame_engine_ms": {
+      "n": 258,
+      "mean_ms": 37.65541976744186,
+      "p50_ms": 37.0238,
+      "p95_ms": 44.005700000000004,
+      "max_ms": 54.4454,
+      "total_ms": 9715.0983
+    },
+    "inactive_frame_engine_ms": {
+      "n": 644,
+      "mean_ms": 31.417939440993788,
+      "p50_ms": 30.9622,
+      "p95_ms": 36.5968,
+      "max_ms": 60.5454,
+      "total_ms": 20233.153
+    },
+    "scope_note": "Grouping by engine frame; extra calls can include immediate rounds or admission wakes. No delta-time or caller identity was recorded."
+  },
+  "csv_engine_frames": 905,
+  "csv_recorded_internal_total": {
+    "n": 905,
+    "mean_ms": 1.1844917127071823,
+    "p50_ms": 0.0,
+    "p95_ms": 4.6914,
+    "max_ms": 6.4941,
+    "total_ms": 1071.965
+  },
+  "csv_exclusive_phases": {
+    "Exclusive/GameThread/StateTree_Tick": {
+      "n": 905,
+      "mean_ms": 0.1035035359116022,
+      "p50_ms": 0.0,
+      "p95_ms": 0.3872,
+      "max_ms": 0.6739,
+      "total_ms": 93.6707,
+      "fraction_of_recorded_internal_percent": 8.73822372931952
+    },
+    "Exclusive/GameThread/StateTree_TickTasks": {
+      "n": 905,
+      "mean_ms": 0.09280165745856353,
+      "p50_ms": 0.0,
+      "p95_ms": 0.335,
+      "max_ms": 0.712,
+      "total_ms": 83.9855,
+      "fraction_of_recorded_internal_percent": 7.834724081476542
+    },
+    "Exclusive/GameThread/StateTree_Task_Tick": {
+      "n": 905,
+      "mean_ms": 0.05042353591160221,
+      "p50_ms": 0.0,
+      "p95_ms": 0.1897,
+      "max_ms": 0.5278,
+      "total_ms": 45.6333,
+      "fraction_of_recorded_internal_percent": 4.256976673678712
+    },
+    "Exclusive/GameThread/StateTree_TriggerTransition": {
+      "n": 905,
+      "mean_ms": 0.16664651933701657,
+      "p50_ms": 0.0,
+      "p95_ms": 0.6245,
+      "max_ms": 1.1212,
+      "total_ms": 150.8151,
+      "fraction_of_recorded_internal_percent": 14.069032104592969
+    },
+    "Exclusive/GameThread/StateTree_TestConditions": {
+      "n": 905,
+      "mean_ms": 0.7300738121546961,
+      "p50_ms": 0.0,
+      "p95_ms": 2.8665,
+      "max_ms": 4.1756,
+      "total_ms": 660.7168,
+      "fraction_of_recorded_internal_percent": 61.63604222152777
+    },
+    "Exclusive/GameThread/StateTree_SelectState": {
+      "n": 905,
+      "mean_ms": 0.01874850828729282,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0802,
+      "max_ms": 0.3525,
+      "total_ms": 16.9674,
+      "fraction_of_recorded_internal_percent": 1.5828315290144737
+    },
+    "Exclusive/GameThread/StateTree_ExitState": {
+      "n": 905,
+      "mean_ms": 0.00446121546961326,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0152,
+      "max_ms": 0.1921,
+      "total_ms": 4.0374,
+      "fraction_of_recorded_internal_percent": 0.3766354311941155
+    },
+    "Exclusive/GameThread/StateTree_Task_ExitState": {
+      "n": 905,
+      "mean_ms": 0.0015990055248618785,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0058,
+      "max_ms": 0.0274,
+      "total_ms": 1.4471,
+      "fraction_of_recorded_internal_percent": 0.13499507913038208
+    },
+    "Exclusive/GameThread/StateTree_EnterState": {
+      "n": 905,
+      "mean_ms": 0.009899005524861879,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0361,
+      "max_ms": 0.2662,
+      "total_ms": 8.9586,
+      "fraction_of_recorded_internal_percent": 0.8357175840629126
+    },
+    "Exclusive/GameThread/StateTree_Task_EnterState": {
+      "n": 905,
+      "mean_ms": 0.00494353591160221,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0185,
+      "max_ms": 0.0907,
+      "total_ms": 4.4738999999999995,
+      "fraction_of_recorded_internal_percent": 0.41735504424118325
+    },
+    "Exclusive/GameThread/StateTree_StateCompleted": {
+      "n": 905,
+      "mean_ms": 0.0008820994475138122,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0048,
+      "max_ms": 0.0421,
+      "total_ms": 0.7983,
+      "fraction_of_recorded_internal_percent": 0.074470714995359
+    },
+    "Exclusive/GameThread/StateTree_Stop": {
+      "n": 905,
+      "mean_ms": 0.00022839779005524863,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0024,
+      "max_ms": 0.0067,
+      "total_ms": 0.2067,
+      "fraction_of_recorded_internal_percent": 0.01928234597211663
+    },
+    "Exclusive/GameThread/StateTree_Start": {
+      "n": 905,
+      "mean_ms": 0.0002650828729281768,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0,
+      "max_ms": 0.1174,
+      "total_ms": 0.2399,
+      "fraction_of_recorded_internal_percent": 0.022379462016017315
+    },
+    "Exclusive/GameThread/StateTree_StartEvaluators": {
+      "n": 905,
+      "mean_ms": 1.580110497237569e-05,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0,
+      "max_ms": 0.0013,
+      "total_ms": 0.0143,
+      "fraction_of_recorded_internal_percent": 0.0013339987779451756
+    }
+  },
+  "csv_scope_note": "All GT StateTree instances, including Actor trees, without World/entity labels. Exclusive fields do not double-count their children. CSV has 905 frames; exact trace window has 902.",
+  "percent_of_authority_world_tick": 12.35799973855332,
+  "percent_of_process_gt": 4.696004272993418,
+  "additional_calls_note": "Do not infer four full rounds. Extra calls total only 2.539 ms across 30 seconds.",
+  "mass_asset": {
+    "asset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass",
+    "ready": true,
+    "dirty": false,
+    "compiled_matches_editor": true,
+    "editor_hash": "b69ce098",
+    "state_count": 21,
+    "max_depth": 3,
+    "persistent_task_count": 16
+  },
+  "mass_leaf_candidate_guards": [
+    {
+      "path": "CommanderOrders/Control/WaitForSafeExit",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 2,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/Control/Stopped",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 2,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/Control/PrepareReplacementMove",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 2,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/SelectOrder/TakeManualOrder",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 2,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/SelectOrder/TakeAutomaticOrder",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 2,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/SelectOrder/Idle",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 4,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "32",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "64",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/ExecuteOrder/FinishOrder",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 3,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "1048576",
+          "Forbidden": "7",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/ExecuteOrder/Suspended",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 4,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "1048576",
+          "Forbidden": "7",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "131079",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/ExecuteOrder/StartOrder",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 4,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "1048576",
+          "Forbidden": "7",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "131072",
+          "Forbidden": "1048583",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/ExecuteOrder/ManualMove",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 4,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "1048576",
+          "Forbidden": "7",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "131072",
+          "Forbidden": "1048583",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/StrongholdStageHandoff",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 4,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "1048576",
+          "Forbidden": "7",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "131072",
+          "Forbidden": "1048583",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/RejectUnreachableStronghold",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 4,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "1048576",
+          "Forbidden": "7",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "131072",
+          "Forbidden": "1048583",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/SelectStronghold",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 7,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "1048576",
+          "Forbidden": "7",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "131072",
+          "Forbidden": "1048583",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceMoving",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceCapturing",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceWaiting",
+          "Result": "Running",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/AdvanceToStronghold",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 11,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "1048576",
+          "Forbidden": "7",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "131072",
+          "Forbidden": "1048583",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Arrived",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Complete",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Failed",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceSelecting",
+          "Result": "None",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceSelecting",
+          "Result": "TargetReady",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceWaiting",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceCapturing",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/CaptureStronghold",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 9,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "1048576",
+          "Forbidden": "7",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "131072",
+          "Forbidden": "1048583",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Complete",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Failed",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceSelecting",
+          "Result": "None",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceSelecting",
+          "Result": "TargetReady",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceWaiting",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    },
+    {
+      "path": "CommanderOrders/ExecuteOrder/StrongholdAdvance/WaitForStronghold",
+      "task_types": [
+        "/Script/GuLiStrike.GuLiCommanderMassPersistentTask"
+      ],
+      "active_chain_on_tick_condition_count": 9,
+      "conditions": [
+        {
+          "Required": "2097152",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "4194304",
+          "Forbidden": "0",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "1048576",
+          "Forbidden": "7",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "131072",
+          "Forbidden": "1048583",
+          "Phase": "Any",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceWaiting",
+          "Result": "NoTarget",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceSelecting",
+          "Result": "None",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceSelecting",
+          "Result": "TargetReady",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceMoving",
+          "Result": "Any",
+          "Name": "None"
+        },
+        {
+          "Required": "0",
+          "Forbidden": "0",
+          "Phase": "AdvanceCapturing",
+          "Result": "Any",
+          "Name": "None"
+        }
+      ],
+      "note": "Static candidate count; successful transitions may stop evaluation. Not a measured callback count."
+    }
+  ],
+  "current_editor_asset_readback_utc": "2026-10-10T02:50:41.433Z",
+  "current_pie_world_count": 0,
+  "source_sha256": {
+    "Source/GuLiStrike/Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.cpp": "23b0d9f4e51952a1fbd3f25480ea78b387b831c84291efe8a2a1d005a380e465",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.cpp": "34b79891794da21e7cbdbd164f8f93533a82493b7b7981cb255eb92a31b73b0d",
+    "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskOperations.cpp": "d6316261449ca6b3d76b037df2615f252388bf0958a71a38925e2e35c9034bd7",
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeNodes.cpp": "258fcd907d881f5e537949ae8a033788c2d4a2ff8b248fe377354bbb29e57762",
+    "Source/GuLiStrike/Commander/Behavior/GuLiCommanderMassStateTreeProcessor.cpp": "c48ed71daa2e5f19746ebdeca005de8e0a664b3da0a1511adddf798437385d1f"
+  },
+  "unmeasured": [
+    "FindGroup individual duration/call count",
+    "per-condition node duration/call count",
+    "CommitBehaviorRequests inclusive/exclusive duration",
+    "actual Mass unit/group counts inside timing window"
+  ],
+  "changes": "Diagnostic reports only. No gameplay/resource/map changes, builds or PIE restart."
+}

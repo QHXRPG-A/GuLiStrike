@@ -1,0 +1,43 @@
+{
+  "success": true,
+  "checks": {
+    "skill": {
+      "exit_code": 0,
+      "summary": "Skill is valid!"
+    },
+    "progress": {
+      "exit_code": 0,
+      "summary": "errors=0 warnings=17"
+    },
+    "python_syntax": "All twelve task scripts compiled with py_compile.",
+    "scoped_diff_check": "git diff --check exit0; existing CRLF notices only.",
+    "resource_and_scene_readback": "passed",
+    "build_and_loaded_modules": "passed",
+    "runtime_related_checks": 14,
+    "cpu_windows": 18,
+    "player_visual": "pending",
+    "pressure_muzzle_gain": "unproven_zero_native_feedback"
+  },
+  "skill_files": [
+    {
+      "path": ".agents\\skills\\guli-client-presentation\\SKILL.md",
+      "sha256": "e548a0fa988031156e14b84fb8638494b0ab4a1c8026d4e1907de506f2d2d0b9"
+    },
+    {
+      "path": ".agents\\skills\\guli-client-presentation\\agents\\openai.yaml",
+      "sha256": "ff2732abddf54c0c0ecbcf0d5603aa41e13ec4d1ad17ac9280b04499641e3bf7"
+    },
+    {
+      "path": ".agents\\skills\\guli-client-presentation\\references\\impact-batch-production.md",
+      "sha256": "125ccb9459d06aaee3e8322018d023fb9bf82f6e23d1f6ebe27472bef0c17f02"
+    },
+    {
+      "path": ".agents\\skills\\guli-client-presentation\\references\\runtime-contracts.md",
+      "sha256": "3f580488bd5d9718144af9308d66296c53cdc9bdae24b465c3a4d6498c8769cc"
+    },
+    {
+      "path": ".agents\\skills\\guli-client-presentation\\references\\validation.md",
+      "sha256": "125274ec0fab6b3ca383e2bae295ed31592d11792a232fc774f5b58357f697dd"
+    }
+  ]
+}

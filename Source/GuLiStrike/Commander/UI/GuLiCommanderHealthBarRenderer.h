@@ -149,6 +149,7 @@ private:
 	TArray<float> CachedSelectedValues;
 	TArray<float> CachedVisibleValues;
 	int32 VisibleInstanceCount = 0;
+	TArray<int32> SceneUIVisibleSlots;
 	double LastUpdateMilliseconds = 0.0;
 	bool bLoggedMissingPlane = false;
 	bool bLoggedMissingMaterial = false;

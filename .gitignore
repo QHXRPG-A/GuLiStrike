@@ -167,6 +167,10 @@ Progress/Commander*.json
 # Generated outputs are local-only. Keep the small Markdown entry points used
 # by Progress documentation so links remain valid in clean Git checkouts.
 outputs/**
+# Retain this session's small report/guide entry points; raw captures remain local.
+!outputs/performance/
+!outputs/performance/**/
+!outputs/performance/**/*.md
 !outputs/ore-resource-variants-20260910/
 !outputs/ore-resource-variants-20260910/README.md
 !outputs/ship-part-visual-migration/

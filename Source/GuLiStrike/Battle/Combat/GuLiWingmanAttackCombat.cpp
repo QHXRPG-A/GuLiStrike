@@ -3,6 +3,7 @@
 #include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityDefinitions.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 #include "Gameplay/Wingman/Combat/GuLiWingmanAttackNavigation.h"
 #include "Battle/Combat/GuLiWingmanTargetAssignment.h"
 #include "Engine/World.h"
@@ -799,6 +800,7 @@ int32 FGuLiWingmanCombatCoordinator::CommitValidatedAttackBatch(const FGuLiWingm
 			const auto* Grant = Context.HangarCapability->FindConfiguredGrant(Channel->Binding);
 			if (!Grant || !Grant->WeaponDefinition) continue;
 			Request.Projectile = Grant->WeaponDefinition->ResolveAttackProjectile();
+			Request.GroundWarningStyle = Request.Projectile ? Request.Projectile->GroundWarningStyle.LoadSynchronous() : nullptr;
 			const auto* Field = Context.HangarCapability->GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindCombatField(Runtime.EffectConfigId);
 			if (!Field) continue;
 			Request.FrozenField = *Field;

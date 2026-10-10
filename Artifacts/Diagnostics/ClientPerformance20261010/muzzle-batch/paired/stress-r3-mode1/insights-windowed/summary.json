@@ -1,0 +1,5755 @@
+{
+  "cpu_eligible": true,
+  "window_method": "Host QPC window; start/stop bridge frames excluded.",
+  "trace_interval_seconds": [
+    1046.1145569999935,
+    1076.115029299981
+  ],
+  "frames": 351,
+  "csv_frames": 354,
+  "case": "stress",
+  "pair": 3,
+  "variant": "mode1",
+  "source_directory": "stress-r3-mode1",
+  "scope": "GT timer statistics and all-thread CPU work are separate. GPU-only rows removed. Engine frame normalization inside the declared window.",
+  "clock_mapping": {
+    "host_clock": "Windows Python time.monotonic / raw QPC seconds",
+    "qpc_origin_seconds": 581100.3172832,
+    "start_cycle": 5811003172832,
+    "cycle_frequency": 10000000
+  },
+  "timers": [
+    {
+      "timer": "GuLiSceneUI_Paint",
+      "calls": 2816,
+      "inclusive_ms_per_frame": 8.243917378917379,
+      "exclusive_ms_per_frame": 8.243917378917379,
+      "max_call_ms": 6.047000000000001
+    },
+    {
+      "timer": "UWorld_Tick",
+      "calls": 1410,
+      "inclusive_ms_per_frame": 61.29909401709401,
+      "exclusive_ms_per_frame": 5.746621082621083,
+      "max_call_ms": 118.15199999999999
+    },
+    {
+      "timer": "GuLiCommander_PredictiveAvoidanceCandidateQuery",
+      "calls": 353,
+      "inclusive_ms_per_frame": 5.398823361823362,
+      "exclusive_ms_per_frame": 5.398823361823362,
+      "max_call_ms": 9.29
+    },
+    {
+      "timer": "Projectile Movement",
+      "calls": 48938,
+      "inclusive_ms_per_frame": 5.863367521367521,
+      "exclusive_ms_per_frame": 4.768763532763533,
+      "max_call_ms": 1.924
+    },
+    {
+      "timer": "ProcessLocalPlayerSlateOperations",
+      "calls": 352,
+      "inclusive_ms_per_frame": 3.5783675213675217,
+      "exclusive_ms_per_frame": 3.5783675213675217,
+      "max_call_ms": 7.4590000000000005
+    },
+    {
+      "timer": "CombatEffectReplication",
+      "calls": 653,
+      "inclusive_ms_per_frame": 3.5630826210826214,
+      "exclusive_ms_per_frame": 3.308364672364672,
+      "max_call_ms": 22.479
+    },
+    {
+      "timer": "GuLiCommanderMassStateTreeProcessor_0",
+      "calls": 197,
+      "inclusive_ms_per_frame": 2.6144786324786327,
+      "exclusive_ms_per_frame": 2.6144786324786327,
+      "max_call_ms": 7.692
+    },
+    {
+      "timer": "GuLiCombatEffects_Presentation",
+      "calls": 704,
+      "inclusive_ms_per_frame": 3.6862193732193735,
+      "exclusive_ms_per_frame": 2.438911680911681,
+      "max_call_ms": 6.412
+    },
+    {
+      "timer": "Slate::AddCustomVertsElement",
+      "calls": 704,
+      "inclusive_ms_per_frame": 2.2574957264957263,
+      "exclusive_ms_per_frame": 2.2574957264957263,
+      "max_call_ms": 2.125
+    },
+    {
+      "timer": "BP_CombatAvatarFly01_C",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 2.1840997150997152,
+      "exclusive_ms_per_frame": 2.1840997150997152,
+      "max_call_ms": 8.222999999999999
+    },
+    {
+      "timer": "ProcessUntilTasksComplete",
+      "calls": 7397,
+      "inclusive_ms_per_frame": 26.351817663817663,
+      "exclusive_ms_per_frame": 1.960991452991453,
+      "max_call_ms": 45.964999999999996
+    },
+    {
+      "timer": "GuLiCommander_ManualAvoidanceRefresh",
+      "calls": 300,
+      "inclusive_ms_per_frame": 1.919207977207977,
+      "exclusive_ms_per_frame": 1.919207977207977,
+      "max_call_ms": 3.849
+    },
+    {
+      "timer": "GuLiProjectilePool_NarrowPhase",
+      "calls": 371874,
+      "inclusive_ms_per_frame": 1.816002849002849,
+      "exclusive_ms_per_frame": 1.816002849002849,
+      "max_call_ms": 0.34900000000000003
+    },
+    {
+      "timer": "GuLiCommanderPresentation_Interpolation",
+      "calls": 704,
+      "inclusive_ms_per_frame": 1.7028005698005697,
+      "exclusive_ms_per_frame": 1.6297806267806267,
+      "max_call_ms": 1.77
+    },
+    {
+      "timer": "NS_WM01_Explosion_2A",
+      "calls": 180989,
+      "inclusive_ms_per_frame": 1.5512792022792021,
+      "exclusive_ms_per_frame": 1.5376353276353278,
+      "max_call_ms": 0.772
+    },
+    {
+      "timer": "GuLiCombatEffects_Runtime",
+      "calls": 353,
+      "inclusive_ms_per_frame": 7.940424501424501,
+      "exclusive_ms_per_frame": 1.4044415954415954,
+      "max_call_ms": 28.434
+    },
+    {
+      "timer": "GuLiProjectilePool_WorldSweep",
+      "calls": 371874,
+      "inclusive_ms_per_frame": 1.3915185185185186,
+      "exclusive_ms_per_frame": 1.3915185185185186,
+      "max_call_ms": 0.4
+    },
+    {
+      "timer": "UCharacterMovementComponent_TickComponent",
+      "calls": 37687,
+      "inclusive_ms_per_frame": 1.4163048433048433,
+      "exclusive_ms_per_frame": 1.3673846153846154,
+      "max_call_ms": 0.54
+    },
+    {
+      "timer": "Slate_PaintSlowPath",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 10.736262108262109,
+      "exclusive_ms_per_frame": 1.321866096866097,
+      "max_call_ms": 7.058
+    },
+    {
+      "timer": "WingmanRelay",
+      "calls": 1766,
+      "inclusive_ms_per_frame": 1.5242193732193732,
+      "exclusive_ms_per_frame": 1.2954700854700854,
+      "max_call_ms": 6.757
+    },
+    {
+      "timer": "GuLiProjectilePool_Candidates",
+      "calls": 371874,
+      "inclusive_ms_per_frame": 1.2725584045584046,
+      "exclusive_ms_per_frame": 1.2725584045584046,
+      "max_call_ms": 0.323
+    },
+    {
+      "timer": "Slate::Prepass",
+      "calls": 352,
+      "inclusive_ms_per_frame": 1.254019943019943,
+      "exclusive_ms_per_frame": 1.252806267806268,
+      "max_call_ms": 3.33
+    },
+    {
+      "timer": "Collision Sphere",
+      "calls": 255499,
+      "inclusive_ms_per_frame": 1.246168091168091,
+      "exclusive_ms_per_frame": 1.08602849002849,
+      "max_call_ms": 0.37
+    },
+    {
+      "timer": "GuLiSceneUI_Update",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.838005698005698,
+      "exclusive_ms_per_frame": 0.7699658119658119,
+      "max_call_ms": 1.2049999999999998
+    },
+    {
+      "timer": "GuLiCommander_SoldierCombat",
+      "calls": 300,
+      "inclusive_ms_per_frame": 0.730960113960114,
+      "exclusive_ms_per_frame": 0.730960113960114,
+      "max_call_ms": 2.718
+    },
+    {
+      "timer": "ClientReceivePublicPoseFrame",
+      "calls": 1800,
+      "inclusive_ms_per_frame": 0.7305612535612537,
+      "exclusive_ms_per_frame": 0.6824273504273504,
+      "max_call_ms": 2.1069999999999998
+    },
+    {
+      "timer": "USkinnedMeshComponent_TickComponent",
+      "calls": 89119,
+      "inclusive_ms_per_frame": 1.1487464387464388,
+      "exclusive_ms_per_frame": 0.6809088319088319,
+      "max_call_ms": 0.637
+    },
+    {
+      "timer": "GuLiProjectilePool",
+      "calls": 889,
+      "inclusive_ms_per_frame": 6.535327635327635,
+      "exclusive_ms_per_frame": 0.643062678062678,
+      "max_call_ms": 21.578
+    },
+    {
+      "timer": "GuLiProjectilePool_Settle",
+      "calls": 43678,
+      "inclusive_ms_per_frame": 0.6877891737891737,
+      "exclusive_ms_per_frame": 0.642014245014245,
+      "max_call_ms": 0.502
+    },
+    {
+      "timer": "GuLiProjectilePool_Snapshot",
+      "calls": 1038,
+      "inclusive_ms_per_frame": 0.6013276353276353,
+      "exclusive_ms_per_frame": 0.6013276353276353,
+      "max_call_ms": 0.6719999999999999
+    },
+    {
+      "timer": "BP_ShipProjectile_C",
+      "calls": 55938,
+      "inclusive_ms_per_frame": 1.2948148148148149,
+      "exclusive_ms_per_frame": 0.5415954415954416,
+      "max_call_ms": 0.484
+    },
+    {
+      "timer": "GameNetDriver",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 1.0490398860398862,
+      "exclusive_ms_per_frame": 0.53197150997151,
+      "max_call_ms": 2.524
+    },
+    {
+      "timer": "GuLiShipProjectile_WingmanSnapshot",
+      "calls": 45438,
+      "inclusive_ms_per_frame": 0.48307692307692307,
+      "exclusive_ms_per_frame": 0.48307692307692307,
+      "max_call_ms": 0.39399999999999996
+    },
+    {
+      "timer": "DeferredRenderUpdates_GameThread",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 2.647774928774929,
+      "exclusive_ms_per_frame": 0.4825811965811966,
+      "max_call_ms": 3.193
+    },
+    {
+      "timer": "Presentation",
+      "calls": 34499,
+      "inclusive_ms_per_frame": 0.5367492877492878,
+      "exclusive_ms_per_frame": 0.4679886039886039,
+      "max_call_ms": 0.6629999999999999
+    },
+    {
+      "timer": "GuLiCommanderPresentation_RebuildLocalInstances",
+      "calls": 704,
+      "inclusive_ms_per_frame": 2.3492905982905983,
+      "exclusive_ms_per_frame": 0.45775498575498574,
+      "max_call_ms": 2.771
+    },
+    {
+      "timer": "EvaluateCanExecute",
+      "calls": 23054,
+      "inclusive_ms_per_frame": 2.442589743589744,
+      "exclusive_ms_per_frame": 0.45345299145299145,
+      "max_call_ms": 2.106
+    },
+    {
+      "timer": "Tick_Engine",
+      "calls": 353,
+      "inclusive_ms_per_frame": 66.28274928774928,
+      "exclusive_ms_per_frame": 0.4376894586894587,
+      "max_call_ms": 154.412
+    },
+    {
+      "timer": "WaitForTasks",
+      "calls": 3244,
+      "inclusive_ms_per_frame": 0.42521937321937325,
+      "exclusive_ms_per_frame": 0.42521937321937325,
+      "max_call_ms": 0.911
+    },
+    {
+      "timer": "ClientReceiveEncodedPoseBlock",
+      "calls": 33422,
+      "inclusive_ms_per_frame": 0.8185356125356125,
+      "exclusive_ms_per_frame": 0.4146096866096866,
+      "max_call_ms": 0.408
+    },
+    {
+      "timer": "NS_WingmanFlightTrail",
+      "calls": 19008,
+      "inclusive_ms_per_frame": 0.3780598290598291,
+      "exclusive_ms_per_frame": 0.3723646723646724,
+      "max_call_ms": 0.207
+    },
+    {
+      "timer": "GuLiClientFlightPrediction",
+      "calls": 54025,
+      "inclusive_ms_per_frame": 0.35803703703703704,
+      "exclusive_ms_per_frame": 0.35803703703703704,
+      "max_call_ms": 0.224
+    },
+    {
+      "timer": "MulticastReliableStates",
+      "calls": 5942,
+      "inclusive_ms_per_frame": 0.3872564102564102,
+      "exclusive_ms_per_frame": 0.3328205128205128,
+      "max_call_ms": 0.585
+    },
+    {
+      "timer": "Tick_Core",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.32413105413105414,
+      "exclusive_ms_per_frame": 0.31074358974358973,
+      "max_call_ms": 10.096
+    },
+    {
+      "timer": "FViewport_Draw",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.4263703703703704,
+      "exclusive_ms_per_frame": 0.3095954415954416,
+      "max_call_ms": 0.5509999999999999
+    },
+    {
+      "timer": "UChannel_ReceivedSequencedBunch",
+      "calls": 23869,
+      "inclusive_ms_per_frame": 2.7866381766381765,
+      "exclusive_ms_per_frame": 0.3040997150997151,
+      "max_call_ms": 2.132
+    },
+    {
+      "timer": "GuLiWingmanPresentationActor",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.35347578347578346,
+      "exclusive_ms_per_frame": 0.28136752136752136,
+      "max_call_ms": 0.902
+    },
+    {
+      "timer": "GuLiMissileCluster",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.5424245014245014,
+      "exclusive_ms_per_frame": 0.2704102564102564,
+      "max_call_ms": 1.0250000000000001
+    },
+    {
+      "timer": "GuLiGroundMassContact_RefreshSnapshot",
+      "calls": 885,
+      "inclusive_ms_per_frame": 0.2532905982905983,
+      "exclusive_ms_per_frame": 0.2532905982905983,
+      "max_call_ms": 0.412
+    },
+    {
+      "timer": "FWaitingQueue_Unpark_SignalWaitingThread",
+      "calls": 32968,
+      "inclusive_ms_per_frame": 0.24826780626780626,
+      "exclusive_ms_per_frame": 0.24826780626780626,
+      "max_call_ms": 0.14100000000000001
+    },
+    {
+      "timer": "MulticastFlightBatch",
+      "calls": 9914,
+      "inclusive_ms_per_frame": 0.5101168091168091,
+      "exclusive_ms_per_frame": 0.2383048433048433,
+      "max_call_ms": 0.228
+    },
+    {
+      "timer": "GuLiMissileCluster_Upload",
+      "calls": 14250,
+      "inclusive_ms_per_frame": 0.23212535612535617,
+      "exclusive_ms_per_frame": 0.23212535612535617,
+      "max_call_ms": 0.161
+    },
+    {
+      "timer": "ServerMovePacked",
+      "calls": 2116,
+      "inclusive_ms_per_frame": 0.32904558404558404,
+      "exclusive_ms_per_frame": 0.22848717948717953,
+      "max_call_ms": 0.786
+    },
+    {
+      "timer": "UpdateCoreCsvStats_BeginFrame",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.22690028490028494,
+      "exclusive_ms_per_frame": 0.22690028490028494,
+      "max_call_ms": 0.546
+    },
+    {
+      "timer": "CommanderNetSync",
+      "calls": 1766,
+      "inclusive_ms_per_frame": 1.040051282051282,
+      "exclusive_ms_per_frame": 0.21892022792022794,
+      "max_call_ms": 1.357
+    },
+    {
+      "timer": "GuLiCommander_PredictiveAvoidanceBuildGrid",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.2034131054131054,
+      "exclusive_ms_per_frame": 0.2034131054131054,
+      "max_call_ms": 0.477
+    },
+    {
+      "timer": "GuLiPose_Encode",
+      "calls": 11166,
+      "inclusive_ms_per_frame": 0.19731339031339032,
+      "exclusive_ms_per_frame": 0.19731339031339032,
+      "max_call_ms": 0.32699999999999996
+    },
+    {
+      "timer": "GuLiCommander_SharedRouteWork",
+      "calls": 11292,
+      "inclusive_ms_per_frame": 0.1977008547008547,
+      "exclusive_ms_per_frame": 0.19582336182336185,
+      "max_call_ms": 0.247
+    },
+    {
+      "timer": "Mesh",
+      "calls": 152156,
+      "inclusive_ms_per_frame": 0.22780056980056979,
+      "exclusive_ms_per_frame": 0.18828490028490028,
+      "max_call_ms": 0.53
+    },
+    {
+      "timer": "GuLiPose_Receive",
+      "calls": 11128,
+      "inclusive_ms_per_frame": 0.35053561253561255,
+      "exclusive_ms_per_frame": 0.18729914529914526,
+      "max_call_ms": 0.25
+    },
+    {
+      "timer": "NS_WingmanBombardment_01",
+      "calls": 7166,
+      "inclusive_ms_per_frame": 0.18453276353276354,
+      "exclusive_ms_per_frame": 0.18003988603988605,
+      "max_call_ms": 0.40900000000000003
+    },
+    {
+      "timer": "Chassis_Transporter_Cockpit_Lvl2",
+      "calls": 53647,
+      "inclusive_ms_per_frame": 0.8808689458689459,
+      "exclusive_ms_per_frame": 0.17394017094017095,
+      "max_call_ms": 0.639
+    },
+    {
+      "timer": "UPrimitiveComponent::GetStreamingRenderAssetInfoWithNULLRemoval",
+      "calls": 12664,
+      "inclusive_ms_per_frame": 0.1733960113960114,
+      "exclusive_ms_per_frame": 0.1733960113960114,
+      "max_call_ms": 0.28400000000000003
+    },
+    {
+      "timer": "SoldierWorldReplication",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.35508547008547003,
+      "exclusive_ms_per_frame": 0.17168091168091168,
+      "max_call_ms": 0.86
+    },
+    {
+      "timer": "[TEDS] Process ObjectsNeedingSyncTags",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.16684045584045584,
+      "exclusive_ms_per_frame": 0.16402279202279202,
+      "max_call_ms": 0.45
+    },
+    {
+      "timer": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+      "calls": 7399,
+      "inclusive_ms_per_frame": 0.19705698005698005,
+      "exclusive_ms_per_frame": 0.16372079772079773,
+      "max_call_ms": 0.356
+    },
+    {
+      "timer": "GuLiPose_Decode",
+      "calls": 11128,
+      "inclusive_ms_per_frame": 0.16323931623931626,
+      "exclusive_ms_per_frame": 0.16323931623931626,
+      "max_call_ms": 0.133
+    },
+    {
+      "timer": "ServerSubmitPoseFrame",
+      "calls": 662,
+      "inclusive_ms_per_frame": 0.2470854700854701,
+      "exclusive_ms_per_frame": 0.15804273504273503,
+      "max_call_ms": 0.562
+    },
+    {
+      "timer": "ClientReceiveAttackCandidateResult",
+      "calls": 3315,
+      "inclusive_ms_per_frame": 0.1795840455840456,
+      "exclusive_ms_per_frame": 0.15725356125356127,
+      "max_call_ms": 0.262
+    },
+    {
+      "timer": "GuLiPose_Capture",
+      "calls": 293,
+      "inclusive_ms_per_frame": 0.1461139601139601,
+      "exclusive_ms_per_frame": 0.1461139601139601,
+      "max_call_ms": 0.383
+    },
+    {
+      "timer": "GuLiCommander_PredictiveAvoidanceSolve",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.14194586894586894,
+      "exclusive_ms_per_frame": 0.14194586894586894,
+      "max_call_ms": 0.434
+    },
+    {
+      "timer": "GuLiPose_Send",
+      "calls": 11767,
+      "inclusive_ms_per_frame": 0.7412364672364673,
+      "exclusive_ms_per_frame": 0.1408860398860399,
+      "max_call_ms": 0.425
+    },
+    {
+      "timer": "NiagaraComponent",
+      "calls": 318035,
+      "inclusive_ms_per_frame": 1.2435783475783475,
+      "exclusive_ms_per_frame": 0.1327094017094017,
+      "max_call_ms": 0.157
+    },
+    {
+      "timer": "GuLiWarMachineHoverPreviewComponent",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.1697150997150997,
+      "exclusive_ms_per_frame": 0.1316894586894587,
+      "max_call_ms": 0.195
+    },
+    {
+      "timer": "NS_WM01MissileCluster_Minimal",
+      "calls": 13002,
+      "inclusive_ms_per_frame": 0.13343019943019943,
+      "exclusive_ms_per_frame": 0.129997150997151,
+      "max_call_ms": 0.203
+    },
+    {
+      "timer": "GuLiCommanderHealthBars_UpdateInstances",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.1260740740740741,
+      "exclusive_ms_per_frame": 0.12514529914529915,
+      "max_call_ms": 0.147
+    },
+    {
+      "timer": "GuLiProjectilePool_BuildGrid",
+      "calls": 1038,
+      "inclusive_ms_per_frame": 0.12307122507122507,
+      "exclusive_ms_per_frame": 0.12307122507122507,
+      "max_call_ms": 0.45199999999999996
+    },
+    {
+      "timer": "UNetConnection_ReceivedPacket",
+      "calls": 20249,
+      "inclusive_ms_per_frame": 2.936760683760683,
+      "exclusive_ms_per_frame": 0.12139601139601139,
+      "max_call_ms": 2.518
+    },
+    {
+      "timer": "Slate::TickPlatform",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.1212051282051282,
+      "exclusive_ms_per_frame": 0.1212051282051282,
+      "max_call_ms": 1.8760000000000001
+    },
+    {
+      "timer": "ForEachObjectOfClasses_Implementation",
+      "calls": 10093,
+      "inclusive_ms_per_frame": 0.11817094017094018,
+      "exclusive_ms_per_frame": 0.11817094017094018,
+      "max_call_ms": 0.29100000000000004
+    },
+    {
+      "timer": "GuLiCommanderPlayerController",
+      "calls": 1766,
+      "inclusive_ms_per_frame": 0.21043304843304841,
+      "exclusive_ms_per_frame": 0.11784045584045584,
+      "max_call_ms": 0.266
+    },
+    {
+      "timer": "Dispatch Processors",
+      "calls": 2469,
+      "inclusive_ms_per_frame": 0.14798005698005698,
+      "exclusive_ms_per_frame": 0.10894301994301996,
+      "max_call_ms": 0.152
+    },
+    {
+      "timer": "Slate::DrawWindows",
+      "calls": 352,
+      "inclusive_ms_per_frame": 14.565495726495728,
+      "exclusive_ms_per_frame": 0.10762678062678063,
+      "max_call_ms": 23.584
+    },
+    {
+      "timer": "NS_WM01MissileCluster_Lite",
+      "calls": 10441,
+      "inclusive_ms_per_frame": 0.10974928774928774,
+      "exclusive_ms_per_frame": 0.10617948717948718,
+      "max_call_ms": 0.174
+    },
+    {
+      "timer": "WingmanCollision",
+      "calls": 81928,
+      "inclusive_ms_per_frame": 0.19325071225071225,
+      "exclusive_ms_per_frame": 0.10471794871794872,
+      "max_call_ms": 0.08600000000000001
+    },
+    {
+      "timer": "GuLiCommanderHealthBars_MaintainActivity",
+      "calls": 1172,
+      "inclusive_ms_per_frame": 0.1043019943019943,
+      "exclusive_ms_per_frame": 0.10354131054131055,
+      "max_call_ms": 0.129
+    },
+    {
+      "timer": "FWorldDelegates::OnWorldPostActorTick",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.49767236467236464,
+      "exclusive_ms_per_frame": 0.10062962962962962,
+      "max_call_ms": 1.272
+    },
+    {
+      "timer": "FPackageName::DoesPackageExistEx",
+      "calls": 1752,
+      "inclusive_ms_per_frame": 0.09672364672364674,
+      "exclusive_ms_per_frame": 0.09672364672364674,
+      "max_call_ms": 0.129
+    },
+    {
+      "timer": "BeginRenderingViewFamily",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.10970940170940172,
+      "exclusive_ms_per_frame": 0.0937037037037037,
+      "max_call_ms": 0.155
+    },
+    {
+      "timer": "GuLiBiZhiMaoReviewActor",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.09785185185185186,
+      "exclusive_ms_per_frame": 0.09295726495726496,
+      "max_call_ms": 0.262
+    },
+    {
+      "timer": "Slate::AddShapedTextElement",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.09043019943019943,
+      "exclusive_ms_per_frame": 0.09043019943019943,
+      "max_call_ms": 0.256
+    },
+    {
+      "timer": "FActorComponentTickFunction::ExecuteTick",
+      "calls": 285408,
+      "inclusive_ms_per_frame": 16.225928774928775,
+      "exclusive_ms_per_frame": 0.08684615384615385,
+      "max_call_ms": 22.48
+    },
+    {
+      "timer": "NS_MiningLaser_Optimized_GPU_All_ThreeTier",
+      "calls": 14780,
+      "inclusive_ms_per_frame": 0.09163532763532764,
+      "exclusive_ms_per_frame": 0.08315384615384616,
+      "max_call_ms": 0.13699999999999998
+    },
+    {
+      "timer": "MemberBehaviorStateTree",
+      "calls": 3741,
+      "inclusive_ms_per_frame": 0.08155840455840456,
+      "exclusive_ms_per_frame": 0.08155840455840456,
+      "max_call_ms": 0.132
+    },
+    {
+      "timer": "ULandscapeSubsystem::Tick",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.12207122507122507,
+      "exclusive_ms_per_frame": 0.08117094017094018,
+      "max_call_ms": 0.23299999999999998
+    },
+    {
+      "timer": "SM_Pioneer_VAT",
+      "calls": 2112,
+      "inclusive_ms_per_frame": 0.1311794871794872,
+      "exclusive_ms_per_frame": 0.078,
+      "max_call_ms": 0.104
+    },
+    {
+      "timer": "UWorld_SendAllEndOfFrameUpdates",
+      "calls": 2464,
+      "inclusive_ms_per_frame": 2.7373675213675215,
+      "exclusive_ms_per_frame": 0.07656695156695156,
+      "max_call_ms": 3.26
+    },
+    {
+      "timer": "GuLiCommanderLODEvaluate",
+      "calls": 443336,
+      "inclusive_ms_per_frame": 0.07523361823361824,
+      "exclusive_ms_per_frame": 0.07523361823361824,
+      "max_call_ms": 0.076
+    },
+    {
+      "timer": "NS_WingmanLaserPool",
+      "calls": 2816,
+      "inclusive_ms_per_frame": 0.08148433048433049,
+      "exclusive_ms_per_frame": 0.07361538461538462,
+      "max_call_ms": 0.11299999999999999
+    },
+    {
+      "timer": "NS_ConstructionLaser_Optimized_GPU_All_ThreeTier",
+      "calls": 22744,
+      "inclusive_ms_per_frame": 0.07871509971509971,
+      "exclusive_ms_per_frame": 0.07335897435897437,
+      "max_call_ms": 0.081
+    },
+    {
+      "timer": "FMassProcessingPhase::ExecuteTick EMassProcessingPhase::PrePhysics",
+      "calls": 1410,
+      "inclusive_ms_per_frame": 0.22902564102564105,
+      "exclusive_ms_per_frame": 0.0716894586894587,
+      "max_call_ms": 0.224
+    },
+    {
+      "timer": "SK_RPF_Door",
+      "calls": 15850,
+      "inclusive_ms_per_frame": 0.3338803418803419,
+      "exclusive_ms_per_frame": 0.07135897435897436,
+      "max_call_ms": 0.356
+    },
+    {
+      "timer": "ConditionalBeginDestroy",
+      "calls": 13,
+      "inclusive_ms_per_frame": 0.07236467236467237,
+      "exclusive_ms_per_frame": 0.07117948717948717,
+      "max_call_ms": 2.025
+    },
+    {
+      "timer": "AnimSingleNodeInstance",
+      "calls": 5287,
+      "inclusive_ms_per_frame": 0.07061253561253561,
+      "exclusive_ms_per_frame": 0.07061253561253561,
+      "max_call_ms": 0.121
+    },
+    {
+      "timer": "Frame",
+      "calls": 353,
+      "inclusive_ms_per_frame": 85.45628774928775,
+      "exclusive_ms_per_frame": 0.07058404558404557,
+      "max_call_ms": 180.949
+    },
+    {
+      "timer": "GuLiCommanderPresentation_MassBatchExecute",
+      "calls": 648,
+      "inclusive_ms_per_frame": 0.06991452991452991,
+      "exclusive_ms_per_frame": 0.06991452991452991,
+      "max_call_ms": 0.155
+    },
+    {
+      "timer": "FTimerManager_Tick",
+      "calls": 1410,
+      "inclusive_ms_per_frame": 0.5857578347578347,
+      "exclusive_ms_per_frame": 0.06825925925925926,
+      "max_call_ms": 9.783
+    },
+    {
+      "timer": "Set ActorComponent Hierarchy",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.06812820512820512,
+      "exclusive_ms_per_frame": 0.06812820512820512,
+      "max_call_ms": 0.575
+    },
+    {
+      "timer": "UMassEntityEditorSubsystem::Tick",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.9538974358974358,
+      "exclusive_ms_per_frame": 0.06680341880341881,
+      "max_call_ms": 9.428
+    },
+    {
+      "timer": "ABP_GroundMech_C",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.18504273504273502,
+      "exclusive_ms_per_frame": 0.06587749287749288,
+      "max_call_ms": 0.379
+    },
+    {
+      "timer": "ShipWorldHUD",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0681054131054131,
+      "exclusive_ms_per_frame": 0.06542735042735043,
+      "max_call_ms": 0.193
+    },
+    {
+      "timer": "GuLiTerritoryOutpostActor",
+      "calls": 14064,
+      "inclusive_ms_per_frame": 0.15166666666666667,
+      "exclusive_ms_per_frame": 0.06526780626780626,
+      "max_call_ms": 0.14200000000000002
+    },
+    {
+      "timer": "GuLiCommanderPresentation_MassBatchSubmit",
+      "calls": 648,
+      "inclusive_ms_per_frame": 0.06425356125356126,
+      "exclusive_ms_per_frame": 0.06425356125356126,
+      "max_call_ms": 0.133
+    },
+    {
+      "timer": "OutpostVisual",
+      "calls": 4224,
+      "inclusive_ms_per_frame": 0.0658888888888889,
+      "exclusive_ms_per_frame": 0.06264102564102564,
+      "max_call_ms": 0.056
+    },
+    {
+      "timer": "FinishedInputThisFrame",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.06107977207977208,
+      "exclusive_ms_per_frame": 0.06107977207977208,
+      "max_call_ms": 0.237
+    },
+    {
+      "timer": "PerformReachabilityAnalysisOnObjectsInternal",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.05966666666666667,
+      "exclusive_ms_per_frame": 0.05956695156695157,
+      "max_call_ms": 20.943
+    },
+    {
+      "timer": "Chaos.PF",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.05882336182336182,
+      "exclusive_ms_per_frame": 0.05882336182336182,
+      "max_call_ms": 0.24899999999999997
+    },
+    {
+      "timer": "PR_Mining_Opaque__Actor",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.06244444444444444,
+      "exclusive_ms_per_frame": 0.05793162393162393,
+      "max_call_ms": 0.531
+    },
+    {
+      "timer": "GuLiCommanderPredictiveAvoidanceProcessor_1",
+      "calls": 353,
+      "inclusive_ms_per_frame": 5.801199430199429,
+      "exclusive_ms_per_frame": 0.057014245014245006,
+      "max_call_ms": 10.059999999999999
+    },
+    {
+      "timer": "CharMoveComp",
+      "calls": 38310,
+      "inclusive_ms_per_frame": 1.4731851851851852,
+      "exclusive_ms_per_frame": 0.05687749287749287,
+      "max_call_ms": 0.541
+    },
+    {
+      "timer": "ServerUpdateCamera",
+      "calls": 2116,
+      "inclusive_ms_per_frame": 0.06846438746438746,
+      "exclusive_ms_per_frame": 0.05591737891737891,
+      "max_call_ms": 0.083
+    },
+    {
+      "timer": "Top_Turret_2x_Lvl1",
+      "calls": 28850,
+      "inclusive_ms_per_frame": 0.18281766381766382,
+      "exclusive_ms_per_frame": 0.055301994301994305,
+      "max_call_ms": 0.222
+    },
+    {
+      "timer": "GuLiCommanderLODViews",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.05501424501424502,
+      "exclusive_ms_per_frame": 0.05501424501424502,
+      "max_call_ms": 0.114
+    },
+    {
+      "timer": "Paint: Game UI",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 9.249555555555556,
+      "exclusive_ms_per_frame": 0.054794871794871795,
+      "max_call_ms": 6.883
+    },
+    {
+      "timer": "StaticMeshComponent",
+      "calls": 1876,
+      "inclusive_ms_per_frame": 0.053803418803418795,
+      "exclusive_ms_per_frame": 0.05364102564102564,
+      "max_call_ms": 0.096
+    },
+    {
+      "timer": "FTaskBase::WaitWithNamedThreadsSupport",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.6578632478632479,
+      "exclusive_ms_per_frame": 0.053099715099715096,
+      "max_call_ms": 6.163
+    },
+    {
+      "timer": "ServerSubmitAttackCandidate",
+      "calls": 311,
+      "inclusive_ms_per_frame": 0.06526780626780626,
+      "exclusive_ms_per_frame": 0.053019943019943026,
+      "max_call_ms": 0.528
+    },
+    {
+      "timer": "WingmanMesh",
+      "calls": 67900,
+      "inclusive_ms_per_frame": 0.10474643874643874,
+      "exclusive_ms_per_frame": 0.052991452991452984,
+      "max_call_ms": 0.073
+    },
+    {
+      "timer": "GuLiCommander_RecoveryFindPath",
+      "calls": 876,
+      "inclusive_ms_per_frame": 0.05037891737891738,
+      "exclusive_ms_per_frame": 0.05037891737891738,
+      "max_call_ms": 1.1260000000000001
+    },
+    {
+      "timer": "NS_MachineGunImpact_AllOptimizations",
+      "calls": 4576,
+      "inclusive_ms_per_frame": 0.05283190883190883,
+      "exclusive_ms_per_frame": 0.050076923076923074,
+      "max_call_ms": 0.154
+    },
+    {
+      "timer": "NS_MachineGunMuzzle_PressurePreview",
+      "calls": 4579,
+      "inclusive_ms_per_frame": 0.0525954415954416,
+      "exclusive_ms_per_frame": 0.049729344729344725,
+      "max_call_ms": 0.122
+    },
+    {
+      "timer": "UInstancedStaticMeshComponent::BatchUpdateInstancesTransforms",
+      "calls": 31660,
+      "inclusive_ms_per_frame": 0.04929059829059829,
+      "exclusive_ms_per_frame": 0.04880626780626781,
+      "max_call_ms": 0.031
+    },
+    {
+      "timer": "TickCompletionEvents",
+      "calls": 7397,
+      "inclusive_ms_per_frame": 26.39935612535612,
+      "exclusive_ms_per_frame": 0.047538461538461536,
+      "max_call_ms": 45.983000000000004
+    },
+    {
+      "timer": "SphereComponent",
+      "calls": 1750,
+      "inclusive_ms_per_frame": 0.04740170940170941,
+      "exclusive_ms_per_frame": 0.04740170940170941,
+      "max_call_ms": 0.079
+    },
+    {
+      "timer": "SConstraintCanvas",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 9.194757834757835,
+      "exclusive_ms_per_frame": 0.04721652421652422,
+      "max_call_ms": 6.838
+    },
+    {
+      "timer": "CharacterMesh0",
+      "calls": 39873,
+      "inclusive_ms_per_frame": 0.30841595441595443,
+      "exclusive_ms_per_frame": 0.04634188034188034,
+      "max_call_ms": 0.222
+    },
+    {
+      "timer": "SGameLayerManager [PlayLevel.cpp(3369)]",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.046176638176638175,
+      "exclusive_ms_per_frame": 0.046176638176638175,
+      "max_call_ms": 0.13999999999999999
+    },
+    {
+      "timer": "StaticLoadObjectInternal",
+      "calls": 11436,
+      "inclusive_ms_per_frame": 0.04599430199430199,
+      "exclusive_ms_per_frame": 0.04599430199430199,
+      "max_call_ms": 0.19799999999999998
+    },
+    {
+      "timer": "UInstancedStaticMeshComponent::CalcBoundsImpl",
+      "calls": 5633,
+      "inclusive_ms_per_frame": 0.04394017094017094,
+      "exclusive_ms_per_frame": 0.04394017094017094,
+      "max_call_ms": 0.029
+    },
+    {
+      "timer": "PR_Construction_Opaque__Actor",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.04762393162393163,
+      "exclusive_ms_per_frame": 0.043920227920227914,
+      "max_call_ms": 0.36200000000000004
+    },
+    {
+      "timer": "ClientReceiveStateBatch",
+      "calls": 1205,
+      "inclusive_ms_per_frame": 0.07904273504273504,
+      "exclusive_ms_per_frame": 0.04331908831908832,
+      "max_call_ms": 0.146
+    },
+    {
+      "timer": "FXSystem",
+      "calls": 1409,
+      "inclusive_ms_per_frame": 0.0638945868945869,
+      "exclusive_ms_per_frame": 0.042609686609686614,
+      "max_call_ms": 0.147
+    },
+    {
+      "timer": "Flush Deferred Commands Parallel",
+      "calls": 2469,
+      "inclusive_ms_per_frame": 0.09196581196581197,
+      "exclusive_ms_per_frame": 0.041923076923076924,
+      "max_call_ms": 0.7240000000000001
+    },
+    {
+      "timer": "USceneComponent::UpdateOverlaps",
+      "calls": 316928,
+      "inclusive_ms_per_frame": 0.1270883190883191,
+      "exclusive_ms_per_frame": 0.04163247863247863,
+      "max_call_ms": 0.077
+    },
+    {
+      "timer": "Weapon_Rocket_Mount_Lvl2",
+      "calls": 38466,
+      "inclusive_ms_per_frame": 0.04137037037037037,
+      "exclusive_ms_per_frame": 0.041339031339031336,
+      "max_call_ms": 0.212
+    },
+    {
+      "timer": "GuLiCommanderRoster_ApplyDelta",
+      "calls": 602,
+      "inclusive_ms_per_frame": 0.04068091168091168,
+      "exclusive_ms_per_frame": 0.04067521367521367,
+      "max_call_ms": 0.121
+    },
+    {
+      "timer": "GuLiMiningVehiclePawn",
+      "calls": 10208,
+      "inclusive_ms_per_frame": 0.08182621082621083,
+      "exclusive_ms_per_frame": 0.040552706552706555,
+      "max_call_ms": 0.079
+    },
+    {
+      "timer": "GuLiConstructionVehiclePawn",
+      "calls": 23825,
+      "inclusive_ms_per_frame": 0.09951566951566951,
+      "exclusive_ms_per_frame": 0.04014814814814815,
+      "max_call_ms": 1.3179999999999998
+    },
+    {
+      "timer": "GuLiCommanderPresentation_InstanceSubmit",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.0851994301994302,
+      "exclusive_ms_per_frame": 0.03926495726495727,
+      "max_call_ms": 0.23299999999999998
+    },
+    {
+      "timer": "UStaticMesh::GetUsedMaterials",
+      "calls": 12814,
+      "inclusive_ms_per_frame": 0.038418803418803424,
+      "exclusive_ms_per_frame": 0.038418803418803424,
+      "max_call_ms": 0.165
+    },
+    {
+      "timer": "ServerAcknowledgePoseBlocks",
+      "calls": 1744,
+      "inclusive_ms_per_frame": 0.07800569800569801,
+      "exclusive_ms_per_frame": 0.03819088319088319,
+      "max_call_ms": 0.106
+    },
+    {
+      "timer": "WingmanPresentation",
+      "calls": 67900,
+      "inclusive_ms_per_frame": 0.11590028490028491,
+      "exclusive_ms_per_frame": 0.03789458689458689,
+      "max_call_ms": 0.082
+    },
+    {
+      "timer": "FRenderCommandPipe_StopRecording",
+      "calls": 3182,
+      "inclusive_ms_per_frame": 0.037472934472934476,
+      "exclusive_ms_per_frame": 0.037472934472934476,
+      "max_call_ms": 0.132
+    },
+    {
+      "timer": "WingmanFlightTrail",
+      "calls": 68200,
+      "inclusive_ms_per_frame": 0.30901709401709404,
+      "exclusive_ms_per_frame": 0.036994301994301995,
+      "max_call_ms": 0.194
+    },
+    {
+      "timer": "Slate::AddBoxElements",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.03688603988603989,
+      "exclusive_ms_per_frame": 0.03688603988603989,
+      "max_call_ms": 0.259
+    },
+    {
+      "timer": "DeletePendingCleanupObjects",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.036188034188034186,
+      "exclusive_ms_per_frame": 0.036188034188034186,
+      "max_call_ms": 0.232
+    },
+    {
+      "timer": "USkeletalMeshComponent_TickAnimation",
+      "calls": 7399,
+      "inclusive_ms_per_frame": 0.3241082621082621,
+      "exclusive_ms_per_frame": 0.0361025641025641,
+      "max_call_ms": 0.44
+    },
+    {
+      "timer": "Lifecycle",
+      "calls": 15695,
+      "inclusive_ms_per_frame": 0.03560683760683761,
+      "exclusive_ms_per_frame": 0.03560683760683761,
+      "max_call_ms": 0.055
+    },
+    {
+      "timer": "Sync actor label to column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.13123646723646723,
+      "exclusive_ms_per_frame": 0.034672364672364675,
+      "max_call_ms": 3.642
+    },
+    {
+      "timer": "FCoreDelegates::OnEndFrame",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.036196581196581194,
+      "exclusive_ms_per_frame": 0.034666666666666665,
+      "max_call_ms": 0.087
+    },
+    {
+      "timer": "FDynamicRenderAssetInstanceManager::IncrementalUpdate",
+      "calls": 301,
+      "inclusive_ms_per_frame": 0.20778062678062678,
+      "exclusive_ms_per_frame": 0.03438461538461538,
+      "max_call_ms": 0.99
+    },
+    {
+      "timer": "BlueprintUpdateAnimation",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.11916524216524219,
+      "exclusive_ms_per_frame": 0.034193732193732194,
+      "max_call_ms": 0.221
+    },
+    {
+      "timer": "UPlayerInput::EvaluateInputDelegates",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.055595441595441594,
+      "exclusive_ms_per_frame": 0.03356695156695157,
+      "max_call_ms": 0.076
+    },
+    {
+      "timer": "Register ActorComponent Ownership",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.03348148148148148,
+      "exclusive_ms_per_frame": 0.03348148148148148,
+      "max_call_ms": 0.42700000000000005
+    },
+    {
+      "timer": "GuLiCommanderGameState",
+      "calls": 986,
+      "inclusive_ms_per_frame": 0.12501139601139602,
+      "exclusive_ms_per_frame": 0.032427350427350426,
+      "max_call_ms": 0.6579999999999999
+    },
+    {
+      "timer": "ABP_GroundMech_Machinegun_C",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.03237037037037037,
+      "exclusive_ms_per_frame": 0.03237037037037037,
+      "max_call_ms": 0.164
+    },
+    {
+      "timer": "GuLiSceneUI_SourceSnapshot",
+      "calls": 343,
+      "inclusive_ms_per_frame": 0.03232763532763533,
+      "exclusive_ms_per_frame": 0.03232763532763533,
+      "max_call_ms": 0.203
+    },
+    {
+      "timer": "UpdateFlightLean",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.05515954415954416,
+      "exclusive_ms_per_frame": 0.032225071225071227,
+      "max_call_ms": 0.08399999999999999
+    },
+    {
+      "timer": "UpdateStreamingRenderAssets",
+      "calls": 251,
+      "inclusive_ms_per_frame": 0.03211111111111111,
+      "exclusive_ms_per_frame": 0.03211111111111111,
+      "max_call_ms": 0.108
+    },
+    {
+      "timer": "MassDeferredCommand_Execute",
+      "calls": 1171,
+      "inclusive_ms_per_frame": 0.11989458689458692,
+      "exclusive_ms_per_frame": 0.032002849002849006,
+      "max_call_ms": 0.559
+    },
+    {
+      "timer": "GuLiPose_Confirm",
+      "calls": 582,
+      "inclusive_ms_per_frame": 0.03129059829059829,
+      "exclusive_ms_per_frame": 0.03129059829059829,
+      "max_call_ms": 0.095
+    },
+    {
+      "timer": "SkeletalMeshComponent0",
+      "calls": 55412,
+      "inclusive_ms_per_frame": 0.9922279202279204,
+      "exclusive_ms_per_frame": 0.031133903133903136,
+      "max_call_ms": 0.639
+    },
+    {
+      "timer": "Slate::DrawWindow",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 10.767350427350427,
+      "exclusive_ms_per_frame": 0.031088319088319084,
+      "max_call_ms": 7.079000000000001
+    },
+    {
+      "timer": "MassExecutor_RunParallel",
+      "calls": 2469,
+      "inclusive_ms_per_frame": 0.17895156695156697,
+      "exclusive_ms_per_frame": 0.030971509971509974,
+      "max_call_ms": 0.156
+    },
+    {
+      "timer": "Cockpit_Freight_Wide",
+      "calls": 9616,
+      "inclusive_ms_per_frame": 0.030754985754985757,
+      "exclusive_ms_per_frame": 0.030746438746438745,
+      "max_call_ms": 0.019
+    },
+    {
+      "timer": "CombatHealth",
+      "calls": 11673,
+      "inclusive_ms_per_frame": 0.029709401709401707,
+      "exclusive_ms_per_frame": 0.029709401709401707,
+      "max_call_ms": 0.073
+    },
+    {
+      "timer": "UChannel_ReceivedRawBunch",
+      "calls": 28104,
+      "inclusive_ms_per_frame": 2.815364672364672,
+      "exclusive_ms_per_frame": 0.028726495726495726,
+      "max_call_ms": 2.134
+    },
+    {
+      "timer": "MiningPresentation",
+      "calls": 19184,
+      "inclusive_ms_per_frame": 0.028541310541310542,
+      "exclusive_ms_per_frame": 0.028541310541310542,
+      "max_call_ms": 0.022
+    },
+    {
+      "timer": "FStreamingManagerCollection::UpdateResourceStreaming",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.28076638176638175,
+      "exclusive_ms_per_frame": 0.028284900284900282,
+      "max_call_ms": 1.071
+    },
+    {
+      "timer": "BP_GroundMech_Light_C",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.028245014245014244,
+      "exclusive_ms_per_frame": 0.028245014245014244,
+      "max_call_ms": 0.16
+    },
+    {
+      "timer": "Capture",
+      "calls": 14064,
+      "inclusive_ms_per_frame": 0.028131054131054132,
+      "exclusive_ms_per_frame": 0.028131054131054132,
+      "max_call_ms": 0.13799999999999998
+    },
+    {
+      "timer": "Mass Processor Task",
+      "calls": 17648,
+      "inclusive_ms_per_frame": 6.14588603988604,
+      "exclusive_ms_per_frame": 0.02779202279202279,
+      "max_call_ms": 10.063
+    },
+    {
+      "timer": "Facilities",
+      "calls": 14064,
+      "inclusive_ms_per_frame": 0.02723646723646724,
+      "exclusive_ms_per_frame": 0.02723646723646724,
+      "max_call_ms": 0.013
+    },
+    {
+      "timer": "ComputeGrassMapGenerationHash",
+      "calls": 8198,
+      "inclusive_ms_per_frame": 0.027128205128205123,
+      "exclusive_ms_per_frame": 0.027128205128205123,
+      "max_call_ms": 0.15100000000000002
+    },
+    {
+      "timer": "Travel",
+      "calls": 21598,
+      "inclusive_ms_per_frame": 0.02699145299145299,
+      "exclusive_ms_per_frame": 0.02699145299145299,
+      "max_call_ms": 0.064
+    },
+    {
+      "timer": "RocketJump",
+      "calls": 1351,
+      "inclusive_ms_per_frame": 0.026840455840455843,
+      "exclusive_ms_per_frame": 0.026840455840455843,
+      "max_call_ms": 0.103
+    },
+    {
+      "timer": "UActorComponent::CreatePhysicsState",
+      "calls": 5355,
+      "inclusive_ms_per_frame": 0.07005413105413105,
+      "exclusive_ms_per_frame": 0.02682336182336182,
+      "max_call_ms": 0.118
+    },
+    {
+      "timer": "MassObserver_OnCompositionChanged",
+      "calls": 52739,
+      "inclusive_ms_per_frame": 0.08375213675213675,
+      "exclusive_ms_per_frame": 0.02586039886039886,
+      "max_call_ms": 0.073
+    },
+    {
+      "timer": "SM_TeslaCollector_Styled",
+      "calls": 19232,
+      "inclusive_ms_per_frame": 0.025735042735042735,
+      "exclusive_ms_per_frame": 0.02572934472934473,
+      "max_call_ms": 0.038
+    },
+    {
+      "timer": "Cockpit_Freight_Spoiler",
+      "calls": 19234,
+      "inclusive_ms_per_frame": 0.05645868945868946,
+      "exclusive_ms_per_frame": 0.02565811965811966,
+      "max_call_ms": 0.07100000000000001
+    },
+    {
+      "timer": "FMassProcessingPhase::ExecuteTick EMassProcessingPhase::FrameEnd",
+      "calls": 1409,
+      "inclusive_ms_per_frame": 0.10870655270655272,
+      "exclusive_ms_per_frame": 0.025470085470085467,
+      "max_call_ms": 0.166
+    },
+    {
+      "timer": "ForEachObjectOfClass",
+      "calls": 10093,
+      "inclusive_ms_per_frame": 0.1434985754985755,
+      "exclusive_ms_per_frame": 0.02532763532763533,
+      "max_call_ms": 0.31
+    },
+    {
+      "timer": "CameraComponent",
+      "calls": 30653,
+      "inclusive_ms_per_frame": 0.024826210826210823,
+      "exclusive_ms_per_frame": 0.024826210826210823,
+      "max_call_ms": 0.19
+    },
+    {
+      "timer": "UpdateSpeedTreeWind",
+      "calls": 1409,
+      "inclusive_ms_per_frame": 0.02445868945868946,
+      "exclusive_ms_per_frame": 0.02445868945868946,
+      "max_call_ms": 0.034
+    },
+    {
+      "timer": "GuLiPose_Wire",
+      "calls": 22294,
+      "inclusive_ms_per_frame": 0.024358974358974363,
+      "exclusive_ms_per_frame": 0.024358974358974363,
+      "max_call_ms": 0.09899999999999999
+    },
+    {
+      "timer": "GuLiPlacedBuilding",
+      "calls": 486,
+      "inclusive_ms_per_frame": 0.03663532763532763,
+      "exclusive_ms_per_frame": 0.023769230769230768,
+      "max_call_ms": 0.163
+    },
+    {
+      "timer": "FEditorViewportClient_Tick",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.023313390313390314,
+      "exclusive_ms_per_frame": 0.023313390313390314,
+      "max_call_ms": 0.047
+    },
+    {
+      "timer": "FEngineLoop_UpdateTimeAndHandleMaxTickRate",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.02284045584045584,
+      "exclusive_ms_per_frame": 0.02284045584045584,
+      "max_call_ms": 0.088
+    },
+    {
+      "timer": "Sphere",
+      "calls": 43563,
+      "inclusive_ms_per_frame": 0.02217948717948718,
+      "exclusive_ms_per_frame": 0.02217948717948718,
+      "max_call_ms": 0.061
+    },
+    {
+      "timer": "Sync actorcomponent label to column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.021897435897435896,
+      "exclusive_ms_per_frame": 0.021897435897435896,
+      "max_call_ms": 0.178
+    },
+    {
+      "timer": "SViewport_OnPaint",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 9.318472934472934,
+      "exclusive_ms_per_frame": 0.021883190883190882,
+      "max_call_ms": 6.958
+    },
+    {
+      "timer": "ProjectileMovementComponent",
+      "calls": 1750,
+      "inclusive_ms_per_frame": 0.02187749287749288,
+      "exclusive_ms_per_frame": 0.02187749287749288,
+      "max_call_ms": 0.034
+    },
+    {
+      "timer": "CollectorPivot_L",
+      "calls": 19234,
+      "inclusive_ms_per_frame": 0.05464957264957265,
+      "exclusive_ms_per_frame": 0.021615384615384616,
+      "max_call_ms": 0.14100000000000001
+    },
+    {
+      "timer": "MassExecutor_RunProcessorsView",
+      "calls": 21900,
+      "inclusive_ms_per_frame": 2.675259259259259,
+      "exclusive_ms_per_frame": 0.021498575498575496,
+      "max_call_ms": 7.7
+    },
+    {
+      "timer": "ParallelFor",
+      "calls": 1130,
+      "inclusive_ms_per_frame": 0.10361823361823361,
+      "exclusive_ms_per_frame": 0.020663817663817665,
+      "max_call_ms": 0.626
+    },
+    {
+      "timer": "BroadcastPreGarbageCollect",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.020703703703703703,
+      "exclusive_ms_per_frame": 0.02066096866096866,
+      "max_call_ms": 7.267
+    },
+    {
+      "timer": "SM_Wingman_Mass",
+      "calls": 17600,
+      "inclusive_ms_per_frame": 0.020370370370370372,
+      "exclusive_ms_per_frame": 0.020370370370370372,
+      "max_call_ms": 0.026
+    },
+    {
+      "timer": "ClientMoveResponsePacked",
+      "calls": 798,
+      "inclusive_ms_per_frame": 0.02463247863247863,
+      "exclusive_ms_per_frame": 0.020336182336182337,
+      "max_call_ms": 0.112
+    },
+    {
+      "timer": "GuLiSceneUIWidget /Engine/Transient.UnrealEdEngine_0:GameInstance_26.GuLiSceneUIWidget_1_Paint",
+      "calls": 352,
+      "inclusive_ms_per_frame": 4.190216524216525,
+      "exclusive_ms_per_frame": 0.020091168091168093,
+      "max_call_ms": 5.648000000000001
+    },
+    {
+      "timer": "CollectorPivot_R",
+      "calls": 19234,
+      "inclusive_ms_per_frame": 0.04666096866096866,
+      "exclusive_ms_per_frame": 0.02001139601139601,
+      "max_call_ms": 0.068
+    },
+    {
+      "timer": "SK_Blue_AirBase",
+      "calls": 1761,
+      "inclusive_ms_per_frame": 0.0799002849002849,
+      "exclusive_ms_per_frame": 0.019974358974358973,
+      "max_call_ms": 0.174
+    },
+    {
+      "timer": "GuLiResourceFactoryActor",
+      "calls": 5373,
+      "inclusive_ms_per_frame": 0.025085470085470084,
+      "exclusive_ms_per_frame": 0.019740740740740743,
+      "max_call_ms": 0.136
+    },
+    {
+      "timer": "WaitUntilTasksComplete",
+      "calls": 1908,
+      "inclusive_ms_per_frame": 0.36676923076923074,
+      "exclusive_ms_per_frame": 0.01949002849002849,
+      "max_call_ms": 0.9179999999999999
+    },
+    {
+      "timer": "GuLiMuzzles_Publish",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.019341880341880342,
+      "exclusive_ms_per_frame": 0.019341880341880342,
+      "max_call_ms": 0.05
+    },
+    {
+      "timer": "GuLiSceneUIWidget /Engine/Transient.UnrealEdEngine_0:GameInstance_25.GuLiSceneUIWidget_1_Paint",
+      "calls": 352,
+      "inclusive_ms_per_frame": 4.094726495726496,
+      "exclusive_ms_per_frame": 0.01916239316239316,
+      "max_call_ms": 6.212
+    },
+    {
+      "timer": "GuLiCommanderPresentation_StateChanges",
+      "calls": 341,
+      "inclusive_ms_per_frame": 0.021903133903133906,
+      "exclusive_ms_per_frame": 0.019156695156695158,
+      "max_call_ms": 0.06499999999999999
+    },
+    {
+      "timer": "DoEntityCompaction",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.018754985754985756,
+      "exclusive_ms_per_frame": 0.018754985754985756,
+      "max_call_ms": 0.026
+    },
+    {
+      "timer": "EnhPIS_Devices",
+      "calls": 14080,
+      "inclusive_ms_per_frame": 0.018490028490028492,
+      "exclusive_ms_per_frame": 0.018490028490028492,
+      "max_call_ms": 0.045000000000000005
+    },
+    {
+      "timer": "Remove parent reference from children of destroyed parent",
+      "calls": 1759,
+      "inclusive_ms_per_frame": 0.018444444444444444,
+      "exclusive_ms_per_frame": 0.018444444444444444,
+      "max_call_ms": 0.028
+    },
+    {
+      "timer": "ExternalControl",
+      "calls": 9717,
+      "inclusive_ms_per_frame": 0.018170940170940172,
+      "exclusive_ms_per_frame": 0.018170940170940172,
+      "max_call_ms": 0.039
+    },
+    {
+      "timer": "UActorComponent::DestroyPhysicsState",
+      "calls": 13800,
+      "inclusive_ms_per_frame": 0.01808547008547009,
+      "exclusive_ms_per_frame": 0.018076923076923077,
+      "max_call_ms": 0.044
+    },
+    {
+      "timer": "Weapon_Rocket_Mount_Lvl3",
+      "calls": 19234,
+      "inclusive_ms_per_frame": 0.029538461538461538,
+      "exclusive_ms_per_frame": 0.01798860398860399,
+      "max_call_ms": 0.054
+    },
+    {
+      "timer": "ShieldSupply",
+      "calls": 728,
+      "inclusive_ms_per_frame": 0.02157834757834758,
+      "exclusive_ms_per_frame": 0.017569800569800568,
+      "max_call_ms": 0.107
+    },
+    {
+      "timer": "CreatePhysicsShapesAndActors",
+      "calls": 1750,
+      "inclusive_ms_per_frame": 0.02594301994301994,
+      "exclusive_ms_per_frame": 0.017487179487179486,
+      "max_call_ms": 0.053
+    },
+    {
+      "timer": "SK_Machinegun",
+      "calls": 3170,
+      "inclusive_ms_per_frame": 0.08684615384615385,
+      "exclusive_ms_per_frame": 0.017452991452991454,
+      "max_call_ms": 0.176
+    },
+    {
+      "timer": "FCoreDelegates::OnBeginFrame",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.017433048433048434,
+      "exclusive_ms_per_frame": 0.017433048433048434,
+      "max_call_ms": 2.271
+    },
+    {
+      "timer": "FMemory::Trim",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.017427350427350427,
+      "exclusive_ms_per_frame": 0.017427350427350427,
+      "max_call_ms": 6.117
+    },
+    {
+      "timer": "FImgMediaSceneViewExtension::BeginRenderViewFamily",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.017344729344729345,
+      "exclusive_ms_per_frame": 0.017344729344729345,
+      "max_call_ms": 0.034999999999999996
+    },
+    {
+      "timer": "Render_UpdateFrame",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.02334472934472934,
+      "exclusive_ms_per_frame": 0.017145299145299144,
+      "max_call_ms": 0.16699999999999998
+    },
+    {
+      "timer": "FChaosScene::AddActorsToScene_AssumesLocked",
+      "calls": 1750,
+      "inclusive_ms_per_frame": 0.017022792022792024,
+      "exclusive_ms_per_frame": 0.017022792022792024,
+      "max_call_ms": 0.034999999999999996
+    },
+    {
+      "timer": "UChaosDebugDrawSubsystem::StaticOnWorldTickEnd",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.016931623931623934,
+      "exclusive_ms_per_frame": 0.016931623931623934,
+      "max_call_ms": 0.017
+    },
+    {
+      "timer": "Slate::Tick (Time and Widgets)",
+      "calls": 352,
+      "inclusive_ms_per_frame": 14.581900284900286,
+      "exclusive_ms_per_frame": 0.016404558404558404,
+      "max_call_ms": 23.618
+    },
+    {
+      "timer": "[TEDS] Compatibility Tick",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.20228774928774929,
+      "exclusive_ms_per_frame": 0.01613960113960114,
+      "max_call_ms": 1.0219999999999998
+    },
+    {
+      "timer": "MiningLaser_L",
+      "calls": 19234,
+      "inclusive_ms_per_frame": 0.022903133903133904,
+      "exclusive_ms_per_frame": 0.015911680911680912,
+      "max_call_ms": 0.13899999999999998
+    },
+    {
+      "timer": "LaserMuzzle_L",
+      "calls": 19234,
+      "inclusive_ms_per_frame": 0.02688034188034188,
+      "exclusive_ms_per_frame": 0.015615384615384614,
+      "max_call_ms": 0.13999999999999999
+    },
+    {
+      "timer": "SPIEViewport [PlayLevel.cpp(3383)]",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.015535612535612536,
+      "exclusive_ms_per_frame": 0.015535612535612536,
+      "max_call_ms": 0.033
+    },
+    {
+      "timer": "GroundMechAbilitySystem",
+      "calls": 295,
+      "inclusive_ms_per_frame": 0.015470085470085469,
+      "exclusive_ms_per_frame": 0.015470085470085469,
+      "max_call_ms": 0.07100000000000001
+    },
+    {
+      "timer": "SK_Legs",
+      "calls": 3170,
+      "inclusive_ms_per_frame": 0.23145014245014245,
+      "exclusive_ms_per_frame": 0.015259259259259259,
+      "max_call_ms": 0.221
+    },
+    {
+      "timer": "FMaterialBakingModule::OnObjectModified",
+      "calls": 16344,
+      "inclusive_ms_per_frame": 0.014843304843304842,
+      "exclusive_ms_per_frame": 0.014843304843304842,
+      "max_call_ms": 0.041999999999999996
+    },
+    {
+      "timer": "PR_Flash_Source__Actor",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.021048433048433048,
+      "exclusive_ms_per_frame": 0.014806267806267806,
+      "max_call_ms": 0.48700000000000004
+    },
+    {
+      "timer": "Mass_BatchChangeTagsForEntities",
+      "calls": 533,
+      "inclusive_ms_per_frame": 0.01519088319088319,
+      "exclusive_ms_per_frame": 0.014746438746438746,
+      "max_call_ms": 0.05
+    },
+    {
+      "timer": "Side_Winglet_Spike_Lvl3",
+      "calls": 19234,
+      "inclusive_ms_per_frame": 0.024592592592592596,
+      "exclusive_ms_per_frame": 0.014735042735042737,
+      "max_call_ms": 0.098
+    },
+    {
+      "timer": "ConditionalFinishDestroy",
+      "calls": 4,
+      "inclusive_ms_per_frame": 0.01465811965811966,
+      "exclusive_ms_per_frame": 0.01465811965811966,
+      "max_call_ms": 2.004
+    },
+    {
+      "timer": "GameplayTasksComponent",
+      "calls": 9717,
+      "inclusive_ms_per_frame": 0.014507122507122508,
+      "exclusive_ms_per_frame": 0.014507122507122508,
+      "max_call_ms": 0.048
+    },
+    {
+      "timer": "ServerAcknowledgeFacts",
+      "calls": 1081,
+      "inclusive_ms_per_frame": 0.017774928774928776,
+      "exclusive_ms_per_frame": 0.0142991452991453,
+      "max_call_ms": 0.037
+    },
+    {
+      "timer": "PR_Flash_Impact__Actor",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.020262108262108263,
+      "exclusive_ms_per_frame": 0.014210826210826212,
+      "max_call_ms": 0.652
+    },
+    {
+      "timer": "Weapon",
+      "calls": 1352,
+      "inclusive_ms_per_frame": 0.014062678062678063,
+      "exclusive_ms_per_frame": 0.014062678062678063,
+      "max_call_ms": 0.077
+    },
+    {
+      "timer": "FMassEditorPhaseTickTask",
+      "calls": 2118,
+      "inclusive_ms_per_frame": 0.12104843304843305,
+      "exclusive_ms_per_frame": 0.01398005698005698,
+      "max_call_ms": 0.196
+    },
+    {
+      "timer": "GatherWindowElements",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 2.4364985754985757,
+      "exclusive_ms_per_frame": 0.013735042735042734,
+      "max_call_ms": 2.215
+    },
+    {
+      "timer": "LaserMuzzle_R",
+      "calls": 19234,
+      "inclusive_ms_per_frame": 0.0212022792022792,
+      "exclusive_ms_per_frame": 0.013706552706552706,
+      "max_call_ms": 0.067
+    },
+    {
+      "timer": "FObjectPurge::DestroyObjects",
+      "calls": 3,
+      "inclusive_ms_per_frame": 0.013612535612535615,
+      "exclusive_ms_per_frame": 0.013612535612535615,
+      "max_call_ms": 2.0
+    },
+    {
+      "timer": "ProcessAsyncLoading",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.014527065527065527,
+      "exclusive_ms_per_frame": 0.013601139601139602,
+      "max_call_ms": 0.157
+    },
+    {
+      "timer": "GuLiStrikeShip",
+      "calls": 325,
+      "inclusive_ms_per_frame": 0.017866096866096866,
+      "exclusive_ms_per_frame": 0.013512820512820512,
+      "max_call_ms": 0.178
+    },
+    {
+      "timer": "FLandscapeGrassMapsBuilder::UpdateTrackedComponents",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.0409031339031339,
+      "exclusive_ms_per_frame": 0.013193732193732191,
+      "max_call_ms": 0.184
+    },
+    {
+      "timer": "GuLiMiningVehicleAIController",
+      "calls": 5648,
+      "inclusive_ms_per_frame": 0.013133903133903134,
+      "exclusive_ms_per_frame": 0.013133903133903134,
+      "max_call_ms": 0.027
+    },
+    {
+      "timer": "UWorldPartitionHLODEditorSubsystem::Tick",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.012888888888888889,
+      "exclusive_ms_per_frame": 0.012888888888888889,
+      "max_call_ms": 0.057
+    },
+    {
+      "timer": "GuLiPose_Ack",
+      "calls": 1162,
+      "inclusive_ms_per_frame": 0.08028774928774929,
+      "exclusive_ms_per_frame": 0.01256980056980057,
+      "max_call_ms": 0.179
+    },
+    {
+      "timer": "SM_BiZhiMao_VAT",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.013407407407407408,
+      "exclusive_ms_per_frame": 0.01219088319088319,
+      "max_call_ms": 0.020999999999999998
+    },
+    {
+      "timer": "ExecuteUbergraph_ABP_GroundMech",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.08497150997150997,
+      "exclusive_ms_per_frame": 0.01215099715099715,
+      "max_call_ms": 0.20900000000000002
+    },
+    {
+      "timer": "FMassProcessingPhase::ExecuteTick EMassProcessingPhase::PostPhysics",
+      "calls": 1410,
+      "inclusive_ms_per_frame": 0.025954415954415954,
+      "exclusive_ms_per_frame": 0.012108262108262107,
+      "max_call_ms": 0.054
+    },
+    {
+      "timer": "HandleHealth",
+      "calls": 94,
+      "inclusive_ms_per_frame": 0.01676068376068376,
+      "exclusive_ms_per_frame": 0.01203133903133903,
+      "max_call_ms": 0.157
+    },
+    {
+      "timer": "GuLiWingmanFlight_Publish",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.012074074074074072,
+      "exclusive_ms_per_frame": 0.012019943019943018,
+      "max_call_ms": 0.034
+    },
+    {
+      "timer": "Camera",
+      "calls": 6340,
+      "inclusive_ms_per_frame": 0.020415954415954413,
+      "exclusive_ms_per_frame": 0.011794871794871794,
+      "max_call_ms": 0.078
+    },
+    {
+      "timer": "Slate::AddElements",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 2.4227606837606834,
+      "exclusive_ms_per_frame": 0.011723646723646721,
+      "max_call_ms": 2.2030000000000003
+    },
+    {
+      "timer": "Armor",
+      "calls": 2113,
+      "inclusive_ms_per_frame": 0.029085470085470085,
+      "exclusive_ms_per_frame": 0.011492877492877494,
+      "max_call_ms": 0.15
+    },
+    {
+      "timer": "FRenderCommandPipe_StartRecording",
+      "calls": 3183,
+      "inclusive_ms_per_frame": 0.01113960113960114,
+      "exclusive_ms_per_frame": 0.01113960113960114,
+      "max_call_ms": 0.05
+    },
+    {
+      "timer": "MiningLaser_R",
+      "calls": 19234,
+      "inclusive_ms_per_frame": 0.01684900284900285,
+      "exclusive_ms_per_frame": 0.011113960113960113,
+      "max_call_ms": 0.066
+    },
+    {
+      "timer": "NetBroadcastTickTime",
+      "calls": 1409,
+      "inclusive_ms_per_frame": 1.0601452991452993,
+      "exclusive_ms_per_frame": 0.011105413105413105,
+      "max_call_ms": 2.532
+    },
+    {
+      "timer": "FSkinningSceneExtension::Tick",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.010917378917378918,
+      "exclusive_ms_per_frame": 0.010917378917378918,
+      "max_call_ms": 0.018000000000000002
+    },
+    {
+      "timer": "CameraBoom",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.023039886039886038,
+      "exclusive_ms_per_frame": 0.010766381766381766,
+      "max_call_ms": 0.083
+    },
+    {
+      "timer": "FAudioDevic_Update",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.05407122507122507,
+      "exclusive_ms_per_frame": 0.010643874643874644,
+      "max_call_ms": 0.155
+    },
+    {
+      "timer": "Collector_L",
+      "calls": 19234,
+      "inclusive_ms_per_frame": 0.023834757834757834,
+      "exclusive_ms_per_frame": 0.010635327635327636,
+      "max_call_ms": 0.038
+    },
+    {
+      "timer": "STableViewBase::Tick",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.010592592592592593,
+      "exclusive_ms_per_frame": 0.010584045584045583,
+      "max_call_ms": 0.204
+    },
+    {
+      "timer": "PhysicsFieldComponent",
+      "calls": 2113,
+      "inclusive_ms_per_frame": 0.010532763532763533,
+      "exclusive_ms_per_frame": 0.010532763532763533,
+      "max_call_ms": 0.11299999999999999
+    },
+    {
+      "timer": "GuLiEngineeringAIController",
+      "calls": 6236,
+      "inclusive_ms_per_frame": 0.010586894586894588,
+      "exclusive_ms_per_frame": 0.01052991452991453,
+      "max_call_ms": 0.116
+    },
+    {
+      "timer": "UnitFeedback",
+      "calls": 4560,
+      "inclusive_ms_per_frame": 0.010464387464387465,
+      "exclusive_ms_per_frame": 0.010464387464387465,
+      "max_call_ms": 0.034
+    },
+    {
+      "timer": "FAudioDevice_UpdateAudioEngineSubsystems",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.010458689458689458,
+      "exclusive_ms_per_frame": 0.010458689458689458,
+      "max_call_ms": 0.11900000000000001
+    },
+    {
+      "timer": "GuLiImpacts_Publish",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.010452991452991453,
+      "exclusive_ms_per_frame": 0.010452991452991453,
+      "max_call_ms": 0.015000000000000001
+    },
+    {
+      "timer": "FAudioDevice_UpdateSources",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.011538461538461537,
+      "exclusive_ms_per_frame": 0.010367521367521367,
+      "max_call_ms": 0.124
+    },
+    {
+      "timer": "GuLiGroundMechCharacter",
+      "calls": 295,
+      "inclusive_ms_per_frame": 0.03201139601139601,
+      "exclusive_ms_per_frame": 0.010253561253561255,
+      "max_call_ms": 0.11
+    },
+    {
+      "timer": "Side_Winglet_Spike_Lvl1",
+      "calls": 9616,
+      "inclusive_ms_per_frame": 0.009846153846153846,
+      "exclusive_ms_per_frame": 0.009840455840455842,
+      "max_call_ms": 0.008
+    },
+    {
+      "timer": "FAudioDevice_UpdateHardware",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.010564102564102564,
+      "exclusive_ms_per_frame": 0.009803418803418803,
+      "max_call_ms": 0.030000000000000002
+    },
+    {
+      "timer": "BroadcastPostTickFlush",
+      "calls": 1409,
+      "inclusive_ms_per_frame": 0.009652421652421653,
+      "exclusive_ms_per_frame": 0.009652421652421653,
+      "max_call_ms": 0.022
+    },
+    {
+      "timer": "NS_GroundDestruction_03",
+      "calls": 740,
+      "inclusive_ms_per_frame": 0.011091168091168092,
+      "exclusive_ms_per_frame": 0.009595441595441595,
+      "max_call_ms": 0.08399999999999999
+    },
+    {
+      "timer": "Collector_R",
+      "calls": 19234,
+      "inclusive_ms_per_frame": 0.02193162393162393,
+      "exclusive_ms_per_frame": 0.00937037037037037,
+      "max_call_ms": 0.027
+    },
+    {
+      "timer": "ConstructionPresentation",
+      "calls": 5157,
+      "inclusive_ms_per_frame": 0.009284900284900286,
+      "exclusive_ms_per_frame": 0.009284900284900286,
+      "max_call_ms": 0.11699999999999999
+    },
+    {
+      "timer": "UInstancedStaticMeshComponent::AddInstancesInternal",
+      "calls": 485,
+      "inclusive_ms_per_frame": 0.009284900284900286,
+      "exclusive_ms_per_frame": 0.009284900284900286,
+      "max_call_ms": 0.057
+    },
+    {
+      "timer": "FEngineLoop::Tick",
+      "calls": 353,
+      "inclusive_ms_per_frame": 85.47050427350426,
+      "exclusive_ms_per_frame": 0.009267806267806267,
+      "max_call_ms": 180.96599999999998
+    },
+    {
+      "timer": "Spring Arm",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.014811965811965812,
+      "exclusive_ms_per_frame": 0.009256410256410257,
+      "max_call_ms": 0.019
+    },
+    {
+      "timer": "Sync UObject's world to column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.009196581196581196,
+      "exclusive_ms_per_frame": 0.009196581196581196,
+      "max_call_ms": 0.07100000000000001
+    },
+    {
+      "timer": "Door",
+      "calls": 15852,
+      "inclusive_ms_per_frame": 0.3429515669515669,
+      "exclusive_ms_per_frame": 0.009048433048433049,
+      "max_call_ms": 0.356
+    },
+    {
+      "timer": "UpdateCoreCsvStats_EndFrame",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.008965811965811966,
+      "exclusive_ms_per_frame": 0.008965811965811966,
+      "max_call_ms": 0.077
+    },
+    {
+      "timer": "Machinegun",
+      "calls": 4227,
+      "inclusive_ms_per_frame": 0.0957977207977208,
+      "exclusive_ms_per_frame": 0.008951566951566951,
+      "max_call_ms": 0.176
+    },
+    {
+      "timer": "LevelInstanceSubsystem",
+      "calls": 1409,
+      "inclusive_ms_per_frame": 0.009005698005698006,
+      "exclusive_ms_per_frame": 0.008880341880341881,
+      "max_call_ms": 0.163
+    },
+    {
+      "timer": "CameraProxyMeshComponent",
+      "calls": 4226,
+      "inclusive_ms_per_frame": 0.010096866096866096,
+      "exclusive_ms_per_frame": 0.008515669515669516,
+      "max_call_ms": 0.074
+    },
+    {
+      "timer": "UpperBodyPivot",
+      "calls": 2113,
+      "inclusive_ms_per_frame": 0.03242165242165242,
+      "exclusive_ms_per_frame": 0.00849002849002849,
+      "max_call_ms": 0.153
+    },
+    {
+      "timer": "GuLiCommanderPresentationActor",
+      "calls": 992,
+      "inclusive_ms_per_frame": 2.3577777777777778,
+      "exclusive_ms_per_frame": 0.008487179487179487,
+      "max_call_ms": 2.779
+    },
+    {
+      "timer": "SWidget::Invalidate",
+      "calls": 4273,
+      "inclusive_ms_per_frame": 0.008464387464387465,
+      "exclusive_ms_per_frame": 0.008464387464387465,
+      "max_call_ms": 0.01
+    },
+    {
+      "timer": "FPhysInterface_Chaos::AddGeometry",
+      "calls": 1750,
+      "inclusive_ms_per_frame": 0.008455840455840457,
+      "exclusive_ms_per_frame": 0.008455840455840457,
+      "max_call_ms": 0.015000000000000001
+    },
+    {
+      "timer": "SDetailsViewBase::Tick",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.008444444444444444,
+      "exclusive_ms_per_frame": 0.008444444444444444,
+      "max_call_ms": 0.223
+    },
+    {
+      "timer": "GuLiSceneUIWidget /Engine/Transient.UnrealEdEngine_0:GameInstance_25.GuLiSceneUIWidget_1_Tick",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.4166780626780627,
+      "exclusive_ms_per_frame": 0.008350427350427351,
+      "max_call_ms": 1.222
+    },
+    {
+      "timer": "USceneComponent::OnRegister",
+      "calls": 3605,
+      "inclusive_ms_per_frame": 0.012578347578347578,
+      "exclusive_ms_per_frame": 0.008136752136752136,
+      "max_call_ms": 0.32899999999999996
+    },
+    {
+      "timer": "FMassProcessingPhase::ExecuteTick EMassProcessingPhase::StartPhysics",
+      "calls": 1410,
+      "inclusive_ms_per_frame": 0.008054131054131055,
+      "exclusive_ms_per_frame": 0.008054131054131055,
+      "max_call_ms": 0.094
+    },
+    {
+      "timer": "GuLiCommander_HexCoverage",
+      "calls": 135434,
+      "inclusive_ms_per_frame": 0.007769230769230769,
+      "exclusive_ms_per_frame": 0.007769230769230769,
+      "max_call_ms": 0.012
+    },
+    {
+      "timer": "MassObserver_OnCompositionChanged_Entity",
+      "calls": 52206,
+      "inclusive_ms_per_frame": 0.09118233618233616,
+      "exclusive_ms_per_frame": 0.007695156695156694,
+      "max_call_ms": 0.074
+    },
+    {
+      "timer": "RecastNavMesh-CommanderSoldier",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.007692307692307693,
+      "exclusive_ms_per_frame": 0.007692307692307693,
+      "max_call_ms": 0.15
+    },
+    {
+      "timer": "FStats::AdvanceFrame",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.009586894586894587,
+      "exclusive_ms_per_frame": 0.007541310541310542,
+      "max_call_ms": 0.031
+    },
+    {
+      "timer": "GuLiWarMachineHover",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.007518518518518518,
+      "exclusive_ms_per_frame": 0.007518518518518518,
+      "max_call_ms": 0.01
+    },
+    {
+      "timer": "EnhPIS_KeyDownPrev",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.008427350427350428,
+      "exclusive_ms_per_frame": 0.007481481481481481,
+      "max_call_ms": 0.01
+    },
+    {
+      "timer": "Remove child from parent's child array",
+      "calls": 5434,
+      "inclusive_ms_per_frame": 0.007470085470085471,
+      "exclusive_ms_per_frame": 0.007470085470085471,
+      "max_call_ms": 0.016
+    },
+    {
+      "timer": "UpdateAnimationTransitions",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.010575498575498577,
+      "exclusive_ms_per_frame": 0.007350427350427349,
+      "max_call_ms": 0.063
+    },
+    {
+      "timer": "ParallelFor.Wait",
+      "calls": 335,
+      "inclusive_ms_per_frame": 0.007105413105413106,
+      "exclusive_ms_per_frame": 0.007105413105413106,
+      "max_call_ms": 0.39
+    },
+    {
+      "timer": "ChaosDebugDrawComponent",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.006951566951566951,
+      "exclusive_ms_per_frame": 0.006951566951566951,
+      "max_call_ms": 0.092
+    },
+    {
+      "timer": "Tick_AutomationController",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.006900284900284901,
+      "exclusive_ms_per_frame": 0.006900284900284901,
+      "max_call_ms": 0.051
+    },
+    {
+      "timer": "CopyOutParametersToLocalParameters",
+      "calls": 17327,
+      "inclusive_ms_per_frame": 0.006837606837606838,
+      "exclusive_ms_per_frame": 0.006837606837606838,
+      "max_call_ms": 0.032
+    },
+    {
+      "timer": "UUnrealEdEngine::AttemptModifiedPackageNotification",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00678917378917379,
+      "exclusive_ms_per_frame": 0.00678917378917379,
+      "max_call_ms": 0.068
+    },
+    {
+      "timer": "FEnhancedInputModule::Tick",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.008717948717948718,
+      "exclusive_ms_per_frame": 0.0067293447293447295,
+      "max_call_ms": 0.023
+    },
+    {
+      "timer": "Asset Registry Tick",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.007686609686609686,
+      "exclusive_ms_per_frame": 0.006666666666666666,
+      "max_call_ms": 0.015000000000000001
+    },
+    {
+      "timer": "SScrollBox [HeaderAndBodyContainer.cpp(134)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.006643874643874644,
+      "exclusive_ms_per_frame": 0.006643874643874644,
+      "max_call_ms": 0.041
+    },
+    {
+      "timer": "MassObserver_HandleElementsImpl",
+      "calls": 14510,
+      "inclusive_ms_per_frame": 0.06454415954415954,
+      "exclusive_ms_per_frame": 0.006641025641025641,
+      "max_call_ms": 0.133
+    },
+    {
+      "timer": "PathFollowingComponent",
+      "calls": 11882,
+      "inclusive_ms_per_frame": 0.006484330484330484,
+      "exclusive_ms_per_frame": 0.006484330484330484,
+      "max_call_ms": 0.022
+    },
+    {
+      "timer": "CommanderTeleportInput",
+      "calls": 1766,
+      "inclusive_ms_per_frame": 0.006398860398860399,
+      "exclusive_ms_per_frame": 0.006398860398860399,
+      "max_call_ms": 0.038
+    },
+    {
+      "timer": "SEditableText [SEditableTextBox.cpp(61)]",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.006233618233618233,
+      "exclusive_ms_per_frame": 0.006233618233618233,
+      "max_call_ms": 0.01
+    },
+    {
+      "timer": "[TEDS] Mapping inspect rows",
+      "calls": 76,
+      "inclusive_ms_per_frame": 0.006048433048433048,
+      "exclusive_ms_per_frame": 0.006048433048433048,
+      "max_call_ms": 0.091
+    },
+    {
+      "timer": "DebugVisLocationProcessor_0",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.005957264957264958,
+      "exclusive_ms_per_frame": 0.005957264957264958,
+      "max_call_ms": 0.057
+    },
+    {
+      "timer": "FMassProcessingPhase::ExecuteTick EMassProcessingPhase::EndPhysics",
+      "calls": 1410,
+      "inclusive_ms_per_frame": 0.005834757834757835,
+      "exclusive_ms_per_frame": 0.005834757834757835,
+      "max_call_ms": 0.033
+    },
+    {
+      "timer": "Unregister Persistent Level on World removal",
+      "calls": 7193,
+      "inclusive_ms_per_frame": 0.00582905982905983,
+      "exclusive_ms_per_frame": 0.00582905982905983,
+      "max_call_ms": 0.018000000000000002
+    },
+    {
+      "timer": "GuLiMuzzles_Lifecycle",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.005794871794871794,
+      "exclusive_ms_per_frame": 0.005794871794871794,
+      "max_call_ms": 0.014
+    },
+    {
+      "timer": "Slate::AddRoundedBoxElements",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.005726495726495727,
+      "exclusive_ms_per_frame": 0.005726495726495727,
+      "max_call_ms": 0.037
+    },
+    {
+      "timer": "SM_WarMachine_Rigid",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.007082621082621082,
+      "exclusive_ms_per_frame": 0.005452991452991452,
+      "max_call_ms": 0.024
+    },
+    {
+      "timer": "UWorld::UpdateLevelStreaming",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.005794871794871794,
+      "exclusive_ms_per_frame": 0.005387464387464388,
+      "max_call_ms": 0.018000000000000002
+    },
+    {
+      "timer": "Mass_BatchCreateReservedEntities",
+      "calls": 124,
+      "inclusive_ms_per_frame": 0.0053561253561253555,
+      "exclusive_ms_per_frame": 0.0053561253561253555,
+      "max_call_ms": 0.064
+    },
+    {
+      "timer": "PollGameDeviceState",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.005313390313390313,
+      "exclusive_ms_per_frame": 0.005313390313390313,
+      "max_call_ms": 0.027
+    },
+    {
+      "timer": "UDataflowSimulationManager::OnWorldPostActorTick",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.005156695156695157,
+      "exclusive_ms_per_frame": 0.005156695156695157,
+      "max_call_ms": 0.034
+    },
+    {
+      "timer": "TeamOutline",
+      "calls": 300,
+      "inclusive_ms_per_frame": 0.005148148148148148,
+      "exclusive_ms_per_frame": 0.005148148148148148,
+      "max_call_ms": 0.016
+    },
+    {
+      "timer": "GuLiResourceWorldState",
+      "calls": 272,
+      "inclusive_ms_per_frame": 0.005122507122507122,
+      "exclusive_ms_per_frame": 0.005122507122507122,
+      "max_call_ms": 0.068
+    },
+    {
+      "timer": "FAudioDevice_UpdateAudioVolumeEffects",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.005122507122507122,
+      "exclusive_ms_per_frame": 0.005122507122507122,
+      "max_call_ms": 0.075
+    },
+    {
+      "timer": "Shoulder",
+      "calls": 2113,
+      "inclusive_ms_per_frame": 0.006581196581196581,
+      "exclusive_ms_per_frame": 0.005096866096866097,
+      "max_call_ms": 0.013
+    },
+    {
+      "timer": "UpdateLocomotionBlend",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.007085470085470086,
+      "exclusive_ms_per_frame": 0.004985754985754986,
+      "max_call_ms": 0.009000000000000001
+    },
+    {
+      "timer": "FAsyncTask::SyncCompletion",
+      "calls": 640,
+      "inclusive_ms_per_frame": 0.0049829059829059824,
+      "exclusive_ms_per_frame": 0.0049829059829059824,
+      "max_call_ms": 0.097
+    },
+    {
+      "timer": "Tick_PostRender",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.004928774928774929,
+      "exclusive_ms_per_frame": 0.004928774928774929,
+      "max_call_ms": 0.015000000000000001
+    },
+    {
+      "timer": "MassStateTreeProcessor_0",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.004831908831908832,
+      "exclusive_ms_per_frame": 0.004831908831908832,
+      "max_call_ms": 0.038
+    },
+    {
+      "timer": "MassActiveSmartObjectSignalProcessor_0",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.004826210826210826,
+      "exclusive_ms_per_frame": 0.004826210826210826,
+      "max_call_ms": 0.005
+    },
+    {
+      "timer": "UPlayerInput::ProcessInputStack",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.07015954415954415,
+      "exclusive_ms_per_frame": 0.004774928774928775,
+      "max_call_ms": 0.088
+    },
+    {
+      "timer": "ConditionalCollectGarbage",
+      "calls": 1409,
+      "inclusive_ms_per_frame": 0.21298005698005698,
+      "exclusive_ms_per_frame": 0.004772079772079772,
+      "max_call_ms": 31.319
+    },
+    {
+      "timer": "GuLiSceneUIWidget /Engine/Transient.UnrealEdEngine_0:GameInstance_26.GuLiSceneUIWidget_1_Tick",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.4344017094017094,
+      "exclusive_ms_per_frame": 0.004726495726495726,
+      "max_call_ms": 1.092
+    },
+    {
+      "timer": "Add world column to UObject",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.004726495726495726,
+      "exclusive_ms_per_frame": 0.004726495726495726,
+      "max_call_ms": 0.094
+    },
+    {
+      "timer": "ProcessWorkerInputs",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.004638176638176638,
+      "exclusive_ms_per_frame": 0.004638176638176638,
+      "max_call_ms": 0.034999999999999996
+    },
+    {
+      "timer": "Tick_Hotfixables",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0045042735042735045,
+      "exclusive_ms_per_frame": 0.0045042735042735045,
+      "max_call_ms": 0.016
+    },
+    {
+      "timer": "GuLiMining_SelectCachedSlot",
+      "calls": 1584,
+      "inclusive_ms_per_frame": 0.0044928774928774924,
+      "exclusive_ms_per_frame": 0.0044928774928774924,
+      "max_call_ms": 0.015000000000000001
+    },
+    {
+      "timer": "FDirectoryWatcherWindows::Tick",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.004404558404558404,
+      "exclusive_ms_per_frame": 0.004404558404558404,
+      "max_call_ms": 0.106
+    },
+    {
+      "timer": "Populate actor typed element handles",
+      "calls": 124,
+      "inclusive_ms_per_frame": 0.004316239316239316,
+      "exclusive_ms_per_frame": 0.004316239316239316,
+      "max_call_ms": 0.060000000000000005
+    },
+    {
+      "timer": "LoadObject",
+      "calls": 11436,
+      "inclusive_ms_per_frame": 0.05027635327635327,
+      "exclusive_ms_per_frame": 0.004282051282051282,
+      "max_call_ms": 0.19799999999999998
+    },
+    {
+      "timer": "MakeUniqueObjectName",
+      "calls": 2106,
+      "inclusive_ms_per_frame": 0.004210826210826211,
+      "exclusive_ms_per_frame": 0.004210826210826211,
+      "max_call_ms": 0.020999999999999998
+    },
+    {
+      "timer": "OutpostHalo",
+      "calls": 2816,
+      "inclusive_ms_per_frame": 0.004182336182336183,
+      "exclusive_ms_per_frame": 0.004182336182336183,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "MassCommandBuffer_MoveAppend",
+      "calls": 27787,
+      "inclusive_ms_per_frame": 0.004119658119658119,
+      "exclusive_ms_per_frame": 0.004119658119658119,
+      "max_call_ms": 0.016
+    },
+    {
+      "timer": "BooleanAND",
+      "calls": 7402,
+      "inclusive_ms_per_frame": 0.004108262108262108,
+      "exclusive_ms_per_frame": 0.004108262108262108,
+      "max_call_ms": 0.041
+    },
+    {
+      "timer": "ReviewEffect",
+      "calls": 1667,
+      "inclusive_ms_per_frame": 0.02564957264957265,
+      "exclusive_ms_per_frame": 0.004031339031339031,
+      "max_call_ms": 0.079
+    },
+    {
+      "timer": "SViewport [SEditorViewport.cpp(83)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.004017094017094017,
+      "exclusive_ms_per_frame": 0.004017094017094017,
+      "max_call_ms": 0.011
+    },
+    {
+      "timer": "GameplayDebuggerCategoryReplicator",
+      "calls": 284,
+      "inclusive_ms_per_frame": 0.004005698005698006,
+      "exclusive_ms_per_frame": 0.004005698005698006,
+      "max_call_ms": 0.026
+    },
+    {
+      "timer": "UStaticMeshComponent::OnRegister",
+      "calls": 1764,
+      "inclusive_ms_per_frame": 0.01455840455840456,
+      "exclusive_ms_per_frame": 0.003991452991452991,
+      "max_call_ms": 0.33
+    },
+    {
+      "timer": "DrawFrustumComponent",
+      "calls": 4226,
+      "inclusive_ms_per_frame": 0.0038205128205128203,
+      "exclusive_ms_per_frame": 0.0038205128205128203,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "WBP_ShipWorldStatus_C /Engine/Transient.UnrealEdEngine_0:GameInstance_26.WBP_ShipWorldStatus_C_0_Tick",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0037891737891737895,
+      "exclusive_ms_per_frame": 0.0037891737891737895,
+      "max_call_ms": 0.05
+    },
+    {
+      "timer": "SMultiLineEditableText [SMultiLineEditableTextBox.cpp(97)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.003737891737891738,
+      "exclusive_ms_per_frame": 0.003737891737891738,
+      "max_call_ms": 0.027
+    },
+    {
+      "timer": "SScrollBar [STableViewBase.cpp(169)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0036923076923076922,
+      "exclusive_ms_per_frame": 0.0036923076923076922,
+      "max_call_ms": 0.009000000000000001
+    },
+    {
+      "timer": "CacheCursorInfo",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.005418803418803419,
+      "exclusive_ms_per_frame": 0.0036524216524216526,
+      "max_call_ms": 0.024
+    },
+    {
+      "timer": "SObjectWidget [Widget.cpp(995)]",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.8547236467236466,
+      "exclusive_ms_per_frame": 0.0036438746438746438,
+      "max_call_ms": 1.227
+    },
+    {
+      "timer": "UMassActorSpawnerSubsystem::ProcessPendingDestruction",
+      "calls": 2114,
+      "inclusive_ms_per_frame": 0.0038974358974358976,
+      "exclusive_ms_per_frame": 0.0035698005698005693,
+      "max_call_ms": 0.064
+    },
+    {
+      "timer": "FAudioDevice_UpdateSoundClasses",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.003452991452991453,
+      "exclusive_ms_per_frame": 0.003452991452991453,
+      "max_call_ms": 0.053
+    },
+    {
+      "timer": "FRenderAssetStreamingManager::IncrementalUpdate",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.2112136752136752,
+      "exclusive_ms_per_frame": 0.003433048433048433,
+      "max_call_ms": 0.995
+    },
+    {
+      "timer": "SM_Armor",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.0033703703703703704,
+      "exclusive_ms_per_frame": 0.0033703703703703704,
+      "max_call_ms": 0.004
+    },
+    {
+      "timer": "NotEqual_IntInt",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.0033618233618233624,
+      "exclusive_ms_per_frame": 0.0033618233618233624,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "LineBatchComponent",
+      "calls": 4228,
+      "inclusive_ms_per_frame": 0.0033390313390313396,
+      "exclusive_ms_per_frame": 0.0033390313390313396,
+      "max_call_ms": 0.015000000000000001
+    },
+    {
+      "timer": "GuLiGroundMassContact_Query",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.003299145299145299,
+      "exclusive_ms_per_frame": 0.003299145299145299,
+      "max_call_ms": 0.088
+    },
+    {
+      "timer": "HandleDeath",
+      "calls": 3,
+      "inclusive_ms_per_frame": 0.007763532763532764,
+      "exclusive_ms_per_frame": 0.003267806267806268,
+      "max_call_ms": 1.433
+    },
+    {
+      "timer": "SM_OutpostPlaceholder",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.003245014245014245,
+      "exclusive_ms_per_frame": 0.003245014245014245,
+      "max_call_ms": 0.011
+    },
+    {
+      "timer": "GuLiArmySkillReplicationActor",
+      "calls": 292,
+      "inclusive_ms_per_frame": 0.003205128205128205,
+      "exclusive_ms_per_frame": 0.003205128205128205,
+      "max_call_ms": 0.112
+    },
+    {
+      "timer": "UWorldPartitionHLODRuntimeSubsystem::OnBeginRenderViews",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.0032022792022792027,
+      "exclusive_ms_per_frame": 0.0032022792022792027,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "FGroomCacheStreamingManager::UpdateResourceStreaming",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.003193732193732194,
+      "exclusive_ms_per_frame": 0.003193732193732194,
+      "max_call_ms": 0.074
+    },
+    {
+      "timer": "SLevelViewport [LevelEditor.cpp(309)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0030655270655270653,
+      "exclusive_ms_per_frame": 0.0030655270655270653,
+      "max_call_ms": 0.01
+    },
+    {
+      "timer": "[TEDS] Mapping drain deletion queue",
+      "calls": 17,
+      "inclusive_ms_per_frame": 0.0030512820512820513,
+      "exclusive_ms_per_frame": 0.0030512820512820513,
+      "max_call_ms": 0.132
+    },
+    {
+      "timer": "Render_BeginFrame",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.005415954415954416,
+      "exclusive_ms_per_frame": 0.0030256410256410257,
+      "max_call_ms": 0.13799999999999998
+    },
+    {
+      "timer": "MassVisualizationComponent EndVisualChanges",
+      "calls": 2114,
+      "inclusive_ms_per_frame": 0.0030227920227920233,
+      "exclusive_ms_per_frame": 0.0030227920227920233,
+      "max_call_ms": 0.008
+    },
+    {
+      "timer": "GuLiCommanderPlayerState",
+      "calls": 179,
+      "inclusive_ms_per_frame": 0.004065527065527066,
+      "exclusive_ms_per_frame": 0.0028603988603988603,
+      "max_call_ms": 0.055
+    },
+    {
+      "timer": "UWorldPartitionSubsystem::UpdateStreamingState",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.0028603988603988603,
+      "exclusive_ms_per_frame": 0.0028603988603988603,
+      "max_call_ms": 0.005
+    },
+    {
+      "timer": "SOutputLog [OutputLogModule.cpp(113)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.002843304843304843,
+      "exclusive_ms_per_frame": 0.002843304843304843,
+      "max_call_ms": 0.308
+    },
+    {
+      "timer": "FMassProcessingPhase::ExecuteTick EMassProcessingPhase::DuringPhysics",
+      "calls": 1410,
+      "inclusive_ms_per_frame": 0.023082621082621085,
+      "exclusive_ms_per_frame": 0.0028148148148148147,
+      "max_call_ms": 0.15
+    },
+    {
+      "timer": "Tick_PerformanceMonitoring",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.002811965811965812,
+      "exclusive_ms_per_frame": 0.002811965811965812,
+      "max_call_ms": 0.008
+    },
+    {
+      "timer": "RotatorFromAxisAndAngle",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.002754985754985755,
+      "exclusive_ms_per_frame": 0.002754985754985755,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "GuLiCommanderRouteLineComponent",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.0027492877492877495,
+      "exclusive_ms_per_frame": 0.0027492877492877495,
+      "max_call_ms": 0.009000000000000001
+    },
+    {
+      "timer": "[TEDS] Tick time sliced tasks",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.01865811965811966,
+      "exclusive_ms_per_frame": 0.0027094017094017094,
+      "max_call_ms": 0.38499999999999995
+    },
+    {
+      "timer": "WinPumpMessages",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0027094017094017094,
+      "exclusive_ms_per_frame": 0.0027094017094017094,
+      "max_call_ms": 0.10500000000000001
+    },
+    {
+      "timer": "Remove Row From Parent Data",
+      "calls": 7193,
+      "inclusive_ms_per_frame": 0.0027065527065527066,
+      "exclusive_ms_per_frame": 0.0027065527065527066,
+      "max_call_ms": 0.041999999999999996
+    },
+    {
+      "timer": "RocketJetLeft",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.004148148148148148,
+      "exclusive_ms_per_frame": 0.0026866096866096866,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "GuLiCommanderGameMode",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.002655270655270655,
+      "exclusive_ms_per_frame": 0.002655270655270655,
+      "max_call_ms": 0.009000000000000001
+    },
+    {
+      "timer": "SSceneOutliner::SortItems",
+      "calls": 162,
+      "inclusive_ms_per_frame": 0.002606837606837607,
+      "exclusive_ms_per_frame": 0.002606837606837607,
+      "max_call_ms": 0.248
+    },
+    {
+      "timer": "GuLiImpacts_Lifecycle",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.0025954415954415953,
+      "exclusive_ms_per_frame": 0.0025954415954415953,
+      "max_call_ms": 0.014
+    },
+    {
+      "timer": "Tick_AutomationWorker",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0025925925925925925,
+      "exclusive_ms_per_frame": 0.0025925925925925925,
+      "max_call_ms": 0.015000000000000001
+    },
+    {
+      "timer": "Sync dataflow object hierarchy to column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.002584045584045584,
+      "exclusive_ms_per_frame": 0.002584045584045584,
+      "max_call_ms": 0.041999999999999996
+    },
+    {
+      "timer": "Chaos_PhysicsParallelFor",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.0025413105413105413,
+      "exclusive_ms_per_frame": 0.0025413105413105413,
+      "max_call_ms": 0.07200000000000001
+    },
+    {
+      "timer": "FStreamingTextureLevelContext::UpdateContext",
+      "calls": 14507,
+      "inclusive_ms_per_frame": 0.0025384615384615385,
+      "exclusive_ms_per_frame": 0.0025384615384615385,
+      "max_call_ms": 0.006
+    },
+    {
+      "timer": "Slate::AddBorderElement",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0025356125356125352,
+      "exclusive_ms_per_frame": 0.0025356125356125352,
+      "max_call_ms": 0.034
+    },
+    {
+      "timer": "Slate::AddViewportElement",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.002427350427350427,
+      "exclusive_ms_per_frame": 0.002427350427350427,
+      "max_call_ms": 0.082
+    },
+    {
+      "timer": "FinishAsyncTrace",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.002427350427350427,
+      "exclusive_ms_per_frame": 0.002427350427350427,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "WBP_ShipWorldStatus_C /Engine/Transient.UnrealEdEngine_0:GameInstance_26.WBP_ShipWorldStatus_C_0_Paint",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.03059259259259259,
+      "exclusive_ms_per_frame": 0.0024074074074074076,
+      "max_call_ms": 0.108
+    },
+    {
+      "timer": "FInterpEaseInOut",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.002381766381766382,
+      "exclusive_ms_per_frame": 0.002381766381766382,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "Production",
+      "calls": 486,
+      "inclusive_ms_per_frame": 0.002319088319088319,
+      "exclusive_ms_per_frame": 0.002319088319088319,
+      "max_call_ms": 0.025
+    },
+    {
+      "timer": "NS_GroundMech_RocketJet",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.0023105413105413103,
+      "exclusive_ms_per_frame": 0.0023105413105413103,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "FEngineLoop_PumpMessages",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.015034188034188031,
+      "exclusive_ms_per_frame": 0.002267806267806268,
+      "max_call_ms": 0.121
+    },
+    {
+      "timer": "NewSceneCaptureComponent2D",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.0022564102564102562,
+      "exclusive_ms_per_frame": 0.0022564102564102562,
+      "max_call_ms": 0.009000000000000001
+    },
+    {
+      "timer": "UE::Interchange::FInterchangeTaskSystem::Tick",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0022450142450142446,
+      "exclusive_ms_per_frame": 0.0022450142450142446,
+      "max_call_ms": 0.031
+    },
+    {
+      "timer": "Render_EndFrame",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.002210826210826211,
+      "exclusive_ms_per_frame": 0.002210826210826211,
+      "max_call_ms": 0.005
+    },
+    {
+      "timer": "SSceneOutliner::Tick",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.002433048433048433,
+      "exclusive_ms_per_frame": 0.002205128205128205,
+      "max_call_ms": 0.063
+    },
+    {
+      "timer": "MarkClusteredObjectsAsReachableTask",
+      "calls": 5,
+      "inclusive_ms_per_frame": 0.002188034188034188,
+      "exclusive_ms_per_frame": 0.002188034188034188,
+      "max_call_ms": 0.259
+    },
+    {
+      "timer": "Sync UObject Name to column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0021424501424501426,
+      "exclusive_ms_per_frame": 0.0021424501424501426,
+      "max_call_ms": 0.023
+    },
+    {
+      "timer": "MapRangeClamped",
+      "calls": 2114,
+      "inclusive_ms_per_frame": 0.0020997150997150997,
+      "exclusive_ms_per_frame": 0.0020997150997150997,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "GuLiCommanderHealthBarRenderer",
+      "calls": 2580,
+      "inclusive_ms_per_frame": 0.23245868945868947,
+      "exclusive_ms_per_frame": 0.0020826210826210825,
+      "max_call_ms": 0.149
+    },
+    {
+      "timer": "UInputComponent::ConditionalBuildKeyMap",
+      "calls": 2112,
+      "inclusive_ms_per_frame": 0.002062678062678063,
+      "exclusive_ms_per_frame": 0.002062678062678063,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "OnRep_HealthState",
+      "calls": 94,
+      "inclusive_ms_per_frame": 0.026797720797720793,
+      "exclusive_ms_per_frame": 0.0020484330484330485,
+      "max_call_ms": 1.5399999999999998
+    },
+    {
+      "timer": "GreaterEqual_DoubleDouble",
+      "calls": 2114,
+      "inclusive_ms_per_frame": 0.0020370370370370373,
+      "exclusive_ms_per_frame": 0.0020370370370370373,
+      "max_call_ms": 0.012
+    },
+    {
+      "timer": "ConstructedUnit",
+      "calls": 486,
+      "inclusive_ms_per_frame": 0.0020313390313390313,
+      "exclusive_ms_per_frame": 0.0020313390313390313,
+      "max_call_ms": 0.007
+    },
+    {
+      "timer": "NavRenderingComp",
+      "calls": 120,
+      "inclusive_ms_per_frame": 0.0019601139601139604,
+      "exclusive_ms_per_frame": 0.0019601139601139604,
+      "max_call_ms": 0.024
+    },
+    {
+      "timer": "SendAllEndOfFrameUpdates",
+      "calls": 2464,
+      "inclusive_ms_per_frame": 2.7393162393162394,
+      "exclusive_ms_per_frame": 0.0019487179487179488,
+      "max_call_ms": 3.26
+    },
+    {
+      "timer": "RecastNavMesh-Default",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.001908831908831909,
+      "exclusive_ms_per_frame": 0.001908831908831909,
+      "max_call_ms": 0.041
+    },
+    {
+      "timer": "GuLiCommander_SharedFindPath",
+      "calls": 46,
+      "inclusive_ms_per_frame": 0.0018746438746438743,
+      "exclusive_ms_per_frame": 0.0018746438746438743,
+      "max_call_ms": 0.048
+    },
+    {
+      "timer": "UNavigationSystemV1::OnWorldPostActorTick",
+      "calls": 2112,
+      "inclusive_ms_per_frame": 0.001863247863247863,
+      "exclusive_ms_per_frame": 0.001863247863247863,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "ExternalUnitControl",
+      "calls": 620,
+      "inclusive_ms_per_frame": 0.0018404558404558405,
+      "exclusive_ms_per_frame": 0.0018404558404558405,
+      "max_call_ms": 0.004
+    },
+    {
+      "timer": "UMassActorSpawnerSubsystem::ProcessPendingSpawningRequest",
+      "calls": 2114,
+      "inclusive_ms_per_frame": 0.0018347578347578347,
+      "exclusive_ms_per_frame": 0.0018347578347578347,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Slate::AddCustomElement",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.0018347578347578347,
+      "exclusive_ms_per_frame": 0.0018347578347578347,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "OnPreEntityDestroyed",
+      "calls": 14387,
+      "inclusive_ms_per_frame": 0.08082621082621083,
+      "exclusive_ms_per_frame": 0.001772079772079772,
+      "max_call_ms": 0.074
+    },
+    {
+      "timer": "SGuLiSceneUI [GuLiSceneUIWidget.cpp(378)]",
+      "calls": 2816,
+      "inclusive_ms_per_frame": 0.001772079772079772,
+      "exclusive_ms_per_frame": 0.001772079772079772,
+      "max_call_ms": 0.013
+    },
+    {
+      "timer": "WBP_ShipWorldStatus [WBP_ShipWorldStatus_C_0]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.005467236467236467,
+      "exclusive_ms_per_frame": 0.001678062678062678,
+      "max_call_ms": 0.051
+    },
+    {
+      "timer": "Actor Visibility Object to New Column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0016581196581196584,
+      "exclusive_ms_per_frame": 0.0016581196581196584,
+      "max_call_ms": 0.026
+    },
+    {
+      "timer": "CollectUnreachableObjectsTask",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0016324786324786328,
+      "exclusive_ms_per_frame": 0.0016324786324786328,
+      "max_call_ms": 0.5730000000000001
+    },
+    {
+      "timer": "MassObserver_ResumeExecution",
+      "calls": 124,
+      "inclusive_ms_per_frame": 0.013951566951566952,
+      "exclusive_ms_per_frame": 0.0016096866096866095,
+      "max_call_ms": 0.204
+    },
+    {
+      "timer": "UActorComponent::OnRegister",
+      "calls": 5355,
+      "inclusive_ms_per_frame": 0.002606837606837607,
+      "exclusive_ms_per_frame": 0.0015811965811965813,
+      "max_call_ms": 0.006
+    },
+    {
+      "timer": "SSceneOutlinerTreeRow [SSceneOutliner.cpp(1927)]",
+      "calls": 3168,
+      "inclusive_ms_per_frame": 0.0015811965811965813,
+      "exclusive_ms_per_frame": 0.0015811965811965813,
+      "max_call_ms": 0.008
+    },
+    {
+      "timer": "MatineeCam_SM",
+      "calls": 2112,
+      "inclusive_ms_per_frame": 0.0015811965811965813,
+      "exclusive_ms_per_frame": 0.0015811965811965813,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Actor Level to Column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0015783475783475785,
+      "exclusive_ms_per_frame": 0.0015783475783475785,
+      "max_call_ms": 0.036000000000000004
+    },
+    {
+      "timer": "STreeView::PopulateLinearizedItems",
+      "calls": 1480,
+      "inclusive_ms_per_frame": 0.0049002849002849,
+      "exclusive_ms_per_frame": 0.00150997150997151,
+      "max_call_ms": 0.871
+    },
+    {
+      "timer": "SM_Shoulder",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.0014843304843304844,
+      "exclusive_ms_per_frame": 0.0014843304843304844,
+      "max_call_ms": 0.013
+    },
+    {
+      "timer": "EnhPIS_PostTick",
+      "calls": 12320,
+      "inclusive_ms_per_frame": 0.0014786324786324786,
+      "exclusive_ms_per_frame": 0.0014786324786324786,
+      "max_call_ms": 0.043000000000000003
+    },
+    {
+      "timer": "Slate::AddGradientElement",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0013732193732193731,
+      "exclusive_ms_per_frame": 0.0013732193732193731,
+      "max_call_ms": 0.022
+    },
+    {
+      "timer": "EnhPIS_Main",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.05695726495726496,
+      "exclusive_ms_per_frame": 0.001361823361823362,
+      "max_call_ms": 0.078
+    },
+    {
+      "timer": "ShipAssembly",
+      "calls": 325,
+      "inclusive_ms_per_frame": 0.0013561253561253563,
+      "exclusive_ms_per_frame": 0.0013561253561253563,
+      "max_call_ms": 0.005
+    },
+    {
+      "timer": "WorldSettings",
+      "calls": 275,
+      "inclusive_ms_per_frame": 0.0013504273504273503,
+      "exclusive_ms_per_frame": 0.0013504273504273503,
+      "max_call_ms": 0.005
+    },
+    {
+      "timer": "BP_ConstructionVehicle_3Tier_C",
+      "calls": 9,
+      "inclusive_ms_per_frame": 0.003415954415954416,
+      "exclusive_ms_per_frame": 0.0013361823361823363,
+      "max_call_ms": 0.433
+    },
+    {
+      "timer": "Cross_VectorVector",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.0013361823361823363,
+      "exclusive_ms_per_frame": 0.0013361823361823363,
+      "max_call_ms": 0.01
+    },
+    {
+      "timer": "FRenderCommandFence::BeginFence",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.001321937321937322,
+      "exclusive_ms_per_frame": 0.001321937321937322,
+      "max_call_ms": 0.012
+    },
+    {
+      "timer": "GuLiUnitWreck",
+      "calls": 12,
+      "inclusive_ms_per_frame": 0.00245014245014245,
+      "exclusive_ms_per_frame": 0.0012905982905982907,
+      "max_call_ms": 0.332
+    },
+    {
+      "timer": "UWorld::UpdateCullDistanceVolumes",
+      "calls": 1752,
+      "inclusive_ms_per_frame": 0.0012735042735042734,
+      "exclusive_ms_per_frame": 0.0012735042735042734,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Not_PreBool",
+      "calls": 3174,
+      "inclusive_ms_per_frame": 0.001245014245014245,
+      "exclusive_ms_per_frame": 0.001245014245014245,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "GuLiSoldierStateReplicator",
+      "calls": 289,
+      "inclusive_ms_per_frame": 0.0012222222222222222,
+      "exclusive_ms_per_frame": 0.0012222222222222222,
+      "max_call_ms": 0.006
+    },
+    {
+      "timer": "ReviewVertexVAT",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.014621082621082623,
+      "exclusive_ms_per_frame": 0.0012136752136752136,
+      "max_call_ms": 0.020999999999999998
+    },
+    {
+      "timer": "[TEDS] Tick time sliced tasks: 'ProcessAssetTasksCooperatively'",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0014700854700854702,
+      "exclusive_ms_per_frame": 0.0012136752136752136,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "GatherUnreachableObjectsTask",
+      "calls": 6,
+      "inclusive_ms_per_frame": 0.0011994301994301994,
+      "exclusive_ms_per_frame": 0.0011994301994301994,
+      "max_call_ms": 0.118
+    },
+    {
+      "timer": "FShaderCompilingManager::ProcessAsyncResults",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.001190883190883191,
+      "exclusive_ms_per_frame": 0.001190883190883191,
+      "max_call_ms": 0.152
+    },
+    {
+      "timer": "Sync Actor's Mobility to Column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0011823361823361824,
+      "exclusive_ms_per_frame": 0.0011823361823361824,
+      "max_call_ms": 0.019
+    },
+    {
+      "timer": "AbstractNavData-Default",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0011823361823361824,
+      "exclusive_ms_per_frame": 0.0011823361823361824,
+      "max_call_ms": 0.098
+    },
+    {
+      "timer": "MassObserver_OnPostEntitiesCreated_Collection",
+      "calls": 7193,
+      "inclusive_ms_per_frame": 0.0036894586894586894,
+      "exclusive_ms_per_frame": 0.001168091168091168,
+      "max_call_ms": 0.01
+    },
+    {
+      "timer": "MassVisualizationComponent BeginVisualChanges",
+      "calls": 2114,
+      "inclusive_ms_per_frame": 0.0011509971509971512,
+      "exclusive_ms_per_frame": 0.0011509971509971512,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "FTraceAux_OnEndFrame_Stats",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00152991452991453,
+      "exclusive_ms_per_frame": 0.0011481481481481481,
+      "max_call_ms": 0.011
+    },
+    {
+      "timer": "SelectFloat",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.001113960113960114,
+      "exclusive_ms_per_frame": 0.001113960113960114,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Mass_CreateSparseChunks",
+      "calls": 5648,
+      "inclusive_ms_per_frame": 0.001113960113960114,
+      "exclusive_ms_per_frame": 0.001113960113960114,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Sync level label to column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0010997150997150997,
+      "exclusive_ms_per_frame": 0.0010997150997150997,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "NiagaraComponent0",
+      "calls": 1432,
+      "inclusive_ms_per_frame": 0.04909401709401709,
+      "exclusive_ms_per_frame": 0.001091168091168091,
+      "max_call_ms": 0.082
+    },
+    {
+      "timer": "PoseableMeshComponent",
+      "calls": 16,
+      "inclusive_ms_per_frame": 0.0012136752136752136,
+      "exclusive_ms_per_frame": 0.0010883190883190883,
+      "max_call_ms": 0.162
+    },
+    {
+      "timer": "RocketJetRight",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.0019316239316239318,
+      "exclusive_ms_per_frame": 0.0010826210826210827,
+      "max_call_ms": 0.019
+    },
+    {
+      "timer": "UnitInstances_Type_1_Team",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.12081766381766383,
+      "exclusive_ms_per_frame": 0.0010598290598290599,
+      "max_call_ms": 0.10500000000000001
+    },
+    {
+      "timer": "FClamp",
+      "calls": 2114,
+      "inclusive_ms_per_frame": 0.001056980056980057,
+      "exclusive_ms_per_frame": 0.001056980056980057,
+      "max_call_ms": 0.029
+    },
+    {
+      "timer": "Tick_DeferredCommands",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0010512820512820515,
+      "exclusive_ms_per_frame": 0.0010512820512820515,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "FMax",
+      "calls": 2114,
+      "inclusive_ms_per_frame": 0.0010512820512820515,
+      "exclusive_ms_per_frame": 0.0010512820512820515,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Sync world label to column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0010427350427350426,
+      "exclusive_ms_per_frame": 0.0010427350427350426,
+      "max_call_ms": 0.033
+    },
+    {
+      "timer": "GuLiOreFieldActor",
+      "calls": 286,
+      "inclusive_ms_per_frame": 0.001037037037037037,
+      "exclusive_ms_per_frame": 0.001037037037037037,
+      "max_call_ms": 0.004
+    },
+    {
+      "timer": "GuLiRogueUpgradePresentation",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.0010227920227920228,
+      "exclusive_ms_per_frame": 0.0010227920227920228,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Asset Registry Event Broadcast",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0010199430199430198,
+      "exclusive_ms_per_frame": 0.0010199430199430198,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "bDoingActorTicks",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.5011111111111111,
+      "exclusive_ms_per_frame": 0.0010113960113960114,
+      "max_call_ms": 1.2730000000000001
+    },
+    {
+      "timer": "FTedsAssetData::RecordAssetDataStats",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0009743589743589744,
+      "exclusive_ms_per_frame": 0.0009743589743589744,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "Divide_DoubleDouble",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.0009629629629629629,
+      "exclusive_ms_per_frame": 0.0009629629629629629,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Sync dataflow object visibility to Column",
+      "calls": 706,
+      "inclusive_ms_per_frame": 0.0009601139601139602,
+      "exclusive_ms_per_frame": 0.0009601139601139602,
+      "max_call_ms": 0.004
+    },
+    {
+      "timer": "Sync Particle's parent to column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0009515669515669515,
+      "exclusive_ms_per_frame": 0.0009515669515669515,
+      "max_call_ms": 0.004
+    },
+    {
+      "timer": "NotEqual_DoubleDouble",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.0009515669515669515,
+      "exclusive_ms_per_frame": 0.0009515669515669515,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FAudioDevice_UpdateDeviceTiming",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.0009515669515669515,
+      "exclusive_ms_per_frame": 0.0009515669515669515,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "UPlayerInput::EvaluateKeyMapState",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.0009430199430199431,
+      "exclusive_ms_per_frame": 0.0009430199430199431,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Add_DoubleDouble",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.0009287749287749288,
+      "exclusive_ms_per_frame": 0.0009287749287749288,
+      "max_call_ms": 0.009000000000000001
+    },
+    {
+      "timer": "OnRep_ReplicatedWorldTimeSecondsDouble",
+      "calls": 278,
+      "inclusive_ms_per_frame": 0.0009031339031339031,
+      "exclusive_ms_per_frame": 0.0009031339031339031,
+      "max_call_ms": 0.008
+    },
+    {
+      "timer": "Add icon override column to actor",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0008888888888888889,
+      "exclusive_ms_per_frame": 0.0008888888888888889,
+      "max_call_ms": 0.004
+    },
+    {
+      "timer": "STreeView_GetChildren",
+      "calls": 1789,
+      "inclusive_ms_per_frame": 0.003390313390313391,
+      "exclusive_ms_per_frame": 0.0008774928774928775,
+      "max_call_ms": 0.28600000000000003
+    },
+    {
+      "timer": "FCoreDelegates::OnSamplingInput",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0008717948717948718,
+      "exclusive_ms_per_frame": 0.0008717948717948718,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "Update alert header",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0008632478632478632,
+      "exclusive_ms_per_frame": 0.0008632478632478632,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "BooleanOR",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.0008632478632478632,
+      "exclusive_ms_per_frame": 0.0008632478632478632,
+      "max_call_ms": 0.064
+    },
+    {
+      "timer": "Particle Visibility Column to Object",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0008632478632478632,
+      "exclusive_ms_per_frame": 0.0008632478632478632,
+      "max_call_ms": 0.09000000000000001
+    },
+    {
+      "timer": "SGameLayerManager [SLevelViewport.cpp(379)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0008575498575498575,
+      "exclusive_ms_per_frame": 0.0008575498575498575,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "GuLiStrongholdNetworkPresentationComponent",
+      "calls": 240,
+      "inclusive_ms_per_frame": 0.0008518518518518518,
+      "exclusive_ms_per_frame": 0.0008518518518518518,
+      "max_call_ms": 0.011
+    },
+    {
+      "timer": "PingPong DurPhysics->PostPhysics",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0008404558404558406,
+      "exclusive_ms_per_frame": 0.0008404558404558406,
+      "max_call_ms": 0.020999999999999998
+    },
+    {
+      "timer": "GuLiCommanderHUD",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.0008376068376068376,
+      "exclusive_ms_per_frame": 0.0008376068376068376,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "PingPong PrePhysics->DurPhysics",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0008290598290598292,
+      "exclusive_ms_per_frame": 0.0008290598290598292,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "Particle Visibility Object to Column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0008205128205128206,
+      "exclusive_ms_per_frame": 0.0008205128205128206,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "SComboButton [SToolBarComboButtonBlock.cpp(328)]",
+      "calls": 5280,
+      "inclusive_ms_per_frame": 0.0008034188034188035,
+      "exclusive_ms_per_frame": 0.0008034188034188035,
+      "max_call_ms": 0.018000000000000002
+    },
+    {
+      "timer": "BuildingPlacement",
+      "calls": 356,
+      "inclusive_ms_per_frame": 0.0008005698005698007,
+      "exclusive_ms_per_frame": 0.0008005698005698007,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Greater_DoubleDouble",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.0007977207977207976,
+      "exclusive_ms_per_frame": 0.0007977207977207976,
+      "max_call_ms": 0.005
+    },
+    {
+      "timer": "Sync visibility Column to dataflow object",
+      "calls": 706,
+      "inclusive_ms_per_frame": 0.000794871794871795,
+      "exclusive_ms_per_frame": 0.000794871794871795,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Sync particle name to label",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0007863247863247862,
+      "exclusive_ms_per_frame": 0.0007863247863247862,
+      "max_call_ms": 0.025
+    },
+    {
+      "timer": "FEngineLoop_CallAllConsoleVariableSinks",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0007834757834757835,
+      "exclusive_ms_per_frame": 0.0007834757834757835,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Sync viewport outline color column to actor",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.000772079772079772,
+      "exclusive_ms_per_frame": 0.000772079772079772,
+      "max_call_ms": 0.046
+    },
+    {
+      "timer": "SDetailsView [PropertyEditorModule.cpp(277)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.009216524216524215,
+      "exclusive_ms_per_frame": 0.0007692307692307692,
+      "max_call_ms": 0.224
+    },
+    {
+      "timer": "Multiply_DoubleDouble",
+      "calls": 1063,
+      "inclusive_ms_per_frame": 0.0007663817663817663,
+      "exclusive_ms_per_frame": 0.0007663817663817663,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "Add icon override column to Particle",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.000754985754985755,
+      "exclusive_ms_per_frame": 0.000754985754985755,
+      "max_call_ms": 0.043000000000000003
+    },
+    {
+      "timer": "UViewportStatsSubsystem::Draw",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.000754985754985755,
+      "exclusive_ms_per_frame": 0.000754985754985755,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "FlushReinstancingQueueImpl",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0007264957264957265,
+      "exclusive_ms_per_frame": 0.0007264957264957265,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Sync dataflow object label to column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0007207977207977208,
+      "exclusive_ms_per_frame": 0.0007207977207977208,
+      "max_call_ms": 0.052
+    },
+    {
+      "timer": "Slate::Tick (Platform and Input)",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.12191168091168092,
+      "exclusive_ms_per_frame": 0.0007094017094017093,
+      "max_call_ms": 1.878
+    },
+    {
+      "timer": "GroundMechFuelAttributes",
+      "calls": 295,
+      "inclusive_ms_per_frame": 0.0007094017094017093,
+      "exclusive_ms_per_frame": 0.0007094017094017093,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "NS_WingmanGroundFlight_SphereTrail",
+      "calls": 144,
+      "inclusive_ms_per_frame": 0.0009344729344729345,
+      "exclusive_ms_per_frame": 0.0007008547008547009,
+      "max_call_ms": 0.006
+    },
+    {
+      "timer": "FRenderCommandList::FParallelForContext::Submit",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.0006923076923076923,
+      "exclusive_ms_per_frame": 0.0006923076923076923,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "SGlobalPlayWorldActions [PlayLevel.cpp(3393)]",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.0006894586894586895,
+      "exclusive_ms_per_frame": 0.0006894586894586895,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Actor Visibility Column to Object",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.000680911680911681,
+      "exclusive_ms_per_frame": 0.000680911680911681,
+      "max_call_ms": 0.088
+    },
+    {
+      "timer": "SInsightsStatusBarWidget [SInsightsStatusBar.cpp(102)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0011282051282051281,
+      "exclusive_ms_per_frame": 0.000660968660968661,
+      "max_call_ms": 0.103
+    },
+    {
+      "timer": "FAudioDevice_UpdateVirtualLoops",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.000660968660968661,
+      "exclusive_ms_per_frame": 0.000660968660968661,
+      "max_call_ms": 0.02
+    },
+    {
+      "timer": "FTaskBase::TryRetractAndExecute",
+      "calls": 2228,
+      "inclusive_ms_per_frame": 0.0019715099715099716,
+      "exclusive_ms_per_frame": 0.0006581196581196581,
+      "max_call_ms": 0.17
+    },
+    {
+      "timer": "SToolBarButtonBlock [SToolBarButtonBlock.cpp(144)]",
+      "calls": 5984,
+      "inclusive_ms_per_frame": 0.0006581196581196581,
+      "exclusive_ms_per_frame": 0.0006581196581196581,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "Actor Visibility Object to Column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0006552706552706553,
+      "exclusive_ms_per_frame": 0.0006552706552706553,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "ShipBuild",
+      "calls": 179,
+      "inclusive_ms_per_frame": 0.0006495726495726496,
+      "exclusive_ms_per_frame": 0.0006495726495726496,
+      "max_call_ms": 0.004
+    },
+    {
+      "timer": "MassObserver_OnCollectionsCreatedImpl_Collection",
+      "calls": 124,
+      "inclusive_ms_per_frame": 0.007826210826210826,
+      "exclusive_ms_per_frame": 0.0006467236467236466,
+      "max_call_ms": 0.13699999999999998
+    },
+    {
+      "timer": "SLevelEditor [LevelEditor.cpp(245)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0006467236467236466,
+      "exclusive_ms_per_frame": 0.0006467236467236466,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "InstancedStaticMesh",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.007723646723646723,
+      "exclusive_ms_per_frame": 0.000641025641025641,
+      "max_call_ms": 0.024
+    },
+    {
+      "timer": "FTedsAssetData::OnDatabaseUpdate",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0016467236467236465,
+      "exclusive_ms_per_frame": 0.0006267806267806268,
+      "max_call_ms": 0.004
+    },
+    {
+      "timer": "CollectGarbageIncremental",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.06362962962962963,
+      "exclusive_ms_per_frame": 0.0006182336182336182,
+      "max_call_ms": 22.334
+    },
+    {
+      "timer": "STreeView::Tick",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.016102564102564103,
+      "exclusive_ms_per_frame": 0.0006096866096866097,
+      "max_call_ms": 1.093
+    },
+    {
+      "timer": "Update/remove icon override column to actor",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0006096866096866097,
+      "exclusive_ms_per_frame": 0.0006096866096866097,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Sync label column to actor",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0006096866096866097,
+      "exclusive_ms_per_frame": 0.0006096866096866097,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Sync actor's parent to column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0005982905982905984,
+      "exclusive_ms_per_frame": 0.0005982905982905984,
+      "max_call_ms": 0.014
+    },
+    {
+      "timer": "SSceneOutliner [SceneOutlinerModule.cpp(86)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0030256410256410257,
+      "exclusive_ms_per_frame": 0.0005925925925925926,
+      "max_call_ms": 0.063
+    },
+    {
+      "timer": "ComputeGrassInstanceGenerationHash",
+      "calls": 8198,
+      "inclusive_ms_per_frame": 0.0005811965811965812,
+      "exclusive_ms_per_frame": 0.0005811965811965812,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Sync dataflow struct hierarchy to column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0005726495726495727,
+      "exclusive_ms_per_frame": 0.0005726495726495727,
+      "max_call_ms": 0.006
+    },
+    {
+      "timer": "ActorEnded",
+      "calls": 6,
+      "inclusive_ms_per_frame": 0.0005698005698005699,
+      "exclusive_ms_per_frame": 0.0005698005698005699,
+      "max_call_ms": 0.04
+    },
+    {
+      "timer": "GuLiCommanderLODWorldEffects",
+      "calls": 3281,
+      "inclusive_ms_per_frame": 0.000566951566951567,
+      "exclusive_ms_per_frame": 0.000566951566951567,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "CommanderSkills",
+      "calls": 179,
+      "inclusive_ms_per_frame": 0.0005555555555555556,
+      "exclusive_ms_per_frame": 0.0005555555555555556,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "Add parent column to actor",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0005527065527065528,
+      "exclusive_ms_per_frame": 0.0005527065527065528,
+      "max_call_ms": 0.014
+    },
+    {
+      "timer": "GuLiCommanderPresentation_DemandPose",
+      "calls": 270,
+      "inclusive_ms_per_frame": 0.0005527065527065528,
+      "exclusive_ms_per_frame": 0.0005527065527065528,
+      "max_call_ms": 0.005
+    },
+    {
+      "timer": "FAudioDevice_StopSources",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.000547008547008547,
+      "exclusive_ms_per_frame": 0.000547008547008547,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "SComboButton [LevelEditorToolBar.cpp(1351)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.000547008547008547,
+      "exclusive_ms_per_frame": 0.000547008547008547,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Remove selection overlay colors",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0005441595441595441,
+      "exclusive_ms_per_frame": 0.0005441595441595441,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "PingPong PostPhysics->PrePhysics",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0005441595441595441,
+      "exclusive_ms_per_frame": 0.0005441595441595441,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "SMultiBoxWidget [MultiBox.cpp(484)]",
+      "calls": 3168,
+      "inclusive_ms_per_frame": 0.0005327635327635327,
+      "exclusive_ms_per_frame": 0.0005327635327635327,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "SToolBarComboButtonBlock [SToolBarComboButtonBlock.cpp(62)]",
+      "calls": 5280,
+      "inclusive_ms_per_frame": 0.000527065527065527,
+      "exclusive_ms_per_frame": 0.000527065527065527,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "Add Icon override to level",
+      "calls": 124,
+      "inclusive_ms_per_frame": 0.0005156695156695157,
+      "exclusive_ms_per_frame": 0.0005156695156695157,
+      "max_call_ms": 0.11699999999999999
+    },
+    {
+      "timer": "GuLiWingmanFlight_Submit",
+      "calls": 134,
+      "inclusive_ms_per_frame": 0.0006638176638176637,
+      "exclusive_ms_per_frame": 0.0005099715099715099,
+      "max_call_ms": 0.01
+    },
+    {
+      "timer": "Update alert widget state",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0005014245014245014,
+      "exclusive_ms_per_frame": 0.0005014245014245014,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "Particle Visibility Object to New Column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0004985754985754985,
+      "exclusive_ms_per_frame": 0.0004985754985754985,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "BroadcastPostGarbageCollect",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0004928774928774929,
+      "exclusive_ms_per_frame": 0.0004928774928774929,
+      "max_call_ms": 0.17300000000000001
+    },
+    {
+      "timer": "FDistanceFieldAsyncQueue::ProcessAsyncTasks",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0008262108262108262,
+      "exclusive_ms_per_frame": 0.00048148148148148144,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Actor Level to New Column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0004786324786324786,
+      "exclusive_ms_per_frame": 0.0004786324786324786,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Add Actor Mobility to a New Column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.00047293447293447294,
+      "exclusive_ms_per_frame": 0.00047293447293447294,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "FRenderCommandList::FParallelForContext::Init",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.00046723646723646723,
+      "exclusive_ms_per_frame": 0.00046723646723646723,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SInsightsStatusBarWidget::Tick",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0004643874643874644,
+      "exclusive_ms_per_frame": 0.0004643874643874644,
+      "max_call_ms": 0.103
+    },
+    {
+      "timer": "SPlacementModeTools [PlacementModeModule.cpp(535)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0004586894586894587,
+      "exclusive_ms_per_frame": 0.0004586894586894587,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FEngineLoop_FlushThreadedLogs",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0004586894586894587,
+      "exclusive_ms_per_frame": 0.0004586894586894587,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "BroadcastGarbageCollectConditionalBeginDestroy",
+      "calls": 13,
+      "inclusive_ms_per_frame": 0.0005071225071225071,
+      "exclusive_ms_per_frame": 0.000452991452991453,
+      "max_call_ms": 0.017
+    },
+    {
+      "timer": "ULevelInstanceSubsystem::UpdateStreamingState",
+      "calls": 1409,
+      "inclusive_ms_per_frame": 0.000452991452991453,
+      "exclusive_ms_per_frame": 0.000452991452991453,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SToolBarSeparatorBlock [SToolBarSeparatorBlock.cpp(34)]",
+      "calls": 2816,
+      "inclusive_ms_per_frame": 0.000452991452991453,
+      "exclusive_ms_per_frame": 0.000452991452991453,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "FMin",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.0004472934472934473,
+      "exclusive_ms_per_frame": 0.0004472934472934473,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "FEngineLoop_HeartBeat",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0004415954415954416,
+      "exclusive_ms_per_frame": 0.0004415954415954416,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "Sync dataflow struct label to column",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.00043874643874643876,
+      "exclusive_ms_per_frame": 0.00043874643874643876,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Sync Column to Actor's Mobility",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.00043019943019943026,
+      "exclusive_ms_per_frame": 0.00043019943019943026,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "Update active alert header",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.00042735042735042735,
+      "exclusive_ms_per_frame": 0.00042735042735042735,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "FAudioDevice_UpdatePassiveSoundMixModifiers",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.0004045584045584046,
+      "exclusive_ms_per_frame": 0.0004045584045584046,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FAudioMixerPlatformSwappable_CheckAudioDeviceChange",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.0007606837606837606,
+      "exclusive_ms_per_frame": 0.00040170940170940173,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Malloc_UpdateStats",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.00040170940170940173,
+      "exclusive_ms_per_frame": 0.00040170940170940173,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "[TEDS] Mapping clean up",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.014162393162393162,
+      "exclusive_ms_per_frame": 0.0003846153846153846,
+      "max_call_ms": 0.379
+    },
+    {
+      "timer": "FTraceAux_Stats_CSV",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00038176638176638176,
+      "exclusive_ms_per_frame": 0.00038176638176638176,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "SCheckBox [SToolBarButtonBlock.cpp(430)]",
+      "calls": 4224,
+      "inclusive_ms_per_frame": 0.00037891737891737896,
+      "exclusive_ms_per_frame": 0.00037891737891737896,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SMenuEntryBlock [SMenuEntryBlock.cpp(224)]",
+      "calls": 3168,
+      "inclusive_ms_per_frame": 0.0003760683760683761,
+      "exclusive_ms_per_frame": 0.0003760683760683761,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "OnRep_RelayState",
+      "calls": 154,
+      "inclusive_ms_per_frame": 0.00037321937321937326,
+      "exclusive_ms_per_frame": 0.00037321937321937326,
+      "max_call_ms": 0.006
+    },
+    {
+      "timer": "SAssetEditorViewportsOverlay [AssetEditorViewportLayout.cpp(199)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0003703703703703703,
+      "exclusive_ms_per_frame": 0.0003703703703703703,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "HandleActorHealthChanged",
+      "calls": 184,
+      "inclusive_ms_per_frame": 0.0003703703703703703,
+      "exclusive_ms_per_frame": 0.0003703703703703703,
+      "max_call_ms": 0.005
+    },
+    {
+      "timer": "SConsoleInputBox [OutputLogModule.cpp(227)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0003646723646723647,
+      "exclusive_ms_per_frame": 0.0003646723646723647,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "UInstancedStaticMeshComponent::ClearAllInstanceBodies",
+      "calls": 485,
+      "inclusive_ms_per_frame": 0.000358974358974359,
+      "exclusive_ms_per_frame": 0.000358974358974359,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FAudioMixerPlatformSwappable_CheckThreadedDeviceSwap",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.000358974358974359,
+      "exclusive_ms_per_frame": 0.000358974358974359,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "SDockingArea [TabManager.cpp(2154)]",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.000358974358974359,
+      "exclusive_ms_per_frame": 0.000358974358974359,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SSceneOutlinerTreeView [SSceneOutliner.cpp(266)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.01645868945868946,
+      "exclusive_ms_per_frame": 0.00035612535612535614,
+      "max_call_ms": 1.093
+    },
+    {
+      "timer": "SWidgetBlock [SWidgetBlock.cpp(49)]",
+      "calls": 2112,
+      "inclusive_ms_per_frame": 0.0003532763532763533,
+      "exclusive_ms_per_frame": 0.0003532763532763533,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SFilterSearchBoxImpl [SFilterSearchBox.cpp(180)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00035042735042735044,
+      "exclusive_ms_per_frame": 0.00035042735042735044,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "FDistanceFieldAsyncQueue::ProcessPendingTasks",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00034188034188034193,
+      "exclusive_ms_per_frame": 0.00034188034188034193,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SExpanderArrow [SOutlinerTreeView.cpp(306)]",
+      "calls": 3168,
+      "inclusive_ms_per_frame": 0.00034188034188034193,
+      "exclusive_ms_per_frame": 0.00034188034188034193,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SZenStatusBarWidget [ZenEditor.cpp(104)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0003361823361823362,
+      "exclusive_ms_per_frame": 0.0003361823361823362,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SPlacementAssetEntry [SPlacementModeTools.cpp(812)]",
+      "calls": 2464,
+      "inclusive_ms_per_frame": 0.0003361823361823362,
+      "exclusive_ms_per_frame": 0.0003361823361823362,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SMenuAnchor [SMenuEntryBlock.cpp(263)]",
+      "calls": 3168,
+      "inclusive_ms_per_frame": 0.0003333333333333333,
+      "exclusive_ms_per_frame": 0.0003333333333333333,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SDetailNameArea [SDetailsView.cpp(278)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00032763532763532767,
+      "exclusive_ms_per_frame": 0.00032763532763532767,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "DestroyActors",
+      "calls": 2114,
+      "inclusive_ms_per_frame": 0.00032763532763532767,
+      "exclusive_ms_per_frame": 0.00032763532763532767,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SEditorPerformanceStatusBarWidget [EditorPerformanceModule.cpp(206)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0003219373219373219,
+      "exclusive_ms_per_frame": 0.0003219373219373219,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "[TEDS] Tick time sliced tasks: 'Mapping Table GC'",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.014478632478632477,
+      "exclusive_ms_per_frame": 0.0003190883190883191,
+      "max_call_ms": 0.38
+    },
+    {
+      "timer": "SSeparator [SeparatorBuilder.cpp(7)]",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.0003190883190883191,
+      "exclusive_ms_per_frame": 0.0003190883190883191,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "NiagaraDataInterfaceArrayPosition",
+      "calls": 70,
+      "inclusive_ms_per_frame": 0.00031623931623931626,
+      "exclusive_ms_per_frame": 0.00031623931623931626,
+      "max_call_ms": 0.004
+    },
+    {
+      "timer": "UObject::Rename",
+      "calls": 3,
+      "inclusive_ms_per_frame": 0.0003190883190883191,
+      "exclusive_ms_per_frame": 0.0003133903133903134,
+      "max_call_ms": 0.044
+    },
+    {
+      "timer": "UE::TraceTools::SToggleTraceButton [SInsightsStatusBar.cpp(182)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0003133903133903134,
+      "exclusive_ms_per_frame": 0.0003133903133903134,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SUnsavedAssetsStatusBarWidget [UnsavedAssetsTrackerModule.cpp(62)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00031054131054131056,
+      "exclusive_ms_per_frame": 0.00031054131054131056,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SSeparator [SToolBarSeparatorBlock.cpp(82)]",
+      "calls": 2816,
+      "inclusive_ms_per_frame": 0.00030484330484330485,
+      "exclusive_ms_per_frame": 0.00030484330484330485,
+      "max_call_ms": 0.009000000000000001
+    },
+    {
+      "timer": "FTedsAssetData::ProcessTaskQueues",
+      "calls": 706,
+      "inclusive_ms_per_frame": 0.000301994301994302,
+      "exclusive_ms_per_frame": 0.000301994301994302,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SStatusBar [StatusBarSubsystem.cpp(516)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0002962962962962963,
+      "exclusive_ms_per_frame": 0.0002962962962962963,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "SComboButton [SZenStatusBar.cpp(307)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0002905982905982906,
+      "exclusive_ms_per_frame": 0.0002905982905982906,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "BroadCastPostGarbageCollectConditionalBeginDestroy",
+      "calls": 13,
+      "inclusive_ms_per_frame": 0.000358974358974359,
+      "exclusive_ms_per_frame": 0.0002877492877492878,
+      "max_call_ms": 0.031
+    },
+    {
+      "timer": "Explosion_Flipbook",
+      "calls": 10,
+      "inclusive_ms_per_frame": 0.0003190883190883191,
+      "exclusive_ms_per_frame": 0.0002877492877492878,
+      "max_call_ms": 0.022
+    },
+    {
+      "timer": "FNiagaraWorldManager::OnPostReachabilityAnalysis",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.000772079772079772,
+      "exclusive_ms_per_frame": 0.00028205128205128203,
+      "max_call_ms": 0.27099999999999996
+    },
+    {
+      "timer": "SListPanel [STableViewBase.cpp(141)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00027920227920227923,
+      "exclusive_ms_per_frame": 0.00027920227920227923,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "InstancedStaticMeshComponent",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.0117008547008547,
+      "exclusive_ms_per_frame": 0.0002763532763532764,
+      "max_call_ms": 0.033
+    },
+    {
+      "timer": "FCardRepresentationAsyncQueue::ProcessAsyncTasks",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0005299145299145299,
+      "exclusive_ms_per_frame": 0.0002735042735042735,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SActorTreeLabel [ActorTreeItem.cpp(345)]",
+      "calls": 2464,
+      "inclusive_ms_per_frame": 0.0002735042735042735,
+      "exclusive_ms_per_frame": 0.0002735042735042735,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FEngineLoop_Idle",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.0002678062678062678,
+      "exclusive_ms_per_frame": 0.0002678062678062678,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FAudioDevice_HandlePause",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.00026495726495726497,
+      "exclusive_ms_per_frame": 0.00026495726495726497,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "UActorComponent::OnCreatePhysicsState",
+      "calls": 1750,
+      "inclusive_ms_per_frame": 0.0002621082621082621,
+      "exclusive_ms_per_frame": 0.0002621082621082621,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "TEDS.RunQuery",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0002621082621082621,
+      "exclusive_ms_per_frame": 0.0002621082621082621,
+      "max_call_ms": 0.092
+    },
+    {
+      "timer": "OmnidirectionalBurst",
+      "calls": 10,
+      "inclusive_ms_per_frame": 0.0002621082621082621,
+      "exclusive_ms_per_frame": 0.0002621082621082621,
+      "max_call_ms": 0.017
+    },
+    {
+      "timer": "SDockingSplitter [TabManager.cpp(2200)]",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.00025925925925925926,
+      "exclusive_ms_per_frame": 0.00025925925925925926,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FAudioDevice_PendingActiveSoundStops",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.00025925925925925926,
+      "exclusive_ms_per_frame": 0.00025925925925925926,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FCardRepresentationAsyncQueue::ProcessPendingTasks",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00025641025641025646,
+      "exclusive_ms_per_frame": 0.00025641025641025646,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "Tick_SlateInput",
+      "calls": 353,
+      "inclusive_ms_per_frame": 0.06664672364672365,
+      "exclusive_ms_per_frame": 0.00025356125356125356,
+      "max_call_ms": 0.244
+    },
+    {
+      "timer": "SActorDetails [SLevelEditor.cpp(2233)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00024501424501424505,
+      "exclusive_ms_per_frame": 0.00024501424501424505,
+      "max_call_ms": 0.011
+    },
+    {
+      "timer": "UpdateLevelVisibilityPriority",
+      "calls": 1057,
+      "inclusive_ms_per_frame": 0.00023646723646723647,
+      "exclusive_ms_per_frame": 0.00023646723646723647,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "Distortion",
+      "calls": 10,
+      "inclusive_ms_per_frame": 0.00023646723646723647,
+      "exclusive_ms_per_frame": 0.00023646723646723647,
+      "max_call_ms": 0.012
+    },
+    {
+      "timer": "BoxComponent",
+      "calls": 2,
+      "inclusive_ms_per_frame": 0.00023646723646723647,
+      "exclusive_ms_per_frame": 0.00023646723646723647,
+      "max_call_ms": 0.045000000000000005
+    },
+    {
+      "timer": "SPlacementAssetThumbnail [SPlacementModeTools.cpp(262)]",
+      "calls": 2464,
+      "inclusive_ms_per_frame": 0.00022792022792022794,
+      "exclusive_ms_per_frame": 0.00022792022792022794,
+      "max_call_ms": 0.01
+    },
+    {
+      "timer": "SComboButton [SInsightsStatusBar.cpp(148)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00022507122507122509,
+      "exclusive_ms_per_frame": 0.00022507122507122509,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "SWrapBox [SBasicFilterBar.h(156)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00022222222222222223,
+      "exclusive_ms_per_frame": 0.00022222222222222223,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SFilterSearchBox [SSceneOutliner.cpp(64)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00022222222222222223,
+      "exclusive_ms_per_frame": 0.00022222222222222223,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FAudioDevice_StartSources",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.00022222222222222223,
+      "exclusive_ms_per_frame": 0.00022222222222222223,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SComboButton [SOutputLog.cpp(191)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00021652421652421653,
+      "exclusive_ms_per_frame": 0.00021652421652421653,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SComboButton [SBasicFilterBar.h(264)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00021652421652421653,
+      "exclusive_ms_per_frame": 0.00021652421652421653,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SGlobalPlayWorldActions [SEditorViewport.cpp(277)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00021367521367521368,
+      "exclusive_ms_per_frame": 0.00021367521367521368,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SComboButton [SourceControlMenuHelpers.cpp(457)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0002022792022792023,
+      "exclusive_ms_per_frame": 0.0002022792022792023,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "Sprite",
+      "calls": 48,
+      "inclusive_ms_per_frame": 0.0002022792022792023,
+      "exclusive_ms_per_frame": 0.0002022792022792023,
+      "max_call_ms": 0.005
+    },
+    {
+      "timer": "SDockingTabWell [SDockingTabStack.cpp(124)]",
+      "calls": 1760,
+      "inclusive_ms_per_frame": 0.00019658119658119656,
+      "exclusive_ms_per_frame": 0.00019658119658119656,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "MassExecutor Run",
+      "calls": 197,
+      "inclusive_ms_per_frame": 2.6175498575498577,
+      "exclusive_ms_per_frame": 0.00019373219373219373,
+      "max_call_ms": 7.7010000000000005
+    },
+    {
+      "timer": "SInlineEditableTextBlock [ActorTreeItem.cpp(55)]",
+      "calls": 2112,
+      "inclusive_ms_per_frame": 0.00019088319088319088,
+      "exclusive_ms_per_frame": 0.00019088319088319088,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "UE::Slate::Private::SPanelDrawerArea [TabManager.cpp(1197)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00019088319088319088,
+      "exclusive_ms_per_frame": 0.00019088319088319088,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FTextureCompilingManager::ProcessTextures",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00018803418803418806,
+      "exclusive_ms_per_frame": 0.00018803418803418806,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "STableColumnHeader [SHeaderRow.cpp(874)]",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.00018803418803418806,
+      "exclusive_ms_per_frame": 0.00018803418803418806,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SMultiLineEditableTextBox [SOutputLog.cpp(226)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00018518518518518515,
+      "exclusive_ms_per_frame": 0.00018518518518518515,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "MassObserver_OnCompositionChanged_Collection",
+      "calls": 533,
+      "inclusive_ms_per_frame": 0.00044444444444444447,
+      "exclusive_ms_per_frame": 0.0001794871794871795,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "DecalComponent",
+      "calls": 36,
+      "inclusive_ms_per_frame": 0.0002905982905982906,
+      "exclusive_ms_per_frame": 0.0001794871794871795,
+      "max_call_ms": 0.038
+    },
+    {
+      "timer": "FSkinnedAssetCompilingManager::ProcessSkinnedAssets",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00017663817663817665,
+      "exclusive_ms_per_frame": 0.00017663817663817665,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FActorFolders::OnAllLevelsChanged",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00017094017094017097,
+      "exclusive_ms_per_frame": 0.00017094017094017097,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SDockingTabStack [TabManager.cpp(2004)]",
+      "calls": 1760,
+      "inclusive_ms_per_frame": 0.0001680911680911681,
+      "exclusive_ms_per_frame": 0.0001680911680911681,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SCheckBox [SToolBarComboButtonBlock.cpp(283)]",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.0001680911680911681,
+      "exclusive_ms_per_frame": 0.0001680911680911681,
+      "max_call_ms": 0.031
+    },
+    {
+      "timer": "FAnimBankCompilingManager::ProcessAnimBanks",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0001680911680911681,
+      "exclusive_ms_per_frame": 0.0001680911680911681,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FStaticMeshCompilingManager::ProcessStaticMeshes",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0001680911680911681,
+      "exclusive_ms_per_frame": 0.0001680911680911681,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "NiagaraDataInterfaceArrayColor",
+      "calls": 70,
+      "inclusive_ms_per_frame": 0.00016524216524216526,
+      "exclusive_ms_per_frame": 0.00016524216524216526,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "NiagaraDataInterfaceArrayFloat2",
+      "calls": 70,
+      "inclusive_ms_per_frame": 0.00016524216524216526,
+      "exclusive_ms_per_frame": 0.00016524216524216526,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "SSourceControlControls [SourceControlMenuHelpers.cpp(450)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0001623931623931624,
+      "exclusive_ms_per_frame": 0.0001623931623931624,
+      "max_call_ms": 0.014
+    },
+    {
+      "timer": "SExtensionPanel [LevelEditor.cpp(193)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0001623931623931624,
+      "exclusive_ms_per_frame": 0.0001623931623931624,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "GuLiCommanderPresentation_MassPositionSample",
+      "calls": 583,
+      "inclusive_ms_per_frame": 0.06243874643874644,
+      "exclusive_ms_per_frame": 0.00015954415954415956,
+      "max_call_ms": 0.133
+    },
+    {
+      "timer": "SSeparator [SourceControlMenuHelpers.cpp(443)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0001566951566951567,
+      "exclusive_ms_per_frame": 0.0001566951566951567,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FSoundWaveCompilingManager::ProcessSoundWaves",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.0001566951566951567,
+      "exclusive_ms_per_frame": 0.0001566951566951567,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "FAudioDevice_VirtualizeLoops",
+      "calls": 1056,
+      "inclusive_ms_per_frame": 0.0001566951566951567,
+      "exclusive_ms_per_frame": 0.0001566951566951567,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SActorFolderTreeLabel [ActorFolderTreeItem.cpp(308)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.000150997150997151,
+      "exclusive_ms_per_frame": 0.000150997150997151,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SSceneOutlinerFilterBar [SSceneOutliner.cpp(2784)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00014814814814814815,
+      "exclusive_ms_per_frame": 0.00014814814814814815,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SSearchBox [SPlacementModeTools.cpp(696)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00014814814814814815,
+      "exclusive_ms_per_frame": 0.00014814814814814815,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SInlineEditableTextBlock [ActorFolderTreeItem.cpp(37)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00014814814814814815,
+      "exclusive_ms_per_frame": 0.00014814814814814815,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SSplitter [SDockingArea.cpp(82)]",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.00013960113960113962,
+      "exclusive_ms_per_frame": 0.00013960113960113962,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "RemovePublicExports",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.00013675213675213676,
+      "exclusive_ms_per_frame": 0.00013675213675213676,
+      "max_call_ms": 0.048
+    },
+    {
+      "timer": "SSceneOutliner::Populate",
+      "calls": 3,
+      "inclusive_ms_per_frame": 0.0001339031339031339,
+      "exclusive_ms_per_frame": 0.0001339031339031339,
+      "max_call_ms": 0.025
+    },
+    {
+      "timer": "WreckPhysics",
+      "calls": 14,
+      "inclusive_ms_per_frame": 0.00012535612535612535,
+      "exclusive_ms_per_frame": 0.00011680911680911681,
+      "max_call_ms": 0.015000000000000001
+    },
+    {
+      "timer": "SSplitter [SDockingSplitter.cpp(15)]",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.00011396011396011397,
+      "exclusive_ms_per_frame": 0.00011396011396011397,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "GameplayDebuggerPlayerManager",
+      "calls": 6,
+      "inclusive_ms_per_frame": 0.00011111111111111112,
+      "exclusive_ms_per_frame": 0.00011111111111111112,
+      "max_call_ms": 0.02
+    },
+    {
+      "timer": "FAnalyticsPropertyStore::Flush",
+      "calls": 3,
+      "inclusive_ms_per_frame": 0.00013675213675213676,
+      "exclusive_ms_per_frame": 0.00010541310541310541,
+      "max_call_ms": 0.018000000000000002
+    },
+    {
+      "timer": "SWorldTreeLabel [WorldTreeItem.cpp(253)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 0.00010541310541310541,
+      "exclusive_ms_per_frame": 0.00010541310541310541,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "MID_M_GroundWarning_Circle",
+      "calls": 26,
+      "inclusive_ms_per_frame": 0.00010541310541310541,
+      "exclusive_ms_per_frame": 0.00010541310541310541,
+      "max_call_ms": 0.004
+    },
+    {
+      "timer": "CollisionCylinder",
+      "calls": 4,
+      "inclusive_ms_per_frame": 0.00030484330484330485,
+      "exclusive_ms_per_frame": 9.97150997150997e-05,
+      "max_call_ms": 0.039
+    },
+    {
+      "timer": "NiagaraDataInterfaceArrayFloat3",
+      "calls": 35,
+      "inclusive_ms_per_frame": 9.97150997150997e-05,
+      "exclusive_ms_per_frame": 9.97150997150997e-05,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "FComponentTypeRegistryData::Tick",
+      "calls": 353,
+      "inclusive_ms_per_frame": 9.116809116809118e-05,
+      "exclusive_ms_per_frame": 9.116809116809118e-05,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "FGroomBindingCompilingManager::ProcessGroomBindingAssets",
+      "calls": 352,
+      "inclusive_ms_per_frame": 8.547008547008548e-05,
+      "exclusive_ms_per_frame": 8.547008547008548e-05,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "SUniformWrapPanel [ColumnWrappingContainer.cpp(61)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 8.547008547008548e-05,
+      "exclusive_ms_per_frame": 8.547008547008548e-05,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "IncrementalPurgeGarbage",
+      "calls": 19,
+      "inclusive_ms_per_frame": 0.11904843304843303,
+      "exclusive_ms_per_frame": 8.262108262108263e-05,
+      "max_call_ms": 6.124
+    },
+    {
+      "timer": "GuLiEngineering_PathBudget",
+      "calls": 352,
+      "inclusive_ms_per_frame": 8.262108262108263e-05,
+      "exclusive_ms_per_frame": 8.262108262108263e-05,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SMenuAnchor [SOutputLog.cpp(182)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 7.977207977207978e-05,
+      "exclusive_ms_per_frame": 7.977207977207978e-05,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "VectorVM_Experimental",
+      "calls": 14,
+      "inclusive_ms_per_frame": 7.977207977207978e-05,
+      "exclusive_ms_per_frame": 7.977207977207978e-05,
+      "max_call_ms": 0.008
+    },
+    {
+      "timer": "SHeaderRow [SSceneOutliner.cpp(125)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 7.692307692307693e-05,
+      "exclusive_ms_per_frame": 7.692307692307693e-05,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "SMenuAnchor [SFilterSearchBox.cpp(177)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 7.407407407407407e-05,
+      "exclusive_ms_per_frame": 7.407407407407407e-05,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "ReceiveEndPlay",
+      "calls": 3,
+      "inclusive_ms_per_frame": 0.00022507122507122509,
+      "exclusive_ms_per_frame": 7.122507122507123e-05,
+      "max_call_ms": 0.031
+    },
+    {
+      "timer": "SComboButton [SSceneOutliner.cpp(206)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 7.122507122507123e-05,
+      "exclusive_ms_per_frame": 7.122507122507123e-05,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "ApplyMiningVisuals",
+      "calls": 3,
+      "inclusive_ms_per_frame": 0.00011111111111111112,
+      "exclusive_ms_per_frame": 6.837606837606838e-05,
+      "max_call_ms": 0.015000000000000001
+    },
+    {
+      "timer": "NotifyUnreachableObjects",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.001720797720797721,
+      "exclusive_ms_per_frame": 6.267806267806268e-05,
+      "max_call_ms": 0.6040000000000001
+    },
+    {
+      "timer": "ArrowComponent0",
+      "calls": 48,
+      "inclusive_ms_per_frame": 6.267806267806268e-05,
+      "exclusive_ms_per_frame": 6.267806267806268e-05,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "OnChildActorDestroyed",
+      "calls": 3,
+      "inclusive_ms_per_frame": 0.0003846153846153846,
+      "exclusive_ms_per_frame": 5.9829059829059824e-05,
+      "max_call_ms": 0.052
+    },
+    {
+      "timer": "SComboButton [SClippingVerticalBox.cpp(145)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 5.9829059829059824e-05,
+      "exclusive_ms_per_frame": 5.9829059829059824e-05,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "RemovePackages",
+      "calls": 1,
+      "inclusive_ms_per_frame": 5.9829059829059824e-05,
+      "exclusive_ms_per_frame": 5.9829059829059824e-05,
+      "max_call_ms": 0.020999999999999998
+    },
+    {
+      "timer": "BodySetup",
+      "calls": 2,
+      "inclusive_ms_per_frame": 5.6980056980056985e-05,
+      "exclusive_ms_per_frame": 5.6980056980056985e-05,
+      "max_call_ms": 0.011
+    },
+    {
+      "timer": "HealthBarInstances",
+      "calls": 36,
+      "inclusive_ms_per_frame": 9.401709401709403e-05,
+      "exclusive_ms_per_frame": 4.558404558404559e-05,
+      "max_call_ms": 0.009000000000000001
+    },
+    {
+      "timer": "SDockTab [MainFrameModule.cpp(923)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 4.558404558404559e-05,
+      "exclusive_ms_per_frame": 4.558404558404559e-05,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SSeparator [SHeaderRow.cpp(1047)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 4.558404558404559e-05,
+      "exclusive_ms_per_frame": 4.558404558404559e-05,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SDockingTabStack [TabManager.cpp(2027)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 4.273504273504274e-05,
+      "exclusive_ms_per_frame": 4.273504273504274e-05,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SDockTab [SLevelEditor.cpp(813)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 3.988603988603989e-05,
+      "exclusive_ms_per_frame": 3.988603988603989e-05,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "SDockTab [OutputLogModule.cpp(118)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 3.7037037037037037e-05,
+      "exclusive_ms_per_frame": 3.7037037037037037e-05,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SWidgetDrawer [SStatusBar.cpp(593)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 3.7037037037037037e-05,
+      "exclusive_ms_per_frame": 3.7037037037037037e-05,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "SSplitter [SHeaderRow.cpp(808)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 3.7037037037037037e-05,
+      "exclusive_ms_per_frame": 3.7037037037037037e-05,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "FWaitingQueue_SignalStandbyThread",
+      "calls": 4,
+      "inclusive_ms_per_frame": 3.418803418803419e-05,
+      "exclusive_ms_per_frame": 3.418803418803419e-05,
+      "max_call_ms": 0.005
+    },
+    {
+      "timer": "SDockTab [LevelEditor.cpp(224)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 3.418803418803419e-05,
+      "exclusive_ms_per_frame": 3.418803418803419e-05,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SSplitter [SActorDetails.cpp(348)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 3.418803418803419e-05,
+      "exclusive_ms_per_frame": 3.418803418803419e-05,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "SScrollPanel [SScrollBox.cpp(157)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 3.418803418803419e-05,
+      "exclusive_ms_per_frame": 3.418803418803419e-05,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "GatherUnreachableObjects",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0032022792022792027,
+      "exclusive_ms_per_frame": 3.133903133903134e-05,
+      "max_call_ms": 1.124
+    },
+    {
+      "timer": "BroadcastPostReachabilityAnalysis",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0010769230769230769,
+      "exclusive_ms_per_frame": 3.133903133903134e-05,
+      "max_call_ms": 0.378
+    },
+    {
+      "timer": "USkeletalMeshComponent::BlockOnParallelEvaluationTask",
+      "calls": 9,
+      "inclusive_ms_per_frame": 0.0009800569800569802,
+      "exclusive_ms_per_frame": 3.133903133903134e-05,
+      "max_call_ms": 0.134
+    },
+    {
+      "timer": "MaterialInstanceDynamic",
+      "calls": 1,
+      "inclusive_ms_per_frame": 3.418803418803419e-05,
+      "exclusive_ms_per_frame": 3.133903133903134e-05,
+      "max_call_ms": 0.012
+    },
+    {
+      "timer": "SScrollBarTrack [SScrollBar.cpp(47)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 3.133903133903134e-05,
+      "exclusive_ms_per_frame": 3.133903133903134e-05,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "SDockTab [SLevelEditor.cpp(1180)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 3.133903133903134e-05,
+      "exclusive_ms_per_frame": 3.133903133903134e-05,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "Plane",
+      "calls": 36,
+      "inclusive_ms_per_frame": 4.8433048433048433e-05,
+      "exclusive_ms_per_frame": 2.8490028490028492e-05,
+      "max_call_ms": 0.008
+    },
+    {
+      "timer": "SDockTab [SLevelEditor.cpp(1032)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 2.8490028490028492e-05,
+      "exclusive_ms_per_frame": 2.8490028490028492e-05,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SSplitter [CategoryDrivenContentBuilderBase.cpp(141)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 2.8490028490028492e-05,
+      "exclusive_ms_per_frame": 2.8490028490028492e-05,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SDockTab [SLevelEditor.cpp(1004)]",
+      "calls": 352,
+      "inclusive_ms_per_frame": 2.5641025641025643e-05,
+      "exclusive_ms_per_frame": 2.5641025641025643e-05,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "ParallelFor Task",
+      "calls": 51,
+      "inclusive_ms_per_frame": 0.006034188034188034,
+      "exclusive_ms_per_frame": 2.2792022792022794e-05,
+      "max_call_ms": 0.091
+    },
+    {
+      "timer": "StopMining",
+      "calls": 3,
+      "inclusive_ms_per_frame": 0.00013675213675213676,
+      "exclusive_ms_per_frame": 2.2792022792022794e-05,
+      "max_call_ms": 0.018000000000000002
+    },
+    {
+      "timer": "UnhashUnreachableObjects",
+      "calls": 13,
+      "inclusive_ms_per_frame": 0.07324501424501424,
+      "exclusive_ms_per_frame": 1.7094017094017095e-05,
+      "max_call_ms": 2.068
+    },
+    {
+      "timer": "ExecuteUbergraph_BP_ConstructionVehicle_3Tier",
+      "calls": 3,
+      "inclusive_ms_per_frame": 0.00015384615384615385,
+      "exclusive_ms_per_frame": 1.7094017094017095e-05,
+      "max_call_ms": 0.02
+    },
+    {
+      "timer": "StopWork",
+      "calls": 1,
+      "inclusive_ms_per_frame": 1.7094017094017095e-05,
+      "exclusive_ms_per_frame": 1.7094017094017095e-05,
+      "max_call_ms": 0.006
+    },
+    {
+      "timer": "GuLiSceneUISourceRegistry",
+      "calls": 2,
+      "inclusive_ms_per_frame": 1.4245014245014246e-05,
+      "exclusive_ms_per_frame": 1.4245014245014246e-05,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "Tasks::Wait",
+      "calls": 1,
+      "inclusive_ms_per_frame": 1.4245014245014246e-05,
+      "exclusive_ms_per_frame": 1.4245014245014246e-05,
+      "max_call_ms": 0.005
+    },
+    {
+      "timer": "FStreamableManager::OnPreGarbageCollect",
+      "calls": 5,
+      "inclusive_ms_per_frame": 1.4245014245014246e-05,
+      "exclusive_ms_per_frame": 1.4245014245014246e-05,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "OnRep_ResourcePrivateState",
+      "calls": 2,
+      "inclusive_ms_per_frame": 1.1396011396011397e-05,
+      "exclusive_ms_per_frame": 1.1396011396011397e-05,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "Deactivate",
+      "calls": 6,
+      "inclusive_ms_per_frame": 1.1396011396011397e-05,
+      "exclusive_ms_per_frame": 1.1396011396011397e-05,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "OnRep_Territories",
+      "calls": 2,
+      "inclusive_ms_per_frame": 1.1396011396011397e-05,
+      "exclusive_ms_per_frame": 1.1396011396011397e-05,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "IncrementalDestroyGarbage",
+      "calls": 6,
+      "inclusive_ms_per_frame": 0.02828205128205128,
+      "exclusive_ms_per_frame": 8.547008547008548e-06,
+      "max_call_ms": 2.004
+    },
+    {
+      "timer": "FRenderAssetStreamingManager::OnPreGarbageCollect",
+      "calls": 1,
+      "inclusive_ms_per_frame": 8.547008547008548e-06,
+      "exclusive_ms_per_frame": 8.547008547008548e-06,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "BroadcastPostPurgeGarbage",
+      "calls": 1,
+      "inclusive_ms_per_frame": 8.547008547008548e-06,
+      "exclusive_ms_per_frame": 8.547008547008548e-06,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "AcquireGCLock",
+      "calls": 1,
+      "inclusive_ms_per_frame": 8.547008547008548e-06,
+      "exclusive_ms_per_frame": 8.547008547008548e-06,
+      "max_call_ms": 0.003
+    },
+    {
+      "timer": "FRealtimeGC_PerformReachabilityAnalysis",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.06363247863247863,
+      "exclusive_ms_per_frame": 5.6980056980056985e-06,
+      "max_call_ms": 22.335
+    },
+    {
+      "timer": "DestroyObjects",
+      "calls": 3,
+      "inclusive_ms_per_frame": 0.013615384615384616,
+      "exclusive_ms_per_frame": 5.6980056980056985e-06,
+      "max_call_ms": 2.0
+    },
+    {
+      "timer": "[TEDS] Post GC clean up",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0002678062678062678,
+      "exclusive_ms_per_frame": 5.6980056980056985e-06,
+      "max_call_ms": 0.094
+    },
+    {
+      "timer": "Arrow",
+      "calls": 3,
+      "inclusive_ms_per_frame": 8.547008547008548e-06,
+      "exclusive_ms_per_frame": 5.6980056980056985e-06,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "IsDedicatedServer",
+      "calls": 3,
+      "inclusive_ms_per_frame": 5.6980056980056985e-06,
+      "exclusive_ms_per_frame": 5.6980056980056985e-06,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "BreakVector",
+      "calls": 3,
+      "inclusive_ms_per_frame": 5.6980056980056985e-06,
+      "exclusive_ms_per_frame": 5.6980056980056985e-06,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "BroadcastGarbageCollectStarted",
+      "calls": 1,
+      "inclusive_ms_per_frame": 5.6980056980056985e-06,
+      "exclusive_ms_per_frame": 5.6980056980056985e-06,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "SetVisibility",
+      "calls": 6,
+      "inclusive_ms_per_frame": 5.6980056980056985e-06,
+      "exclusive_ms_per_frame": 5.6980056980056985e-06,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "SetActorTickEnabled",
+      "calls": 3,
+      "inclusive_ms_per_frame": 5.6980056980056985e-06,
+      "exclusive_ms_per_frame": 5.6980056980056985e-06,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "CollectUnreachableObjects",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0016581196581196584,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.5820000000000001
+    },
+    {
+      "timer": "GC.MarkRootObjectsAsReachable",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.00152991452991453,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.537
+    },
+    {
+      "timer": "GC.GatherUnreachable",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0012022792022792022,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.422
+    },
+    {
+      "timer": "RemoveUnreachableObjects",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0001994301994301994,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.06999999999999999
+    },
+    {
+      "timer": "UEngine::PreGarbageCollect",
+      "calls": 1,
+      "inclusive_ms_per_frame": 1.9943019943019945e-05,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.007
+    },
+    {
+      "timer": "UActorComponent::RecreatePhysicsState",
+      "calls": 14,
+      "inclusive_ms_per_frame": 5.6980056980056985e-06,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "TransformComponent0",
+      "calls": 1,
+      "inclusive_ms_per_frame": 2.8490028490028492e-06,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "A_RPF_Door_Open",
+      "calls": 2,
+      "inclusive_ms_per_frame": 2.8490028490028492e-06,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "MaterialInstanceEditorOnlyData",
+      "calls": 1,
+      "inclusive_ms_per_frame": 2.8490028490028492e-06,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "GetActorScale3D",
+      "calls": 3,
+      "inclusive_ms_per_frame": 2.8490028490028492e-06,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "FCardRepresentationAsyncQueue::CancelUnreachableMeshes",
+      "calls": 1,
+      "inclusive_ms_per_frame": 2.8490028490028492e-06,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "Abs",
+      "calls": 3,
+      "inclusive_ms_per_frame": 2.8490028490028492e-06,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "DamageReceiver",
+      "calls": 3,
+      "inclusive_ms_per_frame": 2.8490028490028492e-06,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "ConstructionWork",
+      "calls": 3,
+      "inclusive_ms_per_frame": 2.8490028490028492e-06,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "FGroomBindingCompilingManager::CancelUnreachableGroomBindings",
+      "calls": 1,
+      "inclusive_ms_per_frame": 2.8490028490028492e-06,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "VfxRegistryBindings",
+      "calls": 3,
+      "inclusive_ms_per_frame": 2.8490028490028492e-06,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "SuccessfulTaskRetraction",
+      "calls": 5,
+      "inclusive_ms_per_frame": 2.8490028490028492e-06,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "FCardRepresentationAsyncQueue::CancelAndDeleteTaskByPredicate",
+      "calls": 1,
+      "inclusive_ms_per_frame": 2.8490028490028492e-06,
+      "exclusive_ms_per_frame": 2.8490028490028492e-06,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "GC.SlowMarkObjectAsReachable",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.000660968660968661,
+      "exclusive_ms_per_frame": 0.0,
+      "max_call_ms": 0.232
+    },
+    {
+      "timer": "GuLiModelPresentationComponent",
+      "calls": 3,
+      "inclusive_ms_per_frame": 2.8490028490028492e-06,
+      "exclusive_ms_per_frame": 0.0,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "GuLiUnitFeedbackComponent",
+      "calls": 2,
+      "inclusive_ms_per_frame": 0.0,
+      "exclusive_ms_per_frame": 0.0,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "FDistanceFieldAsyncQueue::CancelUnreachableMeshes",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0,
+      "exclusive_ms_per_frame": 0.0,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "GuLiCommanderStateTreeComponent",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0,
+      "exclusive_ms_per_frame": 0.0,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "FLevelStreamingGCHelper::OnPreGarbageCollect",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0,
+      "exclusive_ms_per_frame": 0.0,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "FAsyncLoadingThread2::OnGarbageCollectStarted",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0,
+      "exclusive_ms_per_frame": 0.0,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "ClearWeakReferences",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0,
+      "exclusive_ms_per_frame": 0.0,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "FAbandonedRenderAssetUpdateManager::OnPostGarbageCollect",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0,
+      "exclusive_ms_per_frame": 0.0,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "FDistanceFieldAsyncQueue::CancelAndDeleteTaskByPredicate",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0,
+      "exclusive_ms_per_frame": 0.0,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "ConditionalFinishDestroyDeferred",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0,
+      "exclusive_ms_per_frame": 0.0,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "FLevelStreamingGCHelper::PrepareStreamedOutLevelsForGC",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0,
+      "exclusive_ms_per_frame": 0.0,
+      "max_call_ms": 0.0
+    },
+    {
+      "timer": "FSkinnedAssetCompilingManager::FinishAllCompilation",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.0,
+      "exclusive_ms_per_frame": 0.0,
+      "max_call_ms": 0.0
+    }
+  ],
+  "vfx": [
+    {
+      "timer": "NS_WM01_Explosion_2A",
+      "calls": 180989,
+      "inclusive_ms_per_frame": 1.5512792022792021,
+      "exclusive_ms_per_frame": 1.5376353276353278,
+      "max_call_ms": 0.772
+    },
+    {
+      "timer": "NS_WingmanFlightTrail",
+      "calls": 19008,
+      "inclusive_ms_per_frame": 0.3780598290598291,
+      "exclusive_ms_per_frame": 0.3723646723646724,
+      "max_call_ms": 0.207
+    },
+    {
+      "timer": "NS_WingmanBombardment_01",
+      "calls": 7166,
+      "inclusive_ms_per_frame": 0.18453276353276354,
+      "exclusive_ms_per_frame": 0.18003988603988605,
+      "max_call_ms": 0.40900000000000003
+    },
+    {
+      "timer": "NiagaraComponent",
+      "calls": 318035,
+      "inclusive_ms_per_frame": 1.2435783475783475,
+      "exclusive_ms_per_frame": 0.1327094017094017,
+      "max_call_ms": 0.157
+    },
+    {
+      "timer": "NS_WM01MissileCluster_Minimal",
+      "calls": 13002,
+      "inclusive_ms_per_frame": 0.13343019943019943,
+      "exclusive_ms_per_frame": 0.129997150997151,
+      "max_call_ms": 0.203
+    },
+    {
+      "timer": "NS_WM01MissileCluster_Lite",
+      "calls": 10441,
+      "inclusive_ms_per_frame": 0.10974928774928774,
+      "exclusive_ms_per_frame": 0.10617948717948718,
+      "max_call_ms": 0.174
+    },
+    {
+      "timer": "NS_MiningLaser_Optimized_GPU_All_ThreeTier",
+      "calls": 14780,
+      "inclusive_ms_per_frame": 0.09163532763532764,
+      "exclusive_ms_per_frame": 0.08315384615384616,
+      "max_call_ms": 0.13699999999999998
+    },
+    {
+      "timer": "NS_WingmanLaserPool",
+      "calls": 2816,
+      "inclusive_ms_per_frame": 0.08148433048433049,
+      "exclusive_ms_per_frame": 0.07361538461538462,
+      "max_call_ms": 0.11299999999999999
+    },
+    {
+      "timer": "NS_ConstructionLaser_Optimized_GPU_All_ThreeTier",
+      "calls": 22744,
+      "inclusive_ms_per_frame": 0.07871509971509971,
+      "exclusive_ms_per_frame": 0.07335897435897437,
+      "max_call_ms": 0.081
+    },
+    {
+      "timer": "NS_MachineGunImpact_AllOptimizations",
+      "calls": 4576,
+      "inclusive_ms_per_frame": 0.05283190883190883,
+      "exclusive_ms_per_frame": 0.050076923076923074,
+      "max_call_ms": 0.154
+    },
+    {
+      "timer": "NS_MachineGunMuzzle_PressurePreview",
+      "calls": 4579,
+      "inclusive_ms_per_frame": 0.0525954415954416,
+      "exclusive_ms_per_frame": 0.049729344729344725,
+      "max_call_ms": 0.122
+    },
+    {
+      "timer": "NS_GroundDestruction_03",
+      "calls": 740,
+      "inclusive_ms_per_frame": 0.011091168091168092,
+      "exclusive_ms_per_frame": 0.009595441595441595,
+      "max_call_ms": 0.08399999999999999
+    },
+    {
+      "timer": "NS_GroundMech_RocketJet",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.0023105413105413103,
+      "exclusive_ms_per_frame": 0.0023105413105413103,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "NiagaraComponent0",
+      "calls": 1432,
+      "inclusive_ms_per_frame": 0.04909401709401709,
+      "exclusive_ms_per_frame": 0.001091168091168091,
+      "max_call_ms": 0.082
+    },
+    {
+      "timer": "NS_WingmanGroundFlight_SphereTrail",
+      "calls": 144,
+      "inclusive_ms_per_frame": 0.0009344729344729345,
+      "exclusive_ms_per_frame": 0.0007008547008547009,
+      "max_call_ms": 0.006
+    },
+    {
+      "timer": "NiagaraDataInterfaceArrayPosition",
+      "calls": 70,
+      "inclusive_ms_per_frame": 0.00031623931623931626,
+      "exclusive_ms_per_frame": 0.00031623931623931626,
+      "max_call_ms": 0.004
+    },
+    {
+      "timer": "FNiagaraWorldManager::OnPostReachabilityAnalysis",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.000772079772079772,
+      "exclusive_ms_per_frame": 0.00028205128205128203,
+      "max_call_ms": 0.27099999999999996
+    },
+    {
+      "timer": "NiagaraDataInterfaceArrayColor",
+      "calls": 70,
+      "inclusive_ms_per_frame": 0.00016524216524216526,
+      "exclusive_ms_per_frame": 0.00016524216524216526,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "NiagaraDataInterfaceArrayFloat2",
+      "calls": 70,
+      "inclusive_ms_per_frame": 0.00016524216524216526,
+      "exclusive_ms_per_frame": 0.00016524216524216526,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "NiagaraDataInterfaceArrayFloat3",
+      "calls": 35,
+      "inclusive_ms_per_frame": 9.97150997150997e-05,
+      "exclusive_ms_per_frame": 9.97150997150997e-05,
+      "max_call_ms": 0.002
+    }
+  ],
+  "all_cpu_vfx": [
+    {
+      "timer": "NS_WM01_Explosion_2A",
+      "calls": 352383,
+      "inclusive_ms_per_frame": 101.90429914529915,
+      "exclusive_ms_per_frame": 3.686985754985755,
+      "max_call_ms": 3.499
+    },
+    {
+      "timer": "NiagaraGpuComputeDispatch",
+      "calls": 6744,
+      "inclusive_ms_per_frame": 2.1647920227920228,
+      "exclusive_ms_per_frame": 2.1467720797720795,
+      "max_call_ms": 0.962
+    },
+    {
+      "timer": "NiagaraRenderRibbonsAggregation",
+      "calls": 55296,
+      "inclusive_ms_per_frame": 2.679789173789174,
+      "exclusive_ms_per_frame": 1.9178205128205128,
+      "max_call_ms": 0.319
+    },
+    {
+      "timer": "NS_WingmanFlightTrail",
+      "calls": 37312,
+      "inclusive_ms_per_frame": 3.534638176638177,
+      "exclusive_ms_per_frame": 0.6574358974358974,
+      "max_call_ms": 0.622
+    },
+    {
+      "timer": "NiagaraRenderRibbonsGenIndiciesGPU",
+      "calls": 55296,
+      "inclusive_ms_per_frame": 0.5813532763532763,
+      "exclusive_ms_per_frame": 0.5705185185185185,
+      "max_call_ms": 0.324
+    },
+    {
+      "timer": "NiagaraDynamicData",
+      "calls": 18418,
+      "inclusive_ms_per_frame": 0.4984387464387464,
+      "exclusive_ms_per_frame": 0.4984387464387464,
+      "max_call_ms": 0.433
+    },
+    {
+      "timer": "NiagaraRenderRibbonsGenVerticesReductionPhase2GPU",
+      "calls": 55296,
+      "inclusive_ms_per_frame": 0.4183105413105414,
+      "exclusive_ms_per_frame": 0.4181680911680911,
+      "max_call_ms": 0.154
+    },
+    {
+      "timer": "NS_WingmanBombardment_01",
+      "calls": 13546,
+      "inclusive_ms_per_frame": 2.2419971509971512,
+      "exclusive_ms_per_frame": 0.4137720797720798,
+      "max_call_ms": 1.4809999999999999
+    },
+    {
+      "timer": "NiagaraRenderRibbonsGenVerticesInitialSortGPU",
+      "calls": 55296,
+      "inclusive_ms_per_frame": 0.3495498575498575,
+      "exclusive_ms_per_frame": 0.3495014245014245,
+      "max_call_ms": 0.15
+    },
+    {
+      "timer": "NiagaraRenderRibbonsGenVerticesMultiRibbonInitGPU",
+      "calls": 55296,
+      "inclusive_ms_per_frame": 0.34285754985754985,
+      "exclusive_ms_per_frame": 0.34278062678062676,
+      "max_call_ms": 0.153
+    },
+    {
+      "timer": "NS_WM01MissileCluster_Minimal",
+      "calls": 25390,
+      "inclusive_ms_per_frame": 0.38265811965811963,
+      "exclusive_ms_per_frame": 0.2901908831908832,
+      "max_call_ms": 0.298
+    },
+    {
+      "timer": "NS_WM01MissileCluster_Lite",
+      "calls": 20388,
+      "inclusive_ms_per_frame": 0.34444444444444444,
+      "exclusive_ms_per_frame": 0.25626780626780626,
+      "max_call_ms": 0.25999999999999995
+    },
+    {
+      "timer": "NS_MiningLaser_Optimized_GPU_All_ThreeTier",
+      "calls": 22584,
+      "inclusive_ms_per_frame": 0.8347635327635328,
+      "exclusive_ms_per_frame": 0.21361253561253563,
+      "max_call_ms": 0.364
+    },
+    {
+      "timer": "NS_ConstructionLaser_Optimized_GPU_All_ThreeTier",
+      "calls": 30548,
+      "inclusive_ms_per_frame": 0.8722421652421654,
+      "exclusive_ms_per_frame": 0.20208547008547006,
+      "max_call_ms": 0.36200000000000004
+    },
+    {
+      "timer": "NS_MachineGunMuzzle_PressurePreview",
+      "calls": 8469,
+      "inclusive_ms_per_frame": 0.8197492877492877,
+      "exclusive_ms_per_frame": 0.13604843304843306,
+      "max_call_ms": 0.57
+    },
+    {
+      "timer": "NiagaraComponent",
+      "calls": 318035,
+      "inclusive_ms_per_frame": 1.2435783475783475,
+      "exclusive_ms_per_frame": 0.1327094017094017,
+      "max_call_ms": 0.157
+    },
+    {
+      "timer": "NS_MachineGunImpact_AllOptimizations",
+      "calls": 8464,
+      "inclusive_ms_per_frame": 0.8158603988603987,
+      "exclusive_ms_per_frame": 0.12544159544159544,
+      "max_call_ms": 0.53
+    },
+    {
+      "timer": "NS_WingmanLaserPool",
+      "calls": 4928,
+      "inclusive_ms_per_frame": 0.4602279202279202,
+      "exclusive_ms_per_frame": 0.12172364672364673,
+      "max_call_ms": 0.718
+    },
+    {
+      "timer": "NiagaraUpdateDrawIndirectBuffers",
+      "calls": 2205,
+      "inclusive_ms_per_frame": 0.2113960113960114,
+      "exclusive_ms_per_frame": 0.12126780626780626,
+      "max_call_ms": 0.179
+    },
+    {
+      "timer": "Niagara GPU Ribbons",
+      "calls": 864,
+      "inclusive_ms_per_frame": 3.8157834757834754,
+      "exclusive_ms_per_frame": 0.09203988603988605,
+      "max_call_ms": 8.004000000000001
+    },
+    {
+      "timer": "NiagaraRenderRibbonsGenVerticesSortGPU",
+      "calls": 55296,
+      "inclusive_ms_per_frame": 0.46143304843304844,
+      "exclusive_ms_per_frame": 0.0735042735042735,
+      "max_call_ms": 0.15100000000000002
+    },
+    {
+      "timer": "NiagaraRenderRibbonsGenVerticesFinalSortGPU",
+      "calls": 55296,
+      "inclusive_ms_per_frame": 0.03837891737891738,
+      "exclusive_ms_per_frame": 0.03837891737891738,
+      "max_call_ms": 0.094
+    },
+    {
+      "timer": "NS_GroundDestruction_03",
+      "calls": 1232,
+      "inclusive_ms_per_frame": 0.06716239316239317,
+      "exclusive_ms_per_frame": 0.02902849002849003,
+      "max_call_ms": 0.35
+    },
+    {
+      "timer": "FNiagaraGpuComputeDispatch_UpdateInstanceCountManager",
+      "calls": 704,
+      "inclusive_ms_per_frame": 0.025811965811965813,
+      "exclusive_ms_per_frame": 0.025811965811965813,
+      "max_call_ms": 0.063
+    },
+    {
+      "timer": "NS_WingmanGroundFlight_SphereTrail",
+      "calls": 240,
+      "inclusive_ms_per_frame": 0.005487179487179487,
+      "exclusive_ms_per_frame": 0.003737891737891738,
+      "max_call_ms": 0.091
+    },
+    {
+      "timer": "NS_GroundMech_RocketJet",
+      "calls": 1408,
+      "inclusive_ms_per_frame": 0.0023105413105413103,
+      "exclusive_ms_per_frame": 0.0023105413105413103,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "FNiagaraGpuComputeDispatch_ExecuteTicks",
+      "calls": 620,
+      "inclusive_ms_per_frame": 0.6203105413105413,
+      "exclusive_ms_per_frame": 0.0018575498575498575,
+      "max_call_ms": 0.964
+    },
+    {
+      "timer": "NiagaraComponent0",
+      "calls": 1432,
+      "inclusive_ms_per_frame": 0.04909401709401709,
+      "exclusive_ms_per_frame": 0.001091168091168091,
+      "max_call_ms": 0.082
+    },
+    {
+      "timer": "NiagaraDataInterfaceArrayPosition",
+      "calls": 70,
+      "inclusive_ms_per_frame": 0.00031623931623931626,
+      "exclusive_ms_per_frame": 0.00031623931623931626,
+      "max_call_ms": 0.004
+    },
+    {
+      "timer": "FNiagaraWorldManager::OnPostReachabilityAnalysis",
+      "calls": 1,
+      "inclusive_ms_per_frame": 0.000772079772079772,
+      "exclusive_ms_per_frame": 0.00028205128205128203,
+      "max_call_ms": 0.27099999999999996
+    },
+    {
+      "timer": "NiagaraDataInterfaceArrayColor",
+      "calls": 70,
+      "inclusive_ms_per_frame": 0.00016524216524216526,
+      "exclusive_ms_per_frame": 0.00016524216524216526,
+      "max_call_ms": 0.001
+    },
+    {
+      "timer": "NiagaraDataInterfaceArrayFloat2",
+      "calls": 70,
+      "inclusive_ms_per_frame": 0.00016524216524216526,
+      "exclusive_ms_per_frame": 0.00016524216524216526,
+      "max_call_ms": 0.002
+    },
+    {
+      "timer": "NiagaraDataInterfaceArrayFloat3",
+      "calls": 35,
+      "inclusive_ms_per_frame": 9.97150997150997e-05,
+      "exclusive_ms_per_frame": 9.97150997150997e-05,
+      "max_call_ms": 0.002
+    }
+  ],
+  "prediction": [
+    {
+      "timer": "GuLiClientFlightPrediction",
+      "calls": 54025,
+      "inclusive_ms_per_frame": 0.35803703703703704,
+      "exclusive_ms_per_frame": 0.35803703703703704,
+      "max_call_ms": 0.224
+    }
+  ]
+}

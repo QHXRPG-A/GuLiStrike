@@ -1,0 +1,449 @@
+{
+  "success": true,
+  "engine": "5.7.4-0+UE5",
+  "worlds": [
+    {
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "time_seconds": 47.18428511172533,
+      "actor_count": 999,
+      "classes": {
+        "WorldSettings": 1,
+        "Brush": 1,
+        "DirectionalLight": 1,
+        "ExponentialHeightFog": 2,
+        "PostProcessVolume": 4,
+        "SkyLight": 1,
+        "PlayerStart": 4,
+        "NavMeshBoundsVolume": 1,
+        "StaticMeshActor": 170,
+        "GuLiFlightNavigationVolume": 1,
+        "GuLiMapMarker": 50,
+        "Actor": 5,
+        "GuLiMapDensityMap": 1,
+        "CameraActor": 29,
+        "RecastNavMesh": 2,
+        "Note": 69,
+        "TargetPoint": 42,
+        "TextRenderActor": 41,
+        "NiagaraActor": 7,
+        "InstancedFoliageActor": 1,
+        "BP_Sky_Sphere_C": 1,
+        "Landscape": 1,
+        "NavModifierVolume": 77,
+        "GuLiCommanderDeploymentPoint": 11,
+        "SkeletalMeshActor": 7,
+        "GuLiBiZhiMaoReviewActor": 1,
+        "PointLight": 1,
+        "BP_ResourceProcessingFactory_C": 5,
+        "BP_ConstructionVehicle_3Tier_C": 20,
+        "GuLiPerformanceReviewActor": 33,
+        "MassVisualizer": 2,
+        "DefaultPhysicsVolume": 1,
+        "GameplayDebuggerPlayerManager": 1,
+        "GuLiCommanderGameMode": 1,
+        "SmartObjectSubsystemRenderingActor": 1,
+        "GameSession": 1,
+        "GameNetworkManager": 1,
+        "GuLiCommanderGameState": 1,
+        "AbstractNavData": 1,
+        "GuLiArmySkillReplicationActor": 1,
+        "GuLiResourceWorldState": 1,
+        "GuLiOreFieldActor": 1,
+        "GuLiTerritoryOutpostActor": 49,
+        "GuLiPlacedBuilding": 4,
+        "GuLiResourceFactoryActor": 4,
+        "GuLiOreClusterObstacleActor": 240,
+        "GuLiMiningVehiclePawn": 16,
+        "GuLiMiningVehicleAIController": 16,
+        "BP_ElectromagneticMiner_3Tier_C": 16,
+        "GuLiConstructionVehiclePawn": 18,
+        "GuLiEngineeringAIController": 18,
+        "GuLiSoldierStateReplicator": 1,
+        "GuLiCommanderPresentationActor": 1,
+        "MassDebugVisualizer": 1,
+        "GuLiCommanderPlayerController": 2,
+        "GuLiCommanderPlayerState": 2,
+        "GuLiTeamOutlineCameraManager": 2,
+        "GuLiCommanderCameraPawn": 2,
+        "GameplayDebuggerCategoryReplicator": 2,
+        "GuLiBattlePlayerState": 2
+      },
+      "controllers": [
+        {
+          "name": "GuLiCommanderPlayerController_0",
+          "local": false,
+          "viewport": [
+            0,
+            0
+          ],
+          "view_target": "GuLiCommanderCameraPawn0",
+          "auto_manage_camera": true,
+          "camera_location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "camera_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "GuLiCommanderPlayerController_1",
+          "local": false,
+          "viewport": [
+            0,
+            0
+          ],
+          "view_target": "GuLiCommanderCameraPawn1",
+          "auto_manage_camera": true,
+          "camera_location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "camera_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "flight_pool_count": 0,
+      "flight_tick_enabled": 0,
+      "instances": [
+        {
+          "name": "UnitInstances",
+          "count": 0,
+          "mesh": null
+        },
+        {
+          "name": "RingInstances",
+          "count": 0,
+          "mesh": null
+        }
+      ]
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "time_seconds": 45.897122003138065,
+      "actor_count": 706,
+      "classes": {
+        "WorldSettings": 1,
+        "Brush": 1,
+        "DirectionalLight": 1,
+        "ExponentialHeightFog": 2,
+        "PostProcessVolume": 4,
+        "SkyLight": 1,
+        "PlayerStart": 4,
+        "NavMeshBoundsVolume": 1,
+        "StaticMeshActor": 170,
+        "GuLiFlightNavigationVolume": 1,
+        "GuLiMapMarker": 50,
+        "Actor": 6,
+        "GuLiMapDensityMap": 1,
+        "CameraActor": 29,
+        "Note": 69,
+        "TargetPoint": 42,
+        "TextRenderActor": 41,
+        "NiagaraActor": 7,
+        "InstancedFoliageActor": 1,
+        "BP_Sky_Sphere_C": 1,
+        "Landscape": 1,
+        "NavModifierVolume": 77,
+        "SkeletalMeshActor": 7,
+        "GuLiBiZhiMaoReviewActor": 1,
+        "PointLight": 1,
+        "BP_ResourceProcessingFactory_C": 5,
+        "BP_ConstructionVehicle_3Tier_C": 20,
+        "GuLiPerformanceReviewActor": 33,
+        "MassVisualizer": 2,
+        "DefaultPhysicsVolume": 1,
+        "GameplayDebuggerPlayerManager": 1,
+        "ParticleEventManager": 1,
+        "GuLiCommanderHealthBarRenderer": 2,
+        "GuLiCommanderPlayerController": 1,
+        "GuLiTeamOutlineCameraManager": 1,
+        "GuLiCommanderHUD": 1,
+        "GuLiCommanderCameraPawn": 1,
+        "GuLiCommanderGameState": 1,
+        "GuLiConstructionVehiclePawn": 18,
+        "GuLiMiningVehiclePawn": 16,
+        "BP_ElectromagneticMiner_3Tier_C": 16,
+        "GuLiSoldierStateReplicator": 1,
+        "GuLiCommanderPlayerState": 2,
+        "GuLiArmySkillReplicationActor": 1,
+        "GameplayDebuggerCategoryReplicator": 1,
+        "GuLiResourceWorldState": 1,
+        "GuLiTerritoryOutpostActor": 49,
+        "SceneCapture2D": 1,
+        "GuLiResourceFactoryActor": 4,
+        "GuLiPlacedBuilding": 4,
+        "GuLiCommanderPresentationActor": 1,
+        "GuLiOreFieldActor": 1
+      },
+      "controllers": [
+        {
+          "name": "GuLiCommanderPlayerController_0",
+          "local": true,
+          "viewport": [
+            1505,
+            1115
+          ],
+          "view_target": "PerfReview_Camera",
+          "auto_manage_camera": false,
+          "camera_location": [
+            -10800.0,
+            61000.0,
+            15500.0
+          ],
+          "camera_rotation": [
+            6.720696319462149e-07,
+            -74.57783508300781,
+            90.0
+          ]
+        }
+      ],
+      "flight_pool_count": 0,
+      "flight_tick_enabled": 0,
+      "instances": [
+        {
+          "name": "UnitInstances",
+          "count": 0,
+          "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT"
+        },
+        {
+          "name": "RingInstances",
+          "count": 211,
+          "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing"
+        },
+        {
+          "name": "UnitInstances_Type_2",
+          "count": 0,
+          "mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid"
+        },
+        {
+          "name": "UnitInstances_Type_5",
+          "count": 0,
+          "mesh": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid"
+        },
+        {
+          "name": "UnitInstances_Type_6",
+          "count": 0,
+          "mesh": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT"
+        },
+        {
+          "name": "UnitInstances_Type_1_Team_1",
+          "count": 105,
+          "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT"
+        },
+        {
+          "name": "UnitInstances_Type_2_Team_1",
+          "count": 2,
+          "mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid"
+        },
+        {
+          "name": "UnitInstances_Type_2_Team_2",
+          "count": 3,
+          "mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid"
+        },
+        {
+          "name": "UnitInstances_Type_1_Team_2",
+          "count": 101,
+          "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT"
+        },
+        {
+          "name": "WreckUnits_1",
+          "count": 0,
+          "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT"
+        },
+        {
+          "name": "WreckUnits_2",
+          "count": 0,
+          "mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid"
+        },
+        {
+          "name": "InstancedStaticMeshComponent_0",
+          "count": 24,
+          "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT"
+        }
+      ]
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "time_seconds": 45.405520513653755,
+      "actor_count": 706,
+      "classes": {
+        "WorldSettings": 1,
+        "Brush": 1,
+        "DirectionalLight": 1,
+        "ExponentialHeightFog": 2,
+        "PostProcessVolume": 4,
+        "SkyLight": 1,
+        "PlayerStart": 4,
+        "NavMeshBoundsVolume": 1,
+        "StaticMeshActor": 170,
+        "GuLiFlightNavigationVolume": 1,
+        "GuLiMapMarker": 50,
+        "Actor": 6,
+        "GuLiMapDensityMap": 1,
+        "CameraActor": 29,
+        "Note": 69,
+        "TargetPoint": 42,
+        "TextRenderActor": 41,
+        "NiagaraActor": 7,
+        "InstancedFoliageActor": 1,
+        "BP_Sky_Sphere_C": 1,
+        "Landscape": 1,
+        "NavModifierVolume": 77,
+        "SkeletalMeshActor": 7,
+        "GuLiBiZhiMaoReviewActor": 1,
+        "PointLight": 1,
+        "BP_ResourceProcessingFactory_C": 5,
+        "BP_ConstructionVehicle_3Tier_C": 20,
+        "GuLiPerformanceReviewActor": 33,
+        "MassVisualizer": 2,
+        "DefaultPhysicsVolume": 1,
+        "GameplayDebuggerPlayerManager": 1,
+        "ParticleEventManager": 1,
+        "GuLiCommanderHealthBarRenderer": 2,
+        "GuLiCommanderPlayerController": 1,
+        "GuLiTeamOutlineCameraManager": 1,
+        "GuLiCommanderHUD": 1,
+        "GuLiCommanderCameraPawn": 1,
+        "GuLiCommanderGameState": 1,
+        "GuLiMiningVehiclePawn": 16,
+        "BP_ElectromagneticMiner_3Tier_C": 16,
+        "GuLiConstructionVehiclePawn": 18,
+        "GuLiCommanderPlayerState": 2,
+        "GuLiResourceWorldState": 1,
+        "GuLiSoldierStateReplicator": 1,
+        "GuLiArmySkillReplicationActor": 1,
+        "GameplayDebuggerCategoryReplicator": 1,
+        "GuLiTerritoryOutpostActor": 49,
+        "SceneCapture2D": 1,
+        "GuLiOreFieldActor": 1,
+        "GuLiCommanderPresentationActor": 1,
+        "GuLiPlacedBuilding": 4,
+        "GuLiResourceFactoryActor": 4
+      },
+      "controllers": [
+        {
+          "name": "GuLiCommanderPlayerController_0",
+          "local": true,
+          "viewport": [
+            640,
+            484
+          ],
+          "view_target": "PerfReview_Camera",
+          "auto_manage_camera": false,
+          "camera_location": [
+            -10800.0,
+            61000.0,
+            15500.0
+          ],
+          "camera_rotation": [
+            6.720696319462149e-07,
+            -74.57783508300781,
+            90.0
+          ]
+        }
+      ],
+      "flight_pool_count": 0,
+      "flight_tick_enabled": 0,
+      "instances": [
+        {
+          "name": "UnitInstances",
+          "count": 0,
+          "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT"
+        },
+        {
+          "name": "RingInstances",
+          "count": 211,
+          "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing"
+        },
+        {
+          "name": "UnitInstances_Type_2",
+          "count": 0,
+          "mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid"
+        },
+        {
+          "name": "UnitInstances_Type_5",
+          "count": 0,
+          "mesh": "/Game/GuLiStrike/Commander/Units/SweeperSummon/LOD_3Tier_v1/Meshes/SM_Sweeper_Rigid.SM_Sweeper_Rigid"
+        },
+        {
+          "name": "UnitInstances_Type_6",
+          "count": 0,
+          "mesh": "/Game/GuLiStrike/Commander/Units/BiZhiMao/LOD_3Tier_v1/Meshes/SM_BiZhiMao_VAT.SM_BiZhiMao_VAT"
+        },
+        {
+          "name": "UnitInstances_Type_1_Team_1",
+          "count": 105,
+          "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT"
+        },
+        {
+          "name": "UnitInstances_Type_2_Team_1",
+          "count": 2,
+          "mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid"
+        },
+        {
+          "name": "UnitInstances_Type_2_Team_2",
+          "count": 3,
+          "mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid"
+        },
+        {
+          "name": "UnitInstances_Type_1_Team_2",
+          "count": 101,
+          "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT"
+        },
+        {
+          "name": "WreckUnits_1",
+          "count": 0,
+          "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT"
+        },
+        {
+          "name": "WreckUnits_2",
+          "count": 0,
+          "mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid"
+        },
+        {
+          "name": "InstancedStaticMeshComponent_0",
+          "count": 24,
+          "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "LevelEditorPlaySettings/PlayNumberOfClients": "2",
+    "LevelEditorPlaySettings/RunUnderOneProcess": "True",
+    "LevelEditorPlaySettings/bLaunchSeparateServer": "False",
+    "LevelEditorPlaySettings/NewWindowWidth": "1600",
+    "LevelEditorPlaySettings/NewWindowHeight": "896",
+    "EditorPerformanceSettings/bThrottleCPUWhenNotForeground": "False"
+  },
+  "cvars": {
+    "t.MaxFPS": 0.0,
+    "t.IdleWhenNotForeground": 0.0,
+    "r.VSync": 0.0,
+    "r.ScreenPercentage": 0.0,
+    "r.DynamicRes.OperationMode": 0.0,
+    "r.GPUCsvStatsEnabled": 1.0,
+    "Slate.bAllowThrottling": 0.0,
+    "r.RayTracing": 1.0,
+    "r.Lumen.HardwareRayTracing": 1.0,
+    "r.Shadow.Virtual.Enable": 1.0,
+    "sg.ViewDistanceQuality": 3.0,
+    "sg.AntiAliasingQuality": 3.0,
+    "sg.ShadowQuality": 3.0,
+    "sg.GlobalIlluminationQuality": 3.0,
+    "sg.ReflectionQuality": 3.0,
+    "sg.PostProcessQuality": 3.0,
+    "sg.TextureQuality": 3.0,
+    "sg.EffectsQuality": 3.0,
+    "sg.FoliageQuality": 3.0,
+    "sg.ShadingQuality": 3.0
+  }
+}

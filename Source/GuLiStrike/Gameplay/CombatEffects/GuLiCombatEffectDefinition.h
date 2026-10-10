@@ -8,6 +8,8 @@
 
 class UNiagaraSystem;
 class UNiagaraDataChannelAsset;
+class UGuLiProjectileFlightPresentationProfile;
+class UGuLiGroundWarningStyle;
 
 USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiEffectVisualLayer
@@ -78,6 +80,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") TSoftObjectPtr<UGuLiSpellFieldDefinition> ImpactField;
 	/** Per-projectile visual, also used while the production WM01 GPU resources are unavailable. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") int32 FlightVfxId = 0;
+	/** Empty preserves the legacy flight/WM01 route. Only opted-in definitions load it on clients. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") TSoftObjectPtr<UGuLiProjectileFlightPresentationProfile> FlightPresentationProfile;
+	/** Optional existing warning style, frozen into a real authoritative launch request. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") TSoftObjectPtr<UGuLiGroundWarningStyle> GroundWarningStyle;
 	/** WM01's MissileLauncher profile always uses production GPU batches, in every game world. */
 	UFUNCTION(BlueprintPure, Category="Visual")
 	bool UsesMissileClusterRendering() const;
@@ -112,6 +118,9 @@ class GULISTRIKE_API UGuLiCombatEffectCatalog : public UDataAsset
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Weapons") TArray<FGuLiWeaponEffectMount> Mounts;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") TSoftObjectPtr<UNiagaraDataChannelAsset> GunfireChannel;
+	/** Dedicated previous-frame impact channel. Separate from muzzle/tracer delivery. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") TSoftObjectPtr<UNiagaraDataChannelAsset> ImpactChannel;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") TSoftObjectPtr<UNiagaraDataChannelAsset> MuzzleChannel;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") int32 GunfireVfxId = 0;
 	/** Shared one-shot hit feedback for commander, wingman and player machine-gun rounds. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") FGuLiEffectVisualVariant MachineGunImpact;

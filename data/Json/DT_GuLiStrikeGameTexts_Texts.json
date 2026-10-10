@@ -1372,5 +1372,71 @@
     "TextId": "UI.BuildingTypes.BiZhiMao",
     "Introduction": "彼之矛首轮建造",
     "Content": "彼之矛"
+  },
+  {
+    "Name": "UI.Performance.NetThroughput",
+    "TextId": "UI.Performance.NetThroughput",
+    "Introduction": "当前客户端连接实际累计字节差/真实秒；收+发合计；1KB=1000B，不是配置上限",
+    "Content": "网络 收 {0} KB/s | 发 {1} KB/s | 合计 {2} KB/s"
+  },
+  {
+    "Name": "UI.Performance.NetPackets",
+    "TextId": "UI.Performance.NetPackets",
+    "Introduction": "当前连接包速率；丢包为UE计数差/秒，并非丢包百分比",
+    "Content": "包 收 {0}/s 发 {1}/s | 丢包 收 {2}/s 发 {3}/s"
+  },
+  {
+    "Name": "UI.Performance.NetTransport",
+    "TextId": "UI.Performance.NetTransport",
+    "Introduction": "本端发送额度、所有通道可靠bunch待ACK数；欠账=max(QueuedBits,0)/8，非应用队列大小",
+    "Content": "本端额度 {0} KB/s | 可靠待确认 {1} 块 | 欠账 {2} KB"
+  },
+  {
+    "Name": "UI.Performance.NetFlightReceive",
+    "TextId": "UI.Performance.NetFlightReceive",
+    "Introduction": "解码飞行事件速率及应用载荷；不等于画面播放量；年龄用估计服务器时间，排除bootstrap，可能含时钟误差",
+    "Content": "飞行事件 收 {0}/s | 载荷 {1} KB/s | 平均估龄 {2} ms"
+  },
+  {
+    "Name": "UI.Performance.NetPIETransport",
+    "TextId": "UI.Performance.NetPIETransport",
+    "Introduction": "同进程PIE匹配此客户端的服务器连接：下行发送额度、可靠待ACK块数和发送欠账",
+    "Content": "PIE下行额度 {0} KB/s | 可靠待确认 {1} 块 | 欠账 {2} KB"
+  },
+  {
+    "Name": "UI.Performance.NetPIEFlightQueue",
+    "TextId": "UI.Performance.NetPIEFlightQueue",
+    "Introduction": "同进程PIE中此客户端的飞行应用队列；队首样本时间至服务器当前时间，不等于纯排队时间",
+    "Content": "PIE本连接 飞行待发 {0} 条 | 队首事件年龄 {1} ms"
+  },
+  {
+    "Name": "UI.Performance.NetPending",
+    "TextId": "UI.Performance.NetPending",
+    "Introduction": "新建或重连后先等待完整采样区间；未知值不能显示成零",
+    "Content": "网络 收 -- KB/s | 发 -- KB/s | 合计 -- KB/s"
+  },
+  {
+    "Name": "UI.Performance.NetLocal",
+    "TextId": "UI.Performance.NetLocal",
+    "Introduction": "本面板按客户端ServerConnection统计，本地/服务端视口不显示其他客户端汇总",
+    "Content": "网络：本地视口（无客户端到服务器连接）"
+  },
+  {
+    "Name": "UI.Performance.NetFlightPending",
+    "TextId": "UI.Performance.NetFlightPending",
+    "Introduction": "未得到连续两次飞行计数采样",
+    "Content": "飞行事件 收 --/s | 载荷 -- KB/s | 平均估龄 -- ms"
+  },
+  {
+    "Name": "UI.Performance.NetPIEQueuePending",
+    "TextId": "UI.Performance.NetPIEQueuePending",
+    "Introduction": "尚未建立此客户端的服务端飞行事件通道",
+    "Content": "PIE本连接 飞行待发 --（等待通道）"
+  },
+  {
+    "Name": "UI.Performance.NetPIEUnavailable",
+    "TextId": "UI.Performance.NetPIEUnavailable",
+    "Introduction": "跨进程PIE或身份尚未匹配时，不产生额外RPC取得服务端信息",
+    "Content": "PIE服务端队列 --（需同进程服务端）"
   }
 ]

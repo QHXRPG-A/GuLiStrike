@@ -3,7 +3,7 @@
 > 自动生成，请勿手改。运行 `progress_docs.py build` 刷新。
 
 - 错误：0
-- 提示：16
+- 提示：17
 
 ## 错误
 
@@ -21,6 +21,7 @@
 | Progress/DevelopmentDocumentation/20260904-僚机无规则护航盘旋技能重构.md | oversize | 39.0KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md | oversize | 31.4KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md | oversize | 30.4KB，建议阈值 30KB |
+| Progress/DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md | oversize | 35.0KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/GuLiStrike美术规范.md | oversize | 70.0KB，建议阈值 30KB |
 | Progress/Gameplay/战斗.md | oversize | 35.9KB，建议阈值 30KB |
 | Progress/Gameplay/飞船.md | oversize | 61.8KB，建议阈值 30KB |
