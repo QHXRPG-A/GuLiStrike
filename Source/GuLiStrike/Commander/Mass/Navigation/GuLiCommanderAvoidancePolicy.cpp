@@ -5,27 +5,33 @@
 #include "Avoidance/MassAvoidanceFragments.h"
 #include "Commander/GuLiCommanderSimulationTiming.h"
 #include "MassMovementFragments.h"
-#include "HAL/IConsoleManager.h"
-
-static TAutoConsoleVariable<int32> CVarGuLiAvoidanceQueryOptimizations(TEXT("gs.Avoidance.QueryOptimizations"),1,
- TEXT("0 retains the original candidate query; scheduling, spatial coverage and solving are unchanged."));
-
-static TAutoConsoleVariable<int32> CVarGuLiAvoidanceVerify(TEXT("gs.Avoidance.VerifyPrefix"),0,TEXT("Opt-in comparison with the original consumed candidate prefix."));
-static TAutoConsoleVariable<int32> CVarGuLiAvoidanceSparseCells(TEXT("gs.Avoidance.SparseCells"),1,
- TEXT("Skip empty cells with an ordered row index; 0 retains rectangular map lookups."));
+#include "Commander/Mass/GuLiMassMovementTuning.h"
 
 namespace GuLiCommanderAvoidancePolicy
 {
+	bool SimilarReuseMotion(const FVector& Previous, const FVector& Current)
+	{
+		const double Speed = Previous.Size2D(), NextSpeed = Current.Size2D();
+		return Speed > 1 && NextSpeed > 1 && FMath::Abs(NextSpeed - Speed) <= .1 * Speed
+			&& FVector::DotProduct(Previous.GetSafeNormal2D(), Current.GetSafeNormal2D()) >= FMath::Cos(FMath::DegreesToRadians(15.0));
+	}
+	bool IsZeroCacheCurrent(const FZeroResultCache& Cache, const FAgentSnapshot& Agent,
+		double Now, float Lifetime, uint32 OrderRevision, float Horizon, int32 CandidateLimit,
+		float CellSize, FIntPoint MinimumCell, FIntPoint MaximumCell, uint64 MotionSignature)
+	{
+		const double Age = Now - Cache.CreatedAt;
+		return FMath::IsFinite(Age) && Age >= 0 && Age < FMath::Clamp(Lifetime, 0.f, .3f)
+			&& Agent.bParticipates && Agent.bMoving && Cache.Identity == Agent.StableKey
+			&& Cache.OrderRevision == OrderRevision && Cache.Horizon == Horizon && Cache.Radius == Agent.Radius
+			&& Cache.CellSize == CellSize && Cache.CandidateLimit == CandidateLimit
+			&& Cache.MinimumCell == MinimumCell && Cache.MaximumCell == MaximumCell
+			&& Cache.MotionSignature == MotionSignature
+			&& SimilarReuseMotion(Cache.DesiredVelocity, Agent.DesiredVelocity) && SimilarReuseMotion(Cache.Velocity, Agent.Velocity)
+			&& FVector::DistSquared(Cache.Location + Cache.Velocity * Age, Agent.Location)
+				<= FMath::Square(.1 * Cache.Velocity.Size2D() * Age + 1);
+	}
 	namespace
 	{
-		bool IsCandidateBefore(const FNearestCandidate& Lhs, const FNearestCandidate& Rhs)
-		{
-			if (Lhs.bOverlapping != Rhs.bOverlapping) return Lhs.bOverlapping;
-			if (Lhs.TimeToCollision != Rhs.TimeToCollision) return Lhs.TimeToCollision < Rhs.TimeToCollision;
-			return Lhs.DistanceSquared < Rhs.DistanceSquared
-				|| (Lhs.DistanceSquared == Rhs.DistanceSquared && Lhs.StableKey < Rhs.StableKey);
-		}
-
 		double ComputeClosestPointOfApproach(
 			const FVector& RelativePosition,
 			const FVector& RelativeVelocity,
@@ -175,8 +181,7 @@ namespace GuLiCommanderAvoidancePolicy
 				MaximumBucketOccupancy=FMath::Max(MaximumBucketOccupancy,Bucket.Num());
 			}
 		}
-		if (CVarGuLiAvoidanceQueryOptimizations.GetValueOnGameThread() && CVarGuLiAvoidanceSparseCells.GetValueOnGameThread())
-			InOutGrid.RebuildOrderedCells();
+		InOutGrid.RebuildOrderedCells();
 		return MaximumBucketOccupancy;
 	}
 
@@ -197,120 +202,6 @@ namespace GuLiCommanderAvoidancePolicy
 		return true;
 	}
 
-	static FCandidateQueryMetrics SelectNearestCandidatesLegacy(
-		const int32 AgentIndex,
-		const TConstArrayView<FAgentSnapshot> Agents,
-		const FAvoidanceSpatialGrid& Grid,
-		FNearestCandidateList& OutCandidates,
-		const float DetectionDistance,
-		const float MaximumHeightDifference,
-		const float CellSize,
-		const float TimeHorizon)
-	{
-		FCandidateQueryMetrics Metrics;
-		OutCandidates.Reset();
-		if (!Agents.IsValidIndex(AgentIndex)
-			|| !FMath::IsFinite(DetectionDistance) || DetectionDistance <= 0.0f
-			|| !FMath::IsFinite(MaximumHeightDifference) || MaximumHeightDifference < 0.0f
-			|| !FMath::IsFinite(CellSize) || CellSize <= 0.0f
-			|| !FMath::IsFinite(TimeHorizon) || TimeHorizon <= 0.0f)
-		{
-			return Metrics;
-		}
-
-		const FAgentSnapshot& Agent = Agents[AgentIndex];
-		if (!Agent.bParticipates || Agent.StableKey == 0u || Agent.Location.ContainsNaN())
-		{
-			return Metrics;
-		}
-		const int32 CellRadius = FMath::CeilToInt(DetectionDistance / CellSize);
-		const FIntPoint CenterCell = MakeSpatialCell(Agent.Location, CellSize);
-		const double DistanceCutoffSquared = FMath::Square(static_cast<double>(DetectionDistance));
-		TSet<int32> Seen; FNearestCandidateList Environment;
-		for (int32 CellX = CenterCell.X - CellRadius; CellX <= CenterCell.X + CellRadius; ++CellX)
-		{
-			for (int32 CellY = CenterCell.Y - CellRadius; CellY <= CenterCell.Y + CellRadius; ++CellY)
-			{
-				++Metrics.CellLookups;
-				const FAvoidanceBucket* Bucket = Grid.Find(FIntPoint(CellX, CellY));
-				if (!Bucket)
-				{
-					continue;
-				}
-				++Metrics.CellHits;
-				for (const int32 OtherIndex : *Bucket)
-				{
-					if (OtherIndex == AgentIndex || !Agents.IsValidIndex(OtherIndex))
-					{
-						continue;
-					}
-					++Metrics.BucketEntriesVisited;
-					if (Seen.Contains(OtherIndex)) { Metrics.EnvironmentDuplicates += Agents[OtherIndex].bEnvironment ? 1 : 0; continue; }
-					Seen.Add(OtherIndex);
-					++Metrics.UniqueVisits;
-					const FAgentSnapshot& Other = Agents[OtherIndex];
-					if (!Other.bParticipates || Other.StableKey == 0u
-						|| FMath::Abs(Agent.Location.Z - Other.Location.Z) > MaximumHeightDifference)
-					{
-						continue;
-					}
-					const double CenterDistance = FVector::Dist2D(Agent.Location, Other.Location);
-					const double DistanceSquared=FMath::Square(Other.bEnvironment ? FMath::Max(0.,CenterDistance-Other.Radius-Agent.Radius) : CenterDistance);
-					if (!FMath::IsFinite(DistanceSquared) || DistanceSquared > DistanceCutoffSquared)
-					{
-						continue;
-					}
-					++Metrics.ExactCandidates;
-					FNearestCandidate Candidate;
-					Candidate.AgentIndex = OtherIndex;
-					Candidate.DistanceSquared = DistanceSquared;
-					Candidate.StableKey = Other.StableKey;
-					Candidate.bOverlapping = CenterDistance < Agent.Radius + Other.Radius;
-					if (Candidate.bOverlapping) Candidate.TimeToCollision = 0.0;
-					else
-					{
-						const FVector P = (Agent.Location - Other.Location) * FVector(1, 1, 0);
-						const FVector AgentVelocity = Agent.DesiredVelocity.IsNearlyZero() ? Agent.Velocity : Agent.DesiredVelocity;
-						const FVector OtherVelocity = Other.DesiredVelocity.IsNearlyZero() ? Other.Velocity : Other.DesiredVelocity;
-						const FVector V = (AgentVelocity - OtherVelocity) * FVector(1, 1, 0);
-						const double A = V.SizeSquared();
-						const double B = FVector::DotProduct(P, V);
-						const double C = P.SizeSquared() - FMath::Square(Agent.Radius + Other.Radius);
-						const double Discriminant = B * B - A * C;
-						if (A > UE_SMALL_NUMBER && B < 0.0 && Discriminant >= 0.0)
-						{
-							const double T = (-B - FMath::Sqrt(Discriminant)) / A;
-							if (T <= TimeHorizon) Candidate.TimeToCollision = T;
-						}
-					}
-
-					auto& List=Other.bEnvironment ? Environment : OutCandidates;
-					const int32 Limit=Other.bEnvironment ? 4 : 24;
-					int32 InsertIndex = 0;
-					while (InsertIndex < List.Num()
-						&& !IsCandidateBefore(Candidate, List[InsertIndex]))
-					{
-						++InsertIndex;
-					}
-					if (InsertIndex < Limit)
-					{
-						List.Insert(Candidate, InsertIndex);
-						if (List.Num() > Limit)
-						{
-							List.Pop(EAllowShrinking::No);
-						}
-					}
-				}
-			}
-		}
-		// Reserve two of the twelve CPA collider slots for environmental geometry.
-		const int32 Reserved=FMath::Min(2,Environment.Num());
-		for (int32 I=Reserved-1; I>=0; --I) OutCandidates.Insert(Environment[I],0);
-		if (OutCandidates.Num()>24) OutCandidates.SetNum(24,EAllowShrinking::No);
-		Metrics.RetainedCandidates=OutCandidates.Num(); Metrics.ConsumedCandidates=FMath::Min(12,OutCandidates.Num());
-		return Metrics;
-	}
-
 	FCandidateQueryMetrics SelectNearestCandidates(
 		const int32 AgentIndex,
 		const TConstArrayView<FAgentSnapshot> Agents,
@@ -322,8 +213,6 @@ namespace GuLiCommanderAvoidancePolicy
 		const float TimeHorizon,
 		FCandidateQueryScratch* Scratch)
 	{
-		if (!CVarGuLiAvoidanceQueryOptimizations.GetValueOnGameThread())
-			return SelectNearestCandidatesLegacy(AgentIndex, Agents, Grid, OutCandidates, DetectionDistance, MaximumHeightDifference, CellSize, TimeHorizon);
 		FCandidateQueryMetrics Metrics;
 		OutCandidates.Reset();
 		if (!Agents.IsValidIndex(AgentIndex)
@@ -346,9 +235,10 @@ namespace GuLiCommanderAvoidancePolicy
 		FCandidateQueryScratch LocalScratch;
 		FCandidateQueryScratch& QueryScratch = Scratch ? *Scratch : LocalScratch;
 		QueryScratch.BeginQuery(Agents.Num());
+		const int32 CandidateLimit = GuLiMassMovementTuning::GetCandidateLimit();
 		FNearestCandidateList Environment;
 		QueryScratch.Buckets.Reset();
-		if (CVarGuLiAvoidanceSparseCells.GetValueOnGameThread() && !Grid.OrderedRows.IsEmpty())
+		if (!Grid.OrderedRows.IsEmpty())
 			Grid.GatherOrderedBuckets({CenterCell.X - CellRadius, CenterCell.Y - CellRadius},
 				{CenterCell.X + CellRadius, CenterCell.Y + CellRadius}, QueryScratch.Buckets, Metrics.SparseComparisons);
 		else
@@ -393,29 +283,13 @@ namespace GuLiCommanderAvoidancePolicy
 				Candidate.DistanceSquared = DistanceSquared;
 				Candidate.StableKey = Other.StableKey;
 				Candidate.bOverlapping = CenterDistanceSquared < FMath::Square(CombinedRadius);
-				if (Candidate.bOverlapping) Candidate.TimeToCollision = 0.0;
-				else
-				{
-					const FVector P = (Agent.Location - Other.Location) * FVector(1, 1, 0);
-					const FVector AgentVelocity = Agent.DesiredVelocity.IsNearlyZero() ? Agent.Velocity : Agent.DesiredVelocity;
-					const FVector OtherVelocity = Other.DesiredVelocity.IsNearlyZero() ? Other.Velocity : Other.DesiredVelocity;
-					const FVector V = (AgentVelocity - OtherVelocity) * FVector(1, 1, 0);
-					const double A = V.SizeSquared();
-					const double B = FVector::DotProduct(P, V);
-					const double C = P.SizeSquared() - FMath::Square(Agent.Radius + Other.Radius);
-					const double Discriminant = B * B - A * C;
-					if (A > UE_SMALL_NUMBER && B < 0.0 && Discriminant >= 0.0)
-					{
-						const double T = (-B - FMath::Sqrt(Discriminant)) / A;
-						if (T <= TimeHorizon) Candidate.TimeToCollision = T;
-					}
-				}
 
 				auto& List=Other.bEnvironment ? Environment : OutCandidates;
-				const int32 Limit=Other.bEnvironment ? 2 : MaximumNearestCandidates;
+				const int32 Limit=Other.bEnvironment ? FMath::Min(2, CandidateLimit) : CandidateLimit;
 				int32 InsertIndex = 0;
 				while (InsertIndex < List.Num()
-					&& !IsCandidateBefore(Candidate, List[InsertIndex]))
+					&& !(Candidate.DistanceSquared < List[InsertIndex].DistanceSquared
+						|| (Candidate.DistanceSquared == List[InsertIndex].DistanceSquared && Candidate.StableKey < List[InsertIndex].StableKey)))
 				{
 					++InsertIndex;
 				}
@@ -426,24 +300,11 @@ namespace GuLiCommanderAvoidancePolicy
 				}
 			}
 		}
-		// Reserve two of the twelve CPA collider slots for environmental geometry.
-		const int32 Reserved=FMath::Min(2,Environment.Num());
+		const int32 Reserved=FMath::Min(CandidateLimit, FMath::Min(2,Environment.Num()));
 		for (int32 I=Reserved-1; I>=0; --I)
-		{ if (OutCandidates.Num() == MaximumNearestCandidates) OutCandidates.Pop(EAllowShrinking::No); OutCandidates.Insert(Environment[I],0); }
-		if (OutCandidates.Num()>MaximumNearestCandidates) OutCandidates.SetNum(MaximumNearestCandidates,EAllowShrinking::No);
-#if !UE_BUILD_SHIPPING
-        if (CVarGuLiAvoidanceVerify.GetValueOnGameThread())
-        {
-            FNearestCandidateList Original;
-            SelectNearestCandidatesLegacy(AgentIndex,Agents,Grid,Original,DetectionDistance,MaximumHeightDifference,CellSize,TimeHorizon);
-            const int32 Count=FMath::Min(Original.Num(),12);
-            bool Same=Count==FMath::Min(OutCandidates.Num(),12);
-            for (int32 I=0; Same && I<Count; ++I) Same=Original[I].AgentIndex==OutCandidates[I].AgentIndex;
-            ++Metrics.VerifiedPrefixes; Metrics.PrefixMismatches += Same ? 0 : 1;
-            ensureMsgf(Same,TEXT("Avoidance optimized prefix differs from original for agent %d"),AgentIndex);
-        }
-#endif
-		Metrics.RetainedCandidates=OutCandidates.Num(); Metrics.ConsumedCandidates=FMath::Min(12,OutCandidates.Num());
+		{ if (OutCandidates.Num() == CandidateLimit) OutCandidates.Pop(EAllowShrinking::No); OutCandidates.Insert(Environment[I],0); }
+		if (OutCandidates.Num()>CandidateLimit) OutCandidates.SetNum(CandidateLimit,EAllowShrinking::No);
+		Metrics.RetainedCandidates=OutCandidates.Num(); Metrics.ConsumedCandidates=OutCandidates.Num();
 		return Metrics;
 	}
 
@@ -452,9 +313,7 @@ namespace GuLiCommanderAvoidancePolicy
 		const FMassMovementParameters& MovementParameters)
 	{
 		FPredictiveParameters Result;
-		Result.PredictiveAvoidanceTime = FMath::Max(
-			AvoidanceParameters.PredictiveAvoidanceTime,
-			UE_KINDA_SMALL_NUMBER);
+		Result.PredictiveAvoidanceTime = GuLiMassMovementTuning::GetLookaheadSeconds();
 		Result.PredictiveAvoidanceRadiusScale = 1.0f;
 		Result.PredictiveAvoidanceDistance = FMath::Max(
 			AvoidanceParameters.PredictiveAvoidanceDistance,

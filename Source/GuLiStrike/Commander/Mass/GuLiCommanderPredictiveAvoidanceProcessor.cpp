@@ -5,6 +5,8 @@
 
 #include "Avoidance/MassAvoidanceFragments.h"
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
+#include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+#include "Commander/Mass/GuLiMassMovementTuning.h"
 #include "Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h"
 #include "Engine/World.h"
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
@@ -14,6 +16,7 @@
 #include "MassMovementFragments.h"
 #include "MassNavigationFragments.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
+#include "Misc/Crc.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GuLiCommanderPredictiveAvoidanceProcessor)
 
@@ -36,10 +39,12 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 		uint64 CandidateCount = 0u;
 		float PathFade = 1.0f;
 		int32 ColliderEvaluations = 0;
+		int32 PolicyIndex = INDEX_NONE;
 		bool bReceiver = false;
 		bool bShouldReceive = false;
 		bool bForced = false;
 		bool bSolved = false;
+		bool bCached = false;
 	};
 	struct FWorkspace
 	{
@@ -48,7 +53,66 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 		TMap<FMassEntityHandle, int32> AgentIndexByEntity;
 		FAvoidanceSpatialGrid SpatialGrid;
 		FCandidateQueryScratch QueryScratch;
+		TMap<FMassEntityHandle, FZeroResultCache> ZeroResults;
+		TMap<FIntPoint, uint64> CellMotionSignatures;
+		TArray<uint64> AgentMotionHashes;
 	};
+
+	uint64 MotionHash(const FAgentSnapshot& A)
+	{
+		uint64 H = A.StableKey * 1099511628211ull;
+		auto Add = [&H](const auto& V) { H = (H ^ FCrc::MemCrc32(&V, sizeof(V))) * 1099511628211ull; };
+		Add(A.Velocity); Add(A.DesiredVelocity); Add(A.Radius); Add(A.bMoving); Add(A.bParticipates);
+		if (A.bEnvironment) Add(A.Location);
+		return H;
+	}
+	uint64 RegionSignature(const FAgentSnapshot& A, FIntPoint Minimum, FIntPoint Maximum,
+		float CellSize, const TMap<FIntPoint, uint64>& Cells)
+	{
+		const FIntPoint OwnCell = MakeSpatialCell(A.Location, CellSize);
+		const uint64 OwnHash = MotionHash(A);
+		uint64 Signature = 1469598103934665603ull;
+		for (int32 X = Minimum.X; X <= Maximum.X; ++X) for (int32 Y = Minimum.Y; Y <= Maximum.Y; ++Y)
+		{
+			const uint64* Found = Cells.Find({X, Y});
+			uint64 Value = Found ? *Found : 0;
+			if (Found && OwnCell == FIntPoint(X, Y)) Value -= OwnHash;
+			Signature = (Signature ^ Value) * 1099511628211ull;
+		}
+		return Signature;
+	}
+	// This checks ALL nearby entries, not the six prediction candidates. It covers
+	// the next 10 Hz interval and never omits an imminent unit/environment contact.
+	bool IsNearRegionSafe(const FAgentSnapshot& A, TConstArrayView<FAgentSnapshot> Agents,
+		const FAvoidanceSpatialGrid& Grid, float CellSize, float MaximumRadius, float MaximumSpeed,
+		float Padding, FCandidateQueryScratch& Scratch, uint64& Visits, uint64& Checks)
+	{
+		const FVector Velocity = A.DesiredVelocity.IsNearlyZero() ? A.Velocity : A.DesiredVelocity;
+		const float Reach = A.Radius + MaximumRadius + Padding + (A.MaximumSpeed + MaximumSpeed) * .1f;
+		const int32 Range = FMath::CeilToInt(Reach / CellSize);
+		const FIntPoint Cell = MakeSpatialCell(A.Location, CellSize);
+		Scratch.BeginQuery(Agents.Num()); Scratch.Buckets.Reset(); uint64 Comparisons = 0;
+		Grid.GatherOrderedBuckets({Cell.X - Range, Cell.Y - Range}, {Cell.X + Range, Cell.Y + Range}, Scratch.Buckets, Comparisons);
+		for (const auto* Bucket : Scratch.Buckets) for (const int32 Index : *Bucket)
+		{
+			const auto& B = Agents[Index];
+			if (B.StableKey == A.StableKey || !B.bParticipates) continue;
+			if (B.bEnvironment && !Scratch.VisitEnvironment(Index)) continue;
+			++Visits;
+			if (FMath::Abs(A.Location.Z - B.Location.Z) > MaximumHeightDifferenceCentimeters) continue;
+			const FVector P = (A.Location - B.Location) * FVector(1, 1, 0);
+			const double R = A.Radius + B.Radius + Padding;
+			if (P.SizeSquared2D() > FMath::Square(R + (A.MaximumSpeed + B.MaximumSpeed) * .1)) continue;
+			const FVector OtherVelocity = B.bMoving && !B.DesiredVelocity.IsNearlyZero() ? B.DesiredVelocity : B.Velocity;
+			if (!B.bEnvironment && !SimilarReuseMotion(Velocity, OtherVelocity)) return false;
+			const FVector V = (Velocity - OtherVelocity) * FVector(1, 1, 0);
+			++Checks;
+			const double ClosestTime = V.SizeSquared() > UE_SMALL_NUMBER
+				? FMath::Clamp(-FVector::DotProduct(P, V) / V.SizeSquared(), 0.0, .1) : 0;
+			if ((P + V * ClosestTime).SizeSquared2D() <= R * R) return false;
+		}
+		return true;
+	}
 }
 
 UGuLiCommanderPredictiveAvoidanceProcessor::~UGuLiCommanderPredictiveAvoidanceProcessor() = default;
@@ -140,6 +204,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 	float MaximumAgentRadius = 0.0f;
 	float MaximumAgentSpeed = 0.0f;
 	int32 MaximumBucketOccupancy = 0;
+	TSharedPtr<const FSharedAvoidanceGeometry> SharedGeometry;
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_PredictiveAvoidanceBuildGrid);
 		FGuLiPerformanceScope Timing(World, TEXT("Avoidance.GridMs"));
@@ -202,8 +267,23 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 			}
 		}
 		GridCellSize = FMath::Max(SpatialCellSizeCentimeters, MaximumAgentRadius * 2.0f);
-		MaximumBucketOccupancy = BuildSpatialGrid(PolicyAgents, SpatialGrid, GridCellSize);
+		if (auto* Authority = World->GetSubsystem<UGuLiBattleAuthoritySubsystem>())
+			SharedGeometry = Authority->AcquireAvoidanceGeometry(PolicyAgents);
+		if (SharedGeometry)
+		{
+			GridCellSize = SharedGeometry->CellSize;
+			MaximumBucketOccupancy = SharedGeometry->MaximumBucketOccupancy;
+			// A reused immutable version can have a different iteration order.
+			for (auto& Entry : Agents) Entry.PolicyIndex = SharedGeometry->IndexByIdentity.FindChecked(Entry.Agent.StableKey);
+			for (const auto& Entry : Agents) PolicyAgents[Entry.PolicyIndex] = Entry.Agent;
+		}
+		else
+		{
+			MaximumBucketOccupancy = BuildSpatialGrid(PolicyAgents, SpatialGrid, GridCellSize);
+			for (int32 I = 0; I < Agents.Num(); ++I) Agents[I].PolicyIndex = I;
+		}
 	}
+	const FAvoidanceSpatialGrid& QueryGrid = SharedGeometry ? SharedGeometry->Grid : SpatialGrid;
 
 	if (Agents.IsEmpty())
 	{
@@ -265,10 +345,25 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 	for (int32 Index = 0; Index < Agents.Num(); ++Index)
 	{
 		const FProcessorAgent& Entry = Agents[Index];
-		PolicyAgents[Index] = Entry.Agent;
+		PolicyAgents[Entry.PolicyIndex] = Entry.Agent;
 		if (Entry.Agent.bParticipates && !Entry.Agent.bEnvironment)
 			MaximumAgentSpeed = FMath::Max(MaximumAgentSpeed, Entry.Agent.MaximumSpeed);
 	}
+	for (auto It = Workspace->ZeroResults.CreateIterator(); It; ++It)
+		if (!AgentIndexByEntity.Contains(It.Key())) It.RemoveCurrent();
+	Workspace->CellMotionSignatures.Reset();
+	{
+		FGuLiPerformanceScope Timing(World, TEXT("Avoidance.CachePrepareMs"));
+		Workspace->AgentMotionHashes.SetNumUninitialized(PolicyAgents.Num());
+		for (int32 I=0; I<PolicyAgents.Num(); ++I) Workspace->AgentMotionHashes[I]=MotionHash(PolicyAgents[I]);
+		for (const auto& Cell : QueryGrid.OrderedCells)
+		{
+			uint64 Signature = 0;
+			for (int32 Index : *Cell.Bucket) Signature += Workspace->AgentMotionHashes[Index];
+			Workspace->CellMotionSignatures.Add(Cell.Key, Signature);
+		}
+	}
+	uint64 CacheHits = 0, CacheInvalidations = 0, CacheExpirations = 0, GuardVisits = 0, GuardChecks = 0, QueryTrends = 0;
 
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_PredictiveAvoidanceCandidateQuery);
@@ -279,6 +374,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 		for (int32 AgentIndex = 0; AgentIndex < Agents.Num(); ++AgentIndex)
 		{
 			FProcessorAgent& Entry = Agents[AgentIndex];
+			if (!Entry.bShouldReceive && Workspace->ZeroResults.Remove(Entry.Entity)) ++CacheInvalidations;
 			if (!Entry.bReceiver || !ShouldSolve(
 				PhaseAdvance.PhaseMask,
 				Entry.SoldierId,
@@ -295,10 +391,34 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 			Entry.SolveSequence = bScheduledPhase
 				? PhaseAdvance.SequenceByPhase[Phase]
 				: PhaseAdvance.LastSequence;
+			const float Reach = FMath::Max(DetectionDistanceCentimeters, Entry.Agent.Radius + MaximumAgentRadius
+				+ (Entry.Agent.MaximumSpeed + MaximumAgentSpeed) * Entry.Parameters.PredictiveAvoidanceTime
+				+ Entry.Parameters.PredictiveAvoidanceDistance);
+			{
+				if (const auto* Cached = Workspace->ZeroResults.Find(Entry.Entity))
+				{
+					const double Age = CurrentWorldSeconds - Cached->CreatedAt;
+					const bool bExpired = Age < 0 || Age >= GuLiMassMovementTuning::GetCacheLifetimeSeconds();
+					const int32 Range = FMath::CeilToInt(Reach / GridCellSize);
+					const FIntPoint Cell = MakeSpatialCell(Entry.Agent.Location, GridCellSize);
+					const bool bCurrent = !Entry.bForced && IsZeroCacheCurrent(*Cached, Entry.Agent, CurrentWorldSeconds,
+						GuLiMassMovementTuning::GetCacheLifetimeSeconds(), Entry.OrderRevision, Entry.Parameters.PredictiveAvoidanceTime,
+						GuLiMassMovementTuning::GetCandidateLimit(), GridCellSize, {Cell.X - Range, Cell.Y - Range}, {Cell.X + Range, Cell.Y + Range},
+						RegionSignature(Entry.Agent, Cached->MinimumCell, Cached->MaximumCell, GridCellSize, Workspace->CellMotionSignatures))
+						&& IsNearRegionSafe(Entry.Agent, PolicyAgents, QueryGrid, GridCellSize, MaximumAgentRadius, MaximumAgentSpeed,
+							Entry.Parameters.PredictiveAvoidanceDistance, Workspace->QueryScratch, GuardVisits, GuardChecks);
+					if (bCurrent)
+					{
+						Entry.bSolved = true; Entry.bCached = true; ++CacheHits;
+						continue;
+					}
+					Workspace->ZeroResults.Remove(Entry.Entity); ++CacheInvalidations; CacheExpirations += bExpired ? 1 : 0;
+				}
+			}
 			const FCandidateQueryMetrics Metrics = SelectNearestCandidates(
-				AgentIndex,
+				Entry.PolicyIndex,
 				PolicyAgents,
-				SpatialGrid,
+				QueryGrid,
 				Entry.Candidates,
 				FMath::Max(DetectionDistanceCentimeters, Entry.Agent.Radius + MaximumAgentRadius
 					+ (Entry.Agent.MaximumSpeed + MaximumAgentSpeed) * Entry.Parameters.PredictiveAvoidanceTime
@@ -306,6 +426,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 				MaximumHeightDifferenceCentimeters, GridCellSize, Entry.Parameters.PredictiveAvoidanceTime,
 				&Workspace->QueryScratch);
 			Visits += Metrics.BucketEntriesVisited; Exact += Metrics.ExactCandidates; ++Solves; Forced += Entry.bForced ? 1 : 0;
+			QueryTrends += Metrics.TrendEvaluations;
 			CellLookups+=Metrics.CellLookups; CellHits+=Metrics.CellHits; Duplicates+=Metrics.EnvironmentDuplicates; Unique+=Metrics.UniqueVisits;
 			SparseComparisons+=Metrics.SparseComparisons;
 			Retained+=Metrics.RetainedCandidates; Consumed+=Metrics.ConsumedCandidates; Verified+=Metrics.VerifiedPrefixes; Mismatches+=Metrics.PrefixMismatches;
@@ -321,6 +442,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 			Capture->Record(TEXT("Avoidance.BucketVisits"), double(Visits));
 			Capture->Record(TEXT("Avoidance.ExactCandidates"), double(Exact));
 			Capture->Record(TEXT("Avoidance.Solves"), double(Solves));
+			Capture->Record(TEXT("Avoidance.ActualQueries"), double(Solves));
 			Capture->Record(TEXT("Avoidance.Forced"), double(Forced));
 			Capture->Record(TEXT("Avoidance.CellLookups"),double(CellLookups)); Capture->Record(TEXT("Avoidance.CellHits"),double(CellHits));
 			Capture->Record(TEXT("Avoidance.SparseComparisons"),double(SparseComparisons));
@@ -338,7 +460,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 		FGuLiPerformanceScope Timing(World, TEXT("Avoidance.SolveMs"));
 		for (FProcessorAgent& Entry : Agents)
 		{
-			if (!Entry.bSolved)
+			if (!Entry.bSolved || Entry.bCached)
 			{
 				continue;
 			}
@@ -349,7 +471,50 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 				Entry.Parameters,
 				Entry.PathFade,
 				Entry.ColliderEvaluations);
+			if (Entry.SolvedOutput.IsZero() && Entry.Agent.DesiredVelocity.SizeSquared2D() > 1)
+			{
+				bool bSafe = true;
+				const FVector OwnVelocity = Entry.Agent.DesiredVelocity;
+				for (const auto& Candidate : Entry.Candidates)
+				{
+					const auto& Other = PolicyAgents[Candidate.AgentIndex];
+					const FVector OtherVelocity = Other.DesiredVelocity.IsNearlyZero() ? Other.Velocity : Other.DesiredVelocity;
+					const FVector P = (Entry.Agent.Location - Other.Location) * FVector(1, 1, 0);
+					const double Closing = -FVector::DotProduct(P.GetSafeNormal2D(), OwnVelocity - OtherVelocity);
+					if (Other.bEnvironment || Candidate.bOverlapping || !SimilarReuseMotion(OwnVelocity, OtherVelocity)
+						|| Closing > .1 * OwnVelocity.Size2D()) { bSafe = false; break; }
+				}
+				if (bSafe && IsNearRegionSafe(Entry.Agent, PolicyAgents, QueryGrid, GridCellSize, MaximumAgentRadius, MaximumAgentSpeed,
+					Entry.Parameters.PredictiveAvoidanceDistance, Workspace->QueryScratch, GuardVisits, GuardChecks))
+				{
+					const float Reach = FMath::Max(DetectionDistanceCentimeters, Entry.Agent.Radius + MaximumAgentRadius
+						+ (Entry.Agent.MaximumSpeed + MaximumAgentSpeed) * Entry.Parameters.PredictiveAvoidanceTime
+						+ Entry.Parameters.PredictiveAvoidanceDistance);
+					const int32 Range = FMath::CeilToInt(Reach / GridCellSize);
+					const FIntPoint Cell = MakeSpatialCell(Entry.Agent.Location, GridCellSize);
+					auto& Cache = Workspace->ZeroResults.FindOrAdd(Entry.Entity);
+					Cache.Location = Entry.Agent.Location; Cache.Velocity = Entry.Agent.Velocity; Cache.DesiredVelocity = Entry.Agent.DesiredVelocity;
+					Cache.Identity = Entry.Agent.StableKey;
+					Cache.OrderRevision = Entry.OrderRevision; Cache.CreatedAt = CurrentWorldSeconds;
+					Cache.Horizon = Entry.Parameters.PredictiveAvoidanceTime; Cache.CandidateLimit = GuLiMassMovementTuning::GetCandidateLimit();
+					Cache.Radius = Entry.Agent.Radius; Cache.CellSize = GridCellSize;
+					Cache.MinimumCell = {Cell.X - Range, Cell.Y - Range}; Cache.MaximumCell = {Cell.X + Range, Cell.Y + Range};
+					Cache.MotionSignature = RegionSignature(Entry.Agent, Cache.MinimumCell, Cache.MaximumCell,
+						GridCellSize, Workspace->CellMotionSignatures);
+				}
+			}
 		}
+	}
+	if (auto* Capture = World->GetSubsystem<UGuLiPerformanceSubsystem>())
+	{
+		uint64 SolveTrends = 0; for (const auto& Entry : Agents) SolveTrends += Entry.ColliderEvaluations;
+		Capture->Record(TEXT("Avoidance.TrendEvaluations"), double(QueryTrends + SolveTrends));
+		Capture->Record(TEXT("Avoidance.QueryTrendEvaluations"), double(QueryTrends));
+		Capture->Record(TEXT("Avoidance.CacheHits"), double(CacheHits));
+		Capture->Record(TEXT("Avoidance.CacheInvalidations"), double(CacheInvalidations));
+		Capture->Record(TEXT("Avoidance.CacheExpirations"), double(CacheExpirations));
+		Capture->Record(TEXT("Avoidance.CacheGuardVisits"), double(GuardVisits));
+		Capture->Record(TEXT("Avoidance.CacheGuardChecks"), double(GuardChecks));
 	}
 
 	FGuLiPerformanceScope SubmitTiming(World, TEXT("Avoidance.SubmitMs"));

@@ -20,8 +20,8 @@ namespace GuLiCommanderAvoidancePolicy
 	inline constexpr float SpatialCellSizeCentimeters = 300.0f;
 	inline constexpr float DetectionDistanceCentimeters = 1200.0f;
 	inline constexpr float MaximumHeightDifferenceCentimeters = 300.0f;
-	inline constexpr int32 MaximumNearestCandidates = 12;
-	inline constexpr int32 MaximumColliders = 12;
+	inline constexpr int32 MaximumNearestCandidates = 6;
+	inline constexpr int32 MaximumColliders = 6;
 
 	/** The unique phases crossed by one render-frame update, plus their solve sequence numbers. */
 	struct GULISTRIKE_API FPhaseAdvanceResult
@@ -46,7 +46,7 @@ namespace GuLiCommanderAvoidancePolicy
 		float MaximumSpeed = 0.0f;
 	};
 
-	/** One exact-range threat, ordered by overlap, collision time, distance and stable key. */
+	/** One exact-range collider, selected by distance and stable identity before CPA. */
 	struct GULISTRIKE_API FNearestCandidate
 	{
 		int32 AgentIndex = INDEX_NONE;
@@ -63,12 +63,13 @@ namespace GuLiCommanderAvoidancePolicy
 		uint64 ExactCandidates = 0u;
 		uint64 CellLookups = 0u, CellHits = 0u, SparseComparisons = 0u, EnvironmentDuplicates = 0u, UniqueVisits = 0u;
 		uint64 RetainedCandidates = 0u, ConsumedCandidates = 0u, VerifiedPrefixes = 0u, PrefixMismatches = 0u;
+		uint64 TrendEvaluations = 0u;
 	};
 
 	/** Predictive-only subset of Epic's moving avoidance parameters. */
 	struct GULISTRIKE_API FPredictiveParameters
 	{
-		float PredictiveAvoidanceTime = 2.5f;
+		float PredictiveAvoidanceTime = 0.5f;
 		float PredictiveAvoidanceRadiusScale = 1.0f;
 		float PredictiveAvoidanceDistance = 15.0f;
 		float PredictiveAvoidanceStiffness = 700.0f;
@@ -94,7 +95,19 @@ namespace GuLiCommanderAvoidancePolicy
 		void GatherOrderedBuckets(FIntPoint Minimum, FIntPoint Maximum,
 			TArray<const FAvoidanceBucket*, TInlineAllocator<64>>& Out, uint64& Comparisons) const;
 	};
-	using FNearestCandidateList = TArray<FNearestCandidate, TInlineAllocator<24>>;
+	using FNearestCandidateList = TArray<FNearestCandidate, TInlineAllocator<MaximumNearestCandidates>>;
+
+	/** Geometry is published once per exact version, owned by the authority World.
+	 * Velocities in this geometry are not used for solving: callers provide fresh motion. */
+	struct GULISTRIKE_API FSharedAvoidanceGeometry
+	{
+		uint64 Version = 0;
+		float CellSize = SpatialCellSizeCentimeters;
+		int32 MaximumBucketOccupancy = 0;
+		TArray<FAgentSnapshot> Agents;
+		TMap<uint64, int32> IndexByIdentity;
+		FAvoidanceSpatialGrid Grid;
+	};
 
 	/** Environment colliders span cells; ordinary agents occur in exactly one bucket. */
 	struct GULISTRIKE_API FCandidateQueryScratch
@@ -105,6 +118,23 @@ namespace GuLiCommanderAvoidancePolicy
 		void BeginQuery(int32 Count);
 		bool VisitEnvironment(int32 Index);
 	};
+
+	/** Zero-result reuse metadata; lifecycle and full identity remain local to one World. */
+	struct GULISTRIKE_API FZeroResultCache
+	{
+		FVector Location, Velocity, DesiredVelocity;
+		uint64 Identity = 0;
+		uint32 OrderRevision = 0;
+		double CreatedAt = 0;
+		float Horizon = 0, Radius = 0, CellSize = 0;
+		int32 CandidateLimit = 0;
+		FIntPoint MinimumCell, MaximumCell;
+		uint64 MotionSignature = 0;
+	};
+	GULISTRIKE_API bool SimilarReuseMotion(const FVector& Previous, const FVector& Current);
+	GULISTRIKE_API bool IsZeroCacheCurrent(const FZeroResultCache& Cache, const FAgentSnapshot& Agent,
+		double Now, float Lifetime, uint32 OrderRevision, float Horizon, int32 CandidateLimit,
+		float CellSize, FIntPoint MinimumCell, FIntPoint MaximumCell, uint64 MotionSignature);
 
 	/** Advances at 30 Hz, caps hitch catch-up at three steps, and merges repeated phases in one mask. */
 	GULISTRIKE_API FPhaseAdvanceResult AdvancePhases(
@@ -131,7 +161,7 @@ namespace GuLiCommanderAvoidancePolicy
 		FAvoidanceSpatialGrid& InOutGrid,
 		float CellSize = SpatialCellSizeCentimeters);
 
-	/** Retains twelve consumed threats, including up to two environment priority slots. */
+	/** Distance-first mode retains at most six colliders, with up to two nearest environment slots. */
 	GULISTRIKE_API FCandidateQueryMetrics SelectNearestCandidates(
 		int32 AgentIndex,
 		TConstArrayView<FAgentSnapshot> Agents,
@@ -140,7 +170,7 @@ namespace GuLiCommanderAvoidancePolicy
 		float DetectionDistance = DetectionDistanceCentimeters,
 		float MaximumHeightDifference = MaximumHeightDifferenceCentimeters,
 		float CellSize = SpatialCellSizeCentimeters,
-		float TimeHorizon = 2.5f,
+		float TimeHorizon = 0.5f,
 		FCandidateQueryScratch* Scratch = nullptr);
 
 	/** Copies only CPA-related values; separation stiffness and distance are intentionally ignored. */

@@ -1,0 +1,41 @@
+{
+  "success": true,
+  "saved": true,
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "note": {
+    "label": "PerfMassMovement_Entry",
+    "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_71",
+    "position_cm": [
+      -10600.0,
+      65000.0,
+      1300.0
+    ],
+    "editor_only": true,
+    "text": "Mass 避障简化与转向验证入口（不自动启动PIE）\n优化已固定应用：0.5秒预测，最多六候选含最多两个环境优先位，共享索引，最多0.3秒安全零结果缓存，全部Mass车身/炮塔/炮管三倍转向；无本轮运行时开关。\n同进程专服＋双客户端，200单位或600单位＋现有三来源500附加飞行物（167/167/166）；每连接250000 B/s，1280×720。原计划四来源之一已退役，本轮实际使用上述三来源。\n项目终端：python Scripts/Performance/run_snapshot_parallel_review.py --phase inspect --scenes dense200\n压力场景替换为 stress。front/back/split/mixed 切视角；stop/forward/reverse/north/south 改令；空行回车结束并恢复。\n观察迎面交错、同向队列、拥堵、窄路与墙边、停止和90°/180°转向。预测最多六候选含最多两个环境优先；软避障仍保留全部接触对与三轮修正。\n左上角查看吞吐、连接预算和飞行队列；UE连接与应用载荷、同一连接两端分别报告。\n采用依据：此前完整组合在两种负载各三组配对通过CPU与P95门槛；此次移除回退开关，固定该组合。旧40窗口属于此前可切换构建，不把旧报告当作此次新构建重采样。\n配对原始数据：Artifacts/MassAvoidance20261011/PairedReport.md；技术记录：Progress/DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md。\n场景相机沿用 PerfSnapshotNetwork_Dense200_View 与 PerfSnapshotNetwork_Stress_View。\n本Note仅作编辑器入口；自动化与采样结论不代表玩家已验收。"
+  },
+  "cameras": [
+    {
+      "label": "PerfSnapshotNetwork_Dense200_View",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_32",
+      "position_cm": [
+        -10800.0,
+        61000.0,
+        15500.0
+      ],
+      "auto_activate_player_index": -1,
+      "editor_only": true
+    },
+    {
+      "label": "PerfSnapshotNetwork_Stress_View",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_33",
+      "position_cm": [
+        15000.0,
+        58000.0,
+        16000.0
+      ],
+      "auto_activate_player_index": -1,
+      "editor_only": true
+    }
+  ],
+  "default_inactive": true
+}

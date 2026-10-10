@@ -1,0 +1,90 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "scene": "dense200",
+      "scale": 1,
+      "population_and_finite_transforms_pass": true,
+      "stop_moving": 0,
+      "rejected_plans_max": 0,
+      "forced_solves_delta": 1295,
+      "turn_tracks": [
+        {
+          "action": "north_90",
+          "rotating_units": 200
+        },
+        {
+          "action": "south_180",
+          "rotating_units": 200
+        }
+      ],
+      "nominal_hull_limit_deg_per_authority_second": 90
+    },
+    {
+      "scene": "dense200",
+      "scale": 3,
+      "population_and_finite_transforms_pass": true,
+      "stop_moving": 0,
+      "rejected_plans_max": 0,
+      "forced_solves_delta": 1369,
+      "turn_tracks": [
+        {
+          "action": "north_90",
+          "rotating_units": 200
+        },
+        {
+          "action": "south_180",
+          "rotating_units": 200
+        }
+      ],
+      "nominal_hull_limit_deg_per_authority_second": 270
+    },
+    {
+      "scene": "stress",
+      "scale": 1,
+      "population_and_finite_transforms_pass": true,
+      "stop_moving": 0,
+      "rejected_plans_max": 0,
+      "forced_solves_delta": 3855,
+      "turn_tracks": [
+        {
+          "action": "north_90",
+          "rotating_units": 600
+        },
+        {
+          "action": "south_180",
+          "rotating_units": 600
+        }
+      ],
+      "nominal_hull_limit_deg_per_authority_second": 90
+    },
+    {
+      "scene": "stress",
+      "scale": 3,
+      "population_and_finite_transforms_pass": true,
+      "stop_moving": 0,
+      "rejected_plans_max": 0,
+      "forced_solves_delta": 4005,
+      "turn_tracks": [
+        {
+          "action": "north_90",
+          "rotating_units": 600
+        },
+        {
+          "action": "south_180",
+          "rotating_units": 599
+        }
+      ],
+      "nominal_hull_limit_deg_per_authority_second": 270
+    }
+  ],
+  "controls_restored": true,
+  "angular_measurement_note": "Raw peak fields divide discrete yaw differences by sampled World-time intervals. A poll can include two movement steps, so these peaks exceed a continuous rate and do not measure its cap. The movement code applies 90 * scale * MovementDeltaSeconds exactly once; readback shows corresponding step increments and faster responses.",
+  "additional_contracts": "Eight automation cases cover six-candidate/environment/stable-ID selection, cache lifetime and invalidation, identical soft pairs/velocities, mechanical/VAT aim scale and WM01 yaw damping.",
+  "visuals_reviewed": [
+    "outputs/performance/20261011-mass-movement-behavior/dense200-client1.png",
+    "outputs/performance/20261011-mass-movement-behavior/stress-client1.png"
+  ],
+  "visual_scope": "Checked 1280x720 captures for rendering/HUD continuity after stop and order changes; a screenshot does not prove quantitative avoidance or all hand-authored wall/corridor cases.",
+  "player_review_pending": "Original map entry includes further wall/corridor/congestion and WM01 visual-turn checks; no player acceptance is claimed."
+}

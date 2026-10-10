@@ -1,0 +1,47 @@
+{
+  "engine": "D:/UnrealEngine-5.7",
+  "target": "GuLiStrikeEditor Win64 Development",
+  "exit_code": 0,
+  "elapsed_seconds": 82.69,
+  "build_ids": {
+    "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\GuLiMapAuthoring\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\Tripo3DUEBridge-UE5.7-Win64\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\UnrealMCP\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\UnrealMCPython\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "D:\\UE5.7\\test1\\Plugins\\VibeUE\\Binaries\\Win64\\UnrealEditor.modules": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31"
+  },
+  "build_ids_match": true,
+  "source_hashes": {
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiMechanicalAnimation.cpp": "50426c4697db7233603923647a0f42d34b15b310756e17dc9e74b09714f6be54",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiMechanicalAnimation.h": "092248e2c0f1106b1187df8c9af2b102a2d3bbd82bc8e06efbd6f565eaad3489",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiMechanicalTurnPresentation.cpp": "0fb6b0da8fe2008b46e79334613a934d9aa225c60f1fe5fc4996f2d3f89aec86",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiVATAnimation.cpp": "9ff0a9cd3b40e76151d9239c6296810fe85e0480751c35864ba08f1a92a576bf",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiVATAnimation.h": "1b1003965f2480c2a687ef551355277d8b07d943065983d08b45686f7a98c5b6",
+    "Source/GuLiStrike/Gameplay/Presentation/Tests/GuLiMechanicalAnimationTests.cpp": "53109bf763c8857cf4eedb7163e0f9334b8289b23d1cc40f720df8427a023b51",
+    "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp": "65ef5ac8796ad638e3337167370f8bab52b62b66f3737bea6738194a947f456b",
+    "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h": "69bfa22c86013c023ae06c45492c10dbb9a7576627a6d14b39a243d294dae0a5",
+    "Source/GuLiStrike/Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.cpp": "a196ae2a4352739491a46ae48ad694e75aafc0dd04ce220bdbd1684a425e5370",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderMechanicalPresentation.cpp": "d36769d3c9772675d0ca29cad740c0611fcc4227bfecc69e67a2719e462efd2b",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.cpp": "54347c109346d5f70f94ade1cf2f3199c524dbbaf8b0f3f6a4ce11da15a45af8",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h": "db4ee90cda41ea6e474efcabb7b4b0946aa5e83cca1ff109b55b51e4e08462a4",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.cpp": "ab2216413309906649a3c6ffd59390f7c83484ae252d776fd96f95bb10cb6d4c",
+    "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h": "9ad3b355ca41448b6f0b18b21105ec546c1b55a80a9d7bde680b911a97ba2279",
+    "Source/GuLiStrike/Commander/Mass/Navigation/Tests/GuLiCommanderAvoidancePolicyTests.cpp": "df04b77aec650c4c46b3d0f36efa8a6d8be3bed5f362895aacaab09ec783e49b",
+    "Source/GuLiStrike/Commander/Mass/Navigation/Tests/GuLiCommanderNavigationPolicyTests.cpp": "e98fda1687f2ca7758c113f4c10cff2b381f002c41531328988ad5011cdd798b",
+    "Source\\GuLiStrike\\Commander\\Mass\\GuLiMassMovementTuning.h": "2cb02535ca6446f9886f49e66d2aaaf318917abb074c72730087093a761e3e04",
+    "Source\\GuLiStrike\\Commander\\Mass\\GuLiMassMovementTuning.cpp": "f35497950cd1c43179c3cf07e8b662649bf4ae9acf39890041570ac3cb9f52c0"
+  },
+  "dll_sha256": "e004a5c6268c98e3a7012f2d499c0bff9fb68eea9b790dff38d08faf9e326840",
+  "log": "Artifacts/MassAvoidance20261011/Build-Storage.log",
+  "purpose": "Approved Mass distance-first/shared geometry/zero cache/turn3 implementation; prior GroundCrowd8192 change preserved",
+  "build_log_history": [
+    "Artifacts/MassAvoidance20261011/Build.log",
+    "Artifacts/MassAvoidance20261011/Build-QA.log",
+    "Artifacts/MassAvoidance20261011/Build-Final.log",
+    "Artifacts/MassAvoidance20261011/Build-Storage.log"
+  ],
+  "last_incremental_seconds": 12.72
+}

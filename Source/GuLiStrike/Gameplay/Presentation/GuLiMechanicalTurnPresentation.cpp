@@ -2,10 +2,10 @@
 
 namespace
 {
-	float DampedAngle(float Current, float Target, float Dt, const FGuLiMechanicalAnimationConfig& C)
+	float DampedAngle(float Current, float Target, float Dt, const FGuLiMechanicalAnimationConfig& C, float Scale)
 	{
 		const float Delta = FMath::FindDeltaAngleDegrees(Current, Target);
-		const float Step = Delta * (1.0f - FMath::Exp(-C.VisualYawDamping * Dt));
+		const float Step = Delta * (1.0f - FMath::Exp(-C.VisualYawDamping * Scale * Dt));
 		return FRotator::NormalizeAxis(FMath::Abs(Delta - Step) < C.VisualYawSnapDegrees ? Target : Current + Step);
 	}
 	float Bank(float Current, float Target, float Dt, float Enter, float Return)
@@ -43,10 +43,11 @@ namespace
 
 void GuLiMechanicalAnimation::StepVisualTurn(const FGuLiMechanicalAnimationConfig& C,
 	const FGuLiMechanicalAnimationState& S, const FTransform& Logical, double Now, bool bReset,
-	FGuLiMechanicalVisualState& V)
+	FGuLiMechanicalVisualState& V, float YawResponseScale)
 {
 	if (C.Model != EGuLiMechanicalModel::WarMachine || Logical.ContainsNaN() || !FMath::IsFinite(Now)) return;
 	const float TargetUpper = S.bInitialized ? S.UpperYawDegrees : Logical.Rotator().Yaw;
+	const float Scale = FMath::IsFinite(YawResponseScale) ? FMath::Max(0.f, YawResponseScale) : 1.f;
 	const bool bInitialize = bReset || !V.bInitialized || Now < V.PoseTime;
 	const float Dt = bInitialize ? 0 : float(FMath::Max(0.0, Now - V.PoseTime));
 	if (bInitialize)
@@ -59,9 +60,9 @@ void GuLiMechanicalAnimation::StepVisualTurn(const FGuLiMechanicalAnimationConfi
 	else if (Dt > UE_SMALL_NUMBER)
 	{
 		const float Before = V.Root.Rotator().Yaw;
-		const float Yaw = DampedAngle(Before, Logical.Rotator().Yaw, Dt, C);
+		const float Yaw = DampedAngle(Before, Logical.Rotator().Yaw, Dt, C, Scale);
 		V.Root = FTransform(FRotator(0, Yaw, 0), Logical.GetLocation());
-		V.UpperYawDegrees = DampedAngle(V.UpperYawDegrees, TargetUpper, Dt, C);
+		V.UpperYawDegrees = DampedAngle(V.UpperYawDegrees, TargetUpper, Dt, C, Scale);
 		// Do not turn the final sub-degree snap (or quantized idle jitter) into a bank impulse.
 		const bool bMicroTurn = FMath::Abs(FMath::FindDeltaAngleDegrees(Before, Logical.Rotator().Yaw)) <= 2 * C.VisualYawSnapDegrees;
 		V.YawRate = bMicroTurn ? 0 : FMath::FindDeltaAngleDegrees(Before, Yaw) / Dt;

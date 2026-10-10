@@ -4,8 +4,9 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | verification | partial | 玩家通过原地图固定优化入口核对窄路、墙边、拥堵和重防号转向观感；网络协议整改另立任务。 | 2026-10-11 |
+| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | verification | partial | 玩家按原地图网络诊断入口验收保留功能；本轮四候选停止推进，不自动继续P95实验。初始化StateTree异常与压力网络积压另列待确认。 | 2026-10-11 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | verification | partial | 本轮容量调整已编译；重新开启独立服务端PIE，核对自动增援后的Crowd容量及工程车避让。 | 2026-10-11 |
-| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | verification | partial | 玩家按原地图网络诊断入口验收保留功能；本轮四候选停止推进，不自动继续P95实验。初始化StateTree异常与压力网络积压另列待确认。 | 2026-10-10 |
 | [客户端表现管线技能与枪口批量化 — 技术方案](../DevelopmentDocumentation/20261010-客户端表现管线技能与枪口批量化.md) | verification | partial | 玩家打开LVL_CommanderMassPrototype验收枪口外观与实战行为；压力枪口收益需上游可靠事件积压解除后复测，不在本轮改动网络。 | 2026-10-10 |
 | [命中特效事件批量承载与生命周期优化 — 技术方案](../DevelopmentDocumentation/20261009-命中特效事件批量承载与生命周期优化.md) | verification | partial | 玩家直接打开LVL_CommanderMassPrototype的PIE验收视觉及玩法效果；FPS对照暂缓。 | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | verification | partial | 玩家直接打开LVL_CommanderMassPrototype的PIE验收视觉及玩法效果；FPS对照暂缓。 | 2026-10-10 |

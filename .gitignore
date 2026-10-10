@@ -159,6 +159,23 @@ Artifacts/**/insights/events.csv
 Artifacts/PerformanceOptimization20261010/Paired/
 Artifacts/PerformanceOptimization20261010/Diagnosis/Paired/
 Artifacts/PerformanceOptimization20261010/Rollback/Paired/
+# Mass movement review: retain raw windows locally and publish summaries.
+Artifacts/MassAvoidance20261011/Paired/
+Artifacts/MassAvoidance20261011/Attempt1/
+Artifacts/MassAvoidance20261011/Behavior/*-scale*.json
+Artifacts/MassAvoidance20261011/DirectApply/Paired/
+Artifacts/MassAvoidance20261011/DirectApply/Inspect/
+Artifacts/MassAvoidance20261011/DirectApply/Behavior/
+Artifacts/MassAvoidance20261011/**/*.uba
+Artifacts/MassAvoidance20261011/Before/
+Artifacts/MassAvoidance20261011/BeforeEditorQA/
+Artifacts/MassAvoidance20261011/DirectApply/Before/
+Artifacts/MassAvoidance20261011/DirectApply/QAReport/index.html
+# Completed review helpers remain local while session deletion is blocked.
+Scripts/Performance/await_mass_editor.py
+Scripts/Performance/finalize_mass_movement_review.py
+Scripts/Performance/summarize_mass_review_rows.py
+Scripts/Performance/verify_mass_delivery_build.py
 Artifacts/Map*/**/terrain/*.png
 
 # Live editor control scratch files and local command notes

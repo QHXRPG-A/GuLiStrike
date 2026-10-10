@@ -8,6 +8,7 @@
 
 class ANavigationData;
 class UNavigationSystemV1;
+namespace GuLiCommanderAvoidancePolicy { struct FSharedAvoidanceGeometry; }
 
 /**
  * Testable navigation decisions shared by the Commander authority runtime.
@@ -86,6 +87,8 @@ namespace GuLiCommanderNavigationPolicy
 		float MaximumSpeed = 0.0f;
 		uint8 Team = 0u;
 		bool bCanBePushed = false;
+		/** Complete Mass identity, including generation; appended to preserve aggregate callers. */
+		uint64 StableEntityKey = 0u;
 	};
 
 	/** Work counters produced by one manual-separation refresh. */
@@ -93,6 +96,7 @@ namespace GuLiCommanderNavigationPolicy
 	{
 		uint64 CandidatePairs = 0u;
 		uint64 OverlapPairs = 0u;
+		uint64 BucketEntriesVisited = 0u;
 		int32 MaximumBucketOccupancy = 0;
 	};
 
@@ -145,7 +149,8 @@ namespace GuLiCommanderNavigationPolicy
 		TConstArrayView<FManualAvoidanceAgent> Agents,
 		float MaximumHeightDifferenceCentimeters,
 		FManualAvoidanceSpatialGrid& InOutSpatialGrid,
-		TArray<FVector>& OutVelocities);
+		TArray<FVector>& OutVelocities,
+		const GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry* SharedGeometry = nullptr);
 
 	/**
 	 * Finds the exact Commander SupportedAgent config. A Default-only list returns

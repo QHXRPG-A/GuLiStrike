@@ -26,7 +26,7 @@ public:
  /** Explicit PIE fixture only: normal authority spawns/navigation/orders, no persistent data edits. */
  UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Performance") static FString PreparePerformancePopulation(UObject* WorldContext,int32 Population=600,bool Moving=true,FVector CombatCenter=FVector::ZeroVector);
  UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Performance") static FString PerformancePopulationSnapshot(UObject* WorldContext);
- /** 0 stops the fixture, +/-1 replaces its orders with a long east/west march. */
+ /** 0 stops; +/-1 orders east/west; +/-2 orders a short north/south march for turn review. */
  UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Performance") static bool OrderPerformancePopulation(UObject* WorldContext,int32 Direction=1);
  /** Transient client presentation only; server mining tasks/resources are untouched. */
  UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Performance") static bool SetPerformanceMiningVisual(AActor* Owner,bool Active,FVector Target);

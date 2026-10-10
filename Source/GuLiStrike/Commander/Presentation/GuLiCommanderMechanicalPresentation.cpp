@@ -2,6 +2,7 @@
 
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/World.h"
+#include "Commander/Mass/GuLiMassMovementTuning.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectTypes.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
@@ -194,7 +195,8 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 		GuLiMechanicalAnimation::EvaluateHover(C, Id.Value, Soldier.RenderServerTimeSeconds, S);
 		if (C.Model == EGuLiMechanicalModel::WarMachine)
 		{
-			GuLiMechanicalAnimation::StepVisualTurn(C, S, Soldier.PresentedTransform, Soldier.RenderServerTimeSeconds, bResetVisual, Soldier.MechanicalVisual);
+			GuLiMechanicalAnimation::StepVisualTurn(C, S, Soldier.PresentedTransform, Soldier.RenderServerTimeSeconds, bResetVisual, Soldier.MechanicalVisual,
+				GuLiMassMovementTuning::GetTurnRateScale());
 			const float VisualDt = bResetVisual ? 0 : float(FMath::Max(0.0, Soldier.RenderServerTimeSeconds - PreviousPoseTime));
 			GuLiMechanicalAnimation::StepLocomotion(C, BeforeVisual, Soldier.MechanicalVisual.Root, VisualDt, bResetVisual, S);
 		}

@@ -3,6 +3,7 @@
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Misc/AutomationTest.h"
 #include "Engine/StaticMesh.h"
+#include "Gameplay/Presentation/GuLiVATAnimation.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiMechanicalAnimationContractTest,
 	"GuLiStrike.Presentation.MechanicalAnimation", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
@@ -20,6 +21,30 @@ bool FGuLiMechanicalAnimationContractTest::RunTest(const FString& Parameters)
 	S = {};
 	StepAim(C, FTransform::Identity, &Target, 1440, .1f, S);
 	TestTrue(TEXT("Move-speed upgrade accelerates stationary upper turn"), FMath::IsNearlyEqual(S.UpperYawDegrees, 36.0f));
+	S = {};
+	StepAim(C, FTransform::Identity, &Target, 720, .1f, S, 3.f);
+	TestTrue(TEXT("Mass threefold multiplier is applied once"), FMath::IsNearlyEqual(S.UpperYawDegrees, 54.0f));
+	S = {};
+	StepAim(C, FTransform::Identity, &Target, 1440, .05f, S, 3.f);
+	TestTrue(TEXT("Mass multiplier retains the movement-speed gain"), FMath::IsNearlyEqual(S.UpperYawDegrees, 54.0f));
+	{
+		auto* VAT = NewObject<UGuLiVATDefinition>();
+		FGuLiMechanicalAnimationState VAim;
+		const FVector HighTarget(0,100000,100000);
+		GuLiVATAnimation::StepAim(*VAT, {}, FTransform::Identity, &HighTarget, .1f, VAim, 3.f);
+		TestTrue(TEXT("VAT turret receives its multiplier once"), FMath::IsNearlyEqual(VAim.UpperYawDegrees,54.f));
+		TestTrue(TEXT("VAT pitch receives its multiplier once"), FMath::IsNearlyEqual(VAim.GunPitchDegrees[0],27.f));
+		FGuLiMechanicalAnimationState LogicalAim; LogicalAim.bInitialized=true; LogicalAim.UpperYawDegrees=90;
+		FGuLiMechanicalVisualState V1,V3;
+		StepVisualTurn(C,LogicalAim,FTransform::Identity,0,true,V1);
+		StepVisualTurn(C,LogicalAim,FTransform::Identity,0,true,V3);
+		const FTransform Turned(FRotator(0,90,0), FVector::ZeroVector);
+		StepVisualTurn(C,LogicalAim,Turned,.1,false,V1);
+		StepVisualTurn(C,LogicalAim,Turned,.1,false,V3,3.f);
+		TestTrue(TEXT("Mass WM01 damping response is tripled once"), FMath::IsNearlyEqual(V3.Root.Rotator().Yaw,
+			90.f*(1.f-FMath::Exp(-C.VisualYawDamping*.3f)),.001f));
+		TestTrue(TEXT("Default callers retain their damping response"), V3.Root.Rotator().Yaw>V1.Root.Rotator().Yaw);
+	}
 	S.UpperYawDegrees = 90; S.GunPitchDegrees[0] = 30;
 	const FTransform Root(FRotator(0, 20, 0), FVector(700, -200, 40));
 	FTransform Muzzle;

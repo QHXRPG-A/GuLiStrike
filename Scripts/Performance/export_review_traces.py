@@ -52,10 +52,15 @@ def export(directory):
         end=float(selected[-1]['EndTime']) if selected else 0
         method='Retrospective final CSV-N complete engine frames. Start/stop uncertainty <= 0.25 s; diagnostic CPU comparison, not exact CSV boundary.'
     frames=len(selected)
-    health=frames>0 and abs(frames-csv_frames)<=max(5,csv_frames*.02) and abs((end-begin)-record['capture_seconds'])<.25 and max(float(x['Duration']) for x in selected)<1
+    # The receipt also includes stop-command latency. The declared QPC window
+    # is the measured sleep span and is the authority for trace selection.
+    expected_span=(host[1]-host[0]) if clock_path.exists() else record['capture_seconds']
+    health=frames>0 and abs(frames-csv_frames)<=max(5,csv_frames*.02) and abs((end-begin)-expected_span)<.25 and max(float(x['Duration']) for x in selected)<1
     summary={'cpu_eligible':health,'window_method':method,'trace_interval_seconds':[begin,end],
         'frames':frames,'csv_frames':csv_frames,'case':record['case'],'pair':record['pair'],'variant':record['variant'],
         'source_directory':directory.name,'scope':'GT timer statistics and all-thread CPU work are separate. GPU-only rows removed. Engine frame normalization inside the declared window.'}
+    summary['expected_window_seconds']=expected_span
+    summary['receipt_including_stop_seconds']=record['capture_seconds']
     if clock_path.exists():
         summary['clock_mapping']={'host_clock':'Windows Python time.monotonic / raw QPC seconds',
             'qpc_origin_seconds':clock['qpc_origin_seconds'],'start_cycle':clock['start_cycle'],

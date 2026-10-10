@@ -1,7 +1,8 @@
 """Production-bandwidth native network capture after snapshot candidate rollback.
 
-The four experimental candidates were removed. This entry keeps baseline/manual
-capture only; historical comparison code is preserved under Rollback/Before.
+The four earlier experimental candidates were removed. Historical comparison
+code is preserved under Rollback/Before. A new review can pass explicit local
+controls; the original baseline/manual entry remains available.
 
 Uses the existing real movement/combat fixtures. No Python enumeration, screenshots,
 asset writes or additional network RPCs occur in the measured window.
@@ -22,8 +23,8 @@ from Performance import run_muzzle_batch_review as fixture
 from Performance import run_four_stage_review as review
 from Performance.capture_live_pie import SNAPSHOT
 
-OUT = ROOT / 'Artifacts/PerformanceOptimization20261010/Rollback'
-VERIFY = ['gs.Avoidance.VerifyPrefix']
+OUT = ROOT / 'Artifacts/MassAvoidance20261011/DirectApply'
+VERIFY = []
 QUALITY = ['sg.' + s + 'Quality' for s in ['ViewDistance', 'AntiAliasing', 'Shadow',
            'GlobalIllumination', 'Reflection', 'PostProcess', 'Texture', 'Effects', 'Foliage', 'Shading']]
 KEYS = list(dict.fromkeys(fixture.KEYS + VERIFY + QUALITY +
@@ -124,8 +125,8 @@ def prepare_mixed_view(scene):
 
 
 def capture(scene, candidate, round_number, variant, view='onscreen', seconds=30, verify=False, phase='baseline',
-            *, reuse_setup=None, warmup_seconds=10, stop_after=True):
-    if variant != 'baseline':
+            *, reuse_setup=None, warmup_seconds=10, stop_after=True, controls=None):
+    if variant != 'baseline' and controls is None:
         raise ValueError('Snapshot optimization candidates were rolled back; only baseline capture is available')
     name = f'{phase}-{scene}-{view}-{candidate}-r{round_number}-{variant}'
     directory = OUT / 'Paired' / name
@@ -144,11 +145,18 @@ def capture(scene, candidate, round_number, variant, view='onscreen', seconds=30
     log_path = ROOT / 'Saved/Logs/GuLiStrike.log'
     log_offset = log_path.stat().st_size
     fixture.commands([f'{k} {int(verify)}' for k in VERIFY], True)
+    if controls is not None:
+        fixture.commands([f'{k} {v:g}' for k, v in controls.items()], True)
     setup = dict(reuse_setup) if reuse_setup is not None else fixture.launch(
         scene, 2, fixed_viewports=True, install_review_assets=False,
         extra_previews=False, load_seconds=120)
     # The shared fixture disables expensive verification for its historical runs.
     fixture.commands([f'{k} {int(verify)}' for k in VERIFY])
+    if controls is not None:
+        fixture.commands([f'{k} {v:g}' for k, v in controls.items()])
+        actual = review.run(f"unreal.MCPythonHelper.submit_result(json.dumps({{'success':True,'values':{{k:unreal.SystemLibrary.get_console_variable_float_value(k) for k in {list(controls)!r}}}}}))")['values']
+        assert all(abs(actual[k]-v)<1.e-5 for k,v in controls.items()), (controls, actual)
+        setup['movement_controls'] = actual
     setup['target'] = [15000, 65000, 5401.779] if scene == 'stress' else [-10800, 65000, 1000]
     setup['view'] = view
     fixture.commands(['r.ScreenPercentage 100', 'r.DynamicRes.OperationMode 0'])
@@ -227,7 +235,8 @@ unreal.MCPythonHelper.submit_result(json.dumps({'success':True,'worlds':rows}))
                  ['received_shots', 'muzzle_accepted', 'muzzle_born', 'muzzle_expired']}
                 for b, a in zip(before['worlds'][1:], after['worlds'][1:])]
     receipt = {'scene': scene, 'candidate': candidate, 'round': round_number, 'variant': variant,
-               'view': view, 'verification_enabled': verify, 'baseline': 'snapshot_candidates_removed',
+               'view': view, 'verification_enabled': verify,
+               'baseline': 'same_binary_runtime_controls' if controls is not None else 'snapshot_candidates_removed',
                'setup': setup, 'warmup_seconds': warmup_seconds, 'capture_seconds': elapsed, 'csv': stats,
                'reused_pie': reuse_setup is not None,
                'moving_units_displaced': moved, 'alive_before': pop_before['alive'],
@@ -257,7 +266,7 @@ def inspect_scene(scene):
     review.result(PROFILES.replace('ACTION','begin'))
     try:
         segment=0
-        print('PIE ready. Commands: front / back / split / mixed; stop / reverse / forward for units. Enter quits and restores controls. Extra stress replenishment lasts at most 120 seconds.',flush=True)
+        print('PIE ready. Fixed optimized Mass movement is active. Commands: front / back / split / mixed; stop / reverse / forward / north / south for units. Enter quits and restores controls. Extra stress replenishment lasts at most 120 seconds.',flush=True)
         while True:
             command=input('Review command: ').strip().lower()
             review.result(PROFILES.replace('ACTION','end'))
@@ -272,8 +281,8 @@ def inspect_scene(scene):
                     if path.exists():angle=json.loads(path.read_text(encoding='utf-8'))['yaw_offset']
                     else:print('No saved mixed-view calibration; using front view.',flush=True);view='onscreen'
                 configure_view(setup,view,angle)
-            elif command in ['stop','reverse','forward']:
-                direction={'stop':0,'reverse':-1,'forward':1}[command]
+            elif command in ['stop','reverse','forward','north','south']:
+                direction={'stop':0,'reverse':-1,'forward':1,'north':2,'south':-2}[command]
                 review.run(f"w=unreal.EditorLevelLibrary.get_pie_worlds(True)[0]\nunreal.MCPythonHelper.submit_result(json.dumps({{'success':unreal.GuLiComponentSkillQALibrary.order_performance_population(w,{direction})}}))")
             else:print('Unknown command; view unchanged.',flush=True)
             review.result(PROFILES.replace('ACTION','begin'))
@@ -318,7 +327,7 @@ unreal.MCPythonHelper.submit_result(json.dumps({'success':r.success and n.succes
             if args.view == 'mixed':
                 prepare_mixed_view(scene)
             for number in range(1, args.rounds + 1):
-                capture(scene, 'rollback-native', number, 'baseline', args.view,
+                capture(scene, 'fixed-mass-native', number, 'baseline', args.view,
                         seconds=5 if args.phase == 'smoke' else args.seconds,
                         verify=False, phase=args.phase)
     finally:

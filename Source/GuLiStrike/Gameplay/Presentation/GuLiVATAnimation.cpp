@@ -142,14 +142,15 @@ void GuLiVATAnimation::Step(const UGuLiVATDefinition& D, const FVector& Velocity
 }
 
 void GuLiVATAnimation::StepAim(const UGuLiVATDefinition& D, const FGuLiVATPlayback& P,
-	const FTransform& Root, const FVector* Target, float Dt, FGuLiMechanicalAnimationState& Aim)
+	const FTransform& Root, const FVector* Target, float Dt, FGuLiMechanicalAnimationState& Aim, float TurnRateScale)
 {
 	if (!Aim.bInitialized) { Aim.UpperYawDegrees = Root.Rotator().Yaw; Aim.bInitialized = true; }
 	const int32 Top = D.Bones.IndexOfByPredicate([&D](const auto& B) { return B.Name == D.UpperBoneName; });
 	const FVector Pivot = Root.TransformPosition(D.SampleBone(Top, D.TextureFrame(P.Clip, P.Phase)).TransformPosition(D.UpperPivot));
 	const FVector Direction = Target ? *Target - Pivot : Root.GetRotation().GetForwardVector();
 	const FRotator Wanted = Direction.Rotation();
-	Aim.UpperYawDegrees = FMath::FixedTurn(Aim.UpperYawDegrees, Wanted.Yaw, D.UpperTurnRateDegreesPerSecond * FMath::Max(0.f,Dt));
+	const float Scale = FMath::IsFinite(TurnRateScale) ? FMath::Max(0.f, TurnRateScale) : 1.f;
+	Aim.UpperYawDegrees = FMath::FixedTurn(Aim.UpperYawDegrees, Wanted.Yaw, D.UpperTurnRateDegreesPerSecond * Scale * FMath::Max(0.f,Dt));
 	float WantedPitch = Wanted.Pitch;
 	if (Target && (D.bVertexAnimation || !D.PitchBoneName.IsNone()))
 	{
@@ -160,7 +161,7 @@ void GuLiVATAnimation::StepAim(const UGuLiVATDefinition& D, const FGuLiVATPlayba
 		WantedPitch = (*Target-GunPivot).Rotation().Pitch;
 	}
 	for (int32 Side = 0; Side < 2; ++Side)
-		Aim.GunPitchDegrees[Side] = FMath::FInterpConstantTo(Aim.GunPitchDegrees[Side], Target ? FMath::Clamp(WantedPitch, D.MinimumPitchDegrees, D.MaximumPitchDegrees) : 0.0f, Dt, D.PitchTurnRateDegreesPerSecond);
+		Aim.GunPitchDegrees[Side] = FMath::FInterpConstantTo(Aim.GunPitchDegrees[Side], Target ? FMath::Clamp(WantedPitch, D.MinimumPitchDegrees, D.MaximumPitchDegrees) : 0.0f, Dt, D.PitchTurnRateDegreesPerSecond * Scale);
 }
 
 bool GuLiVATAnimation::ResolveMuzzle(const UGuLiVATDefinition& D, const FGuLiVATPlayback& P,

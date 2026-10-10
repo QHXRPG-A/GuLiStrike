@@ -209,7 +209,7 @@ void GuLiMechanicalAnimation::ConfigureOverlay(UInstancedStaticMeshComponent& Co
 }
 
 void GuLiMechanicalAnimation::StepAim(const FGuLiMechanicalAnimationConfig& C, const FTransform& Root,
-	const FVector* Target, float FinalMoveSpeed, float Dt, FGuLiMechanicalAnimationState& S)
+	const FVector* Target, float FinalMoveSpeed, float Dt, FGuLiMechanicalAnimationState& S, float TurnRateScale)
 {
 	if (!C.IsEnabled() || Dt < 0 || !FMath::IsFinite(Dt)) return;
 	const float LowerYaw = Root.Rotator().Yaw;
@@ -218,7 +218,8 @@ void GuLiMechanicalAnimation::StepAim(const FGuLiMechanicalAnimationConfig& C, c
 	const FVector LocalTarget = Target ? HoverBodyTransform(C, S).InverseTransformPosition(Root.InverseTransformPosition(*Target)) : FVector::ZeroVector;
 	const FVector ToTarget = LocalTarget - C.UpperPivot;
 	const float DesiredYaw = Target && !ToTarget.IsNearlyZero() ? LowerYaw + ToTarget.Rotation().Yaw : LowerYaw;
-	const float Rate = C.UpperTurnRate * FMath::Max(0.0f, FinalMoveSpeed) / C.BaseMoveSpeed;
+	const float Scale = FMath::IsFinite(TurnRateScale) ? FMath::Max(0.f, TurnRateScale) : 1.f;
+	const float Rate = C.UpperTurnRate * FMath::Max(0.0f, FinalMoveSpeed) / C.BaseMoveSpeed * Scale;
 	S.UpperYawDegrees = bWarMachine ? FMath::FixedTurn(S.UpperYawDegrees, DesiredYaw, Rate * Dt) : LowerYaw;
 	const FQuat Yaw = FRotator(0, FMath::FindDeltaAngleDegrees(LowerYaw, S.UpperYawDegrees), 0).Quaternion();
 	for (int32 Side = 0; Side < (bWarMachine ? 2 : 1); ++Side)
@@ -227,7 +228,7 @@ void GuLiMechanicalAnimation::StepAim(const FGuLiMechanicalAnimationConfig& C, c
 		const FVector Delta = Target ? LocalTarget - Pivot : FVector::ForwardVector;
 		const float Pitch = Target ? FMath::RadiansToDegrees(FMath::Atan2(Delta.Z, Delta.Size2D())) : 0;
 		S.GunPitchDegrees[Side] = FMath::FInterpConstantTo(S.GunPitchDegrees[Side],
-			FMath::Clamp(Pitch, C.MinimumPitch, C.MaximumPitch), Dt, C.PitchRate);
+			FMath::Clamp(Pitch, C.MinimumPitch, C.MaximumPitch), Dt, C.PitchRate * Scale);
 	}
 }
 

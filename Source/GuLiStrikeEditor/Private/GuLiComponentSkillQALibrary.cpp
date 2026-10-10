@@ -27,6 +27,7 @@
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h"
+#include "MassEntityHandle.h"
 #include "Gameplay/Building/GuLiBuildingProductionComponent.h"
 #include "NavigationSystem.h"
 #include "NavigationData.h"
@@ -201,6 +202,7 @@ FString UGuLiComponentSkillQALibrary::PerformancePopulationSnapshot(UObject* Wor
  auto* Authority=World ? World->GetSubsystem<UGuLiBattleAuthoritySubsystem>() : nullptr;
  Result->SetBoolField(TEXT("success"),Authority!=nullptr);
  Result->SetBoolField(TEXT("ready"),Authority && Authority->HasSpawnedAuthorityPopulation());
+ if (World) Result->SetNumberField(TEXT("world_seconds"),World->GetTimeSeconds());
  if (Authority)
  {
   const auto Stats=Authority->GetNavigationStats();
@@ -229,6 +231,17 @@ FString UGuLiComponentSkillQALibrary::PerformancePopulationSnapshot(UObject* Wor
     FTransform Pose; if (!Authority->TryGetSoldierTransform(Id,Pose)) continue;
     auto Row=MakeShared<FJsonObject>(); Row->SetNumberField(TEXT("id"),Id.Value);
     const FVector P=Pose.GetLocation(); Row->SetArrayField(TEXT("position"),{MakeShared<FJsonValueNumber>(P.X),MakeShared<FJsonValueNumber>(P.Y),MakeShared<FJsonValueNumber>(P.Z)});
+    Row->SetNumberField(TEXT("yaw_degrees"),Pose.Rotator().Yaw);
+    FMassEntityHandle Entity;
+    if (Authority->FindSoldierEntity(Id,Entity)) Row->SetStringField(TEXT("entity_identity"),LexToString(Entity.AsNumber()));
+    FGuLiSoldierNavigationDebug Navigation;
+    if (Authority->TryGetSoldierNavigationDebug(Id,Navigation))
+    {
+     Row->SetBoolField(TEXT("moving"),Navigation.bMoving);
+     Row->SetNumberField(TEXT("order_id"),Navigation.ActiveOrderId);
+     const FVector V=Navigation.Velocity;
+     Row->SetArrayField(TEXT("velocity_cm_s"),{MakeShared<FJsonValueNumber>(V.X),MakeShared<FJsonValueNumber>(V.Y),MakeShared<FJsonValueNumber>(V.Z)});
+    }
     Positions.Add(MakeShared<FJsonValueObject>(Row));
    }
    Result->SetArrayField(TEXT("positions"),Positions);
@@ -241,7 +254,7 @@ bool UGuLiComponentSkillQALibrary::OrderPerformancePopulation(UObject* WorldCont
 {
  UWorld* World=PerformanceAuthorityWorld(WorldContext);
  auto* Authority=World ? World->GetSubsystem<UGuLiBattleAuthoritySubsystem>() : nullptr;
- if (!Authority || PerformancePopulation.World!=World || FMath::Abs(Direction)>1) return false;
+ if (!Authority || PerformancePopulation.World!=World || FMath::Abs(Direction)>2) return false;
  bool Accepted=true;
  for (int32 Team=0;Team<2;++Team)
  {
@@ -260,7 +273,11 @@ bool UGuLiComponentSkillQALibrary::OrderPerformancePopulation(UObject* WorldCont
     Center+=Pose.GetLocation();
    }
    FGuLiMoveRequest Request; Request.SelectionRevision=1; Request.ClientCommandId=++PerformancePopulation.Command[Team];
-   Request.Target=Center/(End-Begin)+FVector(Direction*(PerformancePopulation.bCombatLayout ? 20000.0 : 100000.0),0,0);
+   // The north/south review keeps both compact fixtures inside the authored
+   // +/-90,000 cm navigation volume. Existing east/west captures are unchanged.
+   const FVector Offset=FMath::Abs(Direction)==2 ? FVector(0,FMath::Sign(Direction)*10000.0,0)
+    : FVector(Direction*(PerformancePopulation.bCombatLayout ? 20000.0 : 100000.0),0,0);
+   Request.Target=Center/(End-Begin)+Offset;
    FGuLiCommandAck Ack; Accepted &= Authority->BeginMovePlanning(*Owner,Request,Selection,Ack);
   }
  }

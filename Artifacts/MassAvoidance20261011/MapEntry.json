@@ -1,0 +1,41 @@
+{
+  "success": true,
+  "saved": true,
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "note": {
+    "label": "PerfMassMovement_Entry",
+    "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_71",
+    "position_cm": [
+      -10600.0,
+      65000.0,
+      1300.0
+    ],
+    "editor_only": true,
+    "text": "Mass 避障简化与转向核对（默认不运行）\n当前采用控制：gs.Avoidance.LookaheadSeconds=0.5；gs.Avoidance.DistanceFirst=1；gs.Avoidance.MaxCandidates=6；gs.Avoidance.SharedIndex=1；gs.Avoidance.ReuseZero=1；gs.Avoidance.CacheMaxSeconds=0.3；gs.Units.MassTurnScale=3\n同进程专服＋双客户端，200单位或600单位＋现有三来源500附加飞行物（167/167/166）；每连接250000 B/s，1280×720。原计划四来源之一已退役，本轮实际使用上述三来源。\n项目终端：python Scripts/Performance/run_snapshot_parallel_review.py --phase inspect --scenes dense200\n压力场景替换为 stress。front/back/split/mixed 切视角；stop/forward/reverse/north/south 改令；空行回车结束并恢复。\nmass/old 切换本轮组合与旧算法；只作观察对照，不把手动切换片段当作固定配对收益。\n观察迎面交错、同向队列、拥堵、窄路与墙边、停止和90°/180°转向。预测最多六候选含最多两个环境优先；软避障仍保留全部接触对与三轮修正。\n左上角查看吞吐、连接预算和飞行队列；UE连接与应用载荷、同一连接两端分别报告。\n默认采用与门槛结论：完整组合在200与600+500场景的三组配对均通过原始CPU与整帧P95门槛，默认采用0.5秒/六候选/共享索引/保守零缓存/三倍转向；独立避障及旧避障加三倍转向在压力场景未全通过，不宣称这些组合已通过。\n配对原始数据：Artifacts/MassAvoidance20261011/PairedReport.md；技术记录：Progress/DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md。\n场景相机沿用 PerfSnapshotNetwork_Dense200_View 与 PerfSnapshotNetwork_Stress_View。\n本Note仅作编辑器入口；自动化与采样结论不代表玩家已验收。"
+  },
+  "cameras": [
+    {
+      "label": "PerfSnapshotNetwork_Dense200_View",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_32",
+      "position_cm": [
+        -10800.0,
+        61000.0,
+        15500.0
+      ],
+      "auto_activate_player_index": -1,
+      "editor_only": true
+    },
+    {
+      "label": "PerfSnapshotNetwork_Stress_View",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_33",
+      "position_cm": [
+        15000.0,
+        58000.0,
+        16000.0
+      ],
+      "auto_activate_player_index": -1,
+      "editor_only": true
+    }
+  ],
+  "default_inactive": true
+}

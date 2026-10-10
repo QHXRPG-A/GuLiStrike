@@ -8,6 +8,8 @@
 #include "Avoidance/MassAvoidanceFragments.h"
 #include "MassMovementFragments.h"
 #include "Misc/AutomationTest.h"
+#include "HAL/IConsoleManager.h"
+#include "Commander/Mass/GuLiMassMovementTuning.h"
 
 namespace GuLiCommanderAvoidancePolicyTests
 {
@@ -86,6 +88,25 @@ namespace GuLiCommanderAvoidancePolicyTests
 			ShouldSolve(1u << 1u, 1u, 11u, 11u, true));
 		TestFalse(TEXT("Stopped Soldiers never retain scheduled predictive work"),
 			ShouldSolve(1u << 1u, 1u, 12u, 11u, false));
+		FZeroResultCache Cache;
+		Cache.Identity=1; Cache.Location=FVector::ZeroVector; Cache.Velocity=Cache.DesiredVelocity=FVector(600,0,0);
+		Cache.Radius=100; Cache.OrderRevision=7; Cache.CreatedAt=1; Cache.Horizon=.5; Cache.CellSize=300;
+		Cache.CandidateLimit=6; Cache.MinimumCell={-5,-5}; Cache.MaximumCell={5,5}; Cache.MotionSignature=42;
+		FAgentSnapshot Agent{1,FVector(120,0,0),FVector(600,0,0),100,true,true,false,FVector(600,0,0),600};
+		auto Current=[&](double Now=1.2,uint32 Revision=7,uint64 Signature=42)
+		{ return IsZeroCacheCurrent(Cache,Agent,Now,.3f,Revision,.5f,6,300,{-5,-5},{5,5},Signature); };
+		TestTrue(TEXT("Safe same-direction zero result can survive 0.2 seconds"),Current());
+		TestFalse(TEXT("Cache expires after 0.3 seconds"),Current(1.31));
+		TestFalse(TEXT("Clock reset expires old result"),Current(.9));
+		TestFalse(TEXT("New command invalidates zero result"),Current(1.2,8));
+		TestFalse(TEXT("Local membership/motion/obstacle change invalidates zero result"),Current(1.2,7,43));
+		Agent.StableKey=2; TestFalse(TEXT("New entity generation cannot inherit a zero result"),Current()); Agent.StableKey=1;
+		Agent.bMoving=false; TestFalse(TEXT("Stopping invalidates zero result"),Current()); Agent.bMoving=true;
+		Agent.bParticipates=false; TestFalse(TEXT("Death invalidates zero result"),Current()); Agent.bParticipates=true;
+		Agent.Location.Y=100; TestFalse(TEXT("Teleport off expected motion invalidates zero result"),Current()); Agent.Location.Y=0;
+		Agent.DesiredVelocity=FVector(700,0,0); TestFalse(TEXT("Speed change beyond ten percent invalidates zero result"),Current());
+		Agent.DesiredVelocity=FVector(600,100,0); TestTrue(TEXT("Small direction/speed change remains eligible before the near guard"),Current());
+		Agent.DesiredVelocity=FVector(0,600,0); TestFalse(TEXT("Direction change beyond fifteen degrees invalidates zero result"),Current());
 		return true;
 	}
 
@@ -180,10 +201,33 @@ namespace GuLiCommanderAvoidancePolicyTests
 		TArray<FAgentSnapshot> ReverseAgents = ForwardAgents;
 		Algo::Reverse(ReverseAgents);
 		const TArray<uint64> ReverseKeys = CollectStableKeys(ReverseAgents);
-		TestEqual(TEXT("Only the nearest 24 candidates are retained"),
-			ForwardKeys.Num(), MaximumNearestCandidates);
+		TestEqual(TEXT("The active selector respects its total candidate cap"),
+			ForwardKeys.Num(), GuLiMassMovementTuning::GetCandidateLimit());
 		TestTrue(TEXT("Candidate identity and order do not depend on bucket insertion order"),
 			ForwardKeys == ReverseKeys);
+		{
+			TArray<FAgentSnapshot> Mixed = {
+				{1, FVector::ZeroVector, FVector(600,0,0), 100, true, true},
+				{8, FVector(300,0,0), FVector(-600,0,0), 100, true, true},
+				{2, FVector(-300,0,0), FVector(600,0,0), 100, true, true},
+				{3, FVector(500,0,0), FVector::ZeroVector, 100, true, false},
+				{4, FVector(600,0,0), FVector::ZeroVector, 100, true, false},
+				{5, FVector(700,0,0), FVector::ZeroVector, 100, true, false},
+				{(uint64(1)<<63)|1, FVector(1500,0,0), FVector::ZeroVector, 1200, true, false, true},
+				{(uint64(1)<<63)|2, FVector(400,0,0), FVector::ZeroVector, 100, true, false, true},
+				{(uint64(1)<<63)|3, FVector(500,0,0), FVector::ZeroVector, 100, true, false, true}};
+			FAvoidanceSpatialGrid Grid; BuildSpatialGrid(Mixed, Grid);
+			FNearestCandidateList Selected;
+			const auto Metrics = SelectNearestCandidates(0, Mixed, Grid, Selected);
+			TestEqual(TEXT("Six includes the environment priority slots"), Selected.Num(), 6);
+			TestEqual(TEXT("Selection does not evaluate collision trends"), Metrics.TrendEvaluations, uint64(0));
+			TestEqual(TEXT("Large distant obstacle is ranked by its edge"), Selected[0].StableKey, (uint64(1)<<63)|1);
+			TestEqual(TEXT("Second environment fills only one further slot"), Selected[1].StableKey, (uint64(1)<<63)|2);
+			TestEqual(TEXT("Unit center-distance tie uses stable identity, not threat"), Selected[2].StableKey, uint64(2));
+			FPredictiveParameters P; P.MaximumSpeed=600; P.MaximumAcceleration=2400;
+			int32 Evaluations=0; CalculatePredictiveAvoidance(Mixed[0],Mixed,Selected,P,1,Evaluations);
+			TestEqual(TEXT("Each selected collider computes its trend once"), Evaluations, Selected.Num());
+		}
 		return true;
 	}
 
@@ -207,11 +251,11 @@ namespace GuLiCommanderAvoidancePolicyTests
 
 		TArray<FAgentSnapshot> Agents = {
 			{1u, FVector::ZeroVector, FVector(1000.0, 0.0, 0.0), 750.0f, true, true},
-			{2u, FVector(3000.0, 0.0, 0.0), FVector(-1000.0, 0.0, 0.0), 750.0f, true, true}
+			{2u, FVector(2000.0, 0.0, 0.0), FVector(-1000.0, 0.0, 0.0), 750.0f, true, true}
 		};
 		FNearestCandidate Candidate;
 		Candidate.AgentIndex = 1;
-		Candidate.DistanceSquared = 9000000.0;
+		Candidate.DistanceSquared = 4000000.0;
 		Candidate.StableKey = 2u;
 		TArray<FNearestCandidate> Candidates = {Candidate};
 		int32 ColliderEvaluationsA = 0;
@@ -227,6 +271,14 @@ namespace GuLiCommanderAvoidancePolicyTests
 		TestTrue(TEXT("Instant-separation stiffness does not affect predictive output"),
 			ApproachingForce.Equals(SeparationChangedForce, UE_KINDA_SMALL_NUMBER));
 		TestEqual(TEXT("One selected collider is evaluated"), ColliderEvaluationsA, 1);
+		if (PredictiveA.PredictiveAvoidanceTime <= .5f)
+		{
+			Agents[1].Location.X = 3000;
+			int32 FarEvaluations = 0;
+			TestTrue(TEXT("A contact beyond the shortened horizon does not steer early"),
+				CalculatePredictiveAvoidance(Agents[0],Agents,Candidates,PredictiveA,1,FarEvaluations).IsNearlyZero());
+			Agents[1].Location.X = 2000;
+		}
 
 		Agents[0].Velocity = FVector(-1000.0, 0.0, 0.0);
 		Agents[1].Velocity = FVector(1000.0, 0.0, 0.0);

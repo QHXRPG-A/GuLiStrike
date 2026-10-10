@@ -119,7 +119,7 @@ namespace GuLiMechanicalAnimation
 	/** Uses the monotonic presentation clock, including resets; does not mutate LogicalPose/Aim. */
 	GULISTRIKE_API void StepVisualTurn(const FGuLiMechanicalAnimationConfig& Config,
 		const FGuLiMechanicalAnimationState& Aim, const FTransform& LogicalPose,
-		double PoseTime, bool bReset, FGuLiMechanicalVisualState& Visual);
+		double PoseTime, bool bReset, FGuLiMechanicalVisualState& Visual, float YawResponseScale = 1.0f);
 	GULISTRIKE_API FGuLiMechanicalAnimationFrame BuildVisualFrame(const FGuLiMechanicalAnimationConfig& Config,
 		const FGuLiMechanicalAnimationState& State, const FGuLiMechanicalVisualState& Visual, float Time);
 	GULISTRIKE_API bool ResolveVisualMuzzle(const FGuLiMechanicalAnimationConfig& Config,
@@ -144,7 +144,7 @@ namespace GuLiMechanicalAnimation
 	GULISTRIKE_API void ConfigureOverlay(UInstancedStaticMeshComponent& Component, UMaterialInterface* Material);
 	GULISTRIKE_API void StepAim(const FGuLiMechanicalAnimationConfig& Config,
 		const FTransform& LogicalPose, const FVector* Target, float FinalMoveSpeed, float DeltaSeconds,
-		FGuLiMechanicalAnimationState& State);
+		FGuLiMechanicalAnimationState& State, float TurnRateScale = 1.0f);
 	GULISTRIKE_API void StepLocomotion(const FGuLiMechanicalAnimationConfig& Config,
 		const FTransform& PreviousPose, const FTransform& Pose, float DeltaSeconds, bool bReset,
 		FGuLiMechanicalAnimationState& State);

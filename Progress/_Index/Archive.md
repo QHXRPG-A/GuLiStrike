@@ -4,6 +4,8 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-10-11 | [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | commander, navigation, presentation, performance | partial | 按用户最新指示将已采用的Mass优化固定应用，删除本轮运行时开关与旧预测回退；重新编译13.06秒成功、8份BuildId一致、8项自动化通过，地图入口同步移除旧切换操作。 |
+| 2026-10-11 | [Mass避障简化、转向提速与网络固定对照](../Archive/20261011-Mass避障简化转向提速与网络对照.md) | commander, navigation, presentation, performance | partial | 完整组合在200及600+500同进程场景各三组配对通过，默认采用六邻居预测、共享索引、保守零缓存与三倍转向；编译、8项自动化、原地图入口及退出恢复完成，网络积压仍在。 |
 | 2026-10-11 | [会话变更编译、地图收尾与临时文件清理](../Archive/20261011-会话变更编译地图收尾与临时文件清理.md) | commander, navigation, combat, presentation, performance | partial | 用户授权后源码Editor构建退出0，8份BuildId一致；原地图遗留对象与说明清理并保存读回，66个临时文件约268 MB已删除。未追加PIE或效果验收。 |
 | 2026-10-11 | [地面避障容量耗尽导致专服退出的诊断与调整](../Archive/20261011-地面避障容量耗尽导致专服退出的诊断与调整.md) | commander, navigation, performance | partial | 专服新增Mass障碍时耗尽共享Crowd的1024个注册槽，触发致命断言；配置及原生默认提高至8192，未重跑验证。 |
 | 2026-10-10 | [遗留发射路径清理与地图保存阻塞恢复](../Archive/20261010-遗留发射路径清理与地图保存阻塞恢复.md) | ship, combat, network, performance | partial | 遗留发射实现、绑定资产和文本已清理；关闭任务启动的额外编辑器后，原地图保存及客户端PIE入口恢复。 |

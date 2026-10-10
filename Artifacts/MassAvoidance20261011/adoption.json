@@ -1,0 +1,47 @@
+{
+  "schema": "mass-movement-adoption/v1",
+  "default_controls": {
+    "gs.Avoidance.LookaheadSeconds": 0.5,
+    "gs.Avoidance.DistanceFirst": 1,
+    "gs.Avoidance.MaxCandidates": 6,
+    "gs.Avoidance.SharedIndex": 1,
+    "gs.Avoidance.ReuseZero": 1,
+    "gs.Avoidance.CacheMaxSeconds": 0.3,
+    "gs.Units.MassTurnScale": 3
+  },
+  "decision": "adopt_full_combination",
+  "summary": "完整组合在200与600+500场景的三组配对均通过原始CPU与整帧P95门槛，默认采用0.5秒/六候选/共享索引/保守零缓存/三倍转向；独立避障及旧避障加三倍转向在压力场景未全通过，不宣称这些组合已通过。",
+  "benchmarked_windows": 40,
+  "stress_scenario": {
+    "mass_units": 600,
+    "extra_flights": 500,
+    "actual_source_domains": [167, 167, 166],
+    "plan_deviation": "One of the originally planned four source domains was already retired; all twenty stress windows use the current three production sources. The original four-domain scenario has not been validated."
+  },
+  "total_avoidance_ms_saved": {"dense200": 0.183963, "stress": 4.227177},
+  "pair_p95_delta_ms": {
+    "dense200": [0.4801, -0.3381, -2.7619],
+    "stress": [-4.2947, -3.1294, -3.5769]
+  },
+  "aa_noise_ms": {
+    "dense200": {"total_avoidance": 0.0024985, "frame_p95": 1.2338},
+    "stress": {"total_avoidance": 0.706054, "frame_p95": 0.7482}
+  },
+  "scope": "Only the complete combination is adopted on this evidence; independent switches permit rollback but altered combinations require their own validation.",
+  "limitations": [
+    "Near-zero cache hit counts do not establish a measurable cache-only benefit.",
+    "Shared immutable geometry is consistent within each version; moving geometry still causes frequent version publication and grid builds.",
+    "Stress windows with zero real muzzle births establish CPU/network diagnostics, not complete client presentation benefit.",
+    "Wall/corridor/congestion feel and WM01 visual acceptance remain available in the original map entry for player review.",
+    "Same-process dedicated server and two clients do not establish standalone client FPS."
+  ],
+  "references": {
+    "analysis": "analysis.json",
+    "paired_report": "PairedReport.md",
+    "trace_diagnosis": "trace-diagnosis.json",
+    "automation": "QA/results.json",
+    "behavior": "Behavior/summary.json",
+    "benchmark_build": "Build/benchmark-verification.json",
+    "delivery_build": "Build/verification.json"
+  }
+}

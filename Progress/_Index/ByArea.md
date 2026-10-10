@@ -510,6 +510,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-11 |
 | [会话变更编译、地图收尾与临时文件清理](../Archive/20261011-会话变更编译地图收尾与临时文件清理.md) | archive | recorded | 2026-10-11 |
 | [PIE性能基线与快照多线程优化](../RequirementDocument/20261010-PIE性能基线与快照多线程优化.md) | requirement | approved | 2026-10-10 |
 | [客户端表现管线技能与枪口批量化](../RequirementDocument/20261010-客户端表现管线技能与枪口批量化.md) | requirement | approved | 2026-10-10 |
@@ -517,7 +518,6 @@
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
 | [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-10 |
-| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-10 |
 | [客户端表现管线技能与枪口批量化 — 技术方案](../DevelopmentDocumentation/20261010-客户端表现管线技能与枪口批量化.md) | development | verification | 2026-10-10 |
 | [命中特效事件批量承载与生命周期优化 — 技术方案](../DevelopmentDocumentation/20261009-命中特效事件批量承载与生命周期优化.md) | development | verification | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
@@ -759,7 +759,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
+| [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | development | verification | 2026-10-11 |
+| [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | archive | recorded | 2026-10-11 |
+| [Mass避障简化、转向提速与网络固定对照](../Archive/20261011-Mass避障简化转向提速与网络对照.md) | archive | recorded | 2026-10-11 |
 | [会话变更编译、地图收尾与临时文件清理](../Archive/20261011-会话变更编译地图收尾与临时文件清理.md) | archive | recorded | 2026-10-11 |
 | [地面避障容量耗尽导致专服退出的诊断与调整](../Archive/20261011-地面避障容量耗尽导致专服退出的诊断与调整.md) | archive | recorded | 2026-10-11 |
 | [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
@@ -1470,7 +1474,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
+| [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | development | verification | 2026-10-11 |
+| [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | archive | recorded | 2026-10-11 |
+| [Mass避障简化、转向提速与网络固定对照](../Archive/20261011-Mass避障简化转向提速与网络对照.md) | archive | recorded | 2026-10-11 |
 | [会话变更编译、地图收尾与临时文件清理](../Archive/20261011-会话变更编译地图收尾与临时文件清理.md) | archive | recorded | 2026-10-11 |
 | [地面避障容量耗尽导致专服退出的诊断与调整](../Archive/20261011-地面避障容量耗尽导致专服退出的诊断与调整.md) | archive | recorded | 2026-10-11 |
 | [PIE游戏线程耗时与避障候选查询优化 — 技术方案](../DevelopmentDocumentation/20261009-PIE游戏线程耗时与避障候选查询优化.md) | development | verification | 2026-10-09 |
@@ -1824,6 +1832,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
+| [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
+| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-11 |
+| [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | archive | recorded | 2026-10-11 |
+| [Mass避障简化、转向提速与网络固定对照](../Archive/20261011-Mass避障简化转向提速与网络对照.md) | archive | recorded | 2026-10-11 |
 | [会话变更编译、地图收尾与临时文件清理](../Archive/20261011-会话变更编译地图收尾与临时文件清理.md) | archive | recorded | 2026-10-11 |
 | [地面避障容量耗尽导致专服退出的诊断与调整](../Archive/20261011-地面避障容量耗尽导致专服退出的诊断与调整.md) | archive | recorded | 2026-10-11 |
 | [PIE性能基线与快照多线程优化](../RequirementDocument/20261010-PIE性能基线与快照多线程优化.md) | requirement | approved | 2026-10-10 |
@@ -1833,7 +1846,6 @@
 | [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
 | [游戏左上角帧率与延迟显示](../RequirementDocument/20260923-游戏左上角帧率与延迟显示.md) | requirement | approved | 2026-10-10 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-10 |
-| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-10 |
 | [客户端表现管线技能与枪口批量化 — 技术方案](../DevelopmentDocumentation/20261010-客户端表现管线技能与枪口批量化.md) | development | verification | 2026-10-10 |
 | [命中特效事件批量承载与生命周期优化 — 技术方案](../DevelopmentDocumentation/20261009-命中特效事件批量承载与生命周期优化.md) | development | verification | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
@@ -1984,13 +1996,17 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
+| [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
+| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-11 |
+| [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | archive | recorded | 2026-10-11 |
+| [Mass避障简化、转向提速与网络固定对照](../Archive/20261011-Mass避障简化转向提速与网络对照.md) | archive | recorded | 2026-10-11 |
 | [会话变更编译、地图收尾与临时文件清理](../Archive/20261011-会话变更编译地图收尾与临时文件清理.md) | archive | recorded | 2026-10-11 |
 | [PIE性能基线与快照多线程优化](../RequirementDocument/20261010-PIE性能基线与快照多线程优化.md) | requirement | approved | 2026-10-10 |
 | [客户端表现管线技能与枪口批量化](../RequirementDocument/20261010-客户端表现管线技能与枪口批量化.md) | requirement | approved | 2026-10-10 |
 | [命中特效事件批量承载与生命周期优化](../RequirementDocument/20261009-命中特效事件批量承载与生命周期优化.md) | requirement | approved | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
 | [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
-| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-10 |
 | [客户端表现管线技能与枪口批量化 — 技术方案](../DevelopmentDocumentation/20261010-客户端表现管线技能与枪口批量化.md) | development | verification | 2026-10-10 |
 | [命中特效事件批量承载与生命周期优化 — 技术方案](../DevelopmentDocumentation/20261009-命中特效事件批量承载与生命周期优化.md) | development | verification | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
@@ -2402,11 +2418,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-11 |
 | [PIE性能基线与快照多线程优化](../RequirementDocument/20261010-PIE性能基线与快照多线程优化.md) | requirement | approved | 2026-10-10 |
 | [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
 | [游戏左上角帧率与延迟显示](../RequirementDocument/20260923-游戏左上角帧率与延迟显示.md) | requirement | approved | 2026-10-10 |
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-10 |
-| [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-10 |
 | [客户端视野裁剪与特效三档LOD优化 — 技术方案](../DevelopmentDocumentation/20261009-客户端视野裁剪与特效三档LOD优化.md) | development | verification | 2026-10-10 |
 | [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | development | verification | 2026-10-10 |
 | [未通过性能候选回退与CPU及GPU瓶颈核对](../Archive/20261010-未通过性能候选回退与CPU及GPU瓶颈核对.md) | archive | recorded | 2026-10-10 |

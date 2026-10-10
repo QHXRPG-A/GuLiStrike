@@ -1,0 +1,832 @@
+{
+  "stress_windows": 20,
+  "actual_domains": [
+    167,
+    167,
+    166
+  ],
+  "extra_flights": 500,
+  "plan_deviation": "The current production acceptance fixture has three source domains after a previous retirement; the planned four-domain scenario is not validated.",
+  "windows": [
+    {
+      "run": "aa-stress-onscreen-same-version-r1-baseline",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "aa-stress-onscreen-same-version-r2-baseline",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "avoidance-stress-onscreen-avoidance-r1-avoidance",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "avoidance-stress-onscreen-avoidance-r1-baseline",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "avoidance-stress-onscreen-avoidance-r2-avoidance",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "avoidance-stress-onscreen-avoidance-r2-baseline",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "avoidance-stress-onscreen-avoidance-r3-avoidance",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "avoidance-stress-onscreen-avoidance-r3-baseline",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "combined-stress-onscreen-combined-r1-baseline",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "combined-stress-onscreen-combined-r1-combined",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "combined-stress-onscreen-combined-r2-baseline",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "combined-stress-onscreen-combined-r2-combined",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "combined-stress-onscreen-combined-r3-baseline",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "combined-stress-onscreen-combined-r3-combined",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "turn-stress-onscreen-turn-r1-baseline",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "turn-stress-onscreen-turn-r1-turn",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "turn-stress-onscreen-turn-r2-baseline",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "turn-stress-onscreen-turn-r2-turn",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "turn-stress-onscreen-turn-r3-baseline",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "run": "turn-stress-onscreen-turn-r3-turn",
+      "loads": [
+        {
+          "moment": "before",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        },
+        {
+          "moment": "after",
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "load": {
+            "running": true,
+            "groundMissile": false,
+            "desired": 500,
+            "peak": 500,
+            "accepted": 0,
+            "completed": 0,
+            "rejected": 0,
+            "domains": [
+              167,
+              167,
+              166
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -112,7 +112,7 @@ namespace GuLiVATAnimation
 	GULISTRIKE_API void Step(const UGuLiVATDefinition& Definition, const FVector& Velocity,
 		float BodyYaw, bool bAlive, float Dt, FGuLiVATPlayback& Playback);
 	GULISTRIKE_API void StepAim(const UGuLiVATDefinition& Definition, const FGuLiVATPlayback& Playback,
-		const FTransform& Root, const FVector* Target, float Dt, FGuLiMechanicalAnimationState& Aim);
+		const FTransform& Root, const FVector* Target, float Dt, FGuLiMechanicalAnimationState& Aim, float TurnRateScale = 1.0f);
 	GULISTRIKE_API bool ResolveMuzzle(const UGuLiVATDefinition& Definition, const FGuLiVATPlayback& Playback,
 		const FGuLiMechanicalAnimationState& Aim, const FTransform& Root, int32 Side, FTransform& Out);
 	GULISTRIKE_API void WriteInstance(UInstancedStaticMeshComponent& Component, int32 Index,

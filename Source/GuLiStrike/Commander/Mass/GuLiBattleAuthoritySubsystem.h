@@ -20,6 +20,7 @@ struct FGuLiActiveSkillRuntime;
 struct FGuLiCommanderInitialSpawnSlot;
 struct FGuLiSoldierDefinition;
 struct FGuLiSharedMoveIntent;
+namespace GuLiCommanderAvoidancePolicy { struct FAgentSnapshot; struct FSharedAvoidanceGeometry; }
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierRetiringSignature, const FGuLiSoldierStateItem&);
 
@@ -255,6 +256,9 @@ class GULISTRIKE_API UGuLiBattleAuthoritySubsystem final : public UTickableWorld
 	GENERATED_BODY()
 
 public:
+	/** Game-thread publication: exact geometry changes create a fresh immutable version. */
+	TSharedPtr<const GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry> AcquireAvoidanceGeometry(
+		TConstArrayView<GuLiCommanderAvoidancePolicy::FAgentSnapshot> Agents);
 	/** Called only inside the authority fixed step; validates before changing existing entities. */
 	bool ApplyRogueMovementSource(EGuLiTeam Team, uint16 UnitTypeId, FGuid SourceId, float BonusPercent, FString& Error);
 	float GetUnitMovementSpeed(EGuLiTeam Team, uint16 UnitTypeId) const;

@@ -29,7 +29,7 @@ for w in unreal.EditorLevelLibrary.get_pie_worlds(True):
  rows.append(row)
 unreal.MCPythonHelper.submit_result(json.dumps({{'success':True,'worlds':rows}}))
 '''
-OPTIMIZED={'gs.Flights.DataPool':1,'gs.Effects.ThreeTierLOD':1,'gs.Effects.BoundsCull':1,'gs.Effects.OffscreenLifecycle':1,'gs.Units.Offscreen5Hz':1,'gs.Flights.OffscreenPresentation':1,'gs.Impacts.BatchMode':2,'gs.WingmanFlight.Presentation':1,'gs.WingmanFlight.Warnings':1,'gs.Avoidance.QueryOptimizations':1,'gs.SceneUI.ProjectionCache':1,'gs.Avoidance.SparseCells':1,'gs.Avoidance.VerifyPrefix':0,'guli.Commander.MoveLatencyDiagnostics':0}
+OPTIMIZED={'gs.Flights.DataPool':1,'gs.Effects.ThreeTierLOD':1,'gs.Effects.BoundsCull':1,'gs.Effects.OffscreenLifecycle':1,'gs.Units.Offscreen5Hz':1,'gs.Flights.OffscreenPresentation':1,'gs.Impacts.BatchMode':2,'gs.WingmanFlight.Presentation':1,'gs.WingmanFlight.Warnings':1,'gs.SceneUI.ProjectionCache':1,'guli.Commander.MoveLatencyDiagnostics':0}
 KEYS=['gs.Muzzles.BatchMode','guli.stronghold.TeamUnitCap','guli.stronghold.CaptureSeconds','r.GPUCsvStatsEnabled','t.IdleWhenNotForeground','Slate.bAllowThrottling','r.VSync','t.MaxFPS',*OPTIMIZED]
 
 def write(path,value):path.write_text(json.dumps(value,ensure_ascii=False,indent=2),encoding='utf-8')
@@ -76,7 +76,7 @@ def launch(scene,mode,*,fixed_viewports=False,install_review_assets=True,extra_p
    started=review.run("w=unreal.EditorLevelLibrary.get_pie_worlds(True)[0]\nf=next(s for s in unreal.ObjectIterator(unreal.GuLiFlightAcceptanceSubsystem) if s.get_outer()==w)\nunreal.MCPythonHelper.submit_result(json.dumps({'success':True,'started':f.start_load(500,LOAD_SECONDS)}))".replace('LOAD_SECONDS',str(load_seconds)))
    if started['started']:break
    time.sleep(.5)
-  else:raise RuntimeError('Four source flights not ready')
+  else:raise RuntimeError('Three source flights not ready')
  setup.update(population=pop,sizes=sizes,camera=camera,target=target,health=500000,bandwidth=bandwidth,motion='Normal authority spawn and accepted native move planning. Natural combat stops/arrivals retained, no unit tick or avoidance disabled.')
  return setup
 

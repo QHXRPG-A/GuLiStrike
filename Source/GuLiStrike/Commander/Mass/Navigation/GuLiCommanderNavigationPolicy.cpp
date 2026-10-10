@@ -4,6 +4,7 @@
 
 #include "NavigationData.h"
 #include "NavigationSystem.h"
+#include "Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h"
 
 namespace GuLiCommanderNavigationPolicy
 {
@@ -203,7 +204,8 @@ namespace GuLiCommanderNavigationPolicy
 		const TConstArrayView<FManualAvoidanceAgent> Agents,
 		const float MaximumHeightDifferenceCentimeters,
 		FManualAvoidanceSpatialGrid& InOutSpatialGrid,
-		TArray<FVector>& OutVelocities)
+		TArray<FVector>& OutVelocities,
+		const GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry* SharedGeometry)
 	{
 		constexpr float RecoverySeconds = 0.5f;
 		constexpr float PassiveSpeedScale = 0.25f;
@@ -224,42 +226,70 @@ namespace GuLiCommanderNavigationPolicy
 			MaximumRadius = FMath::Max(MaximumRadius, A.RadiusCentimeters);
 			MaximumSpeed = FMath::Max(MaximumSpeed, A.MaximumSpeed);
 		}
-		const float CellSize = FMath::Max(300.0f, MaximumRadius * 2.0f);
+		const float CellSize = SharedGeometry ? SharedGeometry->CellSize : FMath::Max(300.0f, MaximumRadius * 2.0f);
+		TMap<uint64, int32> ManualIndexByIdentity;
 		for (int32 I = 0; I < Agents.Num(); ++I) if (IsValid(Agents[I]))
 		{
 			const auto& A = Agents[I];
-			auto& Bucket = InOutSpatialGrid.FindOrAdd(MakeAvoidanceSpatialCell(A.Location, CellSize));
-			Bucket.Add(I);
-			Metrics.MaximumBucketOccupancy = FMath::Max(Metrics.MaximumBucketOccupancy, Bucket.Num());
+			if (SharedGeometry) ManualIndexByIdentity.Add(A.StableEntityKey, I);
+			else
+			{
+				auto& Bucket = InOutSpatialGrid.FindOrAdd(MakeAvoidanceSpatialCell(A.Location, CellSize));
+				Bucket.Add(I);
+				Metrics.MaximumBucketOccupancy = FMath::Max(Metrics.MaximumBucketOccupancy, Bucket.Num());
+			}
 			if (A.bReceivesAvoidance) OutVelocities[I] = A.DesiredVelocity.GetClampedToMaxSize(A.MaximumSpeed);
+		}
+		if (SharedGeometry) Metrics.MaximumBucketOccupancy = SharedGeometry->MaximumBucketOccupancy;
+		TArray<int32> SharedToManual;
+		if (SharedGeometry)
+		{
+			SharedToManual.Init(INDEX_NONE, SharedGeometry->Agents.Num());
+			for (int32 I=0; I<SharedGeometry->Agents.Num(); ++I)
+				if (!SharedGeometry->Agents[I].bEnvironment)
+					if (const int32* J=ManualIndexByIdentity.Find(SharedGeometry->Agents[I].StableKey)) SharedToManual[I]=*J;
 		}
 		struct FPair { int32 A, B; FVector Normal; float Penetration; };
 		TArray<FPair> Pairs;
+		TArray<const GuLiCommanderAvoidancePolicy::FAvoidanceBucket*, TInlineAllocator<64>> SharedBuckets;
 		for (int32 I = 0; I < Agents.Num(); ++I) if (IsValid(Agents[I]))
 		{
 			const auto& A = Agents[I];
 			const auto Cell = MakeAvoidanceSpatialCell(A.Location, CellSize);
 			const int32 Range = FMath::CeilToInt((A.RadiusCentimeters + MaximumRadius
 				+ (A.MaximumSpeed + MaximumSpeed) * RecoverySeconds) / CellSize);
-			for (int32 X = Cell.X - Range; X <= Cell.X + Range; ++X)
-			for (int32 Y = Cell.Y - Range; Y <= Cell.Y + Range; ++Y)
+			auto Visit = [&](int32 J)
 			{
-				const auto* Bucket = InOutSpatialGrid.Find(FIntPoint(X, Y));
-				if (!Bucket) continue;
-				for (int32 J : *Bucket)
-				{
+					++Metrics.BucketEntriesVisited;
 					const auto& B = Agents[J];
 					if (A.StableSoldierId >= B.StableSoldierId
-						|| FMath::Abs(A.Location.Z - B.Location.Z) >= MaximumHeightDifferenceCentimeters) continue;
+						|| FMath::Abs(A.Location.Z - B.Location.Z) >= MaximumHeightDifferenceCentimeters) return;
 					++Metrics.CandidatePairs;
 					const FVector Delta = (A.Location - B.Location) * FVector(1, 1, 0);
 					const float Distance = Delta.Size2D();
 					const float Penetration = A.RadiusCentimeters + B.RadiusCentimeters - Distance;
-					if (Penetration < -(A.MaximumSpeed + B.MaximumSpeed) * RecoverySeconds) continue;
+					if (Penetration < -(A.MaximumSpeed + B.MaximumSpeed) * RecoverySeconds) return;
 					if (Penetration > 0.0f) ++Metrics.OverlapPairs;
 					Pairs.Add({I, J, Distance > UE_KINDA_SMALL_NUMBER ? Delta / Distance
 						: FVector(-1, 0, 0), Penetration});
+			};
+			if (SharedGeometry)
+			{
+				SharedBuckets.Reset(); uint64 Comparisons = 0;
+				SharedGeometry->Grid.GatherOrderedBuckets({Cell.X - Range, Cell.Y - Range},
+					{Cell.X + Range, Cell.Y + Range}, SharedBuckets, Comparisons);
+				for (const auto* Bucket : SharedBuckets) for (int32 Index : *Bucket)
+				{
+					const int32 J=SharedToManual[Index];
+					if (J!=INDEX_NONE) Visit(J); // Unit-only, full-generation identity mapping.
 				}
+			}
+			else
+			{
+				for (int32 X = Cell.X - Range; X <= Cell.X + Range; ++X)
+				for (int32 Y = Cell.Y - Range; Y <= Cell.Y + Range; ++Y)
+					if (const auto* Bucket = InOutSpatialGrid.Find(FIntPoint(X, Y)))
+						for (int32 J : *Bucket) Visit(J);
 			}
 		}
 		// Stable pair order makes the solve independent of Mass chunk/array iteration order.

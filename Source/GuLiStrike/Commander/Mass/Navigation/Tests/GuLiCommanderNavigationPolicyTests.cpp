@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h"
+#include "Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -957,6 +958,32 @@ namespace GuLiCommanderNavigationPolicyTests
 		TestTrue(
 			TEXT("The 500-Soldier formation checks local candidates instead of all 124750 pairs"),
 			FormationMetrics.CandidatePairs < 4000u);
+		// Compare the unchanged three-round soft solve through a shared index whose
+		// array order and identities deliberately differ from the manual input.
+		TArray<FManualAvoidanceAgent> Soft;
+		for (int32 I=0; I<24; ++I)
+		{
+			auto& A=Soft.AddDefaulted_GetRef(); A.StableSoldierId=I+1;
+			A.StableEntityKey=(uint64(I+17)<<32)|uint64(99-I);
+			A.Location=FVector((I%6)*240-720,(I/6)*240-480, I==23 ? 500 : 0);
+			A.RadiusCentimeters=150; A.MaximumSpeed=720; A.bParticipates=I!=22;
+			A.bReceivesAvoidance=I%3!=0; A.bCanBePushed=true; A.Team=I<12 ? 1 : 2;
+			A.DesiredVelocity=A.bReceivesAvoidance ? FVector(I<12 ? 720 : -720,0,0) : FVector::ZeroVector;
+		}
+		GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry Shared;
+		Shared.CellSize=300;
+		for (int32 I=Soft.Num()-1; I>=0; --I)
+		{
+			auto& G=Shared.Agents.AddDefaulted_GetRef(); const auto& A=Soft[I];
+			G.StableKey=A.StableEntityKey; G.Location=A.Location; G.Radius=A.RadiusCentimeters; G.bParticipates=A.bParticipates;
+		}
+		Shared.MaximumBucketOccupancy=GuLiCommanderAvoidancePolicy::BuildSpatialGrid(Shared.Agents,Shared.Grid,Shared.CellSize);
+		TArray<FVector> Original, Reused;
+		const auto Old=SolveSoftAvoidanceVelocities(Soft,300,SpatialGrid,Original);
+		const auto New=SolveSoftAvoidanceVelocities(Soft,300,SpatialGrid,Reused,&Shared);
+		TestEqual(TEXT("Shared index preserves all soft candidate pairs"),New.CandidatePairs,Old.CandidatePairs);
+		TestEqual(TEXT("Shared index preserves all overlapping contact pairs"),New.OverlapPairs,Old.OverlapPairs);
+		for (int32 I=0; I<Soft.Num(); ++I) TestTrue(TEXT("Identity mapping preserves the three-round result"),Original[I].Equals(Reused[I],1.e-6));
 		return true;
 	}
 }

@@ -23,6 +23,9 @@
 #include "Commander/Mass/GuLiControlCohortBuilder.h"
 #include "Commander/Mass/Navigation/GuLiCommanderDestinationPlanner.h"
 #include "Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h"
+#include "Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h"
+#include "Commander/Mass/GuLiMassMovementTuning.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Commander/Mass/Navigation/GuLiLocalFlowField.h"
 #include "Commander/Mass/Navigation/GuLiNavigationWorkBudget.h"
 #include "Commander/Mass/Navigation/GuLiNavigationDependency.h"
@@ -1249,7 +1252,7 @@ namespace GuLiCommanderMassPrivate
 		AvoidanceParameters.PredictiveAvoidanceDistance = AgentRadiusCentimeters * 0.35f;
 		AvoidanceParameters.ObstaclePredictiveAvoidanceStiffness = 700.0f;
 		AvoidanceParameters.PredictiveAvoidanceRadiusScale = 1.0f;
-		AvoidanceParameters.PredictiveAvoidanceTime = 2.5f;
+		AvoidanceParameters.PredictiveAvoidanceTime = GuLiMassMovementTuning::GetLookaheadSeconds();
 
 		FMassArchetypeSharedFragmentValues SharedValues;
 		SharedValues.Add(EntityManager.GetOrCreateConstSharedFragment(
@@ -1749,6 +1752,11 @@ struct FGuLiBattleAuthorityState
 	GuLiCommanderNavigationPolicy::FManualAvoidanceSpatialGrid ManualAvoidanceSpatialGrid;
 	TArray<GuLiCommanderNavigationPolicy::FManualAvoidanceAgent> ManualAvoidanceAgents;
 	TArray<FVector> CachedManualAvoidanceVelocities;
+	TSharedPtr<const GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry> AvoidanceGeometry;
+	// Recycle storage only after the published version and every reader released it.
+	TArray<TSharedPtr<GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry>> AvoidanceGeometryPool;
+	uint64 NextAvoidanceGeometryVersion = 1;
+	TArray<GuLiCommanderAvoidancePolicy::FAgentSnapshot> SoftGeometryScratch;
 	FGuLiCombatExecutorRegistry CombatExecutors;
 	TArray<FGuLiCombatSample> CombatSamples;
 	TArray<FGuLiCombatSample> CombatChannels;
@@ -1800,6 +1808,63 @@ void FGuLiBattleAuthorityStateDeleter::operator()(FGuLiBattleAuthorityState* Sta
 
 UGuLiBattleAuthoritySubsystem::UGuLiBattleAuthoritySubsystem() = default;
 UGuLiBattleAuthoritySubsystem::~UGuLiBattleAuthoritySubsystem() = default;
+
+TSharedPtr<const GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry>
+UGuLiBattleAuthoritySubsystem::AcquireAvoidanceGeometry(
+	TConstArrayView<GuLiCommanderAvoidancePolicy::FAgentSnapshot> Agents)
+{
+	using namespace GuLiCommanderAvoidancePolicy;
+	check(IsInGameThread());
+	if (!AuthorityState) return nullptr;
+	FGuLiPerformanceScope Timing(GetWorld(), TEXT("Avoidance.SharedGeometryMs"));
+	auto* Perf = GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>();
+	if (Perf) Perf->Record(TEXT("Avoidance.SharedIndexAccesses"), 1);
+	const auto& Previous = AuthorityState->AvoidanceGeometry;
+	bool bSame = Previous && Previous->Agents.Num() == Agents.Num();
+	const TCHAR* ChangeReason = Previous ? TEXT("Avoidance.GeometryMembershipChanges") : TEXT("Avoidance.GeometryFirstBuilds");
+	// Full identity includes entity generation. Exact comparison covers teleports,
+	// radius/health/membership and dynamic obstacles without missing a write path.
+	for (const auto& A : Agents)
+	{
+		if (!bSame) break;
+		const int32* Index = Previous->IndexByIdentity.Find(A.StableKey);
+		if (!Index) { bSame = false; break; }
+		const auto& B = Previous->Agents[*Index];
+		if (A.Radius != B.Radius) ChangeReason = TEXT("Avoidance.GeometryRadiusChanges");
+		else if (A.bParticipates != B.bParticipates || A.bEnvironment != B.bEnvironment) ChangeReason = TEXT("Avoidance.GeometryParticipationChanges");
+		else if (A.Location != B.Location) ChangeReason = A.bEnvironment ? TEXT("Avoidance.GeometryEnvironmentMoves") : TEXT("Avoidance.GeometryUnitMoves");
+		bSame = A.Location == B.Location && A.Radius == B.Radius
+			&& A.bParticipates == B.bParticipates && A.bEnvironment == B.bEnvironment;
+	}
+	if (bSame)
+	{
+		if (Perf) Perf->Record(TEXT("Avoidance.SharedIndexReuses"), 1);
+		return Previous;
+	}
+	TSharedPtr<FSharedAvoidanceGeometry> Next;
+	for (const auto& Storage : AuthorityState->AvoidanceGeometryPool)
+		if (Storage.GetSharedReferenceCount() == 1) { Next = Storage; break; }
+	if (!Next)
+	{
+		Next = MakeShared<FSharedAvoidanceGeometry>();
+		AuthorityState->AvoidanceGeometryPool.Add(Next);
+	}
+	Next->Version = AuthorityState->NextAvoidanceGeometryVersion++;
+	Next->Agents.Reset(); Next->IndexByIdentity.Reset();
+	Next->Agents.Append(Agents.GetData(), Agents.Num());
+	float MaximumRadius = 0;
+	for (int32 I = 0; I < Next->Agents.Num(); ++I)
+	{
+		const auto& A = Next->Agents[I];
+		Next->IndexByIdentity.Add(A.StableKey, I);
+		if (A.bParticipates && !A.bEnvironment) MaximumRadius = FMath::Max(MaximumRadius, A.Radius);
+	}
+	Next->CellSize = FMath::Max(SpatialCellSizeCentimeters, MaximumRadius * 2);
+	Next->MaximumBucketOccupancy = BuildSpatialGrid(Next->Agents, Next->Grid, Next->CellSize);
+	AuthorityState->AvoidanceGeometry = Next;
+	if (Perf) { Perf->Record(TEXT("Avoidance.SharedIndexBuilds"), 1); Perf->Record(TEXT("Avoidance.SharedIndexVersion"), double(Next->Version)); Perf->Record(ChangeReason, 1); }
+	return Next;
+}
 
 // 仅在游戏世界的服务器或单机创建；普通客户端不运行第二套权威模拟。
 bool UGuLiBattleAuthoritySubsystem::ShouldCreateSubsystem(UObject* Outer) const
@@ -2435,6 +2500,10 @@ void UGuLiBattleAuthoritySubsystem::DestroyAuthorityPopulation()
 	AuthorityState->RecoveryDetectionSteps=0; AuthorityState->RecoveryQueries=0; AuthorityState->RecoveryFailures=0; AuthorityState->RecoveryRepairs=0;
 	AuthorityState->SpatialGrid.Reset();
 	AuthorityState->ManualAvoidanceSpatialGrid.Reset();
+	AuthorityState->AvoidanceGeometry.Reset();
+	AuthorityState->AvoidanceGeometryPool.Reset();
+	AuthorityState->NextAvoidanceGeometryVersion = 1;
+	AuthorityState->SoftGeometryScratch.Reset();
 	AuthorityState->ManualAvoidanceAgents.Reset();
 	AuthorityState->CachedManualAvoidanceVelocities.Reset();
 	AuthorityState->RequestGates.Reset();
@@ -3865,6 +3934,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		auto& Agent = AuthorityState->ManualAvoidanceAgents[I];
 		Agent = {};
 		Agent.StableSoldierId = S.SoldierId.Value;
+		Agent.StableEntityKey = S.Entity.AsNumber();
 		Agent.Team = static_cast<uint8>(S.Team);
 		Agent.Location = S.Location;
 		Agent.RadiusCentimeters = S.AvoidanceRadiusCentimeters;
@@ -3886,9 +3956,37 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 	}
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_ManualAvoidanceRefresh);
+		FGuLiPerformanceScope Timing(GetWorld(), TEXT("Avoidance.SoftMs"));
+		TSharedPtr<const GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry> Geometry;
+		{
+			auto& Scratch = AuthorityState->SoftGeometryScratch;
+			Scratch.Reset();
+			for (const auto& A : AuthorityState->ManualAvoidanceAgents)
+			{
+				if (!A.StableEntityKey) continue;
+				auto& G = Scratch.AddDefaulted_GetRef();
+				G.StableKey = A.StableEntityKey; G.Location = A.Location;
+				G.Radius = A.RadiusCentimeters; G.bParticipates = A.bParticipates;
+			}
+			if (auto* Registry = GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>())
+				for (const auto& O : Registry->GetSnapshot()->Obstacles)
+				{
+					auto& G = Scratch.AddDefaulted_GetRef();
+					G.StableKey = (uint64(1) << 63) | O.Handle.Value;
+					G.Location = O.Location; G.Radius = O.RadiusCentimeters;
+					G.bParticipates = true; G.bEnvironment = true;
+				}
+			Geometry = AcquireAvoidanceGeometry(Scratch);
+		}
 		const auto Metrics = GuLiCommanderNavigationPolicy::SolveSoftAvoidanceVelocities(
 			AuthorityState->ManualAvoidanceAgents, AvoidanceAgentHeightCentimeters,
-			AuthorityState->ManualAvoidanceSpatialGrid, AuthorityState->CachedManualAvoidanceVelocities);
+			AuthorityState->ManualAvoidanceSpatialGrid, AuthorityState->CachedManualAvoidanceVelocities, Geometry.Get());
+		if (auto* Perf = GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>())
+		{
+			Perf->Record(TEXT("Avoidance.SoftCandidatePairs"), double(Metrics.CandidatePairs));
+			Perf->Record(TEXT("Avoidance.SoftOverlapPairs"), double(Metrics.OverlapPairs));
+			Perf->Record(TEXT("Avoidance.SoftBucketVisits"), double(Metrics.BucketEntriesVisited));
+		}
 		++AuthorityState->ManualAvoidanceRefreshes;
 		AuthorityState->ManualAvoidanceCandidatePairs += Metrics.CandidatePairs;
 		AuthorityState->ManualAvoidanceOverlapPairs += Metrics.OverlapPairs;
@@ -3994,7 +4092,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 						Soldier.FacingYawDegrees = FMath::FixedTurn(
 							Soldier.FacingYawDegrees,
 							Soldier.Velocity.GetSafeNormal2D().Rotation().Yaw,
-							FacingRateDegreesPerSecond * MovementDeltaSeconds);
+						FacingRateDegreesPerSecond * GuLiMassMovementTuning::GetTurnRateScale() * MovementDeltaSeconds);
 					}
 				}
 				else
@@ -4114,7 +4212,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 					Soldier.FacingYawDegrees = FMath::FixedTurn(
 						Soldier.FacingYawDegrees,
 						Soldier.Velocity.GetSafeNormal2D().Rotation().Yaw,
-						FacingRateDegreesPerSecond * FixedDeltaSeconds);
+						FacingRateDegreesPerSecond * GuLiMassMovementTuning::GetTurnRateScale() * FixedDeltaSeconds);
 				++AuthorityState->GroundMechYieldSteps;
 				if (bGroundMechYieldReturning[SoldierIndex]
 					&& FVector::DistSquared2D(
@@ -5607,7 +5705,7 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 			&& AimTarget && Soldier.Velocity.SizeSquared2D() < 1)
 		{
 			Soldier.FacingYawDegrees = FMath::FixedTurn(Soldier.FacingYawDegrees,
-				(*AimTarget - Soldier.Location).Rotation().Yaw, Config.LowerTurnRate * Dt);
+				(*AimTarget - Soldier.Location).Rotation().Yaw, Config.LowerTurnRate * GuLiMassMovementTuning::GetTurnRateScale() * Dt);
 			if (auto* Mass = AuthorityState->MassEntitySubsystem.Get())
 				if (Mass->GetEntityManager().IsEntityValid(Soldier.Entity))
 					Mass->GetMutableEntityManager().GetFragmentDataChecked<FTransformFragment>(Soldier.Entity)
@@ -5616,9 +5714,9 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 		if (Definition->VATDefinition)
 			GuLiVATAnimation::StepAim(*Definition->VATDefinition, Soldier.VATPlayback,
 				FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location, FVector(Definition->PresentationScale)),
-				Definition->bConstructionOnly ? nullptr : AimTarget, Dt, Soldier.MechanicalPose);
+				Definition->bConstructionOnly ? nullptr : AimTarget, Dt, Soldier.MechanicalPose, GuLiMassMovementTuning::GetTurnRateScale());
 		else GuLiMechanicalAnimation::StepAim(Config, FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location),
-			AimTarget, GetUnitMovementSpeed(Soldier.Team, Soldier.UnitTypeId), Dt, Soldier.MechanicalPose);
+			AimTarget, GetUnitMovementSpeed(Soldier.Team, Soldier.UnitTypeId), Dt, Soldier.MechanicalPose, GuLiMassMovementTuning::GetTurnRateScale());
 	}
 
 	// All shots were accepted against one alive-state snapshot, permitting simultaneous kills.
