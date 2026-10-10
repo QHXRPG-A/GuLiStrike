@@ -24,3 +24,9 @@
 未搜索或清理Saved、Intermediate、Binaries、DerivedDataCache、商城资产、下载目录或其他会话工作树；不使用`git clean`。清理的原始Trace无法再用Insights重放，原始逐事件Scope并集不能从已删CSV重新导出；保留的计时汇总、选定帧分析和统计仍可核对。重新完整分析需要沿既有脚本重新采样，不能宣称删除原始输入后仍能无损重放。
 
 历史Progress中的本地输出目录保留Markdown入口。正式证据以本目录为主；历史链接到已清理的大文件保留为清理前事实，不悄悄改写旧归档。
+
+## GitHub交付
+
+[推送回执](github-delivery.json)记录主体提交`47004999f7963a44450ac3517f9fddc22edc2d63`、`origin/main`远端核对及57份LFS对象上传完成；[Git对象证据核对](committed-evidence-validation.json)确认375份归档原字节/图像LFS哈希一致。随后元数据提交补入回执，并把GIF的LFS规则限定于本证据目录，不迁移四个历史普通Git GIF，也不改写历史。
+
+[Progress检查](progress-validation.json)为0错误、17项已有尺寸/任务提示；[提交范围和检查](staged-submission.json)记录主体696文件与LFS过滤器核对。新多线程代码未实施，本次未重新构建或运行PIE。
