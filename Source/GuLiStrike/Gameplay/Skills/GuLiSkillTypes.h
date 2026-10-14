@@ -153,19 +153,6 @@ struct GULISTRIKE_API FGuLiSkillNumericOverride
 	UPROPERTY() float RangeCentimeters = 0.0f;
 };
 
-UENUM()
-enum class EGuLiArmySkillCommand : uint8 { UpsertSource, RemoveSource, SetNumericOverride, ClearNumericOverride, ClearAll };
-
-USTRUCT()
-struct GULISTRIKE_API FGuLiArmySkillCommand
-{
-	GENERATED_BODY()
-	UPROPERTY() EGuLiArmySkillCommand Command = EGuLiArmySkillCommand::UpsertSource;
-	UPROPERTY() FGuLiSkillSource Source;
-	UPROPERTY() FGuid SourceInstanceId;
-	UPROPERTY() FGuLiSkillNumericOverride NumericOverride;
-};
-
 /** Extension contract only. New effect implementations register explicitly, not per combination. */
 struct GULISTRIKE_API FGuLiSkillEffectContext
 {

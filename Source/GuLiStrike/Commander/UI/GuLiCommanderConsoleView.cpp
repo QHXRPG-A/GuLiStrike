@@ -37,16 +37,25 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 	if(!PC || !Sync || !SelectionCaption || !GetWorld()) return;
 	const auto* Roster=SoldierStateReplicator.Get(); const auto* GS=GetWorld()->GetGameState<AGuLiBattleGameState>();
 	const bool Ready=Sync->IsSoldierStreamReady() && GS && (!Roster || Roster->GetSnapshotMatchEpoch()==GS->GetMatchEpoch());
+    const auto* Inspected=Presentation.Members.FindByPredicate([&](const auto& R){return R.Type==uint32(InspectionType);});
+    const FName InspectedDefinition=Inspected?Inspected->Definition:NAME_None;
 	Presentation=BuildGuLiCommanderUIPresentation(GetWorld(),CachedSelection,Roster,Ready);
+    if (!InspectedDefinition.IsNone())
+    {
+        const auto* Next=Presentation.Members.FindByPredicate([&](const auto& R){return R.Definition==InspectedDefinition;});
+        InspectionType=Next?int32(Next->Type):0;
+    }
 	const auto* Data=GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>();
-	auto Name=[&](uint16 Type){ const auto* Def=Data?Data->FindDefinition(Type):nullptr;
+	auto Name=[&](uint32 Type){
+        if (Type>MAX_uint16) if (const auto* Row=Presentation.Members.FindByPredicate([&](const auto& R){return R.Type==Type;})) return Row->DisplayName;
+        const auto* Def=Data && Type<=MAX_uint16?Data->FindDefinition(uint16(Type)):nullptr;
 		return Def?Def->DisplayName.ToString():GuLiGameText::Format(TEXT("UI.ConsoleView.033"), {FString::Printf(TEXT("%d"), Type)}); };
-	TArray<uint16> Types; Presentation.Types.GetKeys(Types); Types.Sort();
-	if(InspectionType && !Types.Contains(uint16(InspectionType))) { InspectionType=0; PortraitPage=0; }
+	TArray<uint32> Types; Presentation.Types.GetKeys(Types); Types.Sort();
+	if(InspectionType && !Types.Contains(uint32(InspectionType))) { InspectionType=0; PortraitPage=0; }
 	if(InspectionTypes!=Types || TypeButtons.IsEmpty())
 	{
 		InspectionTypes=Types; TypeStrip->ClearChildren(); TypeButtons.Reset();
-		TArray<uint16> Tabs={0}; Tabs.Append(Types);
+		TArray<uint32> Tabs={0}; Tabs.Append(Types);
 		for(auto Type:Tabs)
 		{
 			auto* B=MakeActionButton(NAME_None,Type?Name(Type):GuLiGameText::Text(TEXT("UI.ConsoleView.045")),TEXT("Type"),Type);
@@ -57,8 +66,8 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 	}
 	for(UGuLiCommanderActionButton* B:TypeButtons)
 	{
-		const int32 Count=B->Argument?Presentation.Types.FindRef(uint16(B->Argument)):Presentation.Members.Num();
-		B->Label->SetText(FText::FromString(FString::Printf(TEXT("%s %d"),B->Argument?*Name(uint16(B->Argument)):GuLiGameText::Text(TEXT("UI.ConsoleView.045")),Count)));
+		const int32 Count=B->Argument?Presentation.Types.FindRef(uint32(B->Argument)):Presentation.Members.Num();
+		B->Label->SetText(FText::FromString(FString::Printf(TEXT("%s %d"),B->Argument?*Name(uint32(B->Argument)):GuLiGameText::Text(TEXT("UI.ConsoleView.045")),Count)));
 		B->SetBackgroundColor(B->Argument==InspectionType?FLinearColor(.3f,.9f,1):FLinearColor::White);
 	}
 	VisibleMemberIndices.Reset();
@@ -67,7 +76,7 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 	VisiblePortraitGroups.Reset();
 	for(const int32 MemberIndex:VisibleMemberIndices)
 	{
-		const uint16 MemberType=Presentation.Members[MemberIndex].Type;
+		const uint32 MemberType=Presentation.Members[MemberIndex].Type;
 		const bool bStartsGroup=VisiblePortraitGroups.IsEmpty()
 			|| VisiblePortraitGroups.Last().Type!=MemberType
 			|| VisiblePortraitGroups.Last().MemberIndices.Num()>=GULI_PANEL_PORTRAIT_GROUP_SIZE;
@@ -92,7 +101,7 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 		const auto& Group=VisiblePortraitGroups[Index];
 		const auto& Row=Presentation.Members[Group.MemberIndices[0]];
 		B->Label->SetText(FText::AsNumber(Group.MemberIndices.Num()));
-		if(ConsoleTheme) B->Icon->SetBrushFromTexture(ConsoleTheme->FindPortrait(Row.Type),true);
+		if(ConsoleTheme) B->Icon->SetBrushFromTexture(Row.Object.IsValid()?ConsoleTheme->FindIcon(TEXT("Unit")):ConsoleTheme->FindPortrait(uint16(Row.Type)),true);
 		B->SetDescription(FText::GetEmpty());
 		B->SetIsEnabled(!Sync->HasUnresolvedSelectionIntent());
 		float GroupHealth=0,GroupMaximumHealth=0;
@@ -109,13 +118,13 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 		GuLiGameText::Format(TEXT("UI.ConsoleView.035"), {FString::Printf(TEXT("%d"), Presentation.Members.Num()), FString::Printf(TEXT("%d"), VisibleMemberIndices.Num())})));
 	float HP=0,Max=0,Shield=0,MaxShield=0;
 	for(int32 Index:VisibleMemberIndices) { const auto& Row=Presentation.Members[Index]; HP+=Row.Health; Max+=Row.MaximumHealth; Shield+=Row.Shield; MaxShield+=Row.MaximumShield; }
-	const uint16 Type=InspectionType?uint16(InspectionType):Types.Num()==1?Types[0]:0;
+	const uint32 Type=InspectionType?uint32(InspectionType):Types.Num()==1?Types[0]:0;
 	const FString Detail=Presentation.Members.IsEmpty()?GuLiGameText::Text(TEXT("UI.ConsoleView.049")):Type?Name(Type):GuLiGameText::Text(TEXT("UI.ConsoleView.050"));
 	auto Attribute=[this](FName Key,bool Visible,const FString& Value)
 	{
 		if(auto* Row=AttributeRows.FindRef(Key).Get()) { Row->SetVisibility(Visible?ESlateVisibility::Visible:ESlateVisibility::Collapsed); Row->Label->SetText(FText::FromString(Value)); }
 	};
-	const auto* Def=Type && Data?Data->FindDefinition(Type):nullptr;
+	const auto* Def=Type && Data && Type<=MAX_uint16?Data->FindDefinition(uint16(Type)):nullptr;
 	Attribute(TEXT("Health"),!VisibleMemberIndices.IsEmpty(),FString::Printf(TEXT("%.0f / %.0f"),HP,Max));
 	Attribute(TEXT("Shield"),MaxShield>0,FString::Printf(TEXT("%.0f / %.0f"),Shield,MaxShield));
 	Attribute(TEXT("Speed"),Def!=nullptr,Def?FString::Printf(TEXT("%.1f m/s"),Def->MovementSpeedCmPerSecond/100):TEXT(""));
@@ -128,14 +137,14 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 		{ Attribute(TEXT("CargoBlue"),true,FString::FromInt(Private->Cargo.Blue)); Attribute(TEXT("CargoRed"),true,FString::FromInt(Private->Cargo.Red)); }
 	}
 	SelectionDetails->SetText(FText::FromString(Detail)); SelectionHealth->SetPercent(Max>0?HP/Max:0);
-	if(ConsoleTheme) PortraitImage->SetBrushFromTexture(Type?ConsoleTheme->FindPortrait(Type):ConsoleTheme->FindIcon(TEXT("Unit")),true);
+	if(ConsoleTheme) PortraitImage->SetBrushFromTexture(Type && Type<=MAX_uint16?ConsoleTheme->FindPortrait(uint16(Type)):ConsoleTheme->FindIcon(TEXT("Unit")),true);
 	PortraitImage->SetRenderOpacity(Presentation.Members.IsEmpty()?.3f:float(.96+.04*FMath::Sin(GetWorld()->GetRealTimeSeconds()*1.4)));
 }
 
 void UGuLiCommanderHUDWidget::CycleInspectionType()
 {
 	if(!CommanderController.IsValid() || bMenuOpen) return;
-	const int32 Current=InspectionTypes.IndexOfByKey(uint16(InspectionType));
+	const int32 Current=InspectionTypes.IndexOfByKey(uint32(InspectionType));
 	InspectionType=InspectionTypes.IsValidIndex(Current+1)?InspectionTypes[Current+1]:0; PortraitPage=0;
 	RefreshConsoleSelection();
 }
@@ -219,7 +228,7 @@ void UGuLiCommanderHUDWidget::RefreshConsoleContext()
 		{
 			B->Label->SetText(Def->DisplayName);
 			B->SetDescription(FText::FromString(GuLiGameText::Format(TEXT("UI.ConsoleView.039"), {FString(*Def->DisplayName.ToString()), FString::Printf(TEXT("%d"), Def->Cost.Blue), FString::Printf(TEXT("%d"), Def->Cost.Red), FString(*Def->Description.ToString())})));
-			B->SetBackgroundColor(Building->GetSelectedBuildingType()==Def->Type?FLinearColor(.3f,.9f,1):FLinearColor::White);
+			B->SetBackgroundColor(Building->GetSelectedBuildingDefinitionId()==Def->DefinitionId?FLinearColor(.3f,.9f,1):FLinearColor::White);
 		}
 	}
 	for(const FName Name:{FName(TEXT("Build")),FName(TEXT("Teleport"))})
@@ -401,7 +410,8 @@ bool UGuLiCommanderHUDWidget::RequestPortraitSelection(EGuLiPanelSelectionAction
 	const auto& Group=VisiblePortraitGroups[Cell];
 	if(Group.MemberIndices.IsEmpty() || !Presentation.Members.IsValidIndex(Group.MemberIndices[0])) return false;
 	const auto& Row=Presentation.Members[Group.MemberIndices[0]];
-	FGuLiPanelSelectionRequest Request; Request.Action=Action; Request.SoldierId=Row.Soldier; Request.ActorId=Row.Actor;
+	FGuLiPanelSelectionRequest Request; Request.Action=Action; Request.SoldierId=Row.Soldier; Request.ActorId=Row.Actor; Request.Object=Row.Object;
+    for (int32 Index:Group.MemberIndices) if (Presentation.Members[Index].Object.IsValid()) Request.ObjectGroup.Add(Presentation.Members[Index].Object);
 	const bool Submitted=PC->GetCommanderNetSyncComponent()->SubmitPanelSelection(Request); RefreshConsoleSelection(); return Submitted;
 }
 

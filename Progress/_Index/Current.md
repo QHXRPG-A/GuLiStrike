@@ -24,6 +24,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [同阵营固定分配与混合P2P架构 — 技术方案](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | combat, commander, navigation, network, performance | 0/12 (0%) | 完成本轮旧复制机制清理后的GitHub提交；临时文件删除被工具策略拒绝，随后回归受影响的G项目，G/F通过后再测性能。 | 2026-10-14 |
 | [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | assets, network, ship, ui | 25/26 (96%) | 用户手动加 7 个 socket（教程见下，坐标已定稿） | 2026-10-10 |
 | [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | building, combat, network, vfx | 6/6 (100%) | 跟踪既有导弹夹具和挂点断言失配；地面弹丸、配色与5Hz专项留待后续安排。 | 2026-09-21 |
 | [游戏内 GM 分页浮层面板 — 技术方案](../DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md) | combat, commander, network, ui | 5/6 (83%) | 重启源码版 Editor，完成三分辨率、Commander/Ground/Air、Standalone/Listen/客户端的人工 PIE 验收。 | 2026-09-10 |

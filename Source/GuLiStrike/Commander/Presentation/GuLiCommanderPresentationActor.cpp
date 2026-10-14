@@ -1,4 +1,5 @@
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Commander/UI/GuLiSceneUISourceRegistry.h"
 // Copyright Epic Games, Inc. All Rights Reserved.
 
@@ -30,8 +31,6 @@
 #include "Gameplay/Tuning/GuLiRuntimeTuningTypes.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Components/SceneComponent.h"
-#include "Engine/NetConnection.h"
-#include "Engine/NetDriver.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -241,7 +240,7 @@ namespace GuLiCommanderPresentation
 
 AGuLiCommanderPresentationActor::AGuLiCommanderPresentationActor()
 {
-	bReplicates = true;
+	bReplicates = false;
 	bAlwaysRelevant = true;
 	bNetLoadOnClient = true;
 	// 只复制 Actor 的存在；每名士兵/ISM 的变换从独立姿态流本地重建。
@@ -308,7 +307,7 @@ void AGuLiCommanderPresentationActor::BeginPlay()
 #endif
 	if (RingInstances) RingInstances->SetHiddenInGame(true);
 
-	if (GetNetMode() == NM_DedicatedServer)
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld()))
 	{
 		SetActorTickEnabled(false);
 		return;
@@ -391,7 +390,7 @@ UInstancedStaticMeshComponent* AGuLiCommanderPresentationActor::EnsureUnitTeamBa
 		return Existing;
 	}
 	const auto* Model = FindUnitInstances(UnitTypeId);
-	if (!Model || !GetWorld() || GetNetMode() == NM_DedicatedServer) return nullptr;
+	if (!Model || !GetWorld() || !UGuLiNetworkSettings::CanPresent(GetWorld())) return nullptr;
 
 	auto* Component = NewObject<UInstancedStaticMeshComponent>(this,
 		*FString::Printf(TEXT("UnitInstances_Type_%u_Team_%u"), UnitTypeId, uint8(Team)), RF_Transient);
@@ -1051,7 +1050,7 @@ void AGuLiCommanderPresentationActor::TracePredictionAck(const FGuLiCommandAck& 
 bool AGuLiCommanderPresentationActor::StartPredictionTrace(
 	const bool bDisableDisplacement, const uint32 SoldierId, const float DurationSeconds)
 {
-	if (bPredictionTraceActive || !GetWorld() || GetNetMode() == NM_DedicatedServer
+	if (bPredictionTraceActive || !GetWorld() || !UGuLiNetworkSettings::CanPresent(GetWorld())
 		|| !FindLocalController() || !FMath::IsFinite(DurationSeconds)
 		|| DurationSeconds < 1.0f || DurationSeconds > 120.0f)
 	{
@@ -1531,29 +1530,10 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 			LatestClockFrameSequence);
 	if (!bServerClockInitialized || bAdvancesClockFrame)
 	{
-		float PlayerStateRoundTripMilliseconds = 0.0f;
-		if (const APlayerController* Controller = FindLocalController())
-		{
-			if (const AGuLiBattlePlayerState* PlayerState = Controller->GetPlayerState<AGuLiBattlePlayerState>())
-			{
-				PlayerStateRoundTripMilliseconds = PlayerState->GetPingInMilliseconds();
-			}
-		}
-		float ConnectionAverageLagSeconds = 0.0f;
-		double ConnectionRawPingSeconds = 0.0;
-		if (const UNetDriver* NetDriver = GetWorld() ? GetWorld()->GetNetDriver() : nullptr)
-		{
-			if (const UNetConnection* Connection = NetDriver->ServerConnection)
-			{
-				ConnectionAverageLagSeconds = Connection->AvgLag;
-				ConnectionRawPingSeconds = Connection->RawPingInSeconds;
-			}
-		}
-		const float RoundTripMilliseconds = GuLiCommanderPresentation::SelectClockRoundTripMilliseconds(
-				ConnectionAverageLagSeconds,
-				ConnectionRawPingSeconds,
-				PlayerStateRoundTripMilliseconds,
-				bLatestClockRoundTripFromConnectionStats);
+        // Owner pose times enter through the P2P projection. UE has no server
+        // connection here, so do not substitute unrelated engine ping statistics.
+        constexpr float RoundTripMilliseconds=0;
+        bLatestClockRoundTripFromConnectionStats=false;
 		LatestClockRoundTripMilliseconds = RoundTripMilliseconds;
 		const double MeasuredServerNowSeconds = GuLiCommanderPresentation::EstimateServerNowAtPoseReceipt(
 				ServerTimeSeconds,
@@ -1938,7 +1918,7 @@ void AGuLiCommanderPresentationActor::BeginPredictionResolution(
 
 bool AGuLiCommanderPresentationActor::EnsureClientMirrorArchetype()
 {
-	if (GetNetMode() == NM_DedicatedServer || !GetWorld())
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld()) || !GetWorld())
 	{
 		return false;
 	}
@@ -2975,7 +2955,7 @@ bool AGuLiCommanderPresentationActor::IsAckResultAccepted(const EGuLiCommandAckR
 
 void AGuLiCommanderPresentationActor::UpdatePhasedInstances(const TMap<uint16,TArray<FTransform>>& Desired)
 {
- if (GetNetMode() == NM_DedicatedServer) return;
+ if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
  for (auto& Pair : PhasedInstancesByType)
  {
   if (!Desired.Contains(Pair.Key) && Pair.Value->GetInstanceCount())
@@ -3012,7 +2992,7 @@ void AGuLiCommanderPresentationActor::UpdatePhasedInstances(const TMap<uint16,TA
 
 void AGuLiCommanderPresentationActor::UpdateWreckInstances(const TMap<uint16,TArray<FTransform>>& Desired)
 {
-	if (GetNetMode() == NM_DedicatedServer) return;
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	for (auto& Pair : WreckInstancesByType)
 	{
 		if (Pair.Value && !Desired.Contains(Pair.Key) && Pair.Value->GetInstanceCount())
@@ -3060,7 +3040,7 @@ void AGuLiCommanderPresentationActor::UpdateWreckInstances(const TMap<uint16,TAr
 void AGuLiCommanderPresentationActor::UpdateHitFlashInstances(
 	const TMap<uint16,TArray<FTransform>>& Transforms, const TMap<uint16,TArray<float>>& StartTimes)
 {
-	if (GetNetMode() == NM_DedicatedServer) return;
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	for (auto& Pair : HitFlashInstancesByType)
 		if (!Transforms.Contains(Pair.Key) && Pair.Value->GetInstanceCount()) Pair.Value->ClearInstances();
 	auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>();

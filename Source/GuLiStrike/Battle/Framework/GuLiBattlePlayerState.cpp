@@ -9,12 +9,23 @@
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Engine/World.h"
 
 AGuLiBattlePlayerState::AGuLiBattlePlayerState()
 {
 	ShipBuild = CreateDefaultSubobject<UGuLiShipBuildComponent>(TEXT("ShipBuild"));
 	CommanderSkills = CreateDefaultSubobject<UGuLiCommanderSkillComponent>(TEXT("CommanderSkills"));
+}
+
+bool AGuLiBattlePlayerState::ApplyHybridRole(const FGuid& Identity,EGuLiTeam NewTeam,
+	EGuLiCommanderRole NewRole,uint8 NewSlot,bool bReady)
+{
+	if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || !Identity.IsValid()
+		|| (PlayerGuid.IsValid() && PlayerGuid!=Identity)) return false;
+	PlayerGuid=Identity;
+	if (Team!=NewTeam || CommanderRole!=NewRole || SlotIndex!=NewSlot) SetServerRoleAssignment(NewTeam,NewRole,NewSlot);
+	SetServerBattleReady(bReady); SetServerSoldierStreamReady(bReady); return true;
 }
 
 void AGuLiBattlePlayerState::BeginPlay()
@@ -62,7 +73,7 @@ TArray<FGuLiWeaponChannelView> AGuLiBattlePlayerState::GetWeaponChannels(const E
 	return Views;
 }
 
-void AGuLiBattlePlayerState::ServerRequestEquipWeapon_Implementation(const FGuid RequestId,
+void AGuLiBattlePlayerState::ServerRequestEquipWeapon(const FGuid RequestId,
 	const FGuLiWeaponBindingKey Binding, const FName SkillId, const int64 ExpectedLoadoutRevision)
 {
 	ClientReceiveWeaponChangeResult(ProcessEquipWeaponRequest(RequestId, Binding, SkillId, ExpectedLoadoutRevision));
@@ -154,32 +165,10 @@ void AGuLiBattlePlayerState::HandleArmyWeaponLoadoutCommitted(const uint32 Revis
 	for (const auto& Reply : Replies) ClientReceiveWeaponChangeResult(Reply);
 }
 
-void AGuLiBattlePlayerState::ClientReceiveWeaponChangeResult_Implementation(const FGuLiWeaponChangeResult& Result)
+void AGuLiBattlePlayerState::ClientReceiveWeaponChangeResult(const FGuLiWeaponChangeResult& Result)
 {
 	LastWeaponChangeResult = Result;
 	OnWeaponChangeResult.Broadcast(Result);
-}
-
-bool AGuLiBattlePlayerState::ExecuteArmySkillCommand(const FGuLiArmySkillCommand& Command, FString& OutError)
-{
-	if (!HasAuthority()) { OutError = TEXT("Army commands execute only on the server."); return false; }
-	auto* Skills = GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
-	if (!Skills) { OutError = TEXT("Army skill runtime is unavailable."); return false; }
-	return Skills->ExecuteCommand(*this, Command, OutError);
-}
-
-
-void AGuLiBattlePlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(AGuLiBattlePlayerState, PlayerGuid);
-	DOREPLIFETIME(AGuLiBattlePlayerState, Team);
-	DOREPLIFETIME(AGuLiBattlePlayerState, CommanderRole);
-	DOREPLIFETIME(AGuLiBattlePlayerState, SlotIndex);
-	DOREPLIFETIME(AGuLiBattlePlayerState, bBattleReady);
-	DOREPLIFETIME(AGuLiBattlePlayerState, bSyncReady);
-	DOREPLIFETIME_CONDITION(AGuLiBattlePlayerState, ResourcePrivateState, COND_OwnerOnly);
 }
 
 bool AGuLiBattlePlayerState::SetServerResourcePrivateState(FGuLiTeamResourcePrivateState NewState)
@@ -195,7 +184,7 @@ bool AGuLiBattlePlayerState::SetServerResourcePrivateState(FGuLiTeamResourcePriv
 		? 1u
 		: ResourcePrivateState.Revision + 1u;
 	ResourcePrivateState = MoveTemp(NewState);
-	ForceNetUpdate();
+
 	OnResourcePrivateStateChanged.Broadcast();
 	if (PreviousInventory.Blue != ResourcePrivateState.Inventory.Blue
 		|| PreviousInventory.Red != ResourcePrivateState.Inventory.Red
@@ -228,6 +217,7 @@ void AGuLiBattlePlayerState::CopyProperties(APlayerState* PlayerState)
 		NewPlayerState->Team = Team;
 		NewPlayerState->CommanderRole = CommanderRole;
 		NewPlayerState->SlotIndex = SlotIndex;
+        NewPlayerState->SeatVersion=SeatVersion;
 		// 身份跨通用/指挥官派生类迁移，公共与士兵流握手都必须重新完成。
 		NewPlayerState->bBattleReady = false;
 		NewPlayerState->bSyncReady = false;
@@ -250,6 +240,7 @@ void AGuLiBattlePlayerState::OverrideWith(APlayerState* PlayerState)
 			Team = IncomingPlayerState->Team;
 			CommanderRole = IncomingPlayerState->CommanderRole;
 			SlotIndex = IncomingPlayerState->SlotIndex;
+            SeatVersion=IncomingPlayerState->SeatVersion;
 		}
 		// A newly logged-in empty state must not erase the recovered match build.
 		if (IncomingPlayerState->ShipBuild->GetBuildState().MatchEpoch != 0)
@@ -273,7 +264,7 @@ void AGuLiBattlePlayerState::EnsureServerPlayerGuid()
 	{
 		PlayerGuid = FGuid::NewGuid();
 		NotifyStateChanged();
-		ForceNetUpdate();
+
 	}
 }
 
@@ -287,13 +278,14 @@ void AGuLiBattlePlayerState::SetServerRoleAssignment(
 		return;
 	}
 
+    if ((Team!=NewTeam || CommanderRole!=NewRole || SlotIndex!=NewSlotIndex) && SeatVersion<MAX_int64) ++SeatVersion;
 	Team = NewTeam;
 	CommanderRole = NewRole;
 	SlotIndex = NewSlotIndex;
 	bBattleReady = false;
 	bSyncReady = false;
 	NotifyStateChanged();
-	ForceNetUpdate();
+
 }
 
 // 公共握手仅开放通用玩法资格；此函数故意不写 bSyncReady。
@@ -306,7 +298,7 @@ void AGuLiBattlePlayerState::SetServerBattleReady(bool bNewBattleReady)
 
 	bBattleReady = bNewBattleReady;
 	NotifyStateChanged();
-	ForceNetUpdate();
+
 }
 
 void AGuLiBattlePlayerState::SetServerSoldierStreamReady(bool bNewSyncReady)
@@ -318,7 +310,7 @@ void AGuLiBattlePlayerState::SetServerSoldierStreamReady(bool bNewSyncReady)
 
 	bSyncReady = bNewSyncReady;
 	NotifyStateChanged();
-	ForceNetUpdate();
+
 }
 
 void AGuLiBattlePlayerState::SetServerObserver()
@@ -330,19 +322,8 @@ void AGuLiBattlePlayerState::NotifyStateChanged()
 {
 	OnCommanderPlayerStateChanged.Broadcast();
 }
-
-// 客户端副本更新后的本地消费入口；不能在这里向服务器反向提交权威分配。
-void AGuLiBattlePlayerState::OnRep_Assignment()
+void AGuLiBattlePlayerState::SetHybridSeatVersion(uint64 Version)
 {
-	NotifyStateChanged();
-}
-
-void AGuLiBattlePlayerState::OnRep_BattleReady()
-{
-	NotifyStateChanged();
-}
-
-void AGuLiBattlePlayerState::OnRep_SyncReady()
-{
-	NotifyStateChanged();
+    if (UGuLiNetworkSettings::IsHybrid(GetWorld()) && Version && Version<=MAX_int64)
+        SeatVersion=static_cast<int64>(Version);
 }

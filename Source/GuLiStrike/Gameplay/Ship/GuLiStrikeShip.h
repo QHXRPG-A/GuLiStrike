@@ -3,8 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Battle/Combat/GuLiWingmanCombatCoordinator.h"
-#include "Battle/Combat/GuLiWingmanReplenishmentController.h"
+#include "Battle/Combat/GuLiWingmanWeaponPolicy.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTypes.h"
 #include "GameFramework/Character.h"
 #include "GuLiStrikeShip.generated.h"
@@ -25,12 +24,21 @@ class UGuLiWingmanWeaponDefinition;
 class UGuLiShipMovementComponent;
 class UGuLiShipWorldHUDComponent;
 class UGuLiShipTargetingRangeComponent;
-class UGuLiWingmanRelayComponent;
 class UEnhancedInputLocalPlayerSubsystem;
 class UGuLiStrikeShipPartComponent;
 class UGuLiStrikeEnginePart;
 class UGuLiStrikeWeaponPart;
 struct FInputActionValue;
+
+/** Persistent semantic flight input. Frame-rate sampling is separate from logical simulation. */
+struct FGuLiHybridShipInput
+{
+	FVector Thrust=FVector::ZeroVector;
+	float Turn=0,Strafe=0;
+	bool bBoost=false;
+	bool operator==(const FGuLiHybridShipInput& Other) const
+	{ return Thrust==Other.Thrust && Turn==Other.Turn && Strafe==Other.Strafe && bBoost==Other.bBoost; }
+};
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(
 	FGuLiWingmanMissileLockPredictedSignature,
@@ -138,6 +146,8 @@ UCLASS(abstract)
 class AGuLiStrikeShip : public ACharacter
 {
 	GENERATED_BODY()
+	friend class FGuLiHybridShipAdapter;
+	friend class FGuLiHybridShipControls;
 
 	/** 飞船舰体静态网格体；其上的 socket 是部件挂点 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
@@ -267,16 +277,16 @@ protected:
 	TArray<FGuLiStrikeStatModifier> StatModifiers;
 
 	/** Server-owned atomic state for the reserved GM.Runtime modifier layer. */
-	// 由 GetLifetimeReplicatedProps 注册，无 OwnerOnly 条件；相关客户端通过 OnRep 重建本地层。
-	UPROPERTY(ReplicatedUsing=OnRep_GMRuntimeState)
+	// Owner capability state is applied to the local component view.
+	UPROPERTY()
 	FGuLiShipGMRuntimeReplicatedState GMRuntimeState;
 
 	/** 所有相关客户端重建部件；组件对象不直接跨端共享。 */
-	UPROPERTY(ReplicatedUsing=OnRep_LoadoutState)
+	UPROPERTY()
 	FGuLiShipLoadoutState LoadoutState;
 
 	/** Reliable immutable Wingman projection consumed by Lease owners and backups. */
-	UPROPERTY(ReplicatedUsing=OnRep_GroupAbilityConfig)
+	UPROPERTY()
 	FGuLiGroupAbilityConfigSnapshot GroupAbilityConfig;
 
 	/** 裸舰体质量（不含任何部件） */
@@ -408,6 +418,8 @@ public:
 
 	/** 构造函数 */
 	AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    void SetCarrierDormant(bool Dormant);
+    UFUNCTION(BlueprintPure,Category="Ship|Control") bool IsCarrierDormant() const { return bCarrierDormant; }
 
 
 	UFUNCTION(BlueprintPure, Category="Ship|Abilities")
@@ -434,13 +446,10 @@ public:
 	UGuLiShipWorldHUDComponent* GetShipWorldHUDComponent() const { return ShipWorldHUD; }
 
 	const FGuLiGroupAbilityConfigSnapshot& GetGroupAbilityConfig() const { return GroupAbilityConfig; }
-	UGuLiWingmanRelayComponent* GetWingmanRelay() const { return BoundWingmanRelay.Get(); }
+    /** Shared semantic input for hardware, UI and logic-only controllers. */
+    bool SubmitGameplayWeaponInput(const FGuLiWeaponBindingKey& Binding,bool Pressed);
+    const TMap<FGuid,FGuLiWingmanMissileSalvoResult>& GetGameplayWeaponResults() const {return WingmanMissileRequestResults;}
 	/** Read-only authority diagnostics; never advances or releases a replenishment timer. */
-	bool TryGetWingmanReplenishmentSchedule(
-		const FGuLiWingmanHandle& Wingman,
-		uint64& OutScheduleId,
-		double& OutReplenishAtSeconds,
-		bool& bOutDue) const;
 
 	/** Cosmetic, local prediction only. The target is never sent back to authority. */
 	UPROPERTY(BlueprintAssignable, Category="Ship|Wingman|Missile")
@@ -453,8 +462,6 @@ public:
 	/** 本地相机与输入上下文维护；服务器持续开火。飞行积分仅由移动组件执行。 */
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
 	UFUNCTION(BlueprintCallable, Category="Ship|Wingman|Target")
 	void SetWingmanAttackTarget(const FGuLiTargetHandle& Target);
 	UFUNCTION(BlueprintCallable, Category="Ship|Wingman|Target")
@@ -465,9 +472,9 @@ public:
 	FDataTableRowHandle WingmanTargetingRow;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ship|Wingman|Target")
 	bool bShowWingmanTargetingRange = true;
-	UPROPERTY(Replicated)
+	UPROPERTY()
 	FGuLiWingmanAttackTarget WingmanAttackTarget;
-	UFUNCTION(Server, Reliable)
+	UFUNCTION()
 	void ServerSetWingmanAttackTarget(const FGuLiTargetHandle& Target);
 
 protected:
@@ -610,11 +617,21 @@ public:
 
 	uint32 GetLoadoutRevision() const { return LoadoutState.Revision; }
 
+	UFUNCTION(BlueprintCallable,Category="Ship|Input")
+	bool SubmitGameplayFlightInput(FVector LocalThrust,float Turn,bool bBoost);
+	void PumpHybridFlightInput();
+	void AdvanceHybridFlight(float DeltaSeconds,const FGuLiHybridShipInput& Input);
+	uint64 GetHybridPoseTick() const { return HybridPoseTick; }
+	uint32 GetHybridFlightRestoreCount() const { return HybridFlightRestoreCount; }
+	uint64 GetHybridMotionEncodingFailures() const { return HybridMotionEncodingFailures; }
+
 	UFUNCTION(BlueprintPure, Category="Ship|Network")
 	UGuLiShipMovementComponent* GetShipMovement() const;
 
 
 private:
+    UPROPERTY() bool bCarrierDormant=false;
+    UFUNCTION() void OnRep_CarrierDormant();
 	UFUNCTION()
 	void OnRep_LoadoutState();
 
@@ -625,15 +642,15 @@ private:
 	void HandleShipDeath();
 
 	// 拥有客户端只提交目录索引/槽位/所见装配版本；-1 表示卸下，不接受客户端任意类。
-	UFUNCTION(Server, Reliable)
+	UFUNCTION()
 	void ServerRequestPartChange(FName SocketName, int32 CatalogueIndex, uint32 ExpectedRevision, uint32 ExpectedBarrier);
 
 	// 批量循环只允许引擎/武器两类，候选及最终装配均由服务器当前目录决定。
-	UFUNCTION(Server, Reliable)
+	UFUNCTION()
 	void ServerRequestCycleParts(bool bEngines, uint32 ExpectedRevision, uint32 ExpectedBarrier);
 
 	/** Explicit request is the sole firing path; the server-side predicted GA callback never fires. */
-	UFUNCTION(Server, Reliable)
+	UFUNCTION()
 	void ServerRequestWingmanMissileSalvo(
 		FGuid RequestId,
 		FIntVector AimDirectionMilli,
@@ -644,7 +661,7 @@ private:
 		uint32 ProfileRevision,
 		uint32 MissileDefinitionRevision);
 
-	UFUNCTION(Client, Reliable)
+	UFUNCTION()
 	void ClientResolveWingmanMissileSalvo(
 		FGuid RequestId,
 		EGuLiWingmanRejectReason RejectReason,
@@ -663,19 +680,9 @@ private:
 	void RemoveShipInputContext();
 	void InitializeShipCapabilities();
 	void PublishGroupAbilityConfig();
-	void RefreshLocalOwnedWingmanGroup();
+
 	void RefreshServerCombatRegistration();
-	void RefreshWingmanRelayBinding();
-	void InstallWingmanWorldValidator(
-		UGuLiWingmanRelayComponent& Relay,
-		const FGuLiWingmanGroupHandle& Group);
-	void MaintainWingmanCombatLifecycle();
-	void RevokeWingmanGroupAuthority();
-	bool EnsureWingmanCombatCoordinator();
-	FGuLiWingmanCombatCoordinator* GetWingmanCombatCoordinator() const;
-	void RegisterWingmanCombatTargets();
-	void UnregisterWingmanCombatTargets();
-	static FGuLiTargetHandle MakeWingmanTargetHandle(const FGuLiWingmanHandle& Wingman);
+
 	bool BuildLocalWingmanMissileAim(FVector& OutAimOrigin, FVector& OutAimForward) const;
 	bool SelectLocalPredictedWingmanTarget(
 		const FVector& AimOrigin,
@@ -694,10 +701,10 @@ private:
 	void BroadcastWingmanMissileResult(
 		const FGuid& RequestId,
 		const FGuLiWingmanMissileSalvoResult& Result);
+    FGuLiWingmanMissileSalvoResult ActivateHybridMissileSalvo(const FGuLiWingmanMissileSalvoRequest& Request);
 	void RememberWingmanMissileRequestResult(
 		const FGuid& RequestId,
 		const FGuLiWingmanMissileSalvoResult& Result);
-	void HandleServerWingmanFireIntentAccepted(const FGuLiWingmanFireIntent& Intent);
 	void HandleGroupAbilityProjectionChanged();
 	void HandleTriggeredShipWeaponAbility(
 		FGuLiWeaponBindingKey WeaponBinding,
@@ -707,6 +714,12 @@ private:
 		bool bLocallyPredicted);
 
 	TWeakObjectPtr<UEnhancedInputLocalPlayerSubsystem> InstalledInputSubsystem;
+	FGuLiHybridShipInput HybridInput,LastHybridInput;
+	uint64 LastHybridInputTick=0;
+	uint64 HybridPoseTick=0;
+	uint32 HybridFlightRestoreCount=0;
+	uint64 HybridMotionEncodingFailures=0;
+	bool bHybridInputSent=false,bSemanticFlightInput=false;
 	uint32 AppliedLoadoutRevision = 0u;
 	bool bEditingLoadout = false;
 	bool bLoadoutDirty = false;
@@ -716,14 +729,8 @@ private:
 	uint32 ShipGeneration = 0u;
 	uint32 GroupGeneration = 0u;
 	FGuLiWeaponBindingKey ActiveMissileInputBinding;
-	TWeakObjectPtr<UGuLiWingmanRelayComponent> BoundWingmanRelay;
-	FGuLiWingmanGroupHandle BoundWorldValidatorGroup;
-	FGuLiWingmanRelayServer* BoundCombatRelayCore = nullptr;
-	uint32 BoundCombatAbilitySnapshotRevision = 0u;
-	TArray<FGuLiTargetHandle> RegisteredWingmanCombatTargets;
 	TMap<FGuid, FGuLiWingmanMissileSalvoResult> WingmanMissileRequestResults;
 	TArray<FGuid> WingmanMissileRequestOrder;
-	bool bWingmanActiveRosterCutPublishPending = false;
 	double LastServerLoadoutIntentTime = -1.0;
 	double NextLoadoutRetryTime = 0.0;
 

@@ -51,8 +51,18 @@ public:
 	UFUNCTION(BlueprintPure, Category="Ship|Capability") bool IsCapabilityEnabled() const { return State == EGuLiShipCapabilityState::Enabled; }
 	/** Returning false means no gameplay was committed. Implementations own activation rules. */
 	virtual bool RequestActivation(FName ActionId, FString& Error);
+    /** Called by the common equipment contract on its simulation owner only. */
+    virtual void AdvanceHybrid(uint64 LogicalTick,double DeltaSeconds) {}
 	virtual void BuildRuntimeView(FGuLiShipCapabilityRuntimeView& View) const;
 	virtual void ApplyRuntimeView(const FGuLiShipCapabilityRuntimeView& View) {}
+	/** Private state is a mechanism contract, shared by every data configuration of this capability. */
+	virtual uint32 GetPrivateStateVersion() const { return 0; }
+	virtual uint64 GetConfigurationChecksum(const UDataAsset* Configuration) const { return 0; }
+	virtual bool CapturePrivateState(TArray<uint8>& Bytes) const { return false; }
+	virtual bool ValidatePrivateState(TConstArrayView<uint8> Bytes,const UDataAsset* Configuration) const { return false; }
+	virtual bool RestorePrivateState(TConstArrayView<uint8> Bytes) { return false; }
+	bool RestoreCapabilityState(EGuLiShipCapabilityState RestoredState);
+	void NotifyRestoredCapabilityState();
 	FGuLiShipCapabilityRuntimeChanged RuntimeChanged;
 	FGuLiShipCapabilityStateChanged StateChanged;
 protected:

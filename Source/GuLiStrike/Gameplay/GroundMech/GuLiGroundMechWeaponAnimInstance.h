@@ -23,6 +23,7 @@ protected:
 	virtual FAnimInstanceProxy* CreateAnimInstanceProxy() override;
 	virtual void DestroyAnimInstanceProxy(FAnimInstanceProxy* Proxy) override;
 private:
+	friend class FGuLiHybridGroundAdapter;
 	float Age = 100;
 	float StartAlpha = 0;
 	float RestZ = 0;

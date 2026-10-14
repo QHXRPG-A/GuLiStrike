@@ -5,6 +5,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Navigation/CrowdManager.h"
 #include "NavigationData.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 
 UGuLiEngineeringCrowdFollowingComponent::UGuLiEngineeringCrowdFollowingComponent(const FObjectInitializer& Initializer)
 	: Super(Initializer)
@@ -37,6 +39,7 @@ void UGuLiEngineeringCrowdFollowingComponent::RefreshParticipation()
 	const ECrowdSimulationState Desired = Control->IsPhased() || !Character->GetActorEnableCollision()
 		? ECrowdSimulationState::Disabled
 		: (Control->AreActionsLocked() || Character->GetCharacterMovement()->MovementMode == MOVE_None
+			|| (UGuLiNetworkSettings::IsHybrid(GetWorld()) && !UGuLiHybridActorComponent::HasSimulation(Character))
 			|| (GetStatus() != EPathFollowingStatus::Moving && !bPausedForControl)
 			? ECrowdSimulationState::ObstacleOnly : ECrowdSimulationState::Enabled);
 	ChangeParticipation(Desired);

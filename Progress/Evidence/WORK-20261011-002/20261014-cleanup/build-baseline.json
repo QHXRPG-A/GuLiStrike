@@ -1,0 +1,56 @@
+{
+  "schema": "guli-build-delivery/v1",
+  "time_utc": "2026-10-14T10:00:23.156060+00:00",
+  "engine": "D:/UnrealEngine-5.7",
+  "ue_target": "GuLiStrikeEditor Win64 Development",
+  "ue_exit_code": 0,
+  "ue_duration_seconds": 21.66,
+  "cmake_config": "Release",
+  "cmake_exit_code": 0,
+  "project_build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+  "engine_build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+  "build_ids_match": true,
+  "protocol": 31,
+  "manifest": 24,
+  "handoff": 2,
+  "artifacts": [
+    {
+      "path": "Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+      "bytes": 1757696,
+      "sha256": "739f46288e01750dfa5d33e814b6ebd44b748857517b018b9861c1c589c77246",
+      "modified_utc": "2026-10-14T08:50:50.603825+00:00"
+    },
+    {
+      "path": "Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+      "bytes": 15287808,
+      "sha256": "e51b22d1d269999c8bc2d827c9017f126c025615ce2a882755e7618217d2b8f1",
+      "modified_utc": "2026-10-14T09:58:46.092335+00:00"
+    },
+    {
+      "path": "Binaries/Win64/UnrealEditor-GuLiStrikeEditor.dll",
+      "bytes": 1274368,
+      "sha256": "accaab09f45a91aa5d4d1a634e6b7e88b7a6b7464636dd9955227e7b5d8deebb",
+      "modified_utc": "2026-10-14T09:58:47.603016+00:00"
+    },
+    {
+      "path": "Tools/GuLiCoordinator/build/windows/Release/GuLiCoordinator.exe",
+      "bytes": 1747968,
+      "sha256": "91fa0c475f0b15df2958e184cbac8bf6d5023b06b4da52b8e010a01fa4c6284b",
+      "modified_utc": "2026-10-14T08:46:53.084386+00:00"
+    },
+    {
+      "path": "Tools/GuLiCoordinator/build/windows/GuLiNetCore/Release/GuLiNetCore.lib",
+      "bytes": 12517604,
+      "sha256": "881d4a2acf986fc6d6f880de6973db896154f950caba198e9e2e6dd42f5d6469",
+      "modified_utc": "2026-10-14T08:46:41.069628+00:00"
+    }
+  ],
+  "runtime_acceptance_after_cleanup": false,
+  "G_passed": false,
+  "F_started": false,
+  "performance_valid_rounds": 0,
+  "physical_temp_cleanup": "blocked_by_tool_policy",
+  "screenshots_deleted": 0,
+  "prior_full_build_seconds": 102.51,
+  "compiled_source_tree_oid": "245dd58d49f500229e78099d99ab049f0a8adf1f"
+}

@@ -7,6 +7,7 @@
 #include "Engine/World.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Presentation/GuLiTeamOutlineComponent.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
 #include "Materials/MaterialInterface.h"
@@ -125,6 +126,7 @@ bool AGuLiWingmanPawn::InitializeOwnerSimulation(
 		StateTreeComponent->SetStateTree(BehaviorStateTree);
 		StateTreeComponent->StartLogic();
 		bUsingStateTree = StateTreeComponent->IsRunning();
+        if (UGuLiNetworkSettings::IsHybrid(GetWorld())) StateTreeComponent->SetComponentTickEnabled(false);
 	}
 	if (!bUsingStateTree)
 	{
@@ -287,6 +289,13 @@ bool AGuLiWingmanPawn::ApplyStateTreeBehavior(const EGuLiWingmanMemberBehavior B
 	return true;
 }
 
+void AGuLiWingmanPawn::ApplyHybridQueryPose(const FTransform& Transform,const FVector& Velocity)
+{
+    if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || Transform.ContainsNaN() || Velocity.ContainsNaN()) return;
+    SetActorTransform(Transform,false,nullptr,ETeleportType::TeleportPhysics);
+    Runtime.Dynamics.Velocity=Velocity;
+    ApplyOwnerPresentationTransform(Transform);UpdateFlightTrail();
+}
 void AGuLiWingmanPawn::ApplyRemotePresentation(
 	const FTransform& Transform,
 	const float Opacity,
@@ -559,8 +568,7 @@ void AGuLiWingmanPawn::StopStateTree(const TCHAR* Reason)
 	bUsingStateTree = false;
 }
 
-#if WITH_DEV_AUTOMATION_TESTS
-void AGuLiWingmanPawn::TickStateTreeForTests(const float DeltaSeconds)
+void AGuLiWingmanPawn::AdvanceLogicalBehavior(const float DeltaSeconds)
 {
 	if (bUsingStateTree && StateTreeComponent
 		&& FMath::IsFinite(DeltaSeconds) && DeltaSeconds >= 0.0f)
@@ -568,4 +576,6 @@ void AGuLiWingmanPawn::TickStateTreeForTests(const float DeltaSeconds)
 		StateTreeComponent->TickComponent(DeltaSeconds, LEVELTICK_All, nullptr);
 	}
 }
+#if WITH_DEV_AUTOMATION_TESTS
+void AGuLiWingmanPawn::TickStateTreeForTests(const float DeltaSeconds) {AdvanceLogicalBehavior(DeltaSeconds);}
 #endif

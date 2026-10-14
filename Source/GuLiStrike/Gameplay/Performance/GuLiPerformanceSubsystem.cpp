@@ -1,16 +1,19 @@
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Engine/World.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
 
 bool UGuLiPerformanceSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	const auto* World = Cast<UWorld>(Outer);
-	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld();
+	return Super::ShouldCreateSubsystem(Outer) && UGuLiNetworkSettings::CanCapturePerformance(World);
 }
 void UGuLiPerformanceSubsystem::BeginCapture()
 {
-	Counters.Reset(); ConnectionSamples.Reset(); NetworkSamples.Reset(); DroppedNetworkSamples = 0;
+	if (!UGuLiNetworkSettings::CanCapturePerformance(GetWorld())) return;
+	Counters.Reset(); NetworkSamples.Reset(); DroppedNetworkSamples = 0;
+    DroppedFrameSamples=0;
 	FirstFrame = LastFrame = GFrameCounter; bCapturing = true; CaptureNetworkSample();
 }
 void UGuLiPerformanceSubsystem::EndCapture()
@@ -29,10 +32,14 @@ void UGuLiPerformanceSubsystem::Record(const FName Name, const double Value, con
 	auto& C = Counters.FindOrAdd(Key);
 	if (C.Calls && C.Frame != GFrameCounter)
 	{
-		// Bounded diagnostic storage. Missing frames count as zero in the mean.
-		if (C.FrameSamples.Num() < 4096) C.FrameSamples.Add(C.FrameTotal);
+        // Retain the whole acceptance window. Overflow invalidates the round;
+        // it must never turn a prefix into an apparently complete distribution.
+        if (C.FrameSamples.Num()<262144)
+        { C.FrameSamples.Add(C.FrameTotal); C.FrameTimes.Add(C.FrameQpc); C.FrameIds.Add(C.Frame); }
+        else ++DroppedFrameSamples;
 		C.FrameTotal = 0;
 	}
+	if (!C.Calls || C.Frame != GFrameCounter) C.FrameQpc = FPlatformTime::Cycles64();
 	C.Frame = GFrameCounter; C.FrameTotal += Value; C.Total += Value; ++C.Calls;
 }
 FString UGuLiPerformanceSubsystem::GetCaptureJson() const
@@ -42,6 +49,9 @@ FString UGuLiPerformanceSubsystem::GetCaptureJson() const
 	const uint64 Frames = FMath::Max(uint64(1), (bCapturing ? GFrameCounter : LastFrame) - FirstFrame + 1);
 	Root->SetNumberField(TEXT("engine_frames"), double(Frames));
 	Root->SetBoolField(TEXT("capturing"), bCapturing);
+    Root->SetNumberField(TEXT("qpc_frequency"),1.0/FPlatformTime::GetSecondsPerCycle64());
+    Root->SetNumberField(TEXT("frame_samples_dropped"),double(DroppedFrameSamples));
+    Root->SetBoolField(TEXT("capture_valid"),IsCaptureValid());
 	auto Values = MakeShared<FJsonObject>();
 	for (const auto& Pair : Counters)
 	{
@@ -50,6 +60,20 @@ FString UGuLiPerformanceSubsystem::GetCaptureJson() const
 		V->SetNumberField(TEXT("total"), C.Total); V->SetNumberField(TEXT("calls"), double(C.Calls));
 		V->SetNumberField(TEXT("mean_per_engine_frame"), C.Total / Frames);
 		V->SetNumberField(TEXT("p95_active_frame"), Samples[FMath::Clamp(FMath::CeilToInt(Samples.Num() * .95) - 1, 0, Samples.Num() - 1)]);
+        const auto Percentile=[&](double P) { return Samples[FMath::Clamp(FMath::CeilToInt(Samples.Num()*P)-1,0,Samples.Num()-1)]; };
+        V->SetNumberField(TEXT("p50_active_frame"),Percentile(.5)); V->SetNumberField(TEXT("p99_active_frame"),Percentile(.99));
+        V->SetNumberField(TEXT("max_active_frame"),Samples.Last());
+        TArray<TSharedPtr<FJsonValue>> Timed;
+        for (int32 I=0;I<=C.FrameSamples.Num();++I)
+        {
+            const bool Last=I==C.FrameSamples.Num(); auto Row=MakeShared<FJsonObject>();
+            Row->SetNumberField(TEXT("qpc"),double(Last?C.FrameQpc:C.FrameTimes[I]));
+            Row->SetNumberField(TEXT("frame"),double(Last?C.Frame:C.FrameIds[I]));
+            Row->SetNumberField(TEXT("value"),Last?C.FrameTotal:C.FrameSamples[I]);
+            Timed.Add(MakeShared<FJsonValueObject>(Row));
+        }
+        V->SetArrayField(TEXT("timed_frames"),Timed);
+        V->SetStringField(TEXT("percentile_method"),TEXT("nearest rank over every retained active frame in the full window"));
 		V->SetNumberField(TEXT("stored_active_frames"), Samples.Num());
 		Values->SetObjectField(Pair.Key, V);
 	}

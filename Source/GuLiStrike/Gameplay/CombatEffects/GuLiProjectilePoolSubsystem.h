@@ -48,24 +48,33 @@ struct GULISTRIKE_API FGuLiPooledProjectileLaunch
 	FGuid SourceLease;
 	/** Frozen player presentation reference, also usable after the firing Pawn disappears. */
 	int32 PlayerBulletVfxId = 0;
+	bool bAcceptanceAdditional = false;
+	/** Explicit load replenishment may prepare a replacement within one second. */
+	float ScheduledActivationSeconds = 0;
 };
 
 DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiPooledProjectileStateEvent, const FGuLiCombatEffectState&, bool);
 
 /** Server-only data pool. Wingmen/players step at 30 Hz; Commander soldiers sweep independently at 5 Hz. */
 UCLASS()
-class GULISTRIKE_API UGuLiProjectilePoolSubsystem : public UWorldSubsystem
+class GULISTRIKE_API UGuLiProjectilePoolSubsystem : public UTickableWorldSubsystem
 {
 	GENERATED_BODY()
 public:
+	TSharedPtr<class IGuLiHybridSimulationAdapter> CreateHybridAdapter(const struct FGuLiHybridObjectState& Object);
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
+	virtual void Tick(float DeltaSeconds) override;
+	virtual bool IsTickable() const override;
+	virtual TStatId GetStatId() const override;
 	void BeginEpoch(uint32 NewEpoch);
 	FGuLiProjectilePoolHandle Launch(const FGuLiPooledProjectileLaunch& Request);
 	bool Release(FGuLiProjectilePoolHandle Handle, EGuLiCombatEffectEndReason Reason);
 	bool Query(FGuLiProjectilePoolHandle Handle, FGuLiCombatEffectState& OutState) const;
 	bool QueryById(const FGuid& Id, FGuLiCombatEffectState& OutState) const;
+    /** True only after authoritative retirement or a final admission rejection. */
+    bool HasTerminalFlightResult(const FGuid& Id) const;
 	/** None selects all pooled projectiles; other kinds select one source domain. */
 	void AppendActiveSnapshot(TArray<FGuLiCombatEffectState>& OutStates, EGuLiTargetKind SourceKind = EGuLiTargetKind::None) const;
 	void Step(float ServerTime);
@@ -74,6 +83,16 @@ public:
 	FGuLiPooledProjectileStateEvent OnState;
 
 private:
+	friend struct FGuLiHybridProjectileState;
+	TSharedPtr<struct FGuLiHybridProjectileState> HybridState;
+	void InitializeHybrid(FSubsystemCollectionBase& Collection);
+	void ResetHybrid();
+	FGuLiProjectilePoolHandle LaunchHybrid(const FGuLiPooledProjectileLaunch& Request,EGuLiTeam SourceTeam);
+	bool IsPendingHybrid(FGuLiProjectilePoolHandle Handle) const;
+	void RetireHybrid(const FGuLiCombatEffectState& State,const FGuLiCombatEffectContext& Context,
+		EGuLiCombatEffectEndReason Reason,const FVector& Position,float Time,const FGuLiTargetHandle* Target);
+	FGuLiProjectilePoolHandle ActivateLaunch(const FGuLiPooledProjectileLaunch& Request,EGuLiTeam SourceTeam,
+		FGuid Lease=FGuid(),int32 ReservedSlot=INDEX_NONE);
 	struct FSlot
 	{
 		FGuLiCombatEffectState State;
@@ -82,6 +101,7 @@ private:
 		uint32 Generation = 0;
 		int32 ActiveIndex = INDEX_NONE;
 		float SweepRadius = 0;
+		FGuid HistoryGroup;
 	};
 	struct FTargetMotion
 	{
@@ -97,7 +117,7 @@ private:
 	void Grow(int32 Count);
 	void Clear();
 	void BuildSpatialIndex(float Now, const FSimulationHistory& History);
-	void StepDomain(float Now, bool bGround, FSimulationHistory& History);
+	void StepDomain(float Now, bool bGround, FSimulationHistory& History,const FGuid* Group=nullptr);
 	bool Retire(FGuLiProjectilePoolHandle Handle, EGuLiCombatEffectEndReason Reason,
 		const FVector& Position, float Time, const FGuLiTargetHandle* HitTarget = nullptr);
 	UPROPERTY(Transient) TObjectPtr<UGuLiDamageLedgerSubsystem> Ledger;
@@ -111,6 +131,9 @@ private:
 	TMap<FGuid, FGuLiProjectilePoolHandle> ById;
 	FSimulationHistory WingmanHistory;
 	FSimulationHistory GroundHistory;
+	struct FScheduledLaunch { FGuLiPooledProjectileLaunch Recipe; EGuLiTeam Team; FGuid Lease; FGuLiProjectilePoolHandle Handle; };
+	TMap<FGuid,FScheduledLaunch> ScheduledLaunches;
+	TMap<FGuid,FSimulationHistory> HybridHistories[2];
 	TArray<FGuLiCombatTargetSnapshot> Snapshots;
 	TArray<FTargetMotion> Targets;
 	TMap<FIntVector, TArray<int32>> SpatialGrid;

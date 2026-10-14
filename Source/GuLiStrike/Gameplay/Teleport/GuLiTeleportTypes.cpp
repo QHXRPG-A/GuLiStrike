@@ -2,7 +2,7 @@
 
 bool FGuLiTeleportFieldConfig::IsValid() const
 {
-	return Level >= 1 && Level <= 4 && bAllowPlayerVehicles == (Level == 4)
+	return Level >= 1 && Level <= 64
 		&& FMath::IsFinite(RadiusCentimeters) && RadiusCentimeters > 0
 		&& FMath::IsFinite(WindupSeconds) && WindupSeconds > 0
 		&& FMath::IsFinite(RecoverySeconds) && RecoverySeconds > 0
@@ -19,7 +19,7 @@ bool GuLiTeleport::IsInsideDisc(const FVector& Location, const FVector& Center, 
 
 bool GuLiTeleport::CanCollectVehicle(const FGuLiTeleportFieldConfig& Config, const bool bShip, const double Height)
 {
-	return Config.IsValid() && Config.Level == 4 && Config.bAllowPlayerVehicles
+	return Config.IsValid() && Config.bAllowPlayerVehicles
 		&& (!bShip || (FMath::IsFinite(Height) && Height >= 0 && Height <= Config.MaxShipHeightCentimeters));
 }
 

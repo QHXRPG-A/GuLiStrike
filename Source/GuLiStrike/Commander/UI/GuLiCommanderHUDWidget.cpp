@@ -388,7 +388,7 @@ void UGuLiCommanderHUDWidget::RefreshSelection(
 {
 	CachedSelection = Selection;
 	CachedSelectionMatchEpoch = GetCurrentMatchEpoch();
-	if (Selection.Cohorts.IsEmpty() && Selection.ActorIds.IsEmpty())
+	if (Selection.Cohorts.IsEmpty() && Selection.ActorIds.IsEmpty() && Selection.Objects.IsEmpty())
 	{
 		CachedCommandAck = FGuLiCommandAck();
 	}

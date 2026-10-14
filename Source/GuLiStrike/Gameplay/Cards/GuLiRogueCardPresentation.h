@@ -44,7 +44,7 @@ private:
 	TWeakObjectPtr<UGuLiRogueCardPresentation> Presentation;
 };
 
-/** Cosmetic local component. All numeric changes go through the existing commander RPC channel. */
+/** Local choice session with optional presentation; numeric decisions use the Commander request channel. */
 UCLASS()
 class GULISTRIKE_API UGuLiRogueCardPresentation : public UActorComponent
 {
@@ -58,6 +58,16 @@ public:
 	void Reroll();
 	bool CanReroll() const;
 	bool IsOpen() const { return bOpen; }
+    /** Activate an offered card through the presentation's select/confirm input. */
+    bool ActivateCandidate(int32 CandidateIndex);
+    int32 GetPresentationPhase() const;
+    /** Commit callback after the presentation has requested confirmation. */
+    bool ConfirmSelection(int32 SelectedIndex);
+    const TArray<FString>& GetCandidateIds() const { return CandidateIds; }
+    FGuid GetSessionId() const { return SessionId; }
+    bool IsChoicePending() const { return bSubmitting; }
+    bool IsChoiceCommitted() const { return bCommitted; }
+    FGuid GetLastCommittedSession() const { return LastCommittedSession; }
 	void ReceiveOffer(FGuid Request, FGuid Session, uint32 Epoch, const TArray<FString>& Cards, const FString& Error);
 	void ReceiveResult(FGuid Session, bool bSuccess, const FString& Error);
 	virtual void TickComponent(float, ELevelTick, FActorComponentTickFunction*) override;
@@ -78,6 +88,7 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UGuLiRogueCardOverlay> Overlay;
 	TArray<FString> CandidateIds;
 	FGuid RequestId, SessionId, PlayerGuid;
+    FGuid LastCommittedSession;
 	uint32 MatchEpoch=0;
 	uint8 PresentationTeam=0;
 	bool bOpen=false, bClosing=false, bSubmitting=false, bTearingDown=false;

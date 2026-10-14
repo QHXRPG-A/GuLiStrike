@@ -29,14 +29,14 @@ public:
 	UGuLiConstructionPresentationComponent();
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out) const override;
+
 	virtual void TickComponent(float Dt, ELevelTick TickType, FActorComponentTickFunction* Function) override;
 	void SetConstructionAuthority(UGuLiBuildingLifecycleComponent* Building);
 	void InitializePresentation(AActor* Actor);
 	void HideBeams();
 	UFUNCTION(BlueprintPure, Category="Construction|Diagnostics") FString GetPresentationDiagnosticsJson() const;
 private:
-	UPROPERTY(ReplicatedUsing=OnRep_State) FGuLiConstructionPresentationState State;
+	UPROPERTY() FGuLiConstructionPresentationState State;
 	UFUNCTION() void OnRep_State();
 	TWeakObjectPtr<AActor> Presentation;
 	TWeakObjectPtr<USceneComponent> Pivots[2];

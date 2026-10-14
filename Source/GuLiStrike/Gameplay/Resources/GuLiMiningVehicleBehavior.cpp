@@ -4,6 +4,7 @@
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Engine/World.h"
+#include "Network/GuLiHybridActorComponent.h"
 
 EGuLiCommanderWorkPhase AGuLiMiningVehiclePawn::GetBehaviorPhase() const
 {
@@ -22,16 +23,16 @@ EGuLiCommanderWorkPhase AGuLiMiningVehiclePawn::GetBehaviorPhase() const
 }
 
 bool AGuLiMiningVehiclePawn::IsBehaviorRetryReady() const
-{ return GetWorld()->GetTimeSeconds() >= NextAutoRetryServerTime; }
+{ return UGuLiHybridActorComponent::BattleSeconds(this) >= NextAutoRetryServerTime; }
 
 void AGuLiMiningVehiclePawn::ExecuteBehaviorAction(EGuLiMiningBehaviorAction Action, uint16 RequestedCluster)
 {
 	using Result = EGuLiCommanderWorkResult;
-	if (!HasAuthority() || !bTaskManaged || bManagedTaskComplete
+	if (!UGuLiHybridActorComponent::HasSimulation(this) || !bTaskManaged || bManagedTaskComplete
 		|| UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)
 		|| FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsRouting()) return;
 	auto* Resources = GetResourceSubsystem();
-	if (!Resources || !Resources->IsRuntimeReady()) return;
+	if (!Resources || !Resources->IsMiningRuntimeReady()) return;
 	switch (Action)
 	{
 	case EGuLiMiningBehaviorAction::SelectTarget:
@@ -59,7 +60,7 @@ void AGuLiMiningVehiclePawn::ExecuteBehaviorAction(EGuLiMiningBehaviorAction Act
 			// Reserve the work position now; select a visible node from the actual pose after arrival.
 			BehaviorResult = Result::TargetReady;
 		}
-		else { BehaviorResult = Result::WaitingPosition; NextAutoRetryServerTime = GetWorld()->GetTimeSeconds()+.2f; }
+		else { BehaviorResult = Result::WaitingPosition; NextAutoRetryServerTime = UGuLiHybridActorComponent::BattleSeconds(this)+.2f; }
 		break;
 	}
 	case EGuLiMiningBehaviorAction::MoveToTarget:
@@ -67,17 +68,17 @@ void AGuLiMiningVehiclePawn::ExecuteBehaviorAction(EGuLiMiningBehaviorAction Act
 		{ BehaviorResult = Result::TargetLost; break; }
 		if (!FindComponentByClass<UGuLiEngineeringTravelComponent>()->BeginWorkMove(BehaviorApproach,GULI_MINING_SLOT_ARRIVAL_RADIUS_CM))
 		{ BehaviorResult = Result::Failed; break; }
-		TaskState = EGuLiMiningTaskState::MovingToCluster; BehaviorResult = Result::Running; ForceNetUpdate(); break;
+		TaskState = EGuLiMiningTaskState::MovingToCluster; BehaviorResult = Result::Running;  break;
 	case EGuLiMiningBehaviorAction::Reposition:
 		GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->RejectSlot(*this,MiningSlot,
 			BehaviorResult==Result::OutOfRange ? EGuLiMiningSlotFailure::NoVisibleNodes : EGuLiMiningSlotFailure::Movement);
 		FinishCurrentTarget(); TaskState = EGuLiMiningTaskState::Idle; BehaviorResult = Result::None;
-		NextAutoRetryServerTime = GetWorld()->GetTimeSeconds()+.2f; break;
+		NextAutoRetryServerTime = UGuLiHybridActorComponent::BattleSeconds(this)+.2f; break;
 	case EGuLiMiningBehaviorAction::Extract:
 		if (TaskState == EGuLiMiningTaskState::Mining) break;
 		if (auto* AI = Cast<AAIController>(GetController())) AI->StopMovement();
 		TaskState = EGuLiMiningTaskState::Mining; MiningAccumulator = 0; BehaviorResult = Result::Running;
-		SetMiningVisual(true); ForceNetUpdate(); break;
+		SetMiningVisual(true);  break;
 	case EGuLiMiningBehaviorAction::SelectFactory:
 	{
 		FinishCurrentTarget();
@@ -118,19 +119,19 @@ void AGuLiMiningVehiclePawn::ExecuteBehaviorAction(EGuLiMiningBehaviorAction Act
 		const FVector Target = Points[(StableActorId.Value + UnloadPointAttempts++) % Points.Num()];
 		BehaviorResult = FindComponentByClass<UGuLiEngineeringTravelComponent>()->BeginWorkMove(Target, 50)
 			? Result::Running : Result::Failed;
-		ForceNetUpdate(); break;
+		 break;
 	}
 	case EGuLiMiningBehaviorAction::Unload:
 		if (!IsValid(Factory) || Factory->GetTeam() != Team) { BehaviorResult = Result::FactoryLost; break; }
 		FindComponentByClass<UGuLiEngineeringTravelComponent>()->StopAtSafePoint();
 		TaskState = EGuLiMiningTaskState::Docking; DockingAccumulator = 0;
-		BehaviorResult = Result::Running; ForceNetUpdate(); break;
+		BehaviorResult = Result::Running;  break;
 	case EGuLiMiningBehaviorAction::FinishCycle: BeginGrace(GetCargoTotal() == 0); break;
 	case EGuLiMiningBehaviorAction::Retry:
 		if (BehaviorResult == Result::Failed) GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->RejectSlot(*this,MiningSlot);
 		FinishCurrentTarget(); TaskState = EGuLiMiningTaskState::Idle;
 		BehaviorResult = Result::None;
-		NextAutoRetryServerTime = GetWorld()->GetTimeSeconds() + (GetCargoTotal() > 0 ? AutoRetrySeconds : .2f); break;
+		NextAutoRetryServerTime = UGuLiHybridActorComponent::BattleSeconds(this) + (GetCargoTotal() > 0 ? AutoRetrySeconds : .2f); break;
 	case EGuLiMiningBehaviorAction::Fail: BeginGrace(false); break;
 	case EGuLiMiningBehaviorAction::Complete: BeginGrace(true); break;
 	}

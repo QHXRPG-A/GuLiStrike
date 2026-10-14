@@ -138,6 +138,7 @@ struct GULISTRIKE_API FGuLiLogicalMissileState
 	float Damage = 0.0f;
 	float CorrectionAccumulator = 0.0f;
 	float LaunchTime = 0;
+	FGuid SourceLease;
 	FVector LaunchPosition = FVector::ZeroVector;
 	FVector LaunchDirection = FVector::ForwardVector;
 	FVector LastTargetLocation = FVector::ZeroVector;
@@ -183,6 +184,13 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiLogicalMissileLaunchEvent, const FGuLiL
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiLogicalMissileCorrectionEvent, const FGuLiLogicalMissileState&);
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiLogicalMissileFinishedEvent, const FGuLiLogicalMissileTerminalEvent&);
 
+namespace GuLiLogicalMissileMotion
+{
+    /** Shared geometry only. The caller retains pending damage and decides when to retire authority. */
+    GULISTRIKE_API bool Advance(UWorld& World,UGuLiDamageLedgerSubsystem& Ledger,FGuLiLogicalMissileState& Missile,
+        float FixedDeltaSeconds,FGuLiLogicalMissileTerminalEvent& Terminal);
+}
+
 /** Server-only 30 Hz logical missile service. Visual clients consume its events through a relay. */
 UCLASS()
 class GULISTRIKE_API UGuLiLogicalMissileSubsystem final : public UTickableWorldSubsystem
@@ -207,12 +215,13 @@ public:
 	bool LaunchFlightSalvo(TConstArrayView<FGuLiLogicalMissileLaunchRequest> Requests, int32& OutLaunchedCount);
 
 	bool ContainsMissile(const FGuid& MissileId) const;
-	int32 GetActiveMissileCount() const { return ActiveMissiles.Num(); }
+	int32 GetActiveMissileCount() const;
 	uint64 GetSimulationStepCount() const { return SimulationStepCount; }
 
 	FGuLiLogicalMissileLaunchEvent OnLaunch;
 	FGuLiLogicalMissileCorrectionEvent OnCorrection;
 	FGuLiLogicalMissileFinishedEvent OnFinished;
+    static FVector TurnDirection(const FVector& CurrentDirection,const FVector& DesiredDirection,float MaximumRadians);
 
 private:
 	bool ValidateLaunchRequest(const FGuLiLogicalMissileLaunchRequest& Request) const;
@@ -221,8 +230,6 @@ private:
 	bool StepMissile(FGuLiLogicalMissileState& Missile, float FixedDeltaSeconds,
 		FGuLiLogicalMissileTerminalEvent& OutTerminal);
 	void FinishMissile(int32 Index, const FGuLiLogicalMissileTerminalEvent& Event);
-	static FVector TurnDirection(const FVector& CurrentDirection, const FVector& DesiredDirection,
-		float MaximumRadians);
 
 	TArray<FGuLiLogicalMissileState> ActiveMissiles;
 	TSet<FGuid> ActiveMissileIds;

@@ -32,9 +32,9 @@ FGuLiActiveSkillExecutionResult UGuLiWarMachineMissileSkillExecutor::Execute(
 {
 	FGuLiActiveSkillExecutionResult Result;
 	const auto* Config=Cast<UGuLiPointSkillConfiguration>(Configuration);
-	UWorld* World=Context.Commander ? Context.Commander->GetWorld() : nullptr;
+	UWorld* World=Context.GetExecutionWorld();
 	const auto* Army=World ? World->GetSubsystem<UGuLiArmySkillSubsystem>() : nullptr;
-	const auto* Weapon=Army && Config ? Army->FindResolvedSkill(Context.Commander->GetTeam(),Context.UnitTypeId,Config->SourceWeaponSlot) : nullptr;
+	const auto* Weapon=Army && Config ? Army->FindResolvedSkill(Context.GetExecutionTeam(),Context.UnitTypeId,Config->SourceWeaponSlot) : nullptr;
 	auto* Runtime=World ? World->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>() : nullptr;
 	if (!Weapon || !Weapon->bUnlocked || !Weapon->bEquipped || Weapon->ProjectileCount<1 || !Runtime)
 	{ Result.Error=TEXT("Missile launcher is unavailable."); return Result; }
@@ -66,10 +66,10 @@ FGuLiActiveSkillExecutionResult UGuLiWarMachineMissileSkillExecutor::Execute(
 bool UGuLiWarMachineMissileSkillExecutor::ConfigurePayload(const FGuLiActiveSkillExecutionContext& Context,
 	const UGuLiPointSkillConfiguration& Config, FGuLiCombatAttackRequest& Request, FString& Error) const
 {
-	auto& World = *Context.Commander->GetWorld();
+	auto& World = *Context.GetExecutionWorld();
 	const auto* Army = World.GetSubsystem<UGuLiArmySkillSubsystem>();
 	const auto* Data = World.GetSubsystem<UGuLiCommanderDataSubsystem>();
-	const auto* Weapon = Army ? Army->FindResolvedSkill(Context.Commander->GetTeam(), Context.UnitTypeId, Config.SourceWeaponSlot) : nullptr;
+	const auto* Weapon = Army ? Army->FindResolvedSkill(Context.GetExecutionTeam(), Context.UnitTypeId, Config.SourceWeaponSlot) : nullptr;
 	const auto* Mount = Data && Data->IsWeaponMountCatalogValid() ? Data->FindWeaponMountConfig(Context.UnitTypeId, Config.SourceWeaponSlot) : nullptr;
 	const auto* Skill = Weapon && Data ? Data->FindSkillDefinition(Weapon->SkillId) : nullptr;
 	if (!Weapon || !Weapon->bUnlocked || !Weapon->bEquipped || Weapon->TriggerMode != EGuLiWeaponTriggerMode::Active
@@ -87,7 +87,7 @@ bool UGuLiWarMachineMissileSkillExecutor::ConfigurePayload(const FGuLiActiveSkil
 			Context.SourceTransform, Config.SourceWeaponSlot, Context.ShotOrdinal % Mount->Muzzles.Num(), World.GetTimeSeconds(), Muzzle))
 			Request.MuzzleOffset = Context.SourceTransform.InverseTransformPosition(Muzzle.GetLocation());
 	}
-	Request.Context.WeaponBinding = FGuLiWeaponBindingKey::Army(Request.Context.MatchEpoch, Context.Commander->GetTeam(), Context.UnitTypeId, Config.SourceWeaponSlot);
+	Request.Context.WeaponBinding = FGuLiWeaponBindingKey::Army(Request.Context.MatchEpoch, Context.GetExecutionTeam(), Context.UnitTypeId, Config.SourceWeaponSlot);
 	Request.Context.ProfileRevision = Weapon->Revision;
 	Request.Context.SkillId = Weapon->SkillId;
 	Request.Context.EffectConfigId = Skill->EffectConfigId;

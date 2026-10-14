@@ -1,5 +1,7 @@
 #include "Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 
 #include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
 #include "CollisionQueryParams.h"
@@ -47,6 +49,7 @@ void UGuLiProjectilePoolSubsystem::Initialize(FSubsystemCollectionBase& Collecti
 	Ledger = GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>();
 	Grow(FMath::Max(1, GetDefault<UGuLiCombatEffectSettings>()->ProjectilePoolInitialCapacity));
 	Stats.Expansions = 0;
+	InitializeHybrid(Collection);
 }
 
 void UGuLiProjectilePoolSubsystem::Grow(const int32 Count)
@@ -60,6 +63,8 @@ void UGuLiProjectilePoolSubsystem::Grow(const int32 Count)
 
 void UGuLiProjectilePoolSubsystem::Clear()
 {
+	for (const auto& Pair:ScheduledLaunches) if (Ledger) Ledger->ReleaseEffectSource(Pair.Value.Lease);
+	ScheduledLaunches.Reset();
 	for (const int32 Index : ActiveSlots)
 	{
 		if (Ledger) Ledger->ReleaseEffectSource(Slots[Index].SourceLease);
@@ -71,17 +76,20 @@ void UGuLiProjectilePoolSubsystem::Clear()
 	WingmanHistory = {}; GroundHistory = {}; Targets.Reset(); Snapshots.Reset(); SpatialGrid.Reset(); Candidates.Reset();
 	OrderedCandidates.Reset(); CandidateVisits.Reset(); CandidateGeneration = 0;
 	NextGroundStepTime = 0; Stats = {}; Stats.Capacity = Slots.Num();
+	HybridHistories[0].Reset(); HybridHistories[1].Reset();
 }
 
 void UGuLiProjectilePoolSubsystem::BeginEpoch(const uint32 NewEpoch)
 {
 	if (!Ledger || NewEpoch == 0 || NewEpoch <= Epoch || Ledger->GetMatchEpoch() != NewEpoch) return;
 	Clear(); Epoch = NewEpoch;
+	ResetHybrid();
 }
 
 void UGuLiProjectilePoolSubsystem::Deinitialize()
 {
 	Clear(); OnState.Clear(); Slots.Reset(); FreeSlots.Reset(); Ledger = nullptr;
+	ResetHybrid(); HybridState.Reset();
 	Super::Deinitialize();
 }
 
@@ -108,29 +116,47 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::Launch(const FGuLiPooled
 	FGuLiCombatTargetSnapshot Source;
 	if (!Ledger->TryGetSourceSnapshot(R.Context.Source, Source) || !Source.bAlive
 		|| (Source.Team != EGuLiTeam::Red && Source.Team != EGuLiTeam::Blue)) return {};
+	if (HybridState) return LaunchHybrid(R,Source.Team);
 	FGuid Lease = R.SourceLease;
 	if (Lease.IsValid()) { if (!Ledger->RetainEffectSource(Lease)) return {}; }
 	else Lease = Ledger->AcquireEffectSource(R.Context.Source);
 	if (!Lease.IsValid()) return {};
+	if (R.ScheduledActivationSeconds>R.ServerTime)
+	{
+        if (!R.bAcceptanceAdditional || R.ScheduledActivationSeconds>R.ServerTime+FMath::Min(R.Lifetime,10.f)+.001f)
+        { Ledger->ReleaseEffectSource(Lease); return {}; }
+        // Distribute the real future recipe now. StepDomain cannot advance it
+        // before StartTime and active-load counters exclude future recipes.
+        auto Future=R; Future.ServerTime=R.ScheduledActivationSeconds;
+        return ActivateLaunch(Future,Source.Team,Lease);
+	}
+	return ActivateLaunch(R,Source.Team,Lease);
+}
+
+FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::ActivateLaunch(const FGuLiPooledProjectileLaunch& R,
+	const EGuLiTeam SourceTeam,const FGuid Lease,const int32 ReservedSlot)
+{
 	if (FreeSlots.IsEmpty()) Grow(FMath::Max(1, GetDefault<UGuLiCombatEffectSettings>()->ProjectilePoolGrowthSize));
-	const int32 Index = FreeSlots.Pop(EAllowShrinking::No);
+	const int32 Index = ReservedSlot==INDEX_NONE ? FreeSlots.Pop(EAllowShrinking::No) : ReservedSlot;
+	if (!Slots.IsValidIndex(Index) || Slots[Index].ActiveIndex!=INDEX_NONE) return {};
 	FSlot& Slot = Slots[Index];
-	Slot.Generation = Slot.Generation == MAX_uint32 ? 1 : Slot.Generation + 1;
+	if (ReservedSlot==INDEX_NONE) Slot.Generation = Slot.Generation == MAX_uint32 ? 1 : Slot.Generation + 1;
 	Slot.ActiveIndex = ActiveSlots.Add(Index);
 	Slot.SourceLease = Lease; Slot.Context = R.Context; Slot.SweepRadius = R.SweepRadius;
 	FGuLiCombatEffectState& State = Slot.State;
 	State = {}; State.Kind = EGuLiCombatEffectKind::LinearProjectile;
 	State.EffectId = R.Context.ShotId; State.MatchEpoch = Epoch; State.Sequence = 1;
-	State.Source = (bGround || bPlayer) ? R.Context.Source : GuLiCombatTargets::MakeWingmanTargetHandle(R.Context.Emitter);
+	State.Source = R.Context.Emitter.IsValid() ? GuLiCombatTargets::MakeWingmanTargetHandle(R.Context.Emitter) : R.Context.Source;
 	// Classify only after freezing the source identity; recycled slots have no
 	// previous source and Commander bullets must retain their independent 5 Hz domain.
 	DomainSlots[State.Source.Kind == EGuLiTargetKind::CommanderSoldier ? 1 : 0].Add(Index);
 	State.PlayerBulletVfxId = R.PlayerBulletVfxId;
+	State.bAcceptanceAdditional = R.bAcceptanceAdditional;
 	State.Target = R.Context.Target;
 	FGuLiCombatTargetSnapshot Target;
 	if (Ledger->TryGetTargetSnapshot(State.Target,Target)) State.LastTargetLocation=Target.Location;
 	State.Motion.SweepRadius = R.SweepRadius;
-	State.SourceTeam = Source.Team;
+	State.SourceTeam = SourceTeam;
 	State.LaunchLocation = State.Location = R.Position; State.LaunchDirection = R.Direction.GetSafeNormal();
 	State.Motion.Speed = R.Speed; State.Velocity = FVector(State.LaunchDirection) * R.Speed;
 	State.MuzzleOffset = R.MuzzleOffset;
@@ -145,7 +171,7 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::Launch(const FGuLiPooled
 
 bool UGuLiProjectilePoolSubsystem::Query(const FGuLiProjectilePoolHandle Handle, FGuLiCombatEffectState& OutState) const
 {
-	if (!Matches(Handle)) { OutState = {}; return false; }
+	if (!Matches(Handle) && !IsPendingHybrid(Handle)) { OutState = {}; return false; }
 	OutState = Slots[Handle.Slot].State; return true;
 }
 
@@ -165,7 +191,9 @@ void UGuLiProjectilePoolSubsystem::AppendActiveSnapshot(TArray<FGuLiCombatEffect
 bool UGuLiProjectilePoolSubsystem::Release(const FGuLiProjectilePoolHandle Handle, const EGuLiCombatEffectEndReason Reason)
 {
 	if (!Matches(Handle)) return false;
-	return Retire(Handle, Reason, Slots[Handle.Slot].State.Location, GetWorld()->GetTimeSeconds());
+    const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    const float Now=Hybrid ? static_cast<float>(Hybrid->GetLogicalSeconds()) : GetWorld()->GetTimeSeconds();
+    return Retire(Handle,Reason,Slots[Handle.Slot].State.Location,Now);
 }
 
 bool UGuLiProjectilePoolSubsystem::Retire(const FGuLiProjectilePoolHandle Handle, EGuLiCombatEffectEndReason Reason,
@@ -191,6 +219,11 @@ bool UGuLiProjectilePoolSubsystem::Retire(const FGuLiProjectilePoolHandle Handle
 	}
 	Slots[Handle.Slot] = {}; Slots[Handle.Slot].Generation = Copy.Generation; FreeSlots.Add(Handle.Slot);
 	Stats.Active = ActiveSlots.Num(); ++Stats.Recycled;
+	if (HybridState)
+	{
+		RetireHybrid(Copy.State,Copy.Context,Reason,Position,Time,HitTarget);
+		return true;
+	}
 	if (HitTarget)
 	{
 		FGuLiDamageRequest Damage;
@@ -200,7 +233,14 @@ bool UGuLiProjectilePoolSubsystem::Retire(const FGuLiProjectilePoolHandle Handle
 		Damage.WeaponBinding = Copy.Context.WeaponBinding; Damage.SkillId = Copy.Context.SkillId;
 		Damage.LoadoutRevision = Copy.Context.LoadoutRevision; Damage.ProfileRevision = Copy.Context.ProfileRevision;
 		Damage.Damage = Copy.Context.Damage; Damage.HitLocation = Position;
-		const auto Result = Ledger->CommitEffectDamage(Damage, Copy.SourceLease);
+		FGuLiDamageCommitResult Result;
+        const TWeakObjectPtr<UGuLiProjectilePoolSubsystem> Weak(this); const uint32 SubmittedEpoch=Epoch;
+        const FGuid Submitted=Ledger->SubmitEffectDamage(Damage,Copy.SourceLease,this,[Weak,SubmittedEpoch](const FGuLiDamageCommitResult& Commit)
+        {
+            if (auto* Self=Weak.Get(); Self && Self->Epoch==SubmittedEpoch && Commit.Status==EGuLiDamageCommitStatus::Committed)
+                ++Self->Stats.Hits;
+        });
+        Result.Status=Submitted.IsValid()?EGuLiDamageCommitStatus::Pending:EGuLiDamageCommitStatus::RejectedByAdapter;
 		// A death callback may synchronously start another round. Do not publish or count an old-round impact there.
 		if (Handle.MatchEpoch != Epoch || Handle.MatchEpoch != Ledger->GetMatchEpoch())
 		{
@@ -208,7 +248,7 @@ bool UGuLiProjectilePoolSubsystem::Retire(const FGuLiProjectilePoolHandle Handle
 			return true;
 		}
 		if (Result.Status == EGuLiDamageCommitStatus::Committed) ++Stats.Hits;
-		else Reason = EGuLiCombatEffectEndReason::Cancelled;
+		else if (Result.Status!=EGuLiDamageCommitStatus::Pending) Reason = EGuLiCombatEffectEndReason::Cancelled;
 	}
 	else if (Reason == EGuLiCombatEffectEndReason::Blocked) ++Stats.Blocked;
 	Ledger->ReleaseEffectSource(Copy.SourceLease);
@@ -251,6 +291,22 @@ void UGuLiProjectilePoolSubsystem::Step(const float Now)
 	TGuardValue<bool> Guard(bStepping, true);
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiProjectilePool);
 	const double Started = FPlatformTime::Seconds(); const uint32 StepEpoch = Epoch;
+	if (HybridState)
+	{
+		for (int32 Domain=0;Domain<2;++Domain)
+		{
+			TSet<FGuid> Groups;
+			for (const int32 Slot:DomainSlots[Domain]) Groups.Add(Slots[Slot].HistoryGroup);
+			for (const FGuid& Group:Groups)
+			{
+				auto& History=HybridHistories[Domain].FindOrAdd(Group);
+				if (!Domain || Now+UE_KINDA_SMALL_NUMBER>=History.PreviousTime+GuLiCombatEffects::GroundProjectileStepSeconds)
+					StepDomain(Now,Domain==1,History,&Group);
+				if (Epoch!=StepEpoch) return;
+			}
+		}
+		Stats.LastStepMilliseconds=(FPlatformTime::Seconds()-Started)*1000.; return;
+	}
 	const bool bHasWingman = !DomainSlots[0].IsEmpty();
 	const bool bHasGround = !DomainSlots[1].IsEmpty();
 	if (bHasWingman) StepDomain(Now, false, WingmanHistory);
@@ -265,7 +321,7 @@ void UGuLiProjectilePoolSubsystem::Step(const float Now)
 	if (Epoch == StepEpoch) Stats.LastStepMilliseconds = (FPlatformTime::Seconds() - Started) * 1000.0;
 }
 
-void UGuLiProjectilePoolSubsystem::StepDomain(const float Now, const bool bGround, FSimulationHistory& History)
+void UGuLiProjectilePoolSubsystem::StepDomain(const float Now, const bool bGround, FSimulationHistory& History,const FGuid* Group)
 {
 	const uint32 StepEpoch = Epoch;
 	if (auto* Capture = GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>(); Capture && Capture->IsCapturing())
@@ -285,6 +341,7 @@ void UGuLiProjectilePoolSubsystem::StepDomain(const float Now, const bool bGroun
 	StepHandles.Reset(ActiveSlots.Num());
 	for (const int32 Index : DomainSlots[bGround ? 1 : 0])
 	{
+		if (Group && Slots[Index].HistoryGroup!=*Group) continue;
 		auto& Handle = StepHandles.AddDefaulted_GetRef(); Handle.Slot = Index; Handle.Generation = Slots[Index].Generation; Handle.MatchEpoch = Epoch;
 	}
 	// StepHandles is separate from the active list, which can change during damage callbacks.

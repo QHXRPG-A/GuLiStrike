@@ -3,12 +3,7 @@
 #include "Gameplay/GroundMech/GuLiGroundMechAbilities.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Gameplay/GroundMech/GuLiGroundMechMovementComponent.h"
-#include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
-#include "Gameplay/Teleport/GuLiTeleportInputComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
-#include "Battle/Framework/GuLiBattlePlayerState.h"
-#include "Battle/Network/GuLiPlayerNetSyncComponent.h"
-#include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Components/StaticMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
@@ -16,12 +11,14 @@
 #include "NiagaraSystem.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
-#include "Net/UnrealNetwork.h"
+#include "GameFramework/PlayerController.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 
 namespace { constexpr int32 RocketInputId = 1; }
 UGuLiGroundMechRocketComponent::UGuLiGroundMechRocketComponent()
 {
-    SetIsReplicatedByDefault(true);
+    SetIsReplicatedByDefault(false);
     PrimaryComponentTick.bCanEverTick = true;
     PrimaryComponentTick.TickGroup = TG_PostUpdateWork;
     SkillTable = TSoftObjectPtr<UDataTable>(FSoftObjectPath(TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Skills.DT_GuLiStrikeMech_Skills")));
@@ -59,16 +56,14 @@ void UGuLiGroundMechRocketComponent::BeginPlay()
     Configuration = *Row;
     bConfigured = true;
     RefreshActorInfo();
-    if (!bFuelBaselineReceived) Movement()->InitializeRocketFuel(Configuration.InitialFuel);
-    if (GetOwner()->HasAuthority())
-    {
-        auto Spec = ASC()->MakeOutgoingSpec(UGuLiGE_MechFuelInitialize::StaticClass(), 1.f, ASC()->MakeEffectContext());
-        Spec.Data->SetSetByCallerMagnitude(TEXT("MaxFuel"), Configuration.MaxFuel);
-        Spec.Data->SetSetByCallerMagnitude(TEXT("Fuel"), Configuration.InitialFuel);
-        ASC()->ApplyGameplayEffectSpecToSelf(*Spec.Data);
-        AbilityHandle = ASC()->GiveAbility(FGameplayAbilitySpec(AbilityClass, 1, RocketInputId, this));
-    }
-    if (GetNetMode() != NM_DedicatedServer)
+    // Every local/query instance needs its configuration before private restore.
+    Movement()->InitializeRocketFuel(Configuration.InitialFuel);
+    auto Spec = ASC()->MakeOutgoingSpec(UGuLiGE_MechFuelInitialize::StaticClass(), 1.f, ASC()->MakeEffectContext());
+    Spec.Data->SetSetByCallerMagnitude(TEXT("MaxFuel"), Configuration.MaxFuel);
+    Spec.Data->SetSetByCallerMagnitude(TEXT("Fuel"), Configuration.InitialFuel);
+    ASC()->ApplyGameplayEffectSpecToSelf(*Spec.Data);
+    AbilityHandle = ASC()->GiveAbility(FGameplayAbilitySpec(AbilityClass, 1, RocketInputId, this));
+    if (UGuLiNetworkSettings::CanPresent(GetWorld()))
     {
         JetSystem = GuLiVfx::Load<UNiagaraSystem>(this, Configuration.JetVfxId);
         FuelMaterial = GuLiVfx::Load<UMaterialInterface>(this, Configuration.FuelBarVfxId);
@@ -79,19 +74,13 @@ void UGuLiGroundMechRocketComponent::BeginPlay()
 void UGuLiGroundMechRocketComponent::RefreshActorInfo()
 {
     if (ASC()) ASC()->InitAbilityActorInfo(GetOwner(), GetOwner());
-    if (bConfigured && GetNetMode() != NM_DedicatedServer) CreatePresentation();
+    if (bConfigured && UGuLiNetworkSettings::CanPresent(GetWorld())) CreatePresentation();
 }
 bool UGuLiGroundMechRocketComponent::CanUseRocketControls() const
 {
-    const auto* Pawn = Cast<APawn>(GetOwner());
-    const auto* State = Pawn ? Pawn->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
-    const auto* PC = Pawn ? Cast<AGuLiCommanderPlayerController>(Pawn->GetController()) : nullptr;
-    const auto* Building = PC ? PC->GetBuildingPlacementComponent() : nullptr;
-    const auto* Teleport = PC ? PC->FindComponentByClass<UGuLiTeleportInputComponent>() : nullptr;
-    return bConfigured && Pawn && State && PC && State->IsBattleReady() && State->GetBattleRole() == EGuLiCommanderRole::Ground
-        && !PC->IsMoveInputIgnored() && !UGuLiExternalUnitControlComponent::AreActorActionsLocked(Pawn)
-        && (!Pawn->IsLocallyControlled() || (PC->GetPlayerNetSyncComponent()->IsConnectionReady()
-            && (!Building || !Building->IsBuildModeActive()) && (!Teleport || !Teleport->IsAiming())));
+    const auto* Identity=UGuLiHybridActorComponent::Find(GetOwner());
+    return bConfigured && Identity && Identity->CanSimulate()
+        && !UGuLiExternalUnitControlComponent::AreActorActionsLocked(GetOwner());
 }
 bool UGuLiGroundMechRocketComponent::CanActivateRocket() const
 {
@@ -101,17 +90,14 @@ bool UGuLiGroundMechRocketComponent::CanActivateRocket() const
 }
 void UGuLiGroundMechRocketComponent::SetRocketJumpInput(bool bHeld)
 {
-    const auto* Pawn = Cast<APawn>(GetOwner());
-    if (!Pawn || !Pawn->IsLocallyControlled()) { if (!bHeld) Interrupt(); return; }
-    if (bHeld && !CanUseRocketControls()) return;
-    if (bInputHeld == bHeld) return;
-    bInputHeld = bHeld;
-    if (bHeld)
-    {
-        bShown = true;
-        FuelBarOpacity = 1.f;
-        ASC()->AbilityLocalInputPressed(RocketInputId);
-    }
+    if (auto* Mech=Cast<AGuLiGroundMechCharacter>(GetOwner())) Mech->SetRocketJumpInput(bHeld);
+}
+void UGuLiGroundMechRocketComponent::ApplyHybridInput(bool bHeld)
+{
+    if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || !ASC()) return;
+    if (bInputHeld==bHeld) return;
+    bInputHeld=bHeld;
+    if (bHeld && CanUseRocketControls()) ASC()->AbilityLocalInputPressed(RocketInputId);
     else ASC()->AbilityLocalInputReleased(RocketInputId);
     RefreshJetState();
 }
@@ -119,7 +105,7 @@ void UGuLiGroundMechRocketComponent::SetAbilityActive(bool bActive)
 {
     bAbilityActive = bActive;
     if (bActive) { bShown = true; FuelBarOpacity = 1.f; }
-    else if (GetOwner()->HasAuthority()) bReplicatedThrusting = false;
+    else bReplicatedThrusting = false;
     RefreshJetState();
 }
 void UGuLiGroundMechRocketComponent::Interrupt()
@@ -138,37 +124,27 @@ void UGuLiGroundMechRocketComponent::Interrupt()
 }
 void UGuLiGroundMechRocketComponent::ApplyFuelDelta(float Delta)
 {
-    if (!GetOwner()->HasAuthority() || FMath::IsNearlyZero(Delta, 1.e-6f)) return;
+    if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || FMath::IsNearlyZero(Delta, 1.e-6f)) return;
     auto Spec = ASC()->MakeOutgoingSpec(UGuLiGE_MechFuelDelta::StaticClass(), 1.f, ASC()->MakeEffectContext());
     Spec.Data->SetSetByCallerMagnitude(TEXT("FuelDelta"), Delta);
     ASC()->ApplyGameplayEffectSpecToSelf(*Spec.Data);
 }
 void UGuLiGroundMechRocketComponent::FinishMovement(float Fuel, bool bThrusting, bool bReplay)
 {
-    if (!bConfigured || bReplay) return;
-    if (GetOwner()->HasAuthority())
-    {
-        ApplyFuelDelta(Fuel - ASC()->GetNumericAttribute(UGuLiGroundMechAttributeSet::GetFuelAttribute()));
-        if (bReplicatedThrusting != bThrusting) { bReplicatedThrusting = bThrusting; GetOwner()->ForceNetUpdate(); }
-    }
-    if (GetOwner()->HasAuthority() && Fuel <= UE_SMALL_NUMBER && bAbilityActive)
+    if (!bConfigured || bReplay || !UGuLiHybridActorComponent::HasSimulation(GetOwner())) return;
+    ApplyFuelDelta(Fuel - ASC()->GetNumericAttribute(UGuLiGroundMechAttributeSet::GetFuelAttribute()));
+    bReplicatedThrusting = bThrusting;
+    if (Fuel <= UE_SMALL_NUMBER && bAbilityActive)
     {
         // Keep held input latched: depletion never counts as releasing Space.
-        // The autonomous proxy stops applying thrust at predicted zero but must not
-        // cancel the server's ability ahead of its final saved movement interval.
         ASC()->CancelAbilityHandle(AbilityHandle);
     }
     RefreshJetState();
 }
-void UGuLiGroundMechRocketComponent::ReceiveInitialFuel(float Value)
-{
-    if (!bFuelBaselineReceived && Movement()) { Movement()->InitializeRocketFuel(Value); bFuelBaselineReceived = true; }
-}
 float UGuLiGroundMechRocketComponent::GetFuel() const
 {
     if (!bConfigured) return 0.f;
-    if (GetOwner()->HasAuthority()) return ASC()->GetNumericAttribute(UGuLiGroundMechAttributeSet::GetFuelAttribute());
-    return Movement()->GetPredictedRocketFuel();
+    return ASC()->GetNumericAttribute(UGuLiGroundMechAttributeSet::GetFuelAttribute());
 }
 float UGuLiGroundMechRocketComponent::GetFuelRatio() const
 {
@@ -176,24 +152,19 @@ float UGuLiGroundMechRocketComponent::GetFuelRatio() const
 }
 bool UGuLiGroundMechRocketComponent::IsThrusting() const
 {
-    const auto* Pawn = Cast<APawn>(GetOwner());
-    return Pawn && Pawn->IsLocallyControlled() ? bAbilityActive && Movement()->IsRocketThrusting() : bReplicatedThrusting;
+    return bReplicatedThrusting;
 }
 bool UGuLiGroundMechRocketComponent::IsJetActive() const
 {
-    const auto* Pawn = Cast<APawn>(GetOwner());
-    if (!Pawn) return false;
-    if (Pawn->IsLocallyControlled())
-        return bInputHeld && bAbilityActive && GetFuel() > UE_SMALL_NUMBER && CanUseRocketControls();
     return bReplicatedJetActive;
 }
 void UGuLiGroundMechRocketComponent::ApplyJetPresentation()
 {
-    if (GetNetMode() == NM_DedicatedServer) return;
+    if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
     const bool bActive = IsJetActive();
     if (bJetsActive == bActive) return;
-    // Activation is called from the locally predicted ability in the input frame.
-    // A missing movement sample must not delay ignition until the character lifts off.
+    // The simulator updates this state in its logical input step. Query instances
+    // apply the same state from the Hybrid pose before refreshing presentation.
     if (bActive && (!LeftJet || !RightJet)) CreatePresentation();
     if (bActive && (!LeftJet || !RightJet)) return;
     bJetsActive = bActive;
@@ -202,21 +173,19 @@ void UGuLiGroundMechRocketComponent::ApplyJetPresentation()
 }
 void UGuLiGroundMechRocketComponent::RefreshJetState()
 {
-    if (GetOwner()->HasAuthority())
+    if (UGuLiHybridActorComponent::HasSimulation(GetOwner()))
     {
         const bool bActive = bAbilityActive && GetFuel() > UE_SMALL_NUMBER && CanUseRocketControls();
         if (bReplicatedJetActive != bActive)
         {
             bReplicatedJetActive = bActive;
-            GetOwner()->ForceNetUpdate();
         }
     }
     ApplyJetPresentation();
 }
-void UGuLiGroundMechRocketComponent::OnRep_JetActive() { ApplyJetPresentation(); }
 void UGuLiGroundMechRocketComponent::CreatePresentation()
 {
-    if (GetNetMode() == NM_DedicatedServer || !bConfigured) return;
+    if (!UGuLiNetworkSettings::CanPresent(GetWorld()) || !bConfigured) return;
     auto* Mech = CastChecked<AGuLiGroundMechCharacter>(GetOwner());
     auto* Armor = Mech->GetArmor();
     if (!bJetsCreated && JetSystem)
@@ -315,9 +284,7 @@ void UGuLiGroundMechRocketComponent::UpdatePresentation(float Delta)
 void UGuLiGroundMechRocketComponent::TickComponent(float Delta, ELevelTick Type, FActorComponentTickFunction* Function)
 {
     Super::TickComponent(Delta, Type, Function);
-    const auto* Pawn = CastChecked<APawn>(GetOwner());
-    if ((Pawn->HasAuthority() || Pawn->IsLocallyControlled()) && (bAbilityActive || bInputHeld) && !CanUseRocketControls()) Interrupt();
-    if (GetNetMode() != NM_DedicatedServer) { CreatePresentation(); UpdatePresentation(Delta); }
+    if (UGuLiNetworkSettings::CanPresent(GetWorld())) { CreatePresentation(); UpdatePresentation(Delta); }
 }
 void UGuLiGroundMechRocketComponent::DestroyPresentation()
 {
@@ -329,14 +296,8 @@ void UGuLiGroundMechRocketComponent::DestroyPresentation()
 void UGuLiGroundMechRocketComponent::EndPlay(EEndPlayReason::Type Reason)
 {
     Interrupt();
-    if (GetOwner()->HasAuthority() && AbilityHandle.IsValid()) ASC()->ClearAbility(AbilityHandle);
+    if (ASC() && AbilityHandle.IsValid()) ASC()->ClearAbility(AbilityHandle);
     DestroyPresentation();
     OnPresentationChanged.Clear();
     Super::EndPlay(Reason);
-}
-void UGuLiGroundMechRocketComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-    DOREPLIFETIME_CONDITION(UGuLiGroundMechRocketComponent, bReplicatedThrusting, COND_SkipOwner);
-    DOREPLIFETIME_CONDITION(UGuLiGroundMechRocketComponent, bReplicatedJetActive, COND_SkipOwner);
 }

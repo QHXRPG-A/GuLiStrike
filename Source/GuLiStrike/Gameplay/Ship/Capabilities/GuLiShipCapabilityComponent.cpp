@@ -39,6 +39,12 @@ void UGuLiShipCapabilityComponent::ReleaseCapability()
 	State = EGuLiShipCapabilityState::Released;
 	OnReleased();
 }
+bool UGuLiShipCapabilityComponent::RestoreCapabilityState(EGuLiShipCapabilityState RestoredState)
+{
+	if (RestoredState==EGuLiShipCapabilityState::Released || State==EGuLiShipCapabilityState::Released) return false;
+	State=RestoredState;return true;
+}
+void UGuLiShipCapabilityComponent::NotifyRestoredCapabilityState() {StateChanged.Broadcast(this,State);}
 
 bool UGuLiShipCapabilityComponent::RequestActivation(FName, FString& Error)
 {

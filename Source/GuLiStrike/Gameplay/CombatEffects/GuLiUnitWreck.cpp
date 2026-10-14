@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiUnitWreck.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
 
 #include "Components/BoxComponent.h"
@@ -50,7 +51,7 @@ void AGuLiUnitWreck::ConfigureVisual(UMeshComponent* Mesh, const FTransform& Tra
 
 bool AGuLiUnitWreck::InitializeFromActor(AActor* Source, UMaterialInterface* Material)
 {
-	if (!Source || !Material || GetNetMode() == NM_DedicatedServer) return false;
+	if (!Source || !Material || !UGuLiNetworkSettings::CanPresent(GetWorld())) return false;
 	const FTransform Axes(Source->GetActorQuat(), Source->GetActorLocation(), FVector::OneVector);
 	FBox Bounds(ForceInit);
 	TInlineComponentArray<UMeshComponent*> Sources;
@@ -100,7 +101,7 @@ bool AGuLiUnitWreck::InitializeFromActor(AActor* Source, UMaterialInterface* Mat
 
 bool AGuLiUnitWreck::InitializeFromStaticMesh(UStaticMesh* Mesh, const FTransform& Transform, UMaterialInterface* Material)
 {
-	if (!Mesh || !Material || Transform.ContainsNaN() || GetNetMode() == NM_DedicatedServer) return false;
+	if (!Mesh || !Material || Transform.ContainsNaN() || !UGuLiNetworkSettings::CanPresent(GetWorld())) return false;
 	const FBox Bounds = Mesh->GetBoundingBox();
 	if (!Bounds.IsValid) return false;
 	SetActorTransform(FTransform(Transform.GetRotation(), Transform.TransformPosition(Bounds.GetCenter())));
@@ -114,7 +115,7 @@ bool AGuLiUnitWreck::InitializeFromStaticMesh(UStaticMesh* Mesh, const FTransfor
 
 void AGuLiUnitWreck::StartFalling(const FVector& InitialVelocity, float MaximumLifetime)
 {
-	if (GetNetMode() == NM_DedicatedServer || InitialVelocity.ContainsNaN()) { Destroy(); return; }
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld()) || InitialVelocity.ContainsNaN()) { Destroy(); return; }
 	// The flight model has no authored collision. A bounds-sized body owns Chaos simulation.
 	// Only scenery blocks scrap: no collision, navigation or damage interaction with living units.
 	PhysicsBody->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);

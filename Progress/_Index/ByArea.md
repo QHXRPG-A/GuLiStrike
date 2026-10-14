@@ -510,14 +510,22 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [同阵营固定分配与混合P2P架构 — 技术方案](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | in_progress | 2026-10-14 |
+| [同阵营固定分配与混合P2P架构](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-13 |
+| [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-13 |
+| [旧CS路由退役与客户端归属交接构建交付](../Archive/20261013-旧CS路由退役与客户端归属交接构建交付.md) | archive | recorded | 2026-10-13 |
+| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-10-12 |
+| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-10-12 |
+| [Ship独占僚机与空席重生六端证据](../Archive/20261012-Ship独占僚机与空席重生六端证据.md) | archive | recorded | 2026-10-12 |
 | [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-11 |
+| [混合命令切点修正与源码增量构建](../Archive/20261011-混合命令切点修正与源码增量构建.md) | archive | recorded | 2026-10-11 |
+| [混合架构基础构建与源码编辑器恢复](../Archive/20261011-混合架构基础构建与源码编辑器恢复.md) | archive | recorded | 2026-10-11 |
 | [会话变更编译、地图收尾与临时文件清理](../Archive/20261011-会话变更编译地图收尾与临时文件清理.md) | archive | recorded | 2026-10-11 |
 | [PIE性能基线与快照多线程优化](../RequirementDocument/20261010-PIE性能基线与快照多线程优化.md) | requirement | approved | 2026-10-10 |
 | [客户端表现管线技能与枪口批量化](../RequirementDocument/20261010-客户端表现管线技能与枪口批量化.md) | requirement | approved | 2026-10-10 |
 | [命中特效事件批量承载与生命周期优化](../RequirementDocument/20261009-命中特效事件批量承载与生命周期优化.md) | requirement | approved | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
 | [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
-| [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-10 |
 | [客户端表现管线技能与枪口批量化 — 技术方案](../DevelopmentDocumentation/20261010-客户端表现管线技能与枪口批量化.md) | development | verification | 2026-10-10 |
 | [命中特效事件批量承载与生命周期优化 — 技术方案](../DevelopmentDocumentation/20261009-命中特效事件批量承载与生命周期优化.md) | development | verification | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
@@ -563,7 +571,6 @@
 | [先驱号验收区域准备与资源目录回读](../Archive/20261003-先驱号验收区域准备与资源目录回读.md) | archive | recorded | 2026-10-03 |
 | [重防号战斗射程优化](../RequirementDocument/20261001-重防号战斗射程优化.md) | requirement | approved | 2026-10-01 |
 | [机枪10度随机弹道](../RequirementDocument/20260930-机枪10度随机弹道.md) | requirement | approved | 2026-10-01 |
-| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-10-01 |
 | [重防号战斗射程优化](../DevelopmentDocumentation/20261001-重防号战斗射程优化.md) | development | done | 2026-10-01 |
 | [机枪10度随机弹道 — 技术方案](../DevelopmentDocumentation/20260930-机枪10度随机弹道.md) | development | done | 2026-10-01 |
 | [重防号战斗射程优化验收通过](../Archive/20261001-重防号战斗射程优化验收通过.md) | archive | recorded | 2026-10-01 |
@@ -615,7 +622,6 @@
 | [地面机甲动画蓝图与空中战斗](../RequirementDocument/20260921-地面机甲动画蓝图与空中战斗.md) | requirement | approved | 2026-09-21 |
 | [地面机甲火箭跳](../RequirementDocument/20260920-地面机甲火箭跳.md) | requirement | approved | 2026-09-21 |
 | [机枪子弹统一受击特效](../RequirementDocument/20260920-机枪子弹统一受击特效.md) | requirement | approved | 2026-09-21 |
-| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-21 |
 | [FireReview双阵营靶场与敌方描边 — 技术方案](../DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md) | development | done | 2026-09-21 |
 | [统一特效目录与ID引用 — 技术方案](../DevelopmentDocumentation/20260921-统一特效目录与ID引用.md) | development | done | 2026-09-21 |
 | [地面机甲动画蓝图与空中战斗 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲动画蓝图与空中战斗.md) | development | done | 2026-09-21 |
@@ -759,9 +765,18 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-14 |
+| [同阵营固定分配与混合P2P架构 — 技术方案](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | in_progress | 2026-10-14 |
+| [同阵营固定分配与混合P2P架构](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-13 |
+| [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-13 |
+| [旧CS路由退役与客户端归属交接构建交付](../Archive/20261013-旧CS路由退役与客户端归属交接构建交付.md) | archive | recorded | 2026-10-13 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-12 |
+| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-10-12 |
 | [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | development | verification | 2026-10-11 |
+| [混合命令切点修正与源码增量构建](../Archive/20261011-混合命令切点修正与源码增量构建.md) | archive | recorded | 2026-10-11 |
+| [混合架构基础构建与源码编辑器恢复](../Archive/20261011-混合架构基础构建与源码编辑器恢复.md) | archive | recorded | 2026-10-11 |
 | [Mass会话GitHub交付与临时文件清理受阻](../Archive/20261011-Mass会话GitHub交付与临时文件清理受阻.md) | archive | recorded | 2026-10-11 |
 | [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | archive | recorded | 2026-10-11 |
 | [Mass避障简化、转向提速与网络固定对照](../Archive/20261011-Mass避障简化转向提速与网络对照.md) | archive | recorded | 2026-10-11 |
@@ -770,8 +785,6 @@
 | [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
 | [游戏左上角帧率与延迟显示](../RequirementDocument/20260923-游戏左上角帧率与延迟显示.md) | requirement | approved | 2026-10-10 |
 | [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-10-10 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-10 |
-| [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-10 |
 | [客户端视野裁剪与特效三档LOD优化 — 技术方案](../DevelopmentDocumentation/20261009-客户端视野裁剪与特效三档LOD优化.md) | development | verification | 2026-10-10 |
 | [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | development | verification | 2026-10-10 |
 | [网络指标HUD仅编译交付](../Archive/20261010-网络指标HUD仅编译交付.md) | archive | recorded | 2026-10-10 |
@@ -871,8 +884,6 @@
 | [指挥官1800米海岛与49据点交付](../Archive/20261001-指挥官1800米海岛与49据点交付.md) | archive | recorded | 2026-10-02 |
 | [重防号战斗射程优化](../RequirementDocument/20261001-重防号战斗射程优化.md) | requirement | approved | 2026-10-01 |
 | [机枪10度随机弹道](../RequirementDocument/20260930-机枪10度随机弹道.md) | requirement | approved | 2026-10-01 |
-| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-10-01 |
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-01 |
 | [Mass上坡绕行](../Gameplay/Mass上坡绕行.md) | gameplay | current | 2026-10-01 |
 | [重防号战斗射程优化](../DevelopmentDocumentation/20261001-重防号战斗射程优化.md) | development | done | 2026-10-01 |
 | [机枪10度随机弹道 — 技术方案](../DevelopmentDocumentation/20260930-机枪10度随机弹道.md) | development | done | 2026-10-01 |
@@ -1307,7 +1318,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-01 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-14 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-24 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-24 |
 | [工程车传送地面校验与建筑屋顶禁行](../Archive/20260924-工程车传送地面校验与建筑屋顶禁行.md) | archive | recorded | 2026-09-24 |
@@ -1362,10 +1373,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-10-12 |
 | [地面机甲辅助瞄准 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md) | development | done | 2026-10-05 |
 | [地面机甲辅助瞄准](../RequirementDocument/20260921-地面机甲辅助瞄准.md) | requirement | approved | 2026-09-21 |
 | [地面机甲火箭跳](../RequirementDocument/20260920-地面机甲火箭跳.md) | requirement | approved | 2026-09-21 |
-| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-21 |
 | [地面机甲火箭跳 — 实施与验证](../DevelopmentDocumentation/20260920-地面机甲火箭跳.md) | development | done | 2026-09-21 |
 | [地面机甲辅助瞄准编译与配置落地](../Archive/20260921-地面机甲辅助瞄准编译与配置落地.md) | archive | recorded | 2026-09-21 |
 | [地面机甲辅助瞄准代码与源表静态交付](../Archive/20260921-地面机甲辅助瞄准代码与源表静态交付.md) | archive | recorded | 2026-09-21 |
@@ -1426,7 +1437,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-01 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-14 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-24 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-24 |
 | [工程车传送地面校验与建筑屋顶禁行](../Archive/20260924-工程车传送地面校验与建筑屋顶禁行.md) | archive | recorded | 2026-09-24 |
@@ -1475,9 +1486,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-14 |
+| [同阵营固定分配与混合P2P架构 — 技术方案](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | in_progress | 2026-10-14 |
+| [同阵营固定分配与混合P2P架构](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-13 |
 | [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | development | verification | 2026-10-11 |
+| [混合命令切点修正与源码增量构建](../Archive/20261011-混合命令切点修正与源码增量构建.md) | archive | recorded | 2026-10-11 |
+| [混合架构基础构建与源码编辑器恢复](../Archive/20261011-混合架构基础构建与源码编辑器恢复.md) | archive | recorded | 2026-10-11 |
 | [Mass会话GitHub交付与临时文件清理受阻](../Archive/20261011-Mass会话GitHub交付与临时文件清理受阻.md) | archive | recorded | 2026-10-11 |
 | [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | archive | recorded | 2026-10-11 |
 | [Mass避障简化、转向提速与网络固定对照](../Archive/20261011-Mass避障简化转向提速与网络对照.md) | archive | recorded | 2026-10-11 |
@@ -1510,7 +1526,6 @@
 | [Mass编译后高处部分路径诊断](../Archive/20261001-Mass编译后高处部分路径诊断.md) | archive | recorded | 2026-10-02 |
 | [Mass陡坡绕行原生编译](../Archive/20261001-Mass陡坡绕行原生编译.md) | archive | recorded | 2026-10-02 |
 | [Mass陡坡绕行源码与静态核对](../Archive/20261001-Mass陡坡绕行源码与静态核对.md) | archive | recorded | 2026-10-02 |
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-01 |
 | [Mass上坡绕行](../Gameplay/Mass上坡绕行.md) | gameplay | current | 2026-10-01 |
 | [Mass选择圈同步与软避障修正](../RequirementDocument/20260930-Mass选择圈同步与软避障修正.md) | requirement | approved | 2026-09-30 |
 | [Mass选择圈同步与软避障修正 — 技术方案](../DevelopmentDocumentation/20260930-Mass选择圈同步与软避障修正.md) | development | done | 2026-09-30 |
@@ -1566,10 +1581,18 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-14 |
+| [同阵营固定分配与混合P2P架构 — 技术方案](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | in_progress | 2026-10-14 |
+| [同阵营固定分配与混合P2P架构](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-13 |
+| [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-13 |
+| [旧CS路由退役与客户端归属交接构建交付](../Archive/20261013-旧CS路由退役与客户端归属交接构建交付.md) | archive | recorded | 2026-10-13 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-12 |
+| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-10-12 |
+| [Ship独占僚机与空席重生六端证据](../Archive/20261012-Ship独占僚机与空席重生六端证据.md) | archive | recorded | 2026-10-12 |
+| [混合命令切点修正与源码增量构建](../Archive/20261011-混合命令切点修正与源码增量构建.md) | archive | recorded | 2026-10-11 |
+| [混合架构基础构建与源码编辑器恢复](../Archive/20261011-混合架构基础构建与源码编辑器恢复.md) | archive | recorded | 2026-10-11 |
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
 | [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-10-10 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-10 |
-| [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
 | [遗留发射路径清理与地图保存阻塞恢复](../Archive/20261010-遗留发射路径清理与地图保存阻塞恢复.md) | archive | recorded | 2026-10-10 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
@@ -1596,7 +1619,6 @@
 | [连通认证暂关与R2C2落地区修复](../Archive/20261002-连通认证暂关与R2C2落地区修复.md) | archive | recorded | 2026-10-02 |
 | [不可达移动拒绝编译加载与PIE门禁记录](../Archive/20261002-不可达移动拒绝编译加载与PIE门禁记录.md) | archive | recorded | 2026-10-02 |
 | [不可达新移动指令拒绝源码与场景交付](../Archive/20261002-不可达新移动指令拒绝源码与场景交付.md) | archive | recorded | 2026-10-02 |
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-01 |
 | [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-09-29 |
 | [Mass分帧寻路与避障稳定性](../RequirementDocument/20260923-Mass分帧寻路与避障稳定性.md) | requirement | approved | 2026-09-24 |
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-24 |
@@ -1630,7 +1652,6 @@
 | [客户端Mass硬校正最小修复](../Archive/20260923-客户端Mass硬校正最小修复.md) | archive | recorded | 2026-09-23 |
 | [客户端Mass行走顿挫分析](../Archive/20260923-客户端Mass行走顿挫分析.md) | archive | recorded | 2026-09-23 |
 | [地面机甲火箭跳](../RequirementDocument/20260920-地面机甲火箭跳.md) | requirement | approved | 2026-09-21 |
-| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-21 |
 | [地面机甲火箭跳 — 实施与验证](../DevelopmentDocumentation/20260920-地面机甲火箭跳.md) | development | done | 2026-09-21 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
 | [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | in_progress | 2026-09-21 |
@@ -1834,9 +1855,16 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [同阵营固定分配与混合P2P架构 — 技术方案](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | in_progress | 2026-10-14 |
+| [同阵营固定分配与混合P2P架构](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-13 |
+| [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-13 |
+| [旧CS路由退役与客户端归属交接构建交付](../Archive/20261013-旧CS路由退役与客户端归属交接构建交付.md) | archive | recorded | 2026-10-13 |
+| [Ship独占僚机与空席重生六端证据](../Archive/20261012-Ship独占僚机与空席重生六端证据.md) | archive | recorded | 2026-10-12 |
 | [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
 | [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-11 |
+| [混合命令切点修正与源码增量构建](../Archive/20261011-混合命令切点修正与源码增量构建.md) | archive | recorded | 2026-10-11 |
+| [混合架构基础构建与源码编辑器恢复](../Archive/20261011-混合架构基础构建与源码编辑器恢复.md) | archive | recorded | 2026-10-11 |
 | [Mass会话GitHub交付与临时文件清理受阻](../Archive/20261011-Mass会话GitHub交付与临时文件清理受阻.md) | archive | recorded | 2026-10-11 |
 | [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | archive | recorded | 2026-10-11 |
 | [Mass避障简化、转向提速与网络固定对照](../Archive/20261011-Mass避障简化转向提速与网络对照.md) | archive | recorded | 2026-10-11 |
@@ -1848,7 +1876,6 @@
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
 | [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
 | [游戏左上角帧率与延迟显示](../RequirementDocument/20260923-游戏左上角帧率与延迟显示.md) | requirement | approved | 2026-10-10 |
-| [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-10 |
 | [客户端表现管线技能与枪口批量化 — 技术方案](../DevelopmentDocumentation/20261010-客户端表现管线技能与枪口批量化.md) | development | verification | 2026-10-10 |
 | [命中特效事件批量承载与生命周期优化 — 技术方案](../DevelopmentDocumentation/20261009-命中特效事件批量承载与生命周期优化.md) | development | verification | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
@@ -2240,9 +2267,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-13 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-12 |
+| [Ship独占僚机与空席重生六端证据](../Archive/20261012-Ship独占僚机与空席重生六端证据.md) | archive | recorded | 2026-10-12 |
 | [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-10-10 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-10 |
-| [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-10 |
 | [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | development | in_progress | 2026-10-10 |
 | [遗留发射路径清理与地图保存阻塞恢复](../Archive/20261010-遗留发射路径清理与地图保存阻塞恢复.md) | archive | recorded | 2026-10-10 |
 | [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
@@ -2422,11 +2450,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-12 |
+| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-10-12 |
 | [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-11 |
 | [PIE性能基线与快照多线程优化](../RequirementDocument/20261010-PIE性能基线与快照多线程优化.md) | requirement | approved | 2026-10-10 |
 | [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
 | [游戏左上角帧率与延迟显示](../RequirementDocument/20260923-游戏左上角帧率与延迟显示.md) | requirement | approved | 2026-10-10 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-10 |
 | [客户端视野裁剪与特效三档LOD优化 — 技术方案](../DevelopmentDocumentation/20261009-客户端视野裁剪与特效三档LOD优化.md) | development | verification | 2026-10-10 |
 | [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | development | verification | 2026-10-10 |
 | [未通过性能候选回退与CPU及GPU瓶颈核对](../Archive/20261010-未通过性能候选回退与CPU及GPU瓶颈核对.md) | archive | recorded | 2026-10-10 |
@@ -2475,7 +2504,6 @@
 | [星际2风格指挥官操作指令集](../Gameplay/指挥官操作攻略.md) | gameplay | current | 2026-10-03 |
 | [绿色引导线源码Editor编译加载](../Archive/20261003-绿色引导线源码Editor编译加载.md) | archive | recorded | 2026-10-03 |
 | [绿色引导线模型中心实时连接交付](../Archive/20261003-绿色引导线模型中心实时连接交付.md) | archive | recorded | 2026-10-03 |
-| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-10-01 |
 | [Mass选择圈同步与软避障修正](../RequirementDocument/20260930-Mass选择圈同步与软避障修正.md) | requirement | approved | 2026-09-30 |
 | [重防号Q每圈60发分批引导](../RequirementDocument/20260930-重防号Q每圈60发分批引导.md) | requirement | approved | 2026-09-30 |
 | [指挥官三档镜头与总览LOD](../RequirementDocument/20260930-指挥官三档镜头与总览LOD.md) | requirement | approved | 2026-09-30 |
@@ -2620,6 +2648,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-10-12 |
 | [客户端表现管线技能与枪口批量化](../RequirementDocument/20261010-客户端表现管线技能与枪口批量化.md) | requirement | approved | 2026-10-10 |
 | [命中特效事件批量承载与生命周期优化](../RequirementDocument/20261009-命中特效事件批量承载与生命周期优化.md) | requirement | approved | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
@@ -2647,7 +2676,6 @@
 | [提速单位坡面卡住与子弹提前显示修复](../DevelopmentDocumentation/20260928-提速单位坡面卡住与子弹提前显示修复.md) | development | done | 2026-10-05 |
 | [三张视差3D卡牌交互演示 — 技术方案](../DevelopmentDocumentation/20260922-三张视差3D卡牌交互演示.md) | development | done | 2026-10-05 |
 | [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | done | 2026-10-05 |
-| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-10-01 |
 | [机枪枪口命中与弹道照明](../RequirementDocument/20260930-机枪枪口命中与弹道照明.md) | requirement | approved | 2026-09-30 |
 | [机枪枪口命中与弹道照明](../DevelopmentDocumentation/20260930-机枪枪口命中与弹道照明.md) | development | verification | 2026-09-30 |
 | [机枪效果编译与资产应用](../Archive/20260930-机枪效果编译与资产应用.md) | archive | recorded | 2026-09-30 |
@@ -2743,9 +2771,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-13 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-12 |
+| [Ship独占僚机与空席重生六端证据](../Archive/20261012-Ship独占僚机与空席重生六端证据.md) | archive | recorded | 2026-10-12 |
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-10 |
-| [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
 | [车辆CharacterMovement与飞船僚机移动开销拆分](../Archive/20261010-车辆CharacterMovement与飞船僚机移动开销拆分.md) | archive | recorded | 2026-10-10 |
 | [三项客户端优化正式接入与PIE验收交付](../Archive/20261010-三项客户端优化正式接入与PIE验收交付.md) | archive | recorded | 2026-10-10 |

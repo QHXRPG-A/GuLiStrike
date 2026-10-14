@@ -7,6 +7,8 @@
 #include "GameFramework/GameStateBase.h"
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 
 UGuLiStrongholdTransitPresentationComponent::UGuLiStrongholdTransitPresentationComponent()
 {
@@ -15,6 +17,7 @@ UGuLiStrongholdTransitPresentationComponent::UGuLiStrongholdTransitPresentationC
 }
 double UGuLiStrongholdTransitPresentationComponent::ServerTime() const
 {
+	if (UGuLiNetworkSettings::IsHybrid(GetWorld())) return UGuLiHybridActorComponent::BattleSeconds(GetOwner());
 	const auto* GS = GetWorld()->GetGameState();
 	return GS ? GS->GetServerWorldTimeSeconds() : GetWorld()->GetTimeSeconds();
 }

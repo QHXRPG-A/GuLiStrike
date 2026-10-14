@@ -2,6 +2,8 @@
 
 #include "Battle/Combat/GuLiLogicalMissileSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
+#include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
+#include "Network/GuLiNetworkSettings.h"
 
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
@@ -47,6 +49,7 @@ void UGuLiLogicalMissileSubsystem::Initialize(FSubsystemCollectionBase& Collecti
 
 void UGuLiLogicalMissileSubsystem::Deinitialize()
 {
+	if (DamageLedger) for (const auto& Missile : ActiveMissiles) if (Missile.SourceLease.IsValid()) DamageLedger->ReleaseEffectSource(Missile.SourceLease);
 	ActiveMissiles.Reset();
 	ActiveMissileIds.Reset();
 	DamageLedger = nullptr;
@@ -86,6 +89,8 @@ bool UGuLiLogicalMissileSubsystem::IsTickable() const
 
 bool UGuLiLogicalMissileSubsystem::LaunchMissile(const FGuLiLogicalMissileLaunchRequest& Request)
 {
+    if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+    {int32 Count=0;auto* Effects=GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>();return Effects && Effects->LaunchHomingSalvo(MakeArrayView(&Request,1),Count);}
 	if (!ValidateLaunchRequest(Request))
 	{
 		return false;
@@ -137,6 +142,7 @@ void UGuLiLogicalMissileSubsystem::CreateMissileUnchecked(
 	Missile.LoadoutRevision = Request.LoadoutRevision;
 	Missile.ProfileRevision = Request.ProfileRevision;
 	Missile.Source = Request.Source;
+	if (UGuLiNetworkSettings::IsHybrid(GetWorld())) Missile.SourceLease=DamageLedger->AcquireEffectSource(Request.Source);
 	Missile.Emitter = Request.Emitter;
 	Missile.Target = Request.Target;
 	Missile.Position = Request.LaunchPosition;
@@ -152,6 +158,8 @@ void UGuLiLogicalMissileSubsystem::CreateMissileUnchecked(
 bool UGuLiLogicalMissileSubsystem::CanLaunchFlightSalvo(
 	const TConstArrayView<FGuLiLogicalMissileLaunchRequest> Requests) const
 {
+    if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+    {const auto* Effects=GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>();return Effects && Effects->CanLaunchHomingSalvo(Requests);}
 	if (!DamageLedger || Requests.IsEmpty()
 		|| Requests.Num() > GULI_WINGMAN_MEMBERS_PER_FLIGHT)
 	{
@@ -191,6 +199,8 @@ bool UGuLiLogicalMissileSubsystem::CanLaunchFlightSalvo(
 bool UGuLiLogicalMissileSubsystem::LaunchFlightSalvo(
 	const TConstArrayView<FGuLiLogicalMissileLaunchRequest> Requests, int32& OutLaunchedCount)
 {
+    if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+    {OutLaunchedCount=0;auto* Effects=GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>();return Effects && Effects->LaunchHomingSalvo(Requests,OutLaunchedCount);}
 	OutLaunchedCount = 0;
 	if (!CanLaunchFlightSalvo(Requests))
 	{
@@ -221,7 +231,15 @@ bool UGuLiLogicalMissileSubsystem::LaunchFlightSalvo(
 
 bool UGuLiLogicalMissileSubsystem::ContainsMissile(const FGuid& MissileId) const
 {
+	if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+	{const auto* Effects=GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>();return Effects && Effects->ContainsHomingMissile(MissileId);}
 	return ActiveMissileIds.Contains(MissileId);
+}
+int32 UGuLiLogicalMissileSubsystem::GetActiveMissileCount() const
+{
+	if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+	{const auto* Effects=GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>();return Effects?Effects->GetActiveHomingMissileCount():0;}
+	return ActiveMissiles.Num();
 }
 
 void UGuLiLogicalMissileSubsystem::StepMissiles(const float FixedDeltaSeconds)
@@ -237,9 +255,8 @@ void UGuLiLogicalMissileSubsystem::StepMissiles(const float FixedDeltaSeconds)
 	}
 }
 
-bool UGuLiLogicalMissileSubsystem::StepMissile(
-	FGuLiLogicalMissileState& Missile, const float FixedDeltaSeconds,
-	FGuLiLogicalMissileTerminalEvent& OutTerminal)
+bool GuLiLogicalMissileMotion::Advance(UWorld& WorldValue,UGuLiDamageLedgerSubsystem& Ledger,
+    FGuLiLogicalMissileState& Missile,float FixedDeltaSeconds,FGuLiLogicalMissileTerminalEvent& OutTerminal)
 {
 	OutTerminal = FGuLiLogicalMissileTerminalEvent();
 	OutTerminal.MatchEpoch = Missile.MatchEpoch;
@@ -252,7 +269,7 @@ bool UGuLiLogicalMissileSubsystem::StepMissile(
 	Missile.SimulationSequence = Missile.SimulationSequence == MAX_uint32
 		? 1u : Missile.SimulationSequence + 1u;
 	OutTerminal.SimulationSequence = Missile.SimulationSequence;
-	if (!DamageLedger || DamageLedger->GetMatchEpoch() != Missile.MatchEpoch)
+	if (Ledger.GetMatchEpoch() != Missile.MatchEpoch)
 	{
 		OutTerminal.Reason = EGuLiLogicalMissileTerminalReason::MatchEpochEnded;
 		return false;
@@ -265,7 +282,7 @@ bool UGuLiLogicalMissileSubsystem::StepMissile(
 	}
 
 	FGuLiCombatTargetSnapshot TargetSnapshot;
-	if (!DamageLedger->TryGetTargetSnapshot(Missile.Target, TargetSnapshot) || !TargetSnapshot.bAlive)
+	if (!Ledger.TryGetTargetSnapshot(Missile.Target, TargetSnapshot) || !TargetSnapshot.bAlive)
 	{
 		OutTerminal.Reason = EGuLiLogicalMissileTerminalReason::TargetLost;
 		return false;
@@ -277,7 +294,7 @@ bool UGuLiLogicalMissileSubsystem::StepMissile(
 		OutTerminal.Reason = EGuLiLogicalMissileTerminalReason::Invalid;
 		return false;
 	}
-	const FVector Direction = TurnDirection(Missile.Velocity.GetSafeNormal(), ToTarget.GetSafeNormal(),
+	const FVector Direction = UGuLiLogicalMissileSubsystem::TurnDirection(Missile.Velocity.GetSafeNormal(), ToTarget.GetSafeNormal(),
 		FMath::DegreesToRadians(Missile.TurnRateDegreesPerSecond) * FixedDeltaSeconds);
 	Missile.Velocity = Direction * Missile.SpeedCentimetersPerSecond;
 	const FVector Start = Missile.Position;
@@ -287,11 +304,11 @@ bool UGuLiLogicalMissileSubsystem::StepMissile(
 		<= FMath::Max(0.0f, TargetSnapshot.CollisionRadius) + Missile.SweepRadiusCentimeters;
 	bool bBlocked = false;
 	FHitResult Hit;
-	if (UWorld* World = GetWorld())
+	if (UWorld* World = &WorldValue)
 	{
 		FCollisionQueryParams Params(SCENE_QUERY_STAT(GuLiLogicalMissileSweep), false);
 		FGuLiCombatTargetSnapshot SourceSnapshot;
-		if (DamageLedger->TryGetTargetSnapshot(Missile.Source, SourceSnapshot)
+		if (Ledger.TryGetTargetSnapshot(Missile.Source, SourceSnapshot)
 			&& SourceSnapshot.CollisionActor.IsValid())
 		{
 			Params.AddIgnoredActor(SourceSnapshot.CollisionActor.Get());
@@ -312,8 +329,19 @@ bool UGuLiLogicalMissileSubsystem::StepMissile(
 		OutTerminal.Reason = EGuLiLogicalMissileTerminalReason::Blocked;
 		return false;
 	}
-	if (bTargetImpact)
-	{
+    if (bTargetImpact) { OutTerminal.Reason=EGuLiLogicalMissileTerminalReason::Impact;return false; }
+    return true;
+}
+
+bool UGuLiLogicalMissileSubsystem::StepMissile(FGuLiLogicalMissileState& Missile,float FixedDeltaSeconds,
+    FGuLiLogicalMissileTerminalEvent& OutTerminal)
+{
+    if (!DamageLedger || !GetWorld()) return false;
+    const bool Active=GuLiLogicalMissileMotion::Advance(*GetWorld(),*DamageLedger,Missile,FixedDeltaSeconds,OutTerminal);
+    if (!Active)
+    {
+        if (OutTerminal.Reason==EGuLiLogicalMissileTerminalReason::Impact)
+        {
 		FGuLiDamageRequest Damage;
 		Damage.MatchEpoch = Missile.MatchEpoch;
 		Damage.DamageEventId = Missile.MissileId;
@@ -328,12 +356,12 @@ bool UGuLiLogicalMissileSubsystem::StepMissile(
 		Damage.Target = Missile.Target;
 		Damage.Damage = Missile.Damage;
 		Damage.HitLocation = Missile.Position;
-		OutTerminal.DamageResult = DamageLedger->CommitDamage(Damage);
-		OutTerminal.Reason = OutTerminal.DamageResult.WasAccepted()
-			? EGuLiLogicalMissileTerminalReason::Impact
-			: EGuLiLogicalMissileTerminalReason::Invalid;
-		return false;
-	}
+        const FGuid Submitted=DamageLedger->SubmitEffectDamage(Damage,Missile.SourceLease);
+        OutTerminal.DamageResult.Status=Submitted.IsValid()?EGuLiDamageCommitStatus::Pending:EGuLiDamageCommitStatus::RejectedByAdapter;
+        OutTerminal.Reason=EGuLiLogicalMissileTerminalReason::Impact;
+        }
+        return false;
+    }
 
 	Missile.CorrectionAccumulator += FixedDeltaSeconds;
 	if (Missile.CorrectionAccumulator >= CorrectionPeriodSeconds)
@@ -352,6 +380,7 @@ void UGuLiLogicalMissileSubsystem::FinishMissile(
 		return;
 	}
 	ActiveMissileIds.Remove(ActiveMissiles[Index].MissileId);
+	if (DamageLedger && ActiveMissiles[Index].SourceLease.IsValid()) DamageLedger->ReleaseEffectSource(ActiveMissiles[Index].SourceLease);
 	ActiveMissiles.RemoveAtSwap(Index, 1, EAllowShrinking::No);
 	OnFinished.Broadcast(Event);
 }

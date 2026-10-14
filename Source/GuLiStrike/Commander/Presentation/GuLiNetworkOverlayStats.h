@@ -1,23 +1,18 @@
 #pragma once
-
 #include "CoreMinimal.h"
-#include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
-
 class APlayerController;
-class UNetConnection;
+class UGuLiHybridSessionSubsystem;
 
-/** Local, one-second wall-clock samples. Never sends telemetry or changes transport state. */
+/** One-second wall-clock samples from the active P2P transport; no telemetry is sent. */
 class FGuLiNetworkOverlayStats
 {
 public:
-	void Refresh(APlayerController* Controller, double Now);
-	const TArray<FString>& GetLines() const { return Lines; }
-
+    void Refresh(APlayerController* Controller,double Now);
+    const TArray<FString>& GetLines() const {return Lines;}
 private:
-	TArray<FString> Lines;
-	TWeakObjectPtr<UNetConnection> SampleConnection;
-	TWeakObjectPtr<UGuLiCombatEffectReplicationComponent> SampleFlights;
-	double SampleWallSeconds = -1.0;
-	uint32 PreviousTotals[6] = {};
-	FGuLiFlightReceiveCounters PreviousFlights;
+    TArray<FString> Lines;
+    TWeakObjectPtr<UGuLiHybridSessionSubsystem> SampleSession;
+    FGuid SampleRoom;
+    double SampleWallSeconds=-1;
+    double PreviousTotals[4]={};
 };

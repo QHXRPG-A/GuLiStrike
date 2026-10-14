@@ -11,6 +11,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Engine/World.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
+#include "Network/GuLiHybridActorComponent.h"
 
 FString UGuLiEngineeringTravelComponent::GetTravelDebug() const
 {
@@ -30,7 +31,7 @@ void UGuLiEngineeringTravelComponent::EndPlay(const EEndPlayReason::Type Reason)
 bool UGuLiEngineeringTravelComponent::PrepareGroundMove(const FVector& Target, float Radius, FGuLiPreparedGroundMove& Out) const
 {
 	Out = {};
-	if (!GetOwner()->HasAuthority() || Target.ContainsNaN() || Radius < 0 || !Control || Control->AreActionsLocked() || IsRouting()) return false;
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || Target.ContainsNaN() || Radius < 0 || !Control || Control->AreActionsLocked() || IsRouting()) return false;
 	Out.Request = FAIMoveRequest(Target);
 	Out.Request.SetUsePathfinding(true); Out.Request.SetAllowPartialPath(false);
 	Out.Request.SetProjectGoalLocation(false); Out.Request.SetAcceptanceRadius(Radius);
@@ -53,7 +54,7 @@ bool UGuLiEngineeringTravelComponent::MoveOnGround(const FVector& Target, float 
 }
 bool UGuLiEngineeringTravelComponent::CommitGroundMove(const FGuLiPreparedGroundMove& Prepared)
 {
-	if (!GetOwner()->HasAuthority() || Control->AreActionsLocked() || IsRouting()) return false;
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || Control->AreActionsLocked() || IsRouting()) return false;
 	GroundGoal = Prepared.Request.GetGoalLocation(); GroundAcceptance = Prepared.Request.GetAcceptanceRadius();
 	if (Prepared.bNeedsPath)
 	{
@@ -114,7 +115,7 @@ bool UGuLiEngineeringTravelComponent::ProcessQueuedPath()
 {
 	if (!HasQueuedPath()) return false;
 	const auto* Pawn=Cast<APawn>(GetOwner());
-	if (!Pawn || !Pawn->HasAuthority() || !Pawn->GetController())
+	if (!Pawn || !UGuLiHybridActorComponent::HasSimulation(Pawn) || !Pawn->GetController())
 	{
 		if (ReplacementTaskId) ReplacementStatus=EGuLiEngineeringPathPreparation::Failed;
 		else GroundStatus=EGuLiEngineeringMoveStatus::Failed;
@@ -154,7 +155,7 @@ bool UGuLiEngineeringTravelComponent::ComputeQueuedPath(const FVector& Target, f
 	const FVector Start = Pawn->GetNavAgentLocation();
 	const auto* Obstacles=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
 	const uint32 Revision = Obstacles->GetStaticRevision();
-	const double Now = GetWorld()->GetTimeSeconds();
+	const double Now = UGuLiHybridActorComponent::BattleSeconds(GetOwner());
 	FailedPaths.RemoveAll([&](const auto& Failure) {
 		FBox Bounds(ForceInit); Bounds+=Failure.Start; Bounds+=Failure.Goal;
 		return Failure.RetryAt<=Now || Obstacles->HasStaticChangesSince(Failure.Revision,Bounds.ExpandBy(2000)); });
@@ -217,7 +218,7 @@ void UGuLiEngineeringTravelComponent::CancelGroundMove()
 }
 bool UGuLiEngineeringTravelComponent::StopAtSafePoint()
 {
-	if (!GetOwner()->HasAuthority() || IsInTransit()) return false;
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || IsInTransit()) return false;
 	CancelGroundMove();
 	if (const auto* Pawn=Cast<APawn>(GetOwner())) if (auto* AI=Cast<AAIController>(Pawn->GetController())) AI->StopMovement();
 	if (auto* Character = Cast<ACharacter>(GetOwner())) Character->GetCharacterMovement()->StopMovementImmediately();

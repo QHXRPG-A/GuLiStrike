@@ -146,7 +146,7 @@ bool FGuLiSelectionRequest::IsWellFormed() const
 	{
 		return IsValidSelectionBox(*this);
 	}
-	return SeedSoldierId.IsValid() != SeedActorId.IsValid()
+	return int32(SeedSoldierId.IsValid())+int32(SeedActorId.IsValid())+int32(SeedObject.IsValid())==1
 		&& (Kind != EGuLiSelectionKind::SameType || IsValidSelectionBox(*this))
 		&& IsUnitSelectionRay(RayDirection)
 		&& FMath::IsFinite(PickHalfAngleRadians)
@@ -251,6 +251,9 @@ bool FGuLiControlCohortDescriptor::NetSerialize(FArchive& Ar, UPackageMap* Map, 
 // 除组内去重，还剔除跨组重复士兵和空组，保证一个选择内每名士兵至多出现一次。
 void FGuLiCommanderSelectionState::Sanitize()
 {
+    TSet<FGuLiHybridObjectKey> SeenObjects;
+    Objects.RemoveAll([&](const auto& K){if (!K.IsValid() || SeenObjects.Contains(K)) return true;SeenObjects.Add(K);return false;});
+    if (Objects.Num()>int32(GULI_MAX_CONTROLLABLE_ACTOR_SELECTION)) Objects.SetNum(GULI_MAX_CONTROLLABLE_ACTOR_SELECTION,EAllowShrinking::No);
 	TSet<FGuLiControlCohortId> SeenCohorts;
 	TSet<FGuLiSoldierId> SeenSoldiers;
 	for (int32 CohortIndex = 0; CohortIndex < Cohorts.Num();)
@@ -346,6 +349,11 @@ bool FGuLiCommanderSelectionState::NetSerialize(FArchive& Ar, UPackageMap* Map, 
 		bOutSuccess = bOutSuccess && bActorSuccess;
 	}
 
+    uint32 ObjectCount=Ar.IsSaving()?Objects.Num():0;
+    Ar.SerializeInt(ObjectCount,GULI_MAX_CONTROLLABLE_ACTOR_SELECTION+1);
+    if (Ar.IsLoading()) Objects.SetNum(ObjectCount);
+    for (auto& K:Objects)
+    {uint8 Kind=uint8(K.Kind);Ar<<Kind;Ar<<K.StableId;Ar.SerializeIntPacked(K.LifeGeneration);if (Ar.IsLoading()) K.Kind=EGuLiHybridObjectKind(Kind);bOutSuccess&=K.IsValid();}
 	Ar.SerializeIntPacked(SelectionRevision);
 	Ar.SerializeIntPacked(AcceptedClientRequestId);
 
@@ -713,7 +721,7 @@ bool FGuLiMoveEndpointFastArray::Upsert(
 		Existing->CommandStart = Candidate.CommandStart;
 		Existing->FinalDestination = Candidate.FinalDestination;
 		Existing->Revision = Candidate.Revision;
-		MarkItemDirty(*Existing);
+
 		return true;
 	}
 	const int32 MaximumEndpoints = static_cast<int32>(
@@ -724,7 +732,7 @@ bool FGuLiMoveEndpointFastArray::Upsert(
 	}
 
 	FGuLiMoveEndpointItem& Added = Items.Add_GetRef(Candidate);
-	MarkItemDirty(Added);
+
 	return true;
 }
 
@@ -739,7 +747,7 @@ bool FGuLiMoveEndpointFastArray::Remove(const FGuLiSoldierId SoldierId)
 		return false;
 	}
 	Items.RemoveAtSwap(Index, 1, EAllowShrinking::No);
-	MarkArrayDirty();
+
 	return true;
 }
 
@@ -772,7 +780,7 @@ int32 FGuLiMoveEndpointFastArray::ReplaceWith(const TConstArrayView<FGuLiMoveEnd
 	}
 	if (ChangedCount > 0)
 	{
-		MarkArrayDirty();
+
 	}
 	TMap<FGuLiSoldierId, int32> ExistingIndexBySoldier;
 	ExistingIndexBySoldier.Reserve(Items.Num());
@@ -805,14 +813,14 @@ int32 FGuLiMoveEndpointFastArray::ReplaceWith(const TConstArrayView<FGuLiMoveEnd
 			{
 				Existing.Revision = 1u;
 			}
-			MarkItemDirty(Existing);
+
 		}
 		else
 		{
 			FGuLiMoveEndpointItem Added = Incoming;
 			Added.Revision = 1u;
 			FGuLiMoveEndpointItem& AddedItem = Items.Add_GetRef(MoveTemp(Added));
-			MarkItemDirty(AddedItem);
+
 		}
 		++ChangedCount;
 	}
@@ -826,40 +834,11 @@ bool FGuLiMoveEndpointFastArray::ResetEndpoints()
 		return false;
 	}
 	Items.Reset();
-	MarkArrayDirty();
+
 	return true;
 }
 
 bool FGuLiQuantizedSoldierPose::IsTeleport() const
 {
 	return (Flags & GULI_SOLDIER_POSE_FLAG_TELEPORT) != 0u;
-}
-
-void FGuLiSoldierStateFastArray::PreReplicatedRemove(const TArrayView<int32> RemovedIndices, int32 FinalSize)
-{
-	TArray<FGuLiSoldierId> Removed;
-	Removed.Reserve(RemovedIndices.Num());
-	for (int32 Index : RemovedIndices) Removed.Add(Items[Index].SoldierId);
-	PendingRemovedIds.Append(Removed);
-	OnRemoved.Broadcast(Removed);
-}
-
-void FGuLiSoldierStateFastArray::PostReplicatedAdd(const TArrayView<int32>& AddedIndices, int32 FinalSize)
-{
-	for (const int32 Index : AddedIndices) PendingReceivedStates.Add(Items[Index]);
-}
-
-void FGuLiSoldierStateFastArray::PostReplicatedChange(const TArrayView<int32>& ChangedIndices, int32 FinalSize)
-{
-	for (const int32 Index : ChangedIndices) PendingReceivedStates.Add(Items[Index]);
-}
-
-void FGuLiSoldierStateFastArray::PostReplicatedReceive(const FFastArraySerializer::FPostReplicatedReceiveParameters& Parameters)
-{
-	if (!PendingReceivedStates.IsEmpty() || !PendingRemovedIds.IsEmpty())
-	{
-		OnReceivedDelta.Broadcast(PendingReceivedStates, PendingRemovedIds);
-		PendingReceivedStates.Reset();
-		PendingRemovedIds.Reset();
-	}
 }

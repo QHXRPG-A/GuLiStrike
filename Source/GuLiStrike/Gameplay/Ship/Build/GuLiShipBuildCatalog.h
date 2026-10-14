@@ -7,6 +7,7 @@
 
 class UGuLiShipCapabilityComponent;
 class UGuLiStrikeShipPartComponent;
+struct FGuLiShipSharedBuildRules;
 
 /** Operators describe rules, never enumerate the project's component catalogue. */
 UENUM(BlueprintType)
@@ -121,6 +122,7 @@ struct GULISTRIKE_API FGuLiShipResolvedBuild
 /** Validated cache is built once per catalogue revision, not in a component Tick. */
 struct GULISTRIKE_API FGuLiShipCompiledBuildRules
 {
+    TSharedPtr<FGuLiShipSharedBuildRules> Shared;
 	TMap<FName, int32> NodeIndices;
 	TMap<FName, int32> GroupIndices;
 	TMap<FName, TSet<FName>> ConflictsByRoute;

@@ -16,6 +16,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraDataInterfaceArrayFunctionLibrary.h"
 #include "TimerManager.h"
+#include "Network/GuLiNetworkSettings.h"
 
 UGuLiBuildingConstructionVisualComponent::UGuLiBuildingConstructionVisualComponent()
 {
@@ -26,7 +27,7 @@ UGuLiBuildingConstructionVisualComponent::UGuLiBuildingConstructionVisualCompone
 void UGuLiBuildingConstructionVisualComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	if (GetOwner()->GetNetMode() == NM_DedicatedServer) return;
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	Lifecycle = GetOwner()->FindComponentByClass<UGuLiBuildingLifecycleComponent>();
 	if (Lifecycle) StateChangedHandle = Lifecycle->OnConstructionStateChanged.AddUObject(this, &ThisClass::RefreshState);
 	RefreshState();

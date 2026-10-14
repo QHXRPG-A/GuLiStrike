@@ -28,10 +28,9 @@ struct FGuLiSoldierRosterDelta
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierRosterDeltaSignature, const FGuLiSoldierRosterDelta&);
 
 /**
- * Public local read model of the soldier roster. Authority reconciles complete captures;
- * clients merge explicit state-stream deltas. Only actor existence uses shared replication.
+ * Public local roster read model, populated from owned entities and P2P state.
  */
-// 服务器维护、相关客户端读取的公共士兵名册 Actor；bAlwaysRelevant，连续姿态另走 NetSync。
+// 保留现有反射类路径；仅保存本进程名册，运动使用P2P显式编码。
 UCLASS(BlueprintType)
 class GULISTRIKE_API AGuLiSoldierStateReplicator final : public AInfo
 {
@@ -40,22 +39,15 @@ class GULISTRIKE_API AGuLiSoldierStateReplicator final : public AInfo
 public:
 	AGuLiSoldierStateReplicator();
 
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	virtual void PostNetReceive() override;
-	virtual void PostInitProperties() override;
 
-	/** Authority only. Applies one coherent roster capture and dirties changed items only. */
-	// 服务器本地应用同次捕获的名册；返回新增/修改/删除条目数，单独战局切换仍可能返回 0。
+	/** Applies a coherent local read-model capture and notifies actual changes. */
+	// 返回新增、修改或删除条目数。
 	int32 ApplyAuthoritySnapshot(
 		TConstArrayView<FGuLiSoldierStateItem> InStates,
 		uint32 MatchEpoch);
 	int32 ApplyAuthorityDelta(TConstArrayView<FGuLiSoldierStateItem> States, uint32 MatchEpoch);
-	/** Connection stream only. Omitted IDs are retained; removals are always explicit. */
-	void ResetRemoteRoster(uint32 MatchEpoch);
-	void ApplyRemoteDelta(const TArray<FGuLiSoldierStateItem>& States,
-		const TArray<FGuLiSoldierId>& Removed, uint32 MatchEpoch, uint32 BatchSequence);
 
-	// 读取本端当前副本；未找到返回 nullptr，客户端读取结果不代表服务器实时状态。
+	// 读取本端当前状态；未找到返回 nullptr。
 	const FGuLiSoldierStateItem* FindSoldierState(FGuLiSoldierId SoldierId) const;
 	bool ContainsSoldier(FGuLiSoldierId SoldierId) const { return LocalSoldierStates.Contains(SoldierId); }
 	SIZE_T GetLocalCacheAllocatedSize() const { return LocalSoldierStates.GetAllocatedSize(); }
@@ -71,34 +63,26 @@ public:
 
 	uint32 GetSnapshotRevision() const { return SnapshotRevision; }
 
-#if WITH_DEV_AUTOMATION_TESTS
-	/** Exercises the actual native RepNotify body without relying on ProcessEvent reflection in a transient test world. */
-	void TestOnly_InvokeSnapshotRevisionRepNotify() { OnRep_SnapshotRevision(); }
-#endif
 
-	/** One batch notification per changed authority snapshot or replicated client revision. */
+	/** One local batch notification per changed snapshot. */
 	// 本地批量变更通知；不是网络多播，也不保证一次通知对应一次完整网络事务。
 	FGuLiSoldierStatesChangedSignature OnSoldierStatesChanged;
 	FGuLiSoldierRosterDeltaSignature OnRosterDelta;
 	FGuLiSoldierRemovalSignature& OnSoldiersRemoved() { return ReplicatedSoldiers.OnRemoved; }
 
 private:
-	friend class FGuLiCommanderRosterCacheTest;
 	void ApplyLocalDelta(const TArray<FGuLiSoldierStateItem>& States, const TArray<FGuLiSoldierId>& Removed);
 	void RefreshLocalEpoch();
 	TMap<FGuLiSoldierId,int32> AuthorityItemIndices;
 	int32 ApplyAuthorityState(TConstArrayView<FGuLiSoldierStateItem> States, uint32 MatchEpoch, bool bComplete);
 	TMap<FGuLiSoldierId, FGuLiSoldierStateItem> LocalSoldierStates;
 	uint32 LocalCacheEpoch = 0;
-	int32 FindItemIndex(FGuLiSoldierId SoldierId) const;
 
-	UFUNCTION()
-	void OnRep_SnapshotRevision();
 
 	UPROPERTY(Transient)
 	FGuLiSoldierStateFastArray ReplicatedSoldiers;
 
-	/** Local read-model epoch/revision; bootstrap verifies a per-connection completion barrier. */
+	/** Local read-model epoch and revision. */
 	UPROPERTY(Transient)
 	uint32 SnapshotMatchEpoch = 0u;
 

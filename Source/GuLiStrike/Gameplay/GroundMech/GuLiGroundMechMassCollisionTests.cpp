@@ -12,9 +12,6 @@
 #include "Misc/AutomationTest.h"
 #include "Components/BoxComponent.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
-#include "Gameplay/GroundMech/GuLiGroundMechMovementNetwork.h"
-#include "Serialization/MemoryReader.h"
-#include "Serialization/MemoryWriter.h"
 #include <limits>
 
 namespace GuLiGroundMechMassCollisionTests
@@ -572,18 +569,6 @@ bool FGuLiGroundMassMovementReplayTest::RunTest(const FString &Parameters)
 	TestTrue(TEXT("The next ordinary move preserves the corrected platform baseline"),
 			 Mech->GetActorLocation().Equals(PredictedEnd + FVector(46, 0, 0), 0.01));
 
-	TArray<uint8> Bytes;
-	FMemoryWriter Writer(Bytes);
-	Corrected.Serialize(Writer);
-	FGuLiMassSupportState Decoded;
-	FMemoryReader Reader(Bytes);
-	Decoded.Serialize(Reader);
-	TestFalse(TEXT("Support response decoding succeeds"), Reader.IsError());
-	TestEqual(TEXT("Support response preserves stable ID"), Decoded.SoldierId.Value, Corrected.SoldierId.Value);
-	TestTrue(TEXT("Support response preserves its reference pose"),
-			 Decoded.BodyLocation.Equals(Corrected.BodyLocation));
-	TestEqual(TEXT("Support response preserves simulation time"), Decoded.SimulationSeconds,
-			  Corrected.SimulationSeconds);
 	return true;
 }
 
@@ -635,129 +620,5 @@ bool FGuLiGroundMassWorldLandingTest::RunTest(const FString &Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiGroundMassNetworkMoveTest, "GuLiStrike.GroundMech.MassCollision.NetworkMove",
-								 GuLiGroundMechMassCollisionTests::Flags)
-bool FGuLiGroundMassNetworkMoveTest::RunTest(const FString &Parameters)
-{
-	using namespace GuLiGroundMechMassCollisionTests;
-	const UClass *FormalMech = LoadClass<AGuLiGroundMechCharacter>(
-		nullptr, TEXT("/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C"));
-	if (!TestNotNull(TEXT("Formal ground mech Blueprint loads"), FormalMech))
-		return false;
-	TestTrue(TEXT("Formal Blueprint uses the Mass-aware movement component"),
-			 FormalMech->GetDefaultObject<AGuLiGroundMechCharacter>()
-				 ->GetCharacterMovement()
-				 ->IsA<UGuLiGroundMechMovementComponent>());
-	FTransientGameWorld Fixture;
-	if (!Fixture.Initialize(*this))
-		return false;
-	auto *Contacts = Fixture.World->GetSubsystem<UGuLiGroundMassContactSubsystem>();
-	auto Body = MakeBody(91, FVector::ZeroVector, 500, 0, 300);
-	Contacts->TestOnly_SetBodies(MakeArrayView(&Body, 1));
-	FActorSpawnParameters Spawn;
-	Spawn.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	auto *Mech = Fixture.World->SpawnActor<AGuLiGroundMechCharacter>(FVector(0, 0, 500), FRotator::ZeroRotator, Spawn);
-	Mech->GetCapsuleComponent()->SetCapsuleSize(100, 100);
-	auto *Move = CastChecked<UGuLiGroundMechMovementComponent>(Mech->GetCharacterMovement());
-	Move->SetMovementMode(MOVE_Falling);
-	Move->Velocity = FVector(0, 0, -4000);
-	Move->StartNewPhysics(0.05f, 0);
-	if (!TestEqual(TEXT("Network fixture starts on a Mass support"), Move->GetMassSupportSoldierId().Value, 91u))
-		return false;
-	const FVector Before = Mech->GetActorLocation();
-	Fixture.World->TimeSeconds = 0.05;
-	Body.Velocity = FVector(720, 0, 0);
-	Contacts->TestOnly_SetBodies(MakeArrayView(&Body, 1));
-	Fixture.World->DeltaTimeSeconds = 1.0f / 60.0f;
-	FGuLiGroundMechMoveContainer Packet;
-	Move->Activate();
-	auto &Data = Packet.Moves[0];
-	Data.TimeStamp = 0.05f;
-	Data.Revision = Move->GetDisplacementRevision();
-	Data.Location = Before + FVector(36, 0, 0);
-	Data.MovementMode = Move->PackNetworkMovementMode();
-	// Incorrect support identity with an otherwise correct position must still be corrected.
-	Data.SupportId = 0;
-	Data.SupportEpoch = 0;
-	Data.SupportDisplacement = 0;
-	Move->ServerMove_HandleMoveData(Packet);
-	TestTrue(TEXT("Real server move handler consumes client timestamp delta, not world delta"),
-			 Mech->GetActorLocation().Equals(Before + FVector(36, 0, 0), 0.01));
-	auto *ServerData = Move->GetPredictionData_Server_Character();
-	TestFalse(TEXT("Wrong support identity forces correction even at the correct position"),
-			  ServerData->PendingAdjustment.bAckGoodMove);
-	FGuLiGroundMechMoveResponse Sent;
-	Sent.ServerFillResponseData(*Move, ServerData->PendingAdjustment);
-	TestEqual(TEXT("Correction is bound to the acknowledged support"), Sent.Support.SoldierId.Value, 91u);
-	const FVector Captured = Sent.Support.BodyLocation;
-	Move->SupportState.BodyLocation.X += 500;
-	FGuLiGroundMechMoveResponse Delayed;
-	Delayed.ServerFillResponseData(*Move, ServerData->PendingAdjustment);
-	TestTrue(TEXT("Delayed serialization uses the captured baseline, not live support"),
-			 Delayed.Support.BodyLocation.Equals(Captured));
-	TArray<uint8> Bytes;
-	FMemoryWriter Writer(Bytes);
-	TestTrue(TEXT("Extended movement response serializes through CMC"), Sent.Serialize(*Move, Writer, nullptr));
-	FGuLiGroundMechMoveResponse Received;
-	FMemoryReader Reader(Bytes);
-	TestTrue(TEXT("Extended movement response deserializes through CMC"), Received.Serialize(*Move, Reader, nullptr));
-	TestEqual(TEXT("External displacement revision survives the specialized response"), Received.Revision,
-			  Sent.Revision);
-	TestTrue(TEXT("Support reference survives the complete movement response"),
-			 Received.Support.BodyLocation.Equals(Captured));
-
-	auto *Client =
-		Fixture.World->SpawnActor<AGuLiGroundMechCharacter>(FVector(2000, 0, 700), FRotator::ZeroRotator, Spawn);
-	Client->GetCapsuleComponent()->SetCapsuleSize(100, 100);
-	auto *ClientMove = CastChecked<UGuLiGroundMechMovementComponent>(Client->GetCharacterMovement());
-	ClientMove->Activate();
-	auto *Prediction = ClientMove->GetPredictionData_Client_Character();
-	FSavedMovePtr Acked = Prediction->AllocateNewMove();
-	Acked->SetMoveFor(Client, 0.05f, FVector::ZeroVector, *Prediction);
-	Acked->TimeStamp = Data.TimeStamp;
-	Prediction->SavedMoves.Add(Acked);
-	ClientMove->ClientHandleMoveResponse(Received);
-	TestEqual(TEXT("Correction installs the authoritative support before replay"),
-			  ClientMove->GetMassSupportSoldierId().Value, 91u);
-	TestTrue(TEXT("Correction installs the corresponding reference pose"),
-			 ClientMove->SupportState.BodyLocation.Equals(Captured));
-	ClientMove->MassSupportSoldierId = FGuLiSoldierId(999u);
-	TestEqual(TEXT("An independently replicated support mirror cannot rewind physics"),
-			  ClientMove->GetMassSupportSoldierId().Value, 91u);
-	const FVector BeforeStale = ClientMove->SupportState.BodyLocation;
-	Received.Revision += 1;
-	Received.Support.BodyLocation.X += 123;
-	ClientMove->ClientHandleMoveResponse(Received);
-	TestTrue(TEXT("Existing external revision guard also protects support corrections"),
-			 ClientMove->SupportState.BodyLocation.Equals(BeforeStale));
-	// The fixture hosts both peers in one transient world; their capsules must not
-	// collide with one another after the correction places them at the same position.
-	Client->SetActorEnableCollision(false);
-	Move->SupportState = Sent.Support;
-	Data.TimeStamp = 0.1f;
-	Data.Location = Before + FVector(72, 0, 0);
-	Move->ServerMove_HandleMoveData(Packet);
-	TestTrue(TEXT("A second packet in the same world frame consumes the next 50ms"),
-			 Mech->GetActorLocation().Equals(Before + FVector(72, 0, 0), 0.01));
-	Data.TimeStamp = 0.15f;
-	Move->ServerMove_HandleMoveData(Packet);
-	TestTrue(TEXT("Additional packets cannot advance beyond the original 100ms sample horizon"),
-			 Mech->GetActorLocation().Equals(Before + FVector(72, 0, 0), 0.01));
-	TestFalse(TEXT("An acknowledged move releases its immutable collision frame"),
-			  static_cast<FGuLiGroundMechSavedMove &>(*Acked).Context.Snapshot.IsValid());
-	Client->SetReplicates(true);
-	Client->SwapRoles();
-	TestEqual(TEXT("Remote movement fixture is a simulated proxy"), Client->GetLocalRole(), ROLE_SimulatedProxy);
-	ClientMove->SetMovementMode(MOVE_Walking);
-	ClientMove->CurrentFloor.bBlockingHit = true;
-	ClientMove->CurrentFloor.bWalkableFloor = true;
-	ClientMove->CurrentFloor.HitResult.ImpactNormal = FVector::UpVector;
-	ClientMove->CurrentFloor.HitResult.Normal = FVector::UpVector;
-	const FVector BeforeProxySmooth = Client->GetActorLocation();
-	ClientMove->MoveSmooth(FVector(100, 0, 0), 0.05f);
-	TestTrue(TEXT("Remote proxy smoothing uses CMC without a local collision time context"),
-			 Client->GetActorLocation().Equals(BeforeProxySmooth + FVector(5, 0, 0), 0.01));
-	return true;
-}
 
 #endif

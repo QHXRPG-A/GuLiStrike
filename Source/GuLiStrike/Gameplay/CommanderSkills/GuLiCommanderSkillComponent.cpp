@@ -3,30 +3,21 @@
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
-#include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
-#include "Gameplay/Skills/GuLiSkillTargeting.h"
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
-#include "Gameplay/Navigation/GuLiLandingGround.h"
 #include "Engine/World.h"
-#include "EngineUtils.h"
 #include "GameFramework/Pawn.h"
-#include "Net/UnrealNetwork.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 
-UGuLiCommanderSkillComponent::UGuLiCommanderSkillComponent() { SetIsReplicatedByDefault(true); }
+UGuLiCommanderSkillComponent::UGuLiCommanderSkillComponent() { SetIsReplicatedByDefault(false); }
 AGuLiBattlePlayerState& UGuLiCommanderSkillComponent::PlayerState() const { return *CastChecked<AGuLiBattlePlayerState>(GetOwner()); }
 AGuLiCommanderPlayerController* UGuLiCommanderSkillComponent::Commander() const { return Cast<AGuLiCommanderPlayerController>(GetOwner()->GetOwner()); }
-void UGuLiCommanderSkillComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME_CONDITION(UGuLiCommanderSkillComponent, Catalog, COND_OwnerOnly);
-	DOREPLIFETIME_CONDITION(UGuLiCommanderSkillComponent, GlobalRuntime, COND_OwnerOnly);
-	DOREPLIFETIME_CONDITION(UGuLiCommanderSkillComponent, SelectedUnitRuntime, COND_OwnerOnly);
-	DOREPLIFETIME_CONDITION(UGuLiCommanderSkillComponent, RuntimeSelectionRevision, COND_OwnerOnly);
-}
+
 void UGuLiCommanderSkillComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+    {H->OnOwnershipStateApplied.AddUObject(this,&ThisClass::RebindHybridRequests);H->OnTransactionCompleted.AddDynamic(this,&ThisClass::CompleteHybridGlobal);}
 	if (GetOwner()->HasAuthority())
 	{
 		if (auto* Army=GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>())
@@ -37,6 +28,9 @@ void UGuLiCommanderSkillComponent::BeginPlay()
 }
 void UGuLiCommanderSkillComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
+    if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) {H->OnCommandCompleted.RemoveAll(this);H->OnOwnershipStateApplied.RemoveAll(this);H->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::CompleteHybridGlobal);}
+    HybridGlobalRequests.Reset();
+    HybridPending.Reset();
 	PlayerState().OnCommanderPlayerStateChanged.RemoveDynamic(this, &ThisClass::HandlePlayerStateChanged);
 	if (BoundSelection.IsValid()) BoundSelection->OnSelectionChanged.RemoveAll(this);
 	if (auto* Army=GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>()) Army->OnWeaponLoadoutCommitted().RemoveAll(this);
@@ -54,6 +48,7 @@ void UGuLiCommanderSkillComponent::HandlePlayerStateChanged()
 		if (Selection) Selection->OnSelectionChanged.AddUObject(this, &ThisClass::RefreshSelectedUnitSkills);
 	}
 	if (Selection) RefreshSelectedUnitSkills(Selection->GetSelectionState());
+    RebindHybridRequests();
 }
 void UGuLiCommanderSkillComponent::HandleWeaponProfilesChanged(uint32 Revision)
 {
@@ -73,7 +68,6 @@ void UGuLiCommanderSkillComponent::RefreshSelectedUnitSkills(const FGuLiCommande
 		FGuLiUnitSkillRuntimeView View; View.SoldierId = Id;
 		if (Authority.QueryUnitSkillRuntime(Id, *Catalog, View.Runtime)) SelectedUnitRuntime.Add(View);
 	}
-	GetOwner()->ForceNetUpdate();
 }
 TArray<FGuLiUnitSkillRuntimeView> UGuLiCommanderSkillComponent::GetSelectedUnitSkills() const
 {
@@ -86,6 +80,7 @@ void UGuLiCommanderSkillComponent::CopyMatchStateFrom(const UGuLiCommanderSkillC
 	check(GetOwner()->HasAuthority());
 	Catalog = Other.Catalog; RuntimeEpoch = Other.RuntimeEpoch;
 	GlobalRuntime = Other.GlobalRuntime; Receipts = Other.Receipts;
+    HybridPending=Other.HybridPending; HybridGlobalRequests=Other.HybridGlobalRequests;
 }
 bool UGuLiCommanderSkillComponent::InitializeCatalog()
 {
@@ -119,36 +114,22 @@ FGuLiActiveSkillRequest UGuLiCommanderSkillComponent::MakeLocalRequest(bool bHas
 }
 void UGuLiCommanderSkillComponent::ActivateSelectedUnits(bool bHasGroundPoint, FVector GroundPoint)
 {
-	auto* PC = Commander();
-	if (!PC || !PC->IsLocalController() || !PC->CanIssueCommanderOrders() || !Catalog) return;
-	auto& Sync = *PC->GetCommanderNetSyncComponent();
-	if (Sync.HasUnresolvedSelectionIntent()) return;
-	const auto& Selection = Sync.GetSelectionState();
-	bool bHasSkill = false;
-	for (TActorIterator<AGuLiSoldierStateReplicator> It(GetWorld()); It; ++It)
-	{
-		for (const auto& Cohort : Selection.Cohorts) for (auto Id : Cohort.MemberIds)
-		{
-			const auto* Soldier = It->FindSoldierState(Id);
-			if (Soldier && Soldier->Team==PlayerState().GetTeam()
-				&& Catalog->FindAvailableUnitSkill(*GetWorld(),Soldier->Team,Soldier->UnitTypeId)) { bHasSkill = true; break; }
-		}
-		break;
-	}
-	if (!bHasSkill) return;
-	auto Request = MakeLocalRequest(bHasGroundPoint, GroundPoint); Request.SelectionRevision = Selection.SelectionRevision;
-	ServerRequestSkill(Request);
+    RequestHybridUnitSkills(bHasGroundPoint,GroundPoint);
 }
+
 void UGuLiCommanderSkillComponent::ActivateGlobalSkill(FName SkillId, bool bHasGroundPoint, FVector GroundPoint)
+{RequestGlobalSkill(SkillId,bHasGroundPoint,GroundPoint);}
+FGuid UGuLiCommanderSkillComponent::RequestGlobalSkill(FName SkillId,bool bHasGroundPoint,FVector GroundPoint)
 {
 	auto* PC = Commander();
-	if (!PC || !PC->IsLocalController() || !PC->CanIssueCommanderOrders() || !Catalog || !Catalog->GlobalSkills.Contains(SkillId)) return;
+	if (!PC || !PC->IsLocalController() || !PC->CanIssueCommanderOrders() || !Catalog || !Catalog->GlobalSkills.Contains(SkillId)) return {};
 	auto Request = MakeLocalRequest(bHasGroundPoint, GroundPoint); Request.GlobalSkillId = SkillId;
 	ServerRequestSkill(Request);
+    return Request.RequestId;
 }
 int32 UGuLiCommanderSkillComponent::GetGlobalSkillLevel(FName SkillId) const
 {
-	const auto* Runtime = GlobalRuntime.FindByPredicate([SkillId](const auto& Item) { return Item.SkillId == SkillId; });
+	const auto Values=GetGlobalSkills();const auto* Runtime = Values.FindByPredicate([SkillId](const auto& Item) { return Item.SkillId == SkillId; });
 	return Runtime ? Runtime->Level : 1;
 }
 bool UGuLiCommanderSkillComponent::SetServerGlobalSkillLevel(FName SkillId, int32 Level)
@@ -157,10 +138,23 @@ bool UGuLiCommanderSkillComponent::SetServerGlobalSkillLevel(FName SkillId, int3
 	auto* Runtime = GlobalRuntime.FindByPredicate([SkillId](const auto& Item) { return Item.SkillId == SkillId; });
 	const auto* Definition = Catalog->FindSkill(SkillId);
 	if (!Runtime || !Definition || Level < 1 || Level > Definition->MaximumLevel) return false;
-	Runtime->Level = Level; GetOwner()->ForceNetUpdate(); return true;
+    return Definition->ExecutorClass
+        && Definition->ExecutorClass->GetDefaultObject<UGuLiCommanderSkillExecutor>()->SetHybridLevel(*GetWorld(),PlayerState().GetTeam(),SkillId,Level).IsValid();
 }
-void UGuLiCommanderSkillComponent::ServerRequestSkill_Implementation(const FGuLiActiveSkillRequest& Request)
-{ ClientReceiveReply(ExecuteServerRequest(Request)); }
+void UGuLiCommanderSkillComponent::ServerRequestSkill(const FGuLiActiveSkillRequest& Request)
+{
+    if (Request.GlobalSkillId.IsNone())
+    {
+        if (!RouteHybridUnitSkillRequest(Request).IsValid())
+        {
+            FGuLiActiveSkillReply Reply;Reply.RequestId=Request.RequestId;Reply.MatchEpoch=Request.MatchEpoch;
+            Reply.Code=EGuLiActiveSkillResultCode::InvalidRequest;Reply.Error=TEXT("Unit skill request is stale, conflicting, or not ready");
+            ClientReceiveReply(Reply);
+        }
+        return;
+    }
+    ClientReceiveReply(RequestHybridGlobal(Request));
+}
 #if WITH_EDITOR
 bool UGuLiCommanderSkillComponent::CopyServerRequestReceipt(FGuid RequestId, FGuLiActiveSkillRequest& OutRequest) const
 {
@@ -171,81 +165,5 @@ bool UGuLiCommanderSkillComponent::CopyServerRequestReceipt(FGuid RequestId, FGu
 	return true;
 }
 #endif
-void UGuLiCommanderSkillComponent::ClientReceiveReply_Implementation(const FGuLiActiveSkillReply& Reply)
+void UGuLiCommanderSkillComponent::ClientReceiveReply(const FGuLiActiveSkillReply& Reply)
 { LastReply = Reply; OnSkillReply.Broadcast(Reply); }
-
-FGuLiActiveSkillReply UGuLiCommanderSkillComponent::ExecuteServerRequest(const FGuLiActiveSkillRequest& Request)
-{
-	FGuLiActiveSkillReply Reply; Reply.RequestId = Request.RequestId; Reply.MatchEpoch = Request.MatchEpoch;
-	auto* PC = Commander();
-	if (!GetOwner()->HasAuthority() || !PC || !PC->CanIssueCommanderOrders() || !Request.RequestId.IsValid()
-		|| Request.GroundPoint.ContainsNaN() || Request.Command > EGuLiActiveSkillCommand::Cancel || bExecuting || !SynchronizeEpoch()
-		|| Request.MatchEpoch != RuntimeEpoch)
-	{ Reply.Error = TEXT("Skill request has invalid authority, identity, command, or match."); return Reply; }
-	if (const auto* Receipt = Receipts.Find(Request.RequestId))
-	{
-		if (Receipt->Request.HasSameContent(Request)) return Receipt->Reply;
-		Reply.Error = TEXT("Request ID was already used for different skill content."); return Reply;
-	}
-	TGuardValue<bool> ExecutingGuard(bExecuting, true);
-	bool bGroundValid = false; FVector Ground = FVector::ZeroVector;
-	// Validate the original teleport click before any generic projection can
-	// replace a roof hit with a nearby ground point and erase its support identity.
-	if (Request.bHasGroundPoint)
-		bGroundValid = Request.GlobalSkillId == TEXT("Teleport")
-			? GuLiLandingGround::Resolve(*GetWorld(), Request.GroundPoint, Ground)
-			: GuLiSkillTargeting::ResolveGround(*GetWorld(), Request.GroundPoint, Ground);
-	if (Request.GlobalSkillId.IsNone())
-	{
-		const auto& Selection = PC->GetCommanderNetSyncComponent()->GetSelectionState();
-		if (Request.Command != EGuLiActiveSkillCommand::Activate || Request.CastId.IsValid()) Reply.Error = TEXT("Unit skills accept one activation command.");
-		else if (Selection.SelectionRevision != Request.SelectionRevision)
-		{ Reply.Code = EGuLiActiveSkillResultCode::StaleSelection; Reply.Error = TEXT("Selection changed before the skill request."); }
-		else
-		{
-			GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->ExecuteSelectedUnitSkills(
-				PlayerState(), Selection, *Catalog, Request.RequestId, bGroundValid, Ground, Reply.Units);
-			Reply.Code = Reply.Units.ContainsByPredicate([](const auto& Item) { return Item.Code == EGuLiActiveSkillResultCode::Succeeded; })
-				? EGuLiActiveSkillResultCode::Succeeded : EGuLiActiveSkillResultCode::Ineligible;
-			RefreshSelectedUnitSkills(Selection);
-		}
-	}
-	else
-	{
-		const auto* Definition = Catalog->FindSkill(Request.GlobalSkillId);
-		auto* Runtime = GlobalRuntime.FindByPredicate([&Request](const auto& Item) { return Item.SkillId == Request.GlobalSkillId; });
-		const bool bStarting = Request.Command == EGuLiActiveSkillCommand::Activate;
-		if (!Definition || !Runtime) { Reply.Code = EGuLiActiveSkillResultCode::NoSkill; Reply.Error = TEXT("Global skill is not granted."); }
-		else if (bStarting && Runtime->ReadyAt > GetWorld()->GetTimeSeconds()) Reply.Code = EGuLiActiveSkillResultCode::Cooldown;
-		else if ((!bStarting && (Definition->TargetMode != EGuLiActiveSkillTargetMode::TwoPoint || !Request.CastId.IsValid() || Runtime->ActiveCastId != Request.CastId))
-			|| (bStarting && Request.CastId.IsValid())) Reply.Error = TEXT("Skill continuation has no matching owned cast.");
-		else if (Request.Command != EGuLiActiveSkillCommand::Cancel && Definition->TargetMode != EGuLiActiveSkillTargetMode::Self && !bGroundValid)
-			Reply.Code = EGuLiActiveSkillResultCode::InvalidGround;
-		else
-		{
-			FGuLiActiveSkillExecutionContext Context;
-			Context.Commander = &PlayerState(); Context.Scope = EGuLiActiveSkillScope::Global;
-			Context.SkillId = Definition->SkillId; Context.RequestId = Request.RequestId; Context.CastId = Request.CastId;
-			Context.Level = Runtime->Level; Context.Command = Request.Command; Context.GroundPoint = Ground;
-			if (PC->GetPawn()) Context.SourceTransform = PC->GetPawn()->GetActorTransform();
-			if (Definition->RangeCentimeters > 0 && Definition->TargetMode != EGuLiActiveSkillTargetMode::Self
-				&& Request.Command != EGuLiActiveSkillCommand::Cancel
-				&& FVector::DistSquared(Context.SourceTransform.GetLocation(), Ground) > FMath::Square(Definition->RangeCentimeters))
-				Reply.Code = EGuLiActiveSkillResultCode::OutOfRange;
-			else
-			{
-				Reply.Global = Definition->ExecutorClass->GetDefaultObject<UGuLiCommanderSkillExecutor>()->Execute(Context, Definition->Configuration);
-				Reply.Code = Reply.Global.bSucceeded ? EGuLiActiveSkillResultCode::Succeeded : EGuLiActiveSkillResultCode::ExecutionFailed;
-				Reply.Error = Reply.Global.Error;
-				if (Reply.Global.bSucceeded)
-				{
-					if (bStarting) Runtime->ReadyAt = GetWorld()->GetTimeSeconds() + Definition->CooldownSeconds;
-					Runtime->ActiveCastId = Request.Command == EGuLiActiveSkillCommand::Cancel ? FGuid() : Reply.Global.CastId;
-					GetOwner()->ForceNetUpdate();
-				}
-			}
-		}
-	}
-	Receipts.Add(Request.RequestId, {Request, Reply});
-	return Reply;
-}

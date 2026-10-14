@@ -1,55 +1,70 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
-#include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
-#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
-#include "Engine/ActorChannel.h"
-#include "Engine/NetConnection.h"
-#include "Engine/NetDriver.h"
 #include "Engine/World.h"
 #include "GameFramework/GameStateBase.h"
-#include "HAL/IConsoleManager.h"
-#include "HAL/PlatformTime.h"
-#include "EngineLogs.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 
 namespace
 {
-	TAutoConsoleVariable<int32> CVarFlightDiagnostics(TEXT("guli.Net.FlightDiagnostics"), 0,
-		TEXT("Log aggregate create/end payload bytes and per-connection queue depth once per second."));
 	UGuLiCombatEffectReplicationComponent* FlightChannel(UWorld* World)
 	{
-		if (!World || World->GetNetMode() == NM_Client) return nullptr;
+		if (!World) return nullptr;
 		auto* State = World->GetGameState();
 		return State ? State->FindComponentByClass<UGuLiCombatEffectReplicationComponent>() : nullptr;
 	}
 }
 
-bool UGuLiCombatEffectReplicationComponent::PublishFlight(UWorld* World, const FGuLiFlightEvent& Event)
+void UGuLiCombatEffectReplicationComponent::RebaseReceivedState(UWorld* World,uint64 OwnerTick,FGuLiCombatEffectState& State)
 {
-	auto* Channel = FlightChannel(World);
-	if (!Channel || !GuLiFlightWire::IsFlight(Event.State.Kind) || !Event.State.IsWellFormed()
-		|| !Channel->IsCurrentEpoch(Event.State.MatchEpoch)) return false;
-	TArray<uint8> Record; uint16 Bits;
-	if (!GuLiFlightWire::EncodeRecord(Event, Record, Bits))
-	{
-		UE_LOG(LogNet, Error, TEXT("Flight recipe exceeds 1000-byte wire limit: %s"), *Event.State.EffectId.ToString());
-		return false;
-	}
+    const auto* Hybrid=World?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
+    if (!Hybrid) return;
+    const float Offset=static_cast<float>(Hybrid->GetLogicalSeconds()-double(OwnerTick)/60.);
+    State.StartTime+=Offset;State.SampleTime+=Offset;State.ActivationTime+=Offset;State.EndTime+=Offset;
+}
+
+void UGuLiCombatEffectReplicationComponent::RebasePublishedState(UWorld* World,uint64 ObjectTick,FGuLiCombatEffectState& State)
+{
+    const auto* Hybrid=World?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
+    if (!Hybrid) return;
+    const float Offset=static_cast<float>(double(ObjectTick)/60.-Hybrid->GetLogicalSeconds());
+    State.StartTime+=Offset;State.SampleTime+=Offset;State.ActivationTime+=Offset;State.EndTime+=Offset;
+}
+
+bool UGuLiCombatEffectReplicationComponent::ApplyHybridFlight(UWorld* World,const FGuLiFlightEvent& Event,bool Retired)
+{
+	const auto* State=World?World->GetGameState():nullptr;
+	auto* Channel=State?State->FindComponentByClass<UGuLiCombatEffectReplicationComponent>():nullptr;
+	if (!Channel || !UGuLiNetworkSettings::IsHybrid(World) || !GuLiFlightWire::IsFlight(Event.State.Kind)
+		|| !Channel->IsCurrentEpoch(Event.State.MatchEpoch) || !Event.State.IsWellFormed()) return false;
 	Channel->HandleEpoch(Event.State.MatchEpoch);
-	const bool Finished = Event.State.Phase == EGuLiCombatEffectPhase::Finished;
-	if (Finished)
-	{
-		// Only the producer of an accepted launch can end it. Repeated callbacks
-		// (physics stop, Destroy, lifespan) cannot enqueue another impact.
-		if (!Channel->ActiveFlights.Remove(Event.State.EffectId)) return false;
-		++Channel->EndedFlights;
-	}
-	else
-	{
-		if (Channel->ActiveFlights.Contains(Event.State.EffectId)) return false;
-		Channel->ActiveFlights.Add(Event.State.EffectId, Event); ++Channel->CreatedFlights;
-	}
-	Channel->PendingFlights.Add(Event);
-	if (auto* Visuals = World->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>()) Visuals->ApplyFlightEvent(Event);
+    if (Channel->bReviewReceipts && Event.State.bAcceptanceAdditional)
+    {
+        const auto Id=Event.State.EffectId;
+        if (!Channel->AdditionalReceipts.Contains(Id))
+        {
+            if (Channel->ReceiptOrder.Num()<4096) Channel->ReceiptOrder.Add(Id);
+            else
+            {
+                Channel->AdditionalReceipts.Remove(Channel->ReceiptOrder[Channel->NextReceipt]);
+                Channel->ReceiptOrder[Channel->NextReceipt]=Id;Channel->NextReceipt=(Channel->NextReceipt+1)%4096;
+            }
+        }
+        auto& Receipt=Channel->AdditionalReceipts.FindOrAdd(Id);
+        Receipt.X=FMath::Max(Receipt.X,int32(Event.State.Sequence));
+        Receipt.Y|=Event.State.Phase==EGuLiCombatEffectPhase::Finished?2:1;
+    }
+    // Record valid delivery even when the metadata channel already knows the
+    // final lifecycle. Late start samples must not recreate a retired visual.
+    if (Retired && Event.State.Phase!=EGuLiCombatEffectPhase::Finished) return true;
+    if (Event.State.Phase==EGuLiCombatEffectPhase::Finished)
+        Channel->FinishedFlights+=Channel->ActiveFlights.Remove(Event.State.EffectId);
+    else
+    {
+        if (!Channel->ActiveFlights.Contains(Event.State.EffectId)) ++Channel->ObservedFlights;
+        Channel->ActiveFlights.Add(Event.State.EffectId,Event);
+    }
+	if (auto* Visuals=World->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>()) Visuals->ApplyFlightEvent(Event);
 	return true;
 }
 
@@ -69,186 +84,50 @@ void UGuLiCombatEffectReplicationComponent::AttachFlightMuzzle(UWorld* World, co
 {
 	auto* Channel = FlightChannel(World);
 	if (!Channel || Channel->Epoch != Cue.MatchEpoch) return;
-	for (auto& Event : Channel->PendingFlights)
-		if (Event.State.EffectId == Cue.ShotId && Event.State.Phase != EGuLiCombatEffectPhase::Finished)
-		{ Event.Muzzle = Cue; Event.bHasMuzzle = true; break; }
 	if (auto* Active = Channel->ActiveFlights.Find(Cue.ShotId)) { Active->Muzzle = Cue; Active->bHasMuzzle = true; }
 	if (auto* Visuals = World->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>())
 		if (const auto* Active = Channel->ActiveFlights.Find(Cue.ShotId)) Visuals->ApplyFlightEvent(*Active);
 }
 
-void UGuLiCombatEffectReplicationComponent::SendToConnection(UNetConnection* Connection, UFunction* Function, void* Parameters)
+bool UGuLiCombatEffectReplicationComponent::QueryFlight(const FGuid& Id,FGuLiCombatEffectState& Out) const
 {
-	auto* Driver = GetWorld()->GetNetDriver();
-	auto* ActorChannel = Connection->FindActorChannelRef(GetOwner());
-	const auto* ClassCache = Driver->NetCache->GetClassNetCache(GetClass());
-	const auto* FieldCache = ClassCache ? ClassCache->GetFromField(Function) : nullptr;
-	if (ActorChannel && FieldCache)
-		Driver->ProcessRemoteFunctionForChannel(ActorChannel,ClassCache,FieldCache,this,Connection,Function,
-			Parameters,nullptr,nullptr,true,UNetDriver::ERemoteFunctionSendPolicy::Default);
+    const auto* Found=ActiveFlights.Find(Id);
+    if (!Found || !IsCurrentEpoch(Found->State.MatchEpoch)) return false;
+    Out=Found->State; return true;
+}
+void UGuLiCombatEffectReplicationComponent::AppendAdditionalFlightSnapshot(TArray<FGuLiCombatEffectState>& Out) const
+{
+    for (const auto& Pair:ActiveFlights)
+        if (Pair.Value.State.bAcceptanceAdditional && IsCurrentEpoch(Pair.Value.State.MatchEpoch)) Out.Add(Pair.Value.State);
+    Out.Sort([](const auto& A,const auto& B){return A.EffectId<B.EffectId;});
+}
+int32 UGuLiCombatEffectReplicationComponent::GetActiveFlightCount() const
+{
+	const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+	const auto* Battle=GetWorld()->GetGameState();
+	const float Now=Hybrid?Hybrid->GetLogicalSeconds():Battle?Battle->GetServerWorldTimeSeconds():GetWorld()->GetTimeSeconds();
+	int32 Count=0;
+	for (const auto& Pair:ActiveFlights)
+		if (!Pair.Value.State.bAcceptanceAdditional || (Now>=Pair.Value.State.StartTime && Now<Pair.Value.State.EndTime)) ++Count;
+	return Count;
 }
 
-void UGuLiCombatEffectReplicationComponent::FlushFlightStreams()
+int32 UGuLiCombatEffectReplicationComponent::GetAdditionalActiveFlightCount() const
 {
-	auto* Driver = GetWorld()->GetNetDriver();
-	if (!Driver) { PendingFlights.Reset(); return; }
-	const auto* Capture = GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>();
-	const bool bMeasureBytes = Capture && Capture->IsCapturing();
-	uint64 PendingRecordBytes = 0;
-	auto MeasureRecordBytes = [&](const FGuLiFlightEvent& Event) -> uint64
-	{
-		TArray<uint8> Record; uint16 Bits = 0;
-		if (!GuLiFlightWire::EncodeRecord(Event, Record, Bits)) { ++FlightByteAccountingFailures; return 0; }
-		return uint64(Record.Num()) + 2;
-	};
-	if (bMeasureBytes)
-	{
-		// Muzzle metadata is attached after PublishFlight. Measure the finalized
-		// recipe once here, before fan-out, without changing or storing wire data.
-		FGuLiPerformanceScope Accounting(GetWorld(), TEXT("Network.FlightRecordAccountingMs"));
-		for (const auto& Event : PendingFlights) PendingRecordBytes += MeasureRecordBytes(Event);
-		ProducedFlightRecordBytes += PendingRecordBytes;
-	}
-	const float Now = GetWorld()->GetTimeSeconds();
-	for (auto It=FlightPeers.CreateIterator(); It; ++It)
-		if (!It.Key().IsValid() || It.Key()->GetConnectionState()!=USOCK_Open
-			|| !Driver->ClientConnections.Contains(It.Key().Get())) It.RemoveCurrent();
-	for (UNetConnection* Connection : Driver->ClientConnections)
-	{
-		if (!Connection || Connection->GetConnectionState()!=USOCK_Open || !Connection->ViewTarget) continue;
-		auto* ActorChannel = Connection->FindActorChannelRef(GetOwner());
-		if (!ActorChannel || ActorChannel->OpenPacketId.First==INDEX_NONE || ActorChannel->Closing) continue;
-		auto* Peer = FlightPeers.Find(Connection);
-		if (Peer && Peer->Channel.Get()!=ActorChannel) { FlightPeers.Remove(Connection); Peer = nullptr; }
-		if (!Peer)
-		{
-			Peer = &FlightPeers.Add(Connection);
-			Peer->Channel = ActorChannel;
-			Peer->Stats.ChannelSerial = ++NextPeerSerial;
-			for (const auto& Pair : ActiveFlights)
-			{
-				FGuLiFlightEvent Bootstrap = Pair.Value;
-				if (Runtime.IsValid()) Runtime->QueryEffect(Pair.Key, Bootstrap.State);
-				// QueryEffect clears its output on a miss; logical missile
-				// producers maintain the separate registry instead.
-				if (!Bootstrap.State.EffectId.IsValid()) Bootstrap.State = Pair.Value.State;
-				if (Bootstrap.State.EndTime <= Now) continue;
-				Bootstrap.bBootstrap = true; Bootstrap.bHasMuzzle = false;
-				if (Bootstrap.State.Kind == EGuLiCombatEffectKind::LinearProjectile)
-				{
-					Bootstrap.State.Location = FVector(Bootstrap.State.LaunchLocation)+FVector(Bootstrap.State.Velocity)*(Now-Bootstrap.State.StartTime);
-					Bootstrap.State.LaunchLocation = Bootstrap.State.Location;
-					Bootstrap.State.StartTime = Bootstrap.State.ActivationTime = Now;
-				}
-				if (Bootstrap.State.Kind == EGuLiCombatEffectKind::LinearProjectile) Bootstrap.State.SampleTime = Now;
-				if (bMeasureBytes) Peer->Stats.BootstrapRecordBytes += MeasureRecordBytes(Bootstrap);
-				Peer->Queue.Add(MoveTemp(Bootstrap)); ++BootstrapFlights;
-				++Peer->Stats.BootstrapEvents;
-			}
-			TArray<FGuLiCombatEffectState> Fields;
-			if (Runtime.IsValid()) Runtime->BuildActiveSnapshot(Fields, true);
-			Fields.RemoveAll([](const auto& State){ return GuLiFlightWire::IsFlight(State.Kind); });
-			for (int32 Index=0; Index<Fields.Num(); Index+=16)
-			{
-				struct FParameters { TArray<FGuLiCombatEffectState> States; } Parameters;
-				Parameters.States.Append(Fields.GetData()+Index,FMath::Min(16,Fields.Num()-Index));
-				SendToConnection(Connection,FindFunctionChecked(GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastActiveSnapshot)),&Parameters);
-			}
-		}
-		Peer->Queue.Append(PendingFlights);
-		Peer->Stats.EnqueuedEvents += PendingFlights.Num();
-		Peer->Stats.EnqueuedRecordBytes += PendingRecordBytes;
-		++Peer->Stats.FlushCalls;
-		// Backpressure leaves reliable events here until the connection has credit.
-		// Neither ForceSend nor cosmetic burst debt bypasses the transport budget.
-		int32 Batch = 0;
-		for (; Batch<8 && Peer->Cursor<Peer->Queue.Num(); ++Batch)
-		{
-			// Observe the existing readiness check exactly once; never alter its credit.
-			if (!Connection->IsNetReady()) { ++Peer->Stats.BudgetDeferrals; break; }
-			struct FParameters { TArray<uint8> Payload; } Parameters;
-			const int32 Count = GuLiFlightWire::EncodeBatch(MakeArrayView(Peer->Queue).Slice(Peer->Cursor,Peer->Queue.Num()-Peer->Cursor),Parameters.Payload);
-			if (!Count) { UE_LOG(LogNet, Error, TEXT("Unable to encode accepted flight event")); break; }
-			SendToConnection(Connection,FindFunctionChecked(GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastFlightBatch)),&Parameters);
-			Peer->Cursor += Count; SentFlightBytes += Parameters.Payload.Num(); ++SentFlightBatches;
-			Peer->Stats.SentEvents += Count; Peer->Stats.SentBytes += Parameters.Payload.Num(); ++Peer->Stats.SentBatches;
-		}
-		if (Batch == 8 && Peer->Cursor < Peer->Queue.Num()) ++Peer->Stats.BatchLimitHits;
-		if (Peer->Cursor == Peer->Queue.Num()) { Peer->Queue.Reset(); Peer->Cursor = 0; }
-		else if (Peer->Cursor >= 256) { Peer->Queue.RemoveAt(0,Peer->Cursor,EAllowShrinking::No); Peer->Cursor = 0; }
-	}
-	PendingFlights.Reset();
-	// Diagnostics are aggregate and dormant by default; no per-projectile log spam.
-	if (CVarFlightDiagnostics.GetValueOnGameThread())
-	{
-		if (FPlatformTime::Seconds()>=NextFlightDiagnosticTime)
-		{ NextFlightDiagnosticTime = FPlatformTime::Seconds()+1; UE_LOG(LogNet, Log, TEXT("GuLiFlights %s"), *GetFlightDiagnostics()); }
-	}
-}
-
-void UGuLiCombatEffectReplicationComponent::MulticastFlightBatch_Implementation(const TArray<uint8>& Payload)
-{
-	if (GetOwner()->HasAuthority()) return;
-	TArray<FGuLiFlightEvent> Events;
-	if (!GuLiFlightWire::DecodeBatch(Payload, Events)) { UE_LOG(LogNet, Warning, TEXT("Rejected invalid flight batch")); return; }
-	FlightReceiveCounters.PayloadBytes += Payload.Num();
-	++FlightReceiveCounters.Batches;
-	FlightReceiveCounters.Events += Events.Num();
-	if (const auto* State = GetWorld()->GetGameState())
-	{
-		const double ServerNow = State->GetServerWorldTimeSeconds();
-		for (const FGuLiFlightEvent& Event : Events)
-		{
-			FlightReceiveCounters.BootstrapEvents += Event.bBootstrap ? 1 : 0;
-			FlightReceiveCounters.StaleEpochEvents += !IsCurrentEpoch(Event.State.MatchEpoch) ? 1 : 0;
-			// Bootstrap is an active-state reconstruction, not a freshly produced event.
-			// Keep signed age: the client's estimated server clock can be ahead/behind.
-			if (!Event.bBootstrap && IsCurrentEpoch(Event.State.MatchEpoch)
-				&& FMath::IsFinite(ServerNow) && FMath::IsFinite(Event.State.SampleTime))
-			{
-				++FlightReceiveCounters.AgeSamples;
-				FlightReceiveCounters.AgeMilliseconds += (ServerNow - Event.State.SampleTime) * 1000.0;
-				constexpr double Bounds[] = {0,16,33,50,100,200,500,1000,2000,5000,10000};
-				const double Age = (ServerNow - Event.State.SampleTime) * 1000.0;
-				int32 Bucket = 0; while (Bucket < UE_ARRAY_COUNT(Bounds) && Age > Bounds[Bucket]) ++Bucket;
-				++FlightReceiveCounters.AgeBuckets[Bucket];
-			}
-		}
-	}
-	if (auto* Visuals = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>())
-		for (const auto& Event : Events) Visuals->ApplyFlightEvent(Event);
-}
-
-FGuLiFlightPeerStats UGuLiCombatEffectReplicationComponent::GetFlightPeerStats(UNetConnection* Connection) const
-{
-	FGuLiFlightPeerStats Result;
-	if (!Connection || !GetOwner() || !GetOwner()->HasAuthority()) return Result;
-	const FPeerStream* Peer = FlightPeers.Find(Connection);
-	if (!Peer) return Result;
-	Result = Peer->Stats;
-	Result.bAvailable = true;
-	Result.QueuedEvents = FMath::Max(0, Peer->Queue.Num() - Peer->Cursor);
-	if (Result.QueuedEvents > 0 && GetWorld())
-	{
-		// Event age is not time spent in this queue; it also includes producer delay.
-		Result.HeadEventAgeMilliseconds = FMath::Max(0.0,
-			(GetWorld()->GetTimeSeconds() - static_cast<double>(Peer->Queue[Peer->Cursor].State.SampleTime)) * 1000.0);
-	}
-	return Result;
+	const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+	const auto* Battle=GetWorld()->GetGameState();
+	// Wire recipes and the real pool use float seconds. Quantize the read clock
+    // identically at an end/start boundary so a sub-tick rounding gap cannot
+    // count neither the expired flight nor its already-admitted successor.
+	const float Now=Hybrid?Hybrid->GetLogicalSeconds():Battle?Battle->GetServerWorldTimeSeconds():GetWorld()->GetTimeSeconds();
+	int32 Count = 0;
+	for (const auto& Pair : ActiveFlights)
+		if (Pair.Value.State.bAcceptanceAdditional && Now>=Pair.Value.State.StartTime && Now<Pair.Value.State.EndTime) ++Count;
+	return Count;
 }
 
 FString UGuLiCombatEffectReplicationComponent::GetFlightDiagnostics() const
 {
-	int32 Queued = 0; for (const auto& Pair : FlightPeers) Queued += Pair.Value.Queue.Num()-Pair.Value.Cursor;
-	int32 Commander=0,Ground=0,Wingman=0;
-	for (const auto& Pair : ActiveFlights)
-		switch (Pair.Value.State.Source.Kind)
-		{
-		case EGuLiTargetKind::CommanderSoldier: ++Commander; break;
-		case EGuLiTargetKind::GroundActor: ++Ground; break;
-		case EGuLiTargetKind::Wingman: ++Wingman; break;
-		default: break;
-		}
-	return FString::Printf(TEXT("active=%d created=%llu ended=%llu payloadBytes=%llu batches=%llu bootstrap=%llu queued=%d policy=events_only domains=%d/%d/%d"),
-		ActiveFlights.Num(),CreatedFlights,EndedFlights,SentFlightBytes,SentFlightBatches,BootstrapFlights,Queued,Commander,Ground,Wingman);
+    return FString::Printf(TEXT("active=%d observed=%llu finished=%llu route=owner_p2p"),
+        ActiveFlights.Num(),ObservedFlights,FinishedFlights);
 }

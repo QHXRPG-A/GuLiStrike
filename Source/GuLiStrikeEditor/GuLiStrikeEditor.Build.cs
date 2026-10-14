@@ -20,6 +20,7 @@ public class GuLiStrikeEditor : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new[]
 		{
 			"AssetRegistry",
+			"BlueprintGraph",
 			"GeometryCore", "GeometryAlgorithms", "MeshDescription", "StaticMeshDescription",
 			"AIModule",
 			"MassEntity", // PIE selection reads the local commander's presented transform.

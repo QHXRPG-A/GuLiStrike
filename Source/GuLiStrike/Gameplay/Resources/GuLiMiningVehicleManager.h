@@ -9,13 +9,16 @@
 class AGuLiMiningVehiclePawn;
 class AGuLiResourceFactoryActor;
 struct FCollisionQueryParams;
+struct FGuLiHybridObjectKey;
 
-/** World-owned miner registry and authority-only per-node allocation. Vehicles own path following and mining. */
+/** World-owned miner registry and owner-capability mining leases. Vehicles own path following and mining. */
 UCLASS()
 class GULISTRIKE_API UGuLiMiningVehicleManager final : public UTickableWorldSubsystem
 {
 	GENERATED_BODY()
 public:
+	UGuLiMiningVehicleManager();
+	virtual ~UGuLiMiningVehicleManager() override;
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Deinitialize() override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -31,11 +34,10 @@ public:
 	EGuLiWorkPositionAvailability AssignCoveredNode(AGuLiMiningVehiclePawn& Vehicle,
 		const FGuLiMiningSlotReservation& Reservation, const FTransform& MiningPose, uint32& Node, FVector& Target);
 	bool GetSlotPose(const AGuLiMiningVehiclePawn& Vehicle, const FGuLiMiningSlotReservation& Reservation, FTransform& Out) const;
-	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category="Resources|Mining")
-	AGuLiMiningVehiclePawn* SpawnMiningVehicle(AGuLiResourceFactoryActor* Factory, FTransform Transform);
+
 	void RegisterVehicle(AGuLiMiningVehiclePawn& Vehicle);
 	void UnregisterVehicle(AGuLiMiningVehiclePawn& Vehicle);
-	void ReleaseNode(const AGuLiMiningVehiclePawn& Vehicle);
+
 	bool OwnsNode(const AGuLiMiningVehiclePawn& Vehicle, uint32 NodeId) const;
 	void IgnoreVehicles(FCollisionQueryParams& Params) const;
 	UFUNCTION(BlueprintPure, Category="Resources|Mining")
@@ -44,10 +46,21 @@ public:
 	UFUNCTION(BlueprintPure, Category="Resources|Mining") FString GetSlotDebug() const;
 	UFUNCTION(BlueprintPure, Category="Resources|Mining") TArray<FTransform> GetClusterSlotPoses(int32 ClusterId, int32 UnitTypeId) const;
 	UFUNCTION(BlueprintPure, Category="Resources|Mining") bool AreClusterSlotsReady(int32 ClusterId, int32 UnitTypeId) const;
+	bool CaptureHybridMiningOperations(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Bytes) const;
+	bool ValidateHybridMiningOperations(TConstArrayView<uint8> Bytes) const;
+	bool RestoreHybridMiningOperations(TConstArrayView<uint8> Bytes,const TArray<FGuLiHybridObjectKey>& Objects);
 private:
+	struct FHybridState;
+	struct FHybridStateDeleter { void operator()(FHybridState* Value) const; };
+	TUniquePtr<FHybridState,FHybridStateDeleter> HybridState;
+	void InitializeHybridOperations();
+	void ClearHybridOperations();
+	void PollHybridOperations();
+	EGuLiWorkPositionAvailability TryReserveHybridSlot(AGuLiMiningVehiclePawn& Vehicle,uint16 Preferred,uint32 Task,FGuLiMiningSlotReservation& Out,FVector& Position);
+	EGuLiWorkPositionAvailability AssignHybridNode(AGuLiMiningVehiclePawn& Vehicle,const FGuLiMiningSlotReservation& Reservation,const FTransform& Pose,uint32& Node,FVector& Target);
+	bool ValidateHybridReservation(const AGuLiMiningVehiclePawn& Vehicle,const FGuLiMiningSlotReservation& Reservation) const;
+	void ReleaseHybridSlot(const AGuLiMiningVehiclePawn& Vehicle,const FGuLiMiningSlotReservation& Reservation);
 	UPROPERTY(Transient) TArray<TObjectPtr<AGuLiMiningVehiclePawn>> Vehicles;
-	TMap<uint32, TWeakObjectPtr<AGuLiMiningVehiclePawn>> NodeOwners;
-	TMap<TWeakObjectPtr<const AGuLiMiningVehiclePawn>, uint32> AssignedNodes;
 	TMap<int32,FGuLiMiningSlotProfile> SlotProfiles;
 	struct FRejectedSlot
 	{

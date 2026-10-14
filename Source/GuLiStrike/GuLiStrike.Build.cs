@@ -7,6 +7,7 @@ public class GuLiStrike : ModuleRules
 	public GuLiStrike(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+		CppStandard = CppStandardVersion.Cpp20;
 
 		PublicDependencyModuleNames.AddRange(new string[] {
 			"Core",
@@ -30,6 +31,7 @@ public class GuLiStrike : ModuleRules
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
+			"GuLiNetCore", "EOSShared", "EOSSDK", "Sockets", "Networking", "HTTP", "WebSockets",
 			"GuLiFlightNavigationRuntime", "RenderCore", "RHI",
 			// Commander 网络合同使用 FastArray 与自定义 NetSerialize。
 			"NetCore",

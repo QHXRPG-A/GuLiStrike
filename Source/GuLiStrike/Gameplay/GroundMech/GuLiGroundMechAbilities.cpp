@@ -3,7 +3,6 @@
 #include "Abilities/Tasks/AbilityTask_WaitInputRelease.h"
 #include "GameplayEffectExtension.h"
 #include "NativeGameplayTags.h"
-#include "Net/UnrealNetwork.h"
 
 UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_RocketJump, "Ability.GroundMech.RocketJump");
 
@@ -25,12 +24,6 @@ UGuLiGroundMechRocketComponent* Rocket(const FGameplayAbilityActorInfo* Info)
 }
 }
 
-void UGuLiGroundMechAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-    DOREPLIFETIME_CONDITION_NOTIFY(UGuLiGroundMechAttributeSet, Fuel, COND_OwnerOnly, REPNOTIFY_Always);
-    DOREPLIFETIME_CONDITION_NOTIFY(UGuLiGroundMechAttributeSet, MaxFuel, COND_OwnerOnly, REPNOTIFY_Always);
-}
 void UGuLiGroundMechAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& Value)
 {
     Super::PreAttributeChange(Attribute, Value);
@@ -42,16 +35,6 @@ void UGuLiGroundMechAttributeSet::PostGameplayEffectExecute(const FGameplayEffec
     Super::PostGameplayEffectExecute(Data);
     if (GetFuel() < 0.f || GetFuel() > GetMaxFuel())
         GetOwningAbilitySystemComponent()->SetNumericAttributeBase(GetFuelAttribute(), FMath::Clamp(GetFuel(), 0.f, GetMaxFuel()));
-}
-void UGuLiGroundMechAttributeSet::OnRep_Fuel(const FGameplayAttributeData& Previous)
-{
-    GAMEPLAYATTRIBUTE_REPNOTIFY(UGuLiGroundMechAttributeSet, Fuel, Previous);
-    if (auto* Owner = GetOwningActor())
-        if (auto* Component = Owner->FindComponentByClass<UGuLiGroundMechRocketComponent>()) Component->ReceiveInitialFuel(GetFuel());
-}
-void UGuLiGroundMechAttributeSet::OnRep_MaxFuel(const FGameplayAttributeData& Previous)
-{
-    GAMEPLAYATTRIBUTE_REPNOTIFY(UGuLiGroundMechAttributeSet, MaxFuel, Previous);
 }
 UGuLiGE_MechFuelInitialize::UGuLiGE_MechFuelInitialize()
 {
@@ -67,7 +50,7 @@ UGuLiGE_MechFuelDelta::UGuLiGE_MechFuelDelta()
 UGuLiGA_RocketJump::UGuLiGA_RocketJump()
 {
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
-    NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalPredicted;
+    NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalOnly;
     FGameplayTagContainer Tags;
     Tags.AddTag(TAG_RocketJump);
     SetAssetTags(Tags);

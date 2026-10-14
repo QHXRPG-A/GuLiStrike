@@ -32,6 +32,8 @@
 #include "Gameplay/Building/GuLiBuildingPlacementPreview.h"
 #include "Gameplay/Building/GuLiPlacedBuilding.h"
 #include "Gameplay/Economy/GuLiTeamEconomySubsystem.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 
 #if WITH_EDITOR
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
@@ -62,11 +64,55 @@ namespace GuLiBuildingPlacement
 			Query.AddIgnoredActors(Children);
 		}
 	}
-	constexpr float ServerGroundTraceUpCentimeters = 5000.0f;
-	constexpr float ServerGroundTraceDownCentimeters = 5000.0f;
+	constexpr float PlacementGroundTraceUpCentimeters = 5000.0f;
+	constexpr float PlacementGroundTraceDownCentimeters = 5000.0f;
 	constexpr float GroundContactToleranceCentimeters = 20.0f;
 	constexpr float CollisionGroundEpsilonCentimeters = 0.4f;
 
+
+	bool AreaQueryClear(UWorld& InWorld,const FGuLiBuildingDefinition& Definition,const FVector& GroundLocation,
+		float YawDegrees,const AActor* SupportingActor,const AActor* Preview)
+	{
+	UWorld* World = &InWorld;
+	if (!World)
+	{
+		return false;
+	}
+	const FVector QueryExtent(
+		Definition.CollisionExtent.X + GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
+		Definition.CollisionExtent.Y + GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
+		FMath::Max(1.0f, Definition.CollisionExtent.Z
+			- GuLiBuildingPlacement::CollisionGroundEpsilonCentimeters));
+	const FVector QueryCenter = GroundLocation + FVector(
+		0.0f,
+		0.0f,
+		Definition.CollisionExtent.Z + GuLiBuildingPlacement::CollisionGroundEpsilonCentimeters);
+	FCollisionObjectQueryParams ObjectQuery;
+	ObjectQuery.AddObjectTypesToQuery(ECC_WorldStatic);
+	ObjectQuery.AddObjectTypesToQuery(ECC_WorldDynamic);
+	ObjectQuery.AddObjectTypesToQuery(ECC_Pawn);
+	FCollisionQueryParams QueryParams(SCENE_QUERY_STAT(GuLiBuildingPlacementOverlap), false);
+	if (SupportingActor)
+	{
+		QueryParams.AddIgnoredActor(SupportingActor);
+	}
+	if (Preview)
+	{
+		QueryParams.AddIgnoredActor(Preview);
+	}
+	TArray<FOverlapResult> Overlaps;
+	if (World->OverlapMultiByObjectType(
+		Overlaps,
+		QueryCenter,
+		FQuat(FRotator(0.0f, YawDegrees, 0.0f)),
+		ObjectQuery,
+		FCollisionShape::MakeBox(QueryExtent),
+		QueryParams))
+	{
+		return false;
+	}
+	return true;
+	}
 	uint32 AllocateNonZeroRequestId(uint32& NextId)
 	{
 		const uint32 Result = NextId == 0u ? 1u : NextId;
@@ -105,25 +151,47 @@ namespace GuLiBuildingPlacement
 UGuLiBuildingPlacementComponent::UGuLiBuildingPlacementComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	SetIsReplicatedByDefault(true);
+	SetIsReplicatedByDefault(false);
 }
 
 void UGuLiBuildingPlacementComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	ResolveCatalog();
+	if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+	{
+		Hybrid->OnTransactionCompleted.AddDynamic(this,&ThisClass::HandleHybridTransaction);
+		Hybrid->OnCommandCompleted.AddUObject(this,&ThisClass::HandleHybridPlacementCommand);
+	}
 }
 
 void UGuLiBuildingPlacementComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	ExitBuildMode(false);
 	ServerRequestTimes.Reset();
+	if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+	{
+		Hybrid->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::HandleHybridTransaction);
+		Hybrid->OnCommandCompleted.RemoveAll(this);
+	}
+	HybridPlacements.Reset(); HybridClientRequests.Reset(); HybridCommandRequests.Reset(); HybridRefundEvents.Reset();
 	Super::EndPlay(EndPlayReason);
 }
 
 APlayerController* UGuLiBuildingPlacementComponent::GetOwningPlayerController() const
 {
+	if (const auto* Pawn=Cast<APawn>(GetOwner())) return Cast<APlayerController>(Pawn->GetController());
 	return Cast<APlayerController>(GetOwner());
+}
+APawn* UGuLiBuildingPlacementComponent::GetPlacementPawn() const
+{
+	if (auto* Pawn=Cast<APawn>(GetOwner())) return Pawn;
+	const auto* PC=GetOwningPlayerController(); return PC?PC->GetPawn():nullptr;
+}
+AGuLiBattlePlayerState* UGuLiBuildingPlacementComponent::GetPlacementPlayer() const
+{
+	if (const auto* Pawn=Cast<APawn>(GetOwner())) return Pawn->GetPlayerState<AGuLiBattlePlayerState>();
+	const auto* PC=GetOwningPlayerController(); return PC?PC->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
 }
 
 UGuLiBuildingCatalog* UGuLiBuildingPlacementComponent::ResolveCatalog()
@@ -140,7 +208,6 @@ bool UGuLiBuildingPlacementComponent::CanLocallyBuild(
 {
 	OutReason = EGuLiBuildingPlacementRejectReason::NotReady;
 	const APlayerController* PlayerController = GetOwningPlayerController();
-	const AGuLiBattlePlayerController* BattleController = Cast<AGuLiBattlePlayerController>(PlayerController);
 	const AGuLiBattlePlayerState* PlayerState = PlayerController
 		? PlayerController->GetPlayerState<AGuLiBattlePlayerState>()
 		: nullptr;
@@ -154,13 +221,12 @@ bool UGuLiBuildingPlacementComponent::CanLocallyBuild(
 		OutReason = EGuLiBuildingPlacementRejectReason::UnauthorizedRole;
 		return false;
 	}
-	const UGuLiPlayerNetSyncComponent* ConnectionSync = BattleController
-		? BattleController->GetPlayerNetSyncComponent()
-		: nullptr;
 	const AGuLiBattleGameState* GameState = GetWorld()
 		? GetWorld()->GetGameState<AGuLiBattleGameState>()
 		: nullptr;
-	if (!PlayerState->IsBattleReady() || !ConnectionSync || !ConnectionSync->IsConnectionReady()
+	const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+	const bool bConnectionReady=Hybrid && Hybrid->IsWorldReady() && !Hybrid->IsBattlePaused();
+	if (!PlayerState->IsBattleReady() || !bConnectionReady
 		|| !GameState || GameState->GetMatchEpoch() == 0u)
 	{
 		return false;
@@ -242,19 +308,28 @@ bool UGuLiBuildingPlacementComponent::HandleNumberKey(const int32 Number)
 	{
 		return false;
 	}
-	SelectedBuildingType = Decision.SelectedType;
-	DestroyPreview();
-	bHasPreviewCandidate = false;
-	EmitSelectionFeedback();
+	SelectBuildingType(Decision.SelectedType);
 	return true;
 }
 
 bool UGuLiBuildingPlacementComponent::SelectBuildingType(EGuLiBuildingType Type)
 {
 	auto* Catalog = ResolveCatalog();
-	if (!Catalog || !Catalog->FindDefinition(Type)) return false;
+	const auto* Definition=Catalog?Catalog->FindDefinition(Type):nullptr;
+	return Definition && SelectBuildingDefinition(Definition->DefinitionId);
+}
+int32 UGuLiBuildingPlacementComponent::GetSelectedBuildingDefinitionId() const
+{
+	if (SelectedBuildingDefinitionId>0) return SelectedBuildingDefinitionId;
+	const auto* Definition=CachedCatalog?CachedCatalog->FindDefinition(SelectedBuildingType):nullptr;
+	return Definition?Definition->DefinitionId:0;
+}
+bool UGuLiBuildingPlacementComponent::SelectBuildingDefinition(int32 DefinitionId)
+{
+	auto* Catalog=ResolveCatalog();const auto* Definition=Catalog?Catalog->FindById(DefinitionId):nullptr;
+	if (!Definition || !Definition->IsUsable()) return false;
 	if (!bBuildModeActive && !EnterBuildMode()) return false;
-	SelectedBuildingType = Type; DestroyPreview(); bHasPreviewCandidate = false;
+	SelectedBuildingType=Definition->Type;SelectedBuildingDefinitionId=DefinitionId;DestroyPreview();bHasPreviewCandidate=false;
 	EmitSelectionFeedback(); return true;
 }
 
@@ -327,9 +402,10 @@ bool UGuLiBuildingPlacementComponent::HandlePrimaryAction(
 	FGuLiBuildingPlacementRequest Request;
 	Request.ClientRequestId = GuLiBuildingPlacement::AllocateNonZeroRequestId(NextClientRequestId);
 	Request.Type = SelectedBuildingType;
+	Request.DefinitionId=GetSelectedBuildingDefinitionId();
 	Request.DesiredGroundLocation = PreviewGroundLocation;
 	Request.CompressedYaw = FRotator::CompressAxisToShort(PreviewYawDegrees);
-	ServerRequestPlacement(Request);
+	RouteHybridPlacement(Request);
 	return true;
 }
 
@@ -370,7 +446,7 @@ void UGuLiBuildingPlacementComponent::UpdatePlacementPreview(
 	}
 
 	const FGuLiBuildingDefinition* Definition = CachedCatalog
-		? CachedCatalog->FindDefinition(SelectedBuildingType)
+		? CachedCatalog->FindById(GetSelectedBuildingDefinitionId())
 		: nullptr;
 	if (!Definition || !Definition->IsUsable() || !EnsurePreviewForDefinition(*Definition))
 	{
@@ -495,32 +571,32 @@ bool UGuLiBuildingPlacementComponent::TraceLocalGround(
 			RayOrigin + RayDirection.GetSafeNormal() * TraceDistance,
 			FCollisionObjectQueryParams(ECC_WorldStatic),
 			QueryParams) || !IsLegalGroundHit(OutHit)) return false;
-	return TraceServerGround(GuLiBuildingPlacementPolicy::SnapGroundLocation(OutHit.ImpactPoint), OutHit);
+	return TracePlacementGround(GuLiBuildingPlacementPolicy::SnapGroundLocation(OutHit.ImpactPoint), OutHit);
 }
 
-bool UGuLiBuildingPlacementComponent::TraceServerGround(
+bool UGuLiBuildingPlacementComponent::TracePlacementGround(
 	const FVector& DesiredLocation,
 	FHitResult& OutHit) const
 {
 	UWorld* World = GetWorld();
 	APlayerController* PlayerController = GetOwningPlayerController();
-	if (!World || !PlayerController || DesiredLocation.ContainsNaN())
+	if (!World || (!PlayerController && !GetPlacementPawn()) || DesiredLocation.ContainsNaN())
 	{
 		return false;
 	}
 
 	FCollisionQueryParams QueryParams(SCENE_QUERY_STAT(GuLiBuildingServerGround), false);
 	QueryParams.AddIgnoredActor(PlayerController);
-	if (const APawn* Pawn = PlayerController->GetPawn())
+	if (const APawn* Pawn = GetPlacementPawn())
 	{
 		QueryParams.AddIgnoredActor(Pawn);
 	}
 	GuLiBuildingPlacement::IgnoreBuildings(*World, QueryParams);
 	const FVector Snapped = GuLiBuildingPlacementPolicy::SnapGroundLocation(DesiredLocation);
 	const FVector Start = Snapped + FVector::UpVector
-		* GuLiBuildingPlacement::ServerGroundTraceUpCentimeters;
+		* GuLiBuildingPlacement::PlacementGroundTraceUpCentimeters;
 	const FVector End = Snapped - FVector::UpVector
-		* GuLiBuildingPlacement::ServerGroundTraceDownCentimeters;
+		* GuLiBuildingPlacement::PlacementGroundTraceDownCentimeters;
 	return World->LineTraceSingleByObjectType(OutHit, Start, End,
 		FCollisionObjectQueryParams(ECC_WorldStatic), QueryParams)
 		&& IsLegalGroundHit(OutHit);
@@ -539,9 +615,9 @@ bool UGuLiBuildingPlacementComponent::IsLineOfSightClear(
 	const AActor* SupportingActor) const
 {
 	const APlayerController* PlayerController = GetOwningPlayerController();
-	const APawn* Pawn = PlayerController ? PlayerController->GetPawn() : nullptr;
+	const APawn* Pawn = GetPlacementPawn();
 	UWorld* World = GetWorld();
-	if (!PlayerController || !Pawn || !World)
+	if (!Pawn || !World)
 	{
 		return false;
 	}
@@ -570,45 +646,12 @@ bool UGuLiBuildingPlacementComponent::IsPlacementAreaClear(
 	const float YawDegrees,
 	const AActor* SupportingActor) const
 {
-	UWorld* World = GetWorld();
-	if (!World)
-	{
-		return false;
-	}
-	const FVector QueryExtent(
-		Definition.CollisionExtent.X + GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
-		Definition.CollisionExtent.Y + GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
-		FMath::Max(1.0f, Definition.CollisionExtent.Z
-			- GuLiBuildingPlacement::CollisionGroundEpsilonCentimeters));
-	const FVector QueryCenter = GroundLocation + FVector(
-		0.0f,
-		0.0f,
-		Definition.CollisionExtent.Z + GuLiBuildingPlacement::CollisionGroundEpsilonCentimeters);
-	FCollisionObjectQueryParams ObjectQuery;
-	ObjectQuery.AddObjectTypesToQuery(ECC_WorldStatic);
-	ObjectQuery.AddObjectTypesToQuery(ECC_WorldDynamic);
-	ObjectQuery.AddObjectTypesToQuery(ECC_Pawn);
-	FCollisionQueryParams QueryParams(SCENE_QUERY_STAT(GuLiBuildingPlacementOverlap), false);
-	if (SupportingActor)
-	{
-		QueryParams.AddIgnoredActor(SupportingActor);
-	}
-	if (PreviewActor)
-	{
-		QueryParams.AddIgnoredActor(PreviewActor);
-	}
-	TArray<FOverlapResult> Overlaps;
-	if (World->OverlapMultiByObjectType(
-		Overlaps,
-		QueryCenter,
-		FQuat(FRotator(0.0f, YawDegrees, 0.0f)),
-		ObjectQuery,
-		FCollisionShape::MakeBox(QueryExtent),
-		QueryParams))
-	{
-		return false;
-	}
-	return !DoesPlacementOverlapCommanderSoldier(QueryCenter, QueryExtent, YawDegrees);
+    auto* World=GetWorld(); if (!World || !GuLiBuildingPlacement::AreaQueryClear(*World,Definition,GroundLocation,YawDegrees,SupportingActor,PreviewActor)) return false;
+    const FVector Extent(Definition.CollisionExtent.X+GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
+        Definition.CollisionExtent.Y+GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
+        FMath::Max(1.f,Definition.CollisionExtent.Z-GuLiBuildingPlacement::CollisionGroundEpsilonCentimeters));
+    const FVector Center=GroundLocation+FVector(0,0,Definition.CollisionExtent.Z+GuLiBuildingPlacement::CollisionGroundEpsilonCentimeters);
+    return !DoesPlacementOverlapCommanderSoldier(Center,Extent,YawDegrees);
 }
 
 bool UGuLiBuildingPlacementComponent::DoesPlacementOverlapCommanderSoldier(
@@ -684,12 +727,10 @@ EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateSpat
 		return EGuLiBuildingPlacementRejectReason::SlopeTooSteep;
 	}
 	const APlayerController* PlayerController = GetOwningPlayerController();
-	const AGuLiBattlePlayerState* PlayerState = PlayerController
-		? PlayerController->GetPlayerState<AGuLiBattlePlayerState>()
-		: nullptr;
+	const AGuLiBattlePlayerState* PlayerState = GetPlacementPlayer();
 	if (PlayerState && PlayerState->GetBattleRole() == EGuLiCommanderRole::Ground)
 	{
-		const APawn* Pawn = PlayerController->GetPawn();
+		const APawn* Pawn = GetPlacementPawn();
 		if (!Pawn || !GuLiBuildingPlacementPolicy::IsGroundPlacementInRange(
 			Pawn->GetActorLocation(), GroundHit.ImpactPoint))
 		{
@@ -715,6 +756,45 @@ EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateSpat
 	return EGuLiBuildingPlacementRejectReason::None;
 }
 
+bool UGuLiBuildingPlacementComponent::ValidateAdmittedPlacement(UWorld& World,const FGuLiBuildingDefinition& Definition,
+    const FVector& Ground,float Yaw,const FGuid& OriginalBuilder,FString* Rejection)
+{
+    if (Rejection) Rejection->Reset();
+    const auto Reject=[&](const FString& Reason){if (Rejection) *Rejection=Reason;return false;};
+    if (!OriginalBuilder.IsValid() || Ground.ContainsNaN() || !FMath::IsFinite(Yaw)) return Reject(TEXT("invalid-input"));
+    FCollisionQueryParams Query(SCENE_QUERY_STAT(GuLiBuildingAdmittedGround),false);
+    GuLiBuildingPlacement::IgnoreBuildings(World,Query); FHitResult Hit;
+    if (!World.LineTraceSingleByObjectType(Hit,Ground+FVector(0,0,GuLiBuildingPlacement::PlacementGroundTraceUpCentimeters),
+        Ground-FVector(0,0,GuLiBuildingPlacement::PlacementGroundTraceDownCentimeters),FCollisionObjectQueryParams(ECC_WorldStatic),Query)
+        || !Hit.bBlockingHit || !Hit.GetActor() || GuLiBuildingPlacement::IsBuildingActor(Hit.GetActor())) return Reject(TEXT("ground-trace"));
+    if (!GuLiBuildingPlacementPolicy::IsSlopeAllowed(Hit.ImpactNormal)) return Reject(TEXT("ground-slope"));
+    if (FVector::DistSquared(Hit.ImpactPoint,Ground)>FMath::Square(GuLiBuildingPlacement::GroundContactToleranceCentimeters)) return Reject(TEXT("ground-contact"));
+    if (!GuLiBuildingPlacement::AreaQueryClear(World,Definition,Ground,Yaw,Hit.GetActor(),nullptr)) return Reject(TEXT("actor-overlap"));
+    TArray<FVector> Soldiers;
+    if (const auto* Authority=World.GetSubsystem<UGuLiBattleAuthoritySubsystem>()) Authority->BuildLivingSoldierLocationSnapshot(Soldiers);
+    const FVector Extent(Definition.CollisionExtent.X+GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
+        Definition.CollisionExtent.Y+GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
+        FMath::Max(1.f,Definition.CollisionExtent.Z-GuLiBuildingPlacement::CollisionGroundEpsilonCentimeters));
+    const FVector Center=Ground+FVector(0,0,Definition.CollisionExtent.Z+GuLiBuildingPlacement::CollisionGroundEpsilonCentimeters);
+    for (const auto& Position:Soldiers)
+        if (GuLiBuildingPlacement::DoesDiscOverlapOrientedBox(Position,GuLiCommanderNavigationPolicy::RequiredAgentRadiusCentimeters,Center,Extent,Yaw))
+            return Reject(TEXT("soldier-overlap ")+Position.ToString());
+    int32 BuilderCount=0,WorldCount=0; TArray<UGuLiBuildingLifecycleComponent*> Buildings;
+    World.GetSubsystem<UGuLiBuildingRegistrySubsystem>()->Query(Buildings);
+    for (const auto* Building:Buildings) if (Building->CountsForManualLimit())
+    {++WorldCount;if (Building->GetState().BuilderGuid==OriginalBuilder) ++BuilderCount;}
+    if (GuLiBuildingPlacementPolicy::ValidateCapacity(BuilderCount,WorldCount)!=EGuLiBuildingPlacementRejectReason::None)
+        return Reject(FString::Printf(TEXT("capacity builder=%d world=%d"),BuilderCount,WorldCount));
+    auto* Presentation=Definition.Category==EGuLiBuildingCategory::Factory?GuLiBuildingVisuals::ResolveFactoryPresentation(&World):nullptr;
+    if (Definition.Category==EGuLiBuildingCategory::Factory && !Presentation) return Reject(TEXT("presentation-unavailable"));
+    FString Reason;
+    // Range and line of sight were frozen and checked by the accepted input.
+    // Recheck the world site without depending on that carrier still existing.
+    if (!GuLiBuildings::ValidateGroundPlacement(World,Definition,FTransform(FRotator(0,Yaw,0),Ground),Presentation,nullptr,Reason))
+        return Reject(TEXT("ground-placement ")+Reason);
+    return true;
+}
+
 EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateLocalCandidate(
 	const FGuLiBuildingDefinition& Definition, const FHitResult& GroundHit, float YawDegrees) const
 {
@@ -732,21 +812,18 @@ EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateLoca
 	return EGuLiBuildingPlacementRejectReason::None;
 }
 
-EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateServerRequest(
+EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidatePlacementRequest(
 	const FGuLiBuildingPlacementRequest& Request,
 	FTransform& OutSpawnTransform,
 	const FGuLiBuildingDefinition*& OutDefinition, AActor*& OutSupportingActor) const
 {
 	OutDefinition = nullptr;
 	const APlayerController* PlayerController = GetOwningPlayerController();
-	const AGuLiBattlePlayerController* BattleController = Cast<AGuLiBattlePlayerController>(PlayerController);
-	const AGuLiBattlePlayerState* PlayerState = PlayerController
-		? PlayerController->GetPlayerState<AGuLiBattlePlayerState>()
-		: nullptr;
+	const AGuLiBattlePlayerState* PlayerState = GetPlacementPlayer();
 	const AGuLiBattleGameState* GameState = GetWorld()
 		? GetWorld()->GetGameState<AGuLiBattleGameState>()
 		: nullptr;
-	if (!PlayerController || !PlayerController->HasAuthority() || !PlayerState || !GameState
+	if (!PlayerState || !GameState
 		|| !PlayerState->IsBattleReady() || GameState->GetMatchEpoch() == 0u)
 	{
 		return EGuLiBuildingPlacementRejectReason::NotReady;
@@ -757,12 +834,9 @@ EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateServ
 		return EGuLiBuildingPlacementRejectReason::UnauthorizedRole;
 	}
 
-	bool bConnectionReady = false;
-	if (BattleController)
-	{
-		const UGuLiPlayerNetSyncComponent* ConnectionSync = BattleController->GetPlayerNetSyncComponent();
-		bConnectionReady = ConnectionSync && ConnectionSync->IsConnectionReady();
-	}
+	const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+	bool bConnectionReady = Hybrid && Hybrid->IsWorldReady() && !Hybrid->IsBattlePaused()
+		&& UGuLiHybridActorComponent::HasSimulation(GetOwner());
 #if WITH_DEV_AUTOMATION_TESTS
 	bConnectionReady |= bTestBypassConnectionGate;
 #endif
@@ -778,7 +852,7 @@ EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateServ
 	{
 		return EGuLiBuildingPlacementRejectReason::AssetUnavailable;
 	}
-	OutDefinition = CachedCatalog->FindDefinition(Request.Type);
+	OutDefinition = Request.DefinitionId>0?CachedCatalog->FindById(Request.DefinitionId):CachedCatalog->FindDefinition(Request.Type);
 	if (!OutDefinition || !OutDefinition->IsUsable())
 	{
 		return EGuLiBuildingPlacementRejectReason::AssetUnavailable;
@@ -787,7 +861,7 @@ EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateServ
 		return EGuLiBuildingPlacementRejectReason::UnauthorizedRole;
 
 	FHitResult GroundHit;
-	if (!TraceServerGround(FVector(Request.DesiredGroundLocation), GroundHit))
+	if (!TracePlacementGround(FVector(Request.DesiredGroundLocation), GroundHit))
 	{
 		return EGuLiBuildingPlacementRejectReason::NoGround;
 	}
@@ -837,179 +911,26 @@ void UGuLiBuildingPlacementComponent::CountPlacedBuildings(
 	}
 }
 
-bool UGuLiBuildingPlacementComponent::ConsumeServerRequestBudget()
-{
-	const UWorld* World = GetWorld();
-	if (!World)
-	{
-		return false;
-	}
-	const double NowSeconds = World->GetRealTimeSeconds();
-	ServerRequestTimes.RemoveAll(
-		[NowSeconds](const double TimeSeconds)
-		{
-			return NowSeconds - TimeSeconds >= 1.0;
-		});
-	if (ServerRequestTimes.Num() >= GuLiBuildingPlacementPolicy::MaximumRequestsPerSecond)
-	{
-		return false;
-	}
-	ServerRequestTimes.Add(NowSeconds);
-	return true;
-}
 
-FGuLiBuildingPlacementResult UGuLiBuildingPlacementComponent::ProcessServerRequest(
-	const FGuLiBuildingPlacementRequest& Request,
-	const bool bSendResult)
-{
-	FGuLiBuildingPlacementResult Result;
-	Result.ClientRequestId = Request.ClientRequestId;
-	Result.RejectReason = EGuLiBuildingPlacementRejectReason::InvalidRequest;
 
-	if (Request.ClientRequestId == 0u)
-	{
-		if (bSendResult)
-		{
-			SendPlacementResult(Result);
-		}
-		return Result;
-	}
-	if (bHasServerRequestHistory
-		&& !GuLiBuildingPlacementPolicy::IsNewerRequestId(
-			Request.ClientRequestId, LastServerRequest.ClientRequestId))
-	{
-		if (Request.ClientRequestId == LastServerRequest.ClientRequestId
-			&& GuLiBuildingPlacementPolicy::AreSameRequest(Request, LastServerRequest))
-		{
-			Result = LastServerResult;
-		}
-		else
-		{
-			Result.RejectReason = Request.ClientRequestId == LastServerRequest.ClientRequestId
-				? EGuLiBuildingPlacementRejectReason::InvalidRequest
-				: EGuLiBuildingPlacementRejectReason::Duplicate;
-		}
-		if (bSendResult)
-		{
-			SendPlacementResult(Result);
-		}
-		return Result;
-	}
 
-	bHasServerRequestHistory = true;
-	LastServerRequest = Request;
-	if (!ConsumeServerRequestBudget())
-	{
-		Result.RejectReason = EGuLiBuildingPlacementRejectReason::RateLimited;
-		LastServerResult = Result;
-		if (bSendResult)
-		{
-			SendPlacementResult(Result);
-		}
-		return Result;
-	}
 
-	FTransform SpawnTransform;
-	const FGuLiBuildingDefinition* Definition = nullptr;
-	AActor* SupportingActor = nullptr;
-	Result.RejectReason = ValidateServerRequest(Request, SpawnTransform, Definition, SupportingActor);
-	if (Result.RejectReason == EGuLiBuildingPlacementRejectReason::None)
-	{
-		APlayerController* PlayerController = GetOwningPlayerController();
-		AGuLiBattlePlayerState* PlayerState = PlayerController
-			? PlayerController->GetPlayerState<AGuLiBattlePlayerState>()
-			: nullptr;
-		UWorld* World = GetWorld();
-		check(World);
-		UGuLiTeamEconomySubsystem* EconomySubsystem =
-			World->GetSubsystem<UGuLiTeamEconomySubsystem>();
-		check(EconomySubsystem);
-		IGuLiTeamEconomy& Economy = *EconomySubsystem;
-		FGuLiEconomyReservation EconomyReservation;
-		FGuid UnitReservation;
-		const bool bUseEconomy = Economy.IsMatchActive();
-		if (bUseEconomy && !Economy.AreTransactionsOpen())
-		{
-			Result.RejectReason = EGuLiBuildingPlacementRejectReason::NotReady;
-		}
-		else if (bUseEconomy && (!PlayerState || !Economy.Reserve(
-			PlayerState->GetTeam(),
-			PlayerState->GetPlayerGuid(),
-			Request.ClientRequestId,
-			GuLiBuildingPlacementPolicy::GetEconomyCost(Request.Type),
-			EconomyReservation)))
-		{
-			Result.RejectReason = EGuLiBuildingPlacementRejectReason::InsufficientResources;
-		}
-		if (Result.RejectReason != EGuLiBuildingPlacementRejectReason::None)
-		{
-			LastServerResult = Result;
-			if (bSendResult) SendPlacementResult(Result);
-			return Result;
-		}
-		FTransform GroundTransform = SpawnTransform;
-		GroundTransform.AddToTranslation(FVector(0,0,-Definition->CollisionExtent.Z));
-		if (Definition->CompletionUnitTypeId > 0 && !World->GetSubsystem<UGuLiBattleAuthoritySubsystem>()
-			->ReserveConstructionUnit(PlayerState->GetTeam(), uint16(Definition->CompletionUnitTypeId), UnitReservation))
-		{
-			if (bUseEconomy) Economy.Refund(EconomyReservation);
-			Result.RejectReason = EGuLiBuildingPlacementRejectReason::PopulationLimitReached;
-			LastServerResult = Result;
-			if (bSendResult) SendPlacementResult(Result);
-			return Result;
-		}
-		AActor* Building = GuLiBuildings::Spawn(*World, Definition->DefinitionId, PlayerState->GetTeam(), GroundTransform, *SupportingActor,
-			World->GetSubsystem<UGuLiResourceWorldSubsystem>()->FindTerritoryIndex(GroundTransform.GetLocation()),
-			EGuLiBuildingOrigin::Manual, false, PlayerState->GetPlayerGuid());
-		if (!Building)
-		{
-			Result.RejectReason = EGuLiBuildingPlacementRejectReason::SpawnFailed;
-			if (bUseEconomy) Economy.Refund(EconomyReservation);
-			if (UnitReservation.IsValid()) World->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->ReleaseConstructionUnit(UnitReservation);
-		}
-		else
-		{
-			Building->SetOwner(PlayerController);
-			if (UnitReservation.IsValid()) Building->FindComponentByClass<UGuLiConstructedUnitComponent>()->SetPopulationReservation(UnitReservation);
-			if (bUseEconomy) Economy.Commit(EconomyReservation);
-		}
-	}
-
-	LastServerResult = Result;
-#if WITH_EDITOR
-	if (const UWorld* World = GetWorld(); World && World->WorldType == EWorldType::PIE)
-	{
-		UE_LOG(LogTemp, Display,
-			TEXT("[GULI_BUILDING_PIE] result owner=%s net_mode=%d request=%u type=%d reason=%d"),
-			GetOwner() ? *GetOwner()->GetName() : TEXT("None"),
-			static_cast<int32>(World->GetNetMode()),
-			Request.ClientRequestId,
-			static_cast<int32>(Request.Type),
-			static_cast<int32>(Result.RejectReason));
-	}
-#endif
-	if (bSendResult)
-	{
-		SendPlacementResult(Result);
-	}
-	return Result;
-}
-
-void UGuLiBuildingPlacementComponent::ServerRequestPlacement_Implementation(
+void UGuLiBuildingPlacementComponent::SubmitPlacementRequest(
 	const FGuLiBuildingPlacementRequest& Request)
 {
-	ProcessServerRequest(Request, true);
+    RouteHybridPlacement(Request);
 }
 
 void UGuLiBuildingPlacementComponent::SendPlacementResult(
 	const FGuLiBuildingPlacementResult& Result)
 {
-	ClientReceivePlacementResult(Result);
+	ApplyPlacementResult(Result);
 }
 
-void UGuLiBuildingPlacementComponent::ClientReceivePlacementResult_Implementation(
+void UGuLiBuildingPlacementComponent::ApplyPlacementResult(
 	const FGuLiBuildingPlacementResult& Result)
 {
+	LastPlacementReceipt=Result; ++PlacementReceiptCount;
 	if (Result.WasAccepted())
 	{
 		EmitFeedback(
@@ -1053,7 +974,7 @@ void UGuLiBuildingPlacementComponent::EmitFeedback(
 FText UGuLiBuildingPlacementComponent::GetSelectedDisplayName() const
 {
 	const FGuLiBuildingDefinition* Definition = CachedCatalog
-		? CachedCatalog->FindDefinition(SelectedBuildingType)
+		? CachedCatalog->FindById(GetSelectedBuildingDefinitionId())
 		: nullptr;
 	return Definition && !Definition->DisplayName.IsEmpty()
 		? Definition->DisplayName
@@ -1061,15 +982,45 @@ FText UGuLiBuildingPlacementComponent::GetSelectedDisplayName() const
 }
 
 #if WITH_EDITOR
+bool UGuLiBuildingPlacementComponent::EditorQAFindClearPlacement(EGuLiBuildingType Type,const FVector& Preferred,float Yaw,FVector& Ground)
+{
+	const auto* Catalog=ResolveCatalog();const auto* D=Catalog?Catalog->FindDefinition(Type):nullptr;
+	return D && EditorQAFindClearDefinition(D->DefinitionId,Preferred,Yaw,Ground);
+}
+bool UGuLiBuildingPlacementComponent::EditorQAFindClearDefinition(int32 DefinitionId,const FVector& Preferred,float Yaw,FVector& Ground)
+{
+	const auto* Pawn=GetPlacementPawn(); const auto* PC=GetOwningPlayerController();
+	const auto* Catalog=ResolveCatalog(); const auto* Definition=Catalog?Catalog->FindById(DefinitionId):nullptr;
+	if (!Pawn || !PC || !PC->IsLocalController() || !Definition || Preferred.ContainsNaN() || !FMath::IsFinite(Yaw)) return false;
+	TArray<FVector> Candidates{Preferred};
+	for (double Radius:{600.,1200.,1800.}) for (int32 Direction=0;Direction<8;++Direction)
+	{
+		const double Angle=UE_DOUBLE_TWO_PI*Direction/8.;
+		Candidates.Add(Pawn->GetActorLocation()+FVector(FMath::Cos(Angle)*Radius,FMath::Sin(Angle)*Radius,0));
+	}
+	for (const auto& Candidate:Candidates)
+	{
+		FHitResult Hit;
+		if (TracePlacementGround(Candidate,Hit) && ValidateSpatialCandidate(*Definition,Hit,GuLiBuildingPlacementPolicy::SnapYaw(Yaw))==EGuLiBuildingPlacementRejectReason::None)
+		{Ground=Hit.ImpactPoint; return true;}
+	}
+	return false;
+}
 bool UGuLiBuildingPlacementComponent::EditorQASubmitPlacement(
 	const EGuLiBuildingType Type,
 	const FVector& GroundLocation,
 	const float YawDegrees)
 {
+	const auto* Catalog=ResolveCatalog();const auto* D=Catalog?Catalog->FindDefinition(Type):nullptr;
+	return D && EditorQASubmitDefinition(D->DefinitionId,GroundLocation,YawDegrees);
+}
+bool UGuLiBuildingPlacementComponent::EditorQASubmitDefinition(int32 DefinitionId,const FVector& GroundLocation,float YawDegrees)
+{
+	const auto* Catalog=ResolveCatalog();const auto* D=Catalog?Catalog->FindById(DefinitionId):nullptr;
 	APlayerController* PlayerController = GetOwningPlayerController();
 	if (!PlayerController || !PlayerController->IsLocalController()
-		|| PlayerController->GetNetMode() != NM_Client
-		|| !GuLiBuildingPlacementPolicy::IsKnownBuildingType(Type)
+		|| !UGuLiNetworkSettings::IsHybrid(GetWorld())
+		|| !D
 		|| GroundLocation.ContainsNaN() || !FMath::IsFinite(YawDegrees))
 	{
 		return false;
@@ -1077,11 +1028,10 @@ bool UGuLiBuildingPlacementComponent::EditorQASubmitPlacement(
 
 	FGuLiBuildingPlacementRequest Request;
 	Request.ClientRequestId = GuLiBuildingPlacement::AllocateNonZeroRequestId(NextClientRequestId);
-	Request.Type = Type;
+	Request.Type = D->Type;Request.DefinitionId=DefinitionId;
 	Request.DesiredGroundLocation = GroundLocation;
 	Request.CompressedYaw = FRotator::CompressAxisToShort(YawDegrees);
-	ServerRequestPlacement(Request);
-	return true;
+	return RouteHybridPlacement(Request);
 }
 
 namespace GuLiBuildingPIEQA
@@ -1254,11 +1204,7 @@ void UGuLiBuildingPlacementComponent::TestOnly_SetCatalog(UGuLiBuildingCatalog* 
 	CachedCatalog = Catalog;
 }
 
-FGuLiBuildingPlacementResult UGuLiBuildingPlacementComponent::TestOnly_ProcessServerRequest(
-	const FGuLiBuildingPlacementRequest& Request)
-{
-	return ProcessServerRequest(Request, false);
-}
+
 
 void UGuLiBuildingPlacementComponent::TestOnly_ResetServerRequestState()
 {

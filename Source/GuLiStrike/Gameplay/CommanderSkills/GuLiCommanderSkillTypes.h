@@ -23,7 +23,7 @@ UENUM(BlueprintType)
 enum class EGuLiActiveSkillResultCode : uint8
 {
 	Succeeded, NoSkill, Ineligible, Cooldown, OutOfRange, InvalidGround, InvalidRequest, StaleSelection, ExecutionFailed,
-	GuidanceCapacityDeferred
+	GuidanceCapacityDeferred, PendingCommit
 };
 
 USTRUCT(BlueprintType)
@@ -71,6 +71,12 @@ struct FGuLiActiveSkillExecutionContext
 {
 	GENERATED_BODY()
 	UPROPERTY(BlueprintReadOnly) TObjectPtr<AGuLiBattlePlayerState> Commander;
+    /** An owning process need not contain the controller's PlayerState. */
+    UPROPERTY(BlueprintReadOnly) TObjectPtr<UWorld> ExecutionWorld;
+    UPROPERTY(BlueprintReadOnly) EGuLiTeam ExecutionTeam=EGuLiTeam::Unassigned;
+    UPROPERTY(BlueprintReadOnly) FGuid ControllerIdentity;
+    UWorld* GetExecutionWorld() const;
+    EGuLiTeam GetExecutionTeam() const;
 	UPROPERTY(BlueprintReadOnly) FGuLiSoldierId SoldierId;
 	UPROPERTY(BlueprintReadOnly) FGuLiTargetHandle Source;
 	UPROPERTY(BlueprintReadOnly) FName SkillId;
@@ -95,6 +101,7 @@ struct FGuLiActiveSkillExecutionResult
 {
 	GENERATED_BODY()
 	UPROPERTY(BlueprintReadOnly) bool bSucceeded = false;
+    UPROPERTY(BlueprintReadOnly) bool bPendingCommit = false;
 	UPROPERTY(BlueprintReadOnly) bool bDeferredByGuidanceCapacity = false;
 	UPROPERTY(BlueprintReadOnly) int32 LaunchedProjectileCount = 0;
 	UPROPERTY(BlueprintReadOnly) FGuid CastId;
@@ -172,6 +179,11 @@ class GULISTRIKE_API UGuLiCommanderSkillExecutor : public UObject
 public:
 	virtual bool ValidateDefinition(const FGuLiActiveSkillDefinition& Definition, FString& Error) const;
 	virtual bool IsAvailable(UWorld& World, EGuLiTeam Team, uint16 UnitTypeId, const UDataAsset* Configuration) const { return true; }
+	/** Each targeting mechanism owns its projection policy; callers never branch on skill IDs. */
+	virtual bool ResolveGroundInput(UWorld& World,const FVector& Requested,FVector& Ground) const;
 	virtual FGuLiActiveSkillExecutionResult Execute(const FGuLiActiveSkillExecutionContext& Context, const UDataAsset* Configuration) const;
+    virtual bool UsesHybridAsyncGlobal() const {return false;}
+    virtual bool ReadHybridRuntime(UWorld&,EGuLiTeam,FName,FGuLiActiveSkillRuntime&) const {return false;}
+    virtual FGuid SetHybridLevel(UWorld&,EGuLiTeam,FName,int32) const {return {};}
 };
 

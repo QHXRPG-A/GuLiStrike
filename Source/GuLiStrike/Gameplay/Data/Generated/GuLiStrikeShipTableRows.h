@@ -191,12 +191,9 @@ struct FGuLiStrikeShipPartsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Parts")
 	float Thrust = 0.0f;
 
-
-
 	/** MuzzleX/MuzzleY/MuzzleZ (float) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Parts")
 	FVector Muzzle = FVector::ZeroVector;
-
 
 	/** ModelId (int, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Parts")

@@ -13,6 +13,7 @@ UCLASS(NotPlaceable)
 class GULISTRIKE_API AGuLiConstructionVehiclePawn : public ACharacter, public IGuLiEngineeringVehicle
 {
 	GENERATED_BODY()
+	friend class FGuLiHybridEngineerAdapter;
 public:
 	AGuLiConstructionVehiclePawn(const FObjectInitializer& Initializer = FObjectInitializer::Get());
 	void InitializeVehicle(EGuLiTeam InTeam, FGuLiControllableActorId InId, const FGuLiSoldierDefinition& Definition);
@@ -27,7 +28,7 @@ public:
 	virtual float GetEngineeringBaseSpeed() const override { return BaseSpeed; }
 	virtual void SetEngineeringPresentationVisible(bool bVisible) override;
 	virtual FBox GetEngineeringTravelBounds() const override { return TravelBounds; }
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out) const override;
+
 private:
 	FBox TravelBounds = FBox(ForceInit);
 	uint32 LastTransitRequestId = 0;
@@ -35,11 +36,11 @@ private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiEngineeringTravelComponent> Travel;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiConstructionWorkComponent> Work;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiConstructionPresentationComponent> ConstructionPresentation;
-	UPROPERTY(Replicated) EGuLiTeam Team = EGuLiTeam::Unassigned;
-	UPROPERTY(Replicated) FGuLiControllableActorId StableId;
-	UPROPERTY(ReplicatedUsing=OnRep_Definition) TSubclassOf<AActor> PresentationClass;
-	UPROPERTY(ReplicatedUsing=OnRep_Definition) float PresentationScale = 1;
-	UPROPERTY(Replicated) float BaseSpeed = 900;
-	UPROPERTY(Replicated) int32 UnitTypeId = 0;
+	UPROPERTY() EGuLiTeam Team = EGuLiTeam::Unassigned;
+	UPROPERTY() FGuLiControllableActorId StableId;
+	UPROPERTY() TSubclassOf<AActor> PresentationClass;
+	UPROPERTY() float PresentationScale = 1;
+	UPROPERTY() float BaseSpeed = 900;
+	UPROPERTY() int32 UnitTypeId = 0;
 	UFUNCTION() void OnRep_Definition();
 };

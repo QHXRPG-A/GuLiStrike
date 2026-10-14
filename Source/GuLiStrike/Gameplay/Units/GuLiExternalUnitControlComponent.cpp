@@ -5,18 +5,45 @@
 #include "Components/MeshComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Net/UnrealNetwork.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Gameplay/Units/GuLiExternalControlRegistry.h"
+#include "Gameplay/Skills/GuLiSkillTargeting.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
+#include "Components/CapsuleComponent.h"
+#include "Materials/MaterialInterface.h"
 
 UGuLiExternalUnitControlComponent::UGuLiExternalUnitControlComponent()
 {
-	SetIsReplicatedByDefault(true);
+	SetIsReplicatedByDefault(false);
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.bStartWithTickEnabled = false;
 }
-void UGuLiExternalUnitControlComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+
+void UGuLiExternalUnitControlComponent::BeginPlay()
 {
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(UGuLiExternalUnitControlComponent, State);
+    Super::BeginPlay();const auto* B=UGuLiHybridActorComponent::Find(GetOwner());if (!B) return;
+    auto* Registry=GetWorld()->GetSubsystem<UGuLiExternalControlRegistry>();TWeakObjectPtr<UGuLiExternalUnitControlComponent> Self(this);
+    if (!Registry || !Registry->Bind(B->GetObjectKey(),*this,[Self](FGuLiExternalBody& Out)
+    {
+        auto* C=Self.Get();auto* A=C?C->GetOwner():nullptr;if (!A) return false;
+        Out.Transform=A->GetActorTransform();Out.Actor=A;Out.bGroundPivot=false;Out.bVehicle=C->bPlayerVehicle;Out.bAirborne=C->bAirborne;Out.bLocked=C->AreActionsLocked();
+        if (const auto* Character=Cast<ACharacter>(A)) Character->GetCapsuleComponent()->GetScaledCapsuleSize(Out.Radius,Out.HalfHeight);
+        FVector Ground;double Height=0;if (!GuLiSkillTargeting::ResolveGround(*A->GetWorld(),A->GetActorLocation(),Ground,&Height)) return false;
+        Out.Altitude=C->bAirborne?float(A->GetActorLocation().Z-Height):Out.HalfHeight+3;return true;
+    },[Self](const FGuLiExternalControl& In)
+    {
+        auto* C=Self.Get();if (!C || (C->State.bActionsLocked && C->State.OwnerToken!=In.Token)) return false;
+        if (In.bLocked || In.bDisplace)
+            if (const auto* Vehicle=Cast<IGuLiEngineeringVehicle>(C->GetOwner()))
+                if (auto* Tasks=C->GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>())
+                    Tasks->CancelPendingMove(FGuLiTaskUnitId::Actor(Vehicle->GetStableActorId(),C->GetWorld()));
+        auto S=C->State;S.OwnerToken=In.Token;S.bPhased=In.bPhased;S.bActionsLocked=In.bLocked;
+        if (!C->State.bActionsLocked && In.bLocked) if (const auto* Character=Cast<ACharacter>(C->GetOwner())) S.RestoreMovementMode=Character->GetCharacterMovement()->MovementMode;
+        if (In.bDisplace) {S.Baseline=In.Transform;++S.DisplacementRevision;}
+        ++S.Revision;if (In.bPhased) S.PhaseMaterial=GuLiVfx::Load<UMaterialInterface>(C,GuLiVfxIds::TeleportBody);
+        C->ApplyHybridState(S);return true;
+    })) GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("External control endpoint registration failed"));
 }
 bool UGuLiExternalUnitControlComponent::IsActorPhased(const AActor* Actor)
 {
@@ -28,15 +55,15 @@ bool UGuLiExternalUnitControlComponent::AreActorActionsLocked(const AActor* Acto
 	const auto* C = Actor ? Actor->FindComponentByClass<UGuLiExternalUnitControlComponent>() : nullptr;
 	return C && C->AreActionsLocked();
 }
-bool UGuLiExternalUnitControlComponent::ApplyServerState(FGuid Token, bool bPhased, bool bLocked,
+bool UGuLiExternalUnitControlComponent::ApplyOwnedState(FGuid Token, bool bPhased, bool bLocked,
 	const FTransform& Baseline, bool bDisplace, UMaterialInterface* PhaseMaterial)
 {
-	if (!GetOwner() || !GetOwner()->HasAuthority() || !Token.IsValid() || Baseline.ContainsNaN()
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || !Token.IsValid() || Baseline.ContainsNaN()
 		|| (State.bActionsLocked && State.OwnerToken != Token)) { return false; }
 	if (bLocked || bDisplace)
 		if (const auto* Vehicle = Cast<IGuLiEngineeringVehicle>(GetOwner()))
 			if (auto* Tasks = GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>())
-				Tasks->CancelPendingMove(FGuLiTaskUnitId::Actor(Vehicle->GetStableActorId()));
+				Tasks->CancelPendingMove(FGuLiTaskUnitId::Actor(Vehicle->GetStableActorId(),GetWorld()));
 	if (!State.bActionsLocked && (bLocked || bDisplace))
 	{
 		if (const auto* Character = Cast<ACharacter>(GetOwner()))
@@ -46,21 +73,21 @@ bool UGuLiExternalUnitControlComponent::ApplyServerState(FGuid Token, bool bPhas
 	if (PhaseMaterial) { State.PhaseMaterial = PhaseMaterial; }
 	if (bDisplace) { State.Baseline = Baseline; ++State.DisplacementRevision; }
 	++State.Revision;
-	ApplyState(); GetOwner()->ForceNetUpdate();
-	// Existing channels receive the discontinuity promptly even while initial troop
-	// replication consumes bandwidth. The retained property still serves late join.
-	MulticastState(State); return true;
-}
-void UGuLiExternalUnitControlComponent::OnRep_State(FGuLiExternalUnitControlState Previous)
-{
-	// An older property update must not undo an already received reliable event.
-	if (int32(State.Revision-Previous.Revision) < 0) { State = Previous; return; }
 	ApplyState();
+    return true;
 }
-void UGuLiExternalUnitControlComponent::MulticastState_Implementation(FGuLiExternalUnitControlState NewState)
+void UGuLiExternalUnitControlComponent::ApplyHybridState(const FGuLiExternalUnitControlState& InState)
 {
-	if (!GetOwner() || GetOwner()->HasAuthority() || int32(NewState.Revision-State.Revision) < 0) { return; }
-	State = NewState; ApplyState();
+    if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || !UGuLiHybridActorComponent::Find(GetOwner())) return;
+    State=InState; ApplyState();
+}
+void UGuLiExternalUnitControlComponent::RestoreHybridState(const FGuLiExternalUnitControlState& InState,const FGuLiExternalControlRestoreSettings& Settings)
+{
+    // The family already restored the current pose. Its most recent teleport
+    // baseline may be older than that pose and must not be displaced again.
+    AppliedDisplacementRevision=InState.DisplacementRevision;
+    bCapturedSettings=Settings.Captured;bPreviousCollision=Settings.Collision;bPreviousCanBeDamaged=Settings.CanBeDamaged;
+    ApplyHybridState(InState);
 }
 void UGuLiExternalUnitControlComponent::ApplyLocalPhaseAppearance(bool bPhased, UMaterialInterface* Material)
 {
@@ -70,7 +97,7 @@ void UGuLiExternalUnitControlComponent::ApplyLocalPhaseAppearance(bool bPhased, 
 }
 void UGuLiExternalUnitControlComponent::ApplyMaterials()
 {
-	if (GetNetMode() == NM_DedicatedServer || !State.PhaseMaterial) { return; }
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld()) || !State.PhaseMaterial) { return; }
 	if (AppliedPhaseMaterial && AppliedPhaseMaterial != State.PhaseMaterial) { RestoreMaterials(); }
 	AppliedPhaseMaterial = State.PhaseMaterial;
 	TInlineComponentArray<UMeshComponent*> Meshes(GetOwner());
@@ -116,7 +143,9 @@ void UGuLiExternalUnitControlComponent::ApplyState()
 	if (State.DisplacementRevision != AppliedDisplacementRevision)
 	{
 		AppliedDisplacementRevision = State.DisplacementRevision;
-		if (Actor->HasAuthority())
+		const auto* Binding=UGuLiHybridActorComponent::Find(Actor);
+		const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+        if (Hybrid && Binding && Hybrid->HasSimulation(Binding->GetObjectKey()))
 		{
 			if (auto* Target = Cast<IGuLiExternalDisplacementTarget>(Movement)) { Target->ApplyExternalDisplacement(State.Baseline); }
 			else { Actor->SetActorTransform(State.Baseline,false,nullptr,ETeleportType::TeleportPhysics); }
@@ -134,7 +163,7 @@ void UGuLiExternalUnitControlComponent::ApplyState()
 		}
 		if (Movement) { Movement->StopMovementImmediately(); Character->SetBase(nullptr); Movement->bJustTeleported = true; }
 	}
-	if (Movement)
+	if (Movement && (State.bActionsLocked || bCapturedSettings))
 	{
 		Character->ConsumeMovementInputVector(); Movement->StopMovementImmediately();
 		Movement->SetMovementMode(State.bActionsLocked ? MOVE_None : EMovementMode(State.RestoreMovementMode));
@@ -162,5 +191,6 @@ void UGuLiExternalUnitControlComponent::TickComponent(float DeltaTime, ELevelTic
 }
 void UGuLiExternalUnitControlComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
+	if (const auto* B=UGuLiHybridActorComponent::Find(GetOwner())) if (auto* R=GetWorld()->GetSubsystem<UGuLiExternalControlRegistry>()) R->Unbind(B->GetObjectKey(),*this);
 	RestoreMaterials(); Super::EndPlay(Reason);
 }

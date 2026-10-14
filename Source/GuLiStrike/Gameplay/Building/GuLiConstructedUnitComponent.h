@@ -7,6 +7,7 @@
 
 class UGuLiBuildingLifecycleComponent;
 class ANavigationData;
+struct FGuLiHybridObjectState;
 
 /** One construction-to-Mass handover; ordinary placed buildings keep this dormant. */
 UCLASS()
@@ -17,25 +18,26 @@ public:
 	UGuLiConstructedUnitComponent();
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
-	virtual void TickComponent(float Dt, ELevelTick Type, FActorComponentTickFunction* Function) override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out) const override;
-	void SetPopulationReservation(const FGuid& Token);
-	bool OwnsPopulationReservation(const FGuid& Token) const { return PopulationReservation.IsValid() && PopulationReservation == Token; }
-	/** Called immediately before the new Mass visual is submitted, independent of actor replication order. */
+
+	/** Called immediately before the new Mass visual is submitted, independent of object-state arrival order. */
 	void RetireVisualForMass(FGuLiSoldierId Id);
+	void AdvanceHybrid(uint64 Tick);
+	bool CaptureHybrid(TArray<uint8>& Bytes) const;
+	bool RestoreHybrid(TConstArrayView<uint8> Bytes,bool Apply);
+	void ActivateHybridRestore();
+	bool ApplyHybridLedger(const FGuLiHybridObjectState& State);
 	UFUNCTION(BlueprintPure, Category="Construction") FGuLiSoldierId GetConvertedSoldierId() const { return ConvertedSoldierId; }
 private:
-	void OnConstructionChanged();
+
 	void BeginConversion();
 	void RefreshHandoverVisual();
-	UPROPERTY(ReplicatedUsing=OnRep_ConvertedSoldier) FGuLiSoldierId ConvertedSoldierId;
-	UFUNCTION() void OnRep_ConvertedSoldier();
+	UPROPERTY() FGuLiSoldierId ConvertedSoldierId;
+
 	UFUNCTION() void HandleNavigationRebuilt(ANavigationData* Data);
 	TWeakObjectPtr<UGuLiBuildingLifecycleComponent> Lifecycle;
-	FGuid PopulationReservation;
-	FDelegateHandle ConstructionChanged;
 	bool bConversionStarted = false;
 	bool bNavigationRebuilt = false;
 	bool bVisualRetired = false;
-	double EarliestConversionTime = 0;
+	uint64 EarliestConversionTick=0;
+	FGuid HybridConversionEvent;
 };

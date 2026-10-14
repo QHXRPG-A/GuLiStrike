@@ -21,8 +21,6 @@ class GULISTRIKE_API AGuLiPlacedBuilding : public AActor, public IGuLiBuildingOw
 public:
 	AGuLiPlacedBuilding();
 
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
 	/** Authority-only initialization used before FinishSpawning. */
 	bool InitializeBuilding(
 		EGuLiBuildingType InBuildingType,
@@ -33,6 +31,7 @@ public:
 	EGuLiBuildingType GetBuildingType() const { return BuildingType; }
 	EGuLiTeam GetBuildingTeam() const { return Team; }
 	virtual void SetBuildingTeamAuthority(EGuLiTeam NewTeam) override;
+    void ApplyHybridTeam(EGuLiTeam NewTeam) {Team=NewTeam;}
 	virtual FVector GetBuildingGroundLocation() const override;
 	bool InitializeFromDefinition(int32 DefinitionId, EGuLiTeam InTeam, const FGuid& BuilderGuid,
 		int32 TerritoryIndex, EGuLiBuildingOrigin Origin, bool bCompleted);
@@ -43,7 +42,7 @@ public:
 
 private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiBuildingLifecycleComponent> Lifecycle;
-	UPROPERTY(ReplicatedUsing=OnRep_BuildingState) int32 DefinitionId = 0;
+	UPROPERTY() int32 DefinitionId = 0;
 	void ApplyDefinition(const FGuLiBuildingDefinition& Definition);
 
 	UFUNCTION()
@@ -58,12 +57,12 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Building")
 	TObjectPtr<UNavModifierComponent> NavigationModifier;
 
-	UPROPERTY(ReplicatedUsing = OnRep_BuildingState, VisibleInstanceOnly, Category = "Building")
+	UPROPERTY(VisibleInstanceOnly, Category = "Building")
 	EGuLiBuildingType BuildingType = EGuLiBuildingType::MissileTurret;
 
-	UPROPERTY(ReplicatedUsing = OnRep_BuildingState, VisibleInstanceOnly, Category = "Building")
+	UPROPERTY(VisibleInstanceOnly, Category = "Building")
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
 
-	UPROPERTY(ReplicatedUsing = OnRep_BuildingState, VisibleInstanceOnly, Category = "Building")
+	UPROPERTY(VisibleInstanceOnly, Category = "Building")
 	FGuid BuilderPlayerGuid;
 };

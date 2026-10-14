@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 
 #include "GuLiStrike.h"
@@ -92,7 +93,7 @@ void AGuLiCommanderHealthBarRenderer::BeginPlay()
 	Super::BeginPlay();
 	if (HealthBarInstances) HealthBarInstances->SetHiddenInGame(true);
 
-	if (GetNetMode() == NM_DedicatedServer)
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld()))
 	{
 		SetActorTickEnabled(false);
 		return;
@@ -131,7 +132,7 @@ void AGuLiCommanderHealthBarRenderer::Tick(const float DeltaSeconds)
 
 AGuLiCommanderHealthBarRenderer* AGuLiCommanderHealthBarRenderer::FindOrSpawn(UWorld* World, APlayerController* Controller)
 {
-	if (!World || World->GetNetMode() == NM_DedicatedServer || !Controller || !Controller->IsLocalController()) return nullptr;
+	if (!World || !UGuLiNetworkSettings::CanPresent(World) || !Controller || !Controller->IsLocalController()) return nullptr;
 	for (TActorIterator<AGuLiCommanderHealthBarRenderer> It(World); It; ++It)
 		if (IsValid(*It) && It->LocalController == Controller) return *It;
 	FActorSpawnParameters Params;

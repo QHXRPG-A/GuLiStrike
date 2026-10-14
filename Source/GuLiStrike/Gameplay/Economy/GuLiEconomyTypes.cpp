@@ -1,14 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Economy/GuLiEconomyTypes.h"
-
-namespace
-{
-	void AdvanceRevision(uint32& Revision)
-	{
-		Revision = Revision == MAX_uint32 ? 1u : Revision + 1u;
-	}
-}
+#include "Network/Private/GuLiNetConversions.h"
 
 int32 FGuLiResourceAmounts::Get(const EGuLiResourceType Type) const
 {
@@ -23,53 +16,43 @@ bool FGuLiResourceAmounts::CanAfford(const EGuLiResourceType Type, const int32 A
 
 bool FGuLiResourceAmounts::CanAfford(const FGuLiResourceAmounts& Cost) const
 {
-	return Cost.Blue >= 0 && Cost.Red >= 0 && Blue >= Cost.Blue && Red >= Cost.Red;
+	return GuLiNet::CanAfford(GuLiNetBridge::ToCore(*this), GuLiNetBridge::ToCore(Cost));
 }
 
 bool FGuLiResourceAmounts::Add(const EGuLiResourceType Type, const int32 Amount)
 {
 	check(Type == EGuLiResourceType::Blue || Type == EGuLiResourceType::Red);
-	if (Amount <= 0)
-	{
-		return false;
-	}
-	int32& Value = Type == EGuLiResourceType::Blue ? Blue : Red;
-	check(Value >= 0);
-	if (static_cast<int64>(Value) + Amount > MAX_int32) return false;
-	Value += Amount;
-	AdvanceRevision(Revision);
+	auto Value = GuLiNetBridge::ToCore(*this); GuLiNet::Resources Delta;
+	if (Type == EGuLiResourceType::Blue) Delta.Blue = Amount; else Delta.Red = Amount;
+	if (!GuLiNet::Credit(Value, Delta)) return false;
+	*this = GuLiNetBridge::ToUE(Value);
 	return true;
 }
 
 bool FGuLiResourceAmounts::Remove(const EGuLiResourceType Type, const int32 Amount)
 {
-	if (Amount <= 0 || !CanAfford(Type, Amount))
-	{
-		return false;
-	}
-	int32& Value = Type == EGuLiResourceType::Blue ? Blue : Red;
-	Value -= Amount;
-	AdvanceRevision(Revision);
+	check(Type == EGuLiResourceType::Blue || Type == EGuLiResourceType::Red);
+	auto Value = GuLiNetBridge::ToCore(*this); GuLiNet::Resources Delta;
+	if (Type == EGuLiResourceType::Blue) Delta.Blue = Amount; else Delta.Red = Amount;
+	if (!GuLiNet::Debit(Value, Delta)) return false;
+	*this = GuLiNetBridge::ToUE(Value);
 	return true;
 }
 
 void FGuLiResourceAmounts::AddChecked(const FGuLiResourceAmounts& Amounts)
 {
-	check(Amounts.Blue >= 0 && Amounts.Red >= 0 && Amounts.HasPositiveAmount());
-	check(Blue >= 0 && Red >= 0);
-	check(static_cast<int64>(Blue) + Amounts.Blue <= MAX_int32);
-	check(static_cast<int64>(Red) + Amounts.Red <= MAX_int32);
-	Blue += Amounts.Blue;
-	Red += Amounts.Red;
-	AdvanceRevision(Revision);
+	auto Value = GuLiNetBridge::ToCore(*this);
+	const bool Added = GuLiNet::Credit(Value, GuLiNetBridge::ToCore(Amounts));
+	checkf(Added, TEXT("Resource credit must be positive and fit int32."));
+	if (Added) *this = GuLiNetBridge::ToUE(Value);
 }
 
 void FGuLiResourceAmounts::RemoveChecked(const FGuLiResourceAmounts& Cost)
 {
-	check(Cost.HasPositiveAmount() && CanAfford(Cost));
-	Blue -= Cost.Blue;
-	Red -= Cost.Red;
-	AdvanceRevision(Revision);
+	auto Value = GuLiNetBridge::ToCore(*this);
+	const bool Removed = GuLiNet::Debit(Value, GuLiNetBridge::ToCore(Cost));
+	checkf(Removed, TEXT("Resource debit must be positive and affordable."));
+	if (Removed) *this = GuLiNetBridge::ToUE(Value);
 }
 
 void FGuLiResourceAmounts::Sanitize()

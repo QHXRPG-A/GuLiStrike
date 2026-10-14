@@ -9,11 +9,12 @@ bool UGuLiBattleAuthoritySubsystem::BuildInitialArmySpawnLayout(
 	const TArray<FGuLiSoldierDefinition>& Definitions,
 	const FVector& RedAssembly, const FVector& BlueAssembly,
 	TArray<FGuLiCommanderInitialSpawnSlot>& OutSlots, FString& OutError,
-	const float InwardInsetCentimeters) const
+	const float InwardInsetCentimeters, const int32 Population) const
 {
 	OutSlots.Reset();
 	OutError.Reset();
-	if (Definitions.IsEmpty() || RedAssembly.ContainsNaN() || BlueAssembly.ContainsNaN()
+	if (Population<2 || Population>10000 || Population%2!=0
+		|| Definitions.IsEmpty() || RedAssembly.ContainsNaN() || BlueAssembly.ContainsNaN()
 		|| !FMath::IsFinite(InwardInsetCentimeters) || InwardInsetCentimeters < 0.0f
 		|| FVector::DistSquared2D(RedAssembly, BlueAssembly) < 1.0
 		|| !FMath::IsFinite(GroupSpacingCentimeters) || GroupSpacingCentimeters <= 0.0f
@@ -36,14 +37,16 @@ bool UGuLiBattleAuthoritySubsystem::BuildInitialArmySpawnLayout(
 		GroupSpacing = FMath::Max(GroupSpacing,
 			Definition.GetMassAvoidanceRadius(MemberAgentRadiusCentimeters) * 2.0f * Columns * UE_SQRT_2);
 	}
-	OutSlots.Reserve(GuLiCommanderInitialSpawn::Population);
+	const int32 MembersPerTeam=Population/2;
+	const int32 FormationCount=FMath::DivideAndRoundUp(MembersPerTeam,GuLiCommanderInitialSpawn::MembersPerFormation);
+	OutSlots.Reserve(Population);
 	for (const EGuLiTeam Team : { EGuLiTeam::Red, EGuLiTeam::Blue })
 	{
 		const FVector Center = Team == EGuLiTeam::Red ? RedAssembly : BlueAssembly;
 		const FVector Opposing = Team == EGuLiTeam::Red ? BlueAssembly : RedAssembly;
 		const FVector Forward = (Opposing - Center).GetSafeNormal2D();
 		const FVector Right(-Forward.Y, Forward.X, 0.0);
-		for (int32 Formation = 0; Formation < GuLiCommanderInitialSpawn::FormationsPerTeam; ++Formation)
+		for (int32 Formation = 0; Formation < FormationCount; ++Formation)
 		{
 			const auto& Definition = Definitions[Formation % FMath::Min(2, Definitions.Num())];
 			const float Radius = Definition.GetMassAvoidanceRadius(MemberAgentRadiusCentimeters);
@@ -53,7 +56,9 @@ bool UGuLiBattleAuthoritySubsystem::BuildInitialArmySpawnLayout(
 			const FVector Anchor = Center + Right * ((Formation % Columns - 2) * GroupSpacing)
 				+ Forward * ((Formation / Columns + 0.5f) * GroupSpacing + InwardInsetCentimeters);
 			const float Yaw = (Opposing - Anchor).GetSafeNormal2D().Rotation().Yaw;
-			for (int32 Member = 0; Member < GuLiCommanderInitialSpawn::MembersPerFormation; ++Member)
+			const int32 Members=FMath::Min(GuLiCommanderInitialSpawn::MembersPerFormation,
+				MembersPerTeam-Formation*GuLiCommanderInitialSpawn::MembersPerFormation);
+			for (int32 Member = 0; Member < Members; ++Member)
 			{
 				auto& Slot = OutSlots.AddDefaulted_GetRef();
 				Slot.Team = Team;

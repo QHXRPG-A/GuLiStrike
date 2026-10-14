@@ -6,6 +6,8 @@
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 #include "Gameplay/Skills/GuLiSkillTargeting.h"
 #include "Engine/World.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridManifest.h"
 
 bool UGuLiPointSkillExecutor::ValidateDefinition(const FGuLiActiveSkillDefinition& Definition, FString& Error) const
 {
@@ -25,7 +27,7 @@ FGuLiActiveSkillExecutionResult UGuLiPointSkillExecutor::Execute(const FGuLiActi
 	FGuLiActiveSkillExecutionResult Result;
 	FGuLiCombatAttackRequest Request;
 	if (!BuildRequest(Context,Configuration,Request,Result.Error)) return Result;
-	auto* Runtime=Context.Commander->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>();
+	auto* Runtime=Context.GetExecutionWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>();
 	Result.EffectId=Runtime ? Runtime->LaunchPointProjectile(Request) : FGuid();
 	Result.bSucceeded=Result.EffectId.IsValid();
 	if (!Result.bSucceeded) Result.Error=TEXT("Projectile execution rejected the cast.");
@@ -36,17 +38,19 @@ bool UGuLiPointSkillExecutor::BuildRequest(const FGuLiActiveSkillExecutionContex
 	const UDataAsset* Configuration, FGuLiCombatAttackRequest& Request, FString& Error) const
 {
 	const auto* Candidate = Cast<UGuLiPointSkillConfiguration>(Configuration);
-	if (!Candidate || !Context.Commander || !Context.Commander->HasAuthority() || !Context.Commander->GetWorld())
+	if (!Candidate || !Context.GetExecutionWorld()
+        || (!UGuLiNetworkSettings::IsHybrid(Context.GetExecutionWorld()) && (!Context.Commander || !Context.Commander->HasAuthority())))
 	{ Error = TEXT("Point projectile requires authoritative caster and configuration."); return false; }
 	const auto& Config = *Candidate;
-	auto& World = *Context.Commander->GetWorld();
+	auto& World = *Context.GetExecutionWorld();
 	const auto* GameState = World.GetGameState<AGuLiBattleGameState>();
 	if (!GameState || !Config.Projectile || !Config.Projectile->ResolveMotionSettings(Request.Motion))
 	{ Error = TEXT("Effect configuration is unavailable."); return false; }
 	Request.Context.Source = Context.Source;
 	Request.Context.MatchEpoch = GameState->GetMatchEpoch();
 	Request.Context.RootEventId = Context.RequestId;
-	Request.Context.ShotId = FGuid::NewGuid();
+    Request.Context.ShotId=FGuLiHybridManifest::MakeStableKey(TEXT("/Game/GuLiStrike/SkillShots"),EGuLiHybridObjectKind::Field,
+        Context.RequestId.ToString(EGuidFormats::Digits)+FString::Printf(TEXT("/%u/%u"),Context.SoldierId.Value,Context.ShotOrdinal)).StableId;
 	Request.SourceTransform = Context.SourceTransform;
 	Request.TargetLocation = Context.GroundPoint;
 	// Admission checks the circle center. The sampled impact may overshoot weapon range.
@@ -78,7 +82,7 @@ bool UGuLiPointSkillExecutor::BuildRequest(const FGuLiActiveSkillExecutionContex
 bool UGuLiPointSkillExecutor::ConfigurePayload(const FGuLiActiveSkillExecutionContext& Context,
 	const UGuLiPointSkillConfiguration& Config, FGuLiCombatAttackRequest& Request, FString& Error) const
 {
-	const auto* Fields = Context.Commander->GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>();
+	const auto* Fields = Context.GetExecutionWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>();
 	const auto* Field = Fields ? Fields->FindCombatField(Config.FieldConfigId) : nullptr;
 	if (!Field) { Error = TEXT("Point projectile field is unavailable."); return false; }
 	Request.MuzzleOffset = Config.LaunchOffset;

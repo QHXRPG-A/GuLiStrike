@@ -5,6 +5,14 @@
 
 namespace
 {
+	bool ResolveTeleportRow(const FGuLiStrikeSpellFieldsFieldsRow& Row,FGuLiTeleportFieldConfig& Out)
+	{
+		if (!Row.FieldType.Equals(TEXT("Teleport"),ESearchCase::IgnoreCase)) return false;
+		Out.Level=Row.Level;Out.RadiusCentimeters=Row.RadiusCentimeters;Out.bAllowPlayerVehicles=Row.bAllowPlayerVehicles;
+		Out.WindupSeconds=Row.WindupSeconds;Out.RecoverySeconds=Row.RecoverySeconds;Out.BeamHeightCentimeters=Row.BeamHeightCentimeters;
+		Out.MaxTargetWaitSeconds=Row.MaxTargetWaitSeconds;Out.MaxShipHeightCentimeters=Row.MaxShipHeightCentimeters;
+		return Out.IsValid();
+	}
 	bool ResolveCombatRow(FName Name, const FGuLiStrikeSpellFieldsFieldsRow& Row, FGuLiSpellFieldConfig& Out)
 	{
 		if (!Row.FieldType.Equals(TEXT("Combat"), ESearchCase::IgnoreCase)) return false;
@@ -45,12 +53,7 @@ void UGuLiSpellFieldDataSubsystem::Initialize(FSubsystemCollectionBase& Collecti
 		if (Row.FieldType.Equals(TEXT("Teleport"), ESearchCase::IgnoreCase))
 		{
 			FGuLiTeleportFieldConfig Field;
-			Field.Level = Row.Level; Field.RadiusCentimeters = Row.RadiusCentimeters;
-			Field.bAllowPlayerVehicles = Row.bAllowPlayerVehicles;
-			Field.WindupSeconds = Row.WindupSeconds; Field.RecoverySeconds = Row.RecoverySeconds;
-			Field.BeamHeightCentimeters = Row.BeamHeightCentimeters;
-			Field.MaxTargetWaitSeconds = Row.MaxTargetWaitSeconds; Field.MaxShipHeightCentimeters = Row.MaxShipHeightCentimeters;
-			if (Field.IsValid() && !FindTeleportField(Field.Level)) { TeleportFields.Add(Field); continue; }
+			if (ResolveTeleportRow(Row,Field) && !FindTeleportField(Field.Level)) { TeleportFields.Add(Field); continue; }
 		}
 		else if (Row.FieldType == TEXT("StrongholdTransit"))
 		{
@@ -109,4 +112,22 @@ bool UGuLiSpellFieldDataSubsystem::GetCombatField(const FName ConfigId, FGuLiSpe
 	if (!Field) return false;
 	OutConfig = *Field;
 	return true;
+}
+
+bool UGuLiSpellFieldDataSubsystem::ResolveAuthoredTeleportConfig(int32 Level,FGuLiTeleportFieldConfig& OutConfig)
+{
+    const auto* Table=GetDefault<UGuLiSpellFieldDataSettings>()->DataTable.LoadSynchronous();
+    if (!Table || Table->GetRowStruct()!=FGuLiStrikeSpellFieldsFieldsRow::StaticStruct()) return false;
+    TArray<FGuLiTeleportFieldConfig> Levels;
+    for (FName Name:Table->GetRowNames())
+    {
+        const auto* Row=Table->FindRow<FGuLiStrikeSpellFieldsFieldsRow>(Name,TEXT("Authored relocation"),false);
+        if (!Row) return false;
+        if (!Row->FieldType.Equals(TEXT("Teleport"),ESearchCase::IgnoreCase)) continue;
+        FGuLiTeleportFieldConfig C;
+        if (!ResolveTeleportRow(*Row,C) || Levels.ContainsByPredicate([&](const auto& V){return V.Level==C.Level;})) return false;
+        Levels.Add(C);
+    }
+    const auto* C=Levels.FindByPredicate([Level](const auto& V){return V.Level==Level;});
+    if (!C) return false;OutConfig=*C;return true;
 }

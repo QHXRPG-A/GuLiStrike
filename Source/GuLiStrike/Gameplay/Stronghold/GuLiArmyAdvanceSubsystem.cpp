@@ -5,6 +5,28 @@
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
 #include "Engine/World.h"
 #include "NavigationSystem.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
+
+void RegisterGuLiHybridAdvanceState(UGuLiArmyAdvanceSubsystem& Self);
+namespace
+{
+double AdvanceTime(const UWorld& World)
+{
+    if (UGuLiNetworkSettings::IsHybrid(&World))
+        if (const auto* H=World.GetSubsystem<UGuLiHybridWorldSubsystem>()) return H->GetLogicalSeconds();
+    return World.GetTimeSeconds();
+}
+}
+void UGuLiArmyAdvanceSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+{
+    Super::Initialize(Collection);
+    if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+    {
+        Collection.InitializeDependency<UGuLiHybridWorldSubsystem>();
+        RegisterGuLiHybridAdvanceState(*this);
+    }
+}
 
 bool UGuLiArmyAdvanceSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
@@ -100,6 +122,12 @@ void UGuLiArmyAdvanceSubsystem::ObserveGroup(FAdvanceGroup& Group)
 
 void UGuLiArmyAdvanceSubsystem::Tick(float)
 {
+    if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+    {
+        auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+        if (!H || !H->CanPublishFacts() || LastHybridTick==H->GetLogicalTick()) return;
+        LastHybridTick=H->GetLogicalTick();
+    }
     RemainingMoveQueries = 4; // Admission throttle only; all navigation uses the authority world budget.
     auto& Resources = *GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
     if (Groups.IsEmpty() || !Resources.IsResourceWorldActive() || !Resources.IsRuntimeReady()) return;
@@ -116,7 +144,7 @@ void UGuLiArmyAdvanceSubsystem::Tick(float)
     for (auto& Group : Groups)
         Group.Soldiers.RemoveAll([&](auto Id) { return !Authority.IsAutomaticallyAdvancing(Id) || !Tasks.MayAdvance(Id); });
     Groups.RemoveAll([](const auto& Group) { return Group.Soldiers.IsEmpty(); });
-    const double Now = GetWorld()->GetTimeSeconds();
+    const double Now = AdvanceTime(*GetWorld());
     // Observe and pace shared groups only. Target choice, orders, stage completion and retries are StateTree operations.
     for (int32 Visit = 0; Visit < Groups.Num(); ++Visit)
     {
@@ -174,7 +202,7 @@ void UGuLiArmyAdvanceSubsystem::MoveToBehaviorTarget(FGuLiSoldierId Soldier)
     Group->PendingPlan=Handle.Value; Group->PendingPlanEpoch=Handle.Epoch; Group->bPlanCommitted=false;
     Group->Phase = EGuLiCommanderWorkPhase::AdvanceMoving;
     Group->Result = EGuLiCommanderWorkResult::Running;
-    Group->NextDecisionTime = GetWorld()->GetTimeSeconds() + .5;
+    Group->NextDecisionTime = AdvanceTime(*GetWorld()) + .5;
 }
 
 void UGuLiArmyAdvanceSubsystem::WaitForBehaviorCapture(FGuLiSoldierId Soldier)
@@ -213,5 +241,5 @@ void UGuLiArmyAdvanceSubsystem::WaitForBehaviorTarget(FGuLiSoldierId Soldier)
     if (Group->bMoving) GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->StopAutomaticMove(Group->Soldiers);
     Group->Phase = EGuLiCommanderWorkPhase::AdvanceWaiting;
     Group->Result = EGuLiCommanderWorkResult::Running;
-    Group->NextDecisionTime = GetWorld()->GetTimeSeconds() + .5;
+    Group->NextDecisionTime = AdvanceTime(*GetWorld()) + .5;
 }

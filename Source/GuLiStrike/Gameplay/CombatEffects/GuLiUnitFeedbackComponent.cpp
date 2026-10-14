@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiUnitWreck.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
@@ -11,7 +12,7 @@
 UGuLiUnitFeedbackComponent::UGuLiUnitFeedbackComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	SetIsReplicatedByDefault(true);
+	SetIsReplicatedByDefault(false);
 }
 
 void UGuLiUnitFeedbackComponent::BeginPlay()
@@ -72,7 +73,7 @@ void UGuLiUnitFeedbackComponent::HandleDeath()
 void UGuLiUnitFeedbackComponent::HideLivingMeshes()
 {
 	AActor* Owner = GetOwner();
-	if (!Owner || !bPlayDestructionEffect || GetNetMode() == NM_DedicatedServer) return;
+	if (!Owner || !bPlayDestructionEffect || !UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	if (const APawn* Pawn = Cast<APawn>(Owner); Pawn && Pawn->IsPlayerControlled()) return;
 	TInlineComponentArray<UMeshComponent*> Meshes;
 	Owner->GetComponents(Meshes, true);
@@ -92,7 +93,7 @@ void UGuLiUnitFeedbackComponent::HandleAnyDamage(AActor* Actor, float Damage, co
 	if (Damage > 0 && Actor && Actor->HasAuthority() && !HealthComponent.IsValid()) MulticastHit();
 }
 
-void UGuLiUnitFeedbackComponent::MulticastHit_Implementation()
+void UGuLiUnitFeedbackComponent::MulticastHit()
 {
 	if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>()) Feedback->FlashActor(GetOwner());
 }

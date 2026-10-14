@@ -1,4 +1,5 @@
 #include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
@@ -18,7 +19,7 @@
 bool UGuLiCommanderOverviewSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	const auto* World = Cast<UWorld>(Outer);
-	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld() && World->GetNetMode() != NM_DedicatedServer;
+	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld() && UGuLiNetworkSettings::CanPresent(World);
 }
 void UGuLiCommanderOverviewSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {

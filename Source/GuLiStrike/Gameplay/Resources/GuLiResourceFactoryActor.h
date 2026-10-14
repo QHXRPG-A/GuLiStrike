@@ -2,28 +2,16 @@
 
 #include "CoreMinimal.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
+#include "Gameplay/Resources/GuLiResourceInventoryComponent.h"
 #include "GameFramework/Actor.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 #include "GuLiResourceFactoryActor.generated.h"
 
 class UBoxComponent;
 class UChildActorComponent;
 class USceneComponent;
 class UGuLiResourceEconomyConfig;
-
-USTRUCT()
-struct GULISTRIKE_API FGuLiFactoryQueueEntry
-{
-	GENERATED_BODY()
-
-	UPROPERTY()
-	EGuLiResourceType ResourceType = EGuLiResourceType::Blue;
-
-	UPROPERTY()
-	int32 Amount = 0;
-	UPROPERTY() EGuLiTeam SettlementTeam = EGuLiTeam::Unassigned;
-};
-
 
 /** Authority factory: raw cargo is processed FIFO; its four unloading destinations are unrestricted. */
 UCLASS(NotPlaceable)
@@ -35,7 +23,7 @@ public:
 	AGuLiResourceFactoryActor();
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void EndPlay(EEndPlayReason::Type Reason) override;
 
 	void InitializeFactory(
 		EGuLiTeam InTeam,
@@ -46,10 +34,7 @@ public:
 	virtual EGuLiTeam GetBuildingTeam() const override { return Team; }
 	virtual void SetBuildingTeamAuthority(EGuLiTeam NewTeam) override;
 	virtual FVector GetBuildingGroundLocation() const override { return GetActorLocation(); }
-	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Resources|Factory")
-	bool EnqueueCargo(const FGuLiResourceAmounts& Cargo);
-	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Resources|Factory")
-	bool EnqueueRaw(EGuLiResourceType ResourceType, int32 Amount);
+
 	UFUNCTION(BlueprintPure, Category = "Resources|Factory")
 	EGuLiTeam GetTeam() const { return Team; }
 	FGuLiControllableActorId GetStableActorId() const { return StableActorId; }
@@ -58,9 +43,12 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Resources|Factory")
 	int32 GetQueuedRawAmount() const;
 	FGuLiResourceFactoryPrivateState MakePrivateState() const;
+    TConstArrayView<FGuLiFactoryQueueEntry> GetDeliveryQueue() const { return Inventory->GetQueue(); }
+    FGuid GetPendingResourceEvent() const { return Inventory->GetPendingEvent(); }
+    uint64 GetAppliedResourceRevision() const { return Inventory->GetAppliedRevision(); }
 	void RegisterMiningVehicle(AActor& Vehicle);
 	void UnregisterMiningVehicle(AActor& Vehicle);
-	bool UploadCargo(AActor& Vehicle, const FGuLiResourceAmounts& Cargo);
+
 	/** Four shared navigation destinations on the factory floor. No occupancy or reservation state. */
 	UFUNCTION(BlueprintPure, Category = "Resources|Factory")
 	TArray<FVector> GetUnloadPoints() const;
@@ -70,10 +58,12 @@ public:
 	bool ShouldDoorBeOpen() const { return DoorState.bOpen; }
 
 private:
+	friend class FGuLiHybridResourceFactoryAdapter;
 #if WITH_DEV_AUTOMATION_TESTS
 	friend class FGuLiScale020FactoryDoorPresentationContract;
 #endif
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiBuildingLifecycleComponent> Lifecycle;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiResourceInventoryComponent> Inventory;
 	UFUNCTION()
 	void OnRep_DockPoint();
 	UFUNCTION()
@@ -85,7 +75,7 @@ private:
 	/** Door is visual-only; the factory shell, floor and ramp own physical geometry. */
 	void ConfigureDoorPresentation();
 	void RefreshConstructionCollision();
-	UPROPERTY(ReplicatedUsing = OnRep_DoorState)
+	UPROPERTY()
 	FGuLiFactoryDoorState DoorState;
 	TSet<TWeakObjectPtr<AActor>> AssignedVehicles;
 	TWeakObjectPtr<class USkeletalMeshComponent> DoorMesh;
@@ -101,22 +91,17 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UChildActorComponent> Presentation;
 
-	UPROPERTY(ReplicatedUsing = OnRep_PresentationClass)
+	UPROPERTY()
 	TSubclassOf<AActor> PresentationClass;
 
-	UPROPERTY(Replicated)
+	UPROPERTY()
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
 
-	UPROPERTY(Replicated)
+	UPROPERTY()
 	FGuLiControllableActorId StableActorId;
 
-	UPROPERTY(ReplicatedUsing = OnRep_DockPoint)
+	UPROPERTY()
 	FVector_NetQuantize10 DockPoint = FVector::ZeroVector;
 
-	UPROPERTY()
-	TArray<FGuLiFactoryQueueEntry> Queue;
-
-	float ProcessingRatePerSecond = 2.0f;
-	float ProcessingAccumulator = 0.0f;
 };
 

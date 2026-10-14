@@ -6,6 +6,7 @@
 #include "GameFramework/GameStateBase.h"
 #include "Engine/World.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Network/GuLiNetworkSettings.h"
 
 AGuLiTeleportFieldActor::AGuLiTeleportFieldActor()
 {
@@ -14,12 +15,12 @@ AGuLiTeleportFieldActor::AGuLiTeleportFieldActor()
 	bAlwaysRelevant = true;
 	// The short destination window must be visible while a joining client loads troop state.
 	NetPriority = 4.f;
-	SetNetUpdateFrequency(10);
+
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
 }
 void AGuLiTeleportFieldActor::EnsureMaterials()
 {
-	if (GetNetMode() == NM_DedicatedServer) { return; }
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) { return; }
 	if (!Ground)
 	{
 		Ground = NewObject<UDecalComponent>(this,TEXT("RangeAndProgress")); Ground->SetupAttachment(GetRootComponent());
@@ -42,6 +43,7 @@ void AGuLiTeleportFieldActor::EnsureMaterials()
 }
 void AGuLiTeleportFieldActor::SetPreview(const FVector& Point, const float Radius, const bool bValid)
 {
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	bPreview = true; SetActorLocation(Point); EnsureMaterials();
 	Ground->DecalSize = GuLiVfx::Scale(this, GuLiVfxIds::TeleportGround, FVector(200,Radius/.94f,Radius/.94f));
 	Beam->SetVisibility(false);
@@ -54,10 +56,9 @@ void AGuLiTeleportFieldActor::SetPreview(const FVector& Point, const float Radiu
 }
 void AGuLiTeleportFieldActor::TickVisuals()
 {
-	if (GetNetMode() == NM_DedicatedServer || bPreview || State.Phase == EGuLiTeleportPhase::Idle) { return; }
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld()) || bPreview || State.Phase == EGuLiTeleportPhase::Idle) { return; }
 	EnsureMaterials();
-	const auto* GS = GetWorld()->GetGameState();
-	const double Now = GS ? GS->GetServerWorldTimeSeconds() : GetWorld()->GetTimeSeconds();
+	const double Now = GetSynchronizedTime(*GetWorld());
 	const double Elapsed = FMath::Max(0.0,Now-State.PhaseStartTime);
 	const bool bLanding = State.bLanded;
 	const bool bBeam = bLanding || State.Phase == EGuLiTeleportPhase::AwaitingDestination || State.Phase == EGuLiTeleportPhase::Returning;

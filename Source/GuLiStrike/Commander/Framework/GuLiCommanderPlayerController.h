@@ -134,6 +134,8 @@ public:
 	GULISTRIKE_API void InvokeHUDCommand(FName Action);
 	void RecallControlGroupFromUI(int32 Slot, bool bControl, bool bShift, bool bAlt);
 	GULISTRIKE_API bool IssueMapMove(const FVector& Point, bool bAppend);
+	/** Shared cursor/semantic-input ground picking; a unit-center height is not a terrain hit. */
+	bool TraceCommanderGroundRay(const FVector& Origin, const FVector& Direction, FVector& OutLocation) const;
 	bool IsCommanderMenuOpen() const;
 	bool IsRogueCardModal() const { return bRogueCardModal; }
 	void SetRogueCardModal(bool bActive);
@@ -241,6 +243,7 @@ private:
 	bool bSelectionSameTypeOnPress = false;
 	FGuLiSoldierId LastClickedSoldier;
 	FGuLiControllableActorId LastClickedActor;
+    FGuLiHybridObjectKey LastClickedObject;
 	double LastUnitClickTime = -1.0;
 	int32 LastGroupKey = INDEX_NONE;
 	double LastGroupKeyTime = -1.0;

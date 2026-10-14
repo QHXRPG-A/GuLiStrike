@@ -1,0 +1,34 @@
+{
+  "schema": "guli-production-migration/v1",
+  "work_id": "WORK-20261011-002",
+  "source_readback": "TestResults/HybridFullAcceptance/Implementation/production-graph-fingerprints-d26.json",
+  "semantic_review": "TestResults/HybridFullAcceptance/Implementation/production-migration-review-d26.json",
+  "operations": [
+    {
+      "kind": "retarget_pure_call",
+      "asset": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier.BP_ConstructionVehicle_3Tier",
+      "graph": "ApplyMiningVisuals",
+      "node_name": "K2Node_CallFunction_5",
+      "source_graph_sha256": "82a00f289eed26aeb40d7599f1d780e77b5c99d35df1fb64de9bb66cb9722fa6",
+      "expected_function": "/Script/Engine.KismetSystemLibrary:IsDedicatedServer",
+      "replacement_function": "/Script/GuLiStrike.GuLiNetworkSettings:IsPresentationDisabled",
+      "intent": "Presentation-only beam/collector gating uses the shared Rendered/LogicOnly policy; no gameplay authority changes."
+    },
+    {
+      "kind": "retarget_pure_call",
+      "asset": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/BP_ElectromagneticMiner_3Tier.BP_ElectromagneticMiner_3Tier",
+      "graph": "ApplyMiningVisuals",
+      "node_name": "K2Node_CallFunction_5",
+      "source_graph_sha256": "28fea4aa898b9e66b3ce37e6c257742776715db426fc972959edf2f283549cb0",
+      "expected_function": "/Script/Engine.KismetSystemLibrary:IsDedicatedServer",
+      "replacement_function": "/Script/GuLiStrike.GuLiNetworkSettings:IsPresentationDisabled",
+      "intent": "Presentation-only beam/collector gating uses the shared Rendered/LogicOnly policy; no gameplay authority changes."
+    }
+  ],
+  "pending": [
+    "Runtime verification of Rendered/LogicOnly and asynchronous UI recovery in the later unified gameplay batch"
+  ],
+  "blueprint_compile": "passed_for_both_modified_assets",
+  "migration_complete": true,
+  "completion_scope": "Reviewed source graphs and saved compiled assets; gameplay behavior remains untested"
+}

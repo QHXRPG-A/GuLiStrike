@@ -16,7 +16,7 @@
 static bool MiningValidate(UWorld& World, const FGuLiTaskUnitContext& Unit, const FGuLiUnitTaskCommand& Command, FString& Error)
 {
 	const auto* Resources = World.GetSubsystem<UGuLiResourceWorldSubsystem>();
-	const bool bValid = Cast<AGuLiMiningVehiclePawn>(Unit.Pawn.Get()) && Command.ClusterId && Resources && Resources->IsRuntimeReady()
+	const bool bValid = Cast<AGuLiMiningVehiclePawn>(Unit.Pawn.Get()) && Command.ClusterId && Resources && Resources->IsMiningRuntimeReady()
 		&& Resources->CanTeamMineAt(Unit.Team, Command.ClusterId) && !Resources->IsClusterEmpty(Command.ClusterId);
 	if (!bValid) Error = GuLiGameText::Text(TEXT("UI.SpecialTaskExecutor.128")); return bValid;
 }

@@ -11,6 +11,10 @@
 #include "GuLiResourceWorldSubsystem.generated.h"
 
 struct FCollisionQueryParams;
+struct FGuLiHybridObjectKey;
+struct FGuLiHybridResourceRequest;
+struct FGuLiHybridTransactionResult;
+struct FGuLiHybridObjectState;
 
 class AGuLiMiningVehiclePawn;
 class AGuLiConstructionVehiclePawn;
@@ -24,6 +28,7 @@ class UGuLiResourceEconomyConfig;
 class UGuLiResourceMapDefinition;
 
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FGuLiTerritoryOwnershipChanged, int32, EGuLiTeam, EGuLiTeam);
+DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiResourceSettlement, const FGuLiHybridTransactionResult&);
 
 /** Match-scoped authority for ore, territory and factories; economy is a separate service. */
 UCLASS(Config = Game)
@@ -33,6 +38,7 @@ class GULISTRIKE_API UGuLiResourceWorldSubsystem final : public UTickableWorldSu
 
 public:
 	UGuLiResourceWorldSubsystem();
+	virtual ~UGuLiResourceWorldSubsystem() override;
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
@@ -42,6 +48,11 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Resources|Runtime")
 	bool IsRuntimeReady() const { return bRuntimeReady; }
+	UFUNCTION(BlueprintPure, Category = "Resources|Runtime")
+	bool IsHybridQuerySceneReady() const { return bHybridQuerySceneReady; }
+	bool IsMiningRuntimeReady() const;
+	void EnableHybridMiningSimulation() { bHybridMiningSimulationSupported=true; }
+	void GetHybridQuerySceneCounts(int32& CollisionClusters,int32& EnabledClusters,int32& VisualComponents) const;
 	UFUNCTION(BlueprintPure, Category = "Resources|Runtime")
 	bool IsResourceWorldActive() const { return bResourceWorldActive; }
 	UFUNCTION(BlueprintPure, Category = "Resources|Runtime")
@@ -69,18 +80,17 @@ public:
 	AGuLiResourceFactoryActor* FindNearestFriendlyFactory(EGuLiTeam Team, const FVector& Location) const;
 	void QueryFriendlyFactories(EGuLiTeam Team, const FVector& Location, TArray<AGuLiResourceFactoryActor*>& Out) const;
 	void RegisterFactory(AGuLiResourceFactoryActor& Factory);
-	AGuLiConstructionVehiclePawn* SpawnConstructionVehicle(EGuLiTeam Team, const FVector& GroundLocation);
-	void CreditFactoryOutput(EGuLiTeam SettlementTeam, EGuLiResourceType Type, int32 Amount);
+    bool RegisterHybridOutpost(AGuLiTerritoryOutpostActor& Outpost,int32 Index);
+    void UnregisterHybridOutpost(AGuLiTerritoryOutpostActor& Outpost,int32 Index);
+    void ApplyHybridControlPoint(const FGuLiHybridObjectState& State,bool Effects);
+    FIntPoint GetHybridCaptureCounts(uint64 LogicalTick,int32 Territory);
+	FGuLiHybridObjectKey GetSettlementKey(const AActor* Actor) const;
+	uint64 GetSettlementTick() const;
+	FGuid SubmitResourceSettlement(const FGuLiHybridResourceRequest& Request);
+	FGuLiResourceSettlement OnResourceSettlement;
 
 	UFUNCTION(BlueprintPure, Category = "Resources|Territory")
 	bool CanTeamMineAt(EGuLiTeam Team, int32 ClusterId) const;
-	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Resources|Territory")
-	bool SetTerritoryOwner(uint8 TerritoryIndex, EGuLiTeam NewOwner);
-	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Resources|Territory")
-	bool SetTerritoryOwnerByBoardCoordinate(int32 Row, int32 Column, EGuLiTeam NewOwner);
-	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Resources|Mining")
-	bool MineOneRaw(EGuLiTeam Team, int32 ClusterId, EGuLiResourceType& OutResourceType);
-	bool MineNodeRaw(EGuLiTeam Team, uint16 ClusterId, uint32 NodeId, EGuLiResourceType& OutResourceType);
 	bool GetNodeMiningTarget(uint32 NodeId, FVector& Target) const;
 	uint32 FindNearestMiningNode(uint16 ClusterId, const FVector& Position) const;
 	void IgnoreMiningNavigationProxies(FCollisionQueryParams& Params) const;
@@ -95,6 +105,7 @@ public:
 	FGuLiResourceAmounts GetTeamInventory(EGuLiTeam Team) const;
 
 private:
+	bool bHybridMiningSimulationSupported=false;
 	UPROPERTY(Config)
 	FSoftObjectPath MapDefinitionAsset;
 
@@ -130,11 +141,12 @@ private:
 	bool bRuntimeReady = false;
 	bool bFatalInitializationError = false;
 	bool bAuthorityActorsSpawned = false;
+	bool bHybridQuerySceneReady = false;
+	bool bHybridDirectoryDirty = true;
 	double NavigationWaitStartSeconds = 0;
 	// Runtime world copies only; restore fully asynchronous gathering when the startup gate opens.
 	TArray<TWeakObjectPtr<ARecastNavMesh>> InitialSynchronousGatheringNavData;
 	bool bOreFieldInitialized = false;
-	bool bEconomyMatchStarted = false;
 	FString InitializationError;
 	uint32 LastAppliedWorldStateRevision = 0u;
 	uint32 NextControllableActorId = 1000;
@@ -143,19 +155,24 @@ private:
 	TMap<EGuLiTeam,TArray<int32>> TransportRegions;
 	FGuLiStrongholdTransportNetwork TransportNetwork;
 	float CaptureAccumulator = 0;
+    uint64 HybridCaptureTick=UINT64_MAX;
+    uint32 HybridCaptureEpoch=0;
+    TArray<FIntPoint> HybridCaptureCounts;
 	float MaintenanceAccumulator = 0;
 	float ActiveMaintenancePeriod = 0;
 	FGuid MaintenanceAccount;
 	uint32 MaintenanceRequestId = 0;
-	void TickStrongholds(float DeltaTime);
+
 	void RefreshEncirclement();
 
 	bool LoadAndValidateAssets();
 	bool ValidateCurrentMap() const;
-	bool SpawnAuthorityActors();
-	void DiscoverReplicatedActors();
-	void ApplyReplicatedState();
-	void UpdateNavigationReadiness();
+
+	bool RefreshHybridQueryScene();
+	void HandleHybridResourceDirectory();
+	void HandleHybridResourceNode(uint32 NodeId,uint8 Remaining);
+	void RefreshHybridClusterObstacle(int32 Index);
+
 	FVector ProjectAnchorToGround(const FVector& Anchor) const;
 	void HandleWorldStateChanged();
 	void HandleOreNodeChanged(uint32 NodeId, uint8 Remaining);

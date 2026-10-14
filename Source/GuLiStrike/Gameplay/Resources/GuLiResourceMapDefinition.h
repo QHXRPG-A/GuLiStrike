@@ -166,7 +166,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Resources|Validation")
 	bool ValidateConfig(FString& OutError) const;
 
-	/** Legacy C++ compatibility query; runtime building code uses IGuLiTeamEconomy. */
+	/** Authored cost query; runtime changes use the owner transaction contract. */
 	int32 GetBlueBuildingCost(EGuLiBuildingType Type) const;
 
 	const FGuLiOreVisualAsset* FindOreVisual(

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Net/Serialization/FastArraySerializer.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
 #include "Gameplay/Stronghold/GuLiStrongholdTransportNetwork.h"
 #include "GuLiResourceWorldState.generated.h"
@@ -12,7 +11,7 @@
 class AGuLiResourceWorldState;
 
 USTRUCT()
-struct GULISTRIKE_API FGuLiOreDeltaItem : public FFastArraySerializerItem
+struct GULISTRIKE_API FGuLiOreDeltaItem
 {
 	GENERATED_BODY()
 
@@ -27,36 +26,16 @@ struct GULISTRIKE_API FGuLiOreDeltaItem : public FFastArraySerializerItem
 };
 
 USTRUCT()
-struct GULISTRIKE_API FGuLiOreDeltaFastArray : public FFastArraySerializer
+struct GULISTRIKE_API FGuLiOreDeltaFastArray
 {
 	GENERATED_BODY()
 
 	UPROPERTY()
 	TArray<FGuLiOreDeltaItem> Items;
 
-	bool NetDeltaSerialize(FNetDeltaSerializeInfo& DeltaParams)
-	{
-		return FFastArraySerializer::FastArrayDeltaSerialize<FGuLiOreDeltaItem, FGuLiOreDeltaFastArray>(
-			Items, DeltaParams, *this);
-	}
 
-	void PostReplicatedAdd(const TArrayView<int32>& AddedIndices, int32 FinalSize);
-	void PostReplicatedChange(const TArrayView<int32>& ChangedIndices, int32 FinalSize);
-	void PreReplicatedRemove(const TArrayView<int32>& RemovedIndices, int32 FinalSize);
-	void PostReplicatedReceive(const FFastArraySerializer::FPostReplicatedReceiveParameters& Parameters);
-	void SetOwner(AGuLiResourceWorldState* InOwner) { Owner = InOwner; }
-
-private:
-	TWeakObjectPtr<AGuLiResourceWorldState> Owner;
-	bool bRebuildAfterRemove = false;
 };
 
-template <>
-struct TStructOpsTypeTraits<FGuLiOreDeltaFastArray>
-	: public TStructOpsTypeTraitsBase2<FGuLiOreDeltaFastArray>
-{
-	enum { WithNetDeltaSerializer = true };
-};
 
 USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiTerritoryRuntimeState
@@ -79,7 +58,7 @@ struct GULISTRIKE_API FGuLiTerritoryRuntimeState
 DECLARE_MULTICAST_DELEGATE(FGuLiResourceWorldStateChanged);
 DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiOreNodeChanged, uint32, uint8);
 
-/** Public replicated session state. The full immutable layout remains in the cooked DataAsset. */
+/** Local resource query projection. Immutable layout remains in the cooked DataAsset. */
 UCLASS(NotPlaceable)
 class GULISTRIKE_API AGuLiResourceWorldState final : public AActor
 {
@@ -89,18 +68,16 @@ public:
 	AGuLiResourceWorldState();
 
 	virtual void BeginPlay() override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	void InitializeAuthority(const FString& InLayoutHash, TConstArrayView<EGuLiTeam> InitialOwners);
-	void SetAuthorityReady(bool bReady);
-	void SetTransportNetworkAuthority(const FGuLiTransportNetworkSnapshot& Snapshot);
+	void ApplyTransportNetwork(const FGuLiTransportNetworkSnapshot& Snapshot);
 	UFUNCTION(BlueprintPure) FGuLiTransportNetworkSnapshot GetTransportNetworkSnapshot() const { return TransportNetwork; }
 	const FGuLiTransportNetworkSnapshot& GetTransportNetwork() const { return TransportNetwork; }
-	bool SetTerritoryOwnerAuthority(uint8 TerritoryIndex, EGuLiTeam NewOwner);
-	void SetTerritorySupplyAuthority(int32 Index, bool bSupplied);
-	void SetTerritoryEncircledAuthority(int32 Index, bool bEncircled);
-	void SetTerritoryGroundAuthority(int32 Index, const FVector& GroundLocation);
-	bool SetNodeRemainingAuthority(uint32 NodeId, uint8 RemainingAmount);
+	void ApplyTerritoryEncirclement(int32 Index, bool bEncircled);
+	/** Apply the resource owner's committed directory without emitting business actions. */
+	bool ApplyHybridDirectory(const FString& InLayoutHash,TConstArrayView<EGuLiTeam> Owners,
+		TConstArrayView<uint8> Remaining,TConstArrayView<FVector> GroundLocations);
+	bool ApplyHybridNodeRemaining(uint32 NodeId,uint8 RemainingAmount);
+    bool ApplyHybridTerritory(int32 Index,EGuLiTeam Owner,bool Supplied);
 
 	UFUNCTION(BlueprintPure, Category = "Resources|Network")
 	FString GetLayoutHash() const { return LayoutHash; }
@@ -113,30 +90,23 @@ public:
 	EGuLiTeam GetTerritoryOwner(uint8 TerritoryIndex) const;
 
 	FGuLiResourceWorldStateChanged& OnStateChanged() { return StateChanged; }
-	void NotifyFastArrayChanged();
-	void NotifyOreIndices(TConstArrayView<int32> Indices);
 	FGuLiOreNodeChanged OreNodeChanged;
 
 private:
-	UFUNCTION()
-	void OnRep_LayoutState();
 
-	UFUNCTION()
-	void OnRep_Territories();
 
-	UPROPERTY(ReplicatedUsing = OnRep_LayoutState)
+	UPROPERTY()
 	FString LayoutHash;
 
-	UPROPERTY(ReplicatedUsing = OnRep_LayoutState)
+	UPROPERTY()
 	bool bAuthorityReady = false;
 
-	UPROPERTY(ReplicatedUsing = OnRep_Territories)
+	UPROPERTY()
 	TArray<FGuLiTerritoryRuntimeState> Territories;
 
-	UPROPERTY(Replicated)
+	UPROPERTY()
 	FGuLiOreDeltaFastArray OreDeltas;
-	UPROPERTY(ReplicatedUsing=OnRep_TransportNetwork) FGuLiTransportNetworkSnapshot TransportNetwork;
-	UFUNCTION() void OnRep_TransportNetwork();
+	UPROPERTY() FGuLiTransportNetworkSnapshot TransportNetwork;
 
 	TMap<uint32, int32> OreDeltaIndexByNodeId;
 	FGuLiResourceWorldStateChanged StateChanged;

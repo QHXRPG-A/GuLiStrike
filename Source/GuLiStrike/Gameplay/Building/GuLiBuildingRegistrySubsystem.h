@@ -18,6 +18,8 @@ public:
 	virtual void Tick(float Dt) override;
 	virtual TStatId GetStatId() const override;
 	void RegisterConstructionPrototype(ACharacter& Vehicle);
+	ACharacter* GetConstructionPrototype() const {return ConstructionPrototype.Get();}
+	void GetConstructionVehicles(TArray<ACharacter*>& Out) const;
 	void UnregisterConstructionPrototype(ACharacter& Vehicle);
 	void QueueConstructionSlots(UGuLiBuildingLifecycleComponent& Building);
 	void Register(UGuLiBuildingLifecycleComponent& Building);

@@ -136,6 +136,9 @@ htmlcov/
 ArtSource/Environment/GuLiStrike_*Island_*/UEImport/LandscapeInputs/*.r16
 ArtSource/Environment/GuLiStrike_*Island_*/UEImport/LandscapeInputs/*.u8
 # Packaged acceptance builds and binary inspection backups are reproducible local outputs.
+# Publish compact acceptance summaries under Progress/Evidence, not raw session captures.
+/TestResults/
+/Content/Development/EditorBackups/
 TestResults/**/Cooked*/
 # Isolated validation projects duplicate source/plugins and remain local.
 TestResults/CommanderMoveContinuity/validation-project-*/

@@ -11,7 +11,6 @@
 
 class UGuLiCommanderSkillComponent;
 class UGuLiShipBuildComponent;
-struct FGuLiArmySkillCommand;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGuLiCommanderPlayerStateChangedSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGuLiWeaponChangeResultSignature, const FGuLiWeaponChangeResult&, Result);
@@ -21,7 +20,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(
 	Inventory);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGuLiResourcePrivateStateChangedSignature);
 
-/** 通用玩家身份与角色复制；公共战局就绪、士兵流就绪分别维护，不互相替代。 */
+/** 协调成员状态的本地玩家镜像；身份、席位和就绪由 Hybrid 提交结果应用。 */
 UCLASS()
 class GULISTRIKE_API AGuLiBattlePlayerState : public APlayerState
 {
@@ -34,14 +33,13 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	UFUNCTION(BlueprintPure, Category="Commander|Skills") UGuLiCommanderSkillComponent* GetCommanderSkills() const { return CommanderSkills; }
 	/** Server-local automatic-weapon/upgrades command; no client RPC. */
-	bool ExecuteArmySkillCommand(const FGuLiArmySkillCommand& Command, FString& OutError);
 
 	/** Committed, read-only equipment view; locked/empty slots remain visible for progression. */
 	UFUNCTION(BlueprintPure, Category="Battle|Weapons")
 	TArray<FGuLiWeaponChannelView> GetWeaponChannels(EGuLiWeaponDomain Domain) const;
 
 	/** Empty SkillId unequips the selected slot. RequestId must be reused when retrying. */
-	UFUNCTION(Server, Reliable, BlueprintCallable, Category="Battle|Weapons")
+	UFUNCTION(BlueprintCallable, Category="Battle|Weapons")
 	void ServerRequestEquipWeapon(FGuid RequestId, FGuLiWeaponBindingKey Binding, FName SkillId, int64 ExpectedLoadoutRevision);
 
 	UPROPERTY(BlueprintAssignable, Category="Battle|Weapons")
@@ -52,7 +50,6 @@ public:
 
 	static constexpr uint8 InvalidSlotIndex = MAX_uint8;
 
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	// 跨派生类的 PlayerState 迁移：只保留身份/席位，新连接或新战局清除两种就绪资格。
 	virtual void CopyProperties(APlayerState* PlayerState) override;
 	virtual void OverrideWith(APlayerState* PlayerState) override;
@@ -74,6 +71,8 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Commander|Player")
 	FGuid GetPlayerGuid() const { return PlayerGuid; }
+    UFUNCTION(BlueprintPure,Category="Battle|Role") int64 GetSeatVersion() const { return SeatVersion; }
+    void SetHybridSeatVersion(uint64 Version);
 
 	UFUNCTION(BlueprintPure, Category = "Commander|Player")
 	EGuLiTeam GetTeam() const { return Team; }
@@ -131,13 +130,16 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Resources|Economy")
 	FGuLiResourcePrivateStateChangedSignature OnResourcePrivateStateChanged;
 
-	// 本地 UI/逻辑通知，由服务器 setter 或客户端 RepNotify 触发，委托本身不跨网。
+	// 本地 UI/逻辑通知，由已提交成员状态应用触发。
 	UPROPERTY(BlueprintAssignable, Category = "Commander|Player")
 	FGuLiCommanderPlayerStateChangedSignature OnCommanderPlayerStateChanged;
 
 private:
+    UPROPERTY() int64 SeatVersion=1;
+	friend class UGuLiHybridWorldSubsystem;
+	bool ApplyHybridRole(const FGuid& Identity,EGuLiTeam NewTeam,EGuLiCommanderRole NewRole,uint8 NewSlot,bool bReady);
 	UPROPERTY(VisibleAnywhere, Category="Ship|Build") TObjectPtr<UGuLiShipBuildComponent> ShipBuild;
-	UFUNCTION(Client, Reliable)
+	UFUNCTION()
 	void ClientReceiveWeaponChangeResult(const FGuLiWeaponChangeResult& Result);
 	/** Shared server handler for the RPC; returns the immediate result before any fixed-step commit. */
 	FGuLiWeaponChangeResult ProcessEquipWeaponRequest(FGuid RequestId, const FGuLiWeaponBindingKey& Binding,
@@ -163,38 +165,29 @@ private:
 	void NotifyStateChanged();
 
 	UFUNCTION()
-	void OnRep_Assignment();
-
-	UFUNCTION()
-	void OnRep_BattleReady();
-
-	UFUNCTION()
-	void OnRep_SyncReady();
-
-	UFUNCTION()
 	void OnRep_ResourcePrivateState(FGuLiTeamResourcePrivateState PreviousState);
 
-	UPROPERTY(ReplicatedUsing = OnRep_Assignment)
+	UPROPERTY()
 	FGuid PlayerGuid;
 
-	UPROPERTY(ReplicatedUsing = OnRep_Assignment)
+	UPROPERTY()
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
 
-	UPROPERTY(ReplicatedUsing = OnRep_Assignment)
+	UPROPERTY()
 	EGuLiCommanderRole CommanderRole = EGuLiCommanderRole::Observer;
 
-	UPROPERTY(ReplicatedUsing = OnRep_Assignment)
+	UPROPERTY()
 	uint8 SlotIndex = InvalidSlotIndex;
 
-	/** 公共战局元数据已完成握手，和士兵名册的流资格独立复制。 */
-	UPROPERTY(ReplicatedUsing = OnRep_BattleReady)
+	/** 本地镜像保留就绪 Getter；资格由已提交目录和世界状态决定。 */
+	UPROPERTY()
 	bool bBattleReady = false;
 
-	/** 保留字段名兼容旧复制/反射查找，仅表示士兵流就绪。 */
-	UPROPERTY(ReplicatedUsing = OnRep_SyncReady)
+	/** 保留字段和 Getter 供玩法、UI 消费，不另建复制握手。 */
+	UPROPERTY()
 	bool bSyncReady = false;
 
 	/** Session state only; intentionally omitted from CopyProperties/OverrideWith. */
-	UPROPERTY(ReplicatedUsing = OnRep_ResourcePrivateState)
+	UPROPERTY()
 	FGuLiTeamResourcePrivateState ResourcePrivateState;
 };

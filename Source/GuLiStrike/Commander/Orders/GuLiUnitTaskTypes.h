@@ -6,6 +6,7 @@
 #include "GuLiUnitTaskTypes.generated.h"
 
 class APawn;
+class UWorld;
 class AGuLiBattlePlayerState;
 class UGuLiCommanderStateTreeComponent;
 struct FGuLiSharedMoveIntent;
@@ -30,8 +31,8 @@ struct FGuLiTaskUnitId
 	bool IsValid() const { return Id != 0 && Generation != 0; }
 	friend bool operator==(const FGuLiTaskUnitId& A, const FGuLiTaskUnitId& B) { return A.Id == B.Id && A.Generation == B.Generation && A.bActor == B.bActor; }
 	friend uint32 GetTypeHash(const FGuLiTaskUnitId& A) { return HashCombine(HashCombine(::GetTypeHash(A.Id), ::GetTypeHash(A.Generation)), ::GetTypeHash(A.bActor)); }
-	static FGuLiTaskUnitId Soldier(FGuLiSoldierId Id) { FGuLiTaskUnitId V; V.Id = Id.Value; return V; }
-	static FGuLiTaskUnitId Actor(FGuLiControllableActorId Id) { FGuLiTaskUnitId V; V.Id = Id.Value; V.bActor = true; return V; }
+	static FGuLiTaskUnitId Soldier(FGuLiSoldierId Id,const UWorld* World=nullptr);
+	static FGuLiTaskUnitId Actor(FGuLiControllableActorId Id,const UWorld* World=nullptr);
 };
 
 USTRUCT()
@@ -89,6 +90,7 @@ struct FGuLiCommanderControlGroup
 	GENERATED_BODY()
 	UPROPERTY() TArray<FGuLiSoldierId> Soldiers;
 	UPROPERTY() TArray<FGuLiControllableActorId> Actors;
+	UPROPERTY() TArray<FGuLiHybridObjectKey> Objects;
 };
 
 struct FGuLiTaskUnitContext

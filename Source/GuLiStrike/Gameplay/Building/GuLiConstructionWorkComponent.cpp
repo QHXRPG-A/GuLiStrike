@@ -9,10 +9,12 @@
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "GameFramework/Character.h"
 #include "Engine/World.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 
 UGuLiConstructionWorkComponent::UGuLiConstructionWorkComponent()
 {
-    PrimaryComponentTick.bCanEverTick=true; PrimaryComponentTick.bStartWithTickEnabled=false;
+    PrimaryComponentTick.bCanEverTick=false; PrimaryComponentTick.bStartWithTickEnabled=false;
     PrimaryComponentTick.TickInterval=.1f;
 }
 void UGuLiConstructionWorkComponent::BeginPlay()
@@ -51,12 +53,12 @@ bool UGuLiConstructionWorkComponent::QueryPosition(const UGuLiBuildingLifecycleC
 
 bool UGuLiConstructionWorkComponent::AssignBuilding(UGuLiBuildingLifecycleComponent& Building, bool bAutomatic)
 {
-    check(GetOwner()->HasAuthority());
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner())) return false;
     FVector Position; float UnusedLength;
     if (!PrepareBuilding(Building, Position, UnusedLength)) return false;
     StopWork(); ++TaskVersion; Target = &Building; bAutomaticOrder = bAutomatic;
     OrderReason = TEXT("已接单，尚未占用施工位");
-    SetComponentTickEnabled(true);
+    SetComponentTickEnabled(false);
     return true;
 }
 
@@ -78,11 +80,12 @@ void UGuLiConstructionWorkComponent::StopWork()
     SetComponentTickEnabled(false);
     bMoveRequested = bApplyingWork = bMoveFailed = bOrderCancelled = bAutomaticOrder = false;
     NextPositionCheck = 0;
+    bHybridSlotAcknowledged=false; HybridSlotRequestedAt=0;
 }
 
 void UGuLiConstructionWorkComponent::SelectPosition()
 {
-    if (!GetOwner()->HasAuthority() || IsTerminalFailure()) return;
+    if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || IsTerminalFailure()) return;
     if (!QueryPosition(*Target, Intent, WorkPosition))
     {
         CancelOrder(TEXT("施工位已满或不可用，退单"));
@@ -97,7 +100,7 @@ void UGuLiConstructionWorkComponent::CancelOrder(const FString& Reason, bool bRe
     PublishConstructionActivity(false);
     if (bRejectPosition && Intent.IsValid())
     {
-        Rejected.Add({ Intent.Slot, bUnreachable ? TNumericLimits<double>::Max() : GetWorld()->GetTimeSeconds() + 1.0,
+        Rejected.Add({ Intent.Slot, bUnreachable ? TNumericLimits<double>::Max() : UGuLiHybridActorComponent::BattleSeconds(GetOwner()) + 1.0,
             GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>()->GetStaticRevision(),
             GetOwner()->GetActorLocation(), Intent.Generation, Intent.Building });
         if (Rejected.Num() > 64) Rejected.RemoveAt(0);
@@ -117,7 +120,7 @@ void UGuLiConstructionWorkComponent::RetryPosition()
 
 bool UGuLiConstructionWorkComponent::IsRejectionCurrent(const FRejected& R,const UGuLiBuildingLifecycleComponent& Building) const
 {
-    if (R.Building!=Building.GetState().InstanceId || R.RetryAt<=GetWorld()->GetTimeSeconds()
+    if (R.Building!=Building.GetState().InstanceId || R.RetryAt<=UGuLiHybridActorComponent::BattleSeconds(GetOwner())
         || R.Generation!=Building.GetConstructionSlotGeneration()) return false;
     // A lost arrival race excludes the position for the full second, even while
     // braking. Only unreachable-path failures depend on the previous start point.
@@ -151,8 +154,14 @@ bool UGuLiConstructionWorkComponent::BeginBehaviorMove()
 
 bool UGuLiConstructionWorkComponent::BeginBehaviorConstruction()
 {
-    if (!GetOwner()->HasAuthority() || GetBehaviorResult() != EGuLiCommanderWorkResult::Arrived) return false;
-    if (!Target->TryOccupyConstructionSlot(*CastChecked<ACharacter>(GetOwner()), TaskVersion, Intent, Reservation))
+    if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || GetBehaviorResult() != EGuLiCommanderWorkResult::Arrived) return false;
+    if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+    {
+        // The published request is accepted at the building owner's logical step.
+        Reservation={Intent.Building,Intent.Slot,Intent.Generation,TaskVersion};
+        bHybridSlotAcknowledged=false; HybridSlotRequestedAt=UGuLiHybridActorComponent::BattleSeconds(GetOwner());
+    }
+    else if (!Target->TryOccupyConstructionSlot(*CastChecked<ACharacter>(GetOwner()), TaskVersion, Intent, Reservation))
     {
         CancelOrder(TEXT("抵达抢位失败，退单"), true);
         return false;
@@ -186,6 +195,7 @@ EGuLiCommanderWorkResult UGuLiConstructionWorkComponent::GetBehaviorResult() con
     if (Target->IsCompleted() || Target->GetState().Phase == EGuLiBuildingPhase::ConvertedToUnit) return Result::Complete;
     if (UGuLiExternalUnitControlComponent::AreActorActionsLocked(GetOwner())) return Result::Running;
     if (!Intent.IsValid()) return Result::None;
+    if (bApplyingWork && UGuLiNetworkSettings::IsHybrid(GetWorld()) && !bHybridSlotAcknowledged) return Result::Running;
     if (bApplyingWork && !Target->ValidateConstructionSlot(*CastChecked<ACharacter>(GetOwner()), Reservation)) return Result::OutOfRange;
     const auto* Travel = GetOwner()->FindComponentByClass<UGuLiEngineeringTravelComponent>();
     if (bMoveFailed || (bMoveRequested && Travel->GetMoveStatus() == EGuLiEngineeringMoveStatus::Failed)) return Result::OutOfRange;
@@ -220,15 +230,23 @@ bool UGuLiConstructionWorkComponent::HasLocalReplacement() const
     return false;
 }
 
-void UGuLiConstructionWorkComponent::TickComponent(float Dt, ELevelTick TickType, FActorComponentTickFunction* Function)
+void UGuLiConstructionWorkComponent::AdvanceHybrid(float Dt)
 {
-    Super::TickComponent(Dt, TickType, Function);
-    if (!GetOwner()->HasAuthority()) return;
+    if (UGuLiHybridActorComponent::HasSimulation(GetOwner()) && Target.IsValid()) AdvanceWork(Dt);
+}
+void UGuLiConstructionWorkComponent::AdvanceWork(float Dt)
+{
     if (!GetOwner()->FindComponentByClass<UGuLiCombatHealthComponent>()->IsAlive()) { StopWork(); return; }
     if (bOrderCancelled) { PublishConstructionActivity(false); return; }
-    if (GetWorld()->GetTimeSeconds() >= NextPositionCheck)
+    const double Now=UGuLiHybridActorComponent::BattleSeconds(GetOwner());
+    if (UGuLiNetworkSettings::IsHybrid(GetWorld()) && bApplyingWork && !bHybridSlotAcknowledged && Target.IsValid())
     {
-        NextPositionCheck = GetWorld()->GetTimeSeconds() + .2;
+        if (Target->ValidateConstructionSlot(*CastChecked<ACharacter>(GetOwner()),Reservation)) bHybridSlotAcknowledged=true;
+        else if (Now>HybridSlotRequestedAt+1.) CancelOrder(TEXT("施工负责人未接受占位，退单"),true);
+    }
+    if (Now >= NextPositionCheck)
+    {
+        NextPositionCheck = Now + .2;
         const auto* Building = Target.Get();
         if (!Building || Building->GetState().Phase == EGuLiBuildingPhase::Destroyed)
             CancelOrder(TEXT("建筑已销毁，退单"));
@@ -249,7 +267,6 @@ void UGuLiConstructionWorkComponent::TickComponent(float Dt, ELevelTick TickType
         && Target->ValidateConstructionSlot(*CastChecked<ACharacter>(GetOwner()), Reservation)
         && FVector::Dist2D(GetOwner()->GetActorLocation(), WorkPosition) <= 100 && Dt > 0;
     PublishConstructionActivity(bCanWork);
-    if (bCanWork) Target->AccumulateConstructionWork(Dt);
 }
 
 void UGuLiConstructionWorkComponent::SuspendConstructionEffects()
@@ -261,10 +278,55 @@ void UGuLiConstructionWorkComponent::PublishConstructionActivity(bool bActive)
 {
     if (!GetOwner()->HasAuthority()) return;
     auto* Building = bActive ? Target.Get() : nullptr;
-    if (auto* Previous = ContributingTo.Get(); Previous && Previous != Building)
-        Previous->SetConstructionContributor(*GetOwner(), false);
     ContributingTo = Building;
-    if (Building) Building->SetConstructionContributor(*GetOwner(), true);
     if (auto* Visual = GetOwner()->FindComponentByClass<UGuLiConstructionPresentationComponent>())
         Visual->SetConstructionAuthority(Building);
+}
+
+FGuLiHybridConstructionFact UGuLiConstructionWorkComponent::GetHybridWorkFact(uint64 At) const
+{
+    FGuLiHybridConstructionFact F; F.At=At; F.Task=TaskVersion; F.Intent=Intent;
+    const auto* Building=Target.Get(); const auto* Binding=Building?UGuLiHybridActorComponent::Find(Building->GetOwner()):nullptr;
+    if (!Binding || IsTerminalFailure()) return F;
+    F.Target=Binding->GetObjectKey(); F.bOccupy=bApplyingWork && Reservation.IsValid();
+    const auto* Travel=GetOwner()->FindComponentByClass<UGuLiEngineeringTravelComponent>();
+    F.bReady=F.bOccupy && Travel && !Travel->IsRouting() && !Travel->IsInTransit() && !Travel->IsWaitingForPath()
+        && Travel->GetMoveStatus()!=EGuLiEngineeringMoveStatus::Moving
+        && !UGuLiExternalUnitControlComponent::AreActorActionsLocked(GetOwner())
+        && FVector::Dist2D(GetOwner()->GetActorLocation(),WorkPosition)<=100;
+    return F;
+}
+bool UGuLiConstructionWorkComponent::ApplyHybridWorkFact(const FGuLiHybridConstructionFact& F)
+{
+    if (F.Target.IsValid())
+    {
+        auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>(); FGuLiHybridObjectState O;
+        const auto* Source=UGuLiHybridActorComponent::Find(GetOwner());
+        if (!H || !Source || F.Target.Kind!=EGuLiHybridObjectKind::Building || !H->GetObject(F.Target,O)
+            || (F.Intent.Building && O.Ordinal!=F.Intent.Building) || O.Team!=Source->GetState().Team || !F.Task) return false;
+    }
+    else if (F.bOccupy || F.bReady) return false;
+    if ((F.bOccupy && (!F.Intent.IsValid() || !F.Intent.Generation)) || (F.bReady && !F.bOccupy)) return false;
+    ObservedHybridFact=F;
+    auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    ObservedFactReceivedTick=H?H->GetLocalLogicalTick():0;
+    bObservedFactReceived=H!=nullptr;
+    auto* Building=H?H->FindBoundActor(F.Target):nullptr;
+    if (auto* Visual=GetOwner()->FindComponentByClass<UGuLiConstructionPresentationComponent>())
+        Visual->SetConstructionAuthority(F.bReady && Building?Building->FindComponentByClass<UGuLiBuildingLifecycleComponent>():nullptr);
+    return true;
+}
+
+bool UGuLiConstructionWorkComponent::GetObservedHybridFact(FGuLiHybridConstructionFact& Fact,uint64* ReceivedAge) const
+{
+    const auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    Fact=ObservedHybridFact;
+    const uint64 Now=H?H->GetLocalLogicalTick():0;
+    if (ReceivedAge) *ReceivedAge=H && bObservedFactReceived && Now>=ObservedFactReceivedTick
+        ?Now-ObservedFactReceivedTick:MAX_uint64;
+    // A building callback uses that building's independent age. Never compare
+    // it with the receiver clock on which the engineer fact arrived.
+    if (!H || !bObservedFactReceived || Now<ObservedFactReceivedTick
+        || Now-ObservedFactReceivedTick>30) return false;
+    return true;
 }

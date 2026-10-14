@@ -23,7 +23,7 @@ private:
 	UFUNCTION() void HandleDeath();
 	UFUNCTION() void HandleDestroyed(AActor* Actor);
 	UFUNCTION() void HandleAnyDamage(AActor* Actor, float Damage, const UDamageType* Type, AController* Instigator, AActor* Causer);
-	UFUNCTION(NetMulticast, Unreliable) void MulticastHit();
+	UFUNCTION() void MulticastHit();
 	void HideLivingMeshes();
 	TArray<TWeakObjectPtr<UMeshComponent>> HiddenLivingMeshes;
 	TWeakObjectPtr<AGuLiUnitWreck> Wreck;

@@ -1,5 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 #include "Gameplay/Presentation/GuLiTeamOutlineComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Components/SkinnedMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -15,7 +16,7 @@ UGuLiTeamOutlineComponent::UGuLiTeamOutlineComponent()
 void UGuLiTeamOutlineComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	if (GetNetMode() == NM_DedicatedServer) return;
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	HealthSource = GetOwner()->FindComponentByClass<UGuLiCombatHealthComponent>();
 	SetComponentTickEnabled(HealthSource != nullptr);
 	if (HealthSource) OutlineTeam = HealthSource->GetCombatTeam();
@@ -40,7 +41,7 @@ void UGuLiTeamOutlineComponent::SetOutlineTeam(EGuLiTeam NewTeam)
 
 void UGuLiTeamOutlineComponent::RefreshMeshes()
 {
-	if (GetNetMode() == NM_DedicatedServer) return;
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	TInlineComponentArray<UPrimitiveComponent*> Meshes(GetOwner());
 	for (UPrimitiveComponent* Mesh : Meshes)
 	{

@@ -4,14 +4,7 @@
 
 #include "Net/UnrealNetwork.h"
 
-void AGuLiCommanderGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(AGuLiCommanderGameState, EffectiveSoldierMoveSpeedCmPerSecond);
-	DOREPLIFETIME(AGuLiCommanderGameState, RuntimeTuningRevision);
-	DOREPLIFETIME(AGuLiCommanderGameState, UnitMovementMultipliers);
-}
 
 float AGuLiCommanderGameState::GetEffectiveUnitMoveSpeedCmPerSecond(EGuLiTeam Team, uint16 UnitTypeId) const
 {
@@ -37,14 +30,14 @@ void AGuLiCommanderGameState::SetAuthoritativeUnitMovementMultiplier(EGuLiTeam T
 		Entry->UnitTypeId = UnitTypeId;
 	}
 	Entry->Multiplier = Multiplier;
-	ForceNetUpdate();
+
 }
 
 void AGuLiCommanderGameState::ResetAuthoritativeUnitMovementMultipliers()
 {
 	if (!HasAuthority() || UnitMovementMultipliers.IsEmpty()) return;
 	UnitMovementMultipliers.Reset();
-	ForceNetUpdate();
+
 }
 
 void AGuLiCommanderGameState::SetAuthoritativeSoldierMovementTuning(
@@ -62,7 +55,7 @@ void AGuLiCommanderGameState::SetAuthoritativeSoldierMovementTuning(
 	OnRuntimeTuningChanged.Broadcast(
 		this->EffectiveSoldierMoveSpeedCmPerSecond,
 		RuntimeTuningRevision);
-	ForceNetUpdate();
+
 }
 
 // 仅士兵调参的本地消费入口；公共席位和战局复制仍由基类处理。

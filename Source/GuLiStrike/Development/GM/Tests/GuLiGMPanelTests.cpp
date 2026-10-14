@@ -3,7 +3,6 @@
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "Development/GM/GuLiGMPanelModel.h"
-#include "Gameplay/Skills/GuLiSkillGMUtilities.h"
 #include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
@@ -46,29 +45,6 @@ bool FGuLiGMPanelRightLayoutTest::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(
-	FGuLiGMPanelPermissionMatrixTest,
-	"GuLiStrike.GM.Panel.PermissionMatrix",
-	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
-
-bool FGuLiGMPanelPermissionMatrixTest::RunTest(const FString& Parameters)
-{
-	(void)Parameters;
-	const GuLiGMPanel::FAccessPolicy Standalone = GuLiGMPanel::ResolveAccessPolicy(NM_Standalone);
-	TestTrue(TEXT("Standalone can mutate authority state"), Standalone.bCanMutateAuthorityState);
-	TestTrue(TEXT("Standalone can read registries and diagnostics"), Standalone.bCanReadRuntimeRegistry && Standalone.bCanReadSkillSources && Standalone.bCanReadAuthorityDiagnostics);
-
-	const GuLiGMPanel::FAccessPolicy Listen = GuLiGMPanel::ResolveAccessPolicy(NM_ListenServer);
-	TestTrue(TEXT("Listen host can mutate authority state"), Listen.bCanMutateAuthorityState);
-
-	const GuLiGMPanel::FAccessPolicy Client = GuLiGMPanel::ResolveAccessPolicy(NM_Client);
-	TestFalse(TEXT("Client never receives a new authority mutation path"), Client.bCanMutateAuthorityState);
-	TestFalse(TEXT("Client cannot read unreplicated registry/source/navigation state"), Client.bCanReadRuntimeRegistry || Client.bCanReadSkillSources || Client.bCanReadAuthorityDiagnostics);
-	TestTrue(TEXT("Client can read replicated committed profiles"), Client.bCanReadSkillProfiles);
-	TestTrue(TEXT("Client keeps explicitly local tools"), Client.bCanRunLocalBenchmark && Client.bCanToggleLocalCameraDebug);
-	TestTrue(TEXT("Client denial is explicit"), Client.AuthorityUnavailableReason.Contains(TEXT("不发送 GM RPC")));
-	return true;
-}
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FGuLiGMPanelConfirmationTest,
@@ -109,36 +85,5 @@ bool FGuLiGMPanelInputLifecycleTest::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(
-	FGuLiGMPanelSourceIdAndInvalidInputTest,
-	"GuLiStrike.GM.Panel.SourceIdAndInvalidInput",
-	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
-
-bool FGuLiGMPanelSourceIdAndInvalidInputTest::RunTest(const FString& Parameters)
-{
-	(void)Parameters;
-	const FGuid RedA = GuLiSkillGM::MakeSourceId(EGuLiTeam::Red, TEXT("PanelSource"));
-	const FGuid RedB = GuLiSkillGM::MakeSourceId(EGuLiTeam::Red, TEXT("PanelSource"));
-	const FGuid Blue = GuLiSkillGM::MakeSourceId(EGuLiTeam::Blue, TEXT("PanelSource"));
-	const FGuid OtherLabel = GuLiSkillGM::MakeSourceId(EGuLiTeam::Red, TEXT("OtherSource"));
-	TestTrue(TEXT("Team+Label SourceId is stable"), RedA == RedB);
-	TestTrue(TEXT("Team is part of SourceId"), RedA != Blue);
-	TestTrue(TEXT("Label is part of SourceId"), RedA != OtherLabel);
-
-	GuLiGMPanel::FModel Model;
-	GuLiGMPanel::FSkillNumericRequest Invalid;
-	Invalid.Team = EGuLiTeam::Red;
-	Invalid.UnitTypeId = TEXT("1");
-	Invalid.SlotId = TEXT("");
-	Invalid.Value = TEXT("1");
-	TestFalse(TEXT("Empty slot is rejected before dispatch"), Model.SetSkillNumericOverride(Invalid).bSuccess);
-	Invalid.SlotId = TEXT("BasicAttack");
-	Invalid.Value = TEXT("nan");
-	TestFalse(TEXT("NaN is rejected before dispatch"), Model.SetSkillNumericOverride(Invalid).bSuccess);
-	Invalid.Value = TEXT("1");
-	Invalid.Team = EGuLiTeam::Unassigned;
-	TestFalse(TEXT("Invalid team is rejected before dispatch"), Model.SetSkillNumericOverride(Invalid).bSuccess);
-	return true;
-}
 
 #endif

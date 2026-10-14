@@ -5,6 +5,7 @@
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
 #include "NavigationSystem.h"
 #include "Engine/World.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 
 void UGuLiBuildingRegistrySubsystem::Register(UGuLiBuildingLifecycleComponent& Building)
 {
@@ -12,12 +13,7 @@ void UGuLiBuildingRegistrySubsystem::Register(UGuLiBuildingLifecycleComponent& B
 	check(Id != 0);
 	if (Buildings.Contains(Id)) return;
 	Buildings.Add(Id, &Building);
-	if (Building.GetOwner()->HasAuthority())
-	{
-		OnSpawned.Broadcast(Building);
-		if (ConstructionPrototype.IsValid()) Building.PrepareConstructionSlots(*ConstructionPrototype);
-		if (Building.IsCompleted()) OnCompleted.Broadcast(Building);
-	}
+
 }
 void UGuLiBuildingRegistrySubsystem::Unregister(UGuLiBuildingLifecycleComponent& Building)
 {
@@ -44,6 +40,10 @@ void UGuLiBuildingRegistrySubsystem::RegisterConstructionPrototype(ACharacter& V
 	ConstructionPrototype=&Vehicle;
 	for (const auto& Pair : Buildings) if (auto* Building=Pair.Value.Get()) Building->PrepareConstructionSlots(Vehicle);
 }
+void UGuLiBuildingRegistrySubsystem::GetConstructionVehicles(TArray<ACharacter*>& Out) const
+{
+	Out.Reset(); for (const auto& Weak:ConstructionVehicles) if (auto* Vehicle=Weak.Get()) Out.Add(Vehicle);
+}
 void UGuLiBuildingRegistrySubsystem::UnregisterConstructionPrototype(ACharacter& Vehicle)
 {
 	ConstructionVehicles.RemoveAll([&](const auto& Entry) { return !Entry.IsValid() || Entry.Get()==&Vehicle; });
@@ -61,6 +61,7 @@ void UGuLiBuildingRegistrySubsystem::DirtyConstructionSlots(const FBox& Bounds)
 }
 void UGuLiBuildingRegistrySubsystem::Tick(float)
 {
+	if (const auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>(); H && (H->IsBattlePaused() || !H->CanPublishFacts())) return;
 	if (GetWorld()->GetNetMode()==NM_Client || SlotQueue.IsEmpty() || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld())) return;
 	const double Start=FPlatformTime::Seconds(); const int32 Count=FMath::Min(4,SlotQueue.Num());
 	for (int32 I=0; I<Count && FPlatformTime::Seconds()-Start<.001; ++I)

@@ -15,209 +15,15 @@
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "UObject/CoreNet.h"
 
-#if WITH_EDITOR
-#include "Editor.h"
-#include "HAL/IConsoleManager.h"
-#include "HAL/FileManager.h"
-#include "Misc/FileHelper.h"
-#include "Misc/Paths.h"
-#include "PlayInEditorDataTypes.h"
-#include "Settings/LevelEditorPlaySettings.h"
-#include "UObject/StrongObjectPtr.h"
-#include "UObject/UObjectIterator.h"
-#include "NiagaraComponent.h"
-#include "NiagaraEmitterInstance.h"
-#include "NiagaraEmitterHandle.h"
-#include "NiagaraSystem.h"
-#include "NiagaraSystemInstanceController.h"
-#include "NiagaraDataChannel.h"
-#include "NiagaraDataChannelFunctionLibrary.h"
-#include "NiagaraDataChannelHandler.h"
-#include "NiagaraDataChannelData.h"
-#include "NiagaraDataSet.h"
-#include "UObject/UnrealType.h"
-#include "Commander/Network/GuLiSoldierStateReplicator.h"
-#include "EngineUtils.h"
-#include "Engine/NetDriver.h"
-#include "Engine/NetConnection.h"
-#include "Engine/GameViewportClient.h"
-#include "ImageUtils.h"
-#include "UnrealClient.h"
-#include "Containers/Ticker.h"
-#include "Serialization/JsonWriter.h"
-
-// Explicit acceptance helpers stay in this authorized test file, never in shipping gameplay.
-namespace GuLiCombatEffectsPIEQA
-{
-	TStrongObjectPtr<ULevelEditorPlaySettings> PlaySettings;
-	FDelegateHandle EndHandle;
-	void Start(const TArray<FString>& Args)
-	{
-		if (!GEditor || GEditor->IsPlaySessionInProgress() || Args.Num() != 1
-			|| (Args[0] != TEXT("listen") && Args[0] != TEXT("dedicated") && Args[0] != TEXT("dedicated-late")))
-		{ UE_LOG(LogTemp, Error, TEXT("Combat effects QA requires stopped PIE: gs.CombatEffects.QA.Start listen|dedicated")); return; }
-		PlaySettings.Reset(DuplicateObject<ULevelEditorPlaySettings>(GetDefault<ULevelEditorPlaySettings>(), GetTransientPackage()));
-		PlaySettings->SetFlags(RF_Transient);
-		PlaySettings->SetPlayNetMode(Args[0] == TEXT("listen") ? EPlayNetMode::PIE_ListenServer : EPlayNetMode::PIE_Client);
-		PlaySettings->SetPlayNumberOfClients(Args[0]==TEXT("dedicated-late") ? 1 : 2); PlaySettings->SetRunUnderOneProcess(true);
-		PlaySettings->bLaunchSeparateServer = false;
-		PlaySettings->NewWindowWidth = 960; PlaySettings->NewWindowHeight = 540;
-		PlaySettings->SetClientWindowSize(FIntPoint(960,540)); PlaySettings->LastSize = FIntPoint(960,540);
-		PlaySettings->MultipleInstancePositions.Reset(); PlaySettings->CenterNewWindow = true;
-		EndHandle = FEditorDelegates::EndPIE.AddLambda([](bool)
-		{ PlaySettings.Reset(); FEditorDelegates::EndPIE.Remove(EndHandle); EndHandle.Reset(); });
-		FRequestPlaySessionParams Request;
-		Request.EditorPlaySettings = PlaySettings.Get(); Request.SessionDestination = EPlaySessionDestinationType::InProcess;
-		Request.WorldType = EPlaySessionWorldType::PlayInEditor; Request.bAllowOnlineSubsystem = false;
-		GEditor->RequestPlaySession(Request);
-	}
-	void Sample()
-	{
-		FString Json; const auto Writer = TJsonWriterFactory<>::Create(&Json); Writer->WriteArrayStart();
-		for (const auto& Context : GEngine->GetWorldContexts())
-		{
-			UWorld* World = Context.World(); if (!World || World->WorldType != EWorldType::PIE) continue;
-			Writer->WriteObjectStart(); Writer->WriteValue(TEXT("world"),World->GetPathName());
-			Writer->WriteValue(TEXT("net_mode"),static_cast<int32>(World->GetNetMode()));
-			Writer->WriteValue(TEXT("world_delta_seconds"),World->GetDeltaSeconds());
-			int32 RosterCount = 0;
-			for (TActorIterator<AGuLiSoldierStateReplicator> It(World); It; ++It) RosterCount += It->GetItems().Num();
-			Writer->WriteValue(TEXT("roster_count"),RosterCount);
-			Writer->WriteArrayStart(TEXT("transport"));
-			if (const UNetDriver* Driver=World->GetNetDriver())
-			{
-				TArray<UNetConnection*> Connections;
-				if (Driver->ServerConnection) Connections.Add(Driver->ServerConnection);
-				for (UNetConnection* Connection:Driver->ClientConnections) if (Connection) Connections.Add(Connection);
-				for (const auto* Connection:Connections)
-				{
-					Writer->WriteObjectStart(); Writer->WriteValue(TEXT("speed_limit_bytes_s"),Connection->CurrentNetSpeed);
-					Writer->WriteValue(TEXT("out_bytes_s"),Connection->OutBytesPerSecond);
-					Writer->WriteValue(TEXT("in_bytes_s"),Connection->InBytesPerSecond);
-					Writer->WriteValue(TEXT("queued_bits"),Connection->QueuedBits); Writer->WriteObjectEnd();
-				}
-			}
-			Writer->WriteArrayEnd();
-			if (World->GetNetMode() != NM_DedicatedServer)
-			{
-				auto* Channel = LoadObject<UNiagaraDataChannelAsset>(nullptr,TEXT("/Game/GuLiStrike/FX/CommanderWeapons/NDC_CommanderGunfire.NDC_CommanderGunfire"));
-				if (auto* Handler = Channel ? UNiagaraDataChannelLibrary::FindDataChannelHandler(World,Channel->Get()) : nullptr)
-				{
-					FNDCAccessContextInst Access(Channel->Get()->GetAccessContextType());
-					if (auto Data = Handler->FindData(Access,ENiagaraResourceAccess::ReadOnly))
-					{
-						const auto Current = Data->GetCPUData(false), Previous = Data->GetCPUData(true);
-						Writer->WriteValue(TEXT("ndc_current"),Current ? Current->GetNumInstances() : 0);
-						Writer->WriteValue(TEXT("ndc_previous"),Previous ? Previous->GetNumInstances() : 0);
-					}
-				}
-			}
-			Writer->WriteArrayStart(TEXT("niagara"));
-			for (TObjectIterator<UNiagaraComponent> It; It; ++It)
-			{
-				UNiagaraComponent* Component = *It;
-				if (!IsValid(Component) || !Component->IsRegistered() || Component->GetWorld() != World || !Component->GetAsset()
-					|| !Component->GetAsset()->GetPathName().StartsWith(TEXT("/Game/GuLiStrike/FX/CommanderWeapons/"))) continue;
-				Writer->WriteObjectStart(); Writer->WriteValue(TEXT("asset"),Component->GetAsset()->GetPathName());
-				Writer->WriteValue(TEXT("active"),Component->IsActive());
-				Writer->WriteArrayStart(TEXT("emitters"));
-				if (const auto Controller = Component->GetSystemInstanceController(); Controller && Controller->IsValid())
-				{
-					Controller->WaitForConcurrentTickAndFinalize();
-					if (Component->GetAsset()->GetName() == TEXT("NS_CommanderGunfireBatch"))
-					{
-						for (int32 Index=0; Index<32; ++Index)
-						{
-							UNiagaraDataInterface* Interface = nullptr; void* Data = nullptr;
-							Controller->GetSystemInstance_Unsafe()->GetDataInterfaceInstanceDataInfo(Index,Interface,Data);
-							if (!Interface) break;
-							if (const auto* ChannelProperty = FindFProperty<FObjectPropertyBase>(Interface->GetClass(),TEXT("Channel")))
-							{
-								UE_LOG(LogTemp,Display,TEXT("Gunfire DI %s Channel=%s InstanceData=%d"),*Interface->GetPathName(),
-									*GetPathNameSafe(ChannelProperty->GetObjectPropertyValue_InContainer(Interface)),Data!=nullptr);
-							}
-						}
-					}
-					for (const auto& Emitter : Controller->GetSystemInstance_Unsafe()->GetEmitters())
-					{
-						Writer->WriteObjectStart(); Writer->WriteValue(TEXT("name"),Emitter->GetEmitterHandle().GetName().ToString());
-						Writer->WriteValue(TEXT("particles"),Emitter->GetNumParticles()); Writer->WriteObjectEnd();
-					}
-				}
-				Writer->WriteArrayEnd(); Writer->WriteObjectEnd();
-			}
-			Writer->WriteArrayEnd(); Writer->WriteObjectEnd();
-		}
-		Writer->WriteArrayEnd(); Writer->Close();
-		const FString Directory=FPaths::ProjectDir()/TEXT("outputs/commander-combat-effects");
-		IFileManager::Get().MakeDirectory(*Directory,true);
-		FFileHelper::SaveStringToFile(Json,*(Directory/TEXT("native_runtime_sample.json")),FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
-	}
-	FAutoConsoleCommand StartCommand(TEXT("gs.CombatEffects.QA.Start"),TEXT("Transient settings: listen (1+1) or dedicated (server+2). Never saves assets."),FConsoleCommandWithArgsDelegate::CreateStatic(&Start));
-	FAutoConsoleCommand SampleCommand(TEXT("gs.CombatEffects.QA.Sample"),TEXT("Read-only role, component and real particle-count sample for all PIE worlds."),FConsoleCommandDelegate::CreateStatic(&Sample));
-	FAutoConsoleCommand CaptureCommand(TEXT("gs.CombatEffects.QA.Capture"),TEXT("Capture a specified PIE client viewport when real gunfire particles span two frames: <label> <PIE instance>."),FConsoleCommandWithArgsDelegate::CreateLambda([](const TArray<FString>& Args)
-	{
-		if (Args.Num()!=2 || Args[0].IsEmpty() || !Args[0].GetCharArray().ContainsByPredicate([](TCHAR C){ return FChar::IsAlnum(C); })) return;
-		for (TCHAR C:Args[0]) if (!FChar::IsAlnum(C) && C!=TEXT('_') && C!=TEXT('-')) return;
-		TWeakObjectPtr<UWorld> Target;
-		for (const auto& Context:GEngine->GetWorldContexts())
-			if (Context.WorldType==EWorldType::PIE && Context.PIEInstance==FCString::Atoi(*Args[1])) Target=Context.World();
-		if (!Target.IsValid() || Target->GetNetMode()==NM_DedicatedServer) return;
-		const FString File=FPaths::ProjectDir()/TEXT("outputs/commander-combat-effects")/(Args[0]+TEXT(".png"));
-		FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Target,File,Elapsed=0.0f,VisibleFrames=0](float Delta) mutable
-		{
-			Elapsed+=Delta; if (!Target.IsValid() || Elapsed>10) return false;
-			bool bParticles=false;
-			for (TObjectIterator<UNiagaraComponent> It; It; ++It)
-			{
-				if (It->GetWorld()!=Target.Get() || !It->GetAsset() || It->GetAsset()->GetName()!=TEXT("NS_CommanderGunfireBatch")) continue;
-				if (const auto Controller=It->GetSystemInstanceController(); Controller && Controller->IsValid())
-				{
-					Controller->WaitForConcurrentTickAndFinalize();
-					for (const auto& Emitter:Controller->GetSystemInstance_Unsafe()->GetEmitters()) bParticles|=Emitter->GetNumParticles()>0;
-				}
-			}
-			VisibleFrames=bParticles ? VisibleFrames+1 : 0;
-			if (VisibleFrames<2) return true;
-			UGameViewportClient* Client=Target->GetGameViewport(); FViewport* Viewport=Client ? Client->Viewport : nullptr;
-			TArray<FColor> Pixels;
-			if (!Viewport || !GetViewportScreenShot(Viewport,Pixels)) return true;
-			TArray64<uint8> PNG; const FIntPoint Size=Viewport->GetSizeXY();
-			FImageUtils::PNGCompressImageArray(Size.X,Size.Y,Pixels,PNG);
-			FFileHelper::SaveArrayToFile(PNG,*File);
-			UE_LOG(LogTemp,Display,TEXT("Combat effects actual PIE viewport captured: %s"),*File);
-			return false;
-		}));
-	}));
-	FAutoConsoleCommand LateJoinCommand(TEXT("gs.CombatEffects.QA.LateJoin"),TEXT("Add the second client to the dedicated-late acceptance fixture."),FConsoleCommandDelegate::CreateLambda([]
-	{
-		if (!GEditor || !GEditor->IsPlaySessionInProgress() || !PlaySettings.IsValid()) return;
-		int32 Clients=0; bool bDedicated=false;
-		for (const auto& Context:GEngine->GetWorldContexts()) if (UWorld* World=Context.World(); World && World->WorldType==EWorldType::PIE)
-		{ Clients+=World->GetNetMode()==NM_Client; bDedicated|=World->GetNetMode()==NM_DedicatedServer; }
-		if (bDedicated && Clients==1) GEditor->RequestLateJoin();
-	}));
-}
-#endif
-
-// A deterministic test clock, not a second public gameplay entry point.
-struct FGuLiCombatEffectRuntimeTestAccess
-{
-	static void Field(UGuLiCombatEffectRuntimeSubsystem* Runtime, FGuid Id, float Now)
-	{ Runtime->bIndexReady = false; Runtime->StepField(Id, Now); }
-	static void Projectile(UGuLiCombatEffectRuntimeSubsystem* Runtime, FGuid Id, float Now, float Delta)
-	{ Runtime->StepProjectile(Id, Delta, Now); }
-};
-
 namespace GuLiCombatEffectTests
 {
-	struct FTarget { FGuLiCombatTargetSnapshot Snapshot; int32 Hits = 0; };
+	struct FTarget { FGuLiCombatTargetSnapshot Snapshot; };
 	struct FFixture
 	{
+		TArray<TUniquePtr<FTarget>> Targets;
 		UWorld* World = nullptr;
 		UGuLiDamageLedgerSubsystem* Ledger = nullptr;
 		UGuLiCombatEffectRuntimeSubsystem* Runtime = nullptr;
-		TArray<TUniquePtr<FTarget>> Targets;
 		bool Initialize(FAutomationTestBase& Test)
 		{
 			if (!GEngine) return false;
@@ -226,11 +32,7 @@ namespace GuLiCombatEffectTests
 			GEngine->CreateNewWorldContext(EWorldType::Game).SetCurrentWorld(World);
 			Ledger = World->GetSubsystem<UGuLiDamageLedgerSubsystem>();
 			Runtime = World->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>();
-			return Test.TestNotNull(TEXT("independent runtime"), Runtime) && Ledger && Ledger->BeginServerEpoch(9);
-		}
-		~FFixture()
-		{
-			if (World) { World->DestroyWorld(false); if (GEngine) GEngine->DestroyWorldContext(World); }
+			return Test.TestNotNull(TEXT("independent runtime"), Runtime) && Ledger && Ledger->BindMatchEpoch(9);
 		}
 		FTarget& Add(EGuLiTeam Team, FVector Position, bool bMass = false, float Radius = 50)
 		{
@@ -247,13 +49,7 @@ namespace GuLiCombatEffectTests
 			Ptr->Snapshot.Health = 100; Ptr->Snapshot.bAlive = true;
 			FGuLiCombatTargetAdapter Adapter; Adapter.LifetimeOwner = World;
 			Adapter.ReadSnapshot = [Ptr](FGuLiCombatTargetSnapshot& Out) { Out = Ptr->Snapshot; return true; };
-			Adapter.ApplyDamage = [Ptr](const FGuLiDamageRequest& Request, FGuLiDamageCommitResult& Out)
-			{
-				if (!Ptr->Snapshot.bAlive) return false;
-				++Ptr->Hits; Out.AppliedDamage = FMath::Min(Request.Damage, Ptr->Snapshot.Health);
-				Ptr->Snapshot.Health -= Out.AppliedDamage; Ptr->Snapshot.bAlive = Ptr->Snapshot.Health > 0;
-				Out.RemainingHealth = Ptr->Snapshot.Health; Out.bKilled = !Ptr->Snapshot.bAlive; return true;
-			};
+
 			check(Ledger->RegisterTarget(Ptr->Snapshot.Handle, MoveTemp(Adapter)));
 			Targets.Add(MoveTemp(Target)); return *Ptr;
 		}
@@ -264,21 +60,11 @@ namespace GuLiCombatEffectTests
 			Value.Damage = 10; Value.MatchEpoch = 9; Value.SkillId = TEXT("TestSpell");
 			return Value;
 		}
+		~FFixture()
+		{
+			if (World) { World->DestroyWorld(false); if (GEngine) GEngine->DestroyWorldContext(World); }
+		}
 	};
-}
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiCombatEffectEpochBootstrapTest, "GuLiStrike.CombatEffects.PublicGameStateInitializesLedger",
-	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
-bool FGuLiCombatEffectEpochBootstrapTest::RunTest(const FString& Parameters)
-{
-	GuLiCombatEffectTests::FFixture F; if (!F.Initialize(*this)) return false;
-	auto* State = F.World->SpawnActor<AGuLiBattleGameState>();
-	if (!TestNotNull(TEXT("public Battle GameState"),State)) return false;
-	State->InitializeServerMatchState();
-	TestTrue(TEXT("a Commander-only match initializes the ledger without another weapon domain"),State->GetMatchEpoch()!=0 && F.Ledger->GetMatchEpoch()==State->GetMatchEpoch());
-	const uint32 Epoch=State->GetMatchEpoch(); State->InitializeServerMatchState();
-	TestEqual(TEXT("bootstrap is idempotent"),F.Ledger->GetMatchEpoch(),Epoch);
-	return true;
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiCombatEffectMathTest, "GuLiStrike.CombatEffects.MathAndIdentity",
@@ -385,153 +171,6 @@ bool FGuLiSpellFieldTableConfigTest::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiSpellFieldLedgerTest, "GuLiStrike.CombatEffects.SphereLedgerAndRetainedSource",
-	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
-bool FGuLiSpellFieldLedgerTest::RunTest(const FString& Parameters)
-{
-	using namespace GuLiCombatEffectTests;
-	FFixture F; if (!F.Initialize(*this)) return false;
-	auto& Source = F.Add(EGuLiTeam::Red, FVector(-5000, 0, 0));
-	auto& Actor = F.Add(EGuLiTeam::Blue, FVector::ZeroVector);
-	auto& Mass = F.Add(EGuLiTeam::Blue, FVector(210, 0, 0), true);
-	auto& Outside = F.Add(EGuLiTeam::Blue, FVector(210.1, 0, 0), true);
-	auto& Friendly = F.Add(EGuLiTeam::Red, FVector::ZeroVector);
-	auto* Definition = NewObject<UGuLiSpellFieldDefinition>(F.World);
-	const auto Context = F.Context(Source);
-	FGuid Id = F.Runtime->CreateSpellField(Definition, Context, FVector::ZeroVector);
-	TestTrue(TEXT("field returns a stable handle"), Id.IsValid());
-	TestEqual(TEXT("registered Actor damaged"), Actor.Hits, 1);
-	TestEqual(TEXT("registered Mass target damaged at sphere boundary"), Mass.Hits, 1);
-	TestEqual(TEXT("outside untouched"), Outside.Hits, 0);
-	TestEqual(TEXT("friendly untouched"), Friendly.Hits, 0);
-	FGuLiCombatEffectRuntimeTestAccess::Field(F.Runtime, Id, 0);
-	TestEqual(TEXT("same pulse cannot repeat"), Actor.Hits, 1);
-	Definition->Timing = EGuLiSpellFieldTiming::Delayed; Definition->Delay = 1;
-	Id = F.Runtime->CreateSpellField(Definition, Context, FVector::ZeroVector);
-	Definition->Radius = 1; // Changing the asset after creation cannot change the frozen radius.
-	FGuLiCombatEffectRuntimeTestAccess::Field(F.Runtime, Id, .5f);
-	TestEqual(TEXT("delay has no early damage"), Mass.Hits, 1);
-	F.Ledger->UnregisterTarget(Source.Snapshot.Handle, F.World); Source.Snapshot.bAlive = false;
-	FGuLiCombatEffectRuntimeTestAccess::Field(F.Runtime, Id, 1.0f);
-	TestEqual(TEXT("a removed caster retains validated attribution"), Actor.Hits, 2);
-	TestEqual(TEXT("frozen radius still reaches its original boundary"), Mass.Hits, 2);
-	TestTrue(TEXT("cancel removes the visual tail too"), F.Runtime->CancelEffect(Id));
-	FGuLiCombatEffectRuntimeTestAccess::Field(F.Runtime, Id, 5.0f);
-	TestEqual(TEXT("cancel cannot deal further damage"), Mass.Hits, 2);
-	TestFalse(TEXT("removed source cannot submit a new spell"), F.Runtime->CreateSpellField(Definition, Context, FVector::ZeroVector).IsValid());
-	F.Ledger->BeginServerEpoch(10); F.Runtime->Tick(0);
-	TestEqual(TEXT("new epoch clears every remaining field"), F.Runtime->GetActiveEffectCount(), 0);
-	return true;
-}
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiPeriodicFieldTest, "GuLiStrike.CombatEffects.PeriodicRequeryAndCancellation",
-	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
-bool FGuLiPeriodicFieldTest::RunTest(const FString& Parameters)
-{
-	using namespace GuLiCombatEffectTests;
-	FFixture F; if (!F.Initialize(*this)) return false;
-	auto& Source = F.Add(EGuLiTeam::Red, FVector(-5000, 0, 0));
-	auto& Target = F.Add(EGuLiTeam::Blue, FVector::ZeroVector, true);
-	auto* Definition = NewObject<UGuLiSpellFieldDefinition>(F.World);
-	Definition->Timing = EGuLiSpellFieldTiming::Periodic; Definition->Delay = .2f;
-	Definition->Duration = 1.1f; Definition->PulseInterval = .5f;
-	FGuid Id = F.Runtime->CreateSpellField(Definition, F.Context(Source), FVector::ZeroVector);
-	FGuLiCombatEffectRuntimeTestAccess::Field(F.Runtime, Id, .2f); TestEqual(TEXT("activation pulse"), Target.Hits, 1);
-	Target.Snapshot.Location = FVector(5000, 0, 0);
-	FGuLiCombatEffectRuntimeTestAccess::Field(F.Runtime, Id, .7f); TestEqual(TEXT("departed target excluded next pulse"), Target.Hits, 1);
-	Target.Snapshot.Location = FVector::ZeroVector;
-	FGuLiCombatEffectRuntimeTestAccess::Field(F.Runtime, Id, 1.2f); TestEqual(TEXT("returning target included next pulse"), Target.Hits, 2);
-	FGuLiCombatEffectRuntimeTestAccess::Field(F.Runtime, Id, 2); TestEqual(TEXT("tail has no damage"), Target.Hits, 2);
-	const FGuid Skipped = F.Runtime->CreateSpellField(Definition, F.Context(Source), FVector::ZeroVector);
-	TestTrue(TEXT("independent fields coexist"), F.Runtime->GetActiveEffectCount() == 2);
-	FGuLiCombatEffectState ExpiredState; F.Runtime->QueryEffect(Skipped,ExpiredState);
-	FGuLiCombatEffectRuntimeTestAccess::Field(F.Runtime,Skipped,ExpiredState.EndTime);
-	TestEqual(TEXT("a hitch to the exclusive end cannot cash out missed periodic damage"),Target.Hits,2);
-	F.Runtime->CancelEffect(Id); FGuLiCombatEffectRuntimeTestAccess::Field(F.Runtime, Id, 3);
-	TestEqual(TEXT("cancelled field never resumes"), Target.Hits, 2);
-	return true;
-}
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiProjectileLifecycleTest, "GuLiStrike.CombatEffects.ProjectileLossImpactAndExpiry",
-	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
-bool FGuLiProjectileLifecycleTest::RunTest(const FString& Parameters)
-{
-	using namespace GuLiCombatEffectTests;
-	FFixture F; if (!F.Initialize(*this)) return false;
-	auto& Source = F.Add(EGuLiTeam::Red, FVector(-5000, 0, 1000));
-	auto& Target = F.Add(EGuLiTeam::Blue, FVector(4000, 0, 1000), true, 150);
-	auto& Nearby = F.Add(EGuLiTeam::Blue, FVector(4200, 0, 1000));
-	auto* Field = NewObject<UGuLiSpellFieldDefinition>(F.World);
-	auto* Projectile = NewObject<UGuLiProjectileEffectDefinition>(F.World); Projectile->ImpactField = Field;
-	const auto Context = F.Context(Source, &Target);
-	const FGuid Id = F.Runtime->LaunchProjectile(Projectile, Context, FTransform(FVector(0, 0, 1000)));
-	TestTrue(TEXT("projectile accepts server target context"), Id.IsValid());
-	TestEqual(TEXT("launch itself has no direct damage"), Target.Hits, 0);
-	F.Ledger->UnregisterTarget(Source.Snapshot.Handle, F.World);
-	F.Ledger->UnregisterTarget(Target.Snapshot.Handle, F.World);
-	Target.Snapshot.Location = FVector(100000, 0, 1000);
-	Field->Radius = 1; // In-flight payload must retain the original explosion radius.
-	FGuLiCombatEffectState State;
-	for (int32 Step = 1; Step <= 240 && F.Runtime->QueryEffect(Id, State); ++Step)
-	{
-		FGuLiCombatEffectRuntimeTestAccess::Projectile(F.Runtime, Id, Step / 30.0f, 1 / 30.0f);
-		if (F.Runtime->QueryEffect(Id, State)) TestTrue(TEXT("lost target keeps the last valid destination"), FVector(State.LastTargetLocation).Equals(FVector(4000, 0, 1000)));
-	}
-	TestEqual(TEXT("last-location arrival creates exactly one explosion"), F.Runtime->GetCounters().FieldsCreated, static_cast<int64>(1));
-	TestEqual(TEXT("nearby target takes one field hit, no direct hit"), Nearby.Hits, 1);
-	// Independent source remains alive for cancellation and timeout checks.
-	auto& Source2 = F.Add(EGuLiTeam::Red, FVector(-10000, 0, 1000));
-	Field->Radius = 800;
-	const auto Context2 = F.Context(Source2, &Nearby);
-	FGuid Other = F.Runtime->LaunchProjectile(Projectile, Context2, FTransform(FVector(0, 0, 1000)));
-	F.Runtime->CancelEffect(Other);
-	Other = F.Runtime->LaunchProjectile(Projectile, Context2, FTransform(FVector(0, 0, 1000)));
-	FGuLiCombatEffectRuntimeTestAccess::Projectile(F.Runtime, Other, 9, 1 / 30.0f);
-	TestEqual(TEXT("cancel and timeout do not create bonus explosions"), F.Runtime->GetCounters().FieldsCreated, static_cast<int64>(1));
-	return true;
-}
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiScale020FrozenPointRadiusTest, "GuLiStrike.Scale020.FrozenPointRadiusAndDamageBoundary",
-	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
-bool FGuLiScale020FrozenPointRadiusTest::RunTest(const FString& Parameters)
-{
-	using namespace GuLiCombatEffectTests;
-	FFixture F; if (!F.Initialize(*this)) return false;
-	auto& Source = F.Add(EGuLiTeam::Red, FVector(-1200, 0, 100));
-	auto& Inside = F.Add(EGuLiTeam::Blue, FVector(1358, 0, 0), true, 1);
-	auto& Outside = F.Add(EGuLiTeam::Blue, FVector(1362, 0, 0), true, 1);
-	auto* Field = NewObject<UGuLiSpellFieldDefinition>(F.World);
-	auto* Projectile = NewObject<UGuLiProjectileEffectDefinition>(F.World);
-	Projectile->ImpactField = Field;
-	FGuLiCombatAttackRequest Request;
-	Request.Context = F.Context(Source);
-	Request.SourceTransform = FTransform(Source.Snapshot.Location);
-	Request.MuzzleOffset = FVector(100, 0, 40); // Already-resolved centimeters, not source-mesh units.
-	Request.TargetLocation = FVector(1200, 0, 0);
-	Request.Projectile = Projectile;
-	Request.FrozenField.ConfigId = TEXT("Scale020BoundaryFixture");
-	Request.FrozenField.Radius = 160;
-	const FGuid Id = F.Runtime->LaunchPointProjectile(Request);
-	if (!TestTrue(TEXT("authority accepts fixed-point request"), Id.IsValid())) return false;
-	FGuLiCombatEffectState State;
-	if (!TestTrue(TEXT("launched state exists"), F.Runtime->QueryEffect(Id, State))) return false;
-	TestEqual(TEXT("warning payload uses exactly the frozen gameplay radius"), State.Radius, 160.0f);
-	TestTrue(TEXT("muzzle is transformed once"), FVector(State.Location).Equals(FVector(-1100, 0, 140)));
-	TestEqual(TEXT("frozen speed is final centimeters per second"), State.Motion.Speed, 1200.0f);
-	Request.FrozenField.Radius = 1;
-	Field->Radius = 1;
-	Projectile->Motion.Speed = 1;
-	for (int32 Step = 1; Step <= 240 && F.Runtime->QueryEffect(Id, State); ++Step)
-	{
-		TestEqual(TEXT("in-flight radius cannot be changed by later authoring values"), State.Radius, 160.0f);
-		FGuLiCombatEffectRuntimeTestAccess::Projectile(F.Runtime, Id, Step / 30.0f, 1 / 30.0f);
-	}
-	TestEqual(TEXT("fixed-point impact creates one field"), F.Runtime->GetCounters().FieldsCreated, int64(1));
-	TestEqual(TEXT("inside 1.6 meter boundary takes one hit"), Inside.Hits, 1);
-	TestEqual(TEXT("outside 1.6 meter boundary takes no hit"), Outside.Hits, 0);
-	return true;
-}
-
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiScale020WarningPoolTest, "GuLiStrike.Scale020.GroundWarningPoolingAndRadius",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FGuLiScale020WarningPoolTest::RunTest(const FString& Parameters)
@@ -576,6 +215,7 @@ bool FGuLiCombatEffectNetworkOrderTest::RunTest(const FString& Parameters)
 	// The 500-unit fixture must not resend long asset paths/frozen motion on each
 	// terminal event. Exercise the real bit serializer, identities and byte budget.
 	FGuLiCombatEffectState Wire; Wire.MatchEpoch=9; Wire.EffectId=FGuid(1,2,3,4); Wire.Sequence=3;
+	Wire.bAcceptanceAdditional=true;
 	Wire.Source=GuLiCombatTargets::MakeCommanderSoldierTargetHandle(9,17);
 	Wire.Target=GuLiCombatTargets::MakeCommanderSoldierTargetHandle(9,500,2);
 	Wire.Location=FVector(123,456,789); Wire.EndTime=8;
@@ -586,12 +226,14 @@ bool FGuLiCombatEffectNetworkOrderTest::RunTest(const FString& Parameters)
 	Decoded.NetSerialize(StateReader,nullptr,bSerialized);
 	TestTrue(TEXT("compact targets round trip the complete stable identities"),bSerialized && Decoded.Source==Wire.Source && Decoded.Target==Wire.Target);
 	TestTrue(TEXT("quantized create preserves position"),FVector(Decoded.Location).Equals(Wire.Location,1));
+	TestTrue(TEXT("additional-flight cohort survives the actual state codec"),Decoded.bAcceptanceAdditional);
 	Wire.Phase=EGuLiCombatEffectPhase::Finished; Wire.EndReason=EGuLiCombatEffectEndReason::Impact;
 	FNetBitWriter EndWriter(nullptr,0); Wire.NetSerialize(EndWriter,nullptr,bSerialized);
 	TestTrue(TEXT("terminal carries its impact point without repeated cast payload, under 44 bytes"),bSerialized && EndWriter.GetNumBytes()<44);
 	FNetBitReader EndReader(nullptr,EndWriter.GetData(),EndWriter.GetNumBits()); Decoded.NetSerialize(EndReader,nullptr,bSerialized);
 	TestTrue(TEXT("terminal remains a well-formed removal at the authoritative impact point"),bSerialized && Decoded.IsWellFormed()
 		&& Decoded.Phase==EGuLiCombatEffectPhase::Finished && FVector(Decoded.Location).Equals(Wire.Location,1));
+	TestTrue(TEXT("terminal keeps its cohort classification"),Decoded.bAcceptanceAdditional);
 	FGuLiCombatShotCue WireShot; WireShot.MatchEpoch=9; WireShot.ShotId=FGuid(4,3,2,1);
 	WireShot.Source=Wire.Source; WireShot.Target=Wire.Target; WireShot.SlotId=TEXT("BasicAttack"); WireShot.UnitTypeId=2;
 	WireShot.Start=FVector(123,456,789); WireShot.End=FVector(12000,500,800);

@@ -33,10 +33,10 @@ AGuLiWarMachinePlaceholderPawn::AGuLiWarMachinePlaceholderPawn(const FObjectInit
 	CreateDefaultSubobject<UGuLiExternalUnitControlComponent>(TEXT("ExternalUnitControl"));
 	auto* UnitFeedback = CreateDefaultSubobject<UGuLiUnitFeedbackComponent>(TEXT("UnitFeedback"));
 	UnitFeedback->bPlayDestructionEffect = false;
-	bReplicates = true;
+	bReplicates = false;
 	// 战局最多十个玩家 Pawn，允许空中远距相机同样观察 Ground；士兵仍走独立姿态流。
 	bAlwaysRelevant = true;
-	SetReplicateMovement(true);
+	SetReplicateMovement(false);
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;

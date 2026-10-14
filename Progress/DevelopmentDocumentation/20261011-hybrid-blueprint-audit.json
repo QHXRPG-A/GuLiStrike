@@ -1,0 +1,2744 @@
+{
+  "schema": "guli-hybrid-blueprint-audit/v1",
+  "captured": "2026-10-11",
+  "engine": "D:/UnrealEngine-5.7",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "map_game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+  "scope": "Read-only selected production and prototype Blueprint inventory. This is not a complete Blueprint migration or runtime validation.",
+  "blueprints": [
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/BP_CombatAvatarFly01",
+        "blueprint_name": "BP_CombatAvatarFly01",
+        "parent_class": "BP_GuLiStrikeShip_C",
+        "variables": [],
+        "functions": [
+          {
+            "name": "UserConstructionScript",
+            "graph_type": "Function",
+            "node_count": 2
+          }
+        ],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 6,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_CallParentFunction_0",
+              "class": "K2Node_CallParentFunction",
+              "title": "父类：开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Actor开始重叠"
+            },
+            {
+              "name": "K2Node_CallParentFunction_1",
+              "class": "K2Node_CallParentFunction",
+              "title": "父类：Actor开始重叠"
+            },
+            {
+              "name": "K2Node_Event_2",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            },
+            {
+              "name": "K2Node_CallParentFunction_2",
+              "class": "K2Node_CallParentFunction",
+              "title": "父类：Tick"
+            }
+          ]
+        },
+        "components": [
+          {
+            "name": "AnimeHull",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "AnimeContour",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          }
+        ],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip",
+        "blueprint_name": "BP_GuLiStrikeShip",
+        "parent_class": "GuLiStrikeShip",
+        "variables": [],
+        "functions": [
+          {
+            "name": "UserConstructionScript",
+            "graph_type": "Function",
+            "node_count": 1
+          }
+        ],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 3,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Actor开始重叠"
+            },
+            {
+              "name": "K2Node_Event_2",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/BP_PC_Ship",
+        "blueprint_name": "BP_PC_Ship",
+        "parent_class": "GuLiCommanderPlayerController",
+        "variables": [],
+        "functions": [
+          {
+            "name": "UserConstructionScript",
+            "graph_type": "Function",
+            "node_count": 1
+          }
+        ],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/BP_GM_ShipWingmanAirCombatPrototype",
+        "blueprint_name": "BP_GM_ShipWingmanAirCombatPrototype",
+        "parent_class": "GuLiShipTestGameMode",
+        "variables": [],
+        "functions": [
+          {
+            "name": "UserConstructionScript",
+            "graph_type": "Function",
+            "node_count": 1
+          }
+        ],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 24,
+          "nodes": [
+            {
+              "name": "K2Node_CustomEvent_0",
+              "class": "K2Node_CustomEvent",
+              "title": "ApplyStartingBuild\nCustom Event"
+            },
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件玩家重新生成时"
+            },
+            {
+              "name": "K2Node_CallFunction_0",
+              "class": "K2Node_CallFunction",
+              "title": "获取游戏状态"
+            },
+            {
+              "name": "K2Node_CallFunction_1",
+              "class": "K2Node_CallFunction",
+              "title": "已开始游玩\n目标是游戏状态基础"
+            },
+            {
+              "name": "K2Node_IfThenElse_0",
+              "class": "K2Node_IfThenElse",
+              "title": "分支"
+            },
+            {
+              "name": "K2Node_CallFunction_2",
+              "class": "K2Node_CallFunction",
+              "title": "Apply Starting Build\n目标是BP GM Ship Wingman Air Combat Prototype"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件设置比赛状态时"
+            },
+            {
+              "name": "K2Node_CallFunction_3",
+              "class": "K2Node_CallFunction",
+              "title": "相等（命名）"
+            },
+            {
+              "name": "K2Node_IfThenElse_1",
+              "class": "K2Node_IfThenElse",
+              "title": "分支"
+            },
+            {
+              "name": "K2Node_CallFunction_4",
+              "class": "K2Node_CallFunction",
+              "title": "获取类的所有actor"
+            },
+            {
+              "name": "K2Node_MacroInstance_0",
+              "class": "K2Node_MacroInstance",
+              "title": "For Each Loop"
+            },
+            {
+              "name": "K2Node_CallFunction_5",
+              "class": "K2Node_CallFunction",
+              "title": "Apply Starting Build\n目标是BP GM Ship Wingman Air Combat Prototype"
+            },
+            {
+              "name": "K2Node_CallFunction_6",
+              "class": "K2Node_CallFunction",
+              "title": "获取受控pawn\n目标是控制器"
+            },
+            {
+              "name": "K2Node_DynamicCast_0",
+              "class": "K2Node_DynamicCast",
+              "title": "Cast To GuLiStrikeShip"
+            },
+            {
+              "name": "K2Node_VariableGet_0",
+              "class": "K2Node_VariableGet",
+              "title": "Get PlayerState"
+            },
+            {
+              "name": "K2Node_DynamicCast_1",
+              "class": "K2Node_DynamicCast",
+              "title": "Cast To GuLiBattlePlayerState"
+            },
+            {
+              "name": "K2Node_CallFunction_7",
+              "class": "K2Node_CallFunction",
+              "title": "Get Ship Build\n目标是Gu Li Battle Player State"
+            },
+            {
+              "name": "K2Node_CallFunction_8",
+              "class": "K2Node_CallFunction",
+              "title": "Get Build State\n目标是Gu Li Ship Build Component"
+            },
+            {
+              "name": "K2Node_CallArrayFunction_0",
+              "class": "K2Node_CallArrayFunction",
+              "title": "包含项目"
+            },
+            {
+              "name": "K2Node_IfThenElse_2",
+              "class": "K2Node_IfThenElse",
+              "title": "分支"
+            },
+            {
+              "name": "K2Node_CallFunction_9",
+              "class": "K2Node_CallFunction",
+              "title": "新Guid"
+            },
+            {
+              "name": "K2Node_CallFunction_10",
+              "class": "K2Node_CallFunction",
+              "title": "Commit Confirmed Choice\n目标是Gu Li Ship Build Component"
+            },
+            {
+              "name": "K2Node_IfThenElse_3",
+              "class": "K2Node_IfThenElse",
+              "title": "分支"
+            },
+            {
+              "name": "K2Node_CallFunction_11",
+              "class": "K2Node_CallFunction",
+              "title": "打印字符串"
+            }
+          ]
+        },
+        "components": [
+          {
+            "name": "DefaultSceneRoot",
+            "class": "SceneComponent",
+            "is_root": true
+          }
+        ],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "error",
+      "error": "Failed to load blueprint: /Game/GuLiStrike/Blueprints/BP_GuLiStrikeGameMode"
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Commander/Units/ConstructionVehicle/LOD_3Tier_v1/BP_ConstructionVehicle_3Tier",
+        "blueprint_name": "BP_ConstructionVehicle_3Tier",
+        "parent_class": "SkeletalMeshActor",
+        "variables": [
+          {
+            "name": "VehicleBodyLengthCm",
+            "type": "real",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "MiningRangeBodyLengths",
+            "type": "real",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "MiningRangeCm",
+            "type": "real",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "MiningActive",
+            "type": "bool",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "MiningTargetWorld",
+            "type": "struct",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "UseWorldTarget",
+            "type": "bool",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "MiningTargetLocal",
+            "type": "struct",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "PreviewMining",
+            "type": "bool",
+            "default_value": "",
+            "is_editable": true
+          }
+        ],
+        "functions": [
+          {
+            "name": "UserConstructionScript",
+            "graph_type": "Function",
+            "node_count": 3
+          },
+          {
+            "name": "UpdateCollectorL",
+            "graph_type": "Function",
+            "node_count": 22
+          },
+          {
+            "name": "UpdateCollectorR",
+            "graph_type": "Function",
+            "node_count": 22
+          },
+          {
+            "name": "ApplyMiningVisuals",
+            "graph_type": "Function",
+            "node_count": 21
+          },
+          {
+            "name": "StartMiningAt",
+            "graph_type": "Function",
+            "node_count": 6
+          },
+          {
+            "name": "StopMining",
+            "graph_type": "Function",
+            "node_count": 4
+          }
+        ],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 8,
+          "nodes": [
+            {
+              "name": "K2Node_Event_3",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_VariableGet_0",
+              "class": "K2Node_VariableGet",
+              "title": "Get MiningActive"
+            },
+            {
+              "name": "K2Node_CallFunction_0",
+              "class": "K2Node_CallFunction",
+              "title": "Apply Mining Visuals\n目标是BP Construction Vehicle 3Tier"
+            },
+            {
+              "name": "K2Node_CallFunction_1",
+              "class": "K2Node_CallFunction",
+              "title": "设置Actor Tick已启用\n目标是Actor"
+            },
+            {
+              "name": "K2Node_Event_4",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            },
+            {
+              "name": "K2Node_CallFunction_2",
+              "class": "K2Node_CallFunction",
+              "title": "Apply Mining Visuals\n目标是BP Construction Vehicle 3Tier"
+            },
+            {
+              "name": "K2Node_Event_5",
+              "class": "K2Node_Event",
+              "title": "事件结束运行"
+            },
+            {
+              "name": "K2Node_CallFunction_3",
+              "class": "K2Node_CallFunction",
+              "title": "Stop Mining\n目标是BP Construction Vehicle 3Tier"
+            }
+          ]
+        },
+        "components": [
+          {
+            "name": "Cockpit_Freight_Spoiler",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "Top_Turret_2x_Lvl1",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "Weapon_Rocket_Mount_Lvl2",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "Weapon_Rocket_Mount_Lvl3",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "Side_Winglet_Spike_Lvl3",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "CollectorPivot_L",
+            "class": "SceneComponent",
+            "is_root": false
+          },
+          {
+            "name": "Collector_L",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "LaserMuzzle_L",
+            "class": "SceneComponent",
+            "is_root": false
+          },
+          {
+            "name": "MiningLaser_L",
+            "class": "NiagaraComponent",
+            "is_root": false
+          },
+          {
+            "name": "CollectorPivot_R",
+            "class": "SceneComponent",
+            "is_root": false
+          },
+          {
+            "name": "Collector_R",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "LaserMuzzle_R",
+            "class": "SceneComponent",
+            "is_root": false
+          },
+          {
+            "name": "MiningLaser_R",
+            "class": "NiagaraComponent",
+            "is_root": false
+          },
+          {
+            "name": "VfxRegistryBindings",
+            "class": "GuLiVfxBindingComponent",
+            "is_root": false
+          }
+        ],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/BP_ElectromagneticMiner_3Tier",
+        "blueprint_name": "BP_ElectromagneticMiner_3Tier",
+        "parent_class": "SkeletalMeshActor",
+        "variables": [
+          {
+            "name": "VehicleBodyLengthCm",
+            "type": "real",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "MiningRangeBodyLengths",
+            "type": "real",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "MiningRangeCm",
+            "type": "real",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "MiningActive",
+            "type": "bool",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "MiningTargetWorld",
+            "type": "struct",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "UseWorldTarget",
+            "type": "bool",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "MiningTargetLocal",
+            "type": "struct",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "PreviewMining",
+            "type": "bool",
+            "default_value": "",
+            "is_editable": true
+          }
+        ],
+        "functions": [
+          {
+            "name": "UserConstructionScript",
+            "graph_type": "Function",
+            "node_count": 3
+          },
+          {
+            "name": "UpdateCollectorL",
+            "graph_type": "Function",
+            "node_count": 22
+          },
+          {
+            "name": "UpdateCollectorR",
+            "graph_type": "Function",
+            "node_count": 22
+          },
+          {
+            "name": "ApplyMiningVisuals",
+            "graph_type": "Function",
+            "node_count": 21
+          },
+          {
+            "name": "StartMiningAt",
+            "graph_type": "Function",
+            "node_count": 6
+          },
+          {
+            "name": "StopMining",
+            "graph_type": "Function",
+            "node_count": 4
+          }
+        ],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 8,
+          "nodes": [
+            {
+              "name": "K2Node_Event_3",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_VariableGet_0",
+              "class": "K2Node_VariableGet",
+              "title": "Get MiningActive"
+            },
+            {
+              "name": "K2Node_CallFunction_0",
+              "class": "K2Node_CallFunction",
+              "title": "Apply Mining Visuals\n目标是BP Electromagnetic Miner 3Tier"
+            },
+            {
+              "name": "K2Node_CallFunction_1",
+              "class": "K2Node_CallFunction",
+              "title": "设置Actor Tick已启用\n目标是Actor"
+            },
+            {
+              "name": "K2Node_Event_4",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            },
+            {
+              "name": "K2Node_CallFunction_2",
+              "class": "K2Node_CallFunction",
+              "title": "Apply Mining Visuals\n目标是BP Electromagnetic Miner 3Tier"
+            },
+            {
+              "name": "K2Node_Event_5",
+              "class": "K2Node_Event",
+              "title": "事件结束运行"
+            },
+            {
+              "name": "K2Node_CallFunction_3",
+              "class": "K2Node_CallFunction",
+              "title": "Stop Mining\n目标是BP Electromagnetic Miner 3Tier"
+            }
+          ]
+        },
+        "components": [
+          {
+            "name": "Cockpit_Freight_Spoiler",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "Top_Turret_2x_Lvl1",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "Weapon_Rocket_Mount_Lvl2",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "Weapon_Rocket_Mount_Lvl3",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "Side_Winglet_Spike_Lvl3",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "CollectorPivot_L",
+            "class": "SceneComponent",
+            "is_root": false
+          },
+          {
+            "name": "Collector_L",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "LaserMuzzle_L",
+            "class": "SceneComponent",
+            "is_root": false
+          },
+          {
+            "name": "MiningLaser_L",
+            "class": "NiagaraComponent",
+            "is_root": false
+          },
+          {
+            "name": "CollectorPivot_R",
+            "class": "SceneComponent",
+            "is_root": false
+          },
+          {
+            "name": "Collector_R",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "LaserMuzzle_R",
+            "class": "SceneComponent",
+            "is_root": false
+          },
+          {
+            "name": "MiningLaser_R",
+            "class": "NiagaraComponent",
+            "is_root": false
+          },
+          {
+            "name": "VfxRegistryBindings",
+            "class": "GuLiVfxBindingComponent",
+            "is_root": false
+          }
+        ],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Blueprints/BP_ResourceProcessingFactory",
+        "blueprint_name": "BP_ResourceProcessingFactory",
+        "parent_class": "Actor",
+        "variables": [
+          {
+            "name": "DoorDuration",
+            "type": "real",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "DoorAlpha",
+            "type": "real",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "OnDoorOpened",
+            "type": "mcdelegate",
+            "default_value": "",
+            "is_editable": true
+          },
+          {
+            "name": "OnDoorClosed",
+            "type": "mcdelegate",
+            "default_value": "",
+            "is_editable": true
+          }
+        ],
+        "functions": [
+          {
+            "name": "UserConstructionScript",
+            "graph_type": "Function",
+            "node_count": 1
+          },
+          {
+            "name": "OpenDoor",
+            "graph_type": "Function",
+            "node_count": 2
+          },
+          {
+            "name": "CloseDoor",
+            "graph_type": "Function",
+            "node_count": 2
+          },
+          {
+            "name": "GetDoorAlpha",
+            "graph_type": "Function",
+            "node_count": 3
+          }
+        ],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 33,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Actor开始重叠"
+            },
+            {
+              "name": "K2Node_Event_2",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            },
+            {
+              "name": "K2Node_Timeline_0",
+              "class": "K2Node_Timeline",
+              "title": "DoorMotion"
+            },
+            {
+              "name": "K2Node_VariableGet_0",
+              "class": "K2Node_VariableGet",
+              "title": "Get Door"
+            },
+            {
+              "name": "K2Node_VariableGet_1",
+              "class": "K2Node_VariableGet",
+              "title": "Get DoorMotion"
+            },
+            {
+              "name": "K2Node_Event_3",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_CallFunction_0",
+              "class": "K2Node_CallFunction",
+              "title": "设置动画\n目标是骨骼网格体组件"
+            },
+            {
+              "name": "K2Node_CallFunction_1",
+              "class": "K2Node_CallFunction",
+              "title": "设置位置\n目标是骨骼网格体组件"
+            },
+            {
+              "name": "K2Node_VariableSet_0",
+              "class": "K2Node_VariableSet",
+              "title": "Set DoorAlpha"
+            },
+            {
+              "name": "K2Node_CallFunction_2",
+              "class": "K2Node_CallFunction",
+              "title": "浮点*浮点"
+            },
+            {
+              "name": "K2Node_CallFunction_3",
+              "class": "K2Node_CallFunction",
+              "title": "设置位置\n目标是骨骼网格体组件"
+            },
+            {
+              "name": "K2Node_CustomEvent_0",
+              "class": "K2Node_CustomEvent",
+              "title": "RequestOpenDoor\nCustom Event"
+            },
+            {
+              "name": "K2Node_VariableGet_2",
+              "class": "K2Node_VariableGet",
+              "title": "Get DoorAlpha"
+            },
+            {
+              "name": "K2Node_CallFunction_4",
+              "class": "K2Node_CallFunction",
+              "title": "浮点<浮点"
+            },
+            {
+              "name": "K2Node_IfThenElse_0",
+              "class": "K2Node_IfThenElse",
+              "title": "分支"
+            },
+            {
+              "name": "K2Node_VariableGet_3",
+              "class": "K2Node_VariableGet",
+              "title": "Get DoorDuration"
+            },
+            {
+              "name": "K2Node_CallFunction_5",
+              "class": "K2Node_CallFunction",
+              "title": "最大（浮点）"
+            },
+            {
+              "name": "K2Node_CallFunction_6",
+              "class": "K2Node_CallFunction",
+              "title": "浮点/浮点"
+            },
+            {
+              "name": "K2Node_CallFunction_7",
+              "class": "K2Node_CallFunction",
+              "title": "设置播放速率\n目标是时间轴组件"
+            },
+            {
+              "name": "K2Node_CustomEvent_1",
+              "class": "K2Node_CustomEvent",
+              "title": "RequestCloseDoor\nCustom Event"
+            },
+            {
+              "name": "K2Node_VariableGet_4",
+              "class": "K2Node_VariableGet",
+              "title": "Get DoorAlpha"
+            },
+            {
+              "name": "K2Node_CallFunction_8",
+              "class": "K2Node_CallFunction",
+              "title": "浮点>浮点"
+            },
+            {
+              "name": "K2Node_IfThenElse_1",
+              "class": "K2Node_IfThenElse",
+              "title": "分支"
+            },
+            {
+              "name": "K2Node_VariableGet_5",
+              "class": "K2Node_VariableGet",
+              "title": "Get DoorDuration"
+            },
+            {
+              "name": "K2Node_CallFunction_9",
+              "class": "K2Node_CallFunction",
+              "title": "最大（浮点）"
+            },
+            {
+              "name": "K2Node_CallFunction_10",
+              "class": "K2Node_CallFunction",
+              "title": "浮点/浮点"
+            },
+            {
+              "name": "K2Node_CallFunction_11",
+              "class": "K2Node_CallFunction",
+              "title": "设置播放速率\n目标是时间轴组件"
+            },
+            {
+              "name": "K2Node_IfThenElse_2",
+              "class": "K2Node_IfThenElse",
+              "title": "分支"
+            },
+            {
+              "name": "K2Node_VariableGet_6",
+              "class": "K2Node_VariableGet",
+              "title": "Get DoorAlpha"
+            },
+            {
+              "name": "K2Node_CallFunction_12",
+              "class": "K2Node_CallFunction",
+              "title": "浮点>=浮点"
+            },
+            {
+              "name": "K2Node_CallDelegate_0",
+              "class": "K2Node_CallDelegate",
+              "title": "Call On Door Opened"
+            },
+            {
+              "name": "K2Node_CallDelegate_1",
+              "class": "K2Node_CallDelegate",
+              "title": "Call On Door Closed"
+            }
+          ]
+        },
+        "components": [
+          {
+            "name": "FactoryRoot",
+            "class": "SceneComponent",
+            "is_root": false
+          },
+          {
+            "name": "Body",
+            "class": "StaticMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "Door",
+            "class": "SkeletalMeshComponent",
+            "is_root": false
+          },
+          {
+            "name": "EntryPoint",
+            "class": "SceneComponent",
+            "is_root": false
+          },
+          {
+            "name": "UnloadPoint",
+            "class": "SceneComponent",
+            "is_root": false
+          },
+          {
+            "name": "BayLight_00",
+            "class": "RectLightComponent",
+            "is_root": false
+          },
+          {
+            "name": "BayLight_01",
+            "class": "RectLightComponent",
+            "is_root": false
+          },
+          {
+            "name": "BayLight_02",
+            "class": "RectLightComponent",
+            "is_root": false
+          },
+          {
+            "name": "BayLight_03",
+            "class": "RectLightComponent",
+            "is_root": false
+          },
+          {
+            "name": "BayLight_04",
+            "class": "RectLightComponent",
+            "is_root": false
+          },
+          {
+            "name": "BayLight_05",
+            "class": "RectLightComponent",
+            "is_root": false
+          },
+          {
+            "name": "AccessRamp",
+            "class": "GuLiGroundAccessRampComponent",
+            "is_root": false
+          }
+        ],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Thor_MissilePod",
+        "blueprint_name": "BP_SC_Thor_MissilePod",
+        "parent_class": "GuLiStrikeWeaponPart",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Thor_MissilePod_Lv2",
+        "blueprint_name": "BP_SC_Thor_MissilePod_Lv2",
+        "parent_class": "GuLiStrikeWeaponPart",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Shield_Generator",
+        "blueprint_name": "BP_SC_Shield_Generator",
+        "parent_class": "GuLiStrikeShipPartComponent",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Electronic_JammingDevice",
+        "blueprint_name": "BP_SC_Electronic_JammingDevice",
+        "parent_class": "GuLiStrikeShipPartComponent",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Incendiary_Bomb_LaunchBay",
+        "blueprint_name": "BP_SC_Incendiary_Bomb_LaunchBay",
+        "parent_class": "GuLiStrikeWeaponPart",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Autocannon",
+        "blueprint_name": "BP_SC_Autocannon",
+        "parent_class": "GuLiStrikeWeaponPart",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Bottom_Twin_Barrel_Turret",
+        "blueprint_name": "BP_SC_Bottom_Twin_Barrel_Turret",
+        "parent_class": "GuLiStrikeWeaponPart",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_CIWS",
+        "blueprint_name": "BP_SC_CIWS",
+        "parent_class": "GuLiStrikeWeaponPart",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Drone_LaunchBay",
+        "blueprint_name": "BP_SC_Drone_LaunchBay",
+        "parent_class": "GuLiStrikeShipPartComponent",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_High_Rate_Fire_Cannon",
+        "blueprint_name": "BP_SC_High_Rate_Fire_Cannon",
+        "parent_class": "GuLiStrikeWeaponPart",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Missile_Bay",
+        "blueprint_name": "BP_SC_Missile_Bay",
+        "parent_class": "GuLiStrikeWeaponPart",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Single_Barrel_Turret",
+        "blueprint_name": "BP_SC_Single_Barrel_Turret",
+        "parent_class": "GuLiStrikeWeaponPart",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Triple_Barrel_Turret",
+        "blueprint_name": "BP_SC_Triple_Barrel_Turret",
+        "parent_class": "GuLiStrikeWeaponPart",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Twin_Barrel_Turret",
+        "blueprint_name": "BP_SC_Twin_Barrel_Turret",
+        "parent_class": "GuLiStrikeWeaponPart",
+        "variables": [],
+        "functions": [],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 2,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    },
+    {
+      "status": "success",
+      "result": {
+        "blueprint_path": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light",
+        "blueprint_name": "BP_GroundMech_Light",
+        "parent_class": "GuLiGroundMechCharacter",
+        "variables": [],
+        "functions": [
+          {
+            "name": "UserConstructionScript",
+            "graph_type": "Function",
+            "node_count": 1
+          }
+        ],
+        "event_graph": {
+          "name": "EventGraph",
+          "node_count": 3,
+          "nodes": [
+            {
+              "name": "K2Node_Event_0",
+              "class": "K2Node_Event",
+              "title": "事件开始运行"
+            },
+            {
+              "name": "K2Node_Event_1",
+              "class": "K2Node_Event",
+              "title": "事件Actor开始重叠"
+            },
+            {
+              "name": "K2Node_Event_2",
+              "class": "K2Node_Event",
+              "title": "事件Tick"
+            }
+          ]
+        },
+        "components": [],
+        "interfaces": [],
+        "success": true
+      }
+    }
+  ],
+  "prototype_graph": {
+    "status": "success",
+    "result": {
+      "blueprint_path": "/Game/GuLiStrike/Ship/BP_GM_ShipWingmanAirCombatPrototype",
+      "graph_data": {
+        "graph_name": "EventGraph",
+        "graph_type": "EdGraph",
+        "nodes": [
+          {
+            "name": "K2Node_CustomEvent_0",
+            "class": "K2Node_CustomEvent",
+            "title": "ApplyStartingBuild\nCustom Event",
+            "pos_x": 0,
+            "pos_y": 0,
+            "can_rename": true,
+            "pins": [
+              {
+                "name": "OutputDelegate",
+                "type": "delegate",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "NewPlayer",
+                "type": "object",
+                "direction": "Output",
+                "connections": 2
+              }
+            ]
+          },
+          {
+            "name": "K2Node_Event_0",
+            "class": "K2Node_Event",
+            "title": "事件玩家重新生成时",
+            "pos_x": 0,
+            "pos_y": -700,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "OutputDelegate",
+                "type": "delegate",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "NewPlayer",
+                "type": "object",
+                "direction": "Output",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_CallFunction_0",
+            "class": "K2Node_CallFunction",
+            "title": "获取游戏状态",
+            "pos_x": 0,
+            "pos_y": -500,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "WorldContextObject",
+                "type": "object",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "ReturnValue",
+                "type": "object",
+                "direction": "Output",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_CallFunction_1",
+            "class": "K2Node_CallFunction",
+            "title": "已开始游玩\n目标是游戏状态基础",
+            "pos_x": 300,
+            "pos_y": -500,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "ReturnValue",
+                "type": "bool",
+                "direction": "Output",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_IfThenElse_0",
+            "class": "K2Node_IfThenElse",
+            "title": "分支",
+            "pos_x": 600,
+            "pos_y": -700,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "execute",
+                "type": "exec",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "Condition",
+                "type": "bool",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "else",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 0
+              }
+            ]
+          },
+          {
+            "name": "K2Node_CallFunction_2",
+            "class": "K2Node_CallFunction",
+            "title": "Apply Starting Build\n目标是BP GM Ship Wingman Air Combat Prototype",
+            "pos_x": 920,
+            "pos_y": -700,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "execute",
+                "type": "exec",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "NewPlayer",
+                "type": "object",
+                "direction": "Input",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_Event_1",
+            "class": "K2Node_Event",
+            "title": "事件设置比赛状态时",
+            "pos_x": 0,
+            "pos_y": -1300,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "OutputDelegate",
+                "type": "delegate",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "NewState",
+                "type": "name",
+                "direction": "Output",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_CallFunction_3",
+            "class": "K2Node_CallFunction",
+            "title": "相等（命名）",
+            "pos_x": 300,
+            "pos_y": -1100,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "A",
+                "type": "name",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "B",
+                "type": "name",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "ReturnValue",
+                "type": "bool",
+                "direction": "Output",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_IfThenElse_1",
+            "class": "K2Node_IfThenElse",
+            "title": "分支",
+            "pos_x": 600,
+            "pos_y": -1300,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "execute",
+                "type": "exec",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "Condition",
+                "type": "bool",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "else",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 0
+              }
+            ]
+          },
+          {
+            "name": "K2Node_CallFunction_4",
+            "class": "K2Node_CallFunction",
+            "title": "获取类的所有actor",
+            "pos_x": 920,
+            "pos_y": -1300,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "execute",
+                "type": "exec",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "WorldContextObject",
+                "type": "object",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "ActorClass",
+                "type": "class",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "OutActors",
+                "type": "object",
+                "direction": "Output",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_MacroInstance_0",
+            "class": "K2Node_MacroInstance",
+            "title": "For Each Loop",
+            "pos_x": 1250,
+            "pos_y": -1300,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "Exec",
+                "type": "exec",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "Array",
+                "type": "object",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "LoopBody",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "Array Element",
+                "type": "object",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "Array Index",
+                "type": "int",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "Completed",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 0
+              }
+            ]
+          },
+          {
+            "name": "K2Node_CallFunction_5",
+            "class": "K2Node_CallFunction",
+            "title": "Apply Starting Build\n目标是BP GM Ship Wingman Air Combat Prototype",
+            "pos_x": 1530,
+            "pos_y": -1300,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "execute",
+                "type": "exec",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "NewPlayer",
+                "type": "object",
+                "direction": "Input",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_CallFunction_6",
+            "class": "K2Node_CallFunction",
+            "title": "获取受控pawn\n目标是控制器",
+            "pos_x": 0,
+            "pos_y": 220,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "ReturnValue",
+                "type": "object",
+                "direction": "Output",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_DynamicCast_0",
+            "class": "K2Node_DynamicCast",
+            "title": "Cast To GuLiStrikeShip",
+            "pos_x": 300,
+            "pos_y": 0,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "execute",
+                "type": "exec",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "CastFailed",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "Object",
+                "type": "object",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "AsGu Li Strike Ship",
+                "type": "object",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "bSuccess",
+                "type": "bool",
+                "direction": "Output",
+                "connections": 0
+              }
+            ]
+          },
+          {
+            "name": "K2Node_VariableGet_0",
+            "class": "K2Node_VariableGet",
+            "title": "Get PlayerState",
+            "pos_x": 300,
+            "pos_y": 250,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "PlayerState",
+                "type": "object",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_DynamicCast_1",
+            "class": "K2Node_DynamicCast",
+            "title": "Cast To GuLiBattlePlayerState",
+            "pos_x": 600,
+            "pos_y": 0,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "execute",
+                "type": "exec",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "CastFailed",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "Object",
+                "type": "object",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "AsGu Li Battle Player State",
+                "type": "object",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "bSuccess",
+                "type": "bool",
+                "direction": "Output",
+                "connections": 0
+              }
+            ]
+          },
+          {
+            "name": "K2Node_CallFunction_7",
+            "class": "K2Node_CallFunction",
+            "title": "Get Ship Build\n目标是Gu Li Battle Player State",
+            "pos_x": 600,
+            "pos_y": 280,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "ReturnValue",
+                "type": "object",
+                "direction": "Output",
+                "connections": 2
+              }
+            ]
+          },
+          {
+            "name": "K2Node_CallFunction_8",
+            "class": "K2Node_CallFunction",
+            "title": "Get Build State\n目标是Gu Li Ship Build Component",
+            "pos_x": 920,
+            "pos_y": 280,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "ReturnValue",
+                "type": "struct",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "ReturnValue_MatchEpoch",
+                "type": "int64",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "ReturnValue_BuildRevision",
+                "type": "int64",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "ReturnValue_ChosenNodeIds",
+                "type": "name",
+                "direction": "Output",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_CallArrayFunction_0",
+            "class": "K2Node_CallArrayFunction",
+            "title": "包含项目",
+            "pos_x": 1250,
+            "pos_y": 230,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "TargetArray",
+                "type": "name",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "ItemToFind",
+                "type": "name",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "ReturnValue",
+                "type": "bool",
+                "direction": "Output",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_IfThenElse_2",
+            "class": "K2Node_IfThenElse",
+            "title": "分支",
+            "pos_x": 1530,
+            "pos_y": 0,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "execute",
+                "type": "exec",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "Condition",
+                "type": "bool",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "else",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_CallFunction_9",
+            "class": "K2Node_CallFunction",
+            "title": "新Guid",
+            "pos_x": 1530,
+            "pos_y": 450,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "ReturnValue",
+                "type": "struct",
+                "direction": "Output",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_CallFunction_10",
+            "class": "K2Node_CallFunction",
+            "title": "Commit Confirmed Choice\n目标是Gu Li Ship Build Component",
+            "pos_x": 1850,
+            "pos_y": 0,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "execute",
+                "type": "exec",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "RequestId",
+                "type": "struct",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "NodeId",
+                "type": "name",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "MatchEpoch",
+                "type": "int64",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "ExpectedBuildRevision",
+                "type": "int64",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "ReturnValue",
+                "type": "struct",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "ReturnValue_RequestId",
+                "type": "struct",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "ReturnValue_bCommitted",
+                "type": "bool",
+                "direction": "Output",
+                "connections": 1
+              },
+              {
+                "name": "ReturnValue_BuildRevision",
+                "type": "int64",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "ReturnValue_Reason",
+                "type": "string",
+                "direction": "Output",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_IfThenElse_3",
+            "class": "K2Node_IfThenElse",
+            "title": "分支",
+            "pos_x": 2250,
+            "pos_y": 0,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "execute",
+                "type": "exec",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "Condition",
+                "type": "bool",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "else",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 1
+              }
+            ]
+          },
+          {
+            "name": "K2Node_CallFunction_11",
+            "class": "K2Node_CallFunction",
+            "title": "打印字符串",
+            "pos_x": 2550,
+            "pos_y": 0,
+            "can_rename": false,
+            "pins": [
+              {
+                "name": "execute",
+                "type": "exec",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "then",
+                "type": "exec",
+                "direction": "Output",
+                "connections": 0
+              },
+              {
+                "name": "self",
+                "type": "object",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "WorldContextObject",
+                "type": "object",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "InString",
+                "type": "string",
+                "direction": "Input",
+                "connections": 1
+              },
+              {
+                "name": "bPrintToScreen",
+                "type": "bool",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "bPrintToLog",
+                "type": "bool",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "TextColor",
+                "type": "struct",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "Duration",
+                "type": "real",
+                "direction": "Input",
+                "connections": 0
+              },
+              {
+                "name": "Key",
+                "type": "name",
+                "direction": "Input",
+                "connections": 0
+              }
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "from_node": "K2Node_CustomEvent_0",
+            "from_pin": "then",
+            "to_node": "K2Node_DynamicCast_0",
+            "to_pin": "execute"
+          },
+          {
+            "from_node": "K2Node_CustomEvent_0",
+            "from_pin": "NewPlayer",
+            "to_node": "K2Node_CallFunction_6",
+            "to_pin": "self"
+          },
+          {
+            "from_node": "K2Node_CustomEvent_0",
+            "from_pin": "NewPlayer",
+            "to_node": "K2Node_VariableGet_0",
+            "to_pin": "self"
+          },
+          {
+            "from_node": "K2Node_Event_0",
+            "from_pin": "then",
+            "to_node": "K2Node_IfThenElse_0",
+            "to_pin": "execute"
+          },
+          {
+            "from_node": "K2Node_Event_0",
+            "from_pin": "NewPlayer",
+            "to_node": "K2Node_CallFunction_2",
+            "to_pin": "NewPlayer"
+          },
+          {
+            "from_node": "K2Node_CallFunction_0",
+            "from_pin": "ReturnValue",
+            "to_node": "K2Node_CallFunction_1",
+            "to_pin": "self"
+          },
+          {
+            "from_node": "K2Node_CallFunction_1",
+            "from_pin": "self",
+            "to_node": "K2Node_CallFunction_0",
+            "to_pin": "ReturnValue"
+          },
+          {
+            "from_node": "K2Node_CallFunction_1",
+            "from_pin": "ReturnValue",
+            "to_node": "K2Node_IfThenElse_0",
+            "to_pin": "Condition"
+          },
+          {
+            "from_node": "K2Node_IfThenElse_0",
+            "from_pin": "execute",
+            "to_node": "K2Node_Event_0",
+            "to_pin": "then"
+          },
+          {
+            "from_node": "K2Node_IfThenElse_0",
+            "from_pin": "Condition",
+            "to_node": "K2Node_CallFunction_1",
+            "to_pin": "ReturnValue"
+          },
+          {
+            "from_node": "K2Node_IfThenElse_0",
+            "from_pin": "then",
+            "to_node": "K2Node_CallFunction_2",
+            "to_pin": "execute"
+          },
+          {
+            "from_node": "K2Node_CallFunction_2",
+            "from_pin": "execute",
+            "to_node": "K2Node_IfThenElse_0",
+            "to_pin": "then"
+          },
+          {
+            "from_node": "K2Node_CallFunction_2",
+            "from_pin": "NewPlayer",
+            "to_node": "K2Node_Event_0",
+            "to_pin": "NewPlayer"
+          },
+          {
+            "from_node": "K2Node_Event_1",
+            "from_pin": "then",
+            "to_node": "K2Node_IfThenElse_1",
+            "to_pin": "execute"
+          },
+          {
+            "from_node": "K2Node_Event_1",
+            "from_pin": "NewState",
+            "to_node": "K2Node_CallFunction_3",
+            "to_pin": "A"
+          },
+          {
+            "from_node": "K2Node_CallFunction_3",
+            "from_pin": "A",
+            "to_node": "K2Node_Event_1",
+            "to_pin": "NewState"
+          },
+          {
+            "from_node": "K2Node_CallFunction_3",
+            "from_pin": "ReturnValue",
+            "to_node": "K2Node_IfThenElse_1",
+            "to_pin": "Condition"
+          },
+          {
+            "from_node": "K2Node_IfThenElse_1",
+            "from_pin": "execute",
+            "to_node": "K2Node_Event_1",
+            "to_pin": "then"
+          },
+          {
+            "from_node": "K2Node_IfThenElse_1",
+            "from_pin": "Condition",
+            "to_node": "K2Node_CallFunction_3",
+            "to_pin": "ReturnValue"
+          },
+          {
+            "from_node": "K2Node_IfThenElse_1",
+            "from_pin": "then",
+            "to_node": "K2Node_CallFunction_4",
+            "to_pin": "execute"
+          },
+          {
+            "from_node": "K2Node_CallFunction_4",
+            "from_pin": "execute",
+            "to_node": "K2Node_IfThenElse_1",
+            "to_pin": "then"
+          },
+          {
+            "from_node": "K2Node_CallFunction_4",
+            "from_pin": "then",
+            "to_node": "K2Node_MacroInstance_0",
+            "to_pin": "Exec"
+          },
+          {
+            "from_node": "K2Node_CallFunction_4",
+            "from_pin": "OutActors",
+            "to_node": "K2Node_MacroInstance_0",
+            "to_pin": "Array"
+          },
+          {
+            "from_node": "K2Node_MacroInstance_0",
+            "from_pin": "Exec",
+            "to_node": "K2Node_CallFunction_4",
+            "to_pin": "then"
+          },
+          {
+            "from_node": "K2Node_MacroInstance_0",
+            "from_pin": "Array",
+            "to_node": "K2Node_CallFunction_4",
+            "to_pin": "OutActors"
+          },
+          {
+            "from_node": "K2Node_MacroInstance_0",
+            "from_pin": "LoopBody",
+            "to_node": "K2Node_CallFunction_5",
+            "to_pin": "execute"
+          },
+          {
+            "from_node": "K2Node_MacroInstance_0",
+            "from_pin": "Array Element",
+            "to_node": "K2Node_CallFunction_5",
+            "to_pin": "NewPlayer"
+          },
+          {
+            "from_node": "K2Node_CallFunction_5",
+            "from_pin": "execute",
+            "to_node": "K2Node_MacroInstance_0",
+            "to_pin": "LoopBody"
+          },
+          {
+            "from_node": "K2Node_CallFunction_5",
+            "from_pin": "NewPlayer",
+            "to_node": "K2Node_MacroInstance_0",
+            "to_pin": "Array Element"
+          },
+          {
+            "from_node": "K2Node_CallFunction_6",
+            "from_pin": "self",
+            "to_node": "K2Node_CustomEvent_0",
+            "to_pin": "NewPlayer"
+          },
+          {
+            "from_node": "K2Node_CallFunction_6",
+            "from_pin": "ReturnValue",
+            "to_node": "K2Node_DynamicCast_0",
+            "to_pin": "Object"
+          },
+          {
+            "from_node": "K2Node_DynamicCast_0",
+            "from_pin": "execute",
+            "to_node": "K2Node_CustomEvent_0",
+            "to_pin": "then"
+          },
+          {
+            "from_node": "K2Node_DynamicCast_0",
+            "from_pin": "then",
+            "to_node": "K2Node_DynamicCast_1",
+            "to_pin": "execute"
+          },
+          {
+            "from_node": "K2Node_DynamicCast_0",
+            "from_pin": "Object",
+            "to_node": "K2Node_CallFunction_6",
+            "to_pin": "ReturnValue"
+          },
+          {
+            "from_node": "K2Node_VariableGet_0",
+            "from_pin": "PlayerState",
+            "to_node": "K2Node_DynamicCast_1",
+            "to_pin": "Object"
+          },
+          {
+            "from_node": "K2Node_VariableGet_0",
+            "from_pin": "self",
+            "to_node": "K2Node_CustomEvent_0",
+            "to_pin": "NewPlayer"
+          },
+          {
+            "from_node": "K2Node_DynamicCast_1",
+            "from_pin": "execute",
+            "to_node": "K2Node_DynamicCast_0",
+            "to_pin": "then"
+          },
+          {
+            "from_node": "K2Node_DynamicCast_1",
+            "from_pin": "then",
+            "to_node": "K2Node_IfThenElse_2",
+            "to_pin": "execute"
+          },
+          {
+            "from_node": "K2Node_DynamicCast_1",
+            "from_pin": "Object",
+            "to_node": "K2Node_VariableGet_0",
+            "to_pin": "PlayerState"
+          },
+          {
+            "from_node": "K2Node_DynamicCast_1",
+            "from_pin": "AsGu Li Battle Player State",
+            "to_node": "K2Node_CallFunction_7",
+            "to_pin": "self"
+          },
+          {
+            "from_node": "K2Node_CallFunction_7",
+            "from_pin": "self",
+            "to_node": "K2Node_DynamicCast_1",
+            "to_pin": "AsGu Li Battle Player State"
+          },
+          {
+            "from_node": "K2Node_CallFunction_7",
+            "from_pin": "ReturnValue",
+            "to_node": "K2Node_CallFunction_8",
+            "to_pin": "self"
+          },
+          {
+            "from_node": "K2Node_CallFunction_7",
+            "from_pin": "ReturnValue",
+            "to_node": "K2Node_CallFunction_10",
+            "to_pin": "self"
+          },
+          {
+            "from_node": "K2Node_CallFunction_8",
+            "from_pin": "self",
+            "to_node": "K2Node_CallFunction_7",
+            "to_pin": "ReturnValue"
+          },
+          {
+            "from_node": "K2Node_CallFunction_8",
+            "from_pin": "ReturnValue_MatchEpoch",
+            "to_node": "K2Node_CallFunction_10",
+            "to_pin": "MatchEpoch"
+          },
+          {
+            "from_node": "K2Node_CallFunction_8",
+            "from_pin": "ReturnValue_BuildRevision",
+            "to_node": "K2Node_CallFunction_10",
+            "to_pin": "ExpectedBuildRevision"
+          },
+          {
+            "from_node": "K2Node_CallFunction_8",
+            "from_pin": "ReturnValue_ChosenNodeIds",
+            "to_node": "K2Node_CallArrayFunction_0",
+            "to_pin": "TargetArray"
+          },
+          {
+            "from_node": "K2Node_CallArrayFunction_0",
+            "from_pin": "TargetArray",
+            "to_node": "K2Node_CallFunction_8",
+            "to_pin": "ReturnValue_ChosenNodeIds"
+          },
+          {
+            "from_node": "K2Node_CallArrayFunction_0",
+            "from_pin": "ReturnValue",
+            "to_node": "K2Node_IfThenElse_2",
+            "to_pin": "Condition"
+          },
+          {
+            "from_node": "K2Node_IfThenElse_2",
+            "from_pin": "execute",
+            "to_node": "K2Node_DynamicCast_1",
+            "to_pin": "then"
+          },
+          {
+            "from_node": "K2Node_IfThenElse_2",
+            "from_pin": "Condition",
+            "to_node": "K2Node_CallArrayFunction_0",
+            "to_pin": "ReturnValue"
+          },
+          {
+            "from_node": "K2Node_IfThenElse_2",
+            "from_pin": "else",
+            "to_node": "K2Node_CallFunction_10",
+            "to_pin": "execute"
+          },
+          {
+            "from_node": "K2Node_CallFunction_9",
+            "from_pin": "ReturnValue",
+            "to_node": "K2Node_CallFunction_10",
+            "to_pin": "RequestId"
+          },
+          {
+            "from_node": "K2Node_CallFunction_10",
+            "from_pin": "execute",
+            "to_node": "K2Node_IfThenElse_2",
+            "to_pin": "else"
+          },
+          {
+            "from_node": "K2Node_CallFunction_10",
+            "from_pin": "then",
+            "to_node": "K2Node_IfThenElse_3",
+            "to_pin": "execute"
+          },
+          {
+            "from_node": "K2Node_CallFunction_10",
+            "from_pin": "self",
+            "to_node": "K2Node_CallFunction_7",
+            "to_pin": "ReturnValue"
+          },
+          {
+            "from_node": "K2Node_CallFunction_10",
+            "from_pin": "RequestId",
+            "to_node": "K2Node_CallFunction_9",
+            "to_pin": "ReturnValue"
+          },
+          {
+            "from_node": "K2Node_CallFunction_10",
+            "from_pin": "MatchEpoch",
+            "to_node": "K2Node_CallFunction_8",
+            "to_pin": "ReturnValue_MatchEpoch"
+          },
+          {
+            "from_node": "K2Node_CallFunction_10",
+            "from_pin": "ExpectedBuildRevision",
+            "to_node": "K2Node_CallFunction_8",
+            "to_pin": "ReturnValue_BuildRevision"
+          },
+          {
+            "from_node": "K2Node_CallFunction_10",
+            "from_pin": "ReturnValue_bCommitted",
+            "to_node": "K2Node_IfThenElse_3",
+            "to_pin": "Condition"
+          },
+          {
+            "from_node": "K2Node_CallFunction_10",
+            "from_pin": "ReturnValue_Reason",
+            "to_node": "K2Node_CallFunction_11",
+            "to_pin": "InString"
+          },
+          {
+            "from_node": "K2Node_IfThenElse_3",
+            "from_pin": "execute",
+            "to_node": "K2Node_CallFunction_10",
+            "to_pin": "then"
+          },
+          {
+            "from_node": "K2Node_IfThenElse_3",
+            "from_pin": "Condition",
+            "to_node": "K2Node_CallFunction_10",
+            "to_pin": "ReturnValue_bCommitted"
+          },
+          {
+            "from_node": "K2Node_IfThenElse_3",
+            "from_pin": "else",
+            "to_node": "K2Node_CallFunction_11",
+            "to_pin": "execute"
+          },
+          {
+            "from_node": "K2Node_CallFunction_11",
+            "from_pin": "execute",
+            "to_node": "K2Node_IfThenElse_3",
+            "to_pin": "else"
+          },
+          {
+            "from_node": "K2Node_CallFunction_11",
+            "from_pin": "InString",
+            "to_node": "K2Node_CallFunction_10",
+            "to_pin": "ReturnValue_Reason"
+          }
+        ]
+      },
+      "success": true
+    }
+  }
+}

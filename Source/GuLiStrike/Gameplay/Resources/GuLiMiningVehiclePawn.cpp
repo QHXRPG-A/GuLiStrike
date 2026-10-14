@@ -3,6 +3,7 @@
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
 #include "Gameplay/Resources/GuLiResourceFactoryActor.h"
+#include "Gameplay/Resources/GuLiResourceInventoryComponent.h"
 #include "Gameplay/Resources/GuLiMiningVehicleManager.h"
 #include "Gameplay/Data/GuLiCommanderSoldierDefinition.h"
 #include "NavigationSystem.h"
@@ -23,20 +24,24 @@
 #include "Battle/Combat/GuLiActorDamageReceiverComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/Units/GuLiExternalCharacterMovementComponent.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
 
 AGuLiMiningVehiclePawn::AGuLiMiningVehiclePawn(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UGuLiExternalCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	CreateDefaultSubobject<UGuLiUnitFeedbackComponent>(TEXT("UnitFeedback"));
+	CreateDefaultSubobject<UGuLiResourceInventoryComponent>(TEXT("ResourceInventory"))->bCargo=true;
 	CreateDefaultSubobject<UGuLiEngineeringTravelComponent>(TEXT("Travel"));
 	CreateDefaultSubobject<UGuLiExternalUnitControlComponent>(TEXT("ExternalControl"));
 	CombatHealth = CreateDefaultSubobject<UGuLiCombatHealthComponent>(TEXT("CombatHealth"));
 	CreateDefaultSubobject<UGuLiActorDamageReceiverComponent>(TEXT("DamageReceiver"));
-	PrimaryActorTick.bCanEverTick = true;
-	bReplicates = true;
+	PrimaryActorTick.bCanEverTick = false;
+	bReplicates = false;
 	bAlwaysRelevant = true;
-	SetReplicateMovement(true);
-	SetNetUpdateFrequency(20.0f);
+	SetReplicateMovement(false);
+
 	// ACharacter requires HalfHeight >= Radius. Keep a real Actor collision envelope
 	// while selecting the deliberately conservative CommanderSoldier nav agent.
 	GetCapsuleComponent()->InitCapsuleSize(130.0f, 130.0f);
@@ -62,8 +67,14 @@ AGuLiMiningVehiclePawn::AGuLiMiningVehiclePawn(const FObjectInitializer& ObjectI
 void AGuLiMiningVehiclePawn::BeginPlay()
 {
 	Super::BeginPlay();
-	SetActorTickEnabled(HasAuthority());
+	if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+	{
+		const auto* Inventory=FindComponentByClass<UGuLiResourceInventoryComponent>();
+		CargoCapacity=Inventory->GetCargoCapacity();MiningRatePerSecond=Inventory->ExtractionRate;
+	}
+	SetActorTickEnabled(false);
 	GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->RegisterVehicle(*this);
+	if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) H->OnTransactionCompleted.AddDynamic(this,&ThisClass::ApplyHybridResourceResult);
 	FindComponentByClass<UGuLiEngineeringTravelComponent>()->OnTransportStarted.AddWeakLambda(this, [this]() { SetMiningVisual(false); });
 	FindComponentByClass<UGuLiEngineeringTravelComponent>()->OnTransportEnded.AddWeakLambda(this, [this]()
 	{
@@ -81,13 +92,6 @@ void AGuLiMiningVehiclePawn::InitializeVehicle(
 	Team = InTeam;
 	StableActorId = InStableActorId;
 	UnitTypeId = Unit.UnitTypeId;
-	FGuLiTargetHandle CombatTarget;
-	CombatTarget.Kind = EGuLiTargetKind::GroundActor;
-	CombatTarget.AuthorityId = FGuid::NewGuid();
-	CombatTarget.Generation = 1;
-	CombatTarget.LocalId = InStableActorId.Value;
-	CombatHealth->ConfigureServerTarget(CombatTarget, Team);
-	CombatHealth->InitializeServerHealth(Unit.MaxHealth);
 	Factory = &InFactory;
 	SpeedCentimetersPerSecond = Unit.MovementSpeedCmPerSecond;
 	MiningRatePerSecond = Config.MiningRatePerSecond;
@@ -102,21 +106,50 @@ void AGuLiMiningVehiclePawn::InitializeVehicle(
     InFactory.RegisterMiningVehicle(*this);
 	if (HasAuthority() && !GetController()) SpawnDefaultController();
 	if (HasAuthority()) CastChecked<AGuLiEngineeringAIController>(GetController())->ConfigureVehicleNavigation();
-	if (HasAuthority())
+	if (UGuLiHybridActorComponent::HasSimulation(this))
 	{
 		bTaskManaged = true; ControlMode = EGuLiMiningControlMode::PlayerOrder;
 		GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()->RegisterActor(*this);
 	}
-	ForceNetUpdate();
+
 }
 
-void AGuLiMiningVehiclePawn::Tick(const float DeltaSeconds)
+bool AGuLiMiningVehiclePawn::PrepareHybridMiningStep()
 {
-    Super::Tick(DeltaSeconds);
-    if (!HasAuthority() || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return;
+    const auto* Resources=GetResourceSubsystem();
+    // Exhaustion removes the geometry used to reconstruct a work position.
+    // Let the existing task tree return cargo or finish the order; repeatedly
+    // waiting to rebuild a position in an empty cluster cannot make progress.
+    if (Resources && TargetClusterId && !Resources->CanTeamMineAt(Team,TargetClusterId)
+        && (TaskState==EGuLiMiningTaskState::MovingToCluster || TaskState==EGuLiMiningTaskState::Mining))
+    {
+        FinishCurrentTarget();
+        BehaviorResult=EGuLiCommanderWorkResult::TargetLost;
+        return true;
+    }
+    auto* Manager=GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>();
+    if (!MiningSlot.Token.IsValid() || Manager->ValidateReservation(*this,MiningSlot)) return true;
+    FVector Position;
+    const auto Status=Manager->TryReserveSlot(*this,MiningSlot.Cluster,MiningSlot.Task,MiningSlot,Position);
+    if (Status==EGuLiWorkPositionAvailability::Available) return true;
+    if (Status==EGuLiWorkPositionAvailability::NoValidPositions)
+    {
+        FinishCurrentTarget();
+        BehaviorResult=EGuLiCommanderWorkResult::TargetLost;
+        return true;
+    }
+    return false; // A live position is still being prepared or claimed.
+}
+
+void AGuLiMiningVehiclePawn::AdvanceHybridMining(const float DeltaSeconds)
+{
+    if (!UGuLiHybridActorComponent::HasSimulation(this) || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return;
     if (FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsRouting()) return;
     const auto* Resources = GetResourceSubsystem();
-    if (!Resources || !Resources->IsRuntimeReady() || BehaviorResult != EGuLiCommanderWorkResult::Running) return;
+    if (!Resources || !Resources->IsMiningRuntimeReady()) return;
+    const bool bRetryingNode = (TaskState == EGuLiMiningTaskState::MovingToCluster || TaskState == EGuLiMiningTaskState::Mining)
+        && bWaitingForMiningSlot && IsBehaviorRetryReady();
+    if (BehaviorResult != EGuLiCommanderWorkResult::Running && !bRetryingNode) return;
     // Only execute the action chosen by StateTree. Every completion is reported, never followed by another action here.
     switch (TaskState)
     {
@@ -142,6 +175,7 @@ bool AGuLiMiningVehiclePawn::BeginMoveTo(const FVector& Target, const float Acce
 
 void AGuLiMiningVehiclePawn::SetEngineeringPresentationVisible(bool bVisible)
 {
+	bVisible=bVisible && GuLiClientPresentation::CanPresent(GetWorld());
 	if (AActor* Child = VehiclePresentation->GetChildActor()) Child->SetActorHiddenInGame(!bVisible);
 }
 
@@ -175,15 +209,21 @@ bool AGuLiMiningVehiclePawn::SelectMiningTarget()
 {
     auto* Manager = GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>();
     const auto Status = Manager->AssignCoveredNode(*this,MiningSlot,GetActorTransform(),TargetNodeId,MiningTarget);
-    if (Status == EGuLiWorkPositionAvailability::Available) return true;
+    if (Status == EGuLiWorkPositionAvailability::Available)
+    {
+        bWaitingForMiningSlot = false;
+        if (TaskState == EGuLiMiningTaskState::Mining && BehaviorResult == EGuLiCommanderWorkResult::WaitingPosition)
+            BehaviorResult = EGuLiCommanderWorkResult::Running;
+        return true;
+    }
     SetMiningVisual(false);
-    if (Status == EGuLiWorkPositionAvailability::Occupied)
+    if (Status == EGuLiWorkPositionAvailability::Occupied || Status == EGuLiWorkPositionAvailability::Pending)
     {
         // Reuse the tree's existing 5 Hz position-wait state, retaining this parked slot.
         bWaitingForMiningSlot = true;
-        TaskState = EGuLiMiningTaskState::MovingToCluster;
+        if (TaskState != EGuLiMiningTaskState::Mining) TaskState = EGuLiMiningTaskState::MovingToCluster;
         BehaviorResult = EGuLiCommanderWorkResult::WaitingPosition;
-        NextAutoRetryServerTime = GetWorld()->GetTimeSeconds()+.2f;
+        NextAutoRetryServerTime = UGuLiHybridActorComponent::BattleSeconds(this)+.2f;
         MiningAccumulator = 0;
     }
     return false;
@@ -223,7 +263,7 @@ void AGuLiMiningVehiclePawn::SetMiningVisual(const bool bActive)
     MiningVisual.Target = Target;
     OnRep_MiningVisual();
 	SetEngineeringPresentationVisible(!FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsInTransit());
-    ForceNetUpdate();
+
 }
 
 void AGuLiMiningVehiclePawn::TickMining(const float DeltaSeconds)
@@ -245,25 +285,15 @@ void AGuLiMiningVehiclePawn::TickMining(const float DeltaSeconds)
     }
     SetMiningVisual(true);
     MiningAccumulator += DeltaSeconds * MiningRatePerSecond;
-    while (MiningAccumulator >= 1.0f && GetCargoTotal() < CargoCapacity)
-    {
-        EGuLiResourceType Type;
-        if (!Resources->MineNodeRaw(Team, TargetClusterId, TargetNodeId, Type))
-        { SetMiningVisual(false); BehaviorResult = EGuLiCommanderWorkResult::TargetLost; return; }
-        Cargo.Add(Type, 1);
-        MiningAccumulator -= 1.0f;
-        ForceNetUpdate();
-        if (GetCargoTotal() >= CargoCapacity)
-        { SetMiningVisual(false); BehaviorResult = EGuLiCommanderWorkResult::Full; return; }
-        if (Resources->IsClusterEmpty(TargetClusterId))
-        { SetMiningVisual(false); BehaviorResult = EGuLiCommanderWorkResult::Depleted; return; }
-        if (!SelectMiningTarget())
-        {
-            if (!bWaitingForMiningSlot) BehaviorResult = EGuLiCommanderWorkResult::OutOfRange;
-            return;
-        }
-        SetMiningVisual(true);
-    }
+    auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    auto* Inventory=FindComponentByClass<UGuLiResourceInventoryComponent>();
+    if (!H || !Inventory || !Resources->GetSettlementKey(this).IsValid() || !H->CanPublishFacts()
+        || PendingResourceEvent.IsValid() || MiningAccumulator<1.0f || Resources->GetSettlementTick()<NextExtractionTick) return;
+    FGuLiHybridMiningLease Lease;
+    if (!H->GetMiningLease(Resources->GetSettlementKey(this),Lease) || Lease.NodeId!=static_cast<int32>(TargetNodeId)) return;
+    PendingResourceAt=Resources->GetSettlementTick();
+    PendingResourceOperation=uint8(EGuLiHybridResourceOperation::Extract);
+    PendingResourceEvent=Inventory->RequestExtraction(int32(TargetNodeId),Lease.Token);
 }
 
 void AGuLiMiningVehiclePawn::TickReturningToFactory()
@@ -283,12 +313,15 @@ void AGuLiMiningVehiclePawn::TickDocking(const float DeltaSeconds)
 	{ BehaviorResult = EGuLiCommanderWorkResult::FactoryLost; return; }
     DockingAccumulator += DeltaSeconds;
     if (DockingAccumulator < DockingSeconds) return;
-    if (GetCargoTotal() > 0 && Factory->GetTeam() == Team)
-    {
-        if (!Factory->UploadCargo(*this, Cargo)) { BehaviorResult = EGuLiCommanderWorkResult::FactoryLost; return; }
-        Cargo = FGuLiResourceAmounts{};
-    }
-    BehaviorResult = EGuLiCommanderWorkResult::Unloaded;
+    auto* Resources=GetResourceSubsystem();
+    auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    auto* Inventory=FindComponentByClass<UGuLiResourceInventoryComponent>();
+    if (!H || !Inventory || !Resources || !Resources->GetSettlementKey(this).IsValid()) return;
+    if (!GetCargoTotal()) { BehaviorResult=EGuLiCommanderWorkResult::Unloaded; return; }
+    if (PendingResourceEvent.IsValid() || !H->CanPublishFacts()) return;
+    PendingResourceAt=Resources->GetSettlementTick();
+    PendingResourceOperation=uint8(EGuLiHybridResourceOperation::Deliver);
+    PendingResourceEvent=Inventory->RequestDelivery(Factory);
 }
 
 void AGuLiMiningVehiclePawn::TickPlayerMoving()
@@ -301,7 +334,7 @@ void AGuLiMiningVehiclePawn::TickPlayerMoving()
 bool AGuLiMiningVehiclePawn::IssuePlayerCommand(const FGuLiMiningCommand& Command, EGuLiTeam RequestingTeam)
 {
 	auto* Resources = GetResourceSubsystem();
-	if (!HasAuthority() || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this) || !Resources || !Resources->IsRuntimeReady()
+	if (!UGuLiHybridActorComponent::HasSimulation(this) || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this) || !Resources || !Resources->IsMiningRuntimeReady()
 		|| RequestingTeam != Team || !Command.IsWellFormed()) return false;
 	if (Command.RequestId == LastCompatibilityRequestId) return true;
 	if (LastCompatibilityRequestId && int32(Command.RequestId - LastCompatibilityRequestId) <= 0) return false;
@@ -319,14 +352,14 @@ bool AGuLiMiningVehiclePawn::IssuePlayerCommand(const FGuLiMiningCommand& Comman
 	}
 	if (!GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()->SubmitActorCommand(*this, Task)) return false;
 	LastCompatibilityRequestId = Command.RequestId; ActivePlayerRequestId = Command.RequestId;
-	ForceNetUpdate(); return true;
+	 return true;
 }
 
 EGuLiTransitOrderResult AGuLiMiningVehiclePawn::IssueStrongholdTransit(
 	const FGuLiStrongholdTransitOrder& Order, EGuLiTeam RequestingTeam)
 {
 	using Result = EGuLiTransitOrderResult;
-	if (!HasAuthority() || RequestingTeam != Team) return Result::Unauthorized;
+	if (!UGuLiHybridActorComponent::HasSimulation(this) || RequestingTeam != Team) return Result::Unauthorized;
 	if (!Order.IsWellFormed()) return Result::InvalidRequest;
 	if (uint32(Order.RequestId) == LastCompatibilityRequestId) return LastTransitResult;
 	if (LastCompatibilityRequestId && int32(uint32(Order.RequestId)-LastCompatibilityRequestId) <= 0) return Result::StaleRequest;
@@ -338,7 +371,7 @@ EGuLiTransitOrderResult AGuLiMiningVehiclePawn::IssueStrongholdTransit(
 	if (!GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()->SubmitActorCommand(*this, Task)) return Result::InvalidRequest;
 	LastCompatibilityRequestId = uint32(Order.RequestId); ActivePlayerRequestId = uint32(Order.RequestId);
 	LastTransitResult = Result::Accepted;
-	ForceNetUpdate(); return LastTransitResult;
+	 return LastTransitResult;
 }
 
 bool AGuLiMiningVehiclePawn::IssuePlayerCommandByValue(
@@ -365,13 +398,13 @@ bool AGuLiMiningVehiclePawn::IssuePlayerCommandByValue(
 void AGuLiMiningVehiclePawn::ForceAutomaticControl()
 {
 	// Kept for old callers. Automatic behavior and persistent Stop belong to the tree's task owner.
-	if (HasAuthority() && !bTaskManaged)
+	if (UGuLiHybridActorComponent::HasSimulation(this) && !bTaskManaged)
 		GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()->RegisterActor(*this);
 }
 
 void AGuLiMiningVehiclePawn::CancelTaskForExternalDisplacement()
 {
-	if (!HasAuthority()) return;
+	if (!UGuLiHybridActorComponent::HasSimulation(this)) return;
 	BeginGrace();
 }
 
@@ -382,17 +415,17 @@ void AGuLiMiningVehiclePawn::BeginGrace(bool bSuccess)
 	if (AAIController* AIController = Cast<AAIController>(GetController())) AIController->StopMovement();
 	ControlMode = bTaskManaged ? EGuLiMiningControlMode::PlayerOrder : EGuLiMiningControlMode::Grace;
 	TaskState = EGuLiMiningTaskState::Idle;
-	GraceEndServerTime = bTaskManaged ? 0 : GetWorld()->GetTimeSeconds() + GraceSeconds;
+	GraceEndServerTime = bTaskManaged ? 0 : UGuLiHybridActorComponent::BattleSeconds(this) + GraceSeconds;
 	if (bTaskManaged) { bManagedTaskComplete = true; bManagedTaskFailed = !bSuccess; }
 	BehaviorResult = bSuccess ? EGuLiCommanderWorkResult::Complete : EGuLiCommanderWorkResult::Failed;
 	bManualReturnOrder = false;
-	ForceNetUpdate();
+
 }
 
 bool AGuLiMiningVehiclePawn::StartManagedTask(const FGuLiMiningCommand& Command, bool bAutomatic)
 {
     ++MiningTaskVersion;
-    if (!HasAuthority() || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return false;
+    if (!UGuLiHybridActorComponent::HasSimulation(this) || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return false;
     bTaskManaged = true; bManagedTaskComplete = false; bManagedTaskFailed = false;
     FinishCurrentTarget();
     ControlMode = bAutomatic ? EGuLiMiningControlMode::Auto : EGuLiMiningControlMode::PlayerOrder;
@@ -406,7 +439,7 @@ bool AGuLiMiningVehiclePawn::StartManagedTask(const FGuLiMiningCommand& Command,
         PlayerMoveTarget = Command.Target;
         if (!BeginMoveTo(PlayerMoveTarget, 100)) { BeginGrace(false); return true; }
         TaskState = EGuLiMiningTaskState::PlayerMoving; BehaviorResult = EGuLiCommanderWorkResult::Running;
-        ForceNetUpdate();
+
     }
     return true;
 }
@@ -421,7 +454,7 @@ bool AGuLiMiningVehiclePawn::StopManagedTask()
 bool AGuLiMiningVehiclePawn::StartPreparedManagedMove(
 	const FGuLiMiningCommand& Command, const FGuLiPreparedGroundMove& Prepared)
 {
-	if (!HasAuthority() || Command.Type != EGuLiMiningOrderType::Move
+	if (!UGuLiHybridActorComponent::HasSimulation(this) || Command.Type != EGuLiMiningOrderType::Move
 		|| UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return false;
 	FinishCurrentTarget();
 	++MiningTaskVersion;
@@ -431,7 +464,7 @@ bool AGuLiMiningVehiclePawn::StartPreparedManagedMove(
 	ControlMode = EGuLiMiningControlMode::PlayerOrder;
 	GraceEndServerTime = 0; ActivePlayerRequestId = Command.RequestId;
 	PlayerMoveTarget = Command.Target; TaskState = EGuLiMiningTaskState::PlayerMoving; BehaviorResult = EGuLiCommanderWorkResult::Running;
-	ForceNetUpdate();
+
 	return true;
 }
 
@@ -442,7 +475,6 @@ void AGuLiMiningVehiclePawn::FinishCurrentTarget()
     FindComponentByClass<UGuLiEngineeringTravelComponent>()->CancelGroundMove();
     SetMiningVisual(false);
     TargetNodeId = 0;
-	GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->ReleaseNode(*this);
 	TargetClusterId = 0u;
 }
 
@@ -450,8 +482,8 @@ float AGuLiMiningVehiclePawn::GetGraceSecondsRemaining() const
 {
 	if (ControlMode != EGuLiMiningControlMode::Grace || GraceEndServerTime <= 0.0f) return 0.0f;
 	const AGameStateBase* State = GetWorld() ? GetWorld()->GetGameState() : nullptr;
-	const float Now = State ? State->GetServerWorldTimeSeconds()
-		: (GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0f);
+	const float Now = UGuLiNetworkSettings::IsHybrid(GetWorld()) ? float(UGuLiHybridActorComponent::BattleSeconds(this)) : State ? State->GetServerWorldTimeSeconds()
+		: (GetWorld() ? UGuLiHybridActorComponent::BattleSeconds(this) : 0.0f);
 	return FMath::Max(0.0f, GraceEndServerTime - Now);
 }
 
@@ -459,7 +491,7 @@ FGuLiMiningVehiclePrivateState AGuLiMiningVehiclePawn::MakePrivateState() const
 {
 	FGuLiMiningVehiclePrivateState State;
 	State.StableActorId = StableActorId;
-	State.Cargo = Cargo;
+	State.Cargo = GetCargo();
 	State.ControlMode = ControlMode;
 	State.TaskState = TaskState;
 	State.TargetClusterId = TargetClusterId;
@@ -496,25 +528,18 @@ void AGuLiMiningVehiclePawn::OnRep_MiningVisual()
 
 void AGuLiMiningVehiclePawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-    if (HasAuthority())
+    if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) H->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::ApplyHybridResourceResult);
+    GetResourceSubsystem()->OnResourceSettlement.RemoveAll(this);
+    if (UGuLiHybridActorComponent::HasSimulation(this))
     {
         FinishCurrentTarget();
-        if (IsValid(Factory)) Factory->UnregisterMiningVehicle(*this);
     }
+    if (IsValid(Factory)) Factory->UnregisterMiningVehicle(*this);
     GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->UnregisterVehicle(*this);
     Super::EndPlay(EndPlayReason);
 }
 
-void AGuLiMiningVehiclePawn::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(AGuLiMiningVehiclePawn, Team);
-	DOREPLIFETIME(AGuLiMiningVehiclePawn, LastTransitResult);
-	DOREPLIFETIME(AGuLiMiningVehiclePawn, UnitTypeId);
-    DOREPLIFETIME(AGuLiMiningVehiclePawn, StableActorId);
-    DOREPLIFETIME(AGuLiMiningVehiclePawn, MiningVisual);
-    DOREPLIFETIME_CONDITION(AGuLiMiningVehiclePawn, PresentationDefinition, COND_InitialOnly);
-}
+
 
 bool AGuLiMiningVehiclePawn::FindReachableMiningApproach(uint32 NodeId, FVector& OutApproach, float& OutPathLength) const
 {

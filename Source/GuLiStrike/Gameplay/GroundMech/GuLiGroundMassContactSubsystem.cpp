@@ -12,6 +12,7 @@
 #include "Gameplay/Data/GuLiCommanderSoldierDefinition.h"
 #include "HAL/PlatformTime.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 
 bool UGuLiGroundMassContactSubsystem::ShouldCreateSubsystem(UObject *Outer) const
 {
@@ -318,6 +319,7 @@ void UGuLiGroundMassContactSubsystem::RefreshSnapshot()
 
 double UGuLiGroundMassContactSubsystem::EstimateSimulationNow() const
 {
+    if (const auto* Hybrid=GetWorld()?GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr) return Hybrid->GetLogicalSeconds();
 	return bClockReady && GetWorld()
 			   ? ClockSimulationAnchor + FMath::Max(0.0, GetWorld()->GetTimeSeconds() - ClockLocalAnchor)
 			   : 0.0;

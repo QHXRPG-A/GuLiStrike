@@ -3,6 +3,8 @@
 #include "Engine/World.h"
 #include "HAL/IConsoleManager.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
+#include "Network/GuLiHybridActorComponent.h"
 
 namespace
 {
@@ -24,6 +26,7 @@ void UGuLiEngineeringPathSubsystem::RecordPathQuery(EGuLiEngineeringPathOrigin O
 }
 void UGuLiEngineeringPathSubsystem::Tick(float)
 {
+	if (const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>(); Hybrid && (Hybrid->IsBattlePaused() || !Hybrid->CanPublishFacts())) return;
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiEngineering_PathBudget);
 	const double Start = FPlatformTime::Seconds(); LastFrameQueries = 0;
 	int32 Remaining = Queue.Num();
@@ -32,6 +35,7 @@ void UGuLiEngineeringPathSubsystem::Tick(float)
 	{
 		auto Item = Queue[0]; Queue.RemoveAt(0,1,EAllowShrinking::No);
 		auto* Travel = Item.Get(); if (!Travel) continue;
+		if (!UGuLiHybridActorComponent::HasSimulation(Travel->GetOwner())) { Queue.AddUnique(Item); continue; }
 		const double Before = FPlatformTime::Seconds();
 		const bool bQueried = Travel->ProcessQueuedPath();
 		if (bQueried)

@@ -1,4 +1,8 @@
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/Private/GuLiNetConversions.h"
 #include "Commander/UI/GuLiSceneUISourceRegistry.h"
 // Copyright Epic Games, Inc. All Rights Reserved.
 
@@ -15,6 +19,11 @@
 
 namespace
 {
+bool IsCurrentSoldierHandle(const FGuLiTargetHandle& Handle,uint32 Epoch)
+{
+    return Handle.Kind!=EGuLiTargetKind::CommanderSoldier || (Epoch
+        && Handle.AuthorityId==GuLiCombatTargets::MakeCommanderSoldierTargetHandle(Epoch,Handle.LocalId).AuthorityId);
+}
 	uint32 NextRevision(const uint32 Current)
 	{
 		const uint32 Next = Current + 1u;
@@ -24,10 +33,7 @@ namespace
 
 bool FGuLiCombatHealthState::IsWellFormed() const
 {
-	return Revision != 0u && FMath::IsFinite(Health) && FMath::IsFinite(MaxHealth)
-		&& MaxHealth > 0.0f && Health >= 0.0f && Health <= MaxHealth
-		&& FMath::IsFinite(Shield) && FMath::IsFinite(MaxShield) && Shield >= 0 && MaxShield >= Shield
-		&& bDead == (Health <= 0.0f);
+	return GuLiNet::ValidHealth(GuLiNetBridge::ToCore(*this));
 }
 
 bool FGuLiDamageRequest::IsWellFormed() const
@@ -97,38 +103,25 @@ FGuLiTargetHandle GuLiCombatTargets::MakeCommanderSoldierTargetHandle(
 
 UGuLiCombatHealthComponent::UGuLiCombatHealthComponent()
 {
-	SetIsReplicatedByDefault(true);
+	SetIsReplicatedByDefault(false);
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UGuLiCombatHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(UGuLiCombatHealthComponent, HealthState);
-	DOREPLIFETIME(UGuLiCombatHealthComponent, TargetHandle);
-	DOREPLIFETIME(UGuLiCombatHealthComponent, Team);
-}
+
 
 void UGuLiCombatHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	if (GetOwner() && GetNetMode() != NM_DedicatedServer && !GetOwner()->FindComponentByClass<UGuLiUnitFeedbackComponent>())
+	if (GetOwner() && UGuLiNetworkSettings::CanPresent(GetWorld()) && !GetOwner()->FindComponentByClass<UGuLiUnitFeedbackComponent>())
 	{
 		auto* Feedback = NewObject<UGuLiUnitFeedbackComponent>(GetOwner());
-		// Health is already replicated. Each render client owns this observer locally.
+		// Committed health is applied locally; each rendered client owns its feedback observer.
 		Feedback->SetIsReplicated(false);
 		Feedback->bPlayDestructionEffect = !GetOwner()->IsA<AGuLiStrikeShip>();
 		GetOwner()->AddInstanceComponent(Feedback);
 		Feedback->RegisterComponent();
 	}
-	if (GetOwner() && GetOwner()->HasAuthority())
-	{
-		if (!HealthState.IsWellFormed())
-		{
-			InitializeServerHealth(DefaultMaxHealth, false);
-		}
-		RegisterWithLedger();
-	}
+
 }
 
 void UGuLiCombatHealthComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -137,115 +130,63 @@ void UGuLiCombatHealthComponent::EndPlay(const EEndPlayReason::Type EndPlayReaso
 	Super::EndPlay(EndPlayReason);
 }
 
-bool UGuLiCombatHealthComponent::ConfigureServerTarget(
-	const FGuLiTargetHandle& NewHandle, const EGuLiTeam NewTeam)
-{
-	if (!GetOwner() || !GetOwner()->HasAuthority() || !NewHandle.IsValid() || NewTeam == EGuLiTeam::Unassigned)
-	{
-		return false;
-	}
-	if (TargetHandle == NewHandle && Team == NewTeam)
-	{
-		RegisterWithLedger();
-		return true;
-	}
-	UnregisterFromLedger();
-	TargetHandle = NewHandle;
-	Team = NewTeam;
-	OnRep_TargetIdentity();
-	RegisterWithLedger();
-	GetOwner()->ForceNetUpdate();
-	return true;
-}
-
-bool UGuLiCombatHealthComponent::InitializeServerHealth(const float NewMaxHealth, const bool bPreserveRatio)
-{
-	if (!GetOwner() || !GetOwner()->HasAuthority() || !FMath::IsFinite(NewMaxHealth) || NewMaxHealth <= 0.0f)
-	{
-		return false;
-	}
-	const bool bWasDead = HealthState.bDead;
-	const float PreviousRatio = bPreserveRatio && HealthState.IsWellFormed()
-		? HealthState.Health / HealthState.MaxHealth
-		: 1.0f;
-	HealthState.MaxHealth = NewMaxHealth;
-	HealthState.Health = FMath::Clamp(NewMaxHealth * PreviousRatio, 0.0f, NewMaxHealth);
-	HealthState.bDead = HealthState.Health <= 0.0f;
-	HealthState.Revision = NextRevision(HealthState.Revision);
-	BroadcastHealthState(bWasDead);
-	GetOwner()->ForceNetUpdate();
-	return true;
-}
-
-void UGuLiCombatHealthComponent::InitializeServerShield(float Maximum)
-{
-	check(GetOwner()->HasAuthority() && FMath::IsFinite(Maximum) && Maximum >= 0);
-	HealthState.MaxShield = Maximum; HealthState.Shield = Maximum;
-	HealthState.Revision = NextRevision(HealthState.Revision);
-	GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
-}
-float UGuLiCombatHealthComponent::ConsumeServerShield(float Damage)
-{
-	check(GetOwner()->HasAuthority() && Damage >= 0);
-	const float Absorbed = FMath::Min(Damage, HealthState.Shield);
-	if (Absorbed == 0) return 0;
-	HealthState.Shield -= Absorbed; HealthState.Revision = NextRevision(HealthState.Revision);
-	GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
-	return Absorbed;
-}
-void UGuLiCombatHealthComponent::RechargeServerShield(float Amount)
-{
-	check(GetOwner()->HasAuthority() && Amount >= 0);
-	if (HealthState.bDead || HealthState.Shield >= HealthState.MaxShield) return;
-	HealthState.Shield = FMath::Min(HealthState.MaxShield, HealthState.Shield + Amount);
-	HealthState.Revision = NextRevision(HealthState.Revision);
-	GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
-}
-
-bool UGuLiCombatHealthComponent::ApplyServerDamage(
-	const FGuLiDamageRequest& Request, FGuLiDamageCommitResult& OutResult)
-{
-	OutResult = FGuLiDamageCommitResult();
-	if (!GetOwner() || !GetOwner()->HasAuthority() || !Request.IsWellFormed()
-		|| Request.Target != TargetHandle || !HealthState.IsWellFormed() || HealthState.bDead)
-	{
-		OutResult.Status = HealthState.bDead
-			? EGuLiDamageCommitStatus::RejectedTargetDead
-			: EGuLiDamageCommitStatus::RejectedByAdapter;
-		return false;
-	}
-	if (UGuLiExternalUnitControlComponent::IsActorPhased(GetOwner()))
-	{
-		OutResult.Status = HealthState.bDead
-			? EGuLiDamageCommitStatus::RejectedTargetDead
-			: EGuLiDamageCommitStatus::RejectedByAdapter;
-		return false;
-	}
-
-	const bool bWasDead = HealthState.bDead;
-	const float PreviousHealth = HealthState.Health;
-	OutResult.AbsorbedDamage = ConsumeServerShield(Request.Damage);
-	HealthState.Health = FMath::Max(0.0f, HealthState.Health - (Request.Damage - OutResult.AbsorbedDamage));
-	HealthState.bDead = HealthState.Health <= 0.0f;
-	HealthState.Revision = NextRevision(HealthState.Revision);
-	OutResult.Status = EGuLiDamageCommitStatus::Committed;
-	OutResult.AppliedDamage = PreviousHealth - HealthState.Health;
-	OutResult.RemainingHealth = HealthState.Health;
-	OutResult.bKilled = !bWasDead && HealthState.bDead;
-	BroadcastHealthState(bWasDead);
-	GetOwner()->ForceNetUpdate();
-	return true;
-}
-
 void UGuLiCombatHealthComponent::OnRep_TargetIdentity()
 {
 	UGuLiSceneUISourceRegistry::Notify(GetOwner(), EGuLiSceneUIChange::Membership);
 }
 
-void UGuLiCombatHealthComponent::OnRep_HealthState()
+bool UGuLiCombatHealthComponent::ApplyHybridHealth(const FGuLiTargetHandle& Handle, EGuLiTeam Faction,
+	const FGuLiCombatHealthState& State, uint64 Epoch, uint64 LedgerRevision, bool bBusinessEffects)
+{
+	if (!GetOwner() || !UGuLiNetworkSettings::IsHybrid(GetWorld()) || !Handle.IsValid()
+		|| Faction == EGuLiTeam::Unassigned || !State.IsWellFormed() || !Epoch || Epoch < HybridEpoch
+		|| (Epoch == HybridEpoch && LedgerRevision < HybridLedgerRevision)) return false;
+	// Register the same life handle used by collision queries and damage. Every
+	// actor adapter applies health, including miners and buildings which have no
+	// weapon component to install this mapping on their behalf. Keep the mapping
+	// after death for admitted effects and pending receipts.
+	if (const auto* Identity = UGuLiHybridActorComponent::Find(GetOwner()))
+	{
+		const auto& Key = Identity->GetObjectKey();
+		auto* Hybrid = GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+		if (!Hybrid) return false;
+        // Gameplay handles can be derived (members, Mass, etc.). The registered
+        // adapter mapping is authoritative; their GUID layout is not the object key.
+        FGuLiHybridObjectKey Bound;
+        if (Hybrid->ResolveTarget(Handle,Bound))
+        { if (Bound!=Key) return false; }
+        else
+        {
+            FGuLiTargetHandle Expected;
+            if (!Hybrid->ResolveObjectTarget(Key,Expected) || Expected!=Handle || !Hybrid->BindTarget(Handle,Key)) return false;
+        }
+	}
+	const bool bNewLife = TargetHandle != Handle;
+	const bool bIdentityChanged = bNewLife || Team != Faction;
+	const bool bStateChanged = Epoch != HybridEpoch || LedgerRevision != HybridLedgerRevision || !HealthState.IsWellFormed();
+	if (bNewLife) { bHybridObservedAlive = false; bHybridDeathDelivered = false; }
+	if (!State.bDead) bHybridObservedAlive = true;
+	if (bStateChanged || bIdentityChanged)
+	{
+		const bool bWasDead = HealthState.bDead;
+		if (bIdentityChanged) { UnregisterFromLedger(); TargetHandle = Handle; Team = Faction; OnRep_TargetIdentity(); }
+		HealthState = State; HybridEpoch = Epoch; HybridLedgerRevision = LedgerRevision;
+		RegisterWithLedger();
+		UGuLiSceneUISourceRegistry::Notify(GetOwner(), bWasDead != State.bDead ? EGuLiSceneUIChange::Membership : EGuLiSceneUIChange::Content);
+		OnHealthChanged.Broadcast(State.Health, State.MaxHealth);
+	}
+	// Numeric fragments arrive before the commit notification. Equal numeric
+	// revisions must still deliver that event once; importing an already dead
+	// life must not replay its death effects.
+	if (bBusinessEffects && State.bDead && bHybridObservedAlive && !bHybridDeathDelivered)
+	{ bHybridDeathDelivered = true; OnDeath.Broadcast(); }
+	return true;
+}
+
+void UGuLiCombatHealthComponent::OnRep_HealthState(const FGuLiCombatHealthState& PreviousState)
 {
 	OnHealthChanged.Broadcast(HealthState.Health, HealthState.MaxHealth);
-	if (HealthState.bDead)
+	if (HealthState.bDead && !PreviousState.bDead)
 	{
 		OnDeath.Broadcast();
 	}
@@ -287,24 +228,15 @@ void UGuLiCombatHealthComponent::BroadcastHealthState(const bool bWasDead)
 
 void UGuLiDamageLedgerSubsystem::Deinitialize()
 {
-	DamageBarriers.Reset();
+	PendingSubmissions.Reset();
 	RetainedEffectSources.Reset();
 	TargetAdapters.Reset();
 	TargetDomains.Reset();
 	SourceAdapters.Reset();
 	ResultsByEvent.Reset();
 	EventOrder.Reset();
-	DeathRecordsByEvent.Reset();
-	DeathEventOrder.Reset();
-	RewardRecordsByEvent.Reset();
-	RewardEventOrder.Reset();
-	RewardPolicy = FGuLiRewardPolicy{};
-	RewardSink = FGuLiRewardSink{};
 	MatchEpoch = 0u;
 	CommitCount = 0u;
-	DeathCommitCount = 0u;
-	RewardCommitCount = 0u;
-	GrantedRewardCount = 0u;
 	Super::Deinitialize();
 }
 
@@ -314,7 +246,7 @@ bool UGuLiDamageLedgerSubsystem::IsAuthorityWorld() const
 	return World && World->GetNetMode() != NM_Client;
 }
 
-bool UGuLiDamageLedgerSubsystem::BeginServerEpoch(const uint32 NewMatchEpoch)
+bool UGuLiDamageLedgerSubsystem::BindMatchEpoch(const uint32 NewMatchEpoch)
 {
 	if (!IsAuthorityWorld() || NewMatchEpoch == 0u)
 	{
@@ -325,111 +257,13 @@ bool UGuLiDamageLedgerSubsystem::BeginServerEpoch(const uint32 NewMatchEpoch)
 		return true;
 	}
 	MatchEpoch = NewMatchEpoch;
+	PendingSubmissions.Reset();
 	RetainedEffectSources.Reset();
 	ResultsByEvent.Reset();
 	EventOrder.Reset();
-	DeathRecordsByEvent.Reset();
-	DeathEventOrder.Reset();
-	RewardRecordsByEvent.Reset();
-	RewardEventOrder.Reset();
 	CommitCount = 0u;
-	DeathCommitCount = 0u;
-	RewardCommitCount = 0u;
-	GrantedRewardCount = 0u;
 	PruneInvalidTargets();
 	return true;
-}
-
-bool UGuLiDamageLedgerSubsystem::SetRewardPipeline(
-	FGuLiRewardPolicy InPolicy,
-	FGuLiRewardSink InSink)
-{
-	if (!IsAuthorityWorld())
-	{
-		return false;
-	}
-	RewardPolicy = MoveTemp(InPolicy);
-	RewardSink = MoveTemp(InSink);
-	return true;
-}
-
-void UGuLiDamageLedgerSubsystem::ClearRewardPipeline()
-{
-	if (IsAuthorityWorld())
-	{
-		RewardPolicy = FGuLiRewardPolicy{};
-		RewardSink = FGuLiRewardSink{};
-	}
-}
-
-bool UGuLiDamageLedgerSubsystem::TryGetDeathRecord(
-	const FGuid& DeathEventId,
-	FGuLiDeathCommitRecord& OutRecord) const
-{
-	OutRecord = FGuLiDeathCommitRecord{};
-	if (!IsAuthorityWorld())
-	{
-		return false;
-	}
-	if (const FGuLiDeathCommitRecord* Record = DeathRecordsByEvent.Find(DeathEventId))
-	{
-		OutRecord = *Record;
-		return true;
-	}
-	return false;
-}
-
-bool UGuLiDamageLedgerSubsystem::TryGetRewardRecord(
-	const FGuid& RewardEventId,
-	FGuLiRewardCommitRecord& OutRecord) const
-{
-	OutRecord = FGuLiRewardCommitRecord{};
-	if (!IsAuthorityWorld())
-	{
-		return false;
-	}
-	if (const FGuLiRewardCommitRecord* Record = RewardRecordsByEvent.Find(RewardEventId))
-	{
-		OutRecord = *Record;
-		return true;
-	}
-	return false;
-}
-
-FGuid UGuLiDamageLedgerSubsystem::DeriveDeathEventId(const FGuid& DamageEventId)
-{
-	if (!DamageEventId.IsValid())
-	{
-		return FGuid{};
-	}
-	FGuid Result(
-		DamageEventId.A ^ 0x44454154u,
-		DamageEventId.B ^ 0x485f4556u,
-		DamageEventId.C ^ 0x454e545fu,
-		DamageEventId.D ^ 0x49445f31u);
-	if (!Result.IsValid())
-	{
-		Result.D = 1u;
-	}
-	return Result;
-}
-
-FGuid UGuLiDamageLedgerSubsystem::DeriveRewardEventId(const FGuid& DamageEventId)
-{
-	if (!DamageEventId.IsValid())
-	{
-		return FGuid{};
-	}
-	FGuid Result(
-		DamageEventId.A ^ 0x52455741u,
-		DamageEventId.B ^ 0x52445f45u,
-		DamageEventId.C ^ 0x56454e54u,
-		DamageEventId.D ^ 0x5f494431u);
-	if (!Result.IsValid())
-	{
-		Result.D = 1u;
-	}
-	return Result;
 }
 
 bool UGuLiDamageLedgerSubsystem::RegisterTarget(
@@ -478,11 +312,7 @@ bool UGuLiDamageLedgerSubsystem::RegisterHealthComponent(UGuLiCombatHealthCompon
 		}
 		return !OutSnapshot.Location.ContainsNaN();
 	};
-	Adapter.ApplyDamage = [WeakHealth](const FGuLiDamageRequest& Request, FGuLiDamageCommitResult& OutResult)
-	{
-		UGuLiCombatHealthComponent* Health = WeakHealth.Get();
-		return Health && Health->ApplyServerDamage(Request, OutResult);
-	};
+
 	return RegisterTarget(Handle, MoveTemp(Adapter));
 }
 
@@ -503,6 +333,7 @@ bool UGuLiDamageLedgerSubsystem::TryGetTargetSnapshot(
 	const FGuLiTargetHandle& Handle, FGuLiCombatTargetSnapshot& OutSnapshot)
 {
 	OutSnapshot = FGuLiCombatTargetSnapshot();
+	if (!IsCurrentSoldierHandle(Handle,MatchEpoch)) return false;
 	FGuLiCombatTargetAdapter* Adapter = TargetAdapters.Find(Handle);
 	if (!Adapter || !Adapter->IsBound() || !Adapter->ReadSnapshot(OutSnapshot)
 		|| OutSnapshot.Handle != Handle || OutSnapshot.Location.ContainsNaN())
@@ -533,6 +364,7 @@ void UGuLiDamageLedgerSubsystem::GetTargetSnapshots(
 			for (auto It = Domain->CreateIterator(); It; ++It)
 			{
 				const FGuLiTargetHandle Handle = *It;
+				if (!IsCurrentSoldierHandle(Handle,MatchEpoch)) { TargetAdapters.Remove(Handle); It.RemoveCurrent(); continue; }
 				const auto* Adapter = TargetAdapters.Find(Handle);
 				if (!Adapter || !Adapter->IsBound())
 				{ TargetAdapters.Remove(Handle); It.RemoveCurrent(); continue; }
@@ -549,7 +381,7 @@ void UGuLiDamageLedgerSubsystem::GetTargetSnapshots(
 		for (const TPair<FGuLiTargetHandle, FGuLiCombatTargetAdapter>& Pair : TargetAdapters)
 		{
 			FGuLiCombatTargetSnapshot Snapshot;
-			if (Pair.Value.IsBound() && Pair.Value.ReadSnapshot(Snapshot)
+			if (IsCurrentSoldierHandle(Pair.Key,MatchEpoch) && Pair.Value.IsBound() && Pair.Value.ReadSnapshot(Snapshot)
 				&& Snapshot.Handle == Pair.Key && Snapshot.Handle.IsValid()
 				&& !Snapshot.Location.ContainsNaN()) OutSnapshots.Add(MoveTemp(Snapshot));
 		}
@@ -568,9 +400,49 @@ void UGuLiDamageLedgerSubsystem::GetTargetSnapshots(
 	});
 }
 
-FGuLiDamageCommitResult UGuLiDamageLedgerSubsystem::CommitDamage(const FGuLiDamageRequest& Request)
+FGuid UGuLiDamageLedgerSubsystem::SubmitDamage(const FGuLiDamageRequest& Request,UObject* Owner,TFunction<void(const FGuLiDamageCommitResult&)> Callback)
 {
-	return CommitDamageInternal(Request, nullptr);
+    return SubmitHybridDamage(Request,{},Owner,MoveTemp(Callback));
+}
+FGuid UGuLiDamageLedgerSubsystem::SubmitEffectDamage(const FGuLiDamageRequest& Request,const FGuid& Lease,UObject* Owner,TFunction<void(const FGuLiDamageCommitResult&)> Callback)
+{
+    return SubmitHybridDamage(Request,Lease,Owner,MoveTemp(Callback));
+}
+FGuid UGuLiDamageLedgerSubsystem::SubmitHybridDamage(const FGuLiDamageRequest& Request,const FGuid& Lease,UObject* Owner,TFunction<void(const FGuLiDamageCommitResult&)> Callback)
+{
+	auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+	if (!Hybrid || !Request.IsWellFormed() || Request.MatchEpoch!=MatchEpoch) return {};
+	if (PendingSubmissions.Contains(Request.DamageEventId)) return Request.DamageEventId;
+	uint64 Started=Hybrid->GetLogicalTick();
+	if (Lease.IsValid())
+	{
+		const auto* Source=RetainedEffectSources.Find(Lease);
+		if (!Source || Source->Source!=Request.Source || Source->Epoch!=MatchEpoch) return {};
+		Started=Source->StartedAt;
+		if (!RetainEffectSource(Lease)) return {};
+	}
+	FPendingSubmission Pending; Pending.RetainedLease=Lease; Pending.CallbackOwner=Owner; Pending.Callback=MoveTemp(Callback);
+	PendingSubmissions.Add(Request.DamageEventId,MoveTemp(Pending));
+	const TWeakObjectPtr<UGuLiDamageLedgerSubsystem> Weak(this); const FGuid Event=Request.DamageEventId; const uint32 SubmittedEpoch=MatchEpoch;
+	const FGuid Submitted=Hybrid->SubmitDamage(Request,Started,[Weak,Event,SubmittedEpoch](const FGuLiDamageCommitResult& Result)
+	{
+		auto* Self=Weak.Get(); if (!Self || Self->MatchEpoch!=SubmittedEpoch) return;
+		auto* P=Self->PendingSubmissions.Find(Event); if (!P) return;
+		auto Callback=MoveTemp(P->Callback); auto Owner=P->CallbackOwner; const auto Lease=P->RetainedLease;
+		Self->PendingSubmissions.Remove(Event);
+		if (!Self->ResultsByEvent.Contains(Event))
+		{
+			if (Result.Status==EGuLiDamageCommitStatus::Committed) ++Self->CommitCount;
+			Self->RememberResult(Event,Result);
+		}
+		if (Lease.IsValid()) Self->ReleaseEffectSource(Lease);
+		if (Owner.IsValid() && Callback) Callback(Result);
+	});
+	if (!Submitted.IsValid())
+	{
+		PendingSubmissions.Remove(Event); if (Lease.IsValid()) ReleaseEffectSource(Lease);
+	}
+	return Submitted;
 }
 
 bool UGuLiDamageLedgerSubsystem::RegisterSource(const FGuLiTargetHandle& Handle, FGuLiCombatSourceAdapter Adapter)
@@ -589,6 +461,7 @@ void UGuLiDamageLedgerSubsystem::UnregisterSource(const FGuLiTargetHandle& Handl
 
 bool UGuLiDamageLedgerSubsystem::TryGetSourceSnapshot(const FGuLiTargetHandle& Handle, FGuLiCombatTargetSnapshot& Out)
 {
+	if (!IsCurrentSoldierHandle(Handle,MatchEpoch)) { Out={}; return false; }
 	if (const auto* Source = SourceAdapters.Find(Handle))
 	{
 		Out = {};
@@ -603,7 +476,7 @@ void UGuLiDamageLedgerSubsystem::GetSourceOnlySnapshots(TArray<FGuLiCombatTarget
 	Out.Reset();
 	for (auto It = SourceAdapters.CreateIterator(); It; ++It)
 	{
-		if (!It.Value().LifetimeOwner.IsValid()) { It.RemoveCurrent(); continue; }
+		if (!It.Value().LifetimeOwner.IsValid() || !IsCurrentSoldierHandle(It.Key(),MatchEpoch)) { It.RemoveCurrent(); continue; }
 		FGuLiCombatTargetSnapshot Snapshot;
 		if (TryGetSourceSnapshot(It.Key(), Snapshot)) Out.Add(Snapshot);
 	}
@@ -614,7 +487,8 @@ FGuid UGuLiDamageLedgerSubsystem::AcquireEffectSource(const FGuLiTargetHandle& S
 	FGuLiCombatTargetSnapshot Snapshot;
 	if (!IsAuthorityWorld() || MatchEpoch == 0 || !TryGetSourceSnapshot(Source, Snapshot) || !Snapshot.bAlive) return {};
 	const FGuid Id = FGuid::NewGuid();
-	RetainedEffectSources.Add(Id, {Source, Snapshot.Team, MatchEpoch, 1});
+	const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+	RetainedEffectSources.Add(Id, {Source, Snapshot.Team, MatchEpoch, 1, Hybrid ? Hybrid->GetLogicalTick() : 0});
 	return Id;
 }
 
@@ -632,148 +506,6 @@ void UGuLiDamageLedgerSubsystem::ReleaseEffectSource(const FGuid& LeaseId)
 	{
 		if (--Source->References <= 0) RetainedEffectSources.Remove(LeaseId);
 	}
-}
-
-FGuLiDamageCommitResult UGuLiDamageLedgerSubsystem::CommitEffectDamage(const FGuLiDamageRequest& Request, const FGuid& LeaseId)
-{
-	const FRetainedEffectSource* Source = RetainedEffectSources.Find(LeaseId);
-	if (!IsAuthorityWorld() || !Source || Source->Epoch != MatchEpoch || Request.MatchEpoch != Source->Epoch
-		|| Source->Source != Request.Source)
-	{
-		FGuLiDamageCommitResult Result;
-		Result.Status = IsAuthorityWorld() ? EGuLiDamageCommitStatus::RejectedMissingTarget : EGuLiDamageCommitStatus::RejectedNotAuthority;
-		return Result;
-	}
-	// Copy before any adapter callback can release a lease or change the map.
-	const EGuLiTeam FrozenTeam = Source->Team;
-	return CommitDamageInternal(Request, &FrozenTeam);
-}
-
-FGuLiDamageCommitResult UGuLiDamageLedgerSubsystem::CommitDamageInternal(
-	const FGuLiDamageRequest& Request, const EGuLiTeam* FrozenSourceTeam)
-{
-	if (!IsAuthorityWorld())
-	{
-		FGuLiDamageCommitResult Result;
-		Result.Status = EGuLiDamageCommitStatus::RejectedNotAuthority;
-		return Result;
-	}
-	if (!Request.IsWellFormed())
-	{
-		FGuLiDamageCommitResult Result;
-		Result.Status = EGuLiDamageCommitStatus::RejectedMalformed;
-		return Result;
-	}
-	if (const FGuLiDamageCommitResult* Cached = ResultsByEvent.Find(Request.DamageEventId))
-	{
-		FGuLiDamageCommitResult Duplicate = *Cached;
-		Duplicate.Status = EGuLiDamageCommitStatus::Duplicate;
-		return Duplicate;
-	}
-
-	FGuLiDamageCommitResult Result;
-	if (MatchEpoch == 0u || Request.MatchEpoch != MatchEpoch)
-	{
-		Result.Status = EGuLiDamageCommitStatus::RejectedWrongEpoch;
-		RememberResult(Request.DamageEventId, Result);
-		return Result;
-	}
-	const FGuid DerivedDeathEventId = DeriveDeathEventId(Request.DamageEventId);
-	if (const FGuLiDeathCommitRecord* ExistingDeath = DeathRecordsByEvent.Find(DerivedDeathEventId);
-		ExistingDeath && ExistingDeath->DamageEventId == Request.DamageEventId)
-	{
-		Result.Status = EGuLiDamageCommitStatus::Duplicate;
-		Result.bKilled = true;
-		Result.DeathEventId = ExistingDeath->DeathEventId;
-		Result.RewardEventId = DeriveRewardEventId(Request.DamageEventId);
-		return Result;
-	}
-
-	FGuLiCombatTargetSnapshot SourceSnapshot;
-	FGuLiCombatTargetSnapshot TargetSnapshot;
-	if ((!FrozenSourceTeam && !TryGetTargetSnapshot(Request.Source, SourceSnapshot))
-		|| !TryGetTargetSnapshot(Request.Target, TargetSnapshot))
-	{
-		Result.Status = EGuLiDamageCommitStatus::RejectedMissingTarget;
-		RememberResult(Request.DamageEventId, Result);
-		return Result;
-	}
-	if (!TargetSnapshot.bAlive)
-	{
-		Result.Status = EGuLiDamageCommitStatus::RejectedTargetDead;
-		RememberResult(Request.DamageEventId, Result);
-		return Result;
-	}
-	const EGuLiTeam SourceTeam = FrozenSourceTeam ? *FrozenSourceTeam : SourceSnapshot.Team;
-	if (SourceTeam != EGuLiTeam::Unassigned && SourceTeam == TargetSnapshot.Team)
-	{
-		Result.Status = EGuLiDamageCommitStatus::RejectedFriendlyFire;
-		RememberResult(Request.DamageEventId, Result);
-		return Result;
-	}
-
-#if !UE_BUILD_SHIPPING
-	// The 300-second Actor continuity gate needs a genuinely persistent target
-	// field so it can prove repeated attack runs instead of merely proving which
-	// side destroys the finite test roster first. Keep all authorization,
-	// deduplication, effects and commit accounting, but leave health untouched for
-	// Wingman-emitted damage only when the explicit unattended test flag is set.
-	if (Request.Emitter.IsValid()
-		&& FParse::Param(FCommandLine::Get(), TEXT("GuLiListenSmokePersistentTargets")))
-	{
-		Result.Status = EGuLiDamageCommitStatus::Committed;
-		Result.CommitOrdinal = ++CommitCount;
-		RememberResult(Request.DamageEventId, Result);
-		return Result;
-	}
-#endif
-
-	FGuLiCombatTargetAdapter* Adapter = TargetAdapters.Find(Request.Target);
-	if (!Adapter || !Adapter->IsBound())
-	{
-		Result.Status = EGuLiDamageCommitStatus::RejectedByAdapter;
-		RememberResult(Request.DamageEventId, Result);
-		return Result;
-	}
-	FGuLiDamageRequest Remaining = Request;
-	for (const auto& Barrier : DamageBarriers)
-	{
-		if (!Barrier.Owner.IsValid() || Remaining.Damage == 0) continue;
-		const float Absorbed = Barrier.Absorb(TargetSnapshot, Remaining.Damage);
-		check(FMath::IsFinite(Absorbed) && Absorbed >= 0 && Absorbed <= Remaining.Damage);
-		Remaining.Damage -= Absorbed;
-	}
-	if (Remaining.Damage > 0)
-	{
-		if (!Adapter->ApplyDamage(Remaining, Result))
-		{
-			Result.Status = EGuLiDamageCommitStatus::RejectedByAdapter;
-			RememberResult(Request.DamageEventId, Result);
-			return Result;
-		}
-	}
-	else Result.RemainingHealth = TargetSnapshot.Health;
-	Result.AbsorbedDamage += Request.Damage - Remaining.Damage;
-	Result.Status = EGuLiDamageCommitStatus::Committed;
-	Result.CommitOrdinal = ++CommitCount;
-	if (Result.bKilled)
-	{
-		CommitLethalEvents(Request, Result);
-	}
-	RememberResult(Request.DamageEventId, Result);
-	return Result;
-}
-
-void UGuLiDamageLedgerSubsystem::RegisterDamageBarrier(UObject& Owner, uint32 StableOrder,
-	TFunction<float(const FGuLiCombatTargetSnapshot&, float)> Absorb)
-{
-	check(IsAuthorityWorld() && Absorb && !DamageBarriers.ContainsByPredicate([&](const auto& B) { return B.Owner == &Owner; }));
-	DamageBarriers.Add({&Owner, StableOrder, MoveTemp(Absorb)});
-	DamageBarriers.Sort([](const auto& A, const auto& B) { return A.StableOrder < B.StableOrder; });
-}
-void UGuLiDamageLedgerSubsystem::UnregisterDamageBarrier(const UObject& Owner)
-{
-	DamageBarriers.RemoveAll([&](const auto& Barrier) { return Barrier.Owner == &Owner; });
 }
 
 void UGuLiDamageLedgerSubsystem::RememberResult(
@@ -794,121 +526,6 @@ void UGuLiDamageLedgerSubsystem::RememberResult(
 		}
 		EventOrder.RemoveAt(0, Overflow, EAllowShrinking::No);
 	}
-}
-
-void UGuLiDamageLedgerSubsystem::RememberDeathRecord(const FGuLiDeathCommitRecord& Record)
-{
-	if (!Record.IsWellFormed() || DeathRecordsByEvent.Contains(Record.DeathEventId))
-	{
-		return;
-	}
-	DeathRecordsByEvent.Add(Record.DeathEventId, Record);
-	DeathEventOrder.Add(Record.DeathEventId);
-	const int32 Overflow = DeathEventOrder.Num() - FMath::Max(1, MaximumRememberedEvents);
-	if (Overflow > 0)
-	{
-		for (int32 Index = 0; Index < Overflow; ++Index)
-		{
-			DeathRecordsByEvent.Remove(DeathEventOrder[Index]);
-		}
-		DeathEventOrder.RemoveAt(0, Overflow, EAllowShrinking::No);
-	}
-}
-
-void UGuLiDamageLedgerSubsystem::RememberRewardRecord(const FGuLiRewardCommitRecord& Record)
-{
-	if (!Record.IsWellFormed() || RewardRecordsByEvent.Contains(Record.RewardEventId))
-	{
-		return;
-	}
-	RewardRecordsByEvent.Add(Record.RewardEventId, Record);
-	RewardEventOrder.Add(Record.RewardEventId);
-	const int32 Overflow = RewardEventOrder.Num() - FMath::Max(1, MaximumRememberedEvents);
-	if (Overflow > 0)
-	{
-		for (int32 Index = 0; Index < Overflow; ++Index)
-		{
-			RewardRecordsByEvent.Remove(RewardEventOrder[Index]);
-		}
-		RewardEventOrder.RemoveAt(0, Overflow, EAllowShrinking::No);
-	}
-}
-
-void UGuLiDamageLedgerSubsystem::CommitLethalEvents(
-	const FGuLiDamageRequest& Request,
-	FGuLiDamageCommitResult& InOutResult)
-{
-	const FGuid DeathEventId = DeriveDeathEventId(Request.DamageEventId);
-	const FGuid RewardEventId = DeriveRewardEventId(Request.DamageEventId);
-	InOutResult.DeathEventId = DeathEventId;
-	InOutResult.RewardEventId = RewardEventId;
-
-	if (const FGuLiDeathCommitRecord* Existing = DeathRecordsByEvent.Find(DeathEventId))
-	{
-		if (Existing->DamageEventId == Request.DamageEventId)
-		{
-			return;
-		}
-		return;
-	}
-
-	FGuLiDeathCommitRecord Death;
-	Death.MatchEpoch = Request.MatchEpoch;
-	Death.DeathEventId = DeathEventId;
-	Death.DamageEventId = Request.DamageEventId;
-	Death.ShotId = Request.ShotId;
-	Death.Source = Request.Source;
-	Death.Emitter = Request.Emitter;
-	Death.WeaponBinding = Request.WeaponBinding;
-	Death.SkillId = Request.SkillId;
-	Death.LoadoutRevision = Request.LoadoutRevision;
-	Death.ProfileRevision = Request.ProfileRevision;
-	Death.RootEventId = Request.RootEventId;
-	Death.Target = Request.Target;
-	Death.CommitOrdinal = ++DeathCommitCount;
-	RememberDeathRecord(Death);
-
-	if (RewardRecordsByEvent.Contains(RewardEventId))
-	{
-		return;
-	}
-
-	FGuLiRewardCommitRecord Reward;
-	Reward.MatchEpoch = Request.MatchEpoch;
-	Reward.RewardEventId = RewardEventId;
-	Reward.DeathEventId = DeathEventId;
-	Reward.CommitOrdinal = ++RewardCommitCount;
-	Reward.Status = EGuLiRewardGrantStatus::PolicyUnavailable;
-
-	if (RewardPolicy)
-	{
-		FGuLiRewardGrant ProposedGrant;
-		if (!RewardPolicy(Death, ProposedGrant) || !ProposedGrant.IsWellFormed())
-		{
-			Reward.Status = EGuLiRewardGrantStatus::NotGranted;
-		}
-		else
-		{
-			Reward.Grant = MoveTemp(ProposedGrant);
-			if (!RewardSink)
-			{
-				Reward.Status = EGuLiRewardGrantStatus::SinkUnavailable;
-			}
-			else
-			{
-				Reward.Status = EGuLiRewardGrantStatus::Granted;
-				if (!RewardSink(Reward))
-				{
-					Reward.Status = EGuLiRewardGrantStatus::SinkRejected;
-				}
-				else
-				{
-					++GrantedRewardCount;
-				}
-			}
-		}
-	}
-	RememberRewardRecord(Reward);
 }
 
 void UGuLiDamageLedgerSubsystem::PruneInvalidTargets()

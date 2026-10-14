@@ -91,7 +91,8 @@ enum class EGuLiDamageCommitStatus : uint8
 	RejectedMissingTarget,
 	RejectedTargetDead,
 	RejectedFriendlyFire,
-	RejectedByAdapter
+	RejectedByAdapter,
+	Pending
 };
 
 USTRUCT(BlueprintType)
@@ -256,11 +257,10 @@ struct GULISTRIKE_API FGuLiCombatTargetAdapter
 {
 	TWeakObjectPtr<UObject> LifetimeOwner;
 	TFunction<bool(FGuLiCombatTargetSnapshot&)> ReadSnapshot;
-	TFunction<bool(const FGuLiDamageRequest&, FGuLiDamageCommitResult&)> ApplyDamage;
 
 	bool IsBound() const
 	{
-		return LifetimeOwner.IsValid() && ReadSnapshot && ApplyDamage;
+		return LifetimeOwner.IsValid() && ReadSnapshot;
 	}
 };
 
@@ -295,10 +295,9 @@ class GULISTRIKE_API UGuLiCombatHealthComponent : public UActorComponent
 public:
 	UGuLiCombatHealthComponent();
 
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
 	UFUNCTION(BlueprintPure, Category = "Combat|Health")
 	const FGuLiCombatHealthState& GetHealthState() const { return HealthState; }
+	float GetConfiguredMaxHealth() const { return DefaultMaxHealth; }
 
 	UFUNCTION(BlueprintPure, Category = "Combat|Health")
 	bool IsAlive() const { return HealthState.IsWellFormed() && !HealthState.bDead; }
@@ -309,17 +308,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Combat|Target")
 	EGuLiTeam GetCombatTeam() const { return Team; }
 
-	/** Authority-only identity registration. Repeating the same values is a no-op. */
-	bool ConfigureServerTarget(const FGuLiTargetHandle& NewHandle, EGuLiTeam NewTeam);
-
-	/** Authority-only initialization; preserves the current health ratio when requested. */
-	bool InitializeServerHealth(float NewMaxHealth, bool bPreserveRatio = false);
-	void InitializeServerShield(float Maximum);
-	float ConsumeServerShield(float Damage);
-	void RechargeServerShield(float Amount);
-
-	/** Called only by the Damage Ledger's registered adapter. */
-	bool ApplyServerDamage(const FGuLiDamageRequest& Request, FGuLiDamageCommitResult& OutResult);
+	/** Apply a committed object-owner result to this local health view without publishing it again. */
+	bool ApplyHybridHealth(const FGuLiTargetHandle& Handle, EGuLiTeam Faction, const FGuLiCombatHealthState& State,
+		uint64 Epoch, uint64 LedgerRevision, bool bBusinessEffects);
 
 	UPROPERTY(BlueprintAssignable, Category = "Combat|Health")
 	FGuLiCombatHealthChanged OnHealthChanged;
@@ -333,7 +324,7 @@ protected:
 
 private:
 	UFUNCTION()
-	void OnRep_HealthState();
+	void OnRep_HealthState(const FGuLiCombatHealthState& PreviousState);
 	UFUNCTION() void OnRep_TargetIdentity();
 
 	void RegisterWithLedger();
@@ -343,17 +334,19 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Combat|Health", meta = (ClampMin = "1.0"))
 	float DefaultMaxHealth = 1000.0f;
 
-	UPROPERTY(ReplicatedUsing = OnRep_HealthState)
+	UPROPERTY()
 	FGuLiCombatHealthState HealthState;
 
-	UPROPERTY(ReplicatedUsing = OnRep_TargetIdentity)
+	UPROPERTY()
 	FGuLiTargetHandle TargetHandle;
 
-	UPROPERTY(ReplicatedUsing = OnRep_TargetIdentity)
+	UPROPERTY()
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
+	uint64 HybridEpoch = 0, HybridLedgerRevision = 0;
+	bool bHybridObservedAlive = false, bHybridDeathDelivered = false;
 };
 
-/** Server-only idempotent damage truth and target registry. */
+/** Local combat query registry and asynchronous requests to the responsible peer. */
 UCLASS()
 class GULISTRIKE_API UGuLiDamageLedgerSubsystem : public UWorldSubsystem
 {
@@ -362,7 +355,7 @@ class GULISTRIKE_API UGuLiDamageLedgerSubsystem : public UWorldSubsystem
 public:
 	virtual void Deinitialize() override;
 
-	bool BeginServerEpoch(uint32 NewMatchEpoch);
+	bool BindMatchEpoch(uint32 NewMatchEpoch);
 	uint32 GetMatchEpoch() const { return MatchEpoch; }
 
 	bool RegisterTarget(const FGuLiTargetHandle& Handle, FGuLiCombatTargetAdapter Adapter);
@@ -376,34 +369,18 @@ public:
 	bool TryGetTargetSnapshot(const FGuLiTargetHandle& Handle, FGuLiCombatTargetSnapshot& OutSnapshot);
 	/** Authority-only stable snapshot of the current target directory for server target acquisition. */
 	void GetTargetSnapshots(TArray<FGuLiCombatTargetSnapshot>& OutSnapshots, EGuLiTargetKind Kind = EGuLiTargetKind::None);
-	/** Optional barriers absorb before target damage; no building/resource types enter the ledger. */
-	void RegisterDamageBarrier(UObject& Owner, uint32 StableOrder, TFunction<float(const FGuLiCombatTargetSnapshot&, float)> Absorb);
-	void UnregisterDamageBarrier(const UObject& Owner);
-	FGuLiDamageCommitResult CommitDamage(const FGuLiDamageRequest& Request);
+	/** Returns request identity; completion is reported by the responsible client. */
+	FGuid SubmitDamage(const FGuLiDamageRequest& Request, UObject* CallbackOwner = nullptr,
+		TFunction<void(const FGuLiDamageCommitResult&)> OnResolved = {});
+	FGuid SubmitEffectDamage(const FGuLiDamageRequest& Request, const FGuid& LeaseId,
+		UObject* CallbackOwner = nullptr, TFunction<void(const FGuLiDamageCommitResult&)> OnResolved = {});
 
 	/** Authority-only cast provenance. A lease is not a target and survives its source Actor's destruction. */
 	FGuid AcquireEffectSource(const FGuLiTargetHandle& Source);
 	bool RetainEffectSource(const FGuid& LeaseId);
 	void ReleaseEffectSource(const FGuid& LeaseId);
-	FGuLiDamageCommitResult CommitEffectDamage(const FGuLiDamageRequest& Request, const FGuid& LeaseId);
-
-	/** Authority-only optional integration point. Empty callbacks restore fail-closed Policy/SinkUnavailable results. */
-	bool SetRewardPipeline(FGuLiRewardPolicy InPolicy, FGuLiRewardSink InSink);
-	void ClearRewardPipeline();
-
-	bool TryGetDeathRecord(const FGuid& DeathEventId, FGuLiDeathCommitRecord& OutRecord) const;
-	bool TryGetRewardRecord(const FGuid& RewardEventId, FGuLiRewardCommitRecord& OutRecord) const;
-
-	static FGuid DeriveDeathEventId(const FGuid& DamageEventId);
-	static FGuid DeriveRewardEventId(const FGuid& DamageEventId);
 
 	uint64 GetCommitCount() const { return CommitCount; }
-	uint64 GetDeathCommitCount() const { return DeathCommitCount; }
-	uint64 GetRewardCommitCount() const { return RewardCommitCount; }
-	uint64 GetGrantedRewardCount() const { return GrantedRewardCount; }
-	int32 GetRememberedEventCount() const { return ResultsByEvent.Num(); }
-	int32 GetRememberedDeathEventCount() const { return DeathRecordsByEvent.Num(); }
-	int32 GetRememberedRewardEventCount() const { return RewardRecordsByEvent.Num(); }
 
 private:
 	struct FRetainedEffectSource
@@ -412,39 +389,29 @@ private:
 		EGuLiTeam Team = EGuLiTeam::Unassigned;
 		uint32 Epoch = 0;
 		int32 References = 1;
+		uint64 StartedAt = 0;
 	};
-	FGuLiDamageCommitResult CommitDamageInternal(const FGuLiDamageRequest& Request, const EGuLiTeam* FrozenSourceTeam);
+	struct FPendingSubmission
+	{
+		FGuid RetainedLease;
+		TWeakObjectPtr<UObject> CallbackOwner;
+		TFunction<void(const FGuLiDamageCommitResult&)> Callback;
+	};
+	TMap<FGuid, FPendingSubmission> PendingSubmissions;
+	FGuid SubmitHybridDamage(const FGuLiDamageRequest& Request, const FGuid& Lease,
+		UObject* CallbackOwner, TFunction<void(const FGuLiDamageCommitResult&)> Callback);
 	TMap<FGuid, FRetainedEffectSource> RetainedEffectSources;
 	bool IsAuthorityWorld() const;
 	void RememberResult(const FGuid& EventId, const FGuLiDamageCommitResult& Result);
-	void RememberDeathRecord(const FGuLiDeathCommitRecord& Record);
-	void RememberRewardRecord(const FGuLiRewardCommitRecord& Record);
-	void CommitLethalEvents(const FGuLiDamageRequest& Request, FGuLiDamageCommitResult& InOutResult);
 	void PruneInvalidTargets();
 
 	TMap<FGuLiTargetHandle, FGuLiCombatTargetAdapter> TargetAdapters;
 	/** Live directory membership by domain; snapshots are still read freshly for every caller. */
 	TMap<EGuLiTargetKind, TSet<FGuLiTargetHandle>> TargetDomains;
 	TMap<FGuLiTargetHandle, FGuLiCombatSourceAdapter> SourceAdapters;
-	struct FDamageBarrier
-	{
-		TWeakObjectPtr<UObject> Owner;
-		uint32 StableOrder = 0;
-		TFunction<float(const FGuLiCombatTargetSnapshot&, float)> Absorb;
-	};
-	TArray<FDamageBarrier> DamageBarriers;
 	TMap<FGuid, FGuLiDamageCommitResult> ResultsByEvent;
 	TArray<FGuid> EventOrder;
-	TMap<FGuid, FGuLiDeathCommitRecord> DeathRecordsByEvent;
-	TArray<FGuid> DeathEventOrder;
-	TMap<FGuid, FGuLiRewardCommitRecord> RewardRecordsByEvent;
-	TArray<FGuid> RewardEventOrder;
-	FGuLiRewardPolicy RewardPolicy;
-	FGuLiRewardSink RewardSink;
 	uint32 MatchEpoch = 0u;
 	uint64 CommitCount = 0u;
-	uint64 DeathCommitCount = 0u;
-	uint64 RewardCommitCount = 0u;
-	uint64 GrantedRewardCount = 0u;
 	int32 MaximumRememberedEvents = 8192;
 };

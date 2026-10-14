@@ -4,12 +4,10 @@
 #include "Engine/DataTable.h"
 #include "Gameplay/GroundMech/GuLiGroundMechMovementComponent.h"
 #include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
+#include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Gameplay/GroundMech/GuLiGroundMechAbilities.h"
 #include "Gameplay/GroundMech/GuLiGroundMechRocketComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
-#include "Battle/Framework/GuLiBattlePlayerController.h"
-#include "Battle/Framework/GuLiBattlePlayerState.h"
-#include "Battle/Network/GuLiPlayerNetSyncComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -19,23 +17,25 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/PlayerController.h"
 #include "InputActionValue.h"
-#include "Net/UnrealNetwork.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Gameplay/GroundMech/Private/GuLiHybridGroundInput.h"
 
 AGuLiGroundMechCharacter::AGuLiGroundMechCharacter(const FObjectInitializer& Initializer)
 	: Super(Initializer.SetDefaultSubobjectClass<UGuLiGroundMechMovementComponent>(CharacterMovementComponentName))
 {
 	PrimaryActorTick.bCanEverTick = true;
-	bReplicates = true;
-	bAlwaysRelevant = true;
+	bReplicates = false;
 	bUseControllerRotationYaw = false;
 	Weapon = CreateDefaultSubobject<UGuLiGroundMechWeaponComponent>(TEXT("Weapon"));
+    CombatHealth = CreateDefaultSubobject<UGuLiCombatHealthComponent>(TEXT("CombatHealth"));
 	AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("GroundMechAbilitySystem"));
-	AbilitySystem->SetIsReplicated(true);
-	AbilitySystem->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	AbilitySystem->SetIsReplicated(false);
 	FuelAttributes = CreateDefaultSubobject<UGuLiGroundMechAttributeSet>(TEXT("GroundMechFuelAttributes"));
 	RocketJump = CreateDefaultSubobject<UGuLiGroundMechRocketComponent>(TEXT("RocketJump"));
-	CreateDefaultSubobject<UGuLiExternalUnitControlComponent>(TEXT("ExternalUnitControl"));
+	CreateDefaultSubobject<UGuLiExternalUnitControlComponent>(TEXT("ExternalUnitControl"))->bPlayerVehicle=true;
 	GetCapsuleComponent()->InitCapsuleSize(230.f, 374.1898f);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetRelativeScale3D(FVector(2.0512617f));
@@ -87,6 +87,7 @@ void AGuLiGroundMechCharacter::PostInitializeComponents()
 void AGuLiGroundMechCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+    CombatHealth->OnDeath.AddUniqueDynamic(this,&ThisClass::HandleCommittedDeath);
 	RocketJump->RefreshActorInfo();
 	DesiredCameraDistance = StandingHeight * 4.f;
 	DisplayAimYaw = GetActorRotation().Yaw;
@@ -126,11 +127,29 @@ void AGuLiGroundMechCharacter::UnPossessed()
 	RemoveInputContext();
 	Super::UnPossessed();
 }
+void AGuLiGroundMechCharacter::SetCarrierDormant(bool Dormant)
+{
+    bCarrierDormant=Dormant; ApplyCarrierDormancy();
+}
+void AGuLiGroundMechCharacter::ApplyCarrierDormancy()
+{
+    if (bCarrierDormant)
+    {
+        RemoveInputContext(); HybridInput={}; SimulationInput={}; bSemanticInput=false; ConsumeMovementInputVector();
+        GetCharacterMovement()->StopMovementImmediately();
+    }
+}
 
 void AGuLiGroundMechCharacter::EndPlay(EEndPlayReason::Type Reason)
 {
+    CombatHealth->OnDeath.RemoveDynamic(this,&ThisClass::HandleCommittedDeath);
 	RemoveInputContext();
 	Super::EndPlay(Reason);
+}
+void AGuLiGroundMechCharacter::HandleCommittedDeath()
+{
+    RemoveInputContext(); HybridInput={}; SimulationInput={}; bSemanticInput=false; ConsumeMovementInputVector();
+    GetCharacterMovement()->StopMovementImmediately(); GetCharacterMovement()->DisableMovement();
 }
 
 void AGuLiGroundMechCharacter::SetupPlayerInputComponent(UInputComponent* Input)
@@ -138,6 +157,8 @@ void AGuLiGroundMechCharacter::SetupPlayerInputComponent(UInputComponent* Input)
 	Super::SetupPlayerInputComponent(Input);
 	auto& Enhanced = *CastChecked<UEnhancedInputComponent>(Input);
 	Enhanced.BindAction(MoveAction,ETriggerEvent::Triggered,this,&ThisClass::Move);
+	Enhanced.BindAction(MoveAction,ETriggerEvent::Completed,this,&ThisClass::StopMove);
+	Enhanced.BindAction(MoveAction,ETriggerEvent::Canceled,this,&ThisClass::StopMove);
 	Enhanced.BindAction(SprintAction,ETriggerEvent::Triggered,this,&ThisClass::Sprint);
 	Enhanced.BindAction(SprintAction,ETriggerEvent::Completed,this,&ThisClass::StopSprint);
 	Enhanced.BindAction(SprintAction,ETriggerEvent::Canceled,this,&ThisClass::StopSprint);
@@ -150,35 +171,31 @@ void AGuLiGroundMechCharacter::SetupPlayerInputComponent(UInputComponent* Input)
 	}
 }
 
-void AGuLiGroundMechCharacter::SetRocketJumpInput(bool bHeld) { RocketJump->SetRocketJumpInput(bHeld); }
+void AGuLiGroundMechCharacter::SetRocketJumpInput(bool bHeld)
+{
+	HybridInput.bRocket=bHeld && CanUseControls();
+}
 void AGuLiGroundMechCharacter::StartRocketJump(const FInputActionValue&) { SetRocketJumpInput(true); }
 void AGuLiGroundMechCharacter::StopRocketJump(const FInputActionValue&) { SetRocketJumpInput(false); }
 
 bool AGuLiGroundMechCharacter::CanUseControls() const
 {
-	if (!IsLocallyControlled()) return false;
-	const auto* PC = Cast<AGuLiBattlePlayerController>(GetController());
-	const auto* State = GetPlayerState<AGuLiBattlePlayerState>();
-	// Ownership and PlayerState arrive independently during initial possession.
-	return PC && State && State->GetBattleRole()==EGuLiCommanderRole::Ground
-		&& State->IsBattleReady() && PC->GetPlayerNetSyncComponent()->IsConnectionReady()
-		&& !PC->IsMoveInputIgnored() && !UGuLiExternalUnitControlComponent::AreActorActionsLocked(this);
+	if (!IsLocallyControlled() || bCarrierDormant || !CombatHealth->IsAlive()) return false;
+	const auto* Identity=UGuLiHybridActorComponent::Find(this);
+	const auto* PC=Cast<APlayerController>(Controller);
+	return Identity && Identity->CanControl() && PC && !PC->IsMoveInputIgnored()
+		&& !UGuLiExternalUnitControlComponent::AreActorActionsLocked(this);
 }
 
 void AGuLiGroundMechCharacter::Move(const FInputActionValue& Value)
 {
 	if (!CanUseControls()) return;
-	FVector2D Axis = Value.Get<FVector2D>();
-	const bool bAirSteering = GetCharacterMovement()->IsFalling() && RocketJump->IsConfigured();
-	Axis = Axis.GetClampedToMaxSize(1.f);
-	const float Magnitude = bAirSteering || bSprintHeld ? 1.f : WalkSpeed/GetCharacterMovement()->MaxWalkSpeed;
-	// CMC transmits this acceleration magnitude, so walk/run share its existing prediction.
-	AddMovementInput(FVector::ForwardVector,Axis.Y*Magnitude);
-	AddMovementInput(FVector::RightVector,Axis.X*Magnitude);
+	HybridInput.Axis = Value.Get<FVector2D>().GetClampedToMaxSize(1.f);
 }
 
-void AGuLiGroundMechCharacter::Sprint(const FInputActionValue&) { bSprintHeld=CanUseControls(); }
-void AGuLiGroundMechCharacter::StopSprint(const FInputActionValue&) { bSprintHeld=false; }
+void AGuLiGroundMechCharacter::StopMove(const FInputActionValue&) { HybridInput.Axis=FVector2D::ZeroVector; }
+void AGuLiGroundMechCharacter::Sprint(const FInputActionValue&) { bSprintHeld=CanUseControls(); HybridInput.bSprint=bSprintHeld; }
+void AGuLiGroundMechCharacter::StopSprint(const FInputActionValue&) { bSprintHeld=false; HybridInput.bSprint=false; }
 
 void AGuLiGroundMechCharacter::Zoom(const FInputActionValue& Value)
 {
@@ -188,6 +205,8 @@ void AGuLiGroundMechCharacter::Zoom(const FInputActionValue& Value)
 
 bool AGuLiGroundMechCharacter::GetCursorAimPoint(FVector& OutPoint) const
 {
+	if (bSemanticInput) { OutPoint=HybridInput.Aim; return HybridInput.bHasAim; }
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return false;
 	const auto* PC = Cast<APlayerController>(GetController());
 	if (!PC || !IsLocallyControlled() || !Machinegun) return false;
 	FVector Origin,Direction;
@@ -203,29 +222,63 @@ bool AGuLiGroundMechCharacter::GetCursorAimPoint(FVector& OutPoint) const
 	return true;
 }
 
-void AGuLiGroundMechCharacter::UpdateAim()
-{
-	FVector AimPoint;
-	if (!GetCursorAimPoint(AimPoint)) return;
-	const FVector ToTarget=AimPoint-GetActorLocation();
-	if (ToTarget.SizeSquared2D()<1.f) return;
-	GetController()->SetControlRotation(FRotator(0,ToTarget.Rotation().Yaw,0));
-}
-
 void AGuLiGroundMechCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	if (CanUseControls()) UpdateAim();
-	else bSprintHeld=false;
-	if (HasAuthority() && Controller) AimYaw=FRotator::CompressAxisToShort(GetControlRotation().Yaw);
-	const float TargetYaw=IsLocallyControlled()?GetControlRotation().Yaw:FRotator::DecompressAxisFromShort(AimYaw);
-	DisplayAimYaw=FMath::FixedTurn(DisplayAimYaw,TargetYaw,540.f*DeltaSeconds);
-	UpperBodyPivot->SetWorldRotation(FRotator(0,DisplayAimYaw-90.f,0));
-	CameraBoom->TargetArmLength=FMath::FInterpTo(CameraBoom->TargetArmLength,DesiredCameraDistance,DeltaSeconds,10.f);
+	if (CanUseControls())
+	{
+		FVector Point;
+		if (GetCursorAimPoint(Point)) { HybridInput.Aim=Point; HybridInput.bHasAim=true; }
+	}
+	else if (const auto* Identity=UGuLiHybridActorComponent::Find(this);
+        !Identity || !GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->HasControl(Identity->GetObjectKey()))
+    { HybridInput.Axis=FVector2D::ZeroVector; HybridInput.bFire=false; HybridInput.bRocket=false; }
+	PumpHybridInput();
+	if (UGuLiNetworkSettings::CanPresent(GetWorld()))
+	{
+		UpperBodyPivot->SetWorldRotation(FRotator(0,DisplayAimYaw-90.f,0));
+		CameraBoom->TargetArmLength=FMath::FInterpTo(CameraBoom->TargetArmLength,DesiredCameraDistance,DeltaSeconds,10.f);
+	}
 }
 
-void AGuLiGroundMechCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+bool AGuLiGroundMechCharacter::SubmitGameplayInput(FVector2D Axis,FVector AimPoint,bool bSprint,bool bFire,bool bRocket,bool bHasAim)
 {
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME_CONDITION(AGuLiGroundMechCharacter,AimYaw,COND_SkipOwner);
+	if (!CanUseControls() || Axis.ContainsNaN() || AimPoint.ContainsNaN() || (bFire && !bHasAim)) return false;
+	bSemanticInput=true; HybridInput={Axis.GetClampedToMaxSize(1.),AimPoint,bSprint,bFire,bRocket,bHasAim};
+	return true;
+}
+void AGuLiGroundMechCharacter::PumpHybridInput()
+{
+	const auto* Identity=UGuLiHybridActorComponent::Find(this);
+	auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+	if (!Identity || !Identity->CanControl() || !Hybrid) return;
+	const uint64 At=Hybrid->GetLogicalTick();
+	if (bHybridInputSent && At==LastHybridInputTick) return;
+	if (bHybridInputSent && HybridInput==LastHybridInput && At>=LastHybridInputTick && At-LastHybridInputTick<30) return;
+	FGuLiHybridObjectState Current;
+	if (!Hybrid->GetObject(Identity->GetObjectKey(),Current)) return;
+	FGuLiHybridStateArchive A(256); auto Input=HybridInput; GuLiHybridGround::Input(A,Input);
+	FGuLiHybridCommand Command; if (!A.Finish(Command.Arguments)) return;
+	Command.Event=FGuid::NewGuid(); Command.LogicalTick=At; Command.Operation=TEXT("GroundInput");
+	auto& Member=Command.Members.AddDefaulted_GetRef(); Member.Key=Current.Key;
+	Member.ControlEpoch=Current.ControlEpoch; Member.OwnerEpoch=Current.OwnerEpoch; Member.Slot=Current.Ordinal;
+	if (Hybrid->RouteCommand(Command)) { LastHybridInput=HybridInput; LastHybridInputTick=At; bHybridInputSent=true; }
+}
+void AGuLiGroundMechCharacter::AdvanceHybrid(float DeltaSeconds)
+{
+	if (!UGuLiHybridActorComponent::HasSimulation(this)) return;
+	RocketJump->ApplyHybridInput(SimulationInput.bRocket);
+	auto* Movement=CastChecked<UGuLiGroundMechMovementComponent>(GetCharacterMovement());
+	Movement->AdvanceHybrid(DeltaSeconds,SimulationInput.Axis,SimulationInput.bSprint);
+	if (SimulationInput.bHasAim)
+	{
+		const auto Offset=SimulationInput.Aim-GetActorLocation();
+		if (Offset.SizeSquared2D()>1) AimYaw=FRotator::CompressAxisToShort(Offset.Rotation().Yaw);
+	}
+	DisplayAimYaw=FMath::FixedTurn(DisplayAimYaw,FRotator::DecompressAxisFromShort(AimYaw),540.f*DeltaSeconds);
+	UpperBodyPivot->SetWorldRotation(FRotator(0,DisplayAimYaw-90.f,0));
+	// These skeletal poses contain gameplay mounting/muzzle sockets on logic-only endpoints too.
+	GetMesh()->TickAnimation(DeltaSeconds,false); GetMesh()->RefreshBoneTransforms();
+	Machinegun->TickAnimation(DeltaSeconds,false); Machinegun->RefreshBoneTransforms();
+	Weapon->AdvanceHybrid(DeltaSeconds,SimulationInput.bFire,SimulationInput.Aim,SimulationInput.bHasAim);
 }

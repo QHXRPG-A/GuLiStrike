@@ -4,7 +4,11 @@
 #include "UObject/Interface.h"
 #include "Gameplay/Building/GuLiBuildingTypes.h"
 #include "Gameplay/Building/GuLiConstructionSlots.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 #include "GuLiBuildingLifecycleComponent.generated.h"
+
+struct FGuLiHybridConstructionPrivateState;
+struct FGuLiHybridConstructionPublicState;
 
 UINTERFACE(MinimalAPI)
 class UGuLiBuildingOwner : public UInterface { GENERATED_BODY() };
@@ -39,17 +43,28 @@ UCLASS(ClassGroup=(GuLiStrike), meta=(BlueprintSpawnableComponent))
 class GULISTRIKE_API UGuLiBuildingLifecycleComponent : public UActorComponent
 {
 	GENERATED_BODY()
+    friend class FGuLiHybridBuildingAdapter;
+    friend class FGuLiHybridResourceFactoryAdapter;
 public:
 	UGuLiBuildingLifecycleComponent();
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out) const override;
+
 	void InitializeBuilding(int32 DefinitionId, int32 TerritoryIndex, EGuLiBuildingOrigin Origin, bool bCompleted, const FGuid& Builder = FGuid());
 	void AddConstructionWork(float Work);
+	void ApplyHybridState(const FGuLiHybridObjectState& Record, bool bBusinessEffects);
+	void AdvanceHybridConstruction(uint64 LogicalTick);
+	void AdvanceHybridContributors(uint64 LogicalTick,float DeltaSeconds);
+	bool CaptureHybridConstruction(FGuLiHybridConstructionPrivateState& Out) const;
+	bool ValidateHybridConstruction(const FGuLiHybridConstructionPrivateState& In) const;
+	bool RestoreHybridConstruction(const FGuLiHybridConstructionPrivateState& In);
+    bool CaptureHybridConstructionPublic(FGuLiHybridConstructionPublicState& Out) const;
+    bool ValidateHybridConstructionPublic(const FGuLiHybridConstructionPublicState& State) const;
+    bool ApplyHybridConstructionPublic(const FGuLiHybridConstructionPublicState& State);
+    TArray<FGuLiHybridObjectKey> GetConstructionContributors() const;
 	void AccumulateConstructionWork(float Work);
 	/** Only actual work contributors belong here; a reservation or an accepted order is insufficient. */
-	void SetConstructionContributor(AActor& Vehicle, bool bActive);
-	virtual void TickComponent(float Dt, ELevelTick TickType, FActorComponentTickFunction* Function) override;
+
 	void PrepareConstructionSlots(ACharacter& Prototype);
 	bool BuildNextConstructionSlot();
 	void InvalidateConstructionSlots(const FBox& Bounds);
@@ -78,7 +93,7 @@ public:
 	/** Local notification on authority and replicas; observers read the current snapshot. */
 	FSimpleMulticastDelegate OnConstructionStateChanged;
 private:
-	UPROPERTY(ReplicatedUsing=OnRep_State) FGuLiBuildingLifecycleState State;
+	UPROPERTY() FGuLiBuildingLifecycleState State;
 	UFUNCTION() void OnRep_State();
 	UFUNCTION() void HandleDeath();
 	void RegisterInstance();
@@ -89,4 +104,6 @@ private:
 	bool bSlotsPending = true;
 	float PendingConstructionWork = 0;
 	TSet<TWeakObjectPtr<AActor>> ActiveContributors;
+	FGuid HybridCompletionEvent;
+	UFUNCTION() void HandleHybridTransaction(const FGuLiHybridTransactionResult& Result);
 };

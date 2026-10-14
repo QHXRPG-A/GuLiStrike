@@ -8,6 +8,8 @@
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridActorComponent.h"
 #include "Components/HierarchicalInstancedStaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/SceneComponent.h"
@@ -21,7 +23,7 @@
 
 AGuLiOreFieldActor::AGuLiOreFieldActor()
 {
-	bReplicates = true;
+	bReplicates = false;
 	bAlwaysRelevant = true;
 	SetReplicateMovement(false);
 	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
@@ -79,7 +81,10 @@ bool AGuLiOreFieldActor::InitializeField(
 	for (UHierarchicalInstancedStaticMeshComponent* Component : OreMeshes)
 	{
 		Component->ClearInstances();
+		Component->SetVisibility(UGuLiNetworkSettings::CanPresent(GetWorld()));
+		if (!UGuLiNetworkSettings::CanPresent(GetWorld())) Component->SetStaticMesh(nullptr);
 	}
+	if (UGuLiNetworkSettings::CanPresent(GetWorld()))
 	for (const FGuLiOreVisualAsset& Asset : InConfig.OreVisuals)
 	{
 		const int32 ComponentIndex = MakeComponentIndex(
@@ -244,6 +249,7 @@ void AGuLiOreFieldActor::RemoveVisual(const uint32 NodeId)
 
 void AGuLiOreFieldActor::AddVisual(const uint32 NodeId, const uint8 RemainingAmount)
 {
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	const UGuLiResourceMapDefinition* Map = Definition.Get();
 	const int32 NodeIndex = static_cast<int32>(NodeId) - 1;
 	if (!Map || !Map->Nodes.IsValidIndex(NodeIndex) || !VisualRefs.IsValidIndex(NodeIndex))
@@ -338,7 +344,7 @@ AGuLiTerritoryOutpostActor::AGuLiTerritoryOutpostActor()
 	CreateDefaultSubobject<UGuLiStrongholdCaptureComponent>(TEXT("Capture"));
 	CreateDefaultSubobject<UGuLiStrongholdFacilitiesComponent>(TEXT("Facilities"));
 	SetCanBeDamaged(false);
-	bReplicates = true;
+	bReplicates = false;
 	bAlwaysRelevant = true;
 	SetReplicateMovement(false);
 	GroundCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("GroundCollision"));
@@ -351,27 +357,20 @@ AGuLiTerritoryOutpostActor::AGuLiTerritoryOutpostActor()
 	Presentation = CreateDefaultSubobject<UGuLiOutpostPresentationComponent>(TEXT("Presentation"));
 }
 
-void AGuLiTerritoryOutpostActor::GetLifetimeReplicatedProps(
-	TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(AGuLiTerritoryOutpostActor, TerritoryIndex);
-	DOREPLIFETIME(AGuLiTerritoryOutpostActor, TerritoryId);
-	DOREPLIFETIME(AGuLiTerritoryOutpostActor, OwnerState);
-}
+
 
 void AGuLiTerritoryOutpostActor::InitializeOutpost(
 	const uint8 InTerritoryIndex,
 	const FName InTerritoryId,
-	const EGuLiTeam InOwner)
+	const EGuLiTeam InOwner,const int32 DefinitionId)
 {
 	TerritoryIndex = InTerritoryIndex;
 	TerritoryId = InTerritoryId;
 	OwnerState.Team = InOwner;
-	OwnerState.FloatEpochServerTime = GetWorld()->GetTimeSeconds();
+	OwnerState.FloatEpochServerTime = UGuLiNetworkSettings::IsHybrid(GetWorld())?UGuLiHybridActorComponent::BattleSeconds(this):GetWorld()->GetTimeSeconds();
 	OwnerState.ChangedServerTime = OwnerState.FloatEpochServerTime;
 	Presentation->ApplyOwnerState(OwnerState);
-	FindComponentByClass<UGuLiBuildingLifecycleComponent>()->InitializeBuilding(7, InTerritoryIndex, EGuLiBuildingOrigin::Map, true);
+	FindComponentByClass<UGuLiBuildingLifecycleComponent>()->InitializeBuilding(DefinitionId, InTerritoryIndex, EGuLiBuildingOrigin::Map, true);
 	FindComponentByClass<UGuLiStrongholdCaptureComponent>()->InitializeCapture(InTerritoryIndex, InOwner);
 	FindComponentByClass<UGuLiStrongholdFacilitiesComponent>()->InitializeFacilities();
 
@@ -379,7 +378,7 @@ void AGuLiTerritoryOutpostActor::InitializeOutpost(
 
 void AGuLiTerritoryOutpostActor::SetBuildingTeamAuthority(EGuLiTeam NewTeam)
 {
-	GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>()->SetTerritoryOwner(TerritoryIndex, NewTeam);
+    SetTerritoryOwnerAuthority(NewTeam);
 }
 
 void AGuLiTerritoryOutpostActor::SetTerritoryOwnerAuthority(const EGuLiTeam InOwner)
@@ -391,13 +390,18 @@ void AGuLiTerritoryOutpostActor::SetTerritoryOwnerAuthority(const EGuLiTeam InOw
 			OwnerState.FloatEpochServerTime = Now;
 		OwnerState.Team = InOwner;
 		OwnerState.ChangedServerTime = Now;
-		FindComponentByClass<UGuLiStrongholdFacilitiesComponent>()->HandleOwnerChanged(InOwner);
 		Presentation->ApplyOwnerState(OwnerState);
-		ForceNetUpdate();
+
 	}
 }
 
 void AGuLiTerritoryOutpostActor::OnRep_OwnerState()
 {
 	Presentation->ApplyOwnerState(OwnerState);
+}
+void AGuLiTerritoryOutpostActor::ApplyHybridOwner(EGuLiTeam InOwner,double LogicalSeconds)
+{
+    if (OwnerState.Team==InOwner) return;
+    if (OwnerState.Team==EGuLiTeam::Unassigned) OwnerState.FloatEpochServerTime=LogicalSeconds;
+    OwnerState.Team=InOwner;OwnerState.ChangedServerTime=LogicalSeconds;Presentation->ApplyOwnerState(OwnerState);
 }

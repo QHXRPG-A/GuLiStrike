@@ -14,10 +14,13 @@ struct FGuLiMiningSlotReservation
 	int32 Slot = INDEX_NONE;
 	uint32 Generation = 0;
 	uint32 Task = 0;
+	uint8 Sample = 0;
+	FGuid Token;
 	bool IsValid() const { return Cluster!=0 && Slot!=INDEX_NONE; }
 };
 struct FGuLiMiningSlot
 {
+	uint8 OriginalSample = 0;
 	FTransform Pose;
 	TArray<uint32> Nodes;
 	TWeakObjectPtr<AGuLiMiningVehiclePawn> Owner;
@@ -41,4 +44,5 @@ struct FGuLiMiningSlotProfile
 	TWeakObjectPtr<AGuLiMiningVehiclePawn> Prototype;
 	TArray<FGuLiMiningClusterSlots> Clusters;
 	int32 BuildCursor = 0;
+	TArray<int32> RequestedClusters;
 };

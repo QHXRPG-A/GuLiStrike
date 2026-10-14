@@ -1,0 +1,68 @@
+#pragma once
+#include "CoreMinimal.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
+
+class AActor;
+class UActorComponent;
+class UClass;
+struct FGuLiHybridManifestData;
+
+/** One reusable gameplay state capability. Its registration owns no world or UObject. */
+struct FGuLiHybridComponentCapability
+{
+    FName Name;
+    uint32 Version=0;
+    const UClass* (*ComponentClass)()=nullptr;
+    bool (*Capture)(const UActorComponent&,TArray<uint8>&)=nullptr;
+    bool (*Validate)(const UActorComponent&,TConstArrayView<uint8>)=nullptr;
+    bool (*Restore)(UActorComponent&,TConstArrayView<uint8>,EGuLiHybridRestoreStage)=nullptr;
+    TArray<FGuLiHybridObjectKey> (*Dependencies)(TConstArrayView<uint8>)=nullptr;
+    void (*AdvanceLogical)(UActorComponent&,uint64,double)=nullptr;
+    bool (*ApplyLedger)(UActorComponent&,const FGuLiHybridObjectState&,uint64,bool)=nullptr;
+    bool (*PrepareRestore)(UActorComponent&,TConstArrayView<uint8>)=nullptr;
+    // Compact query/presentation state; never private jobs, RNG or callbacks.
+    // These three hooks are either all supplied or all absent.
+    bool (*CapturePublic)(const UActorComponent&,TArray<uint8>&)=nullptr;
+    bool (*ValidatePublic)(const UActorComponent&,TConstArrayView<uint8>)=nullptr;
+    bool (*ApplyPublic)(UActorComponent&,TConstArrayView<uint8>)=nullptr;
+    // Export authored component capabilities without adding a class/model switch
+    // to the manifest pipeline. Called for native and inherited SCS templates.
+    bool (*ExportDefinition)(const UActorComponent&,FGuLiHybridManifestData&,const FString&,FString&)=nullptr;
+};
+
+class FGuLiHybridComponentCapabilityRegistration final
+{
+public:
+    explicit FGuLiHybridComponentCapabilityRegistration(FGuLiHybridComponentCapability Capability);
+    ~FGuLiHybridComponentCapabilityRegistration();
+    FGuLiHybridComponentCapabilityRegistration(const FGuLiHybridComponentCapabilityRegistration&)=delete;
+    FGuLiHybridComponentCapabilityRegistration& operator=(const FGuLiHybridComponentCapabilityRegistration&)=delete;
+    const FGuLiHybridComponentCapability& Get() const {return Capability;}
+private:
+    FGuLiHybridComponentCapability Capability;
+};
+
+/** Actor adapters aggregate registered component capabilities without knowing unit definitions. */
+class FGuLiHybridComponentState final
+{
+public:
+    static constexpr uint32 ContractVersion=4;
+    static constexpr uint32 PublicMotionHz=10;
+    static bool BindContracts(FGuLiHybridManifestData& Manifest,FString& Error);
+    static bool ValidateContracts(const FGuLiHybridManifestData& Manifest,FString& Error);
+    static bool Capture(const AActor& Actor,TArray<uint8>& Out);
+    static bool Validate(const AActor& Actor,TConstArrayView<uint8> Bytes);
+    static bool Restore(AActor& Actor,TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage);
+    static bool Advance(AActor& Actor,uint64 Tick,double Delta);
+    static bool ApplyLedger(AActor& Actor,const FGuLiHybridObjectState& State,uint64 Revision,bool Effects);
+    static bool PrepareRestore(AActor& Actor,TConstArrayView<uint8> Bytes);
+    static bool HasPublicState(const AActor& Actor);
+    static bool CapturePublic(const AActor& Actor,TArray<uint8>& Out);
+    static bool ValidatePublic(const AActor& Actor,TConstArrayView<uint8> Bytes);
+    static bool ApplyPublic(AActor& Actor,TConstArrayView<uint8> Bytes);
+    /** Counts native and inherited Blueprint component templates without spawning an actor. */
+    static int32 CountComponentTemplates(const UClass& ActorClass,const UClass& ComponentClass);
+    static bool BindDefinitionLayout(FGuLiHybridManifestData& Manifest,const FString& Definition,const UClass& ActorClass,FString& Error);
+    static bool ValidateDefinitionLayout(const FGuLiHybridManifestData& Manifest,const FString& Definition,const AActor& Actor);
+    static TArray<FGuLiHybridObjectKey> RestoreDependencies(TConstArrayView<uint8> Bytes);
+};

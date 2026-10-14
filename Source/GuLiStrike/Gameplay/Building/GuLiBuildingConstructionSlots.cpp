@@ -5,6 +5,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Engine/World.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 
 TArray<FTransform> UGuLiBuildingLifecycleComponent::GetConstructionSlotPoses() const
 {
@@ -22,13 +24,14 @@ int32 UGuLiBuildingLifecycleComponent::GetReservedConstructionSlots() const
 
 void UGuLiBuildingLifecycleComponent::PrepareConstructionSlots(ACharacter& Prototype)
 {
-	if (!GetOwner()->HasAuthority() || State.Phase!=EGuLiBuildingPhase::UnderConstruction) return;
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || State.Phase!=EGuLiBuildingPhase::UnderConstruction) return;
+	if (UGuLiNetworkSettings::IsHybrid(GetWorld()) && CastChecked<IGuLiEngineeringVehicle>(&Prototype)->GetTeam()!=GetTeam()) return;
 	ConstructionPrototype=&Prototype;
 	if (bSlotsPending) GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->QueueConstructionSlots(*this);
 }
 void UGuLiBuildingLifecycleComponent::InvalidateConstructionSlots(const FBox& Bounds)
 {
-	if (!GetOwner()->HasAuthority() || State.Phase!=EGuLiBuildingPhase::UnderConstruction
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || State.Phase!=EGuLiBuildingPhase::UnderConstruction
 		|| !Bounds.ExpandBy(GetDefinition().CollisionExtent.Size2D()+2000).IsInsideXY(GetGroundLocation())) return;
 	ConstructionSlots.Reset(); NextSlotSample=0; ++SlotGeneration; bSlotsPending=true;
 	ActiveContributors.Reset();
@@ -36,12 +39,13 @@ void UGuLiBuildingLifecycleComponent::InvalidateConstructionSlots(const FBox& Bo
 	{
 		State.bHasActiveBuilders = false;
 		OnConstructionStateChanged.Broadcast();
-		GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
+
 	}
 	if (ConstructionPrototype.IsValid()) GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->QueueConstructionSlots(*this);
 }
 bool UGuLiBuildingLifecycleComponent::BuildNextConstructionSlot()
 {
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner())) return true;
 	if (State.Phase!=EGuLiBuildingPhase::UnderConstruction || !bSlotsPending) return true;
 	auto* Prototype=ConstructionPrototype.Get();
 	if (!Prototype || !CastChecked<IGuLiEngineeringVehicle>(Prototype)->GetEngineeringTravelBounds().IsValid) return false;
@@ -100,7 +104,7 @@ bool UGuLiBuildingLifecycleComponent::TryOccupyConstructionSlot(ACharacter& Vehi
 	const FGuLiConstructionSlotIntent& Intent, FGuLiConstructionSlotReservation& Out)
 {
 	check(IsInGameThread());
-	if (!GetOwner()->HasAuthority() || !Vehicle.HasAuthority() || !Task
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || !Vehicle.HasAuthority() || !Task
 		|| !IsConstructionPositionAvailable(Vehicle, Intent)
 		|| FVector::Dist2D(Vehicle.GetActorLocation(), ConstructionSlots[Intent.Slot].Pose.GetLocation()) > 100) return false;
 	auto& Slot = ConstructionSlots[Intent.Slot];
@@ -118,6 +122,7 @@ bool UGuLiBuildingLifecycleComponent::ValidateConstructionSlot(const ACharacter&
 }
 void UGuLiBuildingLifecycleComponent::ReleaseConstructionSlot(const ACharacter& Vehicle,const FGuLiConstructionSlotReservation& R)
 {
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner())) return;
 	if (R.Building!=State.InstanceId || R.Generation!=SlotGeneration || !ConstructionSlots.IsValidIndex(R.Slot)) return;
 	auto& Slot=ConstructionSlots[R.Slot];
 	if (Slot.Owner.Get()==&Vehicle && Slot.Task==R.Task) { Slot.Owner.Reset(); Slot.Task=0; }
@@ -125,27 +130,7 @@ void UGuLiBuildingLifecycleComponent::ReleaseConstructionSlot(const ACharacter& 
 void UGuLiBuildingLifecycleComponent::AccumulateConstructionWork(float Work)
 {
 	check(GetOwner()->HasAuthority());
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner())) return;
 	if (State.Phase!=EGuLiBuildingPhase::UnderConstruction || Work<=0 || !FMath::IsFinite(Work)) return;
-	PendingConstructionWork+=Work; SetComponentTickEnabled(true);
-}
-void UGuLiBuildingLifecycleComponent::SetConstructionContributor(AActor& Vehicle, bool bActive)
-{
-	if (!GetOwner()->HasAuthority()) return;
-	const TWeakObjectPtr<AActor> Key(&Vehicle);
-	if (bActive && State.Phase == EGuLiBuildingPhase::UnderConstruction) ActiveContributors.Add(Key);
-	else ActiveContributors.Remove(Key);
-	for (auto It = ActiveContributors.CreateIterator(); It; ++It)
-		if (!It->IsValid()) It.RemoveCurrent();
-	const bool bAny = !ActiveContributors.IsEmpty();
-	if (State.bHasActiveBuilders == bAny) return;
-	State.bHasActiveBuilders = bAny;
-	OnConstructionStateChanged.Broadcast();
-	GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
-}
-void UGuLiBuildingLifecycleComponent::TickComponent(float Dt,ELevelTick TickType,FActorComponentTickFunction* Function)
-{
-	Super::TickComponent(Dt,TickType,Function);
-	const float Work=PendingConstructionWork; PendingConstructionWork=0;
-	SetComponentTickEnabled(false);
-	if (GetOwner()->HasAuthority() && Work>0) AddConstructionWork(Work);
+	PendingConstructionWork+=Work;
 }

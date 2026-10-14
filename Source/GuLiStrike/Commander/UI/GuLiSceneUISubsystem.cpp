@@ -1,4 +1,5 @@
 #include "Commander/UI/GuLiSceneUISubsystem.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Commander/UI/GuLiSceneUIWidget.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
@@ -11,6 +12,7 @@ UGuLiSceneUIWidget* UGuLiSceneUISubsystem::ForController(APlayerController* PC)
 }
 UGuLiSceneUIWidget* UGuLiSceneUISubsystem::GetOrCreate(APlayerController* PC)
 {
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return nullptr;
 	if (!PC || PC->IsActorBeingDestroyed())
 	{
 		if (Widget) Widget->RemoveFromParent(); Widget=nullptr; BoundController.Reset(); return nullptr;
@@ -34,7 +36,7 @@ UGuLiSceneUIWidget* UGuLiSceneUISubsystem::GetOrCreate(APlayerController* PC)
 	return Widget;
 }
 bool UGuLiSceneUISubsystem::IsTickable() const
-{ return !IsTemplate() && GetWorld() && GetWorld()->IsGameWorld() && GetWorld()->GetNetMode()!=NM_DedicatedServer; }
+{ return !IsTemplate() && GetWorld() && GetWorld()->IsGameWorld() && UGuLiNetworkSettings::CanPresent(GetWorld()); }
 TStatId UGuLiSceneUISubsystem::GetStatId() const
 { RETURN_QUICK_DECLARE_CYCLE_STAT(GuLiSceneUIOwner,STATGROUP_Tickables); }
 void UGuLiSceneUISubsystem::Tick(float)

@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
@@ -26,7 +27,7 @@
 bool UGuLiUnitFeedbackSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	const UWorld* World = Cast<UWorld>(Outer);
-	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld() && World->GetNetMode() != NM_DedicatedServer;
+	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld() && UGuLiNetworkSettings::CanPresent(World);
 }
 
 void UGuLiUnitFeedbackSubsystem::Initialize(FSubsystemCollectionBase& Collection)

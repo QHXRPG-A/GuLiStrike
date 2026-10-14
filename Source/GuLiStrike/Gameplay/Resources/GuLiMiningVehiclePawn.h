@@ -7,6 +7,7 @@
 #include "Gameplay/Units/GuLiEngineeringAIController.h"
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
 #include "Commander/Behavior/GuLiCommanderWorkTypes.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 #include "GuLiMiningVehiclePawn.generated.h"
 
 class UChildActorComponent;
@@ -40,8 +41,7 @@ public:
 	AGuLiMiningVehiclePawn(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void Tick(float DeltaSeconds) override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 
 	void InitializeVehicle(
 		EGuLiTeam InTeam,
@@ -89,7 +89,7 @@ public:
 	virtual void SetEngineeringPresentationVisible(bool bVisible) override;
 	virtual FBox GetEngineeringTravelBounds() const override { return TravelBounds; }
 	UFUNCTION(BlueprintPure, Category = "Resources|Mining")
-	FGuLiResourceAmounts GetCargo() const { return Cargo; }
+	FGuLiResourceAmounts GetCargo() const;
 	UFUNCTION(BlueprintPure, Category = "Resources|Mining")
 	EGuLiMiningControlMode GetControlMode() const { return ControlMode; }
 	UFUNCTION(BlueprintPure, Category = "Resources|Mining")
@@ -101,6 +101,8 @@ public:
 	float GetGraceEndServerTime() const { return GraceEndServerTime; }
 	uint32 GetActivePlayerRequestId() const { return ActivePlayerRequestId; }
 	FGuLiMiningVehiclePrivateState MakePrivateState() const;
+    FGuid GetPendingResourceEvent() const { return PendingResourceEvent; }
+    uint64 GetAppliedResourceRevision() const { return LastResourceLedger; }
 	UFUNCTION(BlueprintPure, Category = "Resources|Mining")
 	bool CanMineTargetFrom(const FVector& Target, const FTransform& Pose) const;
 	UFUNCTION(BlueprintPure, Category = "Resources|Mining")
@@ -118,6 +120,13 @@ public:
 	FBox GetTravelBounds() const { return TravelBounds; }
 
 private:
+	friend class FGuLiHybridMinerAdapter;
+	bool PrepareHybridMiningStep();
+	void AdvanceHybridMining(float DeltaSeconds);
+	UFUNCTION() void ApplyHybridResourceResult(const FGuLiHybridTransactionResult& Result);
+	FGuid PendingResourceEvent;
+	uint64 PendingResourceAt=0,NextExtractionTick=0,LastResourceLedger=0;
+	uint8 PendingResourceOperation=0;
 	friend struct GuLiOrderBusinessProbe::FRun;
 	UFUNCTION()
 	void OnRep_Presentation();
@@ -132,20 +141,18 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<class UGuLiCombatHealthComponent> CombatHealth;
 
-	UPROPERTY(ReplicatedUsing = OnRep_Presentation)
+	UPROPERTY()
 	FGuLiMiningPresentationDefinition PresentationDefinition;
-	UPROPERTY(ReplicatedUsing = OnRep_MiningVisual)
+	UPROPERTY()
 	FGuLiMiningVisualState MiningVisual;
 
-	UPROPERTY(Replicated)
+	UPROPERTY()
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
 
-	UPROPERTY(Replicated)
-	FGuLiControllableActorId StableActorId;
-	UPROPERTY(Replicated) int32 UnitTypeId = 0;
-
 	UPROPERTY()
-	FGuLiResourceAmounts Cargo;
+	FGuLiControllableActorId StableActorId;
+	UPROPERTY() int32 UnitTypeId = 0;
+
 
 	UPROPERTY()
 	EGuLiMiningControlMode ControlMode = EGuLiMiningControlMode::Auto;
@@ -184,7 +191,7 @@ private:
 	FBox TravelBounds = FBox(ForceInit);
 	uint32 TargetNodeId = 0;
 	uint32 LastCompatibilityRequestId = 0;
-	UPROPERTY(Replicated) EGuLiTransitOrderResult LastTransitResult = EGuLiTransitOrderResult::InvalidRequest;
+	UPROPERTY() EGuLiTransitOrderResult LastTransitResult = EGuLiTransitOrderResult::InvalidRequest;
 	bool bTaskManaged = false;
 	bool bManagedTaskComplete = false;
 	bool bManagedTaskFailed = false;
@@ -195,7 +202,7 @@ private:
 	bool bWaitingForMiningSlot = false;
 
 	UGuLiResourceWorldSubsystem* GetResourceSubsystem() const;
-	int32 GetCargoTotal() const { return Cargo.Blue + Cargo.Red; }
+	int32 GetCargoTotal() const { const auto C=GetCargo();return C.Blue+C.Red; }
 	bool BeginMoveTo(const FVector& Target, float AcceptanceRadius);
 	void TickMovingToCluster();
 	void TickMining(float DeltaSeconds);

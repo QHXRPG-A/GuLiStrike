@@ -7,6 +7,7 @@
 #include "Subsystems/WorldSubsystem.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "Commander/Mass/GuLiSoldierCombat.h"
+#include "Commander/Mass/GuLiCommanderSpawnLayout.h"
 #include "Gameplay/Tuning/GuLiRuntimeTuningTypes.h"
 #include "Commander/Mass/GuLiMassExternalControl.h"
 #include "GuLiBattleAuthoritySubsystem.generated.h"
@@ -14,6 +15,7 @@
 class AGuLiBattlePlayerState;
 class ANavigationData;
 struct FGuLiBattleAuthorityState;
+struct FGuLiHybridObjectKey;
 class UGuLiCommanderSkillCatalog;
 struct FGuLiActiveSkillUnitResult;
 struct FGuLiActiveSkillRuntime;
@@ -260,7 +262,11 @@ public:
 	TSharedPtr<const GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry> AcquireAvoidanceGeometry(
 		TConstArrayView<GuLiCommanderAvoidancePolicy::FAgentSnapshot> Agents);
 	/** Called only inside the authority fixed step; validates before changing existing entities. */
-	bool ApplyRogueMovementSource(EGuLiTeam Team, uint16 UnitTypeId, FGuid SourceId, float BonusPercent, FString& Error);
+
+    FGuLiActiveSkillUnitResult ExecuteHybridUnitSkill(const FGuLiHybridObjectKey& Key,FGuid Request,
+        bool bHasGround,FVector Ground,int32 GuidanceAllocation,FGuid GuidanceBatch);
+    /** Absolute ledger state; applied at the next Mass boundary, also after restore. */
+    void SetHybridMovementState(EGuLiTeam Team,const TMap<uint16,float>& Multipliers);
 	float GetUnitMovementSpeed(EGuLiTeam Team, uint16 UnitTypeId) const;
 	/** Authority lifecycle notification, emitted before the final wreck record is destroyed. */
 	FGuLiSoldierRetiringSignature OnSoldierRetiring;
@@ -275,7 +281,7 @@ public:
 	bool BuildInitialArmySpawnLayout(const TArray<FGuLiSoldierDefinition>& Definitions,
 		const FVector& RedAssembly, const FVector& BlueAssembly,
 		TArray<FGuLiCommanderInitialSpawnSlot>& OutSlots, FString& OutError,
-		float InwardInsetCentimeters = 0.0f) const;
+		float InwardInsetCentimeters = 0.0f, int32 Population = GuLiCommanderInitialSpawn::Population) const;
 
 	/** 在 .cpp 中使用 = default，按默认规则构造父类和成员；世界相关初始化放在 Initialize。 */
 	UGuLiBattleAuthoritySubsystem();
@@ -308,8 +314,6 @@ public:
 	virtual TStatId GetStatId() const override;
 	//~ 更新与统计接口结束
 
-	/** 服务器本地模块生命周期入口，由唯一士兵发布组件调用；公共 Battle 世界默认不启动部队模拟。 */
-	void SetSoldierSimulationEnabled(bool bEnabled);
 	/** On-demand observation only; never advances or repairs simulation. */
 	UFUNCTION(BlueprintCallable, Category="Commander|Diagnostics", meta=(DevelopmentOnly))
 	FString GetMoveResponseDiagnostics() const;
@@ -371,9 +375,7 @@ public:
 	 */
 	bool ApplyDamage(FGuLiSoldierId SoldierId, float Amount);
 	/** Selection is the fixed owner's confirmed server state; no client-provided caster list. */
-	void ExecuteSelectedUnitSkills(AGuLiBattlePlayerState& PlayerState, const FGuLiCommanderSelectionState& Selection,
-		const UGuLiCommanderSkillCatalog& Catalog, FGuid RequestId, bool bHasGroundPoint, FVector GroundPoint,
-		TArray<FGuLiActiveSkillUnitResult>& OutResults);
+
 	bool QueryUnitSkillRuntime(FGuLiSoldierId SoldierId, const UGuLiCommanderSkillCatalog& Catalog, FGuLiActiveSkillRuntime& OutRuntime) const;
 	void CollectExternalUnitsInDisc(EGuLiTeam Team, FVector Center, float Radius, TArray<FGuLiMassExternalUnit>& Out) const;
 	/** Physical presence across all teams, including externally locked units, for placement clearance. */
@@ -396,19 +398,11 @@ public:
 	FGuLiNavigationStats GetNavigationStats() const;
 	/** Extends the executor registry and the skill resolver together. Game-thread/server only. */
 	bool RegisterCombatExecutor(FName ExecutorId, FGuLiCombatExecutorRegistry::FExecutor Executor);
-	/** Non-shipping authoritative test spawn. Uses the same data and current profile as initial Soldiers. */
-	bool SpawnDebugSoldier(EGuLiTeam Team, uint16 UnitTypeId, const FVector& Location, FGuLiSoldierId& OutId);
-	/** Formal production boundary: reserve the available population before creating any entity. */
-	int32 SpawnSoldierBatch(EGuLiTeam Team, uint16 UnitTypeId, TConstArrayView<FVector> Locations, TArray<FGuLiSoldierId>& OutIds);
-	/** Authority-only, all-or-nothing placement around one caster; bypasses production population only. */
-	bool SummonSoldierBatch(EGuLiTeam Team, FGuLiSoldierId CasterId, uint16 UnitTypeId, int32 Count,
-		float Clearance, int32 OuterRings, int32 CandidatesPerRing, TArray<FGuLiSoldierId>& OutIds, FString& Error);
+	/** Plan complete summon placement without creating entities or changing population. */
+	bool PlanSummonPlacement(EGuLiTeam Team, FGuLiSoldierId CasterId, uint16 UnitTypeId, int32 Count,
+		float Clearance, int32 OuterRings, int32 CandidatesPerRing, TArray<FVector>& PlannedLocations, FString& Error);
 	FIntPoint GetTeamPopulation(EGuLiTeam Team) const;
-	/** Population token held by a construction site; no entity exists until commit. */
-	bool ReserveConstructionUnit(EGuLiTeam Team, uint16 UnitTypeId, FGuid& OutReservation);
-	void ReleaseConstructionUnit(const FGuid& Reservation);
-	bool CompleteConstructionUnit(const FGuid& Reservation, const FTransform& GroundPose,
-		float RemainingHealth, const AActor& ConstructionSite, FGuLiSoldierId& OutId);
+
 	int32 GetTeamUnitCap() const;
 	void RegisterAutomaticAdvance(TConstArrayView<FGuLiSoldierId> Soldiers);
 	bool IsAutomaticallyAdvancing(FGuLiSoldierId Soldier) const;
@@ -419,7 +413,8 @@ public:
 	void InvalidateTaskSoldierPlans(TConstArrayView<FGuLiSoldierId> Soldiers);
 	bool GetTaskSoldierInfo(FGuLiSoldierId Id, EGuLiTeam& Team, uint16& UnitTypeId, FVector& Location) const;
 	/** Read-only move admission: every actionable Mass start must reach the clicked ground target. */
-	bool CanSelectionReachMoveTarget(const FGuLiCommanderSelectionState& Selection, const FVector& Target) const;
+	bool CanSelectionReachMoveTarget(const FGuLiCommanderSelectionState& Selection, const FVector& Target,
+		const FGuLiSharedMoveIntent* FrozenSlots = nullptr, FString* Error = nullptr) const;
 	bool SetExplicitSelection(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers,
 		TConstArrayView<FGuLiControllableActorId> Actors, FGuLiCommanderSelectionState& Selection);
 	const FGuLiAuthorityPerformanceCounters& GetPerformanceCounters() const { return PerformanceCounters; }
@@ -492,27 +487,26 @@ public:
 	/** 因世界帧积压超过四步上限而丢弃的固定步数；正式 S1 必须为零。 */
 	uint64 GetDroppedFixedStepCount() const;
 
-	/** 是否已提交完整初始部队（关卡部署点，或无部署点时的默认500人）。 */
+	/** 当前 World 是否已安装已登记的 Mass 对象承载。 */
 	UFUNCTION(BlueprintPure, Category = "Commander|Authority")
 	bool HasSpawnedAuthorityPopulation() const;
 
 private:
-	int32 ReservedRedPopulation = 0;
-	int32 ReservedBluePopulation = 0;
-	bool SpawnReservedSoldier(EGuLiTeam Team, uint16 UnitTypeId, const FVector& Location, FGuLiSoldierId& OutId,
-		float InitialYaw = 0.0f, const AActor* IgnoredConstructionSite = nullptr, float InitialHealth = -1.0f);
-	struct FConstructionUnitReservation
-	{
-		EGuLiTeam Team = EGuLiTeam::Unassigned;
-		uint16 UnitTypeId = 0;
-	};
-	TMap<FGuid, FConstructionUnitReservation> ConstructionUnitReservations;
+	bool InstallGrantedSoldier(EGuLiTeam Team, uint16 UnitTypeId, const FVector& Location, FGuLiSoldierId& OutId,
+		float InitialYaw = 0.0f, float InitialHealth = -1.0f);
+
 	void RetireExpiredSoldiers();
 	/** 检查 World 存在且不是普通客户端；生成部队还需满足世界和导航就绪条件。 */
 	bool IsAuthorityWorld() const;
+    friend class FGuLiHybridMassAdapter;
+    friend class FGuLiHybridMassState;
+    friend void RegisterGuLiHybridMassAdapters(UGuLiBattleAuthoritySubsystem& Authority);
+    bool bAdvancingHybrid=false;
+    bool bInstallingHybridGrant=false;
+    bool bApplyingHybridLedger=false;
+    uint32 InstallingHybridOrdinal=0;
 
 	/** 要求全部出生点投影成功后才提交；失败返回 false，后续 Tick 可重试。 */
-	bool TrySpawnAuthorityPopulation();
 
 	/** 在生命周期允许时销毁本地 Mass 实体，并清空索引、编队与部队生成标记。 */
 	void DestroyAuthorityPopulation();
@@ -629,8 +623,8 @@ private:
 	TOptional<float> PendingMovementSpeedCmPerSecond;
 	TMap<uint32, TMap<FGuid, float>> RogueMovementSources;
 	TMap<uint32, float> RogueMovementMultipliers;
+    TMap<EGuLiTeam,TMap<uint16,float>> PendingHybridMovement;
 	uint32 RogueMovementEpoch=0;
-	bool bApplyingRogueFixedStep=false;
 	void ResetRogueMovementForMatch();
 	bool RefreshRogueMovementEntities(uint32 Key, float Multiplier, FString& Error);
 

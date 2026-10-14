@@ -20,6 +20,7 @@ class GULISTRIKE_API UGuLiWingmanFlightMovementComponent final
 	: public UPawnMovementComponent
 {
 	GENERATED_BODY()
+    friend class UGuLiWingmanSimulationSubsystem;
 
 public:
 	UGuLiWingmanFlightMovementComponent();

@@ -8,7 +8,7 @@
 
 namespace
 {
-	void AddGuid(uint64& Hash, const FGuid& Guid)
+	void WingmanHashAddGuid(uint64& Hash, const FGuid& Guid)
 	{
 		GuLiShipAbilityHash::AddUInt32(Hash, Guid.A);
 		GuLiShipAbilityHash::AddUInt32(Hash, Guid.B);
@@ -16,29 +16,29 @@ namespace
 		GuLiShipAbilityHash::AddUInt32(Hash, Guid.D);
 	}
 
-	void AddGroup(uint64& Hash, const FGuLiWingmanGroupHandle& Group)
+	void WingmanHashAddGroup(uint64& Hash, const FGuLiWingmanGroupHandle& Group)
 	{
-		AddGuid(Hash, Group.ShipInstanceId);
+		WingmanHashAddGuid(Hash, Group.ShipInstanceId);
 		GuLiShipAbilityHash::AddUInt32(Hash, Group.ShipGeneration);
 		GuLiShipAbilityHash::AddUInt32(Hash, Group.GroupGeneration);
 	}
 
-	void AddWingman(uint64& Hash, const FGuLiWingmanHandle& Wingman)
+	void WingmanHashAddWingman(uint64& Hash, const FGuLiWingmanHandle& Wingman)
 	{
-		AddGroup(Hash, Wingman.Flight.Group);
+		WingmanHashAddGroup(Hash, Wingman.Flight.Group);
 		GuLiShipAbilityHash::AddUInt32(Hash, Wingman.Flight.FlightIndex);
 		GuLiShipAbilityHash::AddUInt32(Hash, Wingman.MemberIndex);
 		GuLiShipAbilityHash::AddUInt32(Hash, Wingman.EntityGeneration);
 	}
 
-	void AddVector(uint64& Hash, const FIntVector& Value)
+	void WingmanHashAddVector(uint64& Hash, const FIntVector& Value)
 	{
 		GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Value.X));
 		GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Value.Y));
 		GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Value.Z));
 	}
 
-	void AddDouble(uint64& Hash, const double Value)
+	void WingmanHashAddDouble(uint64& Hash, const double Value)
 	{
 		uint64 Bits = 0u;
 		FMemory::Memcpy(&Bits, &Value, sizeof(Bits));
@@ -223,7 +223,7 @@ bool FGuLiWingmanHealthEntry::IsWellFormed(const FGuLiWingmanGroupHandle& Expect
 uint64 FGuLiWingmanAcceptedBatch::ComputeStableHash() const
 {
 	uint64 Hash = GuLiShipAbilityHash::OffsetBasis;
-	AddGroup(Hash, Group);
+	WingmanHashAddGroup(Hash, Group);
 	GuLiShipAbilityHash::AddUInt32(Hash, StateRef.MatchEpoch);
 	GuLiShipAbilityHash::AddUInt32(Hash, StateRef.GroupGeneration);
 	GuLiShipAbilityHash::AddUInt32(Hash, StateRef.AcceptedSequence);
@@ -235,7 +235,7 @@ uint64 FGuLiWingmanAcceptedBatch::ComputeStableHash() const
 	GuLiShipAbilityHash::AddUInt32(Hash, FlightIndex);
 	GuLiShipAbilityHash::AddUInt32(Hash, FrameSequence);
 	GuLiShipAbilityHash::AddUInt32(Hash, BaseAcceptedSequence);
-	AddDouble(Hash, CaptureEstimatedServerTimeSeconds);
+	WingmanHashAddDouble(Hash, CaptureEstimatedServerTimeSeconds);
 	GuLiShipAbilityHash::AddUInt32(Hash, ValidationRevisions.NavSchemaRevision);
 	GuLiShipAbilityHash::AddUInt64(Hash, ValidationRevisions.NavDataChecksum);
 	GuLiShipAbilityHash::AddUInt32(Hash, ValidationRevisions.TuningRevision);
@@ -247,10 +247,10 @@ uint64 FGuLiWingmanAcceptedBatch::ComputeStableHash() const
 	GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Samples.Num()));
 	for (const FGuLiWingmanCandidateSample& Sample : Samples)
 	{
-		AddWingman(Hash, Sample.Wingman);
-		AddVector(Hash, Sample.PositionCentimeters);
-		AddVector(Hash, Sample.VelocityCentimetersPerSecond);
-		AddVector(Hash, Sample.RotationCentiDegrees);
+		WingmanHashAddWingman(Hash, Sample.Wingman);
+		WingmanHashAddVector(Hash, Sample.PositionCentimeters);
+		WingmanHashAddVector(Hash, Sample.VelocityCentimetersPerSecond);
+		WingmanHashAddVector(Hash, Sample.RotationCentiDegrees);
 		GuLiShipAbilityHash::AddUInt32(Hash, Sample.FlightMode);
 	}
 	return GuLiShipAbilityHash::Finish(Hash);
@@ -773,7 +773,7 @@ namespace GuLiWingmanRelayHash
 		GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Entries.Num()));
 		for (const FGuLiWingmanRosterEntry& Entry : Entries)
 		{
-			AddWingman(Hash, Entry.Wingman);
+			WingmanHashAddWingman(Hash, Entry.Wingman);
 			GuLiShipAbilityHash::AddString(Hash, Entry.WingmanTypeId.ToString());
 			GuLiShipAbilityHash::AddBool(Hash, Entry.bDead);
 		}
@@ -786,8 +786,8 @@ namespace GuLiWingmanRelayHash
 		GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Entries.Num()));
 		for (const FGuLiWingmanAuthorityEntry& Entry : Entries)
 		{
-			AddWingman(Hash, Entry.Wingman);
-			AddGuid(Hash, Entry.LeaseOwnerPlayerGuid);
+			WingmanHashAddWingman(Hash, Entry.Wingman);
+			WingmanHashAddGuid(Hash, Entry.LeaseOwnerPlayerGuid);
 			GuLiShipAbilityHash::AddUInt32(Hash, Entry.LeaseEpoch);
 		}
 		return GuLiShipAbilityHash::Finish(Hash);
@@ -799,7 +799,7 @@ namespace GuLiWingmanRelayHash
 		GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Entries.Num()));
 		for (const FGuLiWingmanHealthEntry& Entry : Entries)
 		{
-			AddWingman(Hash, Entry.Wingman);
+			WingmanHashAddWingman(Hash, Entry.Wingman);
 			GuLiShipAbilityHash::AddUInt32(Hash, Entry.CurrentHealthPermille);
 			GuLiShipAbilityHash::AddUInt32(Hash, Entry.MaximumHealthPermille);
 		}
@@ -812,7 +812,7 @@ namespace GuLiWingmanRelayHash
 		GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Entries.Num()));
 		for (const FGuLiWingmanHandle& Entry : Entries)
 		{
-			AddWingman(Hash, Entry);
+			WingmanHashAddWingman(Hash, Entry);
 		}
 		return GuLiShipAbilityHash::Finish(Hash);
 	}

@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Wingman/Presentation/GuLiWingmanPresentationActor.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 
 #include "Components/SceneComponent.h"
@@ -113,6 +114,7 @@ AGuLiWingmanPresentationActor::AGuLiWingmanPresentationActor()
 void AGuLiWingmanPresentationActor::BeginPlay()
 {
 	Super::BeginPlay();
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) { SetActorTickEnabled(false); return; }
 	if (!EnsureClientResources())
 	{
 		SetActorTickEnabled(false);

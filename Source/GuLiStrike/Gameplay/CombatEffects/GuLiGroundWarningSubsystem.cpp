@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Components/DecalComponent.h"
@@ -27,7 +28,7 @@ bool UGuLiGroundWarningStyle::IsValidStyle() const
 bool UGuLiGroundWarningSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	const auto* World = Cast<UWorld>(Outer);
-	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld() && World->GetNetMode() != NM_DedicatedServer;
+	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld() && UGuLiNetworkSettings::CanPresent(World);
 }
 
 double UGuLiGroundWarningSubsystem::ServerTime() const
@@ -38,7 +39,7 @@ double UGuLiGroundWarningSubsystem::ServerTime() const
 
 bool UGuLiGroundWarningSubsystem::IsTickable() const
 {
-	return !IsTemplate() && !Entries.IsEmpty() && GetWorld() && GetWorld()->GetNetMode() != NM_DedicatedServer;
+	return !IsTemplate() && !Entries.IsEmpty() && GetWorld() && UGuLiNetworkSettings::CanPresent(GetWorld());
 }
 
 TStatId UGuLiGroundWarningSubsystem::GetStatId() const
@@ -49,7 +50,7 @@ TStatId UGuLiGroundWarningSubsystem::GetStatId() const
 bool UGuLiGroundWarningSubsystem::UpsertWarning(const FGuid WarningId, const FGuLiGroundWarningParams& Params)
 {
 	FGuLiPerformanceScope Timing(GetWorld(),TEXT("GroundWarning.UpsertMs"));
-	if (!WarningId.IsValid() || !GetWorld() || GetWorld()->GetNetMode() == NM_DedicatedServer) return false;
+	if (!WarningId.IsValid() || !GetWorld() || !UGuLiNetworkSettings::CanPresent(GetWorld())) return false;
 	if (Params.Location.ContainsNaN() || Params.Location.GetAbsMax() > 10000000 || !FMath::IsFinite(Params.Radius)
 		|| Params.Radius <= 0 || Params.Radius > 100000 || !Params.Style || !Params.Style->IsValidStyle()
 		|| !FMath::IsFinite(Params.Color.R) || !FMath::IsFinite(Params.Color.G) || !FMath::IsFinite(Params.Color.B) || !FMath::IsFinite(Params.Color.A)

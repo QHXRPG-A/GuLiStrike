@@ -232,9 +232,9 @@ bool FGuLiGiftBuildingClearance::Commit(AActor& Building, const AActor& Supporti
 	for (int32 Index : Planned)
 	{
 		auto& Unit = Units[Index]; if (Unit.Soldier.IsValid()) continue;
-		if (!Unit.Control->ApplyServerState(Token,false,false,Unit.Landing,true))
+		if (!Unit.Control->ApplyOwnedState(Token,false,false,Unit.Landing,true))
 		{
-			for (int32 Applied : AppliedActors) Units[Applied].Control->ApplyServerState(Token,false,false,Units[Applied].Original,true);
+			for (int32 Applied : AppliedActors) Units[Applied].Control->ApplyOwnedState(Token,false,false,Units[Applied].Original,true);
 			if (!OriginalMass.IsEmpty()) Authority->ApplyExternalUnitState(OriginalMass,Token,false,false,true);
 			OutFailure = TEXT("External displacement rejected; gift aborted and positions restored."); return false;
 		}
@@ -253,7 +253,7 @@ bool FGuLiGiftBuildingClearance::Commit(AActor& Building, const AActor& Supporti
 		Component->SetNavigationRelevancy(Entry.bRelevant);
 	}
 	S.bCommitted = true;
-	Building.ForceNetUpdate();
+
 	UE_LOG(LogTemp,Display,TEXT("[GULI_GIFT_CLEARANCE] building=%s moved=%d mass=%d actors=%d"),*Building.GetName(),Planned.Num(),Mass.Num(),AppliedActors.Num());
 	return true;
 }

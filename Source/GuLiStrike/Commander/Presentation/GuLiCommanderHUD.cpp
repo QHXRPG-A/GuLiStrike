@@ -1,4 +1,5 @@
 #include "Commander/Presentation/GuLiCommanderHUD.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Misc/ScopeExit.h"
 // Copyright Epic Games, Inc. All Rights Reserved.
 
@@ -24,8 +25,6 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Engine/Canvas.h"
 #include "Engine/Engine.h"
-#include "Engine/NetConnection.h"
-#include "Engine/NetDriver.h"
 #include "Engine/UserInterfaceSettings.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -239,6 +238,7 @@ AGuLiCommanderHUD::AGuLiCommanderHUD()
 void AGuLiCommanderHUD::BeginPlay()
 {
 	Super::BeginPlay();
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) { SetActorTickEnabled(false); return; }
 	BindBuildingFeedback();
 	RefreshCommanderRole();
 }
@@ -267,6 +267,7 @@ void AGuLiCommanderHUD::RefreshCommanderRole()
 
 void AGuLiCommanderHUD::CreateRuntimeHUD()
 {
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	AGuLiCommanderPlayerController* CommanderController = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
 	if (!CommanderController || !CommanderController->IsCommanderViewActive())
 	{
@@ -389,40 +390,7 @@ void AGuLiCommanderHUD::DrawPerformanceStats()
 		const FString FrameRateText = bFirstSample ? GuLiGameText::Text(TEXT("UI.Performance.FPSPending"))
 			: GuLiGameText::Format(TEXT("UI.Performance.FPS"),
 				{ FString::Printf(TEXT("%.0f"), static_cast<double>(GFrameCounter - PerformanceSampleFrame) / Elapsed) });
-		FString LatencyText = GuLiGameText::Text(TEXT("UI.Performance.LatencyPending"));
-		if (GetNetMode() != NM_Client)
-		{
-			LatencyText = GuLiGameText::Text(TEXT("UI.Performance.LatencyLocal"));
-		}
-		else
-		{
-			double RoundTripMilliseconds = 0.0;
-			const UNetDriver* NetDriver = GetWorld() ? GetWorld()->GetNetDriver() : nullptr;
-			if (const UNetConnection* Connection = NetDriver ? NetDriver->ServerConnection : nullptr)
-			{
-				if (FMath::IsFinite(Connection->AvgLag) && Connection->AvgLag > 0.0f)
-				{
-					RoundTripMilliseconds = Connection->AvgLag * 1000.0;
-				}
-				else if (FMath::IsFinite(Connection->RawPingInSeconds) && Connection->RawPingInSeconds > 0.0)
-				{
-					RoundTripMilliseconds = Connection->RawPingInSeconds * 1000.0;
-				}
-			}
-			if (RoundTripMilliseconds <= 0.0)
-			{
-				if (const APlayerState* State = PlayerOwner->GetPlayerState<APlayerState>())
-				{
-					RoundTripMilliseconds = State->GetPingInMilliseconds();
-				}
-			}
-			if (FMath::IsFinite(RoundTripMilliseconds) && RoundTripMilliseconds > 0.0)
-			{
-				LatencyText = GuLiGameText::Format(TEXT("UI.Performance.LatencyRTT"),
-					{ FString::FromInt(FMath::RoundToInt(FMath::Min(RoundTripMilliseconds, 999999.0))) });
-			}
-		}
-		PerformanceStatsText = FrameRateText + TEXT("  |  ") + LatencyText;
+		PerformanceStatsText = FrameRateText;
 		PerformanceSampleWallSeconds = Now;
 		PerformanceSampleFrame = GFrameCounter;
 	}

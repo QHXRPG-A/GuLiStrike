@@ -25,6 +25,8 @@ class GULISTRIKE_API UGuLiUnitDataSubsystem final : public UWorldSubsystem
 public:
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	/** Same validated definitions used by the cache and editor manifest providers. */
+	static bool ResolveAuthoredDefinitions(TArray<FGuLiSoldierDefinition>& Out,FString& Error);
 	const FGuLiSoldierDefinition* FindDefinition(uint16 UnitTypeId) const;
 	const TArray<FGuLiSoldierDefinition>& GetDefinitions() const { return Definitions; }
 	const TArray<FGuLiSoldierDefinition>& GetMassDefinitions() const { return MassDefinitions; }

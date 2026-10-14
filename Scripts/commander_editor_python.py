@@ -16,7 +16,10 @@ def call_editor(code: str, timeout: float = 45.0):
         "try:\n"
         # UE's Python console parser can treat literal '.py' inside a long snippet
         # as a filename. A hex envelope keeps docs/paths out of that parser.
-        f"    exec(bytes.fromhex('{code.encode('utf-8').hex()}').decode('utf-8'), globals())\n"
+        # A fresh namespace prevents previous snippets from keeping UWorld,
+        # actor and package wrappers alive across a later editor map change.
+        f"    exec(bytes.fromhex('{code.encode('utf-8').hex()}').decode('utf-8'), "
+        "{'__name__': '__main__', 'unreal': unreal, 'json': json})\n"
         "except Exception:\n"
         "    unreal.MCPythonHelper.submit_result(json.dumps({"
         "'success': False, 'traceback': traceback.format_exc()}))\n"

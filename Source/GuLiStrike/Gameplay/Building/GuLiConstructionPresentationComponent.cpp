@@ -19,7 +19,7 @@
 
 UGuLiConstructionPresentationComponent::UGuLiConstructionPresentationComponent()
 {
-	SetIsReplicatedByDefault(true);
+	SetIsReplicatedByDefault(false);
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.bStartWithTickEnabled = false;
 	PrimaryComponentTick.TickGroup = TG_PostUpdateWork;
@@ -37,11 +37,7 @@ void UGuLiConstructionPresentationComponent::EndPlay(const EEndPlayReason::Type 
 	Super::EndPlay(Reason);
 }
 
-void UGuLiConstructionPresentationComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(UGuLiConstructionPresentationComponent, State);
-}
+
 
 void UGuLiConstructionPresentationComponent::SetConstructionAuthority(UGuLiBuildingLifecycleComponent* Building)
 {
@@ -54,7 +50,7 @@ void UGuLiConstructionPresentationComponent::SetConstructionAuthority(UGuLiBuild
 	const auto* GameState = GetWorld()->GetGameState();
 	State.ScanStartedAt = GameState ? GameState->GetServerWorldTimeSeconds() : GetWorld()->GetTimeSeconds();
 	OnRep_State();
-	GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
+
 }
 
 void UGuLiConstructionPresentationComponent::OnRep_State()

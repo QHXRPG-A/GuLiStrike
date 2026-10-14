@@ -1,7 +1,6 @@
 #include "Gameplay/Teleport/GuLiTeleportInputComponent.h"
 #include "Gameplay/Data/GuLiGameText.h"
 #include "Gameplay/Navigation/GuLiLandingGround.h"
-#include "Gameplay/Teleport/GuLiTeleportUnitAdapters.h"
 #include "Gameplay/Teleport/GuLiTeleportFieldActor.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
@@ -13,6 +12,8 @@
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Engine/World.h"
 #include "Net/UnrealNetwork.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Gameplay/Teleport/GuLiHybridTeleport.h"
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Layout/SBorder.h"
 #include "Widgets/Input/SButton.h"
@@ -54,18 +55,15 @@ TSharedRef<SWidget> UGuLiTeleportHUDWidget::RebuildWidget()
 }
 UGuLiTeleportInputComponent::UGuLiTeleportInputComponent()
 {
-	SetIsReplicatedByDefault(true); PrimaryComponentTick.bCanEverTick = true;
+	SetIsReplicatedByDefault(false); PrimaryComponentTick.bCanEverTick = true;
 }
-void UGuLiTeleportInputComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-}
+
 AGuLiCommanderPlayerController* UGuLiTeleportInputComponent::GetCommander() const { return Cast<AGuLiCommanderPlayerController>(GetOwner()); }
 FGuLiTeleportCastState UGuLiTeleportInputComponent::QueryState() const
 {
 	FGuLiTeleportCastState State;
 	const auto* PC = GetCommander(); const auto* PS = PC ? PC->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
-	if (PS && GetWorld()) { if (const auto* Field = AGuLiTeleportFieldActor::FindCast(*GetWorld(),PS->GetPlayerGuid())) { State = Field->GetCastState(); } }
+	if (PS && GetWorld()) return GuLiHybridTeleport::Query(*GetWorld(),PS->GetTeam());
 	return State;
 }
 bool UGuLiTeleportInputComponent::SetServerLevel(int32 NewLevel)
@@ -79,7 +77,8 @@ void UGuLiTeleportInputComponent::ActivateAiming()
 	auto* PC = GetCommander();
 	if (!PC || !PC->IsLocalController() || !PC->CanIssueCommanderOrders()) { return; }
 	if (bArmed) { CancelTeleport(); return; }
-	if (QueryState().IsActive()) { return; }
+	const auto Existing=QueryState();
+	if (Existing.IsActive()) {CurrentCastId=Existing.CastId;bArmed=true;if (PC->CommanderCursorWidget) PC->CommanderCursorWidget->SetTeleportMode(true);return;}
 	if (PC->GetBuildingPlacementComponent()) { PC->GetBuildingPlacementComponent()->HandleCancelAction(); }
 	PC->CancelSelectionDrag(); PC->ActivateSelectionTool();
 	CurrentCastId.Invalidate(); Feedback.Reset(); bSourcePending = bCancelPending = false; bArmed = true;
@@ -117,7 +116,7 @@ int32 UGuLiTeleportInputComponent::GetLevel() const
 	const auto* PS = PC ? PC->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
 	return PS ? PS->GetCommanderSkills()->GetGlobalSkillLevel(TEXT("Teleport")) : 1;
 }
-void UGuLiTeleportInputComponent::ServerSubmit_Implementation(FGuid RequestId, EGuLiTeleportCommand Command, FGuid CastId, FVector Point)
+void UGuLiTeleportInputComponent::ServerSubmit(FGuid RequestId, EGuLiTeleportCommand Command, FGuid CastId, FVector Point)
 {
 	auto* PS = GetCommander()->GetPlayerState<AGuLiBattlePlayerState>();
 	const auto* State = GetWorld()->GetGameState<AGuLiBattleGameState>();
@@ -126,10 +125,19 @@ void UGuLiTeleportInputComponent::ServerSubmit_Implementation(FGuid RequestId, E
 	Request.RequestId = RequestId; Request.GlobalSkillId = TEXT("Teleport"); Request.MatchEpoch = State->GetMatchEpoch();
 	Request.Command = static_cast<EGuLiActiveSkillCommand>(Command);
 	Request.CastId = CastId; Request.bHasGroundPoint = Command != EGuLiTeleportCommand::Cancel; Request.GroundPoint = Point;
-	const auto Reply = PS->GetCommanderSkills()->ExecuteServerRequest(Request);
-	ClientResult(Command, Reply.Global.bSucceeded, Reply.Global.CastId, Reply.Error);
+	{
+        auto* Skills=PS->GetCommanderSkills();if (BoundSkills.Get()!=Skills)
+        {if (BoundSkills.IsValid()) BoundSkills->OnSkillReply.RemoveDynamic(this,&ThisClass::HandleHybridSkillReply);BoundSkills=Skills;Skills->OnSkillReply.AddDynamic(this,&ThisClass::HandleHybridSkillReply);}
+        PendingHybridRequests.Add(RequestId,Command);
+    }
+	PS->GetCommanderSkills()->ServerRequestSkill(Request);
 }
-void UGuLiTeleportInputComponent::ClientResult_Implementation(EGuLiTeleportCommand Command, bool bSucceeded, FGuid CastId, const FString& Error)
+void UGuLiTeleportInputComponent::HandleHybridSkillReply(const FGuLiActiveSkillReply& Reply)
+{
+    const auto* Command=PendingHybridRequests.Find(Reply.RequestId);if (!Command||Reply.Global.bPendingCommit) return;
+    const auto Value=*Command;PendingHybridRequests.Remove(Reply.RequestId);ClientResult(Value,Reply.Global.bSucceeded,Reply.Global.CastId,Reply.Error);
+}
+void UGuLiTeleportInputComponent::ClientResult(EGuLiTeleportCommand Command, bool bSucceeded, FGuid CastId, const FString& Error)
 {
 	Feedback = Error;
 	if (Command == EGuLiTeleportCommand::Source)
@@ -160,6 +168,7 @@ FText UGuLiTeleportInputComponent::GetStatusText() const
 void UGuLiTeleportInputComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime,TickType,ThisTickFunction);
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	auto* PC = GetCommander(); if (!PC) { return; }
 	if (!PC->IsLocalController()) { return; }
 	const bool bCommander = PC->IsCommanderViewActive();
@@ -195,6 +204,8 @@ void UGuLiTeleportInputComponent::TickComponent(float DeltaTime, ELevelTick Tick
 }
 void UGuLiTeleportInputComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
+    if (BoundSkills.IsValid()) BoundSkills->OnSkillReply.RemoveDynamic(this,&ThisClass::HandleHybridSkillReply);
+    BoundSkills.Reset();PendingHybridRequests.Reset();
 	ClearLocalAim(); if (HUD) { HUD->RemoveFromParent(); HUD = nullptr; }
 	Super::EndPlay(Reason);
 }

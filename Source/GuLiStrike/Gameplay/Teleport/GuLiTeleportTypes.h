@@ -14,14 +14,14 @@ USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiTeleportFieldConfig
 {
 	GENERATED_BODY()
-	UPROPERTY(BlueprintReadOnly) int32 Level = 1;
-	UPROPERTY(BlueprintReadOnly) float RadiusCentimeters = 0;
-	UPROPERTY(BlueprintReadOnly) bool bAllowPlayerVehicles = false;
-	UPROPERTY(BlueprintReadOnly) float WindupSeconds = 3;
-	UPROPERTY(BlueprintReadOnly) float RecoverySeconds = .5f;
-	UPROPERTY(BlueprintReadOnly) float BeamHeightCentimeters = 10000;
-	UPROPERTY(BlueprintReadOnly) float MaxTargetWaitSeconds = 10;
-	UPROPERTY(BlueprintReadOnly) float MaxShipHeightCentimeters = 2000;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) int32 Level = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float RadiusCentimeters = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) bool bAllowPlayerVehicles = false;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float WindupSeconds = 3;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float RecoverySeconds = .5f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float BeamHeightCentimeters = 10000;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float MaxTargetWaitSeconds = 10;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float MaxShipHeightCentimeters = 2000;
 	bool IsValid() const;
 };
 

@@ -37,7 +37,7 @@ namespace
 	}
 }
 
-bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError)
+bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError, int32 Population)
 {
 	Slots.Reset(); Reservations.Reset(); OutError.Reset(); bUsesAuthoredDeployments = false;
 	TArray<AGuLiCommanderDeploymentPoint*> Deployments;
@@ -65,7 +65,7 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError)
 			OutError = FString::Printf(TEXT("Initial army: invalid/duplicate Soldiers row %s."), *Name.ToString()); return false;
 		}
 		Seen.Add(Definition.UnitTypeId);
-		if (Definition.bSummonOnly) continue;
+		if (Definition.bSummonOnly || Definition.bConstructionOnly) continue;
 		if (Definition.UsesMass()) Mass.Add(Definition);
 		else
 		{
@@ -82,10 +82,11 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError)
 	{
 		OutError = TEXT("Initial army assembly anchors have no supporting ground."); return false;
 	}
-	if (Deployments.IsEmpty())
+	if (Deployments.IsEmpty() || Population>0)
 	{
 		if (!GetDefault<UGuLiBattleAuthoritySubsystem>()->BuildInitialArmySpawnLayout(Mass, Red, Blue, Slots, OutError,
-			GULI_RESOURCE_INITIAL_ARMY_INSET_CM)) return false;
+			GULI_RESOURCE_INITIAL_ARMY_INSET_CM,
+			Population>0 ? Population : GuLiCommanderInitialSpawn::Population)) return false;
 	}
 	else
 	{
@@ -168,6 +169,73 @@ bool FGuLiInitialArmyAuthoring::IsOreClear(const FVector2D& Center) const
 	return true;
 }
 
+bool FGuLiInitialArmyAuthoring::PlaceLoadOnNavigation(UWorld& World,const UGuLiResourceMapDefinition& Definition,FString& OutError)
+{
+	auto* Navigation=FNavigationSystem::GetCurrent<UNavigationSystemV1>(&World);
+	const auto* NavData=Navigation ? Navigation->GetNavDataForAgentName(TEXT("CommanderSoldier")) : nullptr;
+	if (!NavData || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(&World))
+	{ OutError=TEXT("Load placement requires finished CommanderSoldier navigation."); return false; }
+	TArray<FGuLiCommanderInitialSpawnSlot> Placed;
+	auto TrySlot=[&](FGuLiCommanderInitialSpawnSlot& Slot,const TArray<FGuLiCommanderInitialSpawnSlot>& Group)->bool
+	{
+		FVector GroundPoint; float Slope=0; FNavLocation Nav;
+		const float Correction=GuLiCommanderInitialSpawn::MaximumProjectionCorrection;
+		if (!Ground(World,FVector2D(Slot.Location),GroundPoint,Slope) || Slope>15.f
+			|| !Navigation->ProjectPointToNavigation(GroundPoint,Nav,FVector(Correction,Correction,
+				GuLiCommanderInitialSpawn::ProjectionVerticalExtent),NavData)
+			|| FVector::Dist2D(GroundPoint,Nav.Location)>Correction) return false;
+		const FVector2D XY(Nav.Location);
+		if (FMath::Abs(XY.X)+Slot.RadiusCentimeters>GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM
+			|| FMath::Abs(XY.Y)+Slot.RadiusCentimeters>GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM) return false;
+		for (const auto& Cluster : Definition.Clusters)
+			if (FVector2D::DistSquared(XY,FVector2D(Cluster.Center))<FMath::Square(Slot.RadiusCentimeters+Cluster.ObstacleRadiusCentimeters+Correction)) return false;
+		for (const auto& Reserve : Reservations)
+			if (Reserve.bBlocksArmy && FVector2D::DistSquared(XY,Reserve.Center)<FMath::Square(Slot.RadiusCentimeters+Reserve.Radius+Correction)) return false;
+		auto Separate=[&](const auto& Other)
+		{ return FVector::DistSquared2D(Nav.Location,Other.Location)>=FMath::Square(FMath::Max(
+			GuLiCommanderInitialSpawn::MinimumSeparation,Slot.RadiusCentimeters+Other.RadiusCentimeters)); };
+		for (const auto& Other : Placed) if (!Separate(Other)) return false;
+		for (const auto& Other : Group) if (!Separate(Other)) return false;
+		TArray<FOverlapResult> Overlaps; FCollisionObjectQueryParams Objects;
+		Objects.AddObjectTypesToQuery(ECC_WorldStatic); Objects.AddObjectTypesToQuery(ECC_WorldDynamic);
+		World.OverlapMultiByObjectType(Overlaps,GroundPoint+FVector(0,0,Slot.RadiusCentimeters+10.f),FQuat::Identity,
+			Objects,FCollisionShape::MakeSphere(Slot.RadiusCentimeters),FCollisionQueryParams(SCENE_QUERY_STAT(GuLiLoadPlacement),false));
+		for (const auto& O : Overlaps)
+			if (const auto* A=O.GetActor(); A && !A->IsEditorOnly() && !A->IsA<ALandscapeProxy>() && !A->IsA<AVolume>()) return false;
+		Slot.Location=Nav.Location; return true;
+	};
+	for (int32 Begin=0; Begin<Slots.Num();)
+	{
+		int32 End=Begin+1;
+		while (End<Slots.Num() && Slots[End].Team==Slots[Begin].Team && Slots[End].FormationIndex==Slots[Begin].FormationIndex) ++End;
+		bool Accepted=false;
+		// A whole formation translates together; member/type/slot identities never change.
+		for (int32 Ring=0; Ring<=12 && !Accepted; ++Ring)
+		{
+			const int32 Candidates=Ring==0 ? 1 : Ring*8;
+			for (int32 C=0; C<Candidates && !Accepted; ++C)
+			{
+				const double Angle=2.*PI*C/Candidates;
+				const FVector Offset(Ring*1500.*FMath::Cos(Angle),Ring*1500.*FMath::Sin(Angle),0);
+				TArray<FGuLiCommanderInitialSpawnSlot> Group;
+				for (int32 I=Begin; I<End; ++I)
+				{
+					auto Slot=Slots[I]; Slot.Location+=Offset;
+					if (!TrySlot(Slot,Group)) break;
+					Group.Add(Slot);
+				}
+				if (Group.Num()==End-Begin) { Placed.Append(Group); Accepted=true; }
+			}
+		}
+		if (!Accepted) { OutError=TEXT("No complete load formation fits the baked map: ")+SlotName(Slots[Begin]); return false; }
+		Begin=End;
+	}
+	Slots=MoveTemp(Placed);
+	Reservations.RemoveAll([](const auto& R) { return !R.bBlocksArmy; });
+	for (const auto& Slot : Slots) Reservations.Add({FVector2D(Slot.Location),Slot.RadiusCentimeters,SlotName(Slot),false});
+	OutError.Reset(); return true;
+}
+
 bool FGuLiInitialArmyAuthoring::Validate(UWorld& World, const UGuLiResourceMapDefinition& Definition,
 	int32& OutValidSlots, FString& OutError) const
 {
@@ -237,7 +305,7 @@ bool FGuLiInitialArmyAuthoring::Validate(UWorld& World, const UGuLiResourceMapDe
 		}
 		Projected.Add(Nav.Location); ++OutValidSlots;
 	}
-	return OutValidSlots == (bUsesAuthoredDeployments ? Slots.Num() : GuLiCommanderInitialSpawn::Population);
+	return OutValidSlots == Slots.Num() && !Slots.IsEmpty();
 }
 
 FString FGuLiInitialArmyAuthoring::ToJson() const

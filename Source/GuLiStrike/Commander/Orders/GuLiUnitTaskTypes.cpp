@@ -1,4 +1,29 @@
 #include "Commander/Orders/GuLiUnitTaskTypes.h"
+#include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Engine/World.h"
+
+FGuLiTaskUnitId FGuLiTaskUnitId::Soldier(FGuLiSoldierId Id,const UWorld* World)
+{
+    FGuLiTaskUnitId V; V.Id=Id.Value;
+    if (World && UGuLiNetworkSettings::IsHybrid(World))
+    {
+        const auto* Authority=World->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+        V.Generation=Authority?Authority->MakeSoldierTargetHandle(Id).Generation:0;
+    }
+    return V;
+}
+FGuLiTaskUnitId FGuLiTaskUnitId::Actor(FGuLiControllableActorId Id,const UWorld* World)
+{
+    FGuLiTaskUnitId V; V.Id=Id.Value; V.bActor=true;
+    if (World && UGuLiNetworkSettings::IsHybrid(World))
+    {
+        const auto* Hybrid=World->GetSubsystem<UGuLiHybridWorldSubsystem>();
+        V.Generation=Hybrid?Hybrid->GetActorTaskGeneration(Id.Value):0;
+    }
+    return V;
+}
 
 bool FGuLiUnitTaskCommand::IsWellFormed() const
 {

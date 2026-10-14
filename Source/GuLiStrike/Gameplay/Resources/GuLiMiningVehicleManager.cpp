@@ -7,6 +7,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/ChildActorComponent.h"
 #include "Engine/World.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridActorComponent.h"
 
 bool UGuLiMiningVehicleManager::ShouldCreateSubsystem(UObject* Outer) const
 {
@@ -18,23 +20,9 @@ void UGuLiMiningVehicleManager::Deinitialize()
 {
 	GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>()->StaticRegionChanged.RemoveAll(this);
 	SlotProfiles.Reset(); RejectedSlots.Reset();
-	Vehicles.Reset(); NodeOwners.Reset(); AssignedNodes.Reset();
+	ClearHybridOperations();
+	Vehicles.Reset();
 	Super::Deinitialize();
-}
-
-AGuLiMiningVehiclePawn* UGuLiMiningVehicleManager::SpawnMiningVehicle(
-	AGuLiResourceFactoryActor* Factory, FTransform Transform)
-{
-	if (GetWorld()->GetNetMode() == NM_Client || !IsValid(Factory)) return nullptr;
-	const auto* Economy = GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>()->GetEconomyConfig();
-	const auto* Unit = Economy ? GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>()->FindDefinition(Economy->MiningVehicleUnitTypeId) : nullptr;
-	if (!Unit || !Unit->ActorClass || !Unit->ActorClass->IsChildOf(AGuLiMiningVehiclePawn::StaticClass())) return nullptr;
-	FActorSpawnParameters Params;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	auto* Vehicle = GetWorld()->SpawnActor<AGuLiMiningVehiclePawn>(Unit->ActorClass, Transform, Params);
-	if (Vehicle) Vehicle->InitializeVehicle(Factory->GetTeam(),
-		GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>()->AllocateControllableActorId(), *Unit, *Economy, *Factory);
-	return Vehicle;
 }
 
 void UGuLiMiningVehicleManager::RegisterVehicle(AGuLiMiningVehiclePawn& Vehicle)
@@ -49,7 +37,6 @@ void UGuLiMiningVehicleManager::RegisterVehicle(AGuLiMiningVehiclePawn& Vehicle)
 
 void UGuLiMiningVehicleManager::UnregisterVehicle(AGuLiMiningVehiclePawn& Vehicle)
 {
-	ReleaseNode(Vehicle);
 	RejectedSlots.Remove(&Vehicle);
 	for (auto& Profile : SlotProfiles) for (auto& Cluster : Profile.Value.Clusters) for (auto& Slot : Cluster.Slots)
 		if (Slot.Owner.Get()==&Vehicle) { Slot.Owner.Reset(); Slot.Task=0; }
@@ -69,18 +56,20 @@ void UGuLiMiningVehicleManager::IgnoreVehicles(FCollisionQueryParams& Params) co
 
 bool UGuLiMiningVehicleManager::OwnsNode(const AGuLiMiningVehiclePawn& Vehicle, const uint32 NodeId) const
 {
-	const auto* Owner = NodeOwners.Find(NodeId);
-	return Owner && Owner->Get() == &Vehicle;
+	if (const auto* Binding=UGuLiHybridActorComponent::Find(&Vehicle))
+	{
+		FGuLiHybridMiningLease Lease; const auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+		return H && H->GetMiningLease(Binding->GetObjectKey(),Lease) && Lease.NodeId==static_cast<int32>(NodeId) && NodeId!=0;
+	}
+	return false;
 }
 
 int32 UGuLiMiningVehicleManager::GetAssignedNode(const AGuLiMiningVehiclePawn* Vehicle) const
 {
-	const uint32* Node = AssignedNodes.Find(Vehicle);
-	return Node ? *Node : 0;
-}
-
-void UGuLiMiningVehicleManager::ReleaseNode(const AGuLiMiningVehiclePawn& Vehicle)
-{
-	uint32 Node;
-	if (AssignedNodes.RemoveAndCopyValue(&Vehicle, Node)) NodeOwners.Remove(Node);
+	if (const auto* Binding=UGuLiHybridActorComponent::Find(Vehicle))
+	{
+		FGuLiHybridMiningLease Lease; const auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+		return H && H->GetMiningLease(Binding->GetObjectKey(),Lease)?Lease.NodeId:0;
+	}
+	return 0;
 }

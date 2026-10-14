@@ -5,6 +5,11 @@
 	"Description": "",
 	"Modules": [
 		{
+			"Name": "GuLiNetCore",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "GuLiStrike",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
@@ -17,9 +22,15 @@
 	],
 	"Plugins": [
 		{
+			"Name": "EOSShared",
+			"Enabled": true
+		},
+		{
 			"Name": "GeometryProcessing",
 			"Enabled": true,
-			"TargetAllowList": [ "Editor" ]
+			"TargetAllowList": [
+				"Editor"
+			]
 		},
 		{
 			"Name": "GameplayAbilities",
@@ -28,7 +39,9 @@
 		{
 			"Name": "GuLiMapAuthoring",
 			"Enabled": true,
-			"TargetAllowList": [ "Editor" ]
+			"TargetAllowList": [
+				"Editor"
+			]
 		},
 		{
 			"Name": "ModelingToolsEditorMode",

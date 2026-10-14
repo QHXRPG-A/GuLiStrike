@@ -61,26 +61,19 @@ private:
 	FReply SelectTab(ETab Tab);
 	FReply CycleSkillFilterTeam();
 	FReply CycleSkillFormTeam();
-	FReply CycleSpawnTeam();
-	FReply CycleSkillAttribute();
-	FReply CycleModifierOperation();
+
 	FReply ToggleBenchmarkPopulation();
 	FReply ChangeRuntimePage(int32 Delta);
 	FReply ChangeSkillProfilePage(int32 Delta);
-	FReply ChangeSkillSourcePage(int32 Delta);
 
 	FReply RuntimeGet();
 	FReply RuntimeSet();
 	FReply RuntimeReset();
 	FReply RuntimeResetAll();
 	FReply SkillGet();
-	FReply SkillSet();
-	FReply SkillReset();
-	FReply SkillSource();
-	FReply SkillReplace();
-	FReply SkillRemove();
+
 	FReply InspectSkillSoldier();
-	FReply SpawnSoldier();
+
 	FReply RunBenchmark();
 	FReply InspectNavigationSoldier();
 	FReply RefreshNavigationStats();
@@ -91,7 +84,7 @@ private:
 	void HandleProfileFilterChanged(const FText& Text);
 	void HandleUnitFilterChanged(const FText& Text);
 	void HandleSlotFilterChanged(const FText& Text);
-	void HandleSourceFilterChanged(const FText& Text);
+
 	void HandleFormTextChanged(const FText& Text);
 	void HandleSkillLoadoutCommitted(uint32 Revision);
 	void ResetViewStateForWorld();
@@ -100,10 +93,10 @@ private:
 	void RefreshSkills();
 	void RebuildRuntimeRows();
 	void RebuildSkillProfileRows();
-	void RebuildSkillSourceRows();
+
 	void SelectRuntimeRow(int32 Index);
 	void SelectSkillProfileRow(int32 Index);
-	void SelectSkillSourceRow(int32 Index);
+
 	void BindSkillDelegate();
 	void UnbindSkillDelegate();
 	void CancelConfirmation();
@@ -114,12 +107,10 @@ private:
 	FText GetResultText() const;
 	FText GetRuntimePageText() const;
 	FText GetSkillProfilePageText() const;
-	FText GetSkillSourcePageText() const;
+
 	FText GetSkillFilterTeamText() const;
 	FText GetSkillFormTeamText() const;
-	FText GetSpawnTeamText() const;
-	FText GetSkillAttributeText() const;
-	FText GetModifierOperationText() const;
+
 	FText GetBenchmarkPopulationText() const;
 	FText GetCameraDebugText() const;
 	FSlateColor GetResultColor() const;
@@ -139,7 +130,6 @@ private:
 	TSharedPtr<SWidgetSwitcher> TabSwitcher;
 	TSharedPtr<SVerticalBox> RuntimeRowsBox;
 	TSharedPtr<SVerticalBox> SkillProfileRowsBox;
-	TSharedPtr<SVerticalBox> SkillSourceRowsBox;
 
 	TSharedPtr<SEditableTextBox> RuntimeFilterEntry;
 	TSharedPtr<SEditableTextBox> RuntimeKeyEntry;
@@ -147,20 +137,9 @@ private:
 	TSharedPtr<SEditableTextBox> ProfileFilterEntry;
 	TSharedPtr<SEditableTextBox> UnitFilterEntry;
 	TSharedPtr<SEditableTextBox> SlotFilterEntry;
-	TSharedPtr<SEditableTextBox> SourceFilterEntry;
 	TSharedPtr<SEditableTextBox> SkillUnitEntry;
 	TSharedPtr<SEditableTextBox> SkillSlotEntry;
-	TSharedPtr<SEditableTextBox> SkillValueEntry;
-	TSharedPtr<SEditableTextBox> SkillLabelEntry;
-	TSharedPtr<SEditableTextBox> RequiredSkillEntry;
-	TSharedPtr<SEditableTextBox> RequiredTagEntry;
-	TSharedPtr<SEditableTextBox> ReplacementSkillEntry;
-	TSharedPtr<SEditableTextBox> ReplacementPriorityEntry;
 	TSharedPtr<SEditableTextBox> SkillSoldierIdEntry;
-	TSharedPtr<SEditableTextBox> SpawnUnitEntry;
-	TSharedPtr<SEditableTextBox> SpawnXEntry;
-	TSharedPtr<SEditableTextBox> SpawnYEntry;
-	TSharedPtr<SEditableTextBox> SpawnZEntry;
 	TSharedPtr<SEditableTextBox> BenchmarkStepsEntry;
 	TSharedPtr<SEditableTextBox> NavigationSoldierIdEntry;
 	TSharedPtr<SEditableTextBox> CohortIdEntry;
@@ -169,24 +148,16 @@ private:
 	TArray<int32> FilteredRuntimeIndices;
 	TArray<GuLiGMPanel::FSkillProfileRow> SkillProfileRows;
 	TArray<int32> FilteredSkillProfileIndices;
-	TArray<GuLiGMPanel::FSkillSourceRow> SkillSourceRows;
-	TArray<int32> FilteredSkillSourceIndices;
 	FString RuntimeUnavailableReason;
 	FString SkillsUnavailableReason;
-	FString SourcesUnavailableReason;
 	FString RuntimeFilter;
 	FString ProfileFilter;
 	FString UnitFilter;
 	FString SlotFilter;
-	FString SourceFilter;
 	int32 RuntimePage = 0;
 	int32 SkillProfilePage = 0;
-	int32 SkillSourcePage = 0;
 	EGuLiTeam SkillFilterTeam = EGuLiTeam::Unassigned;
 	EGuLiTeam SkillFormTeam = EGuLiTeam::Red;
-	EGuLiTeam SpawnTeam = EGuLiTeam::Red;
-	GuLiGMPanel::ESkillAttribute SkillAttribute = GuLiGMPanel::ESkillAttribute::Damage;
-	GuLiGMPanel::EModifierOperation ModifierOperation = GuLiGMPanel::EModifierOperation::Flat;
 	int32 BenchmarkPopulation = 500;
 };
 

@@ -9,6 +9,9 @@
 #include "GameFramework/Actor.h"
 #include "UObject/StructOnScope.h"
 #include "UObject/UnrealType.h"
+#if !UE_BUILD_SHIPPING
+#include "Development/GuLiHybridReviewSubsystem.h"
+#endif
 
 bool UGuLiMiningPresentationComponent::InitializePresentation(AActor* Actor)
 {
@@ -37,7 +40,7 @@ bool UGuLiMiningPresentationComponent::InitializePresentation(AActor* Actor)
 		TravelRotations[Side] = Pivots[Side]->GetRelativeRotation();
 	}
 	bLatestActive=false; LatestTarget=FVector::ZeroVector; bAppliedVisible=true; ApplyVisibleMining(false);
-	if (GetWorld() && Actor->GetNetMode()!=NM_DedicatedServer)
+	if (GetWorld() && GuLiClientPresentation::CanPresent(GetWorld()))
 		GetWorld()->GetTimerManager().SetTimer(VisibilityTimer,this,&ThisClass::PollVisibility,
 			FGuLiPersistentEffectVisibility::CheckSeconds,true);
 	return true;
@@ -69,8 +72,8 @@ void UGuLiMiningPresentationComponent::ApplyMining(const bool bActive, const FVe
 	const bool Changed=bLatestActive!=bActive;
 	bLatestActive=bActive; LatestTarget=Target;
 	// Authority muzzle geometry remains independent of cosmetic visibility.
-	if (bActive && (Actor->GetNetMode()==NM_DedicatedServer || bAppliedVisible)) AimAt(Target);
-	if (Actor->GetNetMode()==NM_DedicatedServer) return;
+	if (bActive && (!GuLiClientPresentation::CanPresent(GetWorld()) || bAppliedVisible)) AimAt(Target);
+	if (!GuLiClientPresentation::CanPresent(GetWorld())) return;
 	if (Changed) PollVisibility();
 }
 
@@ -88,6 +91,10 @@ void UGuLiMiningPresentationComponent::ApplyVisibleMining(const bool bShow)
 			*Parameter->ContainerPtrToValuePtr<FVector>(Parameters.GetStructMemory())=LatestTarget;
 		}
 		Actor->ProcessEvent(Function,Parameters.GetStructMemory());
+#if !UE_BUILD_SHIPPING
+        if (auto* Review=GetWorld()->GetSubsystem<UGuLiHybridReviewSubsystem>())
+            Review->ObserveBlueprintExecution(*Actor,Function->GetFName());
+#endif
 	}
 	Actor->SetActorTickEnabled(bShow);
 	bAppliedVisible=bShow;

@@ -3,21 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Battle/Network/GuLiPlayerNetSyncComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "GuLiShipMovementComponent.generated.h"
 
-class AGuLiBattlePlayerState;
-class APlayerController;
-struct FGuLiShipMovementNetworkStorage;
-struct FGuLiShipMovementNetworkStorageDeleter
-{
-	void operator()(FGuLiShipMovementNetworkStorage* Storage) const;
-};
-struct FGuLiShipNetworkMoveData;
-struct FGuLiShipMoveResponseData;
-class FGuLiShipSavedMove;
+struct FGuLiHybridShipInput;
 
 /** CarrierSourceRef 对服务器重演位姿的查询结果；Pending 仅表示跨通道数据尚未到达。 */
 UENUM(BlueprintType)
@@ -66,6 +56,7 @@ struct FGuLiShipCanonicalMoveState
 /** 有界、仅权威端写入的 canonical move 环；独立类型便于协议和自动化测试复用。 */
 class GULISTRIKE_API FGuLiShipCanonicalMoveHistory
 {
+	friend class FGuLiHybridShipAdapter;
 public:
 	void Reset(uint32 NewEpoch, int32 InMaxEntries = 256);
 	const FGuLiShipCanonicalMoveState& Append(double ServerWorldTimeSeconds, const FTransform& Transform,
@@ -131,44 +122,18 @@ struct FGuLiShipMovementConfig
 	bool Equals(const FGuLiShipMovementConfig& Other) const;
 };
 
-/** 配置、装配依赖、拥有者身份和暂停基线成组复制；ACK 只确认这一精确屏障。 */
+/** Local committed configuration; it is captured explicitly by the Hybrid Ship adapter. */
 USTRUCT()
 struct FGuLiShipMovementSyncState
 {
-	GENERATED_BODY()
-
-	UPROPERTY()
-	FGuLiShipMovementConfig Config;
-
-	UPROPERTY()
-	FGuLiConnectionBootstrapState ConnectionIdentity;
-
-	UPROPERTY()
-	uint32 ConfigRevision = 0u;
-
-	UPROPERTY()
-	uint32 RequiredLoadoutRevision = 0u;
-
-	UPROPERTY()
-	uint32 BarrierGeneration = 0u;
-
-	UPROPERTY()
-	FTransform BaselineTransform = FTransform::Identity;
-
-	UPROPERTY()
-	FVector BaselineVelocity = FVector::ZeroVector;
-
-	UPROPERTY()
-	float BaselineYawVelocity = 0.0f;
-
-	UPROPERTY()
-	float BaselineBankRoll = 0.0f;
-
-	UPROPERTY()
-	bool bServerAcknowledged = false;
+    GENERATED_BODY()
+    UPROPERTY() FGuLiShipMovementConfig Config;
+    UPROPERTY() uint32 ConfigRevision=0;
+    UPROPERTY() uint32 RequiredLoadoutRevision=0;
+    UPROPERTY() uint32 BarrierGeneration=0;
 };
 
-/** 一次 CMC move 的原始本地轴输入；只在 SavedMove/packed move 内传输，不做属性复制。 */
+/** Local flight input consumed by the granted simulation owner. */
 struct FGuLiShipFlightInput
 {
 	FVector LocalThrust = FVector::ZeroVector;
@@ -183,8 +148,8 @@ struct FGuLiShipFlightInput
 };
 
 /**
- * 飞船唯一运动写者：复用 CharacterMovement 的移动 RPC、位置预测和网格平滑，
- * 扩展每次 move 的转向输入/积分状态；相机、部件及武器仍由 Ship 管理。
+ * Granted Ship owner's local flight integrator and collision movement.
+ * The World logical clock and Hybrid adapter own synchronization and restore.
  */
 UCLASS(ClassGroup = (GuLiStrike))
 class GULISTRIKE_API UGuLiShipMovementComponent : public UCharacterMovementComponent, public IGuLiExternalDisplacementTarget
@@ -195,7 +160,6 @@ public:
 	UGuLiShipMovementComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	virtual ~UGuLiShipMovementComponent() override;
 
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	// 本地输入累积，LocalDirection 使用舰体局部轴；组件采样后清除瞬时轴，Boost 保持到释放。
@@ -204,6 +168,9 @@ public:
 	void AddStrafeInput(float Value);
 	void SetBoostInput(bool bEnabled);
 	void ClearFlightInput();
+    void FreezeCarrierMotion();
+	void AdvanceHybridFlight(float DeltaSeconds,const FGuLiHybridShipInput& Input);
+	FGuLiShipFlightInput ConsumeHybridControllerInput();
 	virtual void ApplyExternalDisplacement(const FTransform& Transform) override;
 
 	// 服务器本地提交；仅完整有效配置或所需装配版本改变时创建新配置代次。
@@ -246,91 +213,27 @@ public:
 
 	const FGuLiShipMovementConfig& GetEffectiveMovementConfig() const { return EffectiveConfig; }
 
-	virtual FNetworkPredictionData_Client* GetPredictionData_Client() const override;
-	// 引擎占有/重启会真正重置预测时钟；这与保留时间的换装配置屏障是两种生命周期。
-	virtual void ResetPredictionData_Client() override;
-	virtual void ResetPredictionData_Server() override;
-	virtual bool ClientUpdatePositionAfterServerUpdate() override;
-	virtual bool ShouldUsePackedMovementRPCs() const override { return true; }
-	virtual bool ShouldCorrectRotation() const override { return true; }
-	virtual void PerformMovement(float DeltaTime) override;
-	virtual void SimulateMovement(float DeltaTime) override;
-	virtual void MoveAutonomous(float ClientTimeStamp, float DeltaTime, uint8 CompressedFlags, const FVector& NewAccel) override;
-	virtual void ServerMove_PerformMovement(const FCharacterNetworkMoveData& MoveData) override;
-	virtual bool ServerCheckClientError(float ClientTimeStamp, float DeltaTime, const FVector& Accel,
-		const FVector& ClientWorldLocation, const FVector& RelativeClientLocation,
-		UPrimitiveComponent* ClientMovementBase, FName ClientBaseBoneName, uint8 ClientMovementMode) override;
-	virtual bool ServerShouldUseAuthoritativePosition(float ClientTimeStamp, float DeltaTime, const FVector& Accel,
-		const FVector& ClientWorldLocation, const FVector& RelativeClientLocation,
-		UPrimitiveComponent* ClientMovementBase, FName ClientBaseBoneName, uint8 ClientMovementMode) override;
-	virtual void ServerMoveHandleClientError(float ClientTimeStamp, float DeltaTime, const FVector& Accel,
-		const FVector& RelativeClientLocation, UPrimitiveComponent* ClientMovementBase,
-		FName ClientBaseBoneName, uint8 ClientMovementMode) override;
-	virtual void ClientHandleMoveResponse(const FCharacterMoveResponseDataContainer& MoveResponse) override;
-
+    virtual void ResetPredictionData_Client() override;
+    virtual bool ShouldUsePackedMovementRPCs() const override { return false; }
+    virtual void PerformMovement(float DeltaTime) override;
 protected:
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void OnClientCorrectionReceived(FNetworkPredictionData_Client_Character& ClientData,
-		float TimeStamp, FVector NewLocation, FVector NewVelocity, UPrimitiveComponent* NewBase,
-		FName NewBaseBoneName, bool bHasBase, bool bBaseRelativePosition,
-		uint8 ServerMovementMode, FVector ServerGravityDirection) override;
+    virtual void BeginPlay() override;
+    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 private:
-	friend class FGuLiShipSavedMove;
-	friend struct FGuLiShipNetworkMoveData;
-	friend struct FGuLiShipMoveResponseData;
+    friend class FGuLiHybridShipAdapter;
+    void ApplyMovementParameters(const FGuLiShipMovementConfig& Config);
+    void IntegrateFlightRotation(float DeltaTime,const FVector& WorldThrustIntent);
+    bool CanSimulateCurrentMove() const;
+    bool HasLocalFlightController() const;
+    void ResetCanonicalMoveHistory();
+    void RecordCanonicalMoveAfterAuthoritySimulation();
 
-	UFUNCTION()
-	void OnRep_MovementSyncState();
-
-	// 拥有客户端只确认服务器给出的完整身份和版本，不能通过此 RPC 选择配置或装配。
-	UFUNCTION(Server, Reliable)
-	void ServerAcknowledgeMovementConfig(uint32 ConfigRevision, uint32 BarrierGeneration,
-		uint32 LoadoutRevision, const FGuLiConnectionBootstrapState& ConnectionIdentity);
-
-	bool BuildCurrentConnectionIdentity(FGuLiConnectionBootstrapState& OutIdentity) const;
-	void RefreshMovementSynchronization();
-	void RefreshServerMovementSynchronization();
-	void RefreshClientMovementSynchronization();
-	void BeginServerMovementBarrier(const FGuLiConnectionBootstrapState& Identity);
-	void ApplyMovementParameters(const FGuLiShipMovementConfig& Config);
-	void ApplyClientMovementBaseline();
-	void ClearPredictionHistoryPreservingTime();
-	void IntegrateFlightRotation(float DeltaTime, const FVector& WorldThrustIntent);
-	bool CanSimulateCurrentMove() const;
-	void SampleLocalFlightInput();
-	bool HasLocalFlightController() const;
-	void ResetCanonicalMoveHistory();
-	void RecordCanonicalMoveAfterAuthoritySimulation();
-
-	// 相关客户端都需要移动参数；拥有者使用身份/ACK 屏障，模拟代理仅消费服务器位姿与配置。
-	UPROPERTY(ReplicatedUsing = OnRep_MovementSyncState)
-	FGuLiShipMovementSyncState MovementSyncState;
-
-	FGuLiShipMovementConfig EffectiveConfig;
-	FGuLiShipFlightInput PendingInput;
-	FGuLiShipFlightInput ActiveInput;
-	TUniquePtr<FGuLiShipMovementNetworkStorage, FGuLiShipMovementNetworkStorageDeleter> NetworkStorage;
-	TWeakObjectPtr<APlayerController> ObservedController;
-	TWeakObjectPtr<AGuLiBattlePlayerState> ObservedPlayerState;
-	TWeakObjectPtr<UGuLiPlayerNetSyncComponent> ObservedConnectionComponent;
-	FGuLiNetworkRequestWindow ConfigurationAckWindow;
-	FGuLiShipCanonicalMoveHistory CanonicalMoveHistory;
-
-	uint32 AppliedLoadoutRevision = 0u;
-	uint32 AppliedConfigRevision = 0u;
-	uint32 AppliedBarrierGeneration = 0u;
-	// 只在服务器预测时钟真正重置时更新；更早生命周期的迟到 move 不能推进新时钟。
-	uint32 ServerPredictionBarrierFloor = 0u;
-	float YawVelocity = 0.0f;
-	float CurrentBankRoll = 0.0f;
-	double NextConfigurationAckTime = 0.0;
-	bool bProcessingRemoteMove = false;
-	bool bServerStartedCurrentBarrier = false;
-	bool bEndingPlay = false;
-	bool bApplyingCorrection = false;
-	float CorrectionTimeStamp = 0.0f;
-	float CorrectionYawVelocity = 0.0f;
-	float CorrectionBankRoll = 0.0f;
+    UPROPERTY(Transient) FGuLiShipMovementSyncState MovementSyncState;
+    FGuLiShipMovementConfig EffectiveConfig;
+    FGuLiShipFlightInput PendingInput,ActiveInput;
+    FGuLiShipCanonicalMoveHistory CanonicalMoveHistory;
+    uint32 AppliedLoadoutRevision=0;
+    float YawVelocity=0,CurrentBankRoll=0;
+    bool bEndingPlay=false;
 };

@@ -1,4 +1,5 @@
 #include "Gameplay/Ship/Build/GuLiShipBuildComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Ship/Build/GuLiShipAssemblyComponent.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "GameFramework/PlayerState.h"
@@ -6,13 +7,8 @@
 #include "Net/UnrealNetwork.h"
 #include "Engine/World.h"
 
-UGuLiShipBuildComponent::UGuLiShipBuildComponent() { SetIsReplicatedByDefault(true); }
-void UGuLiShipBuildComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME_CONDITION(UGuLiShipBuildComponent, State, COND_OwnerOnly);
-	DOREPLIFETIME_CONDITION(UGuLiShipBuildComponent, Catalog, COND_OwnerOnly);
-}
+UGuLiShipBuildComponent::UGuLiShipBuildComponent() { SetIsReplicatedByDefault(false); }
+
 const FGuLiShipCompiledBuildRules& UGuLiShipBuildComponent::GetRules() const
 {
 	if (CompiledCatalog != Catalog || CompiledRevision != Catalog->Revision)
@@ -47,7 +43,8 @@ bool UGuLiShipBuildComponent::RestoreShip(UGuLiShipAssemblyComponent& Assembly, 
 	FGuLiShipRunBuildState Candidate = State;
 	if (Candidate.MatchEpoch != GameState->GetMatchEpoch())
 	{
-		Candidate = {}; Candidate.MatchEpoch = GameState->GetMatchEpoch(); Candidate.BuildRevision = 1;
+		if (!UGuLiNetworkSettings::IsHybrid(GetWorld())) Candidate = {};
+		Candidate.MatchEpoch = GameState->GetMatchEpoch(); Candidate.BuildRevision = FMath::Max<int64>(1,Candidate.BuildRevision);
 	}
 	if (Assembly.GetAppliedMatchEpoch() == Candidate.MatchEpoch && Assembly.GetAppliedBuildRevision() == Candidate.BuildRevision)
 	{
@@ -57,13 +54,15 @@ bool UGuLiShipBuildComponent::RestoreShip(UGuLiShipAssemblyComponent& Assembly, 
 	if (State.MatchEpoch != Candidate.MatchEpoch) Requests.Reset();
 	State = Candidate; Catalog = Assembly.Catalog; CurrentAssembly = &Assembly;
 	Assembly.CommitPreparedBuild();
-	GetOwner()->ForceNetUpdate();
+
 	return true;
 }
 
 FGuLiShipChoiceResult UGuLiShipBuildComponent::CommitConfirmedChoice(FGuid RequestId, FName NodeId, int64 MatchEpoch, int64 ExpectedBuildRevision)
 {
 	FGuLiShipChoiceResult Result; Result.RequestId = RequestId; Result.BuildRevision = State.BuildRevision;
+	if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+	{ Result.Reason=TEXT("Hybrid upgrade choices require a committed coordinator result."); return Result; }
 	if (!GetOwner()->HasAuthority() || !RequestId.IsValid() || bCommitting)
 	{
 		Result.Reason = TEXT("Choice requires a unique server request outside an active commit."); return Result;
@@ -88,8 +87,8 @@ FGuLiShipChoiceResult UGuLiShipBuildComponent::CommitConfirmedChoice(FGuid Reque
 				State = Candidate;
 				Assembly->CommitPreparedBuild();
 				bCommitting = false;
-				Result.bCommitted = true; Result.BuildRevision = State.BuildRevision;
-				GetOwner()->ForceNetUpdate();
+				Result.bCommitted = true; Result.bBusinessEffects=true;Result.BuildRevision = State.BuildRevision;
+
 			}
 		}
 	}
@@ -101,4 +100,29 @@ void UGuLiShipBuildComponent::CopyMatchStateFrom(const UGuLiShipBuildComponent& 
 	check(GetOwner()->HasAuthority());
 	State = Other.State; Catalog = Other.Catalog;
 	Requests = Other.Requests;
+}
+FGuid UGuLiShipBuildComponent::RequestConfirmedChoice(FGuid RequestId,FName NodeId,int64 MatchEpoch,int64 ExpectedBuildRevision)
+{
+    if (!RequestId.IsValid()) RequestId=FGuid::NewGuid();
+    if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+    {auto* Assembly=CurrentAssembly.Get();return Assembly?Assembly->RequestHybridChoice(RequestId,NodeId,MatchEpoch,ExpectedBuildRevision):FGuid{};}
+    const bool AlreadyResolved=Requests.Contains(RequestId);
+    const auto Result=CommitConfirmedChoice(RequestId,NodeId,MatchEpoch,ExpectedBuildRevision);
+    if (!Requests.Contains(RequestId)) return {};
+    if (!AlreadyResolved) OnChoiceResolved.Broadcast(Result);
+    return RequestId;
+}
+bool UGuLiShipBuildComponent::FindChoiceResult(FGuid RequestId,FGuLiShipChoiceResult& Result) const
+{
+    if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+    {const auto* Assembly=CurrentAssembly.Get();return Assembly && Assembly->FindHybridChoiceResult(RequestId,Result);}
+    const auto* Found=Requests.Find(RequestId);if (!Found) return false;Result=Found->Result;return true;
+}
+void UGuLiShipBuildComponent::NotifyHybridChoiceResolved(const UGuLiShipAssemblyComponent& Assembly,const FGuLiShipChoiceResult& Result)
+{if (CurrentAssembly.Get()==&Assembly) OnChoiceResolved.Broadcast(Result);}
+bool UGuLiShipBuildComponent::AdoptExistingShip(UGuLiShipAssemblyComponent& Assembly)
+{
+    if (!GetOwner()->HasAuthority() || bCommitting || !Assembly.Catalog) return false;
+    State=Assembly.GetAppliedBuild(); Catalog=Assembly.Catalog; CurrentAssembly=&Assembly; Requests.Reset();
+     return true;
 }

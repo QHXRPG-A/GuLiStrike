@@ -16,11 +16,13 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Gameplay/Models/GuLiModelPresentationComponent.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 
 AGuLiConstructionVehiclePawn::AGuLiConstructionVehiclePawn(const FObjectInitializer& Initializer)
 	: Super(Initializer.SetDefaultSubobjectClass<UGuLiExternalCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
-	bReplicates = true; bAlwaysRelevant = true; SetReplicateMovement(true);
+	bReplicates = false; bAlwaysRelevant = true; SetReplicateMovement(false);
 	GetCapsuleComponent()->InitCapsuleSize(130,130);
 	GetCapsuleComponent()->SetMaskFilterOnBodyInstance(GuLiEngineeringCollision::VehicleMask);
 	GetCapsuleComponent()->SetMoveIgnoreMask(GuLiEngineeringCollision::VehicleMask);
@@ -49,14 +51,7 @@ void AGuLiConstructionVehiclePawn::InitializeVehicle(EGuLiTeam InTeam, FGuLiCont
 	UnitTypeId = Definition.UnitTypeId;
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 	PresentationClass = Definition.PresentationClass; PresentationScale = Definition.PresentationScale; OnRep_Definition();
-	auto& Health = *FindComponentByClass<UGuLiCombatHealthComponent>();
-	FGuLiTargetHandle Handle; Handle.Kind = EGuLiTargetKind::GroundActor; Handle.AuthorityId = FGuid::NewGuid();
-	Handle.Generation = 1; Handle.LocalId = StableId.Value;
-	Health.ConfigureServerTarget(Handle, Team); Health.InitializeServerHealth(Definition.MaxHealth);
-	if (!GetController()) SpawnDefaultController();
-	CastChecked<AGuLiEngineeringAIController>(GetController())->ConfigureVehicleNavigation();
-	GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()->RegisterActor(*this);
-	ForceNetUpdate();
+
 }
 void AGuLiConstructionVehiclePawn::OnRep_Definition()
 {
@@ -87,7 +82,7 @@ EGuLiTransitOrderResult AGuLiConstructionVehiclePawn::IssueStrongholdTransit(
 	const FGuLiStrongholdTransitOrder& Order, EGuLiTeam RequestingTeam)
 {
 	using Result = EGuLiTransitOrderResult;
-	if (!HasAuthority() || RequestingTeam != Team) return Result::Unauthorized;
+	if (!UGuLiHybridActorComponent::HasSimulation(this) || RequestingTeam != Team) return Result::Unauthorized;
 	if (!Order.IsWellFormed()) return Result::InvalidRequest;
 	if (uint32(Order.RequestId) == LastTransitRequestId) return Result::Accepted;
 	if (LastTransitRequestId != 0 && int32(uint32(Order.RequestId)-LastTransitRequestId) <= 0) return Result::StaleRequest;
@@ -102,19 +97,11 @@ EGuLiTransitOrderResult AGuLiConstructionVehiclePawn::IssueStrongholdTransit(
 }
 bool AGuLiConstructionVehiclePawn::IssueMove(const FVector& Target)
 {
-	if (!HasAuthority() || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return false;
+	if (!UGuLiHybridActorComponent::HasSimulation(this) || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return false;
 	Work->StopWork(); return Travel->BeginMove(Target,100);
 }
 bool AGuLiConstructionVehiclePawn::IssueConstruction(UGuLiBuildingLifecycleComponent* Building, bool bAutomatic)
 {
-	if (!HasAuthority() || !IsValid(Building) || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return false;
+	if (!UGuLiHybridActorComponent::HasSimulation(this) || !IsValid(Building) || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return false;
 	return Work->AssignBuilding(*Building, bAutomatic);
-}
-void AGuLiConstructionVehiclePawn::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(AGuLiConstructionVehiclePawn, Team); DOREPLIFETIME(AGuLiConstructionVehiclePawn, StableId);
-	DOREPLIFETIME(AGuLiConstructionVehiclePawn, PresentationClass); DOREPLIFETIME(AGuLiConstructionVehiclePawn, PresentationScale);
-	DOREPLIFETIME(AGuLiConstructionVehiclePawn, BaseSpeed);
-	DOREPLIFETIME(AGuLiConstructionVehiclePawn, UnitTypeId);
 }

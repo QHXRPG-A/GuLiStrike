@@ -246,24 +246,18 @@ void SGuLiGMPanel::ResetViewStateForWorld()
 	CurrentTab = ETab::Runtime;
 	RuntimePage = 0;
 	SkillProfilePage = 0;
-	SkillSourcePage = 0;
 	RuntimeFilter.Reset();
 	ProfileFilter.Reset();
 	UnitFilter.Reset();
 	SlotFilter.Reset();
-	SourceFilter.Reset();
 	SkillFilterTeam = EGuLiTeam::Unassigned;
 	SkillFormTeam = EGuLiTeam::Red;
-	SpawnTeam = EGuLiTeam::Red;
-	SkillAttribute = GuLiGMPanel::ESkillAttribute::Damage;
-	ModifierOperation = GuLiGMPanel::EModifierOperation::Flat;
 	BenchmarkPopulation = 500;
 	if (TabSwitcher.IsValid()) TabSwitcher->SetActiveWidgetIndex(static_cast<int32>(CurrentTab));
 	if (RuntimeFilterEntry.IsValid()) RuntimeFilterEntry->SetText(FText::GetEmpty());
 	if (ProfileFilterEntry.IsValid()) ProfileFilterEntry->SetText(FText::GetEmpty());
 	if (UnitFilterEntry.IsValid()) UnitFilterEntry->SetText(FText::GetEmpty());
 	if (SlotFilterEntry.IsValid()) SlotFilterEntry->SetText(FText::GetEmpty());
-	if (SourceFilterEntry.IsValid()) SourceFilterEntry->SetText(FText::GetEmpty());
 }
 
 TSharedRef<SWidget> SGuLiGMPanel::MakeSectionTitle(const FString& Title, const FString& CommandNames)
@@ -413,76 +407,14 @@ TSharedRef<SWidget> SGuLiGMPanel::BuildSkillsTab()
 				]
 			]
 			+ SVerticalBox::Slot().AutoHeight()[SAssignNew(SkillProfileRowsBox, SVerticalBox)]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 8.0f)[SNew(SSeparator)]
-			+ SVerticalBox::Slot().AutoHeight()[MakeSectionTitle(TEXT("来源账本"), TEXT("gs.GM.Skill.Source / Replace / Remove"))]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)
-			[
-				SAssignNew(SourceFilterEntry, SEditableTextBox)
-				.HintText(Text(TEXT("过滤 Label / SourceId")))
-				.OnTextChanged(this, &SGuLiGMPanel::HandleSourceFilterChanged)
-			]
-			+ SVerticalBox::Slot().AutoHeight()[SAssignNew(SkillSourceRowsBox, SVerticalBox)]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 8.0f)[SNew(SSeparator)]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)
-			[
-				SNew(SHorizontalBox)
-				+ SHorizontalBox::Slot().AutoWidth().Padding(0.0f, 0.0f, 8.0f, 0.0f)
-				[
-					SNew(SBox).WidthOverride(116.0f)[SNew(STextBlock).Text(Text(TEXT("队伍 / 属性 / 算子")))]
-				]
-				+ SHorizontalBox::Slot().AutoWidth().Padding(0.0f, 0.0f, RowGap, 0.0f)
-				[
-					SNew(SButton).Text(this, &SGuLiGMPanel::GetSkillFormTeamText).OnClicked(this, &SGuLiGMPanel::CycleSkillFormTeam)
-				]
-				+ SHorizontalBox::Slot().AutoWidth().Padding(0.0f, 0.0f, RowGap, 0.0f)
-				[
-					SNew(SButton).Text(this, &SGuLiGMPanel::GetSkillAttributeText).OnClicked(this, &SGuLiGMPanel::CycleSkillAttribute)
-				]
-				+ SHorizontalBox::Slot().AutoWidth()
-				[
-					SNew(SButton).Text(this, &SGuLiGMPanel::GetModifierOperationText).OnClicked(this, &SGuLiGMPanel::CycleModifierOperation)
-				]
-			]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)[MakeEntryRow(TEXT("UnitTypeId"), SkillUnitEntry, TEXT("1"))]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)[MakeEntryRow(TEXT("SlotId"), SkillSlotEntry, TEXT("BasicAttack"))]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)[MakeEntryRow(TEXT("Value"), SkillValueEntry, TEXT(""), TEXT("Set 要求非负；Source 允许有限负数"))]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)[MakeEntryRow(TEXT("Label"), SkillLabelEntry, TEXT("PanelSource"))]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)[MakeEntryRow(TEXT("Required Skill"), RequiredSkillEntry, TEXT("*"))]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)[MakeEntryRow(TEXT("Required Tag"), RequiredTagEntry, TEXT("*"), TEXT("未知 GameplayTag 会被拒绝"))]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)[MakeEntryRow(TEXT("Replace Skill"), ReplacementSkillEntry, TEXT(""))]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)[MakeEntryRow(TEXT("Priority"), ReplacementPriorityEntry, TEXT("0"))]
-			+ SVerticalBox::Slot().AutoHeight()
-			[
-				SNew(SHorizontalBox)
-				+ SHorizontalBox::Slot().AutoWidth().Padding(0.0f, 0.0f, RowGap, 0.0f)[SNew(SButton).Text(Text(TEXT("Get"))).OnClicked(this, &SGuLiGMPanel::SkillGet)]
-				+ SHorizontalBox::Slot().AutoWidth().Padding(0.0f, 0.0f, RowGap, 0.0f)
-				[
-					SNew(SButton).Text(Text(TEXT("Set"))).OnClicked(this, &SGuLiGMPanel::SkillSet)
-					.IsEnabled_Lambda([this]() { return Model.GetAccessPolicy().bCanMutateAuthorityState; })
-				]
-				+ SHorizontalBox::Slot().AutoWidth().Padding(0.0f, 0.0f, RowGap, 0.0f)
-				[
-					SNew(SButton).Text(Text(TEXT("Reset"))).OnClicked(this, &SGuLiGMPanel::SkillReset)
-					.IsEnabled_Lambda([this]() { return Model.GetAccessPolicy().bCanMutateAuthorityState; })
-				]
-				+ SHorizontalBox::Slot().AutoWidth().Padding(0.0f, 0.0f, RowGap, 0.0f)
-				[
-					SNew(SButton).Text(Text(TEXT("Source"))).OnClicked(this, &SGuLiGMPanel::SkillSource)
-					.IsEnabled_Lambda([this]() { return Model.GetAccessPolicy().bCanMutateAuthorityState; })
-				]
-				+ SHorizontalBox::Slot().AutoWidth().Padding(0.0f, 0.0f, RowGap, 0.0f)
-				[
-					SNew(SButton).Text(Text(TEXT("Replace"))).OnClicked(this, &SGuLiGMPanel::SkillReplace)
-					.IsEnabled_Lambda([this]() { return Model.GetAccessPolicy().bCanMutateAuthorityState; })
-				]
-				+ SHorizontalBox::Slot().AutoWidth()
-				[
-					SNew(SButton).Text(Text(TEXT("Remove"))).OnClicked(this, &SGuLiGMPanel::SkillRemove)
-					.IsEnabled_Lambda([this]() { return Model.GetAccessPolicy().bCanMutateAuthorityState; })
-				]
-			]
-		];
+            + SVerticalBox::Slot().AutoHeight().Padding(0.0f,8.0f)[SNew(SSeparator)]
+            + SVerticalBox::Slot().AutoHeight()[SNew(SButton).Text(this,&SGuLiGMPanel::GetSkillFormTeamText).OnClicked(this,&SGuLiGMPanel::CycleSkillFormTeam)]
+            + SVerticalBox::Slot().AutoHeight()[MakeEntryRow(TEXT("UnitTypeId"),SkillUnitEntry,TEXT("1"))]
+            + SVerticalBox::Slot().AutoHeight()[MakeEntryRow(TEXT("SlotId"),SkillSlotEntry,TEXT("BasicAttack"))]
+            + SVerticalBox::Slot().AutoHeight()[SNew(SButton).Text(Text(TEXT("读取已提交能力"))).OnClicked(this,&SGuLiGMPanel::SkillGet)]
+        ];
 }
+
 
 TSharedRef<SWidget> SGuLiGMPanel::BuildSoldiersTab()
 {
@@ -497,24 +429,6 @@ TSharedRef<SWidget> SGuLiGMPanel::BuildSoldiersTab()
 				SNew(SButton).Text(Text(TEXT("检查单兵"))).OnClicked(this, &SGuLiGMPanel::InspectSkillSoldier)
 				.IsEnabled_Lambda([this]() { return Model.GetAccessPolicy().bCanReadAuthorityDiagnostics; })
 			]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 10.0f)[SNew(SSeparator)]
-			+ SVerticalBox::Slot().AutoHeight()[MakeSectionTitle(TEXT("生成调试士兵"), TEXT("gs.GM.Skill.Spawn"))]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)
-			[
-				SNew(SHorizontalBox)
-				+ SHorizontalBox::Slot().AutoWidth().Padding(0.0f, 0.0f, 8.0f, 0.0f)[SNew(SBox).WidthOverride(116.0f)[SNew(STextBlock).Text(Text(TEXT("Team")))]]
-				+ SHorizontalBox::Slot().AutoWidth()[SNew(SButton).Text(this, &SGuLiGMPanel::GetSpawnTeamText).OnClicked(this, &SGuLiGMPanel::CycleSpawnTeam)]
-			]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)[MakeEntryRow(TEXT("UnitTypeId"), SpawnUnitEntry, TEXT("1"))]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)[MakeEntryRow(TEXT("X cm"), SpawnXEntry, TEXT("0"))]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)[MakeEntryRow(TEXT("Y cm"), SpawnYEntry, TEXT("0"))]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)[MakeEntryRow(TEXT("Z cm"), SpawnZEntry, TEXT("0"))]
-			+ SVerticalBox::Slot().AutoHeight()
-			[
-				SNew(SButton).Text(Text(TEXT("生成"))).OnClicked(this, &SGuLiGMPanel::SpawnSoldier)
-				.IsEnabled_Lambda([this]() { return Model.GetAccessPolicy().bCanMutateAuthorityState; })
-			]
-			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 10.0f)[SNew(SSeparator)]
 			+ SVerticalBox::Slot().AutoHeight()[MakeSectionTitle(TEXT("本地无 World 战斗基准"), TEXT("gs.GM.Skill.Bench（不包含渲染/导航/网络/World）"))]
 			+ SVerticalBox::Slot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)
 			[
@@ -590,7 +504,6 @@ FReply SGuLiGMPanel::CycleSkillFilterTeam()
 		? EGuLiTeam::Red
 		: (SkillFilterTeam == EGuLiTeam::Red ? EGuLiTeam::Blue : EGuLiTeam::Unassigned);
 	SkillProfilePage = 0;
-	SkillSourcePage = 0;
 	CancelConfirmation();
 	RefreshSkills();
 	return FReply::Handled();
@@ -599,31 +512,6 @@ FReply SGuLiGMPanel::CycleSkillFilterTeam()
 FReply SGuLiGMPanel::CycleSkillFormTeam()
 {
 	SkillFormTeam = SkillFormTeam == EGuLiTeam::Red ? EGuLiTeam::Blue : EGuLiTeam::Red;
-	CancelConfirmation();
-	return FReply::Handled();
-}
-
-FReply SGuLiGMPanel::CycleSpawnTeam()
-{
-	SpawnTeam = SpawnTeam == EGuLiTeam::Red ? EGuLiTeam::Blue : EGuLiTeam::Red;
-	CancelConfirmation();
-	return FReply::Handled();
-}
-
-FReply SGuLiGMPanel::CycleSkillAttribute()
-{
-	using GuLiGMPanel::ESkillAttribute;
-	SkillAttribute = SkillAttribute == ESkillAttribute::Damage
-		? ESkillAttribute::AttackRate
-		: (SkillAttribute == ESkillAttribute::AttackRate ? ESkillAttribute::Range : ESkillAttribute::Damage);
-	CancelConfirmation();
-	return FReply::Handled();
-}
-
-FReply SGuLiGMPanel::CycleModifierOperation()
-{
-	using GuLiGMPanel::EModifierOperation;
-	ModifierOperation = ModifierOperation == EModifierOperation::Flat ? EModifierOperation::Percent : EModifierOperation::Flat;
 	CancelConfirmation();
 	return FReply::Handled();
 }
@@ -648,14 +536,6 @@ FReply SGuLiGMPanel::ChangeSkillProfilePage(const int32 Delta)
 	SkillProfilePage = GuLiGMPanel::ClampPageIndex(SkillProfilePage + Delta, FilteredSkillProfileIndices.Num());
 	CancelConfirmation();
 	RebuildSkillProfileRows();
-	return FReply::Handled();
-}
-
-FReply SGuLiGMPanel::ChangeSkillSourcePage(const int32 Delta)
-{
-	SkillSourcePage = GuLiGMPanel::ClampPageIndex(SkillSourcePage + Delta, FilteredSkillSourceIndices.Num());
-	CancelConfirmation();
-	RebuildSkillSourceRows();
 	return FReply::Handled();
 }
 
@@ -691,14 +571,6 @@ void SGuLiGMPanel::HandleSlotFilterChanged(const FText& Value)
 	RebuildSkillProfileRows();
 }
 
-void SGuLiGMPanel::HandleSourceFilterChanged(const FText& Value)
-{
-	SourceFilter = Value.ToString().TrimStartAndEnd();
-	SkillSourcePage = 0;
-	CancelConfirmation();
-	RebuildSkillSourceRows();
-}
-
 void SGuLiGMPanel::HandleFormTextChanged(const FText& TextValue)
 {
 	CancelConfirmation();
@@ -723,33 +595,10 @@ void SGuLiGMPanel::RefreshRuntime()
 
 void SGuLiGMPanel::RefreshSkills()
 {
-	SkillProfileRows = Model.QuerySkillProfiles(SkillsUnavailableReason);
-	SkillSourceRows.Reset();
-	SourcesUnavailableReason.Reset();
-	if (SkillFilterTeam == EGuLiTeam::Unassigned)
-	{
-		FString RedReason;
-		FString BlueReason;
-		SkillSourceRows.Append(Model.QuerySkillSources(EGuLiTeam::Red, RedReason));
-		SkillSourceRows.Append(Model.QuerySkillSources(EGuLiTeam::Blue, BlueReason));
-		SourcesUnavailableReason = !RedReason.IsEmpty() ? RedReason : BlueReason;
-	}
-	else
-	{
-		SkillSourceRows = Model.QuerySkillSources(SkillFilterTeam, SourcesUnavailableReason);
-	}
-	SkillSourceRows.Sort([](const GuLiGMPanel::FSkillSourceRow& A, const GuLiGMPanel::FSkillSourceRow& B)
-	{
-		if (A.Team != B.Team)
-		{
-			return static_cast<uint8>(A.Team) < static_cast<uint8>(B.Team);
-		}
-		const int32 LabelOrder = A.Label.Compare(B.Label, ESearchCase::IgnoreCase);
-		return LabelOrder != 0 ? LabelOrder < 0 : A.SourceId.ToString().Compare(B.SourceId.ToString()) < 0;
-	});
-	RebuildSkillProfileRows();
-	RebuildSkillSourceRows();
+    SkillProfileRows=Model.QuerySkillProfiles(SkillsUnavailableReason);
+    RebuildSkillProfileRows();
 }
+
 
 void SGuLiGMPanel::RebuildRuntimeRows()
 {
@@ -848,51 +697,6 @@ void SGuLiGMPanel::RebuildSkillProfileRows()
 	];
 }
 
-void SGuLiGMPanel::RebuildSkillSourceRows()
-{
-	FilteredSkillSourceIndices.Reset();
-	for (int32 Index = 0; Index < SkillSourceRows.Num(); ++Index)
-	{
-		if (Matches(SkillSourceRows[Index].ToSearchText(), SourceFilter))
-		{
-			FilteredSkillSourceIndices.Add(Index);
-		}
-	}
-	SkillSourcePage = GuLiGMPanel::ClampPageIndex(SkillSourcePage, FilteredSkillSourceIndices.Num());
-	if (!SkillSourceRowsBox.IsValid())
-	{
-		return;
-	}
-	SkillSourceRowsBox->ClearChildren();
-	if (!SourcesUnavailableReason.IsEmpty())
-	{
-		SkillSourceRowsBox->AddSlot().AutoHeight()[SNew(STextBlock).Text(Text(SourcesUnavailableReason)).AutoWrapText(true)];
-	}
-	else if (FilteredSkillSourceIndices.IsEmpty())
-	{
-		SkillSourceRowsBox->AddSlot().AutoHeight()[SNew(STextBlock).Text(Text(TEXT("无匹配来源。")))];
-	}
-	const int32 Begin = SkillSourcePage * GuLiGMPanel::ItemsPerPage;
-	const int32 End = FMath::Min(Begin + GuLiGMPanel::ItemsPerPage, FilteredSkillSourceIndices.Num());
-	for (int32 Position = Begin; Position < End; ++Position)
-	{
-		const int32 Index = FilteredSkillSourceIndices[Position];
-		SkillSourceRowsBox->AddSlot().AutoHeight().Padding(0.0f, 0.0f, 0.0f, RowGap)
-		[
-			SNew(SButton).HAlign(HAlign_Left)
-			.OnClicked_Lambda([this, Index]() { SelectSkillSourceRow(Index); return FReply::Handled(); })
-			[SNew(STextBlock).Text(Text(SkillSourceRows[Index].ToDisplayText())).AutoWrapText(true)]
-		];
-	}
-	SkillSourceRowsBox->AddSlot().AutoHeight()
-	[
-		SNew(SHorizontalBox)
-		+ SHorizontalBox::Slot().AutoWidth()[SNew(SButton).Text(Text(TEXT("上一页"))).OnClicked(this, &SGuLiGMPanel::ChangeSkillSourcePage, -1).IsEnabled(SkillSourcePage > 0)]
-		+ SHorizontalBox::Slot().FillWidth(1.0f).HAlign(HAlign_Center).VAlign(VAlign_Center)[SNew(STextBlock).Text(this, &SGuLiGMPanel::GetSkillSourcePageText)]
-		+ SHorizontalBox::Slot().AutoWidth()[SNew(SButton).Text(Text(TEXT("下一页"))).OnClicked(this, &SGuLiGMPanel::ChangeSkillSourcePage, 1).IsEnabled(SkillSourcePage + 1 < GuLiGMPanel::GetPageCount(FilteredSkillSourceIndices.Num()))]
-	];
-}
-
 void SGuLiGMPanel::SelectRuntimeRow(const int32 Index)
 {
 	if (!RuntimeRows.IsValidIndex(Index)) return;
@@ -908,14 +712,6 @@ void SGuLiGMPanel::SelectSkillProfileRow(const int32 Index)
 	SkillFormTeam = Row.Team;
 	SkillUnitEntry->SetText(Text(FString::FromInt(Row.UnitTypeId)));
 	SkillSlotEntry->SetText(Text(Row.SlotId.ToString()));
-	CancelConfirmation();
-}
-
-void SGuLiGMPanel::SelectSkillSourceRow(const int32 Index)
-{
-	if (!SkillSourceRows.IsValidIndex(Index)) return;
-	SkillFormTeam = SkillSourceRows[Index].Team;
-	SkillLabelEntry->SetText(Text(SkillSourceRows[Index].Label));
 	CancelConfirmation();
 }
 
@@ -966,74 +762,9 @@ FReply SGuLiGMPanel::SkillGet()
 	return FReply::Handled();
 }
 
-FReply SGuLiGMPanel::SkillSet()
-{
-	GuLiGMPanel::FSkillNumericRequest Request;
-	Request.Team = SkillFormTeam;
-	Request.UnitTypeId = ReadEntry(SkillUnitEntry);
-	Request.SlotId = ReadEntry(SkillSlotEntry);
-	Request.Attribute = SkillAttribute;
-	Request.Value = ReadEntry(SkillValueEntry);
-	PublishResult(Model.SetSkillNumericOverride(Request));
-	return FReply::Handled();
-}
-
-FReply SGuLiGMPanel::SkillReset()
-{
-	PublishResult(Model.ClearSkillNumericOverride(SkillFormTeam, ReadEntry(SkillUnitEntry), ReadEntry(SkillSlotEntry)));
-	return FReply::Handled();
-}
-
-FReply SGuLiGMPanel::SkillSource()
-{
-	GuLiGMPanel::FSkillSourceRequest Request;
-	Request.Team = SkillFormTeam;
-	Request.UnitTypeId = ReadEntry(SkillUnitEntry);
-	Request.SlotId = ReadEntry(SkillSlotEntry);
-	Request.Label = ReadEntry(SkillLabelEntry);
-	Request.Attribute = SkillAttribute;
-	Request.Operation = ModifierOperation;
-	Request.Value = ReadEntry(SkillValueEntry);
-	Request.RequiredSkillId = ReadEntry(RequiredSkillEntry);
-	Request.RequiredGameplayTag = ReadEntry(RequiredTagEntry);
-	PublishResult(Model.UpsertSkillSource(Request));
-	return FReply::Handled();
-}
-
-FReply SGuLiGMPanel::SkillReplace()
-{
-	GuLiGMPanel::FSkillReplacementRequest Request;
-	Request.Team = SkillFormTeam;
-	Request.UnitTypeId = ReadEntry(SkillUnitEntry);
-	Request.SlotId = ReadEntry(SkillSlotEntry);
-	Request.Label = ReadEntry(SkillLabelEntry);
-	Request.SkillId = ReadEntry(ReplacementSkillEntry);
-	Request.Priority = ReadEntry(ReplacementPriorityEntry);
-	PublishResult(Model.UpsertSkillReplacement(Request));
-	return FReply::Handled();
-}
-
-FReply SGuLiGMPanel::SkillRemove()
-{
-	PublishResult(Model.RemoveSkillSource(SkillFormTeam, ReadEntry(SkillLabelEntry)));
-	return FReply::Handled();
-}
-
 FReply SGuLiGMPanel::InspectSkillSoldier()
 {
 	PublishResult(Model.InspectSkillSoldier(ReadEntry(SkillSoldierIdEntry)));
-	return FReply::Handled();
-}
-
-FReply SGuLiGMPanel::SpawnSoldier()
-{
-	GuLiGMPanel::FSpawnRequest Request;
-	Request.Team = SpawnTeam;
-	Request.UnitTypeId = ReadEntry(SpawnUnitEntry);
-	Request.X = ReadEntry(SpawnXEntry);
-	Request.Y = ReadEntry(SpawnYEntry);
-	Request.Z = ReadEntry(SpawnZEntry);
-	PublishResult(Model.SpawnDebugSoldier(Request));
 	return FReply::Handled();
 }
 
@@ -1173,11 +904,6 @@ FText SGuLiGMPanel::GetSkillProfilePageText() const
 	return Text(FString::Printf(TEXT("第 %d / %d 页，共 %d 条"), SkillProfilePage + 1, GuLiGMPanel::GetPageCount(FilteredSkillProfileIndices.Num()), FilteredSkillProfileIndices.Num()));
 }
 
-FText SGuLiGMPanel::GetSkillSourcePageText() const
-{
-	return Text(FString::Printf(TEXT("第 %d / %d 页，共 %d 条"), SkillSourcePage + 1, GuLiGMPanel::GetPageCount(FilteredSkillSourceIndices.Num()), FilteredSkillSourceIndices.Num()));
-}
-
 FText SGuLiGMPanel::GetSkillFilterTeamText() const
 {
 	return Text(SkillFilterTeam == EGuLiTeam::Unassigned
@@ -1188,21 +914,6 @@ FText SGuLiGMPanel::GetSkillFilterTeamText() const
 FText SGuLiGMPanel::GetSkillFormTeamText() const
 {
 	return Text(FString::Printf(TEXT("Team: %s"), GuLiGMPanel::LexToString(SkillFormTeam)));
-}
-
-FText SGuLiGMPanel::GetSpawnTeamText() const
-{
-	return Text(FString::Printf(TEXT("Team: %s"), GuLiGMPanel::LexToString(SpawnTeam)));
-}
-
-FText SGuLiGMPanel::GetSkillAttributeText() const
-{
-	return Text(FString::Printf(TEXT("Attr: %s"), GuLiGMPanel::LexToString(SkillAttribute)));
-}
-
-FText SGuLiGMPanel::GetModifierOperationText() const
-{
-	return Text(FString::Printf(TEXT("Op: %s"), GuLiGMPanel::LexToString(ModifierOperation)));
 }
 
 FText SGuLiGMPanel::GetBenchmarkPopulationText() const

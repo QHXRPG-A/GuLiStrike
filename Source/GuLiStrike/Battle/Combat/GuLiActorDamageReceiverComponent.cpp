@@ -46,7 +46,7 @@ void UGuLiActorDamageReceiverComponent::ReceiveDamage(
 	Request.Target = Health->GetTargetHandle();
 	Request.Damage = Damage;
 	Request.HitLocation = Actor->GetActorLocation();
-	Ledger->CommitDamage(Request);
+	Ledger->SubmitDamage(Request);
 }
 
 void UGuLiActorDamageReceiverComponent::HandleDeath()

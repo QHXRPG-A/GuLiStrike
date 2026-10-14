@@ -1,13 +1,18 @@
 #include "Gameplay/GroundMech/GuLiGroundMechMovementComponent.h"
 
 #include "Battle/Framework/GuLiBattlePlayerState.h"
+#include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
 #include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
-#include "Gameplay/GroundMech/GuLiGroundMechMovementNetwork.h"
 #include "Gameplay/GroundMech/GuLiGroundMechRocketComponent.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
-#include "Net/UnrealNetwork.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiHybridSessionSubsystem.h"
+#include "Gameplay/GroundMech/GuLiGroundMechAbilities.h"
+#include "AbilitySystemComponent.h"
+#include "Engine/GameInstance.h"
 
 namespace
 {
@@ -23,15 +28,14 @@ FBox2D SweepBounds(const FVector &Start, const FVector &End, float Radius)
 UGuLiGroundMechMovementComponent::UGuLiGroundMechMovementComponent(const FObjectInitializer &Initializer)
 	: Super(Initializer)
 {
-	SetIsReplicatedByDefault(true);
-	MechNetworkStorage.Reset(new FGuLiGroundMechNetworkStorage);
-	SetNetworkMoveDataContainer(MechNetworkStorage->Moves);
-	SetMoveResponseDataContainer(MechNetworkStorage->Response);
+	SetIsReplicatedByDefault(false);
+	PrimaryComponentTick.bStartWithTickEnabled=false;
 }
 UGuLiGroundMechMovementComponent::~UGuLiGroundMechMovementComponent() = default;
 
-void UGuLiGroundMechMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-													 FActorComponentTickFunction *Function)
+// The World logical clock drives local simulation; query actors never run CMC network ticks.
+void UGuLiGroundMechMovementComponent::TickComponent(float,ELevelTick,FActorComponentTickFunction*) {}
+void UGuLiGroundMechMovementComponent::RefreshCollisionContext()
 {
 	if (auto *Contacts = GetMassContactSubsystem())
 	{
@@ -44,18 +48,58 @@ void UGuLiGroundMechMovementComponent::TickComponent(float DeltaTime, ELevelTick
 			PreparedMove = {};
 			LastMoveContext = {};
 			bPreparedMove = false;
-			if (ClientPredictionData)
-			{
-				ClientPredictionData->SavedMoves.Reset();
-				ClientPredictionData->PendingMove.Reset();
-				ClientPredictionData->LastAckedMove.Reset();
-				ClientPredictionData->bUpdatePosition = false;
-			}
 		}
 		PredictionCacheGeneration = Generation;
 	}
-	Super::TickComponent(DeltaTime, TickType, Function);
+}
+void UGuLiGroundMechMovementComponent::AdvanceHybrid(float DeltaTime,FVector2D Axis,bool bSprint)
+{
+	if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || !UGuLiHybridActorComponent::HasSimulation(GetOwner()) || !HasValidData()) return;
+	RefreshCollisionContext();
+	const auto* Mech=CastChecked<AGuLiGroundMechCharacter>(CharacterOwner);
+	const bool bAirSteering=IsFalling() && Rocket() && Rocket()->IsConfigured();
+	const float Magnitude=bAirSteering || bSprint?1.f:Mech->GetWalkSpeed()/MaxWalkSpeed;
+	const FVector Intent(Axis.Y,Axis.X,0.);
+	Acceleration=ScaleInputAcceleration(ConstrainInputAcceleration(Intent.GetClampedToMaxSize(1.)*Magnitude));
+	AnalogInputModifier=ComputeAnalogInputModifier();
+	const bool bPreviousPhysicsWithoutController=bRunPhysicsWithNoController;
+    bRunPhysicsWithNoController=true;
+	PerformMovement(DeltaTime);
+    bRunPhysicsWithNoController=bPreviousPhysicsWithoutController;
 	UpdateGroundMechObstacle(DeltaTime);
+}
+void UGuLiGroundMechMovementComponent::AdvanceDormantRecovery(float DeltaTime)
+{
+    auto* Mech=Cast<AGuLiGroundMechCharacter>(CharacterOwner);
+    auto* Ability=Rocket();
+    if (!Mech || !Mech->HasAuthority() || !Mech->IsCarrierDormant() || !Mech->GetCombatHealthComponent()->IsAlive()
+        || !Ability || !Ability->IsConfigured()
+        || !FMath::IsFinite(DeltaTime) || DeltaTime<=0) return;
+    if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+    {
+        const auto* Binding=UGuLiHybridActorComponent::Find(Mech);
+        const auto* Session=GetWorld()->GetGameInstance()->GetSubsystem<UGuLiHybridSessionSubsystem>();
+        const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+        if (!Binding || !Session || !Hybrid || Hybrid->IsBattlePaused() || !Binding->GetState().bDormant
+            || Binding->GetState().LifeState!=1 || Binding->GetState().StateCustodian!=Session->GetLocalPlayerId()) return;
+    }
+    ClearRocketInput(); StopMovementImmediately();
+    RocketState.Fuel=Ability->GetFuel();
+    const auto& Config=Ability->GetConfiguration();
+    if (!IsMovingOnGround() && !IsMassSupportMode()) { RocketState.RecoveryElapsed=0; return; }
+    const float RecoveryTime=FMath::Max(0.f,RocketState.RecoveryElapsed+DeltaTime-Config.FuelRecoveryDelay);
+    RocketState.RecoveryElapsed=FMath::Min(Config.FuelRecoveryDelay,RocketState.RecoveryElapsed+DeltaTime);
+    const float NewFuel=FMath::Min(Config.MaxFuel,RocketState.Fuel+RecoveryTime*Config.FuelRecoveryPerSecond);
+    auto* ASC=Mech->GetAbilitySystemComponent();
+    if (ASC && NewFuel>RocketState.Fuel+1.e-6f)
+    {
+        auto Spec=ASC->MakeOutgoingSpec(UGuLiGE_MechFuelDelta::StaticClass(),1.f,ASC->MakeEffectContext());
+        if (Spec.IsValid())
+        {
+            Spec.Data->SetSetByCallerMagnitude(TEXT("FuelDelta"),NewFuel-RocketState.Fuel);
+            ASC->ApplyGameplayEffectSpecToSelf(*Spec.Data); RocketState.Fuel=NewFuel;
+        }
+    }
 }
 void UGuLiGroundMechMovementComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
@@ -65,18 +109,8 @@ void UGuLiGroundMechMovementComponent::EndPlay(const EEndPlayReason::Type Reason
 	LastMoveContext = {};
 	Super::EndPlay(Reason);
 }
-void UGuLiGroundMechMovementComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME_CONDITION(UGuLiGroundMechMovementComponent, MassSupportSoldierId, COND_OwnerOnly);
-}
-FNetworkPredictionData_Client *UGuLiGroundMechMovementComponent::GetPredictionData_Client() const
-{
-	if (!ClientPredictionData)
-		const_cast<UGuLiGroundMechMovementComponent *>(this)->ClientPredictionData =
-			new FGuLiGroundMechPredictionData(*this);
-	return ClientPredictionData;
-}
+
+
 bool UGuLiGroundMechMovementComponent::IsMassSupportMode() const
 {
 	return MovementMode == MOVE_Custom && CustomMovementMode == GuLiGroundMechMovement::MassSupportCustomMode;
@@ -157,7 +191,8 @@ void UGuLiGroundMechMovementComponent::PerformMovement(float DeltaTime)
 	BeginMoveContext(DeltaTime);
 	auto* Ability = Rocket();
 	const bool bRocketConfigured = Ability && Ability->IsConfigured();
-	if (bRocketConfigured && CharacterOwner->IsLocallyControlled() && !bReplayingMove)
+	if (bRocketConfigured && !bReplayingMove && (CharacterOwner->IsLocallyControlled()
+        || (UGuLiNetworkSettings::IsHybrid(GetWorld()) && UGuLiHybridActorComponent::HasSimulation(CharacterOwner))))
 	{
 		bRocketHeld = Ability->IsInputHeld();
 		bRocketRequested = Ability->IsAbilityActive();
@@ -215,12 +250,7 @@ UGuLiGroundMechRocketComponent* UGuLiGroundMechMovementComponent::Rocket() const
 {
 	return GetOwner() ? GetOwner()->FindComponentByClass<UGuLiGroundMechRocketComponent>() : nullptr;
 }
-void UGuLiGroundMechMovementComponent::UpdateFromCompressedFlags(uint8 Flags)
-{
-	Super::UpdateFromCompressedFlags(Flags);
-	bRocketHeld = (Flags & FSavedMove_Character::FLAG_Custom_0) != 0;
-	bRocketRequested = (Flags & FSavedMove_Character::FLAG_Custom_1) != 0;
-}
+
 void UGuLiGroundMechMovementComponent::StartNewPhysics(float DeltaTime, int32 Iterations)
 {
 	const bool bOwnContext = !bMoveContextActive;
@@ -600,8 +630,6 @@ void UGuLiGroundMechMovementComponent::ClearMassSupport(bool bEnterFalling)
 void UGuLiGroundMechMovementComponent::OnMovementModeChanged(EMovementMode Previous, uint8 PreviousCustom)
 {
 	Super::OnMovementModeChanged(Previous, PreviousCustom);
-	if (bApplyingCorrection)
-		return;
 	if ((Previous == MOVE_Custom && PreviousCustom == GuLiGroundMechMovement::MassSupportCustomMode &&
 		 !IsMassSupportMode()) ||
 		MovementMode == MOVE_Flying)
@@ -626,15 +654,12 @@ void UGuLiGroundMechMovementComponent::ApplyExternalDisplacement(const FTransfor
 }
 void UGuLiGroundMechMovementComponent::OnTeleported()
 {
-	if (!bApplyingCorrection)
-	{
-		if (auto* Ability = Rocket()) Ability->Interrupt();
-		ClearMassSupport(true);
-		PreparedMove = {};
-		bPreparedMove = false;
-	}
-	ObstacleUpdateAccumulator = ObstacleUpdateIntervalSeconds;
-	Super::OnTeleported();
+    if (auto* Ability = Rocket()) Ability->Interrupt();
+    ClearMassSupport(true);
+    PreparedMove = {};
+    bPreparedMove = false;
+    ObstacleUpdateAccumulator = ObstacleUpdateIntervalSeconds;
+    Super::OnTeleported();
 }
 void UGuLiGroundMechMovementComponent::MarkPresentationContacts()
 {
@@ -660,61 +685,10 @@ void UGuLiGroundMechMovementComponent::MarkPresentationContacts()
 		Contacts->MarkLocalContact(Body);
 	}
 }
-void UGuLiGroundMechMovementComponent::ServerMoveHandleClientError(float Stamp, float Delta, const FVector &Accel,
-																   const FVector &Relative, UPrimitiveComponent *Base,
-																   FName Bone, uint8 Mode)
-{
-	Super::ServerMoveHandleClientError(Stamp, Delta, Accel, Relative, Base, Bone, Mode);
-	if (ServerPredictionData && ServerPredictionData->PendingAdjustment.TimeStamp == Stamp)
-	{
-		PendingResponseTimeStamp = Stamp;
-		PendingResponseSupport = SupportState;
-		PendingResponseRocket = RocketState;
-	}
-}
-bool UGuLiGroundMechMovementComponent::ServerCheckClientError(float Stamp, float Delta, const FVector &Accel,
-															  const FVector &WorldLocation, const FVector &Relative,
-															  UPrimitiveComponent *Base, FName Bone, uint8 Mode)
-{
-	const auto *Data = static_cast<const FGuLiGroundMechMoveData *>(GetCurrentNetworkMoveData());
-	if (Data && (FMath::Abs(Data->RocketEnd.Fuel - RocketState.Fuel) > .05f ||
-		FMath::Abs(Data->RocketEnd.RecoveryElapsed - RocketState.RecoveryElapsed) > .05f)) return true;
-	if (Data && (Data->SupportId != SupportState.SoldierId.Value || Data->SupportEpoch != SupportState.Epoch ||
-				 Data->SupportDisplacement != SupportState.DisplacementRevision))
-		return true;
-	return Super::ServerCheckClientError(Stamp, Delta, Accel, WorldLocation, Relative, Base, Bone, Mode);
-}
-void UGuLiGroundMechMovementComponent::BeforeValidatedMoveResponse(const FCharacterMoveResponseDataContainer &Response)
-{
-	bApplyingCorrection = Response.IsCorrection() && IsActive() && ClientPredictionData &&
-						  ClientPredictionData->GetSavedMoveIndex(Response.ClientAdjustment.TimeStamp) != INDEX_NONE;
-}
-void UGuLiGroundMechMovementComponent::AfterValidatedMoveResponse(const FCharacterMoveResponseDataContainer &Response)
-{
-	if (bApplyingCorrection)
-	{
-		RocketState = static_cast<const FGuLiGroundMechMoveResponse &>(Response).Rocket;
-		if (auto* Ability = Rocket()) Ability->ConfirmMovementBaseline();
-		SupportState = static_cast<const FGuLiGroundMechMoveResponse &>(Response).Support;
-		SupportState.bHasSourceReference = false;
-		const auto &Acked = static_cast<const FGuLiGroundMechSavedMove &>(*ClientPredictionData->LastAckedMove);
-		FGuLiGroundMassBody Source;
-		if (Acked.Context.Snapshot && Acked.Context.Snapshot->Epoch == SupportState.Epoch &&
-			Acked.Context.Snapshot->Find(SupportState.SoldierId,
-										 Acked.Context.StartSimulationSeconds + Acked.Context.Duration, Source) &&
-			Source.DisplacementRevision == SupportState.DisplacementRevision)
-		{
-			SupportState.SourceLocation = Source.Location;
-			SupportState.SourceTopZ = Source.TopZ;
-			SupportState.bHasSourceReference = true;
-		}
-		if (!IsMassSupportMode())
-			ResetMassSupportState();
-	}
-	bApplyingCorrection = false;
-	if (ClientPredictionData && ClientPredictionData->LastAckedMove)
-		static_cast<FGuLiGroundMechSavedMove &>(*ClientPredictionData->LastAckedMove).Context = {};
-}
+
+
+
+
 #if WITH_DEV_AUTOMATION_TESTS
 void UGuLiGroundMechMovementComponent::TestOnly_Replay(const FGuLiGroundMassMoveContext &Context, float Duration)
 {

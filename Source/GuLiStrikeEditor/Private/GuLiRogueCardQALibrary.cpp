@@ -108,36 +108,6 @@ FString UGuLiRogueCardQALibrary::FrameTimings(APlayerController* Controller)
 		Local->ViewportClient->IsStatEnabled(TEXT("Unit"))?TEXT("true"):TEXT("false"));
 }
 
-FString UGuLiRogueCardQALibrary::BuildFixture(APlayerController* PC,int32 Count,FVector Center,float Spacing,bool bCompactLayout)
-{
-	if (!PC || !PC->HasAuthority() || !PC->GetWorld()->IsPlayInEditor() || Count<1 || Count>1000
-		|| Center.ContainsNaN() || !FMath::IsFinite(Spacing) || Spacing<200.f) return TEXT("{}");
-	auto* A=PC->GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
-	const auto* Player=PC->GetPlayerState<AGuLiBattlePlayerState>();
-	auto* Cap=IConsoleManager::Get().FindConsoleVariable(TEXT("guli.stronghold.TeamUnitCap"));
-	if (!A || !Player || !Cap) return TEXT("{}");
-	const int32 PreviousCap=Cap->GetInt();
-	// Tagged override can be removed without replacing the constructor/config value or its priority.
-	const FName OverrideTag(TEXT("RogueUpgradeFixture"));
-	Cap->Set(FMath::Max(PreviousCap,10000),ECVF_SetByCode,OverrideTag);
-	FString Result; auto W=TJsonWriterFactory<>::Create(&Result); W->WriteObjectStart(); W->WriteArrayStart(TEXT("units"));
-	int32 Created=0; const int32 Side=FMath::CeilToInt(FMath::Sqrt(float(Count)))+(bCompactLayout?0:10);
-	for (int32 I=0;I<Side*Side && Created<Count;++I)
-	{
-		FGuLiSoldierId Id;
-		const FVector P=Center+FVector((I%Side-(Side-1)*.5f)*Spacing,(I/Side-(Side-1)*.5f)*Spacing,0);
-		if (!A->SpawnDebugSoldier(Player->GetTeam(),2,P,Id)) continue;
-		FGuLiSoldierCombatDebug D; if (!A->TryGetSoldierCombatDebug(Id,D)) continue;
-		++Created; W->WriteObjectStart(); W->WriteValue(TEXT("id"),Id.Value);
-		W->WriteValue(TEXT("x"),D.Location.X); W->WriteValue(TEXT("y"),D.Location.Y); W->WriteValue(TEXT("z"),D.Location.Z);
-		W->WriteValue(TEXT("attack_rate"),D.AttackRate); W->WriteValue(TEXT("move_speed"),A->GetUnitMovementSpeed(Player->GetTeam(),2));
-		W->WriteObjectEnd();
-	}
-	Cap->Unset(ECVF_SetByCode,OverrideTag);
-	W->WriteArrayEnd(); W->WriteValue(TEXT("created"),Created); W->WriteValue(TEXT("restored_unit_cap"),Cap->GetInt());
-	W->WriteObjectEnd(); W->Close(); return Result;
-}
-
 FString UGuLiRogueCardQALibrary::UpgradeSlots(APlayerController* PC)
 {
 	FString Result; auto W=TJsonWriterFactory<>::Create(&Result); W->WriteObjectStart();

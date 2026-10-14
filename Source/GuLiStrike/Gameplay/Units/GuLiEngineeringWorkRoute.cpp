@@ -3,6 +3,7 @@
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Engine/World.h"
 #include "AIController.h"
+#include "Network/GuLiHybridActorComponent.h"
 
 namespace
 {
@@ -85,7 +86,7 @@ double UGuLiEngineeringTravelComponent::PlanWorkRoute(const FVector& Target, TAr
 double UGuLiEngineeringTravelComponent::EstimateWorkDistance(const FVector& Target) const { return PlanWorkRoute(Target,nullptr); }
 bool UGuLiEngineeringTravelComponent::BeginWorkMove(const FVector& Target, float Radius)
 {
-	if (!GetOwner()->HasAuthority() || Target.ContainsNaN() || IsRouting()) return false;
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || Target.ContainsNaN() || IsRouting()) return false;
 	CancelGroundMove(); Controller().StopMovement();
 	bWorkJourney=true; WorkGoal=Target; WorkAcceptance=Radius;
 	PlanWorkRoute(Target,&WorkLegs); AdvanceWorkRoute();

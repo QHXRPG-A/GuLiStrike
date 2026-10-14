@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Network/GuLiHybridObjectKey.h"
 #include "Commander/GuLiCommanderSimulationTiming.h"
 #include "Battle/Network/GuLiBattleTypes.h"
 #include "Engine/NetSerialization.h"
-#include "Net/Serialization/FastArraySerializer.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
 #include "Gameplay/Units/GuLiEngineeringCommandTypes.h"
 #include "GuLiCommanderTypes.generated.h"
@@ -211,6 +211,8 @@ struct FGuLiPanelSelectionRequest
 	UPROPERTY() EGuLiPanelSelectionAction Action = EGuLiPanelSelectionAction::Single;
 	UPROPERTY() FGuLiSoldierId SoldierId;
 	UPROPERTY() FGuLiControllableActorId ActorId;
+	UPROPERTY() FGuLiHybridObjectKey Object;
+	UPROPERTY() TArray<FGuLiHybridObjectKey> ObjectGroup;
 	UPROPERTY() uint32 SelectionRevision = 0;
 };
 
@@ -239,6 +241,7 @@ struct GULISTRIKE_API FGuLiSelectionRequest
 	/** Mutually exclusive with SeedSoldierId for point/same-type Actor selection. */
 	UPROPERTY(EditAnywhere, Category = "Commander|Network")
 	FGuLiControllableActorId SeedActorId;
+    UPROPERTY(EditAnywhere, Category="Commander|Selection") FGuLiHybridObjectKey SeedObject;
 
 	UPROPERTY(EditAnywhere, Category = "Commander|Network")
 	// Overview framing can exceed NetQuantize's 20-bit centimeter envelope (especially ultrawide).
@@ -346,6 +349,10 @@ struct GULISTRIKE_API FGuLiCommanderSelectionState
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	TArray<FGuLiControllableActorId> ActorIds;
 
+    /** Data-defined selectable actors that do not use a legacy soldier/vehicle ordinal. */
+    UPROPERTY(VisibleAnywhere, Category="Commander|Selection")
+    TArray<FGuLiHybridObjectKey> Objects;
+
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 SelectionRevision = 0u;
 
@@ -440,7 +447,7 @@ struct GULISTRIKE_API FGuLiCommandAck
 
 /** FastArray 承载的单兵离散状态：身份、阵营、生命和命令编号；不包含连续位置。 */
 USTRUCT(BlueprintType)
-struct GULISTRIKE_API FGuLiSoldierStateItem : public FFastArraySerializerItem
+struct GULISTRIKE_API FGuLiSoldierStateItem
 {
 	GENERATED_BODY()
 
@@ -483,52 +490,27 @@ struct GULISTRIKE_API FGuLiSoldierStateItem : public FFastArraySerializerItem
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierRemovalSignature, TConstArrayView<FGuLiSoldierId>);
 
-/** FastArray 增量容器；由所属 Replicator 决定复制范围，并在增改/删除后标脏。 */
+/** Local roster storage. The reflected type name is retained for existing assets. */
 USTRUCT()
-struct GULISTRIKE_API FGuLiSoldierStateFastArray : public FFastArraySerializer
+struct GULISTRIKE_API FGuLiSoldierStateFastArray
 {
 	GENERATED_BODY()
 
 	UPROPERTY()
 	TArray<FGuLiSoldierStateItem> Items;
 
-	// Native notification carries the identities before FastArray erases them.
 	FGuLiSoldierRemovalSignature OnRemoved;
-	// Local-only, value snapshots: FastArray indices cease to be valid after callbacks.
-	DECLARE_MULTICAST_DELEGATE_TwoParams(FReceivedDelta, const TArray<FGuLiSoldierStateItem>&, const TArray<FGuLiSoldierId>&);
-	FReceivedDelta OnReceivedDelta;
-	void PreReplicatedRemove(const TArrayView<int32> RemovedIndices, int32 FinalSize);
-	void PostReplicatedAdd(const TArrayView<int32>& AddedIndices, int32 FinalSize);
-	void PostReplicatedChange(const TArrayView<int32>& ChangedIndices, int32 FinalSize);
-	void PostReplicatedReceive(const FFastArraySerializer::FPostReplicatedReceiveParameters& Parameters);
-
-	// UE 增量序列化入口，由 WithNetDeltaSerializer 接入；脏标记由 Replicator 维护。
-	bool NetDeltaSerialize(FNetDeltaSerializeInfo& DeltaParams)
-	{
-		return FFastArraySerializer::FastArrayDeltaSerialize<
-			FGuLiSoldierStateItem,
-			FGuLiSoldierStateFastArray>(Items, DeltaParams, *this);
-	}
 
 	void Sanitize();
 	const FGuLiSoldierStateItem* Find(FGuLiSoldierId SoldierId) const;
 	FGuLiSoldierStateItem* FindMutable(FGuLiSoldierId SoldierId);
 
-private:
-	TArray<FGuLiSoldierStateItem> PendingReceivedStates;
-	TArray<FGuLiSoldierId> PendingRemovedIds;
 };
 
-template <>
-struct TStructOpsTypeTraits<FGuLiSoldierStateFastArray>
-	: public TStructOpsTypeTraitsBase2<FGuLiSoldierStateFastArray>
-{
-	enum { WithNetDeltaSerializer = true };
-};
 
-/** OwnerOnly authoritative move endpoint for one currently executing soldier. */
+/** Confirmed move endpoint for one currently executing soldier. */
 USTRUCT()
-struct GULISTRIKE_API FGuLiMoveEndpointItem : public FFastArraySerializerItem
+struct GULISTRIKE_API FGuLiMoveEndpointItem
 {
 	GENERATED_BODY()
 
@@ -554,21 +536,15 @@ struct GULISTRIKE_API FGuLiMoveEndpointItem : public FFastArraySerializerItem
 	void Sanitize();
 };
 
-/** Incremental OwnerOnly endpoint set; the owning component controls replication scope and authority writes. */
+/** Local command endpoint storage; P2P publication uses explicit protocol encoding. */
 USTRUCT()
-struct GULISTRIKE_API FGuLiMoveEndpointFastArray : public FFastArraySerializer
+struct GULISTRIKE_API FGuLiMoveEndpointFastArray
 {
 	GENERATED_BODY()
 
 	UPROPERTY()
 	TArray<FGuLiMoveEndpointItem> Items;
 
-	bool NetDeltaSerialize(FNetDeltaSerializeInfo& DeltaParams)
-	{
-		return FFastArraySerializer::FastArrayDeltaSerialize<
-			FGuLiMoveEndpointItem,
-			FGuLiMoveEndpointFastArray>(Items, DeltaParams, *this);
-	}
 
 	void Sanitize();
 	const FGuLiMoveEndpointItem* Find(FGuLiSoldierId SoldierId) const;
@@ -583,12 +559,6 @@ struct GULISTRIKE_API FGuLiMoveEndpointFastArray : public FFastArraySerializer
 	bool ResetEndpoints();
 };
 
-template <>
-struct TStructOpsTypeTraits<FGuLiMoveEndpointFastArray>
-	: public TStructOpsTypeTraitsBase2<FGuLiMoveEndpointFastArray>
-{
-	enum { WithNetDeltaSerializer = true };
-};
 
 /** Native quantized sample; only FGuLiEncodedPoseBlock is serialized on the wire. */
 struct GULISTRIKE_API FGuLiQuantizedSoldierPose

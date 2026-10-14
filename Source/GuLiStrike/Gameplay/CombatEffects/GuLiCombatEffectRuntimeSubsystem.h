@@ -32,6 +32,8 @@ struct FGuLiRuntimeCombatEffect
 	int32 VariantCount = 0;
 	int32 DeliveredPulses = 0;
 	float LastCorrection = 0.0f;
+    bool bHoming = false;
+    float HomingTurnRate = 0;
 };
 
 struct FGuLiWingmanBurstCooldown
@@ -52,6 +54,7 @@ class GULISTRIKE_API UGuLiCombatEffectRuntimeSubsystem : public UTickableWorldSu
 {
 	GENERATED_BODY()
 public:
+	TSharedPtr<class IGuLiHybridSimulationAdapter> CreateHybridAdapter(const struct FGuLiHybridObjectState& Object);
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
@@ -85,6 +88,11 @@ public:
 	FGuid LaunchPointProjectile(const FGuLiCombatAttackRequest& Request);
 	/** Prepares every missile and source lease before publishing any part of a salvo. */
 	bool LaunchPointProjectiles(TConstArrayView<FGuLiCombatAttackRequest> Requests, TArray<FGuid>& OutIds);
+    bool CanLaunchHomingSalvo(TConstArrayView<struct FGuLiLogicalMissileLaunchRequest> Requests) const;
+    bool LaunchHomingSalvo(TConstArrayView<struct FGuLiLogicalMissileLaunchRequest> Requests,int32& OutCount);
+    bool ContainsHomingMissile(FGuid Id) const;
+    int32 GetActiveHomingMissileCount() const;
+    bool IsHybridWingmanBurstBusy(const FGuLiWingmanHandle& Emitter,FName Slot) const;
 	void BuildActiveSnapshot(TArray<FGuLiCombatEffectState>& OutStates, bool bIncludeGroundProjectiles = true) const;
 	void BuildGroundProjectileSnapshot(TArray<FGuLiCombatEffectState>& OutStates) const;
 	uint32 GetEffectEpoch() const { return Epoch; }
@@ -94,9 +102,23 @@ public:
 	FGuLiCombatEffectEpochEvent OnEpoch;
 
 private:
+    friend struct FGuLiHybridEffectRuntime;
+    friend class FGuLiHybridEffectSystem;
+    void InitializeHybrid(FSubsystemCollectionBase& Collection);
+    void ServiceHybrid();
+    void AdvanceHybrid(uint64 Tick);
+    FGuid AdmitHybridEffect(FGuLiRuntimeCombatEffect Instance);
+    bool CanAdmitHybridEffects(TConstArrayView<FGuLiRuntimeCombatEffect> Instances) const;
+    void StepHybridHoming(const FGuid& Id,float Delta,float Now);
+    FGuid TransitionHybridEffect(FGuid Previous,FGuLiRuntimeCombatEffect Instance);
+    bool PublishHybridEffect(const FGuid& Id,bool Reliable);
+    bool FinishHybridEffect(const FGuLiRuntimeCombatEffect& Instance);
+    bool SubmitHybridPulse(const FGuid& Effect,int32 Pulse,const FGuLiCombatTargetSnapshot& Target);
+    TSharedPtr<struct FGuLiHybridEffectRuntime> HybridEffects;
 	friend struct FGuLiCombatEffectRuntimeTestAccess;
 	friend struct FGuLiWingmanAttackCombatTestAccess;
 	bool SynchronizeEpoch();
+	float BattleSeconds() const;
 	bool PrepareContext(const FGuLiCombatEffectContext& Input, FGuLiCombatEffectContext& Output);
 	bool PreparePointProjectile(const FGuLiCombatAttackRequest& Request, FGuLiRuntimeCombatEffect& Instance);
 	bool ResolveFieldConfig(UGuLiSpellFieldDefinition* Definition, const FGuLiCombatEffectContext& Input,
@@ -129,10 +151,9 @@ private:
 	TArray<FGuLiCombatTargetSnapshot> TargetSnapshots;
 	TMap<FIntPoint, TArray<int32>> SpatialGrid;
 	TMap<FGuLiWingmanHandle, TMap<FName, FGuLiWingmanBurstCooldown>> WingmanBurstCooldowns;
-	TArray<FGuid> StepIds;
 	FGuLiCombatEffectCounters Counters;
 	uint32 Epoch = 0;
-	double Accumulator = 0.0;
+	uint64 LastHybridTick = 0;
 	float MaximumTargetRadius = 0.0f;
 	bool bIndexReady = false;
 	bool bInsideStep = false;

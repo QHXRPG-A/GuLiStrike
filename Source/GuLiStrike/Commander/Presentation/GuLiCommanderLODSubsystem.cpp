@@ -1,4 +1,5 @@
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "HAL/IConsoleManager.h"
 #include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
 
@@ -55,7 +56,7 @@ bool UGuLiCommanderLODSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	const auto* World = Cast<UWorld>(Outer);
 	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld()
-		&& World->GetNetMode() != NM_DedicatedServer;
+		&& UGuLiNetworkSettings::CanPresent(World);
 }
 
 void UGuLiCommanderLODSubsystem::Initialize(FSubsystemCollectionBase& Collection)

@@ -8,6 +8,7 @@
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
+#include "Gameplay/Capabilities/GuLiLogicalCooldownComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
 #include "Misc/AutomationTest.h"
 
@@ -53,6 +54,8 @@ namespace GuLiShipAbilityTests
 			{
 				return false;
 			}
+            auto* Clock=NewObject<UGuLiLogicalCooldownComponent>(Ship,TEXT("LogicalCooldowns"));
+            Ship->AddInstanceComponent(Clock);Clock->RegisterComponent();
 			Hangar = NewObject<UGuLiShipHangarCapabilityComponent>(Ship, TEXT("HangarCapability"));
 			if (!Test.TestNotNull(TEXT("Pawn-owned Ship Hangar exists"), Hangar))
 			{

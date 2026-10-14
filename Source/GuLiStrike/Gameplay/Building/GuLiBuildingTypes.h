@@ -89,6 +89,8 @@ struct GULISTRIKE_API FGuLiBuildingDefinition
 	/** Resolved visual cache; author resources in Models, not in the building row. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Models") int32 ModelId = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Models") TSubclassOf<AActor> PresentationClass;
+	/** Optional gameplay implementation override resolved from the catalog, separate from visual models. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building|Capabilities") TSoftClassPtr<AActor> GameplayClass;
 
 	/** Half extent of the baked Scale-1 visual bounds in centimeters. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building", meta = (ClampMin = "1.0"))
@@ -99,6 +101,7 @@ struct GULISTRIKE_API FGuLiBuildingDefinition
 	FVector VisualOffset = FVector::ZeroVector;
 
 	bool IsUsable() const;
+	bool HasProductionCapability() const {return ProductionUnitId>0 && ProductionCount>0 && ProductionSeconds>0 && FMath::IsFinite(ProductionSeconds);}
 };
 
 /** Client intent only. The server canonicalizes ground height and validates every gameplay rule. */
@@ -112,6 +115,10 @@ struct GULISTRIKE_API FGuLiBuildingPlacementRequest
 
 	UPROPERTY()
 	EGuLiBuildingType Type = EGuLiBuildingType::MissileTurret;
+
+	/** Canonical content identity. Zero is accepted only by the legacy enum entry. */
+	UPROPERTY()
+	int32 DefinitionId = 0;
 
 	UPROPERTY()
 	FVector_NetQuantize10 DesiredGroundLocation = FVector::ZeroVector;

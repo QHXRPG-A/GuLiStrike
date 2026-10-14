@@ -12,7 +12,6 @@
 #include "EngineUtils.h"
 #include "GameFramework/GameStateBase.h"
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
-#include "Gameplay/Skills/GuLiSkillGMUtilities.h"
 #include "Gameplay/Ship/GuLiStrikeShip.h"
 #include "Gameplay/Tuning/GuLiRuntimeTuningSubsystem.h"
 
@@ -63,55 +62,6 @@ namespace GuLiGMPanel::Private
 	bool IsPlayableTeam(const EGuLiTeam Team)
 	{
 		return Team == EGuLiTeam::Red || Team == EGuLiTeam::Blue;
-	}
-
-	AGuLiBattlePlayerState* FindCommander(UWorld* World, const EGuLiTeam Team)
-	{
-		if (!World || !World->IsGameWorld() || World->GetNetMode() == NM_Client)
-		{
-			return nullptr;
-		}
-		if (const AGameStateBase* GameState = World->GetGameState())
-		{
-			for (APlayerState* PlayerState : GameState->PlayerArray)
-			{
-				AGuLiBattlePlayerState* Candidate = Cast<AGuLiBattlePlayerState>(PlayerState);
-				if (Candidate && Candidate->IsCommander() && Candidate->GetTeam() == Team)
-				{
-					return Candidate;
-				}
-			}
-		}
-		return nullptr;
-	}
-
-	FActionResult ExecuteArmyCommand(
-		const FModel& Model,
-		const EGuLiTeam Team,
-		const FGuLiArmySkillCommand& Command,
-		const FString& Operation)
-	{
-		const FAccessPolicy Access = Model.GetAccessPolicy();
-		if (!Access.bCanMutateAuthorityState)
-		{
-			return FActionResult::Failure(Operation + TEXT("被拒绝"), Access.AuthorityUnavailableReason);
-		}
-		AGuLiBattlePlayerState* Commander = FindCommander(Model.GetWorld(), Team);
-		if (!Commander)
-		{
-			return FActionResult::Failure(
-				Operation + TEXT("被拒绝"),
-				FString::Printf(TEXT("队伍 %s 没有已就绪指挥官；技能 GM 必须经过真实 ServerOnly GAS 能力。"), LexToString(Team)));
-		}
-		FString Error;
-		if (!Commander->ExecuteArmySkillCommand(Command, Error))
-		{
-			return FActionResult::Failure(Operation + TEXT("被拒绝"), Error);
-		}
-		return FActionResult::Success(
-			Operation + TEXT("已接受"),
-			TEXT("accepted changes publish on the next authority step"),
-			true);
 	}
 
 	const TCHAR* NavigationStateToString(const EGuLiSoldierNavigationState State)
@@ -256,30 +206,13 @@ FString GuLiGMPanel::FSkillProfileRow::ToDisplayText() const
 		LexToString(Team),
 		UnitTypeId,
 		*SlotId.ToString(),
-		bPendingChanges ? TEXT("pending") : TEXT("committed"),
+		TEXT("committed"),
 		*SkillId.ToString(),
 		*ExecutorId.ToString(),
 		Damage,
 		AttackRatePerSecond,
 		RangeCentimeters,
 		Revision);
-}
-
-FString GuLiGMPanel::FSkillSourceRow::ToSearchText() const
-{
-	return FString::Printf(TEXT("%s %s %s"), LexToString(Team), *Label, *SourceId.ToString());
-}
-
-FString GuLiGMPanel::FSkillSourceRow::ToDisplayText() const
-{
-	return FString::Printf(
-		TEXT("%s  %s\n%s  modifier=%d replacement=%d unlock=%d"),
-		LexToString(Team),
-		*Label,
-		*SourceId.ToString(EGuidFormats::DigitsWithHyphensLower),
-		ModifierCount,
-		ReplacementCount,
-		UnlockCount);
 }
 
 int32 GuLiGMPanel::GetPageCount(const int32 ItemCount)
@@ -325,7 +258,6 @@ GuLiGMPanel::FAccessPolicy GuLiGMPanel::ResolveAccessPolicy(
 	const bool bAuthority = NetMode == NM_Standalone || NetMode == NM_ListenServer || NetMode == NM_DedicatedServer;
 	Policy.bCanReadRuntimeRegistry = bAuthority;
 	Policy.bCanReadSkillProfiles = true;
-	Policy.bCanReadSkillSources = bAuthority;
 	Policy.bCanMutateAuthorityState = bAuthority;
 	Policy.bCanReadAuthorityDiagnostics = bAuthority;
 	Policy.bCanRunLocalBenchmark = NetMode != NM_DedicatedServer;
@@ -370,21 +302,6 @@ const TCHAR* GuLiGMPanel::LexToString(const EGuLiTeam Team)
 	}
 }
 
-const TCHAR* GuLiGMPanel::LexToString(const ESkillAttribute Attribute)
-{
-	switch (Attribute)
-	{
-	case ESkillAttribute::Damage: return TEXT("damage");
-	case ESkillAttribute::AttackRate: return TEXT("rate");
-	case ESkillAttribute::Range: return TEXT("range");
-	default: return TEXT("unknown");
-	}
-}
-
-const TCHAR* GuLiGMPanel::LexToString(const EModifierOperation Operation)
-{
-	return Operation == EModifierOperation::Percent ? TEXT("percent") : TEXT("flat");
-}
 
 GuLiGMPanel::FModel::FModel(AGuLiBattlePlayerController* InController)
 	: Controller(InController)
@@ -586,57 +503,12 @@ TArray<GuLiGMPanel::FSkillProfileRow> GuLiGMPanel::FModel::QuerySkillProfiles(
 		Row.AttackRatePerSecond = Profile.AttackRatePerSecond;
 		Row.RangeCentimeters = Profile.RangeCentimeters;
 		Row.Revision = Profile.Revision;
-		Row.bPendingChanges = Skills->HasPendingChanges();
 	}
 	Rows.Sort([](const FSkillProfileRow& A, const FSkillProfileRow& B)
 	{
 		if (A.Team != B.Team) return static_cast<uint8>(A.Team) < static_cast<uint8>(B.Team);
 		if (A.UnitTypeId != B.UnitTypeId) return A.UnitTypeId < B.UnitTypeId;
 		return A.SlotId.LexicalLess(B.SlotId);
-	});
-	return Rows;
-}
-
-TArray<GuLiGMPanel::FSkillSourceRow> GuLiGMPanel::FModel::QuerySkillSources(
-	const EGuLiTeam Team,
-	FString& OutUnavailableReason) const
-{
-	OutUnavailableReason.Reset();
-	TArray<FSkillSourceRow> Rows;
-	const FAccessPolicy Access = GetAccessPolicy();
-	if (!Access.bCanReadSkillSources)
-	{
-		OutUnavailableReason = Access.AuthorityUnavailableReason;
-		return Rows;
-	}
-	if (!Private::IsPlayableTeam(Team))
-	{
-		OutUnavailableReason = TEXT("Team 必须是 Red 或 Blue。");
-		return Rows;
-	}
-	const UWorld* World = GetWorld();
-	const UGuLiArmySkillSubsystem* Skills = World ? World->GetSubsystem<UGuLiArmySkillSubsystem>() : nullptr;
-	if (!Skills)
-	{
-		OutUnavailableReason = TEXT("ArmySkill Subsystem 尚未就绪。");
-		return Rows;
-	}
-	for (const FGuLiSkillSource& Source : Skills->GetSources(Team))
-	{
-		FSkillSourceRow& Row = Rows.AddDefaulted_GetRef();
-		Row.Team = Team;
-		Row.SourceId = Source.SourceInstanceId;
-		Row.Label = Source.DebugLabel;
-		Row.ModifierCount = Source.Modifiers.Num();
-		Row.ReplacementCount = Source.Replacements.Num();
-		Row.UnlockCount = Source.Unlocks.Num();
-	}
-	Rows.Sort([](const FSkillSourceRow& A, const FSkillSourceRow& B)
-	{
-		const int32 LabelOrder = A.Label.Compare(B.Label, ESearchCase::IgnoreCase);
-		return LabelOrder != 0
-			? LabelOrder < 0
-			: A.SourceId.ToString(EGuidFormats::Digits).Compare(B.SourceId.ToString(EGuidFormats::Digits)) < 0;
 	});
 	return Rows;
 }
@@ -660,182 +532,8 @@ GuLiGMPanel::FActionResult GuLiGMPanel::FModel::ExplainSkill(
 	{
 		return FActionResult::Failure(TEXT("gs.GM.Skill.Get 失败"), TEXT("ArmySkill Subsystem 尚未就绪。"));
 	}
-	FString Detail;
-	if (!GetAccessPolicy().bCanReadSkillSources)
-	{
-		const FGuLiResolvedSkillProfile* Profile = Skills->FindResolvedSkill(Team, Unit, Slot);
-		if (!Profile)
-		{
-			return FActionResult::Failure(TEXT("gs.GM.Skill.Get 未找到"), TEXT("客户端尚未收到该 committed final Profile。"));
-		}
-		Detail = FString::Printf(
-			TEXT("Replicated committed final only: Team=%s Unit=%u Slot=%s Skill=%s Executor=%s Damage=%.6g Rate=%.6g/s Range=%.6gcm Revision=%u\n全局 Registry、base/source/override 账本未复制，不可用。"),
-			LexToString(Team), Unit, *Slot.ToString(), *Profile->SkillId.ToString(), *Profile->ExecutorId.ToString(),
-			Profile->Damage, Profile->AttackRatePerSecond, Profile->RangeCentimeters, Profile->Revision);
-	}
-	else
-	{
-		Detail = Skills->ExplainResolvedSkill(Team, Unit, Slot);
-	}
+	FString Detail=Skills->ExplainResolvedSkill(Team,Unit,Slot);
 	return FActionResult::Success(TEXT("gs.GM.Skill.Get 成功"), MoveTemp(Detail));
-}
-
-GuLiGMPanel::FActionResult GuLiGMPanel::FModel::SetSkillNumericOverride(
-	const FSkillNumericRequest& Request) const
-{
-	uint16 Unit = 0;
-	float Value = 0.0f;
-	FName Slot = NAME_None;
-	if (!Private::IsPlayableTeam(Request.Team)
-		|| !Private::ParsePositiveUnit(Request.UnitTypeId, Unit)
-		|| !Private::ParseSlot(Request.SlotId, Slot)
-		|| !Private::ParseFiniteFloat(Request.Value, Value)
-		|| Value < 0.0f)
-	{
-		return FActionResult::Failure(
-			TEXT("gs.GM.Skill.Set 被拒绝"),
-			TEXT("Team/UnitTypeId/SlotId 必须有效，Value 必须是有限非负数。"));
-	}
-	FGuLiArmySkillCommand Command;
-	Command.Command = EGuLiArmySkillCommand::SetNumericOverride;
-	Command.NumericOverride.UnitTypeId = Unit;
-	Command.NumericOverride.SlotId = Slot;
-	switch (Request.Attribute)
-	{
-	case ESkillAttribute::Damage:
-		Command.NumericOverride.bOverrideDamage = true;
-		Command.NumericOverride.Damage = Value;
-		break;
-	case ESkillAttribute::AttackRate:
-		Command.NumericOverride.bOverrideAttackRate = true;
-		Command.NumericOverride.AttackRatePerSecond = Value;
-		break;
-	case ESkillAttribute::Range:
-		Command.NumericOverride.bOverrideRange = true;
-		Command.NumericOverride.RangeCentimeters = Value;
-		break;
-	}
-	return Private::ExecuteArmyCommand(*this, Request.Team, Command, TEXT("gs.GM.Skill.Set"));
-}
-
-GuLiGMPanel::FActionResult GuLiGMPanel::FModel::ClearSkillNumericOverride(
-	const EGuLiTeam Team,
-	const FString& UnitTypeId,
-	const FString& SlotId) const
-{
-	uint16 Unit = 0;
-	FName Slot = NAME_None;
-	if (!Private::IsPlayableTeam(Team)
-		|| !Private::ParsePositiveUnit(UnitTypeId, Unit)
-		|| !Private::ParseSlot(SlotId, Slot))
-	{
-		return FActionResult::Failure(TEXT("gs.GM.Skill.Reset 被拒绝"), TEXT("Team/UnitTypeId/SlotId 必须有效。"));
-	}
-	FGuLiArmySkillCommand Command;
-	Command.Command = EGuLiArmySkillCommand::ClearNumericOverride;
-	Command.NumericOverride.UnitTypeId = Unit;
-	Command.NumericOverride.SlotId = Slot;
-	return Private::ExecuteArmyCommand(*this, Team, Command, TEXT("gs.GM.Skill.Reset"));
-}
-
-GuLiGMPanel::FActionResult GuLiGMPanel::FModel::UpsertSkillSource(
-	const FSkillSourceRequest& Request) const
-{
-	uint16 Unit = 0;
-	float Value = 0.0f;
-	FName Slot = NAME_None;
-	const FString Label = Request.Label.TrimStartAndEnd();
-	if (!Private::IsPlayableTeam(Request.Team)
-		|| !Private::ParsePositiveUnit(Request.UnitTypeId, Unit)
-		|| !Private::ParseSlot(Request.SlotId, Slot)
-		|| !Private::ParseFiniteFloat(Request.Value, Value)
-		|| Label.IsEmpty())
-	{
-		return FActionResult::Failure(
-			TEXT("gs.GM.Skill.Source 被拒绝"),
-			TEXT("Team、UnitTypeId、SlotId、Label 和有限 Value 都必须有效。"));
-	}
-	FGuLiArmySkillCommand Command;
-	Command.Command = EGuLiArmySkillCommand::UpsertSource;
-	Command.Source.SourceInstanceId = GuLiSkillGM::MakeSourceId(Request.Team, Label);
-	Command.Source.DebugLabel = Label;
-	FGuLiSkillModifier& Modifier = Command.Source.Modifiers.AddDefaulted_GetRef();
-	Modifier.Target.UnitTypeIds.Add(Unit);
-	Modifier.Target.SlotId = Slot;
-	Modifier.Operation = Request.Operation == EModifierOperation::Percent
-		? EGuLiSkillModifierOperation::AddPercent
-		: EGuLiSkillModifierOperation::AddFlat;
-	Modifier.Magnitude = Value;
-	switch (Request.Attribute)
-	{
-	case ESkillAttribute::Damage: Modifier.Attribute = EGuLiSkillAttribute::Damage; break;
-	case ESkillAttribute::AttackRate: Modifier.Attribute = EGuLiSkillAttribute::AttackRate; break;
-	case ESkillAttribute::Range: Modifier.Attribute = EGuLiSkillAttribute::Range; break;
-	}
-	const FString RequiredSkill = Request.RequiredSkillId.TrimStartAndEnd();
-	if (!RequiredSkill.IsEmpty() && RequiredSkill != TEXT("*"))
-	{
-		Modifier.Target.RequiredSkillId = FName(*RequiredSkill);
-	}
-	const FString RequiredTag = Request.RequiredGameplayTag.TrimStartAndEnd();
-	if (!RequiredTag.IsEmpty() && RequiredTag != TEXT("*"))
-	{
-		const FGameplayTag Tag = FGameplayTag::RequestGameplayTag(FName(*RequiredTag), false);
-		if (!Tag.IsValid())
-		{
-			return FActionResult::Failure(
-				TEXT("gs.GM.Skill.Source 被拒绝"),
-				FString::Printf(TEXT("未知 GameplayTag: %s"), *RequiredTag));
-		}
-		Modifier.Target.RequiredTags.AddTag(Tag);
-	}
-	return Private::ExecuteArmyCommand(*this, Request.Team, Command, TEXT("gs.GM.Skill.Source"));
-}
-
-GuLiGMPanel::FActionResult GuLiGMPanel::FModel::UpsertSkillReplacement(
-	const FSkillReplacementRequest& Request) const
-{
-	uint16 Unit = 0;
-	int32 Priority = 0;
-	FName Slot = NAME_None;
-	const FString Label = Request.Label.TrimStartAndEnd();
-	const FString SkillId = Request.SkillId.TrimStartAndEnd();
-	if (!Private::IsPlayableTeam(Request.Team)
-		|| !Private::ParsePositiveUnit(Request.UnitTypeId, Unit)
-		|| !Private::ParseSlot(Request.SlotId, Slot)
-		|| !LexTryParseString(Priority, *Request.Priority.TrimStartAndEnd())
-		|| Label.IsEmpty()
-		|| SkillId.IsEmpty())
-	{
-		return FActionResult::Failure(
-			TEXT("gs.GM.Skill.Replace 被拒绝"),
-			TEXT("Team、UnitTypeId、SlotId、Label、SkillId 和整数 Priority 都必须有效。"));
-	}
-	FGuLiArmySkillCommand Command;
-	Command.Command = EGuLiArmySkillCommand::UpsertSource;
-	Command.Source.SourceInstanceId = GuLiSkillGM::MakeSourceId(Request.Team, Label);
-	Command.Source.DebugLabel = Label;
-	FGuLiSkillSlotReplacement& Replacement = Command.Source.Replacements.AddDefaulted_GetRef();
-	Replacement.Target.UnitTypeIds.Add(Unit);
-	Replacement.Target.SlotId = Slot;
-	Replacement.SkillId = FName(*SkillId);
-	Replacement.Priority = Priority;
-	return Private::ExecuteArmyCommand(*this, Request.Team, Command, TEXT("gs.GM.Skill.Replace"));
-}
-
-GuLiGMPanel::FActionResult GuLiGMPanel::FModel::RemoveSkillSource(
-	const EGuLiTeam Team,
-	const FString& LabelText) const
-{
-	const FString Label = LabelText.TrimStartAndEnd();
-	if (!Private::IsPlayableTeam(Team) || Label.IsEmpty())
-	{
-		return FActionResult::Failure(TEXT("gs.GM.Skill.Remove 被拒绝"), TEXT("Team 必须是 Red/Blue，Label 不能为空。"));
-	}
-	FGuLiArmySkillCommand Command;
-	Command.Command = EGuLiArmySkillCommand::RemoveSource;
-	Command.SourceInstanceId = GuLiSkillGM::MakeSourceId(Team, Label);
-	return Private::ExecuteArmyCommand(*this, Team, Command, TEXT("gs.GM.Skill.Remove"));
 }
 
 GuLiGMPanel::FActionResult GuLiGMPanel::FModel::InspectSkillSoldier(const FString& SoldierId) const
@@ -881,41 +579,6 @@ GuLiGMPanel::FActionResult GuLiGMPanel::FModel::InspectSkillSoldier(const FStrin
 			Combat.ShotsFired,
 			Combat.ProfileRevision,
 			*Combat.Location.ToCompactString()));
-}
-
-GuLiGMPanel::FActionResult GuLiGMPanel::FModel::SpawnDebugSoldier(const FSpawnRequest& Request) const
-{
-	const FAccessPolicy Access = GetAccessPolicy();
-	if (!Access.bCanMutateAuthorityState)
-	{
-		return FActionResult::Failure(TEXT("gs.GM.Skill.Spawn 被拒绝"), Access.AuthorityUnavailableReason);
-	}
-	uint16 Unit = 0;
-	float X = 0.0f;
-	float Y = 0.0f;
-	float Z = 0.0f;
-	if (!Private::IsPlayableTeam(Request.Team)
-		|| !Private::ParsePositiveUnit(Request.UnitTypeId, Unit)
-		|| !Private::ParseFiniteFloat(Request.X, X)
-		|| !Private::ParseFiniteFloat(Request.Y, Y)
-		|| !Private::ParseFiniteFloat(Request.Z, Z))
-	{
-		return FActionResult::Failure(
-			TEXT("gs.GM.Skill.Spawn 被拒绝"),
-			TEXT("Team/UnitTypeId 必须有效，X/Y/Z 必须是有限数值（cm）。"));
-	}
-	UWorld* World = GetWorld();
-	UGuLiBattleAuthoritySubsystem* Authority = World ? World->GetSubsystem<UGuLiBattleAuthoritySubsystem>() : nullptr;
-	FGuLiSoldierId SpawnedId;
-	if (!Authority || !Authority->SpawnDebugSoldier(Request.Team, Unit, FVector(X, Y, Z), SpawnedId))
-	{
-		return FActionResult::Failure(TEXT("gs.GM.Skill.Spawn 失败"), TEXT("请检查兵种、容量与当前地图 NavMesh 位置。"));
-	}
-	return FActionResult::Success(
-		TEXT("gs.GM.Skill.Spawn 成功"),
-		FString::Printf(TEXT("team=%s unit=%u soldier=%u position=%s"), LexToString(Request.Team), Unit, SpawnedId.Value, *FVector(X, Y, Z).ToCompactString()),
-		false,
-		1);
 }
 
 GuLiGMPanel::FActionResult GuLiGMPanel::FModel::RunBenchmark(

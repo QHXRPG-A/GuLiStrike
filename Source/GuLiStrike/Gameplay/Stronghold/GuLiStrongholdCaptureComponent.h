@@ -14,16 +14,18 @@ public:
 	UGuLiStrongholdCaptureComponent();
 	void InitializeCapture(int32 InTerritoryIndex, EGuLiTeam Owner);
 	void SetOwnerEndpoint(EGuLiTeam Owner);
-	void AdvanceCapture(int32 Red, int32 Blue, float Seconds, float NeutralCaptureSeconds);
+
+    void ApplyHybridCapture(float Value,int32 Red,int32 Blue)
+    {Progress=Value;RedCount=Red;BlueCount=Blue;}
 	/** Authority fact only; progression is deliberately not a dependency. */
 	FGuLiCaptureRewardRequested OnCaptureRewardRequested;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	UFUNCTION(BlueprintPure, Category="Stronghold") float GetCaptureProgress() const { return Progress; }
 	UFUNCTION(BlueprintPure, Category="Stronghold") int32 GetRedCount() const { return RedCount; }
 	UFUNCTION(BlueprintPure, Category="Stronghold") int32 GetBlueCount() const { return BlueCount; }
 private:
-	UPROPERTY(Replicated) float Progress = 0;
-	UPROPERTY(Replicated) int32 RedCount = 0;
-	UPROPERTY(Replicated) int32 BlueCount = 0;
+	UPROPERTY() float Progress = 0;
+	UPROPERTY() int32 RedCount = 0;
+	UPROPERTY() int32 BlueCount = 0;
 	int32 TerritoryIndex = INDEX_NONE;
 };

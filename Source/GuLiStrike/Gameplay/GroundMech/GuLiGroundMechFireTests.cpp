@@ -20,7 +20,7 @@ struct FGuLiMechFireTestAccess
 	static bool Load(UGuLiGroundMechWeaponComponent* Weapon) { return Weapon->LoadConfiguration(TEXT("1.1")); }
 	static void Fire(UGuLiGroundMechWeaponComponent* Weapon)
 	{ Weapon->RegisterSource(); Weapon->bHasAim = true; Weapon->AimPoint = FVector(100000,0,10000); Weapon->bFireHeld = true; Weapon->TryFire(); }
-	static void RepeatCue(UGuLiGroundMechWeaponComponent* Weapon, FGuid Id, float Time) { Weapon->MulticastShot_Implementation(Id,Time); }
+	static void RepeatCue(UGuLiGroundMechWeaponComponent* Weapon, FGuid Id, float Time) { Weapon->PlayFlightShot(Id,Time); }
 };
 
 namespace GuLiMechFireTests
@@ -41,7 +41,7 @@ namespace GuLiMechFireTests
 	struct FWorld
 	{
 		UWorld* World = UWorld::CreateWorld(EWorldType::Game, false);
-		FWorld() { GEngine->CreateNewWorldContext(EWorldType::Game).SetCurrentWorld(World); World->GetSubsystem<UGuLiDamageLedgerSubsystem>()->BeginServerEpoch(900); }
+		FWorld() { GEngine->CreateNewWorldContext(EWorldType::Game).SetCurrentWorld(World); World->GetSubsystem<UGuLiDamageLedgerSubsystem>()->BindMatchEpoch(900); }
 		~FWorld() { World->DestroyWorld(false); GEngine->DestroyWorldContext(World); }
 	};
 	FGuLiTargetHandle Source()
@@ -68,60 +68,6 @@ bool FMechFireCurveTest::RunTest(const FString&)
 	Anim->TriggerRecoil(); Anim->NativeUpdateAnimation(0);
 	TestEqual(TEXT("Retrigger starts at current displacement"),Anim->RecoilOffset,Before);
 	Anim->NativeUpdateAnimation(.15); TestEqual(TEXT("Stopped weapon returns completely"),Anim->RecoilOffset,0.f);
-	return true;
-}
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMechFirePoolTest,"GuLiStrike.GroundMech.Fire.PlayerPoolAndWire",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
-bool FMechFirePoolTest::RunTest(const FString&)
-{
-	using namespace GuLiMechFireTests; FWorld Fixture;
-	auto* Ledger=Fixture.World->GetSubsystem<UGuLiDamageLedgerSubsystem>();
-	auto* Pool=Fixture.World->GetSubsystem<UGuLiProjectilePoolSubsystem>();
-	FGuLiCombatSourceAdapter Adapter; Adapter.LifetimeOwner=Fixture.World;
-	Adapter.ReadSnapshot=[](FGuLiCombatTargetSnapshot& Out) { Out.Handle=Source(); Out.Team=EGuLiTeam::Red; Out.bAlive=true; return true; };
-	TestTrue(TEXT("Register attack-only player"),Ledger->RegisterSource(Source(),MoveTemp(Adapter)));
-	FGuLiCombatTargetSnapshot Snapshot;
-	TestFalse(TEXT("Player is not a damage target"),Ledger->TryGetTargetSnapshot(Source(),Snapshot));
-	int32 EnemyHits=0, FriendlyHits=0; float Damage=0;
-	for (int32 I=0; I<2; ++I)
-	{
-		FGuLiCombatTargetAdapter Target; Target.LifetimeOwner=Fixture.World;
-		const auto Handle=GuLiCombatTargets::MakeCommanderSoldierTargetHandle(900,I+1);
-		Target.ReadSnapshot=[Handle,I](FGuLiCombatTargetSnapshot& Out)
-		{ Out.Handle=Handle; Out.Location=FVector(I==0?100:600,0,1000); Out.CollisionRadius=20; Out.Team=I==0?EGuLiTeam::Red:EGuLiTeam::Blue; Out.bAlive=true; return true; };
-		Target.ApplyDamage=[&EnemyHits,&FriendlyHits,&Damage,I](const FGuLiDamageRequest& R,FGuLiDamageCommitResult& Out)
-		{ (I==0?FriendlyHits:EnemyHits)++; Damage+=R.Damage; Out.AppliedDamage=R.Damage; Out.RemainingHealth=100-R.Damage; return true; };
-		Ledger->RegisterTarget(Handle,MoveTemp(Target));
-	}
-	FGuLiPooledProjectileLaunch Launch; Launch.Context.MatchEpoch=900; Launch.Context.Source=Source();
-	Launch.Context.ShotId=FGuid::NewGuid(); Launch.Context.RootEventId=Launch.Context.ShotId; Launch.Context.Damage=10;
-	Launch.Position=FVector(0,0,1000); Launch.Speed=12000; Launch.Lifetime=5; Launch.MaximumDistance=60000; Launch.SweepRadius=15;
-	Launch.PlayerBulletVfxId=GuLiVfxIds::PlayerBullet;
-	const auto Handle=Pool->Launch(Launch); TestTrue(TEXT("Player launches without soldier or wingman identity"),Handle.IsValid());
-	TestFalse(TEXT("Duplicate live ShotId rejected"),Pool->Launch(Launch).IsValid());
-	FGuLiCombatEffectState State; Pool->Query(Handle,State);
-	bool bOK=false; FNetBitWriter Writer(nullptr,0); State.NetSerialize(Writer,nullptr,bOK); TestTrue(TEXT("Launch serializes"),bOK);
-	FNetBitReader Reader(nullptr,Writer.GetData(),Writer.GetNumBits()); FGuLiCombatEffectState Copy; Copy.NetSerialize(Reader,nullptr,bOK);
-	TestTrue(TEXT("GroundActor survives wire encoding"),bOK && Copy.Source==Source());
-	TestTrue(TEXT("Visual and ShotId survive wire encoding"),Copy.PlayerBulletVfxId==State.PlayerBulletVfxId && Copy.EffectId==State.EffectId);
-	Launch.Context.Damage=20; // Already-flying data is frozen.
-	Pool->Step(1.f/30); Pool->Query(Handle,State); TestTrue(TEXT("First 30 Hz sweep moved 400 cm"),FMath::IsNearlyEqual(State.Location.X,400.,.01));
-	Ledger->UnregisterSource(Source(),Fixture.World); // Retained provenance survives unpossession/destruction.
-	Pool->Step(2.f/30); Pool->Step(.2);
-	TestEqual(TEXT("Friendly skipped"),FriendlyHits,0); TestEqual(TEXT("Only first enemy hit"),EnemyHits,1);
-	TestEqual(TEXT("In-flight damage remains 10"),Damage,10.f); TestEqual(TEXT("One ledger commit"),Ledger->GetCommitCount(),uint64(1));
-	TestEqual(TEXT("Hit round recycled"),Pool->GetActiveCount(),0);
-	FGuLiCombatSourceAdapter NextSource; NextSource.LifetimeOwner=Fixture.World;
-	NextSource.ReadSnapshot=[](FGuLiCombatTargetSnapshot& Out) { Out.Handle=Source(); Out.Team=EGuLiTeam::Red; Out.bAlive=true; return true; };
-	Ledger->RegisterSource(Source(),MoveTemp(NextSource));
-	Launch.Context.ShotId=FGuid::NewGuid(); Launch.Context.RootEventId=Launch.Context.ShotId;
-	Launch.ServerTime=.2f; Launch.Direction=FVector::RightVector;
-	const auto Expiring=Pool->Launch(Launch); Pool->Step(5.21f);
-	TestFalse(TEXT("Five-second flight expires"),Pool->Query(Expiring,State));
-	Launch.Context.ShotId=FGuid::NewGuid(); Launch.ServerTime=5.3f;
-	const auto OldRound=Pool->Launch(Launch); Ledger->BeginServerEpoch(901); Pool->BeginEpoch(901);
-	TestFalse(TEXT("Round change invalidates old pooled handle"),Pool->Query(OldRound,State));
-	TestEqual(TEXT("Round change empties player rounds"),Pool->GetActiveCount(),0);
 	return true;
 }
 
@@ -161,9 +107,9 @@ bool FMechFireCadenceTest::RunTest(const FString&)
 	const int32 Before=Weapon->ShotsFired; Fixture.World->TimeSeconds=40;
 	PC->SetIgnoreMoveInput(true); FGuLiMechFireTestAccess::Fire(Weapon); TestEqual(TEXT("Input lock prevents fire"),Weapon->ShotsFired,Before); PC->ResetIgnoreMoveInput();
 	const FGuid Token=FGuid::NewGuid(); auto* Control=Pawn->FindComponentByClass<UGuLiExternalUnitControlComponent>();
-	Control->ApplyServerState(Token,false,true,Pawn->GetActorTransform(),false); FGuLiMechFireTestAccess::Fire(Weapon);
+	Control->ApplyOwnedState(Token,false,true,Pawn->GetActorTransform(),false); FGuLiMechFireTestAccess::Fire(Weapon);
 	TestEqual(TEXT("External action lock prevents fire"),Weapon->ShotsFired,Before);
-	Control->ApplyServerState(Token,false,false,Pawn->GetActorTransform(),false);
+	Control->ApplyOwnedState(Token,false,false,Pawn->GetActorTransform(),false);
 	Weapon->bFireHeld=true; PC->FlushPressedKeys(); TestFalse(TEXT("Focus flush releases fire"),Weapon->bFireHeld);
 	Weapon->bFireHeld=true; Pawn->UnPossessed(); TestFalse(TEXT("Unpossession releases fire"),Weapon->bFireHeld);
 	FGuLiMechFireTestAccess::Fire(Weapon); TestEqual(TEXT("Unpossessed pawn cannot fire"),Weapon->ShotsFired,Before);

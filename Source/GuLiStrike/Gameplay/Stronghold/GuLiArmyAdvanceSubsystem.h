@@ -12,6 +12,7 @@ class GULISTRIKE_API UGuLiArmyAdvanceSubsystem : public UTickableWorldSubsystem
 {
 	GENERATED_BODY()
 public:
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
 	virtual void Deinitialize() override;
@@ -28,6 +29,7 @@ public:
 	void RejectBehaviorTarget(FGuLiSoldierId Soldier);
 	void WaitForBehaviorTarget(FGuLiSoldierId Soldier);
 private:
+	friend class FGuLiHybridAdvanceState;
 	struct FAdvanceGroup
 	{
 		EGuLiTeam Team;
@@ -53,5 +55,6 @@ private:
 	uint32 DecisionCursor = 0;
 	int32 RemainingMoveQueries = 4;
 	TArray<EGuLiTeam> ObservedOwners;
+	uint64 LastHybridTick = MAX_uint64;
 	UFUNCTION() void OnNavigationGenerated(ANavigationData* Data);
 };

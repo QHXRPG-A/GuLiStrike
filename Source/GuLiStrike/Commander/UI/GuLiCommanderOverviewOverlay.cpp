@@ -96,14 +96,6 @@ void AGuLiCommanderHUD::BuildOverviewMarkers()
 		if (Health) Marker.HealthFraction = Health->GetHealthState().MaxHealth > 0
 			? FMath::Clamp(Health->GetHealthState().Health / Health->GetHealthState().MaxHealth, 0.f, 1.f) : 0;
 		Marker.BarOpacity = Marker.bSelected && Health ? 1.f : 0.f;
-		if (const auto* Wingman = Cast<AGuLiWingmanPawn>(Actor))
-			if (const auto* Battle = GetWorld()->GetGameState<AGuLiBattleGameState>())
-				for (const auto& Group : Battle->GetPublicWingmanBootstraps())
-					for (const auto& Entry : Group.Bootstrap.Health) if (Entry.Wingman == Wingman->GetWingmanHandle())
-					{
-						Marker.HealthFraction = Entry.MaximumHealthPermille > 0 ? float(Entry.CurrentHealthPermille) / Entry.MaximumHealthPermille : 0;
-						if (Marker.bSelected) Marker.BarOpacity = 1;
-					}
 		if (Feedback) if (const auto* Bar = Feedback->GetActorHealthBars().Find(Actor))
 		{
 			if (Bar->HealthFraction >= 0 && !Health) Marker.HealthFraction = Bar->HealthFraction;

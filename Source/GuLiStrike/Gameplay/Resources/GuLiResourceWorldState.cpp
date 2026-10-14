@@ -2,202 +2,74 @@
 
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
 #include "Gameplay/Stronghold/GuLiStrongholdNetworkPresentationComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 
-#include "Net/UnrealNetwork.h"
-
-void FGuLiOreDeltaFastArray::PostReplicatedAdd(const TArrayView<int32>& AddedIndices, const int32 FinalSize)
-{
-	(void)FinalSize;
-	if (AGuLiResourceWorldState* State = Owner.Get()) State->NotifyOreIndices(AddedIndices);
-}
-
-void FGuLiOreDeltaFastArray::PostReplicatedChange(const TArrayView<int32>& ChangedIndices, const int32 FinalSize)
-{
-	(void)FinalSize;
-	if (AGuLiResourceWorldState* State = Owner.Get()) State->NotifyOreIndices(ChangedIndices);
-}
-
-void FGuLiOreDeltaFastArray::PreReplicatedRemove(const TArrayView<int32>& RemovedIndices, const int32 FinalSize)
-{
-	(void)RemovedIndices; (void)FinalSize;
-	bRebuildAfterRemove = true;
-}
-
-void FGuLiOreDeltaFastArray::PostReplicatedReceive(const FFastArraySerializer::FPostReplicatedReceiveParameters&)
-{
-    if (bRebuildAfterRemove)
-    {
-        bRebuildAfterRemove=false;
-        if (auto* State=Owner.Get()) State->NotifyFastArrayChanged();
-    }
-}
-
-void AGuLiResourceWorldState::NotifyOreIndices(TConstArrayView<int32> Indices)
-{
-    for (int32 Index : Indices)
-    {
-        if (!OreDeltas.Items.IsValidIndex(Index)) continue;
-        const auto& Item=OreDeltas.Items[Index];
-        OreDeltaIndexByNodeId.Add(Item.NodeId,Index);
-        OreNodeChanged.Broadcast(Item.NodeId,Item.RemainingAmount);
-    }
-}
 
 AGuLiResourceWorldState::AGuLiResourceWorldState()
 {
-	bReplicates = true;
-	bAlwaysRelevant = true;
-	SetNetUpdateFrequency(10.0f);
-	SetMinNetUpdateFrequency(2.0f);
+	bReplicates = false;
 	SetReplicateMovement(false);
-	OreDeltas.SetOwner(this);
 }
 
 void AGuLiResourceWorldState::BeginPlay()
 {
 	Super::BeginPlay();
-	OreDeltas.SetOwner(this);
 	RebuildOreIndex();
-	if (GetNetMode() != NM_DedicatedServer)
+	if (UGuLiNetworkSettings::CanPresent(GetWorld()))
 		NewObject<UGuLiStrongholdNetworkPresentationComponent>(this)->RegisterComponent();
 }
 
-void AGuLiResourceWorldState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(AGuLiResourceWorldState, LayoutHash);
-	DOREPLIFETIME(AGuLiResourceWorldState, bAuthorityReady);
-	DOREPLIFETIME(AGuLiResourceWorldState, Territories);
-	DOREPLIFETIME(AGuLiResourceWorldState, OreDeltas);
-	DOREPLIFETIME(AGuLiResourceWorldState, TransportNetwork);
-}
 
-void AGuLiResourceWorldState::SetTransportNetworkAuthority(const FGuLiTransportNetworkSnapshot& Snapshot)
+
+void AGuLiResourceWorldState::ApplyTransportNetwork(const FGuLiTransportNetworkSnapshot& Snapshot)
 {
-	check(HasAuthority());
 	TransportNetwork = Snapshot;
-	ForceNetUpdate();
-	OnRep_TransportNetwork();
-}
-void AGuLiResourceWorldState::OnRep_TransportNetwork()
-{
 	StateChanged.Broadcast();
 }
-
-void AGuLiResourceWorldState::InitializeAuthority(
-	const FString& InLayoutHash,
-	const TConstArrayView<EGuLiTeam> InitialOwners)
+void AGuLiResourceWorldState::ApplyTerritoryEncirclement(int32 Index, bool bEncircled)
 {
-	if (!HasAuthority() || InLayoutHash.IsEmpty()
-		|| InitialOwners.Num() != GULI_RESOURCE_TERRITORY_COUNT)
-	{
-		return;
-	}
-	LayoutHash = InLayoutHash;
-	Territories.Reset(InitialOwners.Num());
-	for (int32 Index = 0; Index < InitialOwners.Num(); ++Index)
-	{
-		FGuLiTerritoryRuntimeState& State = Territories.AddDefaulted_GetRef();
-		State.TerritoryIndex = static_cast<uint8>(Index);
-		State.Owner = InitialOwners[Index];
-		State.Revision = NextStateRevision++;
-	}
-	OreDeltas.Items.Reset();
-	OreDeltaIndexByNodeId.Reset();
-	bAuthorityReady = false;
-	ForceNetUpdate();
-	StateChanged.Broadcast();
-}
-
-void AGuLiResourceWorldState::SetAuthorityReady(const bool bReady)
-{
-	if (!HasAuthority() || bAuthorityReady == bReady)
-	{
-		return;
-	}
-	bAuthorityReady = bReady;
-	ForceNetUpdate();
-	StateChanged.Broadcast();
-}
-
-bool AGuLiResourceWorldState::SetTerritoryOwnerAuthority(
-	const uint8 TerritoryIndex,
-	const EGuLiTeam NewOwner)
-{
-	if (!HasAuthority() || !Territories.IsValidIndex(TerritoryIndex)
-		|| (NewOwner != EGuLiTeam::Unassigned && !GuLiResources::IsPlayableTeam(NewOwner)))
-	{
-		return false;
-	}
-	FGuLiTerritoryRuntimeState& State = Territories[TerritoryIndex];
-	if (State.Owner == NewOwner)
-	{
-		return true;
-	}
-	State.Owner = NewOwner;
-	State.Revision = NextStateRevision++;
-	ForceNetUpdate();
-	StateChanged.Broadcast();
-	return true;
-}
-
-void AGuLiResourceWorldState::SetTerritorySupplyAuthority(int32 Index, bool bSupplied)
-{
-	check(HasAuthority());
-	if (Territories[Index].bSupplied == bSupplied) return;
-	Territories[Index].bSupplied = bSupplied;
-	Territories[Index].Revision = NextStateRevision++;
-	ForceNetUpdate(); StateChanged.Broadcast();
-}
-void AGuLiResourceWorldState::SetTerritoryEncircledAuthority(int32 Index, bool bEncircled)
-{
-	check(HasAuthority());
 	if (Territories[Index].bEncircled == bEncircled) return;
 	Territories[Index].bEncircled = bEncircled;
 	Territories[Index].Revision = NextStateRevision++;
-	ForceNetUpdate(); StateChanged.Broadcast();
+	StateChanged.Broadcast();
 }
-void AGuLiResourceWorldState::SetTerritoryGroundAuthority(int32 Index, const FVector& GroundLocation)
+bool AGuLiResourceWorldState::ApplyHybridDirectory(const FString& InLayoutHash,TConstArrayView<EGuLiTeam> Owners,
+	TConstArrayView<uint8> Remaining,TConstArrayView<FVector> GroundLocations)
 {
-	check(HasAuthority());
-	Territories[Index].GroundLocation = GroundLocation;
-	ForceNetUpdate();
+	if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || InLayoutHash.IsEmpty() || Owners.Num()!=GULI_RESOURCE_TERRITORY_COUNT
+		|| GroundLocations.Num()!=Owners.Num() || Remaining.Num()!=GULI_RESOURCE_NODE_COUNT) return false;
+	for (int32 I=0;I<Owners.Num();++I)
+		if ((Owners[I]!=EGuLiTeam::Unassigned && !GuLiResources::IsPlayableTeam(Owners[I])) || GroundLocations[I].ContainsNaN()) return false;
+	for (const auto Amount:Remaining) if (Amount>3) return false;
+	SetReplicates(false); LayoutHash=InLayoutHash; bAuthorityReady=false;
+	Territories.Reset(Owners.Num());
+	for (int32 I=0;I<Owners.Num();++I)
+	{
+		auto& V=Territories.AddDefaulted_GetRef(); V.TerritoryIndex=uint8(I); V.Owner=Owners[I]; V.GroundLocation=GroundLocations[I];
+		// Supply is a separate authoritative relationship, not inferred by this ore query projection.
+		V.bSupplied=false; V.Revision=NextStateRevision++;
+	}
+	OreDeltas.Items.Reset(Remaining.Num()); OreDeltaIndexByNodeId.Reset();
+	for (int32 I=0;I<Remaining.Num();++I)
+	{
+		auto& V=OreDeltas.Items.AddDefaulted_GetRef(); V.NodeId=uint32(I+1); V.RemainingAmount=Remaining[I]; V.Revision=NextStateRevision++;
+		OreDeltaIndexByNodeId.Add(V.NodeId,I);
+	}
+	StateChanged.Broadcast(); return true;
 }
-
-bool AGuLiResourceWorldState::SetNodeRemainingAuthority(
-	const uint32 NodeId,
-	const uint8 RemainingAmount)
+bool AGuLiResourceWorldState::ApplyHybridTerritory(int32 Index,EGuLiTeam TerritoryOwner,bool Supplied)
 {
-	if (!HasAuthority() || NodeId == 0u || NodeId > GULI_RESOURCE_NODE_COUNT
-		|| RemainingAmount > 3u)
-	{
-		return false;
-	}
-	int32* ExistingIndex = OreDeltaIndexByNodeId.Find(NodeId);
-	if (!ExistingIndex)
-	{
-		FGuLiOreDeltaItem& Item = OreDeltas.Items.AddDefaulted_GetRef();
-		Item.NodeId = NodeId;
-		Item.RemainingAmount = RemainingAmount;
-		Item.Revision = NextStateRevision++;
-		const int32 Index = OreDeltas.Items.Num() - 1;
-		OreDeltaIndexByNodeId.Add(NodeId, Index);
-		OreDeltas.MarkItemDirty(Item);
-	}
-	else
-	{
-		FGuLiOreDeltaItem& Item = OreDeltas.Items[*ExistingIndex];
-		if (Item.RemainingAmount == RemainingAmount)
-		{
-			return true;
-		}
-		Item.RemainingAmount = RemainingAmount;
-		Item.Revision = NextStateRevision++;
-		OreDeltas.MarkItemDirty(Item);
-	}
-	ForceNetUpdate();
-	OreNodeChanged.Broadcast(NodeId,RemainingAmount);
-	return true;
+    if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || !Territories.IsValidIndex(Index)) return false;
+    auto& T=Territories[Index];if (T.Owner==TerritoryOwner && T.bSupplied==Supplied) return true;
+    T.Owner=TerritoryOwner;T.bSupplied=Supplied;T.Revision=NextStateRevision++;StateChanged.Broadcast();return true;
+}
+bool AGuLiResourceWorldState::ApplyHybridNodeRemaining(uint32 NodeId,uint8 RemainingAmount)
+{
+	if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || RemainingAmount>3) return false;
+	const auto* Index=OreDeltaIndexByNodeId.Find(NodeId); if (!Index || !OreDeltas.Items.IsValidIndex(*Index)) return false;
+	auto& V=OreDeltas.Items[*Index]; if (V.RemainingAmount==RemainingAmount) return true;
+	V.RemainingAmount=RemainingAmount; V.Revision=NextStateRevision++;
+	OreNodeChanged.Broadcast(NodeId,RemainingAmount); return true;
 }
 
 uint8 AGuLiResourceWorldState::GetNodeRemainingOr(
@@ -216,22 +88,6 @@ EGuLiTeam AGuLiResourceWorldState::GetTerritoryOwner(const uint8 TerritoryIndex)
 {
 	return Territories.IsValidIndex(TerritoryIndex)
 		? Territories[TerritoryIndex].Owner : EGuLiTeam::Unassigned;
-}
-
-void AGuLiResourceWorldState::NotifyFastArrayChanged()
-{
-	RebuildOreIndex();
-	StateChanged.Broadcast();
-}
-
-void AGuLiResourceWorldState::OnRep_LayoutState()
-{
-	StateChanged.Broadcast();
-}
-
-void AGuLiResourceWorldState::OnRep_Territories()
-{
-	StateChanged.Broadcast();
 }
 
 void AGuLiResourceWorldState::RebuildOreIndex()

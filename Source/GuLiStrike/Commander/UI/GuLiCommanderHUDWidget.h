@@ -56,7 +56,7 @@ namespace GuLiCommanderHUDLayout
 /** Local presentation group. Member indices refer to the current immutable presentation snapshot. */
 struct FGuLiCommanderPortraitGroupView
 {
-	uint16 Type = 0;
+	uint32 Type = 0;
 	TArray<int32> MemberIndices;
 };
 
@@ -134,7 +134,7 @@ private:
 	FGuLiCommanderUIPresentation Presentation;
 	TArray<int32> VisibleMemberIndices;
 	TArray<FGuLiCommanderPortraitGroupView> VisiblePortraitGroups;
-	TArray<uint16> InspectionTypes;
+	TArray<uint32> InspectionTypes;
 	int32 InspectionType = 0, PortraitPage = 0;
 	bool bMenuOpen = false, bQuitConfirmation = false, bHelpOpen = false, bTaskDrawerOpen = false;
 	FModifierKeysState PendingActionModifiers;

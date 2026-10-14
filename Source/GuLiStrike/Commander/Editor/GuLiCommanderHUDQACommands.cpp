@@ -83,7 +83,7 @@ namespace GuLiCommanderHUDQA
 					break;
 				}
 			}
-			if (bFound) { Sync->ServerRequestSelection(Request); }
+			if (bFound) { Sync->SubmitOrderedSelection(Request); }
 			else { bSuccess = false; }
 		}
 		else if (Action == TEXT("kill5") || Action == TEXT("killall") || Action == TEXT("injure"))

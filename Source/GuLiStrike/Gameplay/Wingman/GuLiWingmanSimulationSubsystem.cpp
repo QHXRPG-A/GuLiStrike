@@ -15,24 +15,7 @@
 #include "GuLiFlightNavigationSubsystem.h"
 #include "StateTree.h"
 #include "Subsystems/SubsystemCollection.h"
-
-struct FGuLiWingmanFlightNavigationRuntime
-{
-	TSharedPtr<FGuLiFlightNavCancellationToken, ESPMode::ThreadSafe> CancellationToken;
-	TSharedPtr<TFuture<FGuLiFlightNavPathResult>> PendingResult;
-	TArray<FVector> PathPoints;
-	FVector RequestedStart = FVector::ZeroVector;
-	FVector RequestedGoal = FVector::ZeroVector;
-	FVector ActivePathGoal = FVector::ZeroVector;
-	double NextRequestSeconds = 0.0;
-	uint32 RequestSerial = 0u;
-	uint32 PendingRequestSerial = 0u;
-	uint32 RequestedAbilitySetRevision = 0u;
-	uint32 RequestedFormationCommandRevision = 0u;
-	int32 NextPathPointIndex = INDEX_NONE;
-	bool bRequestPending = false;
-	bool bUsingSafeFallback = false;
-};
+#include "Gameplay/Wingman/Private/GuLiWingmanNavigationRuntime.h"
 
 namespace
 {
@@ -41,7 +24,7 @@ namespace
 	constexpr double FailedPathRetrySeconds = 1.0;
 	constexpr float MinimumGoalDriftForRepathCentimeters = 2000.0f;
 	constexpr float MinimumWaypointReachDistanceCentimeters = 1000.0f;
-	constexpr int32 MaximumNavigationExpandedNodes = 8192;
+	constexpr int32 MaximumNavigationExpandedNodes = GuLiWingmanNavigationMaximumExpandedNodes;
 	constexpr uint32 MaximumInitialSwarmCandidateCount = 64u;
 
 	bool ConfigMatchesGroup(
@@ -247,6 +230,10 @@ void UGuLiWingmanSimulationSubsystem::Initialize(FSubsystemCollectionBase& Colle
 
 void UGuLiWingmanSimulationSubsystem::Deinitialize()
 {
+	TArray<TSharedPtr<FGuLiWingmanLocalGroupRuntime>> Independent;
+	for (const auto& Pair:IndependentRuntimes) if (auto Runtime=Pair.Value.Pin()) Independent.Add(MoveTemp(Runtime));
+	for (const auto& Runtime:Independent) ReleaseIndependentMember(*Runtime);
+	IndependentRuntimes.Reset();IndependentPawns.Reset();
 	DestroyAllOwnedGroups();
 	Super::Deinitialize();
 }
@@ -778,11 +765,15 @@ void UGuLiWingmanSimulationSubsystem::DestroyAllOwnedGroups()
 }
 
 bool UGuLiWingmanSimulationSubsystem::PlanExternalFormationPositions(UWorld* World, const FTransform& Carrier,
-	const FGuLiWingmanFormationRuntimeConfig& Formation, TArray<FVector>& OutPositions, TConstArrayView<int32> LivingSlots)
+	const FGuLiWingmanFormationRuntimeConfig& Formation, TArray<FVector>& OutPositions, TConstArrayView<int32> LivingSlots,FString* Failure)
 {
 	int32 Failed; FVector Point; EGuLiFlightNavSegmentStatus Status;
-	return World && BuildInitialFormationPositions(World->GetSubsystem<UGuLiFlightNavigationSubsystem>(), true,
+	if (!World) {if (Failure) *Failure=TEXT("Missing formation world");return false;}
+    const bool Ready=BuildInitialFormationPositions(World->GetSubsystem<UGuLiFlightNavigationSubsystem>(), true,
 		Carrier, Formation, OutPositions, Failed, Point, Status, LivingSlots);
+    if (Failure) *Failure=Ready?FString{}:FString::Printf(TEXT("Formation navigation: member=%d status=%u point=%s carrier=%s"),
+        Failed,uint8(Status),*Point.ToString(),*Carrier.GetLocation().ToString());
+    return Ready;
 }
 
 void UGuLiWingmanSimulationSubsystem::SetGroupExternalControlState(const FGuLiWingmanGroupHandle& Group, bool bPhased, bool bLocked)
@@ -810,6 +801,11 @@ bool UGuLiWingmanSimulationSubsystem::AdvanceOwnedGroup(
 	const float DeltaSeconds)
 {
 	FGuLiWingmanLocalGroupRuntime* Runtime = OwnedGroups.Find(Group);
+    return Runtime && AdvanceRuntime(*Runtime,DeltaSeconds,GetWorld()->GetTimeSeconds(),false);
+}
+bool UGuLiWingmanSimulationSubsystem::AdvanceRuntime(FGuLiWingmanLocalGroupRuntime& Value,float DeltaSeconds,double NowSeconds,bool LogicalBehavior)
+{
+    auto* Runtime=&Value;
 	if (Runtime && Runtime->bExternalActionsLocked) { return true; }
 	if (!Runtime || !CanOwnSimulation()
 		|| !Runtime->AbilityConfig.IsUsableByLeaseOwner()
@@ -817,7 +813,7 @@ bool UGuLiWingmanSimulationSubsystem::AdvanceOwnedGroup(
 	{
 		return false;
 	}
-	TickNavigationBehavior(Group, DeltaSeconds);
+	TickNavigationRuntime(*Runtime, DeltaSeconds,NowSeconds);
 
 	TArray<AGuLiWingmanPawn*, TInlineAllocator<GULI_WINGMAN_GROUP_SIZE>> SortedPawns;
 	for (const TWeakObjectPtr<AGuLiWingmanPawn>& Entry : Runtime->Pawns)
@@ -840,6 +836,7 @@ bool UGuLiWingmanSimulationSubsystem::AdvanceOwnedGroup(
 	for (AGuLiWingmanPawn* Pawn : SortedPawns)
 	{
 		Pawn->UpdateBehaviorObservation(DeltaSeconds);
+        if (LogicalBehavior) Pawn->AdvanceLogicalBehavior(DeltaSeconds);
 		if (UGuLiWingmanFlightMovementComponent* Movement = Pawn->GetFlightMovement())
 		{
 			Movement->AdvanceFixedSteps(DeltaSeconds, bBypassNavigation);
@@ -871,6 +868,7 @@ AGuLiWingmanPawn* UGuLiWingmanSimulationSubsystem::FindOwnedPawn(
 AGuLiWingmanPawn* UGuLiWingmanSimulationSubsystem::FindOwnedPawn(
 	const FGuLiWingmanHandle& Wingman) const
 {
+    if (const auto* Pawn=IndependentPawns.Find(Wingman)) return Pawn->Get();
 	const FGuLiWingmanLocalGroupRuntime* Runtime = OwnedGroups.Find(Wingman.Flight.Group);
 	return Runtime ? FindOwnedPawn(*Runtime, Wingman) : nullptr;
 }
@@ -1326,12 +1324,16 @@ void UGuLiWingmanSimulationSubsystem::TickNavigationBehavior(
 	const FGuLiWingmanGroupHandle& Group,
 	const float DeltaSeconds)
 {
+    if (auto* Runtime=OwnedGroups.Find(Group)) TickNavigationRuntime(*Runtime,DeltaSeconds,GetWorld()->GetTimeSeconds());
+}
+void UGuLiWingmanSimulationSubsystem::TickNavigationRuntime(FGuLiWingmanLocalGroupRuntime& Value,float DeltaSeconds,double NowSeconds)
+{
 	if (const UWorld* World = GetWorld();
 		World && World->GetNetMode() == NM_DedicatedServer)
 	{
 		FGuLiWingmanQAInvariantRegistry::Add(TEXT("SERVER_WINGMAN_PATHFINDING_EXECUTED"));
 	}
-	FGuLiWingmanLocalGroupRuntime* Runtime = OwnedGroups.Find(Group);
+    auto* Runtime=&Value;
 	if (!Runtime || !CanOwnSimulation()
 		|| !Runtime->AbilityConfig.IsUsableByLeaseOwner())
 	{
@@ -1406,8 +1408,6 @@ void UGuLiWingmanSimulationSubsystem::TickNavigationBehavior(
 			|| State.Dynamics.Mode == EGuLiWingmanFlightMode::Recover;
 	}
 
-	const double NowSeconds = GetWorld()
-		? static_cast<double>(GetWorld()->GetTimeSeconds()) : 0.0;
 	const UGuLiFlightNavigationSubsystem* Navigation = GetWorld()
 		? GetWorld()->GetSubsystem<UGuLiFlightNavigationSubsystem>() : nullptr;
 	bool bBypassNavigation = false;

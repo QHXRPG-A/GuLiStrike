@@ -1,4 +1,5 @@
 #include "Gameplay/Ship/GuLiShipTargetingRangeComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 
 #include "PrimitiveSceneProxy.h"
 #include "SceneManagement.h"
@@ -100,7 +101,7 @@ void UGuLiShipTargetingRangeComponent::SetTargetingRadius(float InRadiusCentimet
 
 FPrimitiveSceneProxy* UGuLiShipTargetingRangeComponent::CreateSceneProxy()
 {
-	return TargetingRadiusCentimeters > 0.0f ? new FGuLiShipTargetingRangeSceneProxy(*this) : nullptr;
+	return UGuLiNetworkSettings::CanPresent(GetWorld()) && TargetingRadiusCentimeters > 0.0f ? new FGuLiShipTargetingRangeSceneProxy(*this) : nullptr;
 }
 
 FBoxSphereBounds UGuLiShipTargetingRangeComponent::CalcBounds(const FTransform& LocalToWorld) const

@@ -2,69 +2,14 @@
 
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 
-#include "Net/UnrealNetwork.h"
-
-void AGuLiSoldierStateReplicator::PostInitProperties()
-{
-	Super::PostInitProperties();
-	if (!IsTemplate())
-	{
-		ReplicatedSoldiers.OnReceivedDelta.AddUObject(this, &ThisClass::ApplyLocalDelta);
-	}
-}
 
 AGuLiSoldierStateReplicator::AGuLiSoldierStateReplicator()
 {
-	bReplicates = true;
-	bAlwaysRelevant = true;
-	bNetLoadOnClient = true;
+	bReplicates = false;
 	SetReplicateMovement(false);
-	// Actor 更新频率是复制调度参数；不等于名册每秒必变 20 次，更不保证每客户端收包 20 Hz。
-	SetNetUpdateFrequency(20.0f);
-	SetMinNetUpdateFrequency(2.0f);
 }
 
-void AGuLiSoldierStateReplicator::GetLifetimeReplicatedProps(
-	TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	// Actor existence remains public; data is admitted by each owning connection's state stream.
-}
 
-void AGuLiSoldierStateReplicator::ResetRemoteRoster(uint32 MatchEpoch)
-{
-	if (HasAuthority()) return; // Listen-server presentation reads the authoritative cache.
-	TArray<FGuLiSoldierId> Removed;
-	for (const auto& Item : ReplicatedSoldiers.Items) Removed.Add(Item.SoldierId);
-	ReplicatedSoldiers.Items.Reset(); LocalSoldierStates.Reset();
-	SnapshotMatchEpoch = LocalCacheEpoch = MatchEpoch; SnapshotRevision = 0;
-	if (!Removed.IsEmpty()) ReplicatedSoldiers.OnRemoved.Broadcast(Removed);
-	FGuLiSoldierRosterDelta Delta; Delta.bReset = true; Delta.Removed = MoveTemp(Removed);
-	OnRosterDelta.Broadcast(Delta);
-}
-
-void AGuLiSoldierStateReplicator::ApplyRemoteDelta(const TArray<FGuLiSoldierStateItem>& States,
-	const TArray<FGuLiSoldierId>& Removed, uint32 MatchEpoch, uint32 BatchSequence)
-{
-	if (HasAuthority() || !MatchEpoch || SnapshotMatchEpoch != MatchEpoch) return;
-	for (const auto& State : States)
-	{
-		const int32 Index = FindItemIndex(State.SoldierId);
-		if (Index == INDEX_NONE) ReplicatedSoldiers.Items.Add(State);
-		else ReplicatedSoldiers.Items[Index] = State;
-	}
-	// Death followed by retirement in one batch must notify death before erasing the identity.
-	if (!States.IsEmpty()) ApplyLocalDelta(States, {});
-	if (!Removed.IsEmpty())
-	{
-		const TSet<FGuLiSoldierId> Ids(Removed);
-		ReplicatedSoldiers.OnRemoved.Broadcast(Removed);
-		ReplicatedSoldiers.Items.RemoveAll([&](const auto& State) { return Ids.Contains(State.SoldierId); });
-		ApplyLocalDelta({}, Removed);
-	}
-	SnapshotRevision = BatchSequence;
-	OnSoldierStatesChanged.Broadcast(SnapshotRevision);
-}
 
 int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(TConstArrayView<FGuLiSoldierStateItem> States, uint32 Epoch)
 { return ApplyAuthorityState(States,Epoch,true); }
@@ -76,7 +21,7 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthorityState(
 	const uint32 MatchEpoch, const bool bComplete)
 {
 	if (!bComplete && SnapshotMatchEpoch != MatchEpoch) return 0;
-	if (!HasAuthority() || MatchEpoch == 0u)
+	if (MatchEpoch == 0u)
 	{
 		return 0;
 	}
@@ -84,7 +29,6 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthorityState(
 	if (bEpochChanged)
 	{
 		SnapshotMatchEpoch = MatchEpoch;
-		// Keep the RepNotify high-water mark monotonic across matches so a client
 		// can never miss an epoch transition because the replicated value repeats.
 	}
 
@@ -125,8 +69,6 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthorityState(
 		NewItem.DisplacementYaw = SanitizedState.DisplacementYaw;
 		NewItem.DisplacementSimulationTime = SanitizedState.DisplacementSimulationTime;
 
-			// 新增条目需 MarkItemDirty 分配/更新 FastArray 复制标识；业务 SoldierId 与内部复制 ID 不同。
-			ReplicatedSoldiers.MarkItemDirty(NewItem);
 			ChangedStates.Add(NewItem);
 			++ChangedItemCount;
 			continue;
@@ -167,7 +109,6 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthorityState(
 		ExistingItem.DisplacementSimulationTime = SanitizedState.DisplacementSimulationTime;
 
 		// 只给变化条目标脏，静止不变的离散状态不随每次姿态捕获重复发送。
-		ReplicatedSoldiers.MarkItemDirty(ExistingItem);
 		ChangedStates.Add(ExistingItem);
 		++ChangedItemCount;
 	}
@@ -192,8 +133,6 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthorityState(
 	if (bRemovedAny)
 	{
 		ReplicatedSoldiers.OnRemoved.Broadcast(RemovedIds);
-		// 删除改变集合结构，必须标记数组脏；只修改 TArray 本身不足以告知 FastArray 增量系统。
-		ReplicatedSoldiers.MarkArrayDirty();
 	}
 	if (ChangedItemCount > 0 || bEpochChanged)
 	{
@@ -203,28 +142,15 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthorityState(
 		{
 			++SnapshotRevision;
 		}
-		ForceNetUpdate();
 		OnSoldierStatesChanged.Broadcast(SnapshotRevision);
 	}
 	return ChangedItemCount;
-}
-
-// 客户端版本到达后广播本地通知；不能由此推导所有相关复制字段已原子到齐。
-void AGuLiSoldierStateReplicator::OnRep_SnapshotRevision()
-{
-	OnSoldierStatesChanged.Broadcast(SnapshotRevision);
 }
 
 const FGuLiSoldierStateItem* AGuLiSoldierStateReplicator::FindSoldierState(
 	const FGuLiSoldierId SoldierId) const
 {
 	return LocalSoldierStates.Find(SoldierId);
-}
-
-void AGuLiSoldierStateReplicator::PostNetReceive()
-{
-	Super::PostNetReceive();
-	RefreshLocalEpoch();
 }
 
 void AGuLiSoldierStateReplicator::RefreshLocalEpoch()
@@ -284,13 +210,4 @@ void AGuLiSoldierStateReplicator::ApplyLocalDelta(
 TArray<FGuLiSoldierStateItem> AGuLiSoldierStateReplicator::GetAllSoldierStates() const
 {
 	return ReplicatedSoldiers.Items;
-}
-
-int32 AGuLiSoldierStateReplicator::FindItemIndex(const FGuLiSoldierId SoldierId) const
-{
-	return ReplicatedSoldiers.Items.IndexOfByPredicate(
-		[SoldierId](const FGuLiSoldierStateItem& Item)
-		{
-			return Item.SoldierId == SoldierId;
-		});
 }

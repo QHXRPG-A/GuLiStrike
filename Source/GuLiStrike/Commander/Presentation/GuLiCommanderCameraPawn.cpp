@@ -31,7 +31,7 @@ namespace
 AGuLiCommanderCameraPawn::AGuLiCommanderCameraPawn()
 {
     PrimaryActorTick.bCanEverTick = true;
-    bReplicates = true;
+    bReplicates = false;
     bOnlyRelevantToOwner = true;
     SetReplicateMovement(false);
     SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));

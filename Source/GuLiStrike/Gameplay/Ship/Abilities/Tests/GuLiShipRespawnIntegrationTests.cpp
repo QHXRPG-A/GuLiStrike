@@ -63,7 +63,7 @@ namespace GuLiShipRespawnIntegrationTests
 				return false;
 			}
 			World->SetGameState(GameState);
-			GameState->InitializeServerMatchState();
+			GameState->ApplyHybridMatchIdentity(FGuid(0,0,0,9),9);
 
 			Controller = World->SpawnActor<APlayerController>();
 			PlayerState = World->SpawnActor<AGuLiBattlePlayerState>();

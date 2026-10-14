@@ -1,3 +1,4 @@
+#include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiFlightVisualActor.h"
 #include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
@@ -13,7 +14,7 @@ static TAutoConsoleVariable<int32> CVarGuLiClientFlightDataPool(TEXT("gs.Flights
 
 AGuLiFlightVisualActor* UGuLiCombatEffectPresentationSubsystem::AcquireFlightActor(const FGuLiFlightEvent& Event)
 {
-	if (!GetWorld() || GetWorld()->GetNetMode()==NM_DedicatedServer) return nullptr;
+	if (!GetWorld() || !UGuLiNetworkSettings::CanPresent(GetWorld())) return nullptr;
 	if (FreeFlightActors.IsEmpty())
 	{
 		const auto* Settings = GetDefault<UGuLiCombatEffectSettings>();

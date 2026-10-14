@@ -1,7 +1,11 @@
 #include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
 #include "GameFramework/GameStateBase.h"
 #include "Engine/World.h"
-#include "TimerManager.h"
+#include "Gameplay/Capabilities/GuLiLogicalCooldownComponent.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiHybridSessionSubsystem.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Engine/GameInstance.h"
 #include "Net/UnrealNetwork.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
 
@@ -80,6 +84,8 @@ void UGuLiShipHangarCapabilityComponent::OnPrepared()
 	for (const auto& Grant : Grants) GrantsById.Add(Grant.AbilityId, Grant);
 	AppliedLoadoutChecksum = AppliedAbilitySet->ComputeLoadoutChecksum(AppliedLoadout);
 	AbilitySetRevision = WeaponLoadoutRevision = ProjectionSnapshotRevision = 1;
+    if (auto* Clock=GetOwner()->FindComponentByClass<UGuLiLogicalCooldownComponent>())
+    {Clock->OnChanged.RemoveAll(this);Clock->OnChanged.AddUObject(this,&ThisClass::PublishCooldowns);}
 }
 
 void UGuLiShipHangarCapabilityComponent::OnEnabled()
@@ -96,25 +102,28 @@ void UGuLiShipHangarCapabilityComponent::OnSuspended()
 
 void UGuLiShipHangarCapabilityComponent::OnReleased()
 {
+    if (auto* Clock=GetOwner()->FindComponentByClass<UGuLiLogicalCooldownComponent>()) Clock->OnChanged.RemoveAll(this);
 	ServerClearShipAbilities();
-	CombatCoordinator.Reset(); ReplenishmentController.Reset();
-}
 
-bool UGuLiShipHangarCapabilityComponent::InitializeCombatCoordinator(const FGuLiWingmanCombatContext& Context, FString& Error)
-{
-	CombatCoordinator = MakeUnique<FGuLiWingmanCombatCoordinator>();
-	return CombatCoordinator->Initialize(Context, &Error);
+    HybridSpawns.Reset();HybridReplenishment.Reset();NextHybridSpawnTick=0;
 }
-void UGuLiShipHangarCapabilityComponent::ResetCombatCoordinator() { CombatCoordinator.Reset(); }
 
 void UGuLiShipHangarCapabilityComponent::InitializeShipActorInfo(AActor* ShipActor)
 {
 	check(ShipActor == GetOwner());
 	bInitializedOnAuthority |= ShipActor->HasAuthority();
+    if (auto* Clock=ShipActor->FindComponentByClass<UGuLiLogicalCooldownComponent>())
+    {Clock->OnChanged.RemoveAll(this);Clock->OnChanged.AddUObject(this,&ThisClass::PublishCooldowns);}
 }
 
 bool UGuLiShipHangarCapabilityComponent::IsOwnerActorAuthoritative() const
 {
+    if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+    {
+        const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());
+        const auto* Session=GetWorld()->GetGameInstance()->GetSubsystem<UGuLiHybridSessionSubsystem>();
+        return bInitializedOnAuthority && Binding && Session && Binding->GetState().SimulationOwner==Session->GetLocalPlayerId();
+    }
 	return bInitializedOnAuthority && GetOwner()->HasAuthority();
 }
 
@@ -145,8 +154,9 @@ bool UGuLiShipHangarCapabilityComponent::ServerApplyAbilitySet(UGuLiShipAbilityS
 void UGuLiShipHangarCapabilityComponent::ServerClearShipAbilities()
 {
 	SetActiveAbilityInputEnabled(false);
-	for (auto& Pair : Cooldowns) GetWorld()->GetTimerManager().ClearTimer(Pair.Value.Timer);
-	Cooldowns.Reset();
+    if (auto* Clock=GetOwner()->FindComponentByClass<UGuLiLogicalCooldownComponent>();Clock && bOwnsCooldownDomain)
+    {Clock->ClearDomain(CooldownDomain());}
+	bOwnsCooldownDomain=false;
 	CooldownViews.Reset();
 	GrantsById.Reset();
 	IdsByWeaponBinding.Reset();
@@ -317,39 +327,37 @@ bool UGuLiShipHangarCapabilityComponent::ServerTryReserveWeaponCooldown(FName Gr
 {
 	if (!IsOwnerActorAuthoritative() || !IsCapabilityEnabled() || Group.IsNone() || !Reservation.IsValid()
 		|| !FMath::IsFinite(Seconds) || Seconds <= 0 || IsWeaponCooldownActive(Group)) return false;
-	auto& Cooldown = Cooldowns.Add(Group);
-	Cooldown.Reservation = Reservation;
-	Cooldown.EndsAt = GetWorld()->GetTimeSeconds() + Seconds;
-	GetWorld()->GetTimerManager().SetTimer(Cooldown.Timer, FTimerDelegate::CreateWeakLambda(this, [this, Group, Reservation]()
-	{
-		const auto* Current = Cooldowns.Find(Group);
-		if (Current && Current->Reservation == Reservation) { Cooldowns.Remove(Group); PublishCooldowns(); }
-	}), Seconds, false);
-	PublishCooldowns();
-	return true;
+    auto* Clock=GetOwner()->FindComponentByClass<UGuLiLogicalCooldownComponent>();
+    const bool Reserved=Clock && Clock->Reserve(CooldownDomain(),Group,Reservation,Seconds);
+    bOwnsCooldownDomain|=Reserved;return Reserved;
 }
 bool UGuLiShipHangarCapabilityComponent::ServerRollbackWeaponCooldown(FName Group, const FGuid& Reservation)
 {
 	if (!IsOwnerActorAuthoritative()) return false;
-	const auto* Current = Cooldowns.Find(Group);
-	if (!Current || Current->Reservation != Reservation) return false;
-	GetWorld()->GetTimerManager().ClearTimer(Cooldowns.FindChecked(Group).Timer);
-	Cooldowns.Remove(Group);
-	PublishCooldowns();
-	return true;
+    auto* Clock=GetOwner()->FindComponentByClass<UGuLiLogicalCooldownComponent>();
+    return Clock && Clock->Rollback(CooldownDomain(),Group,Reservation);
 }
 bool UGuLiShipHangarCapabilityComponent::IsWeaponCooldownActive(FName Group) const
 {
-	if (IsOwnerActorAuthoritative()) return Cooldowns.Contains(Group);
+    if (IsOwnerActorAuthoritative())
+    {const auto* Clock=GetOwner()->FindComponentByClass<UGuLiLogicalCooldownComponent>();return Clock && Clock->IsActive(CooldownDomain(),Group);}
 	const auto* View = CooldownViews.FindByPredicate([Group](const auto& Entry) { return Entry.TimerId == Group; });
-	return View && View->EndsAtServerSeconds > GetWorld()->GetGameState()->GetServerWorldTimeSeconds();
+    const double Now=UGuLiNetworkSettings::IsHybrid(GetWorld())?UGuLiHybridActorComponent::BattleSeconds(GetOwner())
+        :GetWorld()->GetGameState()->GetServerWorldTimeSeconds();
+    return View && View->EndsAtServerSeconds>Now;
+}
+FName UGuLiShipHangarCapabilityComponent::CooldownDomain() const
+{
+    const auto A=GetSourceGroupId().ToString(),B=GetCapabilityId().ToString();
+    return FName(FString::Printf(TEXT("%d:%s%d:%s"),A.Len(),*A,B.Len(),*B));
 }
 void UGuLiShipHangarCapabilityComponent::PublishCooldowns()
 {
 	CooldownViews.Reset();
-	for (const auto& Pair : Cooldowns)
+    const auto* Clock=GetOwner()->FindComponentByClass<UGuLiLogicalCooldownComponent>();
+    if (Clock) for (const auto Name:Clock->GetActiveNames(CooldownDomain()))
 	{
-		auto& View = CooldownViews.AddDefaulted_GetRef(); View.TimerId = Pair.Key; View.EndsAtServerSeconds = Pair.Value.EndsAt;
+        auto& View=CooldownViews.AddDefaulted_GetRef();View.TimerId=Name;View.EndsAtServerSeconds=Clock->EndsAtSeconds(CooldownDomain(),Name);
 	}
 	RuntimeChanged.Broadcast();
 }
@@ -360,8 +368,11 @@ void UGuLiShipHangarCapabilityComponent::BuildRuntimeView(FGuLiShipCapabilityRun
 void UGuLiShipHangarCapabilityComponent::ApplyRuntimeView(const FGuLiShipCapabilityRuntimeView& View) { CooldownViews = View.Timers; }
 
 
-bool UGuLiShipHangarCapabilityComponent::BuildGroupAbilityConfigSnapshot(
-	FGuLiGroupAbilityConfigSnapshot& OutSnapshot) const
+namespace
+{
+bool BuildHangarProjection(const TMap<FGameplayTag,FGuLiShipAbilityGrant>& GrantsById,
+    const FGuLiShipAbilityProjectionContext& ProjectionContext,uint32 AbilitySetRevision,uint32 WeaponLoadoutRevision,
+    uint32 ProjectionSnapshotRevision,bool Enabled,FGuLiGroupAbilityConfigSnapshot& OutSnapshot)
 {
 	OutSnapshot = FGuLiGroupAbilityConfigSnapshot();
 	if (!ProjectionContext.IsWellFormed() || ProjectionSnapshotRevision == 0u)
@@ -394,7 +405,7 @@ bool UGuLiShipHangarCapabilityComponent::BuildGroupAbilityConfigSnapshot(
 	const UGuLiWingmanFormationDefinition* FormationDefinition =
 		FormationGrant ? FormationGrant->FormationDefinition.Get() : nullptr;
 
-	OutSnapshot.bGroupAbilitiesValid = IsCapabilityEnabled() && AbilitySetRevision != 0u && WeaponLoadoutRevision != 0u
+	OutSnapshot.bGroupAbilitiesValid = Enabled && AbilitySetRevision != 0u && WeaponLoadoutRevision != 0u
 		&& FormationGrant && FormationDefinition
 		&& FormationGrant->Slot == EGuLiShipAbilitySlot::Formation;
 	if (OutSnapshot.bGroupAbilitiesValid)
@@ -428,8 +439,8 @@ bool UGuLiShipHangarCapabilityComponent::BuildGroupAbilityConfigSnapshot(
 		for (const FGuLiShipAbilityGrant* Grant : WeaponGrants)
 		{
 			const UGuLiWingmanWeaponDefinition* Definition = Grant ? Grant->WeaponDefinition.Get() : nullptr;
-			const FGuLiWeaponBindingKey Binding = Grant ? BuildWeaponBinding(*Grant) : FGuLiWeaponBindingKey{};
-			const bool bPersistentReady = IsCapabilityEnabled();
+			const FGuLiWeaponBindingKey Binding = Grant ? FGuLiWeaponBindingKey::Wingman(ProjectionContext.MatchEpoch,ProjectionContext.Team,ProjectionContext.OwnerPlayerGuid,ProjectionContext.WingmanTypeId,Grant->GetEffectiveWeaponSlotId()) : FGuLiWeaponBindingKey{};
+			const bool bPersistentReady = Enabled;
 			if (!Grant || !Definition || !Binding.IsWellFormed() || !bPersistentReady)
 			{
 				OutSnapshot.bGroupAbilitiesValid = false;
@@ -490,4 +501,19 @@ bool UGuLiShipHangarCapabilityComponent::BuildGroupAbilityConfigSnapshot(
 
 	OutSnapshot.RefreshHash();
 	return OutSnapshot.IsWellFormed();
+}
+
+}
+bool UGuLiShipHangarCapabilityComponent::BuildGroupAbilityConfigSnapshot(FGuLiGroupAbilityConfigSnapshot& Snapshot) const
+{
+    return BuildHangarProjection(GrantsById,ProjectionContext,AbilitySetRevision,WeaponLoadoutRevision,
+        ProjectionSnapshotRevision,IsCapabilityEnabled(),Snapshot);
+}
+bool UGuLiShipHangarCapabilityComponent::BuildInitialConfiguration(const UGuLiShipHangarDefinition& Definition,
+    const FGuLiShipAbilityProjectionContext& Context,FGuLiGroupAbilityConfigSnapshot& Snapshot)
+{
+    TArray<FGuLiShipAbilityGrant> Grants;FString Error;
+    if (!Context.IsWellFormed() || !Definition.AbilitySet || !Definition.AbilitySet->ResolveLoadout(Definition.Loadout,Grants,&Error)) return false;
+    TMap<FGameplayTag,FGuLiShipAbilityGrant> Index;for (const auto& Grant:Grants) Index.Add(Grant.AbilityId,Grant);
+    return BuildHangarProjection(Index,Context,1,1,3,true,Snapshot) && Snapshot.IsUsableByLeaseOwner();
 }

@@ -8,8 +8,9 @@
 
 bool FGuLiBuildingDefinition::IsUsable() const
 {
-	return (GuLiBuildingPlacementPolicy::IsKnownBuildingType(Type) || Category == EGuLiBuildingCategory::Stronghold)
-		&& (Mesh != nullptr || (Category == EGuLiBuildingCategory::Factory && PresentationClass))
+	return DefinitionId>0
+		&& (Mesh != nullptr || PresentationClass)
+		&& ((ProductionUnitId==0 && ProductionCount==0 && ProductionSeconds==0) || HasProductionCapability())
 		&& !DisplayName.IsEmpty()
 		&& FMath::IsFinite(CollisionExtent.X)
 		&& FMath::IsFinite(CollisionExtent.Y)
@@ -22,7 +23,7 @@ bool FGuLiBuildingPlacementRequest::IsWellFormed() const
 {
 	const FVector Location = DesiredGroundLocation;
 	return ClientRequestId != 0u
-		&& GuLiBuildingPlacementPolicy::IsKnownBuildingType(Type)
+		&& (DefinitionId>0 || (DefinitionId==0 && GuLiBuildingPlacementPolicy::IsKnownBuildingType(Type)))
 		&& FMath::IsFinite(Location.X)
 		&& FMath::IsFinite(Location.Y)
 		&& FMath::IsFinite(Location.Z);
@@ -119,6 +120,7 @@ bool GuLiBuildingPlacementPolicy::AreSameRequest(
 	const FGuLiBuildingPlacementRequest& Rhs)
 {
 	return Lhs.ClientRequestId == Rhs.ClientRequestId
+		&& Lhs.DefinitionId == Rhs.DefinitionId
 		&& Lhs.Type == Rhs.Type
 		&& FVector(Lhs.DesiredGroundLocation).Equals(FVector(Rhs.DesiredGroundLocation), 0.1f)
 		&& Lhs.CompressedYaw == Rhs.CompressedYaw;

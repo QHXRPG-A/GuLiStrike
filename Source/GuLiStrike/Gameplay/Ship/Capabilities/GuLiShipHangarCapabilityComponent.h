@@ -3,8 +3,6 @@
 #include "CoreMinimal.h"
 #include "Gameplay/Ship/Capabilities/GuLiShipCapabilityComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySet.h"
-#include "Battle/Combat/GuLiWingmanCombatCoordinator.h"
-#include "Battle/Combat/GuLiWingmanReplenishmentController.h"
 #include "GuLiShipHangarCapabilityComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FGuLiShipAbilityProjectionChanged);
@@ -36,6 +34,15 @@ public:
 	virtual void BuildRuntimeView(FGuLiShipCapabilityRuntimeView& View) const override;
 	virtual void ApplyRuntimeView(const FGuLiShipCapabilityRuntimeView& View) override;
 	virtual bool RequestActivation(FName ActionId, FString& Error) override;
+	virtual uint32 GetPrivateStateVersion() const override { return 2; }
+    virtual void AdvanceHybrid(uint64 LogicalTick,double DeltaSeconds) override;
+    const FString& GetHybridMemberStatus() const { return HybridMemberStatus; }
+    uint64 GetHybridAdvanceTick() const { return HybridAdvanceTick; }
+    int32 GetHybridPendingMemberCount() const { return HybridSpawns.Num(); }
+	virtual uint64 GetConfigurationChecksum(const UDataAsset* Configuration) const override;
+	virtual bool CapturePrivateState(TArray<uint8>& Bytes) const override;
+	virtual bool ValidatePrivateState(TConstArrayView<uint8> Bytes,const UDataAsset* Configuration) const override;
+	virtual bool RestorePrivateState(TConstArrayView<uint8> Bytes) override;
 	void InitializeShipActorInfo(AActor* ShipActor);
 	bool IsOwnerActorAuthoritative() const;
 	bool ServerApplyAbilitySet(UGuLiShipAbilitySet* AbilitySet, const FGuLiShipAbilityLoadoutState& Loadout, FString& Error);
@@ -49,6 +56,8 @@ public:
 	bool SetProjectionContext(const FGuLiShipAbilityProjectionContext& Context);
 	const FGuLiShipAbilityProjectionContext& GetProjectionContext() const { return ProjectionContext; }
 	bool BuildGroupAbilityConfigSnapshot(FGuLiGroupAbilityConfigSnapshot& Snapshot) const;
+    /** Same authored projection for an independent member factory; no actor or world query. */
+    static bool BuildInitialConfiguration(const UGuLiShipHangarDefinition& Definition,const FGuLiShipAbilityProjectionContext& Context,FGuLiGroupAbilityConfigSnapshot& Snapshot);
 	bool ObserveReplicatedGroupAbilityConfig(const FGuLiGroupAbilityConfigSnapshot& Snapshot);
 	uint32 GetAbilitySetRevision() const { return AbilitySetRevision; }
 	uint32 GetWeaponLoadoutRevision() const { return WeaponLoadoutRevision; }
@@ -78,11 +87,7 @@ public:
 	FGuLiShipTriggeredAbilityAuthorized& OnTriggeredAbilityAuthorized() { return TriggeredAbility; }
 	FGuLiShipWeaponAbilityAuthorized& OnWeaponAbilityAuthorized() { return WeaponAbility; }
 	FGuLiShipAbilityPresentationChanged& OnAbilityPresentationChanged() { return PresentationChanged; }
-	FGuLiWingmanCombatCoordinator* GetCombatCoordinator() const { return CombatCoordinator.Get(); }
-	bool InitializeCombatCoordinator(const FGuLiWingmanCombatContext& Context, FString& Error);
-	void ResetCombatCoordinator();
-	FGuLiWingmanReplenishmentController& GetReplenishmentController() { return ReplenishmentController; }
-	const FGuLiWingmanReplenishmentController& GetReplenishmentController() const { return ReplenishmentController; }
+
 protected:
 	virtual void OnPrepared() override;
 	virtual void OnEnabled() override;
@@ -93,6 +98,7 @@ private:
 	void RebuildWeaponBindingIndex();
 	void MarkProjectionChanged();
 	void PublishCooldowns();
+    FName CooldownDomain() const;
 	static uint32 AdvanceRevision(uint32 Revision);
 	UPROPERTY(Transient) TObjectPtr<UGuLiShipAbilitySet> AppliedAbilitySet;
 	UPROPERTY(Transient) FGuLiShipAbilityLoadoutState AppliedLoadout;
@@ -106,13 +112,16 @@ private:
 	uint32 ObservedAbilitySetRevision = 0, ObservedSnapshotRevision = 0;
 	bool bActiveAbilityInputEnabled = true;
 	bool bInitializedOnAuthority = false;
-	struct FCooldown { FTimerHandle Timer; FGuid Reservation; double EndsAt = 0; };
-	TMap<FName, FCooldown> Cooldowns;
+	bool bOwnsCooldownDomain = false;
 	TArray<FGuLiShipCapabilityTimerView> CooldownViews;
 	FGuLiShipAbilityProjectionChanged ProjectionChanged;
 	FGuLiShipTriggeredAbilityAuthorized TriggeredAbility;
 	FGuLiShipWeaponAbilityAuthorized WeaponAbility;
 	FGuLiShipAbilityPresentationChanged PresentationChanged;
-	TUniquePtr<FGuLiWingmanCombatCoordinator> CombatCoordinator;
-	FGuLiWingmanReplenishmentController ReplenishmentController;
+    struct FHybridSpawn {uint8 Slot=0;uint32 Generation=1;FGuid Event;uint64 StartedAt=0;FVector Position=FVector::ZeroVector;float Facing=0;};
+    struct FHybridReplenish {uint32 Generation=0;uint64 DueAt=0;};
+    TMap<uint8,FHybridSpawn> HybridSpawns;
+    TMap<uint8,FHybridReplenish> HybridReplenishment;
+    uint64 NextHybridSpawnTick=0;
+    FString HybridMemberStatus=TEXT("waiting_for_enabled_capability");uint64 HybridAdvanceTick=0;
 };

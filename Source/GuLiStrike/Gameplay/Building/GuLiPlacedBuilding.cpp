@@ -27,7 +27,7 @@ AGuLiPlacedBuilding::AGuLiPlacedBuilding()
 	CreateDefaultSubobject<UGuLiConstructedUnitComponent>(TEXT("ConstructedUnit"));
 	CreateDefaultSubobject<UGuLiBuildingShieldComponent>(TEXT("ShieldSupply"));
 	CreateDefaultSubobject<UGuLiActorDamageReceiverComponent>(TEXT("DamageReceiver"))->bDestroyOwnerOnDeath = false;
-	bReplicates = true;
+	bReplicates = false;
 	bAlwaysRelevant = true;
 	bNetLoadOnClient = false;
 	SetReplicateMovement(false);
@@ -62,15 +62,7 @@ AGuLiPlacedBuilding::AGuLiPlacedBuilding()
 	NavigationModifier->SetNavigationRelevancy(true);
 }
 
-void AGuLiPlacedBuilding::GetLifetimeReplicatedProps(
-	TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(AGuLiPlacedBuilding, BuildingType);
-	DOREPLIFETIME(AGuLiPlacedBuilding, Team);
-	DOREPLIFETIME(AGuLiPlacedBuilding, BuilderPlayerGuid);
-	DOREPLIFETIME(AGuLiPlacedBuilding, DefinitionId);
-}
+
 
 bool AGuLiPlacedBuilding::InitializeBuilding(
 	const EGuLiBuildingType InBuildingType,
@@ -111,7 +103,7 @@ bool AGuLiPlacedBuilding::InitializeFromDefinition(int32 InDefinitionId, EGuLiTe
 }
 void AGuLiPlacedBuilding::SetBuildingTeamAuthority(EGuLiTeam NewTeam)
 {
-	check(HasAuthority()); Team = NewTeam; Lifecycle->RefreshTeam(); FlushNetDormancy(); ForceNetUpdate();
+	check(HasAuthority()); Team = NewTeam; Lifecycle->RefreshTeam();
 }
 FVector AGuLiPlacedBuilding::GetBuildingGroundLocation() const
 {

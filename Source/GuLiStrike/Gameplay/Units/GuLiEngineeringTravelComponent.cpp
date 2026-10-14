@@ -20,11 +20,13 @@
 #include "Navigation/PathFollowingComponent.h"
 #include "Engine/World.h"
 #include "Net/UnrealNetwork.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 
 UGuLiEngineeringTravelComponent::UGuLiEngineeringTravelComponent()
 {
-	SetIsReplicatedByDefault(true);
-	PrimaryComponentTick.bCanEverTick = true;
+	SetIsReplicatedByDefault(false);
+	PrimaryComponentTick.bCanEverTick=false;
 	PrimaryComponentTick.bStartWithTickEnabled = false;
 }
 void UGuLiEngineeringTravelComponent::BeginPlay()
@@ -33,7 +35,6 @@ void UGuLiEngineeringTravelComponent::BeginPlay()
 	if (auto* Registry = GetWorld()->GetSubsystem<UGuLiSceneUISourceRegistry>()) Registry->RegisterSource(GetOwner(), EGuLiSceneUISourceKind::PawnRing);
 	Control = GetOwner()->FindComponentByClass<UGuLiExternalUnitControlComponent>();
 	check(Control && Cast<IGuLiEngineeringVehicle>(GetOwner()));
-	if (GetOwner()->HasAuthority()) SetComponentTickEnabled(true);
 }
 UGuLiResourceWorldSubsystem& UGuLiEngineeringTravelComponent::Resources() const
 { return *GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>(); }
@@ -44,8 +45,8 @@ AAIController& UGuLiEngineeringTravelComponent::Controller() const
 EGuLiTransitOrderResult UGuLiEngineeringTravelComponent::PrepareTransport(
 	const FGuLiStrongholdTransitOrder& Order, FGuLiPreparedTransit& Out) const
 {
-	check(GetOwner()->HasAuthority());
 	using Result = EGuLiTransitOrderResult;
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner())) return Result::Unauthorized;
 	if (!Order.IsWellFormed() || !Resources().IsRuntimeReady()) return Result::InvalidRequest;
 	if (!GetOwner()->FindComponentByClass<UGuLiCombatHealthComponent>()->IsAlive()) return Result::InvalidVehicle;
 	if (Control->AreActionsLocked()) return Result::ActionsLocked;
@@ -65,22 +66,22 @@ EGuLiTransitOrderResult UGuLiEngineeringTravelComponent::PrepareTransport(
 }
 void UGuLiEngineeringTravelComponent::BeginTransport(const FGuLiPreparedTransit& Prepared)
 {
-	check(GetOwner()->HasAuthority() && Prepared.Route.Num() >= 2 && !Control->AreActionsLocked());
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || Prepared.Route.Num()<2 || Control->AreActionsLocked()) return;
 	State = {}; State.JourneyId = FGuid::NewGuid(); State.TransitFieldId = Prepared.FieldId;
 	State.DestinationTerritory = Prepared.Route.Last(); State.FinalGroundTarget = Prepared.ClickLocation;
 	State.ExitCenter = Resources().GetTerritoryGroundLocation(State.DestinationTerritory);
 	PassedNodes = {Prepared.Route[0]}; ExitQueryAccumulator = 0; ExitCandidateCursor=0;
 	Controller().StopMovement();
-	const bool bApplied = Control->ApplyServerState(State.JourneyId,true,true,GetOwner()->GetActorTransform(),false);
+	const bool bApplied = Control->ApplyOwnedState(State.JourneyId,true,true,GetOwner()->GetActorTransform(),false);
 	check(bApplied);
 	OnTransportStarted.Broadcast();
 	const auto& Config = *GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindStrongholdTransit(State.TransitFieldId);
-	StartAirRoute(Prepared.Route,GetOwner()->GetActorLocation(),GetWorld()->GetTimeSeconds(),Config.AscentSeconds,0);
+	StartAirRoute(Prepared.Route,GetOwner()->GetActorLocation(),UGuLiHybridActorComponent::BattleSeconds(GetOwner()),Config.AscentSeconds,0);
 }
 void UGuLiEngineeringTravelComponent::PublishPhase(EGuLiTransitPhase Phase)
 {
-	State.Phase = Phase; OnRep_State(); GetOwner()->ForceNetUpdate();
-	SetComponentTickEnabled(GetOwner()->HasAuthority());
+	State.Phase = Phase; OnRep_State();
+	SetComponentTickEnabled(false);
 }
 void UGuLiEngineeringTravelComponent::StartAirRoute(const TArray<int32>& Route, const FVector& From,
 	double Now, float Ascent, float InitialSpeed)
@@ -199,16 +200,25 @@ bool UGuLiEngineeringTravelComponent::FindExit(FTransform& Transform) const
 }
 void UGuLiEngineeringTravelComponent::ExitTransit(const FTransform& Transform, double Now)
 {
-	const bool bApplied = Control->ApplyServerState(State.JourneyId,false,false,Transform,true); check(bApplied);
+	const bool bApplied = Control->ApplyOwnedState(State.JourneyId,false,false,Transform,true); check(bApplied);
 	State.ExitPosition = Transform.GetLocation(); State.ExitServerTime = Now;
 	PublishPhase(EGuLiTransitPhase::ExitFlash);
 	OnTransportEnded.Broadcast();
 }
-void UGuLiEngineeringTravelComponent::TickComponent(float Dt, ELevelTick TickType,FActorComponentTickFunction* TickFunction)
+void UGuLiEngineeringTravelComponent::AdvanceHybrid(float Dt)
 {
-	Super::TickComponent(Dt,TickType,TickFunction);
-	check(GetOwner()->HasAuthority());
-	const double Now = GetWorld()->GetTimeSeconds();
+	if (UGuLiNetworkSettings::IsHybrid(GetWorld()) && UGuLiHybridActorComponent::HasSimulation(GetOwner())
+		&& ActivateRestoredTravel()) AdvanceTravel(Dt);
+}
+void UGuLiEngineeringTravelComponent::ApplyHybridTransitMotion(const FGuLiStrongholdTransitState& Transit)
+{
+	if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || !UGuLiHybridActorComponent::Find(GetOwner())) return;
+	const bool Changed=State.Phase!=Transit.Phase || State.JourneyId!=Transit.JourneyId || State.StartServerTime!=Transit.StartServerTime;
+	State=Transit; if (Changed) OnRep_State();
+}
+void UGuLiEngineeringTravelComponent::AdvanceTravel(float Dt)
+{
+	const double Now = UGuLiHybridActorComponent::BattleSeconds(GetOwner());
 	if (State.Phase == EGuLiTransitPhase::Ground) { TickGroundMove(); return; }
 	if (State.Phase == EGuLiTransitPhase::ExitFlash)
 	{
@@ -262,15 +272,11 @@ void UGuLiEngineeringTravelComponent::TickComponent(float Dt, ELevelTick TickTyp
 void UGuLiEngineeringTravelComponent::OnRep_State()
 {
 	Vehicle().SetEngineeringPresentationVisible(!State.IsPhased());
-	if (GetNetMode() == NM_DedicatedServer || State.TransitFieldId == 0) return;
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld()) || State.TransitFieldId == 0) return;
 	if (!Presentation)
 	{
 		Presentation = NewObject<UGuLiStrongholdTransitPresentationComponent>(GetOwner());
 		Presentation->RegisterComponent();
 	}
 	Presentation->ApplyState(State);
-}
-void UGuLiEngineeringTravelComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps); DOREPLIFETIME(UGuLiEngineeringTravelComponent,State);
 }

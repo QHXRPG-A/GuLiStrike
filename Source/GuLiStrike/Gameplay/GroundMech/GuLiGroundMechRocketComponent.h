@@ -26,7 +26,6 @@ public:
     virtual void BeginPlay() override;
     virtual void EndPlay(EEndPlayReason::Type Reason) override;
     virtual void TickComponent(float Delta, ELevelTick Type, FActorComponentTickFunction* Function) override;
-    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out) const override;
     void RefreshActorInfo();
     UFUNCTION(BlueprintCallable, Category="Mech|Rocket Jump") void SetRocketJumpInput(bool bHeld);
     UFUNCTION(BlueprintPure, Category="Mech|Rocket Jump") float GetFuelRatio() const;
@@ -44,16 +43,15 @@ public:
     void SetAbilityActive(bool bActive);
     void Interrupt();
     void FinishMovement(float Fuel, bool bThrusting, bool bReplay);
-    void ReceiveInitialFuel(float Fuel);
-    void ConfirmMovementBaseline() { bFuelBaselineReceived = true; }
+    void ApplyHybridInput(bool bHeld);
 private:
+    friend class FGuLiHybridGroundAdapter;
     UAbilitySystemComponent* ASC() const;
     UGuLiGroundMechMovementComponent* Movement() const;
     void CreatePresentation();
     void UpdatePresentation(float Delta);
     void RefreshJetState();
     void ApplyJetPresentation();
-    UFUNCTION() void OnRep_JetActive();
     void DestroyPresentation();
     void ApplyFuelDelta(float Delta);
     UPROPERTY(EditDefaultsOnly, Category="Mech|Rocket Jump") TSoftObjectPtr<UDataTable> SkillTable;
@@ -65,11 +63,11 @@ private:
     UPROPERTY(Transient) TObjectPtr<UNiagaraComponent> RightJet;
     UPROPERTY(Transient) TObjectPtr<UStaticMeshComponent> FuelBar;
     UPROPERTY(Transient) TObjectPtr<UMaterialInstanceDynamic> FuelMID;
-    UPROPERTY(Replicated) bool bReplicatedThrusting = false;
-    UPROPERTY(ReplicatedUsing=OnRep_JetActive) bool bReplicatedJetActive = false;
+    UPROPERTY() bool bReplicatedThrusting = false;
+    UPROPERTY() bool bReplicatedJetActive = false;
     FGameplayAbilitySpecHandle AbilityHandle;
     bool bConfigured = false, bInputHeld = false, bAbilityActive = false;
-    bool bFuelBaselineReceived = false, bShown = false, bJetsActive = false, bJetsCreated = false;
+    bool bShown = false, bJetsActive = false, bJetsCreated = false;
     float FuelBarOpacity = 0.f, LastRatio = -1.f, LastOpacity = -1.f;
     bool bLastThrusting = false;
 };

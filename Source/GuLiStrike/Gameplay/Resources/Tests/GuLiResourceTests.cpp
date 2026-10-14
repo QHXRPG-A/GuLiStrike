@@ -176,43 +176,6 @@ bool FGuLiResourceBakedAssetContractTest::RunTest(const FString& Parameters)
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
-	FGuLiResourceFastArrayStateTest,
-	"GuLiStrike.Resources.Network.PublicDeltaState",
-	GuLiResourceTests::Flags)
-
-bool FGuLiResourceFastArrayStateTest::RunTest(const FString& Parameters)
-{
-	(void)Parameters;
-	GuLiResourceTests::FTransientGameWorldFixture Fixture;
-	if (!Fixture.Initialize(*this))
-	{
-		return false;
-	}
-	AGuLiResourceWorldState* State = Fixture.World->SpawnActor<AGuLiResourceWorldState>();
-	if (!TestNotNull(TEXT("Authority resource state spawns"), State))
-	{
-		return false;
-	}
-	const TArray<EGuLiTeam> Owners = GuLiResourceTests::MakeInitialOwners();
-	State->InitializeAuthority(TEXT("test-layout-hash"), Owners);
-	TestEqual(TEXT("Only north home begins red"),
-		State->GetTerritoryOwner(GuLiResources::ToTerritoryIndex(1, GULI_RESOURCE_BOARD_CENTER)), EGuLiTeam::Red);
-	TestEqual(TEXT("Only south home begins blue"),
-		State->GetTerritoryOwner(GuLiResources::ToTerritoryIndex(GULI_RESOURCE_BOARD_DIMENSION, GULI_RESOURCE_BOARD_CENTER)), EGuLiTeam::Blue);
-	TestEqual(TEXT("Neutral Territory can be reassigned authoritatively"),
-		State->SetTerritoryOwnerAuthority(
-			GuLiResources::ToTerritoryIndex(3, 3), EGuLiTeam::Red), true);
-	TestTrue(TEXT("First ore decrement creates a delta"), State->SetNodeRemainingAuthority(1u, 2u));
-	TestTrue(TEXT("Second ore decrement updates the same delta"), State->SetNodeRemainingAuthority(1u, 1u));
-	TestEqual(TEXT("One changed logical node occupies one FastArray item"), State->GetOreDeltas().Num(), 1);
-	TestEqual(TEXT("FastArray lookup exposes the latest remaining amount"),
-		State->GetNodeRemainingOr(1u, 3u), static_cast<uint8>(1u));
-	TestEqual(TEXT("Untouched nodes retain their baked amount"),
-		State->GetNodeRemainingOr(2u, 3u), static_cast<uint8>(3u));
-	return true;
-}
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FGuLiResourceHISMSwapIndexTest,
 	"GuLiStrike.Resources.Rendering.HISMSwapIndex",
 	GuLiResourceTests::Flags)
@@ -255,7 +218,9 @@ bool FGuLiResourceHISMSwapIndexTest::RunTest(const FString& Parameters)
 	{
 		return false;
 	}
-	State->InitializeAuthority(TEXT("hism-test-layout"), GuLiResourceTests::MakeInitialOwners());
+	TArray<uint8> Remaining;Remaining.Init(3,GULI_RESOURCE_NODE_COUNT);
+	TArray<FVector> Grounds;Grounds.Init(FVector::ZeroVector,GULI_RESOURCE_TERRITORY_COUNT);
+	State->ApplyHybridDirectory(TEXT("hism-test-layout"),GuLiResourceTests::MakeInitialOwners(),Remaining,Grounds);
 	FString Error;
 	if (!TestTrue(FString::Printf(TEXT("6240-node HISM field initializes: %s"), *Error),
 		Field->InitializeField(*Definition, *Config, *State, Error)))

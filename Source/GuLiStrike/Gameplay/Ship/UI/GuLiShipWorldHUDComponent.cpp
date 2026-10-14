@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Ship/UI/GuLiShipWorldHUDComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Commander/UI/GuLiSceneUITypes.h"
 #include "Commander/UI/GuLiSceneUISourceRegistry.h"
 
@@ -121,7 +122,7 @@ void UGuLiShipWorldHUDComponent::HandleOwnerControllerChanged()
 	}
 
 	APlayerController* Controller = Ship ? Cast<APlayerController>(Ship->GetController()) : nullptr;
-	if (!Ship || GetNetMode() == NM_DedicatedServer || !Ship->IsLocallyControlled()
+	if (!Ship || !UGuLiNetworkSettings::CanPresent(GetWorld()) || !Ship->IsLocallyControlled()
 		|| !Controller || !Controller->IsLocalController())
 	{
 		DestroyRuntimeWidgets();
@@ -772,5 +773,5 @@ bool UGuLiShipWorldHUDComponent::ShouldPresent() const
 	const bool bExplicitlyDead = Health && Health->GetHealthState().IsWellFormed()
 		&& !Health->IsAlive();
 	return Ship && Controller && Controller->IsLocalController() && Ship->IsLocallyControlled()
-		&& GetNetMode() != NM_DedicatedServer && !bExplicitlyDead;
+		&& UGuLiNetworkSettings::CanPresent(GetWorld()) && !bExplicitlyDead;
 }

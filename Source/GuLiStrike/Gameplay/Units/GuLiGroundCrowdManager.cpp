@@ -1,5 +1,8 @@
 #include "Gameplay/Units/GuLiGroundCrowdManager.h"
 #include "NavMesh/RecastNavMesh.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Battle/Framework/GuLiBattleGameState.h"
+#include "Engine/World.h"
 
 void UGuLiGroundCrowdObstacle::GetCrowdAgentCollisions(float& Radius, float& HalfHeight) const
 {
@@ -19,6 +22,19 @@ UGuLiGroundCrowdManager::UGuLiGroundCrowdManager(const FObjectInitializer& Initi
 bool UGuLiGroundCrowdManager::IsSuitableNavData(const ANavigationData& NavData) const
 {
 	return NavData.IsA<ARecastNavMesh>() && NavData.GetConfig().Name == TEXT("CommanderSoldier");
+}
+void UGuLiGroundCrowdManager::Tick(float Dt)
+{
+    // Gameplay advancement is driven once per local world step by CommanderTasks.
+}
+void UGuLiGroundCrowdManager::AdvanceHybrid(uint64 At,float Dt)
+{
+	const auto* Battle=GetWorld()?GetWorld()->GetGameState<AGuLiBattleGameState>():nullptr;
+	if (!Battle || !UGuLiNetworkSettings::IsHybrid(GetWorld())) return;
+	const uint64 Epoch=Battle->GetMatchEpoch();
+	if (Epoch!=LastHybridEpoch) {LastHybridEpoch=Epoch; LastHybridTick=0;}
+	if (At<=LastHybridTick) return;
+	LastHybridTick=At; Super::Tick(Dt);
 }
 
 void UGuLiGroundCrowdManager::SetGroundObstacles(TConstArrayView<FGuLiGroundAvoidanceBody> Bodies)

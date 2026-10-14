@@ -3,13 +3,15 @@
 #include "Gameplay/Building/GuLiBuildingCatalog.h"
 #include "Gameplay/Building/GuLiBuildingConstructionVisualComponent.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Engine/World.h"
 #include "Net/UnrealNetwork.h"
 
 UGuLiBuildingLifecycleComponent::UGuLiBuildingLifecycleComponent()
 {
-	SetIsReplicatedByDefault(true);
-	PrimaryComponentTick.bCanEverTick=true;
+	SetIsReplicatedByDefault(false);
+	PrimaryComponentTick.bCanEverTick=false;
 	PrimaryComponentTick.bStartWithTickEnabled=false;
 	PrimaryComponentTick.TickInterval=.1f;
 }
@@ -17,7 +19,7 @@ void UGuLiBuildingLifecycleComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	// Local presentation is automatic for every lifecycle owner, including future Actor classes.
-	if (GetOwner()->GetNetMode() != NM_DedicatedServer
+	if (UGuLiNetworkSettings::CanPresent(GetWorld())
 		&& !GetOwner()->FindComponentByClass<UGuLiBuildingConstructionVisualComponent>())
 	{
 		auto* Visual = NewObject<UGuLiBuildingConstructionVisualComponent>(GetOwner(), NAME_None, RF_Transient);
@@ -28,17 +30,16 @@ void UGuLiBuildingLifecycleComponent::BeginPlay()
 		if (auto* Health = GetOwner()->FindComponentByClass<UGuLiCombatHealthComponent>())
 			Health->OnDeath.AddDynamic(this, &ThisClass::HandleDeath);
 	if (State.InstanceId) RegisterInstance();
+	if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+		Hybrid->OnTransactionCompleted.AddDynamic(this,&ThisClass::HandleHybridTransaction);
 }
 void UGuLiBuildingLifecycleComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
 	if (auto* Registry = GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()) Registry->Unregister(*this);
+	if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) Hybrid->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::HandleHybridTransaction);
 	Super::EndPlay(Reason);
 }
-void UGuLiBuildingLifecycleComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(UGuLiBuildingLifecycleComponent, State);
-}
+
 const FGuLiBuildingDefinition& UGuLiBuildingLifecycleComponent::GetDefinition() const
 {
 	const auto* Definition = UGuLiBuildingCatalog::LoadDefaultCatalog()->FindById(State.DefinitionId);
@@ -57,24 +58,18 @@ void UGuLiBuildingLifecycleComponent::InitializeBuilding(int32 DefinitionId, int
 	EGuLiBuildingOrigin Origin, bool bCompleted, const FGuid& Builder)
 {
 	check(GetOwner()->HasAuthority() && State.InstanceId == 0);
-	State.InstanceId = GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->AllocateInstanceId();
+	const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());
+	State.InstanceId = Binding ? Binding->GetState().Ordinal : GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->AllocateInstanceId();
+	check(State.InstanceId);
 	State.DefinitionId = DefinitionId; State.TerritoryIndex = TerritoryIndex; State.Origin = Origin;
 	State.BuilderGuid = Builder;
 	State.Phase = bCompleted ? EGuLiBuildingPhase::Completed : EGuLiBuildingPhase::UnderConstruction;
 	State.WorkDone = bCompleted ? GetDefinition().ConstructionWork : 0;
-	if (auto* Health = GetOwner()->FindComponentByClass<UGuLiCombatHealthComponent>())
-	{
-		FGuLiTargetHandle Target;
-		Target.Kind = EGuLiTargetKind::GroundActor; Target.AuthorityId = FGuid::NewGuid();
-		Target.Generation = 1; Target.LocalId = State.InstanceId;
-		Health->ConfigureServerTarget(Target, GetTeam());
-		Health->InitializeServerHealth(GetDefinition().MaxHealth);
-		Health->InitializeServerShield(GetDefinition().MaxShield);
-	}
+
 	if (GetDefinition().Category == EGuLiBuildingCategory::Stronghold) GetOwner()->SetCanBeDamaged(false);
 	if (HasBegunPlay()) RegisterInstance();
 	OnConstructionStateChanged.Broadcast();
-	GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
+
 }
 void UGuLiBuildingLifecycleComponent::RegisterInstance()
 {
@@ -99,8 +94,15 @@ void UGuLiBuildingLifecycleComponent::OnRep_State()
 void UGuLiBuildingLifecycleComponent::AddConstructionWork(float Work)
 {
 	check(GetOwner()->HasAuthority() && Work >= 0);
+	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner())) return;
 	if (State.Phase != EGuLiBuildingPhase::UnderConstruction) return;
 	State.WorkDone = FMath::Min(State.WorkDone + Work, GetDefinition().ConstructionWork);
+	if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+	{
+		// Work is a simulation fact. The formal completed state waits for its ledger receipt.
+		OnConstructionStateChanged.Broadcast();
+		return;
+	}
 	if (State.WorkDone >= GetDefinition().ConstructionWork)
 	{
 		State.Phase = EGuLiBuildingPhase::Completed;
@@ -109,24 +111,69 @@ void UGuLiBuildingLifecycleComponent::AddConstructionWork(float Work)
 		GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->OnCompleted.Broadcast(*this);
 	}
 	OnConstructionStateChanged.Broadcast();
-	GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
+
+}
+void UGuLiBuildingLifecycleComponent::ApplyHybridState(const FGuLiHybridObjectState& Record,bool Effects)
+{
+	if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || !State.InstanceId || State.InstanceId!=Record.Ordinal) return;
+	const auto Before=State.Phase;
+	const auto* Replacement=Record.Capabilities.Find(TEXT("replacement"));
+	const bool Converted=Record.LifeState==3 && Replacement && !Replacement->Data.IsEmpty();
+	State.Phase=Converted ? EGuLiBuildingPhase::ConvertedToUnit : Record.LifeState>=2 ? EGuLiBuildingPhase::Destroyed
+		: Record.bCompleted ? EGuLiBuildingPhase::Completed : EGuLiBuildingPhase::UnderConstruction;
+	if (State.Phase!=EGuLiBuildingPhase::UnderConstruction)
+	{
+		HybridCompletionEvent.Invalidate(); PendingConstructionWork=0; ActiveContributors.Reset(); State.bHasActiveBuilders=false;
+		if (!ConstructionSlots.IsEmpty() || bSlotsPending || Before==EGuLiBuildingPhase::UnderConstruction)
+		{ ConstructionSlots.Reset(); ++SlotGeneration; bSlotsPending=false; }
+		if (State.Phase==EGuLiBuildingPhase::Completed) State.WorkDone=GetDefinition().ConstructionWork;
+	}
+	SetComponentTickEnabled(false);
+	auto* Registry=GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>();
+	if (State.Phase==EGuLiBuildingPhase::Destroyed || Converted)
+	{
+		Registry->Unregister(*this); GetOwner()->SetActorEnableCollision(false); GetOwner()->SetActorHiddenInGame(true);
+		if (Effects && !Converted && Before!=State.Phase) Registry->OnDestroyed.Broadcast(*this);
+	}
+	else
+	{
+		RegisterInstance(); GetOwner()->SetActorHiddenInGame(false); GetOwner()->SetActorEnableCollision(true);
+		if (Effects && Before!=State.Phase && State.Phase==EGuLiBuildingPhase::Completed) Registry->OnCompleted.Broadcast(*this);
+	}
+	if (Before!=State.Phase) OnConstructionStateChanged.Broadcast();
+}
+void UGuLiBuildingLifecycleComponent::AdvanceHybridConstruction(uint64 LogicalTick)
+{
+	if (LogicalTick%6 || !UGuLiNetworkSettings::IsHybrid(GetWorld()) || !UGuLiHybridActorComponent::HasSimulation(GetOwner())
+		|| State.Phase!=EGuLiBuildingPhase::UnderConstruction) return;
+	const float Work=PendingConstructionWork; PendingConstructionWork=0;
+	if (Work>0) AddConstructionWork(Work);
+	if (State.WorkDone<GetDefinition().ConstructionWork || HybridCompletionEvent.IsValid()) return;
+	const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());
+	auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+	FGuLiHybridObjectRequest Request; Request.Source=Binding->GetObjectKey(); Request.Target=Request.Source;
+	Request.Operation=EGuLiHybridObjectOperation::Complete;
+	Request.Rule=FName(*FString::Printf(TEXT("complete/building/%d"),State.DefinitionId));
+	Request.ExpectedRelationRevision=static_cast<int64>(Binding->GetState().RelationRevision);
+	HybridCompletionEvent=Hybrid->SubmitObjectOperation(Request);
+}
+void UGuLiBuildingLifecycleComponent::HandleHybridTransaction(const FGuLiHybridTransactionResult& Result)
+{
+	if (Result.Event==HybridCompletionEvent && Result.Status!=EGuLiHybridTransactionStatus::Deferred
+		&& Result.Status!=EGuLiHybridTransactionStatus::Paused) HybridCompletionEvent.Invalidate();
 }
 void UGuLiBuildingLifecycleComponent::RefreshTeam()
 {
-	check(GetOwner()->HasAuthority());
-	if (auto* Health = GetOwner()->FindComponentByClass<UGuLiCombatHealthComponent>())
-		Health->ConfigureServerTarget(Health->GetTargetHandle(), GetTeam());
-	GetOwner()->ForceNetUpdate();
+    OnConstructionStateChanged.Broadcast();
 }
 void UGuLiBuildingLifecycleComponent::MarkConvertedToUnit()
 {
-	check(GetOwner()->HasAuthority());
-	if (State.Phase != EGuLiBuildingPhase::Completed) return;
-	State.Phase = EGuLiBuildingPhase::ConvertedToUnit;
-	GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->Unregister(*this);
-	OnConstructionStateChanged.Broadcast();
-	GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
+    if (State.Phase != EGuLiBuildingPhase::Completed) return;
+    State.Phase = EGuLiBuildingPhase::ConvertedToUnit;
+    GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->Unregister(*this);
+    OnConstructionStateChanged.Broadcast();
 }
+
 void UGuLiBuildingLifecycleComponent::HandleDeath()
 {
 	if (State.Phase == EGuLiBuildingPhase::Destroyed || State.Phase == EGuLiBuildingPhase::ConvertedToUnit) return;
@@ -138,6 +185,5 @@ void UGuLiBuildingLifecycleComponent::HandleDeath()
 	Registry.OnDestroyed.Broadcast(*this); Registry.Unregister(*this);
 	GetOwner()->SetActorEnableCollision(false);
 	GetOwner()->SetActorHiddenInGame(true);
-	GetOwner()->SetLifeSpan(2);
-	GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
+
 }

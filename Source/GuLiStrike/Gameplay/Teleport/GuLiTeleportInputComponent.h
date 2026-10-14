@@ -6,6 +6,8 @@
 #include "GuLiTeleportInputComponent.generated.h"
 class AGuLiTeleportFieldActor;
 class AGuLiCommanderPlayerController;
+class UGuLiCommanderSkillComponent;
+struct FGuLiActiveSkillReply;
 
 UCLASS()
 class GULISTRIKE_API UGuLiTeleportHUDWidget : public UUserWidget
@@ -23,7 +25,7 @@ public:
 	UGuLiTeleportInputComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	UFUNCTION(BlueprintCallable, Category="Commander|Teleport") void ActivateAiming();
 	UFUNCTION(BlueprintCallable, Category="Commander|Teleport") void CancelTeleport();
 	UFUNCTION(BlueprintPure, Category="Commander|Teleport") bool IsAiming() const { return bArmed; }
@@ -34,9 +36,9 @@ public:
 	bool IsHUDHovered() const;
 	UFUNCTION(BlueprintPure, Category="Commander|Teleport") FText GetStatusText() const;
 	int32 GetLevel() const;
-	UFUNCTION(Server, Reliable, BlueprintCallable, Category="Commander|Teleport") void ServerSubmit(FGuid RequestId, EGuLiTeleportCommand Command, FGuid CastId, FVector Point);
+	UFUNCTION(BlueprintCallable, Category="Commander|Teleport") void ServerSubmit(FGuid RequestId, EGuLiTeleportCommand Command, FGuid CastId, FVector Point);
 private:
-	UFUNCTION(Client, Reliable) void ClientResult(EGuLiTeleportCommand Command, bool bSucceeded, FGuid CastId, const FString& Error);
+	UFUNCTION() void ClientResult(EGuLiTeleportCommand Command, bool bSucceeded, FGuid CastId, const FString& Error);
 	void ClearLocalAim();
 	AGuLiCommanderPlayerController* GetCommander() const;
 	UPROPERTY(Transient) TObjectPtr<AGuLiTeleportFieldActor> Preview;
@@ -46,4 +48,7 @@ private:
 	bool bArmed = false;
 	bool bSourcePending = false;
 	bool bCancelPending = false;
+    TMap<FGuid,EGuLiTeleportCommand> PendingHybridRequests;
+    TWeakObjectPtr<UGuLiCommanderSkillComponent> BoundSkills;
+    UFUNCTION() void HandleHybridSkillReply(const FGuLiActiveSkillReply& Reply);
 };

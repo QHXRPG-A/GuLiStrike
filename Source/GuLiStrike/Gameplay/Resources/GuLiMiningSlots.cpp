@@ -8,6 +8,8 @@
 #include "NavigationSystem.h"
 #include "Engine/World.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 
 FString UGuLiMiningVehicleManager::GetSlotDebug() const
 {
@@ -31,8 +33,8 @@ FString UGuLiMiningVehicleManager::GetSlotDebug() const
 	{
 		Rejections+=Pair.Value.Num(); RejectionBytes+=Pair.Value.GetAllocatedSize();
 	}
-	return FString::Printf(TEXT("Profiles=%d PendingClusters=%d Slots=%d Occupied=%d AssignedNodes=%d NodeOwners=%d RejectedVehicles=%d RejectedSlots=%d SlotCacheBytes=%llu RejectionCacheBytes=%llu"),
-		SlotProfiles.Num(),Pending,Slots,Occupied,AssignedNodes.Num(),NodeOwners.Num(),RejectedSlots.Num(),Rejections,SlotBytes,RejectionBytes);
+	return FString::Printf(TEXT("Profiles=%d PendingClusters=%d Slots=%d Occupied=%d RejectedVehicles=%d RejectedSlots=%d SlotCacheBytes=%llu RejectionCacheBytes=%llu"),
+		SlotProfiles.Num(),Pending,Slots,Occupied,RejectedSlots.Num(),Rejections,SlotBytes,RejectionBytes);
 }
 TArray<FTransform> UGuLiMiningVehicleManager::GetClusterSlotPoses(int32 ClusterId,int32 UnitTypeId) const
 {
@@ -51,7 +53,9 @@ void UGuLiMiningVehicleManager::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 	Collection.InitializeDependency<UGuLiDynamicObstacleRegistrySubsystem>();
+	if (UGuLiNetworkSettings::IsHybrid(GetWorld())) Collection.InitializeDependency<UGuLiHybridWorldSubsystem>();
 	GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>()->StaticRegionChanged.AddUObject(this,&ThisClass::DirtySlots);
+	InitializeHybridOperations();
 }
 TStatId UGuLiMiningVehicleManager::GetStatId() const { RETURN_QUICK_DECLARE_CYCLE_STAT(UGuLiMiningVehicleManager,STATGROUP_Tickables); }
 void UGuLiMiningVehicleManager::DirtySlots(const FBox& Bounds)
@@ -64,16 +68,16 @@ void UGuLiMiningVehicleManager::DirtySlots(const FBox& Bounds)
 			if (Bounds.ExpandBy(3000).IsInsideXY(Map->Clusters[I].Center))
 			{
 				auto& Cluster = Pair.Value.Clusters[I];
-				for (const auto& Slot : Cluster.Slots) if (auto* Owner=Slot.Owner.Get()) ReleaseNode(*Owner);
 				Cluster.Slots.Reset(); Cluster.NextSample=0; Cluster.bPending=true; ++Cluster.Generation;
 			}
 }
 void UGuLiMiningVehicleManager::Tick(float)
 {
+	PollHybridOperations();
 	if (GetWorld()->GetNetMode()==NM_Client) return;
 	const auto* Resources = GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
 	const auto* Map = Resources ? Resources->GetMapDefinition() : nullptr;
-	if (!Map || !Resources->IsRuntimeReady() || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld())) return;
+	if (!Map || !Resources->IsMiningRuntimeReady() || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld())) return;
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMining_BuildSlots);
 	for (AGuLiMiningVehiclePawn* Vehicle : Vehicles)
 		if (IsValid(Vehicle) && Vehicle->GetUnitTypeId()>0 && Vehicle->GetTravelBounds().IsValid)
@@ -89,7 +93,16 @@ void UGuLiMiningVehicleManager::Tick(float)
 		int32 Inspected=0;
 		while (Inspected++<Profile.Clusters.Num() && Samples<8 && FPlatformTime::Seconds()-Start<.001)
 		{
-			const int32 Index=Profile.BuildCursor; Profile.BuildCursor=(Profile.BuildCursor+1)%Profile.Clusters.Num();
+			// Prepare active work first within the same bounded sample/time budget.
+			// A requested cluster must not wait behind the whole map's cache bake.
+			Profile.RequestedClusters.RemoveAll([&](int32 I){return !Profile.Clusters.IsValidIndex(I) || !Profile.Clusters[I].bPending;});
+			int32 Index;
+			if (!Profile.RequestedClusters.IsEmpty())
+			{
+				Index=Profile.RequestedClusters[0];Profile.RequestedClusters.RemoveAt(0,1,EAllowShrinking::No);
+				Profile.RequestedClusters.Add(Index);
+			}
+			else {Index=Profile.BuildCursor;Profile.BuildCursor=(Profile.BuildCursor+1)%Profile.Clusters.Num();}
 			auto& Slots=Profile.Clusters[Index]; if (!Slots.bPending) continue;
 			const auto& Cluster=Map->Clusters[Index];
 			if (Resources->IsClusterEmpty(Cluster.ClusterId)) { Slots.bPending=false; continue; }
@@ -99,7 +112,7 @@ void UGuLiMiningVehicleManager::Tick(float)
 			FTransform Pose;
 			if (GuLiWorkPosition::ProjectPose(*Vehicle,Cluster.Center+Direction*Radius,(-Direction).Rotation(),Pose))
 			{
-				FGuLiMiningSlot Slot; Slot.Pose=Pose;
+				FGuLiMiningSlot Slot; Slot.Pose=Pose; Slot.OriginalSample=static_cast<uint8>(Sample);
 				for (int32 N=0; N<Cluster.NodeCount; ++N)
 				{
 					const uint32 Id=Map->Nodes[Cluster.FirstNodeIndex+N].NodeId; FVector Target;
@@ -113,6 +126,7 @@ void UGuLiMiningVehicleManager::Tick(float)
 }
 bool UGuLiMiningVehicleManager::ValidateReservation(const AGuLiMiningVehiclePawn& Vehicle, const FGuLiMiningSlotReservation& R) const
 {
+	if (!ValidateHybridReservation(Vehicle,R)) return false;
 	const auto* Profile=SlotProfiles.Find(R.Profile);
 	if (!R.IsValid() || !Profile || !Profile->Clusters.IsValidIndex(R.Cluster-1)) return false;
 	const auto& Cluster=Profile->Clusters[R.Cluster-1];
@@ -126,9 +140,9 @@ bool UGuLiMiningVehicleManager::GetSlotPose(const AGuLiMiningVehiclePawn& Vehicl
 }
 void UGuLiMiningVehicleManager::ReleaseSlot(const AGuLiMiningVehiclePawn& Vehicle, const FGuLiMiningSlotReservation& R)
 {
+	ReleaseHybridSlot(Vehicle,R);
 	if (!ValidateReservation(Vehicle,R)) return;
 	auto& Slot=SlotProfiles.FindChecked(R.Profile).Clusters[R.Cluster-1].Slots[R.Slot]; Slot.Owner.Reset(); Slot.Task=0;
-	ReleaseNode(Vehicle);
 }
 void UGuLiMiningVehicleManager::RejectSlot(AGuLiMiningVehiclePawn& Vehicle, const FGuLiMiningSlotReservation& R,
 	EGuLiMiningSlotFailure Failure)
@@ -138,111 +152,19 @@ void UGuLiMiningVehicleManager::RejectSlot(AGuLiMiningVehiclePawn& Vehicle, cons
 	Rejections.RemoveAll([&](const auto& F) { return F.Slot.Profile==R.Profile && F.Slot.Cluster==R.Cluster && F.Slot.Slot==R.Slot; });
 	const bool bUntilChanged = Failure==EGuLiMiningSlotFailure::NoVisibleNodes
 		|| Vehicle.FindComponentByClass<UGuLiEngineeringTravelComponent>()->WasPathUnreachable();
-	Rejections.Add({R,Vehicle.GetActorLocation(),bUntilChanged ? TNumericLimits<double>::Max() : GetWorld()->GetTimeSeconds()+1,
+	Rejections.Add({R,Vehicle.GetActorLocation(),bUntilChanged ? TNumericLimits<double>::Max() : UGuLiHybridActorComponent::BattleSeconds(&Vehicle)+1,
 		GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>()->GetStaticRevision(),Failure,
 		GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>()->GetClusterRemainingRaw(R.Cluster),
-		Vehicle.GetActorTransform(),GetWorld()->GetTimeSeconds()+1});
+		Vehicle.GetActorTransform(),UGuLiHybridActorComponent::BattleSeconds(&Vehicle)+1});
 	ReleaseSlot(Vehicle,R);
 }
 EGuLiWorkPositionAvailability UGuLiMiningVehicleManager::TryReserveSlot(AGuLiMiningVehiclePawn& Vehicle, uint16 Preferred, uint32 Task,
 	FGuLiMiningSlotReservation& Out, FVector& Position)
 {
-	using Status=EGuLiWorkPositionAvailability;
-	if (!Vehicle.HasAuthority()) return Status::NoValidPositions;
-	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMining_SelectCachedSlot);
-	auto* Profile=SlotProfiles.Find(Vehicle.GetUnitTypeId()); if (!Profile) return Status::Pending;
-	if (Out.Profile==Vehicle.GetUnitTypeId() && ValidateReservation(Vehicle,Out) && Out.Task==Task && (!Preferred || Out.Cluster==Preferred))
-	{ Position=Profile->Clusters[Out.Cluster-1].Slots[Out.Slot].Pose.GetLocation(); return Status::Available; }
-	ReleaseSlot(Vehicle,Out);
-	Out={};
-	const auto* Resources=GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
-	const auto& Map=*Resources->GetMapDefinition();
-	auto& Rejections=RejectedSlots.FindOrAdd(&Vehicle);
-	const auto* Obstacles=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
-	const double Now=GetWorld()->GetTimeSeconds();
-	int32 VisibilityChecks=0;
-	Rejections.RemoveAll([&](auto& F) {
-		if (!F.Slot.IsValid() || !Profile->Clusters.IsValidIndex(F.Slot.Cluster-1)
-		|| F.Slot.Profile!=Vehicle.GetUnitTypeId() || F.Slot.Task!=Task || F.RetryAt<=GetWorld()->GetTimeSeconds()
-		|| (F.Failure==EGuLiMiningSlotFailure::Movement && !F.Start.Equals(Vehicle.GetActorLocation(),100))
-		|| (F.Failure==EGuLiMiningSlotFailure::NoVisibleNodes && F.ClusterRemaining!=Resources->GetClusterRemainingRaw(F.Slot.Cluster))
-		|| F.Slot.Generation!=Profile->Clusters[F.Slot.Cluster-1].Generation
-		|| Obstacles->HasStaticChangesSince(F.NavRevision,FBox(F.Start.ComponentMin(Map.Clusters[F.Slot.Cluster-1].Center),
-			F.Start.ComponentMax(Map.Clusters[F.Slot.Cluster-1].Center)).ExpandBy(2000))) return true;
-		// A moving occluder can leave without changing navigation. Recheck the failed parked
-		// pose, never the vehicle's new location, and never launch a path just to test visibility.
-		if (F.Failure==EGuLiMiningSlotFailure::NoVisibleNodes && Now>=F.NextVisibilityCheck && VisibilityChecks<2)
-		{
-			++VisibilityChecks; F.NextVisibilityCheck=Now+1;
-			const auto& Slots=Profile->Clusters[F.Slot.Cluster-1].Slots;
-			if (!Slots.IsValidIndex(F.Slot.Slot)) return true;
-			for (uint32 Id : Slots[F.Slot.Slot].Nodes)
-			{
-				FVector Target;
-				if (Resources->GetNodeMiningTarget(Id,Target) && Vehicle.CanMineTargetFrom(Target,F.FailedPose)) return true;
-			}
-		}
-		return false;
-	});
-	const int32 Current=Resources->FindTerritoryIndex(Vehicle.GetActorLocation());
-	auto* Travel=Vehicle.FindComponentByClass<UGuLiEngineeringTravelComponent>();
-	for (int32 Pass=0; Pass<(Preferred ? 1 : 2); ++Pass)
-	{
-		bool bPending=false, bOccupied=false;
-		double Best=TNumericLimits<double>::Max(); FGuLiMiningSlotReservation Candidate;
-		for (int32 I=0; I<Profile->Clusters.Num(); ++I)
-		{
-			const auto& Definition=Map.Clusters[I];
-			if ((Preferred && Definition.ClusterId!=Preferred) || (!Preferred && (Definition.TerritoryIndex==Current)!=(Pass==0))
-				|| !Resources->CanTeamMineAt(Vehicle.GetTeam(),Definition.ClusterId)) continue;
-			auto& Cluster=Profile->Clusters[I];
-			if (Cluster.bPending) { bPending=true; continue; }
-			for (int32 S=0; S<Cluster.Slots.Num(); ++S)
-			{
-				auto& Slot=Cluster.Slots[S];
-				if (!Slot.Nodes.ContainsByPredicate([&](uint32 N) { return Resources->GetNodeRemainingRaw(N)>0; })) continue;
-				if (Slot.Owner.IsValid() && Slot.Owner.Get()!=&Vehicle) { bOccupied=true; continue; }
-				if (Rejections.ContainsByPredicate([&](const auto& F) { return F.Slot.Cluster==Definition.ClusterId && F.Slot.Slot==S
-					&& F.Slot.Generation==Cluster.Generation; })) continue;
-				if (!Slot.Nodes.ContainsByPredicate([&](uint32 N) { const auto* Owner=NodeOwners.Find(N);
-					return Resources->GetNodeRemainingRaw(N)>0 && (!Owner || !Owner->IsValid() || Owner->Get()==&Vehicle); }))
-				{ bOccupied=true; continue; }
-				const double Distance=Travel->EstimateWorkDistance(Slot.Pose.GetLocation());
-				if (Distance<Best)
-				{ Best=Distance; Candidate={Vehicle.GetUnitTypeId(),Definition.ClusterId,S,Cluster.Generation,Task}; }
-			}
-		}
-		if (Candidate.IsValid())
-		{
-			auto& Slot=Profile->Clusters[Candidate.Cluster-1].Slots[Candidate.Slot];
-			Slot.Owner=&Vehicle; Slot.Task=Task; Out=Candidate; Position=Slot.Pose.GetLocation(); return Status::Available;
-		}
-		if (bPending) return Status::Pending;
-		if (bOccupied) return Status::Occupied;
-	}
-	return Status::NoValidPositions;
+	return TryReserveHybridSlot(Vehicle,Preferred,Task,Out,Position);
 }
 EGuLiWorkPositionAvailability UGuLiMiningVehicleManager::AssignCoveredNode(AGuLiMiningVehiclePawn& Vehicle,
 	const FGuLiMiningSlotReservation& R, const FTransform& MiningPose, uint32& Node, FVector& Target)
 {
-	using Status=EGuLiWorkPositionAvailability;
-	if (!Vehicle.HasAuthority() || !ValidateReservation(Vehicle,R)) return Status::NoValidPositions;
-	const auto* Resources=GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
-	if (!Resources->CanTeamMineAt(Vehicle.GetTeam(),R.Cluster)) return Status::NoValidPositions;
-	const auto& Nodes=SlotProfiles.FindChecked(R.Profile).Clusters[R.Cluster-1].Slots[R.Slot].Nodes;
-	if (OwnsNode(Vehicle,Node) && Nodes.Contains(Node) && Resources->GetNodeMiningTarget(Node,Target)
-		&& Vehicle.CanMineTargetFrom(Target,MiningPose)) return Status::Available;
-	// Keep the slot while trying its other cached nodes; all allocation is on the authority game thread.
-	ReleaseNode(Vehicle); Node=0;
-	bool bOccupied=false;
-	for (uint32 Id : Nodes)
-	{
-		FVector CandidateTarget;
-		if (!Resources->GetNodeMiningTarget(Id,CandidateTarget) || !Vehicle.CanMineTargetFrom(CandidateTarget,MiningPose)) continue;
-		const auto* Owner=NodeOwners.Find(Id);
-		if (Owner && Owner->IsValid()) { bOccupied=true; continue; }
-		Node=Id; Target=CandidateTarget; NodeOwners.Add(Id,&Vehicle); AssignedNodes.Add(&Vehicle,Id);
-		return Status::Available;
-	}
-	return bOccupied ? Status::Occupied : Status::NoValidPositions;
+	return AssignHybridNode(Vehicle,R,MiningPose,Node,Target);
 }

@@ -37,6 +37,7 @@ namespace
 			Storage.FreeInstanceData(Fragment.Instance);
 		}
 		Fragment.Instance = {};
+		Fragment.bStartAttempted = false;
 	}
 }
 
@@ -77,7 +78,7 @@ void UGuLiCommanderMassStateTreeProcessor::Execute(FMassEntityManager&, FMassExe
 		{
 			const int32 Index = EntityIt;
 			auto& Fragment = Trees[Index];
-			const auto Unit = FGuLiTaskUnitId::Soldier(Identities[Index].SoldierId);
+			const auto Unit = FGuLiTaskUnitId::Soldier(Identities[Index].SoldierId,Chunk.GetWorld());
 			if (!Tasks.HasState(Unit)) { ReleaseInstance(Chunk, Storage, Index, Fragment); continue; }
 			if (!Tasks.NeedsBehaviorStep(Unit)) continue;
 			if (!Fragment.Tree || !Fragment.Tree->IsReadyToRun())

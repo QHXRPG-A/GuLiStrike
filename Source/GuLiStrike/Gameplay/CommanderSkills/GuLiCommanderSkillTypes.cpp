@@ -1,4 +1,14 @@
 #include "Gameplay/CommanderSkills/GuLiCommanderSkillTypes.h"
+#include "Battle/Framework/GuLiBattlePlayerState.h"
+#include "Gameplay/Skills/GuLiSkillTargeting.h"
+
+bool UGuLiCommanderSkillExecutor::ResolveGroundInput(UWorld& World,const FVector& Requested,FVector& Ground) const
+{return GuLiSkillTargeting::ResolveGround(World,Requested,Ground);}
+
+UWorld* FGuLiActiveSkillExecutionContext::GetExecutionWorld() const
+{return ExecutionWorld?ExecutionWorld.Get():Commander?Commander->GetWorld():nullptr;}
+EGuLiTeam FGuLiActiveSkillExecutionContext::GetExecutionTeam() const
+{return ExecutionTeam!=EGuLiTeam::Unassigned?ExecutionTeam:Commander?Commander->GetTeam():EGuLiTeam::Unassigned;}
 
 bool FGuLiActiveSkillRequest::HasSameContent(const FGuLiActiveSkillRequest& Other) const
 {

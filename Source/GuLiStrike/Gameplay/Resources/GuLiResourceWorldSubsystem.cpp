@@ -1,6 +1,10 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
+#include "Gameplay/Stronghold/GuLiHybridControlPoint.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
+#include "Development/GuLiHybridReviewSubsystem.h"
 #include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "Gameplay/Building/GuLiConstructionVehiclePawn.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
@@ -96,21 +100,8 @@ void UGuLiResourceWorldSubsystem::QueryFriendlyFactories(EGuLiTeam Team, const F
 	});
 }
 
-AGuLiConstructionVehiclePawn* UGuLiResourceWorldSubsystem::SpawnConstructionVehicle(EGuLiTeam Team, const FVector& GroundLocation)
-{
-	check(GetWorld()->GetNetMode() != NM_Client);
-	const auto* Unit = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>()->FindSoldierDefinition(EconomyConfig->ConstructionVehicleUnitTypeId);
-	check(Unit);
-	FActorSpawnParameters Params; Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-	auto* Vehicle = GetWorld()->SpawnActor<AGuLiConstructionVehiclePawn>(AGuLiConstructionVehiclePawn::StaticClass(),
-		FTransform(FRotator::ZeroRotator, ProjectAnchorToGround(GroundLocation) + FVector(0,0,130)), Params);
-	if (Vehicle) Vehicle->InitializeVehicle(Team, AllocateControllableActorId(), *Unit);
-	return Vehicle;
-}
-void UGuLiResourceWorldSubsystem::CreditFactoryOutput(EGuLiTeam Team, EGuLiResourceType Type, int32 Amount)
-{
-	GetWorld()->GetSubsystem<UGuLiTeamEconomySubsystem>()->Credit(Team, Type, Amount);
-}
+
+
 
 UGuLiResourceWorldSubsystem::UGuLiResourceWorldSubsystem()
 {
@@ -133,12 +124,24 @@ void UGuLiResourceWorldSubsystem::Initialize(FSubsystemCollectionBase& Collectio
 	Collection.InitializeDependency<UGuLiUnitDataSubsystem>();
 	Collection.InitializeDependency<UGuLiMiningVehicleManager>();
 	Collection.InitializeDependency<UGuLiDynamicObstacleRegistrySubsystem>();
+	if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
+	{
+		if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+		{
+			Hybrid->OnResourceDirectoryChanged.AddUObject(this,&ThisClass::HandleHybridResourceDirectory);
+			Hybrid->OnResourceNodeChanged.AddUObject(this,&ThisClass::HandleHybridResourceNode);
+		}
+	}
 }
 
 void UGuLiResourceWorldSubsystem::Deinitialize()
 {
+	OnResourceSettlement.Clear();
+	if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+	{
+		Hybrid->OnResourceDirectoryChanged.RemoveAll(this); Hybrid->OnResourceNodeChanged.RemoveAll(this);
+	}
 	if (WorldState) { WorldState->OnStateChanged().RemoveAll(this); WorldState->OreNodeChanged.RemoveAll(this); }
-	bEconomyMatchStarted = false;
 	ClusterObstacleHandles.Reset();
 	Factories.Reset();
 	Outposts.Reset();
@@ -171,71 +174,20 @@ void UGuLiResourceWorldSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 		return;
 	}
 	StrongholdTopology.Initialize(MapDefinition->Territories);
-	if (InWorld.GetNetMode() != NM_Client)
-	{
-		if (!SpawnAuthorityActors())
-		{
-			bFatalInitializationError = true;
-			UE_LOG(LogGuLiResources, Error, TEXT("Resource startup blocked: %s"), *InitializationError);
-		}
-	}
+
 }
 
 void UGuLiResourceWorldSubsystem::Tick(const float DeltaTime)
 {
-	(void)DeltaTime;
-	if (!bWorldBeginPlay || !bResourceWorldActive || bFatalInitializationError) return;
-#if !UE_BUILD_SHIPPING
-	if (CVarDrawResourceBoard.GetValueOnGameThread() != 0 && MapDefinition)
-	{
-		for (int32 Line = 0; Line <= GULI_RESOURCE_BOARD_DIMENSION; ++Line)
-		{
-			const float Coordinate = -GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM
-				+ Line * GULI_RESOURCE_TERRITORY_SIZE_CM;
-			for (int32 Segment = 0; Segment < GULI_RESOURCE_BOARD_DIMENSION; ++Segment)
-			{
-				const float Start = -GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM
-					+ Segment * GULI_RESOURCE_TERRITORY_SIZE_CM;
-				const float End = Start + GULI_RESOURCE_TERRITORY_SIZE_CM;
-				FVector VerticalStart = ProjectAnchorToGround(FVector(Coordinate, Start, 0.0f));
-				FVector VerticalEnd = ProjectAnchorToGround(FVector(Coordinate, End, 0.0f));
-				FVector HorizontalStart = ProjectAnchorToGround(FVector(Start, Coordinate, 0.0f));
-				FVector HorizontalEnd = ProjectAnchorToGround(FVector(End, Coordinate, 0.0f));
-				VerticalStart.Z += 100.0f;
-				VerticalEnd.Z += 100.0f;
-				HorizontalStart.Z += 100.0f;
-				HorizontalEnd.Z += 100.0f;
-				DrawDebugLine(GetWorld(), VerticalStart, VerticalEnd, FColor::Cyan, false, 0.0f, 0, 60.0f);
-				DrawDebugLine(GetWorld(), HorizontalStart, HorizontalEnd, FColor::Cyan, false, 0.0f, 0, 60.0f);
-			}
-		}
-		for (int32 TerritoryIndex = 0; TerritoryIndex < MapDefinition->Territories.Num(); ++TerritoryIndex)
-		{
-			const FGuLiTerritoryDefinition& Territory = MapDefinition->Territories[TerritoryIndex];
-			const EGuLiTeam Owner = WorldState
-				? WorldState->GetTerritoryOwner(static_cast<uint8>(TerritoryIndex)) : Territory.InitialOwner;
-			const FColor Color = Owner == EGuLiTeam::Red ? FColor::Red
-				: (Owner == EGuLiTeam::Blue ? FColor::Blue : FColor::Silver);
-			FVector LabelLocation = Territory.OutpostGroundLocation;
-			LabelLocation.Z += 1600.0f;
-			const TCHAR* OwnerText = Owner == EGuLiTeam::Red ? TEXT("Red")
-				: (Owner == EGuLiTeam::Blue ? TEXT("Blue") : TEXT("Neutral"));
-			DrawDebugString(GetWorld(), LabelLocation,
-				FString::Printf(TEXT("%s [%s]"), *Territory.TerritoryId.ToString(), OwnerText),
-				nullptr, Color, 0.0f, true, 2.0f);
-		}
-	}
-#endif
-	if (GetWorld()->GetNetMode() == NM_Client)
-	{
-		DiscoverReplicatedActors();
-		if (bReplicatedStateDirty) ApplyReplicatedState();
-	}
-	else
-	{
-		UpdateNavigationReadiness();
-		if (bRuntimeReady) TickStrongholds(DeltaTime);
-	}
+    if (!bWorldBeginPlay || !bResourceWorldActive || bFatalInitializationError || !bHybridDirectoryDirty) return;
+    FString Layout; int32 Nodes=0; uint64 Revision=0;
+    auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    if (!Hybrid || !Hybrid->GetResourceDirectoryMetadata(Layout,Nodes,Revision)) return;
+    if (!RefreshHybridQueryScene())
+    {
+        bFatalInitializationError=true; Hybrid->Suspend(InitializationError);
+        UE_LOG(LogGuLiResources,Error,TEXT("Resource query initialization failed: %s"),*InitializationError);
+    }
 }
 
 TStatId UGuLiResourceWorldSubsystem::GetStatId() const
@@ -277,248 +229,119 @@ bool UGuLiResourceWorldSubsystem::ValidateCurrentMap() const
 		|| RuntimePackage.EndsWith(MapDefinition->MapPackage.ToString());
 }
 
-bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
-{
-	UWorld* World = GetWorld();
-	if (!World || !MapDefinition || !EconomyConfig || bAuthorityActorsSpawned) return false;
-	const FResourceNavigationBuildBatch NavigationBatch(World);
-	if (const UNavigationSystemV1* Navigation = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
-		Navigation && Navigation->GetNumRunningBuildTasks() == 0)
-	{
-		// UE restricts fully asynchronous gathering to one tile worker. Before input is
-		// enabled, gather initial dirty geometry on the game thread and rasterize in parallel.
-		// Never switch modes underneath an already running tile task.
-		for (TActorIterator<ARecastNavMesh> It(World); It; ++It)
-		{
-			if (It->bDoFullyAsyncNavDataGathering)
-			{
-				InitialSynchronousGatheringNavData.Add(*It);
-				It->bDoFullyAsyncNavDataGathering = false;
-			}
-		}
-		UE_LOG(LogGuLiResources, Display, TEXT("[GULI_NAV_STARTUP] initial_dynamic_updates_parallel nav_data=%d"),
-			InitialSynchronousGatheringNavData.Num());
-	}
-	FActorSpawnParameters Params;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	WorldState = World->SpawnActor<AGuLiResourceWorldState>(
-		AGuLiResourceWorldState::StaticClass(), FTransform::Identity, Params);
+
+bool UGuLiResourceWorldSubsystem::RefreshHybridQueryScene()
+{
+	auto* World=GetWorld(); auto* Hybrid=World?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
+	FString Layout; int32 Nodes=0; uint64 Revision=0;
+	if (!Hybrid || !MapDefinition || !EconomyConfig || !Hybrid->GetResourceDirectoryMetadata(Layout,Nodes,Revision)
+		|| Layout!=MapDefinition->LayoutHash || Nodes!=MapDefinition->Nodes.Num())
+	{ InitializationError=TEXT("Committed resource catalog does not match the local baked layout"); return false; }
+	TArray<uint8> Remaining; Remaining.SetNum(Nodes);
+	for (const auto& Node:MapDefinition->Nodes)
+		if (!Remaining.IsValidIndex(Node.NodeId-1) || !Hybrid->GetResourceNodeRemaining(Node.NodeId,Remaining[Node.NodeId-1])
+			|| Remaining[Node.NodeId-1]>Node.InitialAmount)
+		{ InitializationError=TEXT("Committed ore directory is incomplete or exceeds the baked amount"); return false; }
+	TArray<EGuLiTeam> Owners; TArray<FVector> GroundLocations;
+	for (int32 I=0;I<MapDefinition->Territories.Num();++I)
+	{
+		Owners.Add(Hybrid->GetResourceTerritoryOwner(I)); GroundLocations.Add(MapDefinition->Territories[I].OutpostGroundLocation);
+	}
+	const FResourceNavigationBuildBatch NavigationBatch(World);
+	FActorSpawnParameters Params; Params.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	if (!WorldState)
 	{
-		InitializationError = TEXT("Could not spawn the replicated resource world state.");
-		return false;
+		WorldState=World->SpawnActor<AGuLiResourceWorldState>(AGuLiResourceWorldState::StaticClass(),FTransform::Identity,Params);
+		if (!WorldState) { InitializationError=TEXT("Could not create the local resource query projection"); return false; }
+		WorldState->SetReplicates(false);
+		WorldState->OnStateChanged().AddUObject(this,&ThisClass::HandleWorldStateChanged);
+		WorldState->OreNodeChanged.AddUObject(this,&ThisClass::HandleOreNodeChanged);
 	}
-	TArray<EGuLiTeam> Owners;
-	Owners.Reserve(MapDefinition->Territories.Num());
-	for (const FGuLiTerritoryDefinition& Territory : MapDefinition->Territories)
-		Owners.Add(Territory.InitialOwner);
-	WorldState->InitializeAuthority(MapDefinition->LayoutHash, Owners);
-	MaintenanceAccount = FGuid::NewGuid();
-	WorldState->OnStateChanged().AddUObject(this, &ThisClass::HandleWorldStateChanged);
-	WorldState->OreNodeChanged.AddUObject(this, &ThisClass::HandleOreNodeChanged);
-
-	NodeRemaining.SetNum(MapDefinition->Nodes.Num());
-	for (int32 Index = 0; Index < MapDefinition->Nodes.Num(); ++Index)
-		NodeRemaining[Index] = MapDefinition->Nodes[Index].InitialAmount;
-	ClusterRemaining.Init(GULI_RESOURCE_RAW_PER_CLUSTER, MapDefinition->Clusters.Num());
-	FGuLiResourceAmounts StartingBalance;
-	StartingBalance.Blue = EconomyConfig->InitialBlueInventory;
-	StartingBalance.Red = EconomyConfig->InitialRedInventory;
-	UGuLiTeamEconomySubsystem* Economy = World->GetSubsystem<UGuLiTeamEconomySubsystem>();
-	check(Economy);
-	Economy->BeginMatch(StartingBalance, StartingBalance);
-	bEconomyMatchStarted = true;
-
-	OreField = World->SpawnActor<AGuLiOreFieldActor>(
-		AGuLiOreFieldActor::StaticClass(), FTransform::Identity, Params);
-	FString FieldError;
-	if (!OreField || !OreField->InitializeField(*MapDefinition, *EconomyConfig, *WorldState, FieldError))
+	if (!WorldState->ApplyHybridDirectory(Layout,Owners,Remaining,GroundLocations))
+	{ InitializationError=TEXT("Could not apply the committed resource query projection"); return false; }
+	NodeRemaining=MoveTemp(Remaining); ClusterRemaining.Init(0,MapDefinition->Clusters.Num());
+	for (int32 I=0;I<Nodes;++I) ClusterRemaining[MapDefinition->Nodes[I].ClusterId-1]+=NodeRemaining[I];
+	if (UGuLiNetworkSettings::CanPresent(World))
 	{
-		InitializationError = FString::Printf(TEXT("Could not initialize ore HISM field: %s"), *FieldError);
-		return false;
-	}
-	bOreFieldInitialized = true;
-
-	for (int32 Index = 0; Index < MapDefinition->Territories.Num(); ++Index)
-	{
-		const FGuLiTerritoryDefinition& Territory = MapDefinition->Territories[Index];
-		FVector Location = Territory.OutpostGroundLocation;
-		Location.Z += 500.0f;
-		AGuLiTerritoryOutpostActor* Outpost = World->SpawnActor<AGuLiTerritoryOutpostActor>(
-			AGuLiTerritoryOutpostActor::StaticClass(), FTransform(FRotator::ZeroRotator, Location), Params);
-		if (!Outpost)
+		if (!OreField)
 		{
-			InitializationError = TEXT("Could not spawn all canonical Territory landmarks.");
-			return false;
+			OreField=World->SpawnActor<AGuLiOreFieldActor>(AGuLiOreFieldActor::StaticClass(),FTransform::Identity,Params);
+			if (!OreField) { InitializationError=TEXT("Could not create the ore presentation field"); return false; }
+			OreField->SetReplicates(false);
+			if (!OreField->InitializeField(*MapDefinition,*EconomyConfig,*WorldState,InitializationError)) return false;
+			bOreFieldInitialized=true;
 		}
-		Outpost->InitializeOutpost(static_cast<uint8>(Index), Territory.TerritoryId, Territory.InitialOwner);
-		Outposts.Add(Outpost);
-		WorldState->SetTerritoryGroundAuthority(Index, Outpost->GetBuildingGroundLocation());
+		else OreField->ApplyReplicatedState();
 	}
-
-	ClusterObstacles.Reserve(MapDefinition->Clusters.Num());
-	ClusterObstacleHandles.Reserve(MapDefinition->Clusters.Num());
-	UGuLiDynamicObstacleRegistrySubsystem* DynamicObstacles =
-		World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
-	check(DynamicObstacles);
-	for (const FGuLiResourceClusterDefinition& Cluster : MapDefinition->Clusters)
+	if (ClusterObstacles.IsEmpty())
 	{
-		const FTransform ObstacleTransform(FRotator::ZeroRotator, Cluster.Center);
-		AGuLiOreClusterObstacleActor* Obstacle = World->SpawnActorDeferred<AGuLiOreClusterObstacleActor>(
-			AGuLiOreClusterObstacleActor::StaticClass(),
-			ObstacleTransform, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-		if (!Obstacle)
+		auto* Obstacles=World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
+		if (!Obstacles) { InitializationError=TEXT("Missing resource collision/navigation registry"); return false; }
+		ClusterObstacleHandles.SetNum(MapDefinition->Clusters.Num());
+		for (const auto& Cluster:MapDefinition->Clusters)
 		{
-			InitializationError = TEXT("Could not spawn all 240 cluster obstacles.");
-			return false;
-		}
-		Obstacle->InitializeObstacle(Cluster.ClusterId, Cluster.ObstacleRadiusCentimeters);
-		Obstacle->FinishSpawning(ObstacleTransform);
-		ClusterObstacles.Add(Obstacle);
-		ClusterObstacleHandles.Add(DynamicObstacles->RegisterObstacle(
-			Cluster.Center, Cluster.ObstacleRadiusCentimeters));
-	}
-
-	auto SpawnFactoryAndVehicles = [&](const EGuLiTeam Team, const FVector& FactoryAnchor,
-		const FVector& VehicleAnchor) -> bool
-	{
-		const FVector InteriorDirection = FVector(-FactoryAnchor.X, -FactoryAnchor.Y, 0.0f).GetSafeNormal();
-		check(!InteriorDirection.IsNearlyZero());
-		const FVector FactoryLocation = ProjectAnchorToGround(FactoryAnchor);
-		const FVector DockPoint = ProjectAnchorToGround(
-			FactoryAnchor + InteriorDirection * EconomyConfig->FactoryDockOffsetCentimeters);
-		AGuLiResourceFactoryActor* Factory = World->SpawnActor<AGuLiResourceFactoryActor>(
-			AGuLiResourceFactoryActor::StaticClass(),
-			FTransform(FRotator(0.0f, Team == EGuLiTeam::Red ? -90.0f : 90.0f, 0.0f),
-				FactoryLocation), Params);
-		if (!Factory) return false;
-		Factory->InitializeFactory(Team, *EconomyConfig, DockPoint);
-		Factories.AddUnique(Factory);
-		for (int32 Index = 0; Index < EconomyConfig->InitialMiningVehiclesPerTeam; ++Index)
-		{
-			FVector VehicleLocation = ProjectAnchorToGround(
-				VehicleAnchor + GuLiResources::InitialEngineeringVehicleOffset(Team, Index, false));
-			VehicleLocation.Z += 130.0f;
-			if (!World->GetSubsystem<UGuLiMiningVehicleManager>()->SpawnMiningVehicle(Factory,
-				FTransform(FRotator(0.0f, Team == EGuLiTeam::Red ? -90.0f : 90.0f, 0.0f), VehicleLocation)))
-				return false;
-		}
-		return true;
-	};
-	if (!SpawnFactoryAndVehicles(EGuLiTeam::Red, MapDefinition->SpawnAnchors.RedFactory,
-			MapDefinition->SpawnAnchors.RedAssembly)
-		|| !SpawnFactoryAndVehicles(EGuLiTeam::Blue, MapDefinition->SpawnAnchors.BlueFactory,
-			MapDefinition->SpawnAnchors.BlueAssembly))
-	{
-		InitializationError = TEXT("Could not spawn both team factories and mining vehicles.");
-		return false;
-	}
-	for (int32 Index = 0; Index < EconomyConfig->InitialConstructionVehiclesPerTeam; ++Index)
-	{
-		if (!SpawnConstructionVehicle(EGuLiTeam::Red, MapDefinition->SpawnAnchors.RedAssembly
-				+ GuLiResources::InitialEngineeringVehicleOffset(EGuLiTeam::Red, Index, true))
-			|| !SpawnConstructionVehicle(EGuLiTeam::Blue, MapDefinition->SpawnAnchors.BlueAssembly
-				+ GuLiResources::InitialEngineeringVehicleOffset(EGuLiTeam::Blue, Index, true)))
-		{
-			InitializationError = FString::Printf(TEXT("Could not spawn both teams' initial construction vehicle %d."), Index);
-			return false;
+			const FTransform Transform(FRotator::ZeroRotator,Cluster.Center);
+			auto* Proxy=World->SpawnActorDeferred<AGuLiOreClusterObstacleActor>(AGuLiOreClusterObstacleActor::StaticClass(),Transform,
+				nullptr,nullptr,ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+			if (!Proxy) { InitializationError=TEXT("Could not create all resource collision/navigation proxies"); return false; }
+			Proxy->SetReplicates(false); Proxy->InitializeObstacle(Cluster.ClusterId,Cluster.ObstacleRadiusCentimeters);
+			Proxy->FinishSpawning(Transform); ClusterObstacles.Add(Proxy);
 		}
 	}
-	RefreshEncirclement();
-	bAuthorityActorsSpawned = true;
-	NavigationWaitStartSeconds = FPlatformTime::Seconds();
-	UE_LOG(LogGuLiResources, Display,
-		TEXT("Initialized 49 territories, 240 ore clusters, 6240 nodes, 24 HISMs, 2 factories, %d miners and %d builders; waiting for dynamic navigation."),
-		EconomyConfig->InitialMiningVehiclesPerTeam * 2, EconomyConfig->InitialConstructionVehiclesPerTeam * 2);
+	for (int32 I=0;I<ClusterObstacles.Num();++I) RefreshHybridClusterObstacle(I);
+	bHybridQuerySceneReady=true; bHybridDirectoryDirty=false; bReplicatedStateDirty=false;
+    TArray<FGuLiHybridObjectState> Objects;Hybrid->GetObjects(Objects);
+    for (const auto& O:Objects) if (GuLiHybridControlPoint::Read(O).Index!=INDEX_NONE) ApplyHybridControlPoint(O,false);
+	// Formal miners, factories, territory lifecycle and supply have their own grants.
+	// An ore query projection alone must not open the full resource gameplay gate.
+	UE_LOG(LogGuLiResources,Display,TEXT("Hybrid ore query applied nodes=%d collision_clusters=%d visual_components=%d revision=%llu"),
+		Nodes,ClusterObstacles.Num(),OreField?OreField->GetHISMComponentCount():0,Revision);
 	return true;
 }
-
-void UGuLiResourceWorldSubsystem::DiscoverReplicatedActors()
+void UGuLiResourceWorldSubsystem::HandleHybridResourceDirectory() { bHybridDirectoryDirty=true; }
+bool UGuLiResourceWorldSubsystem::IsMiningRuntimeReady() const
 {
-	if (!WorldState)
-	{
-		for (TActorIterator<AGuLiResourceWorldState> It(GetWorld()); It; ++It)
-		{
-			WorldState = *It;
-			WorldState->OnStateChanged().AddUObject(this, &ThisClass::HandleWorldStateChanged);
-			WorldState->OreNodeChanged.AddUObject(this, &ThisClass::HandleOreNodeChanged);
-			bReplicatedStateDirty = true;
-			break;
-		}
-	}
-	if (!OreField)
-	{
-		for (TActorIterator<AGuLiOreFieldActor> It(GetWorld()); It; ++It)
-		{
-			OreField = *It;
-			bReplicatedStateDirty = true;
-			break;
-		}
-	}
-	if (Factories.IsEmpty())
-		for (TActorIterator<AGuLiResourceFactoryActor> It(GetWorld()); It; ++It) Factories.Add(*It);
+    if (bFatalInitializationError) return false;
+    if (const auto* Review=GetWorld()->GetSubsystem<UGuLiHybridReviewSubsystem>();Review && !Review->IsAutonomousMiningEnabled()) return false;
+    const auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    // A rebuilt tile elsewhere does not revoke a valid mining order or stop
+    // extraction. Slot preparation and travel defer their own navigation work.
+    return bHybridMiningSimulationSupported && bHybridQuerySceneReady && H && H->IsWorldReady();
 }
-
-void UGuLiResourceWorldSubsystem::ApplyReplicatedState()
+void UGuLiResourceWorldSubsystem::HandleHybridResourceNode(uint32 NodeId,uint8 Remaining)
 {
-	if (!WorldState || !MapDefinition || !EconomyConfig || !OreField) return;
-	if (!WorldState->GetLayoutHash().IsEmpty()
-		&& !WorldState->GetLayoutHash().Equals(MapDefinition->LayoutHash, ESearchCase::CaseSensitive))
+	if (!bHybridQuerySceneReady || bHybridDirectoryDirty) return;
+	if (!WorldState || !WorldState->ApplyHybridNodeRemaining(NodeId,Remaining))
 	{
-		bFatalInitializationError = true;
-		InitializationError = TEXT("Server/client resource layout hash mismatch; client will not enter Ready.");
-		UE_LOG(LogGuLiResources, Error, TEXT("%s"), *InitializationError);
-		return;
-	}
-	if (!bOreFieldInitialized)
-	{
-		FString Error;
-		if (!OreField->InitializeField(*MapDefinition, *EconomyConfig, *WorldState, Error))
-		{
-			bFatalInitializationError = true;
-			InitializationError = Error;
-			return;
-		}
-		bOreFieldInitialized = true;
-	}
-	for (int32 Index = 0; Index < MapDefinition->Nodes.Num(); ++Index)
-		NodeRemaining[Index] = MapDefinition->Nodes[Index].InitialAmount;
-	for (const FGuLiOreDeltaItem& Delta : WorldState->GetOreDeltas())
-	{
-		const int32 NodeIndex = static_cast<int32>(Delta.NodeId) - 1;
-		if (NodeRemaining.IsValidIndex(NodeIndex)) NodeRemaining[NodeIndex] = Delta.RemainingAmount;
-	}
-	ClusterRemaining.Init(0, MapDefinition->Clusters.Num());
-	for (int32 NodeIndex = 0; NodeIndex < MapDefinition->Nodes.Num(); ++NodeIndex)
-	{
-		const int32 ClusterIndex = static_cast<int32>(MapDefinition->Nodes[NodeIndex].ClusterId) - 1;
-		if (ClusterRemaining.IsValidIndex(ClusterIndex)) ClusterRemaining[ClusterIndex] += NodeRemaining[NodeIndex];
-	}
-	OreField->ApplyReplicatedState();
-	bRuntimeReady = WorldState->IsAuthorityReady() && bOreFieldInitialized;
-	bReplicatedStateDirty = false;
-}
-
-void UGuLiResourceWorldSubsystem::UpdateNavigationReadiness()
-{
-	if (bRuntimeReady || !bAuthorityActorsSpawned || !WorldState) return;
-	if (!UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld()))
-	{
-		for (const TWeakObjectPtr<ARecastNavMesh>& Navigation : InitialSynchronousGatheringNavData)
-			if (Navigation.IsValid()) Navigation->bDoFullyAsyncNavDataGathering = true;
-		InitialSynchronousGatheringNavData.Reset();
-		UGuLiTeamEconomySubsystem* Economy = GetWorld()->GetSubsystem<UGuLiTeamEconomySubsystem>();
-		check(Economy && bEconomyMatchStarted);
-		Economy->OpenTransactions();
-		bRuntimeReady = true;
-		WorldState->SetAuthorityReady(true);
-		UE_LOG(LogGuLiResources, Display, TEXT("[GULI_NAV_STARTUP] initial_dynamic_updates_ready wait_s=%.6f"),
-			FPlatformTime::Seconds() - NavigationWaitStartSeconds);
-		UE_LOG(LogGuLiResources, Display,
-			TEXT("Resource world and navigation are Ready; Mass spawning and Commander input may proceed."));
+		bFatalInitializationError=true; InitializationError=TEXT("Committed ore result cannot be applied to the query scene");
+		if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) Hybrid->Suspend(InitializationError);
 	}
 }
+void UGuLiResourceWorldSubsystem::RefreshHybridClusterObstacle(int32 Index)
+{
+	if (!ClusterObstacles.IsValidIndex(Index) || !ClusterObstacles[Index] || !ClusterObstacleHandles.IsValidIndex(Index)) return;
+	auto* Obstacles=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>(); if (!Obstacles) return;
+	const bool Enabled=ClusterRemaining[Index]>0; ClusterObstacles[Index]->SetObstacleEnabled(Enabled);
+	auto& Handle=ClusterObstacleHandles[Index];
+	if (Enabled && !Handle.IsValid())
+	{
+		const auto& Cluster=MapDefinition->Clusters[Index]; Handle=Obstacles->RegisterObstacle(Cluster.Center,Cluster.ObstacleRadiusCentimeters);
+	}
+	else if (!Enabled && Handle.IsValid()) { Obstacles->UnregisterObstacle(Handle); Handle.Reset(); }
+}
+void UGuLiResourceWorldSubsystem::GetHybridQuerySceneCounts(int32& CollisionClusters,int32& EnabledClusters,int32& VisualComponents) const
+{
+	CollisionClusters=ClusterObstacles.Num(); EnabledClusters=0;
+	for (const auto& Proxy:ClusterObstacles) if (Proxy && Proxy->IsObstacleEnabled()) ++EnabledClusters;
+	VisualComponents=OreField?OreField->GetHISMComponentCount():0;
+}
+
+
+
+
+
+
 
 FVector UGuLiResourceWorldSubsystem::ProjectAnchorToGround(const FVector& Anchor) const
 {
@@ -542,64 +365,15 @@ bool UGuLiResourceWorldSubsystem::CanTeamMineAt(const EGuLiTeam Team, const int3
 {
 	const FGuLiResourceClusterDefinition* Cluster = MapDefinition && ClusterId > 0 && ClusterId <= MAX_uint16
 		? MapDefinition->FindCluster(static_cast<uint16>(ClusterId)) : nullptr;
-	return bRuntimeReady && Cluster && WorldState && GuLiResources::IsPlayableTeam(Team)
+    return IsMiningRuntimeReady() && Cluster && WorldState && GuLiResources::IsPlayableTeam(Team)
 		&& (WorldState->GetTerritoryOwner(Cluster->TerritoryIndex) == Team
 			|| WorldState->GetTerritoryOwner(Cluster->TerritoryIndex) == EGuLiTeam::Unassigned)
 		&& !IsClusterEmpty(ClusterId);
 }
 
-bool UGuLiResourceWorldSubsystem::SetTerritoryOwner(
-	const uint8 TerritoryIndex,
-	const EGuLiTeam NewOwner)
-{
-	const EGuLiTeam OldOwner = WorldState ? WorldState->GetTerritoryOwner(TerritoryIndex) : EGuLiTeam::Unassigned;
-	if (!GetWorld() || GetWorld()->GetNetMode() == NM_Client || !WorldState
-		|| !WorldState->SetTerritoryOwnerAuthority(TerritoryIndex, NewOwner))
-	{
-		return false;
-	}
-	if (OldOwner == NewOwner) return true;
-	Outposts[TerritoryIndex]->SetTerritoryOwnerAuthority(NewOwner);
-	Outposts[TerritoryIndex]->FindComponentByClass<UGuLiStrongholdCaptureComponent>()->SetOwnerEndpoint(NewOwner);
-	RefreshEncirclement();
-	OnTerritoryOwnershipChanged.Broadcast(TerritoryIndex, OldOwner, NewOwner);
-	return true;
-}
 
-bool UGuLiResourceWorldSubsystem::SetTerritoryOwnerByBoardCoordinate(
-	const int32 Row, const int32 Column, const EGuLiTeam NewOwner)
-{
-	const int32 Index = GuLiResources::ToTerritoryIndex(Row, Column);
-	return Index != INDEX_NONE && SetTerritoryOwner(static_cast<uint8>(Index), NewOwner);
-}
 
-bool UGuLiResourceWorldSubsystem::MineOneRaw(
-    const EGuLiTeam Team, const int32 ClusterId, EGuLiResourceType& OutResourceType)
-{
-    if (!CanTeamMineAt(Team, ClusterId)) return false;
-    const FGuLiResourceClusterDefinition& Cluster = *MapDefinition->FindCluster(ClusterId);
-    for (int32 LocalIndex = 0; LocalIndex < Cluster.NodeCount; ++LocalIndex)
-    {
-        const uint32 NodeId = MapDefinition->Nodes[Cluster.FirstNodeIndex + LocalIndex].NodeId;
-        if (NodeRemaining[NodeId - 1] > 0) return MineNodeRaw(Team, ClusterId, NodeId, OutResourceType);
-    }
-    return false;
-}
 
-bool UGuLiResourceWorldSubsystem::MineNodeRaw(
-    const EGuLiTeam Team, const uint16 ClusterId, const uint32 NodeId, EGuLiResourceType& OutResourceType)
-{
-    if (GetWorld()->GetNetMode() == NM_Client || !CanTeamMineAt(Team, ClusterId)
-        || NodeId == 0 || !NodeRemaining.IsValidIndex(NodeId - 1) || NodeRemaining[NodeId - 1] == 0) return false;
-    const FGuLiResourceNodeDefinition& Node = MapDefinition->Nodes[NodeId - 1];
-    if (Node.ClusterId != ClusterId) return false;
-    --NodeRemaining[NodeId - 1];
-    --ClusterRemaining[ClusterId - 1];
-    OutResourceType = Node.ResourceType;
-    WorldState->SetNodeRemainingAuthority(NodeId, NodeRemaining[NodeId - 1]);
-    if (ClusterRemaining[ClusterId - 1] == 0) DisableDepletedCluster(ClusterId);
-    return true;
-}
 
 int32 UGuLiResourceWorldSubsystem::GetNodeRemainingRaw(const int32 NodeId) const
 {
@@ -670,10 +444,8 @@ void UGuLiResourceWorldSubsystem::DisableDepletedCluster(const uint16 ClusterId)
 
 FGuLiResourceAmounts UGuLiResourceWorldSubsystem::GetTeamInventory(const EGuLiTeam Team) const
 {
-	const UGuLiTeamEconomySubsystem* Economy =
-		GetWorld()->GetSubsystem<UGuLiTeamEconomySubsystem>();
-	check(Economy);
-	return Economy->GetTeamBalance(Team);
+	if (const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) return Hybrid->GetTeamBalance(Team);
+	return {};
 }
 
 void UGuLiResourceWorldSubsystem::HandleWorldStateChanged()
@@ -685,11 +457,12 @@ void UGuLiResourceWorldSubsystem::HandleWorldStateChanged()
 void UGuLiResourceWorldSubsystem::HandleOreNodeChanged(uint32 NodeId,uint8 Remaining)
 {
     if (!MapDefinition || NodeId==0 || !NodeRemaining.IsValidIndex(NodeId-1)) return;
-    if (GetWorld()->GetNetMode()==NM_Client && bOreFieldInitialized)
+    if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
     {
         const int32 Cluster=MapDefinition->Nodes[NodeId-1].ClusterId-1;
         if (ClusterRemaining.IsValidIndex(Cluster)) ClusterRemaining[Cluster]+=int32(Remaining)-int32(NodeRemaining[NodeId-1]);
         NodeRemaining[NodeId-1]=Remaining;
+        if (UGuLiNetworkSettings::IsHybrid(GetWorld())) RefreshHybridClusterObstacle(Cluster);
     }
     if (OreField) OreField->ApplyNodeAmount(NodeId,Remaining);
 }

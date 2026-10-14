@@ -10,17 +10,17 @@ enum class EGuLiCommanderWorkResult : uint8;
 class UGuLiBuildingLifecycleComponent;
 struct FGuLiNavigationWorkBudget;
 
-/** Authority-only queue owner. Business components cannot grant or resurrect tasks. */
+/** Object-owner task queue. Business components cannot grant or resurrect tasks. */
 UCLASS()
-class GULISTRIKE_API UGuLiUnitTaskSubsystem final : public UTickableWorldSubsystem
+class GULISTRIKE_API UGuLiUnitTaskSubsystem final : public UWorldSubsystem
 {
 	GENERATED_BODY()
 public:
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
-	virtual void Tick(float DeltaTime) override;
-	virtual TStatId GetStatId() const override;
+
+
 	/** World-frame admission; only explicitly dirtied Mass StateTrees run at zero delta. */
 	void PumpMoveAdmissions(FGuLiNavigationWorkBudget& Budget);
 	void ConsumeMoveProgress();
@@ -66,6 +66,14 @@ public:
 	void WaitBehaviorRound(FGuLiTaskUnitId Unit, const FGuLiCommanderOperationToken& Token);
 	void ReportBehaviorError(FGuLiTaskUnitId Unit, const FString& Error);
 private:
+    friend class FGuLiHybridTaskState;
+    friend class FGuLiHybridMassAdapter;
+    friend class FGuLiHybridEngineerAdapter;
+    friend class FGuLiHybridMinerAdapter;
+    void AdvanceHybrid(uint64 LogicalTick,float DeltaTime);
+    void AdvanceTasks(float DeltaTime);
+    double GetTaskSeconds() const;
+    uint64 LastHybridTick=0;
 	TMap<FGuLiTaskUnitId, FGuLiUnitTaskState> States;
 	// Stable IDs are never reused within this World. Keep a tombstone after death/unregistration.
 	TSet<FGuLiTaskUnitId> InitializedUnits;
@@ -113,6 +121,7 @@ private:
 	void QueueMoveAdmission(FGuLiTaskUnitId Unit);
 	void InitializeBehavior(FGuLiUnitTaskState& State);
 	bool RefreshContext(FGuLiUnitTaskState& State) const;
+	bool HasTaskSimulation(const FGuLiUnitTaskState& State) const;
 	bool Validate(const FGuLiUnitTaskState& State, const FGuLiUnitTaskCommand& Command, FString& Error) const;
 	bool AdmitCommand(FGuLiUnitTaskState& State, const FGuLiUnitTaskCommand& Command, FString& Error);
 	bool Cancel(FGuLiUnitTaskState& State);

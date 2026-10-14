@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
+#include "Network/GuLiHybridAdapterRegistry.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Commander/UI/GuLiSceneUIWidget.h"
 #include "Commander/UI/GuLiSceneUISubsystem.h"
 #include "Gameplay/Cards/GuLiRogueCardPresentation.h"
@@ -713,6 +715,22 @@ bool AGuLiCommanderPlayerController::BuildPointSelectionRequest(FGuLiSelectionRe
 	}
 	const AGuLiBattlePlayerState* State = GetPlayerState<AGuLiBattlePlayerState>();
 	if (!State || !GetWorld()) return false;
+    if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+    {
+        TArray<FGuLiHybridObjectState> Objects;H->GetObjects(Objects);double Best=TNumericLimits<double>::Max();
+        for (const auto& O:Objects)
+        {
+            const auto* Actor=H->FindBoundActor(O.Key);
+            if (!Actor || !H->HasControl(O.Key) || O.OwnershipPolicy!=uint8(EGuLiHybridOwnershipPolicy::CommanderActivity) || Cast<IGuLiEngineeringVehicle>(Actor)) continue;
+            const FBox Bounds=Actor->GetComponentsBoundingBox(true);if (!Bounds.IsValid) continue;
+            const double Along=FVector::DotProduct(Bounds.GetCenter()-Origin,Direction);
+            if (Along<0 || Along>=Best) continue;
+            if (FMath::LineBoxIntersection(Bounds.ExpandBy(FMath::Max(1.,Along*FMath::Tan(Request.PickHalfAngleRadians))),Origin,Origin+Direction*1.e8,Direction))
+            {Best=Along;Request.SeedObject=O.Key;}
+        }
+        if (Request.SeedObject.IsValid()) return true;
+    }
+
 	if (const auto* Camera = Cast<AGuLiCommanderCameraPawn>(GetViewTarget()); Camera && Camera->IsOverviewPresentation())
 	{
 		auto* HUD = Cast<AGuLiCommanderHUD>(GetHUD());
@@ -780,8 +798,8 @@ bool AGuLiCommanderPlayerController::TryIssuePointSelection(const bool bSameType
 	}
 	const double Now = GetWorld()->GetRealTimeSeconds();
 	const bool bDouble = LastUnitClickTime >= 0 && Now - LastUnitClickTime <= GetDefault<UGuLiUnitTaskSettings>()->DoublePressSeconds
-		&& LastClickedActor == Request.SeedActorId && LastClickedSoldier == Request.SeedSoldierId;
-	LastClickedActor = Request.SeedActorId; LastClickedSoldier = Request.SeedSoldierId;
+		&& LastClickedActor == Request.SeedActorId && LastClickedSoldier == Request.SeedSoldierId && LastClickedObject==Request.SeedObject;
+	LastClickedActor = Request.SeedActorId; LastClickedSoldier = Request.SeedSoldierId;LastClickedObject=Request.SeedObject;
 	LastUnitClickTime = bDouble ? -1.0 : Now;
 	const bool SameType = bSameType || bDouble;
 	Request.Kind = SameType ? EGuLiSelectionKind::SameType : EGuLiSelectionKind::Point;
@@ -1055,7 +1073,7 @@ bool AGuLiCommanderPlayerController::HasConfirmedSelection() const
 			return true;
 		}
 	}
-	return !NetSyncComponent->GetSelectionState().ActorIds.IsEmpty();
+	return !NetSyncComponent->GetSelectionState().ActorIds.IsEmpty() || !NetSyncComponent->GetSelectionState().Objects.IsEmpty();
 }
 
 void AGuLiCommanderPlayerController::ZoomCameraIn()
@@ -1086,22 +1104,16 @@ void AGuLiCommanderPlayerController::ZoomCameraOut()
 
 bool AGuLiCommanderPlayerController::TraceGroundUnderCursor(FVector& OutLocation) const
 {
-	const UWorld* World = GetWorld();
-	if (!World)
-	{
-		return false;
-	}
-
 	FVector RayOrigin;
 	FVector RayDirection;
-	if (!DeprojectMousePositionToWorld(RayOrigin, RayDirection)
-		|| RayOrigin.ContainsNaN()
-		|| RayDirection.ContainsNaN())
-	{
-		return false;
-	}
-
-	RayDirection = RayDirection.GetSafeNormal();
+	return DeprojectMousePositionToWorld(RayOrigin,RayDirection)
+		&& TraceCommanderGroundRay(RayOrigin,RayDirection,OutLocation);
+}
+bool AGuLiCommanderPlayerController::TraceCommanderGroundRay(const FVector& RayOrigin,const FVector& Direction,FVector& OutLocation) const
+{
+	const UWorld* World=GetWorld();
+	if (!World || RayOrigin.ContainsNaN() || Direction.ContainsNaN()) return false;
+	const FVector RayDirection=Direction.GetSafeNormal();
 	if (RayDirection.IsNearlyZero())
 	{
 		return false;
@@ -1171,6 +1183,9 @@ FVector AGuLiCommanderPlayerController::FindConfirmedSelectionCenter(int32* OutC
 	const FGuLiCommanderSelectionState& Selection = NetSyncComponent->GetSelectionState();
 	FVector Center = FVector::ZeroVector;
 	int32 FoundCount = 0;
+	if (const auto* H=GetWorld()?GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr)
+        for (const auto& Key:Selection.Objects) if (const auto* Actor=H->FindBoundActor(Key))
+        {Center+=Actor->GetActorLocation();++FoundCount;}
 	if (GetWorld())
 	{
 		const UGuLiCommanderResourceAdapter* ResourceAdapter =
@@ -1284,7 +1299,7 @@ void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 	bEnableClickEvents = bShouldEnable || bGround;
 	bEnableMouseOverEvents = bShouldEnable || bGround;
 	DefaultMouseCursor=bGround?EMouseCursor::Crosshairs:EMouseCursor::Default;
-	if (bShouldEnable)
+	if (bShouldEnable && UGuLiNetworkSettings::CanPresent(GetWorld()))
 	{
 		if (UGameViewportClient* Viewport = GetWorld() ? GetWorld()->GetGameViewport() : nullptr)
 		{

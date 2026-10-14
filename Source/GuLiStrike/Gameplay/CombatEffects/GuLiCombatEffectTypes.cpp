@@ -132,6 +132,7 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 {
 	if (Ar.IsLoading()) *this = {};
 	Ar.SerializeIntPacked(MatchEpoch); Ar << EffectId; Ar.SerializeIntPacked(Sequence);
+	Ar.SerializeBits(&bAcceptanceAdditional, 1);
 	uint8 KindValue=static_cast<uint8>(Kind), PhaseValue=static_cast<uint8>(Phase), ReasonValue=static_cast<uint8>(EndReason);
 	Ar.SerializeBits(&KindValue,2); Ar.SerializeBits(&PhaseValue,2); Ar.SerializeBits(&ReasonValue,3);
 	if (Ar.IsLoading()) { Kind=static_cast<EGuLiCombatEffectKind>(KindValue); Phase=static_cast<EGuLiCombatEffectPhase>(PhaseValue); EndReason=static_cast<EGuLiCombatEffectEndReason>(ReasonValue); }

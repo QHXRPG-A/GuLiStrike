@@ -1,4 +1,5 @@
 #include "Gameplay/Cards/GuLiRogueCardPresentation.h"
+#include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Cards/GuLiRogueCardSubsystem.h"
 #include "Gameplay/Cards/GuLiRogueCardSettings.h"
 #include "Gameplay/Data/Generated/GuLiStrikeGameTextsTableRows.h"
@@ -172,7 +173,10 @@ void UGuLiRogueCardPresentation::Open()
 	RequestId=FGuid::NewGuid(); SessionId.Invalidate(); MatchEpoch=0;
 	PlayerGuid=PC->GetPlayerState<AGuLiBattlePlayerState>()->GetPlayerGuid();
 	PresentationTeam=static_cast<uint8>(PC->GetPlayerState<AGuLiBattlePlayerState>()->GetTeam());
-	PC->SetRogueCardModal(true); SetComponentTickEnabled(true);
+    SetComponentTickEnabled(true);
+    if (!UGuLiNetworkSettings::CanPresent(GetWorld()))
+    { PC->GetCommanderNetSyncComponent()->ServerRequestRogueCards(RequestId); return; }
+	PC->SetRogueCardModal(true);
 	Overlay=CreateWidget<UGuLiRogueCardOverlay>(PC,UGuLiRogueCardOverlay::StaticClass());
 	if (!Overlay) { Close(true); return; }
 	Overlay->AddToViewport(200);
@@ -193,10 +197,10 @@ void UGuLiRogueCardPresentation::ReceiveOffer(FGuid Request,FGuid Session,uint32
 	const bool bReplacing=bRerolling; bRerolling=false;
 	auto* Catalog=GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>();
 	const FText Failure=Error.StartsWith(TEXT("UI.RogueCards.")) ? Catalog->GetText(Error) : FText::FromString(Error);
-	if (bReplacing && !Error.IsEmpty() && Director && Session==SessionId && (!Epoch || Epoch==MatchEpoch))
+	if (bReplacing && !Error.IsEmpty() && !CandidateIds.IsEmpty() && Session==SessionId && (!Epoch || Epoch==MatchEpoch))
 	{
 		// A small pool or rate limit leaves the original offer selectable.
-		RerollNotice=Failure; DisplayedPhase=INDEX_NONE; Director->SetActorTickEnabled(true);
+		RerollNotice=Failure; DisplayedPhase=INDEX_NONE; if (Director) Director->SetActorTickEnabled(true);
 		if (Overlay) Overlay->SetKeyboardFocus();
 		return;
 	}
@@ -209,7 +213,9 @@ void UGuLiRogueCardPresentation::ReceiveOffer(FGuid Request,FGuid Session,uint32
 			HUD->ShowCommandFeedback(GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>()->GetText(TEXT("UI.RogueCards.Empty")),false);
 		Close(true); return;
 	}
-	if (!Error.IsEmpty() || Cards.IsEmpty() || Cards.Num()>3 || !Session.IsValid() || !CreateStage(Cards))
+    const bool bNeedsStage=UGuLiNetworkSettings::CanPresent(GetWorld());
+    if (!bNeedsStage && Error.IsEmpty() && !Cards.IsEmpty() && Cards.Num()<=3 && Session.IsValid()) CandidateIds=Cards;
+	if (!Error.IsEmpty() || Cards.IsEmpty() || Cards.Num()>3 || !Session.IsValid() || (bNeedsStage && !CreateStage(Cards)))
 	{
 		if (auto* HUD=Cast<AGuLiCommanderHUD>(PC->GetHUD()))
 			HUD->ShowCommandFeedback(FText::Format(GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>()->GetText(TEXT("UI.RogueCards.OpenFailed")),
@@ -304,7 +310,9 @@ void UGuLiRogueCardPresentation::Click()
 }
 bool UGuLiRogueCardPresentation::CanReroll() const
 {
-	if (!bOpen || bClosing || bSubmitting || bRerolling || bCommitted || !Director || !SessionId.IsValid() || !ErrorText.IsEmpty()) return false;
+	if (!bOpen || bClosing || bSubmitting || bRerolling || bCommitted || !SessionId.IsValid() || !ErrorText.IsEmpty()) return false;
+    if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return !CandidateIds.IsEmpty();
+    if (!Director) return false;
 	const int32 Phase=GetInteger(Director,TEXT("Phase"));
 	return Phase==1 || Phase==3; // Stable choosing/confirmation states only, never midway through an animation.
 }
@@ -315,7 +323,7 @@ void UGuLiRogueCardPresentation::Reroll()
 	auto* Channel=PC ? PC->GetCommanderNetSyncComponent() : nullptr;
 	if (!Channel) return;
 	bRerolling=true; RequestId=FGuid::NewGuid(); RerollNotice=FText::GetEmpty(); DisplayedPhase=INDEX_NONE;
-	Director->SetActorTickEnabled(false);
+	if (Director) Director->SetActorTickEnabled(false);
 	auto* Catalog=GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>();
 	if (Overlay)
 	{
@@ -325,16 +333,39 @@ void UGuLiRogueCardPresentation::Reroll()
 	Channel->ServerRerollRogueCards(RequestId,SessionId);
 }
 void UGuLiRogueCardPresentation::HandleConfirmation(int32 SelectedIndex)
+{ ConfirmSelection(SelectedIndex); }
+int32 UGuLiRogueCardPresentation::GetPresentationPhase() const
+{ return GetInteger(Director,TEXT("Phase")); }
+bool UGuLiRogueCardPresentation::ActivateCandidate(int32 CandidateIndex)
 {
-	if (!bOpen || !Director || bClosing || bSubmitting || bRerolling || bCommitted || !CandidateIds.IsValidIndex(SelectedIndex)) return;
+    if (!bOpen || bClosing || bSubmitting || bRerolling || bCommitted || !CandidateIds.IsValidIndex(CandidateIndex)) return false;
+    if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return ConfirmSelection(CandidateIndex);
+    const int32 Phase=GetPresentationPhase();
+    if (Phase!=1 && (Phase!=3 || GetInteger(Director,TEXT("SelectedIndex"))!=CandidateIndex)) return false;
+    auto* Function=Director?Director->FindFunction(TEXT("ActivateHit")):nullptr;
+    auto* Index=Function?FindFProperty<FIntProperty>(Function,TEXT("HitIndex")):nullptr;
+    if (!Function || Function->NumParms!=1 || !Index) return false;
+    FStructOnScope Params(Function);Index->SetPropertyValue_InContainer(Params.GetStructMemory(),CandidateIndex);
+    Director->ProcessEvent(Function,Params.GetStructMemory());
+    return Phase==1 ? GetPresentationPhase()==2 && GetInteger(Director,TEXT("SelectedIndex"))==CandidateIndex : bSubmitting || bCommitted;
+}
+bool UGuLiRogueCardPresentation::ConfirmSelection(int32 SelectedIndex)
+{
+	if (!bOpen || (UGuLiNetworkSettings::CanPresent(GetWorld()) && !Director) || bClosing || bSubmitting || bRerolling || bCommitted || !CandidateIds.IsValidIndex(SelectedIndex)) return false;
 	bSubmitting=true; DisplayedPhase=INDEX_NONE;
 	CastChecked<AGuLiCommanderPlayerController>(GetOwner())->GetCommanderNetSyncComponent()->ServerConfirmRogueCard(SessionId,CandidateIds[SelectedIndex]);
+    return true;
 }
 void UGuLiRogueCardPresentation::ReceiveResult(FGuid Session,bool bSuccess,const FString& Error)
 {
 	if (!bOpen || bClosing || Session!=SessionId || !bSubmitting || bCommitted) return;
 	bSubmitting=false; DisplayedPhase=INDEX_NONE;
-	if (bSuccess) { bCommitted=true; Call(Director,TEXT("CompleteConfirmation")); }
+	if (bSuccess)
+    {
+        bCommitted=true;LastCommittedSession=Session;
+        if (UGuLiNetworkSettings::CanPresent(GetWorld())) Call(Director,TEXT("CompleteConfirmation"));
+        else {bFinishedNormally=true;Close(true);}
+    }
 	else ErrorText=FText::Format(GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>()->GetText(TEXT("UI.RogueCards.Failed")),FText::FromString(Error));
 }
 void UGuLiRogueCardPresentation::Cancel()
@@ -372,7 +403,7 @@ void UGuLiRogueCardPresentation::Cleanup()
 	Fade=0.f; DisplayedPhase=INDEX_NONE; ErrorText=FText::GetEmpty(); RerollNotice=FText::GetEmpty();
 	if (auto* PC=Cast<AGuLiCommanderPlayerController>(GetOwner()); !bTearingDown && PC && PC->IsLocalController())
 	{
-		PC->SetRogueCardModal(false);
+		if (UGuLiNetworkSettings::CanPresent(GetWorld())) PC->SetRogueCardModal(false);
 		if (bNotify && CompletedSession.IsValid()) PC->GetCommanderNetSyncComponent()->ServerRogueCardPresentationClosed(CompletedSession);
 	}
 }
@@ -395,9 +426,17 @@ void UGuLiRogueCardPresentation::TickComponent(float Dt,ELevelTick Type,FActorCo
 	const auto* PC=Cast<AGuLiCommanderPlayerController>(GetOwner());
 	const auto* Player=PC ? PC->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
 	const auto* State=GetWorld()->GetGameState<AGuLiBattleGameState>();
-	if (!Player || !Player->IsCommander() || Player->GetPlayerGuid()!=PlayerGuid || static_cast<uint8>(Player->GetTeam())!=PresentationTeam
-		|| !Player->IsBattleReady() || (MatchEpoch && (!State || State->GetMatchEpoch()!=MatchEpoch)))
-	{ if (PC) PC->GetCommanderNetSyncComponent()->ServerCancelRogueCards(SessionId); Close(true); return; }
+	if (!Player || !Player->IsCommander() || Player->GetPlayerGuid()!=PlayerGuid || static_cast<uint8>(Player->GetTeam())!=PresentationTeam)
+	{ if (PC && !bSubmitting) PC->GetCommanderNetSyncComponent()->ServerCancelRogueCards(SessionId); Close(true); return; }
+    // A retained selection keeps its session identity across a global restore.
+    // Temporary lack of a battle permit is not a player cancellation.
+    if (!Player->IsBattleReady() || !State) return;
+    if (MatchEpoch && State->GetMatchEpoch()!=MatchEpoch)
+    {
+        if (!UGuLiNetworkSettings::IsHybrid(GetWorld())) {Close(true);return;}
+        MatchEpoch=State->GetMatchEpoch();
+    }
+    if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	const auto* Settings=GetDefault<UGuLiRogueCardSettings>();
 	Fade=FMath::Clamp(Fade+(bClosing?-Dt:Dt)/FMath::Max(.01f,Settings->FadeSeconds),0.f,1.f);
 	if (Overlay)

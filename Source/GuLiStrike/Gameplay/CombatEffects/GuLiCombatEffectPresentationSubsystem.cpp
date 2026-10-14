@@ -1,4 +1,6 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiFlightVisualActor.h"
 #include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
@@ -41,7 +43,7 @@ static TAutoConsoleVariable<int32> CVarGuLiWingmanWarnings(TEXT("gs.WingmanFligh
 bool UGuLiCombatEffectPresentationSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	const UWorld* World = Cast<UWorld>(Outer);
-	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld() && World->GetNetMode() != NM_DedicatedServer;
+	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld() && UGuLiNetworkSettings::CanPresent(World);
 }
 
 void UGuLiCombatEffectPresentationSubsystem::Initialize(FSubsystemCollectionBase& Collection)
@@ -54,14 +56,14 @@ void UGuLiCombatEffectPresentationSubsystem::Initialize(FSubsystemCollectionBase
 	ImpactBatches = NewObject<UGuLiImpactBatchPresentation>(this);
 	MuzzleBatches = NewObject<UGuLiMuzzleBatchPresentation>(this);
 	WingmanFlights = NewObject<UGuLiWingmanProjectilePresentation>(this);
-	if (GetWorld()->GetNetMode() != NM_DedicatedServer)
+	if (UGuLiNetworkSettings::CanPresent(GetWorld()))
 	{
 		Collection.InitializeDependency<UGuLiGroundWarningSubsystem>();
 		GroundWarnings = GetWorld()->GetSubsystem<UGuLiGroundWarningSubsystem>();
 	}
 }
 
-bool UGuLiCombatEffectPresentationSubsystem::IsTickable() const { return !IsTemplate() && GetWorld() && GetWorld()->IsGameWorld() && GetWorld()->GetNetMode() != NM_DedicatedServer; }
+bool UGuLiCombatEffectPresentationSubsystem::IsTickable() const { return !IsTemplate() && GetWorld() && GetWorld()->IsGameWorld() && UGuLiNetworkSettings::CanPresent(GetWorld()); }
 TStatId UGuLiCombatEffectPresentationSubsystem::GetStatId() const { RETURN_QUICK_DECLARE_CYCLE_STAT(UGuLiCombatEffectPresentationSubsystem, STATGROUP_Tickables); }
 
 void UGuLiCombatEffectPresentationSubsystem::Deinitialize()
@@ -109,6 +111,7 @@ void UGuLiCombatEffectPresentationSubsystem::BeginEpoch(uint32 NewEpoch)
 
 float UGuLiCombatEffectPresentationSubsystem::ServerTime() const
 {
+	if (const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) return static_cast<float>(Hybrid->GetLogicalSeconds());
 	const AGameStateBase* State = GetWorld()->GetGameState();
 	return State ? State->GetServerWorldTimeSeconds() : GetWorld()->GetTimeSeconds();
 }
@@ -423,7 +426,7 @@ void UGuLiCombatEffectPresentationSubsystem::RemoveVisual(const FGuid& Id, bool 
 
 void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectState& State, bool bFromSnapshot)
 {
-	if (!GetWorld() || GetWorld()->GetNetMode() == NM_DedicatedServer) return;
+	if (!GetWorld() || !UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	++Counters.ReceivedStates;
 	if (!State.IsWellFormed()) { ++Counters.RejectedStates; return; }
 	if (State.MatchEpoch != Epoch) BeginEpoch(State.MatchEpoch);
@@ -665,7 +668,7 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyCorrection(const FGuLiCombatEf
 
 void UGuLiCombatEffectPresentationSubsystem::ApplyShots(const TArray<FGuLiCombatShotCue>& Cues)
 {
-	if (!GetWorld() || GetWorld()->GetNetMode() == NM_DedicatedServer) return;
+	if (!GetWorld() || !UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	const float Now = ServerTime();
 	for (const auto& Cue : Cues)
 	{
@@ -924,7 +927,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateField(FGuLiLocalCombatEffect&
 
 void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 {
-	if (!GetWorld() || GetWorld()->GetNetMode() == NM_DedicatedServer) return;
+	if (!GetWorld() || !UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCombatEffects_Presentation);
 	FGuLiPerformanceScope Timing(GetWorld(), TEXT("Flight.PresentationMs"));
 	const double Started = FPlatformTime::Seconds();
@@ -950,6 +953,7 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 	for (auto& Pair : Visuals)
 	{
 		auto& Visual = Pair.Value;
+        if (Visual.State.Kind==EGuLiCombatEffectKind::LinearProjectile && Now<Visual.State.StartTime) continue;
         if (Visual.bFlightConfigurationPending && Now >= Visual.NextFlightConfigurationRetry)
             ResolveFlightConfiguration(Visual);
         if (Visual.FlightRecipe.State.EffectId.IsValid() && Visual.State.Phase != EGuLiCombatEffectPhase::Finished)
@@ -1141,7 +1145,7 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 #if WITH_EDITOR
 int32 UGuLiCombatEffectPresentationSubsystem::EmitReviewImpacts(FVector Location,int32 Count,int32 Seed)
 {
-	if (!GetWorld() || GetWorld()->WorldType!=EWorldType::PIE || GetWorld()->GetNetMode()==NM_DedicatedServer
+	if (!GetWorld() || GetWorld()->WorldType!=EWorldType::PIE || !UGuLiNetworkSettings::CanPresent(GetWorld())
 		|| Location.ContainsNaN() || Count<1 || Count>4096) return 0;
 	const int64 Before=Counters.MachineGunImpactsPlayed;
 	for (int32 I=0;I<Count;++I)
@@ -1159,7 +1163,7 @@ int32 UGuLiCombatEffectPresentationSubsystem::EmitReviewImpacts(FVector Location
 bool UGuLiCombatEffectPresentationSubsystem::EmitReviewImpactInput(int32 Identity,FVector Location,
 	FRotator Rotation,FVector Scale,FLinearColor Tint,int32 Seed,float Lifetime,int32 ReviewEpoch,int32 TerminalSequence)
 {
-	if (!GetWorld() || GetWorld()->WorldType!=EWorldType::PIE || GetWorld()->GetNetMode()==NM_DedicatedServer
+	if (!GetWorld() || GetWorld()->WorldType!=EWorldType::PIE || !UGuLiNetworkSettings::CanPresent(GetWorld())
 		|| !ImpactBatches || !GetCatalog() || Identity<=0 || ReviewEpoch<0 || TerminalSequence<0
 		|| Location.ContainsNaN() || Rotation.ContainsNaN() || !UGuLiVfxRegistrySubsystem::IsValidScale(Scale)
 		|| !FMath::IsFinite(Lifetime) || Lifetime<=0 || Lifetime>3.f) return false;
@@ -1173,7 +1177,7 @@ bool UGuLiCombatEffectPresentationSubsystem::EmitReviewImpactInput(int32 Identit
 
 bool UGuLiCombatEffectPresentationSubsystem::ResetReviewImpacts()
 {
-	if (!GetWorld() || GetWorld()->WorldType!=EWorldType::PIE || GetWorld()->GetNetMode()==NM_DedicatedServer
+	if (!GetWorld() || GetWorld()->WorldType!=EWorldType::PIE || !UGuLiNetworkSettings::CanPresent(GetWorld())
 		|| !ImpactBatches) return false;
 	ImpactBatches->Reset();
 	return true;

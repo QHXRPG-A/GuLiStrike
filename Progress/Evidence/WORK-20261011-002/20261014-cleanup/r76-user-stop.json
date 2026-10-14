@@ -1,0 +1,89 @@
+{
+  "run_id": "6b798a1f-5e9e-4f61-af64-435d3cdb4cc7",
+  "reason": "User switched to project cleanup, legacy retirement, build and GitHub delivery",
+  "passed_checks": [
+    "additional_flights",
+    "unique_simulation",
+    "stable_ownership",
+    "logic_only",
+    "resource_group",
+    "commander_ui",
+    "commander_selection_takeover",
+    "selection_pinning",
+    "idle_offload",
+    "handoff_state",
+    "ship_equipment",
+    "wingman_cadence",
+    "ship_movement",
+    "air_query_presentation",
+    "wingman_air_combat",
+    "ship_combat",
+    "wingman_ground_combat",
+    "wingman_combat"
+  ],
+  "stages": [
+    {
+      "id": "01-prepare-load-cohort",
+      "status": "passed",
+      "failure": null
+    },
+    {
+      "id": "02-startup-flight-and-authority",
+      "status": "passed",
+      "failure": null
+    },
+    {
+      "id": "03-whole-match-resource-authority",
+      "status": "passed",
+      "failure": null
+    },
+    {
+      "id": "04-rendered-ui-and-bindings",
+      "status": "passed",
+      "failure": null
+    },
+    {
+      "id": "05-commander-priority-selection-and-idle-load",
+      "status": "passed",
+      "failure": null
+    },
+    {
+      "id": "06-ship-equipment-members-and-movement",
+      "status": "passed",
+      "failure": null
+    },
+    {
+      "id": "07-ship-weapon-and-member-combat",
+      "status": "passed",
+      "failure": null
+    },
+    {
+      "id": "08-ship-member-ground-combat",
+      "status": "passed",
+      "failure": null
+    },
+    {
+      "id": "09-unpaid-gift-production-stops",
+      "status": "failed",
+      "failure": "Stage 09-unpaid-gift-production-stops timed out: unpaid-cycle-stable"
+    },
+    {
+      "id": "10-construction-site-input",
+      "status": "passed",
+      "failure": null
+    },
+    {
+      "id": "11-placement-preview-cancel-and-unfunded-rejection",
+      "status": "passed",
+      "failure": null
+    },
+    {
+      "id": "12-combat-population-preparation",
+      "status": "running",
+      "failure": null
+    }
+  ],
+  "G_passed": false,
+  "F_started": false,
+  "performance_valid_rounds": 0
+}

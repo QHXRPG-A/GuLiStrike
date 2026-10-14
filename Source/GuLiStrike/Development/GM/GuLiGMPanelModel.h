@@ -13,18 +13,6 @@ namespace GuLiGMPanel
 	inline constexpr int32 ItemsPerPage = 10;
 	inline constexpr double ConfirmationLifetimeSeconds = 5.0;
 
-	enum class ESkillAttribute : uint8
-	{
-		Damage,
-		AttackRate,
-		Range
-	};
-
-	enum class EModifierOperation : uint8
-	{
-		Flat,
-		Percent
-	};
 
 	enum class EConfirmationAction : uint8
 	{
@@ -59,7 +47,6 @@ namespace GuLiGMPanel
 	{
 		bool bCanReadRuntimeRegistry = false;
 		bool bCanReadSkillProfiles = false;
-		bool bCanReadSkillSources = false;
 		bool bCanMutateAuthorityState = false;
 		bool bCanReadAuthorityDiagnostics = false;
 		bool bCanRunLocalBenchmark = false;
@@ -120,65 +107,11 @@ namespace GuLiGMPanel
 		float AttackRatePerSecond = 0.0f;
 		float RangeCentimeters = 0.0f;
 		uint32 Revision = 0u;
-		bool bPendingChanges = false;
 
 		FString ToSearchText() const;
 		FString ToDisplayText() const;
 	};
 
-	struct GULISTRIKE_API FSkillSourceRow
-	{
-		EGuLiTeam Team = EGuLiTeam::Unassigned;
-		FGuid SourceId;
-		FString Label;
-		int32 ModifierCount = 0;
-		int32 ReplacementCount = 0;
-		int32 UnlockCount = 0;
-
-		FString ToSearchText() const;
-		FString ToDisplayText() const;
-	};
-
-	struct GULISTRIKE_API FSkillNumericRequest
-	{
-		EGuLiTeam Team = EGuLiTeam::Red;
-		FString UnitTypeId = TEXT("1");
-		FString SlotId = TEXT("BasicAttack");
-		ESkillAttribute Attribute = ESkillAttribute::Damage;
-		FString Value;
-	};
-
-	struct GULISTRIKE_API FSkillSourceRequest
-	{
-		EGuLiTeam Team = EGuLiTeam::Red;
-		FString UnitTypeId = TEXT("1");
-		FString SlotId = TEXT("BasicAttack");
-		FString Label;
-		ESkillAttribute Attribute = ESkillAttribute::Damage;
-		EModifierOperation Operation = EModifierOperation::Flat;
-		FString Value;
-		FString RequiredSkillId = TEXT("*");
-		FString RequiredGameplayTag = TEXT("*");
-	};
-
-	struct GULISTRIKE_API FSkillReplacementRequest
-	{
-		EGuLiTeam Team = EGuLiTeam::Red;
-		FString UnitTypeId = TEXT("1");
-		FString SlotId = TEXT("BasicAttack");
-		FString Label;
-		FString SkillId;
-		FString Priority = TEXT("0");
-	};
-
-	struct GULISTRIKE_API FSpawnRequest
-	{
-		EGuLiTeam Team = EGuLiTeam::Red;
-		FString UnitTypeId = TEXT("1");
-		FString X = TEXT("0");
-		FString Y = TEXT("0");
-		FString Z = TEXT("0");
-	};
 
 	GULISTRIKE_API int32 GetPageCount(int32 ItemCount);
 	GULISTRIKE_API int32 ClampPageIndex(int32 RequestedPageIndex, int32 ItemCount);
@@ -187,8 +120,6 @@ namespace GuLiGMPanel
 	GULISTRIKE_API EToggleAction ResolveToggleAction(bool bIsLocalController, bool bHasViewportContext, bool bPanelOpen);
 	GULISTRIKE_API FInputRestorePolicy ResolveInputRestorePolicy(bool bCommanderRole);
 	GULISTRIKE_API const TCHAR* LexToString(EGuLiTeam Team);
-	GULISTRIKE_API const TCHAR* LexToString(ESkillAttribute Attribute);
-	GULISTRIKE_API const TCHAR* LexToString(EModifierOperation Operation);
 
 	/** Typed, World-scoped adapter used by Slate. It never dispatches console strings or RPCs. */
 	class GULISTRIKE_API FModel
@@ -208,19 +139,11 @@ namespace GuLiGMPanel
 		FActionResult ResetRuntimeTuning(const FString& KeyOrAll) const;
 
 		TArray<FSkillProfileRow> QuerySkillProfiles(FString& OutUnavailableReason) const;
-		TArray<FSkillSourceRow> QuerySkillSources(EGuLiTeam Team, FString& OutUnavailableReason) const;
+
 		FActionResult ExplainSkill(EGuLiTeam Team, const FString& UnitTypeId, const FString& SlotId) const;
-		FActionResult SetSkillNumericOverride(const FSkillNumericRequest& Request) const;
-		FActionResult ClearSkillNumericOverride(
-			EGuLiTeam Team,
-			const FString& UnitTypeId,
-			const FString& SlotId) const;
-		FActionResult UpsertSkillSource(const FSkillSourceRequest& Request) const;
-		FActionResult UpsertSkillReplacement(const FSkillReplacementRequest& Request) const;
-		FActionResult RemoveSkillSource(EGuLiTeam Team, const FString& Label) const;
 
 		FActionResult InspectSkillSoldier(const FString& SoldierId) const;
-		FActionResult SpawnDebugSoldier(const FSpawnRequest& Request) const;
+
 		FActionResult RunBenchmark(int32 PopulationCount, const FString& Steps) const;
 
 		FActionResult InspectNavigationSoldier(const FString& SoldierId) const;

@@ -16,7 +16,6 @@
 #include "UObject/UnrealType.h"
 #include "Gameplay/Ship/GuLiStrikeShip.h"
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
-#include "Battle/Network/Relay/GuLiWingmanRelayComponent.h"
 #include "Serialization/JsonSerializer.h"
 
 bool UGuLiTeleportQALibrary::ConfigurePIE(int32 Mode,int32 Clients)
@@ -113,21 +112,6 @@ FString UGuLiTeleportQALibrary::Snapshot(UObject* Context)
 		Wingmen.Add(MakeShared<FJsonValueObject>(Item));
 	}
 	Root->SetArrayField(TEXT("wingmen"),Wingmen);
-	TArray<TSharedPtr<FJsonValue>> Groups;
-	for (TActorIterator<AGuLiStrikeShip> It(World); It; ++It)
-	{
-		const auto* PS=It->GetPlayerState<AGuLiBattlePlayerState>(); const auto* Relay=It->GetWingmanRelay();
-		const auto* Core=Relay?Relay->GetServerRelay():nullptr; if (!PS || !Core) continue;
-		auto Item=MakeShared<FJsonObject>(); Item->SetNumberField(TEXT("player_slot"),PS->GetBattleSlotIndex());
-		Item->SetStringField(TEXT("ship"),Core->GetLeaseState().Group.ShipInstanceId.ToString());
-		Item->SetNumberField(TEXT("living"),Core->GetRoster().FilterByPredicate([](const auto& R){return !R.bDead;}).Num());
-		Item->SetStringField(TEXT("health_hash"),LexToString(GuLiWingmanRelayHash::Health(Core->GetHealth())));
-		Item->SetStringField(TEXT("config_hash"),LexToString(Core->GetAbilityConfig().SnapshotHash));
-		Item->SetNumberField(TEXT("movement_writes"),double(Core->GetServerWingmanMovementWriteCount()));
-		Item->SetBoolField(TEXT("locked"),Core->IsExternallyControlled());
-		Groups.Add(MakeShared<FJsonValueObject>(Item));
-	}
-	Root->SetArrayField(TEXT("wingman_groups"),Groups);
 	FString Result; auto Writer=TJsonWriterFactory<>::Create(&Result); FJsonSerializer::Serialize(Root,Writer); return Result;
 }
 #endif

@@ -97,7 +97,7 @@ namespace GuLiCommanderSelectionQuery
 		{
 			// Stable Actors are resolved by the resource subsystem. Mass contributes no hit for
 			// this point request, but the unified selection transaction remains valid.
-			if (Request.SeedActorId.IsValid())
+			if (Request.SeedActorId.IsValid() || Request.SeedObject.IsValid())
 			{
 				return true;
 			}

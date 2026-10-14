@@ -1,6 +1,7 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
@@ -59,14 +60,17 @@ void UGuLiCombatEffectRuntimeSubsystem::Initialize(FSubsystemCollectionBase& Col
 	RegisterAttackExecutor(TEXT("DirectSingleTarget"), [this](const auto& Request, auto& Damage, auto& Cues) { ExecuteDirect(Request, Damage, Cues); });
 	RegisterAttackExecutor(TEXT("GroundMachineGun"), [this](const auto& Request, auto& Damage, auto& Cues) { ExecuteGroundMachineGun(Request, Cues); });
 	RegisterAttackExecutor(TEXT("LaunchProjectile"), [this](const auto& Request, auto& Damage, auto& Cues) { ExecuteProjectile(Request, Damage, Cues); });
+    InitializeHybrid(Collection);
 }
 
 void UGuLiCombatEffectRuntimeSubsystem::Deinitialize()
 {
+    if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) H->UnregisterFactories(*this);
+    HybridEffects.Reset();
 	if (ProjectilePool) ProjectilePool->OnState.RemoveAll(this);
 	ProjectilePool = nullptr;
 	for (const auto& Pair : Effects) if (Ledger) Ledger->ReleaseEffectSource(Pair.Value.SourceLease);
-	Effects.Reset(); Executors.Reset(); TargetSnapshots.Reset(); SpatialGrid.Reset(); StepIds.Reset();
+	Effects.Reset(); Executors.Reset(); TargetSnapshots.Reset(); SpatialGrid.Reset();
 	WingmanBurstCooldowns.Reset();
 	OnState.Clear(); OnShots.Clear(); OnEpoch.Clear(); Catalog = nullptr; Ledger = nullptr; CommanderData = nullptr; FieldData = nullptr;
 	WarnedFieldConfigs.Reset();
@@ -82,23 +86,36 @@ bool UGuLiCombatEffectRuntimeSubsystem::SynchronizeEpoch()
 	if (Epoch != Ledger->GetMatchEpoch())
 	{
 		for (const auto& Pair : Effects) Ledger->ReleaseEffectSource(Pair.Value.SourceLease);
-		Effects.Reset(); TargetSnapshots.Reset(); SpatialGrid.Reset(); StepIds.Reset();
+		Effects.Reset(); TargetSnapshots.Reset(); SpatialGrid.Reset();
 		WingmanBurstCooldowns.Reset();
-		Accumulator = 0; bIndexReady = false; Epoch = Ledger->GetMatchEpoch(); Counters = {};
+		bIndexReady = false; Epoch = Ledger->GetMatchEpoch(); Counters = {};
+		if (const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) LastHybridTick=Hybrid->GetLogicalTick();
 		if (ProjectilePool) ProjectilePool->BeginEpoch(Epoch);
 		OnEpoch.Broadcast(Epoch);
 	}
 	return true;
 }
 
+float UGuLiCombatEffectRuntimeSubsystem::BattleSeconds() const
+{
+    const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    return Hybrid ? static_cast<float>(Hybrid->GetLogicalSeconds()) : GetWorld()->GetTimeSeconds();
+}
+
 bool UGuLiCombatEffectRuntimeSubsystem::PrepareContext(const FGuLiCombatEffectContext& Input, FGuLiCombatEffectContext& Output)
 {
 	if (!SynchronizeEpoch() || !Input.Source.IsValid() || !FMath::IsFinite(Input.Damage) || Input.Damage <= 0
 		|| (Input.MatchEpoch != 0 && Input.MatchEpoch != Epoch)) return false;
-	FGuLiCombatTargetSnapshot Source;
-	if (!Ledger->TryGetSourceSnapshot(Input.Source, Source) || !Source.bAlive) return false;
+	FGuLiCombatTargetSnapshot Source;Output=Input;
+    if (HybridEffects)
+    {
+        if (Output.Emitter.IsValid()) Output.Source=GuLiCombatTargets::MakeWingmanTargetHandle(Output.Emitter);
+        FGuLiHybridObjectKey Key;const auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+        if (!H || !H->ResolveTarget(Output.Source,Key) || !H->HasSimulation(Key)) return false;
+    }
+	if (!Ledger->TryGetSourceSnapshot(Output.Source, Source) || !Source.bAlive) return false;
 	if (Input.WeaponBinding.IsWellFormed() && (Input.WeaponBinding.MatchEpoch != Epoch || Input.WeaponBinding.Team != Source.Team)) return false;
-	Output = Input; Output.MatchEpoch = Epoch;
+	Output.MatchEpoch = Epoch;
 	if (!Output.ShotId.IsValid()) Output.ShotId = FGuid::NewGuid();
 	if (!Output.RootEventId.IsValid()) Output.RootEventId = Output.ShotId;
 	return true;
@@ -174,7 +191,12 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteAttackBatch(TConstArrayView<FGuLi
 	// All source/target fire decisions precede any health mutation, preserving the existing batch semantics.
 	for (const FGuLiDamageRequest& Request : Damage)
 	{
-		if (Ledger->CommitDamage(Request).Status == EGuLiDamageCommitStatus::Committed) ++Counters.DamageCommits;
+		const TWeakObjectPtr<UGuLiCombatEffectRuntimeSubsystem> Weak(this); const uint32 SubmittedEpoch=Epoch;
+		Ledger->SubmitDamage(Request,this,[Weak,SubmittedEpoch](const FGuLiDamageCommitResult& Result)
+		{
+			if (auto* Self=Weak.Get(); Self && Self->Epoch==SubmittedEpoch && Result.Status==EGuLiDamageCommitStatus::Committed)
+				++Self->Counters.DamageCommits;
+		});
 	}
 	if (!Cues.IsEmpty()) { Counters.ShotsPublished += Cues.Num(); OnShots.Broadcast(Cues); }
 }
@@ -207,7 +229,7 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteDirect(const FGuLiCombatAttackReq
 	Cue.MuzzleIndex = static_cast<uint8>(Request.ShotOrdinal % Mount->Muzzles.Num());
 	Cue.MuzzleOffset = Mount->Muzzles[Cue.MuzzleIndex];
 	Cue.Start = Request.SourceTransform.TransformPosition(Cue.MuzzleOffset);
-	Cue.End = Target.Location; Cue.ServerTime = GetWorld()->GetTimeSeconds();
+	Cue.End = Target.Location; Cue.ServerTime = BattleSeconds();
 }
 
 void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiCombatAttackRequest& Request,
@@ -233,7 +255,7 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiComba
 	Launch.Context = Request.Context; Launch.MuzzleOffset = Mount->Muzzles[MuzzleIndex];
 	Launch.Position = Request.SourceTransform.TransformPosition(Launch.MuzzleOffset);
 	Launch.Direction = (Target.Location - Launch.Position).GetSafeNormal();
-	const float ShotTime = GetWorld()->GetTimeSeconds();
+	const float ShotTime = BattleSeconds();
 	FTransform MechanicalMuzzle;
 	if (VAT)
 	{
@@ -258,7 +280,7 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiComba
 	Launch.Speed = Request.Motion.Speed; Launch.Lifetime = Request.Motion.MaximumLifetime;
 	// Acquisition range only gates firing. Once launched, the frozen lifetime governs straight flight.
 	Launch.MaximumDistance = Launch.Speed * Launch.Lifetime;
-	Launch.SweepRadius = Request.Motion.SweepRadius; Launch.ServerTime = GetWorld()->GetTimeSeconds();
+	Launch.SweepRadius = Request.Motion.SweepRadius; Launch.ServerTime = BattleSeconds();
 	if (!ProjectilePool->Launch(Launch).IsValid()) return;
 	FGuLiCombatShotCue& Cue = OutCues.AddDefaulted_GetRef();
 	Cue.MatchEpoch = Epoch; Cue.ShotId = Request.Context.ShotId;
@@ -301,8 +323,8 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::LaunchProjectile(UGuLiProjectileEffectD
 	if (!Field || !ResolveFieldConfig(Field, Context, FieldConfig, Configured) || !PrepareContext(Configured, Prepared)) return {};
 	FGuLiCombatTargetSnapshot Target;
 	if (!Ledger->TryGetTargetSnapshot(Prepared.Target, Target) || !Target.bAlive) return {};
-	const FGuid Lease = Ledger->AcquireEffectSource(Prepared.Source);
-	if (!Lease.IsValid()) return {};
+	const FGuid Lease = HybridEffects?FGuid():Ledger->AcquireEffectSource(Prepared.Source);
+	if (!HybridEffects && !Lease.IsValid()) return {};
 	FGuLiRuntimeCombatEffect Instance;
 	Instance.Context = Prepared; Instance.SourceLease = Lease; Instance.Projectile = Definition; Instance.Field = Field;
 	Instance.Timing = FieldConfig.Timing; Instance.Interval = FieldConfig.PulseInterval;
@@ -310,17 +332,18 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::LaunchProjectile(UGuLiProjectileEffectD
 	Instance.FadeSeconds = FieldConfig.DissipationSeconds; Instance.FrozenRadius = FieldConfig.Radius;
 	Instance.FrozenDelay = FieldConfig.Delay; Instance.VariantCount = Field->ActivationVariants.Num();
 	auto& State = Instance.State;
-	State.MatchEpoch = Epoch; State.EffectId = FGuid::NewGuid(); State.Source = Prepared.Source; State.Target = Prepared.Target;
+	State.MatchEpoch = Epoch; State.EffectId = HybridEffects?Prepared.ShotId:FGuid::NewGuid(); State.Source = Prepared.Source; State.Target = Prepared.Target;
 	if (Prepared.Emitter.IsValid()) State.Source=GuLiCombatTargets::MakeWingmanTargetHandle(Prepared.Emitter);
 	State.ProjectileDefinition = Definition; State.FieldDefinition = Field; State.Motion = AuthoredMotion;
 	State.Location = LaunchTransform.GetLocation(); State.LaunchLocation = State.Location;
 	State.LaunchDirection = LaunchTransform.GetUnitAxis(EAxis::X); State.Velocity = FVector(State.LaunchDirection) * State.Motion.Speed;
 	State.LastTargetLocation = Target.Location; State.RandomSeed = static_cast<int32>(State.EffectId.A ^ State.EffectId.C);
-	State.StartTime = State.SampleTime = State.ActivationTime = GetWorld()->GetTimeSeconds();
+	State.StartTime = State.SampleTime = State.ActivationTime = BattleSeconds();
 	State.EndTime = State.StartTime + State.Motion.MaximumLifetime; State.Sequence = 1;
 	Instance.LastCorrection = State.StartTime;
 	Instance.CurveCoefficients.Initialize(State);
 	const FGuid Id = State.EffectId;
+    if (HybridEffects) {const auto Pending=AdmitHybridEffect(MoveTemp(Instance));if (Pending.IsValid()) ++Counters.ProjectilesLaunched;return Pending;}
 	Effects.Add(Id, MoveTemp(Instance)); ++Counters.ProjectilesLaunched;
 	Publish(Id, true); return Id;
 }
@@ -340,7 +363,7 @@ bool UGuLiCombatEffectRuntimeSubsystem::ExecuteWingmanAttack(const FGuLiCombatAt
     Launch.Direction = (Target.Location - Launch.Position).GetSafeNormal();
     Launch.Speed = Request.Motion.Speed; Launch.Lifetime = Request.Motion.MaximumLifetime;
     Launch.SweepRadius = Request.Motion.SweepRadius; Launch.MaximumDistance = Request.MaximumTravelDistance;
-    Launch.ServerTime = GetWorld()->GetTimeSeconds();
+    Launch.ServerTime = BattleSeconds();
     return ProjectilePool->Launch(Launch).IsValid();
 }
 
@@ -366,7 +389,7 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::StartWingmanGunBurst(
 	{
 		return {};
 	}
-	const float Now = GetWorld()->GetTimeSeconds();
+	const float Now = BattleSeconds();
 	StepWingmanBurstCooldowns(Now);
 	if (const auto* BySlot = WingmanBurstCooldowns.Find(Request.Context.Emitter);
 		BySlot && BySlot->Contains(Request.Context.WeaponBinding.SlotId))
@@ -393,8 +416,8 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::StartWingmanGunBurst(
 	{
 		return {};
 	}
-	const FGuid Lease = Ledger->AcquireEffectSource(Prepared.Source);
-	if (!Lease.IsValid()) return {};
+	const FGuid Lease = HybridEffects?FGuid():Ledger->AcquireEffectSource(Prepared.Source);
+	if (!HybridEffects && !Lease.IsValid()) return {};
 	if (Effects.Contains(Prepared.ShotId))
 	{
 		Ledger->ReleaseEffectSource(Lease);
@@ -427,6 +450,7 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::StartWingmanGunBurst(
 	State.EndTime = Now + DurationSeconds;
 	State.Sequence = 1;
 	const FGuid Id = State.EffectId;
+    if (HybridEffects) {const auto Pending=AdmitHybridEffect(MoveTemp(Instance));if (Pending.IsValid()) ++Counters.GunBurstsStarted;return Pending;}
 	Effects.Add(Id, MoveTemp(Instance));
 	++Counters.GunBurstsStarted;
 	Publish(Id, true);
@@ -447,7 +471,7 @@ int32 UGuLiCombatEffectRuntimeSubsystem::CancelWingmanGunBurst(
 			Matches.Add(Pair.Key);
 		}
 	}
-	const float Now = GetWorld()->GetTimeSeconds();
+	const float Now = BattleSeconds();
 	for (const FGuid& Id : Matches) Finish(Id, EGuLiCombatEffectEndReason::Cancelled, Now);
 	if (bClearCooldown) WingmanBurstCooldowns.Remove(Emitter);
 	return Matches.Num();
@@ -474,6 +498,17 @@ bool UGuLiCombatEffectRuntimeSubsystem::LaunchPointProjectiles(
 			|| Unique.Contains(Instance.State.EffectId)) return false;
 		Unique.Add(Instance.State.EffectId);
 	}
+    if (HybridEffects)
+    {
+        if (!CanAdmitHybridEffects(Prepared)) return false;
+        for (auto& Instance:Prepared)
+        {
+            const auto Id=AdmitHybridEffect(MoveTemp(Instance));
+            if (!Id.IsValid()) {GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Prepared effect batch admission failed"));return false;}
+            OutIds.Add(Id);
+        }
+        Counters.ProjectilesLaunched+=OutIds.Num();return true;
+    }
 	for (auto& Instance : Prepared)
 	{
 		Instance.SourceLease=Ledger->AcquireEffectSource(Instance.Context.Source);
@@ -535,7 +570,7 @@ bool UGuLiCombatEffectRuntimeSubsystem::PreparePointProjectile(
         ? (Request.TargetLocation - FVector(State.Location)).GetSafeNormal2D(UE_SMALL_NUMBER, Request.SourceTransform.GetUnitAxis(EAxis::X))
         : (Request.TargetLocation - FVector(State.Location)).GetSafeNormal();
     State.Velocity = FVector(State.LaunchDirection) * State.Motion.Speed;
-    State.StartTime = State.SampleTime = GetWorld()->GetTimeSeconds();
+    State.StartTime = State.SampleTime = BattleSeconds();
     State.EndTime = State.StartTime + State.Motion.MaximumLifetime; State.Sequence = 1;
     State.RandomSeed = static_cast<int32>(State.EffectId.A ^ State.EffectId.B);
     Instance.CurveCoefficients.Initialize(State);
@@ -548,8 +583,8 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::CreateSpellField(UGuLiSpellFieldDefinit
 	FGuLiSpellFieldConfig Config; FGuLiCombatEffectContext Configured, Prepared;
 	if (!Definition || Location.ContainsNaN() || !ResolveFieldConfig(Definition, Context, Config, Configured)
 		|| !PrepareContext(Configured, Prepared)) return {};
-	const FGuid Lease = Ledger->AcquireEffectSource(Prepared.Source);
-	if (!Lease.IsValid()) return {};
+	const FGuid Lease = HybridEffects?FGuid():Ledger->AcquireEffectSource(Prepared.Source);
+	if (!HybridEffects && !Lease.IsValid()) return {};
 	return CreateFieldInternal(Definition, Prepared, Location, Lease, nullptr, &Config);
 }
 
@@ -574,11 +609,21 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::CreateFieldInternal(UGuLiSpellFieldDefi
 	State.RandomSeed = static_cast<int32>(State.EffectId.A ^ State.EffectId.B);
 	FRandomStream Random(State.RandomSeed);
 	State.VariantIndex = Instance.VariantCount == 0 ? INDEX_NONE : Random.RandRange(0, Instance.VariantCount - 1);
-	State.Radius = Instance.FrozenRadius; State.StartTime = State.SampleTime = GetWorld()->GetTimeSeconds();
+	State.Radius = Instance.FrozenRadius; State.StartTime = State.SampleTime = BattleSeconds();
 	State.ActivationTime = State.StartTime + (Instance.Timing == EGuLiSpellFieldTiming::Instant ? 0.0f : Instance.FrozenDelay);
 	State.EndTime = State.ActivationTime + Instance.Duration;
 	State.Phase = State.ActivationTime > State.StartTime ? EGuLiCombatEffectPhase::Waiting : EGuLiCombatEffectPhase::Active;
 	State.Sequence = 1;
+    if (HybridEffects)
+    {
+        if (Frozen)
+        {
+            const auto Id=TransitionHybridEffect(Frozen->State.EffectId,MoveTemp(Instance));
+            if (Id.IsValid()) ++Counters.FieldsCreated;return Id;
+        }
+        State.EffectId=Context.ShotId;
+        const auto Id=AdmitHybridEffect(MoveTemp(Instance));if (Id.IsValid()) ++Counters.FieldsCreated;return Id;
+    }
 	const FGuid Id = State.EffectId; const float Now = State.StartTime;
 	Effects.Add(Id, MoveTemp(Instance)); ++Counters.FieldsCreated; Publish(Id, true);
 	if (!bInsideStep) bIndexReady = false;
@@ -588,30 +633,7 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::CreateFieldInternal(UGuLiSpellFieldDefi
 
 void UGuLiCombatEffectRuntimeSubsystem::Tick(float DeltaTime)
 {
-	if (!SynchronizeEpoch() || (Effects.IsEmpty() && WingmanBurstCooldowns.IsEmpty() && (!ProjectilePool || ProjectilePool->GetActiveCount() == 0))
-		|| !FMath::IsFinite(DeltaTime) || DeltaTime <= 0) return;
-	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCombatEffects_Runtime);
-	const double Started = FPlatformTime::Seconds();
-	Accumulator = FMath::Min(Accumulator + DeltaTime, static_cast<double>(StepSeconds * 4));
-	while (Accumulator + 1.e-8 >= StepSeconds)
-	{
-		Accumulator -= StepSeconds;
-		const float Now = GetWorld()->GetTimeSeconds() - static_cast<float>(Accumulator);
-		bInsideStep = true; bIndexReady = false;
-		Effects.GenerateKeyArray(StepIds);
-		for (const FGuid Id : StepIds)
-		{
-			const auto* Instance = Effects.Find(Id);
-			if (!Instance) continue;
-			if (Instance->State.Kind == EGuLiCombatEffectKind::Projectile) StepProjectile(Id, StepSeconds, Now);
-			else if (Instance->State.Kind == EGuLiCombatEffectKind::SpellField) StepField(Id, Now);
-			else StepSustainedHitscan(Id, Now);
-		}
-		StepWingmanBurstCooldowns(Now);
-		if (ProjectilePool) ProjectilePool->Step(Now);
-		bInsideStep = false;
-	}
-	Counters.LastStepMilliseconds = (FPlatformTime::Seconds() - Started) * 1000.0;
+    if (SynchronizeEpoch()) ServiceHybrid();
 }
 
 void UGuLiCombatEffectRuntimeSubsystem::StepSustainedHitscan(const FGuid& Id, const float Now)
@@ -648,6 +670,8 @@ void UGuLiCombatEffectRuntimeSubsystem::StepSustainedHitscan(const FGuid& Id, co
 			FGuLiPooledProjectileLaunch Launch;
 			Launch.Context = Instance.Context;
 			Launch.Context.ShotId = GuLiCombatEffects::DamageId(Id, Ordinal, Instance.State.Target);
+			// Each retained projectile owns its own damage event, even within one burst.
+			Launch.Context.RootEventId = Launch.Context.ShotId;
 			Launch.SourceLease = Instance.SourceLease; Launch.ServerTime = Now;
 			Launch.MuzzleOffset = Instance.State.MuzzleOffset;
 			Launch.Position = FTransform(Emitter.Rotation, Emitter.Location).TransformPosition(Launch.MuzzleOffset);
@@ -674,6 +698,12 @@ void UGuLiCombatEffectRuntimeSubsystem::BeginWingmanBurstCooldown(const FGuLiRun
 	FGuLiWingmanBurstCooldown& Cooldown =
 		WingmanBurstCooldowns.FindOrAdd(Instance.Context.Emitter).FindOrAdd(Instance.State.SlotId);
 	Cooldown.Carrier = Instance.Context.Source;
+    if (HybridEffects)
+    {
+        auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();FGuLiHybridObjectKey Member;FGuLiHybridObjectState Object;
+        if (H && H->ResolveTarget(Instance.Context.Source,Member) && H->GetObject(Member,Object) && Object.Parent.IsValid())
+            H->ResolveObjectTarget(Object.Parent,Cooldown.Carrier);
+    }
 	Cooldown.OrbitRadius = Instance.OrbitRadius;
 	Cooldown.DurationSeconds = Instance.CooldownSeconds;
 	Cooldown.OrbitEntryTime = -1.0;
@@ -749,9 +779,10 @@ void UGuLiCombatEffectRuntimeSubsystem::StepProjectile(const FGuid& Id, float De
 	{
 		const FVector Impact = bBlocked ? Hit.ImpactPoint : FVector(State.LastTargetLocation);
 		Effects[Id].State.Location = Impact;
-		if (Instance.Field && Ledger->RetainEffectSource(Instance.SourceLease))
+		if (Instance.Field && (HybridEffects || Ledger->RetainEffectSource(Instance.SourceLease)))
 		{
-			CreateFieldInternal(Instance.Field, Instance.Context, Impact, Instance.SourceLease, &Instance);
+			if (!CreateFieldInternal(Instance.Field, Instance.Context, Impact, Instance.SourceLease, &Instance).IsValid() && HybridEffects)
+            {GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Admitted projectile could not transition into its impact field"));return;}
 		}
 		Finish(Id, EGuLiCombatEffectEndReason::Impact, Now);
 	}
@@ -829,8 +860,19 @@ void UGuLiCombatEffectRuntimeSubsystem::StepField(const FGuid& Id, float Now)
 			{
 				if (!Effects.Contains(Id)) return;
 				if (Target.Handle == Instance.Context.Source) continue;
+                if (HybridEffects)
+                {
+                    if (!SubmitHybridPulse(Id,Pulse,Target))
+                    {GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Field pulse could not retain its pending hit"));return;}
+                    continue;
+                }
 				const auto Request = MakeDamage(Instance.Context, GuLiCombatEffects::DamageId(Id, Pulse, Target.Handle), Target.Handle, Target.Location);
-				if (Ledger->CommitEffectDamage(Request, Instance.SourceLease).Status == EGuLiDamageCommitStatus::Committed) ++Counters.DamageCommits;
+				const TWeakObjectPtr<UGuLiCombatEffectRuntimeSubsystem> Weak(this); const uint32 SubmittedEpoch=Epoch;
+				Ledger->SubmitEffectDamage(Request,Instance.SourceLease,this,[Weak,SubmittedEpoch](const FGuLiDamageCommitResult& Result)
+				{
+					if (auto* Self=Weak.Get(); Self && Self->Epoch==SubmittedEpoch && Result.Status==EGuLiDamageCommitStatus::Committed)
+						++Self->Counters.DamageCommits;
+				});
 			}
 		}
 	}
@@ -846,6 +888,7 @@ void UGuLiCombatEffectRuntimeSubsystem::StepField(const FGuid& Id, float Now)
 
 void UGuLiCombatEffectRuntimeSubsystem::Publish(const FGuid& Id, bool bReliable)
 {
+    if (HybridEffects) {PublishHybridEffect(Id,bReliable);return;}
 	if (const auto* Instance = Effects.Find(Id))
 	{
 		const FGuLiCombatEffectState Snapshot = Instance->State;
@@ -861,13 +904,14 @@ void UGuLiCombatEffectRuntimeSubsystem::Finish(const FGuid& Id, EGuLiCombatEffec
 	Ledger->ReleaseEffectSource(Instance.SourceLease);
 	Instance.State.Phase = EGuLiCombatEffectPhase::Finished; Instance.State.EndReason = Reason;
 	Instance.State.SampleTime = FMath::Max(Now, Instance.State.StartTime); ++Instance.State.Sequence;
+    if (HybridEffects) {FinishHybridEffect(Instance);return;}
 	OnState.Broadcast(Instance.State, true);
 }
 
 bool UGuLiCombatEffectRuntimeSubsystem::CancelEffect(FGuid EffectId)
 {
 	if (!SynchronizeEpoch() || !Effects.Contains(EffectId)) return false;
-	Finish(EffectId, EGuLiCombatEffectEndReason::Cancelled, GetWorld()->GetTimeSeconds()); return true;
+	Finish(EffectId, EGuLiCombatEffectEndReason::Cancelled, BattleSeconds()); return true;
 }
 
 bool UGuLiCombatEffectRuntimeSubsystem::QueryEffect(FGuid EffectId, FGuLiCombatEffectState& OutState) const

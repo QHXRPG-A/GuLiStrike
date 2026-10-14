@@ -31,7 +31,6 @@ class AGuLiCommanderGameState : public AGuLiBattleGameState
 	GENERATED_BODY()
 
 public:
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	/** 服务器本地发布已提交士兵速度（cm/s）及调参版本，不是客户端调参 RPC。 */
 	void SetAuthoritativeSoldierMovementTuning(float EffectiveMoveSpeedCmPerSecond, uint32 TuningRevision);
@@ -54,13 +53,13 @@ private:
 	UFUNCTION()
 	void OnRep_RuntimeTuning();
 
-	UPROPERTY(ReplicatedUsing = OnRep_RuntimeTuning)
+	UPROPERTY()
 	float EffectiveSoldierMoveSpeedCmPerSecond = 720.0f;
 
 	// 两个独立复制属性；客户端不得将两个回调顺序当作原子事务。
-	UPROPERTY(ReplicatedUsing = OnRep_RuntimeTuning)
+	UPROPERTY()
 	uint32 RuntimeTuningRevision = 0u;
 
-	UPROPERTY(Replicated)
+	UPROPERTY()
 	TArray<FGuLiCommanderUnitMovementMultiplier> UnitMovementMultipliers;
 };

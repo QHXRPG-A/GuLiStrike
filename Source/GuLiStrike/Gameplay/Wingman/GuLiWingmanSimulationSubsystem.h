@@ -67,6 +67,9 @@ struct FGuLiWingmanLocalGroupRuntime
 	float NavigationEvaluationAccumulator = 0.0f;
 	TArray<TPair<uint8, FGuLiWingmanAttackFireRecord>> PendingAttackShots;
 	uint32 LastAttackTick = 0u;
+    /** Private owner state. Each member captures only its own assignment and accepted shots. */
+    FGuLiWingmanAttackAuthorityState HybridAttack;
+    double NextHybridTargetScan = 0;
 };
 
 struct FGuLiWingmanAttackDiagnostic
@@ -130,11 +133,25 @@ public:
 	void DestroyAllOwnedGroups();
 
 	bool AdvanceOwnedGroup(const FGuLiWingmanGroupHandle& Group, float DeltaSeconds);
+    /** One granted object owns this runtime, independently of carrier/controller lifetime. */
+    TSharedPtr<FGuLiWingmanLocalGroupRuntime> CreateIndependentMember(const FGuLiWingmanHandle& Member,
+        const FGuLiGroupAbilityConfigSnapshot& Configuration,const FTransform& Carrier,const FVector& CarrierVelocity,
+        const FGuLiCarrierSourceRef& CarrierSource,const FVector& InitialPosition,AActor* CarrierActor);
+    bool AdvanceIndependentMember(FGuLiWingmanLocalGroupRuntime& Runtime,float DeltaSeconds,double LogicalSeconds);
+    bool ApplyIndependentExternalControl(FGuLiWingmanLocalGroupRuntime& Runtime,bool Phased,bool Locked,const FTransform* Destination);
+    void TickIndependentAttackRuns(FGuLiWingmanLocalGroupRuntime& Runtime,const FGuLiWingmanAttackAuthorityState& State,
+        uint32 OwnerVersion,uint32 SimulationTick,double LogicalSeconds,bool Active);
+    void AdvanceHybridAttack(FGuLiWingmanLocalGroupRuntime& Runtime,uint32 OwnerVersion,
+        uint64 LogicalTick,double LogicalSeconds);
+    void ReleaseIndependentMember(FGuLiWingmanLocalGroupRuntime& Runtime);
+    bool CaptureIndependentMember(const FGuLiWingmanLocalGroupRuntime& Runtime,TArray<uint8>& Bytes) const;
+    bool ValidateIndependentMember(TConstArrayView<uint8> Bytes,const FGuLiWingmanHandle& Member) const;
+    bool RestoreIndependentMember(FGuLiWingmanLocalGroupRuntime& Runtime,TConstArrayView<uint8> Bytes,bool ReissueNavigation=true);
 	void SetGroupExternalControlState(const FGuLiWingmanGroupHandle& Group, bool bPhased, bool bLocked);
 	/** Uses the existing escort layout and FlightNav point validation, with no source-to-target path test. */
 	static bool PlanExternalFormationPositions(UWorld* World, const FTransform& Carrier,
 		const FGuLiWingmanFormationRuntimeConfig& Formation, TArray<FVector>& OutPositions,
-		TConstArrayView<int32> LivingSlots = {});
+		TConstArrayView<int32> LivingSlots = {},FString* Failure=nullptr);
 	AGuLiWingmanPawn* FindOwnedPawn(const FGuLiWingmanHandle& Wingman) const;
 	int32 GetOwnedPawnCount(const FGuLiWingmanGroupHandle& Group) const;
 	int32 GetTotalOwnedPawnCount() const;
@@ -210,6 +227,10 @@ public:
 #endif
 
 private:
+    bool AdvanceRuntime(FGuLiWingmanLocalGroupRuntime& Runtime,float DeltaSeconds,double NowSeconds,bool LogicalBehavior);
+    void TickNavigationRuntime(FGuLiWingmanLocalGroupRuntime& Runtime,float DeltaSeconds,double NowSeconds);
+    void TickAttackRuntime(FGuLiWingmanLocalGroupRuntime& Runtime,const FGuLiWingmanAttackAuthorityState& State,
+        uint32 LeaseEpoch,uint32 ClientTick,double Now,bool Active);
 	bool CanOwnSimulation() const;
 	bool InitializeOwnedPawn(AGuLiWingmanPawn& Pawn,
 		const FGuLiWingmanGroupHandle& Group, int32 GroupMemberIndex,
@@ -230,6 +251,8 @@ private:
 	UStaticMesh* ResolveWingmanMesh() const;
 
 	TMap<FGuLiWingmanGroupHandle, FGuLiWingmanLocalGroupRuntime> OwnedGroups;
+    TMap<FGuLiWingmanHandle,TWeakObjectPtr<AGuLiWingmanPawn>> IndependentPawns;
+    TMap<FGuLiWingmanHandle,TWeakPtr<FGuLiWingmanLocalGroupRuntime>> IndependentRuntimes;
 	TSet<FGuLiWingmanGroupHandle> InitialFormationNavigationFailuresLogged;
 	uint64 NavigationAsyncRequestsIssued = 0u;
 	uint64 NavigationResultsAccepted = 0u;

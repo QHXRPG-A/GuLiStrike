@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Battle/Combat/GuLiMissileVisualSubsystem.h"
+#include "Network/GuLiNetworkSettings.h"
 
 #include "Engine/World.h"
 
@@ -41,7 +42,7 @@ bool UGuLiMissileVisualSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	const UWorld* World = Cast<UWorld>(Outer);
 	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld()
-		&& World->GetNetMode() != NM_DedicatedServer;
+		&& UGuLiNetworkSettings::CanPresent(World);
 }
 
 void UGuLiMissileVisualSubsystem::Deinitialize()

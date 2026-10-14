@@ -8,13 +8,6 @@
 
 class UGuLiGroundMassContactSubsystem;
 class UGuLiGroundMechRocketComponent;
-struct FGuLiGroundMechNetworkStorage;
-struct FGuLiGroundMechStorageDeleter
-{
-	void operator()(FGuLiGroundMechNetworkStorage *Storage) const;
-};
-class FGuLiGroundMechSavedMove;
-struct FGuLiGroundMechMoveResponse;
 namespace GuLiGroundMechMovement
 {
 inline constexpr uint8 MassSupportCustomMode = 1u;
@@ -30,30 +23,20 @@ struct FGuLiMassSupportState
 	float TopZ = 0.0f;
 	float Radius = 0.0f;
 	double SimulationSeconds = 0.0;
-	// Local prediction origin. Corrections rebase this against the acknowledged raw
-	// sample so later ordinary moves preserve the authoritative platform offset.
+	// Platform reference retained by physical-state recovery and collision replay.
 	FVector SourceLocation = FVector::ZeroVector;
 	float SourceTopZ = 0.0f;
 	bool bHasSourceReference = false;
 	bool IsValid() const { return SoldierId.IsValid(); }
-	void Serialize(FArchive &Ar);
 };
 
 struct FGuLiRocketMoveState
 {
 	float Fuel = 0.f;
 	float RecoveryElapsed = 0.f;
-	void Serialize(FArchive& Ar)
-	{
-		uint8 Version = 1u;
-		Ar << Version;
-		if (Version != 1u) { Ar.SetError(); return; }
-		Ar << Fuel << RecoveryElapsed;
-		if (Ar.IsLoading() && (!FMath::IsFinite(Fuel) || Fuel < 0.f || !FMath::IsFinite(RecoveryElapsed) || RecoveryElapsed < 0.f)) Ar.SetError();
-	}
 };
 
-/** CMC prediction and world collision, with explicit timed sweeps against Mass data. */
+/** Fixed-clock world collision with explicit timed sweeps against Mass query data. */
 UCLASS()
 class GULISTRIKE_API UGuLiGroundMechMovementComponent final : public UGuLiExternalCharacterMovementComponent
 {
@@ -64,8 +47,9 @@ class GULISTRIKE_API UGuLiGroundMechMovementComponent final : public UGuLiExtern
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 							   FActorComponentTickFunction *ThisTickFunction) override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const override;
-	virtual FNetworkPredictionData_Client *GetPredictionData_Client() const override;
+	void AdvanceHybrid(float DeltaTime,FVector2D Axis,bool bSprint);
+    void AdvanceDormantRecovery(float DeltaTime);
+	virtual bool ShouldUsePackedMovementRPCs() const override { return false; }
 	virtual float GetMaxSpeed() const override;
 	virtual float GetMaxBrakingDeceleration() const override;
 	virtual FRotator ComputeOrientToMovementRotation(const FRotator& CurrentRotation, float DeltaTime, FRotator& DeltaRotation) const override;
@@ -81,9 +65,7 @@ class GULISTRIKE_API UGuLiGroundMechMovementComponent final : public UGuLiExtern
 	FGuLiSoldierId GetMassSupportSoldierId() const { return SupportState.SoldierId; }
 	void InitializeRocketFuel(float Fuel) { RocketState.Fuel = Fuel; RocketState.RecoveryElapsed = 0.f; }
 	void ClearRocketInput() { bRocketHeld = bRocketRequested = bRocketThrusting = bRocketAllowedThisMove = false; }
-	float GetPredictedRocketFuel() const { return RocketState.Fuel; }
-	bool IsRocketThrusting() const { return bRocketThrusting; }
-	virtual void UpdateFromCompressedFlags(uint8 Flags) override;
+
 #if WITH_DEV_AUTOMATION_TESTS
 	FGuLiMassSupportState TestOnly_GetSupport() const { return SupportState; }
 	FGuLiGroundMassMoveContext TestOnly_GetMoveContext() const { return LastMoveContext; }
@@ -105,21 +87,12 @@ class GULISTRIKE_API UGuLiGroundMechMovementComponent final : public UGuLiExtern
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 	virtual void HandleImpact(const FHitResult &Hit, float TimeSlice = 0.0f,
 							  const FVector &MoveDelta = FVector::ZeroVector) override;
-	virtual void ServerMoveHandleClientError(float TimeStamp, float DeltaTime, const FVector &Accel,
-											 const FVector &RelativeClientLocation,
-											 UPrimitiveComponent *ClientMovementBase, FName ClientBaseBoneName,
-											 uint8 ClientMovementMode) override;
-	virtual bool ServerCheckClientError(float TimeStamp, float DeltaTime, const FVector &Accel,
-										const FVector &ClientWorldLocation, const FVector &RelativeClientLocation,
-										UPrimitiveComponent *ClientMovementBase, FName ClientBaseBoneName,
-										uint8 ClientMovementMode) override;
-	virtual void BeforeValidatedMoveResponse(const FCharacterMoveResponseDataContainer &Response) override;
-	virtual void AfterValidatedMoveResponse(const FCharacterMoveResponseDataContainer &Response) override;
+
+
 
   private:
-	friend class FGuLiGroundMechSavedMove;
-	friend class FGuLiGroundMassNetworkMoveTest;
-	friend struct FGuLiGroundMechMoveResponse;
+	friend class FGuLiHybridGroundAdapter;
+	void RefreshCollisionContext();
 	bool IsMassSupportMode() const;
 	bool IsMassHit(const FHitResult &Hit) const;
 	UGuLiGroundMassContactSubsystem *GetMassContactSubsystem() const;
@@ -135,14 +108,12 @@ class GULISTRIKE_API UGuLiGroundMechMovementComponent final : public UGuLiExtern
 	void UnregisterGroundMechObstacle();
 	void MarkPresentationContacts();
 	UGuLiGroundMechRocketComponent* Rocket() const;
-	FGuLiRocketMoveState RocketState, PendingResponseRocket;
+	FGuLiRocketMoveState RocketState;
 	bool bRocketHeld = false, bRocketRequested = false, bRocketThrusting = false;
 	bool bRocketAllowedThisMove = false;
-	UPROPERTY(Replicated)
+	UPROPERTY()
 	FGuLiSoldierId MassSupportSoldierId;
 	FGuLiMassSupportState SupportState;
-	FGuLiMassSupportState PendingResponseSupport;
-	float PendingResponseTimeStamp = -1.0f;
 	FGuLiGroundMassMoveContext ActiveMove, LastMoveContext, PreparedMove;
 	FGuLiGroundMassContact PendingMassContact;
 	double SweepStartSeconds = 0.0;
@@ -150,11 +121,10 @@ class GULISTRIKE_API UGuLiGroundMechMovementComponent final : public UGuLiExtern
 	float DepenetrationUsed = 0.0f;
 	int32 ContactsThisStep = 0;
 	bool bMoveContextActive = false, bSweepStepActive = false, bPreparedMove = false;
-	bool bReplayingMove = false, bApplyingCorrection = false, bTouchedMass = false;
+	bool bReplayingMove = false, bTouchedMass = false;
 	uint32 PredictionCacheGeneration = 0u;
 	float ObstacleUpdateAccumulator = 0.0f;
 	FGuLiDynamicObstacleHandle GroundMechObstacleHandle;
 	EGuLiTeam RegisteredObstacleTeam = EGuLiTeam::Unassigned;
 	TArray<FGuLiGroundMassBody> CandidateBodies;
-	TUniquePtr<FGuLiGroundMechNetworkStorage, FGuLiGroundMechStorageDeleter> MechNetworkStorage;
 };

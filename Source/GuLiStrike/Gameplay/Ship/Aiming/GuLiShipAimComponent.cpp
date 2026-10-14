@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Ship/Aiming/GuLiShipAimComponent.h"
+#include "Network/GuLiNetworkSettings.h"
 
 #include "Gameplay/Ship/GuLiStrikeShip.h"
 #include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
@@ -74,7 +75,7 @@ void UGuLiShipAimComponent::HandleOwnerControllerChanged()
 	}
 
 	APlayerController* Controller = Ship ? Cast<APlayerController>(Ship->GetController()) : nullptr;
-	if (!Ship || !Ship->IsLocallyControlled() || !Controller || !Controller->IsLocalController())
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld()) || !Ship || !Ship->IsLocallyControlled() || !Controller || !Controller->IsLocalController())
 	{
 		ResetAimState();
 		UnbindHangar();

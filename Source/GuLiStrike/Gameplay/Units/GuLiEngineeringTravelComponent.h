@@ -56,6 +56,12 @@ class GULISTRIKE_API UGuLiEngineeringTravelComponent : public UActorComponent
 	GENERATED_BODY()
 public:
 	UGuLiEngineeringTravelComponent();
+	/** Fixed logical advance and private recovery contract; UE navigation handles are rebuilt. */
+	void AdvanceHybrid(float DeltaSeconds);
+	bool CaptureHybridTravel(TArray<uint8>& Bytes) const;
+	bool ValidateHybridTravel(TConstArrayView<uint8> Bytes) const;
+	bool RestoreHybridTravel(TConstArrayView<uint8> Bytes, bool bActivate);
+	void ApplyHybridTransitMotion(const FGuLiStrongholdTransitState& Transit);
 	bool BeginMove(const FVector& Target, float AcceptanceRadius);
 	bool BeginWorkMove(const FVector& Target, float AcceptanceRadius);
 	double EstimateWorkDistance(const FVector& Target) const;
@@ -81,12 +87,14 @@ public:
 	UFUNCTION(BlueprintPure) FGuLiStrongholdTransitState GetTransitState() const { return State; }
 	UFUNCTION(BlueprintPure, Category="Engineering|Navigation") FString GetTravelDebug() const;
 	virtual void BeginPlay() override;
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	FGuLiEngineeringTransportEvent OnTransportStarted;
 	FGuLiEngineeringTransportEvent OnTransportEnded;
 private:
-	UPROPERTY(ReplicatedUsing=OnRep_State) FGuLiStrongholdTransitState State;
+	void AdvanceTravel(float DeltaSeconds);
+	bool ActivateRestoredTravel();
+	bool bRestoredTravelPending = false;
+	UPROPERTY() FGuLiStrongholdTransitState State;
 	UPROPERTY(Transient) TObjectPtr<UGuLiExternalUnitControlComponent> Control;
 	UPROPERTY(Transient) TObjectPtr<UGuLiStrongholdTransitPresentationComponent> Presentation;
 	TArray<int32> PassedNodes;

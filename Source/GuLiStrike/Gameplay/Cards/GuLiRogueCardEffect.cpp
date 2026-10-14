@@ -7,18 +7,26 @@
 
 namespace
 {
-	bool AddSkillSource(const AGuLiBattlePlayerState& Commander, const FGuLiStrikeRogueCardsCardsRow& Card,
-		FGuid SourceId, FName Slot, EGuLiSkillAttribute Attribute, FString& Error)
-	{
-		auto* Skills=Commander.GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
-		if (!Skills) { Error=TEXT("Skill subsystem unavailable"); return false; }
-		FGuLiSkillSource Source; Source.SourceInstanceId=SourceId; Source.DebugLabel=TEXT("RogueCard:")+Card.Id;
-		auto& Modifier=Source.Modifiers.AddDefaulted_GetRef();
-		Modifier.Target.UnitTypeIds.Add(static_cast<uint16>(Card.UnitTypeId)); Modifier.Target.SlotId=Slot;
-		Modifier.Attribute=Attribute; Modifier.Operation=EGuLiSkillModifierOperation::AddPercent;
-		Modifier.Magnitude=Card.BonusPercent;
-		return Skills->UpsertSource(Commander, Source, Error);
-	}
+    void DescribePercent(const FGuLiStrikeRogueCardsCardsRow& R,FGuLiRogueEffectDefinition& Out,FName Slot,EGuLiSkillAttribute Attribute)
+    {
+        auto& M=Out.Source.Modifiers.AddDefaulted_GetRef();M.Target.UnitTypeIds.Add(uint16(R.UnitTypeId));M.Target.SlotId=Slot;
+        M.Attribute=Attribute;M.Operation=EGuLiSkillModifierOperation::AddPercent;M.Magnitude=R.BonusPercent;
+    }
+}
+bool UGuLiRogueCardEffect::Describe(const FGuLiStrikeRogueCardsCardsRow&,FGuLiRogueEffectDefinition&,FString& Error) const
+{Error=TEXT("Card effect has no portable capability description: ")+GetClass()->GetPathName();return false;}
+bool UGuLiRogueCardFireRateEffect::Describe(const FGuLiStrikeRogueCardsCardsRow& R,FGuLiRogueEffectDefinition& Out,FString& Error) const
+{if (!Validate(R,Error)) return false;DescribePercent(R,Out,TEXT("BasicAttack"),EGuLiSkillAttribute::AttackRate);return true;}
+bool UGuLiRogueCardMoveSpeedEffect::Describe(const FGuLiStrikeRogueCardsCardsRow& R,FGuLiRogueEffectDefinition& Out,FString& Error) const
+{if (!Validate(R,Error)) return false;Out.MovementPercent.Add(uint16(R.UnitTypeId),R.BonusPercent);return true;}
+bool UGuLiRogueCardMissileDamageEffect::Describe(const FGuLiStrikeRogueCardsCardsRow& R,FGuLiRogueEffectDefinition& Out,FString& Error) const
+{if (!Validate(R,Error)) return false;DescribePercent(R,Out,TEXT("MissileLauncher"),EGuLiSkillAttribute::Damage);return true;}
+bool UGuLiRogueCardMissilePodEffect::Describe(const FGuLiStrikeRogueCardsCardsRow& R,FGuLiRogueEffectDefinition& Out,FString& Error) const
+{if (!Validate(R,Error)) return false;auto& U=Out.Source.Unlocks.AddDefaulted_GetRef();U.Target.UnitTypeIds.Add(uint16(R.UnitTypeId));U.Target.SlotId=TEXT("MissileLauncher");return true;}
+bool UGuLiRogueCardMissileCountEffect::Describe(const FGuLiStrikeRogueCardsCardsRow& R,FGuLiRogueEffectDefinition& Out,FString& Error) const
+{
+    if (!Validate(R,Error)) return false;auto& M=Out.Source.Modifiers.AddDefaulted_GetRef();M.Target.UnitTypeIds.Add(uint16(R.UnitTypeId));M.Target.SlotId=TEXT("MissileLauncher");
+    M.Attribute=EGuLiSkillAttribute::ProjectileCount;M.Operation=EGuLiSkillModifierOperation::AddFlat;M.IntegerMagnitude=R.BonusCount;return true;
 }
 bool UGuLiRogueCardEffect::Validate(const FGuLiStrikeRogueCardsCardsRow& R, FString& Error) const
 {
@@ -35,15 +43,6 @@ bool UGuLiRogueCardMissilePodEffect::Validate(const FGuLiStrikeRogueCardsCardsRo
 	if (R.BonusPercent==0 && R.BonusCount==0 && R.MaxAcquisitions==1) return true;
 	Error=TEXT("Unlock effect requires zero bonuses and MaxAcquisitions=1"); return false;
 }
-bool UGuLiRogueCardMissilePodEffect::Apply(const AGuLiBattlePlayerState& C, const FGuLiStrikeRogueCardsCardsRow& R, FGuid Id, FString& Error) const
-{
-	auto* Skills=C.GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
-	if (!Skills || !Validate(R,Error)) return false;
-	FGuLiSkillSource Source; Source.SourceInstanceId=Id; Source.DebugLabel=TEXT("RogueCard:")+R.Id;
-	auto& Unlock=Source.Unlocks.AddDefaulted_GetRef();
-	Unlock.Target.UnitTypeIds.Add(static_cast<uint16>(R.UnitTypeId)); Unlock.Target.SlotId=TEXT("MissileLauncher");
-	return Skills->UpsertSource(C,Source,Error);
-}
 bool UGuLiRogueCardMissileCountEffect::Validate(const FGuLiStrikeRogueCardsCardsRow& R, FString& Error) const
 {
 	if (R.BonusCount>0 && R.BonusPercent==0) return true;
@@ -51,24 +50,3 @@ bool UGuLiRogueCardMissileCountEffect::Validate(const FGuLiStrikeRogueCardsCards
 }
 FText UGuLiRogueCardMissileCountEffect::FormatDescription(const FGuLiStrikeRogueCardsCardsRow& R, const FText& Pattern) const
 { return FText::Format(Pattern,FText::AsNumber(R.BonusCount)); }
-bool UGuLiRogueCardMissileCountEffect::Apply(const AGuLiBattlePlayerState& C, const FGuLiStrikeRogueCardsCardsRow& R, FGuid Id, FString& Error) const
-{
-	auto* Skills=C.GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
-	if (!Skills || !Validate(R,Error)) return false;
-	FGuLiSkillSource Source; Source.SourceInstanceId=Id; Source.DebugLabel=TEXT("RogueCard:")+R.Id;
-	auto& Modifier=Source.Modifiers.AddDefaulted_GetRef();
-	Modifier.Target.UnitTypeIds.Add(static_cast<uint16>(R.UnitTypeId)); Modifier.Target.SlotId=TEXT("MissileLauncher");
-	Modifier.Attribute=EGuLiSkillAttribute::ProjectileCount; Modifier.Operation=EGuLiSkillModifierOperation::AddFlat;
-	Modifier.IntegerMagnitude=R.BonusCount;
-	return Skills->UpsertSource(C,Source,Error);
-}
-bool UGuLiRogueCardFireRateEffect::Apply(const AGuLiBattlePlayerState& C, const FGuLiStrikeRogueCardsCardsRow& R, FGuid Id, FString& Error) const
-{ return AddSkillSource(C,R,Id,TEXT("BasicAttack"),EGuLiSkillAttribute::AttackRate,Error); }
-bool UGuLiRogueCardMissileDamageEffect::Apply(const AGuLiBattlePlayerState& C, const FGuLiStrikeRogueCardsCardsRow& R, FGuid Id, FString& Error) const
-{ return AddSkillSource(C,R,Id,TEXT("MissileLauncher"),EGuLiSkillAttribute::Damage,Error); }
-bool UGuLiRogueCardMoveSpeedEffect::Apply(const AGuLiBattlePlayerState& C, const FGuLiStrikeRogueCardsCardsRow& R, FGuid Id, FString& Error) const
-{
-	auto* Authority=C.GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
-	if (!Authority) { Error=TEXT("Movement authority unavailable"); return false; }
-	return Authority->ApplyRogueMovementSource(C.GetTeam(), static_cast<uint16>(R.UnitTypeId), Id, R.BonusPercent, Error);
-}

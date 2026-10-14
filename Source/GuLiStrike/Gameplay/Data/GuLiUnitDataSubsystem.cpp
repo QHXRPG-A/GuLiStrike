@@ -23,34 +23,42 @@ void UGuLiUnitDataSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	UDataTable* Table = Settings->SoldierDataTable.LoadSynchronous();
 	const FGuLiSoldierDefinition Fallback = FGuLiCommanderSoldierResolver::MakeFallbackDefinition();
 	DefaultDefinition = FGuLiCommanderSoldierResolver::Resolve(Table, Settings->DefaultSoldierRowName, Fallback, bDefaultFromTable);
+    if (!ResolveAuthoredDefinitions(Definitions,CatalogError))
+    {Definitions.Reset();MassDefinitions.Reset();UE_LOG(LogTemp,Error,TEXT("%s"),*CatalogError);return;}
+    MassDefinitions=Definitions.FilterByPredicate([](const auto& D){return D.UsesMass();});
+}
+
+bool UGuLiUnitDataSubsystem::ResolveAuthoredDefinitions(TArray<FGuLiSoldierDefinition>& Out,FString& Error)
+{
+    Error.Reset();TArray<FGuLiSoldierDefinition> Resolved;
+    const auto* Table=GetDefault<UGuLiUnitDataSettings>()->SoldierDataTable.LoadSynchronous();
+    const auto Fallback=FGuLiCommanderSoldierResolver::MakeFallbackDefinition();
 	if (!Table || Table->GetRowStruct() != FGuLiStrikeCommanderSoldiersRow::StaticStruct())
 	{
-		CatalogError = TEXT("Soldiers requires a valid unit DataTable.");
-		return;
+		Error = TEXT("Soldiers requires a valid unit DataTable.");
+		return false;
 	}
 	for (FName RowName : Table->GetRowNames())
 	{
 		bool bValid = false;
 		const FGuLiSoldierDefinition Definition = FGuLiCommanderSoldierResolver::Resolve(Table, RowName, Fallback, bValid);
-		if (!bValid || FindDefinition(Definition.UnitTypeId))
+		if (!bValid || Resolved.FindByPredicate([&](const auto& D){return D.UnitTypeId==Definition.UnitTypeId;}))
 		{
-			CatalogError = FString::Printf(TEXT("Soldiers row '%s' is invalid or repeats a UnitTypeId."), *RowName.ToString());
-			Definitions.Reset(); MassDefinitions.Reset();
-			return;
+			Error = FString::Printf(TEXT("Soldiers row '%s' is invalid or repeats a UnitTypeId."), *RowName.ToString());
+
+			return false;
 		}
 		FString BehaviorError;
 		if (!GuLiCommanderBehavior::ValidateDefinition(Definition, BehaviorError))
 		{
-			CatalogError = FString::Printf(TEXT("Soldiers/%s: %s"), *RowName.ToString(), *BehaviorError);
-			Definitions.Reset(); MassDefinitions.Reset();
-			UE_LOG(LogTemp, Error, TEXT("%s"), *CatalogError);
-			return;
+			Error = FString::Printf(TEXT("Soldiers/%s: %s"), *RowName.ToString(), *BehaviorError);
+
+			return false;
 		}
-		Definitions.Add(Definition);
-		if (Definition.UsesMass()) MassDefinitions.Add(Definition);
+		Resolved.Add(Definition);
 	}
-	Definitions.Sort([](const auto& A, const auto& B) { return A.UnitTypeId < B.UnitTypeId; });
-	MassDefinitions.Sort([](const auto& A, const auto& B) { return A.UnitTypeId < B.UnitTypeId; });
+	Resolved.Sort([](const auto& A, const auto& B) { return A.UnitTypeId < B.UnitTypeId; });
+    Out=MoveTemp(Resolved);return true;
 }
 
 const FGuLiSoldierDefinition* UGuLiUnitDataSubsystem::FindDefinition(const uint16 UnitTypeId) const

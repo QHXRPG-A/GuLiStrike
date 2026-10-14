@@ -4,6 +4,10 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-10-13 | [旧CS路由退役与客户端归属交接构建交付](../Archive/20261013-旧CS路由退役与客户端归属交接构建交付.md) | network, commander, combat, performance | partial | 物理删除64个CS专属源文件及保留文件内的旧执行/复制路径，补齐客户端命令交接与能力推进；构建和原地图保存回读完成，运行验收未执行。 |
+| 2026-10-12 | [Ship独占僚机与空席重生六端证据](../Archive/20261012-Ship独占僚机与空席重生六端证据.md) | network, ship, wingman, combat, performance | partial | 两档六端僚机生成及恢复、200档实际掉线销毁与换职重生、真实500飞行物三个寿命周期及恢复专项通过；攻击、完整玩法与性能矩阵仍未交付。 |
+| 2026-10-11 | [混合命令切点修正与源码增量构建](../Archive/20261011-混合命令切点修正与源码增量构建.md) | network, commander, navigation, combat, performance | partial | 修正暂停命令队列、检查点业务接收边界与旧授权恢复校验；核心/协调服务及源码UE增量构建通过，用户授权保存地图后已重启源码编辑器。 |
+| 2026-10-11 | [混合架构基础构建与源码编辑器恢复](../Archive/20261011-混合架构基础构建与源码编辑器恢复.md) | network, commander, navigation, combat, performance | partial | 共享核心及当前UE桥接经源码版Editor构建通过，独立协调服务含EOS校验适配构建通过；修正Launcher项目关联并恢复MCP读取，完整玩法迁移未完成。 |
 | 2026-10-11 | [Mass会话GitHub交付与临时文件清理受阻](../Archive/20261011-Mass会话GitHub交付与临时文件清理受阻.md) | commander, navigation, presentation, performance | partial | Mass优化、原地图与报告共104个文件已上传GitHub main，远端提交核对一致；87个临时文件约85.4 MB的删除被自动审批策略拦截，未删除任何文件。 |
 | 2026-10-11 | [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | commander, navigation, presentation, performance | partial | 按用户最新指示将已采用的Mass优化固定应用，删除本轮运行时开关与旧预测回退；重新编译13.06秒成功、8份BuildId一致、8项自动化通过，地图入口同步移除旧切换操作。 |
 | 2026-10-11 | [Mass避障简化、转向提速与网络固定对照](../Archive/20261011-Mass避障简化转向提速与网络对照.md) | commander, navigation, presentation, performance | partial | 完整组合在200及600+500同进程场景各三组配对通过，默认采用六邻居预测、共享索引、保守零缓存与三倍转向；编译、8项自动化、原地图入口及退出恢复完成，网络积压仍在。 |

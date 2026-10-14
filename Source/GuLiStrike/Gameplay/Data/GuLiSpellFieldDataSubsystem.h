@@ -35,6 +35,7 @@ public:
 	const FString& GetCatalogError() const { return CatalogError; }
 	/** Asset validation has no World; it uses the same row resolver as the per-World cache. */
 	static bool ResolveAuthoredConfig(FName ConfigId, FGuLiSpellFieldConfig& OutConfig);
+	static bool ResolveAuthoredTeleportConfig(int32 Level,FGuLiTeleportFieldConfig& OutConfig);
 	UFUNCTION(BlueprintPure, Category="Spell Fields")
 	bool GetCombatField(FName ConfigId, FGuLiSpellFieldConfig& OutConfig) const;
 private:

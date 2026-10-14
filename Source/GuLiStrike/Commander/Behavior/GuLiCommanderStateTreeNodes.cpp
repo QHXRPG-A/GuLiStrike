@@ -20,7 +20,7 @@ namespace
 	FGuLiTaskUnitId MassUnit(FStateTreeExecutionContext& Context)
 	{
 		const auto& Mass = static_cast<FMassStateTreeExecutionContext&>(Context);
-		return FGuLiTaskUnitId::Soldier(Mass.GetEntityManager().GetFragmentDataChecked<FGuLiMassIdentityFragment>(Mass.GetEntity()).SoldierId);
+		return FGuLiTaskUnitId::Soldier(Mass.GetEntityManager().GetFragmentDataChecked<FGuLiMassIdentityFragment>(Mass.GetEntity()).SoldierId,Context.GetWorld());
 	}
 	bool Matches(FStateTreeExecutionContext& Context, FGuLiTaskUnitId Unit, uint32 Required, uint32 Forbidden, EGuLiCommanderWorkPhase Phase, EGuLiCommanderWorkResult Result)
 	{

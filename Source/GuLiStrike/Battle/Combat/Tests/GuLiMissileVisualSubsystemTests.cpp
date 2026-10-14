@@ -136,25 +136,4 @@ bool FGuLiMissileVisualEventSequenceTest::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiMissileVisualRpcContractTest,
-	"GuLiStrike.Combat.Missile.Visual.GameStateRpcReliabilityContract",
-	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
-
-bool FGuLiMissileVisualRpcContractTest::RunTest(const FString& Parameters)
-{
-	const UFunction* Launch = AGuLiBattleGameState::StaticClass()->FindFunctionByName(
-		TEXT("MulticastReceiveMissileLaunch"));
-	const UFunction* Correction = AGuLiBattleGameState::StaticClass()->FindFunctionByName(
-		TEXT("MulticastReceiveMissileCorrection"));
-	const UFunction* Terminal = AGuLiBattleGameState::StaticClass()->FindFunctionByName(
-		TEXT("MulticastReceiveMissileTerminal"));
-	TestNull(TEXT("separate missile launch RPC retired"), Launch);
-	TestNull(TEXT("periodic missile correction RPC retired"), Correction);
-	TestNull(TEXT("separate missile terminal RPC retired"), Terminal);
-	const UFunction* Batch = UGuLiCombatEffectReplicationComponent::StaticClass()->FindFunctionByName(TEXT("MulticastFlightBatch"));
-	if (!TestNotNull(TEXT("unified flight batch exists"), Batch)) return false;
-	TestTrue(TEXT("launch and terminal share one reliable ordered multicast"),
-		Batch->HasAllFunctionFlags(FUNC_NetMulticast | FUNC_NetReliable));
-	return true;
-}
 #endif

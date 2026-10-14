@@ -348,7 +348,7 @@ namespace GuLiCommanderDebugCommands
 		SelectionRequest.Modifier = EGuLiSelectionModifier::Replace;
 		SelectionRequest.ClientRequestId = RequestSerial;
 		SelectionRequest.KnownSelectionRevision = NetSync->GetSelectionState().SelectionRevision;
-		NetSync->ServerRequestSelection(SelectionRequest);
+		NetSync->SubmitOrderedSelection(SelectionRequest);
 
 		const FGuLiCommanderSelectionState Selection = NetSync->GetSelectionState();
 		if (Selection.Cohorts.IsEmpty() || !NetSync->GetLastCommandAck().IsAccepted()
@@ -372,7 +372,7 @@ namespace GuLiCommanderDebugCommands
 		MoveRequest.ClientCommandId = RequestSerial + 1u;
 		MoveRequest.ClientCommandId = MoveRequest.ClientCommandId == 0u ? 1u : MoveRequest.ClientCommandId;
 		const FGuLiControlCohortDescriptor ProbeCohort = Selection.Cohorts[0];
-		NetSync->ServerIssueMove(MoveRequest);
+		NetSync->SubmitMoveRequest(MoveRequest);
 
 		const TSharedRef<FCommandFlowMoveAckWaitState> WaitState =
 			MakeShared<FCommandFlowMoveAckWaitState>();
@@ -492,7 +492,7 @@ namespace GuLiCommanderDebugCommands
 						static_cast<uint8>(MoveAck.CommandKind),
 						MoveAck.ClientCommandId,
 						static_cast<uint8>(MoveAck.Result),
-						NetSyncInstance->IsServerMovePlanningPending(WaitState->MoveRequest) ? 1 : 0);
+						NetSyncInstance->IsMoveCommandPending(WaitState->MoveRequest.ClientCommandId) ? 1 : 0);
 					WorldInstance->GetTimerManager().ClearTimer(WaitState->TimerHandle);
 				}),
 			CommandFlowMoveAckPollIntervalSeconds,

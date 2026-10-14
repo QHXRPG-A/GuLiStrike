@@ -3,6 +3,7 @@
 #include "NiagaraComponent.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Commander/Presentation/GuLiCommanderLODPolicy.h"
+#include "Network/GuLiNetworkSettings.h"
 
 static TAutoConsoleVariable<int32> GOffscreenLifecycle(TEXT("gs.Effects.OffscreenLifecycle"), 1,
  TEXT("Retire registered transient effects after 0.15 seconds fully outside eligible views."));
@@ -13,6 +14,7 @@ static TAutoConsoleVariable<int32> GThreeTierEffects(TEXT("gs.Effects.ThreeTierL
 static TAutoConsoleVariable<int32> GOffscreenFlights(TEXT("gs.Flights.OffscreenPresentation"),1,
  TEXT("Skip offscreen mesh transforms and flight Niagara updates; prediction and reliable lifecycle remain active."));
 bool GuLiClientPresentation::OffscreenLifecycleEnabled() { return GOffscreenLifecycle.GetValueOnGameThread()!=0; }
+bool GuLiClientPresentation::CanPresent(const UWorld* World) { return UGuLiNetworkSettings::CanPresent(World); }
 bool GuLiClientPresentation::OffscreenUnitsEnabled() { return GOffscreenUnits.GetValueOnGameThread()!=0; }
 bool GuLiClientPresentation::OffscreenFlightsEnabled() { return GOffscreenFlights.GetValueOnGameThread()!=0; }
 bool GuLiClientPresentation::ThreeTierEffectsEnabled() { return GThreeTierEffects.GetValueOnGameThread()!=0; }

@@ -15,16 +15,12 @@
 #include "Gameplay/Cards/GuLiRogueUpgradeTypes.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+#include "Gameplay/Skills/GuLiHybridArmy.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridManifest.h"
 
 namespace
 {
-	void SampleCards(TArray<FString>& Cards, int32 Count)
-	{
-		Count=FMath::Min(Count,Cards.Num());
-		for (int32 I=0; I<Count; ++I) Cards.Swap(I,FMath::RandRange(I,Cards.Num()-1));
-		Cards.SetNum(Count);
-	}
-
 	bool ValidateCardRelations(const TMap<FString,FGuLiStrikeRogueCardsCardsRow>& Cards, FString& Error)
 	{
 		TMap<FString,TSet<FString>> Excluded, Closures;
@@ -85,7 +81,10 @@ bool UGuLiRogueCardSubsystem::LoadCatalog(FString& Error)
 		const auto& R=*Table->FindRow<FGuLiStrikeRogueCardsCardsRow>(Name,TEXT("RogueCards"));
 		UClass* Class=R.ImplementationClass.LoadSynchronous();
 		const auto* Data=GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
-		const bool bIdValid=R.Id.Len()==5 && R.Id[2]=='.' && R.Id.Left(2).IsNumeric() && R.Id.Right(2).IsNumeric() && R.Id.Right(2)!=TEXT("00");
+		// Card identity is data, not an encoded unit/category number. Match the
+		// shared capability's bounded string contract for new content as well.
+		const FTCHARToUTF8 EncodedId(*R.Id);
+		const bool bIdValid=!R.Id.IsEmpty() && EncodedId.Length()<=192;
 		if (!bIdValid || Validated.Contains(R.Id) || R.Type!=1 || R.UnitTypeId<=0 || R.UnitTypeId>MAX_uint16
 			|| !Data || !Data->FindSoldierDefinition(static_cast<uint16>(R.UnitTypeId))
 			|| R.TextIds.Num()!=2 || !Class || !Class->IsChildOf(UGuLiRogueCardEffect::StaticClass())
@@ -119,200 +118,118 @@ FText UGuLiRogueCardSubsystem::GetCardText(const FString& Id, int32 Index)
 				Result=Effect->FormatDescription(*R,Result);
 	return Result;
 }
-bool UGuLiRogueCardSubsystem::IsEligible(const FGuLiStrikeRogueCardsCardsRow& Card, EGuLiTeam Team, FString& Error)
-{
-	TMap<FString,int32> Counts;
-	int64 PendingMissileBonus = 0;
-	if (const auto* Existing=Acquisitions.Find(static_cast<uint32>(Team))) Counts=*Existing;
-	// A source already accepted earlier in this fixed step reserves its acquisition
-	// until EndFixedStep. Concurrent commanders cannot bypass once-only/exclusion rules.
-	for (const auto& Pair : Offers)
-		if (Pair.Value.Team==Team && Pair.Value.bApplied && !Pair.Value.bFinished)
-		{
-			++Counts.FindOrAdd(Pair.Value.Selected);
-			const auto* PendingCard=FindCard(Pair.Value.Selected);
-			if (PendingCard && PendingCard->UnitTypeId==2
-				&& PendingCard->ImplementationClass.Get()==UGuLiRogueCardMissileCountEffect::StaticClass())
-				PendingMissileBonus+=PendingCard->BonusCount;
-		}
-	const int32 Count=Counts.FindRef(Card.Id);
-	if (Count==MAX_int32 || (Card.MaxAcquisitions>0 && Count>=Card.MaxAcquisitions))
-	{ Error=GetText(TEXT("UI.RogueCards.AcquisitionLimit")).ToString(); return false; }
-	for (const FString& Id : Card.RequiredCardIds)
-		if (Counts.FindRef(Id)<1)
-		{ Error=GetText(TEXT("UI.RogueCards.RequirementNotMet")).ToString(); return false; }
-	for (const auto& Pair : Counts)
-		if (Pair.Value>0)
-		{
-			const auto* Other=Catalog.Find(Pair.Key);
-			if (Card.ExcludedCardIds.Contains(Pair.Key) || (Other && Other->ExcludedCardIds.Contains(Card.Id)))
-			{ Error=GetText(TEXT("UI.RogueCards.Excluded")).ToString(); return false; }
-		}
-	if (Card.UnitTypeId==2 && Card.ImplementationClass.Get()==UGuLiRogueCardMissileCountEffect::StaticClass())
-	{
-		const auto* Army=GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
-		const auto* Weapon=Army ? Army->FindResolvedSkill(Team,2,TEXT("MissileLauncher")) : nullptr;
-		const auto* Skills=GetDefault<UGuLiCommanderSkillSettings>()->Catalog.LoadSynchronous();
-		const auto* Definition=Skills ? Skills->FindUnitSkill(2) : nullptr;
-		const auto* Config=Definition ? Cast<UGuLiPointSkillConfiguration>(Definition->Configuration) : nullptr;
-		// Acquisition limits handle ordinary cards; the resolved count also covers
-		// other integer sources and the player-invoked guidance preparation cases.
-		if (!Weapon || !Config || Config->MaxProjectilesPerActivation<1
-			|| int64(Weapon->ProjectileCount)+PendingMissileBonus+Card.BonusCount>Config->MaxProjectilesPerActivation)
-		{ Error=GetText(TEXT("UI.RogueCards.AcquisitionLimit")).ToString(); return false; }
-	}
-	Error.Reset(); return true;
-}
-bool UGuLiRogueCardSubsystem::ValidateOwner(UGuLiCommanderNetSyncComponent& Channel, AGuLiBattlePlayerState*& Owner, FString& Error) const
-{
-	const auto* PC=Cast<APlayerController>(Channel.GetOwner());
-	Owner=PC ? PC->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
-	const auto* State=GetWorld()->GetGameState<AGuLiBattleGameState>();
-	if (GetWorld()->GetNetMode()==NM_Client || !PC || !PC->HasAuthority() || !Owner || !State
-		|| !State->GetMatchEpoch() || !Owner->IsCommander() || !Owner->IsBattleReady() || !Owner->IsSoldierStreamReady())
-	{ Error=TEXT("Commander is not ready for this match"); return false; }
-	for (const auto& Slot : State->GetRoleSlots())
-		if (Slot.SlotIndex==Owner->GetBattleSlotIndex() && Slot.bOccupied && Slot.bBattleReady && Slot.bSyncReady
-			&& Slot.Role==EGuLiCommanderRole::Commander && Slot.Team==Owner->GetTeam()
-			&& Slot.PlayerGuid.IsValid() && Slot.PlayerGuid==Owner->GetPlayerGuid()) return true;
-	Error=TEXT("Commander no longer owns the team seat"); return false;
-}
-void UGuLiRogueCardSubsystem::SynchronizeEpoch()
-{
-	const auto* State=GetWorld()->GetGameState<AGuLiBattleGameState>();
-	const uint32 Current=State ? State->GetMatchEpoch() : 0;
-	if (Current!=Epoch) { Offers.Reset(); Acquisitions.Reset(); Epoch=Current; }
-}
 void UGuLiRogueCardSubsystem::RequestOffer(UGuLiCommanderNetSyncComponent& Channel, FGuid Request)
 {
-	SynchronizeEpoch(); FString Error; AGuLiBattlePlayerState* Owner=nullptr;
-	if (!Request.IsValid() || !ValidateOwner(Channel,Owner,Error) || !LoadCatalog(Error))
-	{ Channel.ClientRogueCardOffer(Request,{},Epoch,{},Error); return; }
-	if (auto* Old=Offers.Find(&Channel); Old && !Old->bFinished && Old->Owner==Owner && Old->Team==Owner->GetTeam())
-	{
-		Channel.ClientRogueCardOffer(Request,Old->Session,Epoch,Old->Candidates,TEXT("")); return;
-	}
-	FOffer Offer; Offer.Request=Request; Offer.Session=FGuid::NewGuid(); Offer.Owner=Owner; Offer.Team=Owner->GetTeam();
-	for (const auto& Pair : Catalog)
-		if (IsEligible(Pair.Value,Offer.Team,Error)) Offer.Candidates.Add(Pair.Key);
-	// Partial Fisher-Yates: every eligible card has the same probability and no duplicates.
-	SampleCards(Offer.Candidates,3);
-	Offer.bFinished=Offer.Candidates.IsEmpty(); // No selection exists to preserve; retry eligibility on the next open.
-	Offers.Add(&Channel,Offer);
-	Channel.ClientRogueCardOffer(Request,Offer.Session,Epoch,Offer.Candidates,TEXT(""));
+
+        const auto* PC=Cast<APlayerController>(Channel.GetOwner());const auto* PS=PC?PC->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
+        const auto Watch=WatchHybridRequest(Request,{},false,Channel);
+        if (Watch==EHybridWatch::Pending) return;
+        if (Watch==EHybridWatch::Rejected)
+        {Channel.ClientRogueCardOffer(Request,{},Epoch,{},TEXT("Army request queue is unavailable"));return;}
+        if (!PS || !GuLiHybridArmy::Request(*GetWorld(),PS->GetTeam(),EGuLiHybridArmyOperation::Offer,Request).IsValid())
+        {
+            HybridRequests.Remove(Request);
+            Channel.ClientRogueCardOffer(Request,{},Epoch,{},TEXT("Army capability is not ready"));
+        }
+        return;
+
 }
 void UGuLiRogueCardSubsystem::RerollOffer(UGuLiCommanderNetSyncComponent& Channel, FGuid Request, FGuid Session)
 {
-	SynchronizeEpoch(); FString Error; AGuLiBattlePlayerState* Owner=nullptr;
-	FOffer* Current=Offers.Find(&Channel);
-	if (!Request.IsValid() || !Session.IsValid() || !ValidateOwner(Channel,Owner,Error) || !LoadCatalog(Error)
-		|| !Current || Current->Owner!=Owner || Current->Team!=Owner->GetTeam()
-		|| Current->bSubmitted || Current->bApplied || Current->bFinished)
-	{ Channel.ClientRogueCardOffer(Request,{},Epoch,{},TEXT("UI.RogueCards.RerollUnavailable")); return; }
-	// Replaying the same request returns the same replacement; it cannot consume another draw.
-	if (Current->Request==Request && Current->RerolledFrom==Session)
-	{ Channel.ClientRogueCardOffer(Request,Current->Session,Epoch,Current->Candidates,TEXT("")); return; }
-	if (Current->Session!=Session)
-	{ Channel.ClientRogueCardOffer(Request,{},Epoch,{},TEXT("UI.RogueCards.RerollUnavailable")); return; }
-	TArray<FString> Alternatives, Retained;
-	for (const auto& Pair : Catalog)
-		if (IsEligible(Pair.Value,Current->Team,Error))
-			(Current->Candidates.Contains(Pair.Key) ? Retained : Alternatives).Add(Pair.Key);
-	if (Alternatives.IsEmpty() && Retained.Num()==Current->Candidates.Num())
-	{ Channel.ClientRogueCardOffer(Request,Current->Session,Epoch,{},TEXT("UI.RogueCards.NoAlternatives")); return; }
-	// Replace as many cards as the eligible pool allows, then fill remaining slots without duplicates.
-	SampleCards(Alternatives,3); SampleCards(Retained,3-Alternatives.Num());
-	Alternatives.Append(Retained); SampleCards(Alternatives,3);
-	FOffer Replacement;
-	Replacement.Request=Request; Replacement.Session=FGuid::NewGuid(); Replacement.RerolledFrom=Session;
-	Replacement.Owner=Owner; Replacement.Team=Current->Team; Replacement.Candidates=MoveTemp(Alternatives);
-	Replacement.bFinished=Replacement.Candidates.IsEmpty();
-	*Current=MoveTemp(Replacement); // Invalidates the old session before any late confirmation can settle.
-	Channel.ClientRogueCardOffer(Request,Current->Session,Epoch,Current->Candidates,TEXT(""));
+
+        const auto* PC=Cast<APlayerController>(Channel.GetOwner());const auto* PS=PC?PC->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
+        const auto Watch=WatchHybridRequest(Request,Session,false,Channel);
+        if (Watch==EHybridWatch::Pending) return;
+        if (Watch==EHybridWatch::Rejected)
+        {Channel.ClientRogueCardOffer(Request,Session,Epoch,{},TEXT("UI.RogueCards.RerollBusy"));return;}
+        if (!PS || !GuLiHybridArmy::Request(*GetWorld(),PS->GetTeam(),EGuLiHybridArmyOperation::Reroll,Request,Session).IsValid())
+        {
+            HybridRequests.Remove(Request);
+            Channel.ClientRogueCardOffer(Request,Session,Epoch,{},TEXT("UI.RogueCards.RerollBusy"));
+        }
+        return;
+
 }
 void UGuLiRogueCardSubsystem::Confirm(UGuLiCommanderNetSyncComponent& Channel, FGuid Session, const FString& CardId)
 {
-	SynchronizeEpoch(); FString Error; AGuLiBattlePlayerState* Owner=nullptr;
-	FOffer* Offer=Offers.Find(&Channel);
-	if (!ValidateOwner(Channel,Owner,Error) || !Offer || Offer->Session!=Session || Offer->Owner!=Owner
-		|| Offer->Team!=Owner->GetTeam() || CardId.Len()>32 || !Offer->Candidates.Contains(CardId))
-	{ Channel.ClientRogueCardResult(Session,false,Error.IsEmpty()?TEXT("Invalid or expired card session"):Error); return; }
-	if (Offer->bFinished)
-	{ Channel.ClientRogueCardResult(Session,Offer->bApplied && Offer->Selected==CardId,Offer->Error); return; }
-	if (Offer->bSubmitted) return;
-	const auto* Card=FindCard(CardId);
-	if (!Card || !IsEligible(*Card,Offer->Team,Error))
-	{
-		Offer->bFinished=true; Offer->Error=Error.IsEmpty()?TEXT("Card configuration changed"):Error;
-		Channel.ClientRogueCardResult(Session,false,Offer->Error); return;
-	}
-	Offer->Selected=CardId; Offer->bSubmitted=true;
+
+        const auto* PC=Cast<APlayerController>(Channel.GetOwner());const auto* PS=PC?PC->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
+        const auto Event=FGuLiHybridManifest::MakeStableKey(TEXT("/Game/GuLiStrike/ArmyRequests"),EGuLiHybridObjectKind::BusinessWork,Session.ToString()+TEXT("/choose/")+CardId).StableId;
+        const auto Watch=WatchHybridRequest(Event,Session,true,Channel);
+        if (Watch==EHybridWatch::Pending) return;
+        if (Watch==EHybridWatch::Rejected)
+        {Channel.ClientRogueCardResult(Session,false,TEXT("Army request queue is unavailable"));return;}
+        if (!PS || !GuLiHybridArmy::Request(*GetWorld(),PS->GetTeam(),EGuLiHybridArmyOperation::Choose,Event,Session,CardId).IsValid())
+        {
+            HybridRequests.Remove(Event);
+            Channel.ClientRogueCardResult(Session,false,TEXT("Army capability is not ready"));
+        }
+        return;
+
+}
+
+UGuLiRogueCardSubsystem::EHybridWatch UGuLiRogueCardSubsystem::WatchHybridRequest(FGuid Event,FGuid Session,bool Selection,UGuLiCommanderNetSyncComponent& Channel)
+{
+    auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    if (!H || !Event.IsValid()) return EHybridWatch::Rejected;
+    for (auto It=HybridRequests.CreateIterator();It;++It) if (!It.Value().Channel.IsValid()) It.RemoveCurrent();
+    if (const auto* Existing=HybridRequests.Find(Event))
+        return Existing->Session==Session && Existing->Selection==Selection && Existing->Channel.Get()==&Channel
+            ? EHybridWatch::Pending : EHybridWatch::Rejected;
+    if (HybridRequests.Num()>=64) return EHybridWatch::Rejected;
+    H->OnTransactionCompleted.AddUniqueDynamic(this,&ThisClass::HybridTransactionFinished);
+    H->OnOwnershipStateApplied.RemoveAll(this);
+    H->OnOwnershipStateApplied.AddWeakLambda(this,[this,H]()
+    {
+        TArray<FGuid> Events;HybridRequests.GetKeys(Events);
+        for (const auto& Event:Events)
+        {
+            FGuLiHybridTransactionResult R;FGuLiHybridCommandResult Command;
+            if (H->FindTransactionResult(Event,R)) HybridTransactionFinished(R);
+            else if (H->FindCommandResult(Event,Command)) HybridCommandFinished(Command);
+            // No local entry is not a rejection: the owner may have transferred this work.
+        }
+    });
+    if (!HybridCommandReceiptHandle.IsValid()) HybridCommandReceiptHandle=H->OnCommandCompleted.AddUObject(this,&ThisClass::HybridCommandFinished);
+    HybridRequests.Add(Event,{Session,Selection,&Channel});return EHybridWatch::Added;
+}
+void UGuLiRogueCardSubsystem::HybridTransactionFinished(const FGuLiHybridTransactionResult& R)
+{
+    if (R.Status==EGuLiHybridTransactionStatus::Paused || R.Status==EGuLiHybridTransactionStatus::Deferred) return;
+    if (R.IsCommitted()) {HybridRequests.Remove(R.Event);return;}
+    RejectHybridRequest(R.Event,FString::Printf(TEXT("Army transaction rejected (%u)"),uint8(R.Status)));
+}
+void UGuLiRogueCardSubsystem::HybridCommandFinished(const FGuLiHybridCommandResult& R)
+{
+    if (!R.Members.ContainsByPredicate([](const auto& M){return M.bAccepted;}))
+        RejectHybridRequest(R.Event,TEXT("Army command was rejected before settlement"));
+}
+void UGuLiRogueCardSubsystem::RejectHybridRequest(FGuid Event,const FString& Error)
+{
+    FPendingHybridUI Pending;if (!HybridRequests.RemoveAndCopyValue(Event,Pending)) return;
+    auto* Channel=Pending.Channel.Get();if (!Channel) return;
+    if (Pending.Selection) Channel->ClientRogueCardResult(Pending.Session,false,Error);
+    else Channel->ClientRogueCardOffer(Event,Pending.Session,Epoch,{},Error);
+}
+void UGuLiRogueCardSubsystem::Deinitialize()
+{
+    if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+    {H->OnTransactionCompleted.RemoveAll(this);H->OnCommandCompleted.Remove(HybridCommandReceiptHandle);H->OnOwnershipStateApplied.RemoveAll(this);}
+    HybridCommandReceiptHandle.Reset();
+    HybridRequests.Reset();HybridClosedSessions.Reset();Offers.Reset();Acquisitions.Reset();Super::Deinitialize();
 }
 void UGuLiRogueCardSubsystem::Cancel(UGuLiCommanderNetSyncComponent& Channel, FGuid Session)
 {
 	// Closing the presentation leaves an unconfirmed offer intact. Reopening is
 	// never a reroll; epoch/owner changes invalidate the stored offer instead.
-	SynchronizeEpoch();
-}
-void UGuLiRogueCardSubsystem::BeginFixedStep()
-{
-	SynchronizeEpoch();
-	for (auto It=Offers.CreateIterator(); It; ++It)
-	{
-		auto* Channel=It.Key().Get(); auto& Offer=It.Value();
-		if (!Channel) { It.RemoveCurrent(); continue; }
-		if (!Offer.bSubmitted || Offer.bFinished || Offer.bApplied) continue;
-		AGuLiBattlePlayerState* Owner=nullptr;
-		const auto* Card=FindCard(Offer.Selected);
-		if (ValidateOwner(*Channel,Owner,Offer.Error) && Offer.Owner==Owner && Offer.Team==Owner->GetTeam() && Card
-			&& IsEligible(*Card,Offer.Team,Offer.Error))
-		{
-			const auto* Effect=Cast<UGuLiRogueCardEffect>(Card->ImplementationClass.LoadSynchronous()->GetDefaultObject());
-			Offer.bApplied=Effect && Effect->Apply(*Owner,*Card,Offer.Session,Offer.Error);
-		}
-		if (!Offer.bApplied)
-		{
-			Offer.bFinished=true; if (Offer.Error.IsEmpty()) Offer.Error=TEXT("Card configuration changed");
-			Channel->ClientRogueCardResult(Offer.Session,false,Offer.Error);
-		}
-	}
-}
-void UGuLiRogueCardSubsystem::EndFixedStep()
-{
-	for (auto& Pair : Offers)
-	{
-		auto& Offer=Pair.Value;
-		if (!Offer.bApplied || Offer.bFinished) continue;
-		Offer.bFinished=true; ++Acquisitions.FindOrAdd(static_cast<uint32>(Offer.Team)).FindOrAdd(Offer.Selected);
-		Offer.CommittedTime=GetWorld()->GetTimeSeconds();
-		if (const auto* Card=FindCard(Offer.Selected))
-			if (const auto* Authority=GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>())
-			{
-				TArray<FGuLiSoldierStateItem> States; Authority->BuildSoldierStateSnapshot(States);
-				for (const auto& State : States)
-					if (State.IsAlive() && State.Team==Offer.Team && State.UnitTypeId==Card->UnitTypeId)
-						Offer.UpgradeTargets.Add(State.SoldierId);
-			}
-		if (auto* Channel=Pair.Key.Get()) Channel->ClientRogueCardResult(Offer.Session,true,TEXT(""));
-	}
-}
 
+}
 void UGuLiRogueCardSubsystem::PresentationClosed(UGuLiCommanderNetSyncComponent& Channel,FGuid Session)
 {
-	SynchronizeEpoch(); FString Error; AGuLiBattlePlayerState* Owner=nullptr;
-	auto* Offer=Offers.Find(&Channel);
-	if (!Offer || Offer->Session!=Session || !Offer->bFinished || !Offer->bApplied || Offer->bUpgradePublished
-		|| !ValidateOwner(Channel,Owner,Error) || Offer->Owner!=Owner || Offer->Team!=Owner->GetTeam()) return;
-	Offer->bUpgradePublished=true;
-	TArray<FGuLiSoldierId> Targets=MoveTemp(Offer->UpgradeTargets);
-	if (GetWorld()->GetTimeSeconds()-Offer->CommittedTime>10.f || Targets.IsEmpty()) return;
-	const auto* Card=FindCard(Offer->Selected);
-	FGuLiRogueUpgradeCue Cue;
-	if (!Card || Card->UpgradeVfx.IsNull() || !FMath::IsFinite(Card->UpgradeVfxScale) || Card->UpgradeVfxScale<=0
-		|| !GuLiRogueUpgrade::ParseColor(Card->UpgradeVfxColor,Cue.Color))
-	{ UE_LOG(LogTemp,Warning,TEXT("Rogue upgrade visual skipped: invalid VFX configuration for %s"),*Offer->Selected); return; }
-	Cue.Session=Session; Cue.MatchEpoch=Epoch; Cue.Team=Offer->Team; Cue.UnitTypeId=static_cast<uint16>(Card->UnitTypeId);
-	Cue.System=TSoftObjectPtr<UNiagaraSystem>(Card->UpgradeVfx.ToSoftObjectPath()); Cue.Scale=Card->UpgradeVfxScale;
-	Cue.Soldiers=MoveTemp(Targets);
-	UGuLiCombatEffectReplicationComponent::PublishRogueUpgrade(GetWorld(),Cue);
+
+        const auto* PC=Cast<APlayerController>(Channel.GetOwner());const auto* PS=PC?PC->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
+        const auto Event=FGuLiHybridManifest::MakeStableKey(TEXT("/Game/GuLiStrike/ArmyRequests"),EGuLiHybridObjectKind::BusinessWork,Session.ToString()+TEXT("/closed")).StableId;
+        if (PS) GuLiHybridArmy::Request(*GetWorld(),PS->GetTeam(),EGuLiHybridArmyOperation::ClosePresentation,Event,Session);
+        return;
+
 }

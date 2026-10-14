@@ -5,7 +5,6 @@
 #include "Commander/Framework/GuLiCommanderGameState.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/Framework/GuLiCommanderPlayerState.h"
-#include "Commander/Framework/GuLiCommanderWorldReplicationComponent.h"
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
 #include "Commander/Presentation/GuLiCommanderHUD.h"
 #include "UObject/ConstructorHelpers.h"
@@ -26,5 +25,4 @@ AGuLiCommanderGameMode::AGuLiCommanderGameMode()
 		RolePawnClasses.Add(EGuLiCommanderRole::Air, AirPawn.Class);
 	}
 	HUDClass = AGuLiCommanderHUD::StaticClass();
-	WorldReplicationComponent = CreateDefaultSubobject<UGuLiCommanderWorldReplicationComponent>(TEXT("SoldierWorldReplication"));
 }

@@ -20,8 +20,10 @@ struct FGuLiInitialArmyAuthoring
 	TArray<FGuLiCommanderInitialSpawnSlot> Slots;
 	TArray<FGuLiSpawnReservation> Reservations;
 	bool bUsesAuthoredDeployments = false;
-	bool Build(UWorld& World, FString& OutError);
+	bool Build(UWorld& World, FString& OutError, int32 Population = 0);
 	bool IsOreClear(const FVector2D& Center) const;
+	/** Deterministic formation placement for an explicit load, preserving the authored map. */
+	bool PlaceLoadOnNavigation(UWorld& World, const UGuLiResourceMapDefinition& Definition, FString& OutError);
 	bool Validate(UWorld& World, const UGuLiResourceMapDefinition& Definition,
 		int32& OutValidSlots, FString& OutError) const;
 	FString ToJson() const;

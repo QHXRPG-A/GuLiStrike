@@ -1,0 +1,967 @@
+{
+  "schema": "guli-cleanup-evidence/v1",
+  "reason": "User requested removal of temporary files and screenshots before building and pushing",
+  "runs": [
+    {
+      "run": "R74",
+      "source": "TestResults\\HybridFullAcceptance\\D31-R74\\Hybrid-3v3-n600-r1-56c3a5e2\\scenario.json",
+      "sha256": "29dc07b8a93202621fae165ee76f460166276d34667e22cf4aba1ebc1c91335c",
+      "status": "incomplete",
+      "checks": {
+        "additional_flights": {
+          "status": "passed",
+          "detail": "500 native pool flights survived three complete lifetimes at their unique owners"
+        },
+        "unique_simulation": {
+          "status": "passed",
+          "detail": "Full stable-life directory and controller/simulator grants agree across six endpoints"
+        },
+        "stable_ownership": {
+          "status": "passed",
+          "detail": "Ordinary load reports only move eligible Commander-owned idle objects through a committed handoff"
+        },
+        "logic_only": {
+          "status": "passed",
+          "detail": "Helpers retain real query/navigation entities and have no presentation or active performance capture"
+        },
+        "resource_group": {
+          "status": "passed",
+          "detail": "Both accounts, neutral resources and authored resource capability hosts share one live owner/version"
+        },
+        "commander_ui": {
+          "status": "passed",
+          "detail": "Rendered role owns its pawn and live UI; frame image retained for visual readback"
+        },
+        "commander_selection_takeover": {
+          "status": "passed",
+          "detail": "Selection of real objects across three owners committed matching private-state digests and one new owner version"
+        },
+        "selection_pinning": {
+          "status": "passed",
+          "detail": "Selected objects remain at Commander beyond the idle interval despite a sufficient reported load gap"
+        },
+        "idle_offload": {
+          "status": "passed",
+          "detail": "No early or equal-load migration; sufficient reported load permits idle transfer; selection wins back ownership"
+        },
+        "handoff_state": {
+          "status": "passed",
+          "detail": "Committed transfers have identical exported/installed state digests; ownership and live entities remain present"
+        },
+        "ship_equipment": {
+          "status": "passed",
+          "detail": "Native assembly request committed; fifty members follow Ship controller grants with 30 Hz simulation/10 Hz publication"
+        },
+        "wingman_cadence": {
+          "status": "passed",
+          "detail": "Native assembly request committed; fifty members follow Ship controller grants with 30 Hz simulation/10 Hz publication"
+        },
+        "ship_movement": {
+          "status": "passed",
+          "detail": "Native movement/turn/boost input completed while members retained their Ship owner"
+        },
+        "air_query_presentation": {
+          "status": "passed",
+          "detail": "Member driver checked receiver-only simulation and remote motion sample bounds"
+        },
+        "wingman_air_combat": {
+          "status": "passed",
+          "detail": "Ship target input led to owned member geometry and target-owner damage observed by all six endpoints"
+        },
+        "ship_combat": {
+          "status": "passed",
+          "detail": "The current production Hangar uses Ship target control and automatic member weapons; no retired manual-salvo input"
+        },
+        "wingman_ground_combat": {
+          "status": "passed",
+          "detail": "Ship target input led to owned member geometry and target-owner damage observed by all six endpoints"
+        },
+        "wingman_combat": {
+          "status": "passed",
+          "detail": "Both air and ground attack chains produced committed damage from Ship-owned members"
+        }
+      },
+      "stages": [
+        {
+          "id": "01-prepare-load-cohort",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "02-startup-flight-and-authority",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "03-whole-match-resource-authority",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "04-rendered-ui-and-bindings",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "05-commander-priority-selection-and-idle-load",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "06-ship-equipment-members-and-movement",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "07-ship-weapon-and-member-combat",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "08-ship-member-ground-combat",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "09-unpaid-gift-production-stops",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "10-construction-site-input",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "11-placement-preview-cancel-and-unfunded-rejection",
+          "status": "failed",
+          "failure": "server exited in stage 11-placement-preview-cancel-and-unfunded-rejection"
+        },
+        {
+          "id": "12-combat-population-preparation",
+          "status": "failed",
+          "failure": "server exited in stage 12-combat-population-preparation"
+        },
+        {
+          "id": "13-construction-1-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 12-combat-population-preparation"
+        },
+        {
+          "id": "14-combat-population-preparation",
+          "status": "failed",
+          "failure": "server exited in stage 14-combat-population-preparation"
+        },
+        {
+          "id": "15-construction-4-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 14-combat-population-preparation"
+        },
+        {
+          "id": "16-construction-101-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 15-construction-4-prerequisite"
+        },
+        {
+          "id": "17-construction-102-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 16-construction-101-prerequisite"
+        },
+        {
+          "id": "18-construction-5-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 17-construction-102-prerequisite"
+        },
+        {
+          "id": "19-production-births",
+          "status": "failed",
+          "failure": "server exited in stage 19-production-births"
+        },
+        {
+          "id": "20-supply-resume-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 19-production-births"
+        },
+        {
+          "id": "21-territory-capture-through-movement",
+          "status": "failed",
+          "failure": "server exited in stage 21-territory-capture-through-movement"
+        },
+        {
+          "id": "22-inventory-combination-unit-101",
+          "status": "failed",
+          "failure": "server exited in stage 22-inventory-combination-unit-101"
+        },
+        {
+          "id": "23-inventory-combination-unit-102",
+          "status": "failed",
+          "failure": "server exited in stage 23-inventory-combination-unit-102"
+        },
+        {
+          "id": "24-inventory-combination-building-102",
+          "status": "failed",
+          "failure": "server exited in stage 24-inventory-combination-building-102"
+        },
+        {
+          "id": "25-mass-frozen-formation-and-active-skill",
+          "status": "failed",
+          "failure": "server exited in stage 25-mass-frozen-formation-and-active-skill"
+        },
+        {
+          "id": "26-teleport-collection-and-landing",
+          "status": "failed",
+          "failure": "server exited in stage 26-teleport-collection-and-landing"
+        },
+        {
+          "id": "27-rogue-cancel-and-return",
+          "status": "failed",
+          "failure": "server exited in stage 27-rogue-cancel-and-return"
+        },
+        {
+          "id": "28-teleport-cancel-and-return",
+          "status": "failed",
+          "failure": "server exited in stage 28-teleport-cancel-and-return"
+        },
+        {
+          "id": "29-rogue-selection-submit-and-return",
+          "status": "failed",
+          "failure": "server exited in stage 29-rogue-selection-submit-and-return"
+        },
+        {
+          "id": "30-combined-mass-wm01-and-summon-battle",
+          "status": "failed",
+          "failure": "server exited in stage 30-combined-mass-wm01-and-summon-battle"
+        },
+        {
+          "id": "31-authored-content-and-blueprint-readback-generic_content",
+          "status": "failed",
+          "failure": "server exited in stage 31-authored-content-and-blueprint-readback-generic_content"
+        },
+        {
+          "id": "32-authored-content-and-blueprint-readback-production_blueprints",
+          "status": "failed",
+          "failure": "server exited in stage 32-authored-content-and-blueprint-readback-production_blueprints"
+        },
+        {
+          "id": "33-authored-content-and-blueprint-readback-production_blueprint_execution",
+          "status": "failed",
+          "failure": "server exited in stage 33-authored-content-and-blueprint-readback-production_blueprint_execution"
+        },
+        {
+          "id": "34-receiver-publication-audit",
+          "status": "failed",
+          "failure": "server exited in stage 34-receiver-publication-audit"
+        },
+        {
+          "id": "35-fixed-role-reconnect",
+          "status": "failed",
+          "failure": "server exited in stage 35-fixed-role-reconnect"
+        },
+        {
+          "id": "36-rendered-commander-to-air",
+          "status": "failed",
+          "failure": "server exited in stage 36-rendered-commander-to-air"
+        },
+        {
+          "id": "37-air-ui-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 37-air-ui-prerequisite"
+        },
+        {
+          "id": "38-authored-content-and-blueprint-readback-map_entry",
+          "status": "failed",
+          "failure": "server exited in stage 38-authored-content-and-blueprint-readback-map_entry"
+        },
+        {
+          "id": "39-rendered-commander-to-ground",
+          "status": "failed",
+          "failure": "server exited in stage 39-rendered-commander-to-ground"
+        },
+        {
+          "id": "40-ground-ui-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 40-ground-ui-prerequisite"
+        },
+        {
+          "id": "41-ground-movement-and-query",
+          "status": "failed",
+          "failure": "server exited in stage 41-ground-movement-and-query"
+        },
+        {
+          "id": "42-ground-formal-combat",
+          "status": "failed",
+          "failure": "Scenario has unverified checks: air_ui, combat_event_correspondence, construction, engineering, fixed_reconnect, fixed_role_rejections, generic_content, ground_combat, ground_movement, ground_query_presentation, ground_ui, inventory_composition, machinegun_speed, map_entry, mass_combat, mass_commands, mining_transport, no_receive_republish, population_cancel_reject_death, production, production_blueprint_execution, production_blueprints, replacement_population, rogue, rogue_cancel, skills, spell_fields, supply_loss_resume, teleport, teleport_cancel, territory_supply, wm01"
+        }
+      ],
+      "missing": [
+        "air_ui",
+        "combat_event_correspondence",
+        "construction",
+        "engineering",
+        "fixed_reconnect",
+        "fixed_role_rejections",
+        "generic_content",
+        "ground_combat",
+        "ground_movement",
+        "ground_query_presentation",
+        "ground_ui",
+        "inventory_composition",
+        "machinegun_speed",
+        "map_entry",
+        "mass_combat",
+        "mass_commands",
+        "mining_transport",
+        "no_receive_republish",
+        "population_cancel_reject_death",
+        "production",
+        "production_blueprint_execution",
+        "production_blueprints",
+        "replacement_population",
+        "rogue",
+        "rogue_cancel",
+        "skills",
+        "spell_fields",
+        "supply_loss_resume",
+        "teleport",
+        "teleport_cancel",
+        "territory_supply",
+        "wm01"
+      ],
+      "measurement_valid": false
+    },
+    {
+      "run": "R75",
+      "source": "TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\scenario.json",
+      "sha256": "a020e968a8631d6fc31532ff780555fbabe369ec632be337a552ec48c8006116",
+      "status": "incomplete",
+      "checks": {
+        "resource_group": {
+          "status": "passed",
+          "detail": "Both accounts, neutral resources and authored resource capability hosts share one live owner/version"
+        },
+        "commander_ui": {
+          "status": "passed",
+          "detail": "Rendered role owns its pawn and live UI; frame image retained for visual readback"
+        },
+        "commander_selection_takeover": {
+          "status": "passed",
+          "detail": "Selection of real objects across three owners committed matching private-state digests and one new owner version"
+        },
+        "selection_pinning": {
+          "status": "passed",
+          "detail": "Selected objects remain at Commander beyond the idle interval despite a sufficient reported load gap"
+        },
+        "idle_offload": {
+          "status": "passed",
+          "detail": "No early or equal-load migration; sufficient reported load permits idle transfer; selection wins back ownership"
+        },
+        "handoff_state": {
+          "status": "passed",
+          "detail": "Committed transfers have identical exported/installed state digests; ownership and live entities remain present"
+        },
+        "ship_equipment": {
+          "status": "passed",
+          "detail": "Native assembly request committed; fifty members follow Ship controller grants with 30 Hz simulation/10 Hz publication"
+        },
+        "wingman_cadence": {
+          "status": "passed",
+          "detail": "Native assembly request committed; fifty members follow Ship controller grants with 30 Hz simulation/10 Hz publication"
+        },
+        "ship_movement": {
+          "status": "passed",
+          "detail": "Native movement/turn/boost input completed while members retained their Ship owner"
+        },
+        "air_query_presentation": {
+          "status": "passed",
+          "detail": "Member driver checked receiver-only simulation and remote motion sample bounds"
+        },
+        "wingman_air_combat": {
+          "status": "passed",
+          "detail": "Ship target input led to owned member geometry and target-owner damage observed by all six endpoints"
+        },
+        "ship_combat": {
+          "status": "passed",
+          "detail": "The current production Hangar uses Ship target control and automatic member weapons; no retired manual-salvo input"
+        }
+      },
+      "stages": [
+        {
+          "id": "01-prepare-load-cohort",
+          "status": "failed",
+          "failure": "Commander has no locally held load preparation objects"
+        },
+        {
+          "id": "02-whole-match-resource-authority",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "03-rendered-ui-and-bindings",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "04-commander-priority-selection-and-idle-load",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "05-ship-equipment-members-and-movement",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "06-ship-weapon-and-member-combat",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "07-ship-member-ground-combat",
+          "status": "failed",
+          "failure": "Stage 07-ship-member-ground-combat timed out: ground-member-commits"
+        },
+        {
+          "id": "08-unpaid-gift-production-stops",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "09-construction-site-input",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "10-placement-preview-cancel-and-unfunded-rejection",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "11-combat-population-preparation",
+          "status": "failed",
+          "failure": "Stage 11-combat-population-preparation timed out: input-dc7d23034e81462e87f6ed3150cdd2b8"
+        },
+        {
+          "id": "12-development-resource-supply-red",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "13-combat-population-preparation",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "14-construction-4-prerequisite",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "15-construction-101-prerequisite",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "16-construction-102-prerequisite",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "17-construction-5-prerequisite",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "18-production-births",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "19-supply-resume-prerequisite",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "20-territory-capture-through-movement",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "21-inventory-combination-unit-101",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "22-inventory-combination-unit-102",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "23-inventory-combination-building-102",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "24-mass-frozen-formation-and-active-skill",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "25-teleport-collection-and-landing",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "26-rogue-cancel-and-return",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "27-teleport-cancel-and-return",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "28-rogue-selection-submit-and-return",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "29-combined-mass-wm01-and-summon-battle",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "30-authored-content-and-blueprint-readback-generic_content",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "31-authored-content-and-blueprint-readback-production_blueprints",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "32-authored-content-and-blueprint-readback-production_blueprint_execution",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "33-receiver-publication-audit",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "34-fixed-role-reconnect",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "35-rendered-commander-to-air",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "36-air-ui-prerequisite",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "37-authored-content-and-blueprint-readback-map_entry",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "38-rendered-commander-to-ground",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "39-ground-ui-prerequisite",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "40-ground-movement-and-query",
+          "status": "failed",
+          "failure": "Runtime JSON is empty or exceeds the evidence limit: D:\\UE5.7\\test1\\TestResults\\HybridFullAcceptance\\D31-R75\\Hybrid-3v3-n600-r1-352e6816\\server\\state.json"
+        },
+        {
+          "id": "41-ground-formal-combat",
+          "status": "failed",
+          "failure": "Scenario has unverified checks: additional_flights, air_ui, combat_event_correspondence, construction, engineering, fixed_reconnect, fixed_role_rejections, generic_content, ground_combat, ground_movement, ground_query_presentation, ground_ui, inventory_composition, logic_only, machinegun_speed, map_entry, mass_combat, mass_commands, mining_transport, no_receive_republish, population_cancel_reject_death, production, production_blueprint_execution, production_blueprints, replacement_population, rogue, rogue_cancel, skills, spell_fields, stable_ownership, supply_loss_resume, teleport, teleport_cancel, territory_supply, unique_simulation, wingman_combat, wingman_ground_combat, wm01"
+        }
+      ],
+      "missing": [
+        "additional_flights",
+        "air_ui",
+        "combat_event_correspondence",
+        "construction",
+        "engineering",
+        "fixed_reconnect",
+        "fixed_role_rejections",
+        "generic_content",
+        "ground_combat",
+        "ground_movement",
+        "ground_query_presentation",
+        "ground_ui",
+        "inventory_composition",
+        "logic_only",
+        "machinegun_speed",
+        "map_entry",
+        "mass_combat",
+        "mass_commands",
+        "mining_transport",
+        "no_receive_republish",
+        "population_cancel_reject_death",
+        "production",
+        "production_blueprint_execution",
+        "production_blueprints",
+        "replacement_population",
+        "rogue",
+        "rogue_cancel",
+        "skills",
+        "spell_fields",
+        "stable_ownership",
+        "supply_loss_resume",
+        "teleport",
+        "teleport_cancel",
+        "territory_supply",
+        "unique_simulation",
+        "wingman_combat",
+        "wingman_ground_combat",
+        "wm01"
+      ],
+      "measurement_valid": false
+    },
+    {
+      "run": "R76",
+      "source": "TestResults\\HybridFullAcceptance\\D31-R76\\Hybrid-3v3-n600-r1-6b798a1f\\scenario.json",
+      "sha256": "98cef4ea37aceb7137b78d87fb1c2885282df507e79731943ef9500b3671cd8f",
+      "status": "incomplete",
+      "checks": {
+        "additional_flights": {
+          "status": "passed",
+          "detail": "500 native pool flights survived three complete lifetimes at their unique owners"
+        },
+        "unique_simulation": {
+          "status": "passed",
+          "detail": "Full stable-life directory and controller/simulator grants agree across six endpoints"
+        },
+        "stable_ownership": {
+          "status": "passed",
+          "detail": "Ordinary load reports only move eligible Commander-owned idle objects through a committed handoff"
+        },
+        "logic_only": {
+          "status": "passed",
+          "detail": "Helpers retain real query/navigation entities and have no presentation or active performance capture"
+        },
+        "resource_group": {
+          "status": "passed",
+          "detail": "Both accounts, neutral resources and authored resource capability hosts share one live owner/version"
+        },
+        "commander_ui": {
+          "status": "passed",
+          "detail": "Rendered role owns its pawn and live UI; frame image retained for visual readback"
+        },
+        "commander_selection_takeover": {
+          "status": "passed",
+          "detail": "Selection of real objects across three owners committed matching private-state digests and one new owner version"
+        },
+        "selection_pinning": {
+          "status": "passed",
+          "detail": "Selected objects remain at Commander beyond the idle interval despite a sufficient reported load gap"
+        },
+        "idle_offload": {
+          "status": "passed",
+          "detail": "No early or equal-load migration; sufficient reported load permits idle transfer; selection wins back ownership"
+        },
+        "handoff_state": {
+          "status": "passed",
+          "detail": "Committed transfers have identical exported/installed state digests; ownership and live entities remain present"
+        },
+        "ship_equipment": {
+          "status": "passed",
+          "detail": "Native assembly request committed; fifty members follow Ship controller grants with 30 Hz simulation/10 Hz publication"
+        },
+        "wingman_cadence": {
+          "status": "passed",
+          "detail": "Native assembly request committed; fifty members follow Ship controller grants with 30 Hz simulation/10 Hz publication"
+        },
+        "ship_movement": {
+          "status": "passed",
+          "detail": "Native movement/turn/boost input completed while members retained their Ship owner"
+        },
+        "air_query_presentation": {
+          "status": "passed",
+          "detail": "Member driver checked receiver-only simulation and remote motion sample bounds"
+        },
+        "wingman_air_combat": {
+          "status": "passed",
+          "detail": "Ship target input led to owned member geometry and target-owner damage observed by all six endpoints"
+        },
+        "ship_combat": {
+          "status": "passed",
+          "detail": "The current production Hangar uses Ship target control and automatic member weapons; no retired manual-salvo input"
+        },
+        "wingman_ground_combat": {
+          "status": "passed",
+          "detail": "Ship target input led to owned member geometry and target-owner damage observed by all six endpoints"
+        },
+        "wingman_combat": {
+          "status": "passed",
+          "detail": "Both air and ground attack chains produced committed damage from Ship-owned members"
+        }
+      },
+      "stages": [
+        {
+          "id": "01-prepare-load-cohort",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "02-startup-flight-and-authority",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "03-whole-match-resource-authority",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "04-rendered-ui-and-bindings",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "05-commander-priority-selection-and-idle-load",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "06-ship-equipment-members-and-movement",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "07-ship-weapon-and-member-combat",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "08-ship-member-ground-combat",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "09-unpaid-gift-production-stops",
+          "status": "failed",
+          "failure": "Stage 09-unpaid-gift-production-stops timed out: unpaid-cycle-stable"
+        },
+        {
+          "id": "10-construction-site-input",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "11-placement-preview-cancel-and-unfunded-rejection",
+          "status": "passed",
+          "failure": null
+        },
+        {
+          "id": "12-combat-population-preparation",
+          "status": "failed",
+          "failure": "server exited in stage 12-combat-population-preparation"
+        },
+        {
+          "id": "13-construction-1-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 12-combat-population-preparation"
+        },
+        {
+          "id": "14-combat-population-preparation",
+          "status": "failed",
+          "failure": "server exited in stage 14-combat-population-preparation"
+        },
+        {
+          "id": "15-construction-4-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 14-combat-population-preparation"
+        },
+        {
+          "id": "16-construction-101-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 15-construction-4-prerequisite"
+        },
+        {
+          "id": "17-construction-102-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 16-construction-101-prerequisite"
+        },
+        {
+          "id": "18-construction-5-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 17-construction-102-prerequisite"
+        },
+        {
+          "id": "19-production-births",
+          "status": "failed",
+          "failure": "server exited in stage 19-production-births"
+        },
+        {
+          "id": "20-supply-resume-prerequisite",
+          "status": "failed",
+          "failure": "Supply resume lacks an observed unpaid production baseline"
+        },
+        {
+          "id": "21-territory-capture-through-movement",
+          "status": "failed",
+          "failure": "server exited in stage 21-territory-capture-through-movement"
+        },
+        {
+          "id": "22-inventory-combination-unit-101",
+          "status": "failed",
+          "failure": "server exited in stage 22-inventory-combination-unit-101"
+        },
+        {
+          "id": "23-inventory-combination-unit-102",
+          "status": "failed",
+          "failure": "server exited in stage 23-inventory-combination-unit-102"
+        },
+        {
+          "id": "24-inventory-combination-building-102",
+          "status": "failed",
+          "failure": "server exited in stage 24-inventory-combination-building-102"
+        },
+        {
+          "id": "25-mass-frozen-formation-and-active-skill",
+          "status": "failed",
+          "failure": "server exited in stage 25-mass-frozen-formation-and-active-skill"
+        },
+        {
+          "id": "26-teleport-collection-and-landing",
+          "status": "failed",
+          "failure": "server exited in stage 26-teleport-collection-and-landing"
+        },
+        {
+          "id": "27-rogue-cancel-and-return",
+          "status": "failed",
+          "failure": "server exited in stage 27-rogue-cancel-and-return"
+        },
+        {
+          "id": "28-teleport-cancel-and-return",
+          "status": "failed",
+          "failure": "server exited in stage 28-teleport-cancel-and-return"
+        },
+        {
+          "id": "29-rogue-selection-submit-and-return",
+          "status": "failed",
+          "failure": "server exited in stage 29-rogue-selection-submit-and-return"
+        },
+        {
+          "id": "30-combined-mass-wm01-and-summon-battle",
+          "status": "failed",
+          "failure": "server exited in stage 30-combined-mass-wm01-and-summon-battle"
+        },
+        {
+          "id": "31-authored-content-and-blueprint-readback-generic_content",
+          "status": "failed",
+          "failure": "server exited in stage 31-authored-content-and-blueprint-readback-generic_content"
+        },
+        {
+          "id": "32-authored-content-and-blueprint-readback-production_blueprints",
+          "status": "failed",
+          "failure": "server exited in stage 32-authored-content-and-blueprint-readback-production_blueprints"
+        },
+        {
+          "id": "33-authored-content-and-blueprint-readback-production_blueprint_execution",
+          "status": "failed",
+          "failure": "server exited in stage 33-authored-content-and-blueprint-readback-production_blueprint_execution"
+        },
+        {
+          "id": "34-receiver-publication-audit",
+          "status": "failed",
+          "failure": "server exited in stage 34-receiver-publication-audit"
+        },
+        {
+          "id": "35-fixed-role-reconnect",
+          "status": "failed",
+          "failure": "server exited in stage 35-fixed-role-reconnect"
+        },
+        {
+          "id": "36-rendered-commander-to-air",
+          "status": "failed",
+          "failure": "server exited in stage 36-rendered-commander-to-air"
+        },
+        {
+          "id": "37-air-ui-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 37-air-ui-prerequisite"
+        },
+        {
+          "id": "38-authored-content-and-blueprint-readback-map_entry",
+          "status": "failed",
+          "failure": "server exited in stage 38-authored-content-and-blueprint-readback-map_entry"
+        },
+        {
+          "id": "39-rendered-commander-to-ground",
+          "status": "failed",
+          "failure": "server exited in stage 39-rendered-commander-to-ground"
+        },
+        {
+          "id": "40-ground-ui-prerequisite",
+          "status": "failed",
+          "failure": "server exited in stage 40-ground-ui-prerequisite"
+        },
+        {
+          "id": "41-ground-movement-and-query",
+          "status": "failed",
+          "failure": "server exited in stage 41-ground-movement-and-query"
+        },
+        {
+          "id": "42-ground-formal-combat",
+          "status": "failed",
+          "failure": "Scenario has unverified checks: air_ui, combat_event_correspondence, construction, engineering, fixed_reconnect, fixed_role_rejections, generic_content, ground_combat, ground_movement, ground_query_presentation, ground_ui, inventory_composition, machinegun_speed, map_entry, mass_combat, mass_commands, mining_transport, no_receive_republish, population_cancel_reject_death, production, production_blueprint_execution, production_blueprints, replacement_population, rogue, rogue_cancel, skills, spell_fields, supply_loss_resume, teleport, teleport_cancel, territory_supply, wm01"
+        }
+      ],
+      "missing": [
+        "air_ui",
+        "combat_event_correspondence",
+        "construction",
+        "engineering",
+        "fixed_reconnect",
+        "fixed_role_rejections",
+        "generic_content",
+        "ground_combat",
+        "ground_movement",
+        "ground_query_presentation",
+        "ground_ui",
+        "inventory_composition",
+        "machinegun_speed",
+        "map_entry",
+        "mass_combat",
+        "mass_commands",
+        "mining_transport",
+        "no_receive_republish",
+        "population_cancel_reject_death",
+        "production",
+        "production_blueprint_execution",
+        "production_blueprints",
+        "replacement_population",
+        "rogue",
+        "rogue_cancel",
+        "skills",
+        "spell_fields",
+        "supply_loss_resume",
+        "teleport",
+        "teleport_cancel",
+        "territory_supply",
+        "wm01"
+      ],
+      "measurement_valid": false
+    }
+  ],
+  "G_passed": false,
+  "F_started": false,
+  "performance_valid_rounds": 0
+}

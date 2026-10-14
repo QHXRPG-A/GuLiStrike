@@ -2,6 +2,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 #include "GuLiStrongholdFacilitiesComponent.generated.h"
 
 USTRUCT()
@@ -13,6 +14,15 @@ struct FGuLiStrongholdGiftSlot
 	UPROPERTY() TObjectPtr<AActor> Building;
 };
 
+struct FGuLiHybridGiftJob
+{
+    FGuLiHybridObjectKey Target;
+    FGuid Event;
+    FTransform Placement;
+    uint32 Attempt=0;
+    bool Submitted=false;
+};
+
 UCLASS()
 class GULISTRIKE_API UGuLiStrongholdFacilitiesComponent : public UActorComponent
 {
@@ -20,15 +30,16 @@ class GULISTRIKE_API UGuLiStrongholdFacilitiesComponent : public UActorComponent
 public:
 	UGuLiStrongholdFacilitiesComponent();
 	void InitializeFacilities();
-	void HandleOwnerChanged(EGuLiTeam Team);
-	virtual void TickComponent(float Dt, ELevelTick TickType, FActorComponentTickFunction* TickFunction) override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	const TArray<FGuLiStrongholdGiftSlot>& GetSlots() const { return Slots; }
 private:
-	UPROPERTY(Replicated) bool bFirstCaptured = false;
-	UPROPERTY(Replicated) TArray<FGuLiStrongholdGiftSlot> Slots;
+    friend struct FGuLiHybridFacilities;
+    TArray<FGuLiHybridGiftJob> HybridJobs;
+    uint64 HybridNextAttempt=0;
+	UPROPERTY() bool bFirstCaptured = false;
+	UPROPERTY() TArray<FGuLiStrongholdGiftSlot> Slots;
 	// Authority-only bounded search state; failed placement never consumes a gift.
 	TMap<int32, int32> PlacementSearchCursor;
 	TMap<int32, FString> LastPlacementFailure;
-	void DeliverPendingSlots();
+
 };

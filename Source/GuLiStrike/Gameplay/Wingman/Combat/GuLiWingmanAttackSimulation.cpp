@@ -3,13 +3,22 @@
 #include "Gameplay/Wingman/GuLiWingmanRuntimeTypes.h"
 #include "Engine/World.h"
 #include "Gameplay/Wingman/Combat/GuLiWingmanAttackNavigation.h"
-#include "Battle/Combat/GuLiWingmanCombatCoordinator.h"
+#include "Gameplay/Wingman/Combat/GuLiWingmanTargeting.h"
+#include "Battle/Combat/GuLiWingmanWeaponPolicy.h"
 #include "GuLiFlightNavigationQuery.h"
 
 void UGuLiWingmanSimulationSubsystem::TickAttackRuns(const FGuLiWingmanGroupHandle& Group,
 	const FGuLiWingmanAttackAuthorityState& State, uint32 LeaseEpoch, uint32 ClientTick, double Now, bool bActive)
 {
-	auto* Runtime = OwnedGroups.Find(Group);
+    if (auto* Runtime=OwnedGroups.Find(Group)) TickAttackRuntime(*Runtime,State,LeaseEpoch,ClientTick,Now,bActive);
+}
+void UGuLiWingmanSimulationSubsystem::TickIndependentAttackRuns(FGuLiWingmanLocalGroupRuntime& Runtime,
+    const FGuLiWingmanAttackAuthorityState& State,uint32 OwnerVersion,uint32 SimulationTick,double LogicalSeconds,bool Active)
+{TickAttackRuntime(Runtime,State,OwnerVersion,SimulationTick,LogicalSeconds,Active);}
+void UGuLiWingmanSimulationSubsystem::TickAttackRuntime(FGuLiWingmanLocalGroupRuntime& Value,
+    const FGuLiWingmanAttackAuthorityState& State,uint32 LeaseEpoch,uint32 ClientTick,double Now,bool bActive)
+{
+    auto* Runtime=&Value;
 	if (!Runtime || !CanOwnSimulation() || !FMath::IsFinite(Now)) return;
 	if (bActive && Runtime->LastAttackTick == ClientTick) return;
 	Runtime->LastAttackTick = ClientTick;

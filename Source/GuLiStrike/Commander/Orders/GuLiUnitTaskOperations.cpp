@@ -97,7 +97,7 @@ EGuLiCommanderOperationResult UGuLiUnitTaskSubsystem::CommitBehaviorOperation(FG
 	{
 		if (!Miner) return Receipt::Failed;
 		const auto* Resources = GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
-		if (!Resources || !Resources->IsRuntimeReady()) return Receipt::Deferred;
+		if (!Resources || !Resources->IsMiningRuntimeReady()) return Receipt::Deferred;
 	}
 	if (Step == Operation::MiningSelect && Miner && !Miner->IsBehaviorRetryReady()) return Receipt::Deferred;
 	if (Step == Operation::MiningFactory && Miner && GetWorkPhase(State.Context.Unit) == Phase::MiningIdle

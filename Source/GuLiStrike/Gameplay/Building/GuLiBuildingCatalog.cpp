@@ -6,6 +6,10 @@
 #include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "GameFramework/Actor.h"
 
+UGuLiBuildingDataSettings::UGuLiBuildingDataSettings()
+	:BuildingsTable(FSoftObjectPath(TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeBuildings_Buildings.DT_GuLiStrikeBuildings_Buildings"))),
+	Catalog(FSoftObjectPath(UGuLiBuildingCatalog::GetDefaultCatalogObjectPath())) {}
+
 const FGuLiBuildingDefinition* UGuLiBuildingCatalog::FindDefinition(EGuLiBuildingType Type) const
 {
 	return Definitions.FindByPredicate([Type](const auto& D) { return D.Type == Type; });
@@ -17,8 +21,7 @@ const FGuLiBuildingDefinition* UGuLiBuildingCatalog::FindById(int32 Id) const
 bool UGuLiBuildingCatalog::ResolveTable(bool bForceRefresh)
 {
 	if (bTableResolved && !bForceRefresh) return true;
-	const auto* Table = LoadObject<UDataTable>(nullptr,
-		TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeBuildings_Buildings.DT_GuLiStrikeBuildings_Buildings"));
+	const auto* Table = GetDefault<UGuLiBuildingDataSettings>()->BuildingsTable.LoadSynchronous();
 	if (!Table || Table->GetRowStruct() != FGuLiStrikeBuildingsBuildingsRow::StaticStruct())
 	{
 		UE_LOG(LogTemp, Error, TEXT("Building table missing or wrong row structure. Import Buildings before starting the match."));
@@ -34,6 +37,7 @@ bool UGuLiBuildingCatalog::ResolveTable(bool bForceRefresh)
 		D.ModelId = R.ModelId;
 		D.Mesh = GuLiModels::Load<UStaticMesh>(this, R.ModelId);
 		D.PresentationClass = GuLiModels::LoadClass<AActor>(this, R.ModelId);
+		if (const auto* GameplayClass=GameplayClasses.Find(R.Id)) D.GameplayClass=*GameplayClass;
 		D.CollisionExtent = R.CollisionExtent; D.VisualOffset = R.VisualOffset; D.MeshScale = R.MeshScale;
 		D.MaxHealth = R.MaxHealth; D.MaxShield = R.MaxShield; D.BuildLevel = R.BuildLevel;
 		D.Cost.Blue = R.BlueCost; D.Cost.Red = R.RedCost; D.ConstructionWork = R.ConstructionWork;
@@ -49,14 +53,21 @@ bool UGuLiBuildingCatalog::ResolveTable(bool bForceRefresh)
 			return false;
 		}
 	}
+	for (const auto& [Id,Class]:GameplayClasses)
+		if (Class.IsNull() || !Resolved.ContainsByPredicate([Id](const auto& D) {return D.DefinitionId==Id;}))
+		{
+			UE_LOG(LogTemp, Error, TEXT("Building gameplay class references an absent definition or empty class: %d"), Id);
+			return false;
+		}
 	Definitions = MoveTemp(Resolved);
 	bTableResolved = true;
 	return true;
 }
 bool UGuLiBuildingCatalog::IsUsable() const
 {
-	return !Definitions.IsEmpty()
-		&& Definitions.ContainsByPredicate([](const auto& D) { return D.Type == EGuLiBuildingType::MissileTurret; });
+	TSet<int32> Ids;
+	for (const auto& D:Definitions) {if (!D.IsUsable() || Ids.Contains(D.DefinitionId)) return false;Ids.Add(D.DefinitionId);}
+	return !Ids.IsEmpty();
 }
 const TCHAR* UGuLiBuildingCatalog::GetDefaultCatalogObjectPath()
 {
@@ -64,7 +75,7 @@ const TCHAR* UGuLiBuildingCatalog::GetDefaultCatalogObjectPath()
 }
 UGuLiBuildingCatalog* UGuLiBuildingCatalog::LoadDefaultCatalog()
 {
-	auto* Catalog = LoadObject<UGuLiBuildingCatalog>(nullptr, GetDefaultCatalogObjectPath());
+	auto* Catalog = GetDefault<UGuLiBuildingDataSettings>()->Catalog.LoadSynchronous();
 	if (Catalog && !Catalog->ResolveTable()) return nullptr;
 	return Catalog;
 }

@@ -109,9 +109,10 @@ class GULISTRIKE_API AGuLiTerritoryOutpostActor final : public AActor, public IG
 
 public:
 	AGuLiTerritoryOutpostActor();
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	void InitializeOutpost(uint8 InTerritoryIndex, FName InTerritoryId, EGuLiTeam InOwner);
+
+	void InitializeOutpost(uint8 InTerritoryIndex, FName InTerritoryId, EGuLiTeam InOwner,int32 DefinitionId=7);
 	void SetTerritoryOwnerAuthority(EGuLiTeam InOwner);
+    void ApplyHybridOwner(EGuLiTeam InOwner,double LogicalSeconds);
 	uint8 GetTerritoryIndex() const { return TerritoryIndex; }
 	UFUNCTION(BlueprintPure) FName GetTerritoryId() const { return TerritoryId; }
 	EGuLiTeam GetTerritoryOwner() const { return OwnerState.Team; }
@@ -129,13 +130,13 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UGuLiOutpostPresentationComponent> Presentation;
 
-	UPROPERTY(Replicated)
+	UPROPERTY()
 	uint8 TerritoryIndex = 0u;
 
-	UPROPERTY(Replicated)
+	UPROPERTY()
 	FName TerritoryId;
 
-	UPROPERTY(ReplicatedUsing = OnRep_OwnerState)
+	UPROPERTY()
 	FGuLiOutpostOwnerState OwnerState;
 };
 

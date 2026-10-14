@@ -84,13 +84,7 @@ namespace GuLiWingmanQAFixture
 
 AGuLiWingmanQAGameMode::AGuLiWingmanQAGameMode()
 {
-	// First four real connections become the two Air slots on each team. Backup and
-	// observer roles can then be added without accepting a client-supplied identity.
-	InitialRolePriority = {
-		EGuLiCommanderRole::Air,
-		EGuLiCommanderRole::Commander,
-		EGuLiCommanderRole::Ground
-	};
+	// Seat assignment is owned by the coordinator.
 }
 
 void AGuLiWingmanQAGameMode::RestartPlayer(AController* NewPlayer)

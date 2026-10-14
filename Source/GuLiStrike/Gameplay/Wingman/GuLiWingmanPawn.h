@@ -27,11 +27,19 @@ enum class EGuLiWingmanPawnMode : uint8
 	RemotePresentation
 };
 
+/** Correctness counters; no tracing or performance sampling on logic clients. */
+struct FGuLiWingmanHybridActivity
+{
+    uint64 SimulationSamples=0,Published=0,Received=0,FirstPublishTick=0,LastPublishTick=0,LastSimulationTick=0,PoseTick=0;
+    uint32 CadenceErrors=0,Restores=0;
+};
+
 /** One non-replicated client Wingman. Dedicated Servers never spawn this class. */
 UCLASS(Transient, NotPlaceable, Config=Game)
 class GULISTRIKE_API AGuLiWingmanPawn final : public APawn
 {
 	GENERATED_BODY()
+    friend class UGuLiWingmanSimulationSubsystem;
 
 public:
 	AGuLiWingmanPawn();
@@ -53,6 +61,18 @@ public:
 
 	void ApplyRemotePresentation(const FTransform& Transform, float Opacity,
 		bool bInteractable, bool bAuthorityRebase);
+    /** Applies a received query pose without advancing behavior or publishing it. */
+    void ApplyHybridQueryPose(const FTransform& Transform,const FVector& Velocity);
+    const FGuLiWingmanHybridActivity& GetHybridActivity() const { return HybridActivity; }
+    void ObserveHybridSimulation(uint64 Tick)
+    { if (HybridActivity.SimulationSamples && Tick-HybridActivity.LastSimulationTick!=2) ++HybridActivity.CadenceErrors;
+      HybridActivity.LastSimulationTick=HybridActivity.PoseTick=Tick;++HybridActivity.SimulationSamples; }
+    void ObserveHybridPublication(uint64 Tick)
+    { if (HybridActivity.Published && Tick-HybridActivity.LastPublishTick!=6) ++HybridActivity.CadenceErrors;
+      if (!HybridActivity.Published) HybridActivity.FirstPublishTick=Tick;
+      HybridActivity.LastPublishTick=HybridActivity.PoseTick=Tick;++HybridActivity.Published; }
+    void ObserveHybridReception(uint64 Tick) { HybridActivity.PoseTick=Tick;++HybridActivity.Received; }
+    void ObserveHybridRestore() { ++HybridActivity.Restores; }
 	void ApplyAuthorityRebase(const FTransform& Transform, const FVector& InitialVelocity);
 	void SetPhaseAppearance(bool bPhased);
 	void MarkRebaseRejected(bool bNoSafePoint, double RetryAfterServerTimeSeconds);
@@ -76,6 +96,7 @@ public:
 	bool IsOwnerSimulationActive() const { return bOwnerSimulationActive; }
 	bool IsPresentationInteractable() const { return bPresentationInteractable; }
 	bool IsStateTreeRunning() const { return bUsingStateTree; }
+    void AdvanceLogicalBehavior(float DeltaSeconds);
 	FGuLiWingmanRuntimeState& GetMutableRuntimeState() { return Runtime; }
 	const FGuLiWingmanRuntimeState& GetRuntimeState() const { return Runtime; }
 	UGuLiWingmanFlightMovementComponent* GetFlightMovement() const { return FlightMovement; }
@@ -87,6 +108,7 @@ public:
 #endif
 
 private:
+    FGuLiWingmanHybridActivity HybridActivity;
 	void StopStateTree(const TCHAR* Reason);
 	void StopFlightTrail();
 

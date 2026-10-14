@@ -3,13 +3,14 @@
 #include "Subsystems/WorldSubsystem.h"
 #include "Gameplay/Data/Generated/GuLiStrikeRogueCardsTableRows.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 #include "GuLiRogueCardSubsystem.generated.h"
 class UGuLiCommanderNetSyncComponent;
 class AGuLiBattlePlayerState;
 class UDataTable;
 class UStringTable;
 
-/** Catalog on both peers; offers/acquisitions exist only on the server and belong to a match/team. */
+/** Local catalog and UI view of the team-owned army capability. */
 UCLASS()
 class GULISTRIKE_API UGuLiRogueCardSubsystem : public UWorldSubsystem
 {
@@ -24,10 +25,10 @@ public:
 	void Confirm(UGuLiCommanderNetSyncComponent& Channel, FGuid Session, const FString& CardId);
 	void Cancel(UGuLiCommanderNetSyncComponent& Channel, FGuid Session);
 	void PresentationClosed(UGuLiCommanderNetSyncComponent& Channel, FGuid Session);
-	/** Only called by the authority simulation, before/after profile commit. */
-	void BeginFixedStep();
-	void EndFixedStep();
+
+    virtual void Deinitialize() override;
 private:
+    friend class FGuLiHybridArmyBridge;
 	struct FOffer
 	{
 		FGuid Request, Session, RerolledFrom;
@@ -37,17 +38,25 @@ private:
 		FString Selected, Error;
 		bool bSubmitted=false, bApplied=false, bFinished=false;
 		bool bUpgradePublished=false;
+		uint32 HybridPresentationEpoch=0;
 		float CommittedTime=0.f;
 		TArray<FGuLiSoldierId> UpgradeTargets;
 	};
 	bool LoadCatalog(FString& Error);
-	bool IsEligible(const FGuLiStrikeRogueCardsCardsRow& Card, EGuLiTeam Team, FString& Error);
-	bool ValidateOwner(UGuLiCommanderNetSyncComponent& Channel, AGuLiBattlePlayerState*& Owner, FString& Error) const;
-	void SynchronizeEpoch();
+
 	UPROPERTY(Transient) TObjectPtr<UDataTable> Table;
 	UPROPERTY(Transient) TObjectPtr<UStringTable> StringTable;
 	TMap<FString, FGuLiStrikeRogueCardsCardsRow> Catalog;
 	TMap<TWeakObjectPtr<UGuLiCommanderNetSyncComponent>, FOffer> Offers;
 	TMap<uint32, TMap<FString, int32>> Acquisitions;
 	uint32 Epoch=0;
+    TMap<uint32,FGuid> HybridClosedSessions;
+    enum class EHybridWatch : uint8 { Rejected, Added, Pending };
+    EHybridWatch WatchHybridRequest(FGuid Event,FGuid Session,bool bSelection,UGuLiCommanderNetSyncComponent& Channel);
+    struct FPendingHybridUI {FGuid Session;bool Selection=false;TWeakObjectPtr<UGuLiCommanderNetSyncComponent> Channel;};
+    TMap<FGuid,FPendingHybridUI> HybridRequests;
+    FDelegateHandle HybridCommandReceiptHandle;
+    void RejectHybridRequest(FGuid Event,const FString& Error);
+    void HybridCommandFinished(const FGuLiHybridCommandResult& Result);
+    UFUNCTION() void HybridTransactionFinished(const FGuLiHybridTransactionResult& Result);
 };

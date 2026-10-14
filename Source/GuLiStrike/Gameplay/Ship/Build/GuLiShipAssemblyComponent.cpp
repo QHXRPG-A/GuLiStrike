@@ -4,17 +4,23 @@
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Components/StaticMeshComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 
-UGuLiShipAssemblyComponent::UGuLiShipAssemblyComponent() { SetIsReplicatedByDefault(true); }
+UGuLiShipAssemblyComponent::UGuLiShipAssemblyComponent() { SetIsReplicatedByDefault(false); }
 AGuLiStrikeShip& UGuLiShipAssemblyComponent::Ship() const { return *CastChecked<AGuLiStrikeShip>(GetOwner()); }
-void UGuLiShipAssemblyComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+
+void UGuLiShipAssemblyComponent::BeginPlay()
 {
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(UGuLiShipAssemblyComponent, Manifest);
-	DOREPLIFETIME(UGuLiShipAssemblyComponent, Runtime);
+    Super::BeginPlay();if (!GetOwner()->HasAuthority()) OnRep_Manifest();
+    if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+        Hybrid->OnTransactionCompleted.AddUniqueDynamic(this,&ThisClass::HandleHybridTransaction);
 }
-void UGuLiShipAssemblyComponent::BeginPlay() { Super::BeginPlay(); if (!GetOwner()->HasAuthority()) OnRep_Manifest(); }
-void UGuLiShipAssemblyComponent::EndPlay(const EEndPlayReason::Type Reason) { ReleaseBuild(); Super::EndPlay(Reason); }
+void UGuLiShipAssemblyComponent::EndPlay(const EEndPlayReason::Type Reason)
+{
+    if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+        Hybrid->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::HandleHybridTransaction);
+    ReleaseBuild();Super::EndPlay(Reason);
+}
 
 bool UGuLiShipAssemblyComponent::PrepareBuild(const FGuLiShipRunBuildState& Build, FString& Error)
 {
@@ -78,6 +84,12 @@ bool UGuLiShipAssemblyComponent::PrepareBuild(const FGuLiShipRunBuildState& Buil
 	bPrepared = true;
 	return true;
 }
+void UGuLiShipAssemblyComponent::AdvanceHybridCapabilities(uint64 Tick,double Delta)
+{
+    if (bRestoringPrivate || bPrepared || bCommitting) return;
+    for (const auto& G:Groups) for (const auto& Entry:G.Capabilities)
+        if (auto* Capability=Entry.Get();IsValid(Capability) && Capability->IsCapabilityEnabled()) Capability->AdvanceHybrid(Tick,Delta);
+}
 
 void UGuLiShipAssemblyComponent::DiscardPreparedBuild()
 {
@@ -132,9 +144,9 @@ void UGuLiShipAssemblyComponent::CommitPreparedBuild()
 	{
 		Manifest.Catalog = Catalog; Manifest.CatalogRevision = Catalog->Revision; Manifest.Build = AppliedBuild;
 	}
-	EvaluateRuntimeRequirements();
+	if (!bRestoringPrivate) EvaluateRuntimeRequirements();
 	bPrepared = false; bCommitting = false;
-	if (GetOwner()->HasAuthority()) PublishRuntime(); else OnRep_Runtime();
+	if (!bRestoringPrivate) {if (GetOwner()->HasAuthority()) PublishRuntime(); else OnRep_Runtime();}
 	Ship().FinishAssemblyCommit();
 }
 
@@ -202,7 +214,7 @@ void UGuLiShipAssemblyComponent::PublishRuntime()
 		for (int32 Index = 0; Index < Group.Parts.Num(); ++Index)
 			if (!Group.Parts[Index]) Runtime.MissingSockets.Add(Mounts[Index].SocketName);
 	}
-	GetOwner()->ForceNetUpdate();
+
 }
 void UGuLiShipAssemblyComponent::OnRep_Manifest()
 {
@@ -239,7 +251,7 @@ UGuLiShipCapabilityComponent* UGuLiShipAssemblyComponent::FindCapability(FName G
 		for (const auto& Capability : Group.Capabilities) if (Capability->GetCapabilityId() == CapabilityId) return Capability;
 	return nullptr;
 }
-void UGuLiShipAssemblyComponent::ServerRequestActivation_Implementation(FGuid RequestId, FName GroupId, FName CapabilityId,
+void UGuLiShipAssemblyComponent::ServerRequestActivation(FGuid RequestId, FName GroupId, FName CapabilityId,
 	FName ActionId, int64 MatchEpoch, int64 BuildRevision)
 {
 	FGuLiShipCapabilityActivationResult Result; Result.RequestId = RequestId;
@@ -258,7 +270,7 @@ void UGuLiShipAssemblyComponent::ServerRequestActivation_Implementation(FGuid Re
 	if (RequestId.IsValid()) ActivationReceipts.Add(RequestId, {GroupId, CapabilityId, ActionId, MatchEpoch, BuildRevision, Result});
 	ClientResolveActivation(Result);
 }
-void UGuLiShipAssemblyComponent::ClientResolveActivation_Implementation(const FGuLiShipCapabilityActivationResult& Result)
+void UGuLiShipAssemblyComponent::ClientResolveActivation(const FGuLiShipCapabilityActivationResult& Result)
 { OnActivationResolved.Broadcast(Result); }
 void UGuLiShipAssemblyComponent::ReleaseBuild()
 {

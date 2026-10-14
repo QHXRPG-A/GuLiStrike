@@ -34,8 +34,12 @@ class GULISTRIKE_API UGuLiGroundCrowdManager : public UCrowdManager
 public:
 	UGuLiGroundCrowdManager(const FObjectInitializer& Initializer = FObjectInitializer::Get());
 	virtual bool IsSuitableNavData(const ANavigationData& NavData) const override;
+	virtual void Tick(float DeltaTime) override;
+	/** All Hybrid engineering objects share one Detour step per logical tick. */
+	void AdvanceHybrid(uint64 LogicalTick,float DeltaTime);
 	void SetGroundObstacles(TConstArrayView<FGuLiGroundAvoidanceBody> Bodies);
 	UFUNCTION(BlueprintPure, Category="Engineering|Navigation") int32 GetGroundObstacleCount() const { return Obstacles.Num(); }
 private:
+	uint64 LastHybridTick=0,LastHybridEpoch=0;
 	UPROPERTY(Transient) TMap<uint32, TObjectPtr<UGuLiGroundCrowdObstacle>> Obstacles;
 };

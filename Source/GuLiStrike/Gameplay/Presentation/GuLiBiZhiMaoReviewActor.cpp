@@ -3,8 +3,9 @@
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
 #include "UObject/Package.h"
-#include "Gameplay/Economy/GuLiTeamEconomySubsystem.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 
 AGuLiBiZhiMaoReviewActor::AGuLiBiZhiMaoReviewActor()
 {
@@ -21,6 +22,13 @@ AGuLiBiZhiMaoReviewActor::AGuLiBiZhiMaoReviewActor()
 void AGuLiBiZhiMaoReviewActor::BeginPlay()
 {
 	Super::BeginPlay();
+	FString AcceptanceRun;
+	if (FParse::Value(FCommandLine::Get(),TEXT("GuLiAcceptanceRun="),AcceptanceRun) && !AcceptanceRun.IsEmpty())
+	{
+		// The acceptance cohort and input script own their load and resources.
+		// This unrelated authoring preview must not inject extra actors or gifts.
+		Instances->ClearInstances(); SetActorHiddenInGame(true); SetActorTickEnabled(false); return;
+	}
 	ResetPreview();
 }
 void AGuLiBiZhiMaoReviewActor::OnConstruction(const FTransform& Transform)
@@ -39,29 +47,7 @@ void AGuLiBiZhiMaoReviewActor::ResetPreview()
 void AGuLiBiZhiMaoReviewActor::Tick(float Dt)
 {
 	Super::Tick(Dt);
-#if !UE_BUILD_SHIPPING
-	if (bPrepareConstructionReview && GetWorld()->GetNetMode()!=NM_Client && HasAuthority() && GetWorld()->IsGameWorld()
-		&& GetWorld()->GetPackage()->GetName().EndsWith(TEXT("LVL_CommanderMassPrototype")))
-	{
-		auto* Resources=GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
-		auto* Economy=GetWorld()->GetSubsystem<UGuLiTeamEconomySubsystem>();
-		if (Resources && Resources->IsRuntimeReady() && Economy && Economy->AreTransactionsOpen()
-			&& GuLiEconomy::IsPlayableTeam(ConstructionReviewTeam))
-		{
-			if (!bConstructionReviewPrepared)
-			{
-				Economy->Credit(ConstructionReviewTeam,EGuLiResourceType::Blue,120);
-				Economy->Credit(ConstructionReviewTeam,EGuLiResourceType::Red,60);
-				bConstructionReviewPrepared=true;
-			}
-			while (BuilderGroundLocations.IsValidIndex(BuildersPrepared))
-			{
-				if (!Resources->SpawnConstructionVehicle(ConstructionReviewTeam,BuilderGroundLocations[BuildersPrepared])) break;
-				++BuildersPrepared;
-			}
-		}
-	}
-#endif
+
 	if (!Animation || !Animation->IsValidDefinition() || !Mesh || Instances->GetInstanceCount()!=1) return;
 	const float SafeDt=FMath::Clamp(Dt,0.f,.1f);
 	Offset+=LocalVelocity*SafeDt;
