@@ -1245,13 +1245,10 @@ uint32 AGuLiCommanderPlayerController::AllocateMoveCommandId()
 bool AGuLiCommanderPlayerController::IsCommanderViewActive() const
 {
 	const AGuLiBattlePlayerState* BattlePlayerState = GetPlayerState<AGuLiBattlePlayerState>();
-	if (!IsLocalController() || !BattlePlayerState || !BattlePlayerState->IsCommander())
-	{
-		return false;
-	}
-	const UGuLiCommanderResourceAdapter* ResourceAdapter = GetWorld()
-		? GetWorld()->GetSubsystem<UGuLiCommanderResourceAdapter>() : nullptr;
-	return ResourceAdapter && ResourceAdapter->IsCommandRuntimeReady();
+	// Hybrid resource queries and gameplay capabilities have separate readiness
+	// gates. The retired full-resource startup flag must not hide this local view
+	// or remove its camera/command mappings; orders retain their own ready checks.
+	return IsLocalController() && BattlePlayerState && BattlePlayerState->IsCommander();
 }
 
 void AGuLiCommanderPlayerController::UpdateCommanderInputMode()

@@ -2,6 +2,10 @@
 #include "Network/GuLiHybridManifest.h"
 #include "Network/GuLiHybridSessionSubsystem.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
+#include "Commander/Framework/GuLiCommanderPlayerController.h"
+#include "Commander/Presentation/GuLiCommanderHUD.h"
+#include "Commander/UI/GuLiCommanderHUDWidget.h"
+#include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Editor.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
@@ -268,6 +272,26 @@ FString UGuLiLocalPIESubsystem::GetSessionStatus() const
         J->SetStringField(TEXT("controller"),PC?PC->GetClass()->GetPathName():TEXT(""));
         J->SetStringField(TEXT("pawn"),PC && PC->GetPawn()?PC->GetPawn()->GetClass()->GetPathName():TEXT(""));
         J->SetStringField(TEXT("hud"),PC && PC->GetHUD()?PC->GetHUD()->GetClass()->GetPathName():TEXT(""));
+        if (const auto* Commander=Cast<AGuLiCommanderPlayerController>(PC))
+        {
+            J->SetBoolField(TEXT("commander_view_active"),Commander->IsCommanderViewActive());
+            J->SetBoolField(TEXT("can_issue_orders"),Commander->CanIssueCommanderOrders());
+            J->SetBoolField(TEXT("mouse_cursor_visible"),Commander->bShowMouseCursor);
+            const auto* HUD=Cast<AGuLiCommanderHUD>(Commander->GetHUD());
+            const auto* Widget=HUD?HUD->GetRuntimeHUDWidget():nullptr;
+            J->SetStringField(TEXT("commander_hud_widget"),Widget?Widget->GetClass()->GetPathName():TEXT(""));
+            J->SetBoolField(TEXT("commander_hud_in_viewport"),Widget && Widget->IsInViewport());
+            J->SetBoolField(TEXT("commander_hud_visible"),Widget && Widget->IsVisible());
+            J->SetBoolField(TEXT("commander_hud_owner_matches"),Widget && Widget->GetOwningPlayer()==Commander);
+            const FVector2D Size=Widget?Widget->GetCachedGeometry().GetLocalSize():FVector2D::ZeroVector;
+            J->SetNumberField(TEXT("commander_hud_width"),Size.X);
+            J->SetNumberField(TEXT("commander_hud_height"),Size.Y);
+        }
+        if (const auto* Resources=World->GetSubsystem<UGuLiResourceWorldSubsystem>())
+        {
+            J->SetBoolField(TEXT("resource_query_ready"),Resources->IsHybridQuerySceneReady());
+            J->SetBoolField(TEXT("legacy_resource_runtime_ready"),Resources->IsRuntimeReady());
+        }
     }
     FString Text;FJsonSerializer::Serialize(J,TJsonWriterFactory<>::Create(&Text));return Text;
 }

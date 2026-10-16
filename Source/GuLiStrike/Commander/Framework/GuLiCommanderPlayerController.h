@@ -118,7 +118,7 @@ public:
 	GULISTRIKE_API bool CanIssueCommanderOrders() const;
 
 	/** 本地指挥视图资格；只依赖角色，网络未就绪时仍可移动相机，但不能发命令。 */
-	bool IsCommanderViewActive() const;
+	GULISTRIKE_API bool IsCommanderViewActive() const;
 
 	UFUNCTION(BlueprintPure, Category = "Commander|Network")
 	UGuLiCommanderNetSyncComponent* GetCommanderNetSyncComponent() const { return NetSyncComponent; }

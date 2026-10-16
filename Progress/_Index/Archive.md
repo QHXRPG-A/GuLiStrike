@@ -4,7 +4,7 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
-| 2026-10-16 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | network, commander, combat | partial | 合并93份CS-P2P文档并保留来源、首次失败及构建事实；三进程PIE已验证，新增临时目录清理因自动审批拒绝而待执行。 |
+| 2026-10-16 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | network, commander, combat | partial | 合并93份CS-P2P文档并保留来源、首次失败及构建事实；用户已执行临时清理，Commander的HUD、点选、移动与缩放修复已加载并完成本轮验证。 |
 | 2026-10-14 | [Artifacts 与 ArtSource 运行时安全清理](../Archive/20261014-Artifacts与ArtSource运行时安全清理.md) | tools | partial | 根据用户授权清理两个目录的非运行时文件，删除 18,868 个文件、1,573 个空目录，逻辑大小 64.597 GiB，仅保留 105 份被文档引用的 Markdown 说明。运行资源未改动，安全性依据静态引用核对，未运行游戏。 |
 | 2026-10-11 | [Mass会话GitHub交付与临时文件清理受阻](../Archive/20261011-Mass会话GitHub交付与临时文件清理受阻.md) | commander, navigation, presentation, performance | partial | Mass优化、原地图与报告共104个文件已上传GitHub main，远端提交核对一致；87个临时文件约85.4 MB的删除被自动审批策略拦截，未删除任何文件。 |
 | 2026-10-11 | [Mass优化固定应用与开关移除](../Archive/20261011-Mass优化固定应用与开关移除.md) | commander, navigation, presentation, performance | partial | 按用户最新指示将已采用的Mass优化固定应用，删除本轮运行时开关与旧预测回退；重新编译13.06秒成功、8份BuildId一致、8项自动化通过，地图入口同步移除旧切换操作。 |
